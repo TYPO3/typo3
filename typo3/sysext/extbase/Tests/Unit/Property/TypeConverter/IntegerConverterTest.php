@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the Integer converter
  *
@@ -87,5 +85,7 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_IntegerConverterTest extends 
 	public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray() {
 		$this->assertEquals(array(), $this->converter->getSourceChildPropertiesToBeConverted('myString'));
 	}
+
 }
+
 ?>

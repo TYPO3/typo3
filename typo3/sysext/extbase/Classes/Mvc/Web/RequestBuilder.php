@@ -1,36 +1,34 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Builds a web request.
  *
  * @package Extbase
  * @subpackage MVC\Web
- *
  * @scope prototype
  */
 class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
@@ -124,7 +122,6 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 		$this->extensionName = $configuration['extensionName'];
 		$this->pluginName = $configuration['pluginName'];
 		$this->defaultControllerName = current(array_keys($configuration['controllerConfiguration']));
-
 		$this->allowedControllerActions = array();
 		foreach ($configuration['controllerConfiguration'] as $controllerName => $controllerActions) {
 			$this->allowedControllerActions[$controllerName] = $controllerActions['actions'];
@@ -143,16 +140,12 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 		$this->loadDefaultValues();
 		$pluginNamespace = $this->extensionService->getPluginNamespace($this->extensionName, $this->pluginName);
 		$parameters = t3lib_div::_GPmerged($pluginNamespace);
-
 		$files = $this->untangleFilesArray($_FILES);
-
 		if (isset($files[$pluginNamespace]) && is_array($files[$pluginNamespace])) {
 			$parameters = Tx_Extbase_Utility_Arrays::arrayMergeRecursiveOverrule($parameters, $files[$pluginNamespace]);
 		}
-
 		$controllerName = $this->resolveControllerName($parameters);
 		$actionName = $this->resolveActionName($controllerName, $parameters);
-
 		$request = $this->objectManager->create('Tx_Extbase_MVC_Web_Request');
 		$request->setPluginName($this->pluginName);
 		$request->setControllerExtensionName($this->extensionName);
@@ -160,18 +153,15 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 		$request->setControllerActionName($actionName);
 		$request->setRequestUri(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseUri(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-		$request->setMethod((isset($_SERVER['REQUEST_METHOD'])) ? $_SERVER['REQUEST_METHOD'] : NULL);
-
-		if (is_string($parameters['format']) && (strlen($parameters['format']))) {
+		$request->setMethod(isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : NULL);
+		if (is_string($parameters['format']) && strlen($parameters['format'])) {
 			$request->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));
 		} else {
 			$request->setFormat($this->defaultFormat);
 		}
-
 		foreach ($parameters as $argumentName => $argumentValue) {
 			$request->setArgument($argumentName, $argumentValue);
 		}
-
 		return $request;
 	}
 
@@ -187,28 +177,19 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	protected function resolveControllerName(array $parameters) {
 		if (!isset($parameters['controller']) || strlen($parameters['controller']) === 0) {
 			if (strlen($this->defaultControllerName) === 0) {
-				throw new Tx_Extbase_MVC_Exception(
-					'The default controller for extension "' . $this->extensionName . '" and plugin "' . $this->pluginName . '" can not be determined. Please check for Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
-					1316104317
-				);
+				throw new Tx_Extbase_MVC_Exception(((('The default controller for extension "' . $this->extensionName) . '" and plugin "') . $this->pluginName) . '" can not be determined. Please check for Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.', 1316104317);
 			}
 			return $this->defaultControllerName;
 		}
 		$allowedControllerNames = array_keys($this->allowedControllerActions);
 		if (!in_array($parameters['controller'], $allowedControllerNames)) {
 			$configuration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-			if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (boolean)$configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
-				throw new t3lib_error_http_PageNotFoundException(
-					'The requested resource was not found',
-					1313857897
-				);
-			} elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (boolean)$configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
+			if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (bool) $configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
+				throw new t3lib_error_http_PageNotFoundException('The requested resource was not found', 1313857897);
+			} elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (bool) $configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
 				return $this->defaultControllerName;
 			}
-			throw new Tx_Extbase_MVC_Exception_InvalidControllerName(
-				'The controller "' . $parameters['controller'] . '" is not allowed by this plugin. Please check for Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
-				1313855173
-			);
+			throw new Tx_Extbase_MVC_Exception_InvalidControllerName(('The controller "' . $parameters['controller']) . '" is not allowed by this plugin. Please check for Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.', 1313855173);
 		}
 		return filter_var($parameters['controller'], FILTER_SANITIZE_STRING);
 	}
@@ -227,10 +208,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 		$defaultActionName = is_array($this->allowedControllerActions[$controllerName]) ? current($this->allowedControllerActions[$controllerName]) : '';
 		if (!isset($parameters['action']) || strlen($parameters['action']) === 0) {
 			if (strlen($defaultActionName) === 0) {
-				throw new Tx_Extbase_MVC_Exception(
-					'The default action can not be determined for controller "' . $controllerName . '". Please check Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
-					1295479651
-				);
+				throw new Tx_Extbase_MVC_Exception(('The default action can not be determined for controller "' . $controllerName) . '". Please check Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.', 1295479651);
 			}
 			return $defaultActionName;
 		}
@@ -238,18 +216,12 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 		$allowedActionNames = $this->allowedControllerActions[$controllerName];
 		if (!in_array($actionName, $allowedActionNames)) {
 			$configuration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-			if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (boolean)$configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
-				throw new t3lib_error_http_PageNotFoundException(
-					'The requested resource was not found',
-					1313857897
-				);
-			} elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (boolean)$configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
+			if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (bool) $configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
+				throw new t3lib_error_http_PageNotFoundException('The requested resource was not found', 1313857897);
+			} elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (bool) $configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
 				return $defaultActionName;
 			}
-			throw new Tx_Extbase_MVC_Exception_InvalidActionName(
-				'The action "' . $actionName . '" (controller "' . $controllerName . '") is not allowed by this plugin. Please check Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
-				1313855175
-			);
+			throw new Tx_Extbase_MVC_Exception_InvalidActionName(((('The action "' . $actionName) . '" (controller "') . $controllerName) . '") is not allowed by this plugin. Please check Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.', 1313855175);
 		}
 		return filter_var($actionName, FILTER_SANITIZE_STRING);
 	}
@@ -263,28 +235,24 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	 */
 	protected function untangleFilesArray(array $convolutedFiles) {
 		$untangledFiles = array();
-
 		$fieldPaths = array();
 		foreach ($convolutedFiles as $firstLevelFieldName => $fieldInformation) {
 			if (!is_array($fieldInformation['error'])) {
 				$fieldPaths[] = array($firstLevelFieldName);
 			} else {
 				$newFieldPaths = $this->calculateFieldPaths($fieldInformation['error'], $firstLevelFieldName);
-				array_walk($newFieldPaths,
-					function(&$value, $key) {
-						$value = explode('/', $value);
-					}
-				);
+				array_walk($newFieldPaths, function (&$value, $key) {
+					$value = explode('/', $value);
+				});
 				$fieldPaths = array_merge($fieldPaths, $newFieldPaths);
 			}
 		}
-
 		foreach ($fieldPaths as $fieldPath) {
 			if (count($fieldPath) === 1) {
-				$fileInformation = $convolutedFiles[$fieldPath{0}];
+				$fileInformation = $convolutedFiles[$fieldPath[0]];
 			} else {
 				$fileInformation = array();
-				foreach ($convolutedFiles[$fieldPath{0}] as $key => $subStructure) {
+				foreach ($convolutedFiles[$fieldPath[0]] as $key => $subStructure) {
 					$fileInformation[$key] = Tx_Extbase_Utility_Arrays::getValueByPath($subStructure, array_slice($fieldPath, 1));
 				}
 			}
@@ -307,7 +275,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 				$fieldPath = ($firstLevelFieldName !== NULL ? $firstLevelFieldName . '/' : '') . $key;
 				if (is_array($subStructure)) {
 					foreach ($this->calculateFieldPaths($subStructure) as $subFieldPath) {
-						$fieldPaths[] = $fieldPath . '/' . $subFieldPath;
+						$fieldPaths[] = ($fieldPath . '/') . $subFieldPath;
 					}
 				} else {
 					$fieldPaths[] = $fieldPath;
@@ -318,4 +286,5 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	}
 
 }
+
 ?>

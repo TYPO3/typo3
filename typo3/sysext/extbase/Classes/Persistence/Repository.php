@@ -11,7 +11,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * The base repository - will usually be extended by a more concrete repository.
  *
@@ -23,7 +22,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 
 	/**
 	 * @var Tx_Extbase_Persistence_IdentityMap
-	 **/
+	 */
 	protected $identityMap;
 
 	/**
@@ -79,7 +78,6 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		$this->addedObjects = new Tx_Extbase_Persistence_ObjectStorage();
 		$this->removedObjects = new Tx_Extbase_Persistence_ObjectStorage();
 		$this->objectType = preg_replace(array('/_Repository_(?!.*_Repository_)/', '/Repository$/'), array('_Model_', ''), $this->getRepositoryClassName());
-
 		if ($objectManager === NULL) {
 			// Legacy creation, in case the object manager is NOT injected
 			// If ObjectManager IS there, then all properties are automatically injected
@@ -125,12 +123,10 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @api
 	 */
 	public function add($object) {
-		if (!($object instanceof $this->objectType)) {
-			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType('The object given to add() was not of the type (' . $this->objectType . ') this repository manages.', 1248363335);
+		if (!$object instanceof $this->objectType) {
+			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType(('The object given to add() was not of the type (' . $this->objectType) . ') this repository manages.', 1248363335);
 		}
-
 		$this->addedObjects->attach($object);
-
 		if ($this->removedObjects->contains($object)) {
 			$this->removedObjects->detach($object);
 		}
@@ -144,14 +140,12 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @api
 	 */
 	public function remove($object) {
-		if (!($object instanceof $this->objectType)) {
-			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType('The object given to remove() was not of the type (' . $this->objectType . ') this repository manages.', 1248363335);
+		if (!$object instanceof $this->objectType) {
+			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType(('The object given to remove() was not of the type (' . $this->objectType) . ') this repository manages.', 1248363335);
 		}
-
 		if ($this->addedObjects->contains($object)) {
 			$this->addedObjects->detach($object);
 		}
-
 		if (!$object->_isNew()) {
 			$this->removedObjects->attach($object);
 		}
@@ -166,13 +160,12 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @api
 	 */
 	public function replace($existingObject, $newObject) {
-		if (!($existingObject instanceof $this->objectType)) {
-			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType('The existing object given to replace was not of the type (' . $this->objectType . ') this repository manages.', 1248363434);
+		if (!$existingObject instanceof $this->objectType) {
+			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType(('The existing object given to replace was not of the type (' . $this->objectType) . ') this repository manages.', 1248363434);
 		}
-		if (!($newObject instanceof $this->objectType)) {
-			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType('The new object given to replace was not of the type (' . $this->objectType . ') this repository manages.', 1248363439);
+		if (!$newObject instanceof $this->objectType) {
+			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType(('The new object given to replace was not of the type (' . $this->objectType) . ') this repository manages.', 1248363439);
 		}
-
 		$backend = $this->persistenceManager->getBackend();
 		$session = $this->persistenceManager->getSession();
 		$uuid = $backend->getIdentifierByObject($existingObject);
@@ -180,7 +173,6 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			$backend->replaceObject($existingObject, $newObject);
 			$session->unregisterReconstitutedObject($existingObject);
 			$session->registerReconstitutedObject($newObject);
-
 			if ($this->removedObjects->contains($existingObject)) {
 				$this->removedObjects->detach($existingObject);
 				$this->removedObjects->attach($newObject);
@@ -194,7 +186,6 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		} else {
 			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The "existing object" is unknown to the persistence backend.', 1238068475);
 		}
-
 	}
 
 	/**
@@ -204,10 +195,9 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @api
 	 */
 	public function update($modifiedObject) {
-		if (!($modifiedObject instanceof $this->objectType)) {
-			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType('The modified object given to update() was not of the type (' . $this->objectType . ') this repository manages.', 1249479625);
+		if (!$modifiedObject instanceof $this->objectType) {
+			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType(('The modified object given to update() was not of the type (' . $this->objectType) . ') this repository manages.', 1249479625);
 		}
-
 		$uid = $modifiedObject->getUid();
 		if ($uid !== NULL) {
 			$existingObject = $this->findByUid($uid);
@@ -244,7 +234,6 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * Returns all objects of this repository.
 	 *
 	 * @return Tx_Extbase_Persistence_QueryResultInterface|array
-	 *         all objects, will be empty if no objects are found, will be an array if raw query results are enabled
 	 * @api
 	 */
 	public function findAll() {
@@ -290,12 +279,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			$query = $this->createQuery();
 			$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 			$query->getQuerySettings()->setRespectStoragePage(FALSE);
-			$object = $query
-					->matching(
-						$query->equals('uid', $uid)
-					)
-					->execute()
-					->getFirst();
+			$object = $query->matching($query->equals('uid', $uid))->execute()->getFirst();
 		}
 		return $object;
 	}
@@ -304,8 +288,8 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * Sets the property names to order the result by per default.
 	 * Expected like this:
 	 * array(
-	 *  'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
-	 *  'bar' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
+	 * 'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
+	 * 'bar' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
 	 * )
 	 *
 	 * @param array $defaultOrderings The property names to order by
@@ -355,28 +339,22 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 */
 	public function __call($methodName, $arguments) {
 		if (substr($methodName, 0, 6) === 'findBy' && strlen($methodName) > 7) {
-			$propertyName = strtolower(substr(substr($methodName, 6), 0, 1) ) . substr(substr($methodName, 6), 1);
+			$propertyName = strtolower(substr(substr($methodName, 6), 0, 1)) . substr(substr($methodName, 6), 1);
 			$query = $this->createQuery();
-			$result = $query->matching($query->equals($propertyName, $arguments[0]))
-				->execute();
+			$result = $query->matching($query->equals($propertyName, $arguments[0]))->execute();
 			return $result;
 		} elseif (substr($methodName, 0, 9) === 'findOneBy' && strlen($methodName) > 10) {
-			$propertyName = strtolower(substr(substr($methodName, 9), 0, 1) ) . substr(substr($methodName, 9), 1);
+			$propertyName = strtolower(substr(substr($methodName, 9), 0, 1)) . substr(substr($methodName, 9), 1);
 			$query = $this->createQuery();
-			$object = $query->matching($query->equals($propertyName, $arguments[0]))
-				->setLimit(1)
-				->execute()
-				->getFirst();
+			$object = $query->matching($query->equals($propertyName, $arguments[0]))->setLimit(1)->execute()->getFirst();
 			return $object;
 		} elseif (substr($methodName, 0, 7) === 'countBy' && strlen($methodName) > 8) {
-			$propertyName = strtolower(substr(substr($methodName, 7), 0, 1) ) . substr(substr($methodName, 7), 1);
+			$propertyName = strtolower(substr(substr($methodName, 7), 0, 1)) . substr(substr($methodName, 7), 1);
 			$query = $this->createQuery();
-			$result = $query->matching($query->equals($propertyName, $arguments[0]))
-				->execute()
-				->count();
+			$result = $query->matching($query->equals($propertyName, $arguments[0]))->execute()->count();
 			return $result;
 		}
-		throw new Tx_Extbase_Persistence_Exception_UnsupportedMethod('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
+		throw new Tx_Extbase_Persistence_Exception_UnsupportedMethod(('The method "' . $methodName) . '" is not supported by the repository.', 1233180480);
 	}
 
 	/**
@@ -389,4 +367,5 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	}
 
 }
+
 ?>

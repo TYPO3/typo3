@@ -1,27 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2010 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Creates a request an dispatches it to the controller which was specified
  * by TS Setup, flexForm and returns the content to the v4 framework.
@@ -43,6 +42,7 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 
 	/**
 	 * The application context
+	 *
 	 * @var string
 	 */
 	protected $context;
@@ -176,7 +176,7 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 	 * @see initialize()
 	 */
 	public function initializePersistence() {
-		$this->persistenceManager = $this->objectManager->get('Tx_Extbase_Persistence_Manager'); // singleton
+		$this->persistenceManager = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
 	}
 
 	/**
@@ -190,8 +190,7 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 	 */
 	public function run($content, $configuration) {
 		$this->initialize($configuration);
-
-			// CLI
+		// CLI
 		if (defined('TYPO3_cliMode') && TYPO3_cliMode === TRUE) {
 			$content = $this->handleCommandLineRequest();
 		} else {
@@ -205,15 +204,12 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 	 */
 	protected function handleCommandLineRequest() {
 		$commandLine = isset($_SERVER['argv']) ? $_SERVER['argv'] : array();
-
 		$request = $this->objectManager->get('Tx_Extbase_MVC_CLI_RequestBuilder')->build(array_slice($commandLine, 1));
 		$response = $this->objectManager->get('Tx_Extbase_MVC_CLI_Response');
 		$extensionName = $request->getControllerExtensionName();
 		$this->configurationManager->setConfiguration(array('extensionName' => $extensionName));
 		$this->objectManager->get('Tx_Extbase_MVC_Dispatcher')->dispatch($request, $response);
-
 		$content = $response->getContent();
-
 		$this->resetSingletons();
 		return $content;
 	}
@@ -224,9 +220,7 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 	protected function handleWebRequest() {
 		$requestHandlerResolver = $this->objectManager->get('Tx_Extbase_MVC_RequestHandlerResolver');
 		$requestHandler = $requestHandlerResolver->resolveRequestHandler();
-
 		$response = $requestHandler->handleRequest();
-
 		// If response is NULL after handling the request we need to stop
 		// This happens for instance, when a USER object was converted to a USER_INT
 		// @see Tx_Extbase_MVC_Web_FrontendRequestHandler::handleRequest()
@@ -239,7 +233,6 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 		}
 		$response->sendHeaders();
 		$content = $response->getContent();
-
 		$this->resetSingletons();
 		return $content;
 	}
@@ -254,45 +247,42 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 		$this->reflectionService->shutdown();
 	}
 
-	 /**
-	  * This method forwards the call to run(). This method is invoked by the mod.php
-	  * function of TYPO3.
-	  *
-	  * @param string $moduleSignature
-	  * @return boolean TRUE, if the request request could be dispatched
-	  * @see run()
-	  **/
+	/**
+	 * This method forwards the call to run(). This method is invoked by the mod.php
+	 * function of TYPO3.
+	 *
+	 * @param string $moduleSignature
+	 * @return boolean TRUE, if the request request could be dispatched
+	 * @see run()
+	 */
 	public function callModule($moduleSignature) {
 		if (!isset($GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature])) {
 			return FALSE;
 		}
 		$moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature];
-
 		// Check permissions and exit if the user has no permission for entry
 		$GLOBALS['BE_USER']->modAccess($moduleConfiguration, TRUE);
 		if (t3lib_div::_GP('id')) {
 			// Check page access
 			$permClause = $GLOBALS['BE_USER']->getPagePermsClause(TRUE);
-			$access = is_array(t3lib_BEfunc::readPageAccess((integer)t3lib_div::_GP('id'), $permClause));
+			$access = is_array(t3lib_BEfunc::readPageAccess((int) t3lib_div::_GP('id'), $permClause));
 			if (!$access) {
 				throw new RuntimeException('You don\'t have access to this page', 1289917924);
 			}
 		}
-
 		// BACK_PATH is the path from the typo3/ directory from within the
 		// directory containing the controller file. We are using mod.php dispatcher
 		// and thus we are already within typo3/ because we call typo3/mod.php
 		$GLOBALS['BACK_PATH'] = '';
-
 		$configuration = array(
 			'extensionName' => $moduleConfiguration['extensionName'],
 			'pluginName' => $moduleSignature
 		);
 		$content = $this->run('', $configuration);
-
 		print $content;
 		return TRUE;
 	}
 
 }
+
 ?>

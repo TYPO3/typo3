@@ -21,20 +21,16 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
- *
- *
  * @package Extbase
  * @subpackage Configuration
  * @version $ID:$
  */
-interface Tx_Extbase_Configuration_ConfigurationManagerInterface extends t3lib_Singleton {
-
+interface Tx_Extbase_Configuration_ConfigurationManagerInterface extends t3lib_Singleton
+{
 	const CONFIGURATION_TYPE_FRAMEWORK = 'Framework';
 	const CONFIGURATION_TYPE_SETTINGS = 'Settings';
 	const CONFIGURATION_TYPE_FULL_TYPOSCRIPT = 'FullTypoScript';
-
 	/**
 	 * @param tslib_cObj $contentObject
 	 * @return void

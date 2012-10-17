@@ -11,7 +11,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * An "Invalid Object Type" exception
  *
@@ -19,6 +18,8 @@
  * @subpackage Persistence\Exception
  */
 class Tx_Extbase_Persistence_Exception_IllegalObjectType extends Tx_Extbase_Persistence_Exception {
+
+
 }
 
 ?>

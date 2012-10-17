@@ -1,30 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * A generic object validator which allows for specifying property validators
  *
@@ -40,9 +39,7 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 */
 	protected $propertyValidators = array();
 
-
 	/**
-	 *
 	 * @var Tx_Extbase_Persistence_ObjectStorage
 	 */
 	static protected $instancesCurrentlyUnderValidation;
@@ -58,31 +55,25 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 */
 	public function validate($object) {
 		$messages = new Tx_Extbase_Error_Result();
-
 		if (self::$instancesCurrentlyUnderValidation === NULL) {
 			self::$instancesCurrentlyUnderValidation = new Tx_Extbase_Persistence_ObjectStorage();
 		}
-
 		if ($object === NULL) {
 			return $messages;
 		}
-
 		if (!is_object($object)) {
 			$messages->addError(new Tx_Extbase_Validation_Error('Object expected, "%1$d" given.', 1241099149, array(gettype($object))));
 			return $messages;
 		}
-
 		if (self::$instancesCurrentlyUnderValidation->contains($object)) {
 			return $messages;
 		} else {
 			self::$instancesCurrentlyUnderValidation->attach($object);
 		}
-
 		foreach ($this->propertyValidators as $propertyName => $validators) {
 			$propertyValue = $this->getPropertyValue($object, $propertyName);
 			$this->checkProperty($propertyValue, $validators, $messages->forProperty($propertyName));
 		}
-
 		self::$instancesCurrentlyUnderValidation->detach($object);
 		return $messages;
 	}
@@ -97,8 +88,7 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 * @return mixed
 	 */
 	protected function getPropertyValue($object, $propertyName) {
-			// TODO: add support for lazy loading proxies, if needed
-
+		// TODO: add support for lazy loading proxies, if needed
 		if (Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($object, $propertyName)) {
 			return Tx_Extbase_Reflection_ObjectAccess::getProperty($object, $propertyName);
 		} else {
@@ -116,7 +106,6 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-
 	protected function checkProperty($value, $validators, Tx_Extbase_Error_Result $messages) {
 		foreach ($validators as $validator) {
 			$messages->merge($validator->validate($value));
@@ -138,7 +127,6 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 			$this->addError('Value is no object.', 1241099148);
 			return FALSE;
 		}
-
 		$result = TRUE;
 		foreach (array_keys($this->propertyValidators) as $propertyName) {
 			if ($this->isPropertyValid($value, $propertyName) === FALSE) {
@@ -171,9 +159,12 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function isPropertyValid($object, $propertyName) {
-		if (!is_object($object)) throw new InvalidArgumentException('Object expected, ' . gettype($object) . ' given.', 1241099149);
-		if (!isset($this->propertyValidators[$propertyName])) return TRUE;
-
+		if (!is_object($object)) {
+			throw new InvalidArgumentException(('Object expected, ' . gettype($object)) . ' given.', 1241099149);
+		}
+		if (!isset($this->propertyValidators[$propertyName])) {
+			return TRUE;
+		}
 		$result = TRUE;
 		foreach ($this->propertyValidators[$propertyName] as $validator) {
 			if ($validator->isValid(Tx_Extbase_Reflection_ObjectAccess::getProperty($object, $propertyName)) === FALSE) {
@@ -207,10 +198,11 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 */
 	public function addPropertyValidator($propertyName, Tx_Extbase_Validation_Validator_ValidatorInterface $validator) {
 		if (!isset($this->propertyValidators[$propertyName])) {
-			$this->propertyValidators[$propertyName] = new Tx_Extbase_Persistence_ObjectStorage;
+			$this->propertyValidators[$propertyName] = new Tx_Extbase_Persistence_ObjectStorage();
 		}
 		$this->propertyValidators[$propertyName]->attach($validator);
 	}
+
 }
 
 ?>

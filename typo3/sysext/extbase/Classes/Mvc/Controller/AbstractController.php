@@ -1,30 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * An abstract base class for Controllers
  *
@@ -92,6 +91,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 
 	/**
 	 * The results of the mapping of request arguments to controller arguments
+	 *
 	 * @var Tx_Extbase_Property_MappingResults
 	 * @api
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
@@ -102,6 +102,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * An array of supported request types. By default only web requests are supported.
 	 * Modify or replace this array if your specific controller supports certain
 	 * (additional) request types.
+	 *
 	 * @var array
 	 */
 	protected $supportedRequestTypes = array('Tx_Extbase_MVC_Request');
@@ -187,7 +188,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 */
 	public function injectFlashMessageContainer(Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer) {
 		$this->flashMessageContainer = $flashMessageContainer;
-			// @deprecated since Extbase 1.1; will be removed in Extbase 6.0
+		// @deprecated since Extbase 1.1; will be removed in Extbase 6.0
 		$this->flashMessages = $flashMessageContainer;
 	}
 
@@ -204,7 +205,9 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 */
 	public function canProcessRequest(Tx_Extbase_MVC_RequestInterface $request) {
 		foreach ($this->supportedRequestTypes as $supportedRequestType) {
-			if ($request instanceof $supportedRequestType) return TRUE;
+			if ($request instanceof $supportedRequestType) {
+				return TRUE;
+			}
 		}
 		return FALSE;
 	}
@@ -219,16 +222,15 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @api
 	 */
 	public function processRequest(Tx_Extbase_MVC_RequestInterface $request, Tx_Extbase_MVC_ResponseInterface $response) {
-		if (!$this->canProcessRequest($request)) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes) , 1187701131);
-
+		if (!$this->canProcessRequest($request)) {
+			throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType((((get_class($this) . ' does not support requests of type "') . get_class($request)) . '". Supported types are: ') . implode(' ', $this->supportedRequestTypes), 1187701131);
+		}
 		$response->setRequest($request);
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
-
 		$this->uriBuilder = $this->objectManager->create('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 		$this->uriBuilder->setRequest($request);
-
 		$this->initializeControllerArgumentsBaseValidators();
 		$this->mapRequestArgumentsToControllerArguments();
 		$this->controllerContext = $this->buildControllerContext();
@@ -273,9 +275,15 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	public function forward($actionName, $controllerName = NULL, $extensionName = NULL, array $arguments = NULL) {
 		$this->request->setDispatched(FALSE);
 		$this->request->setControllerActionName($actionName);
-		if ($controllerName !== NULL) $this->request->setControllerName($controllerName);
-		if ($extensionName !== NULL) $this->request->setControllerExtensionName($extensionName);
-		if ($arguments !== NULL) $this->request->setArguments($arguments);
+		if ($controllerName !== NULL) {
+			$this->request->setControllerName($controllerName);
+		}
+		if ($extensionName !== NULL) {
+			$this->request->setControllerExtensionName($extensionName);
+		}
+		if ($arguments !== NULL) {
+			$this->request->setArguments($arguments);
+		}
 		throw new Tx_Extbase_MVC_Exception_StopAction();
 	}
 
@@ -293,7 +301,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @param array $arguments Arguments to pass to the target action
 	 * @param integer $pageUid Target page uid. If NULL, the current page uid is used
 	 * @param integer $delay (optional) The delay in seconds. Default is no delay.
-	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other"
+	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
 	 * @return void
 	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestType If the request is not a web request
 	 * @throws Tx_Extbase_MVC_Exception_StopAction
@@ -301,17 +309,13 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @api
 	 */
 	protected function redirect($actionName, $controllerName = NULL, $extensionName = NULL, array $arguments = NULL, $pageUid = NULL, $delay = 0, $statusCode = 303) {
-		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
-
+		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) {
+			throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
+		}
 		if ($controllerName === NULL) {
 			$controllerName = $this->request->getControllerName();
 		}
-
-		$uri = $this->uriBuilder
-			->reset()
-			->setTargetPageUid($pageUid)
-			->setCreateAbsoluteUri(TRUE)
-			->uriFor($actionName, $arguments, $controllerName, $extensionName);
+		$uri = $this->uriBuilder->reset()->setTargetPageUid($pageUid)->setCreateAbsoluteUri(TRUE)->uriFor($actionName, $arguments, $controllerName, $extensionName);
 		$this->redirectToUri($uri, $delay, $statusCode);
 	}
 
@@ -322,19 +326,20 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 *
 	 * @param mixed $uri A string representation of a URI
 	 * @param integer $delay (optional) The delay in seconds. Default is no delay.
-	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other"
+	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
 	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestType If the request is not a web request
 	 * @throws Tx_Extbase_MVC_Exception_StopAction
 	 * @api
 	 */
 	protected function redirectToUri($uri, $delay = 0, $statusCode = 303) {
-		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
-
+		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) {
+			throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
+		}
 		$uri = $this->addBaseUriIfNecessary($uri);
 		$escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
-		$this->response->setContent('<html><head><meta http-equiv="refresh" content="' . intval($delay) . ';url=' . $escapedUri . '"/></head></html>');
+		$this->response->setContent(((('<html><head><meta http-equiv="refresh" content="' . intval($delay)) . ';url=') . $escapedUri) . '"/></head></html>');
 		$this->response->setStatus($statusCode);
-		$this->response->setHeader('Location', (string)$uri);
+		$this->response->setHeader('Location', (string) $uri);
 		throw new Tx_Extbase_MVC_Exception_StopAction();
 	}
 
@@ -345,7 +350,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @return string
 	 */
 	protected function addBaseUriIfNecessary($uri) {
-		return t3lib_div::locationHeaderUrl((string)$uri);
+		return t3lib_div::locationHeaderUrl((string) $uri);
 	}
 
 	/**
@@ -361,10 +366,13 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @api
 	 */
 	public function throwStatus($statusCode, $statusMessage = NULL, $content = NULL) {
-		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType('throwStatus() only supports web requests.', 1220539739);
-
+		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) {
+			throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType('throwStatus() only supports web requests.', 1220539739);
+		}
 		$this->response->setStatus($statusCode, $statusMessage);
-		if ($content === NULL) $content = $this->response->getStatus();
+		if ($content === NULL) {
+			$content = $this->response->getStatus();
+		}
 		$this->response->setContent($content);
 		throw new Tx_Extbase_MVC_Exception_StopAction();
 	}
@@ -378,7 +386,9 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	public function initializeControllerArgumentsBaseValidators() {
 		foreach ($this->arguments as $argument) {
 			$validator = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
-			if ($validator !== NULL) $argument->setValidator($validator);
+			if ($validator !== NULL) {
+				$argument->setValidator($validator);
+			}
 		}
 	}
 
@@ -391,11 +401,10 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
 			foreach ($this->arguments as $argument) {
 				$argumentName = $argument->getName();
-
 				if ($this->request->hasArgument($argumentName)) {
 					$argument->setValue($this->request->getArgument($argumentName));
 				} elseif ($argument->isRequired()) {
-					throw new Tx_Extbase_MVC_Controller_Exception_RequiredArgumentMissingException('Required argument "' . $argumentName  . '" is not set.', 1298012500);
+					throw new Tx_Extbase_MVC_Controller_Exception_RequiredArgumentMissingException(('Required argument "' . $argumentName) . '" is not set.', 1298012500);
 				}
 			}
 		} else {
@@ -403,14 +412,16 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 			$optionalPropertyNames = array();
 			$allPropertyNames = $this->arguments->getArgumentNames();
 			foreach ($allPropertyNames as $propertyName) {
-				if ($this->arguments[$propertyName]->isRequired() === FALSE) $optionalPropertyNames[] = $propertyName;
+				if ($this->arguments[$propertyName]->isRequired() === FALSE) {
+					$optionalPropertyNames[] = $propertyName;
+				}
 			}
-
 			$validator = $this->objectManager->create('Tx_Extbase_MVC_Controller_ArgumentsValidator');
 			$this->deprecatedPropertyMapper->mapAndValidate($allPropertyNames, $this->request->getArguments(), $this->arguments, $optionalPropertyNames, $validator);
-
 			$this->argumentsMappingResults = $this->deprecatedPropertyMapper->getMappingResults();
 		}
 	}
+
 }
+
 ?>

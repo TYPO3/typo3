@@ -1,28 +1,27 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Christopher Hlubek <hlubek@networkteam.com>
-*  (c) 2010 Bastian Waidelich <bastian@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Christopher Hlubek <hlubek@networkteam.com>
+ *  (c) 2010 Bastian Waidelich <bastian@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 class Tx_Extbase_Tests_Unit_Persistence_QueryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
@@ -57,6 +56,7 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryTest extends Tx_Extbase_Tests_Unit_
 
 	/**
 	 * Sets up this test case
+	 *
 	 * @return void
 	 */
 	public function setUp() {
@@ -132,31 +132,31 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryTest extends Tx_Extbase_Tests_Unit_
 	 */
 	public function equalsForCaseSensitiveFalseLowercasesOperandProvider() {
 		return array(
-			'Polish alphabet' => array('name', 'ĄĆĘŁŃÓŚŹŻABCDEFGHIJKLMNOPRSTUWYZQXVąćęłńóśźżabcdefghijklmnoprstuwyzqxv', 'ąćęłńóśźżabcdefghijklmnoprstuwyzqxvąćęłńóśźżabcdefghijklmnoprstuwyzqxv' ),
+			'Polish alphabet' => array('name', 'ĄĆĘŁŃÓŚŹŻABCDEFGHIJKLMNOPRSTUWYZQXVąćęłńóśźżabcdefghijklmnoprstuwyzqxv', 'ąćęłńóśźżabcdefghijklmnoprstuwyzqxvąćęłńóśźżabcdefghijklmnoprstuwyzqxv'),
 			'German alphabet' => array('name', 'ßÜÖÄüöä', 'ßüöäüöä'),
 			'Greek alphabet' => array('name', 'Τάχιστη αλώπηξ βαφής ψημένη γη', 'τάχιστη αλώπηξ βαφής ψημένη γη'),
-			'Russian alphabet' => array('name', 'АВСТРАЛИЯавстралия', 'австралияавстралия'),
+			'Russian alphabet' => array('name', 'АВСТРАЛИЯавстралия', 'австралияавстралия')
 		);
 	}
 
 	/**
 	 * Checks if equals condition makes utf-8 argument lowercase correctly
+	 *
 	 * @test
 	 * @dataProvider equalsForCaseSensitiveFalseLowercasesOperandProvider
-	 *
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
 	 * @param string $expectedOperand
 	 */
 	public function equalsForCaseSensitiveFalseLowercasesOperand($propertyName, $operand, $expectedOperand) {
 		/** @var $qomFactory Tx_Extbase_Persistence_QOM_QueryObjectModelFactory */
-		$qomFactory = $this->getMock( 'Tx_Extbase_Persistence_QOM_QueryObjectModelFactory', array('comparison'));
+		$qomFactory = $this->getMock('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory', array('comparison'));
 		$qomFactory->injectObjectManager(t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager'));
-
 		$qomFactory->expects($this->once())->method('comparison')->with($this->anything(), $this->anything(), $expectedOperand);
 		$this->query->injectQomFactory($qomFactory);
-
 		$this->query->equals($propertyName, $operand, FALSE);
 	}
+
 }
+
 ?>

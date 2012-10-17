@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,9 +18,7 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once('AbstractValidatorTestcase.php');
-
+require_once 'AbstractValidatorTestcase.php';
 /**
  * Testcase for the regular expression validator
  *
@@ -37,7 +34,6 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_RegularExpressionValidatorTest 
 	 */
 	public function regularExpressionValidatorMatchesABasicExpressionCorrectly() {
 		$this->validatorOptions(array('regularExpression' => '/^simple[0-9]expression$/'));
-
 		$this->assertFalse($this->validator->validate('simple1expression')->hasErrors());
 		$this->assertTrue($this->validator->validate('simple1expressions')->hasErrors());
 	}
@@ -51,6 +47,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_RegularExpressionValidatorTest 
 		$errors = $this->validator->validate('some subject that will not match')->getErrors();
 		$this->assertEquals(array(new Tx_Extbase_Validation_Error('The given subject did not match the pattern.', 1221565130)), $errors);
 	}
+
 }
 
 ?>

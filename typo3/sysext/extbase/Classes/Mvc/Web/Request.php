@@ -1,37 +1,35 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Represents a web request.
  *
  * @package Extbase
  * @subpackage MVC\Web
  * @version $ID:$
- *
  * @scope prototype
  * @api
  */
@@ -101,7 +99,9 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	 * @throws Tx_Extbase_MVC_Exception_InvalidRequestMethod if the request method is not supported
 	 */
 	public function setMethod($method) {
-		if ($method === '' || (strtoupper($method) !== $method)) throw new Tx_Extbase_MVC_Exception_InvalidRequestMethod('The request method "' . $method . '" is not supported.', 1217778382);
+		if ($method === '' || strtoupper($method) !== $method) {
+			throw new Tx_Extbase_MVC_Exception_InvalidRequestMethod(('The request method "' . $method) . '" is not supported.', 1217778382);
+		}
 		$this->method = $method;
 	}
 
@@ -168,7 +168,7 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function setHmacVerified($hmacVerified) {
-		$this->hmacVerified = (boolean)$hmacVerified;
+		$this->hmacVerified = (bool) $hmacVerified;
 	}
 
 	/**
@@ -188,8 +188,9 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	 * @param boolean $isCached
 	 */
 	public function setIsCached($isCached) {
-		$this->isCached = (boolean) $isCached;
+		$this->isCached = (bool) $isCached;
 	}
+
 	/**
 	 * Return whether the current request is a cached request or not.
 	 *
@@ -208,9 +209,7 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	public function getReferringRequest() {
 		if (isset($this->internalArguments['__referrer']) && is_array($this->internalArguments['__referrer'])) {
 			$referrerArray = $this->internalArguments['__referrer'];
-
-			$referringRequest = new Tx_Extbase_MVC_Web_Request;
-
+			$referringRequest = new Tx_Extbase_MVC_Web_Request();
 			$arguments = array();
 			if (isset($referrerArray['arguments'])) {
 				$serializedArgumentsWithHmac = $referrerArray['arguments'];
@@ -218,11 +217,12 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 				$arguments = unserialize(base64_decode($serializedArguments));
 				unset($referrerArray['arguments']);
 			}
-
 			$referringRequest->setArguments(Tx_Extbase_Utility_Arrays::arrayMergeRecursiveOverrule($arguments, $referrerArray));
 			return $referringRequest;
 		}
 		return NULL;
 	}
+
 }
+
 ?>

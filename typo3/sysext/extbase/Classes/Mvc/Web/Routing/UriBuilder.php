@@ -11,7 +11,6 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
-
 /**
  * An URI Builder
  *
@@ -51,6 +50,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 
 	/**
 	 * Arguments which have been used for building the last URI
+	 *
 	 * @var array
 	 */
 	protected $lastArguments = array();
@@ -267,7 +267,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * @see TSref/typolink.addQueryString
 	 */
 	public function setAddQueryString($addQueryString) {
-		$this->addQueryString = (boolean)$addQueryString;
+		$this->addQueryString = (bool) $addQueryString;
 		return $this;
 	}
 
@@ -309,7 +309,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
 	 */
 	public function setArgumentPrefix($argumentPrefix) {
-		$this->argumentPrefix = (string)$argumentPrefix;
+		$this->argumentPrefix = (string) $argumentPrefix;
 		return $this;
 	}
 
@@ -328,7 +328,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * @api
 	 */
 	public function setLinkAccessRestrictedPages($linkAccessRestrictedPages) {
-		$this->linkAccessRestrictedPages = (boolean)$linkAccessRestrictedPages;
+		$this->linkAccessRestrictedPages = (bool) $linkAccessRestrictedPages;
 		return $this;
 	}
 
@@ -370,7 +370,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * @api
 	 */
 	public function setTargetPageType($targetPageType) {
-		$this->targetPageType = (integer)$targetPageType;
+		$this->targetPageType = (int) $targetPageType;
 		return $this;
 	}
 
@@ -391,7 +391,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * @api
 	 */
 	public function setNoCache($noCache) {
-		$this->noCache = (boolean)$noCache;
+		$this->noCache = (bool) $noCache;
 		return $this;
 	}
 
@@ -412,7 +412,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * @api
 	 */
 	public function setUseCacheHash($useCacheHash) {
-		$this->useCacheHash = (boolean)$useCacheHash;
+		$this->useCacheHash = (bool) $useCacheHash;
 		return $this;
 	}
 
@@ -454,7 +454,6 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		$this->noCache = FALSE;
 		$this->useCacheHash = TRUE;
 		$this->argumentPrefix = NULL;
-
 		return $this;
 	}
 
@@ -505,7 +504,6 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 			$prefixedControllerArguments = array($pluginNamespace => $controllerArguments);
 		}
 		$this->arguments = t3lib_div::array_merge_recursive_overrule($this->arguments, $prefixedControllerArguments);
-
 		return $this->build();
 	}
 
@@ -513,8 +511,8 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * This removes controller and/or action arguments from given controllerArguments
 	 * if they are equal to the default controller/action of the target plugin.
 	 * Note: This is only active in FE mode and if feature "skipDefaultArguments" is enabled
-	 * @see Tx_Extbase_Configuration_ConfigurationManagerInterface::isFeatureEnabled()
 	 *
+	 * @see Tx_Extbase_Configuration_ConfigurationManagerInterface::isFeatureEnabled()
 	 * @param array $controllerArguments the current controller arguments to be modified
 	 * @param string $extensionName target extension name
 	 * @param string $pluginName target plugin name
@@ -562,7 +560,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	public function buildBackendUri() {
 		if ($this->addQueryString === TRUE) {
 			$arguments = t3lib_div::_GET();
-			foreach($this->argumentsToBeExcludedFromQueryString as $argumentToBeExcluded) {
+			foreach ($this->argumentsToBeExcludedFromQueryString as $argumentToBeExcluded) {
 				unset($arguments[$argumentToBeExcluded]);
 			}
 		} else {
@@ -592,18 +590,15 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 */
 	public function buildFrontendUri() {
 		$typolinkConfiguration = $this->buildTypolinkConfiguration();
-
 		if ($this->createAbsoluteUri === TRUE) {
 			$typolinkConfiguration['forceAbsoluteUrl'] = TRUE;
 			if ($this->absoluteUriScheme !== NULL) {
 				$typolinkConfiguration['forceAbsoluteUrl.']['scheme'] = $this->absoluteUriScheme;
 			}
 		}
-
 		$uri = $this->contentObject->typoLink_URL($typolinkConfiguration);
 		return $uri;
 	}
-
 
 	/**
 	 * Builds a TypoLink configuration array from the current settings
@@ -613,18 +608,15 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 */
 	protected function buildTypolinkConfiguration() {
 		$typolinkConfiguration = array();
-
 		$typolinkConfiguration['parameter'] = $this->targetPageUid !== NULL ? $this->targetPageUid : $GLOBALS['TSFE']->id;
 		if ($this->targetPageType !== 0) {
 			$typolinkConfiguration['parameter'] .= ',' . $this->targetPageType;
 		}
-
 		if (count($this->arguments) > 0) {
 			$arguments = $this->convertDomainObjectsToIdentityArrays($this->arguments);
 			$this->lastArguments = $arguments;
 			$typolinkConfiguration['additionalParams'] = t3lib_div::implodeArrayForUrl(NULL, $arguments);
 		}
-
 		if ($this->addQueryString === TRUE) {
 			$typolinkConfiguration['addQueryString'] = 1;
 			if (count($this->argumentsToBeExcludedFromQueryString) > 0) {
@@ -632,23 +624,18 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 					'exclude' => implode(',', $this->argumentsToBeExcludedFromQueryString)
 				);
 			}
-			// TODO: Support for __hmac and addQueryString!
 		}
-
 		if ($this->noCache === TRUE) {
 			$typolinkConfiguration['no_cache'] = 1;
 		} elseif ($this->useCacheHash) {
 			$typolinkConfiguration['useCacheHash'] = 1;
 		}
-
 		if ($this->section !== '') {
 			$typolinkConfiguration['section'] = $this->section;
 		}
-
 		if ($this->linkAccessRestrictedPages === TRUE) {
 			$typolinkConfiguration['linkAccessRestrictedPages'] = 1;
 		}
-
 		return $typolinkConfiguration;
 	}
 
@@ -674,7 +661,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 				} elseif ($argumentValue instanceof Tx_Extbase_DomainObject_AbstractValueObject) {
 					$arguments[$argumentKey] = $this->convertTransientObjectToArray($argumentValue);
 				} else {
-					throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue('Could not serialize Domain Object ' . get_class($argumentValue) . '. It is neither an Entity with identity properties set, nor a Value Object.', 1260881688);
+					throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue(('Could not serialize Domain Object ' . get_class($argumentValue)) . '. It is neither an Entity with identity properties set, nor a Value Object.', 1260881688);
 				}
 			} elseif (is_array($argumentValue)) {
 				$arguments[$argumentKey] = $this->convertDomainObjectsToIdentityArrays($argumentValue);
@@ -709,4 +696,5 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	}
 
 }
+
 ?>

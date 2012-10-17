@@ -18,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the CLI Command class
  */
@@ -79,9 +78,11 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_CommandTest extends Tx_Extbase_Tests_Unit_Ba
 	 */
 	public function invalidCommandClassNames() {
 		return array(
-			array(''), // CommandClassName must not be empty
-			array('Tx_OtherExtensionKey_Foo_Faa_Fuuum_Command_CoffeeCommandController'), // CommandControllers in subpackages are not supported
-			array('Foo') // CommandClassName must start with "Tx_"
+			array(''),
+			// CommandClassName must not be empty
+			array('Tx_OtherExtensionKey_Foo_Faa_Fuuum_Command_CoffeeCommandController'),
+			// CommandControllers in subpackages are not supported
+			array('Foo')
 		);
 	}
 
@@ -94,7 +95,6 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_CommandTest extends Tx_Extbase_Tests_Unit_Ba
 	public function constructThrowsExceptionIfCommandClassNameIsInvalid($controllerClassName) {
 		new Tx_Extbase_MVC_CLI_Command($controllerClassName, 'foo');
 	}
-
 
 	/**
 	 * @test
@@ -136,15 +136,15 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_CommandTest extends Tx_Extbase_Tests_Unit_Ba
 		$this->command->injectReflectionService($mockReflectionService);
 		$this->mockMethodReflection->expects($this->atLeastOnce())->method('getParameters')->will($this->returnValue(array($mockParameterReflection)));
 		$this->mockMethodReflection->expects($this->atLeastOnce())->method('getTagsValues')->will($this->returnValue(array('param' => array('@param $argument1 argument1 description', '@param $argument2 argument2 description'))));
-
 		$mockCommandArgumentDefinition1 = $this->getMock('Tx_Extbase_MVC_CLI_CommandArgumentDefinition', array(), array(), '', FALSE);
 		$mockCommandArgumentDefinition2 = $this->getMock('Tx_Extbase_MVC_CLI_CommandArgumentDefinition', array(), array(), '', FALSE);
 		$this->mockObjectManager->expects($this->at(0))->method('get')->with('Tx_Extbase_MVC_CLI_CommandArgumentDefinition', 'argument1', TRUE, 'argument1 description')->will($this->returnValue($mockCommandArgumentDefinition1));
 		$this->mockObjectManager->expects($this->at(1))->method('get')->with('Tx_Extbase_MVC_CLI_CommandArgumentDefinition', 'argument2', FALSE, 'argument2 description')->will($this->returnValue($mockCommandArgumentDefinition2));
-
 		$expectedResult = array($mockCommandArgumentDefinition1, $mockCommandArgumentDefinition2);
 		$actualResult = $this->command->getArgumentDefinitions();
 		$this->assertSame($expectedResult, $actualResult);
 	}
+
 }
+
 ?>

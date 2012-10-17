@@ -1,30 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * A persistence backend. This backend maps objects to the relational model of the storage backend.
  * It persists all added, removed and changed objects.
@@ -52,7 +51,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 
 	/**
 	 * @var Tx_Extbase_Persistence_IdentityMap
-	 **/
+	 */
 	protected $identityMap;
 
 	/**
@@ -84,7 +83,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * The TYPO3 reference index object
 	 *
 	 * @var t3lib_refindex
-	 **/
+	 */
 	protected $referenceIndex;
 
 	/**
@@ -285,11 +284,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		} else {
 			$query = $this->queryFactory->create($className);
 			$query->getQuerySettings()->setRespectStoragePage(FALSE);
-
-			return $query->matching(
-				$query->equals('uid', $identifier))
-				->execute()
-				->getFirst();
+			return $query->matching($query->equals('uid', $identifier))->execute()->getFirst();
 		}
 	}
 
@@ -300,7 +295,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @return boolean TRUE if the object is new, FALSE if the object exists in the repository
 	 */
 	public function isNewObject($object) {
-		return ($this->getIdentifierByObject($object) === NULL);
+		return $this->getIdentifierByObject($object) === NULL;
 	}
 
 	/**
@@ -320,8 +315,9 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 */
 	public function replaceObject($existingObject, $newObject) {
 		$existingUid = $this->getIdentifierByObject($existingObject);
-		if ($existingUid === NULL) throw new Tx_Extbase_Persistence_Exception_UnknownObject('The given object is unknown to this persistence backend.', 1238070163);
-
+		if ($existingUid === NULL) {
+			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The given object is unknown to this persistence backend.', 1238070163);
+		}
 		$this->identityMap->unregisterObject($existingObject);
 		$this->identityMap->registerObject($newObject, $existingUid);
 	}
@@ -388,7 +384,9 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$properties = $object->_getProperties();
 		foreach ($properties as $propertyName => $propertyValue) {
-			if (!$dataMap->isPersistableProperty($propertyName) || $this->propertyValueIsLazyLoaded($propertyValue)) continue;
+			if (!$dataMap->isPersistableProperty($propertyName) || $this->propertyValueIsLazyLoaded($propertyValue)) {
+				continue;
+			}
 			$columnMap = $dataMap->getColumnMap($propertyName);
 			if ($propertyValue instanceof Tx_Extbase_Persistence_ObjectStorage) {
 				if ($object->_isNew() || $propertyValue->_isDirty()) {
@@ -428,7 +426,9 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @return bool
 	 */
 	protected function propertyValueIsLazyLoaded($propertyValue) {
-		if ($propertyValue instanceof Tx_Extbase_Persistence_LazyLoadingProxy) return TRUE;
+		if ($propertyValue instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
+			return TRUE;
+		}
 		if ($propertyValue instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
 			if ($propertyValue->isInitialized() === FALSE) {
 				return TRUE;
@@ -453,7 +453,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
 		$columnName = $columnMap->getColumnName();
 		$propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
-
 		foreach ($this->getRemovedChildObjects($parentObject, $propertyName) as $removedObject) {
 			if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY && $propertyMetaData['cascade'] === 'remove') {
 				$this->removeObject($removedObject);
@@ -461,11 +460,9 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				$this->detachObjectFromParentObject($removedObject, $parentObject, $propertyName);
 			}
 		}
-
 		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$this->deleteAllRelationsFromRelationtable($parentObject, $propertyName);
 		}
-
 		$currentUids = array();
 		$sortingPosition = 1;
 		foreach ($objectStorage as $object) {
@@ -476,7 +473,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$this->attachObjectToParentObject($object, $parentObject, $propertyName, $sortingPosition);
 			$sortingPosition++;
 		}
-
 		if ($columnMap->getParentKeyFieldName() === NULL) {
 			$row[$columnMap->getColumnName()] = implode(',', $currentUids);
 		} else {
@@ -582,27 +578,21 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		if ($object instanceof Tx_Extbase_DomainObject_AbstractValueObject) {
 			$result = $this->getUidOfAlreadyPersistedValueObject($object);
 			if ($result !== FALSE) {
-				$object->_setProperty('uid', (int)$result);
+				$object->_setProperty('uid', (int) $result);
 				return;
 			}
 		}
-
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$row = array();
 		$this->addCommonFieldsToRow($object, $row);
 		if ($dataMap->getLanguageIdColumnName() !== NULL) {
 			$row[$dataMap->getLanguageIdColumnName()] = -1;
 		}
-		$uid = $this->storageBackend->addRow(
-			$dataMap->getTableName(),
-			$row
-			);
-		$object->_setProperty('uid', (int)$uid);
-
-		if ((integer)$uid >= 1) {
+		$uid = $this->storageBackend->addRow($dataMap->getTableName(), $row);
+		$object->_setProperty('uid', (int) $uid);
+		if ((int) $uid >= 1) {
 			$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterInsertObject', array('object' => $object));
 		}
-
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $uid);
@@ -633,10 +623,10 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 		$columnMap = $dataMap->getColumnMap($propertyName);
 		$row = array(
-			$columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
-			$columnMap->getChildKeyFieldName() => (int)$object->getUid(),
-			$columnMap->getChildSortByFieldName() => !is_null($sortingPosition) ? (int)$sortingPosition : 0
-			);
+			$columnMap->getParentKeyFieldName() => (int) $parentObject->getUid(),
+			$columnMap->getChildKeyFieldName() => (int) $object->getUid(),
+			$columnMap->getChildSortByFieldName() => !is_null($sortingPosition) ? (int) $sortingPosition : 0
+		);
 		$relationTableName = $columnMap->getRelationTableName();
 		// FIXME Reenable support for tablenames
 		// $childTableName = $columnMap->getChildTableName();
@@ -646,18 +636,13 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		if ($columnMap->getRelationTablePageIdColumnName() !== NULL) {
 			$row[$columnMap->getRelationTablePageIdColumnName()] = $this->determineStoragePageIdForNewRecord();
 		}
-
 		$relationTableInsertFields = $columnMap->getRelationTableInsertFields();
 		if (count($relationTableInsertFields)) {
-			foreach($relationTableInsertFields as $insertField => $insertValue) {
+			foreach ($relationTableInsertFields as $insertField => $insertValue) {
 				$row[$insertField] = $insertValue;
 			}
 		}
-
-		$res = $this->storageBackend->addRow(
-			$relationTableName,
-			$row,
-			TRUE);
+		$res = $this->storageBackend->addRow($relationTableName, $row, TRUE);
 		return $res;
 	}
 
@@ -672,20 +657,14 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 		$columnMap = $dataMap->getColumnMap($parentPropertyName);
 		$relationTableName = $columnMap->getRelationTableName();
-
 		$relationMatchFields = array(
-			$columnMap->getParentKeyFieldName() => (int)$parentObject->getUid()
+			$columnMap->getParentKeyFieldName() => (int) $parentObject->getUid()
 		);
-
 		$relationTableMatchFields = $columnMap->getRelationTableMatchFields();
 		if (is_array($relationTableMatchFields) && count($relationTableMatchFields) > 0) {
-			$relationMatchFields = array_merge($relationTableMatchFields,$relationMatchFields);
+			$relationMatchFields = array_merge($relationTableMatchFields, $relationMatchFields);
 		}
-
-		$res = $this->storageBackend->removeRow(
-			$relationTableName,
-			$relationMatchFields,
-			FALSE);
+		$res = $this->storageBackend->removeRow($relationTableName, $relationMatchFields, FALSE);
 		return $res;
 	}
 
@@ -701,13 +680,10 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 		$columnMap = $dataMap->getColumnMap($parentPropertyName);
 		$relationTableName = $columnMap->getRelationTableName();
-		$res = $this->storageBackend->removeRow(
-			$relationTableName,
-			array(
-				$columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
-				$columnMap->getChildKeyFieldName() => (int)$relatedObject->getUid(),
-				),
-			FALSE);
+		$res = $this->storageBackend->removeRow($relationTableName, array(
+			$columnMap->getParentKeyFieldName() => (int) $parentObject->getUid(),
+			$columnMap->getChildKeyFieldName() => (int) $relatedObject->getUid()
+		), FALSE);
 		return $res;
 	}
 
@@ -728,15 +704,10 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				$row['uid'] = $object->_getProperty('_localizedUid');
 			}
 		}
-		$res = $this->storageBackend->updateRow(
-			$dataMap->getTableName(),
-			$row
-			);
-
+		$res = $this->storageBackend->updateRow($dataMap->getTableName(), $row);
 		if ($res === TRUE) {
 			$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterUpdateObject', array('object' => $object));
 		}
-
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $row['uid']);
@@ -802,28 +773,20 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	protected function removeObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, $markAsDeleted = TRUE) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$tableName = $dataMap->getTableName();
-		if (($markAsDeleted === TRUE) && ($dataMap->getDeletedFlagColumnName() !== NULL)) {
+		if ($markAsDeleted === TRUE && $dataMap->getDeletedFlagColumnName() !== NULL) {
 			$deletedColumnName = $dataMap->getDeletedFlagColumnName();
 			$row = array(
 				'uid' => $object->getUid(),
 				$deletedColumnName => 1
 			);
 			$this->addCommonDateFieldsToRow($object, $row);
-			$res = $this->storageBackend->updateRow(
-				$tableName,
-				$row
-			);
+			$res = $this->storageBackend->updateRow($tableName, $row);
 		} else {
-			$res = $this->storageBackend->removeRow(
-				$tableName,
-				array('uid' => $object->getUid())
-				);
+			$res = $this->storageBackend->removeRow($tableName, array('uid' => $object->getUid()));
 		}
-
 		if ($res === TRUE) {
 			$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterRemoveObject', array('object' => $object));
 		}
-
 		$this->removeRelatedObjects($object);
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
@@ -841,7 +804,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$className = get_class($object);
 		$dataMap = $this->dataMapper->getDataMap($className);
 		$classSchema = $this->reflectionService->getClassSchema($className);
-
 		$properties = $object->_getProperties();
 		foreach ($properties as $propertyName => $propertyValue) {
 			$columnMap = $dataMap->getColumnMap($propertyName);
@@ -875,12 +837,12 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			if (Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($object, 'pid')) {
 				$pid = Tx_Extbase_Reflection_ObjectAccess::getProperty($object, 'pid');
 				if (isset($pid)) {
-					return (int)$pid;
+					return (int) $pid;
 				}
 			}
 			$className = get_class($object);
 			if (isset($frameworkConfiguration['persistence']['classes'][$className]) && !empty($frameworkConfiguration['persistence']['classes'][$className]['newRecordStoragePid'])) {
-				return (int)$frameworkConfiguration['persistence']['classes'][$className]['newRecordStoragePid'];
+				return (int) $frameworkConfiguration['persistence']['classes'][$className]['newRecordStoragePid'];
 			}
 		}
 		$storagePidList = t3lib_div::intExplode(',', $frameworkConfiguration['persistence']['storagePid']);

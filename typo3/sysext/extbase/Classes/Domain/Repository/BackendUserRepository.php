@@ -23,13 +23,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Repository for Tx_Extbase_Domain_Model_BackendUser.
  *
  * @author Markus Günther <mail@markus-guenther.de>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
- *
  * @package Extbase
  * @subpackage Domain\Repository
  * @api
@@ -47,5 +45,7 @@ class Tx_Extbase_Domain_Repository_BackendUserRepository extends Tx_Extbase_Pers
 		$querySettings->setRespectStoragePage(FALSE);
 		$this->setDefaultQuerySettings($querySettings);
 	}
+
 }
+
 ?>

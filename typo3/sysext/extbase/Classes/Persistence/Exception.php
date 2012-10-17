@@ -11,7 +11,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * A generic Persistence exception
  *
@@ -20,6 +19,8 @@
  * @version $ID:$
  */
 class Tx_Extbase_Persistence_Exception extends Tx_Extbase_Exception {
+
+
 }
 
 ?>

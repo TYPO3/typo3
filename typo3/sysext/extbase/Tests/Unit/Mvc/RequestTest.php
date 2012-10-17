@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the MVC Generic Request
  *
@@ -77,7 +75,6 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 		$request = new Tx_Extbase_MVC_Request();
 		$request->setArgument('someKey', 'shouldBeOverridden');
 		$request->setArguments($arguments);
-
 		$actualResult = $request->getArguments();
 		$this->assertEquals($arguments, $actualResult);
 	}
@@ -202,7 +199,6 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	public function hasArgumentTellsIfAnArgumentExists() {
 		$request = new Tx_Extbase_MVC_Request();
 		$request->setArgument('existingArgument', 'theValue');
-
 		$this->assertTrue($request->hasArgument('existingArgument'));
 		$this->assertFalse($request->hasArgument('notExistingArgument'));
 	}
@@ -214,7 +210,6 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	public function theActionNameCanBeSetAndRetrieved() {
 		$request = $this->getMock('Tx_Extbase_MVC_Request', array('getControllerObjectName'), array(), '', FALSE);
 		$request->expects($this->once())->method('getControllerObjectName')->will($this->returnValue(''));
-
 		$request->setControllerActionName('theAction');
 		$this->assertEquals('theAction', $request->getControllerActionName());
 	}
@@ -246,10 +241,10 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	public function aFlagCanBeSetIfTheRequestNeedsToBeDispatchedAgain() {
 		$request = new Tx_Extbase_MVC_Request();
 		$this->assertFalse($request->isDispatched());
-
 		$request->setDispatched(TRUE);
 		$this->assertTrue($request->isDispatched());
 	}
+
 }
 
 ?>

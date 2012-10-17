@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,9 +18,7 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once('AbstractValidatorTestcase.php');
-
+require_once 'AbstractValidatorTestcase.php';
 /**
  * Testcase for the number validator
  *
@@ -48,6 +45,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_NumberValidatorTest extends Tx_
 		$numberValidator = new Tx_Extbase_Validation_Validator_NumberValidator();
 		$this->assertEquals($expectedResult, $numberValidator->validate('not a number'));
 	}
+
 }
 
 ?>

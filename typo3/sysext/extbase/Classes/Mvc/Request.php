@@ -1,30 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Represents a generic request.
  *
@@ -37,7 +36,6 @@
 class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 
 	const PATTERN_MATCH_FORMAT = '/^[a-z0-9]{1,5}$/';
-
 	/**
 	 * Pattern after which the controller object name is built
 	 *
@@ -157,8 +155,9 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 		$lowercaseObjectName = str_replace('__', '_', $lowercaseObjectName);
 		// TODO implement getCaseSensitiveObjectName()
 		$objectName = $lowercaseObjectName;
-		if ($objectName === FALSE) throw new Tx_Extbase_MVC_Exception_NoSuchController('The controller object "' . $lowercaseObjectName . '" does not exist.', 1220884009);
-
+		if ($objectName === FALSE) {
+			throw new Tx_Extbase_MVC_Exception_NoSuchController(('The controller object "' . $lowercaseObjectName) . '" does not exist.', 1220884009);
+		}
 		return $objectName;
 	}
 
@@ -180,11 +179,9 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 				(?P<subpackageKey>.+)_Controller
 			)
 			_(?P<controllerName>[a-z_]+)Controller
-			$/ix', $controllerObjectName, $matches
-		);
-
+			$/ix', $controllerObjectName, $matches);
 		$this->controllerExtensionName = $matches['extensionName'];
-		$this->controllerSubpackageKey = (isset($matches['subpackageKey'])) ? $matches['subpackageKey'] : NULL;
+		$this->controllerSubpackageKey = isset($matches['subpackageKey']) ? $matches['subpackageKey'] : NULL;
 		$this->controllerName = $matches['controllerName'];
 	}
 
@@ -271,8 +268,12 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 * @return void
 	 */
 	public function setControllerName($controllerName) {
-		if (!is_string($controllerName) && $controllerName !== NULL) throw new Tx_Extbase_MVC_Exception_InvalidControllerName('The controller name must be a valid string, ' . gettype($controllerName) . ' given.', 1187176358);
-		if (strpos($controllerName, '_') !== FALSE) throw new Tx_Extbase_MVC_Exception_InvalidControllerName('The controller name must not contain underscores.', 1217846412);
+		if (!is_string($controllerName) && $controllerName !== NULL) {
+			throw new Tx_Extbase_MVC_Exception_InvalidControllerName(('The controller name must be a valid string, ' . gettype($controllerName)) . ' given.', 1187176358);
+		}
+		if (strpos($controllerName, '_') !== FALSE) {
+			throw new Tx_Extbase_MVC_Exception_InvalidControllerName('The controller name must not contain underscores.', 1217846412);
+		}
 		if ($controllerName !== NULL) {
 			$this->controllerName = $controllerName;
 		}
@@ -299,8 +300,12 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 * @throws Tx_Extbase_MVC_Exception_InvalidActionName if the action name is not valid
 	 */
 	public function setControllerActionName($actionName) {
-		if (!is_string($actionName) && $actionName !== NULL) throw new Tx_Extbase_MVC_Exception_InvalidActionName('The action name must be a valid string, ' . gettype($actionName) . ' given (' . $actionName . ').', 1187176358);
-		if (($actionName{0} !== strtolower($actionName{0})) && $actionName !== NULL) throw new Tx_Extbase_MVC_Exception_InvalidActionName('The action name must start with a lower case letter, "' . $actionName . '" does not match this criteria.', 1218473352);
+		if (!is_string($actionName) && $actionName !== NULL) {
+			throw new Tx_Extbase_MVC_Exception_InvalidActionName(((('The action name must be a valid string, ' . gettype($actionName)) . ' given (') . $actionName) . ').', 1187176358);
+		}
+		if ($actionName[0] !== strtolower($actionName[0]) && $actionName !== NULL) {
+			throw new Tx_Extbase_MVC_Exception_InvalidActionName(('The action name must start with a lower case letter, "' . $actionName) . '" does not match this criteria.', 1218473352);
+		}
 		if ($actionName !== NULL) {
 			$this->controllerActionName = $actionName;
 		}
@@ -314,7 +319,7 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 */
 	public function getControllerActionName() {
 		$controllerObjectName = $this->getControllerObjectName();
-		if ($controllerObjectName !== '' && ($this->controllerActionName === strtolower($this->controllerActionName))) {
+		if ($controllerObjectName !== '' && $this->controllerActionName === strtolower($this->controllerActionName)) {
 			$actionMethodName = $this->controllerActionName . 'Action';
 			foreach (get_class_methods($controllerObjectName) as $existingMethodName) {
 				if (strtolower($existingMethodName) === strtolower($actionMethodName)) {
@@ -334,31 +339,31 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 * @return void
 	 */
 	public function setArgument($argumentName, $value) {
-		if (!is_string($argumentName) || strlen($argumentName) == 0) throw new Tx_Extbase_MVC_Exception_InvalidArgumentName('Invalid argument name.', 1210858767);
-
+		if (!is_string($argumentName) || strlen($argumentName) == 0) {
+			throw new Tx_Extbase_MVC_Exception_InvalidArgumentName('Invalid argument name.', 1210858767);
+		}
 		if ($argumentName[0] === '_' && $argumentName[1] === '_') {
 			$this->internalArguments[$argumentName] = $value;
 			return;
 		}
-
 		switch ($argumentName) {
-			case '@extension':
-				$this->setControllerExtensionName($value);
-				break;
-			case '@subpackage':
-				$this->setControllerSubpackageKey($value);
-				break;
-			case '@controller':
-				$this->setControllerName($value);
-				break;
-			case '@action':
-				$this->setControllerActionName($value);
-				break;
-			case '@format':
-				$this->setFormat($value);
-				break;
-			default:
-				$this->arguments[$argumentName] = $value;
+		case '@extension':
+			$this->setControllerExtensionName($value);
+			break;
+		case '@subpackage':
+			$this->setControllerSubpackageKey($value);
+			break;
+		case '@controller':
+			$this->setControllerName($value);
+			break;
+		case '@action':
+			$this->setControllerActionName($value);
+			break;
+		case '@format':
+			$this->setFormat($value);
+			break;
+		default:
+			$this->arguments[$argumentName] = $value;
 		}
 	}
 
@@ -395,7 +400,9 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 * @api
 	 */
 	public function getArgument($argumentName) {
-		if (!isset($this->arguments[$argumentName])) throw new Tx_Extbase_MVC_Exception_NoSuchArgument('An argument "' . $argumentName . '" does not exist for this request.', 1176558158);
+		if (!isset($this->arguments[$argumentName])) {
+			throw new Tx_Extbase_MVC_Exception_NoSuchArgument(('An argument "' . $argumentName) . '" does not exist for this request.', 1176558158);
+		}
 		return $this->arguments[$argumentName];
 	}
 
@@ -483,7 +490,6 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	}
 
 	/**
-	 *
 	 * @param Tx_Extbase_Error_Result $originalRequestMappingResults
 	 */
 	public function setOriginalRequestMappingResults(Tx_Extbase_Error_Result $originalRequestMappingResults) {
@@ -507,8 +513,12 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 * @return string Value of the argument, or NULL if not set.
 	 */
 	public function getInternalArgument($argumentName) {
-		if (!isset($this->internalArguments[$argumentName])) return NULL;
+		if (!isset($this->internalArguments[$argumentName])) {
+			return NULL;
+		}
 		return $this->internalArguments[$argumentName];
 	}
 
 }
+
+?>

@@ -24,10 +24,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A request handler which can handle web requests invoked by the frontend.
- *
  */
 class Tx_Extbase_MVC_Web_FrontendRequestHandler extends Tx_Extbase_MVC_Web_AbstractRequestHandler {
 
@@ -64,11 +62,9 @@ class Tx_Extbase_MVC_Web_FrontendRequestHandler extends Tx_Extbase_MVC_Web_Abstr
 	 */
 	public function handleRequest() {
 		$request = $this->requestBuilder->build();
-
 		/** @var $requestHashService Tx_Extbase_Security_Channel_RequestHashService */
 		$requestHashService = $this->objectManager->get('Tx_Extbase_Security_Channel_RequestHashService');
 		$requestHashService->verifyRequest($request);
-
 		if ($this->extensionService->isActionCacheable(NULL, NULL, $request->getControllerName(), $request->getControllerActionName())) {
 			$request->setIsCached(TRUE);
 		} else {
@@ -81,9 +77,7 @@ class Tx_Extbase_MVC_Web_FrontendRequestHandler extends Tx_Extbase_MVC_Web_Abstr
 			$request->setIsCached(FALSE);
 		}
 		$response = $this->objectManager->create('Tx_Extbase_MVC_Web_Response');
-
 		$this->dispatcher->dispatch($request, $response);
-
 		return $response;
 	}
 
@@ -95,5 +89,7 @@ class Tx_Extbase_MVC_Web_FrontendRequestHandler extends Tx_Extbase_MVC_Web_Abstr
 	public function canHandleRequest() {
 		return TYPO3_MODE === 'FE';
 	}
+
 }
+
 ?>

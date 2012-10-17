@@ -21,13 +21,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A Frontend User Group
  *
  * @package Extbase
  * @subpackage Domain\Model
- *
  * @scope prototype
  * @entity
  * @api
@@ -173,4 +171,5 @@ class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_
 	}
 
 }
+
 ?>

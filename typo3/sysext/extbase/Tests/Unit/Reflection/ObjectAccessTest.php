@@ -1,32 +1,30 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
-require_once('Fixture/DummyClassWithGettersAndSetters.php');
-require_once('Fixture/ArrayAccessClass.php');
-
+ *  Copyright notice
+ *
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+require_once 'Fixture/DummyClassWithGettersAndSetters.php';
+require_once 'Fixture/ArrayAccessClass.php';
 /**
  * Test Unit Test Base Class
  */
@@ -103,10 +101,7 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 	 */
 	public function getPropertyTriesToCallABooleanGetterMethodIfItExists() {
 		$property = Tx_Extbase_Reflection_ObjectAccess::getProperty($this->dummyObject, 'booleanProperty');
-
-		$this->assertTrue(
-			$property
-		);
+		$this->assertTrue($property);
 	}
 
 	/**
@@ -170,10 +165,8 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 	public function setPropertyCanDirectlySetValuesInAnArrayObjectOrArray() {
 		$arrayObject = new ArrayObject();
 		$array = array();
-
 		Tx_Extbase_Reflection_ObjectAccess::setProperty($arrayObject, 'publicProperty', 4242);
 		Tx_Extbase_Reflection_ObjectAccess::setProperty($array, 'key', 'value');
-
 		$this->assertEquals(4242, $arrayObject['publicProperty']);
 		$this->assertEquals('value', $array['key']);
 	}
@@ -248,7 +241,6 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 		$stdClassObject = new stdClass();
 		$stdClassObject->property = 'string1';
 		$stdClassObject->property2 = NULL;
-
 		$settablePropertyNames = Tx_Extbase_Reflection_ObjectAccess::getSettablePropertyNames($stdClassObject);
 		$expectedPropertyNames = array('property', 'property2');
 		$this->assertEquals($expectedPropertyNames, $settablePropertyNames, 'getSettablePropertyNames returns not all settable properties.');
@@ -265,7 +257,8 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 			'property' => 'string1',
 			'property2' => NULL,
 			'publicProperty' => NULL,
-			'publicProperty2' => 42);
+			'publicProperty2' => 42
+		);
 		$this->assertEquals($allProperties, $expectedProperties, 'expectedProperties did not return the right values for the properties.');
 	}
 
@@ -281,7 +274,8 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 		$expectedProperties = array(
 			'property' => 'string1',
 			'property2' => NULL,
-			'publicProperty2' => 42);
+			'publicProperty2' => 42
+		);
 		$this->assertEquals($expectedProperties, $allProperties, 'expectedProperties did not return the right values for the properties.');
 	}
 
@@ -292,7 +286,6 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 		$this->assertTrue(Tx_Extbase_Reflection_ObjectAccess::isPropertySettable($this->dummyObject, 'writeOnlyMagicProperty'));
 		$this->assertTrue(Tx_Extbase_Reflection_ObjectAccess::isPropertySettable($this->dummyObject, 'publicProperty'));
 		$this->assertTrue(Tx_Extbase_Reflection_ObjectAccess::isPropertySettable($this->dummyObject, 'property'));
-
 		$this->assertFalse(Tx_Extbase_Reflection_ObjectAccess::isPropertySettable($this->dummyObject, 'privateProperty'));
 		$this->assertFalse(Tx_Extbase_Reflection_ObjectAccess::isPropertySettable($this->dummyObject, 'shouldNotBePickedUp'));
 	}
@@ -303,9 +296,7 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 	public function isPropertySettableWorksOnStdClass() {
 		$stdClassObject = new stdClass();
 		$stdClassObject->property = 'foo';
-
 		$this->assertTrue(Tx_Extbase_Reflection_ObjectAccess::isPropertySettable($stdClassObject, 'property'));
-
 		$this->assertFalse(Tx_Extbase_Reflection_ObjectAccess::isPropertySettable($stdClassObject, 'undefinedProperty'));
 	}
 
@@ -316,7 +307,6 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 		$this->assertTrue(Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($this->dummyObject, 'publicProperty'));
 		$this->assertTrue(Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($this->dummyObject, 'property'));
 		$this->assertTrue(Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($this->dummyObject, 'booleanProperty'));
-
 		$this->assertFalse(Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($this->dummyObject, 'privateProperty'));
 		$this->assertFalse(Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($this->dummyObject, 'writeOnlyMagicProperty'));
 		$this->assertFalse(Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($this->dummyObject, 'shouldNotBePickedUp'));
@@ -328,7 +318,6 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 	public function isPropertyGettableWorksOnArrayAccessObjects() {
 		$arrayObject = new ArrayObject();
 		$arrayObject['key'] = 'v';
-
 		$this->assertTrue(Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($arrayObject, 'key'));
 		$this->assertFalse(Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($arrayObject, 'undefinedKey'));
 	}
@@ -339,9 +328,7 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 	public function isPropertyGettableWorksOnStdClass() {
 		$stdClassObject = new stdClass();
 		$stdClassObject->property = 'foo';
-
 		$this->assertTrue(Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($stdClassObject, 'property'));
-
 		$this->assertFalse(Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($stdClassObject, 'undefinedProperty'));
 	}
 
@@ -352,7 +339,6 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 		$alternativeObject = new Tx_Extbase_Tests_Unit_Reflection_Fixture_DummyClassWithGettersAndSetters();
 		$alternativeObject->setProperty('test');
 		$this->dummyObject->setProperty2($alternativeObject);
-
 		$expected = 'test';
 		$actual = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($this->dummyObject, 'property2.property');
 		$this->assertEquals($expected, $actual);
@@ -365,7 +351,6 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 		$alternativeObject = new Tx_Extbase_Tests_Unit_Reflection_Fixture_DummyClassWithGettersAndSetters();
 		$alternativeObject->setProperty(new stdClass());
 		$this->dummyObject->setProperty2($alternativeObject);
-
 		$this->assertNull(Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($this->dummyObject, 'property2.property.not.existing'));
 	}
 
@@ -374,7 +359,6 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 	 */
 	public function getPropertyPathReturnsNullIfSubjectIsNoObject() {
 		$string = 'Hello world';
-
 		$this->assertNull(Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($string, 'property2'));
 	}
 
@@ -384,9 +368,9 @@ class Tx_Extbase_Tests_Unit_Reflection_ObjectAccessTest extends Tx_Extbase_Tests
 	public function getPropertyPathReturnsNullIfSubjectOnPathIsNoObject() {
 		$object = new \stdClass();
 		$object->foo = 'Hello World';
-
 		$this->assertNull(Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($object, 'foo.bar'));
 	}
 
 }
+
 ?>

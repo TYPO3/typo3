@@ -1,30 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Query settings. This class is NOT part of the FLOW3 API.
  * It reflects the settings unique to TYPO3 4.x.
@@ -38,12 +37,14 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 
 	/**
 	 * Flag if the storage page should be respected for the query.
+	 *
 	 * @var boolean
 	 */
 	protected $respectStoragePage = TRUE;
 
 	/**
 	 * the pid(s) of the storage page(s) that should be respected for the query.
+	 *
 	 * @var array
 	 */
 	protected $storagePageIds = array();
@@ -52,6 +53,7 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	 * A flag indicating whether all or some enable fields should be ignored. If TRUE, all enable fields are ignored.
 	 * If--in addition to this--enableFieldsToBeIgnored is set, only fields specified there are ignored. If FALSE, all
 	 * enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
+	 *
 	 * @var boolean
 	 */
 	protected $ignoreEnableFields = FALSE;
@@ -59,24 +61,28 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	/**
 	 * An array of column names in the enable columns array (array keys in $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']),
 	 * to be ignored while building the query statement
+	 *
 	 * @var array
 	 */
 	protected $enableFieldsToBeIgnored = array();
 
 	/**
 	 * Flag whether deleted records should be included in the result set.
+	 *
 	 * @var boolean
 	 */
 	protected $includeDeleted = FALSE;
 
 	/**
 	 * Flag if the sys_language_uid should be respected (default is TRUE).
+	 *
 	 * @var boolean
 	 */
 	protected $respectSysLanguage = TRUE;
 
 	/**
 	 * Flag if the the query result should be returned as raw QueryResult.
+	 *
 	 * @var boolean
 	 */
 	protected $returnRawQueryResult = FALSE;
@@ -278,4 +284,5 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	}
 
 }
+
 ?>

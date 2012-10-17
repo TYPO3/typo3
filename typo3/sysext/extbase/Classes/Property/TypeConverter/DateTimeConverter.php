@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Converter which transforms from different input formats into DateTime objects.
  *
@@ -27,23 +25,23 @@
  * The date string is expected to be formatted according to DEFAULT_DATE_FORMAT
  * But the default date format can be overridden in the initialize*Action() method like this:
  * $this->arguments['<argumentName>']
- *   ->getPropertyMappingConfiguration()
- *   ->forProperty('<propertyName>') // this line can be skipped in order to specify the format for all properties
- *   ->setTypeConverterOption('Tx_Extbase_Property_TypeConverter_DateTimeConverter', Tx_Extbase_Property_TypeConverter_DateTimeConverter::CONFIGURATION_DATE_FORMAT, '<dateFormat>');
+ * ->getPropertyMappingConfiguration()
+ * ->forProperty('<propertyName>') // this line can be skipped in order to specify the format for all properties
+ * ->setTypeConverterOption('Tx_Extbase_Property_TypeConverter_DateTimeConverter', Tx_Extbase_Property_TypeConverter_DateTimeConverter::CONFIGURATION_DATE_FORMAT, '<dateFormat>');
  *
  * If the source is of type array, it is possible to override the format in the source:
  * array(
- *  'date' => '<dateString>',
- *  'dateFormat' => '<dateFormat>'
+ * 'date' => '<dateString>',
+ * 'dateFormat' => '<dateFormat>'
  * );
  *
  * By using an array as source you can also override time and timezone of the created DateTime object:
  * array(
- *  'date' => '<dateString>',
- *  'hour' => '<hour>', // integer
- *  'minute' => '<minute>', // integer
- *  'seconds' => '<seconds>', // integer
- *  'timezone' => '<timezone>', // string, see http://www.php.net/manual/timezones.php
+ * 'date' => '<dateString>',
+ * 'hour' => '<hour>', // integer
+ * 'minute' => '<minute>', // integer
+ * 'seconds' => '<seconds>', // integer
+ * 'timezone' => '<timezone>', // string, see http://www.php.net/manual/timezones.php
  * );
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -55,7 +53,6 @@ class Tx_Extbase_Property_TypeConverter_DateTimeConverter extends Tx_Extbase_Pro
 	 * @var string
 	 */
 	const CONFIGURATION_DATE_FORMAT = 'dateFormat';
-
 	/**
 	 * The default date format is "YYYY-MM-DDT##:##:##+##:##", for example "2005-08-15T15:52:01+00:00"
 	 * according to the W3C standard @see http://www.w3.org/TR/NOTE-datetime.html
@@ -63,7 +60,6 @@ class Tx_Extbase_Property_TypeConverter_DateTimeConverter extends Tx_Extbase_Pro
 	 * @var string
 	 */
 	const DEFAULT_DATE_FORMAT = DateTime::W3C;
-
 	/**
 	 * @var array<string>
 	 */
@@ -101,7 +97,7 @@ class Tx_Extbase_Property_TypeConverter_DateTimeConverter extends Tx_Extbase_Pro
 	 * Converts $source to a DateTime using the configured dateFormat
 	 *
 	 * @param string $source the string to be converted to a DateTime object
-	 * @param string $targetType must be "DateTime"
+	 * @param string $targetType must be "DateTime
 	 * @param array $convertedChildProperties not used currently
 	 * @param Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration
 	 * @return DateTime
@@ -125,7 +121,7 @@ class Tx_Extbase_Property_TypeConverter_DateTimeConverter extends Tx_Extbase_Pro
 		}
 		$date = DateTime::createFromFormat($dateFormat, $dateAsString);
 		if ($date === FALSE) {
-			return new Tx_Extbase_Error_Error('The string"' . $dateAsString . '" could not be converted to DateTime with format "' . $dateFormat . '"', 1307719788);
+			return new Tx_Extbase_Error_Error(((('The string"' . $dateAsString) . '" could not be converted to DateTime with format "') . $dateFormat) . '"', 1307719788);
 		}
 		if (is_array($source)) {
 			$this->overrideTimeIfSpecified($date, $source);
@@ -150,7 +146,7 @@ class Tx_Extbase_Property_TypeConverter_DateTimeConverter extends Tx_Extbase_Pro
 		if ($dateFormat === NULL) {
 			return self::DEFAULT_DATE_FORMAT;
 		} elseif ($dateFormat !== NULL && !is_string($dateFormat)) {
-			throw new Tx_Extbase_Property_Exception_InvalidPropertyMappingConfigurationException('CONFIGURATION_DATE_FORMAT must be of type string, "' . (is_object($dateFormat) ? get_class($dateFormat) : gettype($dateFormat)) . '" given', 1307719569);
+			throw new Tx_Extbase_Property_Exception_InvalidPropertyMappingConfigurationException(('CONFIGURATION_DATE_FORMAT must be of type string, "' . (is_object($dateFormat) ? get_class($dateFormat) : gettype($dateFormat))) . '" given', 1307719569);
 		}
 		return $dateFormat;
 	}
@@ -163,12 +159,12 @@ class Tx_Extbase_Property_TypeConverter_DateTimeConverter extends Tx_Extbase_Pro
 	 * @return void
 	 */
 	protected function overrideTimeIfSpecified(DateTime $date, array $source) {
-		if (!isset($source['hour']) && !isset($source['minute']) && !isset($source['second'])) {
+		if ((!isset($source['hour']) && !isset($source['minute'])) && !isset($source['second'])) {
 			return;
 		}
-		$hour = isset($source['hour']) ? (integer)$source['hour'] : 0;
-		$minute = isset($source['minute']) ? (integer)$source['minute'] : 0;
-		$second = isset($source['second']) ? (integer)$source['second'] : 0;
+		$hour = isset($source['hour']) ? (int) $source['hour'] : 0;
+		$minute = isset($source['minute']) ? (int) $source['minute'] : 0;
+		$second = isset($source['second']) ? (int) $source['second'] : 0;
 		$date->setTime($hour, $minute, $second);
 	}
 
@@ -186,9 +182,11 @@ class Tx_Extbase_Property_TypeConverter_DateTimeConverter extends Tx_Extbase_Pro
 		try {
 			$timezone = new DateTimeZone($source['timezone']);
 		} catch (Exception $e) {
-			throw new Tx_Extbase_Property_Exception_TypeConverterException('The specified timezone "' . $source['timezone'] . '" is invalid', 1308240974);
+			throw new Tx_Extbase_Property_Exception_TypeConverterException(('The specified timezone "' . $source['timezone']) . '" is invalid', 1308240974);
 		}
 		$date->setTimezone($timezone);
 	}
+
 }
+
 ?>

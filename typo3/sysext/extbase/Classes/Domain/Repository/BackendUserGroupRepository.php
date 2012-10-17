@@ -23,12 +23,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Repository for Tx_Extbase_Domain_Model_BackendUserGroup.
  *
  * @author Markus Günther <mail@markus-guenther.de>
- *
  * @package Extbase
  * @subpackage Domain\Repository
  * @api
@@ -46,5 +44,7 @@ class Tx_Extbase_Domain_Repository_BackendUserGroupRepository extends Tx_Extbase
 		$querySettings->setRespectStoragePage(FALSE);
 		$this->setDefaultQuerySettings($querySettings);
 	}
+
 }
+
 ?>

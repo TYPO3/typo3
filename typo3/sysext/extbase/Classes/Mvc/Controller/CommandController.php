@@ -1,29 +1,27 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
-
+ *  Copyright notice
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * A controller which processes requests from the command line
  *
@@ -32,7 +30,6 @@
 class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Controller_CommandControllerInterface {
 
 	const MAXIMUM_LINE_LENGTH = 79;
-
 	/**
 	 * @var Tx_Extbase_MVC_CLI_Request
 	 */
@@ -104,12 +101,12 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 	 * @api
 	 */
 	public function processRequest(Tx_Extbase_MVC_RequestInterface $request, Tx_Extbase_MVC_ResponseInterface $response) {
-		if (!$this->canProcessRequest($request)) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType(get_class($this) . ' does not support requests of type "' . get_class($request) . '".' , 1300787096);
-
+		if (!$this->canProcessRequest($request)) {
+			throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType(((get_class($this) . ' does not support requests of type "') . get_class($request)) . '".', 1300787096);
+		}
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
-
 		$this->commandMethodName = $this->resolveCommandMethodName();
 		$this->initializeCommandMethodArguments();
 		$this->mapRequestArgumentsToControllerArguments();
@@ -120,7 +117,7 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 	 * Resolves and checks the current command method name
 	 *
 	 * Note: The resulting command method name might not have the correct case, which isn't a problem because PHP is
-	 *       case insensitive regarding method names.
+	 * case insensitive regarding method names.
 	 *
 	 * @return string Method name of the current command
 	 * @author Robert Lemke <robert@typo3.org>
@@ -128,7 +125,7 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 	protected function resolveCommandMethodName() {
 		$commandMethodName = $this->request->getControllerCommandName() . 'Command';
 		if (!is_callable(array($this, $commandMethodName))) {
-			throw new Tx_Extbase_MVC_Exception_NoSuchCommand('A command method "' . $commandMethodName . '()" does not exist in controller "' . get_class($this) . '".', 1300902143);
+			throw new Tx_Extbase_MVC_Exception_NoSuchCommand(((('A command method "' . $commandMethodName) . '()" does not exist in controller "') . get_class($this)) . '".', 1300902143);
 		}
 		return $commandMethodName;
 	}
@@ -142,7 +139,6 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 	 */
 	protected function initializeCommandMethodArguments() {
 		$methodParameters = $this->reflectionService->getMethodParameters(get_class($this), $this->commandMethodName);
-
 		foreach ($methodParameters as $parameterName => $parameterInfo) {
 			$dataType = NULL;
 			if (isset($parameterInfo['type'])) {
@@ -150,9 +146,11 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 			} elseif ($parameterInfo['array']) {
 				$dataType = 'array';
 			}
-			if ($dataType === NULL) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('The argument type for parameter $' . $parameterName . ' of method ' . get_class($this) . '->' . $this->commandMethodName . '() could not be detected.' , 1306755296);
-			$defaultValue = (isset($parameterInfo['defaultValue']) ? $parameterInfo['defaultValue'] : NULL);
-			$this->arguments->addNewArgument($parameterName, $dataType, ($parameterInfo['optional'] === FALSE), $defaultValue);
+			if ($dataType === NULL) {
+				throw new Tx_Extbase_MVC_Exception_InvalidArgumentType(((((('The argument type for parameter $' . $parameterName) . ' of method ') . get_class($this)) . '->') . $this->commandMethodName) . '() could not be detected.', 1306755296);
+			}
+			$defaultValue = isset($parameterInfo['defaultValue']) ? $parameterInfo['defaultValue'] : NULL;
+			$this->arguments->addNewArgument($parameterName, $dataType, $parameterInfo['optional'] === FALSE, $defaultValue);
 		}
 	}
 
@@ -166,11 +164,10 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 	protected function mapRequestArgumentsToControllerArguments() {
 		foreach ($this->arguments as $argument) {
 			$argumentName = $argument->getName();
-
 			if ($this->request->hasArgument($argumentName)) {
 				$argument->setValue($this->request->getArgument($argumentName));
 			} elseif ($argument->isRequired()) {
-				$exception = new Tx_Extbase_MVC_Exception_Command('Required argument "' . $argumentName  . '" is not set.', 1306755520);
+				$exception = new Tx_Extbase_MVC_Exception_Command(('Required argument "' . $argumentName) . '" is not set.', 1306755520);
 				$this->forward('error', 'Tx_Extbase_Command_HelpCommandController', array('exception' => $exception));
 			}
 		}
@@ -194,7 +191,6 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 			$this->request->setControllerObjectName($controllerObjectName);
 		}
 		$this->request->setArguments($arguments);
-
 		$this->arguments->removeAll();
 		throw new Tx_Extbase_MVC_Exception_StopAction();
 	}
@@ -214,21 +210,19 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 		foreach ($this->arguments as $argument) {
 			$preparedArguments[] = $argument->getValue();
 		}
-
 		$commandResult = call_user_func_array(array($this, $this->commandMethodName), $preparedArguments);
-
 		if (is_string($commandResult) && strlen($commandResult) > 0) {
 			$this->response->appendContent($commandResult);
 		} elseif (is_object($commandResult) && method_exists($commandResult, '__toString')) {
-			$this->response->appendContent((string)$commandResult);
+			$this->response->appendContent((string) $commandResult);
 		}
 	}
 
 	/**
 	 * Outputs specified text to the console window
 	 * You can specify arguments that will be passed to the text via sprintf
-	 * @see http://www.php.net/sprintf
 	 *
+	 * @see http://www.php.net/sprintf
 	 * @param string $text Text to output
 	 * @param array $arguments Optional arguments to use for sprintf
 	 * @return void
@@ -273,8 +267,9 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 	 */
 	protected function sendAndExit($exitCode = 0) {
 		$this->response->send();
-		exit($exitCode);
+		die($exitCode);
 	}
 
 }
+
 ?>

@@ -11,14 +11,13 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Bootstrap Interface
  *
  * @package Extbase
  */
-interface Tx_Extbase_Core_BootstrapInterface {
-
+interface Tx_Extbase_Core_BootstrapInterface
+{
 	/**
 	 * Runs the the Extbase Framework by resolving an appropriate Request Handler and passing control to it.
 	 * If the Framework is not initialized yet, it will be initialized.
@@ -30,14 +29,15 @@ interface Tx_Extbase_Core_BootstrapInterface {
 	 */
 	public function run($content, $configuration);
 
-	 /**
-	  * This method forwards the call to run(). This method is invoked by the mod.php
-	  * function of TYPO3.
-	  *
-	  * @param string $moduleSignature
-	  * @return boolean TRUE, if the request request could be dispatched
-	  * @see run()
-	  **/
+	/**
+	 * This method forwards the call to run(). This method is invoked by the mod.php
+	 * function of TYPO3.
+	 *
+	 * @param string $moduleSignature
+	 * @return boolean TRUE, if the request request could be dispatched
+	 * @see run()
+	 */
 	public function callModule($moduleSignature);
+
 }
 ?>

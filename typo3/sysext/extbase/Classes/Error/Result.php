@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Result object for operations dealing with objects, such as the Property Mapper or the Validators.
  *
@@ -176,13 +174,10 @@ class Tx_Extbase_Error_Result {
 		if (count($pathSegments) === 0) {
 			return $this;
 		}
-
 		$propertyName = array_shift($pathSegments);
-
 		if (!isset($this->propertyResults[$propertyName])) {
 			$this->propertyResults[$propertyName] = new Tx_Extbase_Error_Result();
 		}
-
 		return $this->propertyResults[$propertyName]->recurseThroughResult($pathSegments);
 	}
 
@@ -195,16 +190,14 @@ class Tx_Extbase_Error_Result {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function hasProperty($propertyName, $checkerMethodName) {
-		if (count($this->$propertyName) > 0) {
+		if (count($this->{$propertyName}) > 0) {
 			return TRUE;
 		}
-
 		foreach ($this->propertyResults as $subResult) {
-			if ($subResult->$checkerMethodName()) {
+			if ($subResult->{$checkerMethodName}()) {
 				return TRUE;
 			}
 		}
-
 		return FALSE;
 	}
 
@@ -217,7 +210,6 @@ class Tx_Extbase_Error_Result {
 	public function hasErrors() {
 		return $this->hasProperty('errors', 'hasErrors');
 	}
-
 
 	/**
 	 * Does the current Result object have Warnings? (Recursively)
@@ -292,8 +284,8 @@ class Tx_Extbase_Error_Result {
 	 * @return void
 	 */
 	public function flattenTree($propertyName, &$result, $level) {
-		if (count($this->$propertyName) > 0) {
-			$result[implode('.', $level)] = $this->$propertyName;
+		if (count($this->{$propertyName}) > 0) {
+			$result[implode('.', $level)] = $this->{$propertyName};
 		}
 		foreach ($this->propertyResults as $subPropertyName => $subResult) {
 			array_push($level, $subPropertyName);
@@ -314,7 +306,6 @@ class Tx_Extbase_Error_Result {
 		$this->mergeProperty($otherResult, 'getErrors', 'addError');
 		$this->mergeProperty($otherResult, 'getWarnings', 'addWarning');
 		$this->mergeProperty($otherResult, 'getNotices', 'addNotice');
-
 		foreach ($otherResult->getSubResults() as $subPropertyName => $subResult) {
 			$this->forProperty($subPropertyName)->merge($subResult);
 		}
@@ -330,8 +321,8 @@ class Tx_Extbase_Error_Result {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function mergeProperty(Tx_Extbase_Error_Result $otherResult, $getterName, $adderName) {
-		foreach ($otherResult->$getterName() as $messageInOtherResult) {
-			$this->$adderName($messageInOtherResult);
+		foreach ($otherResult->{$getterName}() as $messageInOtherResult) {
+			$this->{$adderName}($messageInOtherResult);
 		}
 	}
 
@@ -343,6 +334,7 @@ class Tx_Extbase_Error_Result {
 	public function getSubResults() {
 		return $this->propertyResults;
 	}
+
 }
 
 ?>

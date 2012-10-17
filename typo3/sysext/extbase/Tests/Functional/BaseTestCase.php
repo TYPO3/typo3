@@ -25,7 +25,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Base database testcase for the Extbase extension.
  *
@@ -39,6 +38,7 @@
  * @api experimental! This class is experimental and subject to change!
  */
 abstract class Tx_Extbase_Tests_Functional_BaseTestCase extends Tx_Phpunit_Database_TestCase {
+
 	/**
 	 * @var Tx_Extbase_Object_ObjectManagerInterface The object manager
 	 */
@@ -59,7 +59,6 @@ abstract class Tx_Extbase_Tests_Functional_BaseTestCase extends Tx_Phpunit_Datab
 	protected function setUp() {
 		$this->createDatabase();
 		$this->useTestDatabase();
-
 		$this->importStdDb();
 		$this->importExtensions(array('cms', 'extbase'));
 	}
@@ -67,5 +66,7 @@ abstract class Tx_Extbase_Tests_Functional_BaseTestCase extends Tx_Phpunit_Datab
 	protected function tearDown() {
 		$this->dropDatabase();
 	}
+
 }
+
 ?>

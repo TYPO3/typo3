@@ -21,13 +21,13 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Converter which transforms simple types to Tx_Extbase_Domain_Model_File.
  *
  * @api experimental! This class is experimental and subject to change!
  */
 abstract class Tx_Extbase_Property_TypeConverter_AbstractFileFolderConverter extends Tx_Extbase_Property_TypeConverter_AbstractTypeConverter {
+
 	/**
 	 * @var integer
 	 */
@@ -63,18 +63,12 @@ abstract class Tx_Extbase_Property_TypeConverter_AbstractFileFolderConverter ext
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration = NULL) {
 		$object = $this->getObject($source);
-
 		if (empty($this->expectedObjectType) || !$object instanceof $this->expectedObjectType) {
-			throw new Tx_Extbase_Property_Exception(
-				'Expected object of type "' . $this->expectedObjectType . '" but got ' . get_class($object),
-				1342895975
-			);
+			throw new Tx_Extbase_Property_Exception((('Expected object of type "' . $this->expectedObjectType) . '" but got ') . get_class($object), 1342895975);
 		}
-
 		/** @var $subject Tx_Extbase_Domain_Model_AbstractFileFolder */
 		$subject = $this->objectManager->create($targetType);
 		$subject->setObject($object);
-
 		return $subject;
 	}
 
@@ -83,5 +77,7 @@ abstract class Tx_Extbase_Property_TypeConverter_AbstractFileFolderConverter ext
 	 * @return t3lib_file_ResourceInterface
 	 */
 	abstract protected function getObject($source);
+
 }
+
 ?>

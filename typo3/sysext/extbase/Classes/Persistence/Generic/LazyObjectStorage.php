@@ -24,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A proxy that can replace any object and replaces itself in it's parent on
  * first access (call, get, set, isset, unset).
@@ -72,7 +71,6 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 	protected $fieldValue;
 
 	/**
-	 *
 	 * @var bool
 	 */
 	protected $isInitialized = FALSE;
@@ -118,7 +116,6 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 	protected function initialize() {
 		if (!$this->isInitialized) {
 			$this->isInitialized = TRUE;
-
 			$objects = $this->dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, FALSE);
 			foreach ($objects as $object) {
 				parent::attach($object);
@@ -129,7 +126,6 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 	}
 
 	// Delegation to the ObjectStorage methods below
-
 	/**
 	 * @see Tx_Extbase_Persistence_ObjectStorage::addAll
 	 */
@@ -225,7 +221,7 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 	/**
 	 * @see Tx_Extbase_Persistence_ObjectStorage::offsetSet
 	 */
-	public function offsetSet($object , $info) {
+	public function offsetSet($object, $info) {
 		$this->initialize();
 		parent::offsetSet($object, $info);
 	}
@@ -271,4 +267,5 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 	}
 
 }
+
 ?>

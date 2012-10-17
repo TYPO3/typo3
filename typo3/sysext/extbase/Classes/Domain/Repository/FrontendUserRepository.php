@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A Frontend User repository
  *
@@ -32,5 +31,7 @@
  */
 class Tx_Extbase_Domain_Repository_FrontendUserRepository extends Tx_Extbase_Persistence_Repository {
 
+
 }
+
 ?>

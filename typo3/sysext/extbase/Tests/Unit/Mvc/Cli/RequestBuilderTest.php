@@ -18,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the MVC CLI Request Builder
  */
@@ -57,23 +56,18 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 	/**
 	 * Sets up this test case
 	 *
-	 * @author  Robert Lemke <robert@typo3.org>
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setUp() {
 		$this->request = $this->getAccessibleMock('Tx_Extbase_MVC_CLI_Request', array('dummy'));
-
 		$this->mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		$this->mockObjectManager->expects($this->any())->method('get')->with('Tx_Extbase_MVC_CLI_Request')->will($this->returnValue($this->request));
-
 		$this->mockCommand = $this->getMock('Tx_Extbase_MVC_CLI_Command', array(), array(), '', FALSE);
 		$this->mockCommand->expects($this->any())->method('getControllerClassName')->will($this->returnValue('Tx_SomeExtensionName_Command_DefaultCommandController'));
 		$this->mockCommand->expects($this->any())->method('getControllerCommandName')->will($this->returnValue('list'));
-
 		$this->mockCommandManager = $this->getMock('Tx_Extbase_MVC_CLI_CommandManager');
 		$this->mockCommandManager->expects($this->any())->method('getCommandByIdentifier')->with('some_extension_name:default:list')->will($this->returnValue($this->mockCommand));
-
 		$this->mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service');
-
 		$this->requestBuilder = new Tx_Extbase_MVC_CLI_RequestBuilder();
 		$this->requestBuilder->injectObjectManager($this->mockObjectManager);
 		$this->requestBuilder->injectReflectionService($this->mockReflectionService);
@@ -88,7 +82,6 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 	 */
 	public function cliAccessWithExtensionControllerAndActionNameBuildsCorrectRequest() {
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->will($this->returnValue(array()));
-
 		$request = $this->requestBuilder->build('some_extension_name:default:list');
 		$this->assertSame('Tx_SomeExtensionName_Command_DefaultCommandController', $request->getControllerObjectName());
 		$this->assertSame('list', $request->getControllerCommandName(), 'The CLI request specifying a package, controller and action name did not return a request object pointing to the expected action.');
@@ -100,13 +93,12 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function ifCommandCantBeResolvedTheHelpScreenIsShown() {
-			// The following call is only made to satisfy PHPUnit. For some weird reason PHPUnit complains that the
-			// mocked method ("getObjectNameByClassName") does not exist _if the mock object is not used_.
+		// The following call is only made to satisfy PHPUnit. For some weird reason PHPUnit complains that the
+		// mocked method ("getObjectNameByClassName") does not exist _if the mock object is not used_.
 		$this->mockCommandManager->getCommandByIdentifier('some_extension_name:default:list');
 		$mockCommandManager = $this->getMock('Tx_Extbase_MVC_CLI_CommandManager');
 		$mockCommandManager->expects($this->any())->method('getCommandByIdentifier')->with('test:default:list')->will($this->throwException(new Tx_Extbase_MVC_Exception_NoSuchCommand()));
 		$this->requestBuilder->injectCommandManager($mockCommandManager);
-
 		$request = $this->requestBuilder->build('test:default:list');
 		$this->assertSame('Tx_Extbase_Command_HelpCommandController', $request->getControllerObjectName());
 	}
@@ -119,7 +111,6 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 			'testArgument' => array('optional' => FALSE, 'type' => 'string')
 		);
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_SomeExtensionName_Command_DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
-
 		$request = $this->requestBuilder->build('some_extension_name:default:list --test-argument=value');
 		$this->assertTrue($request->hasArgument('testArgument'), 'The given "testArgument" was not found in the built request.');
 		$this->assertSame($request->getArgument('testArgument'), 'value', 'The "testArgument" had not the given value.');
@@ -137,7 +128,6 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 			'testArgument2' => array('optional' => FALSE, 'type' => 'string')
 		);
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_SomeExtensionName_Command_DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
-
 		$request = $this->requestBuilder->build('some_extension_name:default:list --test-argument=value --test-argument2=value2');
 		$this->assertTrue($request->hasArgument('testArgument'), 'The given "testArgument" was not found in the built request.');
 		$this->assertTrue($request->hasArgument('testArgument2'), 'The given "testArgument2" was not found in the built request.');
@@ -159,7 +149,6 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 			'testArgument4' => array('optional' => FALSE, 'type' => 'string')
 		);
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_SomeExtensionName_Command_DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
-
 		$request = $this->requestBuilder->build('some_extension_name:default:list --test-argument= value --test-argument2 =value2 --test-argument3 = value3 --test-argument4=value4');
 		$this->assertTrue($request->hasArgument('testArgument'), 'The given "testArgument" was not found in the built request.');
 		$this->assertTrue($request->hasArgument('testArgument2'), 'The given "testArgument2" was not found in the built request.');
@@ -181,10 +170,9 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 		$methodParameters = array(
 			'a' => array('optional' => FALSE, 'type' => 'string'),
 			'd' => array('optional' => FALSE, 'type' => 'string'),
-			'f' => array('optional' => FALSE, 'type' => 'string'),
+			'f' => array('optional' => FALSE, 'type' => 'string')
 		);
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_SomeExtensionName_Command_DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
-
 		$request = $this->requestBuilder->build('some_extension_name:default:list -d valued -f=valuef -a = valuea');
 		$this->assertTrue($request->hasArgument('d'), 'The given "d" was not found in the built request.');
 		$this->assertTrue($request->hasArgument('f'), 'The given "f" was not found in the built request.');
@@ -216,10 +204,9 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 			'c' => array('optional' => FALSE, 'type' => 'string'),
 			'j' => array('optional' => FALSE, 'type' => 'string'),
 			'k' => array('optional' => FALSE, 'type' => 'string'),
-			'm' => array('optional' => FALSE, 'type' => 'string'),
+			'm' => array('optional' => FALSE, 'type' => 'string')
 		);
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_SomeExtensionName_Command_DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
-
 		$request = $this->requestBuilder->build('some_extension_name:default:list --test-argument=value --test-argument2= value2 -k --test-argument-3 = value3 --test-argument4=value4 -f valuef -d=valued -a = valuea -c --testArgument7 --test-argument5 = 5 --test-argument6 -j kjk -m');
 		$this->assertTrue($request->hasArgument('testArgument'), 'The given "testArgument" was not found in the built request.');
 		$this->assertTrue($request->hasArgument('testArgument2'), 'The given "testArgument2" was not found in the built request.');
@@ -253,14 +240,12 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 	public function insteadOfNamedArgumentsTheArgumentsCanBePassedUnnamedInTheCorrectOrder() {
 		$methodParameters = array(
 			'testArgument1' => array('optional' => FALSE, 'type' => 'string'),
-			'testArgument2' => array('optional' => FALSE, 'type' => 'string'),
+			'testArgument2' => array('optional' => FALSE, 'type' => 'string')
 		);
 		$this->mockReflectionService->expects($this->exactly(2))->method('getMethodParameters')->with('Tx_SomeExtensionName_Command_DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
-
 		$request = $this->requestBuilder->build('some_extension_name:default:list --test-argument1 firstArgumentValue --test-argument2 secondArgumentValue');
 		$this->assertSame('firstArgumentValue', $request->getArgument('testArgument1'));
 		$this->assertSame('secondArgumentValue', $request->getArgument('testArgument2'));
-
 		$request = $this->requestBuilder->build('some_extension_name:default:list firstArgumentValue secondArgumentValue');
 		$this->assertSame('firstArgumentValue', $request->getArgument('testArgument1'));
 		$this->assertSame('secondArgumentValue', $request->getArgument('testArgument2'));
@@ -275,10 +260,9 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 			'some' => array('optional' => TRUE, 'type' => 'boolean'),
 			'option' => array('optional' => TRUE, 'type' => 'string'),
 			'argument1' => array('optional' => FALSE, 'type' => 'string'),
-			'argument2' => array('optional' => FALSE, 'type' => 'string'),
+			'argument2' => array('optional' => FALSE, 'type' => 'string')
 		);
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_SomeExtensionName_Command_DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
-
 		$request = $this->requestBuilder->build('some_extension_name:default:list --some -option=value file1 file2');
 		$this->assertSame('list', $request->getControllerCommandName());
 		$this->assertTrue($request->getArgument('some'));
@@ -293,12 +277,10 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 	public function exceedingArgumentsMayBeSpecified() {
 		$methodParameters = array(
 			'testArgument1' => array('optional' => FALSE, 'type' => 'string'),
-			'testArgument2' => array('optional' => FALSE, 'type' => 'string'),
+			'testArgument2' => array('optional' => FALSE, 'type' => 'string')
 		);
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_SomeExtensionName_Command_DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
-
 		$expectedArguments = array('testArgument1' => 'firstArgumentValue', 'testArgument2' => 'secondArgumentValue');
-
 		$request = $this->requestBuilder->build('some_extension_name:default:list --test-argument1=firstArgumentValue --test-argument2 secondArgumentValue exceedingArgument1');
 		$this->assertEquals($expectedArguments, $request->getArguments());
 		$this->assertEquals(array('exceedingArgument1'), $request->getExceedingArguments());
@@ -312,10 +294,9 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 	public function ifNamedArgumentsAreUsedAllRequiredArgumentsMustBeNamed() {
 		$methodParameters = array(
 			'testArgument1' => array('optional' => FALSE, 'type' => 'string'),
-			'testArgument2' => array('optional' => FALSE, 'type' => 'string'),
+			'testArgument2' => array('optional' => FALSE, 'type' => 'string')
 		);
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_SomeExtensionName_Command_DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
-
 		$this->requestBuilder->build('some_extension_name:default:list --test-argument1 firstArgumentValue secondArgumentValue');
 	}
 
@@ -327,10 +308,9 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 	public function ifUnnamedArgumentsAreUsedAllRequiredArgumentsMustBeUnnamed() {
 		$methodParameters = array(
 			'requiredArgument1' => array('optional' => FALSE, 'type' => 'string'),
-			'requiredArgument2' => array('optional' => FALSE, 'type' => 'string'),
+			'requiredArgument2' => array('optional' => FALSE, 'type' => 'string')
 		);
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_SomeExtensionName_Command_DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
-
 		$this->requestBuilder->build('some_extension_name:default:list firstArgumentValue --required-argument2 secondArgumentValue');
 	}
 
@@ -342,12 +322,10 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 		$methodParameters = array(
 			'requiredArgument1' => array('optional' => FALSE, 'type' => 'string'),
 			'requiredArgument2' => array('optional' => FALSE, 'type' => 'string'),
-			'booleanOption' => array('optional' => TRUE, 'type' => 'boolean'),
+			'booleanOption' => array('optional' => TRUE, 'type' => 'boolean')
 		);
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_SomeExtensionName_Command_DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
-
 		$expectedArguments = array('requiredArgument1' => 'firstArgumentValue', 'requiredArgument2' => 'secondArgumentValue', 'booleanOption' => TRUE);
-
 		$request = $this->requestBuilder->build('some_extension_name:default:list --booleanOption firstArgumentValue secondArgumentValue');
 		$this->assertEquals($expectedArguments, $request->getArguments());
 	}
@@ -363,15 +341,14 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 			'b3' => array('optional' => TRUE, 'type' => 'boolean'),
 			'b4' => array('optional' => TRUE, 'type' => 'boolean'),
 			'b5' => array('optional' => TRUE, 'type' => 'boolean'),
-			'b6' => array('optional' => TRUE, 'type' => 'boolean'),
+			'b6' => array('optional' => TRUE, 'type' => 'boolean')
 		);
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_SomeExtensionName_Command_DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
-
 		$expectedArguments = array('b1' => TRUE, 'b2' => TRUE, 'b3' => TRUE, 'b4' => FALSE, 'b5' => FALSE, 'b6' => FALSE);
-
 		$request = $this->requestBuilder->build('some_extension_name:default:list --b2 y --b1 1 --b3 true --b4 false --b5 n --b6 0');
 		$this->assertEquals($expectedArguments, $request->getArguments());
 	}
+
 }
 
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,8 +18,7 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once('AbstractValidatorTestcase.php');
+require_once 'AbstractValidatorTestcase.php';
 /**
  * Testcase for the string length validator
  *
@@ -52,9 +50,8 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_StringValidatorTest extends Tx_
 	 */
 	public function stringValidatorShouldReturnErrorIfObjectWithToStringMethodStringIsGiven() {
 		$className = 'TestClass' . md5(uniqid(mt_rand(), TRUE));
-
-		eval('
-			class ' . $className . ' {
+		eval(('
+			class ' . $className) . ' {
 				public function __toString() {
 					return "ASDF";
 				}

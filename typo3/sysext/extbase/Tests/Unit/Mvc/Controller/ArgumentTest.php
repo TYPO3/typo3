@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the MVC Controller Argument
  *
@@ -39,7 +37,9 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentTest extends Tx_Extbase_Tests
 	protected $objectArgument;
 
 	protected $mockPropertyMapper;
+
 	protected $mockConfigurationBuilder;
+
 	protected $mockConfiguration;
 
 	/**
@@ -48,18 +48,14 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentTest extends Tx_Extbase_Tests
 	public function setUp() {
 		$this->simpleValueArgument = new Tx_Extbase_MVC_Controller_Argument('someName', 'string');
 		$this->objectArgument = new Tx_Extbase_MVC_Controller_Argument('someName', 'DateTime');
-
 		$this->mockPropertyMapper = $this->getMock('Tx_Extbase_Property_PropertyMapper');
 		$this->simpleValueArgument->injectPropertyMapper($this->mockPropertyMapper);
 		$this->objectArgument->injectPropertyMapper($this->mockPropertyMapper);
-
 		$this->mockConfigurationBuilder = $this->getMock('Tx_Extbase_Property_PropertyMappingConfigurationBuilder');
 		$this->mockConfiguration = $this->getMock('Tx_Extbase_Property_PropertyMappingConfigurationInterface');
 		$this->mockConfigurationBuilder->expects($this->any())->method('build')->with('Tx_Extbase_MVC_Controller_MvcPropertyMappingConfiguration')->will($this->returnValue($this->mockConfiguration));
-
 		$this->simpleValueArgument->injectPropertyMappingConfigurationBuilder($this->mockConfigurationBuilder);
 		$this->objectArgument->injectPropertyMappingConfigurationBuilder($this->mockConfigurationBuilder);
-
 		$this->simpleValueArgument->initializeObject();
 		$this->objectArgument->initializeObject();
 	}
@@ -172,7 +168,6 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentTest extends Tx_Extbase_Tests
 		$this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
 	}
 
-
 	/**
 	 * @test
 	 * @author Karsten Dambekalns <karsten@typo3.org>
@@ -230,12 +225,10 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentTest extends Tx_Extbase_Tests
 	public function setValueShouldSetValidationErrorsIfValidatorIsSetAndValidationFailed() {
 		$this->enableRewrittenPropertyMapperInArgument($this->simpleValueArgument);
 		$error = new Tx_Extbase_Error_Error('Some Error', 1234);
-
 		$mockValidator = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
 		$validationMessages = new Tx_Extbase_Error_Result();
 		$validationMessages->addError($error);
 		$mockValidator->expects($this->once())->method('validate')->with('convertedValue')->will($this->returnValue($validationMessages));
-
 		$this->simpleValueArgument->setValidator($mockValidator);
 		$this->setupPropertyMapperAndSetValue();
 		$this->assertFalse($this->simpleValueArgument->isValid());
@@ -260,5 +253,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentTest extends Tx_Extbase_Tests
 		$mockConfigurationManager->expects($this->any())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(TRUE));
 		$argument->injectConfigurationManager($mockConfigurationManager);
 	}
+
 }
+
 ?>

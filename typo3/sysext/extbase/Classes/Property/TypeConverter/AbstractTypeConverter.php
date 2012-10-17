@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Type converter which provides sensible default implementations for most methods. If you extend this class
  * you only need to do the following:
@@ -136,6 +134,9 @@ abstract class Tx_Extbase_Property_TypeConverter_AbstractTypeConverter implement
 	 * @api
 	 */
 	public function getTypeOfChildProperty($targetType, $propertyName, Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration) {
+
 	}
+
 }
+
 ?>

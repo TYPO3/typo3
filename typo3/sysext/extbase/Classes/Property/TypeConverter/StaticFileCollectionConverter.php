@@ -21,13 +21,13 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Converter which transforms simple types to Tx_Extbase_Domain_Model_FileCollection.
  *
  * @api experimental! This class is experimental and subject to change!
  */
 class Tx_Extbase_Property_TypeConverter_StaticFileCollectionConverter extends Tx_Extbase_Property_TypeConverter_AbstractFileCollectionConverter implements t3lib_Singleton {
+
 	/**
 	 * @var array<string>
 	 */
@@ -50,5 +50,7 @@ class Tx_Extbase_Property_TypeConverter_StaticFileCollectionConverter extends Tx
 	protected function getObject($source) {
 		return $this->fileFactory->getCollectionObject($source);
 	}
+
 }
+
 ?>

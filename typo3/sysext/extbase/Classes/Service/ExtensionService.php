@@ -1,27 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2011 Extbase Team
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2011 Extbase Team
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Utilities to process FlexForms
  *
@@ -32,7 +31,6 @@ class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
 
 	const PLUGIN_TYPE_PLUGIN = 'list_type';
 	const PLUGIN_TYPE_CONTENT_ELEMENT = 'CType';
-
 	/**
 	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
@@ -69,7 +67,7 @@ class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
 	 * @return string plugin namespace
 	 */
 	public function getPluginNamespace($extensionName, $pluginName) {
-		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
+		$pluginSignature = strtolower(($extensionName . '_') . $pluginName);
 		$defaultPluginNamespace = 'tx_' . $pluginSignature;
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
 		if (!isset($frameworkConfiguration['view']['pluginNamespace']) || empty($frameworkConfiguration['view']['pluginNamespace'])) {
@@ -92,10 +90,9 @@ class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
 	 */
 	public function getPluginNameByAction($extensionName, $controllerName, $actionName) {
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-			// check, whether the current plugin is configured to handle the action
+		// check, whether the current plugin is configured to handle the action
 		if ($extensionName === $frameworkConfiguration['extensionName']) {
-			if (isset($frameworkConfiguration['controllerConfiguration'][$controllerName])
-				&& in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['actions'])) {
+			if (isset($frameworkConfiguration['controllerConfiguration'][$controllerName]) && in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['actions'])) {
 				return $frameworkConfiguration['pluginName'];
 			}
 		}
@@ -103,11 +100,11 @@ class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
 			return NULL;
 		}
 		$pluginNames = array();
-		foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'] as $pluginName => $pluginConfiguration) {
+		foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'] as $pluginName => $pluginConfiguration) {
 			if (!is_array($pluginConfiguration['controllers'])) {
 				continue;
 			}
-			foreach($pluginConfiguration['controllers'] as $pluginControllerName => $pluginControllerActions) {
+			foreach ($pluginConfiguration['controllers'] as $pluginControllerName => $pluginControllerActions) {
 				if (strtolower($pluginControllerName) !== strtolower($controllerName)) {
 					continue;
 				}
@@ -117,7 +114,7 @@ class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
 			}
 		}
 		if (count($pluginNames) > 1) {
-			throw new Tx_Extbase_Exception('There is more than one plugin that can handle this request (Extension: "' . $extensionName . '", Controller: "' . $controllerName . '", action: "' . $actionName . '"). Please specify "pluginName" argument' , 1280825466);
+			throw new Tx_Extbase_Exception(((((('There is more than one plugin that can handle this request (Extension: "' . $extensionName) . '", Controller: "') . $controllerName) . '", action: "') . $actionName) . '"). Please specify "pluginName" argument', 1280825466);
 		}
 		return count($pluginNames) > 0 ? $pluginNames[0] : NULL;
 	}
@@ -133,12 +130,8 @@ class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
 	 */
 	public function isActionCacheable($extensionName, $pluginName, $controllerName, $actionName) {
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
-
-		if (isset($frameworkConfiguration['controllerConfiguration'][$controllerName])
-			&& is_array($frameworkConfiguration['controllerConfiguration'][$controllerName])
-			&& is_array($frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])
-			&& in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])) {
-				return FALSE;
+		if (((isset($frameworkConfiguration['controllerConfiguration'][$controllerName]) && is_array($frameworkConfiguration['controllerConfiguration'][$controllerName])) && is_array($frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])) && in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])) {
+			return FALSE;
 		}
 		return TRUE;
 	}
@@ -159,22 +152,15 @@ class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
 		if (!isset($frameworkConfiguration['view']['defaultPid']) || empty($frameworkConfiguration['view']['defaultPid'])) {
 			return NULL;
 		}
-		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
+		$pluginSignature = strtolower(($extensionName . '_') . $pluginName);
 		if ($frameworkConfiguration['view']['defaultPid'] === 'auto') {
-			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-				'pid',
-				'tt_content',
-				'list_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($pluginSignature, 'tt_content') . ' AND CType="list"' . $GLOBALS['TSFE']->sys_page->enableFields('tt_content') . ' AND sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid,
-				'',
-				'',
-				2
-			);
+			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('pid', 'tt_content', (((('list_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($pluginSignature, 'tt_content')) . ' AND CType="list"') . $GLOBALS['TSFE']->sys_page->enableFields('tt_content')) . ' AND sys_language_uid=') . $GLOBALS['TSFE']->sys_language_uid, '', '', 2);
 			if (count($pages) > 1) {
-				throw new Tx_Extbase_Exception('There is more than one "' . $pluginSignature . '" plugin in the current page tree. Please remove one plugin or set the TypoScript configuration "plugin.tx_' . $pluginSignature . '.view.defaultPid" to a fixed page id' , 1280773643);
+				throw new Tx_Extbase_Exception(((('There is more than one "' . $pluginSignature) . '" plugin in the current page tree. Please remove one plugin or set the TypoScript configuration "plugin.tx_') . $pluginSignature) . '.view.defaultPid" to a fixed page id', 1280773643);
 			}
 			return count($pages) > 0 ? $pages[0]['pid'] : NULL;
 		}
-		return (integer)$frameworkConfiguration['view']['defaultPid'];
+		return (int) $frameworkConfiguration['view']['defaultPid'];
 	}
 
 	/**
@@ -209,4 +195,5 @@ class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
 	}
 
 }
+
 ?>

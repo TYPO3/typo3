@@ -21,7 +21,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A file context object (File Abstraction Layer)
  *
@@ -32,6 +31,7 @@
  * @api
  */
 class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Extbase_DomainObject_AbstractEntity {
+
 	/**
 	 * @var Tx_Extbase_Domain_Model_File
 	 */
@@ -93,7 +93,6 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	/**
 	 * FILE
 	 */
-
 	/**
 	 * @return Tx_Extbase_Domain_Model_File
 	 */
@@ -139,7 +138,6 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	/**
 	 * COLLECTION
 	 */
-
 	/**
 	 * @return Tx_Extbase_Domain_Model_StaticFileCollection
 	 */
@@ -227,7 +225,6 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	/**
 	 * REFERENCE
 	 */
-
 	/**
 	 * @return Tx_Extbase_Domain_Model_FileReference
 	 */
@@ -273,7 +270,6 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	/**
 	 * FOLDER
 	 */
-
 	/**
 	 * @return Tx_Extbase_Domain_Model_Folder
 	 */
@@ -315,5 +311,7 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	public function removeFolder(Tx_Extbase_Domain_Model_Folder $folder) {
 		$this->folders->detach($folder);
 	}
+
 }
+
 ?>

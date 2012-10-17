@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A Frontend User
  *
@@ -618,4 +617,5 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	}
 
 }
+
 ?>

@@ -11,7 +11,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * A web specific response implementation
  *
@@ -64,7 +63,8 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	protected $statusMessages = array(
 		100 => 'Continue',
 		101 => 'Switching Protocols',
-		102 => 'Processing', # RFC 2518
+		102 => 'Processing',
+		# RFC 2518
 		200 => 'OK',
 		201 => 'Created',
 		202 => 'Accepted',
@@ -105,7 +105,7 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 		504 => 'Gateway Timeout',
 		505 => 'HTTP Version Not Supported',
 		507 => 'Insufficient Storage',
-		509 => 'Bandwidth Limit Exceeded',
+		509 => 'Bandwidth Limit Exceeded'
 	);
 
 	/**
@@ -118,21 +118,24 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	 * @api
 	 */
 	public function setStatus($code, $message = NULL) {
-		if (!is_int($code)) throw new InvalidArgumentException('The HTTP status code must be of type integer, ' . gettype($code) . ' given.', 1220526013);
-		if ($message === NULL && !isset($this->statusMessages[$code])) throw new InvalidArgumentException('No message found for HTTP status code "' . $code . '".', 1220526014);
-
+		if (!is_int($code)) {
+			throw new InvalidArgumentException(('The HTTP status code must be of type integer, ' . gettype($code)) . ' given.', 1220526013);
+		}
+		if ($message === NULL && !isset($this->statusMessages[$code])) {
+			throw new InvalidArgumentException(('No message found for HTTP status code "' . $code) . '".', 1220526014);
+		}
 		$this->statusCode = $code;
-		$this->statusMessage = ($message === NULL) ? $this->statusMessages[$code] : $message;
+		$this->statusMessage = $message === NULL ? $this->statusMessages[$code] : $message;
 	}
 
 	/**
 	 * Returns status code and status message.
 	 *
-	 * @return string The status code and status message, eg. "404 Not Found"
+	 * @return string The status code and status message, eg. "404 Not Found
 	 * @api
 	 */
 	public function getStatus() {
-		return $this->statusCode . ' ' . $this->statusMessage;
+		return ($this->statusCode . ' ') . $this->statusMessage;
 	}
 
 	/**
@@ -145,7 +148,9 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	 * @api
 	 */
 	public function setHeader($name, $value, $replaceExistingHeader = TRUE) {
-		if (strtoupper(substr($name, 0, 4)) === 'HTTP') throw new InvalidArgumentException('The HTTP status header must be set via setStatus().', 1220541963);
+		if (strtoupper(substr($name, 0, 4)) === 'HTTP') {
+			throw new InvalidArgumentException('The HTTP status header must be set via setStatus().', 1220541963);
+		}
 		if ($replaceExistingHeader === TRUE || !isset($this->headers[$name])) {
 			$this->headers[$name] = array($value);
 		} else {
@@ -163,12 +168,12 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 		$preparedHeaders = array();
 		if ($this->statusCode !== NULL) {
 			$protocolVersion = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0';
-			$statusHeader = $protocolVersion . ' ' . $this->statusCode . ' ' . $this->statusMessage;
+			$statusHeader = ((($protocolVersion . ' ') . $this->statusCode) . ' ') . $this->statusMessage;
 			$preparedHeaders[] = $statusHeader;
 		}
 		foreach ($this->headers as $name => $values) {
 			foreach ($values as $value) {
-				$preparedHeaders[] = $name . ': ' . $value;
+				$preparedHeaders[] = ($name . ': ') . $value;
 			}
 		}
 		return $preparedHeaders;
@@ -183,7 +188,9 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	 * @api
 	 */
 	public function sendHeaders() {
-		if (headers_sent() === TRUE) return;
+		if (headers_sent() === TRUE) {
+			return;
+		}
 		foreach ($this->getHeaders() as $header) {
 			header($header);
 		}
@@ -208,14 +215,14 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	 * )
 	 *
 	 * @TODO The workround and the $request member should be removed again, once the PageRender does support non-cached USER_INTs
-	 *
 	 * @param string $additionalHeaderData The value additonal header
 	 * @return void
 	 * @api
 	 */
 	public function addAdditionalHeaderData($additionalHeaderData) {
-		if (!is_string($additionalHeaderData)) throw new InvalidArgumentException('The additiona header data must be of type String, ' . gettype($additionalHeaderData) . ' given.', 1237370877);
-
+		if (!is_string($additionalHeaderData)) {
+			throw new InvalidArgumentException(('The additiona header data must be of type String, ' . gettype($additionalHeaderData)) . ' given.', 1237370877);
+		}
 		if ($this->request->isCached()) {
 			if (TYPO3_MODE === 'FE') {
 				$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
@@ -253,4 +260,5 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	}
 
 }
+
 ?>

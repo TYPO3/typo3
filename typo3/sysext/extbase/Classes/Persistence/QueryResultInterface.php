@@ -11,15 +11,14 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * A lazy result list that is returned by Query::execute()
  *
  * @package Extbase
  * @subpackage Persistence
  */
-interface Tx_Extbase_Persistence_QueryResultInterface extends Countable, Iterator, ArrayAccess {
-
+interface Tx_Extbase_Persistence_QueryResultInterface extends Countable, Iterator, ArrayAccess
+{
 	/**
 	 * Returns a clone of the query object
 	 *
@@ -43,5 +42,6 @@ interface Tx_Extbase_Persistence_QueryResultInterface extends Countable, Iterato
 	 * @api
 	 */
 	public function toArray();
+
 }
 ?>

@@ -24,10 +24,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A request handler which can handle web requests invoked by the backend.
- *
  */
 class Tx_Extbase_MVC_Web_BackendRequestHandler extends Tx_Extbase_MVC_Web_AbstractRequestHandler {
 
@@ -38,15 +36,11 @@ class Tx_Extbase_MVC_Web_BackendRequestHandler extends Tx_Extbase_MVC_Web_Abstra
 	 */
 	public function handleRequest() {
 		$request = $this->requestBuilder->build();
-
 		/** @var $requestHashService Tx_Extbase_Security_Channel_RequestHashService */
 		$requestHashService = $this->objectManager->get('Tx_Extbase_Security_Channel_RequestHashService');
 		$requestHashService->verifyRequest($request);
-
 		$response = $this->objectManager->create('Tx_Extbase_MVC_Web_Response');
-
 		$this->dispatcher->dispatch($request, $response);
-
 		return $response;
 	}
 
@@ -60,4 +54,5 @@ class Tx_Extbase_MVC_Web_BackendRequestHandler extends Tx_Extbase_MVC_Web_Abstra
 	}
 
 }
+
 ?>

@@ -1,30 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Sebastian Kurfürst <sebastian@typo3.org>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Sebastian Kurfürst <sebastian@typo3.org>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * This is a Service which can generate a request hash and check whether the currently given arguments
  * fit to the request hash.
@@ -73,17 +72,18 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 		foreach ($formFieldNames as $formField) {
 			$formFieldParts = explode('[', $formField);
 			$currentPosition =& $formFieldArray;
-			for ($i=0; $i < count($formFieldParts); $i++) {
+			for ($i = 0; $i < count($formFieldParts); $i++) {
 				$formFieldPart = $formFieldParts[$i];
-				if (substr($formFieldPart, -1) == ']') $formFieldPart = substr($formFieldPart, 0, -1); // Strip off closing ] if needed
-
-				if (!is_array($currentPosition)) {
-					throw new Tx_Extbase_Security_Exception_InvalidArgumentForRequestHashGeneration('The form field name "' . $formField . '" collides with a previous form field name which declared the field as string. (String overridden by Array)', 1255072196);
+				if (substr($formFieldPart, -1) == ']') {
+					$formFieldPart = substr($formFieldPart, 0, -1);
 				}
-
+				// Strip off closing ] if needed
+				if (!is_array($currentPosition)) {
+					throw new Tx_Extbase_Security_Exception_InvalidArgumentForRequestHashGeneration(('The form field name "' . $formField) . '" collides with a previous form field name which declared the field as string. (String overridden by Array)', 1255072196);
+				}
 				if ($i == count($formFieldParts) - 1) {
 					if (isset($currentPosition[$formFieldPart]) && is_array($currentPosition[$formFieldPart])) {
-						throw new Tx_Extbase_Security_Exception_InvalidArgumentForRequestHashGeneration('The form field name "' . $formField . '" collides with a previous form field name which declared the field as array. (Array overridden by String)', 1255072587);
+						throw new Tx_Extbase_Security_Exception_InvalidArgumentForRequestHashGeneration(('The form field name "' . $formField) . '" collides with a previous form field name which declared the field as array. (Array overridden by String)', 1255072587);
 					}
 					// Last iteration - add a string
 					if ($formFieldPart === '') {
@@ -93,7 +93,7 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 					}
 				} else {
 					if ($formFieldPart === '') {
-						throw new Tx_Extbase_Security_Exception_InvalidArgumentForRequestHashGeneration('The form field name "' . $formField . '" is invalid. Reason: "[]" used not as last argument.', 1255072832);
+						throw new Tx_Extbase_Security_Exception_InvalidArgumentForRequestHashGeneration(('The form field name "' . $formField) . '" is invalid. Reason: "[]" used not as last argument.', 1255072832);
 					}
 					if (!isset($currentPosition[$formFieldPart])) {
 						$currentPosition[$formFieldPart] = array();
@@ -103,8 +103,7 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 			}
 		}
 		if ($fieldNamePrefix !== '') {
-
-			$formFieldArray = (isset($formFieldArray[$fieldNamePrefix]) ? $formFieldArray[$fieldNamePrefix] : array() );
+			$formFieldArray = isset($formFieldArray[$fieldNamePrefix]) ? $formFieldArray[$fieldNamePrefix] : array();
 		}
 		return $this->serializeAndHashFormFieldArray($formFieldArray);
 	}
@@ -125,6 +124,7 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 	 * Verify the request. Checks if there is an __hmac argument, and if yes, tries to validate and verify it.
 	 *
 	 * In the end, $request->setHmacVerified is set depending on the value.
+	 *
 	 * @param Tx_Extbase_MVC_Web_Request $request The request to verify
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -138,7 +138,8 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 		if (strlen($hmac) < 40) {
 			throw new Tx_Extbase_Security_Exception_SyntacticallyWrongRequestHash('Request hash too short. This is a probably manipulation attempt!', 1255089361);
 		}
-		$serializedFieldNames = substr($hmac, 0, -40); // TODO: Constant for hash length needs to be introduced
+		$serializedFieldNames = substr($hmac, 0, -40);
+		// TODO: Constant for hash length needs to be introduced
 		$hash = substr($hmac, -40);
 		if ($this->hashService->validateHash($serializedFieldNames, $hash)) {
 			$requestArguments = $request->getArguments();
@@ -153,7 +154,6 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 		} else {
 			$request->setHmacVerified(FALSE);
 		}
-
 	}
 
 	/**
@@ -173,17 +173,9 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 					return FALSE;
 				}
 			} elseif (!is_array($requestArguments[$argumentName]) && !is_array($allowedFields[$argumentName])) {
-				// do nothing, as this is allowed
-			} elseif (!is_array($requestArguments[$argumentName]) && $requestArguments[$argumentName] === '' && is_array($allowedFields[$argumentName])) {
-				// do nothing, as this is allowed.
-				// This case is needed for making an array of checkboxes work, in case they are fully unchecked.
-				// Example: if the following checkbox names are defined:
-				//     foo[a]
-				//     foo[b]
-				// then, Fluid automatically renders a hidden field "foo" with the value '' (empty string) in front of it,
-				// to determine the case if the user un-checks all checkboxes.
-				// in this case, the property mapping already does the right thing, but without this condition here,
-				// the request hash checking would fail because of the strong type checks.
+
+			} elseif ((!is_array($requestArguments[$argumentName]) && $requestArguments[$argumentName] === '') && is_array($allowedFields[$argumentName])) {
+
 			} else {
 				// different types - error
 				return FALSE;
@@ -191,6 +183,7 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 		}
 		return TRUE;
 	}
+
 }
 
 ?>

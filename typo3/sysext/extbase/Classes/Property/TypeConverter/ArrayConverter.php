@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Converter which transforms arrays to arrays.
  *
@@ -56,5 +54,7 @@ class Tx_Extbase_Property_TypeConverter_ArrayConverter extends Tx_Extbase_Proper
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration = NULL) {
 		return $source;
 	}
+
 }
+
 ?>

@@ -1,28 +1,27 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Represents a Command
  *
@@ -57,6 +56,7 @@ class Tx_Extbase_MVC_CLI_Command {
 
 	/**
 	 * Reflection service
+	 *
 	 * @var Tx_Extbase_Reflection_Service
 	 */
 	private $reflectionService;
@@ -71,13 +71,12 @@ class Tx_Extbase_MVC_CLI_Command {
 	public function __construct($controllerClassName, $controllerCommandName) {
 		$this->controllerClassName = $controllerClassName;
 		$this->controllerCommandName = $controllerCommandName;
-
 		$classNameParts = explode('_', $controllerClassName);
 		if (count($classNameParts) !== 4 || strpos($classNameParts[3], 'CommandController') === FALSE) {
-			throw new InvalidArgumentException('Invalid controller class name "' . $controllerClassName . '"', 1305100019);
+			throw new InvalidArgumentException(('Invalid controller class name "' . $controllerClassName) . '"', 1305100019);
 		}
 		$extensionKey = t3lib_div::camelCaseToLowerCaseUnderscored($classNameParts[1]);
-		$this->commandIdentifier = strtolower($extensionKey . ':' . substr($classNameParts[3], 0, -17) . ':' . $controllerCommandName);
+		$this->commandIdentifier = strtolower(((($extensionKey . ':') . substr($classNameParts[3], 0, -17)) . ':') . $controllerCommandName);
 	}
 
 	/**
@@ -127,7 +126,7 @@ class Tx_Extbase_MVC_CLI_Command {
 	 */
 	public function getShortDescription() {
 		$lines = explode(chr(10), $this->getCommandMethodReflection()->getDescription());
-		return (count($lines) > 0) ? trim($lines[0]) : '<no description available>';
+		return count($lines) > 0 ? trim($lines[0]) : '<no description available>';
 	}
 
 	/**
@@ -184,7 +183,7 @@ class Tx_Extbase_MVC_CLI_Command {
 			$description = implode(' ', $explodedAnnotation);
 			$required = $commandParameterDefinition['optional'] !== TRUE;
 			$commandArgumentDefinitions[] = $this->objectManager->get('Tx_Extbase_MVC_CLI_CommandArgumentDefinition', $commandParameterName, $required, $description);
-			$i ++;
+			$i++;
 		}
 		return $commandArgumentDefinitions;
 	}
@@ -226,10 +225,9 @@ class Tx_Extbase_MVC_CLI_Command {
 		if (!$commandMethodReflection->isTaggedWith('see')) {
 			return array();
 		}
-
 		$relatedCommandIdentifiers = array();
 		foreach ($commandMethodReflection->getTagValues('see') as $tagValue) {
-			if (preg_match('/^[\w\d\.]+:[\w\d]+:[\w\d]+$/', $tagValue) === 1) {
+			if (preg_match('/^[\\w\\d\\.]+:[\\w\\d]+:[\\w\\d]+$/', $tagValue) === 1) {
 				$relatedCommandIdentifiers[] = $tagValue;
 			}
 		}
@@ -245,5 +243,7 @@ class Tx_Extbase_MVC_CLI_Command {
 		}
 		return $this->commandMethodReflection;
 	}
+
 }
+
 ?>

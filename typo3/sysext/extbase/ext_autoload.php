@@ -1,12 +1,10 @@
 <?php
 $extensionPath = t3lib_extMgm::extPath('extbase');
 $extensionClassesPath = $extensionPath . 'Classes/';
-
 return array(
 	'tx_extbase_tests_unit_basetestcase' => $extensionPath . 'Tests/Unit/BaseTestCase.php',
 	'tx_extbase_tests_functional_basetestcase' => $extensionPath . 'Tests/Functional/BaseTestCase.php',
-
-		// for the autoloader to find the old persistence classes
+	// for the autoloader to find the old persistence classes
 	'tx_extbase_persistence_backend' => $extensionClassesPath . 'Persistence/Generic/Backend.php',
 	'tx_extbase_persistence_backendinterface' => $extensionClassesPath . 'Persistence/Generic/BackendInterface.php',
 	'tx_extbase_persistence_exception_cleanstatenotmemorized' => $extensionClassesPath . 'Persistence/Generic/Exception/CleanStateNotMemorized.php',
@@ -81,6 +79,6 @@ return array(
 	'tx_extbase_persistence_storage_exception_badconstraint' => $extensionClassesPath . 'Persistence/Generic/Storage/Exception/BadConstraint.php',
 	'tx_extbase_persistence_storage_exception_sqlerror' => $extensionClassesPath . 'Persistence/Generic/Storage/Exception/SqlError.php',
 	'tx_extbase_persistence_storage_typo3dbbackend' => $extensionClassesPath . 'Persistence/Generic/Storage/Typo3DbBackend.php',
-	'tx_extbase_persistence_typo3querysettings' => $extensionClassesPath . 'Persistence/Generic/Typo3QuerySettings.php',
+	'tx_extbase_persistence_typo3querysettings' => $extensionClassesPath . 'Persistence/Generic/Typo3QuerySettings.php'
 );
 ?>

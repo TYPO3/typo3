@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,9 +18,7 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once('AbstractValidatorTestcase.php');
-
+require_once 'AbstractValidatorTestcase.php';
 /**
  * Testcase for the text validator
  *
@@ -44,7 +41,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_TextValidatorTest extends Tx_Ex
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function textValidatorAllowsTheNewLineCharacter() {
-		$sampleText = "Ierd Frot uechter mä get, Kirmesdag Milliounen all en, sinn main Stréi mä och. nVu dan durch jéngt gréng, ze rou Monn voll stolz. nKe kille Minutt d'Kirmes net. Hir Wand Lann Gaas da, wär hu Heck Gart zënter, Welt Ronn grousse der ke. Wou fond eraus Wisen am. Hu dénen d'Gaassen eng, eng am virun geplot d'Lëtzebuerger, get botze rëscht Blieder si. Dat Dauschen schéinste Milliounen fu. Ze riede méngem Keppchen déi, si gét fergiess erwaacht, räich jéngt duerch en nun. Gëtt Gaas d'Vullen hie hu, laacht Grénge der dé. Gemaacht gehéiert da aus, gutt gudden d'wäiss mat wa.";
+		$sampleText = 'Ierd Frot uechter mä get, Kirmesdag Milliounen all en, sinn main Stréi mä och. nVu dan durch jéngt gréng, ze rou Monn voll stolz. nKe kille Minutt d\'Kirmes net. Hir Wand Lann Gaas da, wär hu Heck Gart zënter, Welt Ronn grousse der ke. Wou fond eraus Wisen am. Hu dénen d\'Gaassen eng, eng am virun geplot d\'Lëtzebuerger, get botze rëscht Blieder si. Dat Dauschen schéinste Milliounen fu. Ze riede méngem Keppchen déi, si gét fergiess erwaacht, räich jéngt duerch en nun. Gëtt Gaas d\'Vullen hie hu, laacht Grénge der dé. Gemaacht gehéiert da aus, gutt gudden d\'wäiss mat wa.';
 		$this->assertFalse($this->validator->validate($sampleText)->hasErrors());
 	}
 
@@ -53,7 +50,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_TextValidatorTest extends Tx_Ex
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function textValidatorAllowsCommonSpecialCharacters() {
-		$sampleText = "3% of most people tend to use semikolae; we need to check & allow that. And hashes (#) are not evil either, nor is the sign called 'quote'.";
+		$sampleText = '3% of most people tend to use semikolae; we need to check & allow that. And hashes (#) are not evil either, nor is the sign called \'quote\'.';
 		$this->assertFalse($this->validator->validate($sampleText)->hasErrors());
 	}
 
@@ -73,6 +70,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_TextValidatorTest extends Tx_Ex
 		$expected = array(new Tx_Extbase_Validation_Error('The given subject was not a valid text (e.g. contained XML tags).', 1221565786));
 		$this->assertEquals($expected, $this->validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->getErrors());
 	}
+
 }
 
 ?>

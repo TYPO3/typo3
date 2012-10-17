@@ -1,28 +1,27 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Represents a CLI request.
  *
@@ -53,6 +52,7 @@ class Tx_Extbase_MVC_CLI_Request implements Tx_Extbase_MVC_RequestInterface {
 
 	/**
 	 * The arguments for this request
+	 *
 	 * @var array
 	 */
 	protected $arguments = array();
@@ -64,6 +64,7 @@ class Tx_Extbase_MVC_CLI_Request implements Tx_Extbase_MVC_RequestInterface {
 
 	/**
 	 * If this request has been changed and needs to be dispatched again
+	 *
 	 * @var boolean
 	 */
 	protected $dispatched = FALSE;
@@ -127,9 +128,7 @@ class Tx_Extbase_MVC_CLI_Request implements Tx_Extbase_MVC_RequestInterface {
 				(?P<subpackageKey>.+)_Controller
 			)
 			_(?P<controllerName>[a-z_]+)Controller
-			$/ix', $controllerObjectName, $matches
-		);
-
+			$/ix', $controllerObjectName, $matches);
 		$this->controllerExtensionName = $matches['extensionName'];
 		$this->controllerObjectName = $controllerObjectName;
 		$this->command = NULL;
@@ -196,7 +195,9 @@ class Tx_Extbase_MVC_CLI_Request implements Tx_Extbase_MVC_RequestInterface {
 	 * @return void
 	 */
 	public function setArgument($argumentName, $value) {
-		if (!is_string($argumentName) || $argumentName === '') throw new Tx_Extbase_MVC_Exception_InvalidArgumentName('Invalid argument name.', 1300893885);
+		if (!is_string($argumentName) || $argumentName === '') {
+			throw new Tx_Extbase_MVC_Exception_InvalidArgumentName('Invalid argument name.', 1300893885);
+		}
 		$this->arguments[$argumentName] = $value;
 	}
 
@@ -219,7 +220,9 @@ class Tx_Extbase_MVC_CLI_Request implements Tx_Extbase_MVC_RequestInterface {
 	 * @throws Tx_Extbase_MVC_Exception_NoSuchArgument if such an argument does not exist
 	 */
 	public function getArgument($argumentName) {
-		if (!isset($this->arguments[$argumentName])) throw new Tx_Extbase_MVC_Exception_NoSuchArgument('An argument "' . $argumentName . '" does not exist for this request.', 1300893886);
+		if (!isset($this->arguments[$argumentName])) {
+			throw new Tx_Extbase_MVC_Exception_NoSuchArgument(('An argument "' . $argumentName) . '" does not exist for this request.', 1300893886);
+		}
 		return $this->arguments[$argumentName];
 	}
 
@@ -265,5 +268,7 @@ class Tx_Extbase_MVC_CLI_Request implements Tx_Extbase_MVC_RequestInterface {
 	public function getExceedingArguments() {
 		return $this->exceedingArguments;
 	}
+
 }
+
 ?>

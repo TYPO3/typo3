@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the Error object
  *
@@ -34,7 +32,6 @@ class Tx_Extbase_Tests_Unit_Error_ErrorTest extends Tx_Extbase_Tests_Unit_BaseTe
 	public function theConstructorSetsTheErrorMessageCorrectly() {
 		$errorMessage = 'The message';
 		$error = new Tx_Extbase_Error_Error($errorMessage, 0);
-
 		$this->assertEquals($errorMessage, $error->getMessage());
 	}
 
@@ -45,9 +42,9 @@ class Tx_Extbase_Tests_Unit_Error_ErrorTest extends Tx_Extbase_Tests_Unit_BaseTe
 	public function theConstructorSetsTheErrorCodeCorrectly() {
 		$errorCode = 123456789;
 		$error = new Tx_Extbase_Error_Error('', $errorCode);
-
 		$this->assertEquals($errorCode, $error->getCode());
 	}
+
 }
 
 ?>

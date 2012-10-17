@@ -1,30 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * The Query class used to run queries against the database
  *
@@ -164,7 +163,9 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api This method is not part of FLOW3 API
 	 */
 	public function getQuerySettings() {
-		if (!($this->querySettings instanceof Tx_Extbase_Persistence_QuerySettingsInterface)) throw new Tx_Extbase_Persistence_Exception('Tried to get the query settings without seting them before.', 1248689115);
+		if (!$this->querySettings instanceof Tx_Extbase_Persistence_QuerySettingsInterface) {
+			throw new Tx_Extbase_Persistence_Exception('Tried to get the query settings without seting them before.', 1248689115);
+		}
 		return $this->querySettings;
 	}
 
@@ -189,7 +190,8 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 
 	/**
 	 * Returns the selectorn name or an empty string, if the source is not a selector
-	 * // TODO This has to be checked at another place
+	 * / TODO This has to be checked at another place
+	 *
 	 * @return string The selector name
 	 */
 	protected function getSelectorName() {
@@ -204,7 +206,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * Gets the node-tuple source for this query.
 	 *
 	 * @return Tx_Extbase_Persistence_QOM_SourceInterface the node-tuple source; non-null
-	*/
+	 */
 	public function getSource() {
 		if ($this->source === NULL) {
 			$this->source = $this->qomFactory->selector($this->getType(), $this->dataMapper->convertClassNameToTableName($this->getType()));
@@ -229,8 +231,8 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	/**
 	 * Sets the property names to order the result by. Expected like this:
 	 * array(
-	 *  'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
-	 *  'bar' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
+	 * 'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
+	 * 'bar' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
 	 * )
 	 * where 'foo' and 'bar' are property names.
 	 *
@@ -246,8 +248,8 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	/**
 	 * Returns the property names to order the result by. Like this:
 	 * array(
-	 *  'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
-	 *  'bar' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
+	 * 'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
+	 * 'bar' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
 	 * )
 	 *
 	 * @return array
@@ -266,7 +268,9 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function setLimit($limit) {
-		if (!is_int($limit) || $limit < 1) throw new InvalidArgumentException('The limit must be an integer >= 1', 1245071870);
+		if (!is_int($limit) || $limit < 1) {
+			throw new InvalidArgumentException('The limit must be an integer >= 1', 1245071870);
+		}
 		$this->limit = $limit;
 		return $this;
 	}
@@ -302,7 +306,9 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function setOffset($offset) {
-		if (!is_int($offset) || $offset < 0) throw new InvalidArgumentException('The offset must be a positive integer', 1245071872);
+		if (!is_int($offset) || $offset < 0) {
+			throw new InvalidArgumentException('The offset must be a positive integer', 1245071872);
+		}
 		$this->offset = $offset;
 		return $this;
 	}
@@ -357,7 +363,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 *
 	 * @return Tx_Extbase_Persistence_QOM_Constraint the constraint, or null if none
 	 * @api
-	*/
+	 */
 	public function getConstraint() {
 		return $this->constraint;
 	}
@@ -382,10 +388,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 			throw new Tx_Extbase_Persistence_Exception_InvalidNumberOfConstraints('There must be at least one constraint or a non-empty array of constraints given.', 1268056288);
 		}
 		foreach ($constraints as $constraint) {
-			$resultingConstraint = $this->qomFactory->_and(
-				$resultingConstraint,
-				$constraint
-				);
+			$resultingConstraint = $this->qomFactory->_and($resultingConstraint, $constraint);
 		}
 		return $resultingConstraint;
 	}
@@ -409,10 +412,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 			throw new Tx_Extbase_Persistence_Exception_InvalidNumberOfConstraints('There must be at least one constraint or a non-empty array of constraints given.', 1268056288);
 		}
 		foreach ($constraints as $constraint) {
-			$resultingConstraint = $this->qomFactory->_or(
-				$resultingConstraint,
-				$constraint
-				);
+			$resultingConstraint = $this->qomFactory->_or($resultingConstraint, $constraint);
 		}
 		return $resultingConstraint;
 	}
@@ -439,25 +439,10 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function equals($propertyName, $operand, $caseSensitive = TRUE) {
 		if (is_object($operand) || $caseSensitive) {
-			$comparison = $this->qomFactory->comparison(
-				$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
-				Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO,
-				$operand
-			);
+			$comparison = $this->qomFactory->comparison($this->qomFactory->propertyValue($propertyName, $this->getSelectorName()), Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO, $operand);
 		} else {
-			$comparison = $this->qomFactory->comparison(
-				$this->qomFactory->lowerCase(
-					$this->qomFactory->propertyValue($propertyName, $this->getSelectorName())
-				),
-				Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO,
-				t3lib_div::makeInstance('t3lib_cs')->conv_case(
-					Tx_Extbase_Persistence_QueryInterface::CHARSET,
-					$operand,
-					'toLower'
-				)
-			);
+			$comparison = $this->qomFactory->comparison($this->qomFactory->lowerCase($this->qomFactory->propertyValue($propertyName, $this->getSelectorName())), Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO, t3lib_div::makeInstance('t3lib_cs')->conv_case(Tx_Extbase_Persistence_QueryInterface::CHARSET, $operand, 'toLower'));
 		}
-
 		return $comparison;
 	}
 
@@ -470,11 +455,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function like($propertyName, $operand) {
-		return $this->qomFactory->comparison(
-			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
-			Tx_Extbase_Persistence_QueryInterface::OPERATOR_LIKE,
-			$operand
-			);
+		return $this->qomFactory->comparison($this->qomFactory->propertyValue($propertyName, $this->getSelectorName()), Tx_Extbase_Persistence_QueryInterface::OPERATOR_LIKE, $operand);
 	}
 
 	/**
@@ -487,11 +468,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function contains($propertyName, $operand) {
-		return $this->qomFactory->comparison(
-			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
-			Tx_Extbase_Persistence_QueryInterface::OPERATOR_CONTAINS,
-			$operand
-		);
+		return $this->qomFactory->comparison($this->qomFactory->propertyValue($propertyName, $this->getSelectorName()), Tx_Extbase_Persistence_QueryInterface::OPERATOR_CONTAINS, $operand);
 	}
 
 	/**
@@ -504,15 +481,10 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function in($propertyName, $operand) {
-		if (!is_array($operand) && (!$operand instanceof ArrayAccess) && (!$operand instanceof Traversable)) {
+		if ((!is_array($operand) && !$operand instanceof ArrayAccess) && !$operand instanceof Traversable) {
 			throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('The "in" operator must be given a mutlivalued operand (array, ArrayAccess, Traversable).', 1264678095);
 		}
-
-		return $this->qomFactory->comparison(
-			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
-			Tx_Extbase_Persistence_QueryInterface::OPERATOR_IN,
-			$operand
-		);
+		return $this->qomFactory->comparison($this->qomFactory->propertyValue($propertyName, $this->getSelectorName()), Tx_Extbase_Persistence_QueryInterface::OPERATOR_IN, $operand);
 	}
 
 	/**
@@ -524,11 +496,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function lessThan($propertyName, $operand) {
-		return $this->qomFactory->comparison(
-			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
-			Tx_Extbase_Persistence_QueryInterface::OPERATOR_LESS_THAN,
-			$operand
-			);
+		return $this->qomFactory->comparison($this->qomFactory->propertyValue($propertyName, $this->getSelectorName()), Tx_Extbase_Persistence_QueryInterface::OPERATOR_LESS_THAN, $operand);
 	}
 
 	/**
@@ -540,11 +508,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function lessThanOrEqual($propertyName, $operand) {
-		return $this->qomFactory->comparison(
-			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
-			Tx_Extbase_Persistence_QueryInterface::OPERATOR_LESS_THAN_OR_EQUAL_TO,
-			$operand
-			);
+		return $this->qomFactory->comparison($this->qomFactory->propertyValue($propertyName, $this->getSelectorName()), Tx_Extbase_Persistence_QueryInterface::OPERATOR_LESS_THAN_OR_EQUAL_TO, $operand);
 	}
 
 	/**
@@ -556,11 +520,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function greaterThan($propertyName, $operand) {
-		return $this->qomFactory->comparison(
-			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
-			Tx_Extbase_Persistence_QueryInterface::OPERATOR_GREATER_THAN,
-			$operand
-			);
+		return $this->qomFactory->comparison($this->qomFactory->propertyValue($propertyName, $this->getSelectorName()), Tx_Extbase_Persistence_QueryInterface::OPERATOR_GREATER_THAN, $operand);
 	}
 
 	/**
@@ -572,11 +532,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function greaterThanOrEqual($propertyName, $operand) {
-		return $this->qomFactory->comparison(
-			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
-			Tx_Extbase_Persistence_QueryInterface::OPERATOR_GREATER_THAN_OR_EQUAL_TO,
-			$operand
-			);
+		return $this->qomFactory->comparison($this->qomFactory->propertyValue($propertyName, $this->getSelectorName()), Tx_Extbase_Persistence_QueryInterface::OPERATOR_GREATER_THAN_OR_EQUAL_TO, $operand);
 	}
 
 	/**
@@ -597,4 +553,5 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	}
 
 }
+
 ?>

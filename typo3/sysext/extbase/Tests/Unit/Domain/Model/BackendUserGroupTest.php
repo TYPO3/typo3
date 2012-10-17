@@ -1,4 +1,5 @@
- <?php
+<?php
+?> <?php
 /***************************************************************
  *  Copyright notice
  *
@@ -23,15 +24,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for Tx_Extbase_Domain_Model_BackendUserGroup.
  *
  * @author Markus Günther <mail@markus-guenther>
- *
  * @package Extbase
  * @subpackage Domain\Model
- *
  * @scope prototype
  * @entity
  * @api
@@ -55,10 +53,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 * @test
 	 */
 	public function getTitleInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getTitle()
-		);
+		$this->assertSame('', $this->fixture->getTitle());
 	}
 
 	/**
@@ -67,21 +62,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setTitleSetsTitle() {
 		$title = 'foo bar';
 		$this->fixture->setTitle($title);
-
-		$this->assertSame(
-			$title,
-			$this->fixture->getTitle()
-		);
+		$this->assertSame($title, $this->fixture->getTitle());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getDescriptionInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getDescription()
-		);
+		$this->assertSame('', $this->fixture->getDescription());
 	}
 
 	/**
@@ -90,11 +78,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setDescriptionSetsDescription() {
 		$description = 'foo bar';
 		$this->fixture->setDescription($description);
-
-		$this->assertSame(
-			$description,
-			$this->fixture->getDescription()
-		);
+		$this->assertSame($description, $this->fixture->getDescription());
 	}
 
 	/**
@@ -103,22 +87,17 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setSubGroupsSetsSubgroups() {
 		$subGroups = new Tx_Extbase_Persistence_ObjectStorage();
 		$this->fixture->setSubGroups($subGroups);
-
-		$this->assertSame(
-			$subGroups,
-			$this->fixture->getSubGroups()
-		);
+		$this->assertSame($subGroups, $this->fixture->getSubGroups());
 	}
 
 	/**
 	 * @test
 	 */
 	public function anSubGroupCanBeRemoved() {
-		$group1 = new Tx_Extbase_Domain_Model_BackendUserGroup;
+		$group1 = new Tx_Extbase_Domain_Model_BackendUserGroup();
 		$group1->setTitle('foo');
-		$group2 = new Tx_Extbase_Domain_Model_BackendUserGroup;
+		$group2 = new Tx_Extbase_Domain_Model_BackendUserGroup();
 		$group2->setTitle('bar');
-
 		$this->fixture->addSubGroup($group1);
 		$this->fixture->addSubGroup($group2);
 		$this->assertEquals(count($this->fixture->getSubGroups()), 2);
@@ -132,15 +111,13 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 * @test
 	 */
 	public function allSubGroupsCanBeRemoved() {
-		$group1 = new Tx_Extbase_Domain_Model_BackendUserGroup;
+		$group1 = new Tx_Extbase_Domain_Model_BackendUserGroup();
 		$group1->setTitle('foo');
-		$group2 = new Tx_Extbase_Domain_Model_BackendUserGroup;
+		$group2 = new Tx_Extbase_Domain_Model_BackendUserGroup();
 		$group2->setTitle('bar');
-
 		$this->fixture->addSubGroup($group1);
 		$this->fixture->addSubGroup($group2);
 		$this->fixture->removeAllSubGroups();
-
 		$this->assertEquals(count($this->fixture->getSubGroups()), 0);
 	}
 
@@ -148,10 +125,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 * @test
 	 */
 	public function getModulesInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getModules()
-		);
+		$this->assertSame('', $this->fixture->getModules());
 	}
 
 	/**
@@ -160,21 +134,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setModulesSetsModules() {
 		$modules = 'foo,bar';
 		$this->fixture->setModules($modules);
-
-		$this->assertSame(
-			$modules,
-			$this->fixture->getModules()
-		);
+		$this->assertSame($modules, $this->fixture->getModules());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getTablesListeningInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getTablesListening()
-		);
+		$this->assertSame('', $this->fixture->getTablesListening());
 	}
 
 	/**
@@ -183,31 +150,21 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setTablesListeningSetsTablesListening() {
 		$tablesListening = 'foo,bar';
 		$this->fixture->setTablesListening($tablesListening);
-
-		$this->assertSame(
-			$tablesListening,
-			$this->fixture->getTablesListening()
-		);
+		$this->assertSame($tablesListening, $this->fixture->getTablesListening());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getTablesModifyInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getTablesModify()
-		);
+		$this->assertSame('', $this->fixture->getTablesModify());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getPageTypesInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getPageTypes()
-		);
+		$this->assertSame('', $this->fixture->getPageTypes());
 	}
 
 	/**
@@ -216,11 +173,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setPageTypesSetsPageTypes() {
 		$pageTypes = 'foo,bar';
 		$this->fixture->setPageTypes($pageTypes);
-
-		$this->assertSame(
-			$pageTypes,
-			$this->fixture->getPageTypes()
-		);
+		$this->assertSame($pageTypes, $this->fixture->getPageTypes());
 	}
 
 	/**
@@ -229,21 +182,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setTablesModifySetsTablesModify() {
 		$tablesModify = 'foo,bar';
 		$this->fixture->setTablesModify($tablesModify);
-
-		$this->assertSame(
-			$tablesModify,
-			$this->fixture->getTablesModify()
-		);
+		$this->assertSame($tablesModify, $this->fixture->getTablesModify());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getAllowedExcludeFieldsInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getAllowedExcludeFields()
-		);
+		$this->assertSame('', $this->fixture->getAllowedExcludeFields());
 	}
 
 	/**
@@ -252,21 +198,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setAllowedExcludeFieldsSetsAllowedExcludeFields() {
 		$allowedExcludeFields = 'foo,bar';
 		$this->fixture->setAllowedExcludeFields($allowedExcludeFields);
-
-		$this->assertSame(
-			$allowedExcludeFields,
-			$this->fixture->getAllowedExcludeFields()
-		);
+		$this->assertSame($allowedExcludeFields, $this->fixture->getAllowedExcludeFields());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getExplicitlyAllowAndDenyInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getExplicitlyAllowAndDeny()
-		);
+		$this->assertSame('', $this->fixture->getExplicitlyAllowAndDeny());
 	}
 
 	/**
@@ -275,21 +214,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setExplicitlyAllowAndDenySetsExplicitlyAllowAndDeny() {
 		$explicitlyAllowAndDeny = 'foo,bar';
 		$this->fixture->setExplicitlyAllowAndDeny($explicitlyAllowAndDeny);
-
-		$this->assertSame(
-			$explicitlyAllowAndDeny,
-			$this->fixture->getExplicitlyAllowAndDeny()
-		);
+		$this->assertSame($explicitlyAllowAndDeny, $this->fixture->getExplicitlyAllowAndDeny());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getAllowedLanguagesInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getAllowedLanguages()
-		);
+		$this->assertSame('', $this->fixture->getAllowedLanguages());
 	}
 
 	/**
@@ -298,20 +230,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setAllowedLanguagesSetsAllowedLanguages() {
 		$allowedLanguages = '1,0';
 		$this->fixture->setAllowedLanguages($allowedLanguages);
-
-		$this->assertSame(
-			$allowedLanguages,
-			$this->fixture->getAllowedLanguages()
-		);
+		$this->assertSame($allowedLanguages, $this->fixture->getAllowedLanguages());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getWorkspacePermissionInitiallyReturnsFalse() {
-		$this->assertFalse(
-			$this->fixture->getWorkspacePermission()
-		);
+		$this->assertFalse($this->fixture->getWorkspacePermission());
 	}
 
 	/**
@@ -319,20 +245,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 */
 	public function setWorkspacePermissionSetsWorkspacePermission() {
 		$this->fixture->setWorkspacePermissions(TRUE);
-
-		$this->assertTrue(
-			$this->fixture->getWorkspacePermission()
-		);
+		$this->assertTrue($this->fixture->getWorkspacePermission());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getDatabaseMountsInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getDatabaseMounts()
-		);
+		$this->assertSame('', $this->fixture->getDatabaseMounts());
 	}
 
 	/**
@@ -341,21 +261,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setDatabaseMountsSetsDatabaseMounts() {
 		$mounts = '1,42';
 		$this->fixture->setDatabaseMounts($mounts);
-
-		$this->assertSame(
-			$mounts,
-			$this->fixture->getDatabaseMounts()
-		);
+		$this->assertSame($mounts, $this->fixture->getDatabaseMounts());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getFileOperationPermissionsInitiallyReturnsZero() {
-		$this->assertSame(
-			0,
-			$this->fixture->getFileOperationPermissions()
-		);
+		$this->assertSame(0, $this->fixture->getFileOperationPermissions());
 	}
 
 	/**
@@ -364,11 +277,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setFileOperationPermissionsSetsFileOperationPermissions() {
 		$permission = 7;
 		$this->fixture->setFileOperationPermissions($permission);
-
-		$this->assertSame(
-			$permission,
-			$this->fixture->getFileOperationPermissions()
-		);
+		$this->assertSame($permission, $this->fixture->getFileOperationPermissions());
 	}
 
 	/**
@@ -376,19 +285,11 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 */
 	public function getIsFileOperationAllowedReturnsFalse() {
 		$this->fixture->setFileOperationPermissions(0);
-		$this->assertFalse(
-			$this->fixture->isFileOperationAllowed()
-		);
-
+		$this->assertFalse($this->fixture->isFileOperationAllowed());
 		$this->fixture->setFileOperationPermissions(2);
-		$this->assertFalse(
-			$this->fixture->isFileOperationAllowed()
-		);
-
+		$this->assertFalse($this->fixture->isFileOperationAllowed());
 		$this->fixture->setFileOperationPermissions(6);
-		$this->assertFalse(
-			$this->fixture->isFileOperationAllowed()
-		);
+		$this->assertFalse($this->fixture->isFileOperationAllowed());
 	}
 
 	/**
@@ -396,14 +297,9 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 */
 	public function getIsFileOperationAllowedReturnsTrue() {
 		$this->fixture->setFileOperationPermissions(1);
-		$this->assertTrue(
-			$this->fixture->isFileOperationAllowed()
-		);
-
+		$this->assertTrue($this->fixture->isFileOperationAllowed());
 		$this->fixture->setFileOperationPermissions(3);
-		$this->assertTrue(
-			$this->fixture->isFileOperationAllowed()
-		);
+		$this->assertTrue($this->fixture->isFileOperationAllowed());
 	}
 
 	/**
@@ -412,10 +308,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setFileOperationAllowedSetsFileOperationAllowed() {
 		$this->fixture->setFileOperationPermissions(0);
 		$this->fixture->setFileOperationAllowed(TRUE);
-
-		$this->assertTrue(
-			$this->fixture->isFileOperationAllowed()
-		);
+		$this->assertTrue($this->fixture->isFileOperationAllowed());
 	}
 
 	/**
@@ -423,19 +316,11 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 */
 	public function getIsFileUnzipAllowedReturnsFalse() {
 		$this->fixture->setFileOperationPermissions(0);
-		$this->assertFalse(
-			$this->fixture->isFileUnzipAllowed()
-		);
-
+		$this->assertFalse($this->fixture->isFileUnzipAllowed());
 		$this->fixture->setFileOperationPermissions(1);
-		$this->assertFalse(
-			$this->fixture->isFileUnzipAllowed()
-		);
-
+		$this->assertFalse($this->fixture->isFileUnzipAllowed());
 		$this->fixture->setFileOperationPermissions(5);
-		$this->assertFalse(
-			$this->fixture->isFileUnzipAllowed()
-		);
+		$this->assertFalse($this->fixture->isFileUnzipAllowed());
 	}
 
 	/**
@@ -443,14 +328,9 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 */
 	public function getIsFileUnzipAllowedReturnsTrue() {
 		$this->fixture->setFileOperationPermissions(2);
-		$this->assertTrue(
-			$this->fixture->isFileUnzipAllowed()
-		);
-
+		$this->assertTrue($this->fixture->isFileUnzipAllowed());
 		$this->fixture->setFileOperationPermissions(3);
-		$this->assertTrue(
-			$this->fixture->isFileUnzipAllowed()
-		);
+		$this->assertTrue($this->fixture->isFileUnzipAllowed());
 	}
 
 	/**
@@ -459,10 +339,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setFileUnzipAllowedSetsFileUnzipAllowed() {
 		$this->fixture->setFileOperationPermissions(0);
 		$this->fixture->setFileUnzipAllowed(TRUE);
-
-		$this->assertTrue(
-			$this->fixture->isFileUnzipAllowed()
-		);
+		$this->assertTrue($this->fixture->isFileUnzipAllowed());
 	}
 
 	/**
@@ -470,19 +347,11 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 */
 	public function getIsDirectoryRemoveRecursivelyAllowedReturnsFalse() {
 		$this->fixture->setFileOperationPermissions(1);
-		$this->assertFalse(
-			$this->fixture->isDirectoryRemoveRecursivelyAllowed()
-		);
-
+		$this->assertFalse($this->fixture->isDirectoryRemoveRecursivelyAllowed());
 		$this->fixture->setFileOperationPermissions(15);
-		$this->assertFalse(
-			$this->fixture->isDirectoryRemoveRecursivelyAllowed()
-		);
-
+		$this->assertFalse($this->fixture->isDirectoryRemoveRecursivelyAllowed());
 		$this->fixture->setFileOperationPermissions(7);
-		$this->assertFalse(
-				$this->fixture->isDirectoryRemoveRecursivelyAllowed()
-		);
+		$this->assertFalse($this->fixture->isDirectoryRemoveRecursivelyAllowed());
 	}
 
 	/**
@@ -490,14 +359,9 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 */
 	public function getIsDirectoryRemoveRecursivelyAllowedReturnsTrue() {
 		$this->fixture->setFileOperationPermissions(16);
-		$this->assertTrue(
-			$this->fixture->isDirectoryRemoveRecursivelyAllowed()
-		);
-
+		$this->assertTrue($this->fixture->isDirectoryRemoveRecursivelyAllowed());
 		$this->fixture->setFileOperationPermissions(31);
-		$this->assertTrue(
-			$this->fixture->isDirectoryRemoveRecursivelyAllowed()
-		);
+		$this->assertTrue($this->fixture->isDirectoryRemoveRecursivelyAllowed());
 	}
 
 	/**
@@ -506,10 +370,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setDirectoryRemoveRecursivelyAllowedSetsDirectoryRemoveRecursivelyAllowed() {
 		$this->fixture->setFileOperationPermissions(0);
 		$this->fixture->setDirectoryRemoveRecursivelyAllowed(TRUE);
-
-		$this->assertTrue(
-			$this->fixture->isDirectoryRemoveRecursivelyAllowed()
-		);
+		$this->assertTrue($this->fixture->isDirectoryRemoveRecursivelyAllowed());
 	}
 
 	/**
@@ -517,19 +378,11 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 */
 	public function getIsDirectoryCopyAllowedReturnsFalse() {
 		$this->fixture->setFileOperationPermissions(0);
-		$this->assertFalse(
-			$this->fixture->isDirectoryCopyAllowed()
-		);
-
+		$this->assertFalse($this->fixture->isDirectoryCopyAllowed());
 		$this->fixture->setFileOperationPermissions(7);
-		$this->assertFalse(
-			$this->fixture->isDirectoryCopyAllowed()
-		);
-
+		$this->assertFalse($this->fixture->isDirectoryCopyAllowed());
 		$this->fixture->setFileOperationPermissions(23);
-		$this->assertFalse(
-			$this->fixture->isDirectoryCopyAllowed()
-		);
+		$this->assertFalse($this->fixture->isDirectoryCopyAllowed());
 	}
 
 	/**
@@ -537,14 +390,9 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 */
 	public function getIsDirectoryCopyAllowedReturnsTrue() {
 		$this->fixture->setFileOperationPermissions(8);
-		$this->assertTrue(
-			$this->fixture->isDirectoryCopyAllowed()
-		);
-
+		$this->assertTrue($this->fixture->isDirectoryCopyAllowed());
 		$this->fixture->setFileOperationPermissions(15);
-		$this->assertTrue(
-			$this->fixture->isDirectoryCopyAllowed()
-		);
+		$this->assertTrue($this->fixture->isDirectoryCopyAllowed());
 	}
 
 	/**
@@ -553,10 +401,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setDirectoryCopyAllowedSetsDirectoryCopyAllowed() {
 		$this->fixture->setFileOperationPermissions(0);
 		$this->fixture->setDirectoryCopyAllowed(TRUE);
-
-		$this->assertTrue(
-			$this->fixture->isDirectoryCopyAllowed()
-		);
+		$this->assertTrue($this->fixture->isDirectoryCopyAllowed());
 	}
 
 	/**
@@ -564,19 +409,11 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 */
 	public function getIsDirectoryOperationAllowedReturnsFalse() {
 		$this->fixture->setFileOperationPermissions(0);
-		$this->assertFalse(
-			$this->fixture->isDirectoryOperationAllowed()
-		);
-
+		$this->assertFalse($this->fixture->isDirectoryOperationAllowed());
 		$this->fixture->setFileOperationPermissions(3);
-		$this->assertFalse(
-			$this->fixture->isDirectoryOperationAllowed()
-		);
-
+		$this->assertFalse($this->fixture->isDirectoryOperationAllowed());
 		$this->fixture->setFileOperationPermissions(11);
-		$this->assertFalse(
-			$this->fixture->isDirectoryOperationAllowed()
-		);
+		$this->assertFalse($this->fixture->isDirectoryOperationAllowed());
 	}
 
 	/**
@@ -584,14 +421,9 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 */
 	public function getIsDirectoryOperationAllowedReturnsTrue() {
 		$this->fixture->setFileOperationPermissions(4);
-		$this->assertTrue(
-			$this->fixture->isDirectoryOperationAllowed()
-		);
-
+		$this->assertTrue($this->fixture->isDirectoryOperationAllowed());
 		$this->fixture->setFileOperationPermissions(7);
-		$this->assertTrue(
-			$this->fixture->isDirectoryOperationAllowed()
-		);
+		$this->assertTrue($this->fixture->isDirectoryOperationAllowed());
 	}
 
 	/**
@@ -600,20 +432,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setDirectoryOperationAllowedSetsDirectoryOperationAllowed() {
 		$this->fixture->setFileOperationPermissions(0);
 		$this->fixture->setDirectoryoperationAllowed(TRUE);
-
-		$this->assertTrue(
-			$this->fixture->isDirectoryOperationAllowed()
-		);
+		$this->assertTrue($this->fixture->isDirectoryOperationAllowed());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getLockToDomainInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getLockToDomain()
-		);
+		$this->assertSame('', $this->fixture->getLockToDomain());
 	}
 
 	/**
@@ -622,20 +448,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setLockToDomainSetsLockToDomain() {
 		$lockToDomain = 'foo.bar';
 		$this->fixture->setLockToDomain($lockToDomain);
-
-		$this->assertSame(
-			$lockToDomain,
-			$this->fixture->getLockToDomain()
-		);
+		$this->assertSame($lockToDomain, $this->fixture->getLockToDomain());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getHideInListInitiallyReturnsFalse() {
-		$this->assertFalse(
-			$this->fixture->getHideInList()
-		);
+		$this->assertFalse($this->fixture->getHideInList());
 	}
 
 	/**
@@ -643,20 +463,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 */
 	public function setHideInListSetsHideInList() {
 		$this->fixture->setHideInList(TRUE);
-
-		$this->assertTrue(
-			$this->fixture->getHideInList()
-		);
+		$this->assertTrue($this->fixture->getHideInList());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getTsConfigInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getTsConfig()
-		);
+		$this->assertSame('', $this->fixture->getTsConfig());
 	}
 
 	/**
@@ -665,11 +479,9 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	public function setTsConfigSetsTsConfig() {
 		$tsConfig = 'foo bar';
 		$this->fixture->setTsConfig($tsConfig);
-
-		$this->assertSame(
-			$tsConfig,
-			$this->fixture->getTsConfig()
-		);
+		$this->assertSame($tsConfig, $this->fixture->getTsConfig());
 	}
+
 }
+
 ?>

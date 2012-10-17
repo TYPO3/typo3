@@ -1,30 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * The Property Mapper maps properties from a source onto a given target object, often a
  * (domain-) model. Which properties are required and how they should be filtered can
@@ -37,9 +36,9 @@
  *
  * $target = new ArrayObject();
  * $source = new ArrayObject(
- *    array(
- *       'someProperty' => 'SomeValue'
- *    )
+ * array(
+ * 'someProperty' => 'SomeValue'
+ * )
  * );
  * $mapper->mapAndValidate(array('someProperty'), $source, $target);
  *
@@ -55,6 +54,7 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 
 	/**
 	 * Results of the last mapping operation
+	 *
 	 * @var Tx_Extbase_Property_MappingResults
 	 */
 	protected $mappingResults;
@@ -93,7 +93,6 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 	}
 
 	/**
-	 *
 	 * @param Tx_Extbase_Persistence_QueryFactory $queryFactory
 	 * @return void
 	 */
@@ -145,20 +144,21 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 	 */
 	public function mapAndValidate(array $propertyNames, $source, $target, $optionalPropertyNames = array(), Tx_Extbase_Validation_Validator_ObjectValidatorInterface $targetObjectValidator) {
 		$backupProperties = array();
-
 		$this->map($propertyNames, $source, $backupProperties, $optionalPropertyNames);
-		if ($this->mappingResults->hasErrors()) return FALSE;
-
+		if ($this->mappingResults->hasErrors()) {
+			return FALSE;
+		}
 		$this->map($propertyNames, $source, $target, $optionalPropertyNames);
-		if ($this->mappingResults->hasErrors()) return FALSE;
-
+		if ($this->mappingResults->hasErrors()) {
+			return FALSE;
+		}
 		if ($targetObjectValidator->isValid($target) !== TRUE) {
 			$this->addErrorsFromObjectValidator($targetObjectValidator->getErrors());
 			$backupMappingResult = $this->mappingResults;
 			$this->map($propertyNames, $backupProperties, $source, $optionalPropertyNames);
 			$this->mappingResults = $backupMappingResult;
 		}
-		return (!$this->mappingResults->hasErrors());
+		return !$this->mappingResults->hasErrors();
 	}
 
 	/**
@@ -192,21 +192,21 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 	 * @api
 	 */
 	public function map(array $propertyNames, $source, $target, $optionalPropertyNames = array()) {
-		if (!is_object($source) && !is_array($source)) throw new Tx_Extbase_Property_Exception_InvalidSource('The source object must be a valid object or array, ' . gettype($target) . ' given.', 1187807099);
-
+		if (!is_object($source) && !is_array($source)) {
+			throw new Tx_Extbase_Property_Exception_InvalidSource(('The source object must be a valid object or array, ' . gettype($target)) . ' given.', 1187807099);
+		}
 		if (is_string($target) && strpos($target, '_') !== FALSE) {
 			return $this->transformToObject($source, $target, '--none--');
 		}
-
-		if (!is_object($target) && !is_array($target)) throw new Tx_Extbase_Property_Exception_InvalidTarget('The target object must be a valid object or array, ' . gettype($target) . ' given.', 1187807099);
-
+		if (!is_object($target) && !is_array($target)) {
+			throw new Tx_Extbase_Property_Exception_InvalidTarget(('The target object must be a valid object or array, ' . gettype($target)) . ' given.', 1187807099);
+		}
 		$this->mappingResults = new Tx_Extbase_Property_MappingResults();
 		if (is_object($target)) {
 			$targetClassSchema = $this->reflectionService->getClassSchema(get_class($target));
 		} else {
 			$targetClassSchema = NULL;
 		}
-
 		foreach ($propertyNames as $propertyName) {
 			$propertyValue = NULL;
 			if (is_array($source) || $source instanceof ArrayAccess) {
@@ -216,13 +216,11 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 			} else {
 				$propertyValue = Tx_Extbase_Reflection_ObjectAccess::getProperty($source, $propertyName);
 			}
-
 			if ($propertyValue === NULL && !in_array($propertyName, $optionalPropertyNames)) {
-				$this->mappingResults->addError(new Tx_Extbase_Error_Error("Required property '$propertyName' does not exist." , 1236785359), $propertyName);
+				$this->mappingResults->addError(new Tx_Extbase_Error_Error("Required property '{$propertyName}' does not exist.", 1236785359), $propertyName);
 			} else {
 				if ($targetClassSchema !== NULL && $targetClassSchema->hasProperty($propertyName)) {
 					$propertyMetaData = $targetClassSchema->getProperty($propertyName);
-
 					if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'Tx_Extbase_Persistence_ObjectStorage')) && (strpos($propertyMetaData['elementType'], '_') !== FALSE || $propertyValue === '')) {
 						$objects = array();
 						if (is_array($propertyValue)) {
@@ -233,8 +231,7 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 								}
 							}
 						}
-
-							// make sure we hand out what is expected
+						// make sure we hand out what is expected
 						if ($propertyMetaData['type'] === 'ArrayObject') {
 							$propertyValue = new ArrayObject($objects);
 						} elseif ($propertyMetaData['type'] === 'Tx_Extbase_Persistence_ObjectStorage') {
@@ -252,17 +249,15 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 						}
 					}
 				} elseif ($targetClassSchema !== NULL) {
-					$this->mappingResults->addError(new Tx_Extbase_Error_Error("Property '$propertyName' does not exist in target class schema." , 1251813614), $propertyName);
+					$this->mappingResults->addError(new Tx_Extbase_Error_Error("Property '{$propertyName}' does not exist in target class schema.", 1251813614), $propertyName);
 				}
-
 				if (is_array($target)) {
 					$target[$propertyName] = $propertyValue;
 				} elseif (Tx_Extbase_Reflection_ObjectAccess::setProperty($target, $propertyName, $propertyValue) === FALSE) {
-					$this->mappingResults->addError(new Tx_Extbase_Error_Error("Property '$propertyName' could not be set." , 1236783102), $propertyName);
+					$this->mappingResults->addError(new Tx_Extbase_Error_Error("Property '{$propertyName}' could not be set.", 1236783102), $propertyName);
 				}
 			}
 		}
-
 		return !$this->mappingResults->hasErrors();
 	}
 
@@ -291,12 +286,14 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 			if (is_numeric($propertyValue)) {
 				$propertyValue = $this->findObjectByUid($targetType, $propertyValue);
 				if ($propertyValue === FALSE) {
-					$this->mappingResults->addError(new Tx_Extbase_Error_Error('Querying the repository for the specified object with UUID ' . $propertyValue . ' was not successful.' , 1249379517), $propertyName);
+					$this->mappingResults->addError(new Tx_Extbase_Error_Error(('Querying the repository for the specified object with UUID ' . $propertyValue) . ' was not successful.', 1249379517), $propertyName);
 				}
 			} elseif (is_array($propertyValue)) {
 				if (isset($propertyValue['__identity'])) {
 					$existingObject = $this->findObjectByUid($targetType, $propertyValue['__identity']);
-					if ($existingObject === NULL) throw new Tx_Extbase_Property_Exception_InvalidTarget('Querying the repository for the specified object was not successful.', 1237305720);
+					if ($existingObject === NULL) {
+						throw new Tx_Extbase_Property_Exception_InvalidTarget('Querying the repository for the specified object was not successful.', 1237305720);
+					}
 					unset($propertyValue['__identity']);
 					if (count($propertyValue) === 0) {
 						$propertyValue = $existingObject;
@@ -320,7 +317,6 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 				throw new InvalidArgumentException('transformToObject() accepts only numeric values and arrays.', 1251814355);
 			}
 		}
-
 		return $propertyValue;
 	}
 
@@ -346,11 +342,9 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 		$query = $this->queryFactory->create($dataType);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		return $query->matching(
-			$query->equals('uid', intval($uid)))
-			->execute()
-			->getFirst();
+		return $query->matching($query->equals('uid', intval($uid)))->execute()->getFirst();
 	}
+
 }
 
 ?>

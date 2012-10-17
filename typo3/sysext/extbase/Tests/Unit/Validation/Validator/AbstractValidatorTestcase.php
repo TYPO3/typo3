@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the Abstract Validator
  *
@@ -30,7 +28,6 @@ abstract class Tx_Extbase_Tests_Unit_Validation_Validator_AbstractValidatorTestc
 	protected $validatorClassName;
 
 	/**
-	 *
 	 * @var Tx_Extbase_Validation_Validator_ValidatorInterface
 	 */
 	protected $validator;
@@ -45,7 +42,6 @@ abstract class Tx_Extbase_Tests_Unit_Validation_Validator_AbstractValidatorTestc
 	 */
 	protected function getValidator($options = array()) {
 		$validator = new $this->validatorClassName($options);
-
 		return $validator;
 	}
 
@@ -55,6 +51,7 @@ abstract class Tx_Extbase_Tests_Unit_Validation_Validator_AbstractValidatorTestc
 	protected function validatorOptions($options) {
 		$this->validator = $this->getValidator($options);
 	}
+
 }
 
 ?>

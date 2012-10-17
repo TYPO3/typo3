@@ -24,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Analyzes the raw request and delivers a request handler which can handle it.
  */
@@ -84,17 +83,20 @@ class Tx_Extbase_MVC_RequestHandlerResolver {
 	 */
 	public function resolveRequestHandler() {
 		$availableRequestHandlerClassNames = $this->getRegisteredRequestHandlerClassNames();
-
 		$suitableRequestHandlers = array();
 		foreach ($availableRequestHandlerClassNames as $requestHandlerClassName) {
 			$requestHandler = $this->objectManager->get($requestHandlerClassName);
 			if ($requestHandler->canHandleRequest()) {
 				$priority = $requestHandler->getPriority();
-				if (isset($suitableRequestHandlers[$priority])) throw new Tx_Extbase_MVC_Exception('More than one request handler with the same priority can handle the request, but only one handler may be active at a time!', 1176475350);
+				if (isset($suitableRequestHandlers[$priority])) {
+					throw new Tx_Extbase_MVC_Exception('More than one request handler with the same priority can handle the request, but only one handler may be active at a time!', 1176475350);
+				}
 				$suitableRequestHandlers[$priority] = $requestHandler;
 			}
 		}
-		if (count($suitableRequestHandlers) === 0) throw new Tx_Extbase_MVC_Exception('No suitable request handler found.', 1205414233);
+		if (count($suitableRequestHandlers) === 0) {
+			throw new Tx_Extbase_MVC_Exception('No suitable request handler found.', 1205414233);
+		}
 		ksort($suitableRequestHandlers);
 		return array_pop($suitableRequestHandlers);
 	}
@@ -108,5 +110,7 @@ class Tx_Extbase_MVC_RequestHandlerResolver {
 		$settings = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		return is_array($settings['mvc']['requestHandlers']) ? $settings['mvc']['requestHandlers'] : array();
 	}
+
 }
+
 ?>

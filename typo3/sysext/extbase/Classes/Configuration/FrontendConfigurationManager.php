@@ -1,27 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * A general purpose configuration manager used in frontend mode.
  *
@@ -46,7 +45,6 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 		$this->flexFormService = $flexFormService;
 	}
 
-
 	/**
 	 * Returns TypoScript Setup array from current Environment.
 	 *
@@ -67,25 +65,23 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	protected function getPluginConfiguration($extensionName, $pluginName = NULL) {
 		$setup = $this->getTypoScriptSetup();
 		$pluginConfiguration = array();
-		if (is_array($setup['plugin.']['tx_' . strtolower($extensionName) . '.'])) {
-			$pluginConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . strtolower($extensionName) . '.']);
+		if (is_array($setup['plugin.'][('tx_' . strtolower($extensionName)) . '.'])) {
+			$pluginConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.'][('tx_' . strtolower($extensionName)) . '.']);
 		}
-
 		if ($pluginName !== NULL) {
-			$pluginSignature = strtolower($extensionName . '_' . $pluginName);
-			if (is_array($setup['plugin.']['tx_' . $pluginSignature . '.'])) {
-				$pluginConfiguration = t3lib_div::array_merge_recursive_overrule($pluginConfiguration, $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . $pluginSignature . '.']));
+			$pluginSignature = strtolower(($extensionName . '_') . $pluginName);
+			if (is_array($setup['plugin.'][('tx_' . $pluginSignature) . '.'])) {
+				$pluginConfiguration = t3lib_div::array_merge_recursive_overrule($pluginConfiguration, $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.'][('tx_' . $pluginSignature) . '.']));
 			}
 		}
-
 		return $pluginConfiguration;
 	}
 
 	/**
 	 * Returns the configured controller/action pairs of the specified plugin in the format
 	 * array(
-	 *  'Controller1' => array('action1', 'action2'),
-	 *  'Controller2' => array('action3', 'action4')
+	 * 'Controller1' => array('action1', 'action2'),
+	 * 'Controller2' => array('action3', 'action4')
 	 * )
 	 *
 	 * @param string $extensionName
@@ -112,7 +108,6 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 		$frameworkConfiguration = $this->overrideStoragePidIfStartingPointIsSet($frameworkConfiguration);
 		$frameworkConfiguration = $this->overrideConfigurationFromPlugin($frameworkConfiguration);
 		$frameworkConfiguration = $this->overrideConfigurationFromFlexForm($frameworkConfiguration);
-
 		return $frameworkConfiguration;
 	}
 
@@ -129,12 +124,12 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 			$list = array();
 			if ($this->contentObject->data['recursive'] > 0) {
 				$explodedPages = t3lib_div::trimExplode(',', $pages);
-				foreach($explodedPages as $pid) {
+				foreach ($explodedPages as $pid) {
 					$list[] = trim($this->contentObject->getTreeList($pid, $this->contentObject->data['recursive']), ',');
 				}
 			}
 			if (count($list) > 0) {
-				$pages = $pages . ',' . implode(',', $list);
+				$pages = ($pages . ',') . implode(',', $list);
 			}
 			$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, array(
 				'persistence' => array(
@@ -153,8 +148,8 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	 */
 	protected function overrideConfigurationFromPlugin(array $frameworkConfiguration) {
 		$setup = $this->getTypoScriptSetup();
-		$pluginSignature = strtolower($frameworkConfiguration['extensionName'] . '_' . $frameworkConfiguration['pluginName']);
-		$pluginConfiguration = $setup['plugin.']['tx_' . $pluginSignature . '.'];
+		$pluginSignature = strtolower(($frameworkConfiguration['extensionName'] . '_') . $frameworkConfiguration['pluginName']);
+		$pluginConfiguration = $setup['plugin.'][('tx_' . $pluginSignature) . '.'];
 		if (is_array($pluginConfiguration)) {
 			$pluginConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($pluginConfiguration);
 			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $pluginConfiguration, 'settings');
@@ -174,11 +169,9 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	protected function overrideConfigurationFromFlexForm(array $frameworkConfiguration) {
 		if (strlen($this->contentObject->data['pi_flexform']) > 0) {
 			$flexFormConfiguration = $this->flexFormService->convertFlexFormContentToArray($this->contentObject->data['pi_flexform']);
-
 			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'settings');
 			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'persistence');
 			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'view');
-
 			$frameworkConfiguration = $this->overrideSwitchableControllerActionsFromFlexForm($frameworkConfiguration, $flexFormConfiguration);
 		}
 		return $frameworkConfiguration;
@@ -239,11 +232,9 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 		if (!isset($flexFormConfiguration['switchableControllerActions']) || is_array($flexFormConfiguration['switchableControllerActions'])) {
 			return $frameworkConfiguration;
 		}
-
-			// As "," is the flexForm field value delimiter, we need to use ";" as in-field delimiter. That's why we need to replace ; by  , first.
-			// The expected format is: "Controller1->action2;Controller2->action3;Controller2->action1"
+		// As "," is the flexForm field value delimiter, we need to use ";" as in-field delimiter. That's why we need to replace ; by  , first.
+		// The expected format is: "Controller1->action2;Controller2->action3;Controller2->action1"
 		$switchableControllerActionPartsFromFlexForm = t3lib_div::trimExplode(',', str_replace(';', ',', $flexFormConfiguration['switchableControllerActions']), TRUE);
-
 		$newSwitchableControllerActionsFromFlexForm = array();
 		foreach ($switchableControllerActionPartsFromFlexForm as $switchableControllerActionPartFromFlexForm) {
 			list($controller, $action) = t3lib_div::trimExplode('->', $switchableControllerActionPartFromFlexForm);
@@ -257,5 +248,7 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 		}
 		return $frameworkConfiguration;
 	}
+
 }
+
 ?>

@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Thrown if a setting set is not available in the current context.
  *
@@ -30,6 +29,8 @@
  * @version $ID:$
  */
 class Tx_Extbase_Persistence_Generic_Exception_InconsistentQuerySettings extends Tx_Extbase_Persistence_Exception {
+
+
 }
 
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -19,15 +18,14 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Configuration object for the property mapper.
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-interface Tx_Extbase_Property_PropertyMappingConfigurationInterface {
-
+interface Tx_Extbase_Property_PropertyMappingConfigurationInterface
+{
 	/**
 	 * @param string $propertyName
 	 * @return TRUE if the given propertyName should be mapped, FALSE otherwise.
@@ -69,6 +67,6 @@ interface Tx_Extbase_Property_PropertyMappingConfigurationInterface {
 	 * @api
 	 */
 	public function getTypeConverter();
-}
 
+}
 ?>

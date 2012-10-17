@@ -1,28 +1,27 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Builds a CLI request object from the raw command call
  *
@@ -83,7 +82,6 @@ class Tx_Extbase_MVC_CLI_RequestBuilder {
 	public function build($commandLine = '') {
 		$request = $this->objectManager->get('Tx_Extbase_MVC_CLI_Request');
 		$request->setControllerObjectName('Tx_Extbase_Command_HelpCommandController');
-
 		$rawCommandLineArguments = is_array($commandLine) ? $commandLine : explode(' ', $commandLine);
 		if (count($rawCommandLineArguments) === 0) {
 			$request->setControllerCommandName('helpStub');
@@ -101,11 +99,9 @@ class Tx_Extbase_MVC_CLI_RequestBuilder {
 		$controllerCommandName = $command->getControllerCommandName();
 		$request->setControllerObjectName($controllerObjectName);
 		$request->setControllerCommandName($controllerCommandName);
-
 		list($commandLineArguments, $exceedingCommandLineArguments) = $this->parseRawCommandLineArguments($rawCommandLineArguments, $controllerObjectName, $controllerCommandName);
 		$request->setArguments($commandLineArguments);
 		$request->setExceedingArguments($exceedingCommandLineArguments);
-
 		return $request;
 	}
 
@@ -124,7 +120,6 @@ class Tx_Extbase_MVC_CLI_RequestBuilder {
 		$exceedingArguments = array();
 		$commandMethodName = $controllerCommandName . 'Command';
 		$commandMethodParameters = $this->reflectionService->getMethodParameters($controllerObjectName, $commandMethodName);
-
 		$requiredArguments = array();
 		$optionalArguments = array();
 		$argumentNames = array();
@@ -136,14 +131,11 @@ class Tx_Extbase_MVC_CLI_RequestBuilder {
 				$optionalArguments[strtolower($parameterName)] = array('parameterName' => $parameterName, 'type' => $parameterInfo['type']);
 			}
 		}
-
 		$decidedToUseNamedArguments = FALSE;
 		$decidedToUseUnnamedArguments = FALSE;
 		$argumentIndex = 0;
 		while (count($rawCommandLineArguments) > 0) {
-
 			$rawArgument = array_shift($rawCommandLineArguments);
-
 			if ($rawArgument[0] === '-') {
 				if ($rawArgument[1] === '-') {
 					$rawArgument = substr($rawArgument, 2);
@@ -151,7 +143,6 @@ class Tx_Extbase_MVC_CLI_RequestBuilder {
 					$rawArgument = substr($rawArgument, 1);
 				}
 				$argumentName = $this->extractArgumentNameFromCommandLinePart($rawArgument);
-
 				if (isset($optionalArguments[$argumentName])) {
 					$argumentValue = $this->getValueOfCurrentCommandLineOption($rawArgument, $rawCommandLineArguments, $optionalArguments[$argumentName]['type']);
 					$commandLineArguments[$optionalArguments[$argumentName]['parameterName']] = $argumentValue;
@@ -180,17 +171,16 @@ class Tx_Extbase_MVC_CLI_RequestBuilder {
 					}
 				}
 			}
-			$argumentIndex ++;
+			$argumentIndex++;
 		}
-
 		return array($commandLineArguments, $exceedingArguments);
 	}
 
 	/**
 	 * Extracts the option or argument name from the name / value pair of a command line.
 	 *
-	 * @param string $commandLinePart Part of the command line, e.g. "my-important-option=SomeInterestingValue"
-	 * @return string The lowercased argument name, e.g. "myimportantoption"
+	 * @param string $commandLinePart Part of the command line, e.g. "my-important-option=SomeInterestingValue
+	 * @return string The lowercased argument name, e.g. "myimportantoption
 	 */
 	protected function extractArgumentNameFromCommandLinePart($commandLinePart) {
 		$nameAndValue = explode('=', $commandLinePart, 2);
@@ -208,10 +198,9 @@ class Tx_Extbase_MVC_CLI_RequestBuilder {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function getValueOfCurrentCommandLineOption($currentArgument, array &$rawCommandLineArguments, $expectedArgumentType) {
-		if ((!isset($rawCommandLineArguments[0]) && (strpos($currentArgument, '=') === FALSE)) || (isset($rawCommandLineArguments[0]) && $rawCommandLineArguments[0][0] === '-' && (strpos($currentArgument, '=') === FALSE))) {
+		if (!isset($rawCommandLineArguments[0]) && strpos($currentArgument, '=') === FALSE || (isset($rawCommandLineArguments[0]) && $rawCommandLineArguments[0][0] === '-') && strpos($currentArgument, '=') === FALSE) {
 			return TRUE;
 		}
-
 		if (strpos($currentArgument, '=') === FALSE) {
 			$possibleValue = trim(array_shift($rawCommandLineArguments));
 			if (strpos($possibleValue, '=') === FALSE) {
@@ -229,15 +218,15 @@ class Tx_Extbase_MVC_CLI_RequestBuilder {
 			}
 			$currentArgument .= $possibleValue;
 		}
-
 		$splitArgument = explode('=', $currentArgument, 2);
 		while ((!isset($splitArgument[1]) || trim($splitArgument[1]) === '') && count($rawCommandLineArguments) > 0) {
 			$currentArgument .= array_shift($rawCommandLineArguments);
 			$splitArgument = explode('=', $currentArgument);
 		}
-
-		$value = (isset($splitArgument[1])) ? $splitArgument[1] : '';
+		$value = isset($splitArgument[1]) ? $splitArgument[1] : '';
 		return $value;
 	}
+
 }
+
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * The default property mapping configuration is available
  * inside the Argument-object.
@@ -66,5 +64,7 @@ class Tx_Extbase_MVC_Controller_MvcPropertyMappingConfiguration extends Tx_Extba
 	public function setTargetTypeForSubProperty($propertyPath, $targetType) {
 		$this->forProperty($propertyPath)->setTypeConverterOption('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_TARGET_TYPE, $targetType);
 	}
+
 }
+
 ?>

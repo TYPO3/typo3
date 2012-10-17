@@ -24,10 +24,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A request handler which can handle web requests.
- *
  */
 abstract class Tx_Extbase_MVC_Web_AbstractRequestHandler implements Tx_Extbase_MVC_RequestHandlerInterface {
 
@@ -71,7 +69,7 @@ abstract class Tx_Extbase_MVC_Web_AbstractRequestHandler implements Tx_Extbase_M
 	 */
 	public function injectFlashMessageContainer(Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer) {
 		$this->flashMessageContainer = $flashMessageContainer;
-			// @deprecated since Extbase 1.1; will be removed in Extbase 6.0
+		// @deprecated since Extbase 1.1; will be removed in Extbase 6.0
 		$this->flashMessages = $flashMessageContainer;
 	}
 
@@ -111,4 +109,5 @@ abstract class Tx_Extbase_MVC_Web_AbstractRequestHandler implements Tx_Extbase_M
 	}
 
 }
+
 ?>

@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A file object (File Abstraction Layer)
  *
@@ -32,6 +31,7 @@
  * @api experimental! This class is experimental and subject to change!
  */
 abstract class Tx_Extbase_Domain_Model_AbstractFileCollection extends Tx_Extbase_DomainObject_AbstractEntity {
+
 	/**
 	 * @var t3lib_file_Collection_AbstractFileCollection
 	 */
@@ -50,5 +50,7 @@ abstract class Tx_Extbase_Domain_Model_AbstractFileCollection extends Tx_Extbase
 	public function getObject() {
 		return $this->object;
 	}
+
 }
+
 ?>

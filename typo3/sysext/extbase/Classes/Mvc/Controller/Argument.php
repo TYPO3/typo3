@@ -1,30 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * A controller argument
  *
@@ -53,6 +52,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 
 	/**
 	 * This is the old property mapper, which has been completely rewritten for 1.4.
+	 *
 	 * @var Tx_Extbase_Property_Mapper
 	 */
 	protected $deprecatedPropertyMapper;
@@ -86,60 +86,70 @@ class Tx_Extbase_MVC_Controller_Argument {
 
 	/**
 	 * Name of this argument
+	 *
 	 * @var string
 	 */
 	protected $name = '';
 
 	/**
 	 * Short name of this argument
+	 *
 	 * @var string
 	 */
 	protected $shortName = NULL;
 
 	/**
 	 * Data type of this argument's value
+	 *
 	 * @var string
 	 */
 	protected $dataType = NULL;
 
 	/**
 	 * If the data type is an object, the class schema of the data type class is resolved
+	 *
 	 * @var Tx_Extbase_Reflection_ClassSchema
 	 */
 	protected $dataTypeClassSchema;
 
 	/**
 	 * TRUE if this argument is required
+	 *
 	 * @var boolean
 	 */
 	protected $isRequired = FALSE;
 
 	/**
 	 * Actual value of this argument
+	 *
 	 * @var object
 	 */
 	protected $value = NULL;
 
 	/**
 	 * Default value. Used if argument is optional.
+	 *
 	 * @var mixed
 	 */
 	protected $defaultValue = NULL;
 
 	/**
 	 * A custom validator, used supplementary to the base validation
+	 *
 	 * @var Tx_Extbase_Validation_Validator_ValidatorInterface
 	 */
 	protected $validator = NULL;
 
 	/**
 	 * The validation results. This can be asked if the argument has errors.
+	 *
 	 * @var Tx_Extbase_Error_Result
 	 */
 	protected $validationResults = NULL;
 
 	/**
 	 * Uid for the argument, if it has one
+	 *
 	 * @var string
 	 */
 	protected $uid = NULL;
@@ -148,11 +158,11 @@ class Tx_Extbase_MVC_Controller_Argument {
 	const ORIGIN_PERSISTENCE = 1;
 	const ORIGIN_PERSISTENCE_AND_MODIFIED = 2;
 	const ORIGIN_NEWLY_CREATED = 3;
-
 	/**
 	 * The origin of the argument value. This is only meaningful after argument mapping.
 	 *
 	 * One of the ORIGIN_* constants above
+	 *
 	 * @var integer
 	 */
 	protected $origin = 0;
@@ -171,8 +181,12 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @api
 	 */
 	public function __construct($name, $dataType) {
-		if (!is_string($name)) throw new InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
-		if (strlen($name) === 0) throw new InvalidArgumentException('$name must be a non-empty string, ' . strlen($name) . ' characters given.', 1232551853);
+		if (!is_string($name)) {
+			throw new InvalidArgumentException(('$name must be of type string, ' . gettype($name)) . ' given.', 1187951688);
+		}
+		if (strlen($name) === 0) {
+			throw new InvalidArgumentException(('$name must be a non-empty string, ' . strlen($name)) . ' characters given.', 1232551853);
+		}
 		$this->name = $name;
 		$this->dataType = $dataType;
 	}
@@ -217,7 +231,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 */
 	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
-		$this->dataTypeClassSchema = (strpos($this->dataType, '_') !== FALSE) ? $this->reflectionService->getClassSchema($this->dataType) : NULL;
+		$this->dataTypeClassSchema = strpos($this->dataType, '_') !== FALSE ? $this->reflectionService->getClassSchema($this->dataType) : NULL;
 	}
 
 	/**
@@ -285,7 +299,9 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @api
 	 */
 	public function setShortName($shortName) {
-		if ($shortName !== NULL && (!is_string($shortName) || strlen($shortName) !== 1)) throw new InvalidArgumentException('$shortName must be a single character or NULL', 1195824959);
+		if ($shortName !== NULL && (!is_string($shortName) || strlen($shortName) !== 1)) {
+			throw new InvalidArgumentException('$shortName must be a single character or NULL', 1195824959);
+		}
 		$this->shortName = $shortName;
 		return $this;
 	}
@@ -331,7 +347,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @api
 	 */
 	public function setRequired($required) {
-		$this->isRequired = (boolean)$required;
+		$this->isRequired = (bool) $required;
 		return $this;
 	}
 
@@ -445,10 +461,9 @@ class Tx_Extbase_MVC_Controller_Argument {
 				$validationMessages = $this->validator->validate($this->value);
 				$this->validationResults->merge($validationMessages);
 			}
-
 			return $this;
 		} else {
-			if ($rawValue === NULL || (is_object($rawValue) && $rawValue instanceof $this->dataType)) {
+			if ($rawValue === NULL || is_object($rawValue) && $rawValue instanceof $this->dataType) {
 				$this->value = $rawValue;
 			} else {
 				$this->value = $this->transformValue($rawValue);
@@ -489,16 +504,8 @@ class Tx_Extbase_MVC_Controller_Argument {
 			$this->origin = self::ORIGIN_NEWLY_CREATED;
 			$transformedValue = $this->deprecatedPropertyMapper->map(array_keys($value), $value, $this->dataType);
 		}
-
-		if (!($transformedValue instanceof $this->dataType) && ($transformedValue !== NULL || $this->isRequired())) {
-			throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue(
-				'The value must be of type "' . $this->dataType . '", but was of type "'
-					. (is_object($transformedValue) ? get_class($transformedValue) : gettype($transformedValue)) . '".'
-						// add mappingResult errors to exception
-					. ($this->deprecatedPropertyMapper->getMappingResults()->hasErrors()
-						? '<p>' . implode('<br />', $this->deprecatedPropertyMapper->getMappingResults()->getErrors()) . '</p>'
-						: ''),
-				1251730701);
+		if (!$transformedValue instanceof $this->dataType && ($transformedValue !== NULL || $this->isRequired())) {
+			throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue((((('The value must be of type "' . $this->dataType) . '", but was of type "') . (is_object($transformedValue) ? get_class($transformedValue) : gettype($transformedValue))) . '".') . ($this->deprecatedPropertyMapper->getMappingResults()->hasErrors() ? ('<p>' . implode('<br />', $this->deprecatedPropertyMapper->getMappingResults()->getErrors())) . '</p>' : ''), 1251730701);
 		}
 		return $transformedValue;
 	}
@@ -513,10 +520,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 		$query = $this->queryFactory->create($this->dataType);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		return $query->matching(
-			$query->equals('uid', $uid))
-			->execute()
-			->getFirst();
+		return $query->matching($query->equals('uid', $uid))->execute()->getFirst();
 	}
 
 	/**
@@ -579,7 +583,9 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @api
 	 */
 	public function __toString() {
-		return (string)$this->value;
+		return (string) $this->value;
 	}
+
 }
+
 ?>

@@ -1,30 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * A multi action controller. This is by far the most common base class for Controllers.
  *
@@ -56,6 +55,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	/**
 	 * Pattern after which the view object name is built if no Fluid template
 	 * is found.
+	 *
 	 * @var string
 	 * @api
 	 */
@@ -83,6 +83,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 
 	/**
 	 * Name of the action method
+	 *
 	 * @var string
 	 * @api
 	 */
@@ -90,6 +91,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 
 	/**
 	 * Name of the special error action method which is called in case of errors
+	 *
 	 * @var string
 	 * @api
 	 */
@@ -123,7 +125,6 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 */
 	public function canProcessRequest(Tx_Extbase_MVC_RequestInterface $request) {
 		return parent::canProcessRequest($request);
-
 	}
 
 	/**
@@ -135,30 +136,24 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 */
 	public function processRequest(Tx_Extbase_MVC_RequestInterface $request, Tx_Extbase_MVC_ResponseInterface $response) {
 		if (!$this->canProcessRequest($request)) {
-			throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes) , 1187701131);
+			throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType((((get_class($this) . ' does not support requests of type "') . get_class($request)) . '". Supported types are: ') . implode(' ', $this->supportedRequestTypes), 1187701131);
 		}
-
 		if ($response instanceof Tx_Extbase_MVC_Web_Response) {
 			$response->setRequest($request);
 		}
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
-
 		$this->uriBuilder = $this->objectManager->create('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 		$this->uriBuilder->setRequest($request);
-
 		$this->actionMethodName = $this->resolveActionMethodName();
-
 		$this->initializeActionMethodArguments();
 		$this->initializeActionMethodValidators();
-
 		$this->initializeAction();
 		$actionInitializationMethodName = 'initialize' . ucfirst($this->actionMethodName);
 		if (method_exists($this, $actionInitializationMethodName)) {
 			call_user_func(array($this, $actionInitializationMethodName));
 		}
-
 		$this->mapRequestArgumentsToControllerArguments();
 		$this->checkRequestHash();
 		$this->controllerContext = $this->buildControllerContext();
@@ -180,7 +175,6 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 */
 	protected function initializeActionMethodArguments() {
 		$methodParameters = $this->reflectionService->getMethodParameters(get_class($this), $this->actionMethodName);
-
 		foreach ($methodParameters as $parameterName => $parameterInfo) {
 			$dataType = NULL;
 			if (isset($parameterInfo['type'])) {
@@ -188,11 +182,11 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 			} elseif ($parameterInfo['array']) {
 				$dataType = 'array';
 			}
-			if ($dataType === NULL) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('The argument type for parameter $' . $parameterName . ' of method ' . get_class($this) . '->' . $this->actionMethodName . '() could not be detected.' , 1253175643);
-
-			$defaultValue = (isset($parameterInfo['defaultValue']) ? $parameterInfo['defaultValue'] : NULL);
-
-			$this->arguments->addNewArgument($parameterName, $dataType, ($parameterInfo['optional'] === FALSE), $defaultValue);
+			if ($dataType === NULL) {
+				throw new Tx_Extbase_MVC_Exception_InvalidArgumentType(((((('The argument type for parameter $' . $parameterName) . ' of method ') . get_class($this)) . '->') . $this->actionMethodName) . '() could not be detected.', 1253175643);
+			}
+			$defaultValue = isset($parameterInfo['defaultValue']) ? $parameterInfo['defaultValue'] : NULL;
+			$this->arguments->addNewArgument($parameterName, $dataType, $parameterInfo['optional'] === FALSE, $defaultValue);
 		}
 	}
 
@@ -211,20 +205,16 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	protected function initializeActionMethodValidators() {
 		// TODO: still needs to be modified
 		$parameterValidators = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName);
-
 		$dontValidateAnnotations = array();
-
 		if (!$this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
-				// If the rewritten property mapper is *enabled*, we do not support @dontvalidate annotation, thus $dontValidateAnnotations stays empty.
+			// If the rewritten property mapper is *enabled*, we do not support @dontvalidate annotation, thus $dontValidateAnnotations stays empty.
 			$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
 			if (isset($methodTagsValues['dontvalidate'])) {
 				$dontValidateAnnotations = $methodTagsValues['dontvalidate'];
 			}
 		}
-
 		foreach ($this->arguments as $argument) {
 			$validator = $parameterValidators[$argument->getName()];
-
 			if (array_search('$' . $argument->getName(), $dontValidateAnnotations) === FALSE) {
 				$baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
 				if ($baseValidatorConjunction !== NULL) {
@@ -243,7 +233,9 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 */
 	protected function resolveActionMethodName() {
 		$actionMethodName = $this->request->getControllerActionName() . 'Action';
-		if (!method_exists($this, $actionMethodName)) throw new Tx_Extbase_MVC_Exception_NoSuchAction('An action "' . $actionMethodName . '" does not exist in controller "' . get_class($this) . '".', 1186669086);
+		if (!method_exists($this, $actionMethodName)) {
+			throw new Tx_Extbase_MVC_Exception_NoSuchAction(((('An action "' . $actionMethodName) . '" does not exist in controller "') . get_class($this)) . '".', 1186669086);
+		}
 		return $actionMethodName;
 	}
 
@@ -259,14 +251,12 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 */
 	protected function callActionMethod() {
 		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
-				// enabled since Extbase 1.4.0.
+			// enabled since Extbase 1.4.0.
 			$preparedArguments = array();
 			foreach ($this->arguments as $argument) {
 				$preparedArguments[] = $argument->getValue();
 			}
-
 			$validationResult = $this->arguments->getValidationResults();
-
 			if (!$validationResult->hasErrors()) {
 				$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
 			} else {
@@ -275,18 +265,18 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 				if (isset($methodTagsValues['ignorevalidation'])) {
 					$ignoreValidationAnnotations = $methodTagsValues['ignorevalidation'];
 				}
-
-					// if there exists more errors than in ignoreValidationAnnotations_=> call error method
-					// else => call action method
+				// if there exists more errors than in ignoreValidationAnnotations_=> call error method
+				// else => call action method
 				$shouldCallActionMethod = TRUE;
 				foreach ($validationResult->getSubResults() as $argumentName => $subValidationResult) {
-					if (!$subValidationResult->hasErrors()) continue;
-
-					if (array_search('$' . $argumentName, $ignoreValidationAnnotations) !== FALSE) continue;
-
+					if (!$subValidationResult->hasErrors()) {
+						continue;
+					}
+					if (array_search('$' . $argumentName, $ignoreValidationAnnotations) !== FALSE) {
+						continue;
+					}
 					$shouldCallActionMethod = FALSE;
 				}
-
 				if ($shouldCallActionMethod) {
 					$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
 				} else {
@@ -294,26 +284,24 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 				}
 			}
 		} else {
-				// @deprecated since Extbase 1.4.0, will be removed with Extbase 6.0
+			// @deprecated since Extbase 1.4.0, will be removed with Extbase 6.0
 			$argumentsAreValid = TRUE;
 			$preparedArguments = array();
 			foreach ($this->arguments as $argument) {
 				$preparedArguments[] = $argument->getValue();
 			}
-
 			if ($this->argumentsMappingResults->hasErrors()) {
 				$actionResult = call_user_func(array($this, $this->errorMethodName));
 			} else {
 				$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
 			}
 		}
-
 		if ($actionResult === NULL && $this->view instanceof Tx_Extbase_MVC_View_ViewInterface) {
 			$this->response->appendContent($this->view->render());
 		} elseif (is_string($actionResult) && strlen($actionResult) > 0) {
 			$this->response->appendContent($actionResult);
 		} elseif (is_object($actionResult) && method_exists($actionResult, '__toString')) {
-			$this->response->appendContent((string)$actionResult);
+			$this->response->appendContent((string) $actionResult);
 		}
 	}
 
@@ -343,15 +331,16 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		}
 		if (!isset($view)) {
 			$view = $this->objectManager->create('Tx_Extbase_MVC_View_NotFoundView');
-			$view->assign('errorMessage', 'No template was found. View could not be resolved for action "' . $this->request->getControllerActionName() . '"');
+			$view->assign('errorMessage', ('No template was found. View could not be resolved for action "' . $this->request->getControllerActionName()) . '"');
 		}
 		$view->setControllerContext($this->controllerContext);
-
 		if (method_exists($view, 'injectSettings')) {
 			$view->injectSettings($this->settings);
 		}
-		$view->initializeView(); // In FLOW3, solved through Object Lifecycle methods, we need to call it explicitely
-		$view->assign('settings', $this->settings); // same with settings injection.
+		$view->initializeView();
+		// In FLOW3, solved through Object Lifecycle methods, we need to call it explicitely
+		$view->assign('settings', $this->settings);
+		// same with settings injection.
 		return $view;
 	}
 
@@ -360,21 +349,15 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @return void
 	 */
 	protected function setViewConfiguration(Tx_Extbase_MVC_View_ViewInterface $view) {
-			// Template Path Override
+		// Template Path Override
 		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		if (isset($extbaseFrameworkConfiguration['view']['templateRootPath'])
-			&& strlen($extbaseFrameworkConfiguration['view']['templateRootPath']) > 0
-			&& method_exists($view, 'setTemplateRootPath')) {
+		if ((isset($extbaseFrameworkConfiguration['view']['templateRootPath']) && strlen($extbaseFrameworkConfiguration['view']['templateRootPath']) > 0) && method_exists($view, 'setTemplateRootPath')) {
 			$view->setTemplateRootPath(t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath']));
 		}
-		if (isset($extbaseFrameworkConfiguration['view']['layoutRootPath'])
-			&& strlen($extbaseFrameworkConfiguration['view']['layoutRootPath']) > 0
-			&& method_exists($view, 'setLayoutRootPath')) {
+		if ((isset($extbaseFrameworkConfiguration['view']['layoutRootPath']) && strlen($extbaseFrameworkConfiguration['view']['layoutRootPath']) > 0) && method_exists($view, 'setLayoutRootPath')) {
 			$view->setLayoutRootPath(t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['view']['layoutRootPath']));
 		}
-		if (isset($extbaseFrameworkConfiguration['view']['partialRootPath'])
-			&& strlen($extbaseFrameworkConfiguration['view']['partialRootPath']) > 0
-			&& method_exists($view, 'setPartialRootPath')) {
+		if ((isset($extbaseFrameworkConfiguration['view']['partialRootPath']) && strlen($extbaseFrameworkConfiguration['view']['partialRootPath']) > 0) && method_exists($view, 'setPartialRootPath')) {
 			$view->setPartialRootPath(t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['view']['partialRootPath']));
 		}
 	}
@@ -392,7 +375,6 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		$possibleViewName = str_replace('@controller', $this->request->getControllerName(), $possibleViewName);
 		$possibleViewName = str_replace('@action', ucfirst($this->request->getControllerActionName()), $possibleViewName);
 		$format = $this->request->getFormat();
-
 		$viewObjectName = str_replace('@format', ucfirst($this->request->getFormat()), $possibleViewName);
 		if (class_exists($viewObjectName) === FALSE) {
 			$viewObjectName = str_replace('@format', '', $possibleViewName);
@@ -414,6 +396,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @api
 	 */
 	protected function initializeView(Tx_Extbase_MVC_View_ViewInterface $view) {
+
 	}
 
 	/**
@@ -426,6 +409,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @api
 	 */
 	protected function initializeAction() {
+
 	}
 
 	/**
@@ -443,50 +427,42 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 */
 	protected function errorAction() {
 		$this->clearCacheOnError();
-
 		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
 			$errorFlashMessage = $this->getErrorFlashMessage();
 			if ($errorFlashMessage !== FALSE) {
 				$this->flashMessageContainer->add($errorFlashMessage, '', t3lib_FlashMessage::ERROR);
 			}
-
 			$referringRequest = $this->request->getReferringRequest();
 			if ($referringRequest !== NULL) {
 				$originalRequest = clone $this->request;
 				$this->request->setOriginalRequest($originalRequest);
 				$this->request->setOriginalRequestMappingResults($this->arguments->getValidationResults());
-
 				$this->forward($referringRequest->getControllerActionName(), $referringRequest->getControllerName(), $referringRequest->getControllerExtensionName(), $referringRequest->getArguments());
 			}
-
-			$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '().' . PHP_EOL;
+			$message = (((('An error occurred while trying to call ' . get_class($this)) . '->') . $this->actionMethodName) . '().') . PHP_EOL;
 			foreach ($this->arguments->getValidationResults()->getFlattenedErrors() as $propertyPath => $errors) {
 				foreach ($errors as $error) {
-					$message .= 'Error for ' . $propertyPath . ':  ' . $error->render() . PHP_EOL;
+					$message .= ((('Error for ' . $propertyPath) . ':  ') . $error->render()) . PHP_EOL;
 				}
 			}
-
 			return $message;
 		} else {
-				// @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
+			// @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 			$this->request->setErrors($this->argumentsMappingResults->getErrors());
-
 			$errorFlashMessage = $this->getErrorFlashMessage();
 			if ($errorFlashMessage !== FALSE) {
 				$this->flashMessageContainer->add($errorFlashMessage, '', t3lib_FlashMessage::ERROR);
 			}
-
 			$referrer = $this->request->getInternalArgument('__referrer');
 			if ($referrer !== NULL) {
 				$this->forward($referrer['actionName'], $referrer['controllerName'], $referrer['extensionName'], $this->request->getArguments());
 			}
-
-			$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '().' . PHP_EOL;
+			$message = (((('An error occurred while trying to call ' . get_class($this)) . '->') . $this->actionMethodName) . '().') . PHP_EOL;
 			foreach ($this->argumentsMappingResults->getErrors() as $error) {
-				$message .= 'Error:   ' . $error->getMessage() . PHP_EOL;
+				$message .= ('Error:   ' . $error->getMessage()) . PHP_EOL;
 			}
 			foreach ($this->argumentsMappingResults->getWarnings() as $warning) {
-				$message .= 'Warning: ' . $warning->getMessage() . PHP_EOL;
+				$message .= ('Warning: ' . $warning->getMessage()) . PHP_EOL;
 			}
 			return $message;
 		}
@@ -501,7 +477,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @api
 	 */
 	protected function getErrorFlashMessage() {
-		return 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '()';
+		return ((('An error occurred while trying to call ' . get_class($this)) . '->') . $this->actionMethodName) . '()';
 	}
 
 	/**
@@ -516,16 +492,20 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 */
 	protected function checkRequestHash() {
 		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
-				// If the new property mapper is enabled, the request hash is not needed anymore.
+			// If the new property mapper is enabled, the request hash is not needed anymore.
 			return;
 		}
-		if (!($this->request instanceof Tx_Extbase_MVC_Web_Request)) return; // We only want to check it for now for web requests.
-		if ($this->request->isHmacVerified()) return; // all good
-
+		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) {
+			return;
+		}
+		// We only want to check it for now for web requests.
+		if ($this->request->isHmacVerified()) {
+			return;
+		}
+		// all good
 		$verificationNeeded = FALSE;
 		foreach ($this->arguments as $argument) {
-			if ($argument->getOrigin() == Tx_Extbase_MVC_Controller_Argument::ORIGIN_NEWLY_CREATED
-			 || $argument->getOrigin() == Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE_AND_MODIFIED) {
+			if ($argument->getOrigin() == Tx_Extbase_MVC_Controller_Argument::ORIGIN_NEWLY_CREATED || $argument->getOrigin() == Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE_AND_MODIFIED) {
 				$verificationNeeded = TRUE;
 			}
 		}
@@ -554,4 +534,5 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	}
 
 }
+
 ?>

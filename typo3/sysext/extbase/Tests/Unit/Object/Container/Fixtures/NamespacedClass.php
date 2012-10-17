@@ -1,0 +1,10 @@
+<?php
+/**
+ * NamespacedClass
+ */
+class NamespacedClass {
+
+
+}
+
+?>

@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * An "Invalid Property" Exception
  *
@@ -27,6 +25,7 @@
  * @api
  */
 class Tx_Extbase_Property_Exception_InvalidPropertyException extends Tx_Extbase_Property_Exception {
+
 
 }
 

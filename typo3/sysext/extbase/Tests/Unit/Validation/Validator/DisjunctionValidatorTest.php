@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the Disjunction Validator
  *
@@ -35,16 +33,12 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_DisjunctionValidatorTest extend
 		$validatorDisjunction = new Tx_Extbase_Validation_Validator_DisjunctionValidator(array());
 		$validatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
 		$validatorObject->expects($this->once())->method('validate')->will($this->returnValue(new Tx_Extbase_Error_Result()));
-
 		$errors = new Tx_Extbase_Error_Result();
 		$errors->addError(new Tx_Extbase_Error_Error('Error', 123));
-
 		$secondValidatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
 		$secondValidatorObject->expects($this->exactly(1))->method('validate')->will($this->returnValue($errors));
-
 		$validatorDisjunction->addValidator($validatorObject);
 		$validatorDisjunction->addValidator($secondValidatorObject);
-
 		$validatorDisjunction->validate('some subject');
 	}
 
@@ -56,16 +50,12 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_DisjunctionValidatorTest extend
 		$validatorDisjunction = new Tx_Extbase_Validation_Validator_DisjunctionValidator(array());
 		$validatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
 		$validatorObject->expects($this->any())->method('validate')->will($this->returnValue(new Tx_Extbase_Error_Result()));
-
 		$errors = new Tx_Extbase_Error_Result();
 		$errors->addError(new Tx_Extbase_Error_Error('Error', 123));
-
 		$secondValidatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
 		$secondValidatorObject->expects($this->any())->method('validate')->will($this->returnValue($errors));
-
 		$validatorDisjunction->addValidator($validatorObject);
 		$validatorDisjunction->addValidator($secondValidatorObject);
-
 		$this->assertFalse($validatorDisjunction->validate('some subject')->hasErrors());
 	}
 
@@ -75,25 +65,21 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_DisjunctionValidatorTest extend
 	 */
 	public function validateReturnsAllErrorsIfAllValidatorsReturnErrrors() {
 		$validatorDisjunction = new Tx_Extbase_Validation_Validator_DisjunctionValidator(array());
-
 		$error1 = new Tx_Extbase_Error_Error('Error', 123);
 		$error2 = new Tx_Extbase_Error_Error('Error2', 123);
-
 		$errors1 = new Tx_Extbase_Error_Result();
 		$errors1->addError($error1);
 		$validatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
 		$validatorObject->expects($this->any())->method('validate')->will($this->returnValue($errors1));
-
 		$errors2 = new Tx_Extbase_Error_Result();
 		$errors2->addError($error2);
 		$secondValidatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
 		$secondValidatorObject->expects($this->any())->method('validate')->will($this->returnValue($errors2));
-
 		$validatorDisjunction->addValidator($validatorObject);
 		$validatorDisjunction->addValidator($secondValidatorObject);
-
 		$this->assertEquals(array($error1, $error2), $validatorDisjunction->validate('some subject')->getErrors());
 	}
+
 }
 
 ?>

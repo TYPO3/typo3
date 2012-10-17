@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,9 +18,7 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once('AbstractValidatorTestcase.php');
-
+require_once 'AbstractValidatorTestcase.php';
 /**
  * Testcase for the email address validator
  *
@@ -94,5 +91,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_EmailAddressValidatorTest exten
 	public function emailValidatorCreatesTheCorrectErrorForAnInvalidEmailAddress() {
 		$this->assertEquals(1, count($this->validator->validate('notAValidMail@Address')->getErrors()));
 	}
+
 }
+
 ?>

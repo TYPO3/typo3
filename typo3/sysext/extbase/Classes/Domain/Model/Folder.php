@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A folder object (File Abstraction Layer)
  *
@@ -33,5 +32,7 @@
  */
 class Tx_Extbase_Domain_Model_Folder extends Tx_Extbase_Domain_Model_AbstractFileFolder {
 
+
 }
+
 ?>

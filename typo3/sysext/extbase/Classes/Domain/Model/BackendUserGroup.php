@@ -23,15 +23,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * This model represents a backend usergroup.
  *
  * @author Markus Günther <mail@markus-guenther.de>
- *
  * @package Extbase
  * @subpackage Domain\Model
- *
  * @scope prototype
  * @entity
  * @api
@@ -43,7 +40,6 @@ class Tx_Extbase_Domain_Model_BackendUserGroup extends Tx_Extbase_DomainObject_A
 	const DIRECTORY_OPPERATIONS = 4;
 	const DIRECTORY_COPY = 8;
 	const DIRECTORY_REMOVE_RECURSIVELY = 16;
-
 	/**
 	 * @var string
 	 * @validate notEmpty
@@ -517,6 +513,7 @@ class Tx_Extbase_Domain_Model_BackendUserGroup extends Tx_Extbase_DomainObject_A
 
 	/**
 	 * Getter for lock to domain
+	 *
 	 * @return string
 	 */
 	public function getLockToDomain() {
@@ -567,7 +564,7 @@ class Tx_Extbase_Domain_Model_BackendUserGroup extends Tx_Extbase_DomainObject_A
 	 * @return boolean
 	 */
 	protected function isPermissionSet($permission) {
-		return (($this->fileOperationPermissions & $permission) == $permission);
+		return ($this->fileOperationPermissions & $permission) == $permission;
 	}
 
 	/**
@@ -578,11 +575,13 @@ class Tx_Extbase_Domain_Model_BackendUserGroup extends Tx_Extbase_DomainObject_A
 	 * @return void
 	 */
 	protected function setPermission($permission, $value) {
-		if($value) {
+		if ($value) {
 			$this->fileOperationPermissions |= $permission;
 		} else {
 			$this->fileOperationPermissions &= ~$permission;
 		}
 	}
+
 }
+
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,13 +18,13 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the Conjunction Validator
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Extbase_Tests_Unit_Validation_Validator_ConjunctionValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+
 	/**
 	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
@@ -33,7 +32,6 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_ConjunctionValidatorTest extend
 	public function addingValidatorsToAJunctionValidatorWorks() {
 		$proxyClassName = $this->buildAccessibleProxy('Tx_Extbase_Validation_Validator_ConjunctionValidator');
 		$conjunctionValidator = new $proxyClassName(array());
-
 		$mockValidator = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface');
 		$conjunctionValidator->addValidator($mockValidator);
 		$this->assertTrue($conjunctionValidator->_get('validators')->contains($mockValidator));
@@ -49,19 +47,15 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_ConjunctionValidatorTest extend
 		$validatorConjunction = new Tx_Extbase_Validation_Validator_ConjunctionValidator(array());
 		$validatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
 		$validatorObject->expects($this->once())->method('validate')->will($this->returnValue(new Tx_Extbase_Error_Result()));
-
 		$errors = new Tx_Extbase_Error_Result();
 		$errors->addError(new Tx_Extbase_Error_Error('Error', 123));
 		$secondValidatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
 		$secondValidatorObject->expects($this->once())->method('validate')->will($this->returnValue($errors));
-
 		$thirdValidatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
 		$thirdValidatorObject->expects($this->once())->method('validate')->will($this->returnValue(new Tx_Extbase_Error_Result()));
-
 		$validatorConjunction->addValidator($validatorObject);
 		$validatorConjunction->addValidator($secondValidatorObject);
 		$validatorConjunction->addValidator($thirdValidatorObject);
-
 		$validatorConjunction->validate('some subject');
 	}
 
@@ -73,13 +67,10 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_ConjunctionValidatorTest extend
 		$validatorConjunction = new Tx_Extbase_Validation_Validator_ConjunctionValidator(array());
 		$validatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
 		$validatorObject->expects($this->any())->method('validate')->will($this->returnValue(new Tx_Extbase_Error_Result()));
-
 		$secondValidatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
 		$secondValidatorObject->expects($this->any())->method('validate')->will($this->returnValue(new Tx_Extbase_Error_Result()));
-
 		$validatorConjunction->addValidator($validatorObject);
 		$validatorConjunction->addValidator($secondValidatorObject);
-
 		$this->assertFalse($validatorConjunction->validate('some subject')->hasErrors());
 	}
 
@@ -91,14 +82,10 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_ConjunctionValidatorTest extend
 	public function validatorConjunctionReturnsErrorsIfOneValidatorReturnsErrors() {
 		$validatorConjunction = new Tx_Extbase_Validation_Validator_ConjunctionValidator(array());
 		$validatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
-
 		$errors = new Tx_Extbase_Error_Result();
 		$errors->addError(new Tx_Extbase_Error_Error('Error', 123));
-
 		$validatorObject->expects($this->any())->method('validate')->will($this->returnValue($errors));
-
 		$validatorConjunction->addValidator($validatorObject);
-
 		$this->assertTrue($validatorConjunction->validate('some subject')->hasErrors());
 	}
 
@@ -108,15 +95,11 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_ConjunctionValidatorTest extend
 	 */
 	public function removingAValidatorOfTheValidatorConjunctionWorks() {
 		$validatorConjunction = $this->getAccessibleMock('Tx_Extbase_Validation_Validator_ConjunctionValidator', array('dummy'), array(array()), '', TRUE);
-
 		$validator1 = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
 		$validator2 = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
-
 		$validatorConjunction->addValidator($validator1);
 		$validatorConjunction->addValidator($validator2);
-
 		$validatorConjunction->removeValidator($validator1);
-
 		$this->assertFalse($validatorConjunction->_get('validators')->contains($validator1));
 		$this->assertTrue($validatorConjunction->_get('validators')->contains($validator2));
 	}
@@ -138,17 +121,14 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_ConjunctionValidatorTest extend
 	 */
 	public function countReturnesTheNumberOfValidatorsContainedInTheConjunction() {
 		$validatorConjunction = new Tx_Extbase_Validation_Validator_ConjunctionValidator(array());
-
 		$validator1 = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
 		$validator2 = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
-
 		$this->assertSame(0, count($validatorConjunction));
-
 		$validatorConjunction->addValidator($validator1);
 		$validatorConjunction->addValidator($validator2);
-
 		$this->assertSame(2, count($validatorConjunction));
 	}
+
 }
 
 ?>

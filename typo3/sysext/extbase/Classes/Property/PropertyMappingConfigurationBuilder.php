@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * This builder creates the default configuration for Property Mapping, if no configuration has been passed to the Property Mapper.
  *
@@ -35,13 +33,13 @@ class Tx_Extbase_Property_PropertyMappingConfigurationBuilder implements t3lib_S
 	 */
 	public function build($type = 'Tx_Extbase_Property_PropertyMappingConfiguration') {
 		$configuration = new $type();
-
 		$configuration->setTypeConverterOptions('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', array(
 			Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE,
 			Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED => TRUE
 		));
-
 		return $configuration;
 	}
+
 }
+
 ?>

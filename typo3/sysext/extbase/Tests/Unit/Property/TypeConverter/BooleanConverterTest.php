@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,14 +18,12 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the Boolean converter
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Extbase_Tests_Unit_Property_TypeConverter_BooleanConverterTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
-
 
 	/**
 	 * @var Tx_Extbase_Property_TypeConverter_BooleanConverter
@@ -73,5 +70,7 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_BooleanConverterTest extends 
 		$source = '1';
 		$this->assertSame(TRUE, $this->converter->convertFrom($source, 'boolean'));
 	}
+
 }
+
 ?>

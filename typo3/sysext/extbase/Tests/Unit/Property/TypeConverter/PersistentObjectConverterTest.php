@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                          *
  *                                                                        *
@@ -19,10 +18,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once (__DIR__ . '/../../Fixtures/ClassWithSetters.php');
-require_once (__DIR__ . '/../../Fixtures/ClassWithSettersAndConstructor.php');
-
+require_once __DIR__ . '/../../Fixtures/ClassWithSetters.php';
+require_once __DIR__ . '/../../Fixtures/ClassWithSettersAndConstructor.php';
 /**
  * Testcase for the String to String converter
  *
@@ -37,17 +34,17 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 	protected $converter;
 
 	protected $mockReflectionService;
+
 	protected $mockPersistenceManager;
+
 	protected $mockObjectManager;
 
 	public function setUp() {
 		$this->converter = new Tx_Extbase_Property_TypeConverter_PersistentObjectConverter();
 		$this->mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service');
 		$this->converter->injectReflectionService($this->mockReflectionService);
-
 		$this->mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
 		$this->converter->injectPersistenceManager($this->mockPersistenceManager);
-
 		$this->mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		$this->converter->injectObjectManager($this->mockObjectManager);
 	}
@@ -67,9 +64,11 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 	 */
 	public function dataProviderForCanConvert() {
 		return array(
-			array(TRUE, FALSE, TRUE), // is entity => can convert
-			array(FALSE, TRUE, TRUE), // is valueobject => can convert
-			array(FALSE, FALSE, FALSE) // is no entity and no value object => can not convert
+			array(TRUE, FALSE, TRUE),
+			// is entity => can convert
+			array(FALSE, TRUE, TRUE),
+			// is valueobject => can convert
+			array(FALSE, FALSE, FALSE)
 		);
 	}
 
@@ -84,17 +83,18 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 	public function canConvertFromReturnsTrueIfClassIsTaggedWithEntityOrValueObject($isEntity, $isValueObject, $expected) {
 		$className = uniqid('Test_Class');
 		if ($isEntity) {
-			eval("class $className extends Tx_Extbase_DomainObject_AbstractEntity {}");
+			eval("class {$className} extends Tx_Extbase_DomainObject_AbstractEntity {}");
 		} elseif ($isValueObject) {
-			eval("class $className extends Tx_Extbase_DomainObject_AbstractValueObject {}");
+			eval("class {$className} extends Tx_Extbase_DomainObject_AbstractValueObject {}");
 		} else {
-			eval("class $className {}");
+			eval("class {$className} {}");
 		}
 		$this->assertEquals($expected, $this->converter->canConvertFrom('myInputData', $className));
 	}
 
 	/**
 	 * test
+	 *
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getPropertyNamesReturnsEmptyArray() {
@@ -125,7 +125,6 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 	public function getTypeOfChildPropertyShouldUseReflectionServiceToDetermineType() {
 		$mockSchema = $this->getMockBuilder('Tx_Extbase_Reflection_ClassSchema')->disableOriginalConstructor()->getMock();
 		$this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('TheTargetType')->will($this->returnValue($mockSchema));
-
 		$mockSchema->expects($this->any())->method('hasProperty')->with('thePropertyName')->will($this->returnValue(TRUE));
 		$mockSchema->expects($this->any())->method('getProperty')->with('thePropertyName')->will($this->returnValue(array(
 			'type' => 'TheTypeOfSubObject',
@@ -141,10 +140,9 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 	 */
 	public function getTypeOfChildPropertyShouldUseConfiguredTypeIfItWasSet() {
 		$this->mockReflectionService->expects($this->never())->method('getClassSchema');
-
 		$configuration = $this->buildConfiguration(array());
-		$configuration->forProperty('thePropertyName')->setTypeConverterOption('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_TARGET_TYPE, 'Foo\Bar');
-		$this->assertEquals('Foo\Bar', $this->converter->getTypeOfChildProperty('foo', 'thePropertyName', $configuration));
+		$configuration->forProperty('thePropertyName')->setTypeConverterOption('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_TARGET_TYPE, 'Foo\\Bar');
+		$this->assertEquals('Foo\\Bar', $this->converter->getTypeOfChildProperty('foo', 'thePropertyName', $configuration));
 	}
 
 	/**
@@ -154,8 +152,6 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 	public function convertFromShouldFetchObjectFromPersistenceIfuidStringIsGiven() {
 		$identifier = '17';
 		$object = new stdClass();
-
-
 		$this->mockPersistenceManager->expects($this->once())->method('getObjectByIdentifier')->with($identifier)->will($this->returnValue($object));
 		$this->assertSame($object, $this->converter->convertFrom($identifier, 'MySpecialType'));
 	}
@@ -167,7 +163,6 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 	public function convertFromShouldFetchObjectFromPersistenceIfOnlyIdentityArrayGiven() {
 		$identifier = '12345';
 		$object = new stdClass();
-
 		$source = array(
 			'__identity' => $identifier
 		);
@@ -184,7 +179,6 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 		$identifier = '12345';
 		$object = new stdClass();
 		$object->someProperty = 'asdf';
-
 		$source = array(
 			'__identity' => $identifier,
 			'foo' => 'bar'
@@ -202,6 +196,7 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 		$configuration->setTypeConverterOptions('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', $typeConverterOptions);
 		return $configuration;
 	}
+
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -210,7 +205,6 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 		$identifier = '12345';
 		$object = new Tx_Extbase_Fixtures_ClassWithSetters();
 		$object->someProperty = 'asdf';
-
 		$source = array(
 			'__identity' => $identifier,
 			'foo' => 'bar'
@@ -219,10 +213,8 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 			'property1' => 'someConvertedValue'
 		);
 		$this->mockPersistenceManager->expects($this->once())->method('getObjectByIdentifier')->with($identifier)->will($this->returnValue($object));
-
 		$configuration = $this->buildConfiguration(array(Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED => TRUE));
 		$actual = $this->converter->convertFrom($source, 'MySpecialType', $convertedChildProperties, $configuration);
-
 		$this->assertNotSame($object, $actual, 'The object has not been cloned.');
 		$this->assertEquals('asdf', $actual->someProperty, 'The object somehow lost its current state.');
 		$this->assertEquals('someConvertedValue', $actual->property1, 'The sub properties have not been set.');
@@ -239,9 +231,7 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 		$mockClassSchema = $this->getMock('Tx_Extbase_Reflection_ClassSchema', array(), array('Dummy'));
 		$mockClassSchema->expects($this->once())->method('getIdentityProperties')->will($this->returnValue(array('key1' => 'someType')));
 		$this->mockReflectionService->expects($this->once())->method('getClassSchema')->with('SomeType')->will($this->returnValue($mockClassSchema));
-
 		$mockConstraint = $this->getMockBuilder('Tx_Extbase_Persistence_Generic_Qom_Comparison')->disableOriginalConstructor()->getMock();
-
 		$mockObject = new stdClass();
 		$mockQuery = $this->getMock('Tx_Extbase_Persistence_QueryInterface');
 		$mockQueryResult = $this->getMock('Tx_Extbase_Persistence_QueryResultInterface');
@@ -250,9 +240,7 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 		$mockQuery->expects($this->once())->method('equals')->with('key1', 'value1')->will($this->returnValue($mockConstraint));
 		$mockQuery->expects($this->once())->method('matching')->with($mockConstraint)->will($this->returnValue($mockQuery));
 		$mockQuery->expects($this->once())->method('execute')->will($this->returnValue($mockQueryResult));
-
 		$this->mockPersistenceManager->expects($this->once())->method('createQueryForType')->with('SomeType')->will($this->returnValue($mockQuery));
-
 		return $mockObject;
 	}
 
@@ -280,7 +268,6 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 		$convertedChildProperties = array(
 			'property1' => 'bar'
 		);
-
 		$this->mockObjectManager->expects($this->once())->method('create')->with('Tx_Extbase_Fixtures_ClassWithSetters')->will($this->returnValue($object));
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_Extbase_Fixtures_ClassWithSetters', '__construct')->will($this->returnValue(array()));
 		$configuration = $this->buildConfiguration(array(Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
@@ -293,25 +280,15 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 	 */
 	public function convertFromForModelWithoutConstructorCreatesObject() {
 		$className = 'Tx_Extbase_Fixtures_ClassWithSetters';
-
 		$source = array('propertyX' => 'bar');
 		$model = new $className();
 		$convertedChildProperties = array('property1' => 'bar');
-
 		$this->mockObjectManager->expects($this->once())->method('create')->with($className)->will($this->returnValue($model));
-		$configuration = $this->buildConfiguration(
-			array(Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE)
-		);
-		$reflectionException = new ReflectionException('Method ' . $className . '::__construct() does not exist');
-		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with($className, '__construct')
-			->will($this->throwException($reflectionException));
-
+		$configuration = $this->buildConfiguration(array(Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
+		$reflectionException = new ReflectionException(('Method ' . $className) . '::__construct() does not exist');
+		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with($className, '__construct')->will($this->throwException($reflectionException));
 		$result = $this->converter->convertFrom($source, $className, $convertedChildProperties, $configuration);
-
-		$this->assertSame(
-			$model,
-			$result
-		);
+		$this->assertSame($model, $result);
 	}
 
 	/**
@@ -327,7 +304,6 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 		$convertedChildProperties = array(
 			'propertyNotExisting' => 'bar'
 		);
-
 		$this->mockObjectManager->expects($this->once())->method('create')->with('Tx_Extbase_Fixtures_ClassWithSetters')->will($this->returnValue($object));
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_Extbase_Fixtures_ClassWithSetters', '__construct')->will($this->returnValue(array()));
 		$configuration = $this->buildConfiguration(array(Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
@@ -348,7 +324,6 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 			'property1' => 'param1',
 			'property2' => 'bar'
 		);
-
 		$this->mockObjectManager->expects($this->once())->method('create')->with('Tx_Extbase_Fixtures_ClassWithSettersAndConstructor', 'param1')->will($this->returnValue($object));
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_Extbase_Fixtures_ClassWithSettersAndConstructor', '__construct')->will($this->returnValue(array(
 			'property1' => array('optional' => FALSE)
@@ -368,7 +343,6 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 			'propertyX' => 'bar'
 		);
 		$object = new Tx_Extbase_Fixtures_ClassWithSettersAndConstructor('param1');
-
 		$this->mockObjectManager->expects($this->once())->method('create')->with('Tx_Extbase_Fixtures_ClassWithSettersAndConstructor', 'thisIsTheDefaultValue')->will($this->returnValue($object));
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_Extbase_Fixtures_ClassWithSettersAndConstructor', '__construct')->will($this->returnValue(array(
 			'property1' => array('optional' => TRUE, 'defaultValue' => 'thisIsTheDefaultValue')
@@ -391,7 +365,6 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 		$convertedChildProperties = array(
 			'property2' => 'bar'
 		);
-
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_Extbase_Fixtures_ClassWithSettersAndConstructor', '__construct')->will($this->returnValue(array(
 			'property1' => array('optional' => FALSE)
 		)));
@@ -399,5 +372,7 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_PersistentObjectConverterTest
 		$result = $this->converter->convertFrom($source, 'Tx_Extbase_Fixtures_ClassWithSettersAndConstructor', $convertedChildProperties, $configuration);
 		$this->assertSame($object, $result);
 	}
+
 }
+
 ?>

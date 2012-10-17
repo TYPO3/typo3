@@ -11,15 +11,14 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * The Extbase Persistence Manager interface
  *
  * @package Extbase
  * @subpackage Persistence
  */
-interface Tx_Extbase_Persistence_PersistenceManagerInterface {
-
+interface Tx_Extbase_Persistence_PersistenceManagerInterface
+{
 	/**
 	 * Commits new objects and changes to objects in the current persistence
 	 * session into the backend
@@ -79,5 +78,6 @@ interface Tx_Extbase_Persistence_PersistenceManagerInterface {
 	 * @return void
 	 */
 	public function registerRepositoryClassName($className);
+
 }
 ?>

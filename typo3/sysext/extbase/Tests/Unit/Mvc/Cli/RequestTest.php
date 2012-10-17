@@ -18,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the CLI Request class
  */
@@ -39,7 +38,6 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestTest extends Tx_Extbase_Tests_Unit_Ba
 	 */
 	public function setUp() {
 		$this->request = new Tx_Extbase_MVC_CLI_Request();
-
 		$this->mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		$this->request->injectObjectManager($this->mockObjectManager);
 	}
@@ -51,7 +49,6 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestTest extends Tx_Extbase_Tests_Unit_Ba
 	public function getCommandReturnsTheCommandObjectReflectingTheRequestInformation() {
 		$this->request->setControllerObjectName('Tx_Extbase_Command_CacheCommandController');
 		$this->request->setControllerCommandName('flush');
-
 		$this->mockObjectManager->expects($this->once())->method('get')->with('Tx_Extbase_MVC_CLI_Command', 'Tx_Extbase_Command_CacheCommandController', 'flush');
 		$this->request->getCommand();
 	}
@@ -64,12 +61,12 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestTest extends Tx_Extbase_Tests_Unit_Ba
 		$this->request->setControllerObjectName('Tx_Extbase_Command_CacheCommandController');
 		$this->request->setControllerCommandName('flush');
 		$this->request->getCommand();
-
 		$this->request->setControllerObjectName('Tx_SomeExtension_Command_BeerCommandController');
 		$this->request->setControllerCommandName('drink');
-
 		$this->mockObjectManager->expects($this->once())->method('get')->with('Tx_Extbase_MVC_CLI_Command', 'Tx_SomeExtension_Command_BeerCommandController', 'drink');
 		$this->request->getCommand();
 	}
+
 }
+
 ?>

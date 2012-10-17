@@ -21,13 +21,11 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for Tx_Extbase_Domain_Repository_BackendUserRepository.
  *
  * @author Markus Günther <mail@markus-guenther.de>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
- *
  * @package Extbase
  * @subpackage Domain\Repository
  * @api
@@ -40,12 +38,9 @@ class Tx_Extbase_Tests_Unit_Domain_Repository_BackendUserRepositoryTest extends 
 	public function initializeObjectSetsRespectStoragePidToFalse() {
 		$objectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		$fixture = new Tx_Extbase_Domain_Repository_BackendUserRepository($objectManager);
-
 		$querySettings = $this->getMock('Tx_Extbase_Persistence_Typo3QuerySettings');
 		$querySettings->expects($this->once())->method('setRespectStoragePage')->with(FALSE);
-		$objectManager->expects($this->once())->method('create')
-			->with('Tx_Extbase_Persistence_Typo3QuerySettings')->will($this->returnValue($querySettings));
-
+		$objectManager->expects($this->once())->method('create')->with('Tx_Extbase_Persistence_Typo3QuerySettings')->will($this->returnValue($querySettings));
 		$fixture->initializeObject();
 	}
 
@@ -55,18 +50,13 @@ class Tx_Extbase_Tests_Unit_Domain_Repository_BackendUserRepositoryTest extends 
 	public function initializeObjectSetsDefaultQuerySettings() {
 		$objectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		/** @var $fixture Tx_Extbase_Domain_Repository_BackendUserRepository */
-		$fixture = $this->getMock(
-			'Tx_Extbase_Domain_Repository_BackendUserRepository',
-			array('setDefaultQuerySettings'), array($objectManager)
-		);
-
+		$fixture = $this->getMock('Tx_Extbase_Domain_Repository_BackendUserRepository', array('setDefaultQuerySettings'), array($objectManager));
 		$querySettings = $this->getMock('Tx_Extbase_Persistence_Typo3QuerySettings');
-		$objectManager->expects($this->once())->method('create')
-			->with('Tx_Extbase_Persistence_Typo3QuerySettings')->will($this->returnValue($querySettings));
-
+		$objectManager->expects($this->once())->method('create')->with('Tx_Extbase_Persistence_Typo3QuerySettings')->will($this->returnValue($querySettings));
 		$fixture->expects($this->once())->method('setDefaultQuerySettings')->with($querySettings);
-
 		$fixture->initializeObject();
 	}
+
 }
+
 ?>

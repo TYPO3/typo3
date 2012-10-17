@@ -1,27 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * A column map to map a column configured in $TCA on a property of a domain object.
  *
@@ -40,7 +39,6 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	const RELATION_HAS_MANY = 'RELATION_HAS_MANY';
 	const RELATION_BELONGS_TO_MANY = 'RELATION_BELONGS_TO_MANY';
 	const RELATION_HAS_AND_BELONGS_TO_MANY = 'RELATION_HAS_AND_BELONGS_TO_MANY';
-
 	/**
 	 * Constants reflecting how the relation information is stored
 	 */
@@ -48,117 +46,115 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	const RELATION_CHILD_FOREIGN_KEY = 'RELATION_CHILD_FOREIGN_KEY';
 	const RELATION_PARENT_CSV = 'RELATION_PARENT_CSV';
 	const RELATION_INTERMEDIATE_TABLE = 'RELATION_INTERMEDIATE_TABLE';
-
 	/**
 	 * Constants reflecting the loading strategy
 	 */
 	const STRATEGY_EAGER = 'eager';
 	const STRATEGY_LAZY_PROXY = 'proxy';
 	const STRATEGY_LAZY_STORAGE = 'storage';
-	
 	/**
 	 * The property name corresponding to the table name
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $propertyName;
 
 	/**
 	 * The column name
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $columnName;
 
 	/**
 	 * The type of relation
 	 *
 	 * @var int
-	 **/
+	 */
 	protected $typeOfRelation;
 
 	/**
 	 * The name of the child's class
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $childClassName;
 
 	/**
 	 * The name of the child's table
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $childTableName;
 
 	/**
 	 * The where clause to narrow down the selected child records
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $childTableWhereStatement;
 
 	/**
 	 * The name of the field the results from the child's table are sorted by
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $childSortByFieldName;
 
 	/**
 	 * The name of the relation table
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $relationTableName;
 
 	/**
 	 * The name of the column  of the relation table holding the page id
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $relationTablePageIdColumnName;
 
 	/**
 	 * An array of field => value pairs to both insert and match against when writing/reading MM relations
 	 *
 	 * @var array
-	 **/
+	 */
 	protected $relationTableMatchFields;
 
 	/**
 	 * Array of field=>value pairs to insert when writing new MM relations
 	 *
 	 * @var array
-	 **/
+	 */
 	protected $relationTableInsertFields;
 
 	/**
 	 * The where clause to narrow down the selected relation table records
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $relationTableWhereStatement;
 
 	/**
 	 * The name of the field holding the parents key
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $parentKeyFieldName;
 
 	/**
 	 * The name of the field holding the name of the table of the parent's records
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $parentTableFieldName;
 
 	/**
 	 * The name of the field holding the children key
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $childKeyFieldName;
 
 	/**
@@ -197,7 +193,7 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	public function getColumnName() {
 		return $this->columnName;
 	}
-	
+
 	public function setChildTableName($childTableName) {
 		$this->childTableName = $childTableName;
 	}
@@ -287,4 +283,5 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	}
 
 }
+
 ?>

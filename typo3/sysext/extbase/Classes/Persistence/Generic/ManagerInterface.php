@@ -11,7 +11,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * The Extbase Persistence Manager interface
  *
@@ -19,8 +18,8 @@
  * @subpackage Persistence
  * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
  */
-interface Tx_Extbase_Persistence_ManagerInterface extends Tx_Extbase_Persistence_PersistenceManagerInterface {
-
+interface Tx_Extbase_Persistence_ManagerInterface extends Tx_Extbase_Persistence_PersistenceManagerInterface
+{
 	/**
 	 * Returns the current persistence session
 	 *
@@ -36,5 +35,6 @@ interface Tx_Extbase_Persistence_ManagerInterface extends Tx_Extbase_Persistence
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 7.0
 	 */
 	public function getBackend();
+
 }
 ?>

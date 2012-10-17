@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Concrete configuration object for the PropertyMapper.
  *
@@ -78,7 +76,7 @@ class Tx_Extbase_Property_PropertyMappingConfiguration implements Tx_Extbase_Pro
 	/**
 	 * @param string $propertyName
 	 * @return TRUE if the given propertyName should be mapped, FALSE otherwise.
-	 * @todo: extend to enable whitelisting / blacklisting of properties.
+	 * @todo : extend to enable whitelisting / blacklisting of properties.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
@@ -98,7 +96,6 @@ class Tx_Extbase_Property_PropertyMappingConfiguration implements Tx_Extbase_Pro
 		if (isset($this->subConfigurationForProperty[$propertyName])) {
 			return $this->subConfigurationForProperty[$propertyName];
 		}
-
 		return new Tx_Extbase_Property_PropertyMappingConfiguration();
 	}
 
@@ -128,7 +125,6 @@ class Tx_Extbase_Property_PropertyMappingConfiguration implements Tx_Extbase_Pro
 		if (!isset($this->configuration[$typeConverterClassName][$key])) {
 			return NULL;
 		}
-
 		return $this->configuration[$typeConverterClassName][$key];
 	}
 
@@ -147,6 +143,7 @@ class Tx_Extbase_Property_PropertyMappingConfiguration implements Tx_Extbase_Pro
 
 	/**
 	 * Set all options for the given $typeConverter.
+	 *
 	 * @param string $typeConverter class name of type converter
 	 * @param array $options
 	 * @return void
@@ -197,11 +194,10 @@ class Tx_Extbase_Property_PropertyMappingConfiguration implements Tx_Extbase_Pro
 		if (count($splittedPropertyPath) === 0) {
 			return $this;
 		}
-
 		$currentProperty = array_shift($splittedPropertyPath);
 		if (!isset($this->subConfigurationForProperty[$currentProperty])) {
 			$type = get_class($this);
-			$this->subConfigurationForProperty[$currentProperty] = new $type;
+			$this->subConfigurationForProperty[$currentProperty] = new $type();
 			$this->subConfigurationForProperty[$currentProperty]->setParent($this);
 		}
 		return $this->subConfigurationForProperty[$currentProperty]->traverseProperties($splittedPropertyPath);
@@ -227,5 +223,7 @@ class Tx_Extbase_Property_PropertyMappingConfiguration implements Tx_Extbase_Pro
 	public function setTypeConverter(Tx_Extbase_Property_TypeConverterInterface $typeConverter) {
 		$this->typeConverter = $typeConverter;
 	}
+
 }
+
 ?>

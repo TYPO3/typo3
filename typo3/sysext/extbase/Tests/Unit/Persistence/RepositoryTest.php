@@ -1,27 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Bastian Waidelich <bastian@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2010 Bastian Waidelich <bastian@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
@@ -91,10 +90,8 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	 */
 	public function addActuallyAddsAnObjectToTheInternalObjectsArray() {
 		$someObject = new stdClass();
-
 		$this->repository->_set('objectType', get_class($someObject));
 		$this->repository->add($someObject);
-
 		$this->assertTrue($this->repository->getAddedObjects()->contains($someObject));
 	}
 
@@ -105,14 +102,11 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 		$object1 = $this->getMock('Tx_Extbase_DomainObject_AbstractDomainObject');
 		$object2 = $this->getMock('Tx_Extbase_DomainObject_AbstractDomainObject');
 		$object3 = $this->getMock('Tx_Extbase_DomainObject_AbstractDomainObject');
-
 		$this->repository->_set('objectType', get_class($object1));
 		$this->repository->add($object1);
 		$this->repository->add($object2);
 		$this->repository->add($object3);
-
 		$this->repository->remove($object2);
-
 		$this->assertTrue($this->repository->getAddedObjects()->contains($object1));
 		$this->assertFalse($this->repository->getAddedObjects()->contains($object2));
 		$this->assertTrue($this->repository->getAddedObjects()->contains($object3));
@@ -125,17 +119,13 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 		$object1 = $this->getMock('Tx_Extbase_DomainObject_AbstractDomainObject');
 		$object2 = $this->getMock('Tx_Extbase_DomainObject_AbstractDomainObject');
 		$object3 = $this->getMock('Tx_Extbase_DomainObject_AbstractDomainObject');
-
 		$this->repository->_set('objectType', get_class($object1));
 		$this->repository->add($object1);
 		$this->repository->add($object2);
 		$this->repository->add($object3);
-
 		$object2->setPid(1);
 		$object3->setPid(2);
-
 		$this->repository->remove($object2);
-
 		$this->assertTrue($this->repository->getAddedObjects()->contains($object1));
 		$this->assertFalse($this->repository->getAddedObjects()->contains($object2));
 		$this->assertTrue($this->repository->getAddedObjects()->contains($object3));
@@ -149,17 +139,16 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	 */
 	public function removeRetainsObjectForObjectsNotInCurrentSession() {
 		$object = $this->getMock('Tx_Extbase_DomainObject_AbstractDomainObject');
-			// if the object is not currently add()ed, it is not new
+		// if the object is not currently add()ed, it is not new
 		$object->expects($this->once())->method('_isNew')->will($this->returnValue(FALSE));
-
 		$this->repository->_set('objectType', get_class($object));
 		$this->repository->remove($object);
-
 		$this->assertTrue($this->repository->getRemovedObjects()->contains($object));
 	}
 
 	/**
 	 * dataProvider for createQueryCallsQueryFactoryWithExpectedType
+	 *
 	 * @return array
 	 */
 	public function modelAndRepositoryClassNames() {
@@ -168,7 +157,7 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 			array('﻿_Domain_Repository_Content_PageRepository', '﻿_Domain_Model_Content_Page'),
 			array('Tx_RepositoryExample_Domain_Repository_SomeModelRepository', 'Tx_RepositoryExample_Domain_Model_SomeModel'),
 			array('Tx_RepositoryExample_Domain_Repository_RepositoryRepository', 'Tx_RepositoryExample_Domain_Model_Repository'),
-			array('Tx_Repository_Domain_Repository_RepositoryRepository', 'Tx_Repository_Domain_Model_Repository'),
+			array('Tx_Repository_Domain_Repository_RepositoryRepository', 'Tx_Repository_Domain_Model_Repository')
 		);
 	}
 
@@ -180,15 +169,14 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	 */
 	public function constructSetsObjectTypeFromClassName($repositoryClassName, $modelClassName) {
 		$mockClassName = 'MockRepository' . uniqid();
-		eval('class ' . $mockClassName . ' extends Tx_Extbase_Persistence_Repository {
+		eval(((('class ' . $mockClassName) . ' extends Tx_Extbase_Persistence_Repository {
 			protected function getRepositoryClassName() {
-				return \'' . $repositoryClassName . '\';
+				return \'') . $repositoryClassName) . '\';
 			}
 			public function _getObjectType() {
 				return $this->objectType;
 			}
 		}');
-
 		$this->repository = new $mockClassName($this->mockObjectManager);
 		$this->assertEquals($modelClassName, $this->repository->_getObjectType());
 	}
@@ -208,14 +196,11 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	public function createQueryReturnsQueryWithUnmodifiedDefaultQuerySettings() {
 		$mockQueryFactory = $this->getMock('Tx_Extbase_Persistence_QueryFactory');
 		$mockQuery = new Tx_Extbase_Persistence_Query('foo');
-
 		$mockDefaultQuerySettings = $this->getMock('Tx_Extbase_Persistence_QuerySettingsInterface');
 		$this->repository->injectQueryFactory($mockQueryFactory);
 		$this->repository->setDefaultQuerySettings($mockDefaultQuerySettings);
-
 		$mockQueryFactory->expects($this->once())->method('create')->will($this->returnValue($mockQuery));
 		$this->repository->createQuery();
-
 		$instanceQuerySettings = $mockQuery->getQuerySettings();
 		$this->assertEquals($mockDefaultQuerySettings, $instanceQuerySettings);
 		$this->assertNotSame($mockDefaultQuerySettings, $instanceQuerySettings);
@@ -237,10 +222,8 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 		$fakeUid = '123';
 		$object = new stdClass();
 		$this->repository->_set('objectType', 'someObjectType');
-
 		$this->mockIdentityMap->expects($this->once())->method('hasIdentifier')->with($fakeUid, 'someObjectType')->will($this->returnValue(TRUE));
 		$this->mockIdentityMap->expects($this->once())->method('getObjectByIdentifier')->with($fakeUid)->will($this->returnValue($object));
-
 		$expectedResult = $object;
 		$actualResult = $this->repository->findByUid($fakeUid);
 		$this->assertSame($expectedResult, $actualResult);
@@ -257,15 +240,12 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	public function replaceReplacesReconstitutedEntityByNewObject() {
 		$existingObject = $this->getMock('Tx_Extbase_DomainObject_DomainObjectInterface');
 		$newObject = $this->getMock('Tx_Extbase_DomainObject_DomainObjectInterface');
-
 		$mockBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
 		$this->mockPersistenceManager->expects($this->once())->method('getBackend')->will($this->returnValue($mockBackend));
 		$mockBackend->expects($this->once())->method('getIdentifierByObject')->with($existingObject)->will($this->returnValue('123'));
 		$mockBackend->expects($this->once())->method('replaceObject')->with($existingObject, $newObject);
-
 		$mockSession = $this->getMock('Tx_Extbase_Persistence_Session');
 		$this->mockPersistenceManager->expects($this->once())->method('getSession')->will($this->returnValue($mockSession));
-
 		$this->repository->_set('objectType', get_class($newObject));
 		$this->repository->replace($existingObject, $newObject);
 	}
@@ -282,22 +262,17 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	public function replaceRemovesReconstitutedObjectWhichIsMarkedToBeRemoved() {
 		$existingObject = $this->getMock('Tx_Extbase_DomainObject_DomainObjectInterface');
 		$newObject = $this->getMock('Tx_Extbase_DomainObject_DomainObjectInterface');
-
-		$removedObjects = new SplObjectStorage;
+		$removedObjects = new SplObjectStorage();
 		$removedObjects->attach($existingObject);
-
 		$mockBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
 		$this->mockPersistenceManager->expects($this->once())->method('getBackend')->will($this->returnValue($mockBackend));
 		$mockBackend->expects($this->once())->method('getIdentifierByObject')->with($existingObject)->will($this->returnValue('123'));
 		$mockBackend->expects($this->once())->method('replaceObject')->with($existingObject, $newObject);
-
 		$mockSession = $this->getMock('Tx_Extbase_Persistence_Session');
 		$this->mockPersistenceManager->expects($this->once())->method('getSession')->will($this->returnValue($mockSession));
-
 		$this->repository->_set('objectType', get_class($newObject));
 		$this->repository->_set('removedObjects', $removedObjects);
 		$this->repository->replace($existingObject, $newObject);
-
 		$this->assertFalse($removedObjects->contains($existingObject));
 		$this->assertTrue($removedObjects->contains($newObject));
 	}
@@ -313,22 +288,17 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	public function replaceAddsNewObjectToAddedObjects() {
 		$existingObject = $this->getMock('Tx_Extbase_DomainObject_DomainObjectInterface');
 		$newObject = $this->getMock('Tx_Extbase_DomainObject_DomainObjectInterface');
-
-		$addedObjects = new SplObjectStorage;
+		$addedObjects = new SplObjectStorage();
 		$addedObjects->attach($existingObject);
-
 		$mockBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
 		$this->mockPersistenceManager->expects($this->once())->method('getBackend')->will($this->returnValue($mockBackend));
 		$mockBackend->expects($this->once())->method('getIdentifierByObject')->with($existingObject)->will($this->returnValue(NULL));
 		$mockBackend->expects($this->never())->method('replaceObject');
-
 		$mockSession = $this->getMock('Tx_Extbase_Persistence_Session');
 		$this->mockPersistenceManager->expects($this->once())->method('getSession')->will($this->returnValue($mockSession));
-
 		$this->repository->_set('objectType', get_class($newObject));
 		$this->repository->_set('addedObjects', $addedObjects);
 		$this->repository->replace($existingObject, $newObject);
-
 		$this->assertFalse($addedObjects->contains($existingObject));
 		$this->assertTrue($addedObjects->contains($newObject));
 	}
@@ -339,7 +309,6 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	 */
 	public function replaceChecksObjectType() {
 		$this->repository->_set('objectType', 'ExpectedObjectType');
-
 		$this->repository->replace(new stdClass(), new stdClass());
 	}
 
@@ -347,10 +316,9 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	 * @test
 	 */
 	public function updateReplacesAnObjectWithTheSameUuidByTheGivenObject() {
-		$existingObject = new stdClass;
+		$existingObject = new stdClass();
 		$modifiedObject = $this->getMock('Tx_Extbase_DomainObject_DomainObjectInterface');
 		$modifiedObject->expects($this->once())->method('getUid')->will($this->returnValue('123'));
-
 		$repository = $this->getAccessibleMock('Tx_Extbase_Persistence_Repository', array('findByUid', 'replace'), array($this->mockObjectManager));
 		$repository->expects($this->once())->method('findByUid')->with('123')->will($this->returnValue($existingObject));
 		$repository->expects($this->once())->method('replace')->with($existingObject, $modifiedObject);
@@ -365,9 +333,7 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	public function updateRejectsUnknownObjects() {
 		$someObject = $this->getMock('Tx_Extbase_DomainObject_DomainObjectInterface');
 		$someObject->expects($this->once())->method('getUid')->will($this->returnValue(NULL));
-
 		$this->repository->_set('objectType', get_class($someObject));
-
 		$this->repository->update($someObject);
 	}
 
@@ -388,7 +354,6 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 		$this->mockQuery->expects($this->once())->method('equals')->with('foo', 'bar')->will($this->returnValue('matchCriteria'));
 		$this->mockQuery->expects($this->once())->method('matching')->with('matchCriteria')->will($this->returnValue($this->mockQuery));
 		$this->mockQuery->expects($this->once())->method('execute')->will($this->returnValue($mockQueryResult));
-
 		$this->assertSame($mockQueryResult, $this->repository->findByFoo('bar'));
 	}
 
@@ -403,7 +368,6 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 		$this->mockQuery->expects($this->once())->method('matching')->with('matchCriteria')->will($this->returnValue($this->mockQuery));
 		$this->mockQuery->expects($this->once())->method('setLimit')->with(1)->will($this->returnValue($this->mockQuery));
 		$this->mockQuery->expects($this->once())->method('execute')->will($this->returnValue($mockQueryResult));
-
 		$this->assertSame($object, $this->repository->findOneByFoo('bar'));
 	}
 
@@ -416,7 +380,6 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 		$this->mockQuery->expects($this->once())->method('equals')->with('foo', 'bar')->will($this->returnValue('matchCriteria'));
 		$this->mockQuery->expects($this->once())->method('matching')->with('matchCriteria')->will($this->returnValue($this->mockQuery));
 		$this->mockQuery->expects($this->once())->method('execute')->will($this->returnValue($mockQueryResult));
-
 		$this->assertSame(2, $this->repository->countByFoo('bar'));
 	}
 
@@ -434,7 +397,6 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	 */
 	public function addChecksObjectType() {
 		$this->repository->_set('objectType', 'ExpectedObjectType');
-
 		$this->repository->add(new stdClass());
 	}
 
@@ -444,9 +406,9 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	 */
 	public function removeChecksObjectType() {
 		$this->repository->_set('objectType', 'ExpectedObjectType');
-
 		$this->repository->remove(new stdClass());
 	}
 
 }
+
 ?>

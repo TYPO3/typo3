@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A mapper to map database tables configured in $TCA on domain objects.
  *
@@ -55,14 +54,14 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * A reference to the page select object providing methods to perform language and work space overlays
 	 *
 	 * @var t3lib_pageSelect
-	 **/
+	 */
 	protected $pageSelectObject;
 
 	/**
 	 * Cached data maps
 	 *
 	 * @var array
-	 **/
+	 */
 	protected $dataMaps = array();
 
 	/**
@@ -79,7 +78,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * The TYPO3 reference index object
 	 *
 	 * @var t3lib_refindex
-	 **/
+	 */
 	protected $referenceIndex;
 
 	/**
@@ -183,7 +182,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			foreach ($dataMap->getSubclasses() as $subclassName) {
 				$recordSubtype = $this->getDataMap($subclassName)->getRecordType();
 				if ($row[$dataMap->getRecordTypeColumnName()] === $recordSubtype) {
-					$targetType =  $subclassName;
+					$targetType = $subclassName;
 					break;
 				}
 			}
@@ -220,7 +219,9 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	protected function createEmptyObject($className) {
 		// Note: The class_implements() function also invokes autoload to assure that the interfaces
 		// and the class are loaded. Would end up with __PHP_Incomplete_Class without it.
-		if (!in_array('Tx_Extbase_DomainObject_DomainObjectInterface', class_implements($className))) throw new Tx_Extbase_Object_Exception_CannotReconstituteObject('Cannot create empty instance of the class "' . $className . '" because it does not implement the Tx_Extbase_DomainObject_DomainObjectInterface.', 1234386924);
+		if (!in_array('Tx_Extbase_DomainObject_DomainObjectInterface', class_implements($className))) {
+			throw new Tx_Extbase_Object_Exception_CannotReconstituteObject(('Cannot create empty instance of the class "' . $className) . '" because it does not implement the Tx_Extbase_DomainObject_DomainObjectInterface.', 1234386924);
+		}
 		$object = $this->objectManager->getEmptyObject($className);
 		return $object;
 	}
@@ -246,43 +247,44 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		}
 		$properties = $object->_getProperties();
 		foreach ($properties as $propertyName => $propertyValue) {
-			if (!$dataMap->isPersistableProperty($propertyName)) continue;
+			if (!$dataMap->isPersistableProperty($propertyName)) {
+				continue;
+			}
 			$columnMap = $dataMap->getColumnMap($propertyName);
 			$columnName = $columnMap->getColumnName();
 			$propertyData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
 			$propertyValue = NULL;
 			if ($row[$columnName] !== NULL) {
 				switch ($propertyData['type']) {
-					case 'integer':
-						$propertyValue = (int) $row[$columnName];
+				case 'integer':
+					$propertyValue = (int) $row[$columnName];
 					break;
-					case 'float':
-						$propertyValue = (float) $row[$columnName];
+				case 'float':
+					$propertyValue = (double) $row[$columnName];
 					break;
-					case 'boolean':
-						$propertyValue = (boolean) $row[$columnName];
+				case 'boolean':
+					$propertyValue = (bool) $row[$columnName];
 					break;
-					case 'string':
-						$propertyValue = (string) $row[$columnName];
+				case 'string':
+					$propertyValue = (string) $row[$columnName];
 					break;
-					case 'array':
-						// $propertyValue = $this->mapArray($row[$columnName]); // Not supported, yet!
+				case 'array':
+					// $propertyValue = $this->mapArray($row[$columnName]); // Not supported, yet!
 					break;
-					case 'SplObjectStorage':
-					case 'Tx_Extbase_Persistence_ObjectStorage':
+				case 'SplObjectStorage':
+
+				case 'Tx_Extbase_Persistence_ObjectStorage':
+					$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $this->fetchRelated($object, $propertyName, $row[$columnName]));
+					break;
+				default:
+					if ($propertyData['type'] === 'DateTime' || in_array('DateTime', class_parents($propertyData['type']))) {
+						$propertyValue = $this->mapDateTime($row[$columnName]);
+					} else {
 						$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $this->fetchRelated($object, $propertyName, $row[$columnName]));
-					break;
-					default:
-						if (($propertyData['type'] === 'DateTime') || in_array('DateTime', class_parents($propertyData['type']))) {
-							$propertyValue = $this->mapDateTime($row[$columnName]);
-						} else {
-							$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $this->fetchRelated($object, $propertyName, $row[$columnName]));
-							// $propertyValue = $this->mapToObject($row[$columnName]); // Not supported, yet!
-						}
+					}
 					break;
 				}
 			}
-
 			if ($propertyValue !== NULL) {
 				$object->_setProperty($propertyName, $propertyValue);
 			}
@@ -297,7 +299,8 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @return DateTime
 	 */
 	protected function mapDateTime($timestamp) {
-		if (empty($timestamp)) { // 0 -> NULL !!!
+		if (empty($timestamp)) {
+			// 0 -> NULL !!!
 			return NULL;
 		} else {
 			return new DateTime(date('c', $timestamp));
@@ -342,10 +345,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @return mixed
 	 */
 	protected function fetchRelatedEager(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
-		return ($fieldValue === ''
-			? $this->getEmptyRelationValue($parentObject, $propertyName)
-			: $this->getNonEmptyRelationValue($parentObject, $propertyName, $fieldValue)
-		);
+		return $fieldValue === '' ? $this->getEmptyRelationValue($parentObject, $propertyName) : $this->getNonEmptyRelationValue($parentObject, $propertyName, $fieldValue);
 	}
 
 	/**
@@ -355,7 +355,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 */
 	protected function getEmptyRelationValue(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName) {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
-		$relatesToOne = ($columnMap->getTypeOfRelation() == Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE);
+		$relatesToOne = $columnMap->getTypeOfRelation() == Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE;
 		return $relatesToOne ? NULL : array();
 	}
 
@@ -381,7 +381,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	protected function getPreparedQuery(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		$type = $this->getType(get_class($parentObject), $propertyName);
-
 		$query = $this->queryFactory->create($type);
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
@@ -413,17 +412,14 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		if ($columnMap->getParentKeyFieldName() !== NULL) {
 			$constraint = $query->equals($columnMap->getParentKeyFieldName(), $parentObject);
- 			if ($columnMap->getParentTableFieldName() !== NULL) {
- 				$constraint = $query->logicalAnd(
-					$constraint,
-					$query->equals($columnMap->getParentTableFieldName(), $this->getDataMap(get_class($parentObject))->getTableName())
-					);
- 			}
+			if ($columnMap->getParentTableFieldName() !== NULL) {
+				$constraint = $query->logicalAnd($constraint, $query->equals($columnMap->getParentTableFieldName(), $this->getDataMap(get_class($parentObject))->getTableName()));
+			}
 		} else {
 			$constraint = $query->in('uid', t3lib_div::intExplode(',', $fieldValue));
 		}
 		if (count($relationTableMatchFields) > 0) {
-			foreach($relationTableMatchFields as $relationTableMatchFieldName => $relationTableMatchFieldValue) {
+			foreach ($relationTableMatchFields as $relationTableMatchFieldName => $relationTableMatchFieldValue) {
 				$constraint = $query->logicalAnd($constraint, $query->equals($relationTableMatchFieldName, $relationTableMatchFieldValue));
 			}
 		}
@@ -443,12 +439,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$childClassName = $this->getType(get_class($parentObject), $propertyName);
 		$right = $this->qomFactory->selector($childClassName, $columnMap->getChildTableName());
 		$joinCondition = $this->qomFactory->equiJoinCondition($columnMap->getRelationTableName(), $columnMap->getChildKeyFieldName(), $columnMap->getChildTableName(), 'uid');
-		$source = $this->qomFactory->join(
-			$left,
-			$right,
-			Tx_Extbase_Persistence_QueryInterface::JCR_JOIN_TYPE_INNER,
-			$joinCondition
-			);
+		$source = $this->qomFactory->join($left, $right, Tx_Extbase_Persistence_QueryInterface::JCR_JOIN_TYPE_INNER, $joinCondition);
 		return $source;
 	}
 
@@ -472,7 +463,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				foreach ($result as $value) {
 					$objects[] = $value;
 				}
-
 				if ($propertyMetaData['type'] === 'ArrayObject') {
 					$propertyValue = new ArrayObject($objects);
 				} elseif ($propertyMetaData['type'] === 'Tx_Extbase_Persistence_ObjectStorage') {
@@ -527,11 +517,13 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @return Tx_Extbase_Persistence_Mapper_DataMap The data map
 	 */
 	public function getDataMap($className) {
-		if (!is_string($className) || strlen($className) === 0) throw new Tx_Extbase_Persistence_Exception('No class name was given to retrieve the Data Map for.', 1251315965);
+		if (!is_string($className) || strlen($className) === 0) {
+			throw new Tx_Extbase_Persistence_Exception('No class name was given to retrieve the Data Map for.', 1251315965);
+		}
 		if (!isset($this->dataMaps[$className])) {
 			$this->dataMaps[$className] = $this->dataMapFactory->buildDataMap($className);
 		}
- 		return $this->dataMaps[$className];
+		return $this->dataMaps[$className];
 	}
 
 	/**
@@ -589,4 +581,5 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	}
 
 }
+
 ?>

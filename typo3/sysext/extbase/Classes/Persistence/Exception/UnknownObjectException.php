@@ -11,7 +11,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * An "Unknown Object" exception
  *
@@ -19,6 +18,8 @@
  * @subpackage Persistence\Exception
  */
 class Tx_Extbase_Persistence_Exception_UnknownObject extends Tx_Extbase_Persistence_Exception {
+
+
 }
 
 ?>

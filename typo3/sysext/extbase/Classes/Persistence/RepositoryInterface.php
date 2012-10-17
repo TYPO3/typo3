@@ -11,7 +11,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Contract for a repository
  *
@@ -19,8 +18,8 @@
  * @subpackage Persistence
  * @api
  */
-interface Tx_Extbase_Persistence_RepositoryInterface {
-
+interface Tx_Extbase_Persistence_RepositoryInterface
+{
 	/**
 	 * Adds an object to this repository.
 	 *
@@ -111,8 +110,8 @@ interface Tx_Extbase_Persistence_RepositoryInterface {
 	 * Sets the property names to order the result by per default.
 	 * Expected like this:
 	 * array(
-	 *  'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
-	 *  'bar' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
+	 * 'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
+	 * 'bar' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
 	 * )
 	 *
 	 * @param array $defaultOrderings The property names to order by

@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,9 +18,7 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once (__DIR__ . '/../Fixtures/ClassWithSetters.php');
-
+require_once __DIR__ . '/../Fixtures/ClassWithSetters.php';
 /**
  * Testcase for the Property Mapper
  *
@@ -31,7 +28,6 @@ require_once (__DIR__ . '/../Fixtures/ClassWithSetters.php');
 class Tx_Extbase_Tests_Unit_Property_PropertyMappingConfigurationTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 *
 	 * @var Tx_Extbase_Property_PropertyMappingConfiguration
 	 */
 	protected $propertyMappingConfiguration;
@@ -85,7 +81,6 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMappingConfigurationTest extends Tx
 	public function setTypeConverterOptionsShouldOverrideAlreadySetOptions() {
 		$this->propertyMappingConfiguration->setTypeConverterOptions('someConverter', array('k1' => 'v1', 'k2' => 'v2'));
 		$this->propertyMappingConfiguration->setTypeConverterOptions('someConverter', array('k3' => 'v3'));
-
 		$this->assertEquals('v3', $this->propertyMappingConfiguration->getConfigurationValue('someConverter', 'k3'));
 		$this->assertNull($this->propertyMappingConfiguration->getConfigurationValue('someConverter', 'k2'));
 	}
@@ -97,7 +92,6 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMappingConfigurationTest extends Tx
 	public function setTypeConverterOptionShouldOverrideAlreadySetOptions() {
 		$this->propertyMappingConfiguration->setTypeConverterOptions('someConverter', array('k1' => 'v1', 'k2' => 'v2'));
 		$this->propertyMappingConfiguration->setTypeConverterOption('someConverter', 'k1', 'v3');
-
 		$this->assertEquals('v3', $this->propertyMappingConfiguration->getConfigurationValue('someConverter', 'k1'));
 		$this->assertEquals('v2', $this->propertyMappingConfiguration->getConfigurationValue('someConverter', 'k2'));
 	}
@@ -127,10 +121,8 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMappingConfigurationTest extends Tx
 	protected function buildChildConfigurationForSingleProperty() {
 		$childConfiguration = $this->propertyMappingConfiguration->forProperty('key1.key2');
 		$childConfiguration->setTypeConverterOption('someConverter', 'foo', 'specialChildConverter');
-
 		return $childConfiguration;
 	}
-
 
 	/**
 	 * @test
@@ -141,5 +133,7 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMappingConfigurationTest extends Tx
 		$this->assertEquals('k1a', $this->propertyMappingConfiguration->getTargetPropertyName('k1'));
 		$this->assertEquals('k2', $this->propertyMappingConfiguration->getTargetPropertyName('k2'));
 	}
+
 }
+
 ?>

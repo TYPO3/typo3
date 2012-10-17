@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,9 +18,7 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once('AbstractValidatorTestcase.php');
-
+require_once 'AbstractValidatorTestcase.php';
 /**
  * Testcase for the float validator
  *
@@ -44,7 +41,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_FloatValidatorTest extends Tx_E
 			array('+123.45'),
 			array('-123.45'),
 			array('123.45e3'),
-			array(123.45e3)
+			array(123450.0)
 		);
 	}
 
@@ -84,6 +81,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_FloatValidatorTest extends Tx_E
 
 	/**
 	 * test
+	 *
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function floatValidatorCreatesTheCorrectErrorForAnInvalidSubject() {

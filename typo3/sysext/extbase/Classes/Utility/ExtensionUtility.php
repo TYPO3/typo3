@@ -1,27 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Utilities to manage plugins and  modules of an extension. Also useful to auto-generate the autoloader registry
  * file ext_autoload.php.
@@ -33,11 +32,10 @@ class Tx_Extbase_Utility_Extension {
 
 	const PLUGIN_TYPE_PLUGIN = 'list_type';
 	const PLUGIN_TYPE_CONTENT_ELEMENT = 'CType';
-
 	/**
 	 * @var Tx_Extbase_Service_ExtensionService
 	 */
-	protected static $extensionService = NULL;
+	static protected $extensionService = NULL;
 
 	/**
 	 * @return string
@@ -78,19 +76,17 @@ class Tx_Extbase_Utility_Extension {
 			throw new InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
 		}
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
-		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
+		$pluginSignature = (strtolower($extensionName) . '_') . strtolower($pluginName);
 		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName])) {
 			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName] = array();
 		}
-
 		foreach ($controllerActions as $controllerName => $actionsList) {
 			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerName] = array('actions' => t3lib_div::trimExplode(',', $actionsList));
 			if (!empty($nonCacheableControllerActions[$controllerName])) {
 				$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerName]['nonCacheableActions'] = t3lib_div::trimExplode(',', $nonCacheableControllerActions[$controllerName]);
 			}
 		}
-
-		$pluginTemplate = 'plugin.tx_' . strtolower($extensionName) . ' {
+		$pluginTemplate = ('plugin.tx_' . strtolower($extensionName)) . ' {
 	settings {
 	}
 	persistence {
@@ -106,41 +102,39 @@ class Tx_Extbase_Utility_Extension {
 		defaultPid =
 	}
 }';
-		t3lib_extMgm::addTypoScript($extensionName, 'setup', '
-# Setting ' . $extensionName . ' plugin TypoScript
-' . $pluginTemplate);
-
+		t3lib_extMgm::addTypoScript($extensionName, 'setup', (('
+# Setting ' . $extensionName) . ' plugin TypoScript
+') . $pluginTemplate);
 		switch ($pluginType) {
-			case self::PLUGIN_TYPE_PLUGIN:
-				$pluginContent = trim('
-tt_content.list.20.' . $pluginSignature . ' = USER
-tt_content.list.20.' . $pluginSignature . ' {
+		case self::PLUGIN_TYPE_PLUGIN:
+			$pluginContent = trim(((((((('
+tt_content.list.20.' . $pluginSignature) . ' = USER
+tt_content.list.20.') . $pluginSignature) . ' {
 	userFunc = Tx_Extbase_Core_Bootstrap->run
-	extensionName = ' . $extensionName . '
-	pluginName = ' . $pluginName . '
+	extensionName = ') . $extensionName) . '
+	pluginName = ') . $pluginName) . '
 }');
 			break;
-			case self::PLUGIN_TYPE_CONTENT_ELEMENT:
-				$pluginContent = trim('
-tt_content.' . $pluginSignature . ' = COA
-tt_content.' . $pluginSignature . ' {
+		case self::PLUGIN_TYPE_CONTENT_ELEMENT:
+			$pluginContent = trim(((((((('
+tt_content.' . $pluginSignature) . ' = COA
+tt_content.') . $pluginSignature) . ' {
 	10 = < lib.stdheader
 	20 = USER
 	20 {
 		userFunc = Tx_Extbase_Core_Bootstrap->run
-		extensionName = ' . $extensionName . '
-		pluginName = ' . $pluginName . '
+		extensionName = ') . $extensionName) . '
+		pluginName = ') . $pluginName) . '
 	}
 }');
 			break;
-			default:
-				throw new InvalidArgumentException('The pluginType "' . $pluginType .'" is not suported', 1289858856);
+		default:
+			throw new InvalidArgumentException(('The pluginType "' . $pluginType) . '" is not suported', 1289858856);
 		}
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType'] = $pluginType;
-
-		t3lib_extMgm::addTypoScript($extensionName, 'setup', '
-# Setting ' . $extensionName . ' plugin TypoScript
-' . $pluginContent, 43);
+		t3lib_extMgm::addTypoScript($extensionName, 'setup', (('
+# Setting ' . $extensionName) . ' plugin TypoScript
+') . $pluginContent, 43);
 	}
 
 	/**
@@ -161,8 +155,7 @@ tt_content.' . $pluginSignature . ' {
 			throw new InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
 		}
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
-		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
-
+		$pluginSignature = (strtolower($extensionName) . '_') . strtolower($pluginName);
 		t3lib_extMgm::addPlugin(array($pluginTitle, $pluginSignature, $pluginIconPathAndFilename), $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType']);
 	}
 
@@ -181,21 +174,19 @@ tt_content.' . $pluginSignature . ' {
 			$iconPathAndFilename = t3lib_extMgm::extPath($extensionKey) . $relativePath;
 		}
 		// TODO: skin support
-
 		$moduleLabels = array(
 			'tabs_images' => array(
-				'tab' => $iconPathAndFilename,
+				'tab' => $iconPathAndFilename
 			),
 			'labels' => array(
 				'tablabel' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_labels_tablabel'),
-				'tabdescr' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_labels_tabdescr'),
+				'tabdescr' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_labels_tabdescr')
 			),
 			'tabs' => array(
 				'tab' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_tabs_tab')
 			)
 		);
 		$GLOBALS['LANG']->addModuleLabels($moduleLabels, $moduleSignature . '_');
-
 		return $moduleConfiguration;
 	}
 
@@ -217,50 +208,40 @@ tt_content.' . $pluginSignature . ' {
 		}
 		$extensionKey = t3lib_div::camelCaseToLowerCaseUnderscored($extensionName);
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
-
 		$defaultModuleConfiguration = array(
 			'access' => 'admin',
 			'icon' => 'EXT:extbase/ext_icon.gif',
 			'labels' => '',
 			'extRelPath' => t3lib_extMgm::extRelPath($extensionKey) . 'Classes/'
 		);
-
-		if ((strlen($mainModuleName) > 0) && !array_key_exists($mainModuleName, $GLOBALS['TBE_MODULES'])) {
+		if (strlen($mainModuleName) > 0 && !array_key_exists($mainModuleName, $GLOBALS['TBE_MODULES'])) {
 			$mainModuleName = $extensionName . t3lib_div::underscoredToUpperCamelCase($mainModuleName);
 		} else {
-			$mainModuleName = (strlen($mainModuleName) > 0) ? $mainModuleName : 'web';
+			$mainModuleName = strlen($mainModuleName) > 0 ? $mainModuleName : 'web';
 		}
-
-			// add mandatory parameter to use new pagetree
+		// add mandatory parameter to use new pagetree
 		if ($mainModuleName === 'web') {
 			$defaultModuleConfiguration['navigationComponentId'] = 'typo3-pagetree';
 		}
-
 		$moduleConfiguration = t3lib_div::array_merge_recursive_overrule($defaultModuleConfiguration, $moduleConfiguration);
-
 		$moduleSignature = $mainModuleName;
-
-		if ((strlen($subModuleName) > 0)) {
+		if (strlen($subModuleName) > 0) {
 			$subModuleName = $extensionName . t3lib_div::underscoredToUpperCamelCase($subModuleName);
 			$moduleSignature .= '_' . $subModuleName;
 		}
-
 		$moduleConfiguration['name'] = $moduleSignature;
 		$moduleConfiguration['script'] = 'mod.php?M=' . rawurlencode($moduleSignature);
 		$moduleConfiguration['extensionName'] = $extensionName;
 		$moduleConfiguration['configureModuleFunction'] = array('Tx_Extbase_Utility_Extension', 'configureModule');
-
 		$GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
-
 		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature])) {
 			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature] = array();
 		}
-		foreach($controllerActions as $controllerName => $actions) {
+		foreach ($controllerActions as $controllerName => $actions) {
 			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature]['controllers'][$controllerName] = array(
-				'actions' => t3lib_div::trimExplode(',' , $actions)
+				'actions' => t3lib_div::trimExplode(',', $actions)
 			);
 		}
-
 		t3lib_extMgm::addModule($mainModuleName, $subModuleName, $position);
 	}
 
@@ -295,21 +276,20 @@ tt_content.' . $pluginSignature . ' {
 		if ($errors) {
 			return $errors;
 		}
-		$globalPrefix = '$extensionClassesPath = t3lib_extMgm::extPath(\'' . $extensionKey . '\') . \'Classes/\';';
-
+		$globalPrefix = ('$extensionClassesPath = t3lib_extMgm::extPath(\'' . $extensionKey) . '\') . \'Classes/\';';
 		$errors = array();
 		foreach ($classNameToFileMapping as $className => $fileName) {
 			if (!(strpos($className, 'tx_' . strtolower($extensionName)) === 0)) {
-				$errors[] = $className . ' does not start with Tx_' . $extensionName . ' and was not added to the autoloader registry.';
+				$errors[] = (($className . ' does not start with Tx_') . $extensionName) . ' and was not added to the autoloader registry.';
 				unset($classNameToFileMapping[$className]);
 			}
 		}
 		$classNameToFileMapping = array_merge($classNameToFileMapping, $additionalAutoloadClasses);
 		$autoloadFileString = self::generateAutoloadPhpFileData($classNameToFileMapping, $globalPrefix);
-		if (!@file_put_contents($extensionPath . 'ext_autoload.php', $autoloadFileString)) {
-			$errors[] = '<b>' . $extensionPath . 'ext_autoload.php could not be written!</b>';
+		if (!@file_put_contents(($extensionPath . 'ext_autoload.php'), $autoloadFileString)) {
+			$errors[] = ('<b>' . $extensionPath) . 'ext_autoload.php could not be written!</b>';
 		}
-		$errors[] = 'Wrote the following data: <pre>' . htmlspecialchars($autoloadFileString) . '</pre>';
+		$errors[] = ('Wrote the following data: <pre>' . htmlspecialchars($autoloadFileString)) . '</pre>';
 		return implode('<br />', $errors);
 	}
 
@@ -325,12 +305,12 @@ tt_content.' . $pluginSignature . ' {
 	protected function generateAutoloadPhpFileData($classNameToFileMapping, $globalPrefix = '') {
 		$output = '<?php' . PHP_EOL;
 		$output .= '// DO NOT CHANGE THIS FILE! It is automatically generated by Tx_Extbase_Utility_Extension::createAutoloadRegistryForExtension.' . PHP_EOL;
-		$output .= '// This file was generated on ' . date('Y-m-d H:i') . PHP_EOL;
+		$output .= ('// This file was generated on ' . date('Y-m-d H:i')) . PHP_EOL;
 		$output .= PHP_EOL;
 		$output .= $globalPrefix . PHP_EOL;
 		$output .= 'return array(' . PHP_EOL;
 		foreach ($classNameToFileMapping as $className => $quotedFileName) {
-			$output .= '	\'' . $className . '\' => ' . $quotedFileName . ',' . PHP_EOL;
+			$output .= (((('	\'' . $className) . '\' => ') . $quotedFileName) . ',') . PHP_EOL;
 		}
 		$output .= ');' . PHP_EOL;
 		$output .= '?>';
@@ -349,10 +329,11 @@ tt_content.' . $pluginSignature . ' {
 	 */
 	static protected function buildAutoloadRegistryForSinglePath(&$classNameToFileMapping, $path, $excludeRegularExpression = '', $valueWrap = '\'|\'') {
 		$extensionFileNames = t3lib_div::removePrefixPathFromList(t3lib_div::getAllFilesAndFoldersInPath(array(), $path, 'php', FALSE, 99, $excludeRegularExpression), $path);
-
 		foreach ($extensionFileNames as $extensionFileName) {
 			$classNamesInFile = self::extractClassNames($path . $extensionFileName);
-			if (!count($classNamesInFile)) continue;
+			if (!count($classNamesInFile)) {
+				continue;
+			}
 			foreach ($classNamesInFile as $className) {
 				$classNameToFileMapping[strtolower($className)] = str_replace('|', $extensionFileName, $valueWrap);
 			}
@@ -371,7 +352,7 @@ tt_content.' . $pluginSignature . ' {
 		$classNames = array();
 		if (FALSE) {
 			$tokens = token_get_all($fileContent);
-			while(1) {
+			while (1) {
 				// look for "class" or "interface"
 				$token = self::findToken($tokens, array(T_ABSTRACT, T_CLASS, T_INTERFACE));
 				// fetch "class" token if "abstract" was found
@@ -386,7 +367,7 @@ tt_content.' . $pluginSignature . ' {
 				$token = self::findToken($tokens, array(T_STRING), array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT));
 				if ($token === false) {
 					// unexpected end of file or token: remove found names because of parse error
-					t3lib_div::sysLog('Parse error in "' . $filePath. '".', 'Core', 2);
+					t3lib_div::sysLog(('Parse error in "' . $filePath) . '".', 'Core', 2);
 					$classNames = array();
 					break;
 				}
@@ -399,7 +380,7 @@ tt_content.' . $pluginSignature . ' {
 		} else {
 			// TODO: parse PHP - skip coments and strings, apply regexp only on the remaining PHP code
 			$matches = array();
-			preg_match_all('/^[ \t]*(?:(?:abstract|final)?[ \t]*(?:class|interface))[ \t\n\r]+([a-zA-Z][a-zA-Z_0-9]*)/mS', $fileContent, $matches);
+			preg_match_all('/^[ \\t]*(?:(?:abstract|final)?[ \\t]*(?:class|interface))[ \\t\\n\\r]+([a-zA-Z][a-zA-Z_0-9]*)/mS', $fileContent, $matches);
 			$classNames = array_map('t3lib_div::strtolower', $matches[1]);
 		}
 		return $classNames;
@@ -416,7 +397,6 @@ tt_content.' . $pluginSignature . ' {
 	 */
 	static protected function findToken(array &$tokenList, array $wantedTokens, array $intermediateTokens = array()) {
 		$skipAllTokens = count($intermediateTokens) ? false : true;
-
 		$returnValue = false;
 		// Iterate with while since we need the current array position:
 		foreach ($tokenList as $token) {
@@ -424,7 +404,7 @@ tt_content.' . $pluginSignature . ' {
 			if (is_array($token)) {
 				list($id, $text) = $token;
 			} else {
-				$id = $text = $token;
+				$id = ($text = $token);
 			}
 			if (in_array($id, $wantedTokens)) {
 				$returnValue = $text;
@@ -507,6 +487,7 @@ tt_content.' . $pluginSignature . ' {
 		$extensionService = self::getExtensionService();
 		return $extensionService->getTargetPidByPlugin($extensionName, $pluginName);
 	}
+
 }
 
 ?>

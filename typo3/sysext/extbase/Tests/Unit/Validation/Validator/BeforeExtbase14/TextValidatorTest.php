@@ -1,30 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Testcase for the text validator.
  *
@@ -49,7 +48,9 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_TextValidatorTe
 	 * @test
 	 */
 	public function textValidatorAllowsTheNewLineCharacter() {
-		$sampleText = "Ierd Frot uechter mÃ¤ get, Kirmesdag Milliounen all en, sinn main StrÃ©i mÃ¤ och. \nVu dan durch jÃ©ngt grÃ©ng, ze rou Monn voll stolz. \nKe kille Minutt d'Kirmes net. Hir Wand Lann Gaas da, wÃ¤r hu Heck Gart zÃ«nter, Welt Ronn grousse der ke. Wou fond eraus Wisen am. Hu dÃ©nen d'Gaassen eng, eng am virun geplot d'LÃ«tzebuerger, get botze rÃ«scht Blieder si. Dat Dauschen schÃ©inste Milliounen fu. Ze riede mÃ©ngem Keppchen dÃ©i, si gÃ©t fergiess erwaacht, rÃ¤ich jÃ©ngt duerch en nun. GÃ«tt Gaas d'Vullen hie hu, laacht GrÃ©nge der dÃ©. Gemaacht gehÃ©iert da aus, gutt gudden d'wÃ¤iss mat wa.";
+		$sampleText = 'Ierd Frot uechter mÃ¤ get, Kirmesdag Milliounen all en, sinn main StrÃ©i mÃ¤ och.
+Vu dan durch jÃ©ngt grÃ©ng, ze rou Monn voll stolz.
+Ke kille Minutt d\'Kirmes net. Hir Wand Lann Gaas da, wÃ¤r hu Heck Gart zÃ«nter, Welt Ronn grousse der ke. Wou fond eraus Wisen am. Hu dÃ©nen d\'Gaassen eng, eng am virun geplot d\'LÃ«tzebuerger, get botze rÃ«scht Blieder si. Dat Dauschen schÃ©inste Milliounen fu. Ze riede mÃ©ngem Keppchen dÃ©i, si gÃ©t fergiess erwaacht, rÃ¤ich jÃ©ngt duerch en nun. GÃ«tt Gaas d\'Vullen hie hu, laacht GrÃ©nge der dÃ©. Gemaacht gehÃ©iert da aus, gutt gudden d\'wÃ¤iss mat wa.';
 		$textValidator = $this->getMock('Tx_Extbase_Validation_Validator_TextValidator', array('addError'), array(), '', FALSE);
 		$this->assertTrue($textValidator->isValid($sampleText));
 	}
@@ -58,7 +59,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_TextValidatorTe
 	 * @test
 	 */
 	public function textValidatorAllowsCommonSpecialCharacters() {
-		$sampleText = "3% of most people tend to use semikolae; we need to check & allow that. And hashes (#) are not evil either, nor is the sign called 'quote'.";
+		$sampleText = '3% of most people tend to use semikolae; we need to check & allow that. And hashes (#) are not evil either, nor is the sign called \'quote\'.';
 		$textValidator = $this->getMock('Tx_Extbase_Validation_Validator_TextValidator', array('addError'), array(), '', FALSE);
 		$this->assertTrue($textValidator->isValid($sampleText));
 	}
@@ -88,6 +89,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_TextValidatorTe
 		$textValidator->expects($this->once())->method('addError')->with('The given subject was not a valid text (e.g. contained XML tags).', 1221565786);
 		$textValidator->isValid('<span style="color: #BBBBBB;">a nice text</span>');
 	}
+
 }
 
 ?>

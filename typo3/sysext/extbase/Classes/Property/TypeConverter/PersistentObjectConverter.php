@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * This converter transforms arrays or strings to persistent objects. It does the following:
  *
@@ -28,9 +26,9 @@
  *
  * - If the input has an identity property and NO additional properties, we fetch the object from persistence.
  * - If the input has an identity property AND additional properties, we fetch the object from persistence,
- *   create a clone on it, and set the sub-properties. We only do this if the configuration option "CONFIGURATION_MODIFICATION_ALLOWED" is TRUE.
+ * create a clone on it, and set the sub-properties. We only do this if the configuration option "CONFIGURATION_MODIFICATION_ALLOWED" is TRUE.
  * - If the input has NO identity property, but additional properties, we create a new object and return it.
- *   However, we only do this if the configuration option "CONFIGURATION_CREATION_ALLOWED" is TRUE.
+ * However, we only do this if the configuration option "CONFIGURATION_CREATION_ALLOWED" is TRUE.
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
@@ -40,7 +38,6 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 	const CONFIGURATION_MODIFICATION_ALLOWED = 1;
 	const CONFIGURATION_CREATION_ALLOWED = 2;
 	const CONFIGURATION_TARGET_TYPE = 3;
-
 	/**
 	 * @var array
 	 */
@@ -106,7 +103,7 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 	public function canConvertFrom($source, $targetType) {
 		$isValueObject = is_subclass_of($targetType, 'Tx_Extbase_DomainObject_AbstractValueObject');
 		$isEntity = is_subclass_of($targetType, 'Tx_Extbase_DomainObject_AbstractEntity');
-		return ($isEntity || $isValueObject);
+		return $isEntity || $isValueObject;
 	}
 
 	/**
@@ -140,13 +137,12 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 		if ($configuredTargetType !== NULL) {
 			return $configuredTargetType;
 		}
-
 		$schema = $this->reflectionService->getClassSchema($targetType);
 		if (!$schema->hasProperty($propertyName)) {
-			throw new Tx_Extbase_Property_Exception_InvalidTargetException('Property "' . $propertyName . '" was not found in target object of type "' . $targetType . '".', 1297978366);
+			throw new Tx_Extbase_Property_Exception_InvalidTargetException(((('Property "' . $propertyName) . '" was not found in target object of type "') . $targetType) . '".', 1297978366);
 		}
 		$propertyInformation = $schema->getProperty($propertyName);
-		return $propertyInformation['type'] . ($propertyInformation['elementType']!==NULL ? '<' . $propertyInformation['elementType'] . '>' : '');
+		return $propertyInformation['type'] . ($propertyInformation['elementType'] !== NULL ? ('<' . $propertyInformation['elementType']) . '>' : '');
 	}
 
 	/**
@@ -170,10 +166,9 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 		foreach ($convertedChildProperties as $propertyName => $propertyValue) {
 			$result = Tx_Extbase_Reflection_ObjectAccess::setProperty($object, $propertyName, $propertyValue);
 			if ($result === FALSE) {
-				throw new Tx_Extbase_Property_Exception_InvalidTargetException('Property "' . $propertyName . '" could not be set in target object of type "' . $targetType . '".', 1297935345);
+				throw new Tx_Extbase_Property_Exception_InvalidTargetException(((('Property "' . $propertyName) . '" could not be set in target object of type "') . $targetType) . '".', 1297935345);
 			}
 		}
-
 		return $object;
 	}
 
@@ -190,14 +185,12 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 	protected function handleArrayData(array $source, $targetType, array &$convertedChildProperties, Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration = NULL) {
 		if (isset($source['__identity'])) {
 			$object = $this->fetchObjectFromPersistence($source['__identity'], $targetType);
-
 			if (count($source) > 1) {
 				if ($configuration === NULL || $configuration->getConfigurationValue('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', self::CONFIGURATION_MODIFICATION_ALLOWED) !== TRUE) {
 					throw new Tx_Extbase_Property_Exception_InvalidPropertyMappingConfigurationException('Modification of persistent objects not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_MODIFICATION_ALLOWED" to TRUE.', 1297932028);
 				}
 				$object = clone $object;
 			}
-
 			return $object;
 		} else {
 			if ($configuration === NULL || $configuration->getConfigurationValue('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', self::CONFIGURATION_CREATION_ALLOWED) !== TRUE) {
@@ -220,13 +213,11 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 		if (is_numeric($identity)) {
 			$object = $this->persistenceManager->getObjectByIdentifier($identity, $targetType);
 		} else {
-			throw new Tx_Extbase_Property_Exception_InvalidSourceException('The identity property "' . $identity . '" is no UID.', 1297931020);
+			throw new Tx_Extbase_Property_Exception_InvalidSourceException(('The identity property "' . $identity) . '" is no UID.', 1297931020);
 		}
-
 		if ($object === NULL) {
-			throw new Tx_Extbase_Property_Exception_TargetNotFoundException('Object with identity "' . print_r($identity, TRUE) . '" not found.', 1297933823);
+			throw new Tx_Extbase_Property_Exception_TargetNotFoundException(('Object with identity "' . print_r($identity, TRUE)) . '" not found.', 1297933823);
 		}
-
 		return $object;
 	}
 
@@ -248,7 +239,6 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 		} catch (ReflectionException $reflectionException) {
 			$constructorSignature = array();
 		}
-
 		$constructorArguments = array();
 		foreach ($constructorSignature as $constructorArgumentName => $constructorArgumentInformation) {
 			if (array_key_exists($constructorArgumentName, $possibleConstructorArgumentValues)) {
@@ -257,10 +247,12 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 			} elseif ($constructorArgumentInformation['optional'] === TRUE) {
 				$constructorArguments[] = $constructorArgumentInformation['defaultValue'];
 			} else {
-				throw new Tx_Extbase_Property_Exception_InvalidTargetException('Missing constructor argument "' . $constructorArgumentName . '" for object of type "' . $objectType . '".' , 1268734872);
+				throw new Tx_Extbase_Property_Exception_InvalidTargetException(((('Missing constructor argument "' . $constructorArgumentName) . '" for object of type "') . $objectType) . '".', 1268734872);
 			}
 		}
 		return call_user_func_array(array($this->objectManager, 'create'), array_merge(array($objectType), $constructorArguments));
 	}
+
 }
+
 ?>

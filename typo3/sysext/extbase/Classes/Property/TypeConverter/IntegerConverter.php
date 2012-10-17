@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Converter which transforms a simple type to an integer, by simply casting it.
  *
@@ -54,7 +52,9 @@ class Tx_Extbase_Property_TypeConverter_IntegerConverter extends Tx_Extbase_Prop
 	 * @api
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration = NULL) {
-		return (integer)$source;
+		return (int) $source;
 	}
+
 }
+
 ?>

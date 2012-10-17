@@ -1,30 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * A class schema
  *
@@ -38,7 +37,6 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 */
 	const MODELTYPE_ENTITY = 1;
 	const MODELTYPE_VALUEOBJECT = 2;
-
 	/**
 	 * Name of the class this schema is referring to
 	 *
@@ -55,6 +53,7 @@ class Tx_Extbase_Reflection_ClassSchema {
 
 	/**
 	 * Whether a repository exists for the class this schema is referring to
+	 *
 	 * @var boolean
 	 */
 	protected $aggregateRoot = FALSE;
@@ -162,7 +161,9 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setModelType($modelType) {
-		if ($modelType < self::MODELTYPE_ENTITY || $modelType > self::MODELTYPE_VALUEOBJECT) throw new InvalidArgumentException('"' . $modelType . '" is an invalid model type.', 1212519195);
+		if ($modelType < self::MODELTYPE_ENTITY || $modelType > self::MODELTYPE_VALUEOBJECT) {
+			throw new InvalidArgumentException(('"' . $modelType) . '" is an invalid model type.', 1212519195);
+		}
 		$this->modelType = $modelType;
 	}
 
@@ -219,9 +220,8 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 */
 	public function setUuidPropertyName($propertyName) {
 		if (!array_key_exists($propertyName, $this->properties)) {
-			throw new InvalidArgumentException('Property "' . $propertyName . '" must be added to the class schema before it can be marked as UUID property.', 1233863842);
+			throw new InvalidArgumentException(('Property "' . $propertyName) . '" must be added to the class schema before it can be marked as UUID property.', 1233863842);
 		}
-
 		$this->uuidPropertyName = $propertyName;
 	}
 
@@ -246,12 +246,11 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 */
 	public function markAsIdentityProperty($propertyName) {
 		if (!array_key_exists($propertyName, $this->properties)) {
-			throw new InvalidArgumentException('Property "' . $propertyName . '" must be added to the class schema before it can be marked as identity property.', 1233775407);
+			throw new InvalidArgumentException(('Property "' . $propertyName) . '" must be added to the class schema before it can be marked as identity property.', 1233775407);
 		}
 		if ($this->properties[$propertyName]['lazy'] === TRUE) {
-			throw new InvalidArgumentException('Property "' . $propertyName . '" must not be makred for lazy loading to be marked as identity property.', 1239896904);
+			throw new InvalidArgumentException(('Property "' . $propertyName) . '" must not be makred for lazy loading to be marked as identity property.', 1239896904);
 		}
-
 		$this->identityProperties[$propertyName] = $this->properties[$propertyName]['type'];
 	}
 
@@ -267,4 +266,5 @@ class Tx_Extbase_Reflection_ClassSchema {
 	}
 
 }
+
 ?>

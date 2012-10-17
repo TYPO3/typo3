@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A data map to map a single table configured in $TCA on a domain object.
  *
@@ -30,100 +29,100 @@
  * @version $ID:$
  */
 class Tx_Extbase_Persistence_Mapper_DataMap {
-	
+
 	/**
 	 * The class name
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $className;
 
 	/**
 	 * The table name corresponding to the domain class configured in $TCA
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $tableName;
 
 	/**
 	 * The record type stored in the "type" field as configured in $TCA
 	 *
 	 * @var string
-	 **/
+	 */
 	protected $recordType;
 
 	/**
 	 * The subclasses of the current class
 	 *
 	 * @var array
-	 **/
+	 */
 	protected $subclasses = array();
 
 	/**
 	 * An array of column maps configured in $TCA
 	 *
 	 * @var array
-	 **/
+	 */
 	protected $columnMaps = array();
-		
+
 	/**
 	 * @var string
-	 **/
+	 */
 	protected $pageIdColumnName;
 
 	/**
 	 * @var string
-	 **/
+	 */
 	protected $languageIdColumnName;
 
 	/**
 	 * @var string
-	 **/
+	 */
 	protected $translationOriginColumnName;
 
 	/**
 	 * @var string
-	 **/
+	 */
 	protected $modificationDateColumnName;
 
 	/**
 	 * @var string
-	 **/
+	 */
 	protected $creationDateColumnName;
 
 	/**
 	 * @var string
-	 **/
+	 */
 	protected $creatorColumnName;
 
 	/**
 	 * @var string
-	 **/
+	 */
 	protected $deletedFlagColumnName;
 
 	/**
 	 * @var string
-	 **/
+	 */
 	protected $disabledFlagColumnName;
-	
+
 	/**
 	 * @var string
-	 **/
+	 */
 	protected $startTimeColumnName;
 
 	/**
 	 * @var string
-	 **/
+	 */
 	protected $endTimeColumnName;
 
 	/**
 	 * @var string
-	 **/
+	 */
 	protected $frontendUserGroupColumnName;
 
 	/**
 	 * @var string
-	 **/
+	 */
 	protected $recordTypeColumnName;
 
 	/**
@@ -176,7 +175,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	public function getTableName() {
 		return $this->tableName;
 	}
-	
+
 	/**
 	 * Sets the record type
 	 *
@@ -195,7 +194,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	public function getRecordType() {
 		return $this->recordType;
 	}
-	
+
 	/**
 	 * Sets the subclasses
 	 *
@@ -214,7 +213,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	public function getSubclasses() {
 		return $this->subclasses;
 	}
-	
+
 	/**
 	 * Adds a given column map to the data map.
 	 *
@@ -224,7 +223,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	public function addColumnMap(Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap) {
 		$this->columnMaps[$columnMap->getPropertyName()] = $columnMap;
 	}
-	
+
 	/**
 	 * Returns the column map corresponding to the given property name.
 	 *
@@ -244,8 +243,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	public function isPersistableProperty($propertyName) {
 		return isset($this->columnMaps[$propertyName]);
 	}
-	
-	
+
 	/**
 	 * Sets the name of a column holding the page id
 	 *
@@ -255,7 +253,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	public function setPageIdColumnName($pageIdColumnName) {
 		$this->pageIdColumnName = $pageIdColumnName;
 	}
-	
+
 	/**
 	 * Sets the name of a column holding the page id
 	 *
@@ -264,45 +262,45 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	public function getPageIdColumnName() {
 		return $this->pageIdColumnName;
 	}
-	
- 	/**
- 	 * Sets the name of a column holding the language id of the record
- 	 *
- 	 * @param string $languageIdColumnName The field name
- 	 * @return void
- 	 */
- 	public function setLanguageIdColumnName($languageIdColumnName) {
- 		$this->languageIdColumnName = $languageIdColumnName;
- 	}
-		
- 	/**
- 	 * Returns the name of a column holding the language id of the record.
- 	 *
- 	 * @return string The field name
- 	 */
- 	public function getLanguageIdColumnName() {
- 		return $this->languageIdColumnName;
- 	}
-	
- 	/**
- 	 * Sets the name of a column holding the the uid of the record which this record is a translation of.
- 	 *
- 	 * @param string $translationOriginColumnName The field name
- 	 * @return void
- 	 */
- 	public function setTranslationOriginColumnName($translationOriginColumnName) {
- 		$this->translationOriginColumnName = $translationOriginColumnName;
- 	}
-		
- 	/**
- 	 * Returns the name of a column holding the the uid of the record which this record is a translation of.
- 	 *
- 	 * @return string The field name
- 	 */
- 	public function getTranslationOriginColumnName() {
- 		return $this->translationOriginColumnName;
- 	}
-	
+
+	/**
+	 * Sets the name of a column holding the language id of the record
+	 *
+	 * @param string $languageIdColumnName The field name
+	 * @return void
+	 */
+	public function setLanguageIdColumnName($languageIdColumnName) {
+		$this->languageIdColumnName = $languageIdColumnName;
+	}
+
+	/**
+	 * Returns the name of a column holding the language id of the record.
+	 *
+	 * @return string The field name
+	 */
+	public function getLanguageIdColumnName() {
+		return $this->languageIdColumnName;
+	}
+
+	/**
+	 * Sets the name of a column holding the the uid of the record which this record is a translation of.
+	 *
+	 * @param string $translationOriginColumnName The field name
+	 * @return void
+	 */
+	public function setTranslationOriginColumnName($translationOriginColumnName) {
+		$this->translationOriginColumnName = $translationOriginColumnName;
+	}
+
+	/**
+	 * Returns the name of a column holding the the uid of the record which this record is a translation of.
+	 *
+	 * @return string The field name
+	 */
+	public function getTranslationOriginColumnName() {
+		return $this->translationOriginColumnName;
+	}
+
 	/**
 	 * Sets the name of a column holding the timestamp the record was modified
 	 *
@@ -312,7 +310,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	public function setModificationDateColumnName($modificationDateColumnName) {
 		$this->modificationDateColumnName = $modificationDateColumnName;
 	}
-	
+
 	/**
 	 * Returns the name of a column holding the timestamp the record was modified
 	 *
@@ -321,7 +319,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	public function getModificationDateColumnName() {
 		return $this->modificationDateColumnName;
 	}
-	
+
 	/**
 	 * Sets the name of a column holding the creation date timestamp
 	 *
@@ -331,7 +329,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	public function setCreationDateColumnName($creationDateColumnName) {
 		$this->creationDateColumnName = $creationDateColumnName;
 	}
-	
+
 	/**
 	 * Returns the name of a column holding the creation date timestamp
 	 *
@@ -340,7 +338,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	public function getCreationDateColumnName() {
 		return $this->creationDateColumnName;
 	}
-	
+
 	/**
 	 * Sets the name of a column holding the uid of the back-end user who created this record
 	 *
@@ -369,7 +367,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	public function setDeletedFlagColumnName($deletedFlagColumnName) {
 		$this->deletedFlagColumnName = $deletedFlagColumnName;
 	}
-	
+
 	/**
 	 * Returns the name of a column indicating the 'deleted' state of the row
 	 *
@@ -378,7 +376,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	public function getDeletedFlagColumnName() {
 		return $this->deletedFlagColumnName;
 	}
-	
+
 	/**
 	 * Sets the name of a column indicating the 'hidden' state of the row
 	 *
@@ -388,7 +386,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	public function setDisabledFlagColumnName($disabledFlagColumnName) {
 		$this->disabledFlagColumnName = $disabledFlagColumnName;
 	}
-	
+
 	/**
 	 * Returns the name of a column indicating the 'hidden' state of the row
 	 *
@@ -397,7 +395,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	public function getDisabledFlagColumnName() {
 		return $this->disabledFlagColumnName;
 	}
-	
+
 	/**
 	 * Sets the name of a column holding the timestamp the record should not displayed before
 	 *
@@ -475,3 +473,5 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	}
 
 }
+
+?>

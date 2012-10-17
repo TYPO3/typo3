@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Converter which transforms simple types to a string.
  *
@@ -57,5 +55,7 @@ class Tx_Extbase_Property_TypeConverter_StringConverter extends Tx_Extbase_Prope
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration = NULL) {
 		return $source;
 	}
+
 }
+
 ?>

@@ -21,25 +21,22 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for the Tx_Extbase_Domain_Repository_CategoryRepository class.
  *
  * @package Extbase
  * @subpackage Domain\Repository
- *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class Tx_Extbase_Tests_Unit_Domain_Repository_CategoryRepositoryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+
 	/**
 	 * @var Tx_Extbase_Domain_Repository_CategoryRepository
 	 */
 	private $fixture = NULL;
 
 	protected function setUp() {
-		$this->fixture = new Tx_Extbase_Domain_Repository_CategoryRepository(
-			$this->getMock('Tx_Extbase_Object_ObjectManagerInterface')
-		);
+		$this->fixture = new Tx_Extbase_Domain_Repository_CategoryRepository($this->getMock('Tx_Extbase_Object_ObjectManagerInterface'));
 	}
 
 	protected function tearDown() {
@@ -53,13 +50,12 @@ class Tx_Extbase_Tests_Unit_Domain_Repository_CategoryRepositoryTest extends Tx_
 		/** @var $objectManager Tx_Extbase_Object_ObjectManagerInterface */
 		$objectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		$fixture = new Tx_Extbase_Domain_Repository_CategoryRepository($objectManager);
-
 		$querySettings = $this->getMock('Tx_Extbase_Persistence_Typo3QuerySettings');
 		$querySettings->expects($this->once())->method('setRespectStoragePage')->with(FALSE);
-		$objectManager->expects($this->once())->method('create')
-			->with('Tx_Extbase_Persistence_Typo3QuerySettings')->will($this->returnValue($querySettings));
-
+		$objectManager->expects($this->once())->method('create')->with('Tx_Extbase_Persistence_Typo3QuerySettings')->will($this->returnValue($querySettings));
 		$fixture->initializeObject();
 	}
+
 }
+
 ?>

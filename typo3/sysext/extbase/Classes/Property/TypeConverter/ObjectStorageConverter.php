@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Converter which transforms arrays to arrays.
  *
@@ -82,11 +80,9 @@ class Tx_Extbase_Property_TypeConverter_ObjectStorageConverter extends Tx_Extbas
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration = NULL) {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-
 		foreach ($convertedChildProperties as $subProperty) {
 			$objectStorage->attach($subProperty);
 		}
-
 		return $objectStorage;
 	}
 
@@ -100,9 +96,10 @@ class Tx_Extbase_Property_TypeConverter_ObjectStorageConverter extends Tx_Extbas
 	 * @api
 	 */
 	public function getTypeOfChildProperty($targetType, $propertyName, Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration) {
-
 		$parsedTargetType = $this->typeHandlingService->parseType($targetType);
 		return $parsedTargetType['elementType'];
 	}
+
 }
+
 ?>

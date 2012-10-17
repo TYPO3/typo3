@@ -1,27 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Christopher Hlubek <hlubek@networkteam.com>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Christopher Hlubek <hlubek@networkteam.com>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * A backport of the FLOW3 reflection service for aquiring reflection based information.
  * Most of the code is based on the FLOW3 reflection service.
@@ -123,13 +122,13 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 *
 	 * @see reflectClass()
 	 * @see getMethodReflection()
-	 *
 	 * @var boolean
 	 */
 	protected $dataCacheNeedsUpdate = FALSE;
 
 	/**
 	 * Local cache for Class schemata
+	 *
 	 * @var array
 	 */
 	protected $classSchemata = array();
@@ -188,9 +187,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		}
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$this->cacheIdentifier = 'ReflectionData_' . $frameworkConfiguration['extensionName'];
-
 		$this->loadFromCache();
-
 		$this->initialized = TRUE;
 	}
 
@@ -222,8 +219,10 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @return array An array of property names or an empty array if none exist
 	 */
 	public function getClassPropertyNames($className) {
-		if (!isset($this->reflectedClassNames[$className])) $this->reflectClass($className);
-		return (isset($this->classPropertyNames[$className])) ? $this->classPropertyNames[$className] : array();
+		if (!isset($this->reflectedClassNames[$className])) {
+			$this->reflectClass($className);
+		}
+		return isset($this->classPropertyNames[$className]) ? $this->classPropertyNames[$className] : array();
 	}
 
 	/**
@@ -240,7 +239,6 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		} else {
 			return $this->buildClassSchema($className);
 		}
-
 	}
 
 	/**
@@ -263,7 +261,6 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		return $this->methodTagsValues[$className][$methodName];
 	}
 
-
 	/**
 	 * Returns an array of parameters of the given method. Each entry contains
 	 * additional information about the parameter position, type hint etc.
@@ -276,7 +273,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		if (!isset($this->methodParameters[$className][$methodName])) {
 			$method = $this->getMethodReflection($className, $methodName);
 			$this->methodParameters[$className][$methodName] = array();
-			foreach($method->getParameters() as $parameterPosition => $parameter) {
+			foreach ($method->getParameters() as $parameterPosition => $parameter) {
 				$this->methodParameters[$className][$methodName][$parameter->getName()] = $this->convertParameterReflectionToArray($parameter, $parameterPosition, $method);
 			}
 		}
@@ -291,9 +288,13 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @return array An array of tags and their values or an empty array of no tags were found
 	 */
 	public function getPropertyTagsValues($className, $propertyName) {
-		if (!isset($this->reflectedClassNames[$className])) $this->reflectClass($className);
-		if (!isset($this->propertyTagsValues[$className])) return array();
-		return (isset($this->propertyTagsValues[$className][$propertyName])) ? $this->propertyTagsValues[$className][$propertyName] : array();
+		if (!isset($this->reflectedClassNames[$className])) {
+			$this->reflectClass($className);
+		}
+		if (!isset($this->propertyTagsValues[$className])) {
+			return array();
+		}
+		return isset($this->propertyTagsValues[$className][$propertyName]) ? $this->propertyTagsValues[$className][$propertyName] : array();
 	}
 
 	/**
@@ -307,9 +308,13 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @api
 	 */
 	public function getPropertyTagValues($className, $propertyName, $tag) {
-		if (!isset($this->reflectedClassNames[$className])) $this->reflectClass($className);
-		if (!isset($this->propertyTagsValues[$className][$propertyName])) return array();
-		return (isset($this->propertyTagsValues[$className][$propertyName][$tag])) ? $this->propertyTagsValues[$className][$propertyName][$tag] : array();
+		if (!isset($this->reflectedClassNames[$className])) {
+			$this->reflectClass($className);
+		}
+		if (!isset($this->propertyTagsValues[$className][$propertyName])) {
+			return array();
+		}
+		return isset($this->propertyTagsValues[$className][$propertyName][$tag]) ? $this->propertyTagsValues[$className][$propertyName][$tag] : array();
 	}
 
 	/**
@@ -335,9 +340,15 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @api
 	 */
 	public function isClassTaggedWith($className, $tag) {
-		if ($this->initialized === FALSE) return FALSE;
-		if (!isset($this->reflectedClassNames[$className])) $this->reflectClass($className);
-		if (!isset($this->classTagsValues[$className])) return FALSE;
+		if ($this->initialized === FALSE) {
+			return FALSE;
+		}
+		if (!isset($this->reflectedClassNames[$className])) {
+			$this->reflectClass($className);
+		}
+		if (!isset($this->classTagsValues[$className])) {
+			return FALSE;
+		}
 		return isset($this->classTagsValues[$className][$tag]);
 	}
 
@@ -352,9 +363,15 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @api
 	 */
 	public function isPropertyTaggedWith($className, $propertyName, $tag) {
-		if (!isset($this->reflectedClassNames[$className])) $this->reflectClass($className);
-		if (!isset($this->propertyTagsValues[$className])) return FALSE;
-		if (!isset($this->propertyTagsValues[$className][$propertyName])) return FALSE;
+		if (!isset($this->reflectedClassNames[$className])) {
+			$this->reflectClass($className);
+		}
+		if (!isset($this->propertyTagsValues[$className])) {
+			return FALSE;
+		}
+		if (!isset($this->propertyTagsValues[$className][$propertyName])) {
+			return FALSE;
+		}
 		return isset($this->propertyTagsValues[$className][$propertyName][$tag]);
 	}
 
@@ -367,25 +384,21 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	protected function reflectClass($className) {
 		$class = new Tx_Extbase_Reflection_ClassReflection($className);
 		$this->reflectedClassNames[$className] = time();
-
 		foreach ($class->getTagsValues() as $tag => $values) {
 			if (array_search($tag, $this->ignoredTags) === FALSE) {
 				$this->taggedClasses[$tag][] = $className;
 				$this->classTagsValues[$className][$tag] = $values;
 			}
 		}
-
 		foreach ($class->getProperties() as $property) {
 			$propertyName = $property->getName();
 			$this->classPropertyNames[$className][] = $propertyName;
-
 			foreach ($property->getTagsValues() as $tag => $values) {
 				if (array_search($tag, $this->ignoredTags) === FALSE) {
 					$this->propertyTagsValues[$className][$propertyName][$tag] = $values;
 				}
 			}
 		}
-
 		foreach ($class->getMethods() as $method) {
 			$methodName = $method->getName();
 			foreach ($method->getTagsValues() as $tag => $values) {
@@ -393,13 +406,11 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 					$this->methodTagsValues[$className][$methodName][$tag] = $values;
 				}
 			}
-
 			foreach ($method->getParameters() as $parameterPosition => $parameter) {
 				$this->methodParameters[$className][$methodName][$parameter->getName()] = $this->convertParameterReflectionToArray($parameter, $parameterPosition, $method);
 			}
 		}
 		ksort($this->reflectedClassNames);
-
 		$this->dataCacheNeedsUpdate = TRUE;
 	}
 
@@ -411,12 +422,11 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 */
 	protected function buildClassSchema($className) {
 		if (!class_exists($className)) {
-			throw new Tx_Extbase_Reflection_Exception_UnknownClass('The classname "' . $className . '" was not found and thus can not be reflected.', 1278450972);
+			throw new Tx_Extbase_Reflection_Exception_UnknownClass(('The classname "' . $className) . '" was not found and thus can not be reflected.', 1278450972);
 		}
 		$classSchema = $this->objectManager->create('Tx_Extbase_Reflection_ClassSchema', $className);
 		if (is_subclass_of($className, 'Tx_Extbase_DomainObject_AbstractEntity')) {
 			$classSchema->setModelType(Tx_Extbase_Reflection_ClassSchema::MODELTYPE_ENTITY);
-
 			$possibleRepositoryClassName = str_replace('_Model_', '_Repository_', $className) . 'Repository';
 			if (class_exists($possibleRepositoryClassName)) {
 				$classSchema->setAggregateRoot(TRUE);
@@ -426,7 +436,6 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		} else {
 			return NULL;
 		}
-
 		foreach ($this->getClassPropertyNames($className) as $propertyName) {
 			if (!$this->isPropertyTaggedWith($className, $propertyName, 'transient') && $this->isPropertyTaggedWith($className, $propertyName, 'var')) {
 				$cascadeTagValues = $this->getPropertyTagValues($className, $propertyName, 'cascade');
@@ -460,9 +469,8 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 			'optional' => $parameter->isOptional() ? TRUE : FALSE,
 			'allowsNull' => $parameter->allowsNull() ? TRUE : FALSE
 		);
-
 		$parameterClass = $parameter->getClass();
-		$parameterInformation['class'] = ($parameterClass !== NULL) ? $parameterClass->getName() : NULL;
+		$parameterInformation['class'] = $parameterClass !== NULL ? $parameterClass->getName() : NULL;
 		if ($parameter->isDefaultValueAvailable()) {
 			$parameterInformation['defaultValue'] = $parameter->getDefaultValue();
 		}
@@ -477,7 +485,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 				}
 			}
 		}
-		if (isset($parameterInformation['type']) && $parameterInformation['type']{0} === '\\') {
+		if (isset($parameterInformation['type']) && $parameterInformation['type'][0] === '\\') {
 			$parameterInformation['type'] = substr($parameterInformation['type'], 1);
 		}
 		return $parameterInformation;
@@ -507,7 +515,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		$data = $this->dataCache->get($this->cacheIdentifier);
 		if ($data !== FALSE) {
 			foreach ($data as $propertyName => $propertyValue) {
-				$this->$propertyName = $propertyValue;
+				$this->{$propertyName} = $propertyValue;
 			}
 		}
 	}
@@ -519,12 +527,8 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 */
 	protected function saveToCache() {
 		if (!is_object($this->dataCache)) {
-			throw new Tx_Extbase_Reflection_Exception(
-				'A cache must be injected before initializing the Reflection Service.',
-				1232044697
-			);
+			throw new Tx_Extbase_Reflection_Exception('A cache must be injected before initializing the Reflection Service.', 1232044697);
 		}
-
 		$data = array();
 		$propertyNames = array(
 			'reflectedClassNames',
@@ -537,10 +541,11 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 			'classSchemata'
 		);
 		foreach ($propertyNames as $propertyName) {
-			$data[$propertyName] = $this->$propertyName;
+			$data[$propertyName] = $this->{$propertyName};
 		}
 		$this->dataCache->set($this->cacheIdentifier, $data);
 	}
 
 }
+
 ?>

@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A configuration manager following the strategy pattern (GoF315). It hides the concrete
  * implementation of the configuration manager and provides an unified acccess point.
@@ -41,7 +40,7 @@ class Tx_Extbase_Configuration_ConfigurationManager implements Tx_Extbase_Config
 
 	/**
 	 * @var Tx_Extbase_Configuration_AbstractConfigurationManager
-	 **/
+	 */
 	protected $concreteConfigurationManager;
 
 	/**
@@ -103,15 +102,15 @@ class Tx_Extbase_Configuration_ConfigurationManager implements Tx_Extbase_Config
 	 */
 	public function getConfiguration($configurationType, $extensionName = NULL, $pluginName = NULL) {
 		switch ($configurationType) {
-			case self::CONFIGURATION_TYPE_SETTINGS :
-				$configuration = $this->concreteConfigurationManager->getConfiguration($extensionName, $pluginName);
-				return $configuration['settings'];
-			case self::CONFIGURATION_TYPE_FRAMEWORK :
-				return $this->concreteConfigurationManager->getConfiguration($extensionName, $pluginName);
-			case self::CONFIGURATION_TYPE_FULL_TYPOSCRIPT :
-				return $this->concreteConfigurationManager->getTypoScriptSetup();
-			default :
-				throw new Tx_Extbase_Configuration_Exception_InvalidConfigurationType('Invalid configuration type "' . $configurationType . '"', 1206031879);
+		case self::CONFIGURATION_TYPE_SETTINGS:
+			$configuration = $this->concreteConfigurationManager->getConfiguration($extensionName, $pluginName);
+			return $configuration['settings'];
+		case self::CONFIGURATION_TYPE_FRAMEWORK:
+			return $this->concreteConfigurationManager->getConfiguration($extensionName, $pluginName);
+		case self::CONFIGURATION_TYPE_FULL_TYPOSCRIPT:
+			return $this->concreteConfigurationManager->getTypoScriptSetup();
+		default:
+			throw new Tx_Extbase_Configuration_Exception_InvalidConfigurationType(('Invalid configuration type "' . $configurationType) . '"', 1206031879);
 		}
 	}
 
@@ -127,8 +126,9 @@ class Tx_Extbase_Configuration_ConfigurationManager implements Tx_Extbase_Config
 	 */
 	public function isFeatureEnabled($featureName) {
 		$configuration = $this->getConfiguration(self::CONFIGURATION_TYPE_FRAMEWORK);
-		return (boolean)(isset($configuration['features'][$featureName]) && $configuration['features'][$featureName]);
+		return (bool) (isset($configuration['features'][$featureName]) && $configuration['features'][$featureName]);
 	}
 
 }
+
 ?>

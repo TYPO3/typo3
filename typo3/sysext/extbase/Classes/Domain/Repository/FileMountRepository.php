@@ -23,16 +23,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Repository for Tx_Extbase_Domain_Model_FileMount.
  *
  * @author Markus Günther <mail@markus-guenther.de>
- *
  * @package Extbase
  * @api
  */
 class Tx_Extbase_Domain_Repository_FileMountRepository extends Tx_Extbase_Persistence_Repository {
+
 	/**
 	 * Initializes the repository.
 	 *
@@ -46,4 +45,5 @@ class Tx_Extbase_Domain_Repository_FileMountRepository extends Tx_Extbase_Persis
 	}
 
 }
+
 ?>

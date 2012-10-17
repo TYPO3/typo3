@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A file reference object (File Abstraction Layer)
  *
@@ -33,5 +32,7 @@
  */
 class Tx_Extbase_Domain_Model_FileReference extends Tx_Extbase_Domain_Model_AbstractFileFolder {
 
+
 }
+
 ?>

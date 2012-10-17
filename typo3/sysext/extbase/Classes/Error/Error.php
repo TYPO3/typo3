@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -19,10 +18,9 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
- */
 
+ */
 /**
  * An object representation of a generic error. Subclass this to create
  * more specific errors if necessary.
@@ -36,5 +34,7 @@ class Tx_Extbase_Error_Error extends Tx_Extbase_Error_Message {
 	 * @var string
 	 */
 	protected $message = 'Unknown error';
+
 }
+
 ?>

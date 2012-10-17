@@ -24,14 +24,13 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * The interface for a request handler
  *
  * @api
  */
-interface Tx_Extbase_MVC_RequestHandlerInterface {
-
+interface Tx_Extbase_MVC_RequestHandlerInterface
+{
 	/**
 	 * Handles a raw request and returns the respsonse.
 	 *
@@ -58,7 +57,5 @@ interface Tx_Extbase_MVC_RequestHandlerInterface {
 	 */
 	public function getPriority();
 
-
 }
-
 ?>

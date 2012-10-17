@@ -23,16 +23,13 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * This model represents a back-end user.
  *
  * @author Felix Kopp <felix-source@phorax.com>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
- *
  * @package Extbase
  * @subpackage Domain\Model
- *
  * @scope prototype
  * @entity
  * @api
@@ -98,7 +95,6 @@ class Tx_Extbase_Domain_Model_BackendUser extends Tx_Extbase_DomainObject_Abstra
 	 * Sets the user name.
 	 *
 	 * @param string $userName the user name to set, must not be empty
-	 *
 	 * @return void
 	 */
 	public function setUserName($userName) {
@@ -118,7 +114,6 @@ class Tx_Extbase_Domain_Model_BackendUser extends Tx_Extbase_DomainObject_Abstra
 	 * Sets whether this user should be an administrator.
 	 *
 	 * @param boolean $isAdministrator whether this user should be an administrator
-	 *
 	 * @return void
 	 */
 	public function setIsAdministrator($isAdministrator) {
@@ -138,7 +133,6 @@ class Tx_Extbase_Domain_Model_BackendUser extends Tx_Extbase_DomainObject_Abstra
 	 * Sets whether this user is disabled.
 	 *
 	 * @param boolean $isDisabled whether this user is disabled
-	 *
 	 * @return void
 	 */
 	public function setIsDisabled($isDisabled) {
@@ -158,7 +152,6 @@ class Tx_Extbase_Domain_Model_BackendUser extends Tx_Extbase_DomainObject_Abstra
 	 * Sets the point in time from which this user is enabled.
 	 *
 	 * @param \DateTime|NULL $dateAndTime the start date and time
-	 *
 	 * @return void
 	 */
 	public function setStartDateAndTime(\DateTime $dateAndTime = NULL) {
@@ -178,7 +171,6 @@ class Tx_Extbase_Domain_Model_BackendUser extends Tx_Extbase_DomainObject_Abstra
 	 * Sets the point in time before which this user is enabled.
 	 *
 	 * @param \DateTime|NULL $dateAndTime the end date and time
-	 *
 	 * @return void
 	 */
 	public function setEndDateAndTime(\DateTime $dateAndTime = NULL) {
@@ -198,7 +190,6 @@ class Tx_Extbase_Domain_Model_BackendUser extends Tx_Extbase_DomainObject_Abstra
 	 * Sets the e-mail address of this user.
 	 *
 	 * @param string $email the e-mail address, may be empty
-	 *
 	 * @return void
 	 */
 	public function setEmail($email) {
@@ -231,7 +222,7 @@ class Tx_Extbase_Domain_Model_BackendUser extends Tx_Extbase_DomainObject_Abstra
 	 * @return boolean whether this user is currently activated
 	 */
 	public function isActivated() {
-		return !$this->getIsDisabled() && $this->isActivatedViaStartDateAndTime() && $this->isActivatedViaEndDateAndTime();
+		return (!$this->getIsDisabled() && $this->isActivatedViaStartDateAndTime()) && $this->isActivatedViaEndDateAndTime();
 	}
 
 	/**
@@ -243,10 +234,8 @@ class Tx_Extbase_Domain_Model_BackendUser extends Tx_Extbase_DomainObject_Abstra
 		if ($this->getStartDateAndTime() === NULL) {
 			return TRUE;
 		}
-
 		$now = new \DateTime('now');
-
-		return ($this->getStartDateAndTime() <= $now);
+		return $this->getStartDateAndTime() <= $now;
 	}
 
 	/**
@@ -258,17 +247,14 @@ class Tx_Extbase_Domain_Model_BackendUser extends Tx_Extbase_DomainObject_Abstra
 		if ($this->getEndDateAndTime() === NULL) {
 			return TRUE;
 		}
-
 		$now = new \DateTime('now');
-
-		return ($now <= $this->getEndDateAndTime());
+		return $now <= $this->getEndDateAndTime();
 	}
 
 	/**
 	 * Sets whether the IP lock for this user is disabled.
 	 *
 	 * @param boolean $disableIpLock whether the IP lock for this user is disabled
-	 *
 	 * @return void
 	 */
 	public function setIpLockIsDisabled($disableIpLock) {
@@ -297,11 +283,12 @@ class Tx_Extbase_Domain_Model_BackendUser extends Tx_Extbase_DomainObject_Abstra
 	 * Sets this user's last login date and time.
 	 *
 	 * @param \DateTime|NULL $dateAndTime this user's last login date and time
-	 *
 	 * @return void
 	 */
 	public function setLastLoginDateAndTime(\DateTime $dateAndTime = NULL) {
 		$this->lastLoginDateAndTime = $dateAndTime;
 	}
+
 }
+
 ?>

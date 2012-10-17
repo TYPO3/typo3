@@ -1,30 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
@@ -63,12 +62,9 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	public function setUp() {
 		$this->getBackup = t3lib_div::_GET();
 		$this->postBackup = t3lib_div::_POST();
-
 		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
 		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array());
-
 		$this->extConfBackup = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase'];
-
 		$this->backendConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_BackendConfigurationManager', array('getTypoScriptSetup'));
 		$this->mockTypoScriptService = $this->getAccessibleMock('Tx_Extbase_Service_TypoScriptService');
 		$this->backendConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
@@ -95,10 +91,8 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	 */
 	public function getCurrentPageIdReturnsPageIdFromGet() {
 		t3lib_div::_GETset(array('id' => 123));
-
 		$expectedResult = 123;
 		$actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
-
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
@@ -108,10 +102,8 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	public function getCurrentPageIdReturnsPageIdFromPost() {
 		t3lib_div::_GETset(array('id' => 123));
 		$_POST['id'] = 321;
-
 		$expectedResult = 321;
 		$actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
-
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
@@ -119,25 +111,12 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	 * @test
 	 */
 	public function getCurrentPageIdReturnsPidFromFirstRootTemplateIfIdIsNotSetAndNoRootPageWasFound() {
-		$GLOBALS['TYPO3_DB']->expects($this->at(0))
-			->method('exec_SELECTgetRows')
-			->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')
-			->will($this->returnValue(array()));
-
-		$GLOBALS['TYPO3_DB']->expects($this->at(1))
-			->method('exec_SELECTgetRows')
-			->with('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1')
-			->will(
-				$this->returnValue(
-					array(
-						array('pid' => 123)
-					)
-				)
-			);
-
+		$GLOBALS['TYPO3_DB']->expects($this->at(0))->method('exec_SELECTgetRows')->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')->will($this->returnValue(array()));
+		$GLOBALS['TYPO3_DB']->expects($this->at(1))->method('exec_SELECTgetRows')->with('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1')->will($this->returnValue(array(
+			array('pid' => 123)
+		)));
 		$expectedResult = 123;
 		$actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
-
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
@@ -145,20 +124,11 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	 * @test
 	 */
 	public function getCurrentPageIdReturnsUidFromFirstRootPageIfIdIsNotSet() {
-		$GLOBALS['TYPO3_DB']->expects($this->once())
-			->method('exec_SELECTgetRows')
-			->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')
-			->will(
-				$this->returnValue(
-					array(
-						array('uid' => 321)
-					)
-				)
-			);
-
+		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_SELECTgetRows')->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')->will($this->returnValue(array(
+			array('uid' => 321)
+		)));
 		$expectedResult = 321;
 		$actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
-
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
@@ -166,19 +136,10 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	 * @test
 	 */
 	public function getCurrentPageIdReturnsDefaultStoragePidIfIdIsNotSetNoRootTemplateAndRootPageWasFound() {
-		$GLOBALS['TYPO3_DB']->expects($this->at(0))
-			->method('exec_SELECTgetRows')
-			->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')
-			->will($this->returnValue(array()));
-
-		$GLOBALS['TYPO3_DB']->expects($this->at(1))
-			->method('exec_SELECTgetRows')
-			->with('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1')
-			->will($this->returnValue(array()));
-
+		$GLOBALS['TYPO3_DB']->expects($this->at(0))->method('exec_SELECTgetRows')->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')->will($this->returnValue(array()));
+		$GLOBALS['TYPO3_DB']->expects($this->at(1))->method('exec_SELECTgetRows')->with('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1')->will($this->returnValue(array()));
 		$expectedResult = Tx_Extbase_Configuration_AbstractConfigurationManager::DEFAULT_BACKEND_STORAGE_PID;
 		$actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
-
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
@@ -208,8 +169,8 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 		);
 		$testSetup = array(
 			'module.' => array(
-				'tx_someextensionname.' => $testSettings,
-			),
+				'tx_someextensionname.' => $testSettings
+			)
 		);
 		$this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->will($this->returnValue($testSettingsConverted));
 		$this->backendConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($testSetup));
@@ -239,7 +200,7 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 		$testSetup = array(
 			'module.' => array(
 				'tx_someextensionname_somepluginname.' => $testSettings
-			),
+			)
 		);
 		$this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->will($this->returnValue($testSettingsConverted));
 		$this->backendConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($testSetup));
@@ -261,7 +222,7 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 				'foo' => 'bar',
 				'some.' => array(
 					'nested' => 'value'
-				),
+				)
 			)
 		);
 		$testExtensionSettingsConverted = array(
@@ -269,30 +230,30 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 				'foo' => 'bar',
 				'some' => array(
 					'nested' => 'value'
-				),
+				)
 			)
 		);
 		$testPluginSettings = array(
 			'settings.' => array(
 				'some.' => array(
 					'nested' => 'valueOverridde',
-					'new' => 'value',
-				),
+					'new' => 'value'
+				)
 			)
 		);
 		$testPluginSettingsConverted = array(
 			'settings' => array(
 				'some' => array(
 					'nested' => 'valueOverridde',
-					'new' => 'value',
-				),
+					'new' => 'value'
+				)
 			)
 		);
 		$testSetup = array(
 			'module.' => array(
 				'tx_someextensionname.' => $testExtensionSettings,
 				'tx_someextensionname_somepluginname.' => $testPluginSettings
-			),
+			)
 		);
 		$this->mockTypoScriptService->expects($this->at(0))->method('convertTypoScriptArrayToPlainArray')->with($testExtensionSettings)->will($this->returnValue($testExtensionSettingsConverted));
 		$this->mockTypoScriptService->expects($this->at(1))->method('convertTypoScriptArrayToPlainArray')->with($testPluginSettings)->will($this->returnValue($testPluginSettingsConverted));
@@ -303,8 +264,8 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 				'some' => array(
 					'nested' => 'valueOverridde',
 					'new' => 'value'
-				),
-			),
+				)
+			)
 		);
 		$actualResult = $this->backendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName', 'SomePluginName');
 		$this->assertEquals($expectedResult, $actualResult);
@@ -327,16 +288,18 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 		$testSwitchableControllerActions = array(
 			'Controller1' => array(
 				'actions' => array(
-					'action1', 'action2'
+					'action1',
+					'action2'
 				),
 				'nonCacheableActions' => array(
 					'action1'
-				),
+				)
 			),
 			'Controller2' => array(
 				'actions' => array(
-					'action3', 'action4'
-				),
+					'action3',
+					'action4'
+				)
 			)
 		);
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['SomeExtensionName']['modules']['SomePluginName']['controllers'] = $testSwitchableControllerActions;
@@ -354,8 +317,8 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 			'extensionName' => 'SomeExtension',
 			'foo' => array(
 				'bar' => array(
-					'baz' => 'Foo',
-				),
+					'baz' => 'Foo'
+				)
 			),
 			'mvc' => array(
 				'requestHandlers' => array(
@@ -377,17 +340,17 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 			'extensionName' => 'SomeExtension',
 			'foo' => array(
 				'bar' => array(
-					'baz' => 'Foo',
-				),
-			),
+					'baz' => 'Foo'
+				)
+			)
 		);
 		$expectedResult = array(
 			'pluginName' => 'Pi1',
 			'extensionName' => 'SomeExtension',
 			'foo' => array(
 				'bar' => array(
-					'baz' => 'Foo',
-				),
+					'baz' => 'Foo'
+				)
 			),
 			'mvc' => array(
 				'requestHandlers' => array(
@@ -399,5 +362,7 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 		$actualResult = $this->backendConfigurationManager->_call('getContextSpecificFrameworkConfiguration', $frameworkConfiguration);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
+
 }
+
 ?>

@@ -23,14 +23,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for Tx_Extbase_Domain_Model_FrontendUser.
  *
  * @author Markus Günther <mail@markus-guenther.de>
- *
  * @package Extbase
- *
  * @scope prototype
  * @entity
  * @api
@@ -54,10 +51,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	 * @test
 	 */
 	public function getUsernameInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getUsername()
-		);
+		$this->assertSame('', $this->fixture->getUsername());
 	}
 
 	/**
@@ -66,21 +60,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setUsernameSetsUsername() {
 		$username = 'don.juan';
 		$this->fixture->setUsername($username);
-
-		$this->assertSame(
-			$username,
-			$this->fixture->getUsername()
-		);
+		$this->assertSame($username, $this->fixture->getUsername());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getPasswordInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getPassword()
-		);
+		$this->assertSame('', $this->fixture->getPassword());
 	}
 
 	/**
@@ -89,11 +76,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setPasswordSetsPassword() {
 		$password = 'f00Bar';
 		$this->fixture->setPassword($password);
-
-		$this->assertSame(
-			$password,
-			$this->fixture->getPassword()
-		);
+		$this->assertSame($password, $this->fixture->getPassword());
 	}
 
 	/**
@@ -103,11 +86,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 		$usergroup = new Tx_Extbase_Persistence_ObjectStorage();
 		$usergroup->attach(new Tx_Extbase_Domain_Model_FrontendUserGroup('foo'));
 		$this->fixture->setUsergroup($usergroup);
-
-		$this->assertSame(
-			$usergroup,
-			$this->fixture->getUsergroup()
-		);
+		$this->assertSame($usergroup, $this->fixture->getUsergroup());
 	}
 
 	/**
@@ -115,7 +94,6 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	 */
 	public function addUsergroupAddsUserGroup() {
 		$usergroup = new Tx_Extbase_Domain_Model_FrontendUserGroup('foo');
-
 		$this->assertEquals(count($this->fixture->getUsergroup()), 0);
 		$this->fixture->addUsergroup($usergroup);
 		$this->assertEquals(count($this->fixture->getUsergroup()), 1);
@@ -126,7 +104,6 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	 */
 	public function removeUsergroupRemovesUsergroup() {
 		$usergroup = new Tx_Extbase_Domain_Model_FrontendUserGroup('foo');
-
 		$this->fixture->addUsergroup($usergroup);
 		$this->assertEquals(count($this->fixture->getUsergroup()), 1);
 		$this->fixture->removeUsergroup($usergroup);
@@ -137,10 +114,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	 * @test
 	 */
 	public function getNameInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getName()
-		);
+		$this->assertSame('', $this->fixture->getName());
 	}
 
 	/**
@@ -149,21 +123,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setNameSetsName() {
 		$name = 'don juan';
 		$this->fixture->setName($name);
-
-		$this->assertSame(
-			$name,
-			$this->fixture->getName()
-		);
+		$this->assertSame($name, $this->fixture->getName());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getFirstNameInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getFirstName()
-		);
+		$this->assertSame('', $this->fixture->getFirstName());
 	}
 
 	/**
@@ -172,21 +139,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setFirstNameSetsFirstName() {
 		$firstName = 'don';
 		$this->fixture->setFirstName($firstName);
-
-		$this->assertSame(
-			$firstName,
-			$this->fixture->getFirstName()
-		);
+		$this->assertSame($firstName, $this->fixture->getFirstName());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getMiddleNameInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getMiddleName()
-		);
+		$this->assertSame('', $this->fixture->getMiddleName());
 	}
 
 	/**
@@ -195,21 +155,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setMiddleNameSetsMiddleName() {
 		$middleName = 'miguel';
 		$this->fixture->setMiddleName($middleName);
-
-		$this->assertSame(
-			$middleName,
-			$this->fixture->getMiddleName()
-		);
+		$this->assertSame($middleName, $this->fixture->getMiddleName());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getLastNameInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getLastName()
-		);
+		$this->assertSame('', $this->fixture->getLastName());
 	}
 
 	/**
@@ -218,21 +171,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setLastNameSetsLastName() {
 		$lastName = 'juan';
 		$this->fixture->setLastName($lastName);
-
-		$this->assertSame(
-			$lastName,
-			$this->fixture->getLastName()
-		);
+		$this->assertSame($lastName, $this->fixture->getLastName());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getAddressInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getAddress()
-		);
+		$this->assertSame('', $this->fixture->getAddress());
 	}
 
 	/**
@@ -241,21 +187,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setAddressSetsAddress() {
 		$address = 'foobar 42, foo';
 		$this->fixture->setAddress($address);
-
-		$this->assertSame(
-			$address,
-			$this->fixture->getAddress()
-		);
+		$this->assertSame($address, $this->fixture->getAddress());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getTelephoneInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getTelephone()
-		);
+		$this->assertSame('', $this->fixture->getTelephone());
 	}
 
 	/**
@@ -264,21 +203,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setTelephoneSetsTelephone() {
 		$telephone = '42';
 		$this->fixture->setTelephone($telephone);
-
-		$this->assertSame(
-			$telephone,
-			$this->fixture->getTelephone()
-		);
+		$this->assertSame($telephone, $this->fixture->getTelephone());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getFaxInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getFax()
-		);
+		$this->assertSame('', $this->fixture->getFax());
 	}
 
 	/**
@@ -287,21 +219,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setFaxSetsFax() {
 		$fax = '42';
 		$this->fixture->setFax($fax);
-
-		$this->assertSame(
-			$fax,
-			$this->fixture->getFax()
-		);
+		$this->assertSame($fax, $this->fixture->getFax());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getEmailInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getEmail()
-		);
+		$this->assertSame('', $this->fixture->getEmail());
 	}
 
 	/**
@@ -310,21 +235,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setEmailSetsEmail() {
 		$email = 'don.juan@example.com';
 		$this->fixture->setEmail($email);
-
-		$this->assertSame(
-			$email,
-			$this->fixture->getEmail()
-		);
+		$this->assertSame($email, $this->fixture->getEmail());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getLockToDomainInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getLockToDomain()
-		);
+		$this->assertSame('', $this->fixture->getLockToDomain());
 	}
 
 	/**
@@ -333,21 +251,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setLockToDomainSetsLockToDomain() {
 		$lockToDomain = 'foo.bar';
 		$this->fixture->setLockToDomain($lockToDomain);
-
-		$this->assertSame(
-			$lockToDomain,
-			$this->fixture->getLockToDomain()
-		);
+		$this->assertSame($lockToDomain, $this->fixture->getLockToDomain());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getTitleInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getTitle()
-		);
+		$this->assertSame('', $this->fixture->getTitle());
 	}
 
 	/**
@@ -356,21 +267,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setTitleSetsTitle() {
 		$title = 'foobar';
 		$this->fixture->setTitle($title);
-
-		$this->assertSame(
-			$title,
-			$this->fixture->getTitle()
-		);
+		$this->assertSame($title, $this->fixture->getTitle());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getZipInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getZip()
-		);
+		$this->assertSame('', $this->fixture->getZip());
 	}
 
 	/**
@@ -379,21 +283,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setZipSetsZip() {
 		$zip = '42';
 		$this->fixture->setZip($zip);
-
-		$this->assertSame(
-			$zip,
-			$this->fixture->getZip()
-		);
+		$this->assertSame($zip, $this->fixture->getZip());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getCityInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getCity()
-		);
+		$this->assertSame('', $this->fixture->getCity());
 	}
 
 	/**
@@ -402,21 +299,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setCitySetsCity() {
 		$city = 'foo';
 		$this->fixture->setCity($city);
-
-		$this->assertSame(
-			$city,
-			$this->fixture->getCity()
-		);
+		$this->assertSame($city, $this->fixture->getCity());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getCountryInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getCountry()
-		);
+		$this->assertSame('', $this->fixture->getCountry());
 	}
 
 	/**
@@ -425,21 +315,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setCountrySetsCountry() {
 		$country = 'foo';
 		$this->fixture->setCountry($country);
-
-		$this->assertSame(
-			$country,
-			$this->fixture->getCountry()
-		);
+		$this->assertSame($country, $this->fixture->getCountry());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getWwwInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getWww()
-		);
+		$this->assertSame('', $this->fixture->getWww());
 	}
 
 	/**
@@ -448,21 +331,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setWwwSetsWww() {
 		$www = 'foo.bar';
 		$this->fixture->setWww($www);
-
-		$this->assertSame(
-			$www,
-			$this->fixture->getWww()
-		);
+		$this->assertSame($www, $this->fixture->getWww());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getCompanyInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getCompany()
-		);
+		$this->assertSame('', $this->fixture->getCompany());
 	}
 
 	/**
@@ -471,21 +347,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setCompanySetsCompany() {
 		$company = 'foo bar';
 		$this->fixture->setCompany($company);
-
-		$this->assertSame(
-			$company,
-			$this->fixture->getCompany()
-		);
+		$this->assertSame($company, $this->fixture->getCompany());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getImageInitiallyReturnsEmptyString() {
-		$this->assertSame(
-			'',
-			$this->fixture->getImage()
-		);
+		$this->assertSame('', $this->fixture->getImage());
 	}
 
 	/**
@@ -494,20 +363,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setImageSetsImage() {
 		$image = 'foobar.gif';
 		$this->fixture->setImage($image);
-
-		$this->assertSame(
-			$image,
-			$this->fixture->getImage()
-		);
+		$this->assertSame($image, $this->fixture->getImage());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getLastloginInitiallyReturnsNull() {
-		$this->assertNull(
-			$this->fixture->getLastlogin()
-		);
+		$this->assertNull($this->fixture->getLastlogin());
 	}
 
 	/**
@@ -516,20 +379,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setLastloginSetsLastlogin() {
 		$date = new \DateTime();
 		$this->fixture->setLastlogin($date);
-
-		$this->assertSame(
-			$date,
-			$this->fixture->getLastlogin()
-		);
+		$this->assertSame($date, $this->fixture->getLastlogin());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getIsOnlineInitiallyReturnsNull() {
-		$this->assertNull(
-			$this->fixture->getIsOnline()
-		);
+		$this->assertNull($this->fixture->getIsOnline());
 	}
 
 	/**
@@ -538,11 +395,9 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	public function setIsOnlineSetsIsOnline() {
 		$isOnline = new \DateTime();
 		$this->fixture->setIsOnline($isOnline);
-
-		$this->assertSame(
-			$isOnline,
-			$this->fixture->getIsOnline()
-		);
+		$this->assertSame($isOnline, $this->fixture->getIsOnline());
 	}
+
 }
+
 ?>

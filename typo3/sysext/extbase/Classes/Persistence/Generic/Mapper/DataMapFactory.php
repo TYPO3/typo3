@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A factory for a data map to map a single table configured in $TCA on a domain object.
  *
@@ -55,8 +54,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 	 * @var t3lib_cache_frontend_VariableFrontend
 	 */
 	protected $dataMapCache;
-
-
 
 	/**
 	 * Injects the reflection service
@@ -128,21 +125,17 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 	 */
 	protected function buildDataMapInternal($className) {
 		if (!class_exists($className)) {
-			throw new Tx_Extbase_Persistence_Exception_InvalidClass('Could not find class definition for name "' . $className . '". This could be caused by a mis-spelling of the class name in the class definition.');
+			throw new Tx_Extbase_Persistence_Exception_InvalidClass(('Could not find class definition for name "' . $className) . '". This could be caused by a mis-spelling of the class name in the class definition.');
 		}
-
 		$recordType = NULL;
 		$subclasses = array();
 		$tableName = strtolower($className);
 		$columnMapping = array();
-
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$classSettings = $frameworkConfiguration['persistence']['classes'][$className];
 		if ($classSettings !== NULL) {
 			if (isset($classSettings['subclasses']) && is_array($classSettings['subclasses'])) {
-				$subclasses = $this->resolveSubclassesRecursive(
-					$frameworkConfiguration['persistence']['classes'], $classSettings['subclasses']
-				);
+				$subclasses = $this->resolveSubclassesRecursive($frameworkConfiguration['persistence']['classes'], $classSettings['subclasses']);
 			}
 			if (isset($classSettings['mapping']['recordType']) && strlen($classSettings['mapping']['recordType']) > 0) {
 				$recordType = $classSettings['mapping']['recordType'];
@@ -158,18 +151,17 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 				$currentClassSettings = $frameworkConfiguration['persistence']['classes'][$currentClassName];
 				if ($currentClassSettings !== NULL) {
 					if (isset($currentClassSettings['mapping']['columns']) && is_array($currentClassSettings['mapping']['columns'])) {
-						$columnMapping = t3lib_div::array_merge_recursive_overrule($columnMapping, $currentClassSettings['mapping']['columns'], 0, FALSE); // FALSE means: do not include empty values form 2nd array
+						$columnMapping = t3lib_div::array_merge_recursive_overrule($columnMapping, $currentClassSettings['mapping']['columns'], 0, FALSE);
 					}
 				}
 			}
 		}
-
 		$dataMap = $this->objectManager->create('Tx_Extbase_Persistence_Mapper_DataMap', $className, $tableName, $recordType, $subclasses);
 		$dataMap = $this->addMetaDataColumnNames($dataMap, $tableName);
-
 		// $classPropertyNames = $this->reflectionService->getClassPropertyNames($className);
 		$tcaColumnsDefinition = $this->getColumnsDefinition($tableName);
-		$tcaColumnsDefinition = t3lib_div::array_merge_recursive_overrule($tcaColumnsDefinition, $columnMapping); // TODO Is this is too powerful?
+		$tcaColumnsDefinition = t3lib_div::array_merge_recursive_overrule($tcaColumnsDefinition, $columnMapping);
+		// TODO Is this is too powerful?
 		foreach ($tcaColumnsDefinition as $columnName => $columnDefinition) {
 			if (isset($columnDefinition['mapOnProperty'])) {
 				$propertyName = $columnDefinition['mapOnProperty'];
@@ -177,11 +169,10 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 				$propertyName = t3lib_div::underscoredToLowerCamelCase($columnName);
 			}
 			// if (in_array($propertyName, $classPropertyNames)) { // TODO Enable check for property existance
-				$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $propertyName);
-				$propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
-				$columnMap = $this->setRelations($columnMap, $columnDefinition['config'], $propertyMetaData);
-				$dataMap->addColumnMap($columnMap);
-			// }
+			$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $propertyName);
+			$propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
+			$columnMap = $this->setRelations($columnMap, $columnDefinition['config'], $propertyMetaData);
+			$dataMap->addColumnMap($columnMap);
 		}
 		// debug($dataMap);
 		return $dataMap;
@@ -197,15 +188,13 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 	 */
 	protected function resolveSubclassesRecursive(array $classesConfiguration, array $subclasses) {
 		$allSubclasses = array();
-
 		foreach ($subclasses as $subclass) {
 			$allSubclasses[] = $subclass;
 			if (isset($classesConfiguration[$subclass]['subclasses']) && is_array($classesConfiguration[$subclass]['subclasses'])) {
 				$childSubclasses = $this->resolveSubclassesRecursive($classesConfiguration, $classesConfiguration[$subclass]['subclasses']);
-				$allSubclasses = array_merge($allSubclasses,$childSubclasses);
+				$allSubclasses = array_merge($allSubclasses, $childSubclasses);
 			}
 		}
-
 		return $allSubclasses;
 	}
 
@@ -247,17 +236,39 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 	protected function addMetaDataColumnNames(Tx_Extbase_Persistence_Mapper_DataMap $dataMap, $tableName) {
 		$controlSection = $GLOBALS['TCA'][$tableName]['ctrl'];
 		$dataMap->setPageIdColumnName('pid');
-		if (isset($controlSection['tstamp'])) $dataMap->setModificationDateColumnName($controlSection['tstamp']);
-		if (isset($controlSection['crdate'])) $dataMap->setCreationDateColumnName($controlSection['crdate']);
-		if (isset($controlSection['cruser_id'])) $dataMap->setCreatorColumnName($controlSection['cruser_id']);
-		if (isset($controlSection['delete'])) $dataMap->setDeletedFlagColumnName($controlSection['delete']);
-		if (isset($controlSection['languageField'])) $dataMap->setLanguageIdColumnName($controlSection['languageField']);
-		if (isset($controlSection['transOrigPointerField'])) $dataMap->setTranslationOriginColumnName($controlSection['transOrigPointerField']);
-		if (isset($controlSection['type'])) $dataMap->setRecordTypeColumnName($controlSection['type']);
-		if (isset($controlSection['enablecolumns']['disabled'])) $dataMap->setDisabledFlagColumnName($controlSection['enablecolumns']['disabled']);
-		if (isset($controlSection['enablecolumns']['starttime'])) $dataMap->setStartTimeColumnName($controlSection['enablecolumns']['starttime']);
-		if (isset($controlSection['enablecolumns']['endtime'])) $dataMap->setEndTimeColumnName($controlSection['enablecolumns']['endtime']);
-		if (isset($controlSection['enablecolumns']['fe_group'])) $dataMap->setFrontEndUserGroupColumnName($controlSection['enablecolumns']['fe_group']);
+		if (isset($controlSection['tstamp'])) {
+			$dataMap->setModificationDateColumnName($controlSection['tstamp']);
+		}
+		if (isset($controlSection['crdate'])) {
+			$dataMap->setCreationDateColumnName($controlSection['crdate']);
+		}
+		if (isset($controlSection['cruser_id'])) {
+			$dataMap->setCreatorColumnName($controlSection['cruser_id']);
+		}
+		if (isset($controlSection['delete'])) {
+			$dataMap->setDeletedFlagColumnName($controlSection['delete']);
+		}
+		if (isset($controlSection['languageField'])) {
+			$dataMap->setLanguageIdColumnName($controlSection['languageField']);
+		}
+		if (isset($controlSection['transOrigPointerField'])) {
+			$dataMap->setTranslationOriginColumnName($controlSection['transOrigPointerField']);
+		}
+		if (isset($controlSection['type'])) {
+			$dataMap->setRecordTypeColumnName($controlSection['type']);
+		}
+		if (isset($controlSection['enablecolumns']['disabled'])) {
+			$dataMap->setDisabledFlagColumnName($controlSection['enablecolumns']['disabled']);
+		}
+		if (isset($controlSection['enablecolumns']['starttime'])) {
+			$dataMap->setStartTimeColumnName($controlSection['enablecolumns']['starttime']);
+		}
+		if (isset($controlSection['enablecolumns']['endtime'])) {
+			$dataMap->setEndTimeColumnName($controlSection['enablecolumns']['endtime']);
+		}
+		if (isset($controlSection['enablecolumns']['fe_group'])) {
+			$dataMap->setFrontEndUserGroupColumnName($controlSection['enablecolumns']['fe_group']);
+		}
 		return $dataMap;
 	}
 
@@ -279,7 +290,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 			} elseif (isset($propertyMetaData['type']) && strpos($propertyMetaData['type'], '_') !== FALSE) {
 				$columnMap = $this->setOneToOneRelation($columnMap, $columnConfiguration);
 			} else {
-					$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE);
+				$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE);
 			}
 		} else {
 			$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE);
@@ -371,3 +382,5 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 	}
 
 }
+
+?>

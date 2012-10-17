@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Interface for type converters, which can convert from a simple type to an object or another simple type.
  *
@@ -28,8 +26,8 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-interface Tx_Extbase_Property_TypeConverterInterface {
-
+interface Tx_Extbase_Property_TypeConverterInterface
+{
 	/**
 	 * Returns the list of source types the TypeConverter can handle.
 	 * Must be PHP simple types, classes or object is not allowed.
@@ -94,7 +92,7 @@ interface Tx_Extbase_Property_TypeConverterInterface {
 	 *
 	 * The return value can be one of three types:
 	 * - an arbitrary object, or a simple type (which has been created while mapping).
-	 *   This is the normal case.
+	 * This is the normal case.
 	 * - NULL, indicating that this object should *not* be mapped (i.e. a "File Upload" Converter could return NULL if no file has been uploaded, and a silent failure should occur.
 	 * - An instance of Tx_Extbase_Error_Error -- This will be a user-visible error message lateron.
 	 * Furthermore, it should throw an Exception if an unexpected failure occured or a configuration issue happened.
@@ -107,5 +105,6 @@ interface Tx_Extbase_Property_TypeConverterInterface {
 	 * @api
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration = NULL);
+
 }
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,9 +18,7 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once('AbstractValidatorTestcase.php');
-
+require_once 'AbstractValidatorTestcase.php';
 /**
  * Testcase for the raw validator
  *
@@ -37,13 +34,13 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_RawValidatorTest extends Tx_Ext
 	 */
 	public function theRawValidatorAlwaysReturnsNoErrors() {
 		$rawValidator = new Tx_Extbase_Validation_Validator_RawValidator(array());
-
 		$this->assertFalse($rawValidator->validate('simple1expression')->hasErrors());
 		$this->assertFalse($rawValidator->validate('')->hasErrors());
 		$this->assertFalse($rawValidator->validate(NULL)->hasErrors());
 		$this->assertFalse($rawValidator->validate(FALSE)->hasErrors());
 		$this->assertFalse($rawValidator->validate(new ArrayObject())->hasErrors());
 	}
+
 }
 
 ?>

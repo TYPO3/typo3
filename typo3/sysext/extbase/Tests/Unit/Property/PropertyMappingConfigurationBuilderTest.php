@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,9 +18,7 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once (__DIR__ . '/../Fixtures/ClassWithSetters.php');
-
+require_once __DIR__ . '/../Fixtures/ClassWithSetters.php';
 /**
  * Testcase for the Property Mapper
  *
@@ -31,7 +28,6 @@ require_once (__DIR__ . '/../Fixtures/ClassWithSetters.php');
 class Tx_Extbase_Tests_Unit_Property_PropertyMappingConfigurationBuilderTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 *
 	 * @var Tx_Extbase_Property_PropertyMappingConfigurationBuilder
 	 */
 	protected $propertyMappingConfigurationBuilder;
@@ -48,9 +44,10 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMappingConfigurationBuilderTest ext
 		$defaultConfiguration = $this->propertyMappingConfigurationBuilder->build();
 		$this->assertTrue($defaultConfiguration->getConfigurationValue('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
 		$this->assertTrue($defaultConfiguration->getConfigurationValue('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
-
 		$this->assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
 		$this->assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
 	}
+
 }
+
 ?>

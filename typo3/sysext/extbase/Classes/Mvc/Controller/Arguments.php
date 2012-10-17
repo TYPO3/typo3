@@ -1,30 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * A composite of controller arguments
  *
@@ -34,6 +33,7 @@
  * @scope prototype
  */
 class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
+
 	/**
 	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
@@ -76,8 +76,9 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 * @throws InvalidArgumentException if the argument is not a valid Controller Argument object
 	 */
 	public function offsetSet($offset, $value) {
-		if (!$value instanceof Tx_Extbase_MVC_Controller_Argument) throw new InvalidArgumentException('Controller arguments must be valid Tx_Extbase_MVC_Controller_Argument objects.', 1187953786);
-
+		if (!$value instanceof Tx_Extbase_MVC_Controller_Argument) {
+			throw new InvalidArgumentException('Controller arguments must be valid Tx_Extbase_MVC_Controller_Argument objects.', 1187953786);
+		}
 		$argumentName = $value->getName();
 		parent::offsetSet($argumentName, $value);
 		$this->argumentNames[$argumentName] = TRUE;
@@ -91,7 +92,9 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 * @throws InvalidArgumentException if the argument is not a valid Controller Argument object
 	 */
 	public function append($value) {
-		if (!$value instanceof Tx_Extbase_MVC_Controller_Argument) throw new InvalidArgumentException('Controller arguments must be valid Tx_Extbase_MVC_Controller_Argument objects.', 1187953786);
+		if (!$value instanceof Tx_Extbase_MVC_Controller_Argument) {
+			throw new InvalidArgumentException('Controller arguments must be valid Tx_Extbase_MVC_Controller_Argument objects.', 1187953786);
+		}
 		$this->offsetSet(NULL, $value);
 	}
 
@@ -104,7 +107,6 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	public function offsetUnset($offset) {
 		$translatedOffset = $this->translateToLongArgumentName($offset);
 		parent::offsetUnset($translatedOffset);
-
 		unset($this->argumentNames[$translatedOffset]);
 		if ($offset != $translatedOffset) {
 			unset($this->argumentShortNames[$offset]);
@@ -131,7 +133,9 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 */
 	public function offsetGet($offset) {
 		$translatedOffset = $this->translateToLongArgumentName($offset);
-		if ($translatedOffset === '') throw new Tx_Extbase_MVC_Exception_NoSuchArgument('The argument "' . $offset . '" does not exist.', 1216909923);
+		if ($translatedOffset === '') {
+			throw new Tx_Extbase_MVC_Exception_NoSuchArgument(('The argument "' . $offset) . '" does not exist.', 1216909923);
+		}
 		return parent::offsetGet($translatedOffset);
 	}
 
@@ -177,7 +181,9 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 * @throws Tx_Extbase_MVC_Exception_NoSuchArgument
 	 */
 	public function getArgument($argumentName) {
-		if (!$this->offsetExists($argumentName)) throw new Tx_Extbase_MVC_Exception_NoSuchArgument('An argument "' . $argumentName . '" does not exist.', 1195815178);
+		if (!$this->offsetExists($argumentName)) {
+			throw new Tx_Extbase_MVC_Exception_NoSuchArgument(('An argument "' . $argumentName) . '" does not exist.', 1195815178);
+		}
 		return $this->offsetGet($argumentName);
 	}
 
@@ -223,11 +229,11 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 * @return void
 	 */
 	public function __call($methodName, array $arguments) {
-		if (substr($methodName, 0, 3) !== 'set') throw new LogicException('Unknown method "' . $methodName . '".', 1210858451);
-
-		$firstLowerCaseArgumentName = $this->translateToLongArgumentName(strtolower($methodName{3}) . substr($methodName, 4));
+		if (substr($methodName, 0, 3) !== 'set') {
+			throw new LogicException(('Unknown method "' . $methodName) . '".', 1210858451);
+		}
+		$firstLowerCaseArgumentName = $this->translateToLongArgumentName(strtolower($methodName[3]) . substr($methodName, 4));
 		$firstUpperCaseArgumentName = $this->translateToLongArgumentName(ucfirst(substr($methodName, 3)));
-
 		if (in_array($firstLowerCaseArgumentName, $this->getArgumentNames())) {
 			$argument = parent::offsetGet($firstLowerCaseArgumentName);
 			$argument->setValue($arguments[0]);
@@ -248,10 +254,13 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 * @return string long argument name or empty string
 	 */
 	protected function translateToLongArgumentName($argumentName) {
-		if (in_array($argumentName, $this->getArgumentNames())) return $argumentName;
-
+		if (in_array($argumentName, $this->getArgumentNames())) {
+			return $argumentName;
+		}
 		foreach ($this as $argument) {
-			if ($argumentName === $argument->getShortName()) return $argument->getName();
+			if ($argumentName === $argument->getShortName()) {
+				return $argument->getName();
+			}
 		}
 		return '';
 	}
@@ -275,19 +284,16 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 */
 	public function getValidationResults() {
 		$results = new Tx_Extbase_Error_Result();
-
 		foreach ($this as $argument) {
 			$argumentValidationResults = $argument->getValidationResults();
 			if ($argumentValidationResults === NULL) {
 				continue;
 			}
-
-			$results
-				->forProperty($argument->getName())
-				->merge($argumentValidationResults);
+			$results->forProperty($argument->getName())->merge($argumentValidationResults);
 		}
-
 		return $results;
 	}
+
 }
+
 ?>

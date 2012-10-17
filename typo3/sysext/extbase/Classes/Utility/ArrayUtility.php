@@ -1,30 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * The array functions from the good old t3lib_div plus new code.
  *
@@ -160,7 +159,7 @@ class Tx_Extbase_Utility_Arrays {
 	 */
 	static public function array_reduce(array $array, $function, $initial = NULL) {
 		$accumlator = $initial;
-		foreach($array as $value) {
+		foreach ($array as $value) {
 			$accumlator = $function($accumlator, $value);
 		}
 		return $accumlator;
@@ -178,12 +177,12 @@ class Tx_Extbase_Utility_Arrays {
 		if (is_string($path)) {
 			$path = explode('.', $path);
 		} elseif (!is_array($path)) {
-			throw new \InvalidArgumentException('getValueByPath() expects $path to be string or array, "' . gettype($path) . '" given.', 1304950007);
+			throw new \InvalidArgumentException(('getValueByPath() expects $path to be string or array, "' . gettype($path)) . '" given.', 1304950007);
 		}
 		$key = array_shift($path);
 		if (isset($array[$key])) {
 			if (count($path) > 0) {
-				return (is_array($array[$key])) ? self::getValueByPath($array[$key], $path) : NULL;
+				return is_array($array[$key]) ? self::getValueByPath($array[$key], $path) : NULL;
 			} else {
 				return $array[$key];
 			}
@@ -201,13 +200,13 @@ class Tx_Extbase_Utility_Arrays {
 	 * @return array The modified array or object
 	 */
 	static public function setValueByPath($subject, $path, $value) {
-		if (!is_array($subject) && !($subject instanceof \ArrayAccess)) {
-			throw new \InvalidArgumentException('setValueByPath() expects $subject to be array or an object implementing \ArrayAccess, "' . (is_object($subject) ? get_class($subject) : gettype($subject)) . '" given.', 1306424308);
+		if (!is_array($subject) && !$subject instanceof \ArrayAccess) {
+			throw new \InvalidArgumentException(('setValueByPath() expects $subject to be array or an object implementing \\ArrayAccess, "' . (is_object($subject) ? get_class($subject) : gettype($subject))) . '" given.', 1306424308);
 		}
 		if (is_string($path)) {
 			$path = explode('.', $path);
 		} elseif (!is_array($path)) {
-			throw new \InvalidArgumentException('setValueByPath() expects $path to be string or array, "' . gettype($path) . '" given.', 1305111499);
+			throw new \InvalidArgumentException(('setValueByPath() expects $path to be string or array, "' . gettype($path)) . '" given.', 1305111499);
 		}
 		$key = array_shift($path);
 		if (count($path) === 0) {
@@ -232,7 +231,7 @@ class Tx_Extbase_Utility_Arrays {
 		if (is_string($path)) {
 			$path = explode('.', $path);
 		} elseif (!is_array($path)) {
-			throw new \InvalidArgumentException('unsetValueByPath() expects $path to be string or array, "' . gettype($path) . '" given.', 1305111513);
+			throw new \InvalidArgumentException(('unsetValueByPath() expects $path to be string or array, "' . gettype($path)) . '" given.', 1305111513);
 		}
 		$key = array_shift($path);
 		if (count($path) === 0) {
@@ -256,7 +255,7 @@ class Tx_Extbase_Utility_Arrays {
 	 * @api
 	 */
 	static public function sortKeysRecursively(array &$array, $sortFlags = NULL) {
-		foreach($array as &$value) {
+		foreach ($array as &$value) {
 			if (is_array($value)) {
 				if (self::sortKeysRecursively($value, $sortFlags) === FALSE) {
 					return FALSE;
@@ -274,10 +273,10 @@ class Tx_Extbase_Utility_Arrays {
 	 */
 	static public function convertObjectToArray($subject) {
 		if (!is_object($subject) && !is_array($subject)) {
-			throw new \InvalidArgumentException('convertObjectToArray expects either array or object as input, ' . gettype($subject) . ' given.', 1287059709);
+			throw new \InvalidArgumentException(('convertObjectToArray expects either array or object as input, ' . gettype($subject)) . ' given.', 1287059709);
 		}
 		if (is_object($subject)) {
-			$subject = (array)$subject;
+			$subject = (array) $subject;
 		}
 		foreach ($subject as $key => $value) {
 			if (is_array($value) || is_object($value)) {
@@ -307,5 +306,7 @@ class Tx_Extbase_Utility_Arrays {
 		}
 		return $result;
 	}
+
 }
+
 ?>

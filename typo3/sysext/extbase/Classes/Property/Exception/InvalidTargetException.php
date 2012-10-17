@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * An "Invalid Target" Exception
  *
@@ -28,5 +26,7 @@
  */
 class Tx_Extbase_Property_Exception_InvalidTargetException extends Tx_Extbase_Property_Exception {
 
+
 }
+
 ?>

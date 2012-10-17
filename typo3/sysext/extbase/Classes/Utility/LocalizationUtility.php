@@ -1,27 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Sebastian Kurfürst <sebastian@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Sebastian Kurfürst <sebastian@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Localization helper which should be used to fetch localized labels.
  *
@@ -35,35 +34,35 @@ class Tx_Extbase_Utility_Localization {
 	/**
 	 * @var string
 	 */
-	protected static $locallangPath = 'Resources/Private/Language/';
+	static protected $locallangPath = 'Resources/Private/Language/';
 
 	/**
 	 * Local Language content
 	 *
 	 * @var string
-	 **/
-	protected static $LOCAL_LANG = array();
+	 */
+	static protected $LOCAL_LANG = array();
 
 	/**
 	 * Local Language content charset for individual labels (overriding)
 	 *
 	 * @var string
-	 **/
-	protected static $LOCAL_LANG_charset = array();
+	 */
+	static protected $LOCAL_LANG_charset = array();
 
 	/**
 	 * Key of the language to use
 	 *
 	 * @var string
-	 **/
-	protected static $languageKey = 'default';
+	 */
+	static protected $languageKey = 'default';
 
 	/**
 	 * Pointer to alternative fall-back language to use
 	 *
 	 * @var string
-	 **/
-	protected static $alternativeLanguageKey = '';
+	 */
+	static protected $alternativeLanguageKey = '';
 
 	/**
 	 * Returns the localized label of the LOCAL_LANG key, $key.
@@ -76,11 +75,10 @@ class Tx_Extbase_Utility_Localization {
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @author Sebastian Kurfuerst <sebastian@typo3.org>
 	 * @api
-	 * @todo: If vsprintf gets a malformed string, it returns FALSE! Should we throw an exception there?
+	 * @todo : If vsprintf gets a malformed string, it returns FALSE! Should we throw an exception there?
 	 */
 	static public function translate($key, $extensionName, $arguments = NULL) {
 		$value = NULL;
-
 		if (t3lib_div::isFirstPartOfStr($key, 'LLL:')) {
 			$value = self::translateFileReference($key);
 		} else {
@@ -88,10 +86,10 @@ class Tx_Extbase_Utility_Localization {
 			// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
 			if (isset(self::$LOCAL_LANG[$extensionName][self::$languageKey][$key])) {
 				if (is_array(self::$LOCAL_LANG[$extensionName][self::$languageKey][$key])) {
-						// TYPO3 >= 4.6
+					// TYPO3 >= 4.6
 					$value = self::$LOCAL_LANG[$extensionName][self::$languageKey][$key][0]['target'];
 				} else {
-						// TYPO3 < 4.6
+					// TYPO3 < 4.6
 					$value = self::$LOCAL_LANG[$extensionName][self::$languageKey][$key];
 				}
 				if (isset(self::$LOCAL_LANG_charset[$extensionName][self::$languageKey][$key])) {
@@ -99,22 +97,22 @@ class Tx_Extbase_Utility_Localization {
 				}
 			} elseif (self::$alternativeLanguageKey !== '' && isset(self::$LOCAL_LANG[$extensionName][self::$alternativeLanguageKey][$key])) {
 				if (is_array(self::$LOCAL_LANG[$extensionName][self::$alternativeLanguageKey][$key])) {
-						// TYPO3 >= 4.6
+					// TYPO3 >= 4.6
 					$value = self::$LOCAL_LANG[$extensionName][self::$alternativeLanguageKey][$key][0]['target'];
 				} else {
-						// TYPO3 < 4.6
+					// TYPO3 < 4.6
 					$value = self::$LOCAL_LANG[$extensionName][self::$alternativeLanguageKey][$key];
 				}
 				if (isset(self::$LOCAL_LANG_charset[$extensionName][self::$alternativeLanguageKey][$key])) {
 					$value = self::convertCharset($value, self::$LOCAL_LANG_charset[$extensionName][self::$alternativeLanguageKey][$key]);
 				}
 			} elseif (isset(self::$LOCAL_LANG[$extensionName]['default'][$key])) {
-					// No charset conversion because default is English and thereby ASCII
+				// No charset conversion because default is English and thereby ASCII
 				if (is_array(self::$LOCAL_LANG[$extensionName]['default'][$key])) {
-						// TYPO3 >= 4.6
+					// TYPO3 >= 4.6
 					$value = self::$LOCAL_LANG[$extensionName]['default'][$key][0]['target'];
 				} else {
-						// TYPO3 < 4.6
+					// TYPO3 < 4.6
 					$value = self::$LOCAL_LANG[$extensionName]['default'][$key];
 				}
 			}
@@ -160,11 +158,9 @@ class Tx_Extbase_Utility_Localization {
 		if (isset(self::$LOCAL_LANG[$extensionName])) {
 			return;
 		}
-		$locallangPathAndFilename = 'EXT:' . t3lib_div::camelCaseToLowerCaseUnderscored($extensionName) . '/' . self::$locallangPath . 'locallang.xml';
-
+		$locallangPathAndFilename = ((('EXT:' . t3lib_div::camelCaseToLowerCaseUnderscored($extensionName)) . '/') . self::$locallangPath) . 'locallang.xml';
 		self::setLanguageKeys();
-
-		$renderCharset = (TYPO3_MODE === 'FE' ? $GLOBALS['TSFE']->renderCharset : $GLOBALS['LANG']->charSet);
+		$renderCharset = TYPO3_MODE === 'FE' ? $GLOBALS['TSFE']->renderCharset : $GLOBALS['LANG']->charSet;
 		self::$LOCAL_LANG[$extensionName] = t3lib_div::readLLfile($locallangPathAndFilename, self::$languageKey, $renderCharset);
 		if (self::$alternativeLanguageKey !== '') {
 			$alternativeLocalLang = t3lib_div::readLLfile($locallangPathAndFilename, self::$alternativeLanguageKey);
@@ -217,10 +213,10 @@ class Tx_Extbase_Utility_Localization {
 			if (!(is_array($labels) && isset(self::$LOCAL_LANG[$extensionName][$languageKey]))) {
 				continue;
 			}
-			foreach($labels as $labelKey => $labelValue) {
+			foreach ($labels as $labelKey => $labelValue) {
 				if (is_string($labelValue)) {
 					self::$LOCAL_LANG[$extensionName][$languageKey][$labelKey] = $labelValue;
-						// For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset" and if that is not set, assumed to be that of the individual system languages
+					// For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset" and if that is not set, assumed to be that of the individual system languages
 					if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) && strlen($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) > 0) {
 						self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
 					} elseif (is_object($GLOBALS['LANG'])) {
@@ -251,9 +247,8 @@ class Tx_Extbase_Utility_Localization {
 		$result = array();
 		foreach ($labelValues as $key => $labelValue) {
 			if (!empty($parentKey)) {
-				$key = $parentKey . '.' . $key;
+				$key = ($parentKey . '.') . $key;
 			}
-
 			if (is_array($labelValue)) {
 				$labelValue = self::flattenTypoScriptLabelArray($labelValue, $key);
 				$result = array_merge($result, $labelValue);
@@ -280,5 +275,7 @@ class Tx_Extbase_Utility_Localization {
 			return $convertedValue !== NULL ? $convertedValue : $value;
 		}
 	}
+
 }
+
 ?>
