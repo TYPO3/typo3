@@ -332,7 +332,7 @@ div.typo3-TCEforms-suggest-indicator {
 div.typo3-TCEforms-suggest-choices {
 	position: absolute;
 	width: 250px;
-	z-index: 1;
+	z-index: 4000;
 }
 
 div.typo3-TCEforms-suggest-choices ul {
