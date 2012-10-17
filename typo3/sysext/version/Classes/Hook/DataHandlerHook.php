@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Version\Hook;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +32,7 @@
  * Contains some parts for staging, versioning and workspaces
  * to interact with the TYPO3 Core Engine
  */
-class tx_version_tcemain {
+class DataHandlerHook {
 
 	/**
 	 * For accumulating information about workspace stages raised
@@ -61,10 +63,10 @@ class tx_version_tcemain {
 	/**
 	 * hook that is called before any cmd of the commandmap is executed
 	 *
-	 * @param t3lib_TCEmain $tcemainObj reference to the main tcemain object
+	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj reference to the main tcemain object
 	 * @return void
 	 */
-	public function processCmdmap_beforeStart(t3lib_TCEmain $tcemainObj) {
+	public function processCmdmap_beforeStart(\TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj) {
 		// Reset notification array
 		$this->notificationEmailInfo = array();
 		// Resolve dependencies of version/workspaces actions:
@@ -79,10 +81,10 @@ class tx_version_tcemain {
 	 * @param integer $id the ID of the record
 	 * @param mixed $value the value containing the data
 	 * @param boolean $commandIsProcessed can be set so that other hooks or
-	 * @param t3lib_TCEmain $tcemainObj reference to the main tcemain object
+	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj reference to the main tcemain object
 	 * @return 	void
 	 */
-	public function processCmdmap($command, $table, $id, $value, &$commandIsProcessed, t3lib_TCEmain $tcemainObj) {
+	public function processCmdmap($command, $table, $id, $value, &$commandIsProcessed, \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj) {
 		// custom command "version"
 		if ($command == 'version') {
 			$commandIsProcessed = TRUE;
@@ -93,7 +95,7 @@ class tx_version_tcemain {
 				// or if "element" version can be used
 				$versionizeTree = -1;
 				if (isset($value['treeLevels'])) {
-					$versionizeTree = t3lib_utility_Math::forceIntegerInRange($value['treeLevels'], -1, 100);
+					$versionizeTree = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value['treeLevels'], -1, 100);
 				}
 				if ($table == 'pages' && $versionizeTree >= 0) {
 					$this->versionizePages($id, $value['label'], $versionizeTree, $tcemainObj);
@@ -111,7 +113,7 @@ class tx_version_tcemain {
 				$this->version_clearWSID($table, $id, TRUE, $tcemainObj);
 				break;
 			case 'setStage':
-				$elementIds = t3lib_div::trimExplode(',', $id, TRUE);
+				$elementIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $id, TRUE);
 				foreach ($elementIds as $elementId) {
 					$this->version_setStage($table, $elementId, $value['stageId'], isset($value['comment']) && $value['comment'] ? $value['comment'] : $this->generalComment, TRUE, $tcemainObj, $value['notificationAlternativeRecipients']);
 				}
@@ -132,12 +134,12 @@ class tx_version_tcemain {
 	 * @param string $table
 	 * @param int $id
 	 * @param mixed $value
-	 * @param t3lib_TCEmain $tcemain
+	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tcemain
 	 */
-	public function processCmdmap_postProcess($command, $table, $id, $value, t3lib_TCEmain $tcemain) {
+	public function processCmdmap_postProcess($command, $table, $id, $value, \TYPO3\CMS\Core\DataHandler\DataHandler $tcemain) {
 		if ($command === 'move') {
 			if ($value < 0) {
-				$movePlaceHolder = t3lib_BEfunc::getMovePlaceholder($table, abs($value), 'uid');
+				$movePlaceHolder = \TYPO3\CMS\Backend\Utility\BackendUtility::getMovePlaceholder($table, abs($value), 'uid');
 				if ($movePlaceHolder !== FALSE) {
 					$destPid = -$movePlaceHolder['uid'];
 					$tcemain->moveRecord_raw($table, $id, $destPid);
@@ -150,10 +152,10 @@ class tx_version_tcemain {
 	 * hook that is called AFTER all commands of the commandmap was
 	 * executed
 	 *
-	 * @param t3lib_TCEmain $tcemainObj reference to the main tcemain object
+	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj reference to the main tcemain object
 	 * @return 	void
 	 */
-	public function processCmdmap_afterFinish(t3lib_TCEmain $tcemainObj) {
+	public function processCmdmap_afterFinish(\TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj) {
 		// Empty accumulation array:
 		foreach ($this->notificationEmailInfo as $notifItem) {
 			$this->notifyStageChange($notifItem['shared'][0], $notifItem['shared'][1], implode(', ', $notifItem['elements']), 0, $notifItem['shared'][2], $tcemainObj, $notifItem['alternativeRecipients']);
@@ -172,10 +174,10 @@ class tx_version_tcemain {
 	 * @param integer $id the ID of the record
 	 * @param array $record The accordant database record
 	 * @param boolean $recordWasDeleted can be set so that other hooks or
-	 * @param t3lib_TCEmain $tcemainObj reference to the main tcemain object
+	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj reference to the main tcemain object
 	 * @return 	void
 	 */
-	public function processCmdmap_deleteAction($table, $id, array $record, &$recordWasDeleted, t3lib_TCEmain $tcemainObj) {
+	public function processCmdmap_deleteAction($table, $id, array $record, &$recordWasDeleted, \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj) {
 		// only process the hook if it wasn't processed
 		// by someone else before
 		if (!$recordWasDeleted) {
@@ -183,7 +185,7 @@ class tx_version_tcemain {
 			// For Live version, try if there is a workspace version because if so, rather "delete" that instead
 			// Look, if record is an offline version, then delete directly:
 			if ($record['pid'] != -1) {
-				if ($wsVersion = t3lib_BEfunc::getWorkspaceVersionOfRecord($tcemainObj->BE_USER->workspace, $table, $id)) {
+				if ($wsVersion = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($tcemainObj->BE_USER->workspace, $table, $id)) {
 					$record = $wsVersion;
 					$id = $record['uid'];
 				}
@@ -193,7 +195,7 @@ class tx_version_tcemain {
 				if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 					// In Live workspace, delete any. In other workspaces there must be match.
 					if ($tcemainObj->BE_USER->workspace == 0 || (int) $record['t3ver_wsid'] == $tcemainObj->BE_USER->workspace) {
-						$liveRec = t3lib_BEfunc::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state');
+						$liveRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state');
 						// Processing can be skipped if a delete placeholder shall be swapped/published
 						// during the current request. Thus it will be deleted later on...
 						if ((((($record['t3ver_state'] == 2 && !empty($liveRec['uid'])) && !empty($tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['action'])) && !empty($tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['swapWith'])) && $tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['action'] === 'swap') && $tcemainObj->cmdmap[$table][$liveRec['uid']]['version']['swapWith'] == $id) {
@@ -223,7 +225,7 @@ class tx_version_tcemain {
 			} elseif ((int) $record['t3ver_state'] === 3) {
 				// Placeholders for moving operations are deletable directly.
 				// Get record which its a placeholder for and reset the t3ver_state of that:
-				if ($wsRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($record['t3ver_wsid'], $table, $record['t3ver_move_id'], 'uid')) {
+				if ($wsRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($record['t3ver_wsid'], $table, $record['t3ver_move_id'], 'uid')) {
 					// Clear the state flag of the workspace version of the record
 					// Setting placeholder state value for version (so it can know it is currently a new version...)
 					$updateFields = array(
@@ -238,7 +240,7 @@ class tx_version_tcemain {
 				$tcemainObj->versionizeRecord($table, $id, 'DELETED!', TRUE);
 				// Determine newly created versions:
 				// (remove placeholders are copied and modified, thus they appear in the copyMappingArray)
-				$versionizedElements = t3lib_div::arrayDiffAssocRecursive($tcemainObj->copyMappingArray, $copyMappingArray);
+				$versionizedElements = \TYPO3\CMS\Core\Utility\GeneralUtility::arrayDiffAssocRecursive($tcemainObj->copyMappingArray, $copyMappingArray);
 				// Delete localization overlays:
 				foreach ($versionizedElements as $versionizedTableName => $versionizedOriginalIds) {
 					foreach ($versionizedOriginalIds as $versionizedOriginalId => $_) {
@@ -262,16 +264,16 @@ class tx_version_tcemain {
 	 * @param boolean $recordWasMoved can be set so that other hooks or
 	 * @param 	$table	the table
 	 */
-	public function moveRecord($table, $uid, $destPid, array $propArr, array $moveRec, $resolvedPid, &$recordWasMoved, t3lib_TCEmain $tcemainObj) {
+	public function moveRecord($table, $uid, $destPid, array $propArr, array $moveRec, $resolvedPid, &$recordWasMoved, \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj) {
 		// Only do something in Draft workspace
 		if ($tcemainObj->BE_USER->workspace !== 0) {
 			$recordWasMoved = TRUE;
 			// Get workspace version of the source record, if any:
-			$WSversion = t3lib_BEfunc::getWorkspaceVersionOfRecord($tcemainObj->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
+			$WSversion = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($tcemainObj->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
 			// If no version exists and versioningWS is in version 2, a new placeholder is made automatically:
 			if ((!$WSversion['uid'] && (int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) && (int) $moveRec['t3ver_state'] != 3) {
 				$tcemainObj->versionizeRecord($table, $uid, 'Placeholder version for moving record');
-				$WSversion = t3lib_BEfunc::getWorkspaceVersionOfRecord($tcemainObj->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
+				$WSversion = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($tcemainObj->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
 			}
 			// Check workspace permissions:
 			$workspaceAccessBlocked = array();
@@ -324,18 +326,18 @@ class tx_version_tcemain {
 	 * @param string $table Table name of element (or list of element names if $id is zero)
 	 * @param integer $id Record uid of element (if zero, then $table is used as reference to element(s) alone)
 	 * @param string $comment User comment sent along with action
-	 * @param t3lib_TCEmain $tcemainObj TCEmain object
+	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj TCEmain object
 	 * @param array $notificationAlternativeRecipients List of recipients to notify instead of be_users selected by sys_workspace, list is generated by workspace extension module
 	 * @return void
 	 */
-	protected function notifyStageChange(array $stat, $stageId, $table, $id, $comment, t3lib_TCEmain $tcemainObj, array $notificationAlternativeRecipients = array()) {
-		$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $stat['uid']);
+	protected function notifyStageChange(array $stat, $stageId, $table, $id, $comment, \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj, array $notificationAlternativeRecipients = array()) {
+		$workspaceRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $stat['uid']);
 		// So, if $id is not set, then $table is taken to be the complete element name!
 		$elementName = $id ? ($table . ':') . $id : $table;
 		if (is_array($workspaceRec)) {
 			// Get the new stage title from workspaces library, if workspaces extension is installed
-			if (t3lib_extMgm::isLoaded('workspaces')) {
-				$stageService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
+			if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces')) {
+				$stageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
 				$newStage = $stageService->getStageTitle((int) $stageId);
 			} else {
 				// TODO: CONSTANTS SHOULD BE USED - tx_service_workspace_workspaces
@@ -383,7 +385,7 @@ class tx_version_tcemain {
 							// Find all implicated since the last stage-raise from editing to review:
 							foreach ($rows as $dat) {
 								$data = unserialize($dat['log_data']);
-								$emails = t3lib_div::array_merge($emails, $this->getEmailsForStageChangeNotification($dat['userid'], TRUE));
+								$emails = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($emails, $this->getEmailsForStageChangeNotification($dat['userid'], TRUE));
 								if ($data['stage'] == 1) {
 									break;
 								}
@@ -400,8 +402,8 @@ class tx_version_tcemain {
 					break;
 				case 10:
 					$emails = $this->getEmailsForStageChangeNotification($workspaceRec['adminusers'], TRUE);
-					$emails = t3lib_div::array_merge($emails, $this->getEmailsForStageChangeNotification($workspaceRec['reviewers']));
-					$emails = t3lib_div::array_merge($emails, $this->getEmailsForStageChangeNotification($workspaceRec['members']));
+					$emails = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($emails, $this->getEmailsForStageChangeNotification($workspaceRec['reviewers']));
+					$emails = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($emails, $this->getEmailsForStageChangeNotification($workspaceRec['members']));
 					break;
 				}
 			} else {
@@ -412,12 +414,12 @@ class tx_version_tcemain {
 				// Path to record is found:
 				list($elementTable, $elementUid) = explode(':', $elementName);
 				$elementUid = intval($elementUid);
-				$elementRecord = t3lib_BEfunc::getRecord($elementTable, $elementUid);
-				$recordTitle = t3lib_BEfunc::getRecordTitle($elementTable, $elementRecord);
+				$elementRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($elementTable, $elementUid);
+				$recordTitle = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($elementTable, $elementRecord);
 				if ($elementTable == 'pages') {
 					$pageUid = $elementUid;
 				} else {
-					t3lib_BEfunc::fixVersioningPid($elementTable, $elementRecord);
+					\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid($elementTable, $elementRecord);
 					$pageUid = ($elementUid = $elementRecord['pid']);
 				}
 				// fetch the TSconfig settings for the email
@@ -426,13 +428,13 @@ class tx_version_tcemain {
 				// new way, options are
 				// pageTSconfig: tx_version.workspaces.stageNotificationEmail.subject
 				// userTSconfig: page.tx_version.workspaces.stageNotificationEmail.subject
-				$pageTsConfig = t3lib_BEfunc::getPagesTSconfig($pageUid);
+				$pageTsConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pageUid);
 				$emailConfig = $pageTsConfig['tx_version.']['workspaces.']['stageNotificationEmail.'];
 				$markers = array(
 					'###RECORD_TITLE###' => $recordTitle,
-					'###RECORD_PATH###' => t3lib_BEfunc::getRecordPath($elementUid, '', 20),
+					'###RECORD_PATH###' => \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($elementUid, '', 20),
 					'###SITE_NAME###' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
-					'###SITE_URL###' => t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir,
+					'###SITE_URL###' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir,
 					'###WORKSPACE_TITLE###' => $workspaceRec['title'],
 					'###WORKSPACE_UID###' => $workspaceRec['uid'],
 					'###ELEMENT_NAME###' => $elementName,
@@ -444,10 +446,10 @@ class tx_version_tcemain {
 					'###USER_USERNAME###' => $tcemainObj->BE_USER->user['username']
 				);
 				// add marker for preview links if workspace extension is loaded
-				if (t3lib_extMgm::isLoaded('workspaces')) {
-					$this->workspaceService = t3lib_div::makeInstance('tx_Workspaces_Service_Workspaces');
+				if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces')) {
+					$this->workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_Workspaces_Service_Workspaces');
 					// only generate the link if the marker is in the template - prevents database from getting to much entries
-					if (t3lib_div::isFirstPartOfStr($emailConfig['message'], 'LLL:')) {
+					if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($emailConfig['message'], 'LLL:')) {
 						$tempEmailMessage = $GLOBALS['LANG']->sL($emailConfig['message']);
 					} else {
 						$tempEmailMessage = $emailConfig['message'];
@@ -461,7 +463,7 @@ class tx_version_tcemain {
 				// Hook for preprocessing of the content for formmails:
 				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'])) {
 					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'] as $_classRef) {
-						$_procObj =& t3lib_div::getUserObj($_classRef);
+						$_procObj =& \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($_classRef);
 						$markers = $_procObj->postModifyMarkers($markers, $this);
 					}
 				}
@@ -485,29 +487,29 @@ class tx_version_tcemain {
 					$emailRecipients[$recipientData['email']] = $recipientData['email'];
 					// check if the email needs to be localized
 					// in the users' language
-					if (t3lib_div::isFirstPartOfStr($emailSubject, 'LLL:') || t3lib_div::isFirstPartOfStr($emailMessage, 'LLL:')) {
+					if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($emailSubject, 'LLL:') || \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($emailMessage, 'LLL:')) {
 						$recipientLanguage = $recipientData['lang'] ? $recipientData['lang'] : 'default';
 						if (!isset($languageObjects[$recipientLanguage])) {
 							// a LANG object in this language hasn't been
 							// instantiated yet, so this is done here
-							/** @var $languageObject language */
-							$languageObject = t3lib_div::makeInstance('language');
+							/** @var $languageObject \TYPO3\CMS\Lang\LanguageService */
+							$languageObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
 							$languageObject->init($recipientLanguage);
 							$languageObjects[$recipientLanguage] = $languageObject;
 						} else {
 							$languageObject = $languageObjects[$recipientLanguage];
 						}
-						if (t3lib_div::isFirstPartOfStr($emailSubject, 'LLL:')) {
+						if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($emailSubject, 'LLL:')) {
 							$emailSubject = $languageObject->sL($emailSubject);
 						}
-						if (t3lib_div::isFirstPartOfStr($emailMessage, 'LLL:')) {
+						if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($emailMessage, 'LLL:')) {
 							$emailMessage = $languageObject->sL($emailMessage);
 						}
 					}
-					$emailSubject = t3lib_parseHtml::substituteMarkerArray($emailSubject, $markers, '', TRUE, TRUE);
-					$emailMessage = t3lib_parseHtml::substituteMarkerArray($emailMessage, $markers, '', TRUE, TRUE);
+					$emailSubject = \t3lib_parseHtml::substituteMarkerArray($emailSubject, $markers, '', TRUE, TRUE);
+					$emailMessage = \t3lib_parseHtml::substituteMarkerArray($emailMessage, $markers, '', TRUE, TRUE);
 					// Send an email to the recipient
-					t3lib_div::plainMailEncoded($recipientData['email'], $emailSubject, $emailMessage, $emailHeaders);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::plainMailEncoded($recipientData['email'], $emailSubject, $emailMessage, $emailHeaders);
 				}
 				$emailRecipients = implode(',', $emailRecipients);
 				$tcemainObj->newlog2(('Notification email for stage change was sent to "' . $emailRecipients) . '"', $table, $id);
@@ -524,16 +526,16 @@ class tx_version_tcemain {
 	 * @return 	array		Array of emails
 	 */
 	protected function getEmailsForStageChangeNotification($listOfUsers, $noTablePrefix = FALSE) {
-		$users = t3lib_div::trimExplode(',', $listOfUsers, 1);
+		$users = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $listOfUsers, 1);
 		$emails = array();
 		foreach ($users as $userIdent) {
 			if ($noTablePrefix) {
 				$id = intval($userIdent);
 			} else {
-				list($table, $id) = t3lib_div::revExplode('_', $userIdent, 2);
+				list($table, $id) = \TYPO3\CMS\Core\Utility\GeneralUtility::revExplode('_', $userIdent, 2);
 			}
 			if ($table === 'be_users' || $noTablePrefix) {
-				if ($userRecord = t3lib_BEfunc::getRecord('be_users', $id, 'uid,email,lang,realName', t3lib_BEfunc::BEenableFields('be_users'))) {
+				if ($userRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('be_users', $id, 'uid,email,lang,realName', \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('be_users'))) {
 					if (strlen(trim($userRecord['email']))) {
 						$emails[$id] = $userRecord;
 					}
@@ -554,15 +556,15 @@ class tx_version_tcemain {
 	 * @param integer $stageId Stage ID to set
 	 * @param string $comment Comment that goes into log
 	 * @param boolean $notificationEmailInfo Accumulate state changes in memory for compiled notification email?
-	 * @param t3lib_TCEmain $tcemainObj TCEmain object
+	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj TCEmain object
 	 * @param array $notificationAlternativeRecipients comma separated list of recipients to notify instead of normal be_users
 	 * @return void
 	 */
-	protected function version_setStage($table, $id, $stageId, $comment = '', $notificationEmailInfo = FALSE, t3lib_TCEmain $tcemainObj, array $notificationAlternativeRecipients = array()) {
+	protected function version_setStage($table, $id, $stageId, $comment = '', $notificationEmailInfo = FALSE, \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj, array $notificationAlternativeRecipients = array()) {
 		if ($errorCode = $tcemainObj->BE_USER->workspaceCannotEditOfflineVersion($table, $id)) {
 			$tcemainObj->newlog('Attempt to set stage for record failed: ' . $errorCode, 1);
 		} elseif ($tcemainObj->checkRecordUpdateAccess($table, $id)) {
-			$record = t3lib_BEfunc::getRecord($table, $id);
+			$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id);
 			$stat = $tcemainObj->BE_USER->checkWorkspace($record['t3ver_wsid']);
 			// check if the usere is allowed to the current stage, so it's also allowed to send to next stage
 			if ($GLOBALS['BE_USER']->workspaceCheckStageForCurrent($record['t3ver_stage'])) {
@@ -600,11 +602,11 @@ class tx_version_tcemain {
 	 * @param integer $uid Page uid to create new version of.
 	 * @param string $label Version label
 	 * @param integer $versionizeTree Indicating "treeLevel" - "page" (0) or "branch" (>=1) ["element" type must call versionizeRecord() directly]
-	 * @param t3lib_TCEmain $tcemainObj TCEmain object
+	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj TCEmain object
 	 * @return void
 	 * @see copyPages()
 	 */
-	protected function versionizePages($uid, $label, $versionizeTree, t3lib_TCEmain $tcemainObj) {
+	protected function versionizePages($uid, $label, $versionizeTree, \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj) {
 		$uid = intval($uid);
 		// returns the branch
 		$brExist = $tcemainObj->doesBranchExist('', $uid, $tcemainObj->pMap['show'], 1);
@@ -661,15 +663,15 @@ class tx_version_tcemain {
 	 * @param integer $id UID of the online record to swap
 	 * @param integer $swapWith UID of the archived version to swap with!
 	 * @param boolean $swapIntoWS If set, swaps online into workspace instead of publishing out of workspace.
-	 * @param t3lib_TCEmain $tcemainObj TCEmain object
+	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj TCEmain object
 	 * @return void
 	 */
-	protected function version_swap($table, $id, $swapWith, $swapIntoWS = 0, t3lib_TCEmain $tcemainObj) {
+	protected function version_swap($table, $id, $swapWith, $swapIntoWS = 0, \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj) {
 		// First, check if we may actually edit the online record
 		if ($tcemainObj->checkRecordUpdateAccess($table, $id)) {
 			// Select the two versions:
-			$curVersion = t3lib_BEfunc::getRecord($table, $id, '*');
-			$swapVersion = t3lib_BEfunc::getRecord($table, $swapWith, '*');
+			$curVersion = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id, '*');
+			$swapVersion = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $swapWith, '*');
 			$movePlh = array();
 			$movePlhID = 0;
 			if (is_array($curVersion) && is_array($swapVersion)) {
@@ -684,7 +686,7 @@ class tx_version_tcemain {
 									$lockFileName = ((((PATH_site . 'typo3temp/swap_locking/') . $table) . ':') . $id) . '.ser';
 									if (!@is_file($lockFileName)) {
 										// Write lock-file:
-										t3lib_div::writeFileToTypo3tempDir($lockFileName, serialize(array(
+										\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($lockFileName, serialize(array(
 											'tstamp' => $GLOBALS['EXEC_TIME'],
 											'user' => $tcemainObj->BE_USER->user['username'],
 											'curVersion' => $curVersion,
@@ -738,7 +740,7 @@ class tx_version_tcemain {
 										// Moving element.
 										if ((int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
 											//  && $t3ver_state['swapVersion']==4   // Maybe we don't need this?
-											if ($plhRec = t3lib_BEfunc::getMovePlaceholder($table, $id, 't3ver_state,pid,uid' . ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ? ',' . $GLOBALS['TCA'][$table]['ctrl']['sortby'] : ''))) {
+											if ($plhRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getMovePlaceholder($table, $id, 't3ver_state,pid,uid' . ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ? ',' . $GLOBALS['TCA'][$table]['ctrl']['sortby'] : ''))) {
 												$movePlhID = $plhRec['uid'];
 												$movePlh['pid'] = $swapVersion['pid'];
 												$swapVersion['pid'] = intval($plhRec['pid']);
@@ -878,21 +880,21 @@ class tx_version_tcemain {
 	 * @param array $conf: TCA configuration of current field
 	 * @param array $curVersion: Reference to the current (original) record
 	 * @param array $swapVersion: Reference to the record (workspace/versionized) to publish in or swap with
-	 * @param t3lib_TCEmain $tcemainObj TCEmain object
+	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj TCEmain object
 	 * @return void
 	 */
-	protected function version_swap_procBasedOnFieldType($table, $field, array $conf, array &$curVersion, array &$swapVersion, t3lib_TCEmain $tcemainObj) {
+	protected function version_swap_procBasedOnFieldType($table, $field, array $conf, array &$curVersion, array &$swapVersion, \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj) {
 		$inlineType = $tcemainObj->getInlineFieldType($conf);
 		// Process pointer fields on normalized database:
 		if ($inlineType == 'field') {
 			// Read relations that point to the current record (e.g. live record):
-			/** @var $dbAnalysisCur t3lib_loadDBGroup */
-			$dbAnalysisCur = t3lib_div::makeInstance('t3lib_loadDBGroup');
+			/** @var $dbAnalysisCur \TYPO3\CMS\Core\Database\RelationHandler */
+			$dbAnalysisCur = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 			$dbAnalysisCur->setUpdateReferenceIndex(FALSE);
 			$dbAnalysisCur->start('', $conf['foreign_table'], '', $curVersion['uid'], $table, $conf);
 			// Read relations that point to the record to be swapped with e.g. draft record):
-			/** @var $dbAnalysisSwap t3lib_loadDBGroup */
-			$dbAnalysisSwap = t3lib_div::makeInstance('t3lib_loadDBGroup');
+			/** @var $dbAnalysisSwap \TYPO3\CMS\Core\Database\RelationHandler */
+			$dbAnalysisSwap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 			$dbAnalysisSwap->setUpdateReferenceIndex(FALSE);
 			$dbAnalysisSwap->start('', $conf['foreign_table'], '', $swapVersion['uid'], $table, $conf);
 			// Update relations for both (workspace/versioning) sites:
@@ -918,12 +920,12 @@ class tx_version_tcemain {
 	/**
 	 * Writes remapped foreign field (IRRE).
 	 *
-	 * @param t3lib_loadDBGroup $dbAnalysis Instance that holds the sorting order of child records
+	 * @param \TYPO3\CMS\Core\Database\RelationHandler $dbAnalysis Instance that holds the sorting order of child records
 	 * @param array $configuration The TCA field configuration
 	 * @param integer $parentId The uid of the parent record
 	 * @return void
 	 */
-	public function writeRemappedForeignField(t3lib_loadDBGroup $dbAnalysis, array $configuration, $parentId) {
+	public function writeRemappedForeignField(\TYPO3\CMS\Core\Database\RelationHandler $dbAnalysis, array $configuration, $parentId) {
 		foreach ($dbAnalysis->itemArray as &$item) {
 			if (isset($this->remappedIds[$item['table']][$item['id']])) {
 				$item['id'] = $this->remappedIds[$item['table']][$item['id']];
@@ -938,14 +940,14 @@ class tx_version_tcemain {
 	 * @param string $table Table name
 	 * @param integer $id Record UID
 	 * @param boolean $flush If set, will completely delete element
-	 * @param t3lib_TCEmain $tcemainObj TCEmain object
+	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj TCEmain object
 	 * @return 	void
 	 */
-	protected function version_clearWSID($table, $id, $flush = FALSE, t3lib_TCEmain $tcemainObj) {
+	protected function version_clearWSID($table, $id, $flush = FALSE, \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj) {
 		if ($errorCode = $tcemainObj->BE_USER->workspaceCannotEditOfflineVersion($table, $id)) {
 			$tcemainObj->newlog('Attempt to reset workspace for record failed: ' . $errorCode, 1);
 		} elseif ($tcemainObj->checkRecordUpdateAccess($table, $id)) {
-			if ($liveRec = t3lib_BEfunc::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state')) {
+			if ($liveRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state')) {
 				// Clear workspace ID:
 				$updateData = array(
 					't3ver_wsid' => 0,
@@ -960,13 +962,13 @@ class tx_version_tcemain {
 				}
 				// If "deleted" flag is set for the version that got released
 				// it doesn't make sense to keep that "placeholder" anymore and we delete it completly.
-				$wsRec = t3lib_BEfunc::getRecord($table, $id);
+				$wsRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id);
 				if ($flush || ((int) $wsRec['t3ver_state'] == 1 || (int) $wsRec['t3ver_state'] == 2)) {
 					$tcemainObj->deleteEl($table, $id, TRUE, TRUE);
 				}
 				// Remove the move-placeholder if found for live record.
 				if ((int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
-					if ($plhRec = t3lib_BEfunc::getMovePlaceholder($table, $liveRec['uid'], 'uid')) {
+					if ($plhRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getMovePlaceholder($table, $liveRec['uid'], 'uid')) {
 						$tcemainObj->deleteEl($table, $plhRec['uid'], TRUE, TRUE);
 					}
 				}
@@ -986,11 +988,11 @@ class tx_version_tcemain {
 	 * @param integer $oldPageId Current page id.
 	 * @param integer $newPageId New page id
 	 * @param array $copyTablesArray Array of tables from which to copy
-	 * @param t3lib_TCEmain $tcemainObj TCEmain object
+	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj TCEmain object
 	 * @return void
 	 * @see versionizePages()
 	 */
-	protected function rawCopyPageContent($oldPageId, $newPageId, array $copyTablesArray, t3lib_TCEmain $tcemainObj) {
+	protected function rawCopyPageContent($oldPageId, $newPageId, array $copyTablesArray, \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj) {
 		if ($newPageId) {
 			foreach ($copyTablesArray as $table) {
 				// all records under the page is copied.
@@ -1018,16 +1020,16 @@ class tx_version_tcemain {
 	 * @return array Element data. Key is table name, values are array with first element as online UID, second - offline UID
 	 */
 	public function findPageElementsForVersionSwap($table, $id, $offlineId) {
-		$rec = t3lib_BEfunc::getRecord($table, $offlineId, 't3ver_wsid');
+		$rec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $offlineId, 't3ver_wsid');
 		$workspaceId = $rec['t3ver_wsid'];
 		$elementData = array();
 		if ($workspaceId != 0) {
 			// Get page UID for LIVE and workspace
 			if ($table != 'pages') {
-				$rec = t3lib_BEfunc::getRecord($table, $id, 'pid');
+				$rec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id, 'pid');
 				$pageId = $rec['pid'];
-				$rec = t3lib_BEfunc::getRecord('pages', $pageId);
-				t3lib_BEfunc::workspaceOL('pages', $rec, $workspaceId);
+				$rec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pageId);
+				\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('pages', $rec, $workspaceId);
 				$offlinePageId = $rec['_ORIG_uid'];
 			} else {
 				$pageId = $id;
@@ -1036,7 +1038,7 @@ class tx_version_tcemain {
 			// Traversing all tables supporting versioning:
 			foreach ($GLOBALS['TCA'] as $table => $cfg) {
 				if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && $table !== 'pages') {
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('A.uid AS offlineUid, B.uid AS uid', (($table . ' A,') . $table) . ' B', ((((('A.pid=-1 AND B.pid=' . $pageId) . ' AND A.t3ver_wsid=') . $workspaceId) . ' AND B.uid=A.t3ver_oid') . t3lib_BEfunc::deleteClause($table, 'A')) . t3lib_BEfunc::deleteClause($table, 'B'));
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('A.uid AS offlineUid, B.uid AS uid', (($table . ' A,') . $table) . ' B', ((((('A.pid=-1 AND B.pid=' . $pageId) . ' AND A.t3ver_wsid=') . $workspaceId) . ' AND B.uid=A.t3ver_oid') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'A')) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'B'));
 					while (FALSE != ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))) {
 						$elementData[$table][] = array($row[1], $row[0]);
 					}
@@ -1063,7 +1065,7 @@ class tx_version_tcemain {
 			// Traversing all tables supporting versioning:
 			foreach ($GLOBALS['TCA'] as $table => $cfg) {
 				if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && $table !== 'pages') {
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT A.uid', (($table . ' A,') . $table) . ' B', (((((('A.pid=-1' . ' AND A.t3ver_wsid=') . $workspaceId) . ' AND B.pid IN (') . implode(',', $pageIdList)) . ') AND A.t3ver_oid=B.uid') . t3lib_BEfunc::deleteClause($table, 'A')) . t3lib_BEfunc::deleteClause($table, 'B'));
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT A.uid', (($table . ' A,') . $table) . ' B', (((((('A.pid=-1' . ' AND A.t3ver_wsid=') . $workspaceId) . ' AND B.pid IN (') . implode(',', $pageIdList)) . ') AND A.t3ver_oid=B.uid') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'A')) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'B'));
 					while (FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))) {
 						$elementList[$table][] = $row[0];
 					}
@@ -1090,14 +1092,14 @@ class tx_version_tcemain {
 	 */
 	public function findPageIdsForVersionStateChange($table, array $idList, $workspaceId, array &$pageIdList, array &$elementList) {
 		if ($workspaceId != 0) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT B.pid', (($table . ' A,') . $table) . ' B', (((((('A.pid=-1' . ' AND A.t3ver_wsid=') . $workspaceId) . ' AND A.uid IN (') . implode(',', $idList)) . ') AND A.t3ver_oid=B.uid') . t3lib_BEfunc::deleteClause($table, 'A')) . t3lib_BEfunc::deleteClause($table, 'B'));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT B.pid', (($table . ' A,') . $table) . ' B', (((((('A.pid=-1' . ' AND A.t3ver_wsid=') . $workspaceId) . ' AND A.uid IN (') . implode(',', $idList)) . ') AND A.t3ver_oid=B.uid') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'A')) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'B'));
 			while (FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))) {
 				$pageIdList[] = $row[0];
 				// Find ws version
 				// Note: cannot use t3lib_BEfunc::getRecordWSOL()
 				// here because it does not accept workspace id!
-				$rec = t3lib_BEfunc::getRecord('pages', $row[0]);
-				t3lib_BEfunc::workspaceOL('pages', $rec, $workspaceId);
+				$rec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $row[0]);
+				\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('pages', $rec, $workspaceId);
 				if ($rec['_ORIG_uid']) {
 					$elementList['pages'][$row[0]] = $rec['_ORIG_uid'];
 				}
@@ -1117,7 +1119,7 @@ class tx_version_tcemain {
 	 */
 	public function findRealPageIds(array &$idList) {
 		foreach ($idList as $key => $id) {
-			$rec = t3lib_BEfunc::getRecord('pages', $id, 't3ver_oid');
+			$rec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $id, 't3ver_oid');
 			if ($rec['t3ver_oid'] > 0) {
 				$idList[$key] = $rec['t3ver_oid'];
 			}
@@ -1134,21 +1136,21 @@ class tx_version_tcemain {
 	 * @param integer $uid Record uid to move (online record)
 	 * @param integer $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
 	 * @param integer $wsUid UID of offline version of online record
-	 * @param t3lib_TCEmain $tcemainObj TCEmain object
+	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj TCEmain object
 	 * @return void
 	 * @see moveRecord()
 	 */
-	protected function moveRecord_wsPlaceholders($table, $uid, $destPid, $wsUid, t3lib_TCEmain $tcemainObj) {
+	protected function moveRecord_wsPlaceholders($table, $uid, $destPid, $wsUid, \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj) {
 		// If a record gets moved after a record that already has a placeholder record
 		// then the new placeholder record needs to be after the existing one
 		$originalRecordDestinationPid = $destPid;
 		if ($destPid < 0) {
-			$movePlaceHolder = t3lib_BEfunc::getMovePlaceholder($table, abs($destPid), 'uid');
+			$movePlaceHolder = \TYPO3\CMS\Backend\Utility\BackendUtility::getMovePlaceholder($table, abs($destPid), 'uid');
 			if ($movePlaceHolder !== FALSE) {
 				$destPid = -$movePlaceHolder['uid'];
 			}
 		}
-		if ($plh = t3lib_BEfunc::getMovePlaceholder($table, $uid, 'uid')) {
+		if ($plh = \TYPO3\CMS\Backend\Utility\BackendUtility::getMovePlaceholder($table, $uid, 'uid')) {
 			// If already a placeholder exists, move it:
 			$tcemainObj->moveRecord_raw($table, $plh['uid'], $destPid);
 		} else {
@@ -1167,7 +1169,7 @@ class tx_version_tcemain {
 			if ($table == 'pages') {
 				// Copy page access settings from original page to placeholder
 				$perms_clause = $tcemainObj->BE_USER->getPagePermsClause(1);
-				$access = t3lib_BEfunc::readPageAccess($uid, $perms_clause);
+				$access = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($uid, $perms_clause);
 				$newVersion_placeholderFieldArray['perms_userid'] = $access['perms_userid'];
 				$newVersion_placeholderFieldArray['perms_groupid'] = $access['perms_groupid'];
 				$newVersion_placeholderFieldArray['perms_user'] = $access['perms_user'];
@@ -1183,7 +1185,7 @@ class tx_version_tcemain {
 			$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['label']] = ((('[MOVE-TO PLACEHOLDER for #' . $uid) . ', WS#') . $tcemainObj->BE_USER->workspace) . ']';
 			// moving localized records requires to keep localization-settings for the placeholder too
 			if (array_key_exists('languageField', $GLOBALS['TCA'][$table]['ctrl']) && array_key_exists('transOrigPointerField', $GLOBALS['TCA'][$table]['ctrl'])) {
-				$l10nParentRec = t3lib_BEfunc::getRecord($table, $uid);
+				$l10nParentRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid);
 				$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['languageField']] = $l10nParentRec[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
 				$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = $l10nParentRec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
 				unset($l10nParentRec);
@@ -1214,7 +1216,7 @@ class tx_version_tcemain {
 	 * @return array
 	 */
 	protected function getPossibleInlineChildTablesOfParentTable($parentTable, array $possibleInlineChildren = array()) {
-		t3lib_div::loadTCA($parentTable);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($parentTable);
 		foreach ($GLOBALS['TCA'][$parentTable]['columns'] as $parentField => $parentFieldDefinition) {
 			if (isset($parentFieldDefinition['config']['type'])) {
 				$parentFieldConfiguration = $parentFieldDefinition['config'];
@@ -1231,12 +1233,12 @@ class tx_version_tcemain {
 	/**
 	 * Gets an instance of the command map helper.
 	 *
-	 * @param t3lib_TCEmain $tceMain TCEmain object
+	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tceMain TCEmain object
 	 * @param array $commandMap The command map as submitted to t3lib_TCEmain
-	 * @return tx_version_tcemain_CommandMap
+	 * @return \TYPO3\CMS\Version\DataHandler\CommandMap
 	 */
-	public function getCommandMap(t3lib_TCEmain $tceMain, array $commandMap) {
-		return t3lib_div::makeInstance('tx_version_tcemain_CommandMap', $this, $tceMain, $commandMap);
+	public function getCommandMap(\TYPO3\CMS\Core\DataHandler\DataHandler $tceMain, array $commandMap) {
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\DataHandler\\CommandMap', $this, $tceMain, $commandMap);
 	}
 
 	/**
@@ -1247,11 +1249,11 @@ class tx_version_tcemain {
 	 */
 	protected function getUniqueFields($table) {
 		$listArr = array();
-		t3lib_div::loadTCA($table);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if ($GLOBALS['TCA'][$table]['columns']) {
 			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $configArr) {
 				if ($configArr['config']['type'] === 'input') {
-					$evalCodesArray = t3lib_div::trimExplode(',', $configArr['config']['eval'], 1);
+					$evalCodesArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $configArr['config']['eval'], 1);
 					if (in_array('uniqueInPid', $evalCodesArray) || in_array('unique', $evalCodesArray)) {
 						$listArr[] = $field;
 					}
@@ -1262,5 +1264,6 @@ class tx_version_tcemain {
 	}
 
 }
+
 
 ?>

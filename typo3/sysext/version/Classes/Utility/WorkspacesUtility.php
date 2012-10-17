@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Version\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @package TYPO3
  * @subpackage core
  */
-class wslib {
+class WorkspacesUtility {
 
 	/**
 	 * Building tcemain CMD-array for swapping all versions in a workspace.
@@ -49,7 +51,7 @@ class wslib {
 			// Define stage to select:
 			$stage = -99;
 			if ($wsid > 0) {
-				$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $wsid);
+				$workspaceRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $wsid);
 				if ($workspaceRec['publish_access'] & 1) {
 					$stage = 10;
 				}
@@ -92,7 +94,7 @@ class wslib {
 			if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 				// Select all records from this table in the database from the workspace
 				// This joins the online version with the offline version as tables A and B
-				$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('A.uid, A.t3ver_oid, B.pid AS realpid', (($table . ' A,') . $table) . ' B', ((((((('A.pid=-1' . ($pageId != -1 ? ($table === 'pages' ? ' AND B.uid=' . intval($pageId) : ' AND B.pid=' . intval($pageId)) : '')) . ($wsid > -98 ? ' AND A.t3ver_wsid=' . $wsid : ($wsid === -98 ? ' AND A.t3ver_wsid!=0' : ''))) . ($filter === 1 ? ' AND A.t3ver_count=0' : ($filter === 2 ? ' AND A.t3ver_count>0' : ''))) . ($stage != -99 ? ' AND A.t3ver_stage=' . intval($stage) : '')) . ' AND B.pid>=0') . ' AND A.t3ver_oid=B.uid') . t3lib_BEfunc::deleteClause($table, 'A')) . t3lib_BEfunc::deleteClause($table, 'B'), '', 'B.uid');
+				$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('A.uid, A.t3ver_oid, B.pid AS realpid', (($table . ' A,') . $table) . ' B', ((((((('A.pid=-1' . ($pageId != -1 ? ($table === 'pages' ? ' AND B.uid=' . intval($pageId) : ' AND B.pid=' . intval($pageId)) : '')) . ($wsid > -98 ? ' AND A.t3ver_wsid=' . $wsid : ($wsid === -98 ? ' AND A.t3ver_wsid!=0' : ''))) . ($filter === 1 ? ' AND A.t3ver_count=0' : ($filter === 2 ? ' AND A.t3ver_count>0' : ''))) . ($stage != -99 ? ' AND A.t3ver_stage=' . intval($stage) : '')) . ' AND B.pid>=0') . ' AND A.t3ver_oid=B.uid') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'A')) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'B'), '', 'B.uid');
 				if (count($recs)) {
 					$output[$table] = $recs;
 				}
@@ -124,7 +126,7 @@ class wslib {
 		$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,swap_modes,publish_time,unpublish_time', 'sys_workspace', (((('pid=0
 				AND
 				((publish_time!=0 AND publish_time<=' . intval($GLOBALS['EXEC_TIME'])) . ')
-				OR (publish_time=0 AND unpublish_time!=0 AND unpublish_time<=') . intval($GLOBALS['EXEC_TIME'])) . '))') . t3lib_BEfunc::deleteClause('sys_workspace'));
+				OR (publish_time=0 AND unpublish_time!=0 AND unpublish_time<=') . intval($GLOBALS['EXEC_TIME'])) . '))') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace'));
 		foreach ($workspaces as $rec) {
 			// First, clear start/end time so it doesn't get select once again:
 			$fieldArray = $rec['publish_time'] != 0 ? array('publish_time' => 0) : array('unpublish_time' => 0);
@@ -133,7 +135,7 @@ class wslib {
 			$cmd = $this->getCmdArrayForPublishWS($rec['uid'], $rec['swap_modes'] == 1);
 			// $rec['swap_modes']==1 means that auto-publishing will swap versions, not just publish and empty the workspace.
 			// Execute CMD array:
-			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
 			$tce->stripslashes_values = 0;
 			$tce->start(array(), $cmd);
 			$tce->process_cmdmap();
@@ -143,5 +145,6 @@ class wslib {
 	}
 
 }
+
 
 ?>

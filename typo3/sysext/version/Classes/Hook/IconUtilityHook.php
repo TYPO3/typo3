@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Version\Hook;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
 /**
  * Implements a hook for t3lib_iconworks
  */
-class tx_version_iconworks {
+class IconUtilityHook {
 
 	/**
 	 * Visualizes the deleted status for a versionized record.
@@ -45,5 +47,6 @@ class tx_version_iconworks {
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Version\View;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +32,7 @@
  * Contains some parts for staging, versioning and workspaces
  * to interact with the TYPO3 Core Engine
  */
-class tx_version_gui {
+class VersionView {
 
 	/**
 	 * Creates the version selector for the page id inputted.
@@ -46,11 +48,11 @@ class tx_version_gui {
 		}
 		if ($GLOBALS['BE_USER']->workspace == 0) {
 			// Get Current page record:
-			$curPage = t3lib_BEfunc::getRecord('pages', $id);
+			$curPage = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $id);
 			// If the selected page is not online, find the right ID
 			$onlineId = $curPage['pid'] == -1 ? $curPage['t3ver_oid'] : $id;
 			// Select all versions of online version:
-			$versions = t3lib_BEfunc::selectVersionsOfRecord('pages', $onlineId, 'uid,pid,t3ver_label,t3ver_oid,t3ver_wsid,t3ver_id');
+			$versions = \TYPO3\CMS\Backend\Utility\BackendUtility::selectVersionsOfRecord('pages', $onlineId, 'uid,pid,t3ver_label,t3ver_oid,t3ver_wsid,t3ver_id');
 			// If more than one was found...:
 			if (count($versions) > 1) {
 				$selectorLabel = ('<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:versionSelect.label', TRUE)) . '</strong>';
@@ -63,17 +65,17 @@ class tx_version_gui {
 					} else {
 						$label = ((((($vRow['t3ver_label'] . ' (') . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:versionId', TRUE)) . ' ') . $vRow['t3ver_id']) . ($vRow['t3ver_wsid'] != 0 ? ((' ' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:workspaceId', TRUE)) . ' ') . $vRow['t3ver_wsid'] : '')) . ')';
 					}
-					$opt[] = ((((('<option value="' . htmlspecialchars(t3lib_div::linkThisScript(array('id' => $vRow['uid'])))) . '"') . ($id == $vRow['uid'] ? ' selected="selected"' : '')) . '>') . htmlspecialchars($label)) . '</option>';
+					$opt[] = ((((('<option value="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('id' => $vRow['uid'])))) . '"') . ($id == $vRow['uid'] ? ' selected="selected"' : '')) . '>') . htmlspecialchars($label)) . '</option>';
 				}
 				// Add management link:
-				$management = ((('<input type="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.mgm', TRUE)) . '" onclick="window.location.href=\'') . htmlspecialchars(((($GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath('version')) . 'cm1/index.php?table=pages&uid=') . $onlineId))) . '\';" />';
+				$management = ((('<input type="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.mgm', TRUE)) . '" onclick="window.location.href=\'') . htmlspecialchars(((($GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('version')) . 'cm1/index.php?table=pages&uid=') . $onlineId))) . '\';" />';
 				// Create onchange handler:
 				$onChange = 'window.location.href=this.options[this.selectedIndex].value;';
 				// Controls:
 				if ($id == $onlineId) {
-					$controls .= ((('<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"')) . ' class="absmiddle" alt="" /> <strong>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online', TRUE)) . '</strong>';
+					$controls .= ((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"')) . ' class="absmiddle" alt="" /> <strong>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online', TRUE)) . '</strong>';
 				} elseif (!$noAction) {
-					$controls .= ((((('<a href="' . $GLOBALS['TBE_TEMPLATE']->issueCommand((((((('&cmd[pages][' . $onlineId) . '][version][swapWith]=') . $id) . '&cmd[pages][') . $onlineId) . '][version][action]=swap'), t3lib_div::linkThisScript(array('id' => $onlineId)))) . '" class="nobr">') . t3lib_iconWorks::getSpriteIcon('actions-version-swap-version', array(
+					$controls .= ((((('<a href="' . $GLOBALS['TBE_TEMPLATE']->issueCommand((((((('&cmd[pages][' . $onlineId) . '][version][swapWith]=') . $id) . '&cmd[pages][') . $onlineId) . '][version][action]=swap'), \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('id' => $onlineId)))) . '" class="nobr">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-version-swap-version', array(
 						'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swapPage', TRUE),
 						'style' => 'margin-left:5px;vertical-align:bottom;'
 					))) . '<strong>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swap', TRUE)) . '</strong></a>';
@@ -110,15 +112,15 @@ class tx_version_gui {
 				break;
 			}
 			// Get Current page record:
-			$curPage = t3lib_BEfunc::getRecord('pages', $id);
+			$curPage = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $id);
 			// If the selected page is not online, find the right ID
 			$onlineId = $curPage['pid'] == -1 ? $curPage['t3ver_oid'] : $id;
 			// The version of page:
-			$verPage = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, 'pages', $onlineId);
+			$verPage = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, 'pages', $onlineId);
 			if (!$verPage) {
-				if (!count(t3lib_BEfunc::countVersionsOfRecordsOnPage($GLOBALS['BE_USER']->workspace, $onlineId))) {
+				if (!count(\TYPO3\CMS\Backend\Utility\BackendUtility::countVersionsOfRecordsOnPage($GLOBALS['BE_USER']->workspace, $onlineId))) {
 					if ($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(0)) {
-						$onClick = $GLOBALS['TBE_TEMPLATE']->issueCommand(((('&cmd[pages][' . $onlineId) . '][version][action]=new&cmd[pages][') . $onlineId) . '][version][treeLevels]=0', t3lib_div::linkThisScript(array(
+						$onClick = $GLOBALS['TBE_TEMPLATE']->issueCommand(((('&cmd[pages][' . $onlineId) . '][version][action]=new&cmd[pages][') . $onlineId) . '][version][treeLevels]=0', \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array(
 							'id' => $onlineId
 						)));
 						$onClick = ('window.location.href=\'' . $onClick) . '\'; return false;';
@@ -144,5 +146,6 @@ class tx_version_gui {
 	}
 
 }
+
 
 ?>

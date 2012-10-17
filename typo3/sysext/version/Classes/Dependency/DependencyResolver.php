@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Version\Dependency;
+
 /***************************************************************
  * Copyright notice
  *
@@ -27,10 +29,10 @@
 /**
  * Object to handle and determine dependent references of elements.
  */
-class t3lib_utility_Dependency {
+class DependencyResolver {
 
 	/**
-	 * @var t3lib_utility_Dependency_Factory
+	 * @var \TYPO3\CMS\Version\Dependency\DependencyEntityFactory
 	 */
 	protected $factory;
 
@@ -58,10 +60,10 @@ class t3lib_utility_Dependency {
 	 * Sets a callback for a particular event.
 	 *
 	 * @param string $eventName
-	 * @param t3lib_utility_Dependency_Callback $callback
-	 * @return t3lib_utility_Dependency
+	 * @param \TYPO3\CMS\Version\Dependency\EventCallback $callback
+	 * @return \TYPO3\CMS\Version\Dependency\DependencyResolver
 	 */
-	public function setEventCallback($eventName, t3lib_utility_Dependency_Callback $callback) {
+	public function setEventCallback($eventName, \TYPO3\CMS\Version\Dependency\EventCallback $callback) {
 		$this->eventCallbacks[$eventName] = $callback;
 		return $this;
 	}
@@ -76,7 +78,7 @@ class t3lib_utility_Dependency {
 	 */
 	public function executeEventCallback($eventName, $caller, array $callerArguments = array()) {
 		if (isset($this->eventCallbacks[$eventName])) {
-			/** @var $callback t3lib_utility_Dependency_Callback */
+			/** @var $callback \TYPO3\CMS\Version\Dependency\EventCallback */
 			$callback = $this->eventCallbacks[$eventName];
 			return $callback->execute($callerArguments, $caller, $eventName);
 		}
@@ -86,7 +88,7 @@ class t3lib_utility_Dependency {
 	 * Sets the condition that outermost parents required at least one child or parent reference.
 	 *
 	 * @param boolean $outerMostParentsRequireReferences
-	 * @return t3lib_utility_Dependency
+	 * @return \TYPO3\CMS\Version\Dependency\DependencyResolver
 	 */
 	public function setOuterMostParentsRequireReferences($outerMostParentsRequireReferences) {
 		$this->outerMostParentsRequireReferences = (bool) $outerMostParentsRequireReferences;
@@ -99,7 +101,7 @@ class t3lib_utility_Dependency {
 	 * @param string $table
 	 * @param integer $id
 	 * @param array $data
-	 * @return t3lib_utility_Dependency_Element
+	 * @return \TYPO3\CMS\Version\Dependency\ElementEntity
 	 */
 	public function addElement($table, $id, array $data = array()) {
 		$element = $this->getFactory()->getElement($table, $id, $data, $this);
@@ -116,7 +118,7 @@ class t3lib_utility_Dependency {
 	public function getOuterMostParents() {
 		if (!isset($this->outerMostParents)) {
 			$this->outerMostParents = array();
-			/** @var $element t3lib_utility_Dependency_Element */
+			/** @var $element \TYPO3\CMS\Version\Dependency\ElementEntity */
 			foreach ($this->elements as $element) {
 				$this->processOuterMostParent($element);
 			}
@@ -127,10 +129,10 @@ class t3lib_utility_Dependency {
 	/**
 	 * Processes and registers the outermost parents accordant to the registered elements.
 	 *
-	 * @param t3lib_utility_Dependency_Element $element
+	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
 	 * @return void
 	 */
-	protected function processOuterMostParent(t3lib_utility_Dependency_Element $element) {
+	protected function processOuterMostParent(\TYPO3\CMS\Version\Dependency\ElementEntity $element) {
 		if ($this->outerMostParentsRequireReferences === FALSE || $element->hasReferences()) {
 			$outerMostParent = $element->getOuterMostParent();
 			if ($outerMostParent !== FALSE) {
@@ -146,13 +148,13 @@ class t3lib_utility_Dependency {
 	 * Gets all nested elements (including the parent) of a particular outermost parent element.
 	 *
 	 * @throws RuntimeException
-	 * @param t3lib_utility_Dependency_Element $outerMostParent
+	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $outerMostParent
 	 * @return array
 	 */
-	public function getNestedElements(t3lib_utility_Dependency_Element $outerMostParent) {
+	public function getNestedElements(\TYPO3\CMS\Version\Dependency\ElementEntity $outerMostParent) {
 		$outerMostParentName = $outerMostParent->__toString();
 		if (!isset($this->outerMostParents[$outerMostParentName])) {
-			throw new RuntimeException(('Element "' . $outerMostParentName) . '" was detected as outermost parent.', 1289318609);
+			throw new \RuntimeException(('Element "' . $outerMostParentName) . '" was detected as outermost parent.', 1289318609);
 		}
 		$nestedStructure = array_merge(array($outerMostParentName => $outerMostParent), $outerMostParent->getNestedChildren());
 		return $nestedStructure;
@@ -170,15 +172,16 @@ class t3lib_utility_Dependency {
 	/**
 	 * Gets an instance of the factory to keep track of element or reference entities.
 	 *
-	 * @return t3lib_utility_Dependency_Factory
+	 * @return \TYPO3\CMS\Version\Dependency\DependencyEntityFactory
 	 */
 	public function getFactory() {
 		if (!isset($this->factory)) {
-			$this->factory = t3lib_div::makeInstance('t3lib_utility_Dependency_Factory');
+			$this->factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Dependency\\DependencyEntityFactory');
 		}
 		return $this->factory;
 	}
 
 }
+
 
 ?>

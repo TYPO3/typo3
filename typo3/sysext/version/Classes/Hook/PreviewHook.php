@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Version\Hook;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  * @package Version
  */
-class Tx_Version_Preview implements t3lib_Singleton {
+class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * the GET parameter to be used
@@ -43,7 +45,7 @@ class Tx_Version_Preview implements t3lib_Singleton {
 	/**
 	 * instance of the tslib_fe object
 	 *
-	 * @var tslib_fe
+	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
 	 */
 	protected $tsfeObj;
 
@@ -70,7 +72,7 @@ class Tx_Version_Preview implements t3lib_Singleton {
 			// re-initialize the TSFE object:
 			// because the GET variables are taken from the preview
 			// configuration
-			$GLOBALS['TSFE'] = ($this->tsfeObj = t3lib_div::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], t3lib_div::_GP('id'), t3lib_div::_GP('type'), t3lib_div::_GP('no_cache'), t3lib_div::_GP('cHash'), t3lib_div::_GP('jumpurl'), t3lib_div::_GP('MP'), t3lib_div::_GP('RDCT')));
+			$GLOBALS['TSFE'] = ($this->tsfeObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', $GLOBALS['TYPO3_CONF_VARS'], \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('type'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('no_cache'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cHash'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('jumpurl'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('MP'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('RDCT')));
 			// Configuration after initialization of TSFE object.
 			// Basically this unsets the BE cookie if any and forces
 			// the BE user set according to the preview configuration.
@@ -92,7 +94,7 @@ class Tx_Version_Preview implements t3lib_Singleton {
 	public function initializePreviewUser(&$params, &$pObj) {
 		if (((is_null($params['BE_USER']) || $params['BE_USER'] === FALSE) && $this->previewConfiguration !== FALSE) && $this->previewConfiguration['BEUSER_uid'] > 0) {
 			// New backend user object
-			$BE_USER = t3lib_div::makeInstance('t3lib_tsfeBeUserAuth');
+			$BE_USER = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication');
 			$BE_USER->userTS_dontGetCached = 1;
 			$BE_USER->OS = TYPO3_OS;
 			$BE_USER->setBeUserByUid($this->previewConfiguration['BEUSER_uid']);
@@ -111,7 +113,7 @@ class Tx_Version_Preview implements t3lib_Singleton {
 		// if there is a valid BE user, and the full workspace should be
 		// previewed, the workspacePreview option shouldbe set
 		$workspaceUid = $this->previewConfiguration['fullWorkspace'];
-		if (($pObj->beUserLogin && is_object($params['BE_USER'])) && t3lib_utility_Math::canBeInterpretedAsInteger($workspaceUid)) {
+		if (($pObj->beUserLogin && is_object($params['BE_USER'])) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($workspaceUid)) {
 			if ($workspaceUid == 0 || $workspaceUid >= -1 && $params['BE_USER']->checkWorkspace($workspaceUid)) {
 				// Check Access to workspace. Live (0) is OK to preview for all.
 				$pObj->workspacePreview = intval($workspaceUid);
@@ -138,18 +140,18 @@ class Tx_Version_Preview implements t3lib_Singleton {
 		if ($inputCode) {
 			// "log out"
 			if ($inputCode == 'LOGOUT') {
-				setcookie($this->previewKey, '', 0, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
+				setcookie($this->previewKey, '', 0, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
 				if ($this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']) {
 					$templateFile = PATH_site . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate'];
 					if (@is_file($templateFile)) {
-						$message = t3lib_div::getUrl(PATH_site . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']);
+						$message = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_site . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']);
 					} else {
 						$message = ('<strong>ERROR!</strong><br>Template File "' . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']) . '" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.';
 					}
 				} else {
 					$message = 'You logged out from Workspace preview mode. Click this link to <a href="%1$s">go back to the website</a>';
 				}
-				$returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GET('returnUrl'));
+				$returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('returnUrl'));
 				die(sprintf($message, htmlspecialchars(preg_replace(('/\\&?' . $this->previewKey) . '=[[:alnum:]]+/', '', $returnUrl))));
 			}
 			// Look for keyword configuration record:
@@ -158,7 +160,7 @@ class Tx_Version_Preview implements t3lib_Singleton {
 			// - Make sure to remove fe/be cookies (temporarily);
 			// BE already done in ADMCMD_preview_postInit()
 			if (is_array($previewData)) {
-				if (!count(t3lib_div::_POST())) {
+				if (!count(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST())) {
 					// Unserialize configuration:
 					$previewConfig = unserialize($previewData['config']);
 					// For full workspace preview we only ADD a get variable
@@ -169,33 +171,33 @@ class Tx_Version_Preview implements t3lib_Singleton {
 					// users can use those credentials.
 					if ($previewConfig['fullWorkspace']) {
 						// Set the workspace preview value:
-						t3lib_div::_GETset($previewConfig['fullWorkspace'], 'ADMCMD_previewWS');
+						\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset($previewConfig['fullWorkspace'], 'ADMCMD_previewWS');
 						// If ADMCMD_prev is set the $inputCode value cannot come
 						// from a cookie and we set that cookie here. Next time it will
 						// be found from the cookie if ADMCMD_prev is not set again...
-						if (t3lib_div::_GP($this->previewKey)) {
+						if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP($this->previewKey)) {
 							// Lifetime is 1 hour, does it matter much?
 							// Requires the user to click the link from their email again if it expires.
-							SetCookie($this->previewKey, t3lib_div::_GP($this->previewKey), 0, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
+							SetCookie($this->previewKey, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($this->previewKey), 0, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
 						}
 						return $previewConfig;
-					} elseif ((((t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'index.php?') . $this->previewKey) . '=') . $inputCode === t3lib_div::getIndpEnv('TYPO3_REQUEST_URL')) {
+					} elseif ((((\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?') . $this->previewKey) . '=') . $inputCode === \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) {
 						// Set GET variables
 						$GET_VARS = '';
 						parse_str($previewConfig['getVars'], $GET_VARS);
-						t3lib_div::_GETset($GET_VARS);
+						\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset($GET_VARS);
 						// Return preview keyword configuration
 						return $previewConfig;
 					} else {
 						// This check is to prevent people from setting additional
 						// GET vars via realurl or other URL path based ways of passing parameters.
-						throw new Exception(htmlspecialchars(((((('Request URL did not match "' . t3lib_div::getIndpEnv('TYPO3_SITE_URL')) . 'index.php?') . $this->previewKey) . '=') . $inputCode) . '"', 1294585190));
+						throw new \Exception(htmlspecialchars(((((('Request URL did not match "' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL')) . 'index.php?') . $this->previewKey) . '=') . $inputCode) . '"', 1294585190));
 					}
 				} else {
-					throw new Exception('POST requests are incompatible with keyword preview.', 1294585191);
+					throw new \Exception('POST requests are incompatible with keyword preview.', 1294585191);
 				}
 			} else {
-				throw new Exception('ADMCMD command could not be executed! (No keyword configuration found)', 1294585192);
+				throw new \Exception('ADMCMD command could not be executed! (No keyword configuration found)', 1294585192);
 			}
 		}
 		return FALSE;
@@ -207,7 +209,7 @@ class Tx_Version_Preview implements t3lib_Singleton {
 	 * @param input code
 	 */
 	protected function getPreviewInputCode() {
-		$inputCode = t3lib_div::_GP($this->previewKey);
+		$inputCode = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($this->previewKey);
 		// If no inputcode and a cookie is set, load input code from cookie:
 		if (!$inputCode && $_COOKIE[$this->previewKey]) {
 			$inputCode = $_COOKIE[$this->previewKey];
@@ -258,5 +260,6 @@ class Tx_Version_Preview implements t3lib_Singleton {
 	}
 
 }
+
 
 ?>

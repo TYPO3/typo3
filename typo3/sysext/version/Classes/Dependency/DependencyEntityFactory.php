@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Version\Dependency;
+
 /***************************************************************
  * Copyright notice
  *
@@ -27,7 +29,7 @@
 /**
  * Object to create and keep track of element or reference entities.
  */
-class t3lib_utility_Dependency_Factory {
+class DependencyEntityFactory {
 
 	/**
 	 * @var array
@@ -45,13 +47,13 @@ class t3lib_utility_Dependency_Factory {
 	 * @param string $table
 	 * @param integer $id
 	 * @param array $data (optional)
-	 * @param t3lib_utility_Dependency $dependency
-	 * @return t3lib_utility_Dependency_Element
+	 * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
+	 * @return \TYPO3\CMS\Version\Dependency\ElementEntity
 	 */
-	public function getElement($table, $id, array $data = array(), t3lib_utility_Dependency $dependency) {
+	public function getElement($table, $id, array $data = array(), \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency) {
 		$elementName = ($table . ':') . $id;
 		if (!isset($this->elements[$elementName])) {
-			$this->elements[$elementName] = t3lib_div::makeInstance('t3lib_utility_Dependency_Element', $table, $id, $data, $dependency);
+			$this->elements[$elementName] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Dependency\\DependencyResolver_Element', $table, $id, $data, $dependency);
 		}
 		return $this->elements[$elementName];
 	}
@@ -59,14 +61,14 @@ class t3lib_utility_Dependency_Factory {
 	/**
 	 * Gets and registers a new reference.
 	 *
-	 * @param t3lib_utility_Dependency_Element $element
+	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
 	 * @param string $field
-	 * @return t3lib_utility_Dependency_Reference
+	 * @return \TYPO3\CMS\Version\Dependency\ReferenceEntity
 	 */
-	public function getReference(t3lib_utility_Dependency_Element $element, $field) {
+	public function getReference(\TYPO3\CMS\Version\Dependency\ElementEntity $element, $field) {
 		$referenceName = ($element->__toString() . '.') . $field;
 		if (!isset($this->references[$referenceName][$field])) {
-			$this->references[$referenceName][$field] = t3lib_div::makeInstance('t3lib_utility_Dependency_Reference', $element, $field);
+			$this->references[$referenceName][$field] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Dependency\\DependencyResolver_Reference', $element, $field);
 		}
 		return $this->references[$referenceName][$field];
 	}
@@ -78,15 +80,16 @@ class t3lib_utility_Dependency_Factory {
 	 * @param integer $id
 	 * @param string $field
 	 * @param array $data (optional
-	 * @param t3lib_utility_Dependency $dependency
-	 * @return t3lib_utility_Dependency_Reference
+	 * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
+	 * @return \TYPO3\CMS\Version\Dependency\ReferenceEntity
 	 * @see getElement
 	 * @see getReference
 	 */
-	public function getReferencedElement($table, $id, $field, array $data = array(), t3lib_utility_Dependency $dependency) {
+	public function getReferencedElement($table, $id, $field, array $data = array(), \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency) {
 		return $this->getReference($this->getElement($table, $id, $data, $dependency), $field);
 	}
 
 }
+
 
 ?>

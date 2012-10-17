@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Version\Dependency;
+
 /***************************************************************
  * Copyright notice
  *
@@ -27,7 +29,7 @@
 /**
  * Object to hold information on a callback to a defined object and method.
  */
-class t3lib_utility_Dependency_Callback {
+class EventCallback {
 
 	/**
 	 * @var object
@@ -71,5 +73,6 @@ class t3lib_utility_Dependency_Callback {
 	}
 
 }
+
 
 ?>

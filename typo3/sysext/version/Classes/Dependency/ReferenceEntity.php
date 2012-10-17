@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Version\Dependency;
+
 /***************************************************************
  * Copyright notice
  *
@@ -27,10 +29,10 @@
 /**
  * Object to hold reference information of a database field and one accordant element.
  */
-class t3lib_utility_Dependency_Reference {
+class ReferenceEntity {
 
 	/**
-	 * @var t3lib_utility_Dependency_Element
+	 * @var \TYPO3\CMS\Version\Dependency\ElementEntity
 	 */
 	protected $element;
 
@@ -42,10 +44,10 @@ class t3lib_utility_Dependency_Reference {
 	/**
 	 * Creates this object.
 	 *
-	 * @param t3lib_utility_Dependency_Element $element
+	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
 	 * @param string $field
 	 */
-	public function __construct(t3lib_utility_Dependency_Element $element, $field) {
+	public function __construct(\TYPO3\CMS\Version\Dependency\ElementEntity $element, $field) {
 		$this->element = $element;
 		$this->field = $field;
 	}
@@ -53,7 +55,7 @@ class t3lib_utility_Dependency_Reference {
 	/**
 	 * Gets the elements.
 	 *
-	 * @return t3lib_utility_Dependency_Element
+	 * @return \TYPO3\CMS\Version\Dependency\ElementEntity
 	 */
 	public function getElement() {
 		return $this->element;
@@ -78,5 +80,6 @@ class t3lib_utility_Dependency_Reference {
 	}
 
 }
+
 
 ?>

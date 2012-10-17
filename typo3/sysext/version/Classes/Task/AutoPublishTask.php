@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Version\Task;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +31,7 @@
  * @package 		TYPO3
  * @subpackage 	tx_version
  */
-class tx_version_tasks_AutoPublish extends tx_scheduler_Task {
+class AutoPublishTask extends \TYPO3\CMS\Scheduler\Task {
 
 	/**
 	 * Method executed from the Scheduler.
@@ -40,8 +42,8 @@ class tx_version_tasks_AutoPublish extends tx_scheduler_Task {
 	 */
 	public function execute() {
 		// Load the workspace library class and instatiate it
-		require_once t3lib_extMgm::extPath('version') . 'ws/class.wslib.php';
-		$autopubObj = t3lib_div::makeInstance('wslib');
+		require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('version') . 'ws/class.wslib.php';
+		$autopubObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Utility\\WorkspacesUtility');
 		// Publish the workspaces that need to be
 		$autopubObj->autoPublishWorkspaces();
 		// There's no feedback from the publishing process,
@@ -51,5 +53,6 @@ class tx_version_tasks_AutoPublish extends tx_scheduler_Task {
 	}
 
 }
+
 
 ?>

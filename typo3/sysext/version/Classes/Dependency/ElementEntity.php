@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Version\Dependency;
+
 /***************************************************************
  * Copyright notice
  *
@@ -27,14 +29,14 @@
 /**
  * Object to hold information on a dependent database element in abstract.
  */
-class t3lib_utility_Dependency_Element {
+class ElementEntity {
 
 	const REFERENCES_ChildOf = 'childOf';
 	const REFERENCES_ParentOf = 'parentOf';
-	const EVENT_Construct = 't3lib_utility_Dependency_Element::construct';
-	const EVENT_CreateChildReference = 't3lib_utility_Dependency_Element::createChildReference';
-	const EVENT_CreateParentReference = 't3lib_utility_Dependency_Element::createParentReference';
-	const RESPONSE_Skip = 't3lib_utility_Dependency_Element->skip';
+	const EVENT_Construct = 'TYPO3\\CMS\\Version\\Dependency\\DependencyResolver_Element::construct';
+	const EVENT_CreateChildReference = 'TYPO3\\CMS\\Version\\Dependency\\DependencyResolver_Element::createChildReference';
+	const EVENT_CreateParentReference = 'TYPO3\\CMS\\Version\\Dependency\\DependencyResolver_Element::createParentReference';
+	const RESPONSE_Skip = 'TYPO3\\CMS\\Version\\Dependency\\DependencyResolver_Element->skip';
 	/**
 	 * @var string
 	 */
@@ -56,7 +58,7 @@ class t3lib_utility_Dependency_Element {
 	protected $record;
 
 	/**
-	 * @var t3lib_utility_Dependency
+	 * @var \TYPO3\CMS\Version\Dependency\DependencyResolver
 	 */
 	protected $dependency;
 
@@ -76,7 +78,7 @@ class t3lib_utility_Dependency_Element {
 	protected $traversingParents = FALSE;
 
 	/**
-	 * @var t3lib_utility_Dependency_Element
+	 * @var \TYPO3\CMS\Version\Dependency\ElementEntity
 	 */
 	protected $outerMostParent;
 
@@ -91,9 +93,9 @@ class t3lib_utility_Dependency_Element {
 	 * @param string $table
 	 * @param integer $id
 	 * @param array $data (optional)
-	 * @param t3lib_utility_Dependency $dependency
+	 * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
 	 */
-	public function __construct($table, $id, array $data = array(), t3lib_utility_Dependency $dependency) {
+	public function __construct($table, $id, array $data = array(), \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency) {
 		$this->table = $table;
 		$this->id = intval($id);
 		$this->data = $data;
@@ -175,7 +177,7 @@ class t3lib_utility_Dependency_Element {
 	/**
 	 * Gets the parent dependency object.
 	 *
-	 * @return t3lib_utility_Dependency
+	 * @return \TYPO3\CMS\Version\Dependency\DependencyResolver
 	 */
 	public function getDependency() {
 		return $this->dependency;
@@ -237,7 +239,7 @@ class t3lib_utility_Dependency_Element {
 	/**
 	 * Gets the outermost parent element.
 	 *
-	 * @return t3lib_utility_Dependency_Element
+	 * @return \TYPO3\CMS\Version\Dependency\ElementEntity
 	 */
 	public function getOuterMostParent() {
 		if (!isset($this->outerMostParent)) {
@@ -246,10 +248,10 @@ class t3lib_utility_Dependency_Element {
 				$this->outerMostParent = $this;
 			} else {
 				$this->outerMostParent = FALSE;
-				/** @var $parent t3lib_utility_Dependency_Reference */
+				/** @var $parent \TYPO3\CMS\Version\Dependency\ReferenceEntity */
 				foreach ($parents as $parent) {
 					$outerMostParent = $parent->getElement()->getOuterMostParent();
-					if ($outerMostParent instanceof t3lib_utility_Dependency_Element) {
+					if ($outerMostParent instanceof \TYPO3\CMS\Version\Dependency\ElementEntity) {
 						$this->outerMostParent = $outerMostParent;
 						break;
 					} elseif ($outerMostParent === FALSE) {
@@ -270,7 +272,7 @@ class t3lib_utility_Dependency_Element {
 		if (!isset($this->nestedChildren)) {
 			$this->nestedChildren = array();
 			$children = $this->getChildren();
-			/** @var $child t3lib_utility_Dependency_Reference */
+			/** @var $child \TYPO3\CMS\Version\Dependency\ReferenceEntity */
 			foreach ($children as $child) {
 				$this->nestedChildren = array_merge($this->nestedChildren, array($child->getElement()->__toString() => $child->getElement()), $child->getElement()->getNestedChildren());
 			}
@@ -306,5 +308,6 @@ class t3lib_utility_Dependency_Element {
 	}
 
 }
+
 
 ?>

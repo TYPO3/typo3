@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Version\DataHandler;
+
 /***************************************************************
  * Copyright notice
  *
@@ -27,7 +29,7 @@
 /**
  * Handles the t3lib_TCEmain command map and is only used in combination with t3lib_TCEmain.
  */
-class tx_version_tcemain_CommandMap {
+class CommandMap {
 
 	const SCOPE_WorkspacesSwap = 'SCOPE_WorkspacesSwap';
 	const SCOPE_WorkspacesSetStage = 'SCOPE_WorkspacesSetStage';
@@ -43,12 +45,12 @@ class tx_version_tcemain_CommandMap {
 	const KEY_UpdateGetIdCallback = 'KEY_UpdateGetIdCallback';
 	const KEY_TransformDependentElementsToUseLiveId = 'KEY_TransformDependentElementsToUseLiveId';
 	/**
-	 * @var tx_version_tcemain
+	 * @var \TYPO3\CMS\Version\Hook\DataHandlerHook
 	 */
 	protected $parent;
 
 	/**
-	 * @var t3lib_TCEmain
+	 * @var \TYPO3\CMS\Core\DataHandler\DataHandler
 	 */
 	protected $tceMain;
 
@@ -80,10 +82,10 @@ class tx_version_tcemain_CommandMap {
 	/**
 	 * Creates this object.
 	 *
-	 * @param t3lib_TCEmain $parent
+	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $parent
 	 * @param array $commandMap
 	 */
-	public function __construct(tx_version_tcemain $parent, t3lib_TCEmain $tceMain, array $commandMap) {
+	public function __construct(\TYPO3\CMS\Version\Hook\DataHandlerHook $parent, \TYPO3\CMS\Core\DataHandler\DataHandler $tceMain, array $commandMap) {
 		$this->setParent($parent);
 		$this->setTceMain($tceMain);
 		$this->set($commandMap);
@@ -106,7 +108,7 @@ class tx_version_tcemain_CommandMap {
 	 * Sets the command map.
 	 *
 	 * @param array $commandMap
-	 * @return tx_version_tcemain_CommandMap
+	 * @return \TYPO3\CMS\Version\DataHandler\CommandMap
 	 */
 	public function set(array $commandMap) {
 		$this->commandMap = $commandMap;
@@ -116,7 +118,7 @@ class tx_version_tcemain_CommandMap {
 	/**
 	 * Gets the parent object.
 	 *
-	 * @return tx_version_tcemain
+	 * @return \TYPO3\CMS\Version\Hook\DataHandlerHook
 	 */
 	public function getParent() {
 		return $this->parent;
@@ -125,10 +127,10 @@ class tx_version_tcemain_CommandMap {
 	/**
 	 * Sets the parent object.
 	 *
-	 * @param tx_version_tcemain $parent
-	 * @return tx_version_tcemain_CommandMap
+	 * @param \TYPO3\CMS\Version\Hook\DataHandlerHook $parent
+	 * @return \TYPO3\CMS\Version\DataHandler\CommandMap
 	 */
-	public function setParent(tx_version_tcemain $parent) {
+	public function setParent(\TYPO3\CMS\Version\Hook\DataHandlerHook $parent) {
 		$this->parent = $parent;
 		return $this;
 	}
@@ -136,7 +138,7 @@ class tx_version_tcemain_CommandMap {
 	/**
 	 * Gets the parent object.
 	 *
-	 * @return t3lib_TCEmain
+	 * @return \TYPO3\CMS\Core\DataHandler\DataHandler
 	 */
 	public function getTceMain() {
 		return $this->tceMain;
@@ -145,10 +147,10 @@ class tx_version_tcemain_CommandMap {
 	/**
 	 * Sets the parent object.
 	 *
-	 * @param t3lib_TCEmain $tceMain
-	 * @return tx_version_tcemain_CommandMap
+	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tceMain
+	 * @return \TYPO3\CMS\Version\DataHandler\CommandMap
 	 */
-	public function setTceMain(t3lib_TCEmain $tceMain) {
+	public function setTceMain(\TYPO3\CMS\Core\DataHandler\DataHandler $tceMain) {
 		$this->tceMain = $tceMain;
 		return $this;
 	}
@@ -158,7 +160,7 @@ class tx_version_tcemain_CommandMap {
 	 * (see options.workspaces.swapMode).
 	 *
 	 * @param string $workspacesSwapMode
-	 * @return tx_version_tcemain_CommandMap
+	 * @return \TYPO3\CMS\Version\DataHandler\CommandMap
 	 */
 	public function setWorkspacesSwapMode($workspacesSwapMode) {
 		$this->workspacesSwapMode = (string) $workspacesSwapMode;
@@ -170,7 +172,7 @@ class tx_version_tcemain_CommandMap {
 	 * see options.workspaces.changeStageMode)
 	 *
 	 * @param string $workspacesChangeStageMode
-	 * @return tx_version_tcemain_CommandMap
+	 * @return \TYPO3\CMS\Version\DataHandler\CommandMap
 	 */
 	public function setWorkspacesChangeStageMode($workspacesChangeStageMode) {
 		$this->workspacesChangeStageMode = (string) $workspacesChangeStageMode;
@@ -182,7 +184,7 @@ class tx_version_tcemain_CommandMap {
 	 * (see options.workspaces.considerReferences)
 	 *
 	 * @param boolean $workspacesConsiderReferences
-	 * @return tx_version_tcemain_CommandMap
+	 * @return \TYPO3\CMS\Version\DataHandler\CommandMap
 	 */
 	public function setWorkspacesConsiderReferences($workspacesConsiderReferences) {
 		$this->workspacesConsiderReferences = (bool) $workspacesConsiderReferences;
@@ -192,7 +194,7 @@ class tx_version_tcemain_CommandMap {
 	/**
 	 * Processes the command map.
 	 *
-	 * @return tx_version_tcemain_CommandMap
+	 * @return \TYPO3\CMS\Version\DataHandler\CommandMap
 	 */
 	public function process() {
 		$this->resolveWorkspacesSwapDependencies();
@@ -214,7 +216,7 @@ class tx_version_tcemain_CommandMap {
 			foreach ($liveIdCollection as $liveId => $commandCollection) {
 				foreach ($commandCollection as $command => $properties) {
 					if (($command === 'version' && isset($properties['action'])) && $properties['action'] === 'swap') {
-						if (isset($properties['swapWith']) && t3lib_utility_Math::canBeInterpretedAsInteger($properties['swapWith'])) {
+						if (isset($properties['swapWith']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($properties['swapWith'])) {
 							call_user_func_array(array($this, $callbackMethod), array_merge($arguments, array($table, $liveId, $properties)));
 						}
 					}
@@ -234,7 +236,7 @@ class tx_version_tcemain_CommandMap {
 	protected function resolveWorkspacesSwapDependencies() {
 		$scope = self::SCOPE_WorkspacesSwap;
 		$dependency = $this->getDependencyUtility($scope);
-		if (t3lib_div::inList('any,pages', $this->workspacesSwapMode)) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('any,pages', $this->workspacesSwapMode)) {
 			$this->invokeWorkspacesSwapItems('applyWorkspacesSwapBehaviour');
 		}
 		$this->invokeWorkspacesSwapItems('addWorkspacesSwapElements', array($dependency));
@@ -270,13 +272,13 @@ class tx_version_tcemain_CommandMap {
 	/**
 	 * Adds workspaces elements for swapping/publishing.
 	 *
-	 * @param t3lib_utility_Dependency $dependency
+	 * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
 	 * @param string $table
 	 * @param integer $liveId
 	 * @param array $properties
 	 * @return void
 	 */
-	protected function addWorkspacesSwapElements(t3lib_utility_Dependency $dependency, $table, $liveId, array $properties) {
+	protected function addWorkspacesSwapElements(\TYPO3\CMS\Version\Dependency\DependencyResolver $dependency, $table, $liveId, array $properties) {
 		$elementList = array();
 		// Fetch accordant elements if the swapMode is 'any' or 'pages':
 		if ($this->workspacesSwapMode === 'any' || $this->workspacesSwapMode === 'pages' && $table === 'pages') {
@@ -305,7 +307,7 @@ class tx_version_tcemain_CommandMap {
 			foreach ($liveIdCollection as $liveIdList => $commandCollection) {
 				foreach ($commandCollection as $command => $properties) {
 					if (($command === 'version' && isset($properties['action'])) && $properties['action'] === 'setStage') {
-						if (isset($properties['stageId']) && t3lib_utility_Math::canBeInterpretedAsInteger($properties['stageId'])) {
+						if (isset($properties['stageId']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($properties['stageId'])) {
 							call_user_func_array(array($this, $callbackMethod), array_merge($arguments, array($table, $liveIdList, $properties)));
 						}
 					}
@@ -324,7 +326,7 @@ class tx_version_tcemain_CommandMap {
 	protected function resolveWorkspacesSetStageDependencies() {
 		$scope = self::SCOPE_WorkspacesSetStage;
 		$dependency = $this->getDependencyUtility($scope);
-		if (t3lib_div::inList('any,pages', $this->workspacesChangeStageMode)) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('any,pages', $this->workspacesChangeStageMode)) {
 			$this->invokeWorkspacesSetStageItems('applyWorkspacesSetStageBehaviour');
 		}
 		$this->invokeWorkspacesSetStageItems('explodeSetStage');
@@ -342,11 +344,11 @@ class tx_version_tcemain_CommandMap {
 	 */
 	protected function applyWorkspacesSetStageBehaviour($table, $liveIdList, array $properties) {
 		$extendedCommandMap = array();
-		$liveIds = t3lib_div::trimExplode(',', $liveIdList, TRUE);
+		$liveIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $liveIdList, TRUE);
 		$elementList = array($table => $liveIds);
-		if (t3lib_div::inList('any,pages', $this->workspacesChangeStageMode)) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('any,pages', $this->workspacesChangeStageMode)) {
 			if (count($liveIds) === 1) {
-				$workspaceRecord = t3lib_BEfunc::getRecord($table, $liveIds[0], 't3ver_wsid');
+				$workspaceRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $liveIds[0], 't3ver_wsid');
 				$workspaceId = $workspaceRecord['t3ver_wsid'];
 			} else {
 				$workspaceId = $this->getTceMain()->BE_USER->workspace;
@@ -375,13 +377,13 @@ class tx_version_tcemain_CommandMap {
 	/**
 	 * Adds workspaces elements for staging.
 	 *
-	 * @param t3lib_utility_Dependency $dependency
+	 * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
 	 * @param string $table
 	 * @param string $liveIdList
 	 * @param array $properties
 	 * @return void
 	 */
-	protected function addWorkspacesSetStageElements(t3lib_utility_Dependency $dependency, $table, $liveIdList, array $properties) {
+	protected function addWorkspacesSetStageElements(\TYPO3\CMS\Version\Dependency\DependencyResolver $dependency, $table, $liveIdList, array $properties) {
 		$dependency->addElement($table, $liveIdList, array('properties' => $properties));
 	}
 
@@ -419,11 +421,11 @@ class tx_version_tcemain_CommandMap {
 	 */
 	protected function explodeSetStage($table, $liveIdList, array $properties) {
 		$extractedCommandMap = array();
-		$liveIds = t3lib_div::trimExplode(',', $liveIdList, TRUE);
+		$liveIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $liveIdList, TRUE);
 		if (count($liveIds) > 1) {
 			foreach ($liveIds as $liveId) {
 				if (isset($this->commandMap[$table][$liveId]['version'])) {
-					throw new RuntimeException(((('Command map for [' . $table) . '][') . $liveId) . '][version] was already set.', 1289391048);
+					throw new \RuntimeException(((('Command map for [' . $table) . '][') . $liveId) . '][version] was already set.', 1289391048);
 				}
 				$extractedCommandMap[$table][$liveId]['version'] = $properties;
 			}
@@ -436,11 +438,11 @@ class tx_version_tcemain_CommandMap {
 	 * Applies the workspaces dependencies and removes incomplete structures or automatically
 	 * completes them, depending on the options.workspaces.considerReferences setting
 	 *
-	 * @param t3lib_utility_Dependency $dependency
+	 * @param \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency
 	 * @param string $scope
 	 * @return void
 	 */
-	protected function applyWorkspacesDependencies(t3lib_utility_Dependency $dependency, $scope) {
+	protected function applyWorkspacesDependencies(\TYPO3\CMS\Version\Dependency\DependencyResolver $dependency, $scope) {
 		$transformDependentElementsToUseLiveId = $this->getScopeData($scope, self::KEY_TransformDependentElementsToUseLiveId);
 		$elementsToBeVersionized = $dependency->getElements();
 		// Use the uid of the live record instead of the workspace record:
@@ -448,7 +450,7 @@ class tx_version_tcemain_CommandMap {
 			$elementsToBeVersionized = $this->transformDependentElementsToUseLiveId($elementsToBeVersionized);
 		}
 		$outerMostParents = $dependency->getOuterMostParents();
-		/** @var $outerMostParent t3lib_utility_Dependency_Element */
+		/** @var $outerMostParent \TYPO3\CMS\Version\Dependency\ElementEntity */
 		foreach ($outerMostParents as $outerMostParent) {
 			$dependentElements = $dependency->getNestedElements($outerMostParent);
 			if ($transformDependentElementsToUseLiveId) {
@@ -476,13 +478,13 @@ class tx_version_tcemain_CommandMap {
 	 * @return void
 	 */
 	protected function purgeWithErrorMessage(array $elements, $scope) {
-		/** @var $element t3lib_utility_Dependency_Element */
+		/** @var $element \TYPO3\CMS\Version\Dependency\ElementEntity */
 		foreach ($elements as $element) {
 			$table = $element->getTable();
 			$id = $this->processCallback($this->getScopeData($scope, self::KEY_PurgeWithErrorMessageGetIdCallback), array($element));
 			$this->remove($table, $id, 'version');
 			$this->getTceMain()->log($table, $id, 5, 0, 1, $this->getScopeData($scope, self::KEY_ScopeErrorMessage), $this->getScopeData($scope, self::KEY_ScopeErrorCode), array(
-				t3lib_BEfunc::getRecordTitle($table, t3lib_BEfunc::getRecord($table, $id)),
+				\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id)),
 				$table,
 				$id
 			));
@@ -492,18 +494,18 @@ class tx_version_tcemain_CommandMap {
 	/**
 	 * Updates the command map accordant to valid structures and takes care of the correct order.
 	 *
-	 * @param t3lib_utility_Dependency_Element $intersectingElement
+	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $intersectingElement
 	 * @param array $elements
 	 * @param string $scope
 	 * @return void
 	 */
-	protected function update(t3lib_utility_Dependency_Element $intersectingElement, array $elements, $scope) {
+	protected function update(\TYPO3\CMS\Version\Dependency\ElementEntity $intersectingElement, array $elements, $scope) {
 		$orderedCommandMap = array();
 		$commonProperties = array();
 		if ($this->getScopeData($scope, self::KEY_GetCommonPropertiesCallback)) {
 			$commonProperties = $this->processCallback($this->getScopeData($scope, self::KEY_GetCommonPropertiesCallback), array($intersectingElement));
 		}
-		/** @var $element t3lib_utility_Dependency_Element */
+		/** @var $element \TYPO3\CMS\Version\Dependency\ElementEntity */
 		foreach ($elements as $element) {
 			$table = $element->getTable();
 			$id = $this->processCallback($this->getScopeData($scope, self::KEY_UpdateGetIdCallback), array($element));
@@ -524,7 +526,7 @@ class tx_version_tcemain_CommandMap {
 	 * @return void
 	 */
 	protected function mergeToTop(array $commandMap) {
-		$this->commandMap = t3lib_div::array_merge_recursive_overrule($commandMap, $this->commandMap);
+		$this->commandMap = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($commandMap, $this->commandMap);
 	}
 
 	/**
@@ -534,7 +536,7 @@ class tx_version_tcemain_CommandMap {
 	 * @return void
 	 */
 	protected function mergeToBottom(array $commandMap) {
-		$this->commandMap = t3lib_div::array_merge_recursive_overrule($this->commandMap, $commandMap);
+		$this->commandMap = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->commandMap, $commandMap);
 	}
 
 	/**
@@ -556,30 +558,30 @@ class tx_version_tcemain_CommandMap {
 	/**
 	 * Callback to get the liveId of an dependent element.
 	 *
-	 * @param t3lib_utility_Dependency_Element $element
+	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
 	 * @return integer
 	 */
-	protected function getElementLiveIdCallback(t3lib_utility_Dependency_Element $element) {
+	protected function getElementLiveIdCallback(\TYPO3\CMS\Version\Dependency\ElementEntity $element) {
 		return $element->getDataValue('liveId');
 	}
 
 	/**
 	 * Callback to get the real id of an dependent element.
 	 *
-	 * @param t3lib_utility_Dependency_Element $element
+	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
 	 * @return integer
 	 */
-	protected function getElementIdCallback(t3lib_utility_Dependency_Element $element) {
+	protected function getElementIdCallback(\TYPO3\CMS\Version\Dependency\ElementEntity $element) {
 		return $element->getId();
 	}
 
 	/**
 	 * Callback to get the specific properties of a dependent element for swapping/publishing.
 	 *
-	 * @param t3lib_utility_Dependency_Element $element
+	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
 	 * @return array
 	 */
-	protected function getElementSwapPropertiesCallback(t3lib_utility_Dependency_Element $element) {
+	protected function getElementSwapPropertiesCallback(\TYPO3\CMS\Version\Dependency\ElementEntity $element) {
 		return array(
 			'swapWith' => $element->getId()
 		);
@@ -588,10 +590,10 @@ class tx_version_tcemain_CommandMap {
 	/**
 	 * Callback to get common properties of dependent elements for clearing.
 	 *
-	 * @param t3lib_utility_Dependency_Element $element
+	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
 	 * @return array
 	 */
-	protected function getCommonClearPropertiesCallback(t3lib_utility_Dependency_Element $element) {
+	protected function getCommonClearPropertiesCallback(\TYPO3\CMS\Version\Dependency\ElementEntity $element) {
 		$commonSwapProperties = array();
 		$elementProperties = $element->getDataValue('properties');
 		if (isset($elementProperties['action'])) {
@@ -603,10 +605,10 @@ class tx_version_tcemain_CommandMap {
 	/**
 	 * Callback to get common properties of dependent elements for swapping/publishing.
 	 *
-	 * @param t3lib_utility_Dependency_Element $element
+	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
 	 * @return array
 	 */
-	protected function getCommonSwapPropertiesCallback(t3lib_utility_Dependency_Element $element) {
+	protected function getCommonSwapPropertiesCallback(\TYPO3\CMS\Version\Dependency\ElementEntity $element) {
 		$commonSwapProperties = array();
 		$elementProperties = $element->getDataValue('properties');
 		if (isset($elementProperties['action'])) {
@@ -621,20 +623,20 @@ class tx_version_tcemain_CommandMap {
 	/**
 	 * Callback to get the specific properties of a dependent element for staging.
 	 *
-	 * @param t3lib_utility_Dependency_Element $element
+	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
 	 * @return array
 	 */
-	protected function getElementSetStagePropertiesCallback(t3lib_utility_Dependency_Element $element) {
+	protected function getElementSetStagePropertiesCallback(\TYPO3\CMS\Version\Dependency\ElementEntity $element) {
 		return $this->getCommonSetStagePropertiesCallback($element);
 	}
 
 	/**
 	 * Callback to get common properties of dependent elements for staging.
 	 *
-	 * @param t3lib_utility_Dependency_Element $element
+	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $element
 	 * @return array
 	 */
-	protected function getCommonSetStagePropertiesCallback(t3lib_utility_Dependency_Element $element) {
+	protected function getCommonSetStagePropertiesCallback(\TYPO3\CMS\Version\Dependency\ElementEntity $element) {
 		$commonSetStageProperties = array();
 		$elementProperties = $element->getDataValue('properties');
 		if (isset($elementProperties['stageId'])) {
@@ -656,20 +658,20 @@ class tx_version_tcemain_CommandMap {
 	 * Gets an instance of the depency resolver utility.
 	 *
 	 * @param string $scope Scope identifier
-	 * @return t3lib_utility_Dependency
+	 * @return \TYPO3\CMS\Version\Dependency\DependencyResolver
 	 */
 	protected function getDependencyUtility($scope) {
-		/** @var $dependency t3lib_utility_Dependency */
-		$dependency = t3lib_div::makeInstance('t3lib_utility_Dependency');
+		/** @var $dependency \TYPO3\CMS\Version\Dependency\DependencyResolver */
+		$dependency = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Dependency\\DependencyResolver');
 		$dependency->setOuterMostParentsRequireReferences(TRUE);
 		if ($this->getScopeData($scope, self::KEY_ElementConstructCallback)) {
-			$dependency->setEventCallback(t3lib_utility_Dependency_Element::EVENT_Construct, $this->getDependencyCallback($this->getScopeData($scope, self::KEY_ElementConstructCallback)));
+			$dependency->setEventCallback(\TYPO3\CMS\Version\Dependency\ElementEntity::EVENT_Construct, $this->getDependencyCallback($this->getScopeData($scope, self::KEY_ElementConstructCallback)));
 		}
 		if ($this->getScopeData($scope, self::KEY_ElementCreateChildReferenceCallback)) {
-			$dependency->setEventCallback(t3lib_utility_Dependency_Element::EVENT_CreateChildReference, $this->getDependencyCallback($this->getScopeData($scope, self::KEY_ElementCreateChildReferenceCallback)));
+			$dependency->setEventCallback(\TYPO3\CMS\Version\Dependency\ElementEntity::EVENT_CreateChildReference, $this->getDependencyCallback($this->getScopeData($scope, self::KEY_ElementCreateChildReferenceCallback)));
 		}
 		if ($this->getScopeData($scope, self::KEY_ElementCreateParentReferenceCallback)) {
-			$dependency->setEventCallback(t3lib_utility_Dependency_Element::EVENT_CreateParentReference, $this->getDependencyCallback($this->getScopeData($scope, self::KEY_ElementCreateParentReferenceCallback)));
+			$dependency->setEventCallback(\TYPO3\CMS\Version\Dependency\ElementEntity::EVENT_CreateParentReference, $this->getDependencyCallback($this->getScopeData($scope, self::KEY_ElementCreateParentReferenceCallback)));
 		}
 		return $dependency;
 	}
@@ -679,16 +681,16 @@ class tx_version_tcemain_CommandMap {
 	 *
 	 * @param array $callerArguments
 	 * @param array $targetArgument
-	 * @param t3lib_utility_Dependency_Element $caller
+	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $caller
 	 * @param string $eventName
 	 * @return string Skip response (if required)
 	 */
-	public function createNewDependentElementChildReferenceCallback(array $callerArguments, array $targetArgument, t3lib_utility_Dependency_Element $caller, $eventName) {
-		/** @var $reference t3lib_utility_Dependency_Reference */
+	public function createNewDependentElementChildReferenceCallback(array $callerArguments, array $targetArgument, \TYPO3\CMS\Version\Dependency\ElementEntity $caller, $eventName) {
+		/** @var $reference \TYPO3\CMS\Version\Dependency\ReferenceEntity */
 		$reference = $callerArguments['reference'];
-		$fieldCOnfiguration = t3lib_BEfunc::getTcaFieldConfiguration($caller->getTable(), $reference->getField());
-		if (!$fieldCOnfiguration || !t3lib_div::inList('field,list', $this->getTceMain()->getInlineFieldType($fieldCOnfiguration))) {
-			return t3lib_utility_Dependency_Element::RESPONSE_Skip;
+		$fieldCOnfiguration = \TYPO3\CMS\Backend\Utility\BackendUtility::getTcaFieldConfiguration($caller->getTable(), $reference->getField());
+		if (!$fieldCOnfiguration || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList('field,list', $this->getTceMain()->getInlineFieldType($fieldCOnfiguration))) {
+			return \TYPO3\CMS\Version\Dependency\ElementEntity::RESPONSE_Skip;
 		}
 	}
 
@@ -697,16 +699,16 @@ class tx_version_tcemain_CommandMap {
 	 *
 	 * @param array $callerArguments
 	 * @param array $targetArgument
-	 * @param t3lib_utility_Dependency_Element $caller
+	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $caller
 	 * @param string $eventName
 	 * @return string Skip response (if required)
 	 */
-	public function createNewDependentElementParentReferenceCallback(array $callerArguments, array $targetArgument, t3lib_utility_Dependency_Element $caller, $eventName) {
-		/** @var $reference t3lib_utility_Dependency_Reference */
+	public function createNewDependentElementParentReferenceCallback(array $callerArguments, array $targetArgument, \TYPO3\CMS\Version\Dependency\ElementEntity $caller, $eventName) {
+		/** @var $reference \TYPO3\CMS\Version\Dependency\ReferenceEntity */
 		$reference = $callerArguments['reference'];
-		$fieldCOnfiguration = t3lib_BEfunc::getTcaFieldConfiguration($reference->getElement()->getTable(), $reference->getField());
-		if (!$fieldCOnfiguration || !t3lib_div::inList('field,list', $this->getTceMain()->getInlineFieldType($fieldCOnfiguration))) {
-			return t3lib_utility_Dependency_Element::RESPONSE_Skip;
+		$fieldCOnfiguration = \TYPO3\CMS\Backend\Utility\BackendUtility::getTcaFieldConfiguration($reference->getElement()->getTable(), $reference->getField());
+		if (!$fieldCOnfiguration || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList('field,list', $this->getTceMain()->getInlineFieldType($fieldCOnfiguration))) {
+			return \TYPO3\CMS\Version\Dependency\ElementEntity::RESPONSE_Skip;
 		}
 	}
 
@@ -716,18 +718,18 @@ class tx_version_tcemain_CommandMap {
 	 *
 	 * @param array $callerArguments
 	 * @param array $targetArgument
-	 * @param t3lib_utility_Dependency_Element $caller
+	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $caller
 	 * @param string $eventName
 	 * @return string Skip response (if required)
 	 */
-	public function createClearDependentElementChildReferenceCallback(array $callerArguments, array $targetArgument, t3lib_utility_Dependency_Element $caller, $eventName) {
+	public function createClearDependentElementChildReferenceCallback(array $callerArguments, array $targetArgument, \TYPO3\CMS\Version\Dependency\ElementEntity $caller, $eventName) {
 		$response = $this->createNewDependentElementChildReferenceCallback($callerArguments, $targetArgument, $caller, $eventName);
 		if (empty($response)) {
-			/** @var $reference t3lib_utility_Dependency_Reference */
+			/** @var $reference \TYPO3\CMS\Version\Dependency\ReferenceEntity */
 			$reference = $callerArguments['reference'];
 			$record = $reference->getElement()->getRecord();
 			if ($record['t3ver_state'] != 2) {
-				$response = t3lib_utility_Dependency_Element::RESPONSE_Skip;
+				$response = \TYPO3\CMS\Version\Dependency\ElementEntity::RESPONSE_Skip;
 			}
 		}
 		return $response;
@@ -739,18 +741,18 @@ class tx_version_tcemain_CommandMap {
 	 *
 	 * @param array $callerArguments
 	 * @param array $targetArgument
-	 * @param t3lib_utility_Dependency_Element $caller
+	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $caller
 	 * @param string $eventName
 	 * @return string Skip response (if required)
 	 */
-	public function createClearDependentElementParentReferenceCallback(array $callerArguments, array $targetArgument, t3lib_utility_Dependency_Element $caller, $eventName) {
+	public function createClearDependentElementParentReferenceCallback(array $callerArguments, array $targetArgument, \TYPO3\CMS\Version\Dependency\ElementEntity $caller, $eventName) {
 		$response = $this->createNewDependentElementParentReferenceCallback($callerArguments, $targetArgument, $caller, $eventName);
 		if (empty($response)) {
-			/** @var $reference t3lib_utility_Dependency_Reference */
+			/** @var $reference \TYPO3\CMS\Version\Dependency\ReferenceEntity */
 			$reference = $callerArguments['reference'];
 			$record = $reference->getElement()->getRecord();
 			if ($record['t3ver_state'] != 2) {
-				$response = t3lib_utility_Dependency_Element::RESPONSE_Skip;
+				$response = \TYPO3\CMS\Version\Dependency\ElementEntity::RESPONSE_Skip;
 			}
 		}
 		return $response;
@@ -759,14 +761,14 @@ class tx_version_tcemain_CommandMap {
 	/**
 	 * Callback to add additional data to new elements created in the dependency resolver utility.
 	 *
-	 * @param t3lib_utility_Dependency_Element $caller
+	 * @param \TYPO3\CMS\Version\Dependency\ElementEntity $caller
 	 * @param array $callerArguments
 	 * @param array $targetArgument
 	 * @return void
 	 */
-	public function createNewDependentElementCallback(array $callerArguments, array $targetArgument, t3lib_utility_Dependency_Element $caller) {
+	public function createNewDependentElementCallback(array $callerArguments, array $targetArgument, \TYPO3\CMS\Version\Dependency\ElementEntity $caller) {
 		if ($caller->hasDataValue('liveId') === FALSE) {
-			$liveId = t3lib_BEfunc::getLiveVersionIdOfRecord($caller->getTable(), $caller->getId());
+			$liveId = \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionIdOfRecord($caller->getTable(), $caller->getId());
 			if (is_null($liveId) === FALSE) {
 				$caller->setDataValue('liveId', $liveId);
 			}
@@ -781,9 +783,9 @@ class tx_version_tcemain_CommandMap {
 	 */
 	protected function transformDependentElementsToUseLiveId(array $elements) {
 		$transformedElements = array();
-		/** @var $element t3lib_utility_Dependency_Element */
+		/** @var $element \TYPO3\CMS\Version\Dependency\ElementEntity */
 		foreach ($elements as $element) {
-			$elementName = t3lib_utility_Dependency_Element::getIdentifier($element->getTable(), $element->getDataValue('liveId'));
+			$elementName = \TYPO3\CMS\Version\Dependency\ElementEntity::getIdentifier($element->getTable(), $element->getDataValue('liveId'));
 			$transformedElements[$elementName] = $element;
 		}
 		return $transformedElements;
@@ -876,7 +878,7 @@ class tx_version_tcemain_CommandMap {
 	 */
 	protected function getScopeData($scope, $key) {
 		if (!isset($this->scopes[$scope])) {
-			throw new RuntimeException(('Scope "' . $scope) . '" is not defined.', 1289342187);
+			throw new \RuntimeException(('Scope "' . $scope) . '" is not defined.', 1289342187);
 		}
 		return $this->scopes[$scope][$key];
 	}
@@ -886,10 +888,10 @@ class tx_version_tcemain_CommandMap {
 	 *
 	 * @param string $method
 	 * @param array $targetArguments
-	 * @return t3lib_utility_Dependency_Callback
+	 * @return \TYPO3\CMS\Version\Dependency\EventCallback
 	 */
 	protected function getDependencyCallback($method, array $targetArguments = array()) {
-		return t3lib_div::makeInstance('t3lib_utility_Dependency_Callback', $this, $method, $targetArguments);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Dependency\\DependencyResolver_Callback', $this, $method, $targetArguments);
 	}
 
 	/**
@@ -904,5 +906,6 @@ class tx_version_tcemain_CommandMap {
 	}
 
 }
+
 
 ?>

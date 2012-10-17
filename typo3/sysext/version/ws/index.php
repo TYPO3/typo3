@@ -40,9 +40,9 @@ require_once 'class.wslib_gui.php';
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/version/Classes/Controller/WorkspaceModuleController.php
  */
-require_once t3lib_extMgm::extPath('version') . 'Classes/Controller/WorkspaceModuleController.php';
+require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('version') . 'Classes/Controller/WorkspaceModuleController.php';
 // Make instance:
-$SOBE = t3lib_div::makeInstance('SC_mod_user_ws_index');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Controller\\WorkspaceModuleController');
 $SOBE->execute();
 $SOBE->init();
 $SOBE->main();
