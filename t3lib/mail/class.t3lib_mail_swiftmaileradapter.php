@@ -137,6 +137,13 @@ class t3lib_mail_SwiftMailerAdapter implements t3lib_mail_MailerAdapter {
 			$this->boundary = $matches[1];
 			return;
 		}
+
+		// Ignore empty header-values (like from an 'Reply-To:' without an email-address)
+		$headerValue = trim($headerValue);
+		if (empty($headerValue)) {
+			return;
+		}
+
 			// process other, real headers
 		if ($this->messageHeaders->has($headerName)) {
 			$header = $this->messageHeaders->get($headerName);
