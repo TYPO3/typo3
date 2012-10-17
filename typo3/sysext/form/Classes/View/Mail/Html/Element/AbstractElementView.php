@@ -72,10 +72,10 @@ abstract class AbstractElementView {
 	 * Parse the XML of a view object,
 	 * check the node type and name
 	 * and add the proper XML part of child tags
-	 * to the DOMDocument of the current tag
+	 * to the \DOMDocument of the current tag
 	 *
-	 * @param DOMDocument $dom
-	 * @param DOMNode $reference Current XML structure
+	 * @param \DOMDocument $dom
+	 * @param \DOMNode $reference Current XML structure
 	 * @param boolean $emptyElement
 	 * @return boolean
 	 */
@@ -169,11 +169,11 @@ abstract class AbstractElementView {
 	}
 
 	/**
-	 * Get the content for the current object as DOMDocument
+	 * Get the content for the current object as \DOMDocument
 	 *
 	 * @param string $type Type of element for layout
-	 * @param boolean $returnFirstChild If TRUE, the first child will be returned instead of the DOMDocument
-	 * @return mixed DOMDocument/DOMNode XML part of the view object
+	 * @param boolean $returnFirstChild If TRUE, the first child will be returned instead of the \DOMDocument
+	 * @return \DOMDocument|\DOMNode XML part of the view object
 	 */
 	public function render($type = 'element', $returnFirstChild = TRUE) {
 		$useLayout = $this->getLayout((string) $type);
@@ -200,6 +200,7 @@ abstract class AbstractElementView {
 	public function getLayout($type) {
 		/** @var $layoutHandler \TYPO3\CMS\Form\Layout */
 		$layoutHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Layout');
+		$layout = '';
 		switch ($type) {
 		case 'element':
 			$layoutDefault = $this->layout;
@@ -221,9 +222,9 @@ abstract class AbstractElementView {
 	/**
 	 * Replace the current node with a document fragment
 	 *
-	 * @param DOMDocument $dom
-	 * @param DOMNode $node Current Node
-	 * @param DOMNode $value Value to import
+	 * @param \DOMDocument $dom
+	 * @param \DOMNode $node Current Node
+	 * @param \DOMNode $value Value to import
 	 * @return void
 	 */
 	public function replaceNodeWithFragment(\DOMDocument $dom, \DOMNode $node, \DOMNode $value) {
@@ -237,7 +238,7 @@ abstract class AbstractElementView {
 	 * Set the attributes on the html tags according to the attributes that are
 	 * assigned in the model for a certain element
 	 *
-	 * @param DOMElement $domElement DOM element of the specific HTML tag
+	 * @param \DOMElement $domElement DOM element of the specific HTML tag
 	 * @return void
 	 */
 	public function setAttributes(\DOMElement $domElement) {
@@ -255,7 +256,7 @@ abstract class AbstractElementView {
 	/**
 	 * Set a single attribute of a HTML tag specified by key
 	 *
-	 * @param DOMElement $domElement DOM element of the specific HTML tag
+	 * @param \DOMElement $domElement DOM element of the specific HTML tag
 	 * @param string $key Attribute key
 	 * @return void
 	 */
@@ -270,10 +271,10 @@ abstract class AbstractElementView {
 	 * Sets the value of an attribute with the value of another attribute,
 	 * for instance equalizing the name and id attributes for the form tag
 	 *
-	 * @param DOMElement $domElement DOM element of the specific HTML tag
+	 * @param \DOMElement $domElement DOM element of the specific HTML tag
 	 * @param string $key Key of the attribute which needs to be changed
 	 * @param string $other Key of the attribute to take the value from
-	 * @return unknown_type
+	 * @return void
 	 */
 	public function setAttributeWithValueofOtherAttribute(\DOMElement $domElement, $key, $other) {
 		$value = htmlspecialchars($this->model->getAttributeValue((string) $other), ENT_QUOTES);
@@ -298,20 +299,26 @@ abstract class AbstractElementView {
 	 * Create additional object by key and render the content
 	 *
 	 * @param string $key Type of additional
-	 * @return DOMNode
+	 * @return \DOMNode
 	 */
 	public function getAdditional($key) {
 		$additional = $this->createAdditional($key);
 		return $additional->render();
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getInputValue() {
 		if (method_exists($this->model, 'getData')) {
-			$inputValue = nl2br($this->model->getData(), TRUE);
+			$inputValue = $this->model->getData();
 		} else {
 			$inputValue = $this->model->getAttributeValue('value');
 		}
-		return htmlspecialchars($inputValue, ENT_QUOTES);
+
+		$inputValue = htmlspecialchars($inputValue, ENT_QUOTES);
+		$inputValue = nl2br($inputValue, TRUE);
+		return $inputValue;
 	}
 
 	/**
