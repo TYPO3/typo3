@@ -1,27 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009 Oliver Hader <oliver@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009 Oliver Hader <oliver@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Testcase for class Tx_Extbase_Utility_Extension
  *
@@ -32,6 +31,7 @@ class Tx_Extbase_Tests_Unit_Utility_ExtensionTest extends tx_phpunit_testcase {
 
 	/**
 	 * Contains backup of $TYPO3_CONF_VARS
+	 *
 	 * @var array
 	 */
 	protected $typo3ConfVars = array();
@@ -55,27 +55,28 @@ class Tx_Extbase_Tests_Unit_Utility_ExtensionTest extends tx_phpunit_testcase {
 			'9' => 'CASE',
 			'9.' => array(
 				'key.' => array(
-					'field' => 'layout'),
-					0 => '< plugin.tt_news'
+					'field' => 'layout'
 				),
+				0 => '< plugin.tt_news'
+			),
 			'extensionname_someplugin' => 'USER',
 			'extensionname_someplugin.' => array(
 				'userFunc' => 'Tx_Extbase_Core_Bootstrap->run',
 				'extensionName' => 'ExtensionName',
-				'pluginName' => 'SomePlugin',
+				'pluginName' => 'SomePlugin'
 			),
 			'someotherextensionname_secondplugin' => 'USER',
 			'someotherextensionname_secondplugin.' => array(
 				'userFunc' => 'Tx_Extbase_Core_Bootstrap->run',
 				'extensionName' => 'SomeOtherExtensionName',
-				'pluginName' => 'SecondPlugin',
+				'pluginName' => 'SecondPlugin'
 			),
 			'extensionname_thirdplugin' => 'USER',
 			'extensionname_thirdplugin.' => array(
 				'userFunc' => 'Tx_Extbase_Core_Bootstrap->run',
 				'extensionName' => 'ExtensionName',
-				'pluginName' => 'ThirdPlugin',
-			),
+				'pluginName' => 'ThirdPlugin'
+			)
 		);
 	}
 
@@ -90,22 +91,15 @@ class Tx_Extbase_Tests_Unit_Utility_ExtensionTest extends tx_phpunit_testcase {
 	 */
 	public function configurePluginWorksForMinimalisticSetup() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = array();
-		Tx_Extbase_Utility_Extension::configurePlugin(
-			'MyExtension',
-			'Pi1',
-			array('Blog' => 'index')
-		);
+		Tx_Extbase_Utility_Extension::configurePlugin('MyExtension', 'Pi1', array('Blog' => 'index'));
 		$staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['43'];
-
 		$this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
 		$this->assertContains('
 	userFunc = Tx_Extbase_Core_Bootstrap->run
 	extensionName = MyExtension
 	pluginName = Pi1', $staticTypoScript);
-
-	$this->assertNotContains('USER_INT', $staticTypoScript);
+		$this->assertNotContains('USER_INT', $staticTypoScript);
 	}
-
 
 	/**
 	 * @test
@@ -113,11 +107,7 @@ class Tx_Extbase_Tests_Unit_Utility_ExtensionTest extends tx_phpunit_testcase {
 	 */
 	public function configurePluginCreatesCorrectDefaultTypoScriptSetup() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = array();
-		Tx_Extbase_Utility_Extension::configurePlugin(
-			'MyExtension',
-			'Pi1',
-			array('Blog' => 'index')
-		);
+		Tx_Extbase_Utility_Extension::configurePlugin('MyExtension', 'Pi1', array('Blog' => 'index'));
 		$staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['43'];
 		$defaultTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'];
 		$this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
@@ -146,20 +136,14 @@ plugin.tx_myextension {
 	 */
 	public function configurePluginWorksForASingleControllerAction() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = array();
-		Tx_Extbase_Utility_Extension::configurePlugin(
-			'MyExtension',
-			'Pi1',
-			array(
-				'FirstController' => 'index'
-				)
-		);
+		Tx_Extbase_Utility_Extension::configurePlugin('MyExtension', 'Pi1', array(
+			'FirstController' => 'index'
+		));
 		$staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['43'];
-
 		$this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
 		$this->assertContains('
 	extensionName = MyExtension
 	pluginName = Pi1', $staticTypoScript);
-
 		$expectedResult = array(
 			'controllers' => array(
 				'FirstController' => array(
@@ -177,13 +161,9 @@ plugin.tx_myextension {
 	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
 	public function configurePluginThrowsExceptionIfExtensionNameIsEmpty() {
-		Tx_Extbase_Utility_Extension::configurePlugin(
-			'',
-			'SomePlugin',
-			array(
-				'FirstController' => 'index'
-				)
-		);
+		Tx_Extbase_Utility_Extension::configurePlugin('', 'SomePlugin', array(
+			'FirstController' => 'index'
+		));
 	}
 
 	/**
@@ -192,15 +172,10 @@ plugin.tx_myextension {
 	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
 	public function configurePluginThrowsExceptionIfPluginNameIsEmpty() {
-		Tx_Extbase_Utility_Extension::configurePlugin(
-			'MyExtension',
-			'',
-			array(
-				'FirstController' => 'index'
-				)
-		);
+		Tx_Extbase_Utility_Extension::configurePlugin('MyExtension', '', array(
+			'FirstController' => 'index'
+		));
 	}
-
 
 	/**
 	 * @test
@@ -208,22 +183,16 @@ plugin.tx_myextension {
 	 */
 	public function configurePluginRespectsDefaultActionAsANonCacheableAction() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = array();
-		Tx_Extbase_Utility_Extension::configurePlugin(
-			'MyExtension',
-			'Pi1',
-			array(
-				'FirstController' => 'index,show,new, create,delete,edit,update'
-				),
-			array(
-				'FirstController' => 'index,show'
-				)
-			);
+		Tx_Extbase_Utility_Extension::configurePlugin('MyExtension', 'Pi1', array(
+			'FirstController' => 'index,show,new, create,delete,edit,update'
+		), array(
+			'FirstController' => 'index,show'
+		));
 		$staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['43'];
 		$this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
 		$this->assertContains('
 	extensionName = MyExtension
 	pluginName = Pi1', $staticTypoScript);
-
 		$expectedResult = array(
 			'controllers' => array(
 				'FirstController' => array(
@@ -242,22 +211,16 @@ plugin.tx_myextension {
 	 */
 	public function configurePluginRespectsNonDefaultActionAsANonCacheableAction() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = array();
-		Tx_Extbase_Utility_Extension::configurePlugin(
-			'MyExtension',
-			'Pi1',
-			array(
-				'FirstController' => 'index,show,new, create,delete,edit,update'
-				),
-			array(
-				'FirstController' => 'new,show'
-				)
-			);
+		Tx_Extbase_Utility_Extension::configurePlugin('MyExtension', 'Pi1', array(
+			'FirstController' => 'index,show,new, create,delete,edit,update'
+		), array(
+			'FirstController' => 'new,show'
+		));
 		$staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['43'];
 		$this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
 		$this->assertContains('
 	extensionName = MyExtension
 	pluginName = Pi1', $staticTypoScript);
-
 		$expectedResult = array(
 			'controllers' => array(
 				'FirstController' => array(
@@ -276,20 +239,14 @@ plugin.tx_myextension {
 	 */
 	public function configurePluginWorksForMultipleControllerActionsWithCacheableActionAsDefault() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = array();
-		Tx_Extbase_Utility_Extension::configurePlugin(
-			'MyExtension',
-			'Pi1',
-			array(
-				'FirstController' => 'index,show,new,create,delete,edit,update',
-				'SecondController' => 'index,show,delete',
-				'ThirdController' => 'create'
-				),
-			array(
-				'FirstController' => 'new,create,edit,update',
-				'ThirdController' => 'create'
-				)
-			);
-
+		Tx_Extbase_Utility_Extension::configurePlugin('MyExtension', 'Pi1', array(
+			'FirstController' => 'index,show,new,create,delete,edit,update',
+			'SecondController' => 'index,show,delete',
+			'ThirdController' => 'create'
+		), array(
+			'FirstController' => 'new,create,edit,update',
+			'ThirdController' => 'create'
+		));
 		$expectedResult = array(
 			'controllers' => array(
 				'FirstController' => array(
@@ -309,28 +266,21 @@ plugin.tx_myextension {
 		$this->assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
 	}
 
-
 	/**
 	 * @test
 	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
 	public function configurePluginWorksForMultipleControllerActionsWithNonCacheableActionAsDefault() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = array();
-		Tx_Extbase_Utility_Extension::configurePlugin(
-			'MyExtension',
-			'Pi1',
-			array(
-				'FirstController' => 'index,show,new,create,delete,edit,update',
-				'SecondController' => 'index,show,delete',
-				'ThirdController' => 'create'
-				),
-			array(
-				'FirstController' => 'index,new,create,edit,update',
-				'SecondController' => 'delete',
-				'ThirdController' => 'create'
-				)
-			);
-
+		Tx_Extbase_Utility_Extension::configurePlugin('MyExtension', 'Pi1', array(
+			'FirstController' => 'index,show,new,create,delete,edit,update',
+			'SecondController' => 'index,show,delete',
+			'ThirdController' => 'create'
+		), array(
+			'FirstController' => 'index,new,create,edit,update',
+			'SecondController' => 'delete',
+			'ThirdController' => 'create'
+		));
 		$expectedResult = array(
 			'controllers' => array(
 				'FirstController' => array(
