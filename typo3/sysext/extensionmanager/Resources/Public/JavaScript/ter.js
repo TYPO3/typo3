@@ -57,7 +57,7 @@ function bindDownload() {
 function getDependencies(data) {
 	if (data.dependencies.length) {
 		TYPO3.Dialog.QuestionDialog({
-			title: 'Dependencies',
+			title: TYPO3.l10n.localize('extensionList.dependencies.title'),
 			msg: data.message,
 			url: data.url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager[downloadPath]=' + downloadPath,
 			fn: getResolveDependenciesAndInstallResult
@@ -81,18 +81,18 @@ function getResolveDependenciesAndInstallResult(button, dummy, dialog) {
 			success: function (data) {
 				jQuery('#typo3-extension-manager').unmask();
 				if (data.errorMessage.length) {
-					TYPO3.Flashmessage.display(TYPO3.Severity.error, 'Download Error', data.errorMessage, 5);
+					TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.l10n.localize('extensionList.dependenciesResolveDownloadError.title'), data.errorMessage, 5);
 				} else {
-					var successMessage = 'Your installation of ' + data.extension + ' was successfull. <br />';
-					successMessage += '<br /><h3>Log:</h3>';
+					var successMessage = TYPO3.l10n.localize('extensionList.dependenciesResolveDownloadSuccess.message').replace(/\{0\}/g, data.extension) + ' <br />';
+					successMessage += '<br /><h3>' + TYPO3.l10n.localize('extensionList.dependenciesResolveDownloadSuccess.header') + ':</h3>';
 					jQuery.each(data.result, function(index, value) {
-						successMessage += 'Extensions ' + index + ':<br /><ul>';
+						successMessage += TYPO3.l10n.localize('extensionList.dependenciesResolveDownloadSuccess.item') + ' ' + index + ':<br /><ul>';
 						jQuery.each(value, function(extkey, extdata) {
 							successMessage += '<li>' + extkey + '</li>';
 						});
 						successMessage += '</ul>';
 					});
-					TYPO3.Flashmessage.display(TYPO3.Severity.information, data.extension + ' installed.', successMessage, 15);
+					TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.l10n.localize('extensionList.dependenciesResolveFlashMessage.title').replace(/\{0\}/g, data.extension), successMessage, 15);
 				}
 			}
 		});

@@ -38,13 +38,11 @@
 				</f:if>
 				<td>
 					<f:if condition="{extension.updateAvailable}">
-						<f:link.action
-							action="updateCommentForUpdatableVersions"
-							controller="Download"
-							arguments="{extension:extension.key, integerVersion: extension.terObject.integerVersion}"
-							class="updateAvailable"
-							format="json"
-						><f:translate key="extensionList.update"/></f:link.action>
+                        <f:be.buttons.icon
+                            uri="{f:uri.action(action:'updateCommentForUpdatableVersions',controller:'Download',arguments:{extension:extension.key, integerVersion: extension.terObject.integerVersion},format:'json')}"
+                            icon="actions-system-extension-update"
+                            title="{f:translate(key:'extensionList.update')}"
+                        />
 					</f:if>
 				</td>
 				<td>

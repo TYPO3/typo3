@@ -44,8 +44,8 @@ function bindActions() {
 		jQuery(this).click(function() {
 			if (jQuery(this).hasClass('isLoadedWarning')) {
 				TYPO3.Dialog.QuestionDialog({
-					title: 'Extension Removal',
-					msg: 'The extension is currently installed. Uninstall extension?',
+					title: TYPO3.l10n.localize('extensionList.removalConfirmation.title'),
+					msg: TYPO3.l10n.localize('extensionList.removalConfirmation.message'),
 					url: jQuery(this).data('href'),
 					fn: function(button, dummy, dialog) {
 						if (button == 'yes') {
@@ -59,7 +59,7 @@ function bindActions() {
 		})
 	});
 
-	jQuery('.updateAvailable').each(function() {
+	jQuery('.t3-icon-system-extension-update').parent().each(function() {
 		jQuery(this).data('href', jQuery(this).attr('href'));
 		jQuery(this).attr('href', 'javascript:void(0);');
 		jQuery(this).addClass('transformed');
@@ -75,15 +75,15 @@ function bindActions() {
 }
 
 function updateExtension(data) {
-	var message = '<h1>Update?</h1>';
-	message += '<h2>Update Comments:</h2>';
+	var message = '<h1>' + TYPO3.l10n.localize('extensionList.updateConfirmation.title') + '</h1>';
+	message += '<h2>' + TYPO3.l10n.localize('extensionList.updateConfirmation.message') + '</h2>';
 	jQuery.each(data.updateComments, function(version, comment) {
 		message += '<h3>' + version + '</h3>';
 		message += '<div>' + comment + '</div>';
 	});
 
 	TYPO3.Dialog.QuestionDialog({
-		title: 'Version Comments',
+		title: TYPO3.l10n.localize('extensionList.updateConfirmation.questionVersionComments'),
 		msg: message,
 		width: 600,
 		url: data.url,
@@ -94,9 +94,12 @@ function updateExtension(data) {
 					dataType: 'json',
 					success: function(data) {
 						jQuery('#typo3-extension-manager').unmask();
-						TYPO3.Flashmessage.display(TYPO3.Severity.information, 'Extension Update', data.extension + ' updated!', 15);
+						TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.l10n.localize('extensionList.updateFlashMessage.title'),
+								TYPO3.l10n.localize('extensionList.updateFlashMessage.message').replace(/\{0\}/g, data.extension), 15);
 					}
 				});
+			} else {
+				jQuery('#typo3-extension-manager').unmask();
 			}
 		}
 	});
@@ -105,8 +108,8 @@ function updateExtension(data) {
 
 function confirmDeletionAndDelete(url) {
 	TYPO3.Dialog.QuestionDialog({
-		title: 'Extension Removal',
-		msg: 'Are you sure you want to remove the extension?',
+		title: TYPO3.l10n.localize('extensionList.removalConfirmation.title'),
+		msg: TYPO3.l10n.localize('extensionList.removalConfirmation.question'),
 		url: url,
 		fn: function(button, dummy, dialog) {
 			if (button == 'yes') {
@@ -126,6 +129,6 @@ function removeExtension(data) {
 	if (data.success) {
 		datatable.fnDeleteRow(datatable.fnGetPosition(document.getElementById(data.extension)));
 	} else {
-		TYPO3.Flashmessage.display(TYPO3.Severity.error, 'Extension Removal', data.message, 15);
+		TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.l10n.localize('extensionList.removalConfirmation.title'), data.message, 15);
 	}
 }
