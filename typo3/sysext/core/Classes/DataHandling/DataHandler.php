@@ -2754,6 +2754,10 @@ class DataHandler {
 					// So it copies (and localized) content from workspace...
 					$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $uid);
 					if (is_array($row)) {
+						// Ignore placeholders
+						if ($row['t3ver_state'] > 0) {
+							return;
+						}
 						// Initializing:
 						$theNewID = uniqid('NEW');
 						$enableField = isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) ? $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] : '';
