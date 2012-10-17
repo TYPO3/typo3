@@ -2,7 +2,7 @@
 
 <f:layout name="main" />
 <f:section name="docHeaderRow1">
-    <f:be.buttons.icon uri="{f:uri.action(action:'form',controller:'UploadExtensionFile')}" icon="actions-edit-upload" title="{f:translate(key:'extensionList.uploadExtension')}"/>
+	<f:be.buttons.icon uri="{f:uri.action(action:'form',controller:'UploadExtensionFile')}" icon="actions-edit-upload" title="{f:translate(key:'extensionList.uploadExtension')}"/>
 </f:section>
 <f:section name="docHeaderRow2">
 </f:section>
@@ -38,13 +38,11 @@
 				</f:if>
 				<td>
 					<f:if condition="{extension.updateAvailable}">
-						<f:link.action
-							action="updateCommentForUpdatableVersions"
-							controller="Download"
-							arguments="{extension:extension.key, integerVersion: extension.terObject.integerVersion}"
-							class="updateAvailable"
-							format="json"
-						><f:translate key="extensionList.update"/></f:link.action>
+						<f:be.buttons.icon
+							uri="{f:uri.action(action:'updateCommentForUpdatableVersions',controller:'Download',arguments:{extension:extension.key, integerVersion: extension.terObject.integerVersion},format:'json')}"
+							icon="actions-system-extension-update"
+							title="{f:translate(key:'extensionList.update')}"
+						/>
 					</f:if>
 				</td>
 				<td>
@@ -70,7 +68,7 @@
 				<td>
 					<em:configureExtension extension="{extension}" />
 					<em:removeExtension extension="{extension}" />
-                    <f:be.buttons.icon uri="{f:uri.action(action:'downloadExtensionZip',controller:'Action',arguments:'{extension:extension.key}')}" icon="actions-system-extension-download" title="{f:translate(key:'extensionList.downloadzip')}"/>
+					<f:be.buttons.icon uri="{f:uri.action(action:'downloadExtensionZip',controller:'Action',arguments:'{extension:extension.key}')}" icon="actions-system-extension-download" title="{f:translate(key:'extensionList.downloadzip')}"/>
 					<em:downloadExtensionData extension="{extension}" />
 				</td>
 				<td class="{extension.state}">

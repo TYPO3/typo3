@@ -83,6 +83,8 @@ class ListController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCont
 	 */
 	public function indexAction() {
 		$this->pageRenderer->addJsFile('../t3lib/js/extjs/notifications.js');
+		$this->pageRenderer->addInlineLanguageLabelFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
+		$this->pageRenderer->addJsFile(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('lang') . 'res/js/be/typo3lang.js');
 		$availableExtensions = $this->listUtility->getAvailableExtensions();
 		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensions($availableExtensions);
 		$availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation($availableAndInstalledExtensions);
