@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * Tag based view helper.
  * Sould be used as the base class for all view helpers which output simple tags, as it provides some
@@ -22,6 +19,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper extends Tx_Fl
 
 	/**
 	 * Names of all registered tag attributes
+	 *
 	 * @var array
 	 */
 	static private $tagAttributes = array();
@@ -78,7 +76,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper extends Tx_Fl
 		if ($this->hasArgument('additionalAttributes') && is_array($this->arguments['additionalAttributes'])) {
 			$this->tag->addAttributes($this->arguments['additionalAttributes']);
 		}
-
 		if (isset(self::$tagAttributes[get_class($this)])) {
 			foreach (self::$tagAttributes[get_class($this)] as $attributeName) {
 				if ($this->hasArgument($attributeName) && $this->arguments[$attributeName] !== '') {
@@ -122,5 +119,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper extends Tx_Fl
 		$this->registerTagAttribute('tabindex', 'integer', 'Specifies the tab order of this element');
 		$this->registerTagAttribute('onclick', 'string', 'JavaScript evaluated for the onclick event');
 	}
+
 }
+
 ?>

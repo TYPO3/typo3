@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
+
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_Format_HtmlentitiesViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -61,7 +60,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_HtmlentitiesViewHelperTest extends 
 	 * @test
 	 */
 	public function renderDecodesSimpleString() {
-		$source = 'Some special characters: &'.chr(169).'"\'';
+		$source = ('Some special characters: &' . chr(169)) . '"\'';
 		$expectedResult = 'Some special characters: &amp;&copy;&quot;\'';
 		$actualResult = $this->viewHelper->render($source);
 		$this->assertEquals($expectedResult, $actualResult);
@@ -71,7 +70,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_HtmlentitiesViewHelperTest extends 
 	 * @test
 	 */
 	public function renderRespectsKeepQuoteArgument() {
-		$source = 'Some special characters: &'.chr(169).'"\'';
+		$source = ('Some special characters: &' . chr(169)) . '"\'';
 		$expectedResult = 'Some special characters: &amp;&copy;"\'';
 		$actualResult = $this->viewHelper->render($source, TRUE);
 		$this->assertEquals($expectedResult, $actualResult);
@@ -115,5 +114,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_HtmlentitiesViewHelperTest extends 
 		$actualResult = $this->viewHelper->render($source);
 		$this->assertSame($source, $actualResult);
 	}
+
 }
+
 ?>

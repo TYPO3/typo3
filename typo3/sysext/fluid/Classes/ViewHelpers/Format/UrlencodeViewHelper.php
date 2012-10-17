@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,27 +8,10 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Encodes the given string according to http://www.faqs.org/rfcs/rfc3986.html (applying PHPs rawurlencode() function)
+ *
  * @see http://www.php.net/manual/function.rawurlencode.php
- *
- * = Examples =
- *
- * <code title="default notation">
- * <f:format.rawurlencode>foo @+%/</f:format.rawurlencode>
- * </code>
- * <output>
- * foo%20%40%2B%25%2F (rawurlencode() applied)
- * </output>
- *
- * <code title="inline notation">
- * {text -> f:format.urlencode()}
- * </code>
- * <output>
- * Url encoded text (rawurlencode() applied)
- * </output>
- *
  * @api
  */
 class Tx_Fluid_ViewHelpers_Format_UrlencodeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
@@ -60,4 +42,5 @@ class Tx_Fluid_ViewHelpers_Format_UrlencodeViewHelper extends Tx_Fluid_Core_View
 	}
 
 }
+
 ?>

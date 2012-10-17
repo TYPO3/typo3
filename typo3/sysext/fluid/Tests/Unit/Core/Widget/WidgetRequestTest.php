@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,10 +18,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for WidgetRequest
- *
  */
 class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -32,23 +29,21 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestTest extends Tx_Extbase_Tests
 	public function setWidgetContextAlsoSetsControllerObjectName() {
 		$widgetContext = $this->getMock('Tx_Fluid_Core_Widget_WidgetContext', array('getControllerObjectName'));
 		$widgetContext->expects($this->once())->method('getControllerObjectName')->will($this->returnValue('Tx_Fluid_ControllerObjectName'));
-
 		$widgetRequest = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest', array('setControllerObjectName'));
 		$widgetRequest->expects($this->once())->method('setControllerObjectName')->with('Tx_Fluid_ControllerObjectName');
-
 		$widgetRequest->setWidgetContext($widgetContext);
 	}
 
 	/**
 	 * @test
 	 */
-	 public function widgetContextCanBeReadAgain() {
+	public function widgetContextCanBeReadAgain() {
 		$widgetContext = $this->getMock('Tx_Fluid_Core_Widget_WidgetContext');
-
 		$widgetRequest = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest', array('setControllerObjectName'));
 		$widgetRequest->setWidgetContext($widgetContext);
-
 		$this->assertSame($widgetContext, $widgetRequest->getWidgetContext());
-	 }
+	}
+
 }
+
 ?>

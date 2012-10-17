@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,14 +18,12 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * This object stores the WidgetContext for the currently active widgets
  * of the current user, to make sure the WidgetContext is available in
  * Widget AJAX requests.
  *
  * This class is only used internally by the widget framework.
- *
  */
 class Tx_Fluid_Core_Widget_AjaxWidgetContextHolder implements t3lib_Singleton {
 
@@ -72,7 +69,7 @@ class Tx_Fluid_Core_Widget_AjaxWidgetContextHolder implements t3lib_Singleton {
 	 */
 	public function get($ajaxWidgetId) {
 		if (!isset($this->widgetContexts[$ajaxWidgetId])) {
-			throw new Tx_Fluid_Core_Widget_Exception_WidgetContextNotFoundException('No widget context was found for the Ajax Widget Identifier "' . $ajaxWidgetId . '". This only happens if AJAX URIs are called without including the widget on a page.', 1284793775);
+			throw new Tx_Fluid_Core_Widget_Exception_WidgetContextNotFoundException(('No widget context was found for the Ajax Widget Identifier "' . $ajaxWidgetId) . '". This only happens if AJAX URIs are called without including the widget on a page.', 1284793775);
 		}
 		return $this->widgetContexts[$ajaxWidgetId];
 	}
@@ -93,21 +90,19 @@ class Tx_Fluid_Core_Widget_AjaxWidgetContextHolder implements t3lib_Singleton {
 
 	/**
 	 * Persists the widget contexts in the TYPO3 user session
+	 *
 	 * @return void
 	 */
 	protected function storeWidgetContexts() {
 		if (TYPO3_MODE === 'FE') {
-			$GLOBALS['TSFE']->fe_user->setKey(
-				'ses',
-				$this->widgetContextsStorageKey,
-				serialize($this->widgetContexts)
-			);
+			$GLOBALS['TSFE']->fe_user->setKey('ses', $this->widgetContextsStorageKey, serialize($this->widgetContexts));
 			$GLOBALS['TSFE']->fe_user->storeSessionData();
 		} else {
 			$GLOBALS['BE_USER']->uc[$this->widgetContextsStorageKey] = serialize($this->widgetContexts);
 			$GLOBALS['BE_USER']->writeUc();
 		}
 	}
+
 }
 
 ?>

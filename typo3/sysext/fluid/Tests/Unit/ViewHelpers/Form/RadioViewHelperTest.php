@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,12 +8,9 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once(dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php');
-
+require_once dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php';
 /**
  * Test for the "Radio" Form view helper
- *
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_Form_RadioViewHelperTest extends Tx_Fluid_Tests_Unit_ViewHelpers_Form_FormFieldViewHelperBaseTestcase {
 
@@ -40,11 +36,9 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_RadioViewHelperTest extends Tx_Fluid_
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
-
 		$this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 		$this->viewHelper->expects($this->any())->method('getValue')->will($this->returnValue('bar'));
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
-
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
@@ -59,11 +53,9 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_RadioViewHelperTest extends Tx_Fluid_
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
 		$mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
-
 		$this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 		$this->viewHelper->expects($this->any())->method('getValue')->will($this->returnValue('bar'));
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
-
 		$this->viewHelper->initialize();
 		$this->viewHelper->render(TRUE);
 	}
@@ -76,13 +68,11 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_RadioViewHelperTest extends Tx_Fluid_
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
-
 		$this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 		$this->viewHelper->expects($this->any())->method('getValue')->will($this->returnValue('bar'));
 		$this->viewHelper->expects($this->never())->method('isObjectAccessorMode')->will($this->returnValue(TRUE));
 		$this->viewHelper->expects($this->never())->method('getPropertyValue')->will($this->returnValue(TRUE));
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
-
 		$this->viewHelper->initialize();
 		$this->viewHelper->render(TRUE);
 		$this->viewHelper->render(FALSE);
@@ -98,13 +88,11 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_RadioViewHelperTest extends Tx_Fluid_
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
 		$mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
-
 		$this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 		$this->viewHelper->expects($this->any())->method('getValue')->will($this->returnValue('bar'));
 		$this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(TRUE));
 		$this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue(TRUE));
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
-
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
@@ -118,13 +106,11 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_RadioViewHelperTest extends Tx_Fluid_
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
-
 		$this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 		$this->viewHelper->expects($this->any())->method('getValue')->will($this->returnValue('bar'));
 		$this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(TRUE));
 		$this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue(array()));
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
-
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
@@ -139,13 +125,11 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_RadioViewHelperTest extends Tx_Fluid_
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
 		$mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
-
 		$this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
 		$this->viewHelper->expects($this->any())->method('getValue')->will($this->returnValue('bar'));
 		$this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(TRUE));
 		$this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue('bar'));
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
-
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
@@ -157,6 +141,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_RadioViewHelperTest extends Tx_Fluid_
 		$this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
 		$this->viewHelper->render();
 	}
+
 }
 
 ?>

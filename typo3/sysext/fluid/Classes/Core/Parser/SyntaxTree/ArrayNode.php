@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,16 +8,14 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * Array Syntax Tree Node. Handles JSON-like arrays.
- *
  */
 class Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 
 	/**
 	 * An associative array. Each key is a string. Each value is either a literal, or an AbstractNode.
+	 *
 	 * @var array
 	 */
 	protected $internalArray = array();
@@ -59,6 +56,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode extends Tx_Fluid_Core_Parser_Syn
 	public function getInternalArray() {
 		return $this->internalArray;
 	}
+
 }
 
 ?>

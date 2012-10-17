@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,13 +8,14 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * A "Invalid Variable" exception.
  *
  * @api
  */
 class Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException extends Tx_Fluid_Core_ViewHelper_Exception {
+
+
 }
 
 ?>

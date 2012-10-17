@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,10 +8,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for TagBasedViewHelper
- *
  */
 class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractTagBasedViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -27,7 +24,6 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractTagBasedViewHelperTest extends
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('reset'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('reset');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
-
 		$this->viewHelper->initialize();
 	}
 
@@ -38,7 +34,6 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractTagBasedViewHelperTest extends
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('foo', 'bar');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
-
 		$this->viewHelper->_call('registerTagAttribute', 'foo', 'string', 'Description', FALSE);
 		$arguments = array('foo' => 'bar');
 		$this->viewHelper->setArguments($arguments);
@@ -52,7 +47,6 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractTagBasedViewHelperTest extends
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('foo', 'bar');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
-
 		$this->viewHelper->_call('registerTagAttribute', 'foo', 'string', 'Description', FALSE);
 		$arguments = array('additionalAttributes' => array('foo' => 'bar'));
 		$this->viewHelper->setArguments($arguments);
@@ -73,7 +67,6 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractTagBasedViewHelperTest extends
 		$mockTagBuilder->expects($this->at(6))->method('addAttribute')->with('accesskey', 'accesskeyAttribute');
 		$mockTagBuilder->expects($this->at(7))->method('addAttribute')->with('tabindex', 'tabindexAttribute');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
-
 		$arguments = array(
 			'class' => 'classAttribute',
 			'dir' => 'dirAttribute',
@@ -96,7 +89,6 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractTagBasedViewHelperTest extends
 	public function registerTagAttributeRegistersArgumentWithDefaultValue() {
 		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper', array('registerArgument'), array(), '', FALSE);
 		$this->viewHelper->expects($this->once())->method('registerArgument')->with('foo', 'string', 'Description', FALSE, 'defaultValue');
-
 		$this->viewHelper->_call('registerTagAttribute', 'foo', 'string', 'Description', FALSE, 'defaultValue');
 	}
 
@@ -106,8 +98,9 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractTagBasedViewHelperTest extends
 	public function registerTagAttributeRegistersArgumentWithNullIfNoDefaultValueIsSet() {
 		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper', array('registerArgument'), array(), '', FALSE);
 		$this->viewHelper->expects($this->once())->method('registerArgument')->with('foo', 'string', 'Description', FALSE, NULL);
-
 		$this->viewHelper->_call('registerTagAttribute', 'foo', 'string', 'Description', FALSE);
 	}
+
 }
+
 ?>

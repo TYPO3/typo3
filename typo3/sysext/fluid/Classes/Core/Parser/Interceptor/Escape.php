@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,15 +8,14 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * An interceptor adding the escape viewhelper to the suitable places.
- *
  */
 class Tx_Fluid_Core_Parser_Interceptor_Escape implements Tx_Fluid_Core_Parser_InterceptorInterface {
 
 	/**
 	 * Is the interceptor enabled right now?
+	 *
 	 * @var boolean
 	 */
 	protected $interceptorEnabled = TRUE;
@@ -69,11 +67,7 @@ class Tx_Fluid_Core_Parser_Interceptor_Escape implements Tx_Fluid_Core_Parser_In
 			}
 		} elseif ($this->interceptorEnabled && $node instanceof Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode) {
 			$escapeViewHelper = $this->objectManager->get('Tx_Fluid_ViewHelpers_Format_HtmlspecialcharsViewHelper');
-			$node = $this->objectManager->create(
-				'Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode',
-				$escapeViewHelper,
-				array('value' => $node)
-			);
+			$node = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', $escapeViewHelper, array('value' => $node));
 		}
 		return $node;
 	}
@@ -90,5 +84,7 @@ class Tx_Fluid_Core_Parser_Interceptor_Escape implements Tx_Fluid_Core_Parser_In
 			Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OBJECTACCESSOR
 		);
 	}
+
 }
+
 ?>

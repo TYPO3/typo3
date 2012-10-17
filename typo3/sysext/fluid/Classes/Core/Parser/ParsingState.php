@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,23 +8,23 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Stores all information relevant for one parsing pass - that is, the root node,
  * and the current stack of open nodes (nodeStack) and a variable container used
  * for PostParseFacets.
- *
  */
 class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTemplateInterface {
 
 	/**
 	 * Root node reference
+	 *
 	 * @var Tx_Fluid_Core_Parser_SyntaxTree_RootNode
 	 */
 	protected $rootNode;
 
 	/**
 	 * Array of node references currently open.
+	 *
 	 * @var array
 	 */
 	protected $nodeStack = array();
@@ -33,6 +32,7 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	/**
 	 * Variable container where ViewHelpers implementing the PostParseFacet can
 	 * store things in.
+	 *
 	 * @var Tx_Fluid_Core_ViewHelper_TemplateVariableContainer
 	 */
 	protected $variableContainer;
@@ -106,7 +106,7 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	 * @return Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode the top stack element.
 	 */
 	public function getNodeFromStack() {
-		return $this->nodeStack[count($this->nodeStack)-1];
+		return $this->nodeStack[count($this->nodeStack) - 1];
 	}
 
 	/**
@@ -154,8 +154,8 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 
 	/**
 	 * Returns TRUE if the current template has a template defined via <f:layout name="..." />
-	 * @see getLayoutName()
 	 *
+	 * @see getLayoutName()
 	 * @return boolean
 	 */
 	public function hasLayout() {
@@ -201,5 +201,7 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	public function isCompiled() {
 		return FALSE;
 	}
+
 }
+
 ?>

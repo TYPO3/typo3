@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,10 +18,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for WidgetContext
- *
  */
 class Tx_Fluid_Tests_Unit_Core_Widget_WidgetContextTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -32,6 +29,7 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetContextTest extends Tx_Extbase_Tests
 	protected $widgetContext;
 
 	/**
+
 	 */
 	public function setUp() {
 		$this->widgetContext = new Tx_Fluid_Core_Widget_WidgetContext();
@@ -75,10 +73,11 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetContextTest extends Tx_Extbase_Tests
 	public function viewHelperChildNodesCanBeReadAgain() {
 		$viewHelperChildNodes = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_RootNode');
 		$renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContextInterface');
-
 		$this->widgetContext->setViewHelperChildNodes($viewHelperChildNodes, $renderingContext);
 		$this->assertSame($viewHelperChildNodes, $this->widgetContext->getViewHelperChildNodes());
 		$this->assertSame($renderingContext, $this->widgetContext->getViewHelperChildNodeRenderingContext());
 	}
+
 }
+
 ?>

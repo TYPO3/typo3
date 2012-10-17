@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,14 +8,11 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once(dirname(__FILE__) . '/Fixtures/EmptySyntaxTreeNode.php');
-require_once(dirname(__FILE__) . '/Fixtures/Fixture_UserDomainClass.php');
-require_once(dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php');
-
+require_once dirname(__FILE__) . '/Fixtures/EmptySyntaxTreeNode.php';
+require_once dirname(__FILE__) . '/Fixtures/Fixture_UserDomainClass.php';
+require_once dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php';
 /**
  * Test for the "Upload" Form view helper
- *
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_Form_UploadViewHelperTest extends Tx_Fluid_Tests_Unit_ViewHelpers_Form_FormFieldViewHelperBaseTestcase {
 
@@ -38,7 +34,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_UploadViewHelperTest extends Tx_Fluid
 	 */
 	public function renderCorrectlySetsTagName() {
 		$this->tagBuilder->expects($this->once())->method('setTagName')->with('input');
-
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
@@ -50,20 +45,16 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_UploadViewHelperTest extends Tx_Fluid
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('type', 'file');
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('name', 'someName');
-
 		$this->viewHelper->expects($this->at(0))->method('registerFieldNameForFormTokenGeneration')->with('someName[name]');
 		$this->viewHelper->expects($this->at(1))->method('registerFieldNameForFormTokenGeneration')->with('someName[type]');
 		$this->viewHelper->expects($this->at(2))->method('registerFieldNameForFormTokenGeneration')->with('someName[tmp_name]');
 		$this->viewHelper->expects($this->at(3))->method('registerFieldNameForFormTokenGeneration')->with('someName[error]');
 		$this->viewHelper->expects($this->at(4))->method('registerFieldNameForFormTokenGeneration')->with('someName[size]');
-
 		$mockTagBuilder->expects($this->once())->method('render');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
-
 		$arguments = array(
-			'name' => 'someName',
+			'name' => 'someName'
 		);
-
 		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->setViewHelperNode(new Tx_Fluid_ViewHelpers_Fixtures_EmptySyntaxTreeNode());
 		$this->viewHelper->initialize();
@@ -77,6 +68,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_UploadViewHelperTest extends Tx_Fluid
 		$this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
 		$this->viewHelper->render();
 	}
+
 }
 
 ?>

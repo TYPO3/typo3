@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Arguments list. Wraps an array, but only allows read-only methods on it.
  * Is available inside every view helper as $this->arguments - and you use it as if it was an array.
@@ -64,7 +62,6 @@ class Tx_Fluid_Core_ViewHelper_Arguments implements ArrayAccess {
 		if (!array_key_exists($key, $this->arguments)) {
 			return NULL;
 		}
-
 		return $this->arguments[$key];
 	}
 
@@ -75,7 +72,7 @@ class Tx_Fluid_Core_ViewHelper_Arguments implements ArrayAccess {
 	 * @param object $value
 	 */
 	public function offsetSet($key, $value) {
-		throw new Tx_Fluid_Core_Exception('Tried to set argument "' . $key . '", but setting arguments is forbidden.', 1236080693);
+		throw new Tx_Fluid_Core_Exception(('Tried to set argument "' . $key) . '", but setting arguments is forbidden.', 1236080693);
 	}
 
 	/**
@@ -84,7 +81,7 @@ class Tx_Fluid_Core_ViewHelper_Arguments implements ArrayAccess {
 	 * @param string $key
 	 */
 	public function offsetUnset($key) {
-		throw new Tx_Fluid_Core_Exception('Tried to unset argument "' . $key . '", but setting arguments is forbidden.', 1236080702);
+		throw new Tx_Fluid_Core_Exception(('Tried to unset argument "' . $key) . '", but setting arguments is forbidden.', 1236080702);
 	}
 
 	/**
@@ -97,5 +94,7 @@ class Tx_Fluid_Core_ViewHelper_Arguments implements ArrayAccess {
 	public function hasArgument($argumentName) {
 		return $this->offsetExists($argumentName) && $this->arguments[$argumentName] !== NULL;
 	}
+
 }
+
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -12,10 +11,9 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
-
 /**
- */
 
+ */
 /**
  * Renders a string by passing it to a TYPO3 parseFunc.
  * You can either specify a path to the TypoScript setting or set the parseFunc options directly.
@@ -46,17 +44,16 @@
  * </output>
  *
  * @see http://typo3.org/documentation/document-library/references/doc_core_tsref/4.2.0/view/1/5/#id4198758
- *
  */
 class Tx_Fluid_ViewHelpers_Format_HtmlViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * @var	tslib_cObj
+	 * @var 	tslib_cObj
 	 */
 	protected $contentObject;
 
 	/**
-	 * @var	t3lib_fe contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
+	 * @var 	t3lib_fe contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
 	 */
 	protected $tsfeBackup;
 
@@ -91,10 +88,8 @@ class Tx_Fluid_ViewHelpers_Format_HtmlViewHelper extends Tx_Fluid_Core_ViewHelpe
 		if (TYPO3_MODE === 'BE') {
 			$this->simulateFrontendEnvironment();
 		}
-
 		$value = $this->renderChildren();
 		$content = $this->contentObject->parseFunc($value, array(), '< ' . $parseFuncTSPath);
-
 		if (TYPO3_MODE === 'BE') {
 			$this->resetFrontendEnvironment();
 		}
@@ -122,6 +117,7 @@ class Tx_Fluid_ViewHelpers_Format_HtmlViewHelper extends Tx_Fluid_Core_ViewHelpe
 	protected function resetFrontendEnvironment() {
 		$GLOBALS['TSFE'] = $this->tsfeBackup;
 	}
+
 }
 
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,13 +18,14 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * A Fluid Widget exception.
  *
  * @api
  */
 class Tx_Fluid_Core_Widget_Exception extends Tx_Fluid_Core_Exception {
+
+
 }
 
 ?>

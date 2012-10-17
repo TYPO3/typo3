@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * Grouped loop view helper.
  * Loops through the specified values.
@@ -21,9 +18,9 @@
  *
  * <code title="Simple">
  * <f:groupedFor each="{0: {name: 'apple', color: 'green'}, 1: {name: 'cherry', color: 'red'}, 2: {name: 'banana', color: 'yellow'}, 3: {name: 'strawberry', color: 'red'}}" as="fruitsOfThisColor" groupBy="color">
- *   <f:for each="{fruitsOfThisColor}" as="fruit">
- *     {fruit.name}
- *   </f:for>
+ * <f:for each="{fruitsOfThisColor}" as="fruit">
+ * {fruit.name}
+ * </f:for>
  * </f:groupedFor>
  * </code>
  * <output>
@@ -32,38 +29,38 @@
  *
  * <code title="Two dimensional list">
  * <ul>
- *   <f:groupedFor each="{0: {name: 'apple', color: 'green'}, 1: {name: 'cherry', color: 'red'}, 2: {name: 'banana', color: 'yellow'}, 3: {name: 'strawberry', color: 'red'}}" as="fruitsOfThisColor" groupBy="color" groupKey="color">
- *     <li>
- *       {color} fruits:
- *       <ul>
- *         <f:for each="{fruitsOfThisColor}" as="fruit" key="label">
- *           <li>{label}: {fruit.name}</li>
- *         </f:for>
- *       </ul>
- *     </li>
- *   </f:groupedFor>
+ * <f:groupedFor each="{0: {name: 'apple', color: 'green'}, 1: {name: 'cherry', color: 'red'}, 2: {name: 'banana', color: 'yellow'}, 3: {name: 'strawberry', color: 'red'}}" as="fruitsOfThisColor" groupBy="color" groupKey="color">
+ * <li>
+ * {color} fruits:
+ * <ul>
+ * <f:for each="{fruitsOfThisColor}" as="fruit" key="label">
+ * <li>{label}: {fruit.name}</li>
+ * </f:for>
+ * </ul>
+ * </li>
+ * </f:groupedFor>
  * </ul>
  * </code>
  * <output>
  * <ul>
- *   <li>green fruits
- *     <ul>
- *       <li>0: apple</li>
- *     </ul>
- *   </li>
- *   <li>red fruits
- *     <ul>
- *       <li>1: cherry</li>
- *     </ul>
- *     <ul>
- *       <li>3: strawberry</li>
- *     </ul>
- *   </li>
- *   <li>yellow fruits
- *     <ul>
- *       <li>2: banana</li>
- *     </ul>
- *   </li>
+ * <li>green fruits
+ * <ul>
+ * <li>0: apple</li>
+ * </ul>
+ * </li>
+ * <li>red fruits
+ * <ul>
+ * <li>1: cherry</li>
+ * </ul>
+ * <ul>
+ * <li>3: strawberry</li>
+ * </ul>
+ * </li>
+ * <li>yellow fruits
+ * <ul>
+ * <li>2: banana</li>
+ * </ul>
+ * </li>
  * </ul>
  * </output>
  *
@@ -88,13 +85,11 @@ class Tx_Fluid_ViewHelpers_GroupedForViewHelper extends Tx_Fluid_Core_ViewHelper
 		}
 		if (is_object($each)) {
 			if (!$each instanceof Traversable) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('GroupedForViewHelper only supports arrays and objects implementing Traversable interface' , 1253108907);
+				throw new Tx_Fluid_Core_ViewHelper_Exception('GroupedForViewHelper only supports arrays and objects implementing Traversable interface', 1253108907);
 			}
 			$each = iterator_to_array($each);
 		}
-
 		$groups = $this->groupElements($each, $groupBy);
-
 		foreach ($groups['values'] as $currentGroupIndex => $group) {
 			$this->templateVariableContainer->add($groupKey, $groups['keys'][$currentGroupIndex]);
 			$this->templateVariableContainer->add($as, $group);
@@ -120,7 +115,7 @@ class Tx_Fluid_ViewHelpers_GroupedForViewHelper extends Tx_Fluid_Core_ViewHelper
 			} elseif (is_object($value)) {
 				$currentGroupIndex = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($value, $groupBy);
 			} else {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('GroupedForViewHelper only supports multi-dimensional arrays and objects' , 1253120365);
+				throw new Tx_Fluid_Core_ViewHelper_Exception('GroupedForViewHelper only supports multi-dimensional arrays and objects', 1253120365);
 			}
 			$currentGroupKeyValue = $currentGroupIndex;
 			if (is_object($currentGroupIndex)) {
@@ -131,6 +126,7 @@ class Tx_Fluid_ViewHelpers_GroupedForViewHelper extends Tx_Fluid_Core_ViewHelper
 		}
 		return $groups;
 	}
+
 }
 
 ?>

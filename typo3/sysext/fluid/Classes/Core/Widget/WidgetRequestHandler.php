@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,13 +18,11 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Widget request handler, which handles the request if
  * f3-fluid-widget-id is found.
  *
  * This Request Handler gets the WidgetRequestBuilder injected.
- *
  */
 class Tx_Fluid_Core_Widget_WidgetRequestHandler extends Tx_Extbase_MVC_Web_AbstractRequestHandler {
 
@@ -76,7 +73,6 @@ class Tx_Fluid_Core_Widget_WidgetRequestHandler extends Tx_Extbase_MVC_Web_Abstr
 			$request->setContentObjectData($this->cObj->data);
 		}
 		$response = $this->objectManager->create('Tx_Extbase_MVC_Web_Response');
-
 		$this->dispatcher->dispatch($request, $response);
 		return $response;
 	}
@@ -97,6 +93,7 @@ class Tx_Fluid_Core_Widget_WidgetRequestHandler extends Tx_Extbase_MVC_Web_Abstr
 	public function getPriority() {
 		return 200;
 	}
+
 }
 
 ?>

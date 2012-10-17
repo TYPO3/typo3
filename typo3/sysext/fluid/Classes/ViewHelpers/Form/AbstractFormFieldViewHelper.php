@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Abstract Form View Helper. Bundles functionality related to direct property access of objects in other Form ViewHelpers.
  *
@@ -81,7 +79,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 				$propertySegments = explode('.', $this->arguments['property']);
 				$propertyPath = '';
 				foreach ($propertySegments as $segment) {
-					$propertyPath .= '[' . $segment . ']';
+					$propertyPath .= ('[' . $segment) . ']';
 				}
 				$name = $formObjectName . $propertyPath;
 			} else {
@@ -91,12 +89,10 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 			$name = $this->arguments['name'];
 		}
 		if ($this->hasArgument('value') && is_object($this->arguments['value'])) {
-			if (NULL !== $this->persistenceManager->getIdentifierByObject($this->arguments['value'])
-				&& (!$this->persistenceManager->getBackend()->isNewObject($this->arguments['value']))) {
+			if (NULL !== $this->persistenceManager->getIdentifierByObject($this->arguments['value']) && !$this->persistenceManager->getBackend()->isNewObject($this->arguments['value'])) {
 				$name .= '[__identity]';
 			}
 		}
-
 		return $name;
 	}
 
@@ -131,7 +127,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * @return boolean TRUE if a mapping error occured, FALSE otherwise
 	 */
 	protected function hasMappingErrorOccured() {
-		return ($this->controllerContext->getRequest()->getOriginalRequest() !== NULL);
+		return $this->controllerContext->getRequest()->getOriginalRequest() !== NULL;
 	}
 
 	/**
@@ -141,7 +137,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * @return mixed
 	 */
 	protected function getLastSubmittedFormData() {
-		$propertyPath = rtrim(preg_replace('/(\]\[|\[|\])/', '.', $this->getNameWithoutPrefix()), '.');
+		$propertyPath = rtrim(preg_replace('/(\\]\\[|\\[|\\])/', '.', $this->getNameWithoutPrefix()), '.');
 		$value = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($this->controllerContext->getRequest()->getOriginalRequest()->getArguments(), $propertyPath);
 		return $value;
 	}
@@ -155,17 +151,15 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	protected function addAdditionalIdentityPropertiesIfNeeded() {
 		$propertySegments = explode('.', $this->arguments['property']);
 		if (count($propertySegments) >= 2) {
-				// hierarchical property. If there is no "." inside (thus $propertySegments == 1), we do not need to do anything
+			// hierarchical property. If there is no "." inside (thus $propertySegments == 1), we do not need to do anything
 			$formObject = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject');
-
 			$objectName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
-				// If Count == 2 -> we need to go through the for-loop exactly once
-			for ($i=1; $i < count($propertySegments); $i++) {
+			// If Count == 2 -> we need to go through the for-loop exactly once
+			for ($i = 1; $i < count($propertySegments); $i++) {
 				$object = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($formObject, implode('.', array_slice($propertySegments, 0, $i)));
-				$objectName .= '[' . $propertySegments[$i-1] . ']';
+				$objectName .= ('[' . $propertySegments[($i - 1)]) . ']';
 				$hiddenIdentityField = $this->renderHiddenIdentityField($object, $objectName);
-
-					// Add the hidden identity field to the ViewHelperVariableContainer
+				// Add the hidden identity field to the ViewHelperVariableContainer
 				$additionalIdentityProperties = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'additionalIdentityProperties');
 				$additionalIdentityProperties[$objectName] = $hiddenIdentityField;
 				$this->viewHelperVariableContainer->addOrUpdate('Tx_Fluid_ViewHelpers_FormViewHelper', 'additionalIdentityProperties', $additionalIdentityProperties);
@@ -179,10 +173,8 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * @return mixed Value
 	 */
 	protected function getPropertyValue() {
-
 		$formObject = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject');
 		$propertyName = $this->arguments['property'];
-
 		if (is_array($formObject)) {
 			return isset($formObject[$propertyName]) ? $formObject[$propertyName] : NULL;
 		}
@@ -195,8 +187,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * @return boolean TRUE if we should evaluate the domain object, FALSE otherwise.
 	 */
 	protected function isObjectAccessorMode() {
-		return $this->hasArgument('property')
-			&& $this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
+		return $this->hasArgument('property') && $this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
 	}
 
 	/**
@@ -210,7 +201,6 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 		} else {
 			$cssClass = '';
 		}
-
 		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
 			$mappingResultsForProperty = $this->getMappingResultsForProperty();
 			if ($mappingResultsForProperty->hasErrors()) {
@@ -222,7 +212,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 				$this->tag->addAttribute('class', $cssClass);
 			}
 		} else {
-				// @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
+			// @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0.
 			$errors = $this->getErrorsForProperty();
 			if (count($errors) > 0) {
 				if ($this->hasArgument('errorClass')) {
@@ -246,7 +236,6 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 		}
 		$originalRequestMappingResults = $this->controllerContext->getRequest()->getOriginalRequestMappingResults();
 		$formObjectName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
-
 		return $originalRequestMappingResults->forProperty($formObjectName)->forProperty($this->arguments['property']);
 	}
 
@@ -288,7 +277,6 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 		if ($this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields')) {
 			$hiddenFieldNames = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields');
 		}
-
 		$fieldName = $this->getName();
 		if (substr($fieldName, -2) === '[]') {
 			$fieldName = substr($fieldName, 0, -2);
@@ -296,11 +284,11 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 		if (!in_array($fieldName, $hiddenFieldNames)) {
 			$hiddenFieldNames[] = $fieldName;
 			$this->viewHelperVariableContainer->addOrUpdate('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields', $hiddenFieldNames);
-
-			return '<input type="hidden" name="' . htmlspecialchars($fieldName) . '" value="" />';
+			return ('<input type="hidden" name="' . htmlspecialchars($fieldName)) . '" value="" />';
 		}
 		return '';
 	}
+
 }
 
 ?>

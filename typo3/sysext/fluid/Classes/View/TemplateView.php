@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * The main template view. Should be used as view if you want Fluid Templating
  *
@@ -20,81 +17,92 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 
 	/**
 	 * Pattern to be resolved for "@templateRoot" in the other patterns.
+	 *
 	 * @var string
 	 */
 	protected $templateRootPathPattern = '@packageResourcesPath/Private/Templates';
 
 	/**
 	 * Pattern to be resolved for "@partialRoot" in the other patterns.
+	 *
 	 * @var string
 	 */
 	protected $partialRootPathPattern = '@packageResourcesPath/Private/Partials';
 
 	/**
 	 * Pattern to be resolved for "@layoutRoot" in the other patterns.
+	 *
 	 * @var string
 	 */
 	protected $layoutRootPathPattern = '@packageResourcesPath/Private/Layouts';
 
 	/**
 	 * Path to the template root. If NULL, then $this->templateRootPathPattern will be used.
+	 *
 	 * @var string
 	 */
 	protected $templateRootPath = NULL;
 
 	/**
 	 * Path to the partial root. If NULL, then $this->partialRootPathPattern will be used.
+	 *
 	 * @var string
 	 */
 	protected $partialRootPath = NULL;
 
 	/**
 	 * Path to the layout root. If NULL, then $this->layoutRootPathPattern will be used.
+	 *
 	 * @var string
 	 */
 	protected $layoutRootPath = NULL;
 
 	/**
 	 * File pattern for resolving the template file
+	 *
 	 * @var string
 	 */
 	protected $templatePathAndFilenamePattern = '@templateRoot/@subpackage/@controller/@action.@format';
 
 	/**
 	 * Directory pattern for global partials. Not part of the public API, should not be changed for now.
+	 *
 	 * @var string
 	 */
 	private $partialPathAndFilenamePattern = '@partialRoot/@subpackage/@partial.@format';
 
 	/**
 	 * File pattern for resolving the layout
+	 *
 	 * @var string
 	 */
 	protected $layoutPathAndFilenamePattern = '@layoutRoot/@layout.@format';
 
 	/**
 	 * Path and filename of the template file. If set,  overrides the templatePathAndFilenamePattern
+	 *
 	 * @var string
 	 */
 	protected $templatePathAndFilename = NULL;
 
 	/**
 	 * Path and filename of the layout file. If set, overrides the layoutPathAndFilenamePattern
+	 *
 	 * @var string
 	 */
 	protected $layoutPathAndFilename = NULL;
 
 	public function __construct() {
-			$this->injectTemplateParser(Tx_Fluid_Compatibility_TemplateParserBuilder::build());
-			$this->injectObjectManager(t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager'));
-			$this->setRenderingContext($this->objectManager->create('Tx_Fluid_Core_Rendering_RenderingContextInterface'));
-		}
+		$this->injectTemplateParser(Tx_Fluid_Compatibility_TemplateParserBuilder::build());
+		$this->injectObjectManager(t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager'));
+		$this->setRenderingContext($this->objectManager->create('Tx_Fluid_Core_Rendering_RenderingContextInterface'));
+	}
 
-		public function initializeView() {
-		}
+	public function initializeView() {
+
+	}
 
 	// Here, the backporter can insert a constructor method, which is needed for Fluid v4.
-
 	/**
 	 * Sets the path and name of of the template file. Effectively overrides the
 	 * dynamic resolving of a template file.
@@ -135,7 +143,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 		}
 	}
 
-		/**
+	/**
 	 * Set the root path to the templates.
 	 * If set, overrides the one determined from $this->templateRootPathPattern
 	 *
@@ -158,7 +166,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 		$templatePathAndFilename = $this->getTemplatePathAndFilename($actionName);
 		if ($actionName === NULL) {
 			$actionName = $this->controllerContext->getRequest()->getControllerActionName();
-		};
+		}
 		$prefix = 'action_' . $actionName;
 		return $this->createIdentifierForFile($templatePathAndFilename, $prefix);
 	}
@@ -175,7 +183,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 		$templatePathAndFilename = $this->getTemplatePathAndFilename($actionName);
 		$templateSource = file_get_contents($templatePathAndFilename);
 		if ($templateSource === FALSE) {
-			throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException('"' . $templatePathAndFilename . '" is not a valid template resource URI.', 1257246929);
+			throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException(('"' . $templatePathAndFilename) . '" is not a valid template resource URI.', 1257246929);
 		}
 		return $templateSource;
 	}
@@ -194,9 +202,8 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 		}
 		if ($actionName === NULL) {
 			$actionName = $this->controllerContext->getRequest()->getControllerActionName();
-		};
+		}
 		$actionName = ucfirst($actionName);
-
 		$paths = $this->expandGenericPathPattern($this->templatePathAndFilenamePattern, FALSE, FALSE);
 		foreach ($paths as &$templatePathAndFilename) {
 			// These tokens are replaced by the Backporter for the graceful fallback in version 4.
@@ -206,15 +213,15 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 				// additional check for deprecated template filename for case insensitive file systems (Windows)
 				$realFileName = basename(realpath($templatePathAndFilename));
 				if ($realFileName !== ucfirst($realFileName)) {
-					t3lib_div::deprecationLog('the template filename "' . t3lib_div::fixWindowsFilePath(realpath($templatePathAndFilename)) . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "' . basename($templatePathAndFilename) . '"');
+					t3lib_div::deprecationLog(((('the template filename "' . t3lib_div::fixWindowsFilePath(realpath($templatePathAndFilename))) . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "') . basename($templatePathAndFilename)) . '"');
 				}
 				return $templatePathAndFilename;
 			} elseif (file_exists($fallbackPath)) {
-				t3lib_div::deprecationLog('the template filename "' . $fallbackPath . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "' . basename($templatePathAndFilename) . '"');
+				t3lib_div::deprecationLog(((('the template filename "' . $fallbackPath) . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "') . basename($templatePathAndFilename)) . '"');
 				return $fallbackPath;
 			}
 		}
-		throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException('Template could not be loaded. I tried "' . implode('", "', $paths) . '"', 1225709595);
+		throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException(('Template could not be loaded. I tried "' . implode('", "', $paths)) . '"', 1225709595);
 	}
 
 	/**
@@ -230,7 +237,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 		return $this->createIdentifierForFile($layoutPathAndFilename, $prefix);
 	}
 
-
 	/**
 	 * Resolve the path and file name of the layout file, based on
 	 * $this->layoutPathAndFilename and $this->layoutPathAndFilenamePattern.
@@ -239,7 +245,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * this method returns that path, otherwise a path and filename will be
 	 * resolved using the layoutPathAndFilenamePattern.
 	 *
-	 * @param string $layoutName Name of the layout to use. If none given, use "Default"
+	 * @param string $layoutName Name of the layout to use. If none given, use "Default
 	 * @return string contents of the layout template
 	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
 	 */
@@ -247,7 +253,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 		$layoutPathAndFilename = $this->getLayoutPathAndFilename($layoutName);
 		$layoutSource = file_get_contents($layoutPathAndFilename);
 		if ($layoutSource === FALSE) {
-			throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException('"' . $layoutPathAndFilename . '" is not a valid template resource URI.', 1257246929);
+			throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException(('"' . $layoutPathAndFilename) . '" is not a valid template resource URI.', 1257246929);
 		}
 		return $layoutSource;
 	}
@@ -260,7 +266,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * this method returns that path, otherwise a path and filename will be
 	 * resolved using the layoutPathAndFilenamePattern.
 	 *
-	 * @param string $layoutName Name of the layout to use. If none given, use "Default"
+	 * @param string $layoutName Name of the layout to use. If none given, use "Default
 	 * @return string Path and filename of layout files
 	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
 	 */
@@ -277,11 +283,11 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 			if (file_exists($layoutPathAndFilename)) {
 				return $layoutPathAndFilename;
 			} elseif (file_exists($fallbackPath)) {
-				t3lib_div::deprecationLog('the layout filename "' . $fallbackPath . '" is lowercase. This is deprecated since TYPO3 4.6. Please rename the layout to "' . basename($layoutPathAndFilename) . '"');
+				t3lib_div::deprecationLog(((('the layout filename "' . $fallbackPath) . '" is lowercase. This is deprecated since TYPO3 4.6. Please rename the layout to "') . basename($layoutPathAndFilename)) . '"');
 				return $fallbackPath;
 			}
 		}
-		throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
+		throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException(('The template files "' . implode('", "', $paths)) . '" could not be loaded.', 1225709595);
 	}
 
 	/**
@@ -308,7 +314,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 		$partialPathAndFilename = $this->getPartialPathAndFilename($partialName);
 		$partialSource = file_get_contents($partialPathAndFilename);
 		if ($partialSource === FALSE) {
-			throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException('"' . $partialPathAndFilename . '" is not a valid template resource URI.', 1257246929);
+			throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException(('"' . $partialPathAndFilename) . '" is not a valid template resource URI.', 1257246929);
 		}
 		return $partialSource;
 	}
@@ -328,7 +334,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 				return $partialPathAndFilename;
 			}
 		}
-		throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
+		throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException(('The template files "' . implode('", "', $paths)) . '" could not be loaded.', 1225709595);
 	}
 
 	/**
@@ -410,9 +416,9 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * as Controller Object Name and the current format is "html"
 	 *
 	 * If pattern is "@templateRoot/@subpackage/@controller/@action.@format", then the resulting array is:
-	 *  - "Resources/Private/Templates/MySubPackage/My/@action.html"
-	 *  - "Resources/Private/Templates/MySubPackage/@action.html"
-	 *  - "Resources/Private/Templates/@action.html"
+	 * - "Resources/Private/Templates/MySubPackage/My/@action.html"
+	 * - "Resources/Private/Templates/MySubPackage/@action.html"
+	 * - "Resources/Private/Templates/@action.html"
 	 *
 	 * If you set $formatIsOptional to TRUE, then for any of the above arrays, every element will be duplicated  - once with "@format"
 	 * replaced by the current request format, and once with ."@format" stripped off.
@@ -426,15 +432,11 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 		$pattern = str_replace('@templateRoot', $this->getTemplateRootPath(), $pattern);
 		$pattern = str_replace('@partialRoot', $this->getPartialRootPath(), $pattern);
 		$pattern = str_replace('@layoutRoot', $this->getLayoutRootPath(), $pattern);
-
 		$subpackageKey = $this->controllerContext->getRequest()->getControllerSubpackageKey();
 		$controllerName = $this->controllerContext->getRequest()->getControllerName();
-
-		$subpackageParts = ($subpackageKey !== NULL) ? explode(Tx_Fluid_Fluid::NAMESPACE_SEPARATOR, $subpackageKey) : array();
-
+		$subpackageParts = $subpackageKey !== NULL ? explode(Tx_Fluid_Fluid::NAMESPACE_SEPARATOR, $subpackageKey) : array();
 		$results = array();
-
-		$i = ($controllerName === NULL) ? 0 : -1;
+		$i = $controllerName === NULL ? 0 : -1;
 		do {
 			$temporaryPattern = $pattern;
 			if ($i < 0) {
@@ -442,15 +444,12 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 			} else {
 				$temporaryPattern = str_replace('//', '/', str_replace('@controller', '', $temporaryPattern));
 			}
-			$temporaryPattern = str_replace('@subpackage', implode('/', ($i<0 ? $subpackageParts : array_slice($subpackageParts, $i))), $temporaryPattern);
-
+			$temporaryPattern = str_replace('@subpackage', implode('/', $i < 0 ? $subpackageParts : array_slice($subpackageParts, $i)), $temporaryPattern);
 			$results[] = t3lib_div::fixWindowsFilePath(str_replace('@format', $this->controllerContext->getRequest()->getFormat(), $temporaryPattern));
 			if ($formatIsOptional) {
-				$results[] =  t3lib_div::fixWindowsFilePath(str_replace('.@format', '', $temporaryPattern));
+				$results[] = t3lib_div::fixWindowsFilePath(str_replace('.@format', '', $temporaryPattern));
 			}
-
-		} while($i++ < count($subpackageParts) && $bubbleControllerAndSubpackage);
-
+		} while ($i++ < count($subpackageParts) && $bubbleControllerAndSubpackage);
 		return $results;
 	}
 
@@ -472,9 +471,10 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 		}
 		$controllerName = $request->getControllerName();
 		$templateModifiedTimestamp = filemtime($pathAndFilename);
-		$templateIdentifier = sprintf('%s_%s_%s_%s', $extensionName, $controllerName, $prefix, sha1($pathAndFilename . '|' . $templateModifiedTimestamp));
+		$templateIdentifier = sprintf('%s_%s_%s_%s', $extensionName, $controllerName, $prefix, sha1(($pathAndFilename . '|') . $templateModifiedTimestamp));
 		return $templateIdentifier;
 	}
+
 }
 
 ?>

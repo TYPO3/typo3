@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,12 +18,9 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
-
+require_once dirname(__FILE__) . '/ViewHelperBaseTestcase.php';
 /**
  * Testcase for RenderChildren ViewHelper
- *
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_RenderChildrenViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
@@ -34,6 +30,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_RenderChildrenViewHelperTest extends Tx_Fl
 	protected $viewHelper;
 
 	/**
+
 	 */
 	public function setUp() {
 		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
@@ -47,27 +44,20 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_RenderChildrenViewHelperTest extends Tx_Fl
 	public function renderCallsEvaluateOnTheRootNodeAndRegistersTheArguments() {
 		$this->request = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest');
 		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
-
 		$this->viewHelper->initializeArguments();
-
 		$templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
 		$templateVariableContainer->expects($this->at(0))->method('add')->with('k1', 'v1');
 		$templateVariableContainer->expects($this->at(1))->method('add')->with('k2', 'v2');
 		$templateVariableContainer->expects($this->at(2))->method('remove')->with('k1');
 		$templateVariableContainer->expects($this->at(3))->method('remove')->with('k2');
-
 		$renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContextInterface');
 		$renderingContext->expects($this->any())->method('getTemplateVariableContainer')->will($this->returnValue($templateVariableContainer));
-
 		$rootNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_RootNode');
-
 		$widgetContext = $this->getMock('Tx_Fluid_Core_Widget_WidgetContext');
 		$this->request->expects($this->any())->method('getWidgetContext')->will($this->returnValue($widgetContext));
 		$widgetContext->expects($this->any())->method('getViewHelperChildNodeRenderingContext')->will($this->returnValue($renderingContext));
 		$widgetContext->expects($this->any())->method('getViewHelperChildNodes')->will($this->returnValue($rootNode));
-
 		$rootNode->expects($this->any())->method('evaluate')->with($renderingContext)->will($this->returnValue('Rendered Results'));
-
 		$output = $this->viewHelper->render(array('k1' => 'v1', 'k2' => 'v2'));
 		$this->assertEquals('Rendered Results', $output);
 	}
@@ -80,7 +70,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_RenderChildrenViewHelperTest extends Tx_Fl
 		$this->request = $this->getMock('Tx_Fluid_MVC_Request');
 		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
 		$this->viewHelper->initializeArguments();
-
 		$this->viewHelper->render();
 	}
 
@@ -92,13 +81,13 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_RenderChildrenViewHelperTest extends Tx_Fl
 		$this->request = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest');
 		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
 		$this->viewHelper->initializeArguments();
-
 		$widgetContext = $this->getMock('Tx_Fluid_Core_Widget_WidgetContext');
 		$this->request->expects($this->any())->method('getWidgetContext')->will($this->returnValue($widgetContext));
 		$widgetContext->expects($this->any())->method('getViewHelperChildNodeRenderingContext')->will($this->returnValue(NULL));
 		$widgetContext->expects($this->any())->method('getViewHelperChildNodes')->will($this->returnValue(NULL));
-
 		$this->viewHelper->render();
 	}
+
 }
+
 ?>

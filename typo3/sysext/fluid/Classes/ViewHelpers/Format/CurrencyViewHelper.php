@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * Formats a given float to a currency representation.
  *
@@ -53,25 +50,23 @@ class Tx_Fluid_ViewHelpers_Format_CurrencyViewHelper extends Tx_Fluid_Core_ViewH
 	 */
 	public function render($currencySign = '', $decimalSeparator = ',', $thousandsSeparator = '.', $prependCurrency = FALSE, $separateCurrency = TRUE) {
 		$floatToFormat = $this->renderChildren();
-
 		if (empty($floatToFormat)) {
-			$floatToFormat = 0.00;
+			$floatToFormat = 0.0;
 		} else {
 			$floatToFormat = floatval($floatToFormat);
 		}
-
 		$output = number_format($floatToFormat, 2, $decimalSeparator, $thousandsSeparator);
-
 		if ($currencySign !== '') {
-			$currencySeparator = ($separateCurrency) ? ' ' : '';
+			$currencySeparator = $separateCurrency ? ' ' : '';
 			if ($prependCurrency === TRUE) {
-				$output = $currencySign . $currencySeparator . $output;
+				$output = ($currencySign . $currencySeparator) . $output;
 			} else {
-				$output = $output . $currencySeparator . $currencySign;
+				$output = ($output . $currencySeparator) . $currencySign;
 			}
 		}
-
 		return $output;
 	}
+
 }
+
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * VariableContainer which stores template variables.
  * Is used in two contexts:
@@ -24,12 +21,14 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer implements ArrayAccess 
 
 	/**
 	 * List of reserved words that can't be used as variable identifiers in Fluid templates
+	 *
 	 * @var array
 	 */
 	static protected $reservedVariableNames = array('true', 'false', 'on', 'off', 'yes', 'no', '_all');
 
 	/**
 	 * Variables stored in context
+	 *
 	 * @var array
 	 */
 	protected $variables = array();
@@ -53,8 +52,12 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer implements ArrayAccess 
 	 * @api
 	 */
 	public function add($identifier, $value) {
-		if (array_key_exists($identifier, $this->variables)) throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException('Duplicate variable declarations!', 1224479063);
-		if (in_array(strtolower($identifier), self::$reservedVariableNames)) throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException('"' . $identifier . '" is a reserved variable name and can\'t be used as variable identifier.', 1256730379);
+		if (array_key_exists($identifier, $this->variables)) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException('Duplicate variable declarations!', 1224479063);
+		}
+		if (in_array(strtolower($identifier), self::$reservedVariableNames)) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException(('"' . $identifier) . '" is a reserved variable name and can\'t be used as variable identifier.', 1256730379);
+		}
 		$this->variables[$identifier] = $value;
 	}
 
@@ -69,7 +72,9 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer implements ArrayAccess 
 		if ($identifier === '_all') {
 			return $this->variables;
 		}
-		if (!array_key_exists($identifier, $this->variables)) throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException('Tried to get a variable "' . $identifier . '" which is not stored in the context!', 1224479370);
+		if (!array_key_exists($identifier, $this->variables)) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException(('Tried to get a variable "' . $identifier) . '" which is not stored in the context!', 1224479370);
+		}
 		return $this->variables[$identifier];
 	}
 
@@ -81,7 +86,9 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer implements ArrayAccess 
 	 * @api
 	 */
 	public function remove($identifier) {
-		if (!array_key_exists($identifier, $this->variables)) throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException('Tried to remove a variable "' . $identifier . '" which is not stored in the context!', 1224479372);
+		if (!array_key_exists($identifier, $this->variables)) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException(('Tried to remove a variable "' . $identifier) . '" which is not stored in the context!', 1224479372);
+		}
 		unset($this->variables[$identifier]);
 	}
 
@@ -114,7 +121,6 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer implements ArrayAccess 
 		if ($identifier === '_all') {
 			return TRUE;
 		}
-
 		return array_key_exists($identifier, $this->variables);
 	}
 
@@ -167,5 +173,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer implements ArrayAccess 
 	public function offsetGet($identifier) {
 		return $this->get($identifier);
 	}
+
 }
+
 ?>

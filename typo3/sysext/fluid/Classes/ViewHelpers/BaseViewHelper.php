@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * View helper which creates a <base href="..."></base> tag. The Base URI
  * is taken from the current request.
@@ -40,8 +37,9 @@ class Tx_Fluid_ViewHelpers_BaseViewHelper extends Tx_Fluid_Core_ViewHelper_Abstr
 	 * @api
 	 */
 	public function render() {
-		return '<base href="' . $this->controllerContext->getRequest()->getBaseUri() . '" />';
+		return ('<base href="' . $this->controllerContext->getRequest()->getBaseUri()) . '" />';
 	}
+
 }
 
 ?>

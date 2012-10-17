@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,28 +8,10 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * Wrapper for PHPs nl2br function.
+ *
  * @see http://www.php.net/manual/en/function.nl2br.php
- *
- * = Examples =
- *
- * <code title="Example">
- * <f:format.nl2br>{text_with_linebreaks}</f:format.nl2br>
- * </code>
- * <output>
- * text with line breaks replaced by <br />
- * </output>
- *
- * <code title="Inline notation">
- * {text_with_linebreaks -> f:format.nl2br()}
- * </code>
- * <output>
- * text with line breaks replaced by <br />
- * </output>
- *
  * @api
  */
 class Tx_Fluid_ViewHelpers_Format_Nl2brViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
@@ -45,5 +26,7 @@ class Tx_Fluid_ViewHelpers_Format_Nl2brViewHelper extends Tx_Fluid_Core_ViewHelp
 		$content = $this->renderChildren();
 		return nl2br($content);
 	}
+
 }
+
 ?>

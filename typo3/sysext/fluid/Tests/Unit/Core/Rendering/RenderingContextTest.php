@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,15 +8,14 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for ParsingState
- *
  */
 class Tx_Fluid_Tests_Unit_Core_Rendering_RenderingContextTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * Parsing state
+	 *
 	 * @var Tx_Fluid_Core_Rendering_RenderingContextInterface
 	 */
 	protected $renderingContext;
@@ -52,6 +50,7 @@ class Tx_Fluid_Tests_Unit_Core_Rendering_RenderingContextTest extends Tx_Extbase
 		$this->renderingContext->injectViewHelperVariableContainer($viewHelperVariableContainer);
 		$this->assertSame($viewHelperVariableContainer, $this->renderingContext->getViewHelperVariableContainer());
 	}
+
 }
 
 ?>

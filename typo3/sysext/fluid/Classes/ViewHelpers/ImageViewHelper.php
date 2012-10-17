@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -12,7 +11,6 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
-
 /**
  * Resizes a given image (if required) and renders the respective img tag
  *
@@ -94,8 +92,8 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 
 	/**
 	 * Resizes a given image (if required) and renders the respective img tag
-	 * @see http://typo3.org/documentation/document-library/references/doc_core_tsref/4.2.0/view/1/5/#id4164427
 	 *
+	 * @see http://typo3.org/documentation/document-library/references/doc_core_tsref/4.2.0/view/1/5/#id4164427
 	 * @param string $src
 	 * @param string $width width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.
 	 * @param string $height height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.
@@ -103,7 +101,6 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	 * @param integer $minHeight minimum height of the image
 	 * @param integer $maxWidth maximum width of the image
 	 * @param integer $maxHeight maximum height of the image
-	 *
 	 * @return string rendered tag.
 	 */
 	public function render($src, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL) {
@@ -124,11 +121,10 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 		$imageInfo = $this->contentObject->getImgResource($src, $setup);
 		$GLOBALS['TSFE']->lastImageInfo = $imageInfo;
 		if (!is_array($imageInfo)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('Could not get image resource for "' . htmlspecialchars($src) . '".' , 1253191060);
+			throw new Tx_Fluid_Core_ViewHelper_Exception(('Could not get image resource for "' . htmlspecialchars($src)) . '".', 1253191060);
 		}
 		$imageInfo[3] = t3lib_div::png_to_gif_by_imagemagick($imageInfo[3]);
 		$GLOBALS['TSFE']->imagesOnPage[] = $imageInfo[3];
-
 		$imageSource = $GLOBALS['TSFE']->absRefPrefix . t3lib_div::rawUrlEncodeFP($imageInfo[3]);
 		if (TYPO3_MODE === 'BE') {
 			$imageSource = '../' . $imageSource;
@@ -140,7 +136,6 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 		if ($this->arguments['title'] === '') {
 			$this->tag->addAttribute('title', $this->arguments['alt']);
 		}
-
 		return $this->tag->render();
 	}
 
@@ -152,10 +147,9 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	 */
 	protected function simulateFrontendEnvironment() {
 		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
-			// set the working directory to the site root
+		// set the working directory to the site root
 		$this->workingDirectoryBackup = getcwd();
 		chdir(PATH_site);
-
 		$typoScriptSetup = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		$GLOBALS['TSFE'] = new stdClass();
 		$template = t3lib_div::makeInstance('t3lib_TStemplate');
@@ -177,4 +171,7 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 		$GLOBALS['TSFE'] = $this->tsfeBackup;
 		chdir($this->workingDirectoryBackup);
 	}
+
 }
+
+?>

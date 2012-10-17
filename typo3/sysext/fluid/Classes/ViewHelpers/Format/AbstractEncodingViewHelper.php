@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -12,7 +11,6 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
-
 /**
  * This is the base class for ViewHelpers that work with encodings.
  * Currently that are format.htmlentities, format.htmlentitiesDecode and format.htmlspecialchars
@@ -44,4 +42,5 @@ abstract class Tx_Fluid_ViewHelpers_Format_AbstractEncodingViewHelper extends Tx
 	}
 
 }
+
 ?>

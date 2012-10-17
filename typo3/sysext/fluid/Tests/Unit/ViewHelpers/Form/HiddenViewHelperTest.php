@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,12 +8,9 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once(dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php');
-
+require_once dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php';
 /**
  * Test for the "Hidden" Form view helper
- *
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_Form_HiddenViewHelperTest extends Tx_Fluid_Tests_Unit_ViewHelpers_Form_FormFieldViewHelperBaseTestcase {
 
@@ -40,14 +36,13 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_HiddenViewHelperTest extends Tx_Fluid
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
-
 		$this->viewHelper->expects($this->once())->method('getName')->will($this->returnValue('foo'));
 		$this->viewHelper->expects($this->once())->method('getValue')->will($this->returnValue('bar'));
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
-
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
+
 }
 
 ?>

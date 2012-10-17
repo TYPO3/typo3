@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,45 +8,49 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Argument definition of each view helper argument
- *
  */
 class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 
 	/**
 	 * Name of argument
+	 *
 	 * @var string
 	 */
 	protected $name;
 
 	/**
 	 * Type of argument
+	 *
 	 * @var string
 	 */
 	protected $type;
 
 	/**
 	 * Description of argument
+	 *
 	 * @var string
 	 */
 	protected $description;
 
 	/**
 	 * Is argument required?
+	 *
 	 * @var boolean
 	 */
 	protected $required = FALSE;
 
 	/**
 	 * Default value for argument
+	 *
 	 * @var mixed
 	 */
 	protected $defaultValue = NULL;
 
 	/**
 	 * TRUE if it is a method parameter
+	 *
 	 * @var boolean
 	 */
 	protected $isMethodParameter = FALSE;
@@ -124,6 +127,7 @@ class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 	public function isMethodParameter() {
 		return $this->isMethodParameter;
 	}
+
 }
 
 ?>

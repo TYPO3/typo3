@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
+
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_Format_PaddingViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -53,5 +52,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_PaddingViewHelperTest extends Tx_Ex
 		$actualResult = $viewHelper->render(5, '0');
 		$this->assertEquals('12300', $actualResult);
 	}
+
 }
+
 ?>

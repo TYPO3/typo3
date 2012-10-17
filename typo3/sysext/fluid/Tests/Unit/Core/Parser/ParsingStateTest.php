@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,15 +8,14 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for ParsingState
- *
  */
 class Tx_Fluid_Tests_Unit_Core_Parser_ParsingStateTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * Parsing state
+	 *
 	 * @var Tx_Fluid_Core_Parser_ParsingState
 	 */
 	protected $parsingState;
@@ -25,6 +23,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_ParsingStateTest extends Tx_Extbase_Tests_
 	public function setUp() {
 		$this->parsingState = new Tx_Fluid_Core_Parser_ParsingState();
 	}
+
 	public function tearDown() {
 		unset($this->parsingState);
 	}
@@ -53,7 +52,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_ParsingStateTest extends Tx_Extbase_Tests_
 	 */
 	public function renderCallsTheRightMethodsOnTheRootNode() {
 		$renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContextInterface');
-
 		$rootNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_RootNode');
 		$rootNode->expects($this->once())->method('evaluate')->with($renderingContext)->will($this->returnValue('T3DD09 Rock!'));
 		$this->parsingState->setRootNode($rootNode);

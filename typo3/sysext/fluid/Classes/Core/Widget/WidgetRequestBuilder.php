@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,10 +18,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Builds the WidgetRequest if an AJAX widget is called.
- *
  */
 class Tx_Fluid_Core_Widget_WidgetRequestBuilder extends Tx_Extbase_MVC_Web_RequestBuilder {
 
@@ -48,23 +45,22 @@ class Tx_Fluid_Core_Widget_WidgetRequestBuilder extends Tx_Extbase_MVC_Web_Reque
 		$request = $this->objectManager->create('Tx_Fluid_Core_Widget_WidgetRequest');
 		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-		$request->setMethod((isset($_SERVER['REQUEST_METHOD'])) ? $_SERVER['REQUEST_METHOD'] : NULL);
+		$request->setMethod(isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : NULL);
 		if (strtolower($_SERVER['REQUEST_METHOD']) === 'post') {
 			$request->setArguments(t3lib_div::_POST());
 		} else {
 			$request->setArguments(t3lib_div::_GET());
 		}
-
 		$rawGetArguments = t3lib_div::_GET();
-			// TODO: rename to @action, to be consistent with normal naming?
+		// TODO: rename to @action, to be consistent with normal naming?
 		if (isset($rawGetArguments['action'])) {
 			$request->setControllerActionName($rawGetArguments['action']);
 		}
-
 		$widgetContext = $this->ajaxWidgetContextHolder->get($rawGetArguments['fluid-widget-id']);
 		$request->setWidgetContext($widgetContext);
 		return $request;
 	}
+
 }
 
 ?>

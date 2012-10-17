@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * This view helper implements an ifHasRole/else condition for BE users/groups.
  *
@@ -27,7 +25,7 @@
  *
  * <code title="Basic usage">
  * <f:be.security.ifHasRole role="Administrator">
- *   This is being shown in case the current BE user belongs to a BE usergroup (aka role) titled "Administrator" (case sensitive)
+ * This is being shown in case the current BE user belongs to a BE usergroup (aka role) titled "Administrator" (case sensitive)
  * </f:be.security.ifHasRole>
  * </code>
  * <output>
@@ -36,7 +34,7 @@
  *
  * <code title="Using the usergroup uid as role identifier">
  * <f:be.security.ifHasRole role="1">
- *   This is being shown in case the current BE user belongs to a BE usergroup (aka role) with the uid "1"
+ * This is being shown in case the current BE user belongs to a BE usergroup (aka role) with the uid "1"
  * </f:be.security.ifHasRole>
  * </code>
  * <output>
@@ -45,12 +43,12 @@
  *
  * <code title="IfRole / then / else">
  * <f:be.security.ifHasRole role="Administrator">
- *   <f:then>
- *     This is being shown in case you have the role.
- *   </f:then>
- *   <f:else>
- *     This is being displayed in case you do not have the role.
- *   </f:else>
+ * <f:then>
+ * This is being shown in case you have the role.
+ * </f:then>
+ * <f:else>
+ * This is being displayed in case you do not have the role.
+ * </f:else>
  * </f:be.security.ifHasRole>
  * </code>
  * <output>
@@ -89,13 +87,13 @@ class Tx_Fluid_ViewHelpers_Be_Security_IfHasRoleViewHelper extends Tx_Fluid_Core
 			return FALSE;
 		}
 		if (is_numeric($role)) {
-			foreach($GLOBALS['BE_USER']->userGroups as $userGroup) {
-				if ((integer)$userGroup['uid'] === (integer)$role) {
+			foreach ($GLOBALS['BE_USER']->userGroups as $userGroup) {
+				if ((int) $userGroup['uid'] === (int) $role) {
 					return TRUE;
 				}
 			}
 		} else {
-			foreach($GLOBALS['BE_USER']->userGroups as $userGroup) {
+			foreach ($GLOBALS['BE_USER']->userGroups as $userGroup) {
 				if ($userGroup['title'] === $role) {
 					return TRUE;
 				}
@@ -103,5 +101,7 @@ class Tx_Fluid_ViewHelpers_Be_Security_IfHasRoleViewHelper extends Tx_Fluid_Core
 		}
 		return FALSE;
 	}
+
 }
+
 ?>

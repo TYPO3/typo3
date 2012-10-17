@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * Renders an <input type="hidden" ...> tag.
  *
@@ -55,14 +52,12 @@ class Tx_Fluid_ViewHelpers_Form_HiddenViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	public function render() {
 		$name = $this->getName();
 		$this->registerFieldNameForFormTokenGeneration($name);
-
 		$this->tag->addAttribute('type', 'hidden');
 		$this->tag->addAttribute('name', $name);
 		$this->tag->addAttribute('value', $this->getValue());
-
 		return $this->tag->render();
 	}
-}
 
+}
 
 ?>

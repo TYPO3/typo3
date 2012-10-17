@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,12 +18,9 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
-
+require_once dirname(__FILE__) . '/../ViewHelperBaseTestcase.php';
 /**
  * Testcase for security.ifHasRole view helper
- *
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_Security_IfHasRoleViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
@@ -40,17 +36,16 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Security_IfHasRoleViewHelperTest extends T
 
 	public function setUp() {
 		parent::setUp();
-
 		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
 		$GLOBALS['TSFE'] = new stdClass();
 		$GLOBALS['TSFE']->loginUser = 1;
 		$GLOBALS['TSFE']->fe_user->groupData = array(
-			'uid' => array(1,2),
+			'uid' => array(1, 2),
 			'title' => array('Editor', 'OtherRole')
 		);
 		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_Security_IfHasRoleViewHelper', array('renderThenChild', 'renderElseChild'));
 		$this->viewHelper->expects($this->any())->method('renderThenChild')->will($this->returnValue('then child'));
-		$this->viewHelper->expects($this->any())->method('renderElseChild')->will($this->returnValue("else child"));
+		$this->viewHelper->expects($this->any())->method('renderElseChild')->will($this->returnValue('else child'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
@@ -90,6 +85,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Security_IfHasRoleViewHelperTest extends T
 		$actualResult = $this->viewHelper->render(123);
 		$this->assertEquals('else child', $actualResult);
 	}
+
 }
 
 ?>

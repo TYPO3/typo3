@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,28 +8,10 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * Formats a number with custom precision, decimal point and grouped thousands.
+ *
  * @see http://www.php.net/manual/en/function.number-format.php
- *
- * = Examples =
- *
- * <code title="Defaults">
- * <f:format.number>423423.234</f:format.number>
- * </code>
- * <output>
- * 423,423.20
- * </output>
- *
- * <code title="With all parameters">
- * <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".">423423.234</f:format.number>
- * </code>
- * <output>
- * 423.423,2
- * </output>
- *
  * @api
  */
 class Tx_Fluid_ViewHelpers_Format_NumberViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
@@ -49,5 +30,7 @@ class Tx_Fluid_ViewHelpers_Format_NumberViewHelper extends Tx_Fluid_Core_ViewHel
 		$stringToFormat = $this->renderChildren();
 		return number_format($stringToFormat, $decimals, $decimalSeparator, $thousandsSeparator);
 	}
+
 }
+
 ?>

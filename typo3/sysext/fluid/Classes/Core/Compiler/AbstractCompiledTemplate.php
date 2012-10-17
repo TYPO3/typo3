@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,13 +8,10 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * Abstract Fluid Compiled template.
  *
  * INTERNAL!!
- *
  */
 abstract class Tx_Fluid_Core_Compiler_AbstractCompiledTemplate implements Tx_Fluid_Core_Parser_ParsedTemplateInterface {
 
@@ -28,7 +24,7 @@ abstract class Tx_Fluid_Core_Compiler_AbstractCompiledTemplate implements Tx_Flu
 	/**
 	 * @var Tx_Extbase_Object_Container_Container
 	 */
-	protected static $objectContainer;
+	static protected $objectContainer;
 
 	/**
 	 * @var string
@@ -46,7 +42,7 @@ abstract class Tx_Fluid_Core_Compiler_AbstractCompiledTemplate implements Tx_Flu
 	 */
 	public function getViewHelper($uniqueCounter, Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext, $viewHelperName) {
 		if (self::$objectContainer === NULL) {
-			self::$objectContainer = t3lib_div::makeInstance('Tx_Extbase_Object_Container_Container'); // Singleton
+			self::$objectContainer = t3lib_div::makeInstance('Tx_Extbase_Object_Container_Container');
 		}
 		if (isset($this->viewHelpersByPositionAndContext[$uniqueCounter])) {
 			if ($this->viewHelpersByPositionAndContext[$uniqueCounter]->contains($renderingContext)) {
@@ -98,4 +94,5 @@ abstract class Tx_Fluid_Core_Compiler_AbstractCompiledTemplate implements Tx_Flu
 	}
 
 }
+
 ?>

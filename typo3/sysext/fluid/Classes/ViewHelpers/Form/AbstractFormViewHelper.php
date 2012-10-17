@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,14 +8,11 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * Abstract Form View Helper. Bundles functionality related to direct property access of objects in other Form ViewHelpers.
  *
  * If you set the "property" attribute to the name of the property to resolve from the object, this class will
  * automatically set the name and value of a form element.
- *
  */
 abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
@@ -48,12 +44,12 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 		if (!$this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix')) {
 			return $fieldName;
 		}
-		$fieldNamePrefix = (string)$this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix');
+		$fieldNamePrefix = (string) $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix');
 		if ($fieldNamePrefix === '') {
 			return $fieldName;
 		}
 		$fieldNameSegments = explode('[', $fieldName, 2);
-		$fieldName = $fieldNamePrefix . '[' . $fieldNameSegments[0] . ']';
+		$fieldName = (($fieldNamePrefix . '[') . $fieldNameSegments[0]) . ']';
 		if (count($fieldNameSegments) > 1) {
 			$fieldName .= '[' . $fieldNameSegments[1];
 		}
@@ -69,21 +65,18 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 	 * @see Tx_Fluid_MVC_Controller_Argument::setValue()
 	 */
 	protected function renderHiddenIdentityField($object, $name) {
-		if (!is_object($object)
-			|| !($object instanceof Tx_Extbase_DomainObject_AbstractDomainObject)
-			|| ($object->_isNew() && !$object->_isClone())) {
+		if ((!is_object($object) || !$object instanceof Tx_Extbase_DomainObject_AbstractDomainObject) || $object->_isNew() && !$object->_isClone()) {
 			return '';
 		}
 		// Intentionally NOT using PersistenceManager::getIdentifierByObject here!!
 		// Using that one breaks re-submission of data in forms in case of an error.
 		$identifier = $object->getUid();
 		if ($identifier === NULL) {
-			return chr(10) . '<!-- Object of type ' . get_class($object) . ' is without identity -->' . chr(10);
+			return (((chr(10) . '<!-- Object of type ') . get_class($object)) . ' is without identity -->') . chr(10);
 		}
 		$name = $this->prefixFieldName($name) . '[__identity]';
 		$this->registerFieldNameForFormTokenGeneration($name);
-
-		return chr(10) . '<input type="hidden" name="'. $name . '" value="' . $identifier .'" />' . chr(10);
+		return (((((chr(10) . '<input type="hidden" name="') . $name) . '" value="') . $identifier) . '" />') . chr(10);
 	}
 
 	/**
@@ -101,6 +94,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 		$formFieldNames[] = $fieldName;
 		$this->viewHelperVariableContainer->addOrUpdate('Tx_Fluid_ViewHelpers_FormViewHelper', 'formFieldNames', $formFieldNames);
 	}
+
 }
 
 ?>

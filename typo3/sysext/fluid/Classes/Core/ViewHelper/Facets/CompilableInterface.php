@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,7 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * If a ViewHelper implements CompilableInterface, it can directly influence the way
  * the syntax tree is compiled to a static PHP file.
@@ -44,8 +42,8 @@
  * A ViewHelper which wants to directly influence the resulting PHP code must implement
  * the CompilableInterface, and only implement the compile() method.
  */
-interface Tx_Fluid_Core_ViewHelper_Facets_CompilableInterface {
-
+interface Tx_Fluid_Core_ViewHelper_Facets_CompilableInterface
+{
 	/**
 	 * Here follows a more detailed description of the arguments of this function:
 	 *
@@ -98,6 +96,6 @@ interface Tx_Fluid_Core_ViewHelper_Facets_CompilableInterface {
 	 * @return string
 	 */
 	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode, Tx_Fluid_Core_Compiler_TemplateCompiler $templateCompiler);
-}
 
+}
 ?>

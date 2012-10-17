@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,13 +8,11 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
- *
- *
- */
-interface Tx_Fluid_Core_Rendering_RenderingContextInterface {
 
+ */
+interface Tx_Fluid_Core_Rendering_RenderingContextInterface
+{
 	/**
 	 * Get the template variable container
 	 *
@@ -36,5 +33,6 @@ interface Tx_Fluid_Core_Rendering_RenderingContextInterface {
 	 * @return Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer
 	 */
 	public function getViewHelperVariableContainer();
+
 }
 ?>

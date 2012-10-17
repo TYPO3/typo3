@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * The WidgetContext stores all information a widget needs to know about the
  * environment.
@@ -30,7 +28,6 @@
  * to get knowledge over the current widget's configuration.
  *
  * It is a purely internal class which should not be used outside of Fluid.
- *
  */
 class Tx_Fluid_Core_Widget_WidgetContext {
 
@@ -70,8 +67,9 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 	 * @var Tx_Fluid_Core_Parser_SyntaxTree_RootNode
 	 * @transient
 	 */
-	protected $viewHelperChildNodes; // TODO: rename to something more meaningful.
+	protected $viewHelperChildNodes;
 
+	// TODO: rename to something more meaningful.
 	/**
 	 * The rendering context of the ViewHelperChildNodes.
 	 * Only available inside non-AJAX requests.
@@ -267,5 +265,7 @@ class Tx_Fluid_Core_Widget_WidgetContext {
 	public function __sleep() {
 		return array('widgetIdentifier', 'ajaxWidgetIdentifier', 'widgetConfiguration', 'controllerObjectName', 'parentPluginNamespace', 'parentExtensionName', 'parentPluginName', 'widgetViewHelperClassName');
 	}
+
 }
+
 ?>

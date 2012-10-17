@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,12 +18,9 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
-
+require_once dirname(__FILE__) . '/../ViewHelperBaseTestcase.php';
 /**
  * Testcase for security.ifAuthenticated view helper
- *
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_Security_IfAuthenticatedViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
@@ -40,12 +36,11 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Security_IfAuthenticatedViewHelperTest ext
 
 	public function setUp() {
 		parent::setUp();
-
 		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
 		$GLOBALS['TSFE'] = new stdClass();
 		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_Security_IfAuthenticatedViewHelper', array('renderThenChild', 'renderElseChild'));
 		$this->viewHelper->expects($this->any())->method('renderThenChild')->will($this->returnValue('then child'));
-		$this->viewHelper->expects($this->any())->method('renderElseChild')->will($this->returnValue("else child"));
+		$this->viewHelper->expects($this->any())->method('renderElseChild')->will($this->returnValue('else child'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
@@ -59,21 +54,19 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Security_IfAuthenticatedViewHelperTest ext
 	 */
 	public function viewHelperRendersThenChildIfFeUserIsLoggedIn() {
 		$GLOBALS['TSFE']->loginUser = 1;
-
 		$actualResult = $this->viewHelper->render();
 		$this->assertEquals('then child', $actualResult);
 	}
-
 
 	/**
 	 * @test
 	 */
 	public function viewHelperRendersElseChildIfFeUserIsNotLoggedIn() {
 		$GLOBALS['TSFE']->loginUser = 0;
-
 		$actualResult = $this->viewHelper->render();
 		$this->assertEquals('else child', $actualResult);
 	}
+
 }
 
 ?>

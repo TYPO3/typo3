@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * This ViewHelper renders a Pagination of objects.
  *
@@ -27,15 +25,15 @@
  *
  * <code title="required arguments">
  * <f:widget.paginate objects="{blogs}" as="paginatedBlogs">
- *   // use {paginatedBlogs} as you used {blogs} before, most certainly inside
- *   // a <f:for> loop.
+ * / use {paginatedBlogs} as you used {blogs} before, most certainly inside
+ * / a <f:for> loop.
  * </f:widget.paginate>
  * </code>
  *
  * <code title="full configuration">
  * <f:widget.paginate objects="{blogs}" as="paginatedBlogs" configuration="{itemsPerPage: 5, insertAbove: 1, insertBelow: 0, maximumNumberOfLinks: 10}">
- *   // use {paginatedBlogs} as you used {blogs} before, most certainly inside
- *   // a <f:for> loop.
+ * / use {paginatedBlogs} as you used {blogs} before, most certainly inside
+ * / a <f:for> loop.
  * </f:widget.paginate>
  * </code>
  *
@@ -66,7 +64,6 @@ class Tx_Fluid_ViewHelpers_Widget_PaginateViewHelper extends Tx_Fluid_Core_Widge
 	}
 
 	/**
-	 *
 	 * @param Tx_Extbase_Persistence_QueryResultInterface $objects
 	 * @param string $as
 	 * @param array $configuration
@@ -75,6 +72,7 @@ class Tx_Fluid_ViewHelpers_Widget_PaginateViewHelper extends Tx_Fluid_Core_Widge
 	public function render(Tx_Extbase_Persistence_QueryResultInterface $objects, $as, array $configuration = array('itemsPerPage' => 10, 'insertAbove' => FALSE, 'insertBelow' => TRUE, 'maximumNumberOfLinks' => 99)) {
 		return $this->initiateSubRequest();
 	}
+
 }
 
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,14 +8,11 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once(dirname(__FILE__) . '/Fixtures/EmptySyntaxTreeNode.php');
-require_once(dirname(__FILE__) . '/Fixtures/Fixture_UserDomainClass.php');
-require_once(dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php');
-
+require_once dirname(__FILE__) . '/Fixtures/EmptySyntaxTreeNode.php';
+require_once dirname(__FILE__) . '/Fixtures/Fixture_UserDomainClass.php';
+require_once dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php';
 /**
  * Test for the "Textbox" Form view helper
- *
  */
 class Tx_Fluid_ViewHelpers_Form_PasswordViewHelperTest extends Tx_Fluid_Tests_Unit_ViewHelpers_Form_FormFieldViewHelperBaseTestcase {
 
@@ -40,7 +36,6 @@ class Tx_Fluid_ViewHelpers_Form_PasswordViewHelperTest extends Tx_Fluid_Tests_Un
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
-
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
@@ -56,13 +51,11 @@ class Tx_Fluid_ViewHelpers_Form_PasswordViewHelperTest extends Tx_Fluid_Tests_Un
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('value', 'Current value');
 		$mockTagBuilder->expects($this->once())->method('render');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
-
 		$arguments = array(
 			'name' => 'NameOfTextbox',
 			'value' => 'Current value'
 		);
 		$this->viewHelper->setArguments($arguments);
-
 		$this->viewHelper->setViewHelperNode(new Tx_Fluid_ViewHelpers_Fixtures_EmptySyntaxTreeNode());
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
@@ -75,6 +68,7 @@ class Tx_Fluid_ViewHelpers_Form_PasswordViewHelperTest extends Tx_Fluid_Tests_Un
 		$this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
 		$this->viewHelper->render();
 	}
+
 }
 
 ?>

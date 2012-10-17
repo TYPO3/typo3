@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Deprecated. Use <f:flashMessages> instead!
  *
@@ -34,6 +32,7 @@ class Tx_Fluid_ViewHelpers_RenderFlashMessagesViewHelper extends Tx_Fluid_ViewHe
 		t3lib_div::logDeprecatedFunction();
 		return parent::initialize();
 	}
+
 }
 
 ?>

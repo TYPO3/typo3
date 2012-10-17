@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,16 +8,15 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * The parser configuration. Contains all configuration needed to configure
  * the building of a SyntaxTree.
- *
  */
 class Tx_Fluid_Core_Parser_Configuration {
 
 	/**
 	 * Generic interceptors registered with the configuration.
+	 *
 	 * @var array<Tx_Extbase_Persistence_ObjectStorage>
 	 */
 	protected $interceptors = array();
@@ -54,4 +52,5 @@ class Tx_Fluid_Core_Parser_Configuration {
 	}
 
 }
+
 ?>

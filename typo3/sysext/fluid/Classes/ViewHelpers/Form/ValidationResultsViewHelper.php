@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Error messages view helper
  *
@@ -27,27 +25,27 @@
  *
  * <code title="Output error messages as a list">
  * <ul class="errors">
- *   <f:form.errors>
- *     <li>{error.code}: {error.message}</li>
- *   </f:form.errors>
+ * <f:form.errors>
+ * <li>{error.code}: {error.message}</li>
+ * </f:form.errors>
  * </ul>
  * </code>
  * <output>
  * <ul>
- *   <li>1234567890: Validation errors for argument "newBlog"</li>
+ * <li>1234567890: Validation errors for argument "newBlog"</li>
  * </ul>
  * </output>
  *
  * <code title="Output error messages for a single property">
  * <f:form.errors for="someProperty">
- *   <div class="error">
- *     <strong>{error.propertyName}</strong>: <f:for each="{error.errors}" as="errorDetail">{errorDetail.message}</f:for>
- *   </div>
+ * <div class="error">
+ * <strong>{error.propertyName}</strong>: <f:for each="{error.errors}" as="errorDetail">{errorDetail.message}</f:for>
+ * </div>
  * </f:form.errors>
  * </code>
  * <output>
  * <div class="error>
- *   <strong>someProperty:</strong> errorMessage1 errorMessage2
+ * <strong>someProperty:</strong> errorMessage1 errorMessage2
  * </div>
  * </output>
  *
@@ -66,16 +64,15 @@ class Tx_Fluid_ViewHelpers_Form_ValidationResultsViewHelper extends Tx_Fluid_Cor
 	 */
 	public function render($for = '', $as = 'validationResults') {
 		$validationResults = $this->controllerContext->getRequest()->getOriginalRequestMappingResults();
-
 		if ($for !== '') {
 			$validationResults = $validationResults->forProperty($for);
 		}
 		$this->templateVariableContainer->add($as, $validationResults);
 		$output = $this->renderChildren();
 		$this->templateVariableContainer->remove($as);
-
 		return $output;
 	}
+
 }
 
 ?>

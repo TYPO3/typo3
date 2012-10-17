@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,21 +18,20 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
- * @deprecated. Extend Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper instead!
- *
+ * @deprecated . Extend Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper instead!
  * @api
  */
 abstract class Tx_Fluid_Core_ViewHelper_TagBasedViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
 	/**
 	 * Constructor
-	 *
 	 */
 	public function __construct() {
-		t3lib_div::deprecationLog('the ViewHelper "' . get_class($this) . '" extends "Tx_Fluid_Core_ViewHelper_TagBasedViewHelper". This is deprecated since TYPO3 4.5. Please extend the class "Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper"');
+		t3lib_div::deprecationLog(('the ViewHelper "' . get_class($this)) . '" extends "Tx_Fluid_Core_ViewHelper_TagBasedViewHelper". This is deprecated since TYPO3 4.5. Please extend the class "Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper"');
 		parent::__construct();
 	}
+
 }
+
 ?>

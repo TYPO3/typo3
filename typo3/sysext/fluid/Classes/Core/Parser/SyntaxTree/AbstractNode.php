@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,15 +8,14 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Abstract node in the syntax tree which has been built.
- *
  */
 abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode implements Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface {
 
 	/**
 	 * List of Child Nodes.
+	 *
 	 * @var array<Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface>
 	 */
 	protected $childNodes = array();
@@ -36,21 +34,20 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode implements Tx_Fluid_
 			} else {
 				if (is_object($output)) {
 					if (!method_exists($output, '__toString')) {
-						throw new Tx_Fluid_Core_Parser_Exception('Cannot cast object of type "' . get_class($output) . '" to string.', 1248356140);
+						throw new Tx_Fluid_Core_Parser_Exception(('Cannot cast object of type "' . get_class($output)) . '" to string.', 1248356140);
 					}
 					$output = $output->__toString();
 				} else {
-					$output = (string)$output;
+					$output = (string) $output;
 				}
 				$subNodeOutput = $subNode->evaluate($renderingContext);
-
 				if (is_object($subNodeOutput)) {
 					if (!method_exists($subNodeOutput, '__toString')) {
-						throw new Tx_Fluid_Core_Parser_Exception('Cannot cast object of type "' . get_class($subNodeOutput) . '" to string.', 1273753083);
+						throw new Tx_Fluid_Core_Parser_Exception(('Cannot cast object of type "' . get_class($subNodeOutput)) . '" to string.', 1273753083);
 					}
 					$output .= $subNodeOutput->__toString();
 				} else {
-					$output .= (string)$subNodeOutput;
+					$output .= (string) $subNodeOutput;
 				}
 			}
 		}

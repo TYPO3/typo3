@@ -18,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * View helper which renders a record list as known from the TYPO3 list module
  * Note: This feature is experimental!
@@ -42,11 +41,9 @@
  * List of "Website user" records with a text property of "foo" stored on PID 1 and two levels down.
  * Clicking on a username will open the TYPO3 info popup for the respective record
  * </output>
- *
  */
-require_once (PATH_typo3 . 'class.db_list.inc');
-require_once (PATH_typo3 . 'class.db_list_extra.inc');
-
+require_once PATH_typo3 . 'class.db_list.inc';
+require_once PATH_typo3 . 'class.db_list_extra.inc';
 class Tx_Fluid_ViewHelpers_Be_TableListViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
 
 	/**
@@ -76,14 +73,13 @@ class Tx_Fluid_ViewHelpers_Be_TableListViewHelper extends Tx_Fluid_ViewHelpers_B
 	 * @param boolean $sortDescending if TRUE records will be sorted in descending order
 	 * @param boolean $readOnly if TRUE, the edit icons won't be shown. Otherwise edit icons will be shown, if the current BE user has edit rights for the specified table!
 	 * @param boolean $enableClickMenu enables context menu
-	 * @param string $clickTitleMode one of "edit", "show" (only pages, tt_content), "info"
+	 * @param string $clickTitleMode one of "edit", "show" (only pages, tt_content), "info
 	 * @param boolean $alternateBackgroundColors if set, rows will have alternate background colors
 	 * @return string the rendered record list
 	 * @see localRecordList
 	 */
 	public function render($tableName, array $fieldList = array(), $storagePid = NULL, $levels = 0, $filter = '', $recordsPerPage = 0, $sortField = '', $sortDescending = FALSE, $readOnly = FALSE, $enableClickMenu = TRUE, $clickTitleMode = NULL, $alternateBackgroundColors = FALSE) {
 		$pageinfo = t3lib_BEfunc::readPageAccess(t3lib_div::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(1));
-
 		$dblist = t3lib_div::makeInstance('localRecordList');
 		$dblist->backPath = $GLOBALS['BACK_PATH'];
 		$dblist->pageRow = $pageinfo;
@@ -95,13 +91,11 @@ class Tx_Fluid_ViewHelpers_Be_TableListViewHelper extends Tx_Fluid_ViewHelpers_B
 		$dblist->clickTitleMode = $clickTitleMode;
 		$dblist->alternateBgColors = $alternateBackgroundColors;
 		$dblist->clickMenuEnabled = $enableClickMenu;
-
 		if ($storagePid === NULL) {
 			$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 			$storagePid = $frameworkConfiguration['persistence']['storagePid'];
 		}
-
-		$dblist->start($storagePid, $tableName, (integer)t3lib_div::_GP('pointer'), $filter, $levels, $recordsPerPage);
+		$dblist->start($storagePid, $tableName, (int) t3lib_div::_GP('pointer'), $filter, $levels, $recordsPerPage);
 		$dblist->allFields = TRUE;
 		$dblist->dontShowClipControlPanels = TRUE;
 		$dblist->displayFields = FALSE;
@@ -109,11 +103,11 @@ class Tx_Fluid_ViewHelpers_Be_TableListViewHelper extends Tx_Fluid_ViewHelpers_B
 		$dblist->noControlPanels = TRUE;
 		$dblist->sortField = $sortField;
 		$dblist->sortRev = $sortDescending;
-
 		$dblist->script = $_SERVER['REQUEST_URI'];
 		$dblist->generateList();
-
 		return $dblist->HTMLcode;
 	}
+
 }
+
 ?>

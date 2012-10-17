@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,16 +8,14 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * A node which handles object access. This means it handles structures like {object.accessor.bla}
- *
  */
 class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 
 	/**
 	 * Object path which will be called. Is a list like "post.name.email"
+	 *
 	 * @var string
 	 */
 	protected $objectPath;
@@ -34,7 +31,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_P
 	public function __construct($objectPath) {
 		$this->objectPath = $objectPath;
 	}
-
 
 	/**
 	 * Internally used for building up cached templates; do not use directly!
@@ -82,17 +78,18 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_P
 		foreach ($propertyPathSegments as $pathSegment) {
 			$propertyExists = FALSE;
 			$propertyValue = Tx_Extbase_Reflection_ObjectAccess::getPropertyInternal($subject, $pathSegment, FALSE, $propertyExists);
-			if ($propertyExists !== TRUE && (is_array($subject) || $subject instanceof ArrayAccess) && isset($subject[$pathSegment])) {
+			if (($propertyExists !== TRUE && (is_array($subject) || $subject instanceof ArrayAccess)) && isset($subject[$pathSegment])) {
 				$subject = $subject[$pathSegment];
 			} else {
 				$subject = $propertyValue;
 			}
-
 			if ($subject instanceof Tx_Fluid_Core_Parser_SyntaxTree_RenderingContextAwareInterface) {
 				$subject->setRenderingContext($renderingContext);
 			}
 		}
 		return $subject;
 	}
+
 }
+
 ?>

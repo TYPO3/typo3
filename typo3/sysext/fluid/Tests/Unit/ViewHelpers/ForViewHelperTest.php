@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,13 +8,10 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-include_once(dirname(__FILE__) . '/Fixtures/ConstraintSyntaxTreeNode.php');
-require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
-
+include_once dirname(__FILE__) . '/Fixtures/ConstraintSyntaxTreeNode.php';
+require_once dirname(__FILE__) . '/ViewHelperBaseTestcase.php';
 /**
  * Testcase for ForViewHelper
- *
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_ForViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
@@ -23,25 +19,22 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_ForViewHelperTest extends Tx_Fluid_ViewHel
 		parent::setUp();
 		$this->templateVariableContainer = new Tx_Fluid_Core_ViewHelper_TemplateVariableContainer(array());
 		$this->renderingContext->injectTemplateVariableContainer($this->templateVariableContainer);
-
 		$this->arguments['reverse'] = NULL;
 		$this->arguments['key'] = '';
 		$this->arguments['iteration'] = NULL;
 	}
+
 	/**
 	 * @test
 	 */
 	public function renderExecutesTheLoopCorrectly() {
 		$viewHelper = new Tx_Fluid_ViewHelpers_ForViewHelper();
-
 		$viewHelperNode = new Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode($this->templateVariableContainer);
-		$this->arguments['each'] = array(0,1,2,3);
+		$this->arguments['each'] = array(0, 1, 2, 3);
 		$this->arguments['as'] = 'innerVariable';
-
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as']);
-
 		$expectedCallProtocol = array(
 			array('innerVariable' => 0),
 			array('innerVariable' => 1),
@@ -56,17 +49,13 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_ForViewHelperTest extends Tx_Fluid_ViewHel
 	 */
 	public function renderPreservesKeys() {
 		$viewHelper = new Tx_Fluid_ViewHelpers_ForViewHelper();
-
 		$viewHelperNode = new Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode($this->templateVariableContainer);
-
 		$this->arguments['each'] = array('key1' => 'value1', 'key2' => 'value2');
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['key'] = 'someKey';
-
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key']);
-
 		$expectedCallProtocol = array(
 			array(
 				'innerVariable' => 'value1',
@@ -85,12 +74,9 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_ForViewHelperTest extends Tx_Fluid_ViewHel
 	 */
 	public function renderReturnsEmptyStringIfObjectIsNull() {
 		$viewHelper = new Tx_Fluid_ViewHelpers_ForViewHelper();
-
 		$this->arguments['each'] = NULL;
 		$this->arguments['as'] = 'foo';
-
 		$this->injectDependenciesIntoViewHelper($viewHelper);
-
 		$this->assertEquals('', $viewHelper->render($this->arguments['each'], $this->arguments['as']));
 	}
 
@@ -99,12 +85,9 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_ForViewHelperTest extends Tx_Fluid_ViewHel
 	 */
 	public function renderReturnsEmptyStringIfObjectIsEmptyArray() {
 		$viewHelper = new Tx_Fluid_ViewHelpers_ForViewHelper();
-
 		$this->arguments['each'] = array();
 		$this->arguments['as'] = 'foo';
-
 		$this->injectDependenciesIntoViewHelper($viewHelper);
-
 		$this->assertEquals('', $viewHelper->render($this->arguments['each'], $this->arguments['as']));
 	}
 
@@ -113,17 +96,13 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_ForViewHelperTest extends Tx_Fluid_ViewHel
 	 */
 	public function renderIteratesElementsInReverseOrderIfReverseIsTrue() {
 		$viewHelper = new Tx_Fluid_ViewHelpers_ForViewHelper();
-
 		$viewHelperNode = new Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode($this->templateVariableContainer);
-
-		$this->arguments['each'] = array(0,1,2,3);
+		$this->arguments['each'] = array(0, 1, 2, 3);
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['reverse'] = TRUE;
-
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key'], $this->arguments['reverse']);
-
 		$expectedCallProtocol = array(
 			array('innerVariable' => 3),
 			array('innerVariable' => 2),
@@ -138,18 +117,14 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_ForViewHelperTest extends Tx_Fluid_ViewHel
 	 */
 	public function renderPreservesKeysIfReverseIsTrue() {
 		$viewHelper = new Tx_Fluid_ViewHelpers_ForViewHelper();
-
 		$viewHelperNode = new Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode($this->templateVariableContainer);
-
 		$this->arguments['each'] = array('key1' => 'value1', 'key2' => 'value2');
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['key'] = 'someKey';
 		$this->arguments['reverse'] = TRUE;
-
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key'], $this->arguments['reverse']);
-
 		$expectedCallProtocol = array(
 			array(
 				'innerVariable' => 'value2',
@@ -168,17 +143,13 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_ForViewHelperTest extends Tx_Fluid_ViewHel
 	 */
 	public function keyContainsNumericalIndexIfTheGivenArrayDoesNotHaveAKey() {
 		$viewHelper = new Tx_Fluid_ViewHelpers_ForViewHelper();
-
 		$viewHelperNode = new Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode($this->templateVariableContainer);
-
 		$this->arguments['each'] = array('foo', 'bar', 'baz');
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['key'] = 'someKey';
-
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key']);
-
 		$expectedCallProtocol = array(
 			array(
 				'innerVariable' => 'foo',
@@ -201,18 +172,14 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_ForViewHelperTest extends Tx_Fluid_ViewHel
 	 */
 	public function keyContainsNumericalIndexInAscendingOrderEvenIfReverseIsTrueIfTheGivenArrayDoesNotHaveAKey() {
 		$viewHelper = new Tx_Fluid_ViewHelpers_ForViewHelper();
-
 		$viewHelperNode = new Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode($this->templateVariableContainer);
-
 		$this->arguments['each'] = array('foo', 'bar', 'baz');
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['key'] = 'someKey';
 		$this->arguments['reverse'] = TRUE;
-
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key'], $this->arguments['reverse']);
-
 		$expectedCallProtocol = array(
 			array(
 				'innerVariable' => 'baz',
@@ -237,35 +204,28 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_ForViewHelperTest extends Tx_Fluid_ViewHel
 	public function renderThrowsExceptionWhenPassingObjectsToEachThatAreNotTraversable() {
 		$viewHelper = new Tx_Fluid_ViewHelpers_ForViewHelper();
 		$object = new stdClass();
-
 		$this->arguments['each'] = $object;
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['key'] = 'someKey';
 		$this->arguments['reverse'] = TRUE;
-
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key']);
 	}
-
 
 	/**
 	 * @test
 	 */
 	public function renderIteratesThroughElementsOfTraversableObjects() {
 		$viewHelper = new Tx_Fluid_ViewHelpers_ForViewHelper();
-
 		$viewHelperNode = new Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode($this->templateVariableContainer);
-
 		$this->arguments['each'] = new ArrayObject(array('key1' => 'value1', 'key2' => 'value2'));
 		$this->arguments['as'] = 'innerVariable';
-
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as']);
-
 		$expectedCallProtocol = array(
 			array('innerVariable' => 'value1'),
-			array('innerVariable' => 'value2'),
+			array('innerVariable' => 'value2')
 		);
 		$this->assertEquals($expectedCallProtocol, $viewHelperNode->callProtocol, 'The call protocol differs -> The for loop does not work as it should!');
 	}
@@ -275,17 +235,13 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_ForViewHelperTest extends Tx_Fluid_ViewHel
 	 */
 	public function renderPreservesKeyWhenIteratingThroughElementsOfObjectsThatImplementIteratorInterface() {
 		$viewHelper = new Tx_Fluid_ViewHelpers_ForViewHelper();
-
 		$viewHelperNode = new Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode($this->templateVariableContainer);
-
 		$this->arguments['each'] = new ArrayIterator(array('key1' => 'value1', 'key2' => 'value2'));
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['key'] = 'someKey';
-
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key']);
-
 		$expectedCallProtocol = array(
 			array(
 				'innerVariable' => 'value1',
@@ -304,9 +260,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_ForViewHelperTest extends Tx_Fluid_ViewHel
 	 */
 	public function keyContainsTheNumericalIndexWhenIteratingThroughElementsOfObjectsOfTyeSplObjectStorage() {
 		$viewHelper = new Tx_Fluid_ViewHelpers_ForViewHelper();
-
 		$viewHelperNode = new Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode($this->templateVariableContainer);
-
 		$splObjectStorageObject = new SplObjectStorage();
 		$object1 = new stdClass();
 		$splObjectStorageObject->attach($object1);
@@ -314,15 +268,12 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_ForViewHelperTest extends Tx_Fluid_ViewHel
 		$splObjectStorageObject->attach($object2);
 		$object3 = new stdClass();
 		$splObjectStorageObject->attach($object3);
-
 		$this->arguments['each'] = $splObjectStorageObject;
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['key'] = 'someKey';
-
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key']);
-
 		$expectedCallProtocol = array(
 			array(
 				'innerVariable' => $object1,
@@ -345,17 +296,13 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_ForViewHelperTest extends Tx_Fluid_ViewHel
 	 */
 	public function iterationDataIsAddedToTemplateVariableContainerIfIterationArgumentIsSet() {
 		$viewHelper = new Tx_Fluid_ViewHelpers_ForViewHelper();
-
 		$viewHelperNode = new Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode($this->templateVariableContainer);
-
 		$this->arguments['each'] = array('foo' => 'bar', 'FLOW3' => 'Fluid', 'TYPO3' => 'rocks');
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['iteration'] = 'iteration';
-
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key'], $this->arguments['reverse'], $this->arguments['iteration']);
-
 		$expectedCallProtocol = array(
 			array(
 				'innerVariable' => 'bar',
@@ -366,7 +313,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_ForViewHelperTest extends Tx_Fluid_ViewHel
 					'isFirst' => TRUE,
 					'isLast' => FALSE,
 					'isEven' => FALSE,
-					'isOdd' => TRUE,
+					'isOdd' => TRUE
 				)
 			),
 			array(
@@ -396,6 +343,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_ForViewHelperTest extends Tx_Fluid_ViewHel
 		);
 		$this->assertSame($expectedCallProtocol, $viewHelperNode->callProtocol, 'The call protocol differs -> The for loop does not work as it should!');
 	}
+
 }
 
 ?>

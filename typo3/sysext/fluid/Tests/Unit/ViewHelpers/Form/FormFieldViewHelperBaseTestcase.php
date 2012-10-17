@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,12 +18,9 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
-
+require_once dirname(__FILE__) . '/../ViewHelperBaseTestcase.php';
 /**
  * Test for the Abstract Form view helper
- *
  */
 abstract class Tx_Fluid_Tests_Unit_ViewHelpers_Form_FormFieldViewHelperBaseTestcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
@@ -49,6 +45,7 @@ abstract class Tx_Fluid_Tests_Unit_ViewHelpers_Form_FormFieldViewHelperBaseTestc
 		$viewHelper->injectConfigurationManager($this->mockConfigurationManager);
 		parent::injectDependenciesIntoViewHelper($viewHelper);
 	}
+
 }
 
 ?>

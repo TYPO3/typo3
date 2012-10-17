@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -12,7 +11,6 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
-
 /**
  * A view helper for creating links to TYPO3 pages.
  *
@@ -41,7 +39,6 @@
  * <a href="index.php?id=1&extension_key[foo]=bar">page link</f:link.action>
  * (depending on your TS configuration)
  * </output>
- *
  */
 class Tx_Fluid_ViewHelpers_Link_PageViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
@@ -61,7 +58,7 @@ class Tx_Fluid_ViewHelpers_Link_PageViewHelper extends Tx_Fluid_Core_ViewHelper_
 		$this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document', FALSE);
 	}
 
-		/**
+	/**
 	 * @param integer $page target page. See TypoLink destination
 	 * @param array $additionalParams query parameters to be attached to the resulting URI
 	 * @param integer $pageType type of the target page. See typolink.parameter
@@ -76,26 +73,12 @@ class Tx_Fluid_ViewHelpers_Link_PageViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 */
 	public function render($pageUid = NULL, array $additionalParams = array(), $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array()) {
 		$uriBuilder = $this->controllerContext->getUriBuilder();
-		$uri = $uriBuilder
-			->reset()
-			->setTargetPageUid($pageUid)
-			->setTargetPageType($pageType)
-			->setNoCache($noCache)
-			->setUseCacheHash(!$noCacheHash)
-			->setSection($section)
-			->setLinkAccessRestrictedPages($linkAccessRestrictedPages)
-			->setArguments($additionalParams)
-			->setCreateAbsoluteUri($absolute)
-			->setAddQueryString($addQueryString)
-			->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)
-			->build();
-
+		$uri = $uriBuilder->reset()->setTargetPageUid($pageUid)->setTargetPageType($pageType)->setNoCache($noCache)->setUseCacheHash(!$noCacheHash)->setSection($section)->setLinkAccessRestrictedPages($linkAccessRestrictedPages)->setArguments($additionalParams)->setCreateAbsoluteUri($absolute)->setAddQueryString($addQueryString)->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)->build();
 		$this->tag->addAttribute('href', $uri);
 		$this->tag->setContent($this->renderChildren());
-
 		return $this->tag->render();
 	}
-}
 
+}
 
 ?>

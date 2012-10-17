@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,10 +18,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Represents a widget request.
- *
  */
 class Tx_Fluid_Core_Widget_WidgetRequest extends Tx_Extbase_MVC_Web_Request {
 
@@ -53,7 +50,9 @@ class Tx_Fluid_Core_Widget_WidgetRequest extends Tx_Extbase_MVC_Web_Request {
 	 * @return string
 	 */
 	public function getArgumentPrefix() {
-		return $this->widgetContext->getParentPluginNamespace() . '[' . $this->widgetContext->getWidgetIdentifier() . ']';
+		return (($this->widgetContext->getParentPluginNamespace() . '[') . $this->widgetContext->getWidgetIdentifier()) . ']';
 	}
+
 }
+
 ?>

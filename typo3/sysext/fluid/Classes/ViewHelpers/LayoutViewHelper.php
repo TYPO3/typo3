@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * With this tag, you can select a layout to be used for the current template.
  *
@@ -51,7 +48,6 @@ class Tx_Fluid_ViewHelpers_LayoutViewHelper extends Tx_Fluid_Core_ViewHelper_Abs
 		} else {
 			$layoutNameNode = new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('Default');
 		}
-
 		$variableContainer->add('layoutName', $layoutNameNode);
 	}
 
@@ -62,7 +58,9 @@ class Tx_Fluid_ViewHelpers_LayoutViewHelper extends Tx_Fluid_Core_ViewHelper_Abs
 	 * @api
 	 */
 	public function render() {
+
 	}
+
 }
 
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,12 +18,9 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
-
+require_once dirname(__FILE__) . '/../ViewHelperBaseTestcase.php';
 /**
  * Testcase for be.security.ifHasRole view helper
- *
  */
 class Tx_Fluid_ViewHelpers_Be_Security_IfHasRoleViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
@@ -40,22 +36,21 @@ class Tx_Fluid_ViewHelpers_Be_Security_IfHasRoleViewHelperTest extends Tx_Fluid_
 
 	public function setUp() {
 		parent::setUp();
-
 		$this->beUserBackup = isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : NULL;
 		$GLOBALS['BE_USER'] = new stdClass();
 		$GLOBALS['BE_USER']->userGroups = array(
 			array(
 				'uid' => 1,
-				'title' => 'Editor',
+				'title' => 'Editor'
 			),
 			array(
 				'uid' => 2,
-				'title' => 'OtherRole',
-			),
+				'title' => 'OtherRole'
+			)
 		);
 		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_Be_Security_IfHasRoleViewHelper', array('renderThenChild', 'renderElseChild'));
 		$this->viewHelper->expects($this->any())->method('renderThenChild')->will($this->returnValue('then child'));
-		$this->viewHelper->expects($this->any())->method('renderElseChild')->will($this->returnValue("else child"));
+		$this->viewHelper->expects($this->any())->method('renderElseChild')->will($this->returnValue('else child'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
@@ -95,6 +90,7 @@ class Tx_Fluid_ViewHelpers_Be_Security_IfHasRoleViewHelperTest extends Tx_Fluid_
 		$actualResult = $this->viewHelper->render(123);
 		$this->assertEquals('else child', $actualResult);
 	}
+
 }
 
 ?>

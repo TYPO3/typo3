@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,12 +8,9 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
-
+require_once dirname(__FILE__) . '/ViewHelperBaseTestcase.php';
 /**
  * Testcase for ElseViewHelper
- *
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_ElseViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
@@ -23,11 +19,11 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_ElseViewHelperTest extends Tx_Fluid_ViewHe
 	 */
 	public function renderRendersChildren() {
 		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_ElseViewHelper', array('renderChildren'));
-
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
 		$actualResult = $viewHelper->render();
 		$this->assertEquals('foo', $actualResult);
 	}
+
 }
 
 ?>

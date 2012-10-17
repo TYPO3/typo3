@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,7 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Post Parse Facet. Your view helper should implement this if you want a callback
  * to be called directly after the syntax tree node corresponding to this view
@@ -21,10 +19,9 @@
  * in case you implement this facet.
  *
  * Normally, this facet is not needed, except in really really rare cases.
- *
  */
-interface Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface {
-
+interface Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface
+{
 	/**
 	 * Callback which is called directly after the corresponding syntax tree
 	 * node to this view helper has been built.
@@ -42,5 +39,4 @@ interface Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface {
 	static public function postParseEvent(Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $syntaxTreeNode, array $viewHelperArguments, Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer);
 
 }
-
 ?>

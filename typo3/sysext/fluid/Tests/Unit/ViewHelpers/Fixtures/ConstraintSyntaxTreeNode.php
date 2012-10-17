@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,12 +8,11 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * [Enter description here]
- *
  */
 class Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode extends Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode {
+
 	public $callProtocol = array();
 
 	public function __construct(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer) {
@@ -30,8 +28,10 @@ class Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode extends Tx_Fluid_Co
 		$this->callProtocol[] = $callElement;
 	}
 
-	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {}
-}
+	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
 
+	}
+
+}
 
 ?>

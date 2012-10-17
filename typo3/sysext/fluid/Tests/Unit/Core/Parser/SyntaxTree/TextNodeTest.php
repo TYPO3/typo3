@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,10 +8,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for TextNode
- *
  */
 class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_TextNodeTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -32,8 +29,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_TextNodeTest extends Tx_Extbase
 	public function constructorThrowsExceptionIfNoStringGiven() {
 		new Tx_Fluid_Core_Parser_SyntaxTree_TextNode(123);
 	}
+
 }
-
-
 
 ?>

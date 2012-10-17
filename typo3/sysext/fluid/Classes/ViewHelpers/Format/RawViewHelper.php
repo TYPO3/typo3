@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,7 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Outputs an argument/value without any escaping. Is normally used to output
  * an ObjectAccessor which should not be escaped, but output as-is.
@@ -63,7 +61,7 @@ class Tx_Fluid_ViewHelpers_Format_RawViewHelper extends Tx_Fluid_Core_ViewHelper
 			return $value;
 		}
 	}
-}
 
+}
 
 ?>

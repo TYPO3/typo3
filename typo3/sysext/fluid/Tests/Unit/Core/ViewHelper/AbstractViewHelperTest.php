@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,13 +8,10 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
-require_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper2.php');
-
+require_once dirname(__FILE__) . '/../Fixtures/TestViewHelper.php';
+require_once dirname(__FILE__) . '/../Fixtures/TestViewHelper2.php';
 /**
  * Testcase for AbstractViewHelper
- *
  */
 class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -24,16 +20,13 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 	 */
 	public function argumentsCanBeRegistered() {
 		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array(), array(), '', FALSE);
-
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render'), array(), '', FALSE);
 		$viewHelper->injectReflectionService($mockReflectionService);
-
-		$name = "This is a name";
-		$description = "Example desc";
-		$type = "string";
+		$name = 'This is a name';
+		$description = 'Example desc';
+		$type = 'string';
 		$isRequired = TRUE;
 		$expected = new Tx_Fluid_Core_ViewHelper_ArgumentDefinition($name, $type, $description, $isRequired);
-
 		$viewHelper->_call('registerArgument', $name, $type, $description, $isRequired);
 		$this->assertEquals(array($name => $expected), $viewHelper->prepareArguments(), 'Argument definitions not returned correctly.');
 	}
@@ -44,14 +37,12 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 	 */
 	public function registeringTheSameArgumentNameAgainThrowsException() {
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render'), array(), '', FALSE);
-
-		$name = "shortName";
-		$description = "Example desc";
-		$type = "string";
+		$name = 'shortName';
+		$description = 'Example desc';
+		$type = 'string';
 		$isRequired = TRUE;
-
 		$viewHelper->_call('registerArgument', $name, $type, $description, $isRequired);
-		$viewHelper->_call('registerArgument', $name, "integer", $description, $isRequired);
+		$viewHelper->_call('registerArgument', $name, 'integer', $description, $isRequired);
 	}
 
 	/**
@@ -59,10 +50,8 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 	 */
 	public function overrideArgumentOverwritesExistingArgumentDefinition() {
 		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array(), array(), '', FALSE);
-
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render'), array(), '', FALSE);
 		$viewHelper->injectReflectionService($mockReflectionService);
-
 		$name = 'argumentName';
 		$description = 'argument description';
 		$overriddenDescription = 'overwritten argument description';
@@ -70,7 +59,6 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$overriddenType = 'integer';
 		$isRequired = TRUE;
 		$expected = new Tx_Fluid_Core_ViewHelper_ArgumentDefinition($name, $overriddenType, $overriddenDescription, $isRequired);
-
 		$viewHelper->_call('registerArgument', $name, $type, $description, $isRequired);
 		$viewHelper->_call('overrideArgument', $name, $overriddenType, $overriddenDescription, $isRequired);
 		$this->assertEquals($viewHelper->prepareArguments(), array($name => $expected), 'Argument definitions not returned correctly. The original ArgumentDefinition could not be overridden.');
@@ -82,10 +70,8 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 	 */
 	public function overrideArgumentThrowsExceptionWhenTryingToOverwriteAnNonexistingArgument() {
 		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array(), array(), '', FALSE);
-
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render'), array(), '', FALSE);
 		$viewHelper->injectReflectionService($mockReflectionService);
-
 		$viewHelper->_call('overrideArgument', 'argumentName', 'string', 'description', TRUE);
 	}
 
@@ -94,12 +80,9 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 	 */
 	public function prepareArgumentsCallsInitializeArguments() {
 		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array(), array(), '', FALSE);
-
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'initializeArguments'), array(), '', FALSE);
 		$viewHelper->injectReflectionService($mockReflectionService);
-
 		$viewHelper->expects($this->once())->method('initializeArguments');
-
 		$viewHelper->prepareArguments();
 	}
 
@@ -107,31 +90,23 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 	 * @test
 	 */
 	public function prepareArgumentsRegistersAnnotationBasedArgumentsWithDescriptionIfDebugModeIsEnabled() {
-
 		Tx_Fluid_Fluid::$debugMode = TRUE;
-
 		$availableClassNames = array(
-			array('Tx_Fluid_Core_Fixtures_TestViewHelper'),
+			array('Tx_Fluid_Core_Fixtures_TestViewHelper')
 		);
 		$dataCacheMock = $this->getMock('t3lib_cache_frontend_VariableFrontend', array(), array(), '', FALSE);
 		$dataCacheMock->expects($this->any())->method('has')->will($this->returnValue(TRUE));
 		$dataCacheMock->expects($this->any())->method('get')->will($this->returnValue(array()));
-
 		$reflectionService = new Tx_Extbase_Reflection_Service();
 		$reflectionService->setDataCache($dataCacheMock);
-
-
 		$viewHelper = new Tx_Fluid_Core_Fixtures_TestViewHelper();
 		$viewHelper->injectReflectionService($reflectionService);
-
 		$expected = array(
 			'param1' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param1', 'integer', 'P1 Stuff', TRUE, null, TRUE),
 			'param2' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param2', 'array', 'P2 Stuff', TRUE, null, TRUE),
-			'param3' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param3', 'string', 'P3 Stuff', FALSE, 'default', TRUE),
+			'param3' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param3', 'string', 'P3 Stuff', FALSE, 'default', TRUE)
 		);
-
 		$this->assertEquals($expected, $viewHelper->prepareArguments(), 'Annotation based arguments were not registered.');
-
 		Tx_Fluid_Fluid::$debugMode = FALSE;
 	}
 
@@ -139,29 +114,22 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 	 * @test
 	 */
 	public function prepareArgumentsRegistersAnnotationBasedArgumentsWithoutDescriptionIfDebugModeIsDisabled() {
-
 		Tx_Fluid_Fluid::$debugMode = FALSE;
-
 		$availableClassNames = array(
-			array('Tx_Fluid_Core_Fixtures_TestViewHelper2'),
+			array('Tx_Fluid_Core_Fixtures_TestViewHelper2')
 		);
 		$dataCacheMock = $this->getMock('t3lib_cache_frontend_VariableFrontend', array(), array(), '', FALSE);
 		$dataCacheMock->expects($this->any())->method('has')->will($this->returnValue(TRUE));
 		$dataCacheMock->expects($this->any())->method('get')->will($this->returnValue(array()));
-
 		$reflectionService = new Tx_Extbase_Reflection_Service();
 		$reflectionService->setDataCache($dataCacheMock);
-
-
 		$viewHelper = new Tx_Fluid_Core_Fixtures_TestViewHelper2();
 		$viewHelper->injectReflectionService($reflectionService);
-
 		$expected = array(
 			'param1' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param1', 'integer', '', TRUE, null, TRUE),
 			'param2' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param2', 'array', '', TRUE, null, TRUE),
-			'param3' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param3', 'string', '', FALSE, 'default', TRUE),
+			'param3' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param3', 'string', '', FALSE, 'default', TRUE)
 		);
-
 		$this->assertEquals($expected, $viewHelper->prepareArguments(), 'Annotation based arguments were not registered.');
 	}
 
@@ -170,12 +138,9 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 	 */
 	public function validateArgumentsCallsPrepareArguments() {
 		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array(), array(), '', FALSE);
-
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'prepareArguments'), array(), '', FALSE);
 		$viewHelper->injectReflectionService($mockReflectionService);
-
 		$viewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue(array()));
-
 		$viewHelper->validateArguments();
 	}
 
@@ -184,8 +149,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 	 */
 	public function validateArgumentsAcceptsAllObjectsImplemtingArrayAccessAsAnArray() {
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'prepareArguments'), array(), '', FALSE);
-
-		$viewHelper->setArguments(array('test' => new ArrayObject));
+		$viewHelper->setArguments(array('test' => new ArrayObject()));
 		$viewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue(array('test' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('test', 'array', FALSE, 'documentation'))));
 		$viewHelper->validateArguments();
 	}
@@ -195,16 +159,12 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 	 */
 	public function validateArgumentsCallsTheRightValidators() {
 		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array(), array(), '', FALSE);
-
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'prepareArguments'), array(), '', FALSE);
 		$viewHelper->injectReflectionService($mockReflectionService);
-
 		$viewHelper->setArguments(array('test' => 'Value of argument'));
-
 		$viewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue(array(
-			'test' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition("test", "string", FALSE, "documentation")
+			'test' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('test', 'string', FALSE, 'documentation')
 		)));
-
 		$viewHelper->validateArguments();
 	}
 
@@ -214,16 +174,12 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 	 */
 	public function validateArgumentsCallsTheRightValidatorsAndThrowsExceptionIfValidationIsWrong() {
 		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array(), array(), '', FALSE);
-
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'prepareArguments'), array(), '', FALSE);
 		$viewHelper->injectReflectionService($mockReflectionService);
-
 		$viewHelper->setArguments(array('test' => 'test'));
-
 		$viewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue(array(
-			'test' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition("test", "stdClass", FALSE, "documentation")
+			'test' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('test', 'stdClass', FALSE, 'documentation')
 		)));
-
 		$viewHelper->validateArguments();
 	}
 
@@ -235,7 +191,6 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$viewHelper->expects($this->at(0))->method('validateArguments');
 		$viewHelper->expects($this->at(1))->method('initialize');
 		$viewHelper->expects($this->at(2))->method('callRenderMethod')->will($this->returnValue('Output'));
-
 		$expectedOutput = 'Output';
 		$actualOutput = $viewHelper->initializeArgumentsAndRender(array('argument1' => 'value1'));
 		$this->assertEquals($expectedOutput, $actualOutput);
@@ -248,19 +203,17 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
 		$viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
 		$controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
-
 		$renderingContext = new Tx_Fluid_Core_Rendering_RenderingContext();
 		$renderingContext->injectTemplateVariableContainer($templateVariableContainer);
 		$renderingContext->injectViewHelperVariableContainer($viewHelperVariableContainer);
 		$renderingContext->setControllerContext($controllerContext);
-
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render', 'prepareArguments'), array(), '', FALSE);
-
 		$viewHelper->setRenderingContext($renderingContext);
-
 		$this->assertSame($viewHelper->_get('templateVariableContainer'), $templateVariableContainer);
 		$this->assertSame($viewHelper->_get('viewHelperVariableContainer'), $viewHelperVariableContainer);
 		$this->assertSame($viewHelper->_get('controllerContext'), $controllerContext);
 	}
+
 }
+
 ?>

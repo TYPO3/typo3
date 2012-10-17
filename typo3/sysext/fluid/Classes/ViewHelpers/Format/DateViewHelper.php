@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * Formats a DateTime object.
  *
@@ -92,10 +89,12 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelper extends Tx_Fluid_Core_ViewHelpe
 			try {
 				$date = new DateTime($date);
 			} catch (Exception $exception) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('"' . $date . '" could not be parsed by DateTime constructor.', 1241722579);
+				throw new Tx_Fluid_Core_ViewHelper_Exception(('"' . $date) . '" could not be parsed by DateTime constructor.', 1241722579);
 			}
 		}
 		return $date->format($format);
 	}
+
 }
+
 ?>

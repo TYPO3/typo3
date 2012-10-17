@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,10 +18,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for AbstractWidgetController
- *
  */
 class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetControllerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -41,22 +38,15 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetControllerTest extends Tx_Ex
 	public function processRequestSetsWidgetConfiguration() {
 		$widgetContext = $this->getMock('Tx_Fluid_Core_Widget_WidgetContext');
 		$widgetContext->expects($this->once())->method('getWidgetConfiguration')->will($this->returnValue('myConfiguration'));
-
 		$request = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest', array(), array(), '', FALSE);
 		$request->expects($this->once())->method('getWidgetContext')->will($this->returnValue($widgetContext));
-
 		$response = $this->getMock('Tx_Extbase_MVC_ResponseInterface');
-
 		$abstractWidgetController = $this->getAccessibleMock('Tx_Fluid_Core_Widget_AbstractWidgetController', array('resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'initializeAction', 'checkRequestHash', 'mapRequestArgumentsToControllerArguments', 'buildControllerContext', 'resolveView', 'callActionMethod'), array(), '', FALSE);
-
 		$mockUriBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_UriBuilder');
-
 		$objectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		$objectManager->expects($this->any())->method('create')->with('Tx_Extbase_MVC_Web_Routing_UriBuilder')->will($this->returnValue($mockUriBuilder));
 		$abstractWidgetController->_set('objectManager', $objectManager);
-
 		$abstractWidgetController->processRequest($request, $response);
-
 		$widgetConfiguration = $abstractWidgetController->_get('widgetConfiguration');
 		$this->assertEquals('myConfiguration', $widgetConfiguration);
 	}
@@ -74,25 +64,20 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetControllerTest extends Tx_Ex
 				)
 			)
 		);
-
 		$widgetContext = $this->getMock('Tx_Fluid_Core_Widget_WidgetContext');
 		$widgetContext->expects($this->any())->method('getWidgetViewHelperClassName')->will($this->returnValue('Tx_Fluid_ViewHelpers_Widget_PaginateViewHelper'));
-
 		$request = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest', array(), array(), '', FALSE);
 		$request->expects($this->any())->method('getWidgetContext')->will($this->returnValue($widgetContext));
-
 		$configurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManager');
-		$configurationManager->expects($this->any())
-			->method('getConfiguration')
-			->will($this->returnValue($frameworkConfiguration));
-
+		$configurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($frameworkConfiguration));
 		$view = $this->getAccessibleMock('Tx_Fluid_View_TemplateView', array('dummy'));
-
 		$abstractWidgetController = $this->getAccessibleMock('Tx_Fluid_Core_Widget_AbstractWidgetController', array('dummy'));
 		$abstractWidgetController->injectConfigurationManager($configurationManager);
 		$abstractWidgetController->_set('request', $request);
 		$abstractWidgetController->_call('setViewConfiguration', $view);
 		$this->assertEquals(t3lib_div::getFileAbsFileName('EXT:fluid/Resources/Private/DummyTestTemplates'), $view->_call('getTemplateRootPath'));
 	}
+
 }
+
 ?>

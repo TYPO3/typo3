@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
+
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_Format_NumberViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -33,5 +32,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_NumberViewHelperTest extends Tx_Ext
 		$actualResult = $viewHelper->render(3, ',', '.');
 		$this->assertEquals('3.333,333', $actualResult);
 	}
+
 }
+
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,16 +8,14 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * Text Syntax Tree Node - is a container for strings.
- *
  */
 class Tx_Fluid_Core_Parser_SyntaxTree_TextNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 
 	/**
 	 * Contents of the text node
+	 *
 	 * @var string
 	 */
 	protected $text;
@@ -30,7 +27,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_TextNode extends Tx_Fluid_Core_Parser_Synt
 	 */
 	public function __construct($text) {
 		if (!is_string($text)) {
-			throw new Tx_Fluid_Core_Parser_Exception('Text node requires an argument of type string, "' . gettype($text) . '" given.');
+			throw new Tx_Fluid_Core_Parser_Exception(('Text node requires an argument of type string, "' . gettype($text)) . '" given.');
 		}
 		$this->text = $text;
 	}
@@ -54,6 +51,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_TextNode extends Tx_Fluid_Core_Parser_Synt
 	public function getText() {
 		return $this->text;
 	}
+
 }
 
 ?>

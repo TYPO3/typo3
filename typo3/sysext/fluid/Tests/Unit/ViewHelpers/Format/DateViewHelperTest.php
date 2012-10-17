@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
+
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_Format_DateViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -79,5 +78,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_DateViewHelperTest extends Tx_Extba
 		$actualResult = $viewHelper->render('1980-12-12');
 		$this->assertEquals('1980-12-12', $actualResult);
 	}
+
 }
+
 ?>

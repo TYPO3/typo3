@@ -1,6 +1,7 @@
 <?php
-declare(ENCODING = 'utf-8') ;
+declare (ENCODING = 'utf-8') {
 
+}
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -20,7 +21,6 @@ declare(ENCODING = 'utf-8') ;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * @api
  */
@@ -98,7 +98,6 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 		$this->validateArguments();
 		$this->initialize();
 		$this->initializeWidgetContext();
-
 		return $this->callRenderMethod();
 	}
 
@@ -110,17 +109,14 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	private function initializeWidgetContext() {
 		$this->widgetContext->setWidgetConfiguration($this->getWidgetConfiguration());
 		$this->initializeWidgetIdentifier();
-
-		$controllerObjectName = ($this->controller instanceof Tx_Fluid_AOP_ProxyInterface) ? $this->controller->FLOW3_AOP_Proxy_getProxyTargetClassName() : get_class($this->controller);
+		$controllerObjectName = $this->controller instanceof Tx_Fluid_AOP_ProxyInterface ? $this->controller->FLOW3_AOP_Proxy_getProxyTargetClassName() : get_class($this->controller);
 		$this->widgetContext->setControllerObjectName($controllerObjectName);
-
 		$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
 		$pluginName = $this->controllerContext->getRequest()->getPluginName();
 		$this->widgetContext->setParentExtensionName($extensionName);
 		$this->widgetContext->setParentPluginName($pluginName);
 		$pluginNamespace = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
 		$this->widgetContext->setParentPluginNamespace($pluginNamespace);
-
 		$this->widgetContext->setWidgetViewHelperClassName(get_class($this));
 		if ($this->ajaxWidget === TRUE) {
 			$this->ajaxWidgetContextHolder->store($this->widgetContext);
@@ -160,17 +156,15 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 	 * @api
 	 */
 	protected function initiateSubRequest() {
-		if (!($this->controller instanceof Tx_Fluid_Core_Widget_AbstractWidgetController)) {
+		if (!$this->controller instanceof Tx_Fluid_Core_Widget_AbstractWidgetController) {
 			if (isset($this->controller)) {
-				throw new Tx_Fluid_Core_Widget_Exception_MissingControllerException('initiateSubRequest() can not be called if there is no valid controller extending Tx_Fluid_Core_Widget_AbstractWidgetController. Got "' . get_class($this->controller) . '" in class "' . get_class($this) . '".', 1289422564);
+				throw new Tx_Fluid_Core_Widget_Exception_MissingControllerException(((('initiateSubRequest() can not be called if there is no valid controller extending Tx_Fluid_Core_Widget_AbstractWidgetController. Got "' . get_class($this->controller)) . '" in class "') . get_class($this)) . '".', 1289422564);
 			}
-			throw new Tx_Fluid_Core_Widget_Exception_MissingControllerException('initiateSubRequest() can not be called if there is no controller inside $this->controller. Make sure to add a corresponding injectController method to your WidgetViewHelper class "' . get_class($this) . '".', 1284401632);
+			throw new Tx_Fluid_Core_Widget_Exception_MissingControllerException(('initiateSubRequest() can not be called if there is no controller inside $this->controller. Make sure to add a corresponding injectController method to your WidgetViewHelper class "' . get_class($this)) . '".', 1284401632);
 		}
-
 		$subRequest = $this->objectManager->create('Tx_Fluid_Core_Widget_WidgetRequest');
 		$subRequest->setWidgetContext($this->widgetContext);
 		$this->passArgumentsToSubRequest($subRequest);
-
 		$subResponse = $this->objectManager->create('Tx_Extbase_MVC_Web_Response');
 		$this->controller->processRequest($subRequest, $subResponse);
 		return $subResponse;
@@ -210,9 +204,9 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetViewHelper extends Tx_Fluid_Co
 		}
 		$widgetIdentifier = '@widget_' . $widgetCounter;
 		$this->viewHelperVariableContainer->addOrUpdate('Tx_Fluid_Core_Widget_AbstractWidgetViewHelper', 'nextWidgetNumber', $widgetCounter + 1);
-
 		$this->widgetContext->setWidgetIdentifier($widgetIdentifier);
 	}
+
 }
 
 ?>

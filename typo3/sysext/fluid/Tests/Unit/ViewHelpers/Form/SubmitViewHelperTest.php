@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,12 +8,9 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once(dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php');
-
+require_once dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php';
 /**
  * Test for the "Submit" Form view helper
- *
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SubmitViewHelperTest extends Tx_Fluid_Tests_Unit_ViewHelpers_Form_FormFieldViewHelperBaseTestcase {
 
@@ -38,12 +34,11 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SubmitViewHelperTest extends Tx_Fluid
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'submit');
-
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
-
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
+
 }
 
 ?>

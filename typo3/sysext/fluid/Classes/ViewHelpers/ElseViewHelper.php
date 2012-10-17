@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * Else-Branch of a condition. Only has an effect inside of "If". See the If-ViewHelper for documentation.
  *
@@ -18,9 +15,9 @@
  *
  * <code title="Output content if condition is not met">
  * <f:if condition="{someCondition}">
- *   <f:else>
- *     condition was not true
- *   </f:else>
+ * <f:else>
+ * condition was not true
+ * </f:else>
  * </f:if>
  * </code>
  * <output>
@@ -40,6 +37,7 @@ class Tx_Fluid_ViewHelpers_ElseViewHelper extends Tx_Fluid_Core_ViewHelper_Abstr
 	public function render() {
 		return $this->renderChildren();
 	}
+
 }
 
 ?>

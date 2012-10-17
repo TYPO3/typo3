@@ -18,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * View helper which returns shortcut button with icon
  * Note: This view helper is experimental!
@@ -42,10 +41,8 @@
  * Note:
  * Normally you won't need to set getVars & setVars parameters in Extbase modules
  * </output>
- *
  */
 class Tx_Fluid_ViewHelpers_Be_Buttons_ShortcutViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
-
 
 	/**
 	 * Renders a shortcut button as known from the TYPO3 backend
@@ -60,15 +57,15 @@ class Tx_Fluid_ViewHelpers_Be_Buttons_ShortcutViewHelper extends Tx_Fluid_ViewHe
 		$currentRequest = $this->controllerContext->getRequest();
 		$extensionName = $currentRequest->getControllerExtensionName();
 		$moduleName = $currentRequest->getPluginName();
-
 		if (count($getVars) === 0) {
-			$modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
+			$modulePrefix = strtolower((('tx_' . $extensionName) . '_') . $moduleName);
 			$getVars = array('id', 'M', $modulePrefix);
 		}
 		$getList = implode(',', $getVars);
 		$setList = implode(',', $setVars);
-
 		return $doc->makeShortcutIcon($getList, $setList, $moduleName);
 	}
+
 }
+
 ?>

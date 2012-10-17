@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * A view helper for creating links to external targets.
  *
@@ -62,15 +59,14 @@ class Tx_Fluid_ViewHelpers_Link_ExternalViewHelper extends Tx_Fluid_Core_ViewHel
 	public function render($uri, $defaultScheme = 'http') {
 		$scheme = parse_url($uri, PHP_URL_SCHEME);
 		if ($scheme === NULL && $defaultScheme !== '') {
-			$uri = $defaultScheme . '://' . $uri;
+			$uri = ($defaultScheme . '://') . $uri;
 		}
 		$this->tag->addAttribute('href', $uri);
 		$this->tag->setContent($this->renderChildren());
 		$this->tag->forceClosingTag(TRUE);
-
 		return $this->tag->render();
 	}
-}
 
+}
 
 ?>

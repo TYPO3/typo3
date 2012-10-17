@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * @api
  */
@@ -19,12 +16,12 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	/**
 	 * Two-dimensional object array storing the values. The first dimension is the fully qualified ViewHelper name,
 	 * and the second dimension is the identifier for the data the ViewHelper wants to store.
+	 *
 	 * @var array
 	 */
 	protected $objects = array();
 
 	/**
-	 *
 	 * @var Tx_Fluid_View_AbstractTemplateView
 	 */
 	protected $view;
@@ -43,7 +40,9 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	 * @api
 	 */
 	public function add($viewHelperName, $key, $value) {
-		if ($this->exists($viewHelperName, $key)) throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException('The key "' . $viewHelperName . '->' . $key . '" was already stored and you cannot override it.', 1243352010);
+		if ($this->exists($viewHelperName, $key)) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException(((('The key "' . $viewHelperName) . '->') . $key) . '" was already stored and you cannot override it.', 1243352010);
+		}
 		$this->addOrUpdate($viewHelperName, $key, $value);
 	}
 
@@ -74,7 +73,9 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	 * @api
 	 */
 	public function get($viewHelperName, $key) {
-		if (!$this->exists($viewHelperName, $key)) throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException('No value found for key "' . $viewHelperName . '->' . $key . '"', 1243325768);
+		if (!$this->exists($viewHelperName, $key)) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException(((('No value found for key "' . $viewHelperName) . '->') . $key) . '"', 1243325768);
+		}
 		return $this->objects[$viewHelperName][$key];
 	}
 
@@ -100,7 +101,9 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	 * @api
 	 */
 	public function remove($viewHelperName, $key) {
-		if (!$this->exists($viewHelperName, $key)) throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException('No value found for key "' . $viewHelperName . '->' . $key . '", thus the key cannot be removed.', 1243352249);
+		if (!$this->exists($viewHelperName, $key)) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException(((('No value found for key "' . $viewHelperName) . '->') . $key) . '", thus the key cannot be removed.', 1243352249);
+		}
 		unset($this->objects[$viewHelperName][$key]);
 	}
 
@@ -133,5 +136,7 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	public function __sleep() {
 		return array('objects');
 	}
+
 }
+
 ?>

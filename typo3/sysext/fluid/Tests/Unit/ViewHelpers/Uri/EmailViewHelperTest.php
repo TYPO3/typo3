@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,12 +18,9 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
-
+require_once dirname(__FILE__) . '/../ViewHelperBaseTestcase.php';
 /**
  * Testcase for the email uri view helper
- *
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_Uri_EmailViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
@@ -40,10 +36,8 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Uri_EmailViewHelperTest extends Tx_Fluid_V
 
 	public function setUp() {
 		parent::setUp();
-
 		$this->cObjBackup = $GLOBALS['TSFE']->cObj;
 		$GLOBALS['TSFE']->cObj = $this->getMock('tslib_cObj', array(), array(), '', FALSE);
-
 		$this->viewHelper = new Tx_Fluid_ViewHelpers_Uri_EmailViewHelper();
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
@@ -58,13 +52,11 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Uri_EmailViewHelperTest extends Tx_Fluid_V
 	 */
 	public function renderReturnsFirstResultOfGetMailTo() {
 		#$GLOBALS['TSFE']->cObj->expects($this->once())->method('getMailTo')->with('some@email.tld', 'some@email.tld')->will($this->returnValue(array('mailto:some@email.tld', 'some@email.tld')));
-
 		$this->viewHelper->initialize();
 		$actualResult = $this->viewHelper->render('some@email.tld');
-
 		$this->assertEquals('mailto:some@email.tld', $actualResult);
 	}
-}
 
+}
 
 ?>

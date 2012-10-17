@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,14 +8,12 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * This interface is returned by Tx_Fluid_Core_Parser_TemplateParser->parse()
  * method and is a parsed template
- *
  */
-interface Tx_Fluid_Core_Parser_ParsedTemplateInterface {
-
+interface Tx_Fluid_Core_Parser_ParsedTemplateInterface
+{
 	/**
 	 * Render the parsed template with rendering context
 	 *
@@ -45,8 +42,8 @@ interface Tx_Fluid_Core_Parser_ParsedTemplateInterface {
 
 	/**
 	 * Returns TRUE if the current template has a template defined via <f:layout name="..." />
-	 * @see getLayoutName()
 	 *
+	 * @see getLayoutName()
 	 * @return boolean
 	 */
 	public function hasLayout();
@@ -63,6 +60,6 @@ interface Tx_Fluid_Core_Parser_ParsedTemplateInterface {
 	 * @return boolean TRUE if the template is already compiled, FALSE otherwise
 	 */
 	public function isCompiled();
-}
 
+}
 ?>

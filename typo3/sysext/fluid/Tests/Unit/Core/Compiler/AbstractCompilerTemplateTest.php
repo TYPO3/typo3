@@ -21,10 +21,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for AbstractCompilerTemplate
- *
  */
 class Tx_Fluid_Tests_Unit_Core_Compiler_AbstractCompilerTemplateTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -40,12 +38,10 @@ class Tx_Fluid_Tests_Unit_Core_Compiler_AbstractCompilerTemplateTest extends Tx_
 	 */
 	public function isDefaultEncodingIsSetThanDefaultEncodingWillReturned() {
 		$className = uniqid('Tx_Fluid_Core_Compiler_AbstractCompiledTemplate');
-		eval(
-			'abstract class ' . $className . ' extends Tx_Fluid_Core_Compiler_AbstractCompiledTemplate {' .
-			'  static protected $defaultEncoding = \'ISO-8859-1\';' .
-			'}'
-		);
+		eval(((('abstract class ' . $className) . ' extends Tx_Fluid_Core_Compiler_AbstractCompiledTemplate {') . '  static protected $defaultEncoding = \'ISO-8859-1\';') . '}');
 		$this->assertSame('ISO-8859-1', $className::resolveDefaultEncoding());
 	}
+
 }
+
 ?>

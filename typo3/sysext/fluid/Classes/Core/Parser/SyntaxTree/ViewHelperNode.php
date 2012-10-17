@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,28 +8,28 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * Node which will call a ViewHelper associated with this node.
- *
  */
 class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 
 	/**
 	 * Class name of view helper
+	 *
 	 * @var string
 	 */
 	protected $viewHelperClassName;
 
 	/**
 	 * Arguments of view helper - References to RootNodes.
+	 *
 	 * @var array
 	 */
 	protected $arguments = array();
 
 	/**
 	 * The ViewHelper associated with this node
+	 *
 	 * @var Tx_Fluid_Core_ViewHelper_AbstractViewHelper
 	 */
 	protected $uninitializedViewHelper = NULL;
@@ -38,11 +37,10 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	/**
 	 * A mapping RenderingContext -> ViewHelper to only re-initialize ViewHelpers
 	 * when a context change occurs.
+	 *
 	 * @var Tx_Extbase_Persistence_ObjectStorage
 	 */
 	protected $viewHelpersByContext = NULL;
-
-
 
 	/**
 	 * Constructor.
@@ -107,10 +105,9 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 			$viewHelper = clone $this->uninitializedViewHelper;
 			$this->viewHelpersByContext->attach($renderingContext, $viewHelper);
 		}
-
 		$evaluatedArguments = array();
 		if (count($viewHelper->prepareArguments())) {
- 			foreach ($viewHelper->prepareArguments() as $argumentName => $argumentDefinition) {
+			foreach ($viewHelper->prepareArguments() as $argumentName => $argumentDefinition) {
 				if (isset($this->arguments[$argumentName])) {
 					$argumentValue = $this->arguments[$argumentName];
 					$evaluatedArguments[$argumentName] = $argumentValue->evaluate($renderingContext);
@@ -119,17 +116,13 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 				}
 			}
 		}
-
 		$viewHelper->setArguments($evaluatedArguments);
 		$viewHelper->setViewHelperNode($this);
 		$viewHelper->setRenderingContext($renderingContext);
-
 		if ($viewHelper instanceof Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface) {
 			$viewHelper->setChildNodes($this->childNodes);
 		}
-
 		$output = $viewHelper->initializeArgumentsAndRender();
-
 		return $output;
 	}
 
@@ -141,6 +134,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	public function __sleep() {
 		return array('viewHelperClassName', 'arguments', 'childNodes');
 	}
+
 }
 
 ?>

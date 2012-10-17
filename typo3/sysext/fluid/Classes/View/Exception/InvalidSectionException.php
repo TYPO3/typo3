@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,13 +8,14 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * An "Invalid Section" exception
  *
  * @api
  */
 class Tx_Fluid_View_Exception_InvalidSectionException extends Tx_Fluid_View_Exception {
+
+
 }
 
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,12 +8,10 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * "THEN" -> only has an effect inside of "IF". See If-ViewHelper for documentation.
- * @see Tx_Fluid_ViewHelpers_IfViewHelper
  *
+ * @see Tx_Fluid_ViewHelpers_IfViewHelper
  * @api
  */
 class Tx_Fluid_ViewHelpers_ThenViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
@@ -28,6 +25,7 @@ class Tx_Fluid_ViewHelpers_ThenViewHelper extends Tx_Fluid_Core_ViewHelper_Abstr
 	public function render() {
 		return $this->renderChildren();
 	}
+
 }
 
 ?>

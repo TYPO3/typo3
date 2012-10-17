@@ -18,21 +18,18 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * The abstract base class for all backend view helpers
  * Note: backend view helpers are still experimental!
- *
- *
  */
 abstract class Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	* Gets instance of template if exists or create a new one.
-	* Saves instance in viewHelperVariableContainer
-	*
-	* @return template $doc
-	*/
+	 * Gets instance of template if exists or create a new one.
+	 * Saves instance in viewHelperVariableContainer
+	 *
+	 * @return template $doc
+	 */
 	public function getDocInstance() {
 		if (!isset($GLOBALS['SOBE']->doc)) {
 			$GLOBALS['SOBE']->doc = t3lib_div::makeInstance('template');
@@ -42,4 +39,5 @@ abstract class Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper extends Tx_Flui
 	}
 
 }
+
 ?>

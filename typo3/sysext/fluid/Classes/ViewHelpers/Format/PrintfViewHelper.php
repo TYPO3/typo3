@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * A view helper for formatting values with printf. Either supply an array for
  * the arguments or a single value.
@@ -61,5 +58,7 @@ class Tx_Fluid_ViewHelpers_Format_PrintfViewHelper extends Tx_Fluid_Core_ViewHel
 		$format = $this->renderChildren();
 		return vsprintf($format, $arguments);
 	}
+
 }
+
 ?>

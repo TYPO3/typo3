@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * The abstract base class for all view helpers.
  *
@@ -20,12 +17,14 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * TRUE if arguments have already been initialized
+	 *
 	 * @var boolean
 	 */
 	private $argumentsInitialized = FALSE;
 
 	/**
 	 * Stores all Tx_Fluid_ArgumentDefinition instances
+	 *
 	 * @var array
 	 */
 	private $argumentDefinitions = array();
@@ -36,18 +35,21 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 *
 	 * In our benchmarks, this cache leads to a 40% improvement when using a certain
 	 * ViewHelper class many times throughout the rendering process.
+	 *
 	 * @var array
 	 */
 	static private $argumentDefinitionCache = array();
 
 	/**
 	 * Current view helper node
+	 *
 	 * @var Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
 	 */
 	private $viewHelperNode;
 
 	/**
 	 * Arguments array.
+	 *
 	 * @var array
 	 * @api
 	 */
@@ -55,6 +57,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * Current variable container reference.
+	 *
 	 * @var Tx_Fluid_Core_ViewHelper_TemplateVariableContainer
 	 * @api
 	 */
@@ -62,6 +65,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * Controller Context to use
+	 *
 	 * @var Tx_Extbase_MVC_Controller_ControllerContext
 	 * @api
 	 */
@@ -80,6 +84,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * ViewHelper Variable Container
+	 *
 	 * @var Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer
 	 * @api
 	 */
@@ -87,6 +92,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * Reflection service
+	 *
 	 * @var Tx_Extbase_Reflection_Service
 	 */
 	private $reflectionService;
@@ -94,6 +100,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	/**
 	 * With this flag, you can disable the escaping interceptor inside this ViewHelper.
 	 * THIS MIGHT CHANGE WITHOUT NOTICE, NO PUBLIC API!
+	 *
 	 * @var boolean
 	 * @internal
 	 */
@@ -122,6 +129,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
 	 * Inject a Reflection service
+	 *
 	 * @param Tx_Extbase_Reflection_Service $reflectionService Reflection service
 	 */
 	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
@@ -154,7 +162,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 */
 	protected function registerArgument($name, $type, $description, $required = FALSE, $defaultValue = NULL) {
 		if (array_key_exists($name, $this->argumentDefinitions)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('Argument "' . $name . '" has already been defined, thus it should not be defined again.', 1253036401);
+			throw new Tx_Fluid_Core_ViewHelper_Exception(('Argument "' . $name) . '" has already been defined, thus it should not be defined again.', 1253036401);
 		}
 		$this->argumentDefinitions[$name] = new Tx_Fluid_Core_ViewHelper_ArgumentDefinition($name, $type, $description, $required, $defaultValue);
 		return $this;
@@ -163,8 +171,8 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	/**
 	 * Overrides a registered argument. Call this method from your ViewHelper subclass
 	 * inside the initializeArguments() method if you want to override a previously registered argument.
-	 * @see registerArgument()
 	 *
+	 * @see registerArgument()
 	 * @param string $name Name of the argument
 	 * @param string $type Type of the argument
 	 * @param string $description Description of the argument
@@ -175,7 +183,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 */
 	protected function overrideArgument($name, $type, $description, $required = FALSE, $defaultValue = NULL) {
 		if (!array_key_exists($name, $this->argumentDefinitions)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('Argument "' . $name . '" has not been defined, thus it can\'t be overridden.', 1279212461);
+			throw new Tx_Fluid_Core_ViewHelper_Exception(('Argument "' . $name) . '" has not been defined, thus it can\'t be overridden.', 1279212461);
 		}
 		$this->argumentDefinitions[$name] = new Tx_Fluid_Core_ViewHelper_ArgumentDefinition($name, $type, $description, $required, $defaultValue);
 		return $this;
@@ -212,7 +220,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	public function initializeArgumentsAndRender() {
 		$this->validateArguments();
 		$this->initialize();
-
 		return $this->callRenderMethod();
 	}
 
@@ -228,11 +235,10 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 				$renderMethodParameters[$argumentName] = $this->arguments[$argumentName];
 			}
 		}
-
 		try {
 			return call_user_func_array(array($this, 'render'), $renderMethodParameters);
 		} catch (Tx_Fluid_Core_ViewHelper_Exception $exception) {
-				// @todo [BW] rethrow exception, log, ignore.. depending on the current context
+			// @todo [BW] rethrow exception, log, ignore.. depending on the current context
 			return $exception->getMessage();
 		}
 	}
@@ -246,6 +252,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * @api
 	 */
 	public function initialize() {
+
 	}
 
 	/**
@@ -274,7 +281,9 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 */
 	protected function buildRenderChildrenClosure() {
 		$self = $this;
-		return function() use ($self) { return $self->renderChildren(); };
+		return function () use($self) {
+			return $self->renderChildren();
+		};
 	}
 
 	/**
@@ -307,16 +316,13 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 		if (count($methodParameters) === 0) {
 			return;
 		}
-
 		if (Tx_Fluid_Fluid::$debugMode) {
 			$methodTags = $this->reflectionService->getMethodTagsValues(get_class($this), 'render');
-
 			$paramAnnotations = array();
 			if (isset($methodTags['param'])) {
 				$paramAnnotations = $methodTags['param'];
 			}
 		}
-
 		$i = 0;
 		foreach ($methodParameters as $parameterName => $parameterInfo) {
 			$dataType = NULL;
@@ -326,9 +332,8 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 				$dataType = 'array';
 			}
 			if ($dataType === NULL) {
-				throw new Tx_Fluid_Core_Parser_Exception('could not determine type of argument "' . $parameterName .'" of the render-method in ViewHelper "' . get_class($this) . '". Either the methods docComment is invalid or some PHP optimizer strips off comments.', 1242292003);
+				throw new Tx_Fluid_Core_Parser_Exception(((('could not determine type of argument "' . $parameterName) . '" of the render-method in ViewHelper "') . get_class($this)) . '". Either the methods docComment is invalid or some PHP optimizer strips off comments.', 1242292003);
 			}
-
 			$description = '';
 			if (Tx_Fluid_Fluid::$debugMode && isset($paramAnnotations[$i])) {
 				$explodedAnnotation = explode(' ', $paramAnnotations[$i]);
@@ -340,7 +345,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 			if (isset($parameterInfo['defaultValue'])) {
 				$defaultValue = $parameterInfo['defaultValue'];
 			}
-			$this->argumentDefinitions[$parameterName] = new Tx_Fluid_Core_ViewHelper_ArgumentDefinition($parameterName, $dataType, $description, ($parameterInfo['optional'] === FALSE), $defaultValue, TRUE);
+			$this->argumentDefinitions[$parameterName] = new Tx_Fluid_Core_ViewHelper_ArgumentDefinition($parameterName, $dataType, $description, $parameterInfo['optional'] === FALSE, $defaultValue, TRUE);
 			$i++;
 		}
 	}
@@ -352,27 +357,29 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 */
 	public function validateArguments() {
 		$argumentDefinitions = $this->prepareArguments();
-		if (!count($argumentDefinitions)) return;
-
+		if (!count($argumentDefinitions)) {
+			return;
+		}
 		foreach ($argumentDefinitions as $argumentName => $registeredArgument) {
 			if ($this->hasArgument($argumentName)) {
 				$type = $registeredArgument->getType();
-				if ($this->arguments[$argumentName] === $registeredArgument->getDefaultValue()) continue;
-
+				if ($this->arguments[$argumentName] === $registeredArgument->getDefaultValue()) {
+					continue;
+				}
 				if ($type === 'array') {
-					if (!is_array($this->arguments[$argumentName]) && !$this->arguments[$argumentName] instanceof ArrayAccess && !$this->arguments[$argumentName] instanceof Traversable) {
-						throw new InvalidArgumentException('The argument "' . $argumentName . '" was registered with type "array", but is of type "' . gettype($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '"', 1237900529);
+					if ((!is_array($this->arguments[$argumentName]) && !$this->arguments[$argumentName] instanceof ArrayAccess) && !$this->arguments[$argumentName] instanceof Traversable) {
+						throw new InvalidArgumentException(((((('The argument "' . $argumentName) . '" was registered with type "array", but is of type "') . gettype($this->arguments[$argumentName])) . '" in view helper "') . get_class($this)) . '"', 1237900529);
 					}
 				} elseif ($type === 'boolean') {
 					if (!is_bool($this->arguments[$argumentName])) {
-						throw new InvalidArgumentException('The argument "' . $argumentName . '" was registered with type "boolean", but is of type "' . gettype($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '".', 1240227732);
+						throw new InvalidArgumentException(((((('The argument "' . $argumentName) . '" was registered with type "boolean", but is of type "') . gettype($this->arguments[$argumentName])) . '" in view helper "') . get_class($this)) . '".', 1240227732);
 					}
 				} elseif (class_exists($type, FALSE)) {
-					if (! ($this->arguments[$argumentName] instanceof $type)) {
+					if (!$this->arguments[$argumentName] instanceof $type) {
 						if (is_object($this->arguments[$argumentName])) {
-							throw new InvalidArgumentException('The argument "' . $argumentName . '" was registered with type "' . $type . '", but is of type "' . get_class($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '".', 1256475114);
+							throw new InvalidArgumentException(((((((('The argument "' . $argumentName) . '" was registered with type "') . $type) . '", but is of type "') . get_class($this->arguments[$argumentName])) . '" in view helper "') . get_class($this)) . '".', 1256475114);
 						} else {
-							throw new InvalidArgumentException('The argument "' . $argumentName . '" was registered with type "' . $type . '", but is of type "' . gettype($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '".', 1256475113);
+							throw new InvalidArgumentException(((((((('The argument "' . $argumentName) . '" was registered with type "') . $type) . '", but is of type "') . gettype($this->arguments[$argumentName])) . '" in view helper "') . get_class($this)) . '".', 1256475113);
 						}
 					}
 				}
@@ -388,6 +395,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * @api
 	 */
 	public function initializeArguments() {
+
 	}
 
 	/**
@@ -400,7 +408,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * @api
 	 */
 	//abstract public function render();
-
 	/**
 	 * Get the rendering context interface.
 	 *
@@ -440,8 +447,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * @see Tx_Fluid_Core_ViewHelper_Facets_CompilableInterface
 	 */
 	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode, Tx_Fluid_Core_Compiler_TemplateCompiler $templateCompiler) {
-		return sprintf('%s::renderStatic(%s, %s, $renderingContext)',
-				get_class($this), $argumentsVariableName, $renderChildrenClosureVariableName);
+		return sprintf('%s::renderStatic(%s, %s, $renderingContext)', get_class($this), $argumentsVariableName, $renderChildrenClosureVariableName);
 	}
 
 	/**
@@ -467,7 +473,9 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	 * @return void
 	 */
 	public function resetState() {
+
 	}
+
 }
 
 ?>

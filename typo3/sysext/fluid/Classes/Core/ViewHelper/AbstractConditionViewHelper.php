@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,32 +8,18 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * This view helper is an abstract ViewHelper which implements an if/else condition.
+ *
  * @see Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode::convertArgumentValue() to find see how boolean arguments are evaluated
- *
- * = Usage =
- *
- * To create a custom Condition ViewHelper, you need to subclass this class, and
- * implement your own render() method. Inside there, you should call $this->renderThenChild()
- * if the condition evaluated to TRUE, and $this->renderElseChild() if the condition evaluated
- * to FALSE.
- *
- * Every Condition ViewHelper has a "then" and "else" argument, so it can be used like:
- * <[aConditionViewHelperName] .... then="condition true" else="condition false" />,
- * or as well use the "then" and "else" child nodes.
- *
  * @see Tx_Fluid_ViewHelpers_IfViewHelper for a more detailed explanation and a simple usage example.
- * Make sure to NOT OVERRIDE the constructor.
- *
  * @api
  */
 abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface, Tx_Fluid_Core_ViewHelper_Facets_CompilableInterface {
 
 	/**
 	 * An array of Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
+	 *
 	 * @var array
 	 */
 	private $childNodes = array();
@@ -51,7 +36,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_F
 
 	/**
 	 * Initializes the "then" and "else" arguments
-	 *
 	 */
 	public function __construct() {
 		$this->registerArgument('then', 'mixed', 'Value to be returned if the condition if met.', FALSE);
@@ -76,20 +60,16 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_F
 		} elseif ($this->hasArgument('__elseClosure') || $this->hasArgument('else')) {
 			return '';
 		}
-
 		$elseViewHelperEncountered = FALSE;
 		foreach ($this->childNodes as $childNode) {
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
-				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ThenViewHelper') {
+			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode && $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ThenViewHelper') {
 				$data = $childNode->evaluate($this->renderingContext);
 				return $data;
 			}
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
-				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ElseViewHelper') {
+			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode && $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ElseViewHelper') {
 				$elseViewHelperEncountered = TRUE;
 			}
 		}
-
 		if ($elseViewHelperEncountered) {
 			return '';
 		} else {
@@ -114,12 +94,10 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_F
 			return $elseClosure();
 		}
 		foreach ($this->childNodes as $childNode) {
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
-				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ElseViewHelper') {
+			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode && $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ElseViewHelper') {
 				return $childNode->evaluate($this->renderingContext);
 			}
 		}
-
 		return '';
 	}
 
@@ -137,21 +115,18 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_F
 	 */
 	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode, Tx_Fluid_Core_Compiler_TemplateCompiler $templateCompiler) {
 		foreach ($syntaxTreeNode->getChildNodes() as $childNode) {
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
-				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ThenViewHelper') {
-
+			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode && $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ThenViewHelper') {
 				$childNodesAsClosure = $templateCompiler->wrapChildNodesInClosure($childNode);
 				$initializationPhpCode .= sprintf('%s[\'__thenClosure\'] = %s;', $argumentsVariableName, $childNodesAsClosure) . chr(10);
 			}
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
-				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ElseViewHelper') {
-
+			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode && $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ElseViewHelper') {
 				$childNodesAsClosure = $templateCompiler->wrapChildNodesInClosure($childNode);
 				$initializationPhpCode .= sprintf('%s[\'__elseClosure\'] = %s;', $argumentsVariableName, $childNodesAsClosure) . chr(10);
 			}
 		}
 		return Tx_Fluid_Core_Compiler_TemplateCompiler::SHOULD_GENERATE_VIEWHELPER_INVOCATION;
 	}
+
 }
 
 ?>

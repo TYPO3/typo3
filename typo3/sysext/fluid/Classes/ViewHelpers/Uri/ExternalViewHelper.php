@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * A view helper for creating URIs to external targets.
  * Currently the specified URI is simply passed through.
@@ -44,11 +41,11 @@ class Tx_Fluid_ViewHelpers_Uri_ExternalViewHelper extends Tx_Fluid_Core_ViewHelp
 	public function render($uri, $defaultScheme = 'http') {
 		$scheme = parse_url($uri, PHP_URL_SCHEME);
 		if ($scheme === NULL && $defaultScheme !== '') {
-			$uri = $defaultScheme . '://' . $uri;
+			$uri = ($defaultScheme . '://') . $uri;
 		}
 		return $uri;
 	}
-}
 
+}
 
 ?>

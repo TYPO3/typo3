@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * The EscapeViewHelper is used to escape variable content in various ways. By
  * default HTML is the target.
@@ -64,28 +62,27 @@ class Tx_Fluid_ViewHelpers_EscapeViewHelper extends Tx_Fluid_ViewHelpers_Format_
 		if ($value === NULL) {
 			$value = $this->renderChildren();
 		}
-
 		if (!is_string($value)) {
 			return $value;
 		}
-
 		if ($encoding === NULL) {
 			$encoding = $this->resolveDefaultEncoding();
 		}
-
 		switch ($type) {
-			case 'html':
-				return htmlspecialchars($value, ENT_COMPAT, $encoding);
+		case 'html':
+			return htmlspecialchars($value, ENT_COMPAT, $encoding);
 			break;
-			case 'entities':
-				return htmlentities($value, ENT_COMPAT, $encoding);
+		case 'entities':
+			return htmlentities($value, ENT_COMPAT, $encoding);
 			break;
-			case 'url':
-				return rawurlencode($value);
-			default:
-				return $value;
+		case 'url':
+			return rawurlencode($value);
+		default:
+			return $value;
 			break;
 		}
 	}
+
 }
+
 ?>

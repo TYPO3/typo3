@@ -1,5 +1,4 @@
 <?php
-
 class Tx_Fluid_Core_Fixtures_TestViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
@@ -9,9 +8,10 @@ class Tx_Fluid_Core_Fixtures_TestViewHelper extends Tx_Fluid_Core_ViewHelper_Abs
 	 * @param array $param2 P2 Stuff
 	 * @param string $param3 P3 Stuff
 	 */
-	public function render($param1, array $param2, $param3 = "default") {
+	public function render($param1, array $param2, $param3 = 'default') {
 
 	}
+
 }
 
 ?>

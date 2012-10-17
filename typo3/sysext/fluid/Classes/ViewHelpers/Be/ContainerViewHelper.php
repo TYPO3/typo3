@@ -18,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * View helper which allows you to create extbase based modules in the style of TYPO3 default modules.
  * Note: This feature is experimental!
@@ -40,7 +39,6 @@
  * "your module content" wrapped with propper head & body tags.
  * Custom CSS file EXT:your_extension/Resources/Public/styles/backend.css and JavaScript file EXT:your_extension/Resources/Public/scripts/main.js will be loaded
  * </output>
- *
  */
 class Tx_Fluid_ViewHelpers_Be_ContainerViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
 
@@ -66,15 +64,14 @@ class Tx_Fluid_ViewHelpers_Be_ContainerViewHelper extends Tx_Fluid_ViewHelpers_B
 	public function render($pageTitle = '', $enableJumpToUrl = TRUE, $enableClickMenu = TRUE, $loadPrototype = TRUE, $loadScriptaculous = FALSE, $scriptaculousModule = '', $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $extJsAdapter = '', $enableExtJsDebug = FALSE, $addCssFile = NULL, $addJsFile = NULL) {
 		$doc = $this->getDocInstance();
 		$pageRenderer = $doc->getPageRenderer();
-
 		if ($enableJumpToUrl) {
-			$doc->JScode .= '
+			$doc->JScode .= ('
 				<script language="javascript" type="text/javascript">
 					script_ended = 0;
 					function jumpToUrl(URL)	{
 						document.location = URL;
 					}
-					' . $doc->redirectUrls() . '
+					' . $doc->redirectUrls()) . '
 				</script>
 			';
 		}
@@ -99,11 +96,12 @@ class Tx_Fluid_ViewHelpers_Be_ContainerViewHelper extends Tx_Fluid_ViewHelpers_B
 		if ($addJsFile !== NULL) {
 			$pageRenderer->addJsFile($addJsFile);
 		}
-
 		$output = $this->renderChildren();
 		$output = $doc->startPage($pageTitle) . $output;
 		$output .= $doc->endPage();
 		return $output;
 	}
+
 }
+
 ?>

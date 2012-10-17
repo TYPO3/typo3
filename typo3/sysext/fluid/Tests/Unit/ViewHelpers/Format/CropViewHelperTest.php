@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,8 +18,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
+
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_Format_CropViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -41,7 +40,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_CropViewHelperTest extends Tx_Extba
 
 	public function setUp() {
 		parent::setUp();
-
 		$this->mockContentObject = $this->getMock('tslib_cObj', array(), array(), '', FALSE);
 		$this->mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
 		$this->mockConfigurationManager->expects($this->any())->method('getContentObject')->will($this->returnValue($this->mockContentObject));
@@ -85,5 +83,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_CropViewHelperTest extends Tx_Extba
 		$actualResult = $this->viewHelper->render(123, '...', TRUE, FALSE);
 		$this->assertEquals('Cropped Content', $actualResult);
 	}
+
 }
+
 ?>

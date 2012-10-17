@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,11 +18,11 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
+
  */
-interface Tx_Fluid_Core_ViewHelper_ViewHelperInterface {
+interface Tx_Fluid_Core_ViewHelper_ViewHelperInterface
+{
 
 }
-
 ?>

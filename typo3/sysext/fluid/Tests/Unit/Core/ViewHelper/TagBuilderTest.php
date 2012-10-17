@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,10 +8,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for TagBuilder
- *
  */
 class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -153,7 +150,6 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 		$tagBuilder->addAttribute('attribute1', 'attribute1value');
 		$tagBuilder->addAttribute('attribute2', 'attribute2value');
 		$tagBuilder->reset();
-
 		$this->assertEquals('', $tagBuilder->_get('tagName'));
 		$this->assertEquals('', $tagBuilder->_get('content'));
 		$this->assertEquals(array(), $tagBuilder->_get('attributes'));
@@ -186,6 +182,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 		$tagBuilder->setTagName('');
 		$this->assertEquals('', $tagBuilder->render());
 	}
+
 }
 
 ?>

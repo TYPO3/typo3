@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,13 +8,11 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * This view helper implements an if/else condition.
  * Check Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode::convertArgumentValue() to see how boolean arguments are evaluated
  *
- * **Conditions:**
+ * Conditions:**
  *
  * As a condition is a boolean value, you can just use a boolean argument.
  * Alternatively, you can write a boolean expression there.
@@ -34,24 +31,24 @@
  * below).
  * ::
  *
- *   <f:if condition="{rank} > 100">
- *     Will be shown if rank is > 100
- *   </f:if>
- *   <f:if condition="{rank} % 2">
- *     Will be shown if rank % 2 != 0.
- *   </f:if>
- *   <f:if condition="{rank} == {k:bar()}">
- *     Checks if rank is equal to the result of the ViewHelper "k:bar"
- *   </f:if>
- *   <f:if condition="{0: foo.bar} == {0: 'stringToCompare'}">
- *     Will result true if {foo.bar}'s represented value equals 'stringToCompare'.
- *   </f:if>
+ * <f:if condition="{rank} > 100">
+ * Will be shown if rank is > 100
+ * </f:if>
+ * <f:if condition="{rank} % 2">
+ * Will be shown if rank % 2 != 0.
+ * </f:if>
+ * <f:if condition="{rank} == {k:bar()}">
+ * Checks if rank is equal to the result of the ViewHelper "k:bar"
+ * </f:if>
+ * <f:if condition="{0: foo.bar} == {0: 'stringToCompare'}">
+ * Will result true if {foo.bar}'s represented value equals 'stringToCompare'.
+ * </f:if>
  *
  * = Examples =
  *
  * <code title="Basic usage">
  * <f:if condition="somecondition">
- *   This is being shown in case the condition matches
+ * This is being shown in case the condition matches
  * </f:if>
  * </code>
  * <output>
@@ -60,12 +57,12 @@
  *
  * <code title="If / then / else">
  * <f:if condition="somecondition">
- *   <f:then>
- *     This is being shown in case the condition matches.
- *   </f:then>
- *   <f:else>
- *     This is being displayed in case the condition evaluates to FALSE.
- *   </f:else>
+ * <f:then>
+ * This is being shown in case the condition matches.
+ * </f:then>
+ * <f:else>
+ * This is being displayed in case the condition evaluates to FALSE.
+ * </f:else>
  * </f:if>
  * </code>
  * <output>
@@ -100,5 +97,7 @@ class Tx_Fluid_ViewHelpers_IfViewHelper extends Tx_Fluid_Core_ViewHelper_Abstrac
 			return $this->renderElseChild();
 		}
 	}
+
 }
+
 ?>

@@ -11,12 +11,12 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
-
 /**
+
  */
 class Tx_Fluid_Exception extends Exception {
 
-}
 
+}
 
 ?>

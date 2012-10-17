@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * This view helper generates a <select> dropdown list for the use with a form.
  *
@@ -96,31 +93,25 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 		if ($this->hasArgument('multiple')) {
 			$name .= '[]';
 		}
-
 		$this->tag->addAttribute('name', $name);
-
 		$options = $this->getOptions();
 		if (empty($options)) {
 			$options = array('' => '');
 		}
 		$this->tag->setContent($this->renderOptionTags($options));
-
 		$this->setErrorClassAttribute();
-
 		$content = '';
-
-			// register field name for token generation.
-			// in case it is a multi-select, we need to register the field name
-			// as often as there are elements in the box
+		// register field name for token generation.
+		// in case it is a multi-select, we need to register the field name
+		// as often as there are elements in the box
 		if ($this->hasArgument('multiple') && $this->arguments['multiple'] !== '') {
 			$content .= $this->renderHiddenFieldForEmptyValue();
-			for ($i=0; $i<count($options); $i++) {
+			for ($i = 0; $i < count($options); $i++) {
 				$this->registerFieldNameForFormTokenGeneration($name);
 			}
 		} else {
 			$this->registerFieldNameForFormTokenGeneration($name);
 		}
-
 		$content .= $this->tag->render();
 		return $content;
 	}
@@ -133,10 +124,9 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 */
 	protected function renderOptionTags($options) {
 		$output = '';
-
 		foreach ($options as $value => $label) {
 			$isSelected = $this->isSelected($value);
-			$output.= $this->renderOptionTag($value, $label, $isSelected) . chr(10);
+			$output .= $this->renderOptionTag($value, $label, $isSelected) . chr(10);
 		}
 		return $output;
 	}
@@ -147,42 +137,40 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 * @return array an associative array of options, key will be the value of the option tag
 	 */
 	protected function getOptions() {
-		if (!is_array($this->arguments['options']) && !($this->arguments['options'] instanceof Traversable)) {
+		if (!is_array($this->arguments['options']) && !$this->arguments['options'] instanceof Traversable) {
 			return array();
 		}
 		$options = array();
 		$optionsArgument = $this->arguments['options'];
 		foreach ($optionsArgument as $key => $value) {
 			if (is_object($value)) {
-
 				if ($this->hasArgument('optionValueField')) {
 					$key = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($value, $this->arguments['optionValueField']);
 					if (is_object($key)) {
 						if (method_exists($key, '__toString')) {
-							$key = (string)$key;
+							$key = (string) $key;
 						} else {
-							throw new Tx_Fluid_Core_ViewHelper_Exception('Identifying value for object of class "' . get_class($value) . '" was an object.' , 1247827428);
+							throw new Tx_Fluid_Core_ViewHelper_Exception(('Identifying value for object of class "' . get_class($value)) . '" was an object.', 1247827428);
 						}
 					}
 				} elseif ($this->persistenceManager->getBackend()->getIdentifierByObject($value) !== NULL) {
 					$key = $this->persistenceManager->getBackend()->getIdentifierByObject($value);
 				} elseif (method_exists($value, '__toString')) {
-					$key = (string)$value;
+					$key = (string) $value;
 				} else {
-					throw new Tx_Fluid_Core_ViewHelper_Exception('No identifying value for object of class "' . get_class($value) . '" found.' , 1247826696);
+					throw new Tx_Fluid_Core_ViewHelper_Exception(('No identifying value for object of class "' . get_class($value)) . '" found.', 1247826696);
 				}
-
 				if ($this->hasArgument('optionLabelField')) {
 					$value = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($value, $this->arguments['optionLabelField']);
 					if (is_object($value)) {
 						if (method_exists($value, '__toString')) {
-							$value = (string)$value;
+							$value = (string) $value;
 						} else {
-							throw new Tx_Fluid_Core_ViewHelper_Exception('Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.' , 1247827553);
+							throw new Tx_Fluid_Core_ViewHelper_Exception(('Label value for object of class "' . get_class($value)) . '" was an object without a __toString() method.', 1247827553);
 						}
 					}
 				} elseif (method_exists($value, '__toString')) {
-					$value = (string)$value;
+					$value = (string) $value;
 				} elseif ($this->persistenceManager->getBackend()->getIdentifierByObject($value) !== NULL) {
 					$value = $this->persistenceManager->getBackend()->getIdentifierByObject($value);
 				}
@@ -203,7 +191,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 */
 	protected function isSelected($value) {
 		$selectedValue = $this->getSelectedValue();
-		if ($value === $selectedValue || (string)$value === $selectedValue) {
+		if ($value === $selectedValue || (string) $value === $selectedValue) {
 			return TRUE;
 		}
 		if ($this->hasArgument('multiple')) {
@@ -223,11 +211,11 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 */
 	protected function getSelectedValue() {
 		$value = $this->getValue();
-		if (!is_array($value) && !($value instanceof  Traversable)) {
+		if (!is_array($value) && !$value instanceof Traversable) {
 			return $this->getOptionValueScalar($value);
 		}
 		$selectedValues = array();
-		foreach($value as $selectedValueElement) {
+		foreach ($value as $selectedValueElement) {
 			$selectedValues[] = $this->getOptionValueScalar($selectedValueElement);
 		}
 		return $selectedValues;
@@ -243,10 +231,12 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 		if (is_object($valueElement)) {
 			if ($this->hasArgument('optionValueField')) {
 				return Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($valueElement, $this->arguments['optionValueField']);
-			} else if ($this->persistenceManager->getBackend()->getIdentifierByObject($valueElement) !== NULL){
-				return $this->persistenceManager->getBackend()->getIdentifierByObject($valueElement);
 			} else {
-				return (string)$valueElement;
+				if ($this->persistenceManager->getBackend()->getIdentifierByObject($valueElement) !== NULL) {
+					return $this->persistenceManager->getBackend()->getIdentifierByObject($valueElement);
+				} else {
+					return (string) $valueElement;
+				}
 			}
 		} else {
 			return $valueElement;
@@ -262,14 +252,14 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 * @return string the rendered option tag
 	 */
 	protected function renderOptionTag($value, $label, $isSelected) {
-		$output = '<option value="' . htmlspecialchars($value) . '"';
+		$output = ('<option value="' . htmlspecialchars($value)) . '"';
 		if ($isSelected) {
-			$output.= ' selected="selected"';
+			$output .= ' selected="selected"';
 		}
-		$output.= '>' . htmlspecialchars($label) . '</option>';
-
+		$output .= ('>' . htmlspecialchars($label)) . '</option>';
 		return $output;
 	}
+
 }
 
 ?>

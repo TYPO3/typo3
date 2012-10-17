@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,19 +8,16 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * An interceptor interface. Interceptors are used in the parsing stage to change
  * the syntax tree of a template, e.g. by adding viewhelper nodes.
- *
  */
-interface Tx_Fluid_Core_Parser_InterceptorInterface {
-
+interface Tx_Fluid_Core_Parser_InterceptorInterface
+{
 	const INTERCEPT_OPENING_VIEWHELPER = 1;
 	const INTERCEPT_CLOSING_VIEWHELPER = 2;
 	const INTERCEPT_TEXT = 3;
 	const INTERCEPT_OBJECTACCESSOR = 4;
-
 	/**
 	 * The interceptor can process the given node at will and must return a node
 	 * that will be used in place of the given node.
@@ -39,5 +35,6 @@ interface Tx_Fluid_Core_Parser_InterceptorInterface {
 	 * @return array Array of INTERCEPT_* constants
 	 */
 	public function getInterceptionPoints();
+
 }
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,17 +8,13 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
-
+require_once dirname(__FILE__) . '/../Fixtures/TestViewHelper.php';
 /**
  * Testcase for AbstractViewHelper
- *
  */
 class Tx_Fluid_Tests_Unit_Core_ViewHelper_ViewHelperVariableContainerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 *
 	 * @var Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer
 	 */
 	protected $viewHelperVariableContainer;
@@ -27,6 +22,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_ViewHelperVariableContainerTest extend
 	protected function setUp() {
 		$this->viewHelperVariableContainer = new Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer();
 	}
+
 	/**
 	 * @test
 	 */
@@ -35,7 +31,6 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_ViewHelperVariableContainerTest extend
 		$this->assertFalse($this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_TestViewHelper', 'test'));
 		$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_TestViewHelper', 'test', $variable);
 		$this->assertTrue($this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_TestViewHelper', 'test'));
-
 		$this->assertEquals($variable, $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_TestViewHelper', 'test'));
 	}
 
@@ -90,5 +85,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_ViewHelperVariableContainerTest extend
 		$this->viewHelperVariableContainer->setView($view);
 		$this->assertSame($view, $this->viewHelperVariableContainer->getView());
 	}
+
 }
+
 ?>

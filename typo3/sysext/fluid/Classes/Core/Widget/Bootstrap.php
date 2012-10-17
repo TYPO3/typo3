@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,10 +18,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * This is the bootstrap for Ajax Widget responses
- *
  */
 class Tx_Fluid_Core_Widget_Bootstrap {
 
@@ -49,12 +46,10 @@ class Tx_Fluid_Core_Widget_Bootstrap {
 		$this->initializeConfiguration($configuration);
 		$this->configureObjectManager();
 		$ajaxWidgetContextHolder = $this->objectManager->get('Tx_Fluid_Core_Widget_AjaxWidgetContextHolder');
-
 		$widgetIdentifier = t3lib_div::_GET('fluid-widget-id');
 		$widgetContext = $ajaxWidgetContextHolder->get($widgetIdentifier);
 		$configuration['extensionName'] = $widgetContext->getParentExtensionName();
 		$configuration['pluginName'] = $widgetContext->getParentPluginName();
-
 		$extbaseBootstrap = $this->objectManager->get('Tx_Extbase_Core_Bootstrap');
 		$extbaseBootstrap->cObj = $this->cObj;
 		return $extbaseBootstrap->run($content, $configuration);
@@ -94,6 +89,7 @@ class Tx_Fluid_Core_Widget_Bootstrap {
 			}
 		}
 	}
+
 }
 
 ?>

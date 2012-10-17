@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,15 +8,13 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Interface for objects which are aware of Fluid's rendering context. All objects
  * marked with this interface will get the current rendering context injected
  * by the ObjectAccessorNode on trying to evaluate them.
- *
  */
-interface Tx_Fluid_Core_Parser_SyntaxTree_RenderingContextAwareInterface {
-
+interface Tx_Fluid_Core_Parser_SyntaxTree_RenderingContextAwareInterface
+{
 	/**
 	 * Sets the current rendering context
 	 *
@@ -27,5 +24,4 @@ interface Tx_Fluid_Core_Parser_SyntaxTree_RenderingContextAwareInterface {
 	public function setRenderingContext(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext);
 
 }
-
 ?>

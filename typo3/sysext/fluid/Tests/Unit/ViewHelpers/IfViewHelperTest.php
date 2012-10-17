@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,12 +8,9 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
-
+require_once dirname(__FILE__) . '/ViewHelperBaseTestcase.php';
 /**
  * Testcase for IfViewHelper
- *
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_IfViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
@@ -40,21 +36,19 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_IfViewHelperTest extends Tx_Fluid_ViewHelp
 	 */
 	public function viewHelperRendersThenChildIfConditionIsTrue() {
 		$this->viewHelper->expects($this->at(0))->method('renderThenChild')->will($this->returnValue('foo'));
-
 		$actualResult = $this->viewHelper->render(TRUE);
 		$this->assertEquals('foo', $actualResult);
 	}
-
 
 	/**
 	 * @test
 	 */
 	public function viewHelperRendersElseChildIfConditionIsFalse() {
 		$this->viewHelper->expects($this->at(0))->method('renderElseChild')->will($this->returnValue('foo'));
-
 		$actualResult = $this->viewHelper->render(FALSE);
 		$this->assertEquals('foo', $actualResult);
 	}
+
 }
 
 ?>

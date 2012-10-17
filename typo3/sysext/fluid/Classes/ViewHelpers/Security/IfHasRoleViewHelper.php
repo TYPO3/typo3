@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * This view helper implements an ifHasRole/else condition for FE users/groups.
  *
@@ -27,7 +25,7 @@
  *
  * <code title="Basic usage">
  * <f:security.ifHasRole role="Administrator">
- *   This is being shown in case the current FE user belongs to a FE usergroup (aka role) titled "Administrator" (case sensitive)
+ * This is being shown in case the current FE user belongs to a FE usergroup (aka role) titled "Administrator" (case sensitive)
  * </f:security.ifHasRole>
  * </code>
  * <output>
@@ -36,7 +34,7 @@
  *
  * <code title="Using the usergroup uid as role identifier">
  * <f:security.ifHasRole role="1">
- *   This is being shown in case the current FE user belongs to a FE usergroup (aka role) with the uid "1"
+ * This is being shown in case the current FE user belongs to a FE usergroup (aka role) with the uid "1"
  * </f:security.ifHasRole>
  * </code>
  * <output>
@@ -45,12 +43,12 @@
  *
  * <code title="IfRole / then / else">
  * <f:security.ifHasRole role="Administrator">
- *   <f:then>
- *     This is being shown in case you have the role.
- *   </f:then>
- *   <f:else>
- *     This is being displayed in case you do not have the role.
- *   </f:else>
+ * <f:then>
+ * This is being shown in case you have the role.
+ * </f:then>
+ * <f:else>
+ * This is being displayed in case you do not have the role.
+ * </f:else>
  * </f:security.ifHasRole>
  * </code>
  * <output>
@@ -89,10 +87,12 @@ class Tx_Fluid_ViewHelpers_Security_IfHasRoleViewHelper extends Tx_Fluid_Core_Vi
 			return FALSE;
 		}
 		if (is_numeric($role)) {
-			return (is_array($GLOBALS['TSFE']->fe_user->groupData['uid']) && in_array($role, $GLOBALS['TSFE']->fe_user->groupData['uid']));
+			return is_array($GLOBALS['TSFE']->fe_user->groupData['uid']) && in_array($role, $GLOBALS['TSFE']->fe_user->groupData['uid']);
 		} else {
-			return (is_array($GLOBALS['TSFE']->fe_user->groupData['title']) && in_array($role, $GLOBALS['TSFE']->fe_user->groupData['title']));
+			return is_array($GLOBALS['TSFE']->fe_user->groupData['title']) && in_array($role, $GLOBALS['TSFE']->fe_user->groupData['title']);
 		}
 	}
+
 }
+
 ?>

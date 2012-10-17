@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,10 +18,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the StandaloneView
- *
  */
 class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -98,38 +95,28 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 	 */
 	public function setUp() {
 		$this->view = $this->getAccessibleMock('Tx_Fluid_View_StandaloneView', array('dummy'), array(), '', FALSE);
-
 		$this->mockTemplateParser = $this->getMock('Tx_Fluid_Core_Parser_TemplateParser');
 		$this->mockParsedTemplate = $this->getMock('Tx_Fluid_Core_Parser_ParsedTemplateInterface');
 		$this->mockTemplateParser->expects($this->any())->method('parse')->will($this->returnValue($this->mockParsedTemplate));
-
 		$this->mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-
 		$this->mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManager');
 		$this->mockObjectManager->expects($this->any())->method('get')->will($this->returnCallback(array($this, 'objectManagerCallback')));
 		$this->mockObjectManager->expects($this->any())->method('create')->will($this->returnCallback(array($this, 'objectManagerCallback')));
-
 		$this->mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request');
 		$this->mockUriBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 		$this->mockFlashMessages = $this->getMock('Tx_Extbase_MVC_Controller_FlashMessages');
 		$this->mockContentObject = $this->getMock('tslib_cObj');
-
 		$this->mockControllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext');
 		$this->mockControllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->mockRequest));
-
 		$this->mockViewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
-
 		$this->mockRenderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContext');
 		$this->mockRenderingContext->expects($this->any())->method('getControllerContext')->will($this->returnValue($this->mockControllerContext));
 		$this->mockRenderingContext->expects($this->any())->method('getViewHelperVariableContainer')->will($this->returnValue($this->mockViewHelperVariableContainer));
-
 		$this->view->injectTemplateParser($this->mockTemplateParser);
 		$this->view->injectObjectManager($this->mockObjectManager);
 		$this->view->setRenderingContext($this->mockRenderingContext);
-
 		$this->mockTemplateCompiler = $this->getMock('Tx_Fluid_Core_Compiler_TemplateCompiler');
 		$this->view->_set('templateCompiler', $this->mockTemplateCompiler);
-
 		t3lib_div::setSingletonInstance('Tx_Extbase_Object_ObjectManager', $this->mockObjectManager);
 		t3lib_div::addInstance('tslib_cObj', $this->mockContentObject);
 	}
@@ -146,23 +133,23 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 	 * @return object
 	 */
 	public function objectManagerCallback($className) {
-		switch($className) {
-			case 'Tx_Extbase_Configuration_ConfigurationManagerInterface':
-				return $this->mockConfigurationManager;
-			case 'Tx_Fluid_Core_Parser_TemplateParser':
-				return $this->mockTemplateParser;
-			case 'Tx_Fluid_Core_Rendering_RenderingContext':
-				return $this->mockRenderingContext;
-			case 'Tx_Extbase_MVC_Web_Request':
-				return $this->mockRequest;
-			case 'Tx_Extbase_MVC_Web_Routing_UriBuilder':
-				return $this->mockUriBuilder;
-			case 'Tx_Extbase_MVC_Controller_ControllerContext':
-				return $this->mockControllerContext;
-			case 'Tx_Extbase_MVC_Controller_FlashMessages':
-				return $this->mockFlashMessages;
-			case 'Tx_Fluid_Core_Compiler_TemplateCompiler':
-				return $this->mockTemplateCompiler;
+		switch ($className) {
+		case 'Tx_Extbase_Configuration_ConfigurationManagerInterface':
+			return $this->mockConfigurationManager;
+		case 'Tx_Fluid_Core_Parser_TemplateParser':
+			return $this->mockTemplateParser;
+		case 'Tx_Fluid_Core_Rendering_RenderingContext':
+			return $this->mockRenderingContext;
+		case 'Tx_Extbase_MVC_Web_Request':
+			return $this->mockRequest;
+		case 'Tx_Extbase_MVC_Web_Routing_UriBuilder':
+			return $this->mockUriBuilder;
+		case 'Tx_Extbase_MVC_Controller_ControllerContext':
+			return $this->mockControllerContext;
+		case 'Tx_Extbase_MVC_Controller_FlashMessages':
+			return $this->mockFlashMessages;
+		case 'Tx_Fluid_Core_Compiler_TemplateCompiler':
+			return $this->mockTemplateCompiler;
 		}
 	}
 
@@ -173,7 +160,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 		$mockContentObject = $this->getMock('tslib_cObj');
 		// FIXME should be compared with identicalTo() - but that does not seem to work
 		$this->mockConfigurationManager->expects($this->once())->method('setContentObject')->with($this->equalTo($this->mockContentObject));
-
 		new Tx_Fluid_View_StandaloneView($mockContentObject);
 	}
 
@@ -183,7 +169,6 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 	public function constructorCreatesContentObjectIfItIsNotSpecified() {
 		// FIXME should be compared with identicalTo() - but that does not seem to work
 		$this->mockConfigurationManager->expects($this->once())->method('setContentObject')->with($this->equalTo($this->mockContentObject));
-
 		new Tx_Fluid_View_StandaloneView();
 	}
 
@@ -299,7 +284,7 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 		$this->view->setTemplatePathAndFilename($templatePathAndFilename);
 		$this->view->setLayoutRootPath($layoutRootPath);
 		$actualResult = $this->view->getLayoutRootPath();
-	    $this->assertEquals($layoutRootPath, $actualResult);
+		$this->assertEquals($layoutRootPath, $actualResult);
 	}
 
 	/**
@@ -385,7 +370,7 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 		$this->view->setTemplatePathAndFilename($templatePathAndFilename);
 		$this->view->setPartialRootPath($partialRootPath);
 		$actualResult = $this->view->getPartialRootPath();
-	    $this->assertEquals($partialRootPath, $actualResult);
+		$this->assertEquals($partialRootPath, $actualResult);
 	}
 
 	/**
@@ -453,5 +438,7 @@ class Tx_Fluid_Tests_Unit_View_StandaloneViewTest extends Tx_Extbase_Tests_Unit_
 		$actualResult = $this->view->_call('getPartialSource', 'LayoutFixture');
 		$this->assertEquals($expectedResult, $actualResult);
 	}
+
 }
+
 ?>

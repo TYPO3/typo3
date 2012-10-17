@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -12,7 +11,6 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
-
 /**
  * This ViewHelper generates a HTML dump of the tagged variable.
  *
@@ -47,8 +45,9 @@ class Tx_Fluid_ViewHelpers_DebugViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	 * @return string
 	 */
 	public function render($title = NULL, $maxDepth = 8, $plainText = FALSE, $ansiColors = FALSE, $inline = FALSE, $blacklistedClassNames = NULL, $blacklistedPropertyNames = NULL) {
-		return Tx_Extbase_Utility_Debugger::var_dump($this->renderChildren(), $title, $maxDepth , (bool)$plainText, (bool)$ansiColors, (bool)$inline, $blacklistedClassNames, $blacklistedPropertyNames);
+		return Tx_Extbase_Utility_Debugger::var_dump($this->renderChildren(), $title, $maxDepth, (bool) $plainText, (bool) $ansiColors, (bool) $inline, $blacklistedClassNames, $blacklistedPropertyNames);
 	}
+
 }
 
 ?>

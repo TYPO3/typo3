@@ -8,7 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Outputs an argument/value without any escaping and wraps it with CDATA tags.
  *
@@ -60,7 +59,7 @@ class Tx_Fluid_ViewHelpers_Format_CdataViewHelper extends Tx_Fluid_Core_ViewHelp
 		}
 		return sprintf('<![CDATA[%s]]>', $value);
 	}
-}
 
+}
 
 ?>

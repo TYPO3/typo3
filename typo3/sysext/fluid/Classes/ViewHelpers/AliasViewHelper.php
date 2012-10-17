@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * Declares new variables which are aliases of other variables.
  * Takes a "map"-Parameter which is an associative array which defines the shorthand mapping.
@@ -29,7 +26,7 @@
  *
  * <code title="Multiple mappings">
  * <f:alias map="{x: foo.bar.baz, y: foo.bar.baz.name}">
- *   {x.name} or {y}
+ * {x.name} or {y}
  * </f:alias>
  * </code>
  * <output>
@@ -58,6 +55,7 @@ class Tx_Fluid_ViewHelpers_AliasViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 		}
 		return $output;
 	}
+
 }
 
 ?>

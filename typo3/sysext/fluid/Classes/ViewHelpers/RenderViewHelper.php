@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,8 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-
 /**
  * ViewHelper that renders a section or a specified partial
  *
@@ -33,27 +30,27 @@
  *
  * <code title="Rendering recursive sections">
  * <f:section name="mySection">
- *  <ul>
- *    <f:for each="{myMenu}" as="menuItem">
- *      <li>
- *        {menuItem.text}
- *        <f:if condition="{menuItem.subItems}">
- *          <f:render section="mySection" arguments="{myMenu: menuItem.subItems}" />
- *        </f:if>
- *      </li>
- *    </f:for>
- *  </ul>
+ * <ul>
+ * <f:for each="{myMenu}" as="menuItem">
+ * <li>
+ * {menuItem.text}
+ * <f:if condition="{menuItem.subItems}">
+ * <f:render section="mySection" arguments="{myMenu: menuItem.subItems}" />
+ * </f:if>
+ * </li>
+ * </f:for>
+ * </ul>
  * </f:section>
  * <f:render section="mySection" arguments="{myMenu: menu}" />
  * </code>
  * <output>
  * <ul>
- *   <li>menu1
- *     <ul>
- *       <li>menu1a</li>
- *       <li>menu1b</li>
- *     </ul>
- *   </li>
+ * <li>menu1
+ * <ul>
+ * <li>menu1a</li>
+ * <li>menu1b</li>
+ * </ul>
+ * </li>
  * [...]
  * (depending on the value of {menu})
  * </output>
@@ -83,7 +80,6 @@ class Tx_Fluid_ViewHelpers_RenderViewHelper extends Tx_Fluid_Core_ViewHelper_Abs
 	 */
 	public function render($section = NULL, $partial = NULL, $arguments = array(), $optional = FALSE) {
 		$arguments = $this->loadSettingsIntoArguments($arguments);
-
 		if ($partial !== NULL) {
 			return $this->viewHelperVariableContainer->getView()->renderPartial($partial, $section, $arguments);
 		} elseif ($section !== NULL) {
@@ -104,6 +100,7 @@ class Tx_Fluid_ViewHelpers_RenderViewHelper extends Tx_Fluid_Core_ViewHelper_Abs
 		}
 		return $arguments;
 	}
+
 }
 
 ?>

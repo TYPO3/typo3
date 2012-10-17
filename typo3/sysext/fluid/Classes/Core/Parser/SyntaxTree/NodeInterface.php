@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,13 +8,11 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Node in the syntax tree.
- *
  */
-interface Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface {
-
+interface Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface
+{
 	/**
 	 * Evaluate all child nodes and return the evaluated results.
 	 *
@@ -46,6 +43,6 @@ interface Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface {
 	 * @return mixed Evaluated node
 	 */
 	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext);
-}
 
+}
 ?>

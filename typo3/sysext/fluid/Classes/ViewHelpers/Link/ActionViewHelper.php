@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -12,7 +11,6 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
-
 /**
  * A view helper for creating links to extbase actions.
  *
@@ -25,7 +23,6 @@
  * <a href="index.php?id=123&tx_myextension_plugin[action]=show&tx_myextension_plugin[controller]=Standard&cHash=xyz">action link</f:link.action>
  * (depending on the current page and your TS configuration)
  * </output>
- *
  */
 class Tx_Fluid_ViewHelpers_Link_ActionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
@@ -58,7 +55,7 @@ class Tx_Fluid_ViewHelpers_Link_ActionViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @param boolean $noCache set this to disable caching for the target page. You should not need this.
 	 * @param boolean $noCacheHash set this to supress the cHash query parameter created by TypoLink. You should not need this.
 	 * @param string $section the anchor to be added to the URI
-	 * @param string $format The requested format, e.g. ".html"
+	 * @param string $format The requested format, e.g. ".html
 	 * @param boolean $linkAccessRestrictedPages If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.
 	 * @param array $additionalParams additional query parameters that won't be prefixed like $arguments (overrule $arguments)
 	 * @param boolean $absolute If set, the URI of the rendered link is absolute
@@ -68,26 +65,13 @@ class Tx_Fluid_ViewHelpers_Link_ActionViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 */
 	public function render($action = NULL, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $format = '', $linkAccessRestrictedPages = FALSE, array $additionalParams = array(), $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array()) {
 		$uriBuilder = $this->controllerContext->getUriBuilder();
-		$uri = $uriBuilder
-			->reset()
-			->setTargetPageUid($pageUid)
-			->setTargetPageType($pageType)
-			->setNoCache($noCache)
-			->setUseCacheHash(!$noCacheHash)
-			->setSection($section)
-			->setFormat($format)
-			->setLinkAccessRestrictedPages($linkAccessRestrictedPages)
-			->setArguments($additionalParams)
-			->setCreateAbsoluteUri($absolute)
-			->setAddQueryString($addQueryString)
-			->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)
-			->uriFor($action, $arguments, $controller, $extensionName, $pluginName);
-
+		$uri = $uriBuilder->reset()->setTargetPageUid($pageUid)->setTargetPageType($pageType)->setNoCache($noCache)->setUseCacheHash(!$noCacheHash)->setSection($section)->setFormat($format)->setLinkAccessRestrictedPages($linkAccessRestrictedPages)->setArguments($additionalParams)->setCreateAbsoluteUri($absolute)->setAddQueryString($addQueryString)->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)->uriFor($action, $arguments, $controller, $extensionName, $pluginName);
 		$this->tag->addAttribute('href', $uri);
 		$this->tag->setContent($this->renderChildren());
 		$this->tag->forceClosingTag(TRUE);
-
 		return $this->tag->render();
 	}
+
 }
+
 ?>

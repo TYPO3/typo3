@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,27 +8,10 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Applies htmlspecialchars() escaping to a value
+ *
  * @see http://www.php.net/manual/function.htmlspecialchars.php
- *
- * = Examples =
- *
- * <code title="default notation">
- * <f:format.htmlspecialchars>{text}</f:format.htmlspecialchars>
- * </code>
- * <output>
- * Text with & " ' < > * replaced by HTML entities (htmlspecialchars applied).
- * </output>
- *
- * <code title="inline notation">
- * {text -> f:format.htmlspecialchars(encoding: 'ISO-8859-1')}
- * </code>
- * <output>
- * Text with & " ' < > * replaced by HTML entities (htmlspecialchars applied).
- * </output>
- *
  * @api
  */
 class Tx_Fluid_ViewHelpers_Format_HtmlspecialcharsViewHelper extends Tx_Fluid_ViewHelpers_Format_AbstractEncodingViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_CompilableInterface {
@@ -70,9 +52,9 @@ class Tx_Fluid_ViewHelpers_Format_HtmlspecialcharsViewHelper extends Tx_Fluid_Vi
 	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode, Tx_Fluid_Core_Compiler_TemplateCompiler $templateCompiler) {
 		$valueVariableName = $templateCompiler->variableName('value');
 		$initializationPhpCode .= sprintf('%s = (%s[\'value\'] !== NULL ? %s[\'value\'] : %s());', $valueVariableName, $argumentsVariableName, $argumentsVariableName, $renderChildrenClosureVariableName) . chr(10);
-
-		return sprintf('(!is_string(%s) ? %s : htmlspecialchars(%s, (%s[\'keepQuotes\'] ? ENT_NOQUOTES : ENT_COMPAT), (%s[\'encoding\'] !== NULL ? %s[\'encoding\'] : Tx_Fluid_Core_Compiler_AbstractCompiledTemplate::resolveDefaultEncoding()), %s[\'doubleEncode\']))',
-				$valueVariableName, $valueVariableName, $valueVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName);
+		return sprintf('(!is_string(%s) ? %s : htmlspecialchars(%s, (%s[\'keepQuotes\'] ? ENT_NOQUOTES : ENT_COMPAT), (%s[\'encoding\'] !== NULL ? %s[\'encoding\'] : Tx_Fluid_Core_Compiler_AbstractCompiledTemplate::resolveDefaultEncoding()), %s[\'doubleEncode\']))', $valueVariableName, $valueVariableName, $valueVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName);
 	}
+
 }
+
 ?>

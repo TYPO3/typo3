@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -12,7 +11,6 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
-
 /**
  * Email URI view helper.
  * Generates an email URI incorporating TYPO3s spamProtectEmailAddresses-settings.
@@ -26,7 +24,6 @@
  * javascript:linkTo_UnCryptMailto('ocknvq,hqqBdct0vnf');
  * (depending on your spamProtectEmailAddresses-settings)
  * </output>
- *
  */
 class Tx_Fluid_ViewHelpers_Uri_EmailViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
@@ -42,7 +39,7 @@ class Tx_Fluid_ViewHelpers_Uri_EmailViewHelper extends Tx_Fluid_Core_ViewHelper_
 			return 'mailto:' . $email;
 		}
 	}
-}
 
+}
 
 ?>

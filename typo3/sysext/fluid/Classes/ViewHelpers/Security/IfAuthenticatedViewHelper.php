@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,7 +18,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * This view helper implements an ifAuthenticated/else condition for FE users/groups.
  *
@@ -27,7 +25,7 @@
  *
  * <code title="Basic usage">
  * <f:security.ifAuthenticated>
- *   This is being shown whenever a FE user is logged in
+ * This is being shown whenever a FE user is logged in
  * </f:security.ifAuthenticated>
  * </code>
  * <output>
@@ -36,12 +34,12 @@
  *
  * <code title="IfAuthenticated / then / else">
  * <f:security.ifAuthenticated>
- *   <f:then>
- *     This is being shown in case you have access.
- *   </f:then>
- *   <f:else>
- *     This is being displayed in case you do not have access.
- *   </f:else>
+ * <f:then>
+ * This is being shown in case you have access.
+ * </f:then>
+ * <f:else>
+ * This is being displayed in case you do not have access.
+ * </f:else>
  * </f:security.ifAuthenticated>
  * </code>
  * <output>
@@ -65,5 +63,7 @@ class Tx_Fluid_ViewHelpers_Security_IfAuthenticatedViewHelper extends Tx_Fluid_C
 		}
 		return $this->renderElseChild();
 	}
+
 }
+
 ?>

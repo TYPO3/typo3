@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,10 +8,8 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the TemplateView
- *
  */
 class Tx_Fluid_Tests_Unit_View_AbstractTemplateViewTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
@@ -38,6 +35,7 @@ class Tx_Fluid_Tests_Unit_View_AbstractTemplateViewTest extends Tx_Extbase_Tests
 
 	/**
 	 * Sets up this test case
+	 *
 	 * @return void
 	 */
 	public function setUp() {
@@ -66,10 +64,7 @@ class Tx_Fluid_Tests_Unit_View_AbstractTemplateViewTest extends Tx_Extbase_Tests
 		$this->templateVariableContainer->expects($this->at(1))->method('add')->with('foo', 'FooValue');
 		$this->templateVariableContainer->expects($this->at(2))->method('exists')->with('bar')->will($this->returnValue(FALSE));
 		$this->templateVariableContainer->expects($this->at(3))->method('add')->with('bar', 'BarValue');
-
-		$this->view
-			->assign('foo', 'FooValue')
-			->assign('bar', 'BarValue');
+		$this->view->assign('foo', 'FooValue')->assign('bar', 'BarValue');
 	}
 
 	/**
@@ -81,7 +76,6 @@ class Tx_Fluid_Tests_Unit_View_AbstractTemplateViewTest extends Tx_Extbase_Tests
 		$this->templateVariableContainer->expects($this->at(2))->method('exists')->with('foo')->will($this->returnValue(TRUE));
 		$this->templateVariableContainer->expects($this->at(3))->method('remove')->with('foo');
 		$this->templateVariableContainer->expects($this->at(4))->method('add')->with('foo', 'FooValueOverridden');
-
 		$this->view->assign('foo', 'FooValue');
 		$this->view->assign('foo', 'FooValueOverridden');
 	}
@@ -96,10 +90,7 @@ class Tx_Fluid_Tests_Unit_View_AbstractTemplateViewTest extends Tx_Extbase_Tests
 		$this->templateVariableContainer->expects($this->at(3))->method('add')->with('bar', 'BarValue');
 		$this->templateVariableContainer->expects($this->at(4))->method('exists')->with('baz')->will($this->returnValue(FALSE));
 		$this->templateVariableContainer->expects($this->at(5))->method('add')->with('baz', 'BazValue');
-
-		$this->view
-			->assignMultiple(array('foo' => 'FooValue', 'bar' => 'BarValue'))
-			->assignMultiple(array('baz' => 'BazValue'));
+		$this->view->assignMultiple(array('foo' => 'FooValue', 'bar' => 'BarValue'))->assignMultiple(array('baz' => 'BazValue'));
 	}
 
 	/**
@@ -113,10 +104,10 @@ class Tx_Fluid_Tests_Unit_View_AbstractTemplateViewTest extends Tx_Extbase_Tests
 		$this->templateVariableContainer->expects($this->at(4))->method('add')->with('foo', 'FooValueOverridden');
 		$this->templateVariableContainer->expects($this->at(5))->method('exists')->with('bar')->will($this->returnValue(FALSE));
 		$this->templateVariableContainer->expects($this->at(6))->method('add')->with('bar', 'BarValue');
-
 		$this->view->assign('foo', 'FooValue');
 		$this->view->assignMultiple(array('foo' => 'FooValueOverridden', 'bar' => 'BarValue'));
 	}
+
 }
 
 ?>

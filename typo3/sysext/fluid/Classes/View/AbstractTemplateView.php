@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,12 +8,10 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Abstract Fluid Template View.
  *
  * Contains the fundamental methods which any Fluid based template view needs.
- *
  */
 abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View_ViewInterface {
 
@@ -24,7 +21,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	const RENDERING_TEMPLATE = 1;
 	const RENDERING_PARTIAL = 2;
 	const RENDERING_LAYOUT = 3;
-
 	/**
 	 * @var Tx_Extbase_MVC_Controller_ControllerContext
 	 */
@@ -57,6 +53,7 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	/**
 	 * Stack containing the current rendering type, the current rendering context, and the current parsed template
 	 * Do not manipulate directly, instead use the methods"getCurrent*()", "startRendering(...)" and "stopRendering()"
+	 *
 	 * @var array
 	 */
 	protected $renderingStack = array();
@@ -123,9 +120,10 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	}
 
 	public function initializeView() {
-	}
-	// Here, the backporter can insert the initializeView method, which is needed for Fluid v4.
 
+	}
+
+	// Here, the backporter can insert the initializeView method, which is needed for Fluid v4.
 	/**
 	 * Assign a value to the variable container.
 	 *
@@ -173,7 +171,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	public function render($actionName = NULL) {
 		$this->baseRenderingContext->setControllerContext($this->controllerContext);
 		$this->templateParser->setConfiguration($this->buildParserConfiguration());
-
 		$templateIdentifier = $this->getTemplateIdentifier($actionName);
 		if ($this->templateCompiler->has($templateIdentifier)) {
 			$parsedTemplate = $this->templateCompiler->get($templateIdentifier);
@@ -183,7 +180,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 				$this->templateCompiler->store($templateIdentifier, $parsedTemplate);
 			}
 		}
-
 		if ($parsedTemplate->hasLayout()) {
 			$layoutName = $parsedTemplate->getLayoutName($this->baseRenderingContext);
 			$layoutIdentifier = $this->getLayoutIdentifier($layoutName);
@@ -203,7 +199,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 			$output = $parsedTemplate->render($this->baseRenderingContext);
 			$this->stopRendering();
 		}
-
 		return $output;
 	}
 
@@ -227,20 +222,18 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 			$renderingContext->injectTemplateVariableContainer($variableContainer);
 			$renderingTypeOnNextLevel = $this->getCurrentRenderingType();
 		}
-
 		$parsedTemplate = $this->getCurrentParsedTemplate();
-
 		if ($parsedTemplate->isCompiled()) {
 			$methodNameOfSection = 'section_' . sha1($sectionName);
 			if ($ignoreUnknown && !method_exists($parsedTemplate, $methodNameOfSection)) {
 				return '';
 			}
 			$this->startRendering($renderingTypeOnNextLevel, $parsedTemplate, $renderingContext);
-			$output = $parsedTemplate->$methodNameOfSection($renderingContext);
+			$output = $parsedTemplate->{$methodNameOfSection}($renderingContext);
 			$this->stopRendering();
 		} else {
 			$sections = $parsedTemplate->getVariableContainer()->get('sections');
-			if(!array_key_exists($sectionName, $sections)) {
+			if (!array_key_exists($sectionName, $sections)) {
 				$controllerObjectName = $this->controllerContext->getRequest()->getControllerObjectName();
 				if ($ignoreUnknown) {
 					return '';
@@ -249,14 +242,11 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 				}
 			}
 			$section = $sections[$sectionName];
-
 			$renderingContext->getViewHelperVariableContainer()->add('Tx_Fluid_ViewHelpers_SectionViewHelper', 'isCurrentlyRenderingSection', 'TRUE');
-
 			$this->startRendering($renderingTypeOnNextLevel, $parsedTemplate, $renderingContext);
 			$output = $section->evaluate($renderingContext);
 			$this->stopRendering();
 		}
-
 		return $output;
 	}
 
@@ -274,7 +264,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 			$this->partialIdentifierCache[$partialName] = $this->getPartialIdentifier($partialName);
 		}
 		$partialIdentifier = $this->partialIdentifierCache[$partialName];
-
 		if ($this->templateCompiler->has($partialIdentifier)) {
 			$parsedPartial = $this->templateCompiler->get($partialIdentifier);
 		} else {
@@ -283,11 +272,9 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 				$this->templateCompiler->store($partialIdentifier, $parsedPartial);
 			}
 		}
-
 		$variableContainer = $this->objectManager->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer', $variables);
 		$renderingContext = clone $this->getCurrentRenderingContext();
 		$renderingContext->injectTemplateVariableContainer($variableContainer);
-
 		$this->startRendering(self::RENDERING_PARTIAL, $parsedPartial, $renderingContext);
 		if ($sectionName !== NULL) {
 			$output = $this->renderSection($sectionName, $variables);
@@ -295,7 +282,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 			$output = $parsedPartial->render($renderingContext);
 		}
 		$this->stopRendering();
-
 		return $output;
 	}
 
@@ -335,7 +321,7 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 	 * this method returns that path, otherwise a path and filename will be
 	 * resolved using the layoutPathAndFilenamePattern.
 	 *
-	 * @param string $layoutName Name of the layout to use. If none given, use "Default"
+	 * @param string $layoutName Name of the layout to use. If none given, use "Default
 	 * @return string Path and filename of layout file
 	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
 	 */
@@ -368,7 +354,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Extbase_MVC_View
 		$parserConfiguration = $this->objectManager->create('Tx_Fluid_Core_Parser_Configuration');
 		if ($this->controllerContext->getRequest()->getFormat() === 'html') {
 			$parserConfiguration->addInterceptor($this->objectManager->get('Tx_Fluid_Core_Parser_Interceptor_Escape'));
-
 		}
 		return $parserConfiguration;
 	}

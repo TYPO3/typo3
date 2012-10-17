@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,10 +8,9 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
-
+require_once dirname(__FILE__) . '/../ViewHelperBaseTestcase.php';
 /**
+
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_Link_ExternalViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
@@ -37,9 +35,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Link_ExternalViewHelperTest extends Tx_Flu
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'http://www.some-domain.tld');
 		$mockTagBuilder->expects($this->once())->method('setContent')->with('some content');
 		$this->viewHelper->_set('tag', $mockTagBuilder);
-
 		$this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue('some content'));
-
 		$this->viewHelper->initialize();
 		$this->viewHelper->render('http://www.some-domain.tld');
 	}
@@ -53,9 +49,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Link_ExternalViewHelperTest extends Tx_Flu
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'http://www.some-domain.tld');
 		$mockTagBuilder->expects($this->once())->method('setContent')->with('some content');
 		$this->viewHelper->_set('tag', $mockTagBuilder);
-
 		$this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue('some content'));
-
 		$this->viewHelper->initialize();
 		$this->viewHelper->render('www.some-domain.tld');
 	}
@@ -69,9 +63,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Link_ExternalViewHelperTest extends Tx_Flu
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'ftp://some-domain.tld');
 		$mockTagBuilder->expects($this->once())->method('setContent')->with('some content');
 		$this->viewHelper->_set('tag', $mockTagBuilder);
-
 		$this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue('some content'));
-
 		$this->viewHelper->initialize();
 		$this->viewHelper->render('some-domain.tld', 'ftp');
 	}
@@ -85,12 +77,11 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Link_ExternalViewHelperTest extends Tx_Flu
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'some-domain.tld');
 		$mockTagBuilder->expects($this->once())->method('setContent')->with('some content');
 		$this->viewHelper->_set('tag', $mockTagBuilder);
-
 		$this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue('some content'));
-
 		$this->viewHelper->initialize();
 		$this->viewHelper->render('some-domain.tld', '');
 	}
+
 }
 
 ?>

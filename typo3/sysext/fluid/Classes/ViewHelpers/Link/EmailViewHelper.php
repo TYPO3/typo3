@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -12,10 +11,9 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
-
 /**
- */
 
+ */
 /**
  * Email link view helper.
  * Generates an email link incorporating TYPO3s spamProtectEmailAddresses-settings.
@@ -36,7 +34,6 @@
  * <output>
  * <a href="javascript:linkTo_UnCryptMailto('ocknvq,hqqBdct0vnf');">some custom content</a>
  * </output>
- *
  */
 class Tx_Fluid_ViewHelpers_Link_EmailViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
@@ -76,10 +73,9 @@ class Tx_Fluid_ViewHelpers_Link_EmailViewHelper extends Tx_Fluid_Core_ViewHelper
 		$this->tag->setContent($linkText);
 		$this->tag->addAttribute('href', $linkHref);
 		$this->tag->forceClosingTag(TRUE);
-
 		return $this->tag->render();
 	}
-}
 
+}
 
 ?>

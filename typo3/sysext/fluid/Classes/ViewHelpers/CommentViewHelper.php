@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,7 +8,6 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * This ViewHelper prevents rendering of any content inside the tag
  * Note: Contents of the comment will still be *parsed* thus throwing an
@@ -21,8 +19,8 @@
  * <code title="Commenting out fluid code">
  * Before
  * <f:comment>
- *   This is completely hidden.
- *   <f:debug>This does not get parsed</f:debug>
+ * This is completely hidden.
+ * <f:debug>This does not get parsed</f:debug>
  * </f:comment>
  * After
  * </code>
@@ -33,7 +31,7 @@
  *
  * <code title="Prevent parsing">
  * <f:comment><![CDATA[
- *  <f:some.invalid.syntax />
+ * <f:some.invalid.syntax />
  * ]]></f:comment>
  * </code>
  * <output>
@@ -55,7 +53,9 @@ class Tx_Fluid_ViewHelpers_CommentViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	 * @api
 	 */
 	public function render() {
+
 	}
+
 }
 
 ?>

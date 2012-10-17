@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,22 +8,21 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * [Enter description here]
- *
  */
 class Tx_Fluid_View_Fixture_TemplateViewFixture extends Tx_Fluid_View_TemplateView {
 
 	public $syntaxTree;
 
 	protected function resolveTemplateFile() {
+
 	}
 
 	protected function loadTemplateFile($templateFilePath) {
+
 	}
 
 }
-
 
 ?>
