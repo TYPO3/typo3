@@ -461,8 +461,14 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	static public function returnAllowedInstallPaths() {
 		$installPaths = self::returnInstallPaths();
-		if (!(isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowSystemInstall']) && $GLOBALS['TYPO3_CONF_VARS']['EXT']['allowSystemInstall'])) {
+		if (empty($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowSystemInstall'])) {
 			unset($installPaths['System']);
+		}
+		if (empty($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowGlobalInstall'])) {
+			unset($installPaths['Global']);
+		}
+		if (empty($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowLocalInstall'])) {
+			unset($installPaths['Local']);
 		}
 		return $installPaths;
 	}
