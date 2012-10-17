@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers;
+
 /*
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -27,7 +29,7 @@
  *
  * @api
  */
-class Tx_Fluid_ViewHelpers_RenderChildrenViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @param array $arguments
@@ -45,30 +47,30 @@ class Tx_Fluid_ViewHelpers_RenderChildrenViewHelper extends Tx_Fluid_Core_ViewHe
 	/**
 	 * Get the widget rendering context, or throw an exception if it cannot be found.
 	 *
-	 * @return Tx_Fluid_Core_Rendering_RenderingContextInterface
+	 * @return \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface
 	 */
 	protected function getWidgetRenderingContext() {
 		$renderingContext = $this->getWidgetContext()->getViewHelperChildNodeRenderingContext();
-		if (!$renderingContext instanceof Tx_Fluid_Core_Rendering_RenderingContextInterface) {
-			throw new Tx_Fluid_Core_Widget_Exception_RenderingContextNotFoundException('Rendering Context not found inside Widget. <f:renderChildren> has been used in an AJAX Request, but is only usable in non-ajax mode.', 1284986604);
+		if (!$renderingContext instanceof \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface) {
+			throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\RenderingContextNotFoundException('Rendering Context not found inside Widget. <f:renderChildren> has been used in an AJAX Request, but is only usable in non-ajax mode.', 1284986604);
 		}
 		return $renderingContext;
 	}
 
 	/**
-	 * @return Tx_Fluid_Core_Parser_SyntaxTree_RootNode
+	 * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode
 	 */
 	protected function getWidgetChildNodes() {
 		return $this->getWidgetContext()->getViewHelperChildNodes();
 	}
 
 	/**
-	 * @return Tx_Fluid_Core_Widget_WidgetContext
+	 * @return \TYPO3\CMS\Fluid\Core\Widget\WidgetContext
 	 */
 	protected function getWidgetContext() {
 		$request = $this->controllerContext->getRequest();
-		if (!$request instanceof Tx_Fluid_Core_Widget_WidgetRequest) {
-			throw new Tx_Fluid_Core_Widget_Exception_WidgetRequestNotFoundException('The Request is not a WidgetRequest! <f:renderChildren> must be called inside a Widget Template.', 1284986120);
+		if (!$request instanceof \TYPO3\CMS\Fluid\Core\Widget\WidgetRequest) {
+			throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetRequestNotFoundException('The Request is not a WidgetRequest! <f:renderChildren> must be called inside a Widget Template.', 1284986120);
 		}
 		return $request->getWidgetContext();
 	}
@@ -100,5 +102,6 @@ class Tx_Fluid_ViewHelpers_RenderChildrenViewHelper extends Tx_Fluid_Core_ViewHe
 	}
 
 }
+
 
 ?>

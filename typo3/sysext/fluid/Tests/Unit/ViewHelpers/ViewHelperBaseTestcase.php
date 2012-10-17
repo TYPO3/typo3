@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,45 +13,45 @@
 /**
 
  */
-abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Tests_Unit_BaseTestCase {
+abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
 	 */
 	protected $viewHelperVariableContainer;
 
 	/**
-	 * @var Tx_Fluid_Core_ViewHelper_TemplateVariableContainer
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
 	 */
 	protected $templateVariableContainer;
 
 	/**
-	 * @var Tx_Extbase_MVC_Web_Routing_UriBuilder
+	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
 	 */
 	protected $uriBuilder;
 
 	/**
-	 * @var Tx_Extbase_MVC_Controller_ControllerContext
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
 	 */
 	protected $controllerContext;
 
 	/**
-	 * @var Tx_Fluid_Core_ViewHelper_TagBuilder
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder
 	 */
 	protected $tagBuilder;
 
 	/**
-	 * @var Tx_Fluid_Core_ViewHelper_Arguments
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\Arguments
 	 */
 	protected $arguments;
 
 	/**
-	 * @var Tx_Extbase_MVC_Web_Request
+	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Request
 	 */
 	protected $request;
 
 	/**
-	 * @var Tx_Fluid_Core_Rendering_RenderingContext
+	 * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext
 	 */
 	protected $renderingContext;
 
@@ -57,9 +59,9 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Te
 	 * @return void
 	 */
 	public function setUp() {
-		$this->viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
-		$this->templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
-		$this->uriBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		$this->viewHelperVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\ViewHelperVariableContainer');
+		$this->templateVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer');
+		$this->uriBuilder = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
 		$this->uriBuilder->expects($this->any())->method('reset')->will($this->returnValue($this->uriBuilder));
 		$this->uriBuilder->expects($this->any())->method('setArguments')->will($this->returnValue($this->uriBuilder));
 		$this->uriBuilder->expects($this->any())->method('setSection')->will($this->returnValue($this->uriBuilder));
@@ -72,30 +74,31 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Te
 		$this->uriBuilder->expects($this->any())->method('setTargetPageType')->will($this->returnValue($this->uriBuilder));
 		$this->uriBuilder->expects($this->any())->method('setNoCache')->will($this->returnValue($this->uriBuilder));
 		$this->uriBuilder->expects($this->any())->method('setUseCacheHash')->will($this->returnValue($this->uriBuilder));
-		$this->request = $this->getMock('Tx_Extbase_MVC_Web_Request');
-		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
+		$this->request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
+		$this->controllerContext = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext', array(), array(), '', FALSE);
 		$this->controllerContext->expects($this->any())->method('getUriBuilder')->will($this->returnValue($this->uriBuilder));
 		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
-		$this->tagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder');
+		$this->tagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
 		$this->arguments = array();
-		$this->renderingContext = new Tx_Fluid_Core_Rendering_RenderingContext();
+		$this->renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
 		$this->renderingContext->injectTemplateVariableContainer($this->templateVariableContainer);
 		$this->renderingContext->injectViewHelperVariableContainer($this->viewHelperVariableContainer);
 		$this->renderingContext->setControllerContext($this->controllerContext);
 	}
 
 	/**
-	 * @param Tx_Fluid_Core_ViewHelper_AbstractViewHelper $viewHelper
+	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper
 	 * @return void
 	 */
-	protected function injectDependenciesIntoViewHelper(Tx_Fluid_Core_ViewHelper_AbstractViewHelper $viewHelper) {
+	protected function injectDependenciesIntoViewHelper(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper) {
 		$viewHelper->setRenderingContext($this->renderingContext);
 		$viewHelper->setArguments($this->arguments);
-		if ($viewHelper instanceof Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper) {
+		if ($viewHelper instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper) {
 			$viewHelper->injectTagBuilder($this->tagBuilder);
 		}
 	}
 
 }
+
 
 ?>

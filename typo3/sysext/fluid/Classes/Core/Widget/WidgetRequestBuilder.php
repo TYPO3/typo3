@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Widget;
+
 /*
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -21,37 +23,37 @@
 /**
  * Builds the WidgetRequest if an AJAX widget is called.
  */
-class Tx_Fluid_Core_Widget_WidgetRequestBuilder extends Tx_Extbase_MVC_Web_RequestBuilder {
+class WidgetRequestBuilder extends \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder {
 
 	/**
-	 * @var Tx_Fluid_Core_Widget_AjaxWidgetContextHolder
+	 * @var \TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder
 	 */
 	private $ajaxWidgetContextHolder;
 
 	/**
-	 * @param Tx_Fluid_Core_Widget_AjaxWidgetContextHolder $ajaxWidgetContextHolder
+	 * @param \TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder
 	 * @return void
 	 */
-	public function injectAjaxWidgetContextHolder(Tx_Fluid_Core_Widget_AjaxWidgetContextHolder $ajaxWidgetContextHolder) {
+	public function injectAjaxWidgetContextHolder(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder) {
 		$this->ajaxWidgetContextHolder = $ajaxWidgetContextHolder;
 	}
 
 	/**
 	 * Builds a widget request object from the raw HTTP information
 	 *
-	 * @return Tx_Fluid_Core_Widget_WidgetRequest The widget request as an object
+	 * @return \TYPO3\CMS\Fluid\Core\Widget\WidgetRequest The widget request as an object
 	 */
 	public function build() {
-		$request = $this->objectManager->create('Tx_Fluid_Core_Widget_WidgetRequest');
-		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
-		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
+		$request = $this->objectManager->create('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest');
+		$request->setRequestURI(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
+		$request->setBaseURI(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
 		$request->setMethod(isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : NULL);
 		if (strtolower($_SERVER['REQUEST_METHOD']) === 'post') {
-			$request->setArguments(t3lib_div::_POST());
+			$request->setArguments(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST());
 		} else {
-			$request->setArguments(t3lib_div::_GET());
+			$request->setArguments(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET());
 		}
-		$rawGetArguments = t3lib_div::_GET();
+		$rawGetArguments = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
 		// TODO: rename to @action, to be consistent with normal naming?
 		if (isset($rawGetArguments['action'])) {
 			$request->setControllerActionName($rawGetArguments['action']);
@@ -62,5 +64,6 @@ class Tx_Fluid_Core_Widget_WidgetRequestBuilder extends Tx_Extbase_MVC_Web_Reque
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\View;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -13,7 +15,7 @@
  *
  * @api
  */
-class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
+class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 
 	/**
 	 * Pattern to be resolved for "@templateRoot" in the other patterns.
@@ -93,9 +95,9 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	protected $layoutPathAndFilename = NULL;
 
 	public function __construct() {
-		$this->injectTemplateParser(Tx_Fluid_Compatibility_TemplateParserBuilder::build());
-		$this->injectObjectManager(t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager'));
-		$this->setRenderingContext($this->objectManager->create('Tx_Fluid_Core_Rendering_RenderingContextInterface'));
+		$this->injectTemplateParser(\TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder::build());
+		$this->injectObjectManager(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager'));
+		$this->setRenderingContext($this->objectManager->create('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContextInterface'));
 	}
 
 	public function initializeView() {
@@ -129,16 +131,16 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	/**
 	 * Checks whether a template can be resolved for the current request context.
 	 *
-	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext Controller context which is available inside the view
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext Controller context which is available inside the view
 	 * @return boolean
 	 * @api
 	 */
-	public function canRender(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
+	public function canRender(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext) {
 		$this->setControllerContext($controllerContext);
 		try {
 			$this->getTemplateSource();
 			return TRUE;
-		} catch (Tx_Fluid_View_Exception_InvalidTemplateResourceException $e) {
+		} catch (\TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException $e) {
 			return FALSE;
 		}
 	}
@@ -177,13 +179,13 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 *
 	 * @param string $actionName Name of the action. If NULL, will be taken from request.
 	 * @return string Full path to template
-	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
+	 * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
 	 */
 	protected function getTemplateSource($actionName = NULL) {
 		$templatePathAndFilename = $this->getTemplatePathAndFilename($actionName);
 		$templateSource = file_get_contents($templatePathAndFilename);
 		if ($templateSource === FALSE) {
-			throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException(('"' . $templatePathAndFilename) . '" is not a valid template resource URI.', 1257246929);
+			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('"' . $templatePathAndFilename) . '" is not a valid template resource URI.', 1257246929);
 		}
 		return $templateSource;
 	}
@@ -194,7 +196,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 *
 	 * @param string $actionName Name of the action. If NULL, will be taken from request.
 	 * @return string Full path to template
-	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
+	 * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
 	 */
 	protected function getTemplatePathAndFilename($actionName = NULL) {
 		if ($this->templatePathAndFilename !== NULL) {
@@ -213,15 +215,15 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 				// additional check for deprecated template filename for case insensitive file systems (Windows)
 				$realFileName = basename(realpath($templatePathAndFilename));
 				if ($realFileName !== ucfirst($realFileName)) {
-					t3lib_div::deprecationLog(((('the template filename "' . t3lib_div::fixWindowsFilePath(realpath($templatePathAndFilename))) . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "') . basename($templatePathAndFilename)) . '"');
+					\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(((('the template filename "' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(realpath($templatePathAndFilename))) . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "') . basename($templatePathAndFilename)) . '"');
 				}
 				return $templatePathAndFilename;
 			} elseif (file_exists($fallbackPath)) {
-				t3lib_div::deprecationLog(((('the template filename "' . $fallbackPath) . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "') . basename($templatePathAndFilename)) . '"');
+				\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(((('the template filename "' . $fallbackPath) . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "') . basename($templatePathAndFilename)) . '"');
 				return $fallbackPath;
 			}
 		}
-		throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException(('Template could not be loaded. I tried "' . implode('", "', $paths)) . '"', 1225709595);
+		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('Template could not be loaded. I tried "' . implode('", "', $paths)) . '"', 1225709595);
 	}
 
 	/**
@@ -247,13 +249,13 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 *
 	 * @param string $layoutName Name of the layout to use. If none given, use "Default
 	 * @return string contents of the layout template
-	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
+	 * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
 	 */
 	protected function getLayoutSource($layoutName = 'Default') {
 		$layoutPathAndFilename = $this->getLayoutPathAndFilename($layoutName);
 		$layoutSource = file_get_contents($layoutPathAndFilename);
 		if ($layoutSource === FALSE) {
-			throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException(('"' . $layoutPathAndFilename) . '" is not a valid template resource URI.', 1257246929);
+			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('"' . $layoutPathAndFilename) . '" is not a valid template resource URI.', 1257246929);
 		}
 		return $layoutSource;
 	}
@@ -268,7 +270,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 *
 	 * @param string $layoutName Name of the layout to use. If none given, use "Default
 	 * @return string Path and filename of layout files
-	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
+	 * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
 	 */
 	protected function getLayoutPathAndFilename($layoutName = 'Default') {
 		if ($this->layoutPathAndFilename !== NULL) {
@@ -283,11 +285,11 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 			if (file_exists($layoutPathAndFilename)) {
 				return $layoutPathAndFilename;
 			} elseif (file_exists($fallbackPath)) {
-				t3lib_div::deprecationLog(((('the layout filename "' . $fallbackPath) . '" is lowercase. This is deprecated since TYPO3 4.6. Please rename the layout to "') . basename($layoutPathAndFilename)) . '"');
+				\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(((('the layout filename "' . $fallbackPath) . '" is lowercase. This is deprecated since TYPO3 4.6. Please rename the layout to "') . basename($layoutPathAndFilename)) . '"');
 				return $fallbackPath;
 			}
 		}
-		throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException(('The template files "' . implode('", "', $paths)) . '" could not be loaded.', 1225709595);
+		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('The template files "' . implode('", "', $paths)) . '" could not be loaded.', 1225709595);
 	}
 
 	/**
@@ -308,13 +310,13 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 *
 	 * @param string $partialName The name of the partial
 	 * @return string contents of the partial template
-	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
+	 * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
 	 */
 	protected function getPartialSource($partialName) {
 		$partialPathAndFilename = $this->getPartialPathAndFilename($partialName);
 		$partialSource = file_get_contents($partialPathAndFilename);
 		if ($partialSource === FALSE) {
-			throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException(('"' . $partialPathAndFilename) . '" is not a valid template resource URI.', 1257246929);
+			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('"' . $partialPathAndFilename) . '" is not a valid template resource URI.', 1257246929);
 		}
 		return $partialSource;
 	}
@@ -324,7 +326,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 *
 	 * @param string $partialName The name of the partial
 	 * @return string the full path which should be used. The path definitely exists.
-	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
+	 * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
 	 */
 	protected function getPartialPathAndFilename($partialName) {
 		$paths = $this->expandGenericPathPattern($this->partialPathAndFilenamePattern, TRUE, TRUE);
@@ -334,7 +336,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 				return $partialPathAndFilename;
 			}
 		}
-		throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException(('The template files "' . implode('", "', $paths)) . '" could not be loaded.', 1225709595);
+		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('The template files "' . implode('", "', $paths)) . '" could not be loaded.', 1225709595);
 	}
 
 	/**
@@ -346,7 +348,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 		if ($this->templateRootPath !== NULL) {
 			return $this->templateRootPath;
 		} else {
-			return str_replace('@packageResourcesPath', t3lib_extMgm::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()) . 'Resources/', $this->templateRootPathPattern);
+			return str_replace('@packageResourcesPath', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()) . 'Resources/', $this->templateRootPathPattern);
 		}
 	}
 
@@ -371,7 +373,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 		if ($this->partialRootPath !== NULL) {
 			return $this->partialRootPath;
 		} else {
-			return str_replace('@packageResourcesPath', t3lib_extMgm::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()) . 'Resources/', $this->partialRootPathPattern);
+			return str_replace('@packageResourcesPath', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()) . 'Resources/', $this->partialRootPathPattern);
 		}
 	}
 
@@ -396,7 +398,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 		if ($this->layoutRootPath !== NULL) {
 			return $this->layoutRootPath;
 		} else {
-			return str_replace('@packageResourcesPath', t3lib_extMgm::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()) . 'Resources/', $this->layoutRootPathPattern);
+			return str_replace('@packageResourcesPath', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()) . 'Resources/', $this->layoutRootPathPattern);
 		}
 	}
 
@@ -434,7 +436,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 		$pattern = str_replace('@layoutRoot', $this->getLayoutRootPath(), $pattern);
 		$subpackageKey = $this->controllerContext->getRequest()->getControllerSubpackageKey();
 		$controllerName = $this->controllerContext->getRequest()->getControllerName();
-		$subpackageParts = $subpackageKey !== NULL ? explode(Tx_Fluid_Fluid::NAMESPACE_SEPARATOR, $subpackageKey) : array();
+		$subpackageParts = $subpackageKey !== NULL ? explode(\TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR, $subpackageKey) : array();
 		$results = array();
 		$i = $controllerName === NULL ? 0 : -1;
 		do {
@@ -445,9 +447,9 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 				$temporaryPattern = str_replace('//', '/', str_replace('@controller', '', $temporaryPattern));
 			}
 			$temporaryPattern = str_replace('@subpackage', implode('/', $i < 0 ? $subpackageParts : array_slice($subpackageParts, $i)), $temporaryPattern);
-			$results[] = t3lib_div::fixWindowsFilePath(str_replace('@format', $this->controllerContext->getRequest()->getFormat(), $temporaryPattern));
+			$results[] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(str_replace('@format', $this->controllerContext->getRequest()->getFormat(), $temporaryPattern));
 			if ($formatIsOptional) {
-				$results[] = t3lib_div::fixWindowsFilePath(str_replace('.@format', '', $temporaryPattern));
+				$results[] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(str_replace('.@format', '', $temporaryPattern));
 			}
 		} while ($i++ < count($subpackageParts) && $bubbleControllerAndSubpackage);
 		return $results;
@@ -476,5 +478,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	}
 
 }
+
 
 ?>

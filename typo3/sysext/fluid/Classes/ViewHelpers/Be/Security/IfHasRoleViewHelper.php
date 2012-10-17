@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Security;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -58,7 +60,7 @@
  *
  * @api
  */
-class Tx_Fluid_ViewHelpers_Be_Security_IfHasRoleViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * renders <f:then> child if the current logged in BE user belongs to the specified role (aka usergroup)
@@ -103,5 +105,6 @@ class Tx_Fluid_ViewHelpers_Be_Security_IfHasRoleViewHelper extends Tx_Fluid_Core
 	}
 
 }
+
 
 ?>

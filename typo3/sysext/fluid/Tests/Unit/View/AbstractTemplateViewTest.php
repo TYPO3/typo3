@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\View;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,25 +13,25 @@
 /**
  * Testcase for the TemplateView
  */
-class Tx_Fluid_Tests_Unit_View_AbstractTemplateViewTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class AbstractTemplateViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Fluid_View_AbstractTemplateView
+	 * @var \TYPO3\CMS\Fluid\View\AbstractTemplateView
 	 */
 	protected $view;
 
 	/**
-	 * @var Tx_Fluid_Core_Rendering_RenderingContext
+	 * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext
 	 */
 	protected $renderingContext;
 
 	/**
-	 * @var Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
 	 */
 	protected $viewHelperVariableContainer;
 
 	/**
-	 * @var Tx_Fluid_Core_ViewHelper_TemplateVariableContainer
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
 	 */
 	protected $templateVariableContainer;
 
@@ -39,12 +41,12 @@ class Tx_Fluid_Tests_Unit_View_AbstractTemplateViewTest extends Tx_Extbase_Tests
 	 * @return void
 	 */
 	public function setUp() {
-		$this->templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer', array('exists', 'remove', 'add'));
-		$this->viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer', array('setView'));
-		$this->renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContext', array('getViewHelperVariableContainer', 'getTemplateVariableContainer'));
+		$this->templateVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer', array('exists', 'remove', 'add'));
+		$this->viewHelperVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\ViewHelperVariableContainer', array('setView'));
+		$this->renderingContext = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext', array('getViewHelperVariableContainer', 'getTemplateVariableContainer'));
 		$this->renderingContext->expects($this->any())->method('getViewHelperVariableContainer')->will($this->returnValue($this->viewHelperVariableContainer));
 		$this->renderingContext->expects($this->any())->method('getTemplateVariableContainer')->will($this->returnValue($this->templateVariableContainer));
-		$this->view = $this->getMock('Tx_Fluid_View_AbstractTemplateView', array('getTemplateSource', 'getLayoutSource', 'getPartialSource', 'canRender', 'getTemplateIdentifier', 'getLayoutIdentifier', 'getPartialIdentifier'));
+		$this->view = $this->getMock('TYPO3\\CMS\\Fluid\\View\\AbstractTemplateView', array('getTemplateSource', 'getLayoutSource', 'getPartialSource', 'canRender', 'getTemplateIdentifier', 'getLayoutIdentifier', 'getPartialIdentifier'));
 		$this->view->setRenderingContext($this->renderingContext);
 	}
 
@@ -109,5 +111,6 @@ class Tx_Fluid_Tests_Unit_View_AbstractTemplateViewTest extends Tx_Extbase_Tests
 	}
 
 }
+
 
 ?>

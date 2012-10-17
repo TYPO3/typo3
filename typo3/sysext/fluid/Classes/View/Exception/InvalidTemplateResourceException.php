@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\View\Exception;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -13,9 +15,10 @@
  *
  * @api
  */
-class Tx_Fluid_View_Exception_InvalidTemplateResourceException extends Tx_Fluid_View_Exception {
+class InvalidTemplateResourceException extends \TYPO3\CMS\Fluid\View\Exception {
 
 
 }
+
 
 ?>

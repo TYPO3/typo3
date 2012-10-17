@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,13 +13,13 @@
 /**
  * Testcase for Regular expressions in parser
  */
-class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class TemplateParserPatternTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function testSCAN_PATTERN_NAMESPACEDECLARATION() {
-		$pattern = str_replace('FLUID_NAMESPACE_SEPARATOR', preg_quote(Tx_Fluid_Fluid::NAMESPACE_SEPARATOR), Tx_Fluid_Core_Parser_TemplateParser::$SCAN_PATTERN_NAMESPACEDECLARATION);
+		$pattern = str_replace('FLUID_NAMESPACE_SEPARATOR', preg_quote(\TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR), \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SCAN_PATTERN_NAMESPACEDECLARATION);
 		$this->assertEquals(preg_match($pattern, '{namespace acme=Tx_AcmeMyPackage_Bla_blubb}'), 1, 'The SCAN_PATTERN_NAMESPACEDECLARATION pattern did not match a namespace declaration (1).');
 		$this->assertEquals(preg_match($pattern, '{namespace acme=Tx_AcmeMyPackage_Bla_Blubb }'), 1, 'The SCAN_PATTERN_NAMESPACEDECLARATION pattern did not match a namespace declaration (2).');
 		$this->assertEquals(preg_match($pattern, '    {namespace foo = Tx_Foo_Bla3_Blubb }    '), 1, 'The SCAN_PATTERN_NAMESPACEDECLARATION pattern did not match a namespace declaration (3).');
@@ -29,7 +31,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 	 * @test
 	 */
 	public function testSPLIT_PATTERN_DYNAMICTAGS() {
-		$pattern = $this->insertNamespaceIntoRegularExpression(Tx_Fluid_Core_Parser_TemplateParser::$SPLIT_PATTERN_TEMPLATE_DYNAMICTAGS, array('typo3', 't3', 'f'));
+		$pattern = $this->insertNamespaceIntoRegularExpression(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SPLIT_PATTERN_TEMPLATE_DYNAMICTAGS, array('typo3', 't3', 'f'));
 		$source = '<html><head> <f:a.testing /> <f:blablubb> {testing}</f4:blz> </t3:hi.jo>';
 		$expected = array('<html><head> ', '<f:a.testing />', ' ', '<f:blablubb>', ' {testing}</f4:blz> ', '</t3:hi.jo>');
 		$this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_DYNAMICTAGS pattern did not split the input string correctly with simple tags.');
@@ -58,7 +60,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 	 * @test
 	 */
 	public function testSCAN_PATTERN_DYNAMICTAG() {
-		$pattern = $this->insertNamespaceIntoRegularExpression(Tx_Fluid_Core_Parser_TemplateParser::$SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG, array('f'));
+		$pattern = $this->insertNamespaceIntoRegularExpression(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG, array('f'));
 		$source = '<f:crop attribute="Hallo">';
 		$expected = array(
 			0 => '<f:crop attribute="Hallo">',
@@ -121,7 +123,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 	 * @test
 	 */
 	public function testSCAN_PATTERN_CLOSINGDYNAMICTAG() {
-		$pattern = $this->insertNamespaceIntoRegularExpression(Tx_Fluid_Core_Parser_TemplateParser::$SCAN_PATTERN_TEMPLATE_CLOSINGVIEWHELPERTAG, array('f'));
+		$pattern = $this->insertNamespaceIntoRegularExpression(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SCAN_PATTERN_TEMPLATE_CLOSINGVIEWHELPERTAG, array('f'));
 		$this->assertEquals(preg_match($pattern, '</f:bla>'), 1, 'The SCAN_PATTERN_CLOSINGDYNAMICTAG does not match a tag it should match.');
 		$this->assertEquals(preg_match($pattern, '</f:bla.a    >'), 1, 'The SCAN_PATTERN_CLOSINGDYNAMICTAG does not match a tag (with spaces included) it should match.');
 		$this->assertEquals(preg_match($pattern, '</t:bla>'), 0, 'The SCAN_PATTERN_CLOSINGDYNAMICTAG does match match a tag it should not match.');
@@ -131,7 +133,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 	 * @test
 	 */
 	public function testSPLIT_PATTERN_TAGARGUMENTS() {
-		$pattern = Tx_Fluid_Core_Parser_TemplateParser::$SPLIT_PATTERN_TAGARGUMENTS;
+		$pattern = \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SPLIT_PATTERN_TAGARGUMENTS;
 		$source = ' test="Hallo" argument:post="\'Web" other=\'Single"Quoted\'';
 		$this->assertEquals(preg_match_all($pattern, $source, $matches, PREG_SET_ORDER), 3, 'The SPLIT_PATTERN_TAGARGUMENTS does not match correctly.');
 	}
@@ -140,7 +142,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 	 * @test
 	 */
 	public function testSPLIT_PATTERN_SHORTHANDSYNTAX() {
-		$pattern = $this->insertNamespaceIntoRegularExpression(Tx_Fluid_Core_Parser_TemplateParser::$SPLIT_PATTERN_SHORTHANDSYNTAX, array('f'));
+		$pattern = $this->insertNamespaceIntoRegularExpression(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SPLIT_PATTERN_SHORTHANDSYNTAX, array('f'));
 		$source = 'some string{Object.bla}here as well';
 		$expected = array('some string', '{Object.bla}', 'here as well');
 		$this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX pattern did not split the input string correctly with a simple example.');
@@ -168,7 +170,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 	 * @test
 	 */
 	public function testSPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER() {
-		$pattern = Tx_Fluid_Core_Parser_TemplateParser::$SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER;
+		$pattern = \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER;
 		$source = 'f:for(each: bla)';
 		$expected = array(
 			0 => array(
@@ -212,7 +214,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 	 * @test
 	 */
 	public function testSCAN_PATTERN_SHORTHANDSYNTAX_OBJECTACCESSORS() {
-		$pattern = Tx_Fluid_Core_Parser_TemplateParser::$SCAN_PATTERN_SHORTHANDSYNTAX_OBJECTACCESSORS;
+		$pattern = \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SCAN_PATTERN_SHORTHANDSYNTAX_OBJECTACCESSORS;
 		$this->assertEquals(preg_match($pattern, '{object}'), 1, 'Object accessor not identified!');
 		$this->assertEquals(preg_match($pattern, '{oBject1}'), 1, 'Object accessor not identified if there is a number and capitals inside!');
 		$this->assertEquals(preg_match($pattern, '{object.recursive}'), 1, 'Object accessor not identified if there is a dot inside!');
@@ -229,7 +231,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 	 * @test
 	 */
 	public function testSCAN_PATTERN_SHORTHANDSYNTAX_ARRAYS() {
-		$pattern = Tx_Fluid_Core_Parser_TemplateParser::$SCAN_PATTERN_SHORTHANDSYNTAX_ARRAYS;
+		$pattern = \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SCAN_PATTERN_SHORTHANDSYNTAX_ARRAYS;
 		$this->assertEquals(preg_match($pattern, '{a:b}'), 1, 'Array syntax not identified!');
 		$this->assertEquals(preg_match($pattern, '{a:b, c :   d}'), 1, 'Array syntax not identified in case there are multiple properties!');
 		$this->assertEquals(preg_match($pattern, '{a : 123}'), 1, 'Array syntax not identified when a number is passed as argument!');
@@ -247,7 +249,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 	 * @test
 	 */
 	public function testSPLIT_PATTERN_SHORTHANDSYNTAX_ARRAY_PARTS() {
-		$pattern = Tx_Fluid_Core_Parser_TemplateParser::$SPLIT_PATTERN_SHORTHANDSYNTAX_ARRAY_PARTS;
+		$pattern = \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SPLIT_PATTERN_SHORTHANDSYNTAX_ARRAY_PARTS;
 		$source = '{a: b, e: {c:d, e:f}}';
 		preg_match_all($pattern, $source, $matches, PREG_SET_ORDER);
 		$expected = array(
@@ -287,7 +289,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 	 * @test
 	 */
 	public function testSCAN_PATTERN_CDATA() {
-		$pattern = Tx_Fluid_Core_Parser_TemplateParser::$SCAN_PATTERN_CDATA;
+		$pattern = \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SCAN_PATTERN_CDATA;
 		$this->assertEquals(preg_match($pattern, '<!-- Test -->'), 0, 'The SCAN_PATTERN_CDATA matches a comment, but it should not.');
 		$this->assertEquals(preg_match($pattern, '<![CDATA[This is some ]]>'), 1, 'The SCAN_PATTERN_CDATA does not match a simple CDATA string.');
 		$this->assertEquals(preg_match($pattern, '<![CDATA[This is<bla:test> some ]]>'), 1, 'The SCAN_PATTERN_CDATA does not match a CDATA string with tags inside..');
@@ -305,5 +307,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserPatternTest extends Tx_Extba
 	}
 
 }
+
 
 ?>

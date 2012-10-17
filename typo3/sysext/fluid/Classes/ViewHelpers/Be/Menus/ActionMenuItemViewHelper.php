@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -46,7 +48,7 @@
  * localized selectbox
  * <output>
  */
-class Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuItemViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
+class ActionMenuItemViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 
 	/**
 	 * @var string
@@ -78,5 +80,6 @@ class Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuItemViewHelper extends Tx_Fluid_Co
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\Interceptor;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,40 +13,40 @@
 /**
  * Testcase for Interceptor\Escape
  */
-class Tx_Fluid_Tests_Unit_Core_Parser_Interceptor_EscapeTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class EscapeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Fluid_Core_Parser_Interceptor_Escape
+	 * @var \TYPO3\CMS\Fluid\Core\Parser\Interceptor\Escape
 	 */
 	protected $escapeInterceptor;
 
 	/**
-	 * @var Tx_Fluid_Core_ViewHelper_AbstractViewHelper
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 */
 	protected $mockViewHelper;
 
 	/**
-	 * @var Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
+	 * @var \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
 	 */
 	protected $mockNode;
 
 	/**
-	 * @var Tx_Fluid_Core_Parser_ParsingState
+	 * @var \TYPO3\CMS\Fluid\Core\Parser\ParsingState
 	 */
 	protected $mockParsingState;
 
 	public function setUp() {
-		$this->escapeInterceptor = $this->getAccessibleMock('Tx_Fluid_Core_Parser_Interceptor_Escape', array('dummy'));
-		$this->mockViewHelper = $this->getMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper');
-		$this->mockNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array(), array(), '', FALSE);
-		$this->mockParsingState = $this->getMock('Tx_Fluid_Core_Parser_ParsingState');
+		$this->escapeInterceptor = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\Interceptor\\Escape', array('dummy'));
+		$this->mockViewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\AbstractViewHelper');
+		$this->mockNode = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode', array(), array(), '', FALSE);
+		$this->mockParsingState = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\ParsingState');
 	}
 
 	/**
 	 * @test
 	 */
 	public function processDoesNotDisableEscapingInterceptorByDefault() {
-		$interceptorPosition = Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OPENING_VIEWHELPER;
+		$interceptorPosition = \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_OPENING_VIEWHELPER;
 		$this->mockViewHelper->expects($this->once())->method('isEscapingInterceptorEnabled')->will($this->returnValue(TRUE));
 		$this->mockNode->expects($this->once())->method('getUninitializedViewHelper')->will($this->returnValue($this->mockViewHelper));
 		$this->assertTrue($this->escapeInterceptor->_get('interceptorEnabled'));
@@ -56,7 +58,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_Interceptor_EscapeTest extends Tx_Extbase_
 	 * @test
 	 */
 	public function processDisablesEscapingInterceptorIfViewHelperDisablesIt() {
-		$interceptorPosition = Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OPENING_VIEWHELPER;
+		$interceptorPosition = \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_OPENING_VIEWHELPER;
 		$this->mockViewHelper->expects($this->once())->method('isEscapingInterceptorEnabled')->will($this->returnValue(FALSE));
 		$this->mockNode->expects($this->once())->method('getUninitializedViewHelper')->will($this->returnValue($this->mockViewHelper));
 		$this->assertTrue($this->escapeInterceptor->_get('interceptorEnabled'));
@@ -68,7 +70,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_Interceptor_EscapeTest extends Tx_Extbase_
 	 * @test
 	 */
 	public function processReenablesEscapingInterceptorOnClosingViewHelperTagIfItWasDisabledBefore() {
-		$interceptorPosition = Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER;
+		$interceptorPosition = \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER;
 		$this->escapeInterceptor->_set('interceptorEnabled', FALSE);
 		$this->escapeInterceptor->_set('viewHelperNodesWhichDisableTheInterceptor', array($this->mockNode));
 		$this->escapeInterceptor->process($this->mockNode, $interceptorPosition, $this->mockParsingState);
@@ -79,17 +81,18 @@ class Tx_Fluid_Tests_Unit_Core_Parser_Interceptor_EscapeTest extends Tx_Extbase_
 	 * @test
 	 */
 	public function processWrapsCurrentViewHelperInHtmlentitiesViewHelperOnObjectAccessor() {
-		$interceptorPosition = Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OBJECTACCESSOR;
-		$mockNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode', array(), array(), '', FALSE);
-		$mockEscapeViewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_HtmlspecialcharsViewHelper');
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$mockObjectManager->expects($this->at(0))->method('get')->with('Tx_Fluid_ViewHelpers_Format_HtmlspecialcharsViewHelper')->will($this->returnValue($mockEscapeViewHelper));
-		$mockObjectManager->expects($this->at(1))->method('create')->with('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', $mockEscapeViewHelper, array('value' => $mockNode))->will($this->returnValue($this->mockNode));
+		$interceptorPosition = \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_OBJECTACCESSOR;
+		$mockNode = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ObjectAccessorNode', array(), array(), '', FALSE);
+		$mockEscapeViewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\HtmlspecialcharsViewHelper');
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$mockObjectManager->expects($this->at(0))->method('get')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\HtmlspecialcharsViewHelper')->will($this->returnValue($mockEscapeViewHelper));
+		$mockObjectManager->expects($this->at(1))->method('create')->with('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode', $mockEscapeViewHelper, array('value' => $mockNode))->will($this->returnValue($this->mockNode));
 		$this->escapeInterceptor->injectObjectManager($mockObjectManager);
 		$actualResult = $this->escapeInterceptor->process($mockNode, $interceptorPosition, $this->mockParsingState);
 		$this->assertSame($this->mockNode, $actualResult);
 	}
 
 }
+
 
 ?>

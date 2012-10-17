@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -28,7 +30,7 @@
  * @see Tx_Fluid_ViewHelpers_IfViewHelper
  * @api
  */
-class Tx_Fluid_ViewHelpers_ElseViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class ElseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @return string the rendered string
@@ -39,5 +41,6 @@ class Tx_Fluid_ViewHelpers_ElseViewHelper extends Tx_Fluid_Core_ViewHelper_Abstr
 	}
 
 }
+
 
 ?>

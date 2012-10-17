@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -45,7 +47,7 @@
  *
  * @api
  */
-class Tx_Fluid_ViewHelpers_Format_PrintfViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class PrintfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Format the arguments with the given printf format string.
@@ -60,5 +62,6 @@ class Tx_Fluid_ViewHelpers_Format_PrintfViewHelper extends Tx_Fluid_Core_ViewHel
 	}
 
 }
+
 
 ?>

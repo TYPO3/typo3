@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,7 +13,7 @@
 /**
  * Abstract node in the syntax tree which has been built.
  */
-abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode implements Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface {
+abstract class AbstractNode implements \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface {
 
 	/**
 	 * List of Child Nodes.
@@ -23,10 +25,10 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode implements Tx_Fluid_
 	/**
 	 * Evaluate all child nodes and return the evaluated results.
 	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return mixed Normally, an object is returned - in case it is concatenated with a string, a string is returned.
 	 */
-	public function evaluateChildNodes(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+	public function evaluateChildNodes(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		$output = NULL;
 		foreach ($this->childNodes as $subNode) {
 			if ($output === NULL) {
@@ -34,7 +36,7 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode implements Tx_Fluid_
 			} else {
 				if (is_object($output)) {
 					if (!method_exists($output, '__toString')) {
-						throw new Tx_Fluid_Core_Parser_Exception(('Cannot cast object of type "' . get_class($output)) . '" to string.', 1248356140);
+						throw new \TYPO3\CMS\Fluid\Core\Parser\Exception(('Cannot cast object of type "' . get_class($output)) . '" to string.', 1248356140);
 					}
 					$output = $output->__toString();
 				} else {
@@ -43,7 +45,7 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode implements Tx_Fluid_
 				$subNodeOutput = $subNode->evaluate($renderingContext);
 				if (is_object($subNodeOutput)) {
 					if (!method_exists($subNodeOutput, '__toString')) {
-						throw new Tx_Fluid_Core_Parser_Exception(('Cannot cast object of type "' . get_class($subNodeOutput)) . '" to string.', 1273753083);
+						throw new \TYPO3\CMS\Fluid\Core\Parser\Exception(('Cannot cast object of type "' . get_class($subNodeOutput)) . '" to string.', 1273753083);
 					}
 					$output .= $subNodeOutput->__toString();
 				} else {
@@ -67,13 +69,14 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode implements Tx_Fluid_
 	/**
 	 * Appends a subnode to this node. Is used inside the parser to append children
 	 *
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $childNode The subnode to add
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface $childNode The subnode to add
 	 * @return void
 	 */
-	public function addChildNode(Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $childNode) {
+	public function addChildNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface $childNode) {
 		$this->childNodes[] = $childNode;
 	}
 
 }
+
 
 ?>

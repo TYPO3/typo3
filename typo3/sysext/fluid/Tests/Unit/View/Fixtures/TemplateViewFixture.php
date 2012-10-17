@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\View\Fixtures;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,7 +13,7 @@
 /**
  * [Enter description here]
  */
-class Tx_Fluid_View_Fixture_TemplateViewFixture extends Tx_Fluid_View_TemplateView {
+class TemplateViewFixture extends \TYPO3\CMS\Fluid\View\TemplateView {
 
 	public $syntaxTree;
 
@@ -24,5 +26,6 @@ class Tx_Fluid_View_Fixture_TemplateViewFixture extends Tx_Fluid_View_TemplateVi
 	}
 
 }
+
 
 ?>

@@ -11,13 +11,15 @@
 require_once dirname(__FILE__) . '/Fixtures/EmptySyntaxTreeNode.php';
 require_once dirname(__FILE__) . '/Fixtures/Fixture_UserDomainClass.php';
 require_once dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php';
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
+
 /**
  * Test for the "Select" Form view helper
  */
-class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid_Tests_Unit_ViewHelpers_Form_FormFieldViewHelperBaseTestcase {
+class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase {
 
 	/**
-	 * @var Tx_Fluid_ViewHelpers_Form_SelectViewHelper
+	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper
 	 */
 	protected $viewHelper;
 
@@ -25,7 +27,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid
 		parent::setUp();
 		$this->arguments['name'] = '';
 		$this->arguments['sortByOptionLabel'] = FALSE;
-		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_Form_SelectViewHelper', array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
+		$this->viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\SelectViewHelper', array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
 	}
 
 	/**
@@ -119,7 +121,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid
 	 * @test
 	 */
 	public function multipleSelectCreatesExpectedOptions() {
-		$this->tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder();
+		$this->tagBuilder = new \Tx_Fluid_Core_ViewHelper_TagBuilder();
 		$this->arguments['options'] = array(
 			'value1' => 'label1',
 			'value2' => 'label2',
@@ -141,16 +143,16 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid
 	 */
 	public function selectOnDomainObjectsCreatesExpectedOptions() {
 		$this->markTestIncomplete('TODO - fix test in backporter');
-		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
+		$mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue(NULL));
 		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
 		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
 		$this->tagBuilder->expects($this->once())->method('setContent')->with((((('<option value="1">Ingmar</option>' . chr(10)) . '<option value="2" selected="selected">Sebastian</option>') . chr(10)) . '<option value="3">Robert</option>') . chr(10));
 		$this->tagBuilder->expects($this->once())->method('render');
-		$user_is = new Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(1, 'Ingmar', 'Schlecht');
-		$user_sk = new Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(2, 'Sebastian', 'Kurfuerst');
-		$user_rl = new Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(3, 'Robert', 'Lemke');
+		$user_is = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(1, 'Ingmar', 'Schlecht');
+		$user_sk = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(2, 'Sebastian', 'Kurfuerst');
+		$user_rl = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(3, 'Robert', 'Lemke');
 		$this->arguments['options'] = array(
 			$user_is,
 			$user_sk,
@@ -169,11 +171,11 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid
 	 * @test
 	 */
 	public function multipleSelectOnDomainObjectsCreatesExpectedOptions() {
-		$this->tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder();
+		$this->tagBuilder = new \Tx_Fluid_Core_ViewHelper_TagBuilder();
 		$this->viewHelper->expects($this->exactly(3))->method('registerFieldNameForFormTokenGeneration')->with('myName[]');
-		$user_is = new Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(1, 'Ingmar', 'Schlecht');
-		$user_sk = new Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(2, 'Sebastian', 'Kurfuerst');
-		$user_rl = new Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(3, 'Robert', 'Lemke');
+		$user_is = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(1, 'Ingmar', 'Schlecht');
+		$user_sk = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(2, 'Sebastian', 'Kurfuerst');
+		$user_rl = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(3, 'Robert', 'Lemke');
 		$this->arguments['options'] = array(
 			$user_is,
 			$user_sk,
@@ -197,18 +199,18 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid
 	 * @author Johannes Künsebeck <jk@hdnet.de>
 	 */
 	public function multipleSelectOnDomainObjectsCreatesExpectedOptionsWithoutOptionValueField() {
-		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
-		$mockBackend = $this->getMock('Tx_Extbase_Persistence_Backend', array('getIdentifierByObject'), array(), '', false);
+		$mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
+		$mockBackend = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Backend', array('getIdentifierByObject'), array(), '', false);
 		$mockBackend->expects($this->any())->method('getIdentifierByObject')->will($this->returnCallback(function ($object) {
 			return $object->getId();
 		}));
 		$mockPersistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($mockBackend));
 		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
-		$this->tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder();
+		$this->tagBuilder = new \Tx_Fluid_Core_ViewHelper_TagBuilder();
 		$this->viewHelper->expects($this->exactly(3))->method('registerFieldNameForFormTokenGeneration')->with('myName[]');
-		$user_is = new Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(1, 'Ingmar', 'Schlecht');
-		$user_sk = new Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(2, 'Sebastian', 'Kurfuerst');
-		$user_rl = new Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(3, 'Robert', 'Lemke');
+		$user_is = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(1, 'Ingmar', 'Schlecht');
+		$user_sk = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(2, 'Sebastian', 'Kurfuerst');
+		$user_rl = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(3, 'Robert', 'Lemke');
 		$this->arguments['options'] = array($user_is, $user_sk, $user_rl);
 		$this->arguments['value'] = array($user_rl, $user_is);
 		$this->arguments['optionLabelField'] = 'lastName';
@@ -227,14 +229,14 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid
 	 */
 	public function selectWithoutFurtherConfigurationOnDomainObjectsUsesUuidForValueAndLabel() {
 		$this->markTestIncomplete('TODO - fix test in backporter');
-		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
+		$mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('fakeUID'));
 		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
 		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
 		$this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="fakeUID">fakeUID</option>' . chr(10));
 		$this->tagBuilder->expects($this->once())->method('render');
-		$user = new Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(1, 'Ingmar', 'Schlecht');
+		$user = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(1, 'Ingmar', 'Schlecht');
 		$this->arguments['options'] = array(
 			$user
 		);
@@ -249,14 +251,14 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid
 	 */
 	public function selectWithoutFurtherConfigurationOnDomainObjectsUsesToStringForLabelIfAvailable() {
 		$this->markTestIncomplete('TODO - fix test in backporter');
-		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
+		$mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('fakeUID'));
 		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
 		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
 		$this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="fakeUID">toStringResult</option>' . chr(10));
 		$this->tagBuilder->expects($this->once())->method('render');
-		$user = $this->getMock('Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass', array('__toString'), array(1, 'Ingmar', 'Schlecht'));
+		$user = $this->getMock('TYPO3\\CMS\\Fluid\\Tests\\Unit\\ViewHelpers\\Form\\Fixtures\\Fixture_UserDomainClass', array('__toString'), array(1, 'Ingmar', 'Schlecht'));
 		$user->expects($this->atLeastOnce())->method('__toString')->will($this->returnValue('toStringResult'));
 		$this->arguments['options'] = array(
 			$user
@@ -269,14 +271,14 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid
 
 	/**
 	 * @test
-	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception
+	 * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 */
 	public function selectOnDomainObjectsThrowsExceptionIfNoValueCanBeFound() {
 		$this->markTestIncomplete('TODO - fix test in backporter');
-		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
+		$mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue(NULL));
 		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
-		$user = new Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(1, 'Ingmar', 'Schlecht');
+		$user = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(1, 'Ingmar', 'Schlecht');
 		$this->arguments['options'] = array(
 			$user
 		);
@@ -334,5 +336,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid
 	}
 
 }
+
 
 ?>

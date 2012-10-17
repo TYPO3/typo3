@@ -9,24 +9,26 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 require_once dirname(__FILE__) . '/../../ViewHelpers/ViewHelperBaseTestcase.php';
+namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
+
 /**
  * Testcase for Condition ViewHelper
  */
-class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractConditionViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+class AbstractConditionViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
 
 	/**
-	 * @var Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper
 	 */
 	protected $viewHelper;
 
 	/**
-	 * @var Tx_Fluid_Core_ViewHelper_Arguments
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\Arguments
 	 */
 	protected $mockArguments;
 
 	public function setUp() {
 		parent::setUp();
-		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper', array('getRenderingContext', 'renderChildren', 'hasArgument'));
+		$this->viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\AbstractConditionViewHelper', array('getRenderingContext', 'renderChildren', 'hasArgument'));
 		$this->viewHelper->expects($this->any())->method('getRenderingContext')->will($this->returnValue($this->renderingContext));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 	}
@@ -44,8 +46,8 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractConditionViewHelperTest extend
 	 * @test
 	 */
 	public function renderThenChildReturnsThenViewHelperChildIfConditionIsTrueAndThenViewHelperChildExists() {
-		$mockThenViewHelperNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array('getViewHelperClassName', 'evaluate'), array(), '', FALSE);
-		$mockThenViewHelperNode->expects($this->at(0))->method('getViewHelperClassName')->will($this->returnValue('Tx_Fluid_ViewHelpers_ThenViewHelper'));
+		$mockThenViewHelperNode = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode', array('getViewHelperClassName', 'evaluate'), array(), '', FALSE);
+		$mockThenViewHelperNode->expects($this->at(0))->method('getViewHelperClassName')->will($this->returnValue('TYPO3\\CMS\\Fluid\\ViewHelpers\\ThenViewHelper'));
 		$mockThenViewHelperNode->expects($this->at(1))->method('evaluate')->with($this->renderingContext)->will($this->returnValue('ThenViewHelperResults'));
 		$this->viewHelper->setChildNodes(array($mockThenViewHelperNode));
 		$actualResult = $this->viewHelper->_call('renderThenChild');
@@ -64,8 +66,8 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractConditionViewHelperTest extend
 	 * @test
 	 */
 	public function renderElseChildRendersElseViewHelperChildIfConditionIsFalseAndNoThenViewHelperChildExists() {
-		$mockElseViewHelperNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array('getViewHelperClassName', 'evaluate', 'setRenderingContext'), array(), '', FALSE);
-		$mockElseViewHelperNode->expects($this->at(0))->method('getViewHelperClassName')->will($this->returnValue('Tx_Fluid_ViewHelpers_ElseViewHelper'));
+		$mockElseViewHelperNode = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode', array('getViewHelperClassName', 'evaluate', 'setRenderingContext'), array(), '', FALSE);
+		$mockElseViewHelperNode->expects($this->at(0))->method('getViewHelperClassName')->will($this->returnValue('TYPO3\\CMS\\Fluid\\ViewHelpers\\ElseViewHelper'));
 		$mockElseViewHelperNode->expects($this->at(1))->method('evaluate')->with($this->renderingContext)->will($this->returnValue('ElseViewHelperResults'));
 		$this->viewHelper->setChildNodes(array($mockElseViewHelperNode));
 		$actualResult = $this->viewHelper->_call('renderElseChild');
@@ -87,8 +89,8 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractConditionViewHelperTest extend
 	 * @test
 	 */
 	public function renderThenChildReturnsEmptyStringIfChildNodesOnlyContainElseViewHelper() {
-		$mockElseViewHelperNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array('getViewHelperClassName', 'evaluate'), array(), '', FALSE);
-		$mockElseViewHelperNode->expects($this->any())->method('getViewHelperClassName')->will($this->returnValue('Tx_Fluid_ViewHelpers_ElseViewHelper'));
+		$mockElseViewHelperNode = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode', array('getViewHelperClassName', 'evaluate'), array(), '', FALSE);
+		$mockElseViewHelperNode->expects($this->any())->method('getViewHelperClassName')->will($this->returnValue('TYPO3\\CMS\\Fluid\\ViewHelpers\\ElseViewHelper'));
 		$this->viewHelper->setChildNodes(array($mockElseViewHelperNode));
 		$this->viewHelper->expects($this->never())->method('renderChildren')->will($this->returnValue('Child nodes'));
 		$actualResult = $this->viewHelper->_call('renderThenChild');
@@ -99,7 +101,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractConditionViewHelperTest extend
 	 * @test
 	 */
 	public function thenArgumentHasPriorityOverChildNodesIfConditionIsTrue() {
-		$mockThenViewHelperNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array('getViewHelperClassName', 'evaluate', 'setRenderingContext'), array(), '', FALSE);
+		$mockThenViewHelperNode = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode', array('getViewHelperClassName', 'evaluate', 'setRenderingContext'), array(), '', FALSE);
 		$mockThenViewHelperNode->expects($this->never())->method('evaluate');
 		$this->viewHelper->setChildNodes(array($mockThenViewHelperNode));
 		$this->viewHelper->expects($this->atLeastOnce())->method('hasArgument')->with('then')->will($this->returnValue(TRUE));
@@ -124,8 +126,8 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractConditionViewHelperTest extend
 	 * @test
 	 */
 	public function elseArgumentHasPriorityOverChildNodesIfConditionIsFalse() {
-		$mockElseViewHelperNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array('getViewHelperClassName', 'evaluate', 'setRenderingContext'), array(), '', FALSE);
-		$mockElseViewHelperNode->expects($this->any())->method('getViewHelperClassName')->will($this->returnValue('Tx_Fluid_ViewHelpers_ElseViewHelper'));
+		$mockElseViewHelperNode = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode', array('getViewHelperClassName', 'evaluate', 'setRenderingContext'), array(), '', FALSE);
+		$mockElseViewHelperNode->expects($this->any())->method('getViewHelperClassName')->will($this->returnValue('TYPO3\\CMS\\Fluid\\ViewHelpers\\ElseViewHelper'));
 		$mockElseViewHelperNode->expects($this->never())->method('evaluate');
 		$this->viewHelper->setChildNodes(array($mockElseViewHelperNode));
 		$this->viewHelper->expects($this->atLeastOnce())->method('hasArgument')->with('else')->will($this->returnValue(TRUE));
@@ -136,5 +138,6 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractConditionViewHelperTest extend
 	}
 
 }
+
 
 ?>

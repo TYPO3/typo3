@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -29,7 +31,7 @@
  *
  * @api
  */
-class Tx_Fluid_ViewHelpers_CountViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class CountViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @var boolean
@@ -47,12 +49,13 @@ class Tx_Fluid_ViewHelpers_CountViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 		if ($subject === NULL) {
 			$subject = $this->renderChildren();
 		}
-		if (is_object($subject) && !$subject instanceof Countable) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception(('CountViewHelper only supports arrays and objects implementing Countable interface. Given: "' . get_class($subject)) . '"', 1279808078);
+		if (is_object($subject) && !$subject instanceof \Countable) {
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(('CountViewHelper only supports arrays and objects implementing Countable interface. Given: "' . get_class($subject)) . '"', 1279808078);
 		}
 		return count($subject);
 	}
 
 }
+
 
 ?>

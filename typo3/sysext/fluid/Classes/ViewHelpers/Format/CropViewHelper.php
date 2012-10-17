@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
+
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -55,7 +57,7 @@
  * (depending on the value of {someLongText})
  * </output>
  */
-class Tx_Fluid_ViewHelpers_Format_CropViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class CropViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @var 	tslib_cObj
@@ -68,15 +70,15 @@ class Tx_Fluid_ViewHelpers_Format_CropViewHelper extends Tx_Fluid_Core_ViewHelpe
 	protected $tsfeBackup;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 		$this->contentObject = $this->configurationManager->getContentObject();
 	}
@@ -114,13 +116,13 @@ class Tx_Fluid_ViewHelpers_Format_CropViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 */
 	protected function simulateFrontendEnvironment() {
 		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
-		$GLOBALS['TSFE'] = new stdClass();
+		$GLOBALS['TSFE'] = new \stdClass();
 		// preparing csConvObj
 		if (!is_object($GLOBALS['TSFE']->csConvObj)) {
 			if (is_object($GLOBALS['LANG'])) {
 				$GLOBALS['TSFE']->csConvObj = $GLOBALS['LANG']->csConvObj;
 			} else {
-				$GLOBALS['TSFE']->csConvObj = t3lib_div::makeInstance('t3lib_cs');
+				$GLOBALS['TSFE']->csConvObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
 			}
 		}
 		// preparing renderCharset
@@ -144,5 +146,6 @@ class Tx_Fluid_ViewHelpers_Format_CropViewHelper extends Tx_Fluid_Core_ViewHelpe
 	}
 
 }
+
 
 ?>

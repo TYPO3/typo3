@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\ViewHelper;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -15,7 +17,7 @@
  * @see Tx_Fluid_ViewHelpers_IfViewHelper for a more detailed explanation and a simple usage example.
  * @api
  */
-abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface, Tx_Fluid_Core_ViewHelper_Facets_CompilableInterface {
+abstract class AbstractConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface, \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface {
 
 	/**
 	 * An array of Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
@@ -62,11 +64,11 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_F
 		}
 		$elseViewHelperEncountered = FALSE;
 		foreach ($this->childNodes as $childNode) {
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode && $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ThenViewHelper') {
+			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode && $childNode->getViewHelperClassName() === 'TYPO3\\CMS\\Fluid\\ViewHelpers\\ThenViewHelper') {
 				$data = $childNode->evaluate($this->renderingContext);
 				return $data;
 			}
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode && $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ElseViewHelper') {
+			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode && $childNode->getViewHelperClassName() === 'TYPO3\\CMS\\Fluid\\ViewHelpers\\ElseViewHelper') {
 				$elseViewHelperEncountered = TRUE;
 			}
 		}
@@ -94,7 +96,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_F
 			return $elseClosure();
 		}
 		foreach ($this->childNodes as $childNode) {
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode && $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ElseViewHelper') {
+			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode && $childNode->getViewHelperClassName() === 'TYPO3\\CMS\\Fluid\\ViewHelpers\\ElseViewHelper') {
 				return $childNode->evaluate($this->renderingContext);
 			}
 		}
@@ -108,25 +110,26 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_F
 	 * @param string $argumentsVariableName
 	 * @param string $renderChildrenClosureVariableName
 	 * @param string $initializationPhpCode
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode
-	 * @param Tx_Fluid_Core_Compiler_TemplateCompiler $templateCompiler
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode
+	 * @param \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler
 	 * @return string
 	 * @internal
 	 */
-	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode, Tx_Fluid_Core_Compiler_TemplateCompiler $templateCompiler) {
+	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode, \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler) {
 		foreach ($syntaxTreeNode->getChildNodes() as $childNode) {
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode && $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ThenViewHelper') {
+			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode && $childNode->getViewHelperClassName() === 'TYPO3\\CMS\\Fluid\\ViewHelpers\\ThenViewHelper') {
 				$childNodesAsClosure = $templateCompiler->wrapChildNodesInClosure($childNode);
 				$initializationPhpCode .= sprintf('%s[\'__thenClosure\'] = %s;', $argumentsVariableName, $childNodesAsClosure) . chr(10);
 			}
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode && $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ElseViewHelper') {
+			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode && $childNode->getViewHelperClassName() === 'TYPO3\\CMS\\Fluid\\ViewHelpers\\ElseViewHelper') {
 				$childNodesAsClosure = $templateCompiler->wrapChildNodesInClosure($childNode);
 				$initializationPhpCode .= sprintf('%s[\'__elseClosure\'] = %s;', $argumentsVariableName, $childNodesAsClosure) . chr(10);
 			}
 		}
-		return Tx_Fluid_Core_Compiler_TemplateCompiler::SHOULD_GENERATE_VIEWHELPER_INVOCATION;
+		return \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler::SHOULD_GENERATE_VIEWHELPER_INVOCATION;
 	}
 
 }
+
 
 ?>

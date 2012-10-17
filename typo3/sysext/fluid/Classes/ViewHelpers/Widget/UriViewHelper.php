@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
+
 /*
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -33,7 +35,7 @@
  *
  * @api
  */
-class Tx_Fluid_ViewHelpers_Widget_UriViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class UriViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Render the Uri.
@@ -92,5 +94,6 @@ class Tx_Fluid_ViewHelpers_Widget_UriViewHelper extends Tx_Fluid_Core_ViewHelper
 	}
 
 }
+
 
 ?>

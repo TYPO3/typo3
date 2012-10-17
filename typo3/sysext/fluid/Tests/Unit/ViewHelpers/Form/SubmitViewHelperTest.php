@@ -9,10 +9,12 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 require_once dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php';
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
+
 /**
  * Test for the "Submit" Form view helper
  */
-class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SubmitViewHelperTest extends Tx_Fluid_Tests_Unit_ViewHelpers_Form_FormFieldViewHelperBaseTestcase {
+class SubmitViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase {
 
 	/**
 	 * @var Tx_Fluid_ViewHelpers_Form_ubmitViewHelper
@@ -21,7 +23,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SubmitViewHelperTest extends Tx_Fluid
 
 	public function setUp() {
 		parent::setUp();
-		$this->viewHelper = new Tx_Fluid_ViewHelpers_Form_SubmitViewHelper();
+		$this->viewHelper = new \Tx_Fluid_ViewHelpers_Form_SubmitViewHelper();
 		$this->arguments['name'] = '';
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
@@ -31,7 +33,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SubmitViewHelperTest extends Tx_Fluid
 	 * @test
 	 */
 	public function renderCorrectlySetsTagNameAndDefaultAttributes() {
-		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName', 'addAttribute'));
+		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'submit');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
@@ -40,5 +42,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SubmitViewHelperTest extends Tx_Fluid
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,7 +13,7 @@
 /**
  * A node which is used inside boolean arguments
  */
-class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
+class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 
 	/**
 	 * List of comparators which are supported in the boolean expression language.
@@ -47,14 +49,14 @@ class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_S
 	/**
 	 * Left side of the comparison
 	 *
-	 * @var Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
+	 * @var \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
 	 */
 	protected $leftSide;
 
 	/**
 	 * Right side of the comparison
 	 *
-	 * @var Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
+	 * @var \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
 	 */
 	protected $rightSide;
 
@@ -71,7 +73,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_S
 	 * If no comparator was found, the syntax tree node should be
 	 * converted to boolean.
 	 *
-	 * @var Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
+	 * @var \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
 	 */
 	protected $syntaxTreeNode;
 
@@ -79,22 +81,22 @@ class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_S
 	 * Constructor. Parses the syntax tree node and fills $this->leftSide, $this->rightSide,
 	 * $this->comparator and $this->syntaxTreeNode.
 	 *
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode
 	 */
-	public function __construct(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode) {
+	public function __construct(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode) {
 		$childNodes = $syntaxTreeNode->getChildNodes();
 		if (count($childNodes) > 3) {
-			throw new Tx_Fluid_Core_Parser_Exception('A boolean expression has more than tree parts.', 1244201848);
+			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('A boolean expression has more than tree parts.', 1244201848);
 		} elseif (count($childNodes) === 0) {
 			// In this case, we do not have child nodes; i.e. the current SyntaxTreeNode
 			// is a text node with a literal comparison like "1 == 1"
 			$childNodes = array($syntaxTreeNode);
 		}
-		$this->leftSide = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
-		$this->rightSide = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
+		$this->leftSide = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode();
+		$this->rightSide = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode();
 		$this->comparator = NULL;
 		foreach ($childNodes as $childNode) {
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_TextNode && !preg_match(str_replace('COMPARATORS', implode('|', self::$comparators), self::$booleanExpressionTextNodeCheckerRegularExpression), $childNode->getText())) {
+			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode && !preg_match(str_replace('COMPARATORS', implode('|', self::$comparators), self::$booleanExpressionTextNodeCheckerRegularExpression), $childNode->getText())) {
 				// $childNode is text node, and no comparator found.
 				$this->comparator = NULL;
 				// skip loop and fall back to classical to boolean conversion.
@@ -103,14 +105,14 @@ class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_S
 			if ($this->comparator !== NULL) {
 				// comparator already set, we are evaluating the right side of the comparator
 				$this->rightSide->addChildNode($childNode);
-			} elseif ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_TextNode && ($this->comparator = $this->getComparatorFromString($childNode->getText()))) {
+			} elseif ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode && ($this->comparator = $this->getComparatorFromString($childNode->getText()))) {
 				// comparator in current string segment
 				$explodedString = explode($this->comparator, $childNode->getText());
 				if (isset($explodedString[0]) && trim($explodedString[0]) !== '') {
-					$this->leftSide->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode(trim($explodedString[0])));
+					$this->leftSide->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode(trim($explodedString[0])));
 				}
 				if (isset($explodedString[1]) && trim($explodedString[1]) !== '') {
-					$this->rightSide->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode(trim($explodedString[1])));
+					$this->rightSide->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode(trim($explodedString[1])));
 				}
 			} else {
 				// comparator not found yet, on the left side of the comparator
@@ -132,7 +134,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_S
 	}
 
 	/**
-	 * @return Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
+	 * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
 	 * @internal
 	 */
 	public function getSyntaxTreeNode() {
@@ -140,7 +142,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_S
 	}
 
 	/**
-	 * @return Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
+	 * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
 	 * @internal
 	 */
 	public function getLeftSide() {
@@ -148,7 +150,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_S
 	}
 
 	/**
-	 * @return Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
+	 * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
 	 * @internal
 	 */
 	public function getRightSide() {
@@ -156,10 +158,10 @@ class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_S
 	}
 
 	/**
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return boolean the boolean value
 	 */
-	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		if ($this->comparator !== NULL) {
 			return self::evaluateComparator($this->comparator, $this->leftSide->evaluate($renderingContext), $this->rightSide->evaluate($renderingContext));
 		} else {
@@ -182,9 +184,9 @@ class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_S
 	 *
 	 * This function must be static public, as it is also directly called from cached templates.
 	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return boolean TRUE if comparison of left and right side using the comparator emit TRUE, false otherwise
-	 * @throws Tx_Fluid_Core_Parser_Exception
+	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 */
 	static public function evaluateComparator($comparator, $evaluatedLeftSide, $evaluatedRightSide) {
 		switch ($comparator) {
@@ -228,7 +230,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_S
 			}
 			return $evaluatedLeftSide <= $evaluatedRightSide;
 		default:
-			throw new Tx_Fluid_Core_Parser_Exception(('Comparator "' . $comparator) . '" is not implemented.', 1244234398);
+			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception(('Comparator "' . $comparator) . '" is not implemented.', 1244234398);
 		}
 	}
 
@@ -292,7 +294,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_S
 		if (is_string($value)) {
 			return !empty($value) && strtolower($value) !== 'false';
 		}
-		if (is_array($value) || is_object($value) && $value instanceof Countable) {
+		if (is_array($value) || is_object($value) && $value instanceof \Countable) {
 			return count($value) > 0;
 		}
 		if (is_object($value)) {
@@ -302,5 +304,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode extends Tx_Fluid_Core_Parser_S
 	}
 
 }
+
 
 ?>

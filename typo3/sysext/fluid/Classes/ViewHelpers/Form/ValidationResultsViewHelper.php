@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -52,7 +54,7 @@
  * @api
  * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_Form_ValidationResultsViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class ValidationResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Iterates through selected errors of the request.
@@ -74,5 +76,6 @@ class Tx_Fluid_ViewHelpers_Form_ValidationResultsViewHelper extends Tx_Fluid_Cor
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -24,13 +26,14 @@
  *
  * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0. Please use the <f:form.textfield> ViewHelper instead.
  */
-class Tx_Fluid_ViewHelpers_Form_TextboxViewHelper extends Tx_Fluid_ViewHelpers_Form_TextfieldViewHelper {
+class TextboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\TextfieldViewHelper {
 
 	public function render() {
-		t3lib_div::logDeprecatedFunction('<f:form.textbox> is deprecated. Please use <f:form.textfield> instead.');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction('<f:form.textbox> is deprecated. Please use <f:form.textfield> instead.');
 		parent::render();
 	}
 
 }
+
 
 ?>

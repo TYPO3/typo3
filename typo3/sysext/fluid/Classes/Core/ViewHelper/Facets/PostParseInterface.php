@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\ViewHelper\Facets;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -20,7 +22,7 @@
  *
  * Normally, this facet is not needed, except in really really rare cases.
  */
-interface Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface
+interface PostParseInterface
 {
 	/**
 	 * Callback which is called directly after the corresponding syntax tree
@@ -31,12 +33,13 @@ interface Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface
 	 * You can store some data inside the variableContainer given here, which
 	 * can be used f.e. inside the TemplateView.
 	 *
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $syntaxTreeNode The current node in the syntax tree corresponding to this view helper.
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $syntaxTreeNode The current node in the syntax tree corresponding to this view helper.
 	 * @param array $viewHelperArguments View helper arguments as an array of SyntaxTrees. If you really need an argument, make sure to call $viewHelperArguments[$argName]->render(...)!
-	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer Variable container you can use to pass on some variables to the view.
+	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer Variable container you can use to pass on some variables to the view.
 	 * @return void
 	 */
-	static public function postParseEvent(Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $syntaxTreeNode, array $viewHelperArguments, Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer);
+	static public function postParseEvent(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $syntaxTreeNode, array $viewHelperArguments, \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer);
 
 }
+
 ?>

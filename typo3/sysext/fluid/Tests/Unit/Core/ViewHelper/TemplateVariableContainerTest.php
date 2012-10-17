@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,13 +13,13 @@
 /**
  * Testcase for TemplateVariableContainer
  */
-class Tx_Fluid_Tests_Unit_Core_ViewHelper_TemplateVariableContainerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class TemplateVariableContainerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 
 	 */
 	public function setUp() {
-		$this->variableContainer = new Tx_Fluid_Core_ViewHelper_TemplateVariableContainer();
+		$this->variableContainer = new \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer();
 	}
 
 	/**
@@ -67,7 +69,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TemplateVariableContainerTest extends 
 
 	/**
 	 * @test
-	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException
+	 * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
 	 */
 	public function duplicateIdentifiersThrowException() {
 		$this->variableContainer->add('variable', 'string1');
@@ -76,7 +78,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TemplateVariableContainerTest extends 
 
 	/**
 	 * @test
-	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException
+	 * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
 	 */
 	public function addingReservedIdentifiersThrowException() {
 		$this->variableContainer->add('TrUe', 'someValue');
@@ -84,7 +86,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TemplateVariableContainerTest extends 
 
 	/**
 	 * @test
-	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException
+	 * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
 	 */
 	public function gettingNonexistentValueThrowsException() {
 		$this->variableContainer->get('nonexistent');
@@ -92,7 +94,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TemplateVariableContainerTest extends 
 
 	/**
 	 * @test
-	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException
+	 * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
 	 */
 	public function deletingNonexistentValueThrowsException() {
 		$this->variableContainer->remove('nonexistent');
@@ -100,7 +102,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TemplateVariableContainerTest extends 
 
 	/**
 	 * @test
-	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException
+	 * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
 	 */
 	public function removeReallyRemovesVariables() {
 		$this->variableContainer->add('variable', 'string1');
@@ -125,12 +127,13 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TemplateVariableContainerTest extends 
 
 	/**
 	 * @test
-	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException
+	 * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
 	 */
 	public function addingVariableNamedAllShouldThrowException() {
 		$this->variableContainer->add('_all', 'foo');
 	}
 
 }
+
 
 ?>

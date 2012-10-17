@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Widget;
+
 /*
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -25,7 +27,7 @@
  *
  * This class is only used internally by the widget framework.
  */
-class Tx_Fluid_Core_Widget_AjaxWidgetContextHolder implements t3lib_Singleton {
+class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * An array $ajaxWidgetIdentifier => $widgetContext
@@ -38,7 +40,7 @@ class Tx_Fluid_Core_Widget_AjaxWidgetContextHolder implements t3lib_Singleton {
 	/**
 	 * @var string
 	 */
-	protected $widgetContextsStorageKey = 'Tx_Fluid_Core_Widget_AjaxWidgetContextHolder_widgetContexts';
+	protected $widgetContextsStorageKey = 'TYPO3\\CMS\\Fluid\\Core\\Widget\\AjaxWidgetContextHolder_widgetContexts';
 
 	/**
 	 * Constructor
@@ -65,11 +67,11 @@ class Tx_Fluid_Core_Widget_AjaxWidgetContextHolder implements t3lib_Singleton {
 	 * Get the widget context for the given $ajaxWidgetId.
 	 *
 	 * @param string $ajaxWidgetId
-	 * @return Tx_Fluid_Core_Widget_WidgetContext
+	 * @return \TYPO3\CMS\Fluid\Core\Widget\WidgetContext
 	 */
 	public function get($ajaxWidgetId) {
 		if (!isset($this->widgetContexts[$ajaxWidgetId])) {
-			throw new Tx_Fluid_Core_Widget_Exception_WidgetContextNotFoundException(('No widget context was found for the Ajax Widget Identifier "' . $ajaxWidgetId) . '". This only happens if AJAX URIs are called without including the widget on a page.', 1284793775);
+			throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetContextNotFoundException(('No widget context was found for the Ajax Widget Identifier "' . $ajaxWidgetId) . '". This only happens if AJAX URIs are called without including the widget on a page.', 1284793775);
 		}
 		return $this->widgetContexts[$ajaxWidgetId];
 	}
@@ -78,10 +80,10 @@ class Tx_Fluid_Core_Widget_AjaxWidgetContextHolder implements t3lib_Singleton {
 	 * Stores the WidgetContext inside the Context, and sets the
 	 * AjaxWidgetIdentifier inside the Widget Context correctly.
 	 *
-	 * @param Tx_Fluid_Core_Widget_WidgetContext $widgetContext
+	 * @param \TYPO3\CMS\Fluid\Core\Widget\WidgetContext $widgetContext
 	 * @return void
 	 */
-	public function store(Tx_Fluid_Core_Widget_WidgetContext $widgetContext) {
+	public function store(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext $widgetContext) {
 		$ajaxWidgetId = md5(uniqid(mt_rand(), TRUE));
 		$widgetContext->setAjaxWidgetIdentifier($ajaxWidgetId);
 		$this->widgetContexts[$ajaxWidgetId] = $widgetContext;
@@ -104,5 +106,6 @@ class Tx_Fluid_Core_Widget_AjaxWidgetContextHolder implements t3lib_Singleton {
 	}
 
 }
+
 
 ?>

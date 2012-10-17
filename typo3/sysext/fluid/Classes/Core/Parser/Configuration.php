@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Parser;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -12,7 +14,7 @@
  * The parser configuration. Contains all configuration needed to configure
  * the building of a SyntaxTree.
  */
-class Tx_Fluid_Core_Parser_Configuration {
+class Configuration {
 
 	/**
 	 * Generic interceptors registered with the configuration.
@@ -24,13 +26,13 @@ class Tx_Fluid_Core_Parser_Configuration {
 	/**
 	 * Adds an interceptor to apply to values coming from object accessors.
 	 *
-	 * @param Tx_Fluid_Core_Parser_InterceptorInterface $interceptor
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface $interceptor
 	 * @return void
 	 */
-	public function addInterceptor(Tx_Fluid_Core_Parser_InterceptorInterface $interceptor) {
+	public function addInterceptor(\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface $interceptor) {
 		foreach ($interceptor->getInterceptionPoints() as $interceptionPoint) {
 			if (!isset($this->interceptors[$interceptionPoint])) {
-				$this->interceptors[$interceptionPoint] = t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
+				$this->interceptors[$interceptionPoint] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage');
 			}
 			if (!$this->interceptors[$interceptionPoint]->contains($interceptor)) {
 				$this->interceptors[$interceptionPoint]->attach($interceptor);
@@ -45,12 +47,13 @@ class Tx_Fluid_Core_Parser_Configuration {
 	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Fluid_Core_Parser_InterceptorInterface>
 	 */
 	public function getInterceptors($interceptionPoint) {
-		if (isset($this->interceptors[$interceptionPoint]) && $this->interceptors[$interceptionPoint] instanceof Tx_Extbase_Persistence_ObjectStorage) {
+		if (isset($this->interceptors[$interceptionPoint]) && $this->interceptors[$interceptionPoint] instanceof \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage) {
 			return $this->interceptors[$interceptionPoint];
 		}
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage');
 	}
 
 }
+
 
 ?>

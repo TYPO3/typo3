@@ -19,26 +19,28 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 require_once dirname(__FILE__) . '/../ViewHelperBaseTestcase.php';
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Be;
+
 /**
  * Testcase for be.security.ifAuthenticated view helper
  */
-class Tx_Fluid_ViewHelpers_Be_Security_IfAuthenticatedViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+class IfAuthenticatedViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
 
 	/**
-	 * @var Tx_Fluid_ViewHelpers_Be_Security_IfAuthenticatedViewHelper
+	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Be\Security\IfAuthenticatedViewHelper
 	 */
 	protected $viewHelper;
 
 	/**
-	 * @var t3lib_tsfeBeUserAuth
+	 * @var \TYPO3\CMS\Backend\FrontendBackendUserAuthentication
 	 */
 	protected $beUserBackup;
 
 	public function setUp() {
 		parent::setUp();
 		$this->beUserBackup = isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : NULL;
-		$GLOBALS['BE_USER'] = new stdClass();
-		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_Be_Security_IfAuthenticatedViewHelper', array('renderThenChild', 'renderElseChild'));
+		$GLOBALS['BE_USER'] = new \stdClass();
+		$this->viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Be\\Security\\IfAuthenticatedViewHelper', array('renderThenChild', 'renderElseChild'));
 		$this->viewHelper->expects($this->any())->method('renderThenChild')->will($this->returnValue('then child'));
 		$this->viewHelper->expects($this->any())->method('renderElseChild')->will($this->returnValue('else child'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
@@ -67,5 +69,6 @@ class Tx_Fluid_ViewHelpers_Be_Security_IfAuthenticatedViewHelperTest extends Tx_
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -50,7 +52,7 @@
  *
  * @api
  */
-class Tx_Fluid_ViewHelpers_SectionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface, Tx_Fluid_Core_ViewHelper_Facets_CompilableInterface {
+class SectionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\PostParseInterface, \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface {
 
 	/**
 	 * Initialize the arguments.
@@ -66,12 +68,12 @@ class Tx_Fluid_ViewHelpers_SectionViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	 * Save the associated view helper node in a static public class variable.
 	 * called directly after the view helper was built.
 	 *
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $syntaxTreeNode
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $syntaxTreeNode
 	 * @param array $viewHelperArguments
-	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer
+	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer
 	 * @return void
 	 */
-	static public function postParseEvent(Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $syntaxTreeNode, array $viewHelperArguments, Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer) {
+	static public function postParseEvent(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $syntaxTreeNode, array $viewHelperArguments, \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer) {
 		$sectionName = $viewHelperArguments['name']->getText();
 		if (!$variableContainer->exists('sections')) {
 			$variableContainer->add('sections', array());
@@ -89,8 +91,8 @@ class Tx_Fluid_ViewHelpers_SectionViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	 * @api
 	 */
 	public function render() {
-		if ($this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_SectionViewHelper', 'isCurrentlyRenderingSection')) {
-			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_SectionViewHelper', 'isCurrentlyRenderingSection');
+		if ($this->viewHelperVariableContainer->exists('TYPO3\\CMS\\Fluid\\ViewHelpers\\SectionViewHelper', 'isCurrentlyRenderingSection')) {
+			$this->viewHelperVariableContainer->remove('TYPO3\\CMS\\Fluid\\ViewHelpers\\SectionViewHelper', 'isCurrentlyRenderingSection');
 			return $this->renderChildren();
 		}
 		return '';
@@ -102,14 +104,15 @@ class Tx_Fluid_ViewHelpers_SectionViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	 * @param string $argumentsVariableName
 	 * @param string $renderChildrenClosureVariableName
 	 * @param string $initializationPhpCode
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode
-	 * @param Tx_Fluid_Core_Compiler_TemplateCompiler $templateCompiler
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode
+	 * @param \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler
 	 * @return string
 	 */
-	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode, Tx_Fluid_Core_Compiler_TemplateCompiler $templateCompiler) {
+	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode, \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler) {
 		return '\'\'';
 	}
 
 }
+
 
 ?>

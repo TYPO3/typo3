@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -21,30 +23,30 @@
 /**
  * Testcase for WidgetRequestBuilder
  */
-class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class WidgetRequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Fluid_Core_Widget_WidgetRequestBuilder
+	 * @var \TYPO3\CMS\Fluid\Core\Widget\WidgetRequestBuilder
 	 */
 	protected $widgetRequestBuilder;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $mockObjectManager;
 
 	/**
-	 * @var Tx_Fluid_Core_Widget_WidgetRequest
+	 * @var \TYPO3\CMS\Fluid\Core\Widget\WidgetRequest
 	 */
 	protected $mockWidgetRequest;
 
 	/**
-	 * @var Tx_Fluid_Core_Widget_AjaxWidgetContextHolder
+	 * @var \TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder
 	 */
 	protected $mockAjaxWidgetContextHolder;
 
 	/**
-	 * @var Tx_Fluid_Core_Widget_WidgetContext
+	 * @var \TYPO3\CMS\Fluid\Core\Widget\WidgetContext
 	 */
 	protected $mockWidgetContext;
 
@@ -70,13 +72,13 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 		$this->serverBackup = $_SERVER;
 		$this->getBackup = $_GET;
 		$this->postBackup = $_POST;
-		$this->widgetRequestBuilder = $this->getAccessibleMock('Tx_Fluid_Core_Widget_WidgetRequestBuilder', array('setArgumentsFromRawRequestData'));
-		$this->mockWidgetRequest = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest');
-		$this->mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$this->mockObjectManager->expects($this->once())->method('create')->with('Tx_Fluid_Core_Widget_WidgetRequest')->will($this->returnValue($this->mockWidgetRequest));
+		$this->widgetRequestBuilder = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequestBuilder', array('setArgumentsFromRawRequestData'));
+		$this->mockWidgetRequest = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest');
+		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$this->mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest')->will($this->returnValue($this->mockWidgetRequest));
 		$this->widgetRequestBuilder->_set('objectManager', $this->mockObjectManager);
-		$this->mockWidgetContext = $this->getMock('Tx_Fluid_Core_Widget_WidgetContext');
-		$this->mockAjaxWidgetContextHolder = $this->getMock('Tx_Fluid_Core_Widget_AjaxWidgetContextHolder');
+		$this->mockWidgetContext = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetContext');
+		$this->mockAjaxWidgetContextHolder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\AjaxWidgetContextHolder');
 		$this->widgetRequestBuilder->injectAjaxWidgetContextHolder($this->mockAjaxWidgetContextHolder);
 		$this->mockAjaxWidgetContextHolder->expects($this->once())->method('get')->will($this->returnValue($this->mockWidgetContext));
 	}
@@ -94,7 +96,7 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 	 * @test
 	 */
 	public function buildSetsRequestUri() {
-		$requestUri = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
+		$requestUri = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
 		$this->mockWidgetRequest->expects($this->once())->method('setRequestURI')->with($requestUri);
 		$this->widgetRequestBuilder->build();
 	}
@@ -103,7 +105,7 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 	 * @test
 	 */
 	public function buildSetsBaseUri() {
-		$baseUri = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		$baseUri = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 		$this->mockWidgetRequest->expects($this->once())->method('setBaseURI')->with($baseUri);
 		$this->widgetRequestBuilder->build();
 	}
@@ -168,5 +170,6 @@ class Tx_Fluid_Tests_Unit_Core_Widget_WidgetRequestBuilderTest extends Tx_Extbas
 	}
 
 }
+
 
 ?>

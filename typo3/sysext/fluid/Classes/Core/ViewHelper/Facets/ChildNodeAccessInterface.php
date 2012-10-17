@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\ViewHelper\Facets;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -20,7 +22,7 @@
  *
  * See Tx_Fluid_ViewHelpers_IfViewHelper for an example how it is used.
  */
-interface Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface
+interface ChildNodeAccessInterface
 {
 	/**
 	 * Sets the direct child nodes of the current syntax tree node.
@@ -31,4 +33,5 @@ interface Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface
 	public function setChildNodes(array $childNodes);
 
 }
+
 ?>

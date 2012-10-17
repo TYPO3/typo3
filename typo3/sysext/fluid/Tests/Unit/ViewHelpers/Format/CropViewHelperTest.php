@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -21,29 +23,29 @@
 /**
 
  */
-class Tx_Fluid_Tests_Unit_ViewHelpers_Format_CropViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class CropViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Fluid_ViewHelpers_Format_CropViewHelper
+	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\CropViewHelper
 	 */
 	protected $viewHelper;
 
 	/**
-	 * @var tslib_cObj
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	protected $mockContentObject;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $mockConfigurationManager;
 
 	public function setUp() {
 		parent::setUp();
-		$this->mockContentObject = $this->getMock('tslib_cObj', array(), array(), '', FALSE);
-		$this->mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$this->mockContentObject = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array(), array(), '', FALSE);
+		$this->mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		$this->mockConfigurationManager->expects($this->any())->method('getContentObject')->will($this->returnValue($this->mockContentObject));
-		$this->viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_CropViewHelper', array('renderChildren'));
+		$this->viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\CropViewHelper', array('renderChildren'));
 		$this->viewHelper->injectConfigurationManager($this->mockConfigurationManager);
 		$this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('Some Content'));
 	}
@@ -85,5 +87,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_CropViewHelperTest extends Tx_Extba
 	}
 
 }
+
 
 ?>

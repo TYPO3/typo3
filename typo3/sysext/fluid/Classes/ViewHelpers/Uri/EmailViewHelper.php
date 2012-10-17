@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
+
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -25,7 +27,7 @@
  * (depending on your spamProtectEmailAddresses-settings)
  * </output>
  */
-class Tx_Fluid_ViewHelpers_Uri_EmailViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class EmailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @param string $email The email address to be turned into a URI
@@ -41,5 +43,6 @@ class Tx_Fluid_ViewHelpers_Uri_EmailViewHelper extends Tx_Fluid_Core_ViewHelper_
 	}
 
 }
+
 
 ?>

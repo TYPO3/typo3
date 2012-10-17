@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Widget;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -23,9 +25,10 @@
  *
  * @api
  */
-class Tx_Fluid_Core_Widget_Exception extends Tx_Fluid_Core_Exception {
+class Exception extends \TYPO3\CMS\Fluid\Core\Exception {
 
 
 }
+
 
 ?>

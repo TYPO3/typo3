@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,15 +13,15 @@
 /**
  * Node in the syntax tree.
  */
-interface Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface
+interface NodeInterface
 {
 	/**
 	 * Evaluate all child nodes and return the evaluated results.
 	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return mixed Normally, an object is returned - in case it is concatenated with a string, a string is returned.
 	 */
-	public function evaluateChildNodes(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext);
+	public function evaluateChildNodes(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext);
 
 	/**
 	 * Returns all child nodes for a given node.
@@ -31,18 +33,19 @@ interface Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface
 	/**
 	 * Appends a subnode to this node. Is used inside the parser to append children
 	 *
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $childNode The subnode to add
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface $childNode The subnode to add
 	 * @return void
 	 */
-	public function addChildNode(Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $childNode);
+	public function addChildNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface $childNode);
 
 	/**
 	 * Evaluates the node - can return not only strings, but arbitary objects.
 	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return mixed Evaluated node
 	 */
-	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext);
+	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext);
 
 }
+
 ?>

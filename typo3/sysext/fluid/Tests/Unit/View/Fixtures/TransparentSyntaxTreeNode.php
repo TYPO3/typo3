@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\View\Fixtures;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,14 +13,15 @@
 /**
  * [Enter description here]
  */
-class Tx_Fluid_View_Fixture_TransparentSyntaxTreeNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
+class TransparentSyntaxTreeNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 
 	public $variableContainer;
 
-	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 
 	}
 
 }
+
 
 ?>

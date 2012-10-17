@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
+
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -24,7 +26,7 @@
  * (depending on the current page and your TS configuration)
  * </output>
  */
-class Tx_Fluid_ViewHelpers_Uri_ActionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @param string $action Target action
@@ -52,5 +54,6 @@ class Tx_Fluid_ViewHelpers_Uri_ActionViewHelper extends Tx_Fluid_Core_ViewHelper
 	}
 
 }
+
 
 ?>

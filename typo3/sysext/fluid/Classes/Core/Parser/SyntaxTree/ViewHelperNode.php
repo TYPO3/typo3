@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,7 +13,7 @@
 /**
  * Node which will call a ViewHelper associated with this node.
  */
-class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
+class ViewHelperNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 
 	/**
 	 * Class name of view helper
@@ -30,7 +32,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	/**
 	 * The ViewHelper associated with this node
 	 *
-	 * @var Tx_Fluid_Core_ViewHelper_AbstractViewHelper
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 */
 	protected $uninitializedViewHelper = NULL;
 
@@ -38,19 +40,19 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 * A mapping RenderingContext -> ViewHelper to only re-initialize ViewHelpers
 	 * when a context change occurs.
 	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
 	 */
 	protected $viewHelpersByContext = NULL;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param Tx_Fluid_Core_ViewHelper_AbstractViewHelper $viewHelper The view helper
+	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper The view helper
 	 * @param array $arguments Arguments of view helper - each value is a RootNode.
 	 */
-	public function __construct(Tx_Fluid_Core_ViewHelper_AbstractViewHelper $viewHelper, array $arguments) {
+	public function __construct(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper, array $arguments) {
 		$this->uninitializedViewHelper = $viewHelper;
-		$this->viewHelpersByContext = t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
+		$this->viewHelpersByContext = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage');
 		$this->arguments = $arguments;
 		$this->viewHelperClassName = get_class($this->uninitializedViewHelper);
 	}
@@ -59,7 +61,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 * Returns the attached (but still uninitialized) ViewHelper for this ViewHelperNode.
 	 * We need this method because sometimes Interceptors need to ask some information from the ViewHelper.
 	 *
-	 * @return Tx_Fluid_Core_ViewHelper_AbstractViewHelper the attached ViewHelper, if it is initialized
+	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper the attached ViewHelper, if it is initialized
 	 */
 	public function getUninitializedViewHelper() {
 		return $this->uninitializedViewHelper;
@@ -94,10 +96,10 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 *
 	 * Afterwards, checks that the view helper did not leave a variable lying around.
 	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return object evaluated node after the view helper has been called.
 	 */
-	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		if ($this->viewHelpersByContext->contains($renderingContext)) {
 			$viewHelper = $this->viewHelpersByContext[$renderingContext];
 			$viewHelper->resetState();
@@ -119,7 +121,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 		$viewHelper->setArguments($evaluatedArguments);
 		$viewHelper->setViewHelperNode($this);
 		$viewHelper->setRenderingContext($renderingContext);
-		if ($viewHelper instanceof Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface) {
+		if ($viewHelper instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface) {
 			$viewHelper->setChildNodes($this->childNodes);
 		}
 		$output = $viewHelper->initializeArgumentsAndRender();
@@ -136,5 +138,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	}
 
 }
+
 
 ?>

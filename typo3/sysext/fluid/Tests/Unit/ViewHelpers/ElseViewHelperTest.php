@@ -9,21 +9,24 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 require_once dirname(__FILE__) . '/ViewHelperBaseTestcase.php';
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
+
 /**
  * Testcase for ElseViewHelper
  */
-class Tx_Fluid_Tests_Unit_ViewHelpers_ElseViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+class ElseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
 
 	/**
 	 * @test
 	 */
 	public function renderRendersChildren() {
-		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_ElseViewHelper', array('renderChildren'));
+		$viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\ElseViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
 		$actualResult = $viewHelper->render();
 		$this->assertEquals('foo', $actualResult);
 	}
 
 }
+
 
 ?>

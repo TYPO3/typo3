@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Compatibility;
+
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -28,13 +30,13 @@
  *
  * @internal
  */
-class Tx_Fluid_Compatibility_DocbookGeneratorService extends Tx_Fluid_Service_DocbookGenerator {
+class DocbookGeneratorService extends \TYPO3\CMS\Fluid\Service\DocbookGenerator {
 
 	public function userFunc() {
-		if (!class_exists('Tx_Extbase_Utility_ClassLoader')) {
-			require t3lib_extmgm::extPath('extbase') . 'Classes/Utility/ClassLoader.php';
+		if (!class_exists('TYPO3\\CMS\\Extbase\\Utility\\ClassLoaderUtility')) {
+			require \t3lib_extmgm::extPath('extbase') . 'Classes/Utility/ClassLoader.php';
 		}
-		$classLoader = new Tx_Extbase_Utility_ClassLoader();
+		$classLoader = new \TYPO3\CMS\Extbase\Utility\ClassLoaderUtility();
 		spl_autoload_register(array($classLoader, 'loadClass'));
 		return $this->generateDocbook('Tx_Fluid_ViewHelpers');
 	}
@@ -44,7 +46,7 @@ class Tx_Fluid_Compatibility_DocbookGeneratorService extends Tx_Fluid_Service_Do
 		if ($namespaceParts[count($namespaceParts) - 1] == '') {
 
 		}
-		$classFilePathAndName = t3lib_extMgm::extPath(t3lib_div::camelCaseToLowerCaseUnderscored($namespaceParts[1])) . 'Classes/';
+		$classFilePathAndName = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath(\TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($namespaceParts[1])) . 'Classes/';
 		$classFilePathAndName .= implode(array_slice($namespaceParts, 2, -1), '/') . '/';
 		$classNames = array();
 		$this->recursiveClassNameSearch($namespace, $classFilePathAndName, $classNames);
@@ -71,10 +73,11 @@ class Tx_Fluid_Compatibility_DocbookGeneratorService extends Tx_Fluid_Service_Do
 	}
 
 	protected function instanciateViewHelper($className) {
-		$objectFactory = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$objectFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		return $objectFactory->create($className);
 	}
 
 }
+
 
 ?>

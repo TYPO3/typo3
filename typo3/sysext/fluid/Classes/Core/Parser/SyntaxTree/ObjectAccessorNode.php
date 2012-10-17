@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,7 +13,7 @@
 /**
  * A node which handles object access. This means it handles structures like {object.accessor.bla}
  */
-class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
+class ObjectAccessorNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 
 	/**
 	 * Object path which will be called. Is a list like "post.name.email"
@@ -53,10 +55,10 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_P
 	 * The first part of the object path has to be a variable in the
 	 * TemplateVariableContainer.
 	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return object The evaluated object, can be any object type.
 	 */
-	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		return self::getPropertyPath($renderingContext->getTemplateVariableContainer(), $this->objectPath, $renderingContext);
 	}
 
@@ -70,20 +72,20 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_P
 	 *
 	 * @param mixed $subject An object or array
 	 * @param string $propertyPath
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return mixed Value of the property
 	 */
-	static public function getPropertyPath($subject, $propertyPath, Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+	static public function getPropertyPath($subject, $propertyPath, \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		$propertyPathSegments = explode('.', $propertyPath);
 		foreach ($propertyPathSegments as $pathSegment) {
 			$propertyExists = FALSE;
-			$propertyValue = Tx_Extbase_Reflection_ObjectAccess::getPropertyInternal($subject, $pathSegment, FALSE, $propertyExists);
-			if (($propertyExists !== TRUE && (is_array($subject) || $subject instanceof ArrayAccess)) && isset($subject[$pathSegment])) {
+			$propertyValue = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyInternal($subject, $pathSegment, FALSE, $propertyExists);
+			if (($propertyExists !== TRUE && (is_array($subject) || $subject instanceof \ArrayAccess)) && isset($subject[$pathSegment])) {
 				$subject = $subject[$pathSegment];
 			} else {
 				$subject = $propertyValue;
 			}
-			if ($subject instanceof Tx_Fluid_Core_Parser_SyntaxTree_RenderingContextAwareInterface) {
+			if ($subject instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RenderingContextAwareInterface) {
 				$subject->setRenderingContext($renderingContext);
 			}
 		}
@@ -91,5 +93,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_P
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\SyntaxTree;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,25 +13,26 @@
 /**
  * Testcase for TextNode
  */
-class Tx_Fluid_Tests_Unit_Core_Parser_SyntaxTree_TextNodeTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class TextNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function renderReturnsSameStringAsGivenInConstructor() {
 		$string = 'I can work quite effectively in a train!';
-		$node = new Tx_Fluid_Core_Parser_SyntaxTree_TextNode($string);
-		$this->assertEquals($node->evaluate($this->getMock('Tx_Fluid_Core_Rendering_RenderingContext')), $string, 'The rendered string of a text node is not the same as the string given in the constructor.');
+		$node = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode($string);
+		$this->assertEquals($node->evaluate($this->getMock('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext')), $string, 'The rendered string of a text node is not the same as the string given in the constructor.');
 	}
 
 	/**
 	 * @test
-	 * @expectedException Tx_Fluid_Core_Parser_Exception
+	 * @expectedException \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 */
 	public function constructorThrowsExceptionIfNoStringGiven() {
-		new Tx_Fluid_Core_Parser_SyntaxTree_TextNode(123);
+		new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode(123);
 	}
 
 }
+
 
 ?>

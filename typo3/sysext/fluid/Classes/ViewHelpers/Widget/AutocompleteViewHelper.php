@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -35,12 +37,12 @@
  * </code>
  * <output>
  * <input type="text" id="name" />
- * / the input field and the required JavaScript for the Ajax communication (see Resources/Private/Templates/ViewHelpers/Widget/Autocomplete/Index.html
+ * the input field and the required JavaScript for the Ajax communication (see Resources/Private/Templates/ViewHelpers/Widget/Autocomplete/Index.html
  * </output>
  *
  * @api
  */
-class Tx_Fluid_ViewHelpers_Widget_AutocompleteViewHelper extends Tx_Fluid_Core_Widget_AbstractWidgetViewHelper {
+class AutocompleteViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper {
 
 	/**
 	 * @var bool
@@ -48,28 +50,29 @@ class Tx_Fluid_ViewHelpers_Widget_AutocompleteViewHelper extends Tx_Fluid_Core_W
 	protected $ajaxWidget = TRUE;
 
 	/**
-	 * @var Tx_Fluid_ViewHelpers_Widget_Controller_AutocompleteController
+	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\AutocompleteController
 	 */
 	protected $controller;
 
 	/**
-	 * @param Tx_Fluid_ViewHelpers_Widget_Controller_AutocompleteController $controller
+	 * @param \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\AutocompleteController $controller
 	 * @return void
 	 */
-	public function injectController(Tx_Fluid_ViewHelpers_Widget_Controller_AutocompleteController $controller) {
+	public function injectController(\TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\AutocompleteController $controller) {
 		$this->controller = $controller;
 	}
 
 	/**
-	 * @param Tx_Extbase_Persistence_QueryResult $objects
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $objects
 	 * @param string $for
 	 * @param string $searchProperty
 	 * @return string
 	 */
-	public function render(Tx_Extbase_Persistence_QueryResult $objects, $for, $searchProperty) {
+	public function render(\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $objects, $for, $searchProperty) {
 		return $this->initiateSubRequest();
 	}
 
 }
+
 
 ?>

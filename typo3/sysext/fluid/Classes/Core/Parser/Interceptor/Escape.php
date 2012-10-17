@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Parser\Interceptor;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,7 +13,7 @@
 /**
  * An interceptor adding the escape viewhelper to the suitable places.
  */
-class Tx_Fluid_Core_Parser_Interceptor_Escape implements Tx_Fluid_Core_Parser_InterceptorInterface {
+class Escape implements \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface {
 
 	/**
 	 * Is the interceptor enabled right now?
@@ -29,17 +31,17 @@ class Tx_Fluid_Core_Parser_Interceptor_Escape implements Tx_Fluid_Core_Parser_In
 	protected $viewHelperNodesWhichDisableTheInterceptor = array();
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
 	 * Inject object manager
 	 *
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -47,27 +49,27 @@ class Tx_Fluid_Core_Parser_Interceptor_Escape implements Tx_Fluid_Core_Parser_In
 	 * Adds a ViewHelper node using the Format\HtmlspecialcharsViewHelper to the given node.
 	 * If "escapingInterceptorEnabled" in the ViewHelper is FALSE, will disable itself inside the ViewHelpers body.
 	 *
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface $node
 	 * @param integer $interceptorPosition One of the INTERCEPT_* constants for the current interception point
-	 * @param Tx_Fluid_Core_Parser_ParsingState $parsingState the current parsing state. Not needed in this interceptor.
-	 * @return Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\ParsingState $parsingState the current parsing state. Not needed in this interceptor.
+	 * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface
 	 */
-	public function process(Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node, $interceptorPosition, Tx_Fluid_Core_Parser_ParsingState $parsingState) {
-		if ($interceptorPosition === Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OPENING_VIEWHELPER) {
+	public function process(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface $node, $interceptorPosition, \TYPO3\CMS\Fluid\Core\Parser\ParsingState $parsingState) {
+		if ($interceptorPosition === \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_OPENING_VIEWHELPER) {
 			if (!$node->getUninitializedViewHelper()->isEscapingInterceptorEnabled()) {
 				$this->interceptorEnabled = FALSE;
 				$this->viewHelperNodesWhichDisableTheInterceptor[] = $node;
 			}
-		} elseif ($interceptorPosition === Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER) {
+		} elseif ($interceptorPosition === \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER) {
 			if (end($this->viewHelperNodesWhichDisableTheInterceptor) === $node) {
 				array_pop($this->viewHelperNodesWhichDisableTheInterceptor);
 				if (count($this->viewHelperNodesWhichDisableTheInterceptor) === 0) {
 					$this->interceptorEnabled = TRUE;
 				}
 			}
-		} elseif ($this->interceptorEnabled && $node instanceof Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode) {
-			$escapeViewHelper = $this->objectManager->get('Tx_Fluid_ViewHelpers_Format_HtmlspecialcharsViewHelper');
-			$node = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', $escapeViewHelper, array('value' => $node));
+		} elseif ($this->interceptorEnabled && $node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode) {
+			$escapeViewHelper = $this->objectManager->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\HtmlspecialcharsViewHelper');
+			$node = $this->objectManager->create('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode', $escapeViewHelper, array('value' => $node));
 		}
 		return $node;
 	}
@@ -79,12 +81,13 @@ class Tx_Fluid_Core_Parser_Interceptor_Escape implements Tx_Fluid_Core_Parser_In
 	 */
 	public function getInterceptionPoints() {
 		return array(
-			Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OPENING_VIEWHELPER,
-			Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER,
-			Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OBJECTACCESSOR
+			\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_OPENING_VIEWHELPER,
+			\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER,
+			\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_OBJECTACCESSOR
 		);
 	}
 
 }
+
 
 ?>

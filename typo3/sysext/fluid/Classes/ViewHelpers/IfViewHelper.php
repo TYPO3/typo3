@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -81,7 +83,7 @@
  * @see Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode::convertArgumentValue()
  * @api
  */
-class Tx_Fluid_ViewHelpers_IfViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+class IfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * renders <f:then> child if $condition is true, otherwise renders <f:else> child.
@@ -99,5 +101,6 @@ class Tx_Fluid_ViewHelpers_IfViewHelper extends Tx_Fluid_Core_ViewHelper_Abstrac
 	}
 
 }
+
 
 ?>

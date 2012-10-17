@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -38,7 +40,7 @@
  *
  * @api
  */
-class Tx_Fluid_ViewHelpers_Form_CheckboxViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper {
+class CheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper {
 
 	/**
 	 * @var string
@@ -78,7 +80,7 @@ class Tx_Fluid_ViewHelpers_Form_CheckboxViewHelper extends Tx_Fluid_ViewHelpers_
 				$checked = in_array($valueAttribute, $propertyValue);
 				$nameAttribute .= '[]';
 			} else {
-				throw new Tx_Fluid_Core_ViewHelper_Exception(((('Checkbox viewhelpers can only be bound to properties of type boolean or array. Property "' . $this->arguments['property']) . '" is of type "') . (is_object($propertyValue) ? get_class($propertyValue) : gettype($propertyValue))) . '".', 1248261038);
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(((('Checkbox viewhelpers can only be bound to properties of type boolean or array. Property "' . $this->arguments['property']) . '" is of type "') . (is_object($propertyValue) ? get_class($propertyValue) : gettype($propertyValue))) . '".', 1248261038);
 			}
 		}
 		$this->registerFieldNameForFormTokenGeneration($nameAttribute);
@@ -93,5 +95,6 @@ class Tx_Fluid_ViewHelpers_Form_CheckboxViewHelper extends Tx_Fluid_ViewHelpers_
 	}
 
 }
+
 
 ?>

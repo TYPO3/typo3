@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Parser;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -13,12 +15,12 @@
  * and the current stack of open nodes (nodeStack) and a variable container used
  * for PostParseFacets.
  */
-class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTemplateInterface {
+class ParsingState implements \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterface {
 
 	/**
 	 * Root node reference
 	 *
-	 * @var Tx_Fluid_Core_Parser_SyntaxTree_RootNode
+	 * @var \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode
 	 */
 	protected $rootNode;
 
@@ -33,14 +35,14 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	 * Variable container where ViewHelpers implementing the PostParseFacet can
 	 * store things in.
 	 *
-	 * @var Tx_Fluid_Core_ViewHelper_TemplateVariableContainer
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
 	 */
 	protected $variableContainer;
 
 	/**
 	 * The layout name of the current template or NULL if the template does not contain a layout definition
 	 *
-	 * @var Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
+	 * @var \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
 	 */
 	protected $layoutNameNode;
 
@@ -53,27 +55,27 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	 * Injects a variable container. ViewHelpers implementing the PostParse
 	 * Facet can store information inside this variableContainer.
 	 *
-	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer
+	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer
 	 * @return void
 	 */
-	public function injectVariableContainer(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer) {
+	public function injectVariableContainer(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer) {
 		$this->variableContainer = $variableContainer;
 	}
 
 	/**
 	 * Set root node of this parsing state
 	 *
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $rootNode
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $rootNode
 	 * @return void
 	 */
-	public function setRootNode(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $rootNode) {
+	public function setRootNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $rootNode) {
 		$this->rootNode = $rootNode;
 	}
 
 	/**
 	 * Get root node of this parsing state.
 	 *
-	 * @return Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode The root node
+	 * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode The root node
 	 */
 	public function getRootNode() {
 		return $this->rootNode;
@@ -82,10 +84,10 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	/**
 	 * Render the parsed template with rendering context
 	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext The rendering context to use
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext The rendering context to use
 	 * @return Rendered string
 	 */
-	public function render(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+	public function render(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		return $this->rootNode->evaluate($renderingContext);
 	}
 
@@ -93,17 +95,17 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	 * Push a node to the node stack. The node stack holds all currently open
 	 * templating tags.
 	 *
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $node Node to push to node stack
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $node Node to push to node stack
 	 * @return void
 	 */
-	public function pushNodeToStack(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $node) {
+	public function pushNodeToStack(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $node) {
 		array_push($this->nodeStack, $node);
 	}
 
 	/**
 	 * Get the top stack element, without removing it.
 	 *
-	 * @return Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode the top stack element.
+	 * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode the top stack element.
 	 */
 	public function getNodeFromStack() {
 		return $this->nodeStack[count($this->nodeStack) - 1];
@@ -112,7 +114,7 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	/**
 	 * Pop the top stack element (=remove it) and return it back.
 	 *
-	 * @return Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode the top stack element, which was removed.
+	 * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode the top stack element, which was removed.
 	 */
 	public function popNodeFromStack() {
 		return array_pop($this->nodeStack);
@@ -130,7 +132,7 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	/**
 	 * Returns a variable container which will be then passed to the postParseFacet.
 	 *
-	 * @return Tx_Fluid_Core_ViewHelper_TemplateVariableContainer The variable container or NULL if none has been set yet
+	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer The variable container or NULL if none has been set yet
 	 * @todo Rename to getPostParseVariableContainer
 	 */
 	public function getVariableContainer() {
@@ -138,15 +140,15 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	}
 
 	/**
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $layoutNameNode name of the layout that is defined in this template via <f:layout name="..." />
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $layoutNameNode name of the layout that is defined in this template via <f:layout name="..." />
 	 * @return void
 	 */
-	public function setLayoutNameNode(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $layoutNameNode) {
+	public function setLayoutNameNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $layoutNameNode) {
 		$this->layoutNameNode = $layoutNameNode;
 	}
 
 	/**
-	 * @return Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
+	 * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
 	 */
 	public function getLayoutNameNode() {
 		return $this->layoutNameNode;
@@ -167,10 +169,10 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	 * If no layout is defined, this returns NULL
 	 * This requires the current rendering context in order to be able to evaluate the layout name
 	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return string
 	 */
-	public function getLayoutName(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+	public function getLayoutName(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		if (!$this->hasLayout()) {
 			return NULL;
 		}
@@ -178,7 +180,7 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 		if (!empty($layoutName)) {
 			return $layoutName;
 		}
-		throw new Tx_Fluid_View_Exception('The layoutName could not be evaluated to a string', 1296805368);
+		throw new \TYPO3\CMS\Fluid\View\Exception('The layoutName could not be evaluated to a string', 1296805368);
 	}
 
 	/**
@@ -203,5 +205,6 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	}
 
 }
+
 
 ?>

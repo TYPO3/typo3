@@ -44,18 +44,20 @@
  */
 require_once PATH_typo3 . 'class.db_list.inc';
 require_once PATH_typo3 . 'class.db_list_extra.inc';
-class Tx_Fluid_ViewHelpers_Be_TableListViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
+namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
+
+class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
@@ -79,8 +81,8 @@ class Tx_Fluid_ViewHelpers_Be_TableListViewHelper extends Tx_Fluid_ViewHelpers_B
 	 * @see localRecordList
 	 */
 	public function render($tableName, array $fieldList = array(), $storagePid = NULL, $levels = 0, $filter = '', $recordsPerPage = 0, $sortField = '', $sortDescending = FALSE, $readOnly = FALSE, $enableClickMenu = TRUE, $clickTitleMode = NULL, $alternateBackgroundColors = FALSE) {
-		$pageinfo = t3lib_BEfunc::readPageAccess(t3lib_div::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(1));
-		$dblist = t3lib_div::makeInstance('localRecordList');
+		$pageinfo = \t3lib_BEfunc::readPageAccess(\t3lib_div::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(1));
+		$dblist = \t3lib_div::makeInstance('TYPO3\\CMS\\Recordlist\\RecordList\\DatabaseRecordList');
 		$dblist->backPath = $GLOBALS['BACK_PATH'];
 		$dblist->pageRow = $pageinfo;
 		if ($readOnly === FALSE) {
@@ -92,10 +94,10 @@ class Tx_Fluid_ViewHelpers_Be_TableListViewHelper extends Tx_Fluid_ViewHelpers_B
 		$dblist->alternateBgColors = $alternateBackgroundColors;
 		$dblist->clickMenuEnabled = $enableClickMenu;
 		if ($storagePid === NULL) {
-			$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+			$frameworkConfiguration = $this->configurationManager->getConfiguration(\Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 			$storagePid = $frameworkConfiguration['persistence']['storagePid'];
 		}
-		$dblist->start($storagePid, $tableName, (int) t3lib_div::_GP('pointer'), $filter, $levels, $recordsPerPage);
+		$dblist->start($storagePid, $tableName, (int) \t3lib_div::_GP('pointer'), $filter, $levels, $recordsPerPage);
 		$dblist->allFields = TRUE;
 		$dblist->dontShowClipControlPanels = TRUE;
 		$dblist->displayFields = FALSE;
@@ -109,5 +111,6 @@ class Tx_Fluid_ViewHelpers_Be_TableListViewHelper extends Tx_Fluid_ViewHelpers_B
 	}
 
 }
+
 
 ?>

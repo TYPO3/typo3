@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -14,7 +16,7 @@
  * @see http://www.php.net/manual/en/function.number-format.php
  * @api
  */
-class Tx_Fluid_ViewHelpers_Format_NumberViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class NumberViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Format the numeric value as a number with grouped thousands, decimal point and
@@ -32,5 +34,6 @@ class Tx_Fluid_ViewHelpers_Format_NumberViewHelper extends Tx_Fluid_Core_ViewHel
 	}
 
 }
+
 
 ?>

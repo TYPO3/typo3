@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
+
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -40,7 +42,7 @@
  * (depending on your TS configuration)
  * </output>
  */
-class Tx_Fluid_ViewHelpers_Link_PageViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
+class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 
 	/**
 	 * @var string
@@ -80,5 +82,6 @@ class Tx_Fluid_ViewHelpers_Link_PageViewHelper extends Tx_Fluid_Core_ViewHelper_
 	}
 
 }
+
 
 ?>

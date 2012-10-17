@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers;
+
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -40,10 +42,10 @@
  * Could not get image resource for "NonExistingImage.png".
  * </output>
  */
-class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
+class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 
 	/**
-	 * @var tslib_cObj
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	protected $contentObject;
 
@@ -63,15 +65,15 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	protected $workingDirectoryBackup;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 		$this->contentObject = $this->configurationManager->getContentObject();
 	}
@@ -121,11 +123,11 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 		$imageInfo = $this->contentObject->getImgResource($src, $setup);
 		$GLOBALS['TSFE']->lastImageInfo = $imageInfo;
 		if (!is_array($imageInfo)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception(('Could not get image resource for "' . htmlspecialchars($src)) . '".', 1253191060);
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(('Could not get image resource for "' . htmlspecialchars($src)) . '".', 1253191060);
 		}
-		$imageInfo[3] = t3lib_div::png_to_gif_by_imagemagick($imageInfo[3]);
+		$imageInfo[3] = \TYPO3\CMS\Core\Utility\GeneralUtility::png_to_gif_by_imagemagick($imageInfo[3]);
 		$GLOBALS['TSFE']->imagesOnPage[] = $imageInfo[3];
-		$imageSource = $GLOBALS['TSFE']->absRefPrefix . t3lib_div::rawUrlEncodeFP($imageInfo[3]);
+		$imageSource = $GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::rawUrlEncodeFP($imageInfo[3]);
 		if (TYPO3_MODE === 'BE') {
 			$imageSource = '../' . $imageSource;
 			$this->resetFrontendEnvironment();
@@ -150,9 +152,9 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 		// set the working directory to the site root
 		$this->workingDirectoryBackup = getcwd();
 		chdir(PATH_site);
-		$typoScriptSetup = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-		$GLOBALS['TSFE'] = new stdClass();
-		$template = t3lib_div::makeInstance('t3lib_TStemplate');
+		$typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$GLOBALS['TSFE'] = new \stdClass();
+		$template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\TemplateService');
 		$template->tt_track = 0;
 		$template->init();
 		$template->getFileName_backPath = PATH_site;
@@ -173,5 +175,6 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	}
 
 }
+
 
 ?>

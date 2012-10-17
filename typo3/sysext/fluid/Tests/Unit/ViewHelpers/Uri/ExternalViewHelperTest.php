@@ -9,19 +9,21 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 require_once dirname(__FILE__) . '/../ViewHelperBaseTestcase.php';
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Uri;
+
 /**
  * Testcase for the external uri view helper
  */
-class Tx_Fluid_Tests_Unit_ViewHelpers_Uri_ExternalViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
 
 	/**
-	 * @var Tx_Fluid_ViewHelpers_Uri_ExternalViewHelper
+	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Uri\ExternalViewHelper
 	 */
 	protected $viewHelper;
 
 	public function setUp() {
 		parent::setUp();
-		$this->viewHelper = new Tx_Fluid_ViewHelpers_Uri_ExternalViewHelper();
+		$this->viewHelper = new \Tx_Fluid_ViewHelpers_Uri_ExternalViewHelper();
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
@@ -63,5 +65,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Uri_ExternalViewHelperTest extends Tx_Flui
 	}
 
 }
+
 
 ?>

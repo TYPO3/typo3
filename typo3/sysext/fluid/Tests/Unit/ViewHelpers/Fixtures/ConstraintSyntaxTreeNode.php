@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,15 +13,15 @@
 /**
  * [Enter description here]
  */
-class Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode extends Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode {
+class ConstraintSyntaxTreeNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode {
 
 	public $callProtocol = array();
 
-	public function __construct(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer) {
+	public function __construct(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer) {
 		$this->variableContainer = $variableContainer;
 	}
 
-	public function evaluateChildNodes(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+	public function evaluateChildNodes(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		$identifiers = $this->variableContainer->getAllIdentifiers();
 		$callElement = array();
 		foreach ($identifiers as $identifier) {
@@ -28,10 +30,11 @@ class Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode extends Tx_Fluid_Co
 		$this->callProtocol[] = $callElement;
 	}
 
-	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 
 	}
 
 }
+
 
 ?>

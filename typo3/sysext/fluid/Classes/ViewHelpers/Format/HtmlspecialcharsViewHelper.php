@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -14,7 +16,7 @@
  * @see http://www.php.net/manual/function.htmlspecialchars.php
  * @api
  */
-class Tx_Fluid_ViewHelpers_Format_HtmlspecialcharsViewHelper extends Tx_Fluid_ViewHelpers_Format_AbstractEncodingViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_CompilableInterface {
+class HtmlspecialcharsViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\AbstractEncodingViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface {
 
 	/**
 	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
@@ -49,12 +51,13 @@ class Tx_Fluid_ViewHelpers_Format_HtmlspecialcharsViewHelper extends Tx_Fluid_Vi
 		return htmlspecialchars($value, $flags, $encoding, $doubleEncode);
 	}
 
-	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode, Tx_Fluid_Core_Compiler_TemplateCompiler $templateCompiler) {
+	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode, \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler) {
 		$valueVariableName = $templateCompiler->variableName('value');
 		$initializationPhpCode .= sprintf('%s = (%s[\'value\'] !== NULL ? %s[\'value\'] : %s());', $valueVariableName, $argumentsVariableName, $argumentsVariableName, $renderChildrenClosureVariableName) . chr(10);
-		return sprintf('(!is_string(%s) ? %s : htmlspecialchars(%s, (%s[\'keepQuotes\'] ? ENT_NOQUOTES : ENT_COMPAT), (%s[\'encoding\'] !== NULL ? %s[\'encoding\'] : Tx_Fluid_Core_Compiler_AbstractCompiledTemplate::resolveDefaultEncoding()), %s[\'doubleEncode\']))', $valueVariableName, $valueVariableName, $valueVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName);
+		return sprintf('(!is_string(%s) ? %s : htmlspecialchars(%s, (%s[\'keepQuotes\'] ? ENT_NOQUOTES : ENT_COMPAT), (%s[\'encoding\'] !== NULL ? %s[\'encoding\'] : TYPO3\\CMS\\Fluid\\Core\\Compiler\\AbstractCompiledTemplate::resolveDefaultEncoding()), %s[\'doubleEncode\']))', $valueVariableName, $valueVariableName, $valueVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName);
 	}
 
 }
+
 
 ?>

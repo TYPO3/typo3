@@ -1,4 +1,5 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Parser\Fixtures;
 
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
@@ -9,26 +10,30 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Enter description here...
  */
-class Tx_Fluid_Core_Parser_Fixtures_PostParseFacetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface {
+class PostParseFacetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\PostParseInterface {
 
-	public static $wasCalled = FALSE;
+	static public $wasCalled = FALSE;
 
 	public function __construct() {
+
 	}
 
-	static public function postParseEvent(Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $viewHelperNode, array $arguments, Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer) {
+	static public function postParseEvent(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $viewHelperNode, array $arguments, \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer) {
 		self::$wasCalled = TRUE;
 	}
 
 	public function initializeArguments() {
+
 	}
 
 	public function render() {
+
 	}
+
 }
+
 
 ?>

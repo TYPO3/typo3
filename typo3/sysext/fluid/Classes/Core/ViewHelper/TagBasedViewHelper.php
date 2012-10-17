@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\ViewHelper;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -22,16 +24,17 @@
  * @deprecated . Extend Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper instead!
  * @api
  */
-abstract class Tx_Fluid_Core_ViewHelper_TagBasedViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
+abstract class TagBasedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
-		t3lib_div::deprecationLog(('the ViewHelper "' . get_class($this)) . '" extends "Tx_Fluid_Core_ViewHelper_TagBasedViewHelper". This is deprecated since TYPO3 4.5. Please extend the class "Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper"');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(('the ViewHelper "' . get_class($this)) . '" extends "TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBasedViewHelper". This is deprecated since TYPO3 4.5. Please extend the class "TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\AbstractTagBasedViewHelper"');
 		parent::__construct();
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -14,7 +16,7 @@
  * @see http://www.php.net/manual/function.strip-tags.php
  * @api
  */
-class Tx_Fluid_ViewHelpers_Format_StripTagsViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class StripTagsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
@@ -42,5 +44,6 @@ class Tx_Fluid_ViewHelpers_Format_StripTagsViewHelper extends Tx_Fluid_Core_View
 	}
 
 }
+
 
 ?>

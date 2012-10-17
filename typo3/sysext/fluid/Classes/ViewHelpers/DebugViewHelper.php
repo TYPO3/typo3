@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers;
+
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -30,7 +32,7 @@
  * [A HTML view of the var_dump]
  * </output>
  */
-class Tx_Fluid_ViewHelpers_DebugViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class DebugViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * A wrapper for Tx_Extbase_Utility_Debugger::var_dump().
@@ -45,9 +47,10 @@ class Tx_Fluid_ViewHelpers_DebugViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	 * @return string
 	 */
 	public function render($title = NULL, $maxDepth = 8, $plainText = FALSE, $ansiColors = FALSE, $inline = FALSE, $blacklistedClassNames = NULL, $blacklistedPropertyNames = NULL) {
-		return Tx_Extbase_Utility_Debugger::var_dump($this->renderChildren(), $title, $maxDepth, (bool) $plainText, (bool) $ansiColors, (bool) $inline, $blacklistedClassNames, $blacklistedPropertyNames);
+		return \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->renderChildren(), $title, $maxDepth, (bool) $plainText, (bool) $ansiColors, (bool) $inline, $blacklistedClassNames, $blacklistedPropertyNames);
 	}
 
 }
+
 
 ?>

@@ -19,13 +19,15 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 require_once dirname(__FILE__) . '/ViewHelperBaseTestcase.php';
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
+
 /**
  * Testcase for RenderChildren ViewHelper
  */
-class Tx_Fluid_Tests_Unit_ViewHelpers_RenderChildrenViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+class RenderChildrenViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
 
 	/**
-	 * @var Tx_Fluid_ViewHelpers_RenderChildrenViewHelper
+	 * @var \TYPO3\CMS\Fluid\ViewHelpers\RenderChildrenViewHelper
 	 */
 	protected $viewHelper;
 
@@ -33,8 +35,8 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_RenderChildrenViewHelperTest extends Tx_Fl
 
 	 */
 	public function setUp() {
-		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
-		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_RenderChildrenViewHelper', array('renderChildren'));
+		$this->controllerContext = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext', array(), array(), '', FALSE);
+		$this->viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\RenderChildrenViewHelper', array('renderChildren'));
 		$this->viewHelper->_set('controllerContext', $this->controllerContext);
 	}
 
@@ -42,18 +44,18 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_RenderChildrenViewHelperTest extends Tx_Fl
 	 * @test
 	 */
 	public function renderCallsEvaluateOnTheRootNodeAndRegistersTheArguments() {
-		$this->request = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest');
+		$this->request = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest');
 		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
 		$this->viewHelper->initializeArguments();
-		$templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
+		$templateVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer');
 		$templateVariableContainer->expects($this->at(0))->method('add')->with('k1', 'v1');
 		$templateVariableContainer->expects($this->at(1))->method('add')->with('k2', 'v2');
 		$templateVariableContainer->expects($this->at(2))->method('remove')->with('k1');
 		$templateVariableContainer->expects($this->at(3))->method('remove')->with('k2');
-		$renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContextInterface');
+		$renderingContext = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContextInterface');
 		$renderingContext->expects($this->any())->method('getTemplateVariableContainer')->will($this->returnValue($templateVariableContainer));
-		$rootNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_RootNode');
-		$widgetContext = $this->getMock('Tx_Fluid_Core_Widget_WidgetContext');
+		$rootNode = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\RootNode');
+		$widgetContext = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetContext');
 		$this->request->expects($this->any())->method('getWidgetContext')->will($this->returnValue($widgetContext));
 		$widgetContext->expects($this->any())->method('getViewHelperChildNodeRenderingContext')->will($this->returnValue($renderingContext));
 		$widgetContext->expects($this->any())->method('getViewHelperChildNodes')->will($this->returnValue($rootNode));
@@ -64,7 +66,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_RenderChildrenViewHelperTest extends Tx_Fl
 
 	/**
 	 * @test
-	 * @expectedException Tx_Fluid_Core_Widget_Exception_WidgetRequestNotFoundException
+	 * @expectedException \TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetRequestNotFoundException
 	 */
 	public function renderThrowsExceptionIfTheRequestIsNotAWidgetRequest() {
 		$this->request = $this->getMock('Tx_Fluid_MVC_Request');
@@ -75,13 +77,13 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_RenderChildrenViewHelperTest extends Tx_Fl
 
 	/**
 	 * @test
-	 * @expectedException Tx_Fluid_Core_Widget_Exception_RenderingContextNotFoundException
+	 * @expectedException \TYPO3\CMS\Fluid\Core\Widget\Exception\RenderingContextNotFoundException
 	 */
 	public function renderThrowsExceptionIfTheChildNodeRenderingContextIsNotThere() {
-		$this->request = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest');
+		$this->request = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest');
 		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
 		$this->viewHelper->initializeArguments();
-		$widgetContext = $this->getMock('Tx_Fluid_Core_Widget_WidgetContext');
+		$widgetContext = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetContext');
 		$this->request->expects($this->any())->method('getWidgetContext')->will($this->returnValue($widgetContext));
 		$widgetContext->expects($this->any())->method('getViewHelperChildNodeRenderingContext')->will($this->returnValue(NULL));
 		$widgetContext->expects($this->any())->method('getViewHelperChildNodes')->will($this->returnValue(NULL));
@@ -89,5 +91,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_RenderChildrenViewHelperTest extends Tx_Fl
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,7 +13,7 @@
 /**
  * Text Syntax Tree Node - is a container for strings.
  */
-class Tx_Fluid_Core_Parser_SyntaxTree_TextNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
+class TextNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 
 	/**
 	 * Contents of the text node
@@ -27,7 +29,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_TextNode extends Tx_Fluid_Core_Parser_Synt
 	 */
 	public function __construct($text) {
 		if (!is_string($text)) {
-			throw new Tx_Fluid_Core_Parser_Exception(('Text node requires an argument of type string, "' . gettype($text)) . '" given.');
+			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception(('Text node requires an argument of type string, "' . gettype($text)) . '" given.');
 		}
 		$this->text = $text;
 	}
@@ -36,10 +38,10 @@ class Tx_Fluid_Core_Parser_SyntaxTree_TextNode extends Tx_Fluid_Core_Parser_Synt
 	 * Return the text associated to the syntax tree. Text from child nodes is
 	 * appended to the text in the node's own text.
 	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return string the text stored in this node/subtree.
 	 */
-	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		return $this->text . $this->evaluateChildNodes($renderingContext);
 	}
 
@@ -53,5 +55,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_TextNode extends Tx_Fluid_Core_Parser_Synt
 	}
 
 }
+
 
 ?>

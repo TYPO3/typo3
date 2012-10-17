@@ -9,19 +9,21 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 require_once dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php';
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
+
 /**
  * Test for the "Radio" Form view helper
  */
-class Tx_Fluid_Tests_Unit_ViewHelpers_Form_RadioViewHelperTest extends Tx_Fluid_Tests_Unit_ViewHelpers_Form_FormFieldViewHelperBaseTestcase {
+class RadioViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase {
 
 	/**
-	 * @var Tx_Fluid_ViewHelpers_Form_RadioViewHelper
+	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\RadioViewHelper
 	 */
 	protected $viewHelper;
 
 	public function setUp() {
 		parent::setUp();
-		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_Form_RadioViewHelper', array('setErrorClassAttribute', 'getName', 'getValue', 'isObjectAccessorMode', 'getPropertyValue', 'registerFieldNameForFormTokenGeneration'));
+		$this->viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\RadioViewHelper', array('setErrorClassAttribute', 'getName', 'getValue', 'isObjectAccessorMode', 'getPropertyValue', 'registerFieldNameForFormTokenGeneration'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
@@ -30,7 +32,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_RadioViewHelperTest extends Tx_Fluid_
 	 * @test
 	 */
 	public function renderCorrectlySetsTagNameAndDefaultAttributes() {
-		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName', 'addAttribute'));
+		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
@@ -47,7 +49,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_RadioViewHelperTest extends Tx_Fluid_
 	 * @test
 	 */
 	public function renderSetsCheckedAttributeIfSpecified() {
-		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName', 'addAttribute'));
+		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
@@ -64,7 +66,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_RadioViewHelperTest extends Tx_Fluid_
 	 * @test
 	 */
 	public function renderIgnoresBoundPropertyIfCheckedIsSet() {
-		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName', 'addAttribute'));
+		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
@@ -82,7 +84,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_RadioViewHelperTest extends Tx_Fluid_
 	 * @test
 	 */
 	public function renderCorrectlySetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeBoolean() {
-		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName', 'addAttribute'));
+		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
@@ -101,7 +103,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_RadioViewHelperTest extends Tx_Fluid_
 	 * @test
 	 */
 	public function renderDoesNotAppendSquareBracketsToNameAttributeIfBoundToAPropertyOfTypeArray() {
-		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName', 'addAttribute'));
+		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
@@ -119,7 +121,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_RadioViewHelperTest extends Tx_Fluid_
 	 * @test
 	 */
 	public function renderCorrectlySetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeString() {
-		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName', 'addAttribute'));
+		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
@@ -143,5 +145,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_RadioViewHelperTest extends Tx_Fluid_
 	}
 
 }
+
 
 ?>

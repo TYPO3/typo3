@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,17 +13,17 @@
 /**
  * Testcase for ParsingState
  */
-class Tx_Fluid_Tests_Unit_Core_Parser_ParsingStateTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class ParsingStateTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * Parsing state
 	 *
-	 * @var Tx_Fluid_Core_Parser_ParsingState
+	 * @var \TYPO3\CMS\Fluid\Core\Parser\ParsingState
 	 */
 	protected $parsingState;
 
 	public function setUp() {
-		$this->parsingState = new Tx_Fluid_Core_Parser_ParsingState();
+		$this->parsingState = new \TYPO3\CMS\Fluid\Core\Parser\ParsingState();
 	}
 
 	public function tearDown() {
@@ -32,7 +34,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_ParsingStateTest extends Tx_Extbase_Tests_
 	 * @test
 	 */
 	public function setRootNodeCanBeReadOutAgain() {
-		$rootNode = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
+		$rootNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode();
 		$this->parsingState->setRootNode($rootNode);
 		$this->assertSame($this->parsingState->getRootNode(), $rootNode, 'Root node could not be read out again.');
 	}
@@ -41,7 +43,7 @@ class Tx_Fluid_Tests_Unit_Core_Parser_ParsingStateTest extends Tx_Extbase_Tests_
 	 * @test
 	 */
 	public function pushAndGetFromStackWorks() {
-		$rootNode = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
+		$rootNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode();
 		$this->parsingState->pushNodeToStack($rootNode);
 		$this->assertSame($rootNode, $this->parsingState->getNodeFromStack($rootNode), 'Node returned from stack was not the right one.');
 		$this->assertSame($rootNode, $this->parsingState->popNodeFromStack($rootNode), 'Node popped from stack was not the right one.');
@@ -51,8 +53,8 @@ class Tx_Fluid_Tests_Unit_Core_Parser_ParsingStateTest extends Tx_Extbase_Tests_
 	 * @test
 	 */
 	public function renderCallsTheRightMethodsOnTheRootNode() {
-		$renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContextInterface');
-		$rootNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_RootNode');
+		$renderingContext = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContextInterface');
+		$rootNode = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\RootNode');
 		$rootNode->expects($this->once())->method('evaluate')->with($renderingContext)->will($this->returnValue('T3DD09 Rock!'));
 		$this->parsingState->setRootNode($rootNode);
 		$renderedValue = $this->parsingState->render($renderingContext);
@@ -60,5 +62,6 @@ class Tx_Fluid_Tests_Unit_Core_Parser_ParsingStateTest extends Tx_Extbase_Tests_
 	}
 
 }
+
 
 ?>

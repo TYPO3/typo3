@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Compiler;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,24 +26,25 @@
 /**
  * Testcase for AbstractCompilerTemplate
  */
-class Tx_Fluid_Tests_Unit_Core_Compiler_AbstractCompilerTemplateTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class AbstractCompilerTemplateTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function resolveDefaultEncodingWillBeSetToUtf8IfNotSet() {
-		$this->assertSame('UTF-8', Tx_Fluid_Core_Compiler_AbstractCompiledTemplate::resolveDefaultEncoding());
+		$this->assertSame('UTF-8', \TYPO3\CMS\Fluid\Core\Compiler\AbstractCompiledTemplate::resolveDefaultEncoding());
 	}
 
 	/**
 	 * @test
 	 */
 	public function isDefaultEncodingIsSetThanDefaultEncodingWillReturned() {
-		$className = uniqid('Tx_Fluid_Core_Compiler_AbstractCompiledTemplate');
-		eval(((('abstract class ' . $className) . ' extends Tx_Fluid_Core_Compiler_AbstractCompiledTemplate {') . '  static protected $defaultEncoding = \'ISO-8859-1\';') . '}');
+		$className = uniqid('TYPO3\\CMS\\Fluid\\Core\\Compiler\\AbstractCompiledTemplate');
+		eval(((('abstract class ' . $className) . ' extends TYPO3\\CMS\\Fluid\\Core\\Compiler\\AbstractCompiledTemplate {') . '  static protected $defaultEncoding = \'ISO-8859-1\';') . '}');
 		$this->assertSame('ISO-8859-1', $className::resolveDefaultEncoding());
 	}
 
 }
+
 
 ?>

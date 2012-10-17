@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\ViewHelper;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -15,7 +17,7 @@
  *
  * @api
  */
-abstract class Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+abstract class AbstractTagBasedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Names of all registered tag attributes
@@ -27,7 +29,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper extends Tx_Fl
 	/**
 	 * Tag builder instance
 	 *
-	 * @var Tx_Fluid_Core_ViewHelper_TagBuilder
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder
 	 * @api
 	 */
 	protected $tag = NULL;
@@ -43,10 +45,10 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper extends Tx_Fl
 	/**
 	 * Inject a TagBuilder
 	 *
-	 * @param Tx_Fluid_Core_ViewHelper_TagBuilder $tagBuilder Tag builder
+	 * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tagBuilder Tag builder
 	 * @return void
 	 */
-	public function injectTagBuilder(Tx_Fluid_Core_ViewHelper_TagBuilder $tagBuilder) {
+	public function injectTagBuilder(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder $tagBuilder) {
 		$this->tag = $tagBuilder;
 	}
 
@@ -121,5 +123,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper extends Tx_Fl
 	}
 
 }
+
 
 ?>

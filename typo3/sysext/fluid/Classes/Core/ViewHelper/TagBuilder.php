@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\ViewHelper;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -13,7 +15,7 @@
  *
  * @api
  */
-class Tx_Fluid_Core_ViewHelper_TagBuilder {
+class TagBuilder {
 
 	/**
 	 * Name of the Tag to be rendered
@@ -199,5 +201,6 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	}
 
 }
+
 
 ?>

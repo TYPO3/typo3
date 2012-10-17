@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,7 +13,7 @@
 /**
  * Array Syntax Tree Node. Handles JSON-like arrays.
  */
-class Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
+class ArrayNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 
 	/**
 	 * An associative array. Each key is a string. Each value is either a literal, or an AbstractNode.
@@ -32,13 +34,13 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode extends Tx_Fluid_Core_Parser_Syn
 	/**
 	 * Evaluate the array and return an evaluated array
 	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return array An associative array with literal values
 	 */
-	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		$arrayToBuild = array();
 		foreach ($this->internalArray as $key => $value) {
-			if ($value instanceof Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode) {
+			if ($value instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode) {
 				$arrayToBuild[$key] = $value->evaluate($renderingContext);
 			} else {
 				// TODO - this case should not happen!
@@ -58,5 +60,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode extends Tx_Fluid_Core_Parser_Syn
 	}
 
 }
+
 
 ?>

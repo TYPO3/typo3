@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -41,7 +43,7 @@
  * CSH button as known from the TYPO3 backend with some custom settings.
  * </output>
  */
-class Tx_Fluid_ViewHelpers_Be_Buttons_CshViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
+class CshViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 
 	/**
 	 * Render context sensitive help (CSH) for the given table
@@ -59,10 +61,11 @@ class Tx_Fluid_ViewHelpers_Be_Buttons_CshViewHelper extends Tx_Fluid_ViewHelpers
 			$moduleName = $currentRequest->getPluginName();
 			$table = '_MOD_' . $moduleName;
 		}
-		$cshButton = t3lib_BEfunc::cshItem($table, $field, $GLOBALS['BACK_PATH'], '', $iconOnly, $styleAttributes);
+		$cshButton = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem($table, $field, $GLOBALS['BACK_PATH'], '', $iconOnly, $styleAttributes);
 		return ('<div class="docheader-csh">' . $cshButton) . '</div>';
 	}
 
 }
+
 
 ?>

@@ -11,19 +11,21 @@
 require_once dirname(__FILE__) . '/Fixtures/EmptySyntaxTreeNode.php';
 require_once dirname(__FILE__) . '/Fixtures/Fixture_UserDomainClass.php';
 require_once dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php';
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
+
 /**
  * Test for the "Textbox" Form view helper
  */
-class Tx_Fluid_ViewHelpers_Form_PasswordViewHelperTest extends Tx_Fluid_Tests_Unit_ViewHelpers_Form_FormFieldViewHelperBaseTestcase {
+class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase {
 
 	/**
-	 * @var Tx_Fluid_ViewHelpers_Form_TextboxViewHelper
+	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\TextboxViewHelper
 	 */
 	protected $viewHelper;
 
 	public function setUp() {
 		parent::setUp();
-		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_Form_PasswordViewHelper', array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
+		$this->viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\PasswordViewHelper', array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
 		$this->arguments['name'] = '';
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
@@ -33,7 +35,7 @@ class Tx_Fluid_ViewHelpers_Form_PasswordViewHelperTest extends Tx_Fluid_Tests_Un
 	 * @test
 	 */
 	public function renderCorrectlySetsTagName() {
-		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName'), array(), '', FALSE);
+		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('setTagName'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
 		$this->viewHelper->initialize();
@@ -44,7 +46,7 @@ class Tx_Fluid_ViewHelpers_Form_PasswordViewHelperTest extends Tx_Fluid_Tests_Un
 	 * @test
 	 */
 	public function renderCorrectlySetsTypeNameAndValueAttributes() {
-		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
+		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('type', 'password');
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('name', 'NameOfTextbox');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('NameOfTextbox');
@@ -56,7 +58,7 @@ class Tx_Fluid_ViewHelpers_Form_PasswordViewHelperTest extends Tx_Fluid_Tests_Un
 			'value' => 'Current value'
 		);
 		$this->viewHelper->setArguments($arguments);
-		$this->viewHelper->setViewHelperNode(new Tx_Fluid_ViewHelpers_Fixtures_EmptySyntaxTreeNode());
+		$this->viewHelper->setViewHelperNode(new \Tx_Fluid_ViewHelpers_Fixtures_EmptySyntaxTreeNode());
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
@@ -70,5 +72,6 @@ class Tx_Fluid_ViewHelpers_Form_PasswordViewHelperTest extends Tx_Fluid_Tests_Un
 	}
 
 }
+
 
 ?>

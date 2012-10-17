@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -13,9 +15,10 @@
  *
  * @api
  */
-class Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException extends Tx_Fluid_Core_ViewHelper_Exception {
+class InvalidVariableException extends \TYPO3\CMS\Fluid\Core\ViewHelper\Exception {
 
 
 }
+
 
 ?>

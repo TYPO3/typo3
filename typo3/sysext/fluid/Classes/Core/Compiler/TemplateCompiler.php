@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Compiler;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,11 +13,11 @@
 /**
 
  */
-class Tx_Fluid_Core_Compiler_TemplateCompiler implements t3lib_Singleton {
+class TemplateCompiler implements \TYPO3\CMS\Core\SingletonInterface {
 
 	const SHOULD_GENERATE_VIEWHELPER_INVOCATION = '##should_gen_viewhelper##';
 	/**
-	 * @var t3lib_cache_frontend_PhpFrontend
+	 * @var \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend
 	 */
 	protected $templateCache;
 
@@ -30,10 +32,10 @@ class Tx_Fluid_Core_Compiler_TemplateCompiler implements t3lib_Singleton {
 	protected $syntaxTreeInstanceCache = array();
 
 	/**
-	 * @param t3lib_cache_frontend_PhpFrontend $templateCache
+	 * @param \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend $templateCache
 	 * @return void
 	 */
-	public function setTemplateCache(t3lib_cache_frontend_PhpFrontend $templateCache) {
+	public function setTemplateCache(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend $templateCache) {
 		$this->templateCache = $templateCache;
 	}
 
@@ -48,7 +50,7 @@ class Tx_Fluid_Core_Compiler_TemplateCompiler implements t3lib_Singleton {
 
 	/**
 	 * @param string $identifier
-	 * @return Tx_Fluid_Core_Parser_ParsedTemplateInterface
+	 * @return \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterface
 	 */
 	public function get($identifier) {
 		$identifier = $this->sanitizeIdentifier($identifier);
@@ -62,10 +64,10 @@ class Tx_Fluid_Core_Compiler_TemplateCompiler implements t3lib_Singleton {
 
 	/**
 	 * @param string $identifier
-	 * @param Tx_Fluid_Core_Parser_ParsingState $parsingState
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\ParsingState $parsingState
 	 * @return void
 	 */
-	public function store($identifier, Tx_Fluid_Core_Parser_ParsingState $parsingState) {
+	public function store($identifier, \TYPO3\CMS\Fluid\Core\Parser\ParsingState $parsingState) {
 		$identifier = $this->sanitizeIdentifier($identifier);
 		$this->variableCounter = 0;
 		$generatedRenderFunctions = '';
@@ -78,14 +80,14 @@ class Tx_Fluid_Core_Compiler_TemplateCompiler implements t3lib_Singleton {
 		}
 		$generatedRenderFunctions .= $this->generateCodeForSection($this->convertListOfSubNodes($parsingState->getRootNode()), 'render', 'Main Render function');
 		$convertedLayoutNameNode = $parsingState->hasLayout() ? $this->convert($parsingState->getLayoutNameNode()) : array('initialization' => '', 'execution' => 'NULL');
-		$classDefinition = ('class FluidCache_' . $identifier) . ' extends Tx_Fluid_Core_Compiler_AbstractCompiledTemplate';
+		$classDefinition = ('class FluidCache_' . $identifier) . ' extends TYPO3\\CMS\\Fluid\\Core\\Compiler\\AbstractCompiledTemplate';
 		$templateCode = '%s {
 
 public function getVariableContainer() {
 	// TODO
-	return new Tx_Fluid_Core_ViewHelper_TemplateVariableContainer();
+	return new TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer();
 }
-public function getLayoutName(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+public function getLayoutName(TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContextInterface $renderingContext) {
 %s
 return %s;
 }
@@ -115,7 +117,7 @@ return %s;
 		$templateCode = '/**
  * %s
  */
-public function %s(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+public function %s(TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContextInterface $renderingContext) {
 $self = $this;
 %s
 return %s;
@@ -128,33 +130,33 @@ return %s;
 	 * - initialization: contains PHP code which is inserted *before* the actual rendering call. Must be valid, i.e. end with semi-colon.
 	 * - execution: contains *a single PHP instruction* which needs to return the rendered output of the given element. Should NOT end with semi-colon.
 	 *
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $node
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $node
 	 * @return array two-element array, see above
 	 */
-	protected function convert(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $node) {
-		if ($node instanceof Tx_Fluid_Core_Parser_SyntaxTree_TextNode) {
+	protected function convert(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $node) {
+		if ($node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode) {
 			return $this->convertTextNode($node);
-		} elseif ($node instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode) {
+		} elseif ($node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode) {
 			return $this->convertViewHelperNode($node);
-		} elseif ($node instanceof Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode) {
+		} elseif ($node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode) {
 			return $this->convertObjectAccessorNode($node);
-		} elseif ($node instanceof Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode) {
+		} elseif ($node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ArrayNode) {
 			return $this->convertArrayNode($node);
-		} elseif ($node instanceof Tx_Fluid_Core_Parser_SyntaxTree_RootNode) {
+		} elseif ($node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode) {
 			return $this->convertListOfSubNodes($node);
-		} elseif ($node instanceof Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode) {
+		} elseif ($node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode) {
 			return $this->convertBooleanNode($node);
 		} else {
-			throw new Exception('TODO: TYPE XY NOT FOUND');
+			throw new \Exception('TODO: TYPE XY NOT FOUND');
 		}
 	}
 
 	/**
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_TextNode $node
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode $node
 	 * @return array
 	 * @see convert()
 	 */
-	protected function convertTextNode(Tx_Fluid_Core_Parser_SyntaxTree_TextNode $node) {
+	protected function convertTextNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode $node) {
 		return array(
 			'initialization' => '',
 			'execution' => ('\'' . $this->escapeTextForUseInSingleQuotes($node->getText())) . '\''
@@ -165,11 +167,11 @@ return %s;
 	 * Convert a single ViewHelperNode into its cached representation. If the ViewHelper implements the "Compilable" facet,
 	 * the ViewHelper itself is asked for its cached PHP code representation. If not, a ViewHelper is built and then invoked.
 	 *
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $node
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $node
 	 * @return array
 	 * @see convert()
 	 */
-	protected function convertViewHelperNode(Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $node) {
+	protected function convertViewHelperNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $node) {
 		$initializationPhpCode = ('// Rendering ViewHelper ' . $node->getViewHelperClassName()) . chr(10);
 		// Build up $arguments array
 		$argumentsVariableName = $this->variableName('arguments');
@@ -189,7 +191,7 @@ return %s;
 		// Build up closure which renders the child nodes
 		$renderChildrenClosureVariableName = $this->variableName('renderChildrenClosure');
 		$initializationPhpCode .= sprintf('%s = %s;', $renderChildrenClosureVariableName, $this->wrapChildNodesInClosure($node)) . chr(10);
-		if ($node->getUninitializedViewHelper() instanceof Tx_Fluid_Core_ViewHelper_Facets_CompilableInterface) {
+		if ($node->getUninitializedViewHelper() instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface) {
 			// ViewHelper is compilable
 			$viewHelperInitializationPhpCode = '';
 			$convertedViewHelperExecutionCode = $node->getUninitializedViewHelper()->compile($argumentsVariableName, $renderChildrenClosureVariableName, $viewHelperInitializationPhpCode, $node, $this);
@@ -215,28 +217,28 @@ return %s;
 	}
 
 	/**
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode $node
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode $node
 	 * @return array
 	 * @see convert()
 	 */
-	protected function convertObjectAccessorNode(Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode $node) {
+	protected function convertObjectAccessorNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode $node) {
 		return array(
 			'initialization' => '',
-			'execution' => sprintf('Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode::getPropertyPath($renderingContext->getTemplateVariableContainer(), \'%s\', $renderingContext)', $node->getObjectPath())
+			'execution' => sprintf('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ObjectAccessorNode::getPropertyPath($renderingContext->getTemplateVariableContainer(), \'%s\', $renderingContext)', $node->getObjectPath())
 		);
 	}
 
 	/**
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode $node
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ArrayNode $node
 	 * @return array
 	 * @see convert()
 	 */
-	protected function convertArrayNode(Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode $node) {
+	protected function convertArrayNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ArrayNode $node) {
 		$initializationPhpCode = '// Rendering Array' . chr(10);
 		$arrayVariableName = $this->variableName('array');
 		$initializationPhpCode .= sprintf('%s = array();', $arrayVariableName) . chr(10);
 		foreach ($node->getInternalArray() as $key => $value) {
-			if ($value instanceof Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode) {
+			if ($value instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode) {
 				$converted = $this->convert($value);
 				$initializationPhpCode .= $converted['initialization'];
 				$initializationPhpCode .= sprintf('%s[\'%s\'] = %s;', $arrayVariableName, $key, $converted['execution']) . chr(10);
@@ -255,11 +257,11 @@ return %s;
 	}
 
 	/**
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $node
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $node
 	 * @return array
 	 * @see convert()
 	 */
-	public function convertListOfSubNodes(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $node) {
+	public function convertListOfSubNodes(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $node) {
 		switch (count($node->getChildNodes())) {
 		case 0:
 			return array(
@@ -285,25 +287,25 @@ return %s;
 	}
 
 	/**
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode $node
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode $node
 	 * @return array
 	 * @see convert()
 	 */
-	protected function convertBooleanNode(Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode $node) {
+	protected function convertBooleanNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode $node) {
 		$initializationPhpCode = '// Rendering Boolean node' . chr(10);
 		if ($node->getComparator() !== NULL) {
 			$convertedLeftSide = $this->convert($node->getLeftSide());
 			$convertedRightSide = $this->convert($node->getRightSide());
 			return array(
 				'initialization' => ($initializationPhpCode . $convertedLeftSide['initialization']) . $convertedRightSide['initialization'],
-				'execution' => sprintf('Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::evaluateComparator(\'%s\', %s, %s)', $node->getComparator(), $convertedLeftSide['execution'], $convertedRightSide['execution'])
+				'execution' => sprintf('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\BooleanNode::evaluateComparator(\'%s\', %s, %s)', $node->getComparator(), $convertedLeftSide['execution'], $convertedRightSide['execution'])
 			);
 		} else {
 			// simple case, no comparator.
 			$converted = $this->convert($node->getSyntaxTreeNode());
 			return array(
 				'initialization' => $initializationPhpCode . $converted['initialization'],
-				'execution' => sprintf('Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode::convertToBoolean(%s)', $converted['execution'])
+				'execution' => sprintf('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\BooleanNode::convertToBoolean(%s)', $converted['execution'])
 			);
 		}
 	}
@@ -317,10 +319,10 @@ return %s;
 	}
 
 	/**
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $node
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $node
 	 * @return string
 	 */
-	public function wrapChildNodesInClosure(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $node) {
+	public function wrapChildNodesInClosure(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $node) {
 		$closure = '';
 		$closure .= 'function() use ($renderingContext, $self) {' . chr(10);
 		$convertedSubNodes = $this->convertListOfSubNodes($node);
@@ -341,5 +343,6 @@ return %s;
 	}
 
 }
+
 
 ?>

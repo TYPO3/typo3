@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -22,22 +24,23 @@
  * The abstract base class for all backend view helpers
  * Note: backend view helpers are still experimental!
  */
-abstract class Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+abstract class AbstractBackendViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Gets instance of template if exists or create a new one.
 	 * Saves instance in viewHelperVariableContainer
 	 *
-	 * @return template $doc
+	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate $doc
 	 */
 	public function getDocInstance() {
 		if (!isset($GLOBALS['SOBE']->doc)) {
-			$GLOBALS['SOBE']->doc = t3lib_div::makeInstance('template');
+			$GLOBALS['SOBE']->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 			$GLOBALS['SOBE']->doc->backPath = $GLOBALS['BACK_PATH'];
 		}
 		return $GLOBALS['SOBE']->doc;
 	}
 
 }
+
 
 ?>

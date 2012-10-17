@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -25,15 +27,15 @@
  *
  * <code title="required arguments">
  * <f:widget.paginate objects="{blogs}" as="paginatedBlogs">
- * / use {paginatedBlogs} as you used {blogs} before, most certainly inside
- * / a <f:for> loop.
+ * use {paginatedBlogs} as you used {blogs} before, most certainly inside
+ * a <f:for> loop.
  * </f:widget.paginate>
  * </code>
  *
  * <code title="full configuration">
  * <f:widget.paginate objects="{blogs}" as="paginatedBlogs" configuration="{itemsPerPage: 5, insertAbove: 1, insertBelow: 0, maximumNumberOfLinks: 10}">
- * / use {paginatedBlogs} as you used {blogs} before, most certainly inside
- * / a <f:for> loop.
+ * use {paginatedBlogs} as you used {blogs} before, most certainly inside
+ * a <f:for> loop.
  * </f:widget.paginate>
  * </code>
  *
@@ -48,31 +50,32 @@
  *
  * @api
  */
-class Tx_Fluid_ViewHelpers_Widget_PaginateViewHelper extends Tx_Fluid_Core_Widget_AbstractWidgetViewHelper {
+class PaginateViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper {
 
 	/**
-	 * @var Tx_Fluid_ViewHelpers_Widget_Controller_PaginateController
+	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController
 	 */
 	protected $controller;
 
 	/**
-	 * @param Tx_Fluid_ViewHelpers_Widget_Controller_PaginateController $controller
+	 * @param \TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController $controller
 	 * @return void
 	 */
-	public function injectController(Tx_Fluid_ViewHelpers_Widget_Controller_PaginateController $controller) {
+	public function injectController(\TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController $controller) {
 		$this->controller = $controller;
 	}
 
 	/**
-	 * @param Tx_Extbase_Persistence_QueryResultInterface $objects
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $objects
 	 * @param string $as
 	 * @param array $configuration
 	 * @return string
 	 */
-	public function render(Tx_Extbase_Persistence_QueryResultInterface $objects, $as, array $configuration = array('itemsPerPage' => 10, 'insertAbove' => FALSE, 'insertBelow' => TRUE, 'maximumNumberOfLinks' => 99)) {
+	public function render(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $objects, $as, array $configuration = array('itemsPerPage' => 10, 'insertAbove' => FALSE, 'insertBelow' => TRUE, 'maximumNumberOfLinks' => 99)) {
 		return $this->initiateSubRequest();
 	}
 
 }
+
 
 ?>

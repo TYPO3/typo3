@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -39,7 +41,7 @@
  * This time the "actions-document-new" icon is returned, the button has the title attribute set and links to the "new" action of the current controller.
  * </output>
  */
-class Tx_Fluid_ViewHelpers_Be_Buttons_IconViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
+class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 
 	/**
 	 * Renders an icon link as known from the TYPO3 backend
@@ -50,9 +52,10 @@ class Tx_Fluid_ViewHelpers_Be_Buttons_IconViewHelper extends Tx_Fluid_ViewHelper
 	 * @return string the rendered icon link
 	 */
 	public function render($uri, $icon = 'actions-document-close', $title = '') {
-		return ((('<a href="' . $uri) . '">') . t3lib_iconWorks::getSpriteIcon($icon, array('title' => $title))) . '</a>';
+		return ((('<a href="' . $uri) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($icon, array('title' => $title))) . '</a>';
 	}
 
 }
+
 
 ?>

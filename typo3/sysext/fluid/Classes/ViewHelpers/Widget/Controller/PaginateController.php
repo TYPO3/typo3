@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -21,7 +23,7 @@
 /**
 
  */
-class Tx_Fluid_ViewHelpers_Widget_Controller_PaginateController extends Tx_Fluid_Core_Widget_AbstractWidgetController {
+class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController {
 
 	/**
 	 * @var array
@@ -29,7 +31,7 @@ class Tx_Fluid_ViewHelpers_Widget_Controller_PaginateController extends Tx_Fluid
 	protected $configuration = array('itemsPerPage' => 10, 'insertAbove' => FALSE, 'insertBelow' => TRUE, 'maximumNumberOfLinks' => 99);
 
 	/**
-	 * @var Tx_Extbase_Persistence_QueryResultInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
 	 */
 	protected $objects;
 
@@ -53,7 +55,7 @@ class Tx_Fluid_ViewHelpers_Widget_Controller_PaginateController extends Tx_Fluid
 	 */
 	public function initializeAction() {
 		$this->objects = $this->widgetConfiguration['objects'];
-		$this->configuration = t3lib_div::array_merge_recursive_overrule($this->configuration, $this->widgetConfiguration['configuration'], TRUE);
+		$this->configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->configuration, $this->widgetConfiguration['configuration'], TRUE);
 		$this->numberOfPages = ceil(count($this->objects) / (int) $this->configuration['itemsPerPage']);
 		$this->maximumNumberOfLinks = (int) $this->configuration['maximumNumberOfLinks'];
 	}
@@ -142,5 +144,6 @@ class Tx_Fluid_ViewHelpers_Widget_Controller_PaginateController extends Tx_Fluid
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -21,14 +23,14 @@
 /**
  * Testcase for AbstractWidgetController
  */
-class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetControllerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class AbstractWidgetControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function canHandleWidgetRequest() {
-		$request = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest', array('dummy'), array(), '', FALSE);
-		$abstractWidgetController = $this->getMock('Tx_Fluid_Core_Widget_AbstractWidgetController', array('dummy'), array(), '', FALSE);
+		$request = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest', array('dummy'), array(), '', FALSE);
+		$abstractWidgetController = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\AbstractWidgetController', array('dummy'), array(), '', FALSE);
 		$this->assertTrue($abstractWidgetController->canProcessRequest($request));
 	}
 
@@ -36,15 +38,15 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetControllerTest extends Tx_Ex
 	 * @test
 	 */
 	public function processRequestSetsWidgetConfiguration() {
-		$widgetContext = $this->getMock('Tx_Fluid_Core_Widget_WidgetContext');
+		$widgetContext = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetContext');
 		$widgetContext->expects($this->once())->method('getWidgetConfiguration')->will($this->returnValue('myConfiguration'));
-		$request = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest', array(), array(), '', FALSE);
+		$request = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest', array(), array(), '', FALSE);
 		$request->expects($this->once())->method('getWidgetContext')->will($this->returnValue($widgetContext));
-		$response = $this->getMock('Tx_Extbase_MVC_ResponseInterface');
-		$abstractWidgetController = $this->getAccessibleMock('Tx_Fluid_Core_Widget_AbstractWidgetController', array('resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'initializeAction', 'checkRequestHash', 'mapRequestArgumentsToControllerArguments', 'buildControllerContext', 'resolveView', 'callActionMethod'), array(), '', FALSE);
-		$mockUriBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_UriBuilder');
-		$objectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$objectManager->expects($this->any())->method('create')->with('Tx_Extbase_MVC_Web_Routing_UriBuilder')->will($this->returnValue($mockUriBuilder));
+		$response = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\ResponseInterface');
+		$abstractWidgetController = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\AbstractWidgetController', array('resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'initializeAction', 'checkRequestHash', 'mapRequestArgumentsToControllerArguments', 'buildControllerContext', 'resolveView', 'callActionMethod'), array(), '', FALSE);
+		$mockUriBuilder = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
+		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$objectManager->expects($this->any())->method('create')->with('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder')->will($this->returnValue($mockUriBuilder));
 		$abstractWidgetController->_set('objectManager', $objectManager);
 		$abstractWidgetController->processRequest($request, $response);
 		$widgetConfiguration = $abstractWidgetController->_get('widgetConfiguration');
@@ -58,26 +60,27 @@ class Tx_Fluid_Tests_Unit_Core_Widget_AbstractWidgetControllerTest extends Tx_Ex
 		$frameworkConfiguration = array(
 			'view' => array(
 				'widget' => array(
-					'Tx_Fluid_ViewHelpers_Widget_PaginateViewHelper' => array(
-						'templateRootPath' => 'EXT:fluid/Resources/Private/DummyTestTemplates'
+					'TYPO3\\CMS\\Fluid\\ViewHelpers\\Widget\\PaginateViewHelper' => array(
+						'template' => 'EXT:fluid/Resources/Private/DummyTestTemplates'
 					)
 				)
 			)
 		);
-		$widgetContext = $this->getMock('Tx_Fluid_Core_Widget_WidgetContext');
-		$widgetContext->expects($this->any())->method('getWidgetViewHelperClassName')->will($this->returnValue('Tx_Fluid_ViewHelpers_Widget_PaginateViewHelper'));
-		$request = $this->getMock('Tx_Fluid_Core_Widget_WidgetRequest', array(), array(), '', FALSE);
+		$widgetContext = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetContext');
+		$widgetContext->expects($this->any())->method('getWidgetViewHelperClassName')->will($this->returnValue('TYPO3\\CMS\\Fluid\\ViewHelpers\\Widget\\PaginateViewHelper'));
+		$request = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest', array(), array(), '', FALSE);
 		$request->expects($this->any())->method('getWidgetContext')->will($this->returnValue($widgetContext));
-		$configurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManager');
+		$configurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 		$configurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($frameworkConfiguration));
-		$view = $this->getAccessibleMock('Tx_Fluid_View_TemplateView', array('dummy'));
-		$abstractWidgetController = $this->getAccessibleMock('Tx_Fluid_Core_Widget_AbstractWidgetController', array('dummy'));
+		$view = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\TemplateView', array('dummy'));
+		$abstractWidgetController = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\AbstractWidgetController', array('dummy'));
 		$abstractWidgetController->injectConfigurationManager($configurationManager);
 		$abstractWidgetController->_set('request', $request);
 		$abstractWidgetController->_call('setViewConfiguration', $view);
-		$this->assertEquals(t3lib_div::getFileAbsFileName('EXT:fluid/Resources/Private/DummyTestTemplates'), $view->_call('getTemplateRootPath'));
+		$this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:fluid/Resources/Private/DummyTestTemplates'), $view->_call('getTemplateRootPath'));
 	}
 
 }
+
 
 ?>

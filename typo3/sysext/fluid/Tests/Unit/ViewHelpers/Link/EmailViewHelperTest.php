@@ -12,26 +12,28 @@
  * Public License for more details.                                       *
  *                                                                        */
 require_once dirname(__FILE__) . '/../ViewHelperBaseTestcase.php';
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
+
 /**
 
  */
-class Tx_Fluid_Tests_Unit_ViewHelpers_Link_EmailViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
 
 	/**
-	 * @var Tx_Fluid_ViewHelpers_Link_EmailViewHelper
+	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Link\EmailViewHelper
 	 */
 	protected $viewHelper;
 
 	/**
-	 * @var tslib_cObj
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	protected $cObjBackup;
 
 	public function setUp() {
 		parent::setUp();
 		$this->cObjBackup = $GLOBALS['TSFE']->cObj;
-		$GLOBALS['TSFE']->cObj = $this->getMock('tslib_cObj', array(), array(), '', FALSE);
-		$this->viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Link_EmailViewHelper'), array('renderChildren'));
+		$GLOBALS['TSFE']->cObj = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array(), array(), '', FALSE);
+		$this->viewHelper = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Fluid\\ViewHelpers\\Link\\EmailViewHelper'), array('renderChildren'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
@@ -45,7 +47,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Link_EmailViewHelperTest extends Tx_Fluid_
 	 */
 	public function renderCorrectlySetsTagNameAndAttributesAndContent() {
 		//$GLOBALS['TSFE']->cObj->expects($this->once())->method('getMailTo')->with('some@email.tld', 'some@email.tld')->will($this->returnValue(array('mailto:some@email.tld', 'some@email.tld')));
-		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName', 'addAttribute', 'setContent'));
+		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('setTagName', 'addAttribute', 'setContent'));
 		$mockTagBuilder->expects($this->once())->method('setTagName')->with('a');
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'mailto:some@email.tld');
 		$mockTagBuilder->expects($this->once())->method('setContent')->with('some content');
@@ -60,7 +62,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Link_EmailViewHelperTest extends Tx_Fluid_
 	 */
 	public function renderSetsTagContentToEmailIfRenderChildrenReturnNull() {
 		//$GLOBALS['TSFE']->cObj->expects($this->once())->method('getMailTo')->with('some@email.tld', 'some@email.tld')->will($this->returnValue(array('mailto:some@email.tld', 'some@email.tld')));
-		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName', 'addAttribute', 'setContent'));
+		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('setTagName', 'addAttribute', 'setContent'));
 		$mockTagBuilder->expects($this->once())->method('setContent')->with('some@email.tld');
 		$this->viewHelper->_set('tag', $mockTagBuilder);
 		$this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue(NULL));
@@ -69,5 +71,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Link_EmailViewHelperTest extends Tx_Fluid_
 	}
 
 }
+
 
 ?>

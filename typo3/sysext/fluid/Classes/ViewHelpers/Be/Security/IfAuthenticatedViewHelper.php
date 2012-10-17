@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Security;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -49,7 +51,7 @@
  *
  * @api
  */
-class Tx_Fluid_ViewHelpers_Be_Security_IfAuthenticatedViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+class IfAuthenticatedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * Renders <f:then> child if any BE user is currently authenticated, otherwise renders <f:else> child.
@@ -65,5 +67,6 @@ class Tx_Fluid_ViewHelpers_Be_Security_IfAuthenticatedViewHelper extends Tx_Flui
 	}
 
 }
+
 
 ?>

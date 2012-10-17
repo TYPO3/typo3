@@ -17,7 +17,7 @@ fluidAjaxWidgetResponse {
 config.tx_extbase {
 	mvc {
 		requestHandlers {
-			Tx_Fluid_Core_Widget_WidgetRequestHandler = Tx_Fluid_Core_Widget_WidgetRequestHandler
+			TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler = TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler
 		}
 	}
 }

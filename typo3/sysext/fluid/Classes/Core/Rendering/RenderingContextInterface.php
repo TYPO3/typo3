@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Rendering;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,28 +13,29 @@
 /**
 
  */
-interface Tx_Fluid_Core_Rendering_RenderingContextInterface
+interface RenderingContextInterface
 {
 	/**
 	 * Get the template variable container
 	 *
-	 * @return Tx_Fluid_Core_ViewHelper_TemplateVariableContainer The Template Variable Container
+	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer The Template Variable Container
 	 */
 	public function getTemplateVariableContainer();
 
 	/**
 	 * Get the controller context which will be passed to the ViewHelper
 	 *
-	 * @return Tx_Extbase_MVC_Controller_ControllerContext The controller context to set
+	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext The controller context to set
 	 */
 	public function getControllerContext();
 
 	/**
 	 * Get the ViewHelperVariableContainer
 	 *
-	 * @return Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer
+	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
 	 */
 	public function getViewHelperVariableContainer();
 
 }
+
 ?>

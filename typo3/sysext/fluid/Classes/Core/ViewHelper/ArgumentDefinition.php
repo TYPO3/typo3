@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\ViewHelper;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,7 +13,7 @@
 /**
  * Argument definition of each view helper argument
  */
-class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
+class ArgumentDefinition {
 
 	/**
 	 * Name of argument
@@ -129,5 +131,6 @@ class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 	}
 
 }
+
 
 ?>

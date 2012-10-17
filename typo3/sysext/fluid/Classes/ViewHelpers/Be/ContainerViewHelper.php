@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -40,7 +42,7 @@
  * Custom CSS file EXT:your_extension/Resources/Public/styles/backend.css and JavaScript file EXT:your_extension/Resources/Public/scripts/main.js will be loaded
  * </output>
  */
-class Tx_Fluid_ViewHelpers_Be_ContainerViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
+class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 
 	/**
 	 * Render start page with template.php and pageTitle
@@ -103,5 +105,6 @@ class Tx_Fluid_ViewHelpers_Be_ContainerViewHelper extends Tx_Fluid_ViewHelpers_B
 	}
 
 }
+
 
 ?>

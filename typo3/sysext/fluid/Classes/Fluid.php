@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid;
+
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -14,11 +16,13 @@
 /**
 
  */
-class Tx_Fluid_Fluid {
+class Fluid {
 
-	const NAMESPACE_SEPARATOR = '_';
+	const LEGACY_NAMESPACE_SEPARATOR = '_';
+	const NAMESPACE_SEPARATOR = '\\';
 	static public $debugMode = FALSE;
 
 }
+
 
 ?>

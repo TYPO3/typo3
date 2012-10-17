@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -36,7 +38,7 @@
  *
  * @api
  */
-class Tx_Fluid_ViewHelpers_AliasViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class AliasViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Render alias
@@ -57,5 +59,6 @@ class Tx_Fluid_ViewHelpers_AliasViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	}
 
 }
+
 
 ?>

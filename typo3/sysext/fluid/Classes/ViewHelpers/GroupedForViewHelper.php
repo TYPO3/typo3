@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -66,7 +68,7 @@
  *
  * @api
  */
-class Tx_Fluid_ViewHelpers_GroupedForViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class GroupedForViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Iterates through elements of $each and renders child nodes
@@ -84,8 +86,8 @@ class Tx_Fluid_ViewHelpers_GroupedForViewHelper extends Tx_Fluid_Core_ViewHelper
 			return '';
 		}
 		if (is_object($each)) {
-			if (!$each instanceof Traversable) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('GroupedForViewHelper only supports arrays and objects implementing Traversable interface', 1253108907);
+			if (!$each instanceof \Traversable) {
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('GroupedForViewHelper only supports arrays and objects implementing Traversable interface', 1253108907);
 			}
 			$each = iterator_to_array($each);
 		}
@@ -113,9 +115,9 @@ class Tx_Fluid_ViewHelpers_GroupedForViewHelper extends Tx_Fluid_Core_ViewHelper
 			if (is_array($value)) {
 				$currentGroupIndex = isset($value[$groupBy]) ? $value[$groupBy] : NULL;
 			} elseif (is_object($value)) {
-				$currentGroupIndex = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($value, $groupBy);
+				$currentGroupIndex = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($value, $groupBy);
 			} else {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('GroupedForViewHelper only supports multi-dimensional arrays and objects', 1253120365);
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('GroupedForViewHelper only supports multi-dimensional arrays and objects', 1253120365);
 			}
 			$currentGroupKeyValue = $currentGroupIndex;
 			if (is_object($currentGroupIndex)) {
@@ -128,5 +130,6 @@ class Tx_Fluid_ViewHelpers_GroupedForViewHelper extends Tx_Fluid_Core_ViewHelper
 	}
 
 }
+
 
 ?>

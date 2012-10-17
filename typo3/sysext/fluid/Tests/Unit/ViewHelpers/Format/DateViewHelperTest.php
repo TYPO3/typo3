@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,14 +13,14 @@
 /**
 
  */
-class Tx_Fluid_Tests_Unit_ViewHelpers_Format_DateViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class DateViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function viewHelperFormatsDateCorrectly() {
-		$viewHelper = new Tx_Fluid_ViewHelpers_Format_DateViewHelper();
-		$actualResult = $viewHelper->render(new DateTime('1980-12-13'));
+		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper();
+		$actualResult = $viewHelper->render(new \DateTime('1980-12-13'));
 		$this->assertEquals('1980-12-13', $actualResult);
 	}
 
@@ -26,7 +28,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_DateViewHelperTest extends Tx_Extba
 	 * @test
 	 */
 	public function viewHelperFormatsDateStringCorrectly() {
-		$viewHelper = new Tx_Fluid_ViewHelpers_Format_DateViewHelper();
+		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper();
 		$actualResult = $viewHelper->render('1980-12-13');
 		$this->assertEquals('1980-12-13', $actualResult);
 	}
@@ -35,8 +37,8 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_DateViewHelperTest extends Tx_Extba
 	 * @test
 	 */
 	public function viewHelperRespectsCustomFormat() {
-		$viewHelper = new Tx_Fluid_ViewHelpers_Format_DateViewHelper();
-		$actualResult = $viewHelper->render(new DateTime('1980-02-01'), 'd.m.Y');
+		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper();
+		$actualResult = $viewHelper->render(new \DateTime('1980-02-01'), 'd.m.Y');
 		$this->assertEquals('01.02.1980', $actualResult);
 	}
 
@@ -44,7 +46,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_DateViewHelperTest extends Tx_Extba
 	 * @test
 	 */
 	public function viewHelperReturnsEmptyStringIfNULLIsGiven() {
-		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
+		$viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\DateViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
 		$actualResult = $viewHelper->render();
 		$this->assertEquals('', $actualResult);
@@ -52,10 +54,10 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_DateViewHelperTest extends Tx_Extba
 
 	/**
 	 * @test
-	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception
+	 * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 */
 	public function viewHelperThrowsExceptionIfDateStringCantBeParsed() {
-		$viewHelper = new Tx_Fluid_ViewHelpers_Format_DateViewHelper();
+		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper();
 		$viewHelper->render('foo');
 	}
 
@@ -63,8 +65,8 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_DateViewHelperTest extends Tx_Extba
 	 * @test
 	 */
 	public function viewHelperUsesChildNodesIfDateAttributeIsNotSpecified() {
-		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
-		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(new DateTime('1980-12-13')));
+		$viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\DateViewHelper', array('renderChildren'));
+		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(new \DateTime('1980-12-13')));
 		$actualResult = $viewHelper->render();
 		$this->assertEquals('1980-12-13', $actualResult);
 	}
@@ -73,12 +75,13 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_DateViewHelperTest extends Tx_Extba
 	 * @test
 	 */
 	public function dateArgumentHasPriorityOverChildNodes() {
-		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
+		$viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\DateViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->never())->method('renderChildren');
 		$actualResult = $viewHelper->render('1980-12-12');
 		$this->assertEquals('1980-12-12', $actualResult);
 	}
 
 }
+
 
 ?>

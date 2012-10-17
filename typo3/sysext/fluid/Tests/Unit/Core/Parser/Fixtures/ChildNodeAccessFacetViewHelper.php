@@ -1,4 +1,5 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Parser\Fixtures;
 
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
@@ -9,13 +10,13 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Test fixture for the child node access facet.
- *
  */
-abstract class Tx_Fluid_Core_Parser_Fixtures_ChildNodeAccessFacetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
+abstract class ChildNodeAccessFacetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface {
+
 
 }
+
 
 ?>

@@ -1,5 +1,7 @@
 <?php
-class Tx_Fluid_Core_Fixtures_TestViewHelper2 extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Fixtures;
+
+class TestViewHelper2 extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * My comments. Bla blubb.
@@ -13,5 +15,6 @@ class Tx_Fluid_Core_Fixtures_TestViewHelper2 extends Tx_Fluid_Core_ViewHelper_Ab
 	}
 
 }
+
 
 ?>

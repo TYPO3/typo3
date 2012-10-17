@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -48,7 +50,7 @@
  * </code>
  * This automatically inserts the value of {customer.name} inside the textbox and adjusts the name of the textbox accordingly.
  */
-class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper {
+class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper {
 
 	/**
 	 * @var string
@@ -56,17 +58,17 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	protected $tagName = 'form';
 
 	/**
-	 * @var Tx_Extbase_Security_Channel_RequestHashService
+	 * @var \TYPO3\CMS\Extbase\Security\Channel\RequestHashService
 	 */
 	protected $requestHashService;
 
 	/**
-	 * @var Tx_Extbase_Security_Cryptography_HashService
+	 * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService
 	 */
 	protected $hashService;
 
 	/**
-	 * @var Tx_Extbase_Service_ExtensionService
+	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService
 	 */
 	protected $extensionService;
 
@@ -79,40 +81,40 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	protected $formActionUriArguments;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
 	/**
 	 * Inject a request hash service
 	 *
-	 * @param Tx_Extbase_Security_Channel_RequestHashService $requestHashService The request hash service
+	 * @param \TYPO3\CMS\Extbase\Security\Channel\RequestHashService $requestHashService The request hash service
 	 * @return void
 	 */
-	public function injectRequestHashService(Tx_Extbase_Security_Channel_RequestHashService $requestHashService) {
+	public function injectRequestHashService(\TYPO3\CMS\Extbase\Security\Channel\RequestHashService $requestHashService) {
 		$this->requestHashService = $requestHashService;
 	}
 
 	/**
-	 * @param Tx_Extbase_Security_Cryptography_HashService $hashService
+	 * @param \TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService
 	 */
-	public function injectHashService(Tx_Extbase_Security_Cryptography_HashService $hashService) {
+	public function injectHashService(\TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService) {
 		$this->hashService = $hashService;
 	}
 
 	/**
-	 * @param Tx_Extbase_Service_ExtensionService $extensionService
+	 * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
 	 * @return void
 	 */
-	public function injectExtensionService(Tx_Extbase_Service_ExtensionService $extensionService) {
+	public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService) {
 		$this->extensionService = $extensionService;
 	}
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
@@ -206,8 +208,8 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 * @return string HTML-string for the additional identity properties
 	 */
 	protected function renderAdditionalIdentityFields() {
-		if ($this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'additionalIdentityProperties')) {
-			$additionalIdentityProperties = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'additionalIdentityProperties');
+		if ($this->viewHelperVariableContainer->exists('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'additionalIdentityProperties')) {
+			$additionalIdentityProperties = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'additionalIdentityProperties');
 			$output = '';
 			foreach ($additionalIdentityProperties as $identity) {
 				$output .= chr(10) . $identity;
@@ -252,7 +254,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	protected function addFormObjectNameToViewHelperVariableContainer() {
 		$formObjectName = $this->getFormObjectName();
 		if ($formObjectName !== NULL) {
-			$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName', $formObjectName);
+			$this->viewHelperVariableContainer->add('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName', $formObjectName);
 		}
 	}
 
@@ -264,7 +266,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	protected function removeFormObjectNameFromViewHelperVariableContainer() {
 		$formObjectName = $this->getFormObjectName();
 		if ($formObjectName !== NULL) {
-			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
+			$this->viewHelperVariableContainer->remove('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName');
 		}
 	}
 
@@ -292,8 +294,8 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 */
 	protected function addFormObjectToViewHelperVariableContainer() {
 		if ($this->hasArgument('object')) {
-			$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject', $this->arguments['object']);
-			$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'additionalIdentityProperties', array());
+			$this->viewHelperVariableContainer->add('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObject', $this->arguments['object']);
+			$this->viewHelperVariableContainer->add('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'additionalIdentityProperties', array());
 		}
 	}
 
@@ -304,8 +306,8 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 */
 	protected function removeFormObjectFromViewHelperVariableContainer() {
 		if ($this->hasArgument('object')) {
-			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject');
-			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'additionalIdentityProperties');
+			$this->viewHelperVariableContainer->remove('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObject');
+			$this->viewHelperVariableContainer->remove('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'additionalIdentityProperties');
 		}
 	}
 
@@ -316,7 +318,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 */
 	protected function addFieldNamePrefixToViewHelperVariableContainer() {
 		$fieldNamePrefix = $this->getFieldNamePrefix();
-		$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix', $fieldNamePrefix);
+		$this->viewHelperVariableContainer->add('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'fieldNamePrefix', $fieldNamePrefix);
 	}
 
 	/**
@@ -338,7 +340,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 * @return void
 	 */
 	protected function removeFieldNamePrefixFromViewHelperVariableContainer() {
-		$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix');
+		$this->viewHelperVariableContainer->remove('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'fieldNamePrefix');
 	}
 
 	/**
@@ -347,7 +349,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 * @return void
 	 */
 	protected function addFormFieldNamesToViewHelperVariableContainer() {
-		$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'formFieldNames', array());
+		$this->viewHelperVariableContainer->add('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formFieldNames', array());
 	}
 
 	/**
@@ -356,7 +358,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 * @return void
 	 */
 	protected function removeFormFieldNamesFromViewHelperVariableContainer() {
-		$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'formFieldNames');
+		$this->viewHelperVariableContainer->remove('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formFieldNames');
 	}
 
 	/**
@@ -365,7 +367,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 * @return string the hmac field
 	 */
 	protected function renderRequestHashField() {
-		$formFieldNames = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formFieldNames');
+		$formFieldNames = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formFieldNames');
 		$this->postProcessUriArgumentsForRequesthash($this->formActionUriArguments, $formFieldNames);
 		$requestHash = $this->requestHashService->generateRequestHash($formFieldNames, $this->getFieldNamePrefix());
 		// in v4, we need to prefix __hmac as well to make it show up in the request object.
@@ -417,11 +419,12 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 * Remove Checkbox field names from ViewHelper variable container, to start from scratch when a new form starts.
 	 */
 	protected function removeCheckboxFieldNamesFromViewHelperVariableContainer() {
-		if ($this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_Form_CheckboxViewHelper', 'checkboxFieldNames')) {
-			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_Form_CheckboxViewHelper', 'checkboxFieldNames');
+		if ($this->viewHelperVariableContainer->exists('TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\CheckboxViewHelper', 'checkboxFieldNames')) {
+			$this->viewHelperVariableContainer->remove('TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\CheckboxViewHelper', 'checkboxFieldNames');
 		}
 	}
 
 }
+
 
 ?>

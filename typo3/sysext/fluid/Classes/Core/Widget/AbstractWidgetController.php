@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Widget;
+
 /*
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -25,12 +27,12 @@
  *
  * @api
  */
-abstract class Tx_Fluid_Core_Widget_AbstractWidgetController extends Tx_Extbase_MVC_Controller_ActionController implements t3lib_Singleton {
+abstract class AbstractWidgetController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var array
 	 */
-	protected $supportedRequestTypes = array('Tx_Fluid_Core_Widget_WidgetRequest');
+	protected $supportedRequestTypes = array('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest');
 
 	/**
 	 * Configuration for this widget.
@@ -43,12 +45,12 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetController extends Tx_Extbase_
 	/**
 	 * Handles a request. The result output is returned by altering the given response.
 	 *
-	 * @param Tx_Extbase_MVC_RequestInterface $request The request object
-	 * @param Tx_Extbase_MVC_ResponseInterface $response The response, modified by this handler
+	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
+	 * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this handler
 	 * @return void
 	 * @api
 	 */
-	public function processRequest(Tx_Extbase_MVC_RequestInterface $request, Tx_Extbase_MVC_ResponseInterface $response) {
+	public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
 		$this->widgetConfiguration = $request->getWidgetContext()->getWidgetConfiguration();
 		parent::processRequest($request, $response);
 	}
@@ -57,17 +59,18 @@ abstract class Tx_Fluid_Core_Widget_AbstractWidgetController extends Tx_Extbase_
 	 * Allows the widget template root path to be overriden via the framework configuration,
 	 * e.g. plugin.tx_extension.view.widget.<WidgetViewHelperClassName>.templateRootPath
 	 *
-	 * @param Tx_Extbase_MVC_View_ViewInterface $view
+	 * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
 	 * @return void
 	 */
-	protected function setViewConfiguration(Tx_Extbase_MVC_View_ViewInterface $view) {
-		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+	protected function setViewConfiguration(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view) {
+		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$widgetViewHelperClassName = $this->request->getWidgetContext()->getWidgetViewHelperClassName();
-		if ((isset($extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName]['templateRootPath']) && strlen($extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName]['templateRootPath']) > 0) && method_exists($view, 'setTemplateRootPath')) {
-			$view->setTemplateRootPath(t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName]['templateRootPath']));
+		if ((isset($extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName]['template']) && strlen($extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName]['template']) > 0) && method_exists($view, 'setTemplateRootPath')) {
+			$view->setTemplateRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName]['template']));
 		}
 	}
 
 }
+
 
 ?>

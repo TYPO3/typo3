@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Widget\Exception;
+
 /*
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -21,9 +23,10 @@
 /**
  * An exception if no widget context could be found inside the AjaxWidgetContextHolder.
  */
-class Tx_Fluid_Core_Widget_Exception_WidgetContextNotFoundException extends Tx_Fluid_Core_Widget_Exception {
+class WidgetContextNotFoundException extends \TYPO3\CMS\Fluid\Core\Widget\Exception {
 
 
 }
+
 
 ?>

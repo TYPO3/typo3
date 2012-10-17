@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,13 +13,13 @@
 /**
  * Testcase for TagBuilder
  */
-class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class TagBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function constructorSetsTagName() {
-		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('someTagName');
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder('someTagName');
 		$this->assertEquals('someTagName', $tagBuilder->getTagName());
 	}
 
@@ -25,7 +27,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function constructorSetsTagContent() {
-		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('', '<some text>');
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder('', '<some text>');
 		$this->assertEquals('<some text>', $tagBuilder->getContent());
 	}
 
@@ -33,7 +35,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function setContentDoesNotEscapeValue() {
-		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder();
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder();
 		$tagBuilder->setContent('<to be escaped>', FALSE);
 		$this->assertEquals('<to be escaped>', $tagBuilder->getContent());
 	}
@@ -42,7 +44,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function hasContentReturnsTrueIfTagContainsText() {
-		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('', 'foo');
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder('', 'foo');
 		$this->assertTrue($tagBuilder->hasContent());
 	}
 
@@ -50,7 +52,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function hasContentReturnsFalseIfContentIsNull() {
-		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder();
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder();
 		$tagBuilder->setContent(NULL);
 		$this->assertFalse($tagBuilder->hasContent());
 	}
@@ -59,7 +61,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function hasContentReturnsFalseIfContentIsAnEmptyString() {
-		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder();
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder();
 		$tagBuilder->setContent('');
 		$this->assertFalse($tagBuilder->hasContent());
 	}
@@ -68,7 +70,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function renderReturnsEmptyStringByDefault() {
-		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder();
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder();
 		$this->assertEquals('', $tagBuilder->render());
 	}
 
@@ -76,7 +78,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function renderReturnsSelfClosingTagIfNoContentIsSpecified() {
-		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('tag');
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder('tag');
 		$this->assertEquals('<tag />', $tagBuilder->render());
 	}
 
@@ -84,7 +86,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function contentCanBeRemoved() {
-		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('tag', 'some content');
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder('tag', 'some content');
 		$tagBuilder->setContent(NULL);
 		$this->assertEquals('<tag />', $tagBuilder->render());
 	}
@@ -93,7 +95,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function renderReturnsOpeningAndClosingTagIfNoContentIsSpecifiedButForceClosingTagIsTrue() {
-		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('tag');
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder('tag');
 		$tagBuilder->forceClosingTag(TRUE);
 		$this->assertEquals('<tag></tag>', $tagBuilder->render());
 	}
@@ -102,7 +104,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function attributesAreProperlyRendered() {
-		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('tag');
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder('tag');
 		$tagBuilder->addAttribute('attribute1', 'attribute1value');
 		$tagBuilder->addAttribute('attribute2', 'attribute2value');
 		$tagBuilder->addAttribute('attribute3', 'attribute3value');
@@ -113,7 +115,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function attributeValuesAreEscapedByDefault() {
-		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('tag');
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder('tag');
 		$tagBuilder->addAttribute('foo', '<to be escaped>');
 		$this->assertEquals('<tag foo="&lt;to be escaped&gt;" />', $tagBuilder->render());
 	}
@@ -122,7 +124,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function attributeValuesAreNotEscapedIfDisabled() {
-		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('tag');
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder('tag');
 		$tagBuilder->addAttribute('foo', '<not to be escaped>', FALSE);
 		$this->assertEquals('<tag foo="<not to be escaped>" />', $tagBuilder->render());
 	}
@@ -131,7 +133,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function attributesCanBeRemoved() {
-		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('tag');
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder('tag');
 		$tagBuilder->addAttribute('attribute1', 'attribute1value');
 		$tagBuilder->addAttribute('attribute2', 'attribute2value');
 		$tagBuilder->addAttribute('attribute3', 'attribute3value');
@@ -143,7 +145,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function resetResetsTagBuilder() {
-		$tagBuilder = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('dummy'));
+		$tagBuilder = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('dummy'));
 		$tagBuilder->setTagName('tagName');
 		$tagBuilder->setContent('some content');
 		$tagBuilder->forceClosingTag(TRUE);
@@ -160,7 +162,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function tagNameCanBeOverridden() {
-		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('foo');
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder('foo');
 		$tagBuilder->setTagName('bar');
 		$this->assertEquals('<bar />', $tagBuilder->render());
 	}
@@ -169,7 +171,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function tagContentCanBeOverridden() {
-		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('foo', 'some content');
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder('foo', 'some content');
 		$tagBuilder->setContent('');
 		$this->assertEquals('<foo />', $tagBuilder->render());
 	}
@@ -178,11 +180,12 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_TagBuilderTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function tagIsNotRenderedIfTagNameIsEmpty() {
-		$tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder('foo');
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder('foo');
 		$tagBuilder->setTagName('');
 		$this->assertEquals('', $tagBuilder->render());
 	}
 
 }
+
 
 ?>

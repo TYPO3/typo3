@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,24 +13,24 @@
 /**
  * Testcase for ParsingState
  */
-class Tx_Fluid_Tests_Unit_Core_Rendering_RenderingContextTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class RenderingContextTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * Parsing state
 	 *
-	 * @var Tx_Fluid_Core_Rendering_RenderingContextInterface
+	 * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface
 	 */
 	protected $renderingContext;
 
 	public function setUp() {
-		$this->renderingContext = new Tx_Fluid_Core_Rendering_RenderingContext();
+		$this->renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
 	}
 
 	/**
 	 * @test
 	 */
 	public function templateVariableContainerCanBeReadCorrectly() {
-		$templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
+		$templateVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer');
 		$this->renderingContext->injectTemplateVariableContainer($templateVariableContainer);
 		$this->assertSame($this->renderingContext->getTemplateVariableContainer(), $templateVariableContainer, 'Template Variable Container could not be read out again.');
 	}
@@ -37,7 +39,7 @@ class Tx_Fluid_Tests_Unit_Core_Rendering_RenderingContextTest extends Tx_Extbase
 	 * @test
 	 */
 	public function controllerContextCanBeReadCorrectly() {
-		$controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
+		$controllerContext = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext', array(), array(), '', FALSE);
 		$this->renderingContext->setControllerContext($controllerContext);
 		$this->assertSame($this->renderingContext->getControllerContext(), $controllerContext);
 	}
@@ -46,11 +48,12 @@ class Tx_Fluid_Tests_Unit_Core_Rendering_RenderingContextTest extends Tx_Extbase
 	 * @test
 	 */
 	public function viewHelperVariableContainerCanBeReadCorrectly() {
-		$viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
+		$viewHelperVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\ViewHelperVariableContainer');
 		$this->renderingContext->injectViewHelperVariableContainer($viewHelperVariableContainer);
 		$this->assertSame($viewHelperVariableContainer, $this->renderingContext->getViewHelperVariableContainer());
 	}
 
 }
+
 
 ?>

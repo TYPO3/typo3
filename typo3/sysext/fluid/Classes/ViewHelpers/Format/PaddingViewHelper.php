@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -14,7 +16,7 @@
  * @see http://www.php.net/manual/en/function.str_pad.php
  * @api
  */
-class Tx_Fluid_ViewHelpers_Format_PaddingViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class PaddingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Pad a string to a certain length with another string
@@ -39,5 +41,6 @@ class Tx_Fluid_ViewHelpers_Format_PaddingViewHelper extends Tx_Fluid_Core_ViewHe
 	}
 
 }
+
 
 ?>

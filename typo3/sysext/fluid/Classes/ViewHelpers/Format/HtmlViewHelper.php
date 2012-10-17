@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
+
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -45,7 +47,7 @@
  *
  * @see http://typo3.org/documentation/document-library/references/doc_core_tsref/4.2.0/view/1/5/#id4198758
  */
-class Tx_Fluid_ViewHelpers_Format_HtmlViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class HtmlViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @var 	tslib_cObj
@@ -67,15 +69,15 @@ class Tx_Fluid_ViewHelpers_Format_HtmlViewHelper extends Tx_Fluid_Core_ViewHelpe
 	protected $escapingInterceptorEnabled = FALSE;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 		$this->contentObject = $this->configurationManager->getContentObject();
 	}
@@ -104,8 +106,8 @@ class Tx_Fluid_ViewHelpers_Format_HtmlViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 */
 	protected function simulateFrontendEnvironment() {
 		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
-		$GLOBALS['TSFE'] = new stdClass();
-		$GLOBALS['TSFE']->tmpl->setup = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$GLOBALS['TSFE'] = new \stdClass();
+		$GLOBALS['TSFE']->tmpl->setup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 	}
 
 	/**
@@ -119,5 +121,6 @@ class Tx_Fluid_ViewHelpers_Format_HtmlViewHelper extends Tx_Fluid_Core_ViewHelpe
 	}
 
 }
+
 
 ?>

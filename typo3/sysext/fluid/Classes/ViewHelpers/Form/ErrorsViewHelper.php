@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -52,7 +54,7 @@
  * @api
  * @deprecated since Extbase 1.4.0, will be removed with Extbase 1.6.0.
  */
-class Tx_Fluid_ViewHelpers_Form_ErrorsViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class ErrorsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Iterates through selected errors of the request.
@@ -88,7 +90,7 @@ class Tx_Fluid_ViewHelpers_Form_ErrorsViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 */
 	protected function getErrorsForProperty($propertyName, $errors) {
 		foreach ($errors as $error) {
-			if ($error instanceof Tx_Extbase_Validation_PropertyError) {
+			if ($error instanceof \TYPO3\CMS\Extbase\Validation\PropertyError) {
 				if ($error->getPropertyName() === $propertyName) {
 					return $error->getErrors();
 				}
@@ -98,5 +100,6 @@ class Tx_Fluid_ViewHelpers_Form_ErrorsViewHelper extends Tx_Fluid_Core_ViewHelpe
 	}
 
 }
+
 
 ?>

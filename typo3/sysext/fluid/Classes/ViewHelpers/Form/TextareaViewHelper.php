@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -23,7 +25,7 @@
  *
  * @api
  */
-class Tx_Fluid_ViewHelpers_Form_TextareaViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper {
+class TextareaViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper {
 
 	/**
 	 * @var string
@@ -62,5 +64,6 @@ class Tx_Fluid_ViewHelpers_Form_TextareaViewHelper extends Tx_Fluid_ViewHelpers_
 	}
 
 }
+
 
 ?>

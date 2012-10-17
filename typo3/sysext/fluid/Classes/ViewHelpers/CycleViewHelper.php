@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -42,7 +44,7 @@
  *
  * @api
  */
-class Tx_Fluid_ViewHelpers_CycleViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class CycleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * the values to be iterated through
@@ -90,8 +92,8 @@ class Tx_Fluid_ViewHelpers_CycleViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	 */
 	protected function initializeValues($values) {
 		if (is_object($values)) {
-			if (!$values instanceof Traversable) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('CycleViewHelper only supports arrays and objects implementing Traversable interface', 1248728393);
+			if (!$values instanceof \Traversable) {
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('CycleViewHelper only supports arrays and objects implementing Traversable interface', 1248728393);
 			}
 			$this->values = iterator_to_array($values, FALSE);
 		} else {
@@ -101,5 +103,6 @@ class Tx_Fluid_ViewHelpers_CycleViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	}
 
 }
+
 
 ?>

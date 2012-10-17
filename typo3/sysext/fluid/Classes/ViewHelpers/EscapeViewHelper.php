@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -47,7 +49,7 @@
  *
  * @deprecated since Extbase 1.4.0; will be removed in Extbase 1.6.0. Please use the <f:format.*> ViewHelpers instead.
  */
-class Tx_Fluid_ViewHelpers_EscapeViewHelper extends Tx_Fluid_ViewHelpers_Format_AbstractEncodingViewHelper {
+class EscapeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\AbstractEncodingViewHelper {
 
 	/**
 	 * Escapes special characters with their escaped counterparts as needed.
@@ -58,7 +60,7 @@ class Tx_Fluid_ViewHelpers_EscapeViewHelper extends Tx_Fluid_ViewHelpers_Format_
 	 * @return string the altered string.
 	 */
 	public function render($value = NULL, $type = 'html', $encoding = NULL) {
-		t3lib_div::logDeprecatedFunction('<f:escape> is deprecated. Please use the <f:format.*> ViewHelpers instead.');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction('<f:escape> is deprecated. Please use the <f:format.*> ViewHelpers instead.');
 		if ($value === NULL) {
 			$value = $this->renderChildren();
 		}
@@ -84,5 +86,6 @@ class Tx_Fluid_ViewHelpers_EscapeViewHelper extends Tx_Fluid_ViewHelpers_Format_
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -55,7 +57,7 @@
  *
  * @api
  */
-class Tx_Fluid_ViewHelpers_ForViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_CompilableInterface {
+class ForViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface {
 
 	/**
 	 * Iterates through elements of $each and renders child nodes
@@ -75,16 +77,16 @@ class Tx_Fluid_ViewHelpers_ForViewHelper extends Tx_Fluid_Core_ViewHelper_Abstra
 	/**
 	 * @param array $arguments
 	 * @param Closure $renderChildrenClosure
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return string
 	 */
-	static public function renderStatic(array $arguments, Closure $renderChildrenClosure, Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		$templateVariableContainer = $renderingContext->getTemplateVariableContainer();
 		if ($arguments['each'] === NULL) {
 			return '';
 		}
-		if (is_object($arguments['each']) && !$arguments['each'] instanceof Traversable) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('ForViewHelper only supports arrays and objects implementing Traversable interface', 1248728393);
+		if (is_object($arguments['each']) && !$arguments['each'] instanceof \Traversable) {
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('ForViewHelper only supports arrays and objects implementing Traversable interface', 1248728393);
 		}
 		if ($arguments['reverse'] === TRUE) {
 			// array_reverse only supports arrays
@@ -126,5 +128,6 @@ class Tx_Fluid_ViewHelpers_ForViewHelper extends Tx_Fluid_Core_ViewHelper_Abstra
 	}
 
 }
+
 
 ?>

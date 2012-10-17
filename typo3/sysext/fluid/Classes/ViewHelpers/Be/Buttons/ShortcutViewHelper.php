@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -42,7 +44,7 @@
  * Normally you won't need to set getVars & setVars parameters in Extbase modules
  * </output>
  */
-class Tx_Fluid_ViewHelpers_Be_Buttons_ShortcutViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
+class ShortcutViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 
 	/**
 	 * Renders a shortcut button as known from the TYPO3 backend
@@ -67,5 +69,6 @@ class Tx_Fluid_ViewHelpers_Be_Buttons_ShortcutViewHelper extends Tx_Fluid_ViewHe
 	}
 
 }
+
 
 ?>

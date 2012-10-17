@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -31,7 +33,7 @@
  * Current page path, prefixed with "Path:" and wrapped in a span with the class "typo3-docheader-pagePath"
  * </output>
  */
-class Tx_Fluid_ViewHelpers_Be_PagePathViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
+class PagePathViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 
 	/**
 	 * Renders the current page path
@@ -41,8 +43,8 @@ class Tx_Fluid_ViewHelpers_Be_PagePathViewHelper extends Tx_Fluid_ViewHelpers_Be
 	 */
 	public function render() {
 		$doc = $this->getDocInstance();
-		$id = t3lib_div::_GP('id');
-		$pageRecord = t3lib_BEfunc::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(1));
+		$id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+		$pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(1));
 		// Is this a real page
 		if ($pageRecord['uid']) {
 			$title = $pageRecord['_thePathFull'];
@@ -53,7 +55,7 @@ class Tx_Fluid_ViewHelpers_Be_PagePathViewHelper extends Tx_Fluid_ViewHelpers_Be
 		$pagePath = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.path', 1) . ': <span class="typo3-docheader-pagePath">';
 		// crop the title to title limit (or 50, if not defined)
 		$cropLength = empty($GLOBALS['BE_USER']->uc['titleLen']) ? 50 : $GLOBALS['BE_USER']->uc['titleLen'];
-		$croppedTitle = t3lib_div::fixed_lgd_cs($title, -$cropLength);
+		$croppedTitle = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($title, -$cropLength);
 		if ($croppedTitle !== $title) {
 			$pagePath .= ((('<abbr title="' . htmlspecialchars($title)) . '">') . htmlspecialchars($croppedTitle)) . '</abbr>';
 		} else {
@@ -64,5 +66,6 @@ class Tx_Fluid_ViewHelpers_Be_PagePathViewHelper extends Tx_Fluid_ViewHelpers_Be
 	}
 
 }
+
 
 ?>

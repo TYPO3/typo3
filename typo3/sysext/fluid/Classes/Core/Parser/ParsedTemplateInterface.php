@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Parser;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -12,20 +14,20 @@
  * This interface is returned by Tx_Fluid_Core_Parser_TemplateParser->parse()
  * method and is a parsed template
  */
-interface Tx_Fluid_Core_Parser_ParsedTemplateInterface
+interface ParsedTemplateInterface
 {
 	/**
 	 * Render the parsed template with rendering context
 	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext The rendering context to use
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext The rendering context to use
 	 * @return Rendered string
 	 */
-	public function render(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext);
+	public function render(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext);
 
 	/**
 	 * Returns a variable container used in the PostParse Facet.
 	 *
-	 * @return Tx_Fluid_Core_ViewHelper_TemplateVariableContainer
+	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
 	 */
 	// TODO remove
 	public function getVariableContainer();
@@ -35,10 +37,10 @@ interface Tx_Fluid_Core_Parser_ParsedTemplateInterface
 	 * If no layout is defined, this returns NULL
 	 * This requires the current rendering context in order to be able to evaluate the layout name
 	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return string
 	 */
-	public function getLayoutName(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext);
+	public function getLayoutName(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext);
 
 	/**
 	 * Returns TRUE if the current template has a template defined via <f:layout name="..." />
@@ -62,4 +64,5 @@ interface Tx_Fluid_Core_Parser_ParsedTemplateInterface
 	public function isCompiled();
 
 }
+
 ?>

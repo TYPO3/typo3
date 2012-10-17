@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Service;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -12,7 +14,7 @@
  * XML Schema (XSD) Generator. Will generate an XML schema which can be used for autocompletion
  * in schema-aware editors like Eclipse XML editor.
  */
-class Tx_Fluid_Service_DocbookGenerator extends Tx_Fluid_Service_AbstractGenerator {
+class DocbookGenerator extends Tx_Fluid_Service_AbstractGenerator {
 
 	/**
 	 * Generate the XML Schema definition for a given namespace.
@@ -21,11 +23,11 @@ class Tx_Fluid_Service_DocbookGenerator extends Tx_Fluid_Service_AbstractGenerat
 	 * @return string XML Schema definition
 	 */
 	public function generateDocbook($namespace) {
-		if (substr($namespace, -1) !== Tx_Fluid_Fluid::NAMESPACE_SEPARATOR) {
-			$namespace .= Tx_Fluid_Fluid::NAMESPACE_SEPARATOR;
+		if (substr($namespace, -1) !== \TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR) {
+			$namespace .= \TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR;
 		}
 		$classNames = $this->getClassNamesInNamespace($namespace);
-		$xmlRootNode = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?>
+		$xmlRootNode = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?>
 <section version="5.0" xmlns="http://docbook.org/ns/docbook"
          xml:id="fluid.usermanual.standardviewhelpers"
          xmlns:xl="http://www.w3.org/1999/xlink"
@@ -52,8 +54,8 @@ class Tx_Fluid_Service_DocbookGenerator extends Tx_Fluid_Service_AbstractGenerat
 	 * @param SimpleXMLElement $xmlRootNode XML root node where the xsd:element is appended.
 	 * @return void
 	 */
-	protected function generateXmlForClassName($className, $namespace, SimpleXMLElement $xmlRootNode) {
-		$reflectionClass = new Tx_Extbase_Reflection_ClassReflection($className);
+	protected function generateXmlForClassName($className, $namespace, \SimpleXMLElement $xmlRootNode) {
+		$reflectionClass = new \TYPO3\CMS\Extbase\Reflection\ClassReflection($className);
 		if (!$reflectionClass->isSubclassOf($this->abstractViewHelperReflectionClass)) {
 			return;
 		}
@@ -76,7 +78,7 @@ class Tx_Fluid_Service_DocbookGenerator extends Tx_Fluid_Service_AbstractGenerat
 	 * @param SimpleXMLElement $docbookSection DocBook section to add the attributes to.
 	 * @return void
 	 */
-	protected function addArguments($className, SimpleXMLElement $docbookSection) {
+	protected function addArguments($className, \SimpleXMLElement $docbookSection) {
 		$viewHelper = $this->instanciateViewHelper($className);
 		$argumentDefinitions = $viewHelper->prepareArguments();
 		if (count($argumentDefinitions) === 0) {
@@ -113,7 +115,7 @@ class Tx_Fluid_Service_DocbookGenerator extends Tx_Fluid_Service_AbstractGenerat
 	 * @param string $default
 	 * @return void
 	 */
-	private function addArgumentTableRow(SimpleXMLElement $parent, $name, $type, $required, $description, $default) {
+	private function addArgumentTableRow(\SimpleXMLElement $parent, $name, $type, $required, $description, $default) {
 		$row = $parent->addChild('row');
 		$row->addChild('entry', $name);
 		$row->addChild('entry', $type);
@@ -134,7 +136,7 @@ class Tx_Fluid_Service_DocbookGenerator extends Tx_Fluid_Service_AbstractGenerat
 	 * @param SimpleXMLElement $docbookSection Node to add the documentation to
 	 * @return void
 	 */
-	protected function addDocumentation($documentation, SimpleXMLElement $docbookSection) {
+	protected function addDocumentation($documentation, \SimpleXMLElement $docbookSection) {
 		$splitRegex = '/^\\s*(=[^=]+=)$/m';
 		$regex = '/^\\s*(=([^=]+)=)$/m';
 		$matches = preg_split($splitRegex, $documentation, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
@@ -153,7 +155,7 @@ class Tx_Fluid_Service_DocbookGenerator extends Tx_Fluid_Service_AbstractGenerat
 	 * @param string $text
 	 * @param SimpleXMLElement $parentElement
 	 */
-	protected function addText($text, SimpleXMLElement $parentElement) {
+	protected function addText($text, \SimpleXMLElement $parentElement) {
 		$splitRegex = '/
 		(<code(?:.*?)>
 			(?:.*?)
@@ -187,5 +189,6 @@ class Tx_Fluid_Service_DocbookGenerator extends Tx_Fluid_Service_AbstractGenerat
 	}
 
 }
+
 
 ?>

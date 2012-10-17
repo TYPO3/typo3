@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,15 +13,15 @@
 /**
 
  */
-class Tx_Fluid_Tests_Unit_ViewHelpers_Format_HtmlentitiesViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Fluid_ViewHelpers_Format_HtmlentitiesViewHelper
+	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlentitiesViewHelper
 	 */
 	protected $viewHelper;
 
 	public function setUp() {
-		$this->viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_HtmlentitiesViewHelper', array('renderChildren'));
+		$this->viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\HtmlentitiesViewHelper', array('renderChildren'));
 	}
 
 	/**
@@ -110,11 +112,12 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_HtmlentitiesViewHelperTest extends 
 	 * @test
 	 */
 	public function renderReturnsUnmodifiedSourceIfItIsNoString() {
-		$source = new stdClass();
+		$source = new \stdClass();
 		$actualResult = $this->viewHelper->render($source);
 		$this->assertSame($source, $actualResult);
 	}
 
 }
+
 
 ?>

@@ -19,26 +19,28 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 require_once dirname(__FILE__) . '/../ViewHelperBaseTestcase.php';
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Uri;
+
 /**
  * Testcase for the email uri view helper
  */
-class Tx_Fluid_Tests_Unit_ViewHelpers_Uri_EmailViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
 
 	/**
-	 * @var Tx_Fluid_ViewHelpers_Uri_EmailViewHelper
+	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Uri\EmailViewHelper
 	 */
 	protected $viewHelper;
 
 	/**
-	 * @var tslib_cObj
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	protected $cObjBackup;
 
 	public function setUp() {
 		parent::setUp();
 		$this->cObjBackup = $GLOBALS['TSFE']->cObj;
-		$GLOBALS['TSFE']->cObj = $this->getMock('tslib_cObj', array(), array(), '', FALSE);
-		$this->viewHelper = new Tx_Fluid_ViewHelpers_Uri_EmailViewHelper();
+		$GLOBALS['TSFE']->cObj = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array(), array(), '', FALSE);
+		$this->viewHelper = new \Tx_Fluid_ViewHelpers_Uri_EmailViewHelper();
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
@@ -58,5 +60,6 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Uri_EmailViewHelperTest extends Tx_Fluid_V
 	}
 
 }
+
 
 ?>

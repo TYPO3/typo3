@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Core\Compiler;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -13,7 +15,7 @@
  *
  * INTERNAL!!
  */
-abstract class Tx_Fluid_Core_Compiler_AbstractCompiledTemplate implements Tx_Fluid_Core_Parser_ParsedTemplateInterface {
+abstract class AbstractCompiledTemplate implements \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterface {
 
 	/**
 	 * @var array
@@ -22,7 +24,7 @@ abstract class Tx_Fluid_Core_Compiler_AbstractCompiledTemplate implements Tx_Flu
 
 	// These tokens are replaced by the Backporter for implementing different behavior in TYPO3 v4
 	/**
-	 * @var Tx_Extbase_Object_Container_Container
+	 * @var \TYPO3\CMS\Extbase\Object\Container\Container
 	 */
 	static protected $objectContainer;
 
@@ -35,14 +37,14 @@ abstract class Tx_Fluid_Core_Compiler_AbstractCompiledTemplate implements Tx_Flu
 	 * Public such that it is callable from within closures
 	 *
 	 * @param integer $uniqueCounter
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @param string $viewHelperName
-	 * @return Tx_Fluid_Core_ViewHelper_AbstractViewHelper
+	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 * @internal
 	 */
-	public function getViewHelper($uniqueCounter, Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext, $viewHelperName) {
+	public function getViewHelper($uniqueCounter, \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext, $viewHelperName) {
 		if (self::$objectContainer === NULL) {
-			self::$objectContainer = t3lib_div::makeInstance('Tx_Extbase_Object_Container_Container');
+			self::$objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\Container\\Container');
 		}
 		if (isset($this->viewHelpersByPositionAndContext[$uniqueCounter])) {
 			if ($this->viewHelpersByPositionAndContext[$uniqueCounter]->contains($renderingContext)) {
@@ -51,16 +53,16 @@ abstract class Tx_Fluid_Core_Compiler_AbstractCompiledTemplate implements Tx_Flu
 				return $viewHelper;
 			} else {
 				$viewHelperInstance = self::$objectContainer->getInstance($viewHelperName);
-				if ($viewHelperInstance instanceof t3lib_Singleton) {
+				if ($viewHelperInstance instanceof \TYPO3\CMS\Core\SingletonInterface) {
 					$viewHelperInstance->resetState();
 				}
 				$this->viewHelpersByPositionAndContext[$uniqueCounter]->attach($renderingContext, $viewHelperInstance);
 				return $viewHelperInstance;
 			}
 		} else {
-			$this->viewHelpersByPositionAndContext[$uniqueCounter] = t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
+			$this->viewHelpersByPositionAndContext[$uniqueCounter] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage');
 			$viewHelperInstance = self::$objectContainer->getInstance($viewHelperName);
-			if ($viewHelperInstance instanceof t3lib_Singleton) {
+			if ($viewHelperInstance instanceof \TYPO3\CMS\Core\SingletonInterface) {
 				$viewHelperInstance->resetState();
 			}
 			$this->viewHelpersByPositionAndContext[$uniqueCounter]->attach($renderingContext, $viewHelperInstance);
@@ -94,5 +96,6 @@ abstract class Tx_Fluid_Core_Compiler_AbstractCompiledTemplate implements Tx_Flu
 	}
 
 }
+
 
 ?>

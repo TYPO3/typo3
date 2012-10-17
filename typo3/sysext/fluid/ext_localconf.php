@@ -5,7 +5,7 @@ if (!defined('TYPO3_MODE')) {
 // Register caches if not already done in localconf.php or a previously loaded extension.
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template'])) {
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template'] = array(
-		'backend' => 't3lib_cache_backend_FileBackend',
+		'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend',
 		'frontend' => 't3lib_cache_frontend_PhpFrontend'
 	);
 }

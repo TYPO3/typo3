@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -46,7 +48,7 @@
  * localized selectbox
  * <output>
  */
-class Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
+class ActionMenuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface {
 
 	/**
 	 * @var string
@@ -81,7 +83,7 @@ class Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuViewHelper extends Tx_Fluid_Core_V
 		$this->tag->addAttribute('onchange', 'jumpToUrl(this.options[this.selectedIndex].value, this);');
 		$options = '';
 		foreach ($this->childNodes as $childNode) {
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode) {
+			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode) {
 				$options .= $childNode->evaluate($this->renderingContext);
 			}
 		}
@@ -90,5 +92,6 @@ class Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuViewHelper extends Tx_Fluid_Core_V
 	}
 
 }
+
 
 ?>

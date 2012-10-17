@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
+
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -24,7 +26,7 @@
  * (depending on current package)
  * </output>
  */
-class Tx_Fluid_ViewHelpers_Uri_ResourceViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Render the URI to the resource. The filename is used from child content.
@@ -39,8 +41,8 @@ class Tx_Fluid_ViewHelpers_Uri_ResourceViewHelper extends Tx_Fluid_Core_ViewHelp
 		if ($extensionName === NULL) {
 			$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
 		}
-		$uri = (('EXT:' . t3lib_div::camelCaseToLowerCaseUnderscored($extensionName)) . '/Resources/Public/') . $path;
-		$uri = t3lib_div::getFileAbsFileName($uri);
+		$uri = (('EXT:' . \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName)) . '/Resources/Public/') . $path;
+		$uri = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($uri);
 		$uri = substr($uri, strlen(PATH_site));
 		if ((TYPO3_MODE === 'BE' && $absolute === FALSE) && $uri !== FALSE) {
 			$uri = '../' . $uri;
@@ -52,5 +54,6 @@ class Tx_Fluid_ViewHelpers_Uri_ResourceViewHelper extends Tx_Fluid_Core_ViewHelp
 	}
 
 }
+
 
 ?>
