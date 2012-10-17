@@ -500,14 +500,14 @@ class TemplateParser {
 	 */
 	protected function resolveViewHelperName($namespaceIdentifier, $methodIdentifier) {
 		$explodedViewHelperName = explode('.', $methodIdentifier);
-		$namespaceSeperator = strpos($this->namespaces[$namespaceIdentifier], \TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR) !== FALSE ? \TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR : \TYPO3\CMS\Fluid\Fluid::LEGACY_NAMESPACE_SEPARATOR;
+		$namespaceSeparator = strpos($this->namespaces[$namespaceIdentifier], \TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR) !== FALSE ? \TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR : \TYPO3\CMS\Fluid\Fluid::LEGACY_NAMESPACE_SEPARATOR;
 		if (count($explodedViewHelperName) > 1) {
-			$className = implode($namespaceSeperator, array_map('ucfirst', $explodedViewHelperName));
+			$className = implode($namespaceSeparator, array_map('ucfirst', $explodedViewHelperName));
 		} else {
 			$className = ucfirst($explodedViewHelperName[0]);
 		}
 		$className .= 'ViewHelper';
-		$name = $this->namespaces[$namespaceIdentifier] . $namespaceSeperator . $className;
+		$name = $this->namespaces[$namespaceIdentifier] . $namespaceSeparator . $className;
 		return $name;
 	}
 
