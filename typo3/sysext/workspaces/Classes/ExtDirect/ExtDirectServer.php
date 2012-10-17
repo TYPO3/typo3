@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\ExtDirect;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,15 +33,15 @@
  * @package Workspaces
  * @subpackage ExtDirect
  */
-class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHandler {
+class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 
 	/**
-	 * @var Tx_Workspaces_Service_GridData
+	 * @var \TYPO3\CMS\Workspaces\Service\GridDataService
 	 */
 	protected $gridDataService;
 
 	/**
-	 * @var Tx_Workspaces_Service_Stages
+	 * @var \TYPO3\CMS\Workspaces\Service\StagesService
 	 */
 	protected $stagesService;
 
@@ -49,7 +51,7 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 	 * @param stdClass $parameters
 	 * @return array
 	 */
-	public function checkIntegrity(stdClass $parameters) {
+	public function checkIntegrity(\stdClass $parameters) {
 		$integrity = $this->createIntegrityService($this->getAffectedElements($parameters));
 		$integrity->check();
 		$response = array(
@@ -67,7 +69,7 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 	public function getWorkspaceInfos($parameter) {
 		// To avoid too much work we use -1 to indicate that every page is relevant
 		$pageId = $parameter->id > 0 ? $parameter->id : -1;
-		if (!isset($parameter->language) || !t3lib_utility_Math::canBeInterpretedAsInteger($parameter->language)) {
+		if (!isset($parameter->language) || !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($parameter->language)) {
 			$parameter->language = NULL;
 		}
 		$versions = $this->getWorkspaceService()->selectVersionsInWorkspace($this->getCurrentWorkspace(), 0, -99, $pageId, $parameter->depth, 'tables_select', $parameter->language);
@@ -82,8 +84,8 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 	 * @return array
 	 */
 	public function getHistory($parameters) {
-		/** @var $historyService Tx_Workspaces_Service_History */
-		$historyService = t3lib_div::makeInstance('Tx_Workspaces_Service_History');
+		/** @var $historyService \TYPO3\CMS\Workspaces\Service\HistoryService */
+		$historyService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\HistoryService');
 		$history = $historyService->getHistory($parameters->table, $parameters->versionId);
 		return array(
 			'data' => $history,
@@ -100,7 +102,7 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 	public function getStageActions($parameter) {
 		$currentWorkspace = $this->getCurrentWorkspace();
 		$stages = array();
-		if ($currentWorkspace != Tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES) {
+		if ($currentWorkspace != \TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES) {
 			$stages = $this->getStagesService()->getStagesForWSUser();
 		}
 		$data = array(
@@ -119,40 +121,40 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 	public function getRowDetails($parameter) {
 		$diffReturnArray = array();
 		$liveReturnArray = array();
-		/** @var $t3lib_diff t3lib_diff */
-		$t3lib_diff = t3lib_div::makeInstance('t3lib_diff');
-		/** @var $parseObj t3lib_parsehtml_proc */
-		$parseObj = t3lib_div::makeInstance('t3lib_parsehtml_proc');
-		$liveRecord = t3lib_BEfunc::getRecord($parameter->table, $parameter->t3ver_oid);
-		$versionRecord = t3lib_BEfunc::getRecord($parameter->table, $parameter->uid);
-		$icon_Live = t3lib_iconWorks::mapRecordTypeToSpriteIconClass($parameter->table, $liveRecord);
-		$icon_Workspace = t3lib_iconWorks::mapRecordTypeToSpriteIconClass($parameter->table, $versionRecord);
+		/** @var $t3lib_diff \TYPO3\CMS\Core\Utility\DiffUtility */
+		$t3lib_diff = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
+		/** @var $parseObj \TYPO3\CMS\Core\Html\RteHtmlParser */
+		$parseObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\RteHtmlParser');
+		$liveRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
+		$versionRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($parameter->table, $parameter->uid);
+		$icon_Live = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconClass($parameter->table, $liveRecord);
+		$icon_Workspace = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconClass($parameter->table, $versionRecord);
 		$stagePosition = $this->getStagesService()->getPositionOfCurrentStage($parameter->stage);
 		$fieldsOfRecords = array_keys($liveRecord);
 		// get field list from TCA configuration, if available
-		t3lib_div::loadTCA($parameter->table);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($parameter->table);
 		if ($GLOBALS['TCA'][$parameter->table]) {
 			if ($GLOBALS['TCA'][$parameter->table]['interface']['showRecordFieldList']) {
 				$fieldsOfRecords = $GLOBALS['TCA'][$parameter->table]['interface']['showRecordFieldList'];
-				$fieldsOfRecords = t3lib_div::trimExplode(',', $fieldsOfRecords, 1);
+				$fieldsOfRecords = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldsOfRecords, 1);
 			}
 		}
 		foreach ($fieldsOfRecords as $fieldName) {
 			// check for exclude fields
-			if (($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['exclude'] == 0) || t3lib_div::inList($GLOBALS['BE_USER']->groupData['non_exclude_fields'], ($parameter->table . ':') . $fieldName)) {
+			if (($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['exclude'] == 0) || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['BE_USER']->groupData['non_exclude_fields'], ($parameter->table . ':') . $fieldName)) {
 				// call diff class only if there is a difference
 				if (strcmp($liveRecord[$fieldName], $versionRecord[$fieldName]) !== 0) {
 					// Select the human readable values before diff
-					$liveRecord[$fieldName] = t3lib_BEfunc::getProcessedValue($parameter->table, $fieldName, $liveRecord[$fieldName], 0, 1);
-					$versionRecord[$fieldName] = t3lib_BEfunc::getProcessedValue($parameter->table, $fieldName, $versionRecord[$fieldName], 0, 1);
+					$liveRecord[$fieldName] = \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($parameter->table, $fieldName, $liveRecord[$fieldName], 0, 1);
+					$versionRecord[$fieldName] = \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($parameter->table, $fieldName, $versionRecord[$fieldName], 0, 1);
 					// Get the field's label. If not available, use the field name
-					$fieldTitle = $GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel($parameter->table, $fieldName));
+					$fieldTitle = $GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel($parameter->table, $fieldName));
 					if (empty($fieldTitle)) {
 						$fieldTitle = $fieldName;
 					}
 					if ($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config']['type'] == 'group' && $GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config']['internal_type'] == 'file') {
-						$versionThumb = t3lib_BEfunc::thumbCode($versionRecord, $parameter->table, $fieldName, '');
-						$liveThumb = t3lib_BEfunc::thumbCode($liveRecord, $parameter->table, $fieldName, '');
+						$versionThumb = \TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode($versionRecord, $parameter->table, $fieldName, '');
+						$liveThumb = \TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode($liveRecord, $parameter->table, $fieldName, '');
 						$diffReturnArray[] = array(
 							'field' => $fieldName,
 							'label' => $fieldTitle,
@@ -182,7 +184,7 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 		// (this may be used by custom or dynamically-defined fields)
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray'] as $className) {
-				$hookObject =& t3lib_div::getUserObj($className);
+				$hookObject =& \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($className);
 				$hookObject->modifyDifferenceArray($parameter, $diffReturnArray, $liveReturnArray, $t3lib_diff);
 			}
 		}
@@ -220,11 +222,11 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 		foreach ($sysLogRows as $sysLogRow) {
 			$sysLogEntry = array();
 			$data = unserialize($sysLogRow['log_data']);
-			$beUserRecord = t3lib_BEfunc::getRecord('be_users', $sysLogRow['userid']);
+			$beUserRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('be_users', $sysLogRow['userid']);
 			$sysLogEntry['stage_title'] = $this->getStagesService()->getStageTitle($data['stage']);
 			$sysLogEntry['user_uid'] = $sysLogRow['userid'];
 			$sysLogEntry['user_username'] = is_array($beUserRecord) ? $beUserRecord['username'] : '';
-			$sysLogEntry['tstamp'] = t3lib_BEfunc::datetime($sysLogRow['tstamp']);
+			$sysLogEntry['tstamp'] = \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($sysLogRow['tstamp']);
 			$sysLogEntry['user_comment'] = $data['comment'];
 			$sysLogReturnArray[] = $sysLogEntry;
 		}
@@ -240,8 +242,8 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 		$systemLanguages = array(
 			array(
 				'uid' => 'all',
-				'title' => Tx_Extbase_Utility_Localization::translate('language.allLanguages', 'workspaces'),
-				'cls' => t3lib_iconWorks::getSpriteIconClasses('empty-empty')
+				'title' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('language.allLanguages', 'workspaces'),
+				'cls' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('empty-empty')
 			)
 		);
 		foreach ($this->getGridDataService()->getSystemLanguages() as $id => $systemLanguage) {
@@ -251,7 +253,7 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 			$systemLanguages[] = array(
 				'uid' => $id,
 				'title' => htmlspecialchars($systemLanguage['title']),
-				'cls' => t3lib_iconWorks::getSpriteIconClasses($systemLanguage['flagIcon'])
+				'cls' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses($systemLanguage['flagIcon'])
 			);
 		}
 		$result = array(
@@ -264,11 +266,11 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 	/**
 	 * Gets the Grid Data Service.
 	 *
-	 * @return Tx_Workspaces_Service_GridData
+	 * @return \TYPO3\CMS\Workspaces\Service\GridDataService
 	 */
 	protected function getGridDataService() {
 		if (!isset($this->gridDataService)) {
-			$this->gridDataService = t3lib_div::makeInstance('Tx_Workspaces_Service_GridData');
+			$this->gridDataService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\GridDataService');
 		}
 		return $this->gridDataService;
 	}
@@ -276,15 +278,16 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 	/**
 	 * Gets the Stages Service.
 	 *
-	 * @return Tx_Workspaces_Service_Stages
+	 * @return \TYPO3\CMS\Workspaces\Service\StagesService
 	 */
 	protected function getStagesService() {
 		if (!isset($this->stagesService)) {
-			$this->stagesService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
+			$this->stagesService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
 		}
 		return $this->stagesService;
 	}
 
 }
+
 
 ?>

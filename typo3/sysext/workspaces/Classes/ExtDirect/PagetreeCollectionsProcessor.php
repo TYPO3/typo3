@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\ExtDirect;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,34 +33,34 @@
  * @package 	TYPO3
  * @subpackage t3lib
  */
-class Tx_Workspaces_ExtDirect_PagetreeCollectionsProcessor implements t3lib_tree_pagetree_interfaces_CollectionProcessor {
+class PagetreeCollectionsProcessor implements \TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface {
 
 	/**
 	 * @abstract
-	 * @param t3lib_tree_pagetree_Node $node
+	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
 	 * @param int $mountPoint
 	 * @param int $level
-	 * @param t3lib_tree_pagetree_NodeCollection $nodeCollection
+	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
 	 * @return void
 	 */
 	public function postProcessGetNodes($node, $mountPoint, $level, $nodeCollection) {
 		foreach ($nodeCollection as $node) {
-			/** @var $node t3lib_tree_Node */
+			/** @var $node \TYPO3\CMS\Backend\Tree\TreeNode */
 			$this->highlightVersionizedElements($node);
 		}
 	}
 
 	/**
 	 * @abstract
-	 * @param t3lib_tree_pagetree_Node $node
+	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
 	 * @param string $searchFilter
 	 * @param int $mountPoint
-	 * @param t3lib_tree_pagetree_NodeCollection $nodeCollection
+	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
 	 * @return void
 	 */
 	public function postProcessFilteredNodes($node, $searchFilter, $mountPoint, $nodeCollection) {
 		foreach ($nodeCollection as $node) {
-			/** @var $node t3lib_tree_Node */
+			/** @var $node \TYPO3\CMS\Backend\Tree\TreeNode */
 			$this->highlightVersionizedElements($node);
 		}
 	}
@@ -66,12 +68,12 @@ class Tx_Workspaces_ExtDirect_PagetreeCollectionsProcessor implements t3lib_tree
 	/**
 	 * @abstract
 	 * @param string $searchFilter
-	 * @param t3lib_tree_pagetree_NodeCollection $nodeCollection
+	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection $nodeCollection
 	 * @return void
 	 */
 	public function postProcessGetTreeMounts($searchFilter, $nodeCollection) {
 		foreach ($nodeCollection as $node) {
-			/** @var $node t3lib_tree_Node */
+			/** @var $node \TYPO3\CMS\Backend\Tree\TreeNode */
 			$this->highlightVersionizedElements($node);
 		}
 	}
@@ -80,15 +82,16 @@ class Tx_Workspaces_ExtDirect_PagetreeCollectionsProcessor implements t3lib_tree
 	 * Sets the CSS Class on all pages which have versioned records
 	 * in the current workspace
 	 *
-	 * @param t3lib_tree_Node $node
+	 * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
 	 * @return void
 	 */
-	protected function highlightVersionizedElements(t3lib_tree_Node $node) {
-		if (!$node->getCls() && count(t3lib_BEfunc::countVersionsOfRecordsOnPage($GLOBALS['BE_USER']->workspace, $node->getId(), TRUE))) {
+	protected function highlightVersionizedElements(\TYPO3\CMS\Backend\Tree\TreeNode $node) {
+		if (!$node->getCls() && count(\TYPO3\CMS\Backend\Utility\BackendUtility::countVersionsOfRecordsOnPage($GLOBALS['BE_USER']->workspace, $node->getId(), TRUE))) {
 			$node->setCls('ver-versions');
 		}
 	}
 
 }
+
 
 ?>

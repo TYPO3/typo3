@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\Service;
+
 /***************************************************************
  * Copyright notice
  *
@@ -29,7 +31,7 @@
  * @package Workspaces
  * @subpackage Service
  */
-class Tx_Workspaces_Service_Integrity {
+class IntegrityService {
 
 	/**
 	 * Succes status - everything is fine
@@ -110,10 +112,10 @@ class Tx_Workspaces_Service_Integrity {
 	/**
 	 * Checks a single element.
 	 *
-	 * @param Tx_Workspaces_Domain_Model_CombinedRecord $element
+	 * @param \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord $element
 	 * @return void
 	 */
-	public function checkElement(Tx_Workspaces_Domain_Model_CombinedRecord $element) {
+	public function checkElement(\TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord $element) {
 		$this->checkLocalization($element);
 	}
 
@@ -123,26 +125,26 @@ class Tx_Workspaces_Service_Integrity {
 	 * is new in this workspace (has only a placeholder record in live),
 	 * then boths (localization and localization parent) should be published.
 	 *
-	 * @param Tx_Workspaces_Domain_Model_CombinedRecord $element
+	 * @param \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord $element
 	 * @return void
 	 */
-	protected function checkLocalization(Tx_Workspaces_Domain_Model_CombinedRecord $element) {
+	protected function checkLocalization(\TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord $element) {
 		$table = $element->getTable();
-		if (t3lib_BEfunc::isTableLocalizable($table)) {
+		if (\TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($table)) {
 			$languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
 			$languageParentField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
 			$versionRow = $element->getVersionRecord()->getRow();
 			// If element is a localization:
 			if ($versionRow[$languageField] > 0) {
 				// Get localization parent from live workspace:
-				$languageParentRecord = t3lib_BEfunc::getRecord($table, $versionRow[$languageParentField], 'uid,t3ver_state');
+				$languageParentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $versionRow[$languageParentField], 'uid,t3ver_state');
 				// If localization parent is a "new placeholder" record:
 				if ($languageParentRecord['t3ver_state'] == 1) {
-					$title = t3lib_BEfunc::getRecordTitle($table, $versionRow);
+					$title = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $versionRow);
 					// Add warning for current versionized record:
-					$this->addIssue($element->getLiveRecord()->getIdentifier(), self::STATUS_Warning, sprintf(Tx_Extbase_Utility_Localization::translate('integrity.dependsOnDefaultLanguageRecord', 'workspaces'), $title));
+					$this->addIssue($element->getLiveRecord()->getIdentifier(), self::STATUS_Warning, sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('integrity.dependsOnDefaultLanguageRecord', 'workspaces'), $title));
 					// Add info for related localization parent record:
-					$this->addIssue(($table . ':') . $languageParentRecord['uid'], self::STATUS_Info, sprintf(Tx_Extbase_Utility_Localization::translate('integrity.isDefaultLanguageRecord', 'workspaces'), $title));
+					$this->addIssue(($table . ':') . $languageParentRecord['uid'], self::STATUS_Info, sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('integrity.isDefaultLanguageRecord', 'workspaces'), $title));
 				}
 			}
 		}
@@ -246,5 +248,6 @@ class Tx_Workspaces_Service_Integrity {
 	}
 
 }
+
 
 ?>

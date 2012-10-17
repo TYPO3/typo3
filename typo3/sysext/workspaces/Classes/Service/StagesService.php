@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @package Workspaces
  * @subpackage Service
  */
-class Tx_Workspaces_Service_Stages {
+class StagesService {
 
 	const TABLE_STAGE = 'sys_workspace_stage';
 	// if a record is in the "ready to publish" stage STAGE_PUBLISH_ID the nextStage is STAGE_PUBLISH_EXECUTE_ID, this id wont be saved at any time in db
@@ -116,7 +118,7 @@ class Tx_Workspaces_Service_Stages {
 	 * @return array Current and next highest possible stage
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
-	public function getPreviousStageForElementCollection($workspaceItems, array $byTableName = array('tt_content', 'pages', 'pages_language_overlay')) {
+	public function getPreviousStageForElementCollection($workspaceItems, array $byTableName = array('tt_content', 'pages', 'sys_language_overlay')) {
 		$currentStage = array();
 		$previousStage = array();
 		$usedStages = array();
@@ -162,7 +164,7 @@ class Tx_Workspaces_Service_Stages {
 	 * @return array Current and next possible stage.
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
-	public function getNextStageForElementCollection($workspaceItems, array $byTableName = array('tt_content', 'pages', 'pages_language_overlay')) {
+	public function getNextStageForElementCollection($workspaceItems, array $byTableName = array('tt_content', 'pages', 'sys_language_overlay')) {
 		$currentStage = array();
 		$usedStages = array();
 		$nextStage = array();
@@ -214,7 +216,7 @@ class Tx_Workspaces_Service_Stages {
 				'uid' => self::STAGE_EDIT_ID,
 				'title' => (($GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:stage_editing')) . '"'
 			);
-			$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $this->getWorkspaceId());
+			$workspaceRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
 			if ($workspaceRec['custom_stages'] > 0) {
 				// Get all stage records for this workspace
 				$workspaceStageRecs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', self::TABLE_STAGE, ((('parentid=' . $this->getWorkspaceId()) . ' AND parenttable=') . $GLOBALS['TYPO3_DB']->fullQuoteStr('sys_workspace', self::TABLE_STAGE)) . ' AND deleted=0', '', 'sorting', '', 'uid');
@@ -280,7 +282,7 @@ class Tx_Workspaces_Service_Stages {
 	 * @return bool TRUE or FALSE
 	 */
 	public function checkCustomStagingForWS() {
-		$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $this->getWorkspaceId());
+		$workspaceRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
 		return $workspaceRec['custom_stages'] > 0;
 	}
 
@@ -320,7 +322,7 @@ class Tx_Workspaces_Service_Stages {
 	 * @return array
 	 */
 	public function getStageRecord($stageid) {
-		return t3lib_BEfunc::getRecord('sys_workspace_stage', $stageid);
+		return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace_stage', $stageid);
 	}
 
 	/**
@@ -330,8 +332,8 @@ class Tx_Workspaces_Service_Stages {
 	 * @return integer The next stage Id
 	 */
 	public function getNextStage($stageId) {
-		if (!t3lib_utility_Math::canBeInterpretedAsInteger($stageId)) {
-			throw new InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'), 1291109987);
+		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageId)) {
+			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'), 1291109987);
 		}
 		$nextStage = FALSE;
 		$workspaceStageRecs = $this->getStagesForWS();
@@ -397,8 +399,8 @@ class Tx_Workspaces_Service_Stages {
 	 * @return int			id
 	 */
 	public function getPrevStage($stageid) {
-		if (!t3lib_utility_Math::canBeInterpretedAsInteger($stageid)) {
-			throw new InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'));
+		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageid)) {
+			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'));
 		}
 		$prevStage = FALSE;
 		$workspaceStageRecs = $this->getStagesForWS();
@@ -452,7 +454,7 @@ class Tx_Workspaces_Service_Stages {
 	 * @return 	array be_users with e-mail and name
 	 */
 	public function getResponsibleBeUser($stageId, $selectDefaultUserField = FALSE) {
-		$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $this->getWorkspaceId());
+		$workspaceRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
 		$recipientArray = array();
 		switch ($stageId) {
 		case self::STAGE_PUBLISH_EXECUTE_ID:
@@ -484,7 +486,7 @@ class Tx_Workspaces_Service_Stages {
 			break;
 		}
 		if (!empty($userList)) {
-			$userRecords = t3lib_BEfunc::getUserNames('username, uid, email, realName', ('AND uid IN (' . $userList) . ')');
+			$userRecords = \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames('username, uid, email, realName', ('AND uid IN (' . $userList) . ')');
 		}
 		if (!empty($userRecords) && is_array($userRecords)) {
 			foreach ($userRecords as $userUid => $userRecord) {
@@ -502,7 +504,7 @@ class Tx_Workspaces_Service_Stages {
 	 */
 	public function getResponsibleUser($stageRespValue) {
 		$stageValuesArray = array();
-		$stageValuesArray = t3lib_div::trimExplode(',', $stageRespValue);
+		$stageValuesArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $stageRespValue);
 		$beuserUidArray = array();
 		$begroupUidArray = array();
 		$allBeUserArray = array();
@@ -518,13 +520,13 @@ class Tx_Workspaces_Service_Stages {
 			}
 		}
 		if (!empty($begroupUidArray)) {
-			$allBeUserArray = t3lib_befunc::getUserNames();
+			$allBeUserArray = \t3lib_befunc::getUserNames();
 			$begroupUidList = implode(',', $begroupUidArray);
 			$this->userGroups = array();
 			$begroupUidArray = $this->fetchGroups($begroupUidList);
 			foreach ($begroupUidArray as $groupkey => $groupData) {
 				foreach ($allBeUserArray as $useruid => $userdata) {
-					if (t3lib_div::inList($userdata['usergroup_cached_list'], $groupData['uid'])) {
+					if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($userdata['usergroup_cached_list'], $groupData['uid'])) {
 						$beuserUidArray[] = $useruid;
 					}
 				}
@@ -576,7 +578,7 @@ class Tx_Workspaces_Service_Stages {
 	 * @return array
 	 */
 	private function fetchGroupsRecursive($grList, $idList = '') {
-		$requiredGroups = t3lib_div::intExplode(',', $grList, TRUE);
+		$requiredGroups = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $grList, TRUE);
 		$existingGroups = array_keys($this->userGroups);
 		$missingGroups = array_diff($requiredGroups, $existingGroups);
 		if (count($missingGroups) > 0) {
@@ -587,14 +589,14 @@ class Tx_Workspaces_Service_Stages {
 			// traversing list
 			// Get row:
 			$row = $this->userGroups[$uid];
-			if (is_array($row) && !t3lib_div::inList($idList, $uid)) {
+			if (is_array($row) && !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($idList, $uid)) {
 				// Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
 				// If the localconf.php option isset the user of the sub- sub- groups will also be used
 				if ($GLOBALS['TYPO3_CONF_VARS']['BE']['customStageShowRecipientRecursive'] == 1) {
 					// Include sub groups
 					if (trim($row['subgroup'])) {
 						// Make integer list
-						$theList = implode(',', t3lib_div::intExplode(',', $row['subgroup']));
+						$theList = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $row['subgroup']));
 						// Get the subarray
 						$subbarray = $this->fetchGroups($theList, ($idList . ',') . $uid);
 						list($subUid, $subArray) = each($subbarray);
@@ -616,10 +618,10 @@ class Tx_Workspaces_Service_Stages {
 	 */
 	public function getPropertyOfCurrentWorkspaceStage($stageId, $property) {
 		$result = NULL;
-		if (!t3lib_utility_Math::canBeInterpretedAsInteger($stageId)) {
-			throw new InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'));
+		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageId)) {
+			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'));
 		}
-		$workspaceStage = t3lib_BEfunc::getRecord(self::TABLE_STAGE, $stageId);
+		$workspaceStage = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord(self::TABLE_STAGE, $stageId);
 		if (is_array($workspaceStage) && isset($workspaceStage[$property])) {
 			$result = $workspaceStage[$property];
 		}
@@ -671,7 +673,7 @@ class Tx_Workspaces_Service_Stages {
 				// if the current stage is allowed for the user, the user is also allowed to send to prev
 				$isAllowed = $this->isStageAllowedForUser($stageId);
 			}
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 
 		}
 		return $isAllowed;
@@ -693,7 +695,7 @@ class Tx_Workspaces_Service_Stages {
 				// if the current stage is allowed for the user, the user is also allowed to send to next
 				$isAllowed = $this->isStageAllowedForUser($stageId);
 			}
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 
 		}
 		return $isAllowed;
@@ -745,22 +747,22 @@ class Tx_Workspaces_Service_Stages {
 	 * @return integer
 	 */
 	public function getNotificationMode($stageId) {
-		if (!t3lib_utility_Math::canBeInterpretedAsInteger($stageId)) {
-			throw new InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'));
+		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageId)) {
+			throw new \InvalidArgumentException($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:error.stageId.integer'));
 		}
 		switch ($stageId) {
 		case self::STAGE_PUBLISH_EXECUTE_ID:
 
 		case self::STAGE_PUBLISH_ID:
-			$workspaceRecord = t3lib_BEfunc::getRecord('sys_workspace', $this->getWorkspaceId());
+			$workspaceRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
 			return $workspaceRecord['publish_notification_mode'];
 			break;
 		case self::STAGE_EDIT_ID:
-			$workspaceRecord = t3lib_BEfunc::getRecord('sys_workspace', $this->getWorkspaceId());
+			$workspaceRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
 			return $workspaceRecord['edit_notification_mode'];
 			break;
 		default:
-			$workspaceStage = t3lib_BEfunc::getRecord(self::TABLE_STAGE, $stageId);
+			$workspaceStage = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord(self::TABLE_STAGE, $stageId);
 			if (is_array($workspaceStage) && isset($workspaceStage['notification_mode'])) {
 				return $workspaceStage['notification_mode'];
 			}
@@ -769,5 +771,6 @@ class Tx_Workspaces_Service_Stages {
 	}
 
 }
+
 
 ?>

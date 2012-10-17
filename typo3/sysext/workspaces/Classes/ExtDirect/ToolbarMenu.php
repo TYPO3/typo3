@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\ExtDirect;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @package Workspaces
  * @subpackage ExtDirect
  */
-class Tx_Workspaces_ExtDirect_ToolbarMenu {
+class ToolbarMenu {
 
 	/**
 	 * @param $parameter
@@ -51,11 +53,12 @@ class Tx_Workspaces_ExtDirect_ToolbarMenu {
 		$workspaceId = intval($parameter->workSpaceId);
 		$GLOBALS['BE_USER']->setWorkspace($workspaceId);
 		return array(
-			'title' => Tx_Workspaces_Service_Workspaces::getWorkspaceTitle($workspaceId),
+			'title' => \TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($workspaceId),
 			'id' => $workspaceId
 		);
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\Hook;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,15 +33,15 @@
  * @package Workspaces
  * @subpackage Service
  */
-class Tx_Workspaces_Service_Befunc implements t3lib_Singleton {
+class BackendUtilityHook implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Gets a singleton instance of this object.
 	 *
-	 * @return Tx_Workspaces_Service_Befunc
+	 * @return \TYPO3\CMS\Workspaces\Hook\BackendUtilityHook
 	 */
 	static public function getInstance() {
-		return t3lib_div::makeInstance('Tx_Workspaces_Service_Befunc');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Hook\\BackendUtilityHook');
 	}
 
 	/**
@@ -71,17 +73,17 @@ class Tx_Workspaces_Service_Befunc implements t3lib_Singleton {
 	 * @deprecated since TYPO3 4.6 - use Tx_Workspaces_Service_Workspaces::getLivePageUid() instead
 	 */
 	protected function getLivePageUid($uid) {
-		t3lib_div::deprecationLog(__METHOD__ . ' is deprected since TYPO3 4.6 - use Tx_Workspaces_Service_Workspaces::getLivePageUid() instead');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(__METHOD__ . ' is deprected since TYPO3 4.6 - use TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService::getLivePageUid() instead');
 		return $this->getWorkspaceService()->getLivePageUid($uid);
 	}
 
 	/**
 	 * Gets an instance of the workspaces service.
 	 *
-	 * @return Tx_Workspaces_Service_Workspaces
+	 * @return \TYPO3\CMS\Workspaces\Service\WorkspaceService
 	 */
 	protected function getWorkspaceService() {
-		return t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
 	}
 
 	/**
@@ -94,19 +96,20 @@ class Tx_Workspaces_Service_Befunc implements t3lib_Singleton {
 	 */
 	public function makeEditForm_accessCheck($params, &$form) {
 		if ($GLOBALS['BE_USER']->workspace !== 0 && $GLOBALS['TCA'][$params['table']]['ctrl']['versioningWS']) {
-			$record = t3lib_BEfunc::getRecordWSOL($params['table'], $params['uid']);
-			if (abs($record['t3ver_stage']) > Tx_Workspaces_Service_Stages::STAGE_EDIT_ID) {
-				$stages = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
+			$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($params['table'], $params['uid']);
+			if (abs($record['t3ver_stage']) > \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_EDIT_ID) {
+				$stages = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
 				$stageName = $stages->getStageTitle($record['t3ver_stage']);
-				$editingName = $stages->getStageTitle(Tx_Workspaces_Service_Stages::STAGE_EDIT_ID);
+				$editingName = $stages->getStageTitle(\TYPO3\CMS\Workspaces\Service\StagesService::STAGE_EDIT_ID);
 				$message = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:info.elementAlreadyModified');
-				$flashMessage = t3lib_div::makeInstance('t3lib_FlashMessage', sprintf($message, $stageName, $editingName), '', t3lib_FlashMessage::INFO, TRUE);
-				t3lib_FlashMessageQueue::addMessage($flashMessage);
+				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($message, $stageName, $editingName), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO, TRUE);
+				\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
 			}
 		}
 		return $params['hasAccess'];
 	}
 
 }
+
 
 ?>

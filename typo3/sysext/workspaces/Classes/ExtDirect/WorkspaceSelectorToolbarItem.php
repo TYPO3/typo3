@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\ExtDirect;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,6 +30,7 @@
 if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 	require_once PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php';
 }
+
 /**
  * class to render the workspace selector
  *
@@ -35,7 +38,7 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
  * @package Workspaces
  * @subpackage ExtDirect
  */
-class Tx_Workspaces_ExtDirect_WorkspaceSelectorToolbarItem implements backend_toolbarItem {
+class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface {
 
 	protected $changeWorkspace;
 
@@ -55,12 +58,12 @@ class Tx_Workspaces_ExtDirect_WorkspaceSelectorToolbarItem implements backend_to
 	 *
 	 * @param 	TYPO3backend	TYPO3 backend object reference
 	 */
-	public function __construct(TYPO3backend &$backendReference = NULL) {
+	public function __construct(\TYPO3backend &$backendReference = NULL) {
 		$this->backendReference = $backendReference;
-		$this->changeWorkspace = t3lib_div::_GP('changeWorkspace');
-		$this->changeWorkspacePreview = t3lib_div::_GP('changeWorkspacePreview');
-		$pageRenderer = t3lib_div::makeInstance('t3lib_pageRenderer');
-		$this->backendReference->addJavaScript(('TYPO3.Workspaces = { workspaceTitle : \'' . addslashes(Tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace))) . '\'};
+		$this->changeWorkspace = \t3lib_div::_GP('changeWorkspace');
+		$this->changeWorkspacePreview = \t3lib_div::_GP('changeWorkspacePreview');
+		$pageRenderer = \t3lib_div::makeInstance('t3lib_pageRenderer');
+		$this->backendReference->addJavaScript(('TYPO3.Workspaces = { workspaceTitle : \'' . addslashes(\Tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace))) . '\'};
 ');
 	}
 
@@ -71,9 +74,9 @@ class Tx_Workspaces_ExtDirect_WorkspaceSelectorToolbarItem implements backend_to
 	 * @return boolean  TRUE if user has access, FALSE if not
 	 */
 	public function checkAccess() {
-		if (t3lib_extMgm::isLoaded('workspaces')) {
+		if (\t3lib_extMgm::isLoaded('workspaces')) {
 			if ($this->checkAccess == NULL) {
-				$availableWorkspaces = Tx_Workspaces_Service_Workspaces::getAvailableWorkspaces();
+				$availableWorkspaces = \Tx_Workspaces_Service_Workspaces::getAvailableWorkspaces();
 				if (count($availableWorkspaces) > 0) {
 					$this->checkAccess = TRUE;
 				} else {
@@ -93,13 +96,13 @@ class Tx_Workspaces_ExtDirect_WorkspaceSelectorToolbarItem implements backend_to
 	public function render() {
 		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.workspace', TRUE);
 		$this->addJavascriptToBackend();
-		$availableWorkspaces = Tx_Workspaces_Service_Workspaces::getAvailableWorkspaces();
+		$availableWorkspaces = \Tx_Workspaces_Service_Workspaces::getAvailableWorkspaces();
 		$workspaceMenu = array();
-		$stateCheckedIcon = t3lib_iconWorks::getSpriteIcon('status-status-checked');
-		$stateUncheckedIcon = t3lib_iconWorks::getSpriteIcon('empty-empty', array(
+		$stateCheckedIcon = \t3lib_iconWorks::getSpriteIcon('status-status-checked');
+		$stateUncheckedIcon = \t3lib_iconWorks::getSpriteIcon('empty-empty', array(
 			'title' => $GLOBALS['LANG']->getLL('bookmark_inactive')
 		));
-		$workspaceMenu[] = ('<a href="#" class="toolbar-item">' . t3lib_iconWorks::getSpriteIcon('apps-toolbar-menu-workspace', array('title' => $title))) . '</a>';
+		$workspaceMenu[] = ('<a href="#" class="toolbar-item">' . \t3lib_iconWorks::getSpriteIcon('apps-toolbar-menu-workspace', array('title' => $title))) . '</a>';
 		$workspaceMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
 		if (count($availableWorkspaces)) {
 			foreach ($availableWorkspaces as $workspaceId => $label) {
@@ -128,7 +131,7 @@ class Tx_Workspaces_ExtDirect_WorkspaceSelectorToolbarItem implements backend_to
 	 * @return 	void
 	 */
 	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile(t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/JavaScript/workspacemenu.js');
+		$this->backendReference->addJavascriptFile(\t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/JavaScript/workspacemenu.js');
 	}
 
 	/**
@@ -142,7 +145,8 @@ class Tx_Workspaces_ExtDirect_WorkspaceSelectorToolbarItem implements backend_to
 
 }
 
+
 if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
-	$GLOBALS['TYPO3backend']->addToolbarItem('workSpaceSelector', 'Tx_Workspaces_ExtDirect_WorkspaceSelectorToolbarItem');
+	$GLOBALS['TYPO3backend']->addToolbarItem('workSpaceSelector', 'TYPO3\\CMS\\Workspaces\\ExtDirect\\WorkspaceSelectorToolbarItem');
 }
 ?>

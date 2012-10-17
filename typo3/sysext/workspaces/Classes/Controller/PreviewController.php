@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,15 +33,15 @@
  * @package Workspaces
  * @subpackage Controller
  */
-class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controller_AbstractController {
+class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractController {
 
 	/**
-	 * @var Tx_Workspaces_Service_Stages
+	 * @var \TYPO3\CMS\Workspaces\Service\StagesService
 	 */
 	protected $stageService;
 
 	/**
-	 * @var Tx_Workspaces_Service_Workspaces
+	 * @var \TYPO3\CMS\Workspaces\Service\WorkspaceService
 	 */
 	protected $workspaceService;
 
@@ -50,10 +52,10 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 	 */
 	protected function initializeAction() {
 		parent::initializeAction();
-		$this->stageService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
-		$this->workspaceService = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
+		$this->stageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
+		$this->workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
 		$this->template->setExtDirectStateProvider();
-		$resourcePath = t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/StyleSheet/preview.css';
+		$resourcePath = \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('workspaces') . 'Resources/Public/StyleSheet/preview.css';
 		$GLOBALS['TBE_STYLES']['extJS']['theme'] = $resourcePath;
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->enableExtJSQuickTips();
@@ -68,7 +70,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ux/flashmessages.js');
 		$this->pageRenderer->addJsFile($this->backPath . 'js/extjs/iframepanel.js');
 		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/notifications.js');
-		$resourcePathJavaScript = t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/JavaScript/';
+		$resourcePathJavaScript = \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('workspaces') . 'Resources/Public/JavaScript/';
 		$jsFiles = array(
 			'Ext.ux.plugins.TabStripContainer.js',
 			'Store/mainstore.js',
@@ -93,34 +95,34 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 	public function indexAction($previewWS = NULL) {
 		// @todo language doesn't always come throught the L parameter
 		// @todo Evaluate how the intval() call can be used with Extbase validators/filters
-		$language = intval(t3lib_div::_GP('L'));
+		$language = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('L'));
 		// fetch the next and previous stage
 		$workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $this->pageId, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
 		list(, $nextStage) = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
 		list(, $previousStage) = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
-		/** @var $wsService Tx_Workspaces_Service_Workspaces */
-		$wsService = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
+		/** @var $wsService \TYPO3\CMS\Workspaces\Service\WorkspaceService */
+		$wsService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
 		$wsList = $wsService->getAvailableWorkspaces();
 		$activeWorkspace = $GLOBALS['BE_USER']->workspace;
 		if (!is_null($previewWS)) {
 			if (in_array($previewWS, array_keys($wsList)) && $activeWorkspace != $previewWS) {
 				$activeWorkspace = $previewWS;
 				$GLOBALS['BE_USER']->setWorkspace($activeWorkspace);
-				t3lib_BEfunc::setUpdateSignal('updatePageTree');
+				\TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal('updatePageTree');
 			}
 		}
-		/** @var $uriBuilder Tx_Extbase_MVC_Web_Routing_UriBuilder */
-		$uriBuilder = $this->objectManager->create('Tx_Extbase_MVC_Web_Routing_UriBuilder');
-		$wsSettingsPath = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
-		$wsSettingsUri = $uriBuilder->uriFor('singleIndex', array(), 'Tx_Workspaces_Controller_ReviewController', 'workspaces', 'web_workspacesworkspaces');
+		/** @var $uriBuilder \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder */
+		$uriBuilder = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
+		$wsSettingsPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
+		$wsSettingsUri = $uriBuilder->uriFor('singleIndex', array(), 'TYPO3\\CMS\\Workspaces\\Controller\\ReviewController', 'workspaces', 'web_workspacesworkspaces');
 		$wsSettingsParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Review';
 		$wsSettingsUrl = ($wsSettingsPath . $wsSettingsUri) . $wsSettingsParams;
-		$viewDomain = t3lib_BEfunc::getViewDomain($this->pageId);
+		$viewDomain = \TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain($this->pageId);
 		$wsBaseUrl = ((($viewDomain . '/index.php?id=') . $this->pageId) . '&L=') . $language;
 		// @todo - handle new pages here
 		// branchpoints are not handled anymore because this feature is not supposed anymore
-		if (Tx_Workspaces_Service_Workspaces::isNewPage($this->pageId)) {
-			$wsNewPageUri = $uriBuilder->uriFor('newPage', array(), 'Tx_Workspaces_Controller_PreviewController', 'workspaces', 'web_workspacesworkspaces');
+		if (\TYPO3\CMS\Workspaces\Service\WorkspaceService::isNewPage($this->pageId)) {
+			$wsNewPageUri = $uriBuilder->uriFor('newPage', array(), 'TYPO3\\CMS\\Workspaces\\Controller\\PreviewController', 'workspaces', 'web_workspacesworkspaces');
 			$wsNewPageParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Preview';
 			$this->view->assign('liveUrl', ($wsSettingsPath . $wsNewPageUri) . $wsNewPageParams);
 		} else {
@@ -128,19 +130,19 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		}
 		$this->view->assign('wsUrl', ($wsBaseUrl . '&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=') . $GLOBALS['BE_USER']->workspace);
 		$this->view->assign('wsSettingsUrl', $wsSettingsUrl);
-		$this->view->assign('backendDomain', t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'));
-		$splitPreviewTsConfig = t3lib_BEfunc::getModTSconfig($this->pageId, 'workspaces.splitPreviewModes');
-		$splitPreviewModes = t3lib_div::trimExplode(',', $splitPreviewTsConfig['value']);
+		$this->view->assign('backendDomain', \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'));
+		$splitPreviewTsConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pageId, 'workspaces.splitPreviewModes');
+		$splitPreviewModes = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $splitPreviewTsConfig['value']);
 		$allPreviewModes = array('slider', 'vbox', 'hbox');
 		if (!array_intersect($splitPreviewModes, $allPreviewModes)) {
 			$splitPreviewModes = $allPreviewModes;
 		}
 		$this->pageRenderer->addInlineSetting('Workspaces', 'SplitPreviewModes', $splitPreviewModes);
-		$GLOBALS['BE_USER']->setAndSaveSessionData('workspaces.backend_domain', t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'));
+		$GLOBALS['BE_USER']->setAndSaveSessionData('workspaces.backend_domain', \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'));
 		$this->pageRenderer->addInlineSetting('Workspaces', 'disableNextStageButton', $this->isInvalidStage($nextStage));
 		$this->pageRenderer->addInlineSetting('Workspaces', 'disablePreviousStageButton', $this->isInvalidStage($previousStage));
 		$this->pageRenderer->addInlineSetting('Workspaces', 'disableDiscardStageButton', $this->isInvalidStage($nextStage) && $this->isInvalidStage($previousStage));
-		$resourcePath = t3lib_extMgm::extRelPath('lang') . 'res/js/be/';
+		$resourcePath = \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('lang') . 'res/js/be/';
 		$this->pageRenderer->addJsFile($resourcePath . 'typo3lang.js');
 		$this->pageRenderer->addJsInlineCode('workspaces.preview.lll', ((((((((((((((((((((((('
 		TYPO3.lang = {
@@ -158,7 +160,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 			previousStage: \'') . $previousStage['title']) . '\'
 		};TYPO3.l10n.initialize();
 ');
-		$resourcePath = t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/';
+		$resourcePath = \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('workspaces') . 'Resources/Public/';
 		$this->pageRenderer->addJsFile($resourcePath . 'JavaScript/preview.js');
 	}
 
@@ -177,8 +179,8 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 	 * @return void
 	 */
 	public function newPageAction() {
-		$message = t3lib_div::makeInstance('t3lib_FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:info.newpage.detail'), $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:info.newpage'), t3lib_FlashMessage::INFO);
-		t3lib_FlashMessageQueue::addMessage($message);
+		$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:info.newpage.detail'), $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:info.newpage'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+		\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
 	}
 
 	/**
@@ -189,10 +191,10 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 	 * @return 	string
 	 */
 	protected function generateJavascript() {
-		$pathTYPO3 = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')) . '/';
+		$pathTYPO3 = \TYPO3\CMS\Core\Utility\GeneralUtility::dirname(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/';
 		// If another page module was specified, replace the default Page module with the new one
 		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
-		$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
+		$pageModule = \TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
 		if (!$GLOBALS['BE_USER']->check('modules', $pageModule)) {
 			$pageModule = '';
 		}
@@ -207,11 +209,11 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 			$loginSecurityLevel = 'superchallenged';
 		}
 		$t3Configuration = array(
-			'siteUrl' => t3lib_div::getIndpEnv('TYPO3_SITE_URL'),
+			'siteUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'),
 			'PATH_typo3' => $pathTYPO3,
 			'PATH_typo3_enc' => rawurlencode($pathTYPO3),
 			'username' => htmlspecialchars($GLOBALS['BE_USER']->user['username']),
-			'uniqueID' => t3lib_div::shortMD5(uniqid('')),
+			'uniqueID' => \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(uniqid('')),
 			'securityLevel' => $this->loginSecurityLevel,
 			'TYPO3_mainDir' => TYPO3_mainDir,
 			'pageModule' => $pageModule,
@@ -223,7 +225,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 			'moduleMenuWidth' => $this->menuWidth - 1,
 			'topBarHeight' => isset($GLOBALS['TBE_STYLES']['dims']['topFrameH']) ? intval($GLOBALS['TBE_STYLES']['dims']['topFrameH']) : 30,
 			'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? intval($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) : FALSE,
-			'listModulePath' => t3lib_extMgm::isLoaded('recordlist') ? t3lib_extMgm::extRelPath('recordlist') . 'mod1/' : '',
+			'listModulePath' => \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('recordlist') ? \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('recordlist') . 'mod1/' : '',
 			'debugInWindow' => $GLOBALS['BE_USER']->uc['debugInWindow'] ? 1 : 0,
 			'ContextHelpWindows' => array(
 				'width' => 600,
@@ -286,5 +288,6 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 	}
 
 }
+
 
 ?>

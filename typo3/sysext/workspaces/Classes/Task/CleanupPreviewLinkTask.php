@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\Task;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
  * @package Workspaces
  * @subpackage Service
  */
-class Tx_Workspaces_Service_CleanupPreviewLinkTask extends tx_scheduler_Task {
+class CleanupPreviewLinkTask extends \TYPO3\CMS\Scheduler\Task {
 
 	/**
 	 * Cleanup old preview links.
@@ -42,5 +44,6 @@ class Tx_Workspaces_Service_CleanupPreviewLinkTask extends tx_scheduler_Task {
 	}
 
 }
+
 
 ?>

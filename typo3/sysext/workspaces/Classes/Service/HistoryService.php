@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\Service;
+
 /***************************************************************
  * Copyright notice
  *
@@ -29,7 +31,7 @@
  * @package Workspaces
  * @subpackage Service
  */
-class Tx_Workspaces_Service_History implements t3lib_Singleton {
+class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var array
@@ -42,7 +44,7 @@ class Tx_Workspaces_Service_History implements t3lib_Singleton {
 	protected $historyObjects = array();
 
 	/**
-	 * @var t3lib_diff
+	 * @var \TYPO3\CMS\Core\Utility\DiffUtility
 	 */
 	protected $differencesObject;
 
@@ -51,7 +53,7 @@ class Tx_Workspaces_Service_History implements t3lib_Singleton {
 	 */
 	public function __construct() {
 		require_once PATH_typo3 . 'class.show_rechis.inc';
-		$this->backendUserNames = t3lib_BEfunc::getUserNames();
+		$this->backendUserNames = \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames();
 	}
 
 	/**
@@ -88,7 +90,7 @@ class Tx_Workspaces_Service_History implements t3lib_Singleton {
 			$differences = implode('<br/>', $this->getDifferences($entry));
 		}
 		return array(
-			'datetime' => htmlspecialchars(t3lib_BEfunc::datetime($entry['tstamp'])),
+			'datetime' => htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::datetime($entry['tstamp'])),
 			'user' => htmlspecialchars($this->getUserName($entry['user'])),
 			'differences' => $differences
 		);
@@ -107,10 +109,10 @@ class Tx_Workspaces_Service_History implements t3lib_Singleton {
 		if (is_array($entry['newRecord'])) {
 			$fields = array_keys($entry['newRecord']);
 			foreach ($fields as $field) {
-				t3lib_div::loadTCA($tableName);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName);
 				if (!empty($GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type']) && $GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type'] !== 'passthrough') {
 					// Create diff-result:
-					$fieldDifferences = $this->getDifferencesObject()->makeDiffDisplay(t3lib_BEfunc::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, TRUE), t3lib_BEfunc::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, TRUE));
+					$fieldDifferences = $this->getDifferencesObject()->makeDiffDisplay(\TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, TRUE), \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, TRUE));
 					$differences[] = nl2br($fieldDifferences);
 				}
 			}
@@ -137,12 +139,12 @@ class Tx_Workspaces_Service_History implements t3lib_Singleton {
 	 *
 	 * @param string $table Name of the table
 	 * @param integer $id Uid of the record
-	 * @return recordHistory
+	 * @return \TYPO3\CMS\Backend\History\RecordHistory
 	 */
 	protected function getHistoryObject($table, $id) {
 		if (!isset($this->historyObjects[$table][$id])) {
-			/** @var $historyObject recordHistory */
-			$historyObject = t3lib_div::makeInstance('recordHistory');
+			/** @var $historyObject \TYPO3\CMS\Backend\History\RecordHistory */
+			$historyObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\History\\RecordHistory');
 			$historyObject->element = ($table . ':') . $id;
 			$historyObject->createChangeLog();
 			$this->historyObjects[$table][$id] = $historyObject;
@@ -153,15 +155,16 @@ class Tx_Workspaces_Service_History implements t3lib_Singleton {
 	/**
 	 * Gets an instance of the record differences utility.
 	 *
-	 * @return t3lib_diff
+	 * @return \TYPO3\CMS\Core\Utility\DiffUtility
 	 */
 	protected function getDifferencesObject() {
 		if (!isset($this->differencesObject)) {
-			$this->differencesObject = t3lib_div::makeInstance('t3lib_diff');
+			$this->differencesObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
 		}
 		return $this->differencesObject;
 	}
 
 }
+
 
 ?>

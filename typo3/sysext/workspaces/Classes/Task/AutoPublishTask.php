@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\Task;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +31,7 @@
  * @package Workspaces
  * @subpackage Service
  */
-class Tx_Workspaces_Service_AutoPublishTask extends tx_scheduler_Task {
+class AutoPublishTask extends \TYPO3\CMS\Scheduler\Task {
 
 	/**
 	 * Method executed from the Scheduler.
@@ -39,7 +41,7 @@ class Tx_Workspaces_Service_AutoPublishTask extends tx_scheduler_Task {
 	 * @return 	boolean
 	 */
 	public function execute() {
-		$autopubObj = t3lib_div::makeInstance('Tx_Workspaces_Service_AutoPublish');
+		$autopubObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\AutoPublishService');
 		// Publish the workspaces that need to be
 		$autopubObj->autoPublishWorkspaces();
 		// There's no feedback from the publishing process,
@@ -49,5 +51,6 @@ class Tx_Workspaces_Service_AutoPublishTask extends tx_scheduler_Task {
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\Hook;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,11 +33,11 @@
  * @package Workspaces
  * @subpackage Service
  */
-class Tx_Workspaces_Service_Fehooks {
+class TypoScriptFrontendControllerHook {
 
 	/**
 	 * @param array $params
-	 * @param tslib_fe $pObj
+	 * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $pObj
 	 * @return mixed
 	 */
 	public function hook_eofe($params, $pObj) {
@@ -53,5 +55,6 @@ class Tx_Workspaces_Service_Fehooks {
 	}
 
 }
+
 
 ?>

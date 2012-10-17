@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\Domain\Model;
+
 /***************************************************************
  * Copyright notice
  *
@@ -29,7 +31,7 @@
  * @package Workspaces
  * @subpackage Domain
  */
-class Tx_Workspaces_Domain_Model_CombinedRecord {
+class CombinedRecord {
 
 	/**
 	 * @var string
@@ -37,12 +39,12 @@ class Tx_Workspaces_Domain_Model_CombinedRecord {
 	protected $table;
 
 	/**
-	 * @var Tx_Workspaces_Domain_Model_DatabaseRecord
+	 * @var \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord
 	 */
 	protected $versionRecord;
 
 	/**
-	 * @var Tx_Workspaces_Domain_Model_DatabaseRecord
+	 * @var \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord
 	 */
 	protected $liveRecord;
 
@@ -52,12 +54,12 @@ class Tx_Workspaces_Domain_Model_CombinedRecord {
 	 * @param string $table Name of the database table
 	 * @param integer $liveId Id of the database live-record row
 	 * @param integer $versionId Id of the datbase version-record row
-	 * @return Tx_Workspaces_Domain_Model_CombinedRecord
+	 * @return \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord
 	 */
 	static public function create($table, $liveId, $versionId) {
-		$liveRecord = Tx_Workspaces_Domain_Model_DatabaseRecord::create($table, $liveId);
-		$versionRecord = Tx_Workspaces_Domain_Model_DatabaseRecord::create($table, $versionId);
-		return t3lib_div::makeInstance('Tx_Workspaces_Domain_Model_CombinedRecord', $table, $liveRecord, $versionRecord);
+		$liveRecord = \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord::create($table, $liveId);
+		$versionRecord = \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord::create($table, $versionId);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Domain\\Model\\CombinedRecord', $table, $liveRecord, $versionRecord);
 	}
 
 	/**
@@ -66,22 +68,22 @@ class Tx_Workspaces_Domain_Model_CombinedRecord {
 	 * @param string $table Name of the database table
 	 * @param array $liveRow The relevant datbase live-record row
 	 * @param array $versionRow The relevant database version-record row
-	 * @return Tx_Workspaces_Domain_Model_CombinedRecord
+	 * @return \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord
 	 */
 	static public function createFromArrays($table, array $liveRow, array $versionRow) {
-		$liveRecord = Tx_Workspaces_Domain_Model_DatabaseRecord::createFromArray($table, $liveRow);
-		$versionRecord = Tx_Workspaces_Domain_Model_DatabaseRecord::createFromArray($table, $versionRow);
-		return t3lib_div::makeInstance('Tx_Workspaces_Domain_Model_CombinedRecord', $table, $liveRecord, $versionRecord);
+		$liveRecord = \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord::createFromArray($table, $liveRow);
+		$versionRecord = \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord::createFromArray($table, $versionRow);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Domain\\Model\\CombinedRecord', $table, $liveRecord, $versionRecord);
 	}
 
 	/**
 	 * Creates this object.
 	 *
 	 * @param string $table
-	 * @param Tx_Workspaces_Domain_Model_DatabaseRecord $liveRecord
-	 * @param Tx_Workspaces_Domain_Model_DatabaseRecord $versionRecord
+	 * @param \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $liveRecord
+	 * @param \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $versionRecord
 	 */
-	public function __construct($table, Tx_Workspaces_Domain_Model_DatabaseRecord $liveRecord, Tx_Workspaces_Domain_Model_DatabaseRecord $versionRecord) {
+	public function __construct($table, \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $liveRecord, \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $versionRecord) {
 		$this->setTable($table);
 		$this->setLiveRecord($liveRecord);
 		$this->setVersionRecord($versionRecord);
@@ -109,7 +111,7 @@ class Tx_Workspaces_Domain_Model_CombinedRecord {
 	/**
 	 * Gets the live-record object.
 	 *
-	 * @return Tx_Workspaces_Domain_Model_DatabaseRecord
+	 * @return \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord
 	 */
 	public function getLiveRecord() {
 		return $this->liveRecord;
@@ -118,17 +120,17 @@ class Tx_Workspaces_Domain_Model_CombinedRecord {
 	/**
 	 * Sets the live-record object.
 	 *
-	 * @param Tx_Workspaces_Domain_Model_DatabaseRecord $liveRecord
+	 * @param \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $liveRecord
 	 * @return void
 	 */
-	public function setLiveRecord(Tx_Workspaces_Domain_Model_DatabaseRecord $liveRecord) {
+	public function setLiveRecord(\TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $liveRecord) {
 		$this->liveRecord = $liveRecord;
 	}
 
 	/**
 	 * Gets the version-record object.
 	 *
-	 * @return Tx_Workspaces_Domain_Model_DatabaseRecord
+	 * @return \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord
 	 */
 	public function getVersionRecord() {
 		return $this->versionRecord;
@@ -137,10 +139,10 @@ class Tx_Workspaces_Domain_Model_CombinedRecord {
 	/**
 	 * Sets the version-record object.
 	 *
-	 * @param Tx_Workspaces_Domain_Model_DatabaseRecord $versionRecord
+	 * @param \TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $versionRecord
 	 * @return void
 	 */
-	public function setVersionRecord(Tx_Workspaces_Domain_Model_DatabaseRecord $versionRecord) {
+	public function setVersionRecord(\TYPO3\CMS\Workspaces\Domain\Model\DatabaseRecord $versionRecord) {
 		$this->versionRecord = $versionRecord;
 	}
 
@@ -163,5 +165,6 @@ class Tx_Workspaces_Domain_Model_CombinedRecord {
 	}
 
 }
+
 
 ?>

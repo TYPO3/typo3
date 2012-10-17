@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @package Workspaces
  * @subpackage Service
  */
-class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
+class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var array
@@ -54,7 +56,7 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 			$availableWorkspaces[self::LIVE_WORKSPACE_ID] = self::getWorkspaceTitle(self::LIVE_WORKSPACE_ID);
 		}
 		// add custom workspaces (selecting all, filtering by BE_USER check):
-		$customWorkspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, title, adminusers, members', 'sys_workspace', 'pid = 0' . t3lib_BEfunc::deleteClause('sys_workspace'), '', 'title');
+		$customWorkspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, title, adminusers, members', 'sys_workspace', 'pid = 0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace'), '', 'title');
 		if (count($customWorkspaces)) {
 			foreach ($customWorkspaces as $workspace) {
 				if ($GLOBALS['BE_USER']->checkWorkspace($workspace)) {
@@ -93,13 +95,13 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 			break;
 		default:
 			$labelField = $GLOBALS['TCA']['sys_workspace']['ctrl']['label'];
-			$wsRecord = t3lib_beFunc::getRecord('sys_workspace', $wsId, 'uid,' . $labelField);
+			$wsRecord = \t3lib_beFunc::getRecord('sys_workspace', $wsId, 'uid,' . $labelField);
 			if (is_array($wsRecord)) {
 				$title = $wsRecord[$labelField];
 			}
 		}
 		if ($title === FALSE) {
-			throw new InvalidArgumentException('No such workspace defined');
+			throw new \InvalidArgumentException('No such workspace defined');
 		}
 		return $title;
 	}
@@ -120,9 +122,9 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 			// Define stage to select:
 			$stage = -99;
 			if ($wsid > 0) {
-				$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $wsid);
+				$workspaceRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $wsid);
 				if ($workspaceRec['publish_access'] & 1) {
-					$stage = Tx_Workspaces_Service_Stages::STAGE_PUBLISH_ID;
+					$stage = \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_ID;
 				}
 			}
 			// Select all versions to swap:
@@ -235,7 +237,7 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	 * @return array
 	 */
 	protected function selectAllVersionsFromPages($table, $pageList, $wsid, $filter, $stage, $language = NULL) {
-		$isTableLocalizable = t3lib_BEfunc::isTableLocalizable($table);
+		$isTableLocalizable = \TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($table);
 		$languageParentField = '';
 		// If table is not localizable, but localized reocrds shall
 		// be collected, an empty result array needs to be returned:
@@ -256,7 +258,7 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 			$pidConstraint = strstr($pageList, ',') ? (' IN (' . $pageList) . ')' : '=' . $pageList;
 			$where .= (' AND B.' . $pidField) . $pidConstraint;
 		}
-		if ($isTableLocalizable && t3lib_utility_Math::canBeInterpretedAsInteger($language)) {
+		if ($isTableLocalizable && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($language)) {
 			$where .= ((' AND A.' . $GLOBALS['TCA'][$table]['ctrl']['languageField']) . '=') . $language;
 		}
 		/** For "real" workspace numbers, select by that.
@@ -280,8 +282,8 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 		$where .= ' AND B.pid>=0';
 		// ... and finally the join between the two tables.
 		$where .= ' AND A.t3ver_oid=B.uid';
-		$where .= t3lib_BEfunc::deleteClause($table, 'A');
-		$where .= t3lib_BEfunc::deleteClause($table, 'B');
+		$where .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'A');
+		$where .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'B');
 		/** Select all records from this table in the database from the workspace
 		This joins the online version with the offline version as tables A and B
 		Order by UID, mostly to have a sorting in the backend overview module which doesn't "jump around" when swapping. */
@@ -327,9 +329,9 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 			$where .= (' AND ' . $pidField) . $pidConstraint;
 		}
 		$where .= ' AND A.t3ver_move_id = B.uid AND B.uid = C.t3ver_oid';
-		$where .= t3lib_BEfunc::deleteClause($table, 'A');
-		$where .= t3lib_BEfunc::deleteClause($table, 'B');
-		$where .= t3lib_BEfunc::deleteClause($table, 'C');
+		$where .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'A');
+		$where .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'B');
+		$where .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'C');
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fields, $from, $where, '', 'A.uid');
 		return is_array($res) ? $res : array();
 	}
@@ -346,8 +348,8 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 		/** Reusing existing functionality with the drawback that
 		mount points are not covered yet */
 		$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-		/** @var $searchObj t3lib_fullsearch */
-		$searchObj = t3lib_div::makeInstance('t3lib_fullsearch');
+		/** @var $searchObj \TYPO3\CMS\Core\Database\QueryView */
+		$searchObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryView');
 		if ($pageId > 0) {
 			$pageList = $searchObj->getTreeList($pageId, $recursionLevel, 0, $perms_clause);
 		} else {
@@ -365,8 +367,8 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 		unset($searchObj);
 		if (intval($GLOBALS['TCA']['pages']['ctrl']['versioningWS']) === 2 && $pageList) {
 			// Remove the "subbranch" if a page was moved away
-			$movedAwayPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, pid, t3ver_move_id', 'pages', ((('t3ver_move_id IN (' . $pageList) . ') AND t3ver_wsid=') . intval($wsid)) . t3lib_BEfunc::deleteClause('pages'), '', 'uid', '', 't3ver_move_id');
-			$pageIds = t3lib_div::intExplode(',', $pageList, TRUE);
+			$movedAwayPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, pid, t3ver_move_id', 'pages', ((('t3ver_move_id IN (' . $pageList) . ') AND t3ver_wsid=') . intval($wsid)) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages'), '', 'uid', '', 't3ver_move_id');
+			$pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $pageList, TRUE);
 			// move all pages away
 			$newList = array_diff($pageIds, array_keys($movedAwayPages));
 			// keep current page in the list
@@ -383,9 +385,9 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 			} while ($changed);
 			$pageList = implode(',', $newList);
 			// In case moving pages is enabled we need to replace all move-to pointer with their origin
-			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, t3ver_move_id', 'pages', (('uid IN (' . $pageList) . ')') . t3lib_BEfunc::deleteClause('pages'), '', 'uid', '', 'uid');
+			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, t3ver_move_id', 'pages', (('uid IN (' . $pageList) . ')') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages'), '', 'uid', '', 'uid');
 			$newList = array();
-			$pageIds = t3lib_div::intExplode(',', $pageList, TRUE);
+			$pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $pageList, TRUE);
 			if (!in_array($pageId, $pageIds)) {
 				$pageIds[] = $pageId;
 			}
@@ -413,7 +415,7 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 		$permittedElements = array();
 		if (is_array($recs)) {
 			foreach ($recs as $rec) {
-				$page = t3lib_beFunc::getRecord('pages', $rec[$checkField], 'uid,pid,perms_userid,perms_user,perms_groupid,perms_group,perms_everybody');
+				$page = \t3lib_beFunc::getRecord('pages', $rec[$checkField], 'uid,pid,perms_userid,perms_user,perms_groupid,perms_group,perms_everybody');
 				if ($GLOBALS['BE_USER']->doesUserHaveAccess($page, 1) && $this->isLanguageAccessibleForCurrentUser($table, $rec)) {
 					$permittedElements[] = $rec;
 				}
@@ -431,7 +433,7 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	 */
 	protected function isLanguageAccessibleForCurrentUser($table, array $record) {
 		$languageUid = 0;
-		if (t3lib_BEfunc::isTableLocalizable($table)) {
+		if (\TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($table)) {
 			$languageUid = $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
 		} else {
 			return TRUE;
@@ -473,15 +475,15 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 		// If the language is not default, check state of overlay
 		if ($language > 0) {
 			$whereClause = 'pid = ' . $id;
-			$whereClause .= ((' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField']) . ' = ') . $language;
+			$whereClause .= ((' AND ' . $GLOBALS['TCA']['sys_language_overlay']['ctrl']['languageField']) . ' = ') . $language;
 			$whereClause .= ' AND t3ver_wsid = ' . $GLOBALS['BE_USER']->workspace;
-			$whereClause .= t3lib_BEfunc::deleteClause('pages_language_overlay');
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('t3ver_state', 'pages_language_overlay', $whereClause);
+			$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_language_overlay');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('t3ver_state', 'sys_language_overlay', $whereClause);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$isNewPage = (int) $row['t3ver_state'] === 1;
 			}
 		} else {
-			$rec = t3lib_BEfunc::getRecord('pages', $id, 't3ver_state');
+			$rec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $id, 't3ver_state');
 			if (is_array($rec)) {
 				$isNewPage = (int) $rec['t3ver_state'] === 1;
 			}
@@ -501,16 +503,16 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	static public function viewSingleRecord($table, $uid, $record = NULL) {
 		$viewUrl = '';
 		if ($table == 'pages') {
-			$viewUrl = t3lib_BEfunc::viewOnClick(t3lib_BEfunc::getLiveVersionIdOfRecord('pages', $uid));
-		} elseif ($table == 'pages_language_overlay' || $table == 'tt_content') {
-			$elementRecord = is_array($record) ? $record : t3lib_BEfunc::getLiveVersionOfRecord($table, $uid);
-			$viewUrl = t3lib_BEfunc::viewOnClick($elementRecord['pid']);
+			$viewUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick(\TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionIdOfRecord('pages', $uid));
+		} elseif ($table == 'sys_language_overlay' || $table == 'tt_content') {
+			$elementRecord = is_array($record) ? $record : \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionOfRecord($table, $uid);
+			$viewUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($elementRecord['pid']);
 		} else {
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'])) {
 				$_params = array('table' => $table, 'uid' => $uid, 'record' => $record);
 				$_funcRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'];
 				$null = NULL;
-				$viewUrl = t3lib_div::callUserFunction($_funcRef, $_params, $null);
+				$viewUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $null);
 			}
 		}
 		return $viewUrl;
@@ -526,9 +528,9 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	public function canCreatePreviewLink($pageUid, $workspaceUid) {
 		$result = TRUE;
 		if ($pageUid > 0 && $workspaceUid > 0) {
-			$pageRecord = t3lib_BEfunc::getRecord('pages', $pageUid);
-			t3lib_BEfunc::workspaceOL('pages', $pageRecord, $workspaceUid);
-			if (!t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'], $pageRecord['doktype'])) {
+			$pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pageUid);
+			\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('pages', $pageRecord, $workspaceUid);
+			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'], $pageRecord['doktype'])) {
 				$result = FALSE;
 			}
 		} else {
@@ -544,14 +546,14 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	 * @return string the full domain including the protocol http:// or https://, but without the trailing '/'
 	 */
 	public function generateWorkspacePreviewLink($uid) {
-		$previewObject = t3lib_div::makeInstance('Tx_Version_Preview');
+		$previewObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Hook\\PreviewHook');
 		$timeToLiveHours = $previewObject->getPreviewLinkLifetime();
 		$previewKeyword = $previewObject->compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], $timeToLiveHours * 3600, $this->getCurrentWorkspace());
 		$linkParams = array(
 			'ADMCMD_prev' => $previewKeyword,
 			'id' => $uid
 		);
-		return (t3lib_BEfunc::getViewDomain($uid) . '/index.php?') . t3lib_div::implodeArrayForUrl('', $linkParams);
+		return (\TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain($uid) . '/index.php?') . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $linkParams);
 	}
 
 	/**
@@ -566,9 +568,9 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 		if ($uid > 0) {
 			$uid = $this->getLivePageUid($uid);
 		}
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		/** @var $uriBuilder Tx_Extbase_MVC_Web_Routing_UriBuilder */
-		$uriBuilder = $objectManager->create('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		/** @var $uriBuilder \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder */
+		$uriBuilder = $objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
 		/** This seems to be very harsh to set this directly to "/typo3 but the viewOnClick also
 		has /index.php as fixed value here and dealing with the backPath is very error-prone
 
@@ -577,9 +579,9 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 		$redirect = $backPath . 'index.php?redirect_url=';
 		// @todo why do we need these additional params? the URIBuilder should add the controller, but he doesn't :(
 		$additionalParams = '&tx_workspaces_web_workspacesworkspaces%5Bcontroller%5D=Preview&M=web_WorkspacesWorkspaces&id=';
-		$viewScript = ($backPath . $uriBuilder->setArguments(array('tx_workspaces_web_workspacesworkspaces' => array('previewWS' => $GLOBALS['BE_USER']->workspace)))->uriFor('index', array(), 'Tx_Workspaces_Controller_PreviewController', 'workspaces', 'web_workspacesworkspaces')) . $additionalParams;
+		$viewScript = ($backPath . $uriBuilder->setArguments(array('tx_workspaces_web_workspacesworkspaces' => array('previewWS' => $GLOBALS['BE_USER']->workspace)))->uriFor('index', array(), 'TYPO3\\CMS\\Workspaces\\Controller\\PreviewController', 'workspaces', 'web_workspacesworkspaces')) . $additionalParams;
 		if ($addDomain === TRUE) {
-			return ((t3lib_BEfunc::getViewDomain($uid) . $redirect) . urlencode($viewScript)) . $uid;
+			return ((\TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain($uid) . $redirect) . urlencode($viewScript)) . $uid;
 		} else {
 			return $viewScript;
 		}
@@ -595,16 +597,17 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	 */
 	public function getLivePageUid($uid) {
 		if (!isset($this->pageCache[$uid])) {
-			$pageRecord = t3lib_beFunc::getRecord('pages', $uid);
+			$pageRecord = \t3lib_beFunc::getRecord('pages', $uid);
 			if (is_array($pageRecord)) {
 				$this->pageCache[$uid] = $pageRecord['t3ver_oid'] ? $pageRecord['t3ver_oid'] : $uid;
 			} else {
-				throw new InvalidArgumentException('uid is supposed to point to an existing page - given value was:' . $uid, 1290628113);
+				throw new \InvalidArgumentException('uid is supposed to point to an existing page - given value was:' . $uid, 1290628113);
 			}
 		}
 		return $this->pageCache[$uid];
 	}
 
 }
+
 
 ?>

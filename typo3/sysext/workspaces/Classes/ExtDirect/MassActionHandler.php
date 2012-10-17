@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\ExtDirect;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +35,7 @@
  * @package Workspaces
  * @subpackage ExtDirect
  */
-class Tx_Workspaces_ExtDirect_MassActionHandler extends Tx_Workspaces_ExtDirect_AbstractHandler {
+class MassActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 
 	const MAX_RECORDS_TO_PROCESS = 30;
 	/**
@@ -54,7 +56,7 @@ class Tx_Workspaces_ExtDirect_MassActionHandler extends Tx_Workspaces_ExtDirect_
 		$currentWorkspace = $this->getCurrentWorkspace();
 		$massActionsEnabled = $GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.enableMassActions') !== '0';
 		// in case we're working within "All Workspaces" we can't provide Mass Actions
-		if ($currentWorkspace != Tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES && $massActionsEnabled) {
+		if ($currentWorkspace != \TYPO3\CMS\Workspaces\Service\WorkspaceService::SELECT_ALL_WORKSPACES && $massActionsEnabled) {
 			$publishAccess = $GLOBALS['BE_USER']->workspacePublishAccess($currentWorkspace);
 			if ($publishAccess && !($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1)) {
 				$actions[] = array('action' => 'publish', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_publish'));
@@ -62,7 +64,7 @@ class Tx_Workspaces_ExtDirect_MassActionHandler extends Tx_Workspaces_ExtDirect_
 					$actions[] = array('action' => 'swap', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_swap'));
 				}
 			}
-			if ($currentWorkspace !== Tx_Workspaces_Service_Workspaces::LIVE_WORKSPACE_ID) {
+			if ($currentWorkspace !== \TYPO3\CMS\Workspaces\Service\WorkspaceService::LIVE_WORKSPACE_ID) {
 				$actions[] = array('action' => 'discard', 'title' => $GLOBALS['LANG']->sL($this->pathToLocallang . ':label_doaction_discard'));
 			}
 		}
@@ -79,7 +81,7 @@ class Tx_Workspaces_ExtDirect_MassActionHandler extends Tx_Workspaces_ExtDirect_
 	 * @param stdclass $parameters
 	 * @return array
 	 */
-	public function publishWorkspace(stdclass $parameters) {
+	public function publishWorkspace(\stdclass $parameters) {
 		$result = array(
 			'init' => FALSE,
 			'total' => 0,
@@ -95,7 +97,7 @@ class Tx_Workspaces_ExtDirect_MassActionHandler extends Tx_Workspaces_ExtDirect_
 				$result['processed'] = $this->processData($this->getCurrentWorkspace());
 				$result['total'] = $GLOBALS['BE_USER']->getSessionData('workspaceMassAction_total');
 			}
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			$result['error'] = $e->getMessage();
 		}
 		return $result;
@@ -107,7 +109,7 @@ class Tx_Workspaces_ExtDirect_MassActionHandler extends Tx_Workspaces_ExtDirect_
 	 * @param stdclass $parameters
 	 * @return array
 	 */
-	public function flushWorkspace(stdclass $parameters) {
+	public function flushWorkspace(\stdclass $parameters) {
 		$result = array(
 			'init' => FALSE,
 			'total' => 0,
@@ -123,7 +125,7 @@ class Tx_Workspaces_ExtDirect_MassActionHandler extends Tx_Workspaces_ExtDirect_
 				$result['processed'] = $this->processData($this->getCurrentWorkspace());
 				$result['total'] = $GLOBALS['BE_USER']->getSessionData('workspaceMassAction_total');
 			}
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			$result['error'] = $e->getMessage();
 		}
 		return $result;
@@ -202,15 +204,15 @@ class Tx_Workspaces_ExtDirect_MassActionHandler extends Tx_Workspaces_ExtDirect_
 			$GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction', NULL);
 			$GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction_total', 0);
 		} else {
-			/** @var $tce t3lib_TCEmain */
-			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+			/** @var $tce \TYPO3\CMS\Core\DataHandler\DataHandler */
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
 			$tce->stripslashes_values = 0;
 			// Execute the commands:
 			$tce->start(array(), $limitedCmd);
 			$tce->process_cmdmap();
 			$errors = $tce->errorLog;
 			if (count($errors) > 0) {
-				throw new Exception(implode(', ', $errors));
+				throw new \Exception(implode(', ', $errors));
 			} else {
 				// Unset processed records
 				foreach ($limitedCmd as $table => $recs) {
@@ -227,5 +229,6 @@ class Tx_Workspaces_ExtDirect_MassActionHandler extends Tx_Workspaces_ExtDirect_
 	}
 
 }
+
 
 ?>

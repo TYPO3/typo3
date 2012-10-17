@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\ExtDirect;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @package Workspaces
  * @subpackage ExtDirect
  */
-abstract class Tx_Workspaces_ExtDirect_AbstractHandler {
+abstract class AbstractHandler {
 
 	/**
 	 * Gets the current workspace ID.
@@ -65,10 +67,10 @@ abstract class Tx_Workspaces_ExtDirect_AbstractHandler {
 	/**
 	 * Gets an instance of the workspaces service.
 	 *
-	 * @return Tx_Workspaces_Service_Workspaces
+	 * @return \TYPO3\CMS\Workspaces\Service\WorkspaceService
 	 */
 	protected function getWorkspaceService() {
-		return t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
 	}
 
 	/**
@@ -78,9 +80,9 @@ abstract class Tx_Workspaces_ExtDirect_AbstractHandler {
 	 * @param stdClass $parameters
 	 * @return integer|NULL
 	 */
-	protected function validateLanguageParameter(stdClass $parameters) {
+	protected function validateLanguageParameter(\stdClass $parameters) {
 		$language = NULL;
-		if (isset($parameters->language) && t3lib_utility_Math::canBeInterpretedAsInteger($parameters->language)) {
+		if (isset($parameters->language) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($parameters->language)) {
 			$language = $parameters->language;
 		}
 		return $language;
@@ -95,17 +97,17 @@ abstract class Tx_Workspaces_ExtDirect_AbstractHandler {
 	 * @param stdClass $parameters
 	 * @return array
 	 */
-	protected function getAffectedElements(stdClass $parameters) {
+	protected function getAffectedElements(\stdClass $parameters) {
 		$affectedElements = array();
 		if ($parameters->type === 'selection') {
 			foreach ((array) $parameters->selection as $element) {
-				$affectedElements[] = Tx_Workspaces_Domain_Model_CombinedRecord::create($element->table, $element->liveId, $element->versionId);
+				$affectedElements[] = \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord::create($element->table, $element->liveId, $element->versionId);
 			}
 		} elseif ($parameters->type === 'all') {
 			$versions = $this->getWorkspaceService()->selectVersionsInWorkspace($this->getCurrentWorkspace(), 0, -99, -1, 0, 'tables_select', $this->validateLanguageParameter($parameters));
 			foreach ($versions as $table => $tableElements) {
 				foreach ($tableElements as $element) {
-					$affectedElement = Tx_Workspaces_Domain_Model_CombinedRecord::create($table, $element['t3ver_oid'], $element['uid']);
+					$affectedElement = \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord::create($table, $element['t3ver_oid'], $element['uid']);
 					$affectedElement->getVersionRecord()->setRow($element);
 					$affectedElements[] = $affectedElement;
 				}
@@ -119,16 +121,17 @@ abstract class Tx_Workspaces_ExtDirect_AbstractHandler {
 	 * given set of affected elements.
 	 *
 	 * @param Tx_Workspaces_Domain_Model_CombinedRecord[] $affectedElements
-	 * @return Tx_Workspaces_Service_Integrity
+	 * @return \TYPO3\CMS\Workspaces\Service\IntegrityService
 	 * @see getAffectedElements
 	 */
 	protected function createIntegrityService(array $affectedElements) {
-		/** @var $integrityService Tx_Workspaces_Service_Integrity */
-		$integrityService = t3lib_div::makeInstance('Tx_Workspaces_Service_Integrity');
+		/** @var $integrityService \TYPO3\CMS\Workspaces\Service\IntegrityService */
+		$integrityService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\IntegrityService');
 		$integrityService->setAffectedElements($affectedElements);
 		return $integrityService;
 	}
 
 }
+
 
 ?>

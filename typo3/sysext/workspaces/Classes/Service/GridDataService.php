@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @package Workspaces
  * @subpackage Service
  */
-class Tx_Workspaces_Service_GridData {
+class GridDataService {
 
 	const SIGNAL_GenerateDataArray_BeforeCaching = 'generateDataArray.beforeCaching';
 	const SIGNAL_GenerateDataArray_PostProcesss = 'generateDataArray.postProcess';
@@ -66,7 +68,7 @@ class Tx_Workspaces_Service_GridData {
 	protected $sortDir = '';
 
 	/**
-	 * @var t3lib_cache_frontend_Frontend
+	 * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
 	 */
 	protected $workspacesCache = NULL;
 
@@ -76,7 +78,7 @@ class Tx_Workspaces_Service_GridData {
 	protected $systemLanguages;
 
 	/**
-	 * @var Tx_Workspaces_Service_Integrity
+	 * @var \TYPO3\CMS\Workspaces\Service\IntegrityService
 	 */
 	protected $integrityService;
 
@@ -99,7 +101,7 @@ class Tx_Workspaces_Service_GridData {
 		if (is_int($currentWorkspace)) {
 			$this->currentWorkspace = $currentWorkspace;
 		} else {
-			throw new InvalidArgumentException('No such workspace defined');
+			throw new \InvalidArgumentException('No such workspace defined');
 		}
 		$data = array();
 		$data['data'] = array();
@@ -118,20 +120,20 @@ class Tx_Workspaces_Service_GridData {
 	 */
 	protected function generateDataArray(array $versions, $filterTxt) {
 		$workspaceAccess = $GLOBALS['BE_USER']->checkWorkspace($GLOBALS['BE_USER']->workspace);
-		$swapStage = $workspaceAccess['publish_access'] & 1 ? Tx_Workspaces_Service_Stages::STAGE_PUBLISH_ID : 0;
+		$swapStage = $workspaceAccess['publish_access'] & 1 ? \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_ID : 0;
 		$swapAccess = $GLOBALS['BE_USER']->workspacePublishAccess($GLOBALS['BE_USER']->workspace) && $GLOBALS['BE_USER']->workspaceSwapAccess();
 		$this->initializeWorkspacesCachingFramework();
 		// check for dataArray in cache
 		if ($this->getDataArrayFromCache($versions, $filterTxt) === FALSE) {
-			/** @var $stagesObj Tx_Workspaces_Service_Stages */
-			$stagesObj = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
+			/** @var $stagesObj \TYPO3\CMS\Workspaces\Service\StagesService */
+			$stagesObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
 			foreach ($versions as $table => $records) {
 				$versionArray = array('table' => $table);
 				$isRecordTypeAllowedToModify = $GLOBALS['BE_USER']->check('tables_modify', $table);
 				foreach ($records as $record) {
-					$origRecord = t3lib_BEFunc::getRecord($table, $record['t3ver_oid']);
-					$versionRecord = t3lib_BEFunc::getRecord($table, $record['uid']);
-					$combinedRecord = Tx_Workspaces_Domain_Model_CombinedRecord::createFromArrays($table, $origRecord, $versionRecord);
+					$origRecord = \t3lib_BEFunc::getRecord($table, $record['t3ver_oid']);
+					$versionRecord = \t3lib_BEFunc::getRecord($table, $record['uid']);
+					$combinedRecord = \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord::createFromArrays($table, $origRecord, $versionRecord);
 					$this->getIntegrityService()->checkElement($combinedRecord);
 					if (isset($GLOBALS['TCA'][$table]['columns']['hidden'])) {
 						$recordState = $this->workspaceState($versionRecord['t3ver_state'], $origRecord['hidden'], $versionRecord['hidden']);
@@ -139,31 +141,31 @@ class Tx_Workspaces_Service_GridData {
 						$recordState = $this->workspaceState($versionRecord['t3ver_state']);
 					}
 					$isDeletedPage = $table == 'pages' && $recordState == 'deleted';
-					$viewUrl = Tx_Workspaces_Service_Workspaces::viewSingleRecord($table, $record['t3ver_oid'], $origRecord);
+					$viewUrl = \TYPO3\CMS\Workspaces\Service\WorkspaceService::viewSingleRecord($table, $record['t3ver_oid'], $origRecord);
 					$versionArray['id'] = ($table . ':') . $record['uid'];
 					$versionArray['uid'] = $record['uid'];
 					$versionArray['workspace'] = $versionRecord['t3ver_id'];
-					$versionArray['label_Workspace'] = htmlspecialchars(t3lib_befunc::getRecordTitle($table, $versionRecord));
-					$versionArray['label_Live'] = htmlspecialchars(t3lib_befunc::getRecordTitle($table, $origRecord));
+					$versionArray['label_Workspace'] = htmlspecialchars(\t3lib_befunc::getRecordTitle($table, $versionRecord));
+					$versionArray['label_Live'] = htmlspecialchars(\t3lib_befunc::getRecordTitle($table, $origRecord));
 					$versionArray['label_Stage'] = htmlspecialchars($stagesObj->getStageTitle($versionRecord['t3ver_stage']));
 					$tempStage = $stagesObj->getNextStage($versionRecord['t3ver_stage']);
 					$versionArray['label_nextStage'] = htmlspecialchars($stagesObj->getStageTitle($tempStage['uid']));
 					$tempStage = $stagesObj->getPrevStage($versionRecord['t3ver_stage']);
 					$versionArray['label_prevStage'] = htmlspecialchars($stagesObj->getStageTitle($tempStage['uid']));
-					$versionArray['path_Live'] = htmlspecialchars(t3lib_BEfunc::getRecordPath($record['livepid'], '', 999));
-					$versionArray['path_Workspace'] = htmlspecialchars(t3lib_BEfunc::getRecordPath($record['wspid'], '', 999));
-					$versionArray['workspace_Title'] = htmlspecialchars(Tx_Workspaces_Service_Workspaces::getWorkspaceTitle($versionRecord['t3ver_wsid']));
+					$versionArray['path_Live'] = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($record['livepid'], '', 999));
+					$versionArray['path_Workspace'] = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($record['wspid'], '', 999));
+					$versionArray['workspace_Title'] = htmlspecialchars(\TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($versionRecord['t3ver_wsid']));
 					$versionArray['workspace_Tstamp'] = $versionRecord['tstamp'];
-					$versionArray['workspace_Formated_Tstamp'] = t3lib_BEfunc::datetime($versionRecord['tstamp']);
+					$versionArray['workspace_Formated_Tstamp'] = \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($versionRecord['tstamp']);
 					$versionArray['t3ver_oid'] = $record['t3ver_oid'];
 					$versionArray['livepid'] = $record['livepid'];
 					$versionArray['stage'] = $versionRecord['t3ver_stage'];
-					$versionArray['icon_Live'] = t3lib_iconWorks::mapRecordTypeToSpriteIconClass($table, $origRecord);
-					$versionArray['icon_Workspace'] = t3lib_iconWorks::mapRecordTypeToSpriteIconClass($table, $versionRecord);
+					$versionArray['icon_Live'] = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconClass($table, $origRecord);
+					$versionArray['icon_Workspace'] = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconClass($table, $versionRecord);
 					$languageValue = $this->getLanguageValue($table, $versionRecord);
-					$versionArray['languageValue'] = $languageValue;
-					$versionArray['language'] = array(
-						'cls' => t3lib_iconWorks::getSpriteIconClasses($this->getSystemLanguageValue($languageValue, 'flagIcon')),
+					$versionArray['TYPO3\\CMS\\Lang\\LanguageServiceValue'] = $languageValue;
+					$versionArray['TYPO3\\CMS\\Lang\\LanguageService'] = array(
+						'cls' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses($this->getSystemLanguageValue($languageValue, 'flagIcon')),
 						'title' => htmlspecialchars($this->getSystemLanguageValue($languageValue, 'title'))
 					);
 					$versionArray['allowedAction_nextStage'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
@@ -321,7 +323,7 @@ class Tx_Workspaces_Service_GridData {
 				break;
 			}
 		} else {
-			t3lib_div::sysLog(('Try to sort "' . $this->sort) . '" in "Tx_Workspaces_Service_GridData::sortDataArray" but $this->dataArray is empty! This might be the Bug #26422 which could not reproduced yet.', 3);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(('Try to sort "' . $this->sort) . '" in "TYPO3\\CMS\\Workspaces\\Service\\GridDataService::sortDataArray" but $this->dataArray is empty! This might be the Bug #26422 which could not reproduced yet.', 3);
 		}
 		// Suggested slot method:
 		// methodName(Tx_Workspaces_Service_GridData $gridData, array &$dataArray, $sortColumn, $sortDirection)
@@ -459,7 +461,7 @@ class Tx_Workspaces_Service_GridData {
 	 */
 	protected function getLanguageValue($table, array $record) {
 		$languageValue = 0;
-		if (t3lib_BEfunc::isTableLocalizable($table)) {
+		if (\TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($table)) {
 			$languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
 			if (!empty($record[$languageField])) {
 				$languageValue = $record[$languageField];
@@ -493,8 +495,8 @@ class Tx_Workspaces_Service_GridData {
 	 */
 	public function getSystemLanguages() {
 		if (!isset($this->systemLanguages)) {
-			/** @var $translateTools t3lib_transl8tools */
-			$translateTools = t3lib_div::makeInstance('t3lib_transl8tools');
+			/** @var $translateTools \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider */
+			$translateTools = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TranslationConfigurationProvider');
 			$this->systemLanguages = $translateTools->getSystemLanguages();
 		}
 		return $this->systemLanguages;
@@ -503,11 +505,11 @@ class Tx_Workspaces_Service_GridData {
 	/**
 	 * Gets an instance of the integrity service.
 	 *
-	 * @return Tx_Workspaces_Service_Integrity
+	 * @return \TYPO3\CMS\Workspaces\Service\IntegrityService
 	 */
 	protected function getIntegrityService() {
 		if (!isset($this->integrityService)) {
-			$this->integrityService = t3lib_div::makeInstance('Tx_Workspaces_Service_Integrity');
+			$this->integrityService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\IntegrityService');
 		}
 		return $this->integrityService;
 	}
@@ -521,23 +523,24 @@ class Tx_Workspaces_Service_GridData {
 	protected function emitSignal($signalName) {
 		// Arguments are always ($this, [method argument], [method argument], ...)
 		$signalArguments = array_merge(array($this), array_slice(func_get_args(), 1));
-		$this->getSignalSlotDispatcher()->dispatch('Tx_Workspaces_Service_GridData', $signalName, $signalArguments);
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Workspaces\\Service\\GridDataService', $signalName, $signalArguments);
 	}
 
 	/**
-	 * @return Tx_Extbase_SignalSlot_Dispatcher
+	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
 	 */
 	protected function getSignalSlotDispatcher() {
-		return $this->getObjectManager()->get('Tx_Extbase_SignalSlot_Dispatcher');
+		return $this->getObjectManager()->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
 	}
 
 	/**
-	 * @return Tx_Extbase_Object_ObjectManager
+	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected function getObjectManager() {
-		return t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
  * @package Workspaces
  * @subpackage Service
  */
-class Tx_Workspaces_Service_AutoPublish {
+class AutoPublishService {
 
 	/**
 	 * This method is called by the Scheduler task that triggers
@@ -48,8 +50,8 @@ class Tx_Workspaces_Service_AutoPublish {
 		$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,swap_modes,publish_time,unpublish_time', 'sys_workspace', (((('pid=0
 				AND
 				((publish_time!=0 AND publish_time<=' . intval($GLOBALS['EXEC_TIME'])) . ')
-				OR (publish_time=0 AND unpublish_time!=0 AND unpublish_time<=') . intval($GLOBALS['EXEC_TIME'])) . '))') . t3lib_BEfunc::deleteClause('sys_workspace'));
-		$workspaceService = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
+				OR (publish_time=0 AND unpublish_time!=0 AND unpublish_time<=') . intval($GLOBALS['EXEC_TIME'])) . '))') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace'));
+		$workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
 		foreach ($workspaces as $rec) {
 			// First, clear start/end time so it doesn't get select once again:
 			$fieldArray = $rec['publish_time'] != 0 ? array('publish_time' => 0) : array('unpublish_time' => 0);
@@ -58,7 +60,7 @@ class Tx_Workspaces_Service_AutoPublish {
 			$cmd = $workspaceService->getCmdArrayForPublishWS($rec['uid'], $rec['swap_modes'] == 1);
 			// $rec['swap_modes']==1 means that auto-publishing will swap versions, not just publish and empty the workspace.
 			// Execute CMD array:
-			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
 			$tce->stripslashes_values = 0;
 			$tce->start(array(), $cmd);
 			$tce->process_cmdmap();
@@ -68,5 +70,6 @@ class Tx_Workspaces_Service_AutoPublish {
 	}
 
 }
+
 
 ?>
