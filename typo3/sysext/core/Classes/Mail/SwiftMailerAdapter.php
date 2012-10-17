@@ -143,6 +143,13 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 			$this->boundary = $matches[1];
 			return;
 		}
+
+		// ignore empty header-values (like from an 'Reply-To:' without an email-address)
+		$headerValue = trim($headerValue);
+		if (empty($headerValue)) {
+			return;
+		}
+
 		// process other, real headers
 		if ($this->messageHeaders->has($headerName)) {
 			$header = $this->messageHeaders->get($headerName);
