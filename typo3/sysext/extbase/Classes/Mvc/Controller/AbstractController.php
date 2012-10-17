@@ -129,7 +129,18 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	 * Constructs the controller.
 	 */
 	public function __construct() {
-		list(, $this->extensionName) = explode('_', get_class($this));
+		$className = get_class($this);
+		if (strpos($className, '\\') !== FALSE) {
+			$classNameParts = explode('\\', $className, 4);
+			// Skip vendor and product name for core classes
+			if (strpos($className, 'TYPO3\\CMS\\') === 0) {
+				$this->extensionName = $classNameParts[2];
+			} else {
+				$this->extensionName = $classNameParts[1];
+			}
+		} else {
+			list(, $this->extensionName) = explode('_', $className);
+		}
 	}
 
 	/**

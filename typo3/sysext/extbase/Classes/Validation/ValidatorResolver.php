@@ -310,7 +310,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string|boolean Name of the validator object or FALSE
 	 */
 	protected function resolveValidatorObjectName($validatorName) {
-		if ((strpbrk($validatorName, '_\\') !== FALSE) && class_exists($validatorName)) {
+		if (strpbrk($validatorName, '_\\') !== FALSE && class_exists($validatorName)) {
 			return $validatorName;
 		}
 		list($extensionName, $extensionValidatorName) = explode(':', $validatorName);

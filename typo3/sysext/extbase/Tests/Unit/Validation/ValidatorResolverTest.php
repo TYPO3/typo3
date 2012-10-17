@@ -67,7 +67,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 */
-	public function resolveValidatorObjectNameCanResolveShorthandValidatornames() {
+	public function resolveValidatorObjectNameCanResolveShorthandNotNamespacedValidatorNames() {
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		eval('class Tx_Mypkg_Validation_Validator_MyFirstValidator {}');
 		$validatorResolver = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver', array('dummy'));

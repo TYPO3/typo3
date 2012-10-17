@@ -134,7 +134,19 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 		$options = array();
 		foreach ($commands as $command) {
 			if ($command->isInternal() === FALSE) {
-				$classNameParts = explode('_', $command->getControllerClassName());
+				$className = $command->getControllerClassName();
+				if (strpos($command->getControllerClassName(), '\\')) {
+					$classNameParts = explode('\\', $className);
+					// Skip vendor and product name for core classes
+					if (strpos($className, 'TYPO3\\CMS\\') === 0) {
+						$classPartsToSkip = 2;
+					} else {
+						$classPartsToSkip = 1;
+					}
+					$classNameParts = array_slice($classNameParts, $classPartsToSkip);
+				} else {
+					$classNameParts = explode('_', $className);
+				}
 				$identifier = $command->getCommandIdentifier();
 				$options[$identifier] = $classNameParts[1] . ' ' . str_replace('CommandController', '', $classNameParts[3]) . ': ' . $command->getControllerCommandName();
 			}

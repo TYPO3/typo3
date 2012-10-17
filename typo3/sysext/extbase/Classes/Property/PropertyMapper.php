@@ -157,6 +157,9 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($source === NULL) {
 			$source = '';
 		}
+		// This is needed to correctly convert old class names to new ones
+		// This compatibility layer will be removed with 7.0
+		$targetType = \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($targetType);
 		$typeConverter = $this->findTypeConverter($source, $targetType, $configuration);
 		if (!is_object($typeConverter) || !$typeConverter instanceof \TYPO3\CMS\Extbase\Property\TypeConverterInterface) {
 			throw new \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException('Type converter for "' . $source . '" -> "' . $targetType . '" not found.');
