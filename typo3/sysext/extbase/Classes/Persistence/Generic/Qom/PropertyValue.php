@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -40,7 +42,7 @@
  * @version $Id$
  * @scope prototype
  */
-class Tx_Extbase_Persistence_QOM_PropertyValue extends Tx_Extbase_Persistence_QOM_DynamicOperand implements Tx_Extbase_Persistence_QOM_PropertyValueInterface {
+class PropertyValue extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperand implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\PropertyValueInterface {
 
 	/**
 	 * @var string
@@ -82,5 +84,6 @@ class Tx_Extbase_Persistence_QOM_PropertyValue extends Tx_Extbase_Persistence_QO
 	}
 
 }
+
 
 ?>

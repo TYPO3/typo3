@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\View;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +34,7 @@
  * @version $Id: EmptyView.php 2517 2010-08-04 17:56:45Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_MVC_View_NotFoundView extends Tx_Extbase_MVC_View_AbstractView {
+class NotFoundView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView {
 
 	/**
 	 * @var array
@@ -43,16 +45,16 @@ class Tx_Extbase_MVC_View_NotFoundView extends Tx_Extbase_MVC_View_AbstractView 
 	 * Renders the not found view
 	 *
 	 * @return string The rendered view
-	 * @throws Tx_Extbase_MVC_Exception if no request has been set
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception if no request has been set
 	 * @api
 	 */
 	public function render() {
 		if (!is_object($this->controllerContext->getRequest())) {
-			throw new Tx_Extbase_MVC_Exception('Can\'t render view without request object.', 1192450280);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception('Can\'t render view without request object.', 1192450280);
 		}
 		$template = file_get_contents($this->getTemplatePathAndFilename());
-		if ($this->controllerContext->getRequest() instanceof Tx_Extbase_MVC_Web_Request) {
-			$template = str_replace('###BASEURI###', t3lib_div::getIndpEnv('TYPO3_SITE_URL'), $template);
+		if ($this->controllerContext->getRequest() instanceof \TYPO3\CMS\Extbase\Mvc\Web\Request) {
+			$template = str_replace('###BASEURI###', \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), $template);
 		}
 		foreach ($this->variablesMarker as $variableName => $marker) {
 			$variableValue = isset($this->variables[$variableName]) ? $this->variables[$variableName] : '';
@@ -68,7 +70,7 @@ class Tx_Extbase_MVC_View_NotFoundView extends Tx_Extbase_MVC_View_AbstractView 
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getTemplatePathAndFilename() {
-		return t3lib_extmgm::extPath('extbase') . 'Resources/Private/MVC/NotFoundView_Template.html';
+		return \t3lib_extmgm::extPath('extbase') . 'Resources/Private/MVC/NotFoundView_Template.html';
 	}
 
 	/**
@@ -88,5 +90,6 @@ class Tx_Extbase_MVC_View_NotFoundView extends Tx_Extbase_MVC_View_AbstractView 
 	}
 
 }
+
 
 ?>

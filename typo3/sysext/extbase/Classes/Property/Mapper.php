@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Property;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -50,77 +52,77 @@
  * @api
  * @deprecated since Extbase 1.4.0
  */
-class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
+class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Results of the last mapping operation
 	 *
-	 * @var Tx_Extbase_Property_MappingResults
+	 * @var \TYPO3\CMS\Extbase\Property\MappingResults
 	 */
 	protected $mappingResults;
 
 	/**
-	 * @var Tx_Extbase_Validation_ValidatorResolver
+	 * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
 	 */
 	protected $validatorResolver;
 
 	/**
-	 * @var Tx_Extbase_Reflection_Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\Service
 	 */
 	protected $reflectionService;
 
 	/**
-	 * @var Tx_Extbase_Persistence_ManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
 	 */
 	protected $persistenceManager;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Extbase_Persistence_QueryFactory
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory
 	 */
 	protected $queryFactory;
 
 	/**
-	 * @param Tx_Extbase_Validation_ValidatorResolver $validatorResolver
+	 * @param \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver
 	 * @return void
 	 */
-	public function injectValidatorResolver(Tx_Extbase_Validation_ValidatorResolver $validatorResolver) {
+	public function injectValidatorResolver(\TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver) {
 		$this->validatorResolver = $validatorResolver;
 	}
 
 	/**
-	 * @param Tx_Extbase_Persistence_QueryFactory $queryFactory
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory $queryFactory
 	 * @return void
 	 */
-	public function injectQueryFactory(Tx_Extbase_Persistence_QueryFactory $queryFactory) {
+	public function injectQueryFactory(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory $queryFactory) {
 		$this->queryFactory = $queryFactory;
 	}
 
 	/**
-	 * @param Tx_Extbase_Persistence_Manager $persistenceManager
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager
 	 * @return void
 	 */
-	public function injectPersistenceManager(Tx_Extbase_Persistence_Manager $persistenceManager) {
+	public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager) {
 		$this->persistenceManager = $persistenceManager;
 	}
 
 	/**
-	 * @param Tx_Extbase_Reflection_Service $reflectionService
+	 * @param \TYPO3\CMS\Extbase\Reflection\Service $reflectionService
 	 * @return void
 	 */
-	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
 
 	/**
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -135,14 +137,14 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 	 * @param array $propertyNames Names of the properties to map.
 	 * @param mixed $source Source containing the properties to map to the target object. Must either be an array, ArrayObject or any other object.
 	 * @param object $target The target object
-	 * @param Tx_Extbase_Validation_Validator_ObjectValidatorInterface $targetObjectValidator A validator used for validating the target object
+	 * @param \TYPO3\CMS\Extbase\Validation\Validator\ObjectValidatorInterface $targetObjectValidator A validator used for validating the target object
 	 * @param array $optionalPropertyNames Names of optional properties. If a property is specified here and it doesn't exist in the source, no error is issued.
 	 * @return boolean TRUE if the mapped properties are valid, otherwise FALSE
 	 * @see getMappingResults()
 	 * @see map()
 	 * @api
 	 */
-	public function mapAndValidate(array $propertyNames, $source, $target, $optionalPropertyNames = array(), Tx_Extbase_Validation_Validator_ObjectValidatorInterface $targetObjectValidator) {
+	public function mapAndValidate(array $propertyNames, $source, $target, $optionalPropertyNames = array(), \TYPO3\CMS\Extbase\Validation\Validator\ObjectValidatorInterface $targetObjectValidator) {
 		$backupProperties = array();
 		$this->map($propertyNames, $source, $backupProperties, $optionalPropertyNames);
 		if ($this->mappingResults->hasErrors()) {
@@ -169,7 +171,7 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 	 */
 	protected function addErrorsFromObjectValidator($errors) {
 		foreach ($errors as $error) {
-			if ($error instanceof Tx_Extbase_Validation_PropertyError) {
+			if ($error instanceof \TYPO3\CMS\Extbase\Validation\PropertyError) {
 				$propertyName = $error->getPropertyName();
 				$this->mappingResults->addError($error, $propertyName);
 			}
@@ -193,15 +195,15 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 	 */
 	public function map(array $propertyNames, $source, $target, $optionalPropertyNames = array()) {
 		if (!is_object($source) && !is_array($source)) {
-			throw new Tx_Extbase_Property_Exception_InvalidSource(('The source object must be a valid object or array, ' . gettype($target)) . ' given.', 1187807099);
+			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidSource(('The source object must be a valid object or array, ' . gettype($target)) . ' given.', 1187807099);
 		}
 		if (is_string($target) && strpos($target, '_') !== FALSE) {
 			return $this->transformToObject($source, $target, '--none--');
 		}
 		if (!is_object($target) && !is_array($target)) {
-			throw new Tx_Extbase_Property_Exception_InvalidTarget(('The target object must be a valid object or array, ' . gettype($target)) . ' given.', 1187807099);
+			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTarget(('The target object must be a valid object or array, ' . gettype($target)) . ' given.', 1187807099);
 		}
-		$this->mappingResults = new Tx_Extbase_Property_MappingResults();
+		$this->mappingResults = new \TYPO3\CMS\Extbase\Property\MappingResults();
 		if (is_object($target)) {
 			$targetClassSchema = $this->reflectionService->getClassSchema(get_class($target));
 		} else {
@@ -209,19 +211,19 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 		}
 		foreach ($propertyNames as $propertyName) {
 			$propertyValue = NULL;
-			if (is_array($source) || $source instanceof ArrayAccess) {
+			if (is_array($source) || $source instanceof \ArrayAccess) {
 				if (isset($source[$propertyName])) {
 					$propertyValue = $source[$propertyName];
 				}
 			} else {
-				$propertyValue = Tx_Extbase_Reflection_ObjectAccess::getProperty($source, $propertyName);
+				$propertyValue = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($source, $propertyName);
 			}
 			if ($propertyValue === NULL && !in_array($propertyName, $optionalPropertyNames)) {
-				$this->mappingResults->addError(new Tx_Extbase_Error_Error("Required property '{$propertyName}' does not exist.", 1236785359), $propertyName);
+				$this->mappingResults->addError(new \TYPO3\CMS\Extbase\Error\Error("Required property '{$propertyName}' does not exist.", 1236785359), $propertyName);
 			} else {
 				if ($targetClassSchema !== NULL && $targetClassSchema->hasProperty($propertyName)) {
 					$propertyMetaData = $targetClassSchema->getProperty($propertyName);
-					if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'Tx_Extbase_Persistence_ObjectStorage')) && (strpos($propertyMetaData['elementType'], '_') !== FALSE || $propertyValue === '')) {
+					if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage')) && (strpos($propertyMetaData['elementType'], '_') !== FALSE || $propertyValue === '')) {
 						$objects = array();
 						if (is_array($propertyValue)) {
 							foreach ($propertyValue as $value) {
@@ -233,9 +235,9 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 						}
 						// make sure we hand out what is expected
 						if ($propertyMetaData['type'] === 'ArrayObject') {
-							$propertyValue = new ArrayObject($objects);
-						} elseif ($propertyMetaData['type'] === 'Tx_Extbase_Persistence_ObjectStorage') {
-							$propertyValue = new Tx_Extbase_Persistence_ObjectStorage();
+							$propertyValue = new \ArrayObject($objects);
+						} elseif ($propertyMetaData['type'] === 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage') {
+							$propertyValue = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 							foreach ($objects as $object) {
 								$propertyValue->attach($object);
 							}
@@ -249,12 +251,12 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 						}
 					}
 				} elseif ($targetClassSchema !== NULL) {
-					$this->mappingResults->addError(new Tx_Extbase_Error_Error("Property '{$propertyName}' does not exist in target class schema.", 1251813614), $propertyName);
+					$this->mappingResults->addError(new \TYPO3\CMS\Extbase\Error\Error("Property '{$propertyName}' does not exist in target class schema.", 1251813614), $propertyName);
 				}
 				if (is_array($target)) {
 					$target[$propertyName] = $propertyValue;
-				} elseif (Tx_Extbase_Reflection_ObjectAccess::setProperty($target, $propertyName, $propertyValue) === FALSE) {
-					$this->mappingResults->addError(new Tx_Extbase_Error_Error("Property '{$propertyName}' could not be set.", 1236783102), $propertyName);
+				} elseif (\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($target, $propertyName, $propertyValue) === FALSE) {
+					$this->mappingResults->addError(new \TYPO3\CMS\Extbase\Error\Error("Property '{$propertyName}' could not be set.", 1236783102), $propertyName);
 				}
 			}
 		}
@@ -278,7 +280,7 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 			} else {
 				try {
 					$propertyValue = $this->objectManager->create($targetType, $propertyValue);
-				} catch (Exception $e) {
+				} catch (\Exception $e) {
 					$propertyValue = NULL;
 				}
 			}
@@ -286,13 +288,13 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 			if (is_numeric($propertyValue)) {
 				$propertyValue = $this->findObjectByUid($targetType, $propertyValue);
 				if ($propertyValue === FALSE) {
-					$this->mappingResults->addError(new Tx_Extbase_Error_Error(('Querying the repository for the specified object with UUID ' . $propertyValue) . ' was not successful.', 1249379517), $propertyName);
+					$this->mappingResults->addError(new \TYPO3\CMS\Extbase\Error\Error(('Querying the repository for the specified object with UUID ' . $propertyValue) . ' was not successful.', 1249379517), $propertyName);
 				}
 			} elseif (is_array($propertyValue)) {
 				if (isset($propertyValue['__identity'])) {
 					$existingObject = $this->findObjectByUid($targetType, $propertyValue['__identity']);
 					if ($existingObject === NULL) {
-						throw new Tx_Extbase_Property_Exception_InvalidTarget('Querying the repository for the specified object was not successful.', 1237305720);
+						throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTarget('Querying the repository for the specified object was not successful.', 1237305720);
 					}
 					unset($propertyValue['__identity']);
 					if (count($propertyValue) === 0) {
@@ -314,7 +316,7 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 					}
 				}
 			} else {
-				throw new InvalidArgumentException('transformToObject() accepts only numeric values and arrays.', 1251814355);
+				throw new \InvalidArgumentException('transformToObject() accepts only numeric values and arrays.', 1251814355);
 			}
 		}
 		return $propertyValue;
@@ -323,7 +325,7 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 	/**
 	 * Returns the results of the last mapping operation.
 	 *
-	 * @return Tx_Extbase_Property_MappingResults The mapping results (or NULL if no mapping has been carried out yet)
+	 * @return \TYPO3\CMS\Extbase\Property\MappingResults The mapping results (or NULL if no mapping has been carried out yet)
 	 * @api
 	 */
 	public function getMappingResults() {
@@ -346,5 +348,6 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 	}
 
 }
+
 
 ?>

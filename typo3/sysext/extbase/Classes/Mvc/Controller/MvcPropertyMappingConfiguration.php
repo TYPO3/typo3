@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Controller;
+
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -25,7 +27,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class Tx_Extbase_MVC_Controller_MvcPropertyMappingConfiguration extends Tx_Extbase_Property_PropertyMappingConfiguration {
+class MvcPropertyMappingConfiguration extends \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration {
 
 	/**
 	 * Allow creation of a certain sub property
@@ -36,7 +38,7 @@ class Tx_Extbase_MVC_Controller_MvcPropertyMappingConfiguration extends Tx_Extba
 	 * @api
 	 */
 	public function allowCreationForSubProperty($propertyPath) {
-		$this->forProperty($propertyPath)->setTypeConverterOption('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, TRUE);
+		$this->forProperty($propertyPath)->setTypeConverterOption('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, TRUE);
 	}
 
 	/**
@@ -48,7 +50,7 @@ class Tx_Extbase_MVC_Controller_MvcPropertyMappingConfiguration extends Tx_Extba
 	 * @api
 	 */
 	public function allowModificationForSubProperty($propertyPath) {
-		$this->forProperty($propertyPath)->setTypeConverterOption('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, TRUE);
+		$this->forProperty($propertyPath)->setTypeConverterOption('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, TRUE);
 	}
 
 	/**
@@ -62,9 +64,10 @@ class Tx_Extbase_MVC_Controller_MvcPropertyMappingConfiguration extends Tx_Extba
 	 * @api
 	 */
 	public function setTargetTypeForSubProperty($propertyPath, $targetType) {
-		$this->forProperty($propertyPath)->setTypeConverterOption('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_TARGET_TYPE, $targetType);
+		$this->forProperty($propertyPath)->setTypeConverterOption('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_TARGET_TYPE, $targetType);
 	}
 
 }
+
 
 ?>

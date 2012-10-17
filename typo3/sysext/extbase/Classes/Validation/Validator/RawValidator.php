@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @subpackage Validation\Validator
  * @version $Id$
  */
-class Tx_Extbase_Validation_Validator_RawValidator implements Tx_Extbase_Validation_Validator_ValidatorInterface {
+class RawValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {
 
 	/**
 	 * Always returns TRUE
@@ -69,14 +71,15 @@ class Tx_Extbase_Validation_Validator_RawValidator implements Tx_Extbase_Validat
 	 * Always returns TRUE
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @return Tx_Extbase_Error_Result
+	 * @return \TYPO3\CMS\Extbase\Error\Result
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function validate($value) {
-		return new Tx_Extbase_Error_Result();
+		return new \TYPO3\CMS\Extbase\Error\Result();
 	}
 
 }
+
 
 ?>

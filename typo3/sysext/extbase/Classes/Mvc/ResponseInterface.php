@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +32,7 @@
  * @version $Id$
  * @api
  */
-interface Tx_Extbase_MVC_ResponseInterface
+interface ResponseInterface
 {
 	/**
 	 * Overrides and sets the content of the response
@@ -59,4 +61,5 @@ interface Tx_Extbase_MVC_ResponseInterface
 	public function getContent();
 
 }
+
 ?>

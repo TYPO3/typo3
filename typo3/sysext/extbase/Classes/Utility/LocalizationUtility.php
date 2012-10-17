@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +31,7 @@
  * @version $ID:$
  * @api
  */
-class Tx_Extbase_Utility_Localization {
+class LocalizationUtility {
 
 	/**
 	 * @var string
@@ -79,7 +81,7 @@ class Tx_Extbase_Utility_Localization {
 	 */
 	static public function translate($key, $extensionName, $arguments = NULL) {
 		$value = NULL;
-		if (t3lib_div::isFirstPartOfStr($key, 'LLL:')) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($key, 'LLL:')) {
 			$value = self::translateFileReference($key);
 		} else {
 			self::initializeLocalization($extensionName);
@@ -158,12 +160,12 @@ class Tx_Extbase_Utility_Localization {
 		if (isset(self::$LOCAL_LANG[$extensionName])) {
 			return;
 		}
-		$locallangPathAndFilename = ((('EXT:' . t3lib_div::camelCaseToLowerCaseUnderscored($extensionName)) . '/') . self::$locallangPath) . 'locallang.xml';
+		$locallangPathAndFilename = ((('EXT:' . \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName)) . '/') . self::$locallangPath) . 'locallang.xml';
 		self::setLanguageKeys();
 		$renderCharset = TYPO3_MODE === 'FE' ? $GLOBALS['TSFE']->renderCharset : $GLOBALS['LANG']->charSet;
-		self::$LOCAL_LANG[$extensionName] = t3lib_div::readLLfile($locallangPathAndFilename, self::$languageKey, $renderCharset);
+		self::$LOCAL_LANG[$extensionName] = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($locallangPathAndFilename, self::$languageKey, $renderCharset);
 		if (self::$alternativeLanguageKey !== '') {
-			$alternativeLocalLang = t3lib_div::readLLfile($locallangPathAndFilename, self::$alternativeLanguageKey);
+			$alternativeLocalLang = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($locallangPathAndFilename, self::$alternativeLanguageKey);
 			self::$LOCAL_LANG[$extensionName] = array_merge(self::$LOCAL_LANG[$extensionName], $alternativeLocalLang);
 		}
 		self::loadTypoScriptLabels($extensionName);
@@ -203,9 +205,9 @@ class Tx_Extbase_Utility_Localization {
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function loadTypoScriptLabels($extensionName) {
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$frameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if (!is_array($frameworkConfiguration['_LOCAL_LANG'])) {
 			return;
 		}
@@ -277,5 +279,6 @@ class Tx_Extbase_Utility_Localization {
 	}
 
 }
+
 
 ?>

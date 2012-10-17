@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,39 +26,39 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_MVC_Controller_ActionController
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 */
 	protected $actionController;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $mockObjectManager;
 
 	/**
-	 * @var Tx_Extbase_MVC_Web_Routing_UriBuilder
+	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
 	 */
 	protected $mockUriBuilder;
 
 	public function setUp() {
-		$this->actionController = $this->getAccessibleMock('Tx_Extbase_MVC_Controller_ActionController');
+		$this->actionController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController');
 	}
 
 	/**
 	 * @test
 	 */
 	public function processRequestSticksToSpecifiedSequence() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request', array(), array(), '', FALSE);
+		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request', array(), array(), '', FALSE);
 		$mockRequest->expects($this->once())->method('setDispatched')->with(TRUE);
-		$mockUriBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		$mockUriBuilder = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
 		$mockUriBuilder->expects($this->once())->method('setRequest')->with($mockRequest);
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$mockObjectManager->expects($this->once())->method('create')->with('Tx_Extbase_MVC_Web_Routing_UriBuilder')->will($this->returnValue($mockUriBuilder));
-		$mockResponse = $this->getMock('Tx_Extbase_MVC_Web_Response', array(), array(), '', FALSE);
-		$mockController = $this->getAccessibleMock('Tx_Extbase_MVC_Controller_ActionController', array(
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder')->will($this->returnValue($mockUriBuilder));
+		$mockResponse = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Response', array(), array(), '', FALSE);
+		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array(
 			'initializeFooAction',
 			'initializeAction',
 			'resolveActionMethodName',
@@ -89,13 +91,13 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function callActionMethodAppendsStringsReturnedByActionMethodToTheResponseObject() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request', array(), array(), '', FALSE);
-		$mockResponse = $this->getMock('Tx_Extbase_MVC_ResponseInterface', array(), array(), '', FALSE);
+		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array(), array(), '', FALSE);
+		$mockResponse = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\ResponseInterface', array(), array(), '', FALSE);
 		$mockResponse->expects($this->once())->method('appendContent')->with('the returned string');
-		$mockArguments = new ArrayObject();
-		$mockArgumentMappingResults = $this->getMock('Tx_Extbase_Property_MappingResults', array(), array(), '', FALSE);
+		$mockArguments = new \ArrayObject();
+		$mockArgumentMappingResults = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\MappingResults', array(), array(), '', FALSE);
 		$mockArgumentMappingResults->expects($this->once())->method('hasErrors')->will($this->returnValue(FALSE));
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction', 'initializeAction'), array(), '', FALSE);
+		$mockController = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController'), array('fooAction', 'initializeAction'), array(), '', FALSE);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$mockController->expects($this->once())->method('fooAction')->will($this->returnValue('the returned string'));
 		$mockController->_set('request', $mockRequest);
@@ -111,15 +113,15 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function callActionMethodRendersTheViewAutomaticallyIfTheActionReturnedNullAndAViewExists() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request', array(), array(), '', FALSE);
-		$mockResponse = $this->getMock('Tx_Extbase_MVC_ResponseInterface', array(), array(), '', FALSE);
+		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array(), array(), '', FALSE);
+		$mockResponse = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\ResponseInterface', array(), array(), '', FALSE);
 		$mockResponse->expects($this->once())->method('appendContent')->with('the view output');
-		$mockView = $this->getMock('Tx_Extbase_MVC_View_ViewInterface');
+		$mockView = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
 		$mockView->expects($this->once())->method('render')->will($this->returnValue('the view output'));
-		$mockArguments = new ArrayObject();
-		$mockArgumentMappingResults = $this->getMock('Tx_Extbase_Property_MappingResults', array(), array(), '', FALSE);
+		$mockArguments = new \ArrayObject();
+		$mockArgumentMappingResults = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\MappingResults', array(), array(), '', FALSE);
 		$mockArgumentMappingResults->expects($this->once())->method('hasErrors')->will($this->returnValue(FALSE));
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction', 'initializeAction'), array(), '', FALSE);
+		$mockController = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController'), array('fooAction', 'initializeAction'), array(), '', FALSE);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$mockController->expects($this->once())->method('fooAction');
 		$mockController->_set('request', $mockRequest);
@@ -136,13 +138,13 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function callActionMethodCallsTheErrorActionIfTheMappingResultsHaveErrors() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request', array(), array(), '', FALSE);
-		$mockResponse = $this->getMock('Tx_Extbase_MVC_ResponseInterface', array(), array(), '', FALSE);
+		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array(), array(), '', FALSE);
+		$mockResponse = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\ResponseInterface', array(), array(), '', FALSE);
 		$mockResponse->expects($this->once())->method('appendContent')->with('the returned string');
-		$mockArguments = new ArrayObject();
-		$mockArgumentMappingResults = $this->getMock('Tx_Extbase_Property_MappingResults', array(), array(), '', FALSE);
+		$mockArguments = new \ArrayObject();
+		$mockArgumentMappingResults = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\MappingResults', array(), array(), '', FALSE);
 		$mockArgumentMappingResults->expects($this->once())->method('hasErrors')->will($this->returnValue(TRUE));
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('barAction', 'initializeAction'), array(), '', FALSE);
+		$mockController = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController'), array('barAction', 'initializeAction'), array(), '', FALSE);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$mockController->expects($this->once())->method('barAction')->will($this->returnValue('the returned string'));
 		$mockController->_set('request', $mockRequest);
@@ -159,15 +161,15 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function callActionMethodPassesDefaultValuesAsArguments() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request', array(), array(), '', FALSE);
-		$mockResponse = $this->getMock('Tx_Extbase_MVC_ResponseInterface', array(), array(), '', FALSE);
-		$arguments = new ArrayObject();
-		$optionalArgument = new Tx_Extbase_MVC_Controller_Argument('name1', 'Text');
+		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array(), array(), '', FALSE);
+		$mockResponse = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\ResponseInterface', array(), array(), '', FALSE);
+		$arguments = new \ArrayObject();
+		$optionalArgument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('name1', 'Text');
 		$optionalArgument->setDefaultValue('Default value');
 		$arguments[] = $optionalArgument;
-		$mockArgumentMappingResults = $this->getMock('Tx_Extbase_Property_MappingResults', array(), array(), '', FALSE);
+		$mockArgumentMappingResults = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\MappingResults', array(), array(), '', FALSE);
 		$mockArgumentMappingResults->expects($this->once())->method('hasErrors')->will($this->returnValue(FALSE));
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction', 'initializeAction'), array(), '', FALSE);
+		$mockController = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController'), array('fooAction', 'initializeAction'), array(), '', FALSE);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$mockController->expects($this->once())->method('fooAction')->with('Default value');
 		$mockController->_set('request', $mockRequest);
@@ -184,13 +186,13 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 */
 	public function resolveViewUsesFluidTemplateViewIfTemplateIsAvailable() {
 		$mockSession = $this->getMock('Tx_Extbase_Session_SessionInterface');
-		$mockControllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
-		$mockFluidTemplateView = $this->getMock('Tx_Extbase_MVC_View_ViewInterface');
+		$mockControllerContext = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext', array(), array(), '', FALSE);
+		$mockFluidTemplateView = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
 		$mockFluidTemplateView->expects($this->once())->method('setControllerContext')->with($mockControllerContext);
 		$mockFluidTemplateView->expects($this->once())->method('canRender')->with($mockControllerContext)->will($this->returnValue(TRUE));
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface', array(), array(), '', FALSE);
-		$mockObjectManager->expects($this->at(0))->method('create')->with('Tx_Fluid_View_TemplateView')->will($this->returnValue($mockFluidTemplateView));
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('buildControllerContext', 'resolveViewObjectName', 'setViewConfiguration'), array(), '', FALSE);
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface', array(), array(), '', FALSE);
+		$mockObjectManager->expects($this->at(0))->method('create')->with('TYPO3\\CMS\\Fluid\\View\\TemplateView')->will($this->returnValue($mockFluidTemplateView));
+		$mockController = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController'), array('buildControllerContext', 'resolveViewObjectName', 'setViewConfiguration'), array(), '', FALSE);
 		$mockController->expects($this->once())->method('resolveViewObjectName')->will($this->returnValue(FALSE));
 		$mockController->_set('session', $mockSession);
 		$mockController->_set('objectManager', $mockObjectManager);
@@ -203,13 +205,13 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function resolveViewObjectNameUsesViewObjectNamePatternToResolveViewObjectName() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request', array(), array(), '', FALSE);
+		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array(), array(), '', FALSE);
 		$mockRequest->expects($this->once())->method('getControllerExtensionName')->will($this->returnValue('MyPackage'));
 		$mockRequest->expects($this->once())->method('getControllerName')->will($this->returnValue('MyController'));
 		$mockRequest->expects($this->once())->method('getControllerActionName')->will($this->returnValue('MyAction'));
 		$mockRequest->expects($this->atLeastOnce())->method('getFormat')->will($this->returnValue('MyFormat'));
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface', array(), array(), '', FALSE);
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('dummy'), array(), '', FALSE);
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface', array(), array(), '', FALSE);
+		$mockController = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController'), array('dummy'), array(), '', FALSE);
 		$mockController->_set('request', $mockRequest);
 		$mockController->_set('objectManager', $mockObjectManager);
 		$mockController->_set('viewObjectNamePattern', 'RandomViewObjectPattern_@package_@controller_@action_@format');
@@ -221,22 +223,22 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function resolveActionMethodNameReturnsTheCurrentActionMethodNameFromTheRequest() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request', array(), array(), '', FALSE);
+		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array(), array(), '', FALSE);
 		$mockRequest->expects($this->once())->method('getControllerActionName')->will($this->returnValue('fooBar'));
-		$mockController = $this->getAccessibleMock('Tx_Extbase_MVC_Controller_ActionController', array('fooBarAction'), array(), '', FALSE);
+		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('fooBarAction'), array(), '', FALSE);
 		$mockController->_set('request', $mockRequest);
 		$this->assertEquals('fooBarAction', $mockController->_call('resolveActionMethodName'));
 	}
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception_NoSuchAction
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function resolveActionMethodNameThrowsAnExceptionIfTheActionDefinedInTheRequestDoesNotExist() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request', array(), array(), '', FALSE);
+		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array(), array(), '', FALSE);
 		$mockRequest->expects($this->once())->method('getControllerActionName')->will($this->returnValue('fooBar'));
-		$mockController = $this->getAccessibleMock('Tx_Extbase_MVC_Controller_ActionController', array('otherBarAction'), array(), '', FALSE);
+		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('otherBarAction'), array(), '', FALSE);
 		$mockController->_set('request', $mockRequest);
 		$mockController->_call('resolveActionMethodName');
 	}
@@ -246,12 +248,12 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function initializeActionMethodArgumentsRegistersArgumentsFoundInTheSignatureOfTheCurrentActionMethod() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request', array(), array(), '', FALSE);
-		$mockArguments = $this->getMock('Tx_Extbase_MVC_Controller_Arguments', array('addNewArgument', 'removeAll'), array(), '', FALSE);
+		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array(), array(), '', FALSE);
+		$mockArguments = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments', array('addNewArgument', 'removeAll'), array(), '', FALSE);
 		$mockArguments->expects($this->at(0))->method('addNewArgument')->with('stringArgument', 'string', TRUE);
 		$mockArguments->expects($this->at(1))->method('addNewArgument')->with('integerArgument', 'integer', TRUE);
 		$mockArguments->expects($this->at(2))->method('addNewArgument')->with('objectArgument', 'F3_Foo_Bar', TRUE);
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction', 'evaluateDontValidateAnnotations'), array(), '', FALSE);
+		$mockController = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController'), array('fooAction', 'evaluateDontValidateAnnotations'), array(), '', FALSE);
 		$methodParameters = array(
 			'stringArgument' => array(
 				'position' => 0,
@@ -278,7 +280,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 				'type' => 'F3_Foo_Bar'
 			)
 		);
-		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array(), array(), '', FALSE);
+		$mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service', array(), array(), '', FALSE);
 		$mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodParameters));
 		$mockController->injectReflectionService($mockReflectionService);
 		$mockController->_set('request', $mockRequest);
@@ -292,12 +294,12 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function initializeActionMethodArgumentsRegistersOptionalArgumentsAsSuch() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request', array(), array(), '', FALSE);
-		$mockArguments = $this->getMock('Tx_Extbase_MVC_Controller_Arguments', array(), array(), '', FALSE);
+		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array(), array(), '', FALSE);
+		$mockArguments = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments', array(), array(), '', FALSE);
 		$mockArguments->expects($this->at(0))->method('addNewArgument')->with('arg1', 'string', TRUE);
 		$mockArguments->expects($this->at(1))->method('addNewArgument')->with('arg2', 'array', FALSE, array(21));
 		$mockArguments->expects($this->at(2))->method('addNewArgument')->with('arg3', 'string', FALSE, 42);
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction', 'evaluateDontValidateAnnotations'), array(), '', FALSE);
+		$mockController = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController'), array('fooAction', 'evaluateDontValidateAnnotations'), array(), '', FALSE);
 		$methodParameters = array(
 			'arg1' => array(
 				'position' => 0,
@@ -325,7 +327,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 				'type' => 'string'
 			)
 		);
-		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array(), array(), '', FALSE);
+		$mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service', array(), array(), '', FALSE);
 		$mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodParameters));
 		$mockController->injectReflectionService($mockReflectionService);
 		$mockController->_set('request', $mockRequest);
@@ -337,12 +339,12 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sbastian@typo3.org>
-	 * @expectedException Tx_Extbase_MVC_Exception_InvalidArgumentType
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException
 	 */
 	public function initializeActionMethodArgumentsThrowsExceptionIfDataTypeWasNotSpecified() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request', array(), array(), '', FALSE);
-		$mockArguments = $this->getMock('Tx_Extbase_MVC_Controller_Arguments', array(), array(), '', FALSE);
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction'), array(), '', FALSE);
+		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array(), array(), '', FALSE);
+		$mockArguments = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments', array(), array(), '', FALSE);
+		$mockController = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController'), array('fooAction'), array(), '', FALSE);
 		$methodParameters = array(
 			'arg1' => array(
 				'position' => 0,
@@ -352,7 +354,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 				'allowsNull' => FALSE
 			)
 		);
-		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array(), array(), '', FALSE);
+		$mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service', array(), array(), '', FALSE);
 		$mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodParameters));
 		$mockController->injectReflectionService($mockReflectionService);
 		$mockController->_set('request', $mockRequest);
@@ -366,18 +368,18 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 * @author Sebastian Kurfürst <sbastian@typo3.org>
 	 */
 	public function initializeActionMethodValidatorsCorrectlyRegistersValidatorsBasedOnDataType() {
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction'), array(), '', FALSE);
+		$mockController = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController'), array('fooAction'), array(), '', FALSE);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
-		$argument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName'), array(), '', FALSE);
+		$argument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName'), array(), '', FALSE);
 		$argument->expects($this->any())->method('getName')->will($this->returnValue('arg1'));
-		$arguments = $this->getMock('Tx_Extbase_MVC_Controller_Arguments', array('dummy'), array(), '', FALSE);
+		$arguments = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments', array('dummy'), array(), '', FALSE);
 		$arguments->addArgument($argument);
 		$methodTagsValues = array();
 		$methodArgumentsValidatorConjunctions = array();
-		$methodArgumentsValidatorConjunctions['arg1'] = $this->getMock('Tx_Extbase_Validation_Validator_ConjunctionValidator', array(), array(), '', FALSE);
-		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array(), array(), '', FALSE);
+		$methodArgumentsValidatorConjunctions['arg1'] = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator', array(), array(), '', FALSE);
+		$mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service', array(), array(), '', FALSE);
 		$mockReflectionService->expects($this->once())->method('getMethodTagsValues')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodTagsValues));
-		$mockValidatorResolver = $this->getMock('Tx_Extbase_Validation_ValidatorResolver', array(), array(), '', FALSE);
+		$mockValidatorResolver = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver', array(), array(), '', FALSE);
 		$mockValidatorResolver->expects($this->once())->method('buildMethodArgumentsValidatorConjunctions')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodArgumentsValidatorConjunctions));
 		$mockController->injectReflectionService($mockReflectionService);
 		$mockController->injectValidatorResolver($mockValidatorResolver);
@@ -392,21 +394,21 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 * @author Sebastian Kurfürst <sbastian@typo3.org>
 	 */
 	public function initializeActionMethodValidatorsRegistersModelBasedValidators() {
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction'), array(), '', FALSE);
+		$mockController = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController'), array('fooAction'), array(), '', FALSE);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
-		$argument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName', 'getDataType'), array(), '', FALSE);
+		$argument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName', 'getDataType'), array(), '', FALSE);
 		$argument->expects($this->any())->method('getName')->will($this->returnValue('arg1'));
 		$argument->expects($this->any())->method('getDataType')->will($this->returnValue('F3_Foo_Quux'));
-		$arguments = $this->getMock('Tx_Extbase_MVC_Controller_Arguments', array('dummy'), array(), '', FALSE);
+		$arguments = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments', array('dummy'), array(), '', FALSE);
 		$arguments->addArgument($argument);
 		$methodTagsValues = array();
-		$quuxBaseValidatorConjunction = $this->getMock('Tx_Extbase_Validation_Validator_ConjunctionValidator', array(), array(), '', FALSE);
+		$quuxBaseValidatorConjunction = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator', array(), array(), '', FALSE);
 		$methodArgumentsValidatorConjunctions = array();
-		$methodArgumentsValidatorConjunctions['arg1'] = $this->getMock('Tx_Extbase_Validation_Validator_ConjunctionValidator', array(), array(), '', FALSE);
+		$methodArgumentsValidatorConjunctions['arg1'] = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator', array(), array(), '', FALSE);
 		$methodArgumentsValidatorConjunctions['arg1']->expects($this->once())->method('addValidator')->with($quuxBaseValidatorConjunction);
-		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array(), array(), '', FALSE);
+		$mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service', array(), array(), '', FALSE);
 		$mockReflectionService->expects($this->once())->method('getMethodTagsValues')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodTagsValues));
-		$mockValidatorResolver = $this->getMock('Tx_Extbase_Validation_ValidatorResolver', array(), array(), '', FALSE);
+		$mockValidatorResolver = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver', array(), array(), '', FALSE);
 		$mockValidatorResolver->expects($this->once())->method('buildMethodArgumentsValidatorConjunctions')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodArgumentsValidatorConjunctions));
 		$mockValidatorResolver->expects($this->once())->method('getBaseValidatorConjunction')->with('F3_Foo_Quux')->will($this->returnValue($quuxBaseValidatorConjunction));
 		$mockController->injectReflectionService($mockReflectionService);
@@ -422,12 +424,12 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 * @author Sebastian Kurfürst <sbastian@typo3.org>
 	 */
 	public function initializeActionMethodValidatorsDoesNotRegisterModelBasedValidatorsIfDontValidateAnnotationIsSet() {
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction'), array(), '', FALSE);
+		$mockController = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController'), array('fooAction'), array(), '', FALSE);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
-		$argument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName', 'getDataType'), array(), '', FALSE);
+		$argument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName', 'getDataType'), array(), '', FALSE);
 		$argument->expects($this->any())->method('getName')->will($this->returnValue('arg1'));
 		$argument->expects($this->any())->method('getDataType')->will($this->returnValue('F3_Foo_Quux'));
-		$arguments = $this->getMock('Tx_Extbase_MVC_Controller_Arguments', array('dummy'), array(), '', FALSE);
+		$arguments = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments', array('dummy'), array(), '', FALSE);
 		$arguments->addArgument($argument);
 		$methodTagsValues = array(
 			'dontvalidate' => array(
@@ -435,12 +437,12 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 			)
 		);
 		$methodArgumentsValidatorConjunctions = array();
-		$methodArgumentsValidatorConjunctions['arg1'] = $this->getMock('Tx_Extbase_Validation_Validator_ConjunctionValidator', array(), array(), '', FALSE);
-		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array(), array(), '', FALSE);
+		$methodArgumentsValidatorConjunctions['arg1'] = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator', array(), array(), '', FALSE);
+		$mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service', array(), array(), '', FALSE);
 		$mockReflectionService->expects($this->once())->method('getMethodTagsValues')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodTagsValues));
-		$mockValidatorResolver = $this->getMock('Tx_Extbase_Validation_ValidatorResolver', array(), array(), '', FALSE);
+		$mockValidatorResolver = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver', array(), array(), '', FALSE);
 		$mockValidatorResolver->expects($this->once())->method('buildMethodArgumentsValidatorConjunctions')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodArgumentsValidatorConjunctions));
-		$mockValidatorResolver->expects($this->any())->method('getBaseValidatorConjunction')->will($this->throwException(new Exception('This should not be called because the dontvalidate annotation is set.')));
+		$mockValidatorResolver->expects($this->any())->method('getBaseValidatorConjunction')->will($this->throwException(new \Exception('This should not be called because the dontvalidate annotation is set.')));
 		$mockController->injectReflectionService($mockReflectionService);
 		$mockController->injectValidatorResolver($mockValidatorResolver);
 		$mockController->_set('arguments', $arguments);
@@ -454,13 +456,13 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function defaultErrorActionSetsArgumentMappingResultsErrorsInRequest() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request', array(), array(), '', FALSE);
-		$mockFlashMessages = $this->getMock('Tx_Extbase_MVC_Controller_FlashMessages', array(), array(), '', FALSE);
-		$mockError = $this->getMock('Tx_Extbase_Error_Error', array('getMessage'), array(), '', FALSE);
-		$mockArgumentsMappingResults = $this->getMock('Tx_Extbase_Property_MappingResults', array('getErrors', 'getWarnings'), array(), '', FALSE);
+		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array(), array(), '', FALSE);
+		$mockFlashMessages = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FlashMessages', array(), array(), '', FALSE);
+		$mockError = $this->getMock('TYPO3\\CMS\\Extbase\\Error\\Error', array('getMessage'), array(), '', FALSE);
+		$mockArgumentsMappingResults = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\MappingResults', array('getErrors', 'getWarnings'), array(), '', FALSE);
 		$mockArgumentsMappingResults->expects($this->atLeastOnce())->method('getErrors')->will($this->returnValue(array($mockError)));
 		$mockArgumentsMappingResults->expects($this->any())->method('getWarnings')->will($this->returnValue(array()));
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('pushFlashMessage', 'clearCacheOnError'), array(), '', FALSE);
+		$mockController = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController'), array('pushFlashMessage', 'clearCacheOnError'), array(), '', FALSE);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$mockController->_set('request', $mockRequest);
 		$mockController->_set('flashMessageContainer', $mockFlashMessages);
@@ -487,9 +489,9 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 			// HMAC is verified
 			array(TRUE),
 			// HMAC not verified, but objects are directly fetched from persistence layer
-			array(FALSE, FALSE, Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE, Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE),
+			array(FALSE, FALSE, \TYPO3\CMS\Extbase\Mvc\Controller\Argument::ORIGIN_PERSISTENCE, \TYPO3\CMS\Extbase\Mvc\Controller\Argument::ORIGIN_PERSISTENCE),
 			// HMAC not verified, objects new and modified, but dontverifyrequesthash-annotation set
-			array(FALSE, TRUE, Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE, Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE_AND_MODIFIED, array('dontverifyrequesthash' => ''))
+			array(FALSE, TRUE, \TYPO3\CMS\Extbase\Mvc\Controller\Argument::ORIGIN_PERSISTENCE, \TYPO3\CMS\Extbase\Mvc\Controller\Argument::ORIGIN_PERSISTENCE_AND_MODIFIED, array('dontverifyrequesthash' => ''))
 		);
 	}
 
@@ -504,15 +506,15 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	 * @param array $methodTagsValues
 	 */
 	public function checkRequestHashDoesNotThrowExceptionInNormalOperations($hmacVerified, $reflectionServiceNeedsInitialization = FALSE, $argument1Origin = 3, $argument2Origin = 3, array $methodTagsValues = array()) {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request', array('isHmacVerified'), array(), '', FALSE);
+		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request', array('isHmacVerified'), array(), '', FALSE);
 		$mockRequest->expects($this->once())->method('isHmacVerified')->will($this->returnValue($hmacVerified));
-		$argument1 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getOrigin'), array(), '', FALSE);
+		$argument1 = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getOrigin'), array(), '', FALSE);
 		$argument1->expects($this->any())->method('getOrigin')->will($this->returnValue($argument1Origin));
-		$argument2 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getOrigin'), array(), '', FALSE);
+		$argument2 = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getOrigin'), array(), '', FALSE);
 		$argument2->expects($this->any())->method('getOrigin')->will($this->returnValue($argument2Origin));
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('dummy'), array(), '', FALSE);
+		$mockController = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController'), array('dummy'), array(), '', FALSE);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
-		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array('getMethodTagsValues'), array(), '', FALSE);
+		$mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service', array('getMethodTagsValues'), array(), '', FALSE);
 		if ($reflectionServiceNeedsInitialization) {
 			// Somehow this is needed, else I get "Mocked method does not exist."
 			$mockReflectionService->expects($this->any())->method('getMethodTagsValues')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodTagsValues));
@@ -526,23 +528,23 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception_InvalidOrNoRequestHash
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidOrNoRequestHashException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function checkRequestHashThrowsExceptionIfNeeded() {
 		$hmacVerified = FALSE;
-		$argument1Origin = Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE_AND_MODIFIED;
-		$argument2Origin = Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE;
+		$argument1Origin = \TYPO3\CMS\Extbase\Mvc\Controller\Argument::ORIGIN_PERSISTENCE_AND_MODIFIED;
+		$argument2Origin = \TYPO3\CMS\Extbase\Mvc\Controller\Argument::ORIGIN_PERSISTENCE;
 		$methodTagsValues = array();
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request', array('isHmacVerified'), array(), '', FALSE);
+		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request', array('isHmacVerified'), array(), '', FALSE);
 		$mockRequest->expects($this->once())->method('isHmacVerified')->will($this->returnValue($hmacVerified));
-		$argument1 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getOrigin'), array(), '', FALSE);
+		$argument1 = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getOrigin'), array(), '', FALSE);
 		$argument1->expects($this->any())->method('getOrigin')->will($this->returnValue($argument1Origin));
-		$argument2 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getOrigin'), array(), '', FALSE);
+		$argument2 = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getOrigin'), array(), '', FALSE);
 		$argument2->expects($this->any())->method('getOrigin')->will($this->returnValue($argument2Origin));
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('dummy'), array(), '', FALSE);
+		$mockController = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController'), array('dummy'), array(), '', FALSE);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
-		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array('getMethodTagsValues'), array(), '', FALSE);
+		$mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service', array('getMethodTagsValues'), array(), '', FALSE);
 		$mockReflectionService->expects($this->any())->method('getMethodTagsValues')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodTagsValues));
 		$mockController->_set('arguments', array($argument1, $argument2));
 		$mockController->_set('request', $mockRequest);
@@ -554,14 +556,15 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ActionControllerTest extends Tx_Extba
 	/**
 	 * Helper which enables the deprecated property mapper in the ActionController class.
 	 *
-	 * @param Tx_Extbase_MVC_Controller_ActionController $actionController
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ActionController $actionController
 	 */
-	protected function enableDeprecatedPropertyMapperInController(Tx_Extbase_MVC_Controller_ActionController $actionController) {
-		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+	protected function enableDeprecatedPropertyMapperInController(\TYPO3\CMS\Extbase\Mvc\Controller\ActionController $actionController) {
+		$mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		$mockConfigurationManager->expects($this->any())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(FALSE));
 		$actionController->injectConfigurationManager($mockConfigurationManager);
 	}
 
 }
+
 
 ?>

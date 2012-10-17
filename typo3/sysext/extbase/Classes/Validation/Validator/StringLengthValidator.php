@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +34,7 @@
  * @version $Id$
  * @scope prototype
  */
-class Tx_Extbase_Validation_Validator_StringLengthValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class StringLengthValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
 	 * Returns TRUE, if the given property ($value) is a valid string and its length
@@ -47,10 +49,10 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator extends Tx_Extbase_V
 	public function isValid($value) {
 		$this->errors = array();
 		if ((isset($this->options['minimum']) && isset($this->options['maximum'])) && $this->options['maximum'] < $this->options['minimum']) {
-			throw new Tx_Extbase_Validation_Exception_InvalidValidationOptions('The \'maximum\' is shorter than the \'minimum\' in the StringLengthValidator.', 1238107096);
+			throw new \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException('The \'maximum\' is shorter than the \'minimum\' in the StringLengthValidator.', 1238107096);
 		}
 		if (is_object($value) && !method_exists($value, '__toString')) {
-			throw new Tx_Extbase_Validation_Exception_InvalidSubject('The given object could not be converted to a string.', 1238110957);
+			throw new \TYPO3\CMS\Extbase\Validation\Exception\InvalidSubjectException('The given object could not be converted to a string.', 1238110957);
 		}
 		// TODO Use t3lib_cs::strlen() instead; How do we get the charset?
 		$stringLength = strlen($value);
@@ -74,5 +76,6 @@ class Tx_Extbase_Validation_Validator_StringLengthValidator extends Tx_Extbase_V
 	}
 
 }
+
 
 ?>

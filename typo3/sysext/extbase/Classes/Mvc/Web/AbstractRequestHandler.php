@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Web;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,65 +29,65 @@
 /**
  * A request handler which can handle web requests.
  */
-abstract class Tx_Extbase_MVC_Web_AbstractRequestHandler implements Tx_Extbase_MVC_RequestHandlerInterface {
+abstract class AbstractRequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Extbase_MVC_Dispatcher
+	 * @var \TYPO3\CMS\Extbase\Mvc\Dispatcher
 	 */
 	protected $dispatcher;
 
 	/**
-	 * @var Tx_Extbase_MVC_Web_RequestBuilder
+	 * @var \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder
 	 */
 	protected $requestBuilder;
 
 	/**
-	 * @var Tx_Extbase_MVC_Controller_FlashMessages
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages
 	 * @deprecated since Extbase 1.1; will be removed in Extbase 6.0
 	 */
 	protected $flashMessages;
 
 	/**
-	 * @var Tx_Extbase_MVC_Controller_FlashMessages
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages
 	 */
 	protected $flashMessageContainer;
 
 	/**
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
 	/**
-	 * @param Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages $flashMessageContainer
 	 * @return void
 	 */
-	public function injectFlashMessageContainer(Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer) {
+	public function injectFlashMessageContainer(\TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages $flashMessageContainer) {
 		$this->flashMessageContainer = $flashMessageContainer;
 		// @deprecated since Extbase 1.1; will be removed in Extbase 6.0
 		$this->flashMessages = $flashMessageContainer;
 	}
 
 	/**
-	 * @param Tx_Extbase_MVC_Dispatcher $dispatcher
+	 * @param \TYPO3\CMS\Extbase\Mvc\Dispatcher $dispatcher
 	 * @return void
 	 */
-	public function injectDispatcher(Tx_Extbase_MVC_Dispatcher $dispatcher) {
+	public function injectDispatcher(\TYPO3\CMS\Extbase\Mvc\Dispatcher $dispatcher) {
 		$this->dispatcher = $dispatcher;
 	}
 
 	/**
-	 * @param Tx_Extbase_MVC_Web_RequestBuilder $requestBuilder
+	 * @param \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder $requestBuilder
 	 * @return void
 	 */
-	public function injectRequestBuilder(Tx_Extbase_MVC_Web_RequestBuilder $requestBuilder) {
+	public function injectRequestBuilder(\TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder $requestBuilder) {
 		$this->requestBuilder = $requestBuilder;
 	}
 
@@ -109,5 +111,6 @@ abstract class Tx_Extbase_MVC_Web_AbstractRequestHandler implements Tx_Extbase_M
 	}
 
 }
+
 
 ?>

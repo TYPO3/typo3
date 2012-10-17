@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +34,7 @@
  * @version $Id$
  * @scope prototype
  */
-class Tx_Extbase_Persistence_QOM_BindVariableValue extends Tx_Extbase_Persistence_QOM_StaticOperand implements Tx_Extbase_Persistence_QOM_BindVariableValueInterface {
+class BindVariableValue extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\StaticOperand implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\BindVariableValueInterface {
 
 	/**
 	 * @var string
@@ -68,5 +70,6 @@ class Tx_Extbase_Persistence_QOM_BindVariableValue extends Tx_Extbase_Persistenc
 	}
 
 }
+
 
 ?>

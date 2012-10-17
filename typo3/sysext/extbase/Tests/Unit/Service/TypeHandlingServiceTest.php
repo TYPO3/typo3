@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,15 +29,15 @@
  * @package Extbase
  * @subpackage extbase
  */
-class Tx_Extbase_Tests_Unit_Service_TypeHandlingServiceTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class TypeHandlingServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Service_TypeHandlingService
+	 * @var \TYPO3\CMS\Extbase\Service\TypeHandlingService
 	 */
 	protected $typeHandlingService;
 
 	public function setUp() {
-		$this->typeHandlingService = new Tx_Extbase_Service_TypeHandlingService();
+		$this->typeHandlingService = new \TYPO3\CMS\Extbase\Service\TypeHandlingService();
 	}
 
 	/**
@@ -168,5 +170,6 @@ class Tx_Extbase_Tests_Unit_Service_TypeHandlingServiceTest extends Tx_Extbase_T
 	}
 
 }
+
 
 ?>

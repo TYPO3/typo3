@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,20 +30,20 @@
  * Dispatches requests to the controller which was specified by the request and
  * returns the response the controller generated.
  */
-class Tx_Extbase_MVC_Dispatcher implements t3lib_Singleton {
+class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface A reference to the object manager
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface A reference to the object manager
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Extbase_Reflection_Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\Service
 	 */
 	protected $reflectionService;
 
 	/**
-	 * @var Tx_Extbase_SignalSlot_Dispatcher
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
 	 */
 	protected $signalSlotDispatcher;
 
@@ -53,48 +55,48 @@ class Tx_Extbase_MVC_Dispatcher implements t3lib_Singleton {
 	/**
 	 * Constructs the global dispatcher
 	 *
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager A reference to the object manager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager A reference to the object manager
 	 */
-	public function __construct(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
 	/**
 	 * Injects the Reflection Service
 	 *
-	 * @param Tx_Extbase_Reflection_Service $reflectionService
+	 * @param \TYPO3\CMS\Extbase\Reflection\Service $reflectionService
 	 * @return void
 	 */
-	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
 
 	/**
 	 * Injects the SignalSlotDispatcher Service
 	 *
-	 * @param Tx_Extbase_SignalSlot_Dispatcher $signalSlotDispatcher
+	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
 	 */
-	public function injectSignalSlotDispatcher(Tx_Extbase_SignalSlot_Dispatcher $signalSlotDispatcher) {
+	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
 		$this->signalSlotDispatcher = $signalSlotDispatcher;
 	}
 
 	/**
 	 * Dispatches a request to a controller and initializes the security framework.
 	 *
-	 * @param Tx_Extbase_MVC_RequestInterface $request The request to dispatch
-	 * @param Tx_Extbase_MVC_ResponseInterface $response The response, to be modified by the controller
+	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request to dispatch
+	 * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, to be modified by the controller
 	 * @return void
 	 */
-	public function dispatch(Tx_Extbase_MVC_RequestInterface $request, Tx_Extbase_MVC_ResponseInterface $response) {
+	public function dispatch(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
 		$dispatchLoopCount = 0;
 		while (!$request->isDispatched()) {
 			if ($dispatchLoopCount++ > 99) {
-				throw new Tx_Extbase_MVC_Exception_InfiniteLoop(('Could not ultimately dispatch the request after ' . $dispatchLoopCount) . ' iterations. Most probably, a @dontvalidate annotation is missing on re-displaying a form with validation errors.', 1217839467);
+				throw new \TYPO3\CMS\Extbase\Mvc\Exception\InfiniteLoopException(('Could not ultimately dispatch the request after ' . $dispatchLoopCount) . ' iterations. Most probably, a @dontvalidate annotation is missing on re-displaying a form with validation errors.', 1217839467);
 			}
 			$controller = $this->resolveController($request);
 			try {
 				$controller->processRequest($request, $response);
-			} catch (Tx_Extbase_MVC_Exception_StopAction $ignoredException) {
+			} catch (\TYPO3\CMS\Extbase\Mvc\Exception\StopActionException $ignoredException) {
 
 			}
 		}
@@ -105,20 +107,21 @@ class Tx_Extbase_MVC_Dispatcher implements t3lib_Singleton {
 	 * Finds and instanciates a controller that matches the current request.
 	 * If no controller can be found, an instance of NotFoundControllerInterface is returned.
 	 *
-	 * @param Tx_Extbase_MVC_RequestInterface $request The request to dispatch
-	 * @return Tx_Extbase_MVC_Controller_ControllerInterface
+	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request to dispatch
+	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	protected function resolveController(Tx_Extbase_MVC_RequestInterface $request) {
+	protected function resolveController(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request) {
 		$controllerObjectName = $request->getControllerObjectName();
 		$controller = $this->objectManager->get($controllerObjectName);
-		if (!$controller instanceof Tx_Extbase_MVC_Controller_ControllerInterface) {
-			throw new Tx_Extbase_MVC_Exception_InvalidController(('Invalid controller "' . $request->getControllerObjectName()) . '". The controller must implement the Tx_Extbase_MVC_Controller_ControllerInterface.', 1202921619);
+		if (!$controller instanceof \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface) {
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException(('Invalid controller "' . $request->getControllerObjectName()) . '". The controller must implement the TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerInterface.', 1202921619);
 		}
 		return $controller;
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @entity
  * @api
  */
-class Tx_Extbase_Domain_Model_Category extends Tx_Extbase_DomainObject_AbstractEntity {
+class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * @var string
@@ -70,7 +72,7 @@ class Tx_Extbase_Domain_Model_Category extends Tx_Extbase_DomainObject_AbstractE
 	 * @api
 	 */
 	protected function initStorageObjects() {
-		$this->items = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->items = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 	}
 
 	/**
@@ -122,7 +124,7 @@ class Tx_Extbase_Domain_Model_Category extends Tx_Extbase_DomainObject_AbstractE
 	 * @api
 	 */
 	public function getParent() {
-		if ($this->parent instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
+		if ($this->parent instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
 			$this->parent->_loadRealInstance();
 		}
 		return $this->parent;
@@ -131,11 +133,11 @@ class Tx_Extbase_Domain_Model_Category extends Tx_Extbase_DomainObject_AbstractE
 	/**
 	 * Sets the parent category.
 	 *
-	 * @param Tx_Extbase_Domain_Model_Category $parent the parent category
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\Category $parent the parent category
 	 * @return void
 	 * @api
 	 */
-	public function setParent(Tx_Extbase_Domain_Model_Category $parent) {
+	public function setParent(\TYPO3\CMS\Extbase\Domain\Model\Category $parent) {
 		$this->parent = $parent;
 	}
 
@@ -156,32 +158,33 @@ class Tx_Extbase_Domain_Model_Category extends Tx_Extbase_DomainObject_AbstractE
 	 * @return void
 	 * @api
 	 */
-	public function setItems(Tx_Extbase_Persistence_ObjectStorage $items) {
+	public function setItems(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $items) {
 		$this->items = $items;
 	}
 
 	/**
 	 * Adds a item to the items property
 	 *
-	 * @param Tx_Extbase_DomainObject_AbstractEntity $item
+	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $item
 	 * @return void
 	 * @api
 	 */
-	public function addItem(Tx_Extbase_DomainObject_AbstractEntity $item) {
+	public function addItem(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity $item) {
 		$this->items->attach($item);
 	}
 
 	/**
 	 * Removes a item of the items property
 	 *
-	 * @param Tx_Extbase_DomainObject_AbstractEntity $item
+	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $item
 	 * @return void
 	 * @api
 	 */
-	public function removeItem(Tx_Extbase_DomainObject_AbstractEntity $item) {
+	public function removeItem(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity $item) {
 		$this->items->detach($item);
 	}
 
 }
+
 
 ?>

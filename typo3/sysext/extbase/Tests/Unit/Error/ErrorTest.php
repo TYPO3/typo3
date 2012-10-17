@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Error;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -23,7 +25,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Tests_Unit_Error_ErrorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class ErrorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
@@ -31,7 +33,7 @@ class Tx_Extbase_Tests_Unit_Error_ErrorTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 */
 	public function theConstructorSetsTheErrorMessageCorrectly() {
 		$errorMessage = 'The message';
-		$error = new Tx_Extbase_Error_Error($errorMessage, 0);
+		$error = new \TYPO3\CMS\Extbase\Error\Error($errorMessage, 0);
 		$this->assertEquals($errorMessage, $error->getMessage());
 	}
 
@@ -41,10 +43,11 @@ class Tx_Extbase_Tests_Unit_Error_ErrorTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 */
 	public function theConstructorSetsTheErrorCodeCorrectly() {
 		$errorCode = 123456789;
-		$error = new Tx_Extbase_Error_Error('', $errorCode);
+		$error = new \TYPO3\CMS\Extbase\Error\Error('', $errorCode);
 		$this->assertEquals($errorCode, $error->getCode());
 	}
 
 }
+
 
 ?>

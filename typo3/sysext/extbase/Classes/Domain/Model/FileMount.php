@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +34,7 @@
  * @entity
  * @api
  */
-class Tx_Extbase_Domain_Model_FileMount extends Tx_Extbase_DomainObject_AbstractEntity {
+class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * Title of the file mount.
@@ -119,5 +121,6 @@ class Tx_Extbase_Domain_Model_FileMount extends Tx_Extbase_DomainObject_Abstract
 	}
 
 }
+
 
 ?>

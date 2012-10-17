@@ -21,19 +21,21 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once t3lib_extMgm::extPath('extbase') . 'Tests/Functional/Domain/Model/Fixture/FileContext.php';
+require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Tests/Functional/Domain/Model/Fixture/FileContext.php';
+namespace TYPO3\CMS\Extbase\Tests\Functional\Domain\Model;
+
 /**
  * Test case to check functionality type converters on FAL domain objects.
  */
-class Tx_Extbase_Tests_Functional_Domain_Model_FileContextTest extends Tx_Extbase_Tests_Functional_BaseTestCase {
+class FileContextTest extends Tx_Extbase_Tests_Functional_BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Property_PropertyMapper
+	 * @var \TYPO3\CMS\Extbase\Property\PropertyMapper
 	 */
 	protected $propertyMapper;
 
 	/**
-	 * @var Tx_Extbase_MVC_Controller_MvcPropertyMappingConfiguration
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration
 	 */
 	protected $propertyMapperConfiguration;
 
@@ -46,10 +48,10 @@ class Tx_Extbase_Tests_Functional_Domain_Model_FileContextTest extends Tx_Extbas
 		$this->importDataSet(dirname(__FILE__) . '/Fixture/data_sys_file.xml');
 		$this->importDataSet(dirname(__FILE__) . '/Fixture/data_sys_file_reference.xml');
 		$this->importDataSet(dirname(__FILE__) . '/Fixture/data_sys_file_collection.xml');
-		/** @var $configurationBuilder Tx_Extbase_Property_PropertyMappingConfigurationBuilder */
-		$configurationBuilder = $this->objectManager->get('Tx_Extbase_Property_PropertyMappingConfigurationBuilder');
-		$this->propertyMapperConfiguration = $configurationBuilder->build('Tx_Extbase_MVC_Controller_MvcPropertyMappingConfiguration');
-		$this->propertyMapper = $this->objectManager->get('Tx_Extbase_Property_PropertyMapper');
+		/** @var $configurationBuilder \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder */
+		$configurationBuilder = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfigurationBuilder');
+		$this->propertyMapperConfiguration = $configurationBuilder->build('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\MvcPropertyMappingConfiguration');
+		$this->propertyMapper = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Property\\PropertyMapper');
 	}
 
 	/**
@@ -68,10 +70,10 @@ class Tx_Extbase_Tests_Functional_Domain_Model_FileContextTest extends Tx_Extbas
 		$data = array(
 			'file' => 1
 		);
-		/** @var $fixture Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext */
-		$fixture = $this->propertyMapper->convert($data, 'Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext', $this->propertyMapperConfiguration);
-		$this->assertInstanceOf('Tx_Extbase_Domain_Model_File', $fixture->getFile());
-		$this->assertInstanceOf('t3lib_file_File', $fixture->getFile()->getObject());
+		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
+		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\File', $fixture->getFile());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\File', $fixture->getFile()->getObject());
 		$this->assertEquals(1, $fixture->getFile()->getObject()->getUid());
 	}
 
@@ -85,9 +87,9 @@ class Tx_Extbase_Tests_Functional_Domain_Model_FileContextTest extends Tx_Extbas
 				2
 			)
 		);
-		/** @var $fixture Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext */
-		$fixture = $this->propertyMapper->convert($data, 'Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext', $this->propertyMapperConfiguration);
-		$this->assertInstanceOf('Tx_Extbase_Persistence_ObjectStorage', $fixture->getFiles());
+		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
+		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage', $fixture->getFiles());
 		$this->assertEquals(2, $fixture->getFiles()->count());
 		$fixture->getFiles()->rewind();
 		$this->assertEquals(1, $fixture->getFiles()->current()->getObject()->getUid());
@@ -102,11 +104,11 @@ class Tx_Extbase_Tests_Functional_Domain_Model_FileContextTest extends Tx_Extbas
 		$data = array(
 			'fileReference' => 1
 		);
-		/** @var $fixture Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext */
-		$fixture = $this->propertyMapper->convert($data, 'Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext', $this->propertyMapperConfiguration);
-		$this->assertInstanceOf('Tx_Extbase_Domain_Model_FileReference', $fixture->getFileReference());
-		$this->assertInstanceOf('t3lib_file_FileReference', $fixture->getFileReference()->getObject());
-		$this->assertInstanceOf('t3lib_file_File', $fixture->getFileReference()->getObject()->getOriginalFile());
+		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
+		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\FileReference', $fixture->getFileReference());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\FileReference', $fixture->getFileReference()->getObject());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\File', $fixture->getFileReference()->getObject()->getOriginalFile());
 		$this->assertEquals(1, $fixture->getFileReference()->getObject()->getOriginalFile()->getUid());
 	}
 
@@ -120,17 +122,17 @@ class Tx_Extbase_Tests_Functional_Domain_Model_FileContextTest extends Tx_Extbas
 				2
 			)
 		);
-		/** @var $fixture Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext */
-		$fixture = $this->propertyMapper->convert($data, 'Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext', $this->propertyMapperConfiguration);
-		$this->assertInstanceOf('Tx_Extbase_Persistence_ObjectStorage', $fixture->getFileReferences());
+		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
+		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage', $fixture->getFileReferences());
 		$this->assertEquals(2, $fixture->getFileReferences()->count());
 		$fixture->getFileReferences()->rewind();
-		$this->assertInstanceOf('t3lib_file_FileReference', $fixture->getFileReferences()->current()->getObject());
-		$this->assertInstanceOf('t3lib_file_File', $fixture->getFileReferences()->current()->getObject()->getOriginalFile());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\FileReference', $fixture->getFileReferences()->current()->getObject());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\File', $fixture->getFileReferences()->current()->getObject()->getOriginalFile());
 		$this->assertEquals(1, $fixture->getFileReferences()->current()->getObject()->getOriginalFile()->getUid());
 		$fixture->getFileReferences()->next();
-		$this->assertInstanceOf('t3lib_file_FileReference', $fixture->getFileReferences()->current()->getObject());
-		$this->assertInstanceOf('t3lib_file_File', $fixture->getFileReferences()->current()->getObject()->getOriginalFile());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\FileReference', $fixture->getFileReferences()->current()->getObject());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\File', $fixture->getFileReferences()->current()->getObject()->getOriginalFile());
 		$this->assertEquals(2, $fixture->getFileReferences()->current()->getObject()->getOriginalFile()->getUid());
 	}
 
@@ -145,10 +147,10 @@ class Tx_Extbase_Tests_Functional_Domain_Model_FileContextTest extends Tx_Extbas
 		$data = array(
 			'folder' => '9999:/'
 		);
-		/** @var $fixture Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext */
-		$fixture = $this->propertyMapper->convert($data, 'Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext', $this->propertyMapperConfiguration);
-		$this->assertInstanceOf('Tx_Extbase_Domain_Model_Folder', $fixture->getFolder());
-		$this->assertInstanceOf('t3lib_file_Folder', $fixture->getFolder()->getObject());
+		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
+		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\Folder', $fixture->getFolder());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\Folder', $fixture->getFolder()->getObject());
 		$this->assertEquals('/', $fixture->getFolder()->getObject()->getIdentifier());
 	}
 
@@ -166,17 +168,17 @@ class Tx_Extbase_Tests_Functional_Domain_Model_FileContextTest extends Tx_Extbas
 				'9999:/'
 			)
 		);
-		/** @var $fixture Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext */
-		$fixture = $this->propertyMapper->convert($data, 'Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext', $this->propertyMapperConfiguration);
-		$this->assertInstanceOf('Tx_Extbase_Persistence_ObjectStorage', $fixture->getFolders());
+		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
+		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage', $fixture->getFolders());
 		$this->assertEquals(2, $fixture->getFolders()->count());
 		$fixture->getFolders()->rewind();
-		$this->assertInstanceOf('Tx_Extbase_Domain_Model_Folder', $fixture->getFolders()->current());
-		$this->assertInstanceOf('t3lib_file_Folder', $fixture->getFolders()->current()->getObject());
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\Folder', $fixture->getFolders()->current());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\Folder', $fixture->getFolders()->current()->getObject());
 		$this->assertEquals('/', $fixture->getFolders()->current()->getObject()->getIdentifier());
 		$fixture->getFolders()->next();
-		$this->assertInstanceOf('Tx_Extbase_Domain_Model_Folder', $fixture->getFolders()->current());
-		$this->assertInstanceOf('t3lib_file_Folder', $fixture->getFolders()->current()->getObject());
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\Folder', $fixture->getFolders()->current());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\Folder', $fixture->getFolders()->current()->getObject());
 		$this->assertEquals('/', $fixture->getFolders()->current()->getObject()->getIdentifier());
 	}
 
@@ -187,9 +189,9 @@ class Tx_Extbase_Tests_Functional_Domain_Model_FileContextTest extends Tx_Extbas
 		$data = array(
 			'staticFileCollection' => 2
 		);
-		/** @var $fixture Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext */
-		$fixture = $this->propertyMapper->convert($data, 'Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext', $this->propertyMapperConfiguration);
-		$this->assertInstanceOf('Tx_Extbase_Domain_Model_StaticFileCollection', $fixture->getStaticFileCollection());
+		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
+		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\StaticFileCollection', $fixture->getStaticFileCollection());
 		$this->assertEquals(2, $fixture->getStaticFileCollection()->getObject()->getUid());
 	}
 
@@ -202,11 +204,11 @@ class Tx_Extbase_Tests_Functional_Domain_Model_FileContextTest extends Tx_Extbas
 				2
 			)
 		);
-		/** @var $fixture Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext */
-		$fixture = $this->propertyMapper->convert($data, 'Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext', $this->propertyMapperConfiguration);
-		$this->assertInstanceOf('Tx_Extbase_Persistence_ObjectStorage', $fixture->getStaticFileCollections());
+		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
+		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage', $fixture->getStaticFileCollections());
 		$this->assertEquals(1, $fixture->getStaticFileCollections()->count());
-		$this->assertInstanceOf('Tx_Extbase_Domain_Model_StaticFileCollection', $fixture->getStaticFileCollections()->current());
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\StaticFileCollection', $fixture->getStaticFileCollections()->current());
 		$this->assertEquals(2, $fixture->getStaticFileCollections()->current()->getObject()->getUid());
 	}
 
@@ -217,9 +219,9 @@ class Tx_Extbase_Tests_Functional_Domain_Model_FileContextTest extends Tx_Extbas
 		$data = array(
 			'folderBasedFileCollection' => 1
 		);
-		/** @var $fixture Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext */
-		$fixture = $this->propertyMapper->convert($data, 'Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext', $this->propertyMapperConfiguration);
-		$this->assertInstanceOf('Tx_Extbase_Domain_Model_FolderBasedFileCollection', $fixture->getFolderBasedFileCollection());
+		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
+		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\FolderBasedFileCollection', $fixture->getFolderBasedFileCollection());
 		$this->assertEquals(1, $fixture->getFolderBasedFileCollection()->getObject()->getUid());
 	}
 
@@ -232,14 +234,15 @@ class Tx_Extbase_Tests_Functional_Domain_Model_FileContextTest extends Tx_Extbas
 				1
 			)
 		);
-		/** @var $fixture Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext */
-		$fixture = $this->propertyMapper->convert($data, 'Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext', $this->propertyMapperConfiguration);
-		$this->assertInstanceOf('Tx_Extbase_Persistence_ObjectStorage', $fixture->getFolderBasedFileCollections());
+		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
+		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage', $fixture->getFolderBasedFileCollections());
 		$this->assertEquals(1, $fixture->getFolderBasedFileCollections()->count());
-		$this->assertInstanceOf('Tx_Extbase_Domain_Model_FolderBasedFileCollection', $fixture->getFolderBasedFileCollections()->current());
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\FolderBasedFileCollection', $fixture->getFolderBasedFileCollections()->current());
 		$this->assertEquals(1, $fixture->getFolderBasedFileCollections()->current()->getObject()->getUid());
 	}
 
 }
+
 
 ?>

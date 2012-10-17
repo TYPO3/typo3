@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,9 +32,10 @@
  * @package Extbase
  * @version $ID: $
  */
-class Tx_Extbase_Exception extends Exception {
+class Exception extends \Exception {
 
 
 }
+
 
 ?>

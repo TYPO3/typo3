@@ -1,12 +1,11 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence;
+
 /***************************************************************
  *  Copyright notice
  *
  *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
  *  All rights reserved
- *
- *  This class is a backport of the corresponding class of FLOW3.
- *  All credits go to the v5 team.
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -25,14 +24,30 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * An SQL exception
+ * An interface how to monitor changes on an object and its properties. All domain objects which should be persisted need to implement the below interface.
  *
+ * @see Tx_Extbase_DomainObject_AbstractEntity
+ * @see Tx_Extbase_DomainObject_AbstractValueObject
  * @package Extbase
- * @subpackage Persistence\Storage\Exception
+ * @subpackage Persistence
  * @version $ID:$
  */
-class Tx_Extbase_Persistence_Storage_Exception_SqlError extends Tx_Extbase_Persistence_Exception {
+interface ObjectMonitoringInterface
+{
+	/**
+	 * Register an object's clean state, e.g. after it has been reconstituted
+	 * from the database
+	 *
+	 * @return void
+	 */
+	public function _memorizeCleanState();
 
+	/**
+	 * Returns TRUE if the properties were modified after reconstitution
+	 *
+	 * @return boolean
+	 */
+	public function _isDirty();
 
 }
 

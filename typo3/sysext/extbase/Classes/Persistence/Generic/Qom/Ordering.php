@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,10 +34,10 @@
  * @subpackage Persistence\QOM
  * @version $Id$
  */
-class Tx_Extbase_Persistence_QOM_Ordering implements Tx_Extbase_Persistence_QOM_OrderingInterface {
+class Ordering implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrderingInterface {
 
 	/**
-	 * @var Tx_Extbase_Persistence_QOM_DynamicOperandInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface
 	 */
 	protected $operand;
 
@@ -47,10 +49,10 @@ class Tx_Extbase_Persistence_QOM_Ordering implements Tx_Extbase_Persistence_QOM_
 	/**
 	 * Constructs the Ordering instance
 	 *
-	 * @param Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand The operand; non-null
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand The operand; non-null
 	 * @param string either Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING or Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING
 	 */
-	public function __construct(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand, $order = Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING) {
+	public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand, $order = \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING) {
 		$this->operand = $operand;
 		$this->order = $order;
 	}
@@ -58,7 +60,7 @@ class Tx_Extbase_Persistence_QOM_Ordering implements Tx_Extbase_Persistence_QOM_
 	/**
 	 * The operand by which to order.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_DynamicOperandInterface the operand; non-null
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface the operand; non-null
 	 */
 	public function getOperand() {
 		return $this->operand;
@@ -74,5 +76,6 @@ class Tx_Extbase_Persistence_QOM_Ordering implements Tx_Extbase_Persistence_QOM_
 	}
 
 }
+
 
 ?>

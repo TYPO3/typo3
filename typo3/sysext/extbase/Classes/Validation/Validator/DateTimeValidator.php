@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @subpackage Validation\Validator
  * @version $Id$
  */
-class Tx_Extbase_Validation_Validator_DateTimeValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class DateTimeValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
 	 * Checks if the given value is a valid DateTime object.
@@ -43,7 +45,7 @@ class Tx_Extbase_Validation_Validator_DateTimeValidator extends Tx_Extbase_Valid
 	 */
 	public function isValid($value) {
 		$this->errors = array();
-		if ($value instanceof DateTime) {
+		if ($value instanceof \DateTime) {
 			return TRUE;
 		}
 		$this->addError('The given subject was not a valid DateTime. Got: "%1$d"', 1238087674, array(gettype($value)));
@@ -51,5 +53,6 @@ class Tx_Extbase_Validation_Validator_DateTimeValidator extends Tx_Extbase_Valid
 	}
 
 }
+
 
 ?>

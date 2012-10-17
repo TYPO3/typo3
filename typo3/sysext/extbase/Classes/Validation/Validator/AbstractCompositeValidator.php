@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +35,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-abstract class Tx_Extbase_Validation_Validator_AbstractCompositeValidator implements Tx_Extbase_Validation_Validator_ValidatorInterface, Countable {
+abstract class AbstractCompositeValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface, \Countable {
 
 	/**
 	 * @var array
@@ -41,7 +43,7 @@ abstract class Tx_Extbase_Validation_Validator_AbstractCompositeValidator implem
 	protected $options = array();
 
 	/**
-	 * @var Tx_Extbase_Persistence_ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
 	 */
 	protected $validators;
 
@@ -54,7 +56,7 @@ abstract class Tx_Extbase_Validation_Validator_AbstractCompositeValidator implem
 	 * Constructs the validator conjunction
 	 */
 	public function __construct() {
-		$this->validators = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->validators = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 	}
 
 	/**
@@ -81,21 +83,21 @@ abstract class Tx_Extbase_Validation_Validator_AbstractCompositeValidator implem
 	/**
 	 * Adds a new validator to the conjunction.
 	 *
-	 * @param Tx_Extbase_Validation_Validator_ValidatorInterface $validator The validator that should be added
+	 * @param \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator The validator that should be added
 	 * @return void
 	 */
-	public function addValidator(Tx_Extbase_Validation_Validator_ValidatorInterface $validator) {
+	public function addValidator(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator) {
 		$this->validators->attach($validator);
 	}
 
 	/**
 	 * Removes the specified validator.
 	 *
-	 * @param Tx_Extbase_Validation_Validator_ValidatorInterface $validator The validator to remove
+	 * @param \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator The validator to remove
 	 */
-	public function removeValidator(Tx_Extbase_Validation_Validator_ValidatorInterface $validator) {
+	public function removeValidator(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator) {
 		if (!$this->validators->contains($validator)) {
-			throw new Tx_Extbase_Validation_Exception_NoSuchValidator('Cannot remove validator because its not in the conjunction.', 1207020177);
+			throw new \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException('Cannot remove validator because its not in the conjunction.', 1207020177);
 		}
 		$this->validators->detach($validator);
 	}
@@ -110,5 +112,6 @@ abstract class Tx_Extbase_Validation_Validator_AbstractCompositeValidator implem
 	}
 
 }
+
 
 ?>

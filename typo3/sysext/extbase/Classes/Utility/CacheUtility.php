@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @subpackage Utility
  * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0. Please use Tx_Extbase_Service_CacheService instead
  */
-class Tx_Extbase_Utility_Cache {
+class CacheUtility {
 
 	/**
 	 * Clears the page cache
@@ -40,12 +42,13 @@ class Tx_Extbase_Utility_Cache {
 	 * @return void
 	 */
 	static public function clearPageCache($pageIdsToClear = NULL) {
-		t3lib_div::logDeprecatedFunction();
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		$cacheService = $objectManager->get('Tx_Extbase_Service_CacheService');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$cacheService = $objectManager->get('TYPO3\\CMS\\Extbase\\Service\\CacheService');
 		$cacheService->clearPageCache($pageIdsToClear);
 	}
 
 }
+
 
 ?>

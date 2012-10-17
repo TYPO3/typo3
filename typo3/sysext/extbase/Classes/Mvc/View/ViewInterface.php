@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\View;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,15 +34,15 @@
  * @version $ID:$
  * @api
  */
-interface Tx_Extbase_MVC_View_ViewInterface
+interface ViewInterface
 {
 	/**
 	 * Sets the current controller context
 	 *
-	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
 	 * @return void
 	 */
-	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext);
+	public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext);
 
 	/**
 	 * Add a variable to the view data collection.
@@ -48,7 +50,7 @@ interface Tx_Extbase_MVC_View_ViewInterface
 	 *
 	 * @param string $key Key of variable
 	 * @param mixed $value Value of object
-	 * @return Tx_Extbase_MVC_View_ViewInterface an instance of $this, to enable chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\View\ViewInterface an instance of $this, to enable chaining
 	 * @api
 	 */
 	public function assign($key, $value);
@@ -57,7 +59,7 @@ interface Tx_Extbase_MVC_View_ViewInterface
 	 * Add multiple variables to the view data collection
 	 *
 	 * @param array $values array in the format array(key1 => value1, key2 => value2)
-	 * @return Tx_Extbase_MVC_View_ViewInterface an instance of $this, to enable chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\View\ViewInterface an instance of $this, to enable chaining
 	 * @api
 	 */
 	public function assignMultiple(array $values);
@@ -65,11 +67,11 @@ interface Tx_Extbase_MVC_View_ViewInterface
 	/**
 	 * Tells if the view implementation can render the view for the given context.
 	 *
-	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
 	 * @return boolean TRUE if the view has something useful to display, otherwise FALSE
 	 * @api
 	 */
-	public function canRender(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext);
+	public function canRender(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext);
 
 	/**
 	 * Renders the view
@@ -88,4 +90,5 @@ interface Tx_Extbase_MVC_View_ViewInterface
 	public function initializeView();
 
 }
+
 ?>

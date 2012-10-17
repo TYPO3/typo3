@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Reflection\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,9 +32,10 @@
  * @version $Id: InvalidPropertyType.php 1729 2009-11-25 21:37:20Z stucki $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Reflection_Exception_PropertyNotAccessibleException extends Tx_Extbase_Reflection_Exception {
+class PropertyNotAccessibleException extends \TYPO3\CMS\Extbase\Reflection\Exception {
 
 
 }
+
 
 ?>

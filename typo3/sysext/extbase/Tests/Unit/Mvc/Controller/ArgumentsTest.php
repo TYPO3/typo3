@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,14 +26,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class ArgumentsTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function argumentsObjectIsOfScopePrototype() {
-		$arguments1 = new Tx_Extbase_MVC_Controller_Arguments();
-		$arguments2 = new Tx_Extbase_MVC_Controller_Arguments();
+		$arguments1 = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
+		$arguments2 = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 		$this->assertNotSame($arguments1, $arguments2, 'The arguments object is not of scope prototype!');
 	}
 
@@ -39,8 +41,8 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function addingAnArgumentManuallyWorks() {
-		$arguments = new Tx_Extbase_MVC_Controller_Arguments();
-		$newArgument = new Tx_Extbase_MVC_Controller_Argument('argumentName1234', 'dummyValue');
+		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
+		$newArgument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('argumentName1234', 'dummyValue');
 		$arguments->addArgument($newArgument);
 		$this->assertSame($newArgument, $arguments->getArgument('argumentName1234'), 'The added and retrieved argument is not the same.');
 	}
@@ -49,11 +51,11 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function addingAnArgumentReplacesArgumentWithSameName() {
-		$arguments = new Tx_Extbase_MVC_Controller_Arguments();
-		$mockFirstArgument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName'), array(), '', FALSE);
+		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
+		$mockFirstArgument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName'), array(), '', FALSE);
 		$mockFirstArgument->expects($this->any())->method('getName')->will($this->returnValue('argumentName1234'));
 		$arguments->addArgument($mockFirstArgument);
-		$mockSecondArgument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName'), array(), '', FALSE);
+		$mockSecondArgument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName'), array(), '', FALSE);
 		$mockSecondArgument->expects($this->any())->method('getName')->will($this->returnValue('argumentName1234'));
 		$arguments->addArgument($mockSecondArgument);
 		$this->assertSame($mockSecondArgument, $arguments->getArgument('argumentName1234'), 'The added and retrieved argument is not the same.');
@@ -63,10 +65,10 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function addNewArgumentProvidesFluentInterface() {
-		$mockArgument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array(), '', FALSE);
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$mockObjectManager->expects($this->once())->method('create')->with('Tx_Extbase_MVC_Controller_Argument')->will($this->returnValue($mockArgument));
-		$arguments = new Tx_Extbase_MVC_Controller_Arguments();
+		$mockArgument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array(), array(), '', FALSE);
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument')->will($this->returnValue($mockArgument));
+		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 		$arguments->injectObjectManager($mockObjectManager);
 		$newArgument = $arguments->addNewArgument('someArgument');
 		$this->assertSame($newArgument, $mockArgument);
@@ -76,9 +78,9 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function addingArgumentThroughArrayAccessWorks() {
-		$mockArgument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName'), array(), '', FALSE);
+		$mockArgument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName'), array(), '', FALSE);
 		$mockArgument->expects($this->any())->method('getName')->will($this->returnValue('argumentName1234'));
-		$arguments = new Tx_Extbase_MVC_Controller_Arguments();
+		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 		$arguments[] = $mockArgument;
 		$this->assertTrue($arguments->hasArgument('argumentName1234'), 'Added argument does not exist.');
 		$this->assertSame($mockArgument, $arguments->getArgument('argumentName1234'), 'Added and retrieved arguments are not the same.');
@@ -88,9 +90,9 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function retrievingArgumentThroughArrayAccessWorks() {
-		$mockArgument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName'), array(), '', FALSE);
+		$mockArgument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName'), array(), '', FALSE);
 		$mockArgument->expects($this->any())->method('getName')->will($this->returnValue('argumentName1234'));
-		$arguments = new Tx_Extbase_MVC_Controller_Arguments();
+		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 		$arguments[] = $mockArgument;
 		$this->assertSame($mockArgument, $arguments['argumentName1234'], 'Argument retrieved by array access is not the one we added.');
 	}
@@ -99,11 +101,11 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function getArgumentWithNonExistingArgumentNameThrowsException() {
-		$arguments = new Tx_Extbase_MVC_Controller_Arguments();
+		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 		try {
 			$arguments->getArgument('someArgument');
 			$this->fail('getArgument() did not throw an exception although the specified argument does not exist.');
-		} catch (Tx_Extbase_MVC_Exception_NoSuchArgument $exception) {
+		} catch (\TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException $exception) {
 
 		}
 	}
@@ -112,9 +114,9 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function issetReturnsCorrectResult() {
-		$mockArgument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName'), array(), '', FALSE);
+		$mockArgument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName'), array(), '', FALSE);
 		$mockArgument->expects($this->any())->method('getName')->will($this->returnValue('argumentName1234'));
-		$arguments = new Tx_Extbase_MVC_Controller_Arguments();
+		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 		$this->assertFalse(isset($arguments['argumentName1234']), 'isset() did not return FALSE.');
 		$arguments[] = $mockArgument;
 		$this->assertTrue(isset($arguments['argumentName1234']), 'isset() did not return TRUE.');
@@ -124,13 +126,13 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function getArgumentNamesReturnsNamesOfAddedArguments() {
-		$mockArgument1 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName'), array(), '', FALSE);
+		$mockArgument1 = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName'), array(), '', FALSE);
 		$mockArgument1->expects($this->any())->method('getName')->will($this->returnValue('argumentName1'));
-		$mockArgument2 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName'), array(), '', FALSE);
+		$mockArgument2 = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName'), array(), '', FALSE);
 		$mockArgument2->expects($this->any())->method('getName')->will($this->returnValue('argumentName2'));
-		$mockArgument3 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName'), array(), '', FALSE);
+		$mockArgument3 = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName'), array(), '', FALSE);
 		$mockArgument3->expects($this->any())->method('getName')->will($this->returnValue('argumentName3'));
-		$arguments = new Tx_Extbase_MVC_Controller_Arguments();
+		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 		$arguments[] = $mockArgument1;
 		$arguments[] = $mockArgument2;
 		$arguments[] = $mockArgument3;
@@ -142,16 +144,16 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function getArgumentShortNamesReturnsShortNamesOfAddedArguments() {
-		$mockArgument1 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName', 'getShortName'), array(), '', FALSE);
+		$mockArgument1 = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName', 'getShortName'), array(), '', FALSE);
 		$mockArgument1->expects($this->any())->method('getName')->will($this->returnValue('argumentName1'));
 		$mockArgument1->expects($this->any())->method('getShortName')->will($this->returnValue('a'));
-		$mockArgument2 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName', 'getShortName'), array(), '', FALSE);
+		$mockArgument2 = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName', 'getShortName'), array(), '', FALSE);
 		$mockArgument2->expects($this->any())->method('getName')->will($this->returnValue('argumentName2'));
 		$mockArgument2->expects($this->any())->method('getShortName')->will($this->returnValue('b'));
-		$mockArgument3 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName', 'getShortName'), array(), '', FALSE);
+		$mockArgument3 = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName', 'getShortName'), array(), '', FALSE);
 		$mockArgument3->expects($this->any())->method('getName')->will($this->returnValue('argumentName3'));
 		$mockArgument3->expects($this->any())->method('getShortName')->will($this->returnValue('c'));
-		$arguments = new Tx_Extbase_MVC_Controller_Arguments();
+		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 		$arguments[] = $mockArgument1;
 		$arguments[] = $mockArgument2;
 		$arguments[] = $mockArgument3;
@@ -163,14 +165,14 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function addNewArgumentCreatesAndAddsNewArgument() {
-		$mockArgument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName'), array(), '', FALSE);
+		$mockArgument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName'), array(), '', FALSE);
 		$mockArgument->expects($this->any())->method('getName')->will($this->returnValue('dummyName'));
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$mockObjectManager->expects($this->once())->method('create')->with('Tx_Extbase_MVC_Controller_Argument')->will($this->returnValue($mockArgument));
-		$arguments = new Tx_Extbase_MVC_Controller_Arguments();
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument')->will($this->returnValue($mockArgument));
+		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 		$arguments->injectObjectManager($mockObjectManager);
 		$addedArgument = $arguments->addNewArgument('dummyName');
-		$this->assertInstanceOf('Tx_Extbase_MVC_Controller_Argument', $addedArgument, 'addNewArgument() either did not add a new argument or did not return it.');
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', $addedArgument, 'addNewArgument() either did not add a new argument or did not return it.');
 		$retrievedArgument = $arguments['dummyName'];
 		$this->assertSame($addedArgument, $retrievedArgument, 'The added and the retrieved argument are not the same.');
 	}
@@ -179,11 +181,11 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function addNewArgumentAssumesTextDataTypeByDefault() {
-		$mockArgument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName'), array(), '', FALSE);
+		$mockArgument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName'), array(), '', FALSE);
 		$mockArgument->expects($this->any())->method('getName')->will($this->returnValue('dummyName'));
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$mockObjectManager->expects($this->once())->method('create')->with('Tx_Extbase_MVC_Controller_Argument', 'dummyName', 'Text')->will($this->returnValue($mockArgument));
-		$arguments = new Tx_Extbase_MVC_Controller_Arguments();
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', 'dummyName', 'Text')->will($this->returnValue($mockArgument));
+		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 		$arguments->injectObjectManager($mockObjectManager);
 		$arguments->addNewArgument('dummyName');
 	}
@@ -192,12 +194,12 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function addNewArgumentCanAddArgumentsMarkedAsRequired() {
-		$mockArgument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName', 'setRequired'), array(), '', FALSE);
+		$mockArgument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName', 'setRequired'), array(), '', FALSE);
 		$mockArgument->expects($this->once())->method('getName')->will($this->returnValue('dummyName'));
 		$mockArgument->expects($this->once())->method('setRequired')->with(TRUE);
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$mockObjectManager->expects($this->once())->method('create')->with('Tx_Extbase_MVC_Controller_Argument', 'dummyName', 'Text')->will($this->returnValue($mockArgument));
-		$arguments = new Tx_Extbase_MVC_Controller_Arguments();
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', 'dummyName', 'Text')->will($this->returnValue($mockArgument));
+		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 		$arguments->injectObjectManager($mockObjectManager);
 		$arguments->addNewArgument('dummyName', 'Text', TRUE);
 	}
@@ -206,13 +208,13 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function addNewArgumentCanAddArgumentsMarkedAsOptionalWithDefaultValues() {
-		$mockArgument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName', 'setRequired', 'setDefaultValue'), array(), '', FALSE);
+		$mockArgument = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName', 'setRequired', 'setDefaultValue'), array(), '', FALSE);
 		$mockArgument->expects($this->once())->method('getName')->will($this->returnValue('dummyName'));
 		$mockArgument->expects($this->once())->method('setRequired')->with(FALSE);
 		$mockArgument->expects($this->once())->method('setDefaultValue')->with('someDefaultValue');
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$mockObjectManager->expects($this->once())->method('create')->with('Tx_Extbase_MVC_Controller_Argument', 'dummyName', 'Text')->will($this->returnValue($mockArgument));
-		$arguments = new Tx_Extbase_MVC_Controller_Arguments();
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', 'dummyName', 'Text')->will($this->returnValue($mockArgument));
+		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 		$arguments->injectObjectManager($mockObjectManager);
 		$arguments->addNewArgument('dummyName', 'Text', FALSE, 'someDefaultValue');
 	}
@@ -223,7 +225,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function callingInvalidMethodThrowsException() {
-		$arguments = new Tx_Extbase_MVC_Controller_Arguments();
+		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 		$arguments->nonExistingMethod();
 	}
 
@@ -232,11 +234,11 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Test
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function removeAllClearsAllArguments() {
-		$mockArgument1 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName', 'getShortName'), array(), '', FALSE);
+		$mockArgument1 = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName', 'getShortName'), array(), '', FALSE);
 		$mockArgument1->expects($this->any())->method('getName')->will($this->returnValue('argumentName1'));
-		$mockArgument2 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName', 'getShortName'), array(), '', FALSE);
+		$mockArgument2 = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('getName', 'getShortName'), array(), '', FALSE);
 		$mockArgument2->expects($this->any())->method('getName')->will($this->returnValue('argumentName2'));
-		$arguments = new Tx_Extbase_MVC_Controller_Arguments();
+		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 		$arguments[] = $mockArgument1;
 		$arguments[] = $mockArgument2;
 		$this->assertTrue($arguments->hasArgument('argumentName2'));
@@ -245,5 +247,6 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_ArgumentsTest extends Tx_Extbase_Test
 	}
 
 }
+
 
 ?>

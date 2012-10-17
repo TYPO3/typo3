@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -35,23 +37,23 @@
  * @version $Id$
  * @scope prototype
  */
-class Tx_Extbase_Persistence_QOM_LogicalAnd implements Tx_Extbase_Persistence_QOM_AndInterface {
+class LogicalAnd implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface {
 
 	/**
-	 * @var Tx_Extbase_Persistence_QOM_ConstraintInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface
 	 */
 	protected $constraint1;
 
 	/**
-	 * @var Tx_Extbase_Persistence_QOM_ConstraintInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface
 	 */
 	protected $constraint2;
 
 	/**
-	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint1
-	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint1
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint2
 	 */
-	public function __construct(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint1, Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2) {
+	public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint1, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint2) {
 		$this->constraint1 = $constraint1;
 		$this->constraint2 = $constraint2;
 	}
@@ -70,7 +72,7 @@ class Tx_Extbase_Persistence_QOM_LogicalAnd implements Tx_Extbase_Persistence_QO
 	/**
 	 * Gets the first constraint.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_ConstraintInterface the constraint; non-null
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint; non-null
 	 */
 	public function getConstraint1() {
 		return $this->constraint1;
@@ -79,12 +81,13 @@ class Tx_Extbase_Persistence_QOM_LogicalAnd implements Tx_Extbase_Persistence_QO
 	/**
 	 * Gets the second constraint.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_ConstraintInterface the constraint; non-null
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint; non-null
 	 */
 	public function getConstraint2() {
 		return $this->constraint2;
 	}
 
 }
+
 
 ?>

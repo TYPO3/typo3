@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,13 +26,13 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class Tx_Extbase_Tests_Unit_Persistence_SessionTest extends tx_phpunit_testcase {
+class SessionTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
 	 */
 	public function newSessionIsEmpty() {
-		$persistenceSession = new Tx_Extbase_Persistence_Session();
+		$persistenceSession = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
 		$reconstitutedObjects = $persistenceSession->getReconstitutedObjects();
 		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
 	}
@@ -39,8 +41,8 @@ class Tx_Extbase_Tests_Unit_Persistence_SessionTest extends tx_phpunit_testcase 
 	 * @test
 	 */
 	public function objectCanBeRegisteredAsReconstituted() {
-		$persistenceSession = new Tx_Extbase_Persistence_Session();
-		$entity = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
+		$persistenceSession = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
+		$entity = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity');
 		$persistenceSession->registerReconstitutedObject($entity);
 		$reconstitutedObjects = $persistenceSession->getReconstitutedObjects();
 		$this->assertTrue($reconstitutedObjects->contains($entity), 'The object was not registered as reconstituted.');
@@ -50,8 +52,8 @@ class Tx_Extbase_Tests_Unit_Persistence_SessionTest extends tx_phpunit_testcase 
 	 * @test
 	 */
 	public function objectCanBeUnregisteredAsReconstituted() {
-		$persistenceSession = new Tx_Extbase_Persistence_Session();
-		$entity = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
+		$persistenceSession = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
+		$entity = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity');
 		$persistenceSession->registerReconstitutedObject($entity);
 		$persistenceSession->unregisterReconstitutedObject($entity);
 		$reconstitutedObjects = $persistenceSession->getReconstitutedObjects();
@@ -59,5 +61,6 @@ class Tx_Extbase_Tests_Unit_Persistence_SessionTest extends tx_phpunit_testcase 
 	}
 
 }
+
 
 ?>

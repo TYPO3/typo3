@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,9 +33,10 @@
  * @subpackage MVC\Exception
  * @version $Id$
  */
-class Tx_Extbase_MVC_Exception_NoSuchAction extends Tx_Extbase_MVC_Exception {
+class NoSuchActionException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 
 
 }
+
 
 ?>

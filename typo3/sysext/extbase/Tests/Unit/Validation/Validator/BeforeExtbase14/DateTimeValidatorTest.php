@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\BeforeExtbase14;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,24 +36,25 @@
  * @subpackage extbase
  * @version $Id: DateTimeValidator_testcase.php 1408 2009-10-08 13:15:09Z jocrau $
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_DateTimeValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class DateTimeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function dateTimeValidatorReturnsTrueForAValidDateTimeObject() {
-		$dateTimeValidator = new Tx_Extbase_Validation_Validator_DateTimeValidator();
-		$this->assertTrue($dateTimeValidator->isValid(new DateTime()));
+		$dateTimeValidator = new \TYPO3\CMS\Extbase\Validation\Validator\DateTimeValidator();
+		$this->assertTrue($dateTimeValidator->isValid(new \DateTime()));
 	}
 
 	/**
 	 * @test
 	 */
 	public function dateTimeValidatorReturnsFalseForAnInvalidDateTimeObject() {
-		$dateTimeValidator = $this->getMock('Tx_Extbase_Validation_Validator_DateTimeValidator', array('addError'), array(), '', FALSE);
+		$dateTimeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\DateTimeValidator', array('addError'), array(), '', FALSE);
 		$this->assertFalse($dateTimeValidator->isValid('blah'));
 	}
 
 }
+
 
 ?>

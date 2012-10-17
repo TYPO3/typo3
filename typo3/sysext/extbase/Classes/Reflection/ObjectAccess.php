@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Reflection;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +35,7 @@
  * @subpackage Reflection
  * @version $Id$
  */
-class Tx_Extbase_Reflection_ObjectAccess {
+class ObjectAccess {
 
 	const ACCESS_GET = 0;
 	const ACCESS_SET = 1;
@@ -58,17 +60,17 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 */
 	static public function getProperty($subject, $propertyName, $forceDirectAccess = FALSE) {
 		if (!is_object($subject) && !is_array($subject)) {
-			throw new InvalidArgumentException(('$subject must be an object or array, ' . gettype($subject)) . ' given.', 1237301367);
+			throw new \InvalidArgumentException(('$subject must be an object or array, ' . gettype($subject)) . ' given.', 1237301367);
 		}
-		if (!is_string($propertyName) && (!is_array($subject) && !$subject instanceof ArrayAccess)) {
-			throw new InvalidArgumentException('Given property name is not of type string.', 1231178303);
+		if (!is_string($propertyName) && (!is_array($subject) && !$subject instanceof \ArrayAccess)) {
+			throw new \InvalidArgumentException('Given property name is not of type string.', 1231178303);
 		}
 		$propertyExists = FALSE;
 		$propertyValue = self::getPropertyInternal($subject, $propertyName, $forceDirectAccess, $propertyExists);
 		if ($propertyExists === TRUE) {
 			return $propertyValue;
 		}
-		throw new Tx_Extbase_Reflection_Exception_PropertyNotAccessibleException(('The property "' . $propertyName) . '" on the subject was not accessible.', 1263391473);
+		throw new \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException(('The property "' . $propertyName) . '" on the subject was not accessible.', 1263391473);
 	}
 
 	/**
@@ -98,15 +100,15 @@ class Tx_Extbase_Reflection_ObjectAccess {
 		}
 		if ($forceDirectAccess === TRUE) {
 			if (property_exists(get_class($subject), $propertyName)) {
-				$propertyReflection = new Tx_Extbase_Reflection_PropertyReflection(get_class($subject), $propertyName);
+				$propertyReflection = new \TYPO3\CMS\Extbase\Reflection\PropertyReflection(get_class($subject), $propertyName);
 				return $propertyReflection->getValue($subject);
 			} elseif (property_exists($subject, $propertyName)) {
 				return $subject->{$propertyName};
 			} else {
-				throw new Tx_Extbase_Reflection_Exception_PropertyNotAccessibleException(('The property "' . $propertyName) . '" on the subject does not exist.', 1302855001);
+				throw new \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException(('The property "' . $propertyName) . '" on the subject does not exist.', 1302855001);
 			}
 		}
-		if ($subject instanceof ArrayAccess && isset($subject[$propertyName])) {
+		if ($subject instanceof \ArrayAccess && isset($subject[$propertyName])) {
 			return $subject[$propertyName];
 		}
 		$getterMethodName = 'get' . ucfirst($propertyName);
@@ -141,7 +143,7 @@ class Tx_Extbase_Reflection_ObjectAccess {
 		foreach ($propertyPathSegments as $pathSegment) {
 			$propertyExists = FALSE;
 			$propertyValue = self::getPropertyInternal($subject, $pathSegment, FALSE, $propertyExists);
-			if (($propertyExists !== TRUE && (is_array($subject) || $subject instanceof ArrayAccess)) && isset($subject[$pathSegment])) {
+			if (($propertyExists !== TRUE && (is_array($subject) || $subject instanceof \ArrayAccess)) && isset($subject[$pathSegment])) {
 				$subject = $subject[$pathSegment];
 			} else {
 				$subject = $propertyValue;
@@ -174,14 +176,14 @@ class Tx_Extbase_Reflection_ObjectAccess {
 			return TRUE;
 		}
 		if (!is_object($subject)) {
-			throw new InvalidArgumentException(('subject must be an object or array, ' . gettype($subject)) . ' given.', 1237301368);
+			throw new \InvalidArgumentException(('subject must be an object or array, ' . gettype($subject)) . ' given.', 1237301368);
 		}
 		if (!is_string($propertyName)) {
-			throw new InvalidArgumentException('Given property name is not of type string.', 1231178878);
+			throw new \InvalidArgumentException('Given property name is not of type string.', 1231178878);
 		}
 		if ($forceDirectAccess === TRUE) {
 			if (property_exists(get_class($subject), $propertyName)) {
-				$propertyReflection = new Tx_Extbase_Reflection_PropertyReflection(get_class($subject), $propertyName);
+				$propertyReflection = new \TYPO3\CMS\Extbase\Reflection\PropertyReflection(get_class($subject), $propertyName);
 				$propertyReflection->setAccessible(TRUE);
 				$propertyReflection->setValue($subject, $propertyValue);
 			} else {
@@ -189,7 +191,7 @@ class Tx_Extbase_Reflection_ObjectAccess {
 			}
 		} elseif (is_callable(array($subject, $setterMethodName = self::buildSetterMethodName($propertyName)))) {
 			$subject->{$setterMethodName}($propertyValue);
-		} elseif ($subject instanceof ArrayAccess) {
+		} elseif ($subject instanceof \ArrayAccess) {
 			$subject[$propertyName] = $propertyValue;
 		} elseif (array_key_exists($propertyName, get_object_vars($subject))) {
 			$subject->{$propertyName} = $propertyValue;
@@ -248,9 +250,9 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 */
 	static public function getSettablePropertyNames($object) {
 		if (!is_object($object)) {
-			throw new InvalidArgumentException(('$object must be an object, ' . gettype($object)) . ' given.', 1264022994);
+			throw new \InvalidArgumentException(('$object must be an object, ' . gettype($object)) . ' given.', 1264022994);
 		}
-		if ($object instanceof stdClass) {
+		if ($object instanceof \stdClass) {
 			$declaredPropertyNames = array_keys(get_object_vars($object));
 		} else {
 			$declaredPropertyNames = array_keys(get_class_vars(get_class($object)));
@@ -275,9 +277,9 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 */
 	static public function isPropertySettable($object, $propertyName) {
 		if (!is_object($object)) {
-			throw new InvalidArgumentException(('$object must be an object, ' . gettype($object)) . ' given.', 1259828920);
+			throw new \InvalidArgumentException(('$object must be an object, ' . gettype($object)) . ' given.', 1259828920);
 		}
-		if ($object instanceof stdClass && array_search($propertyName, array_keys(get_object_vars($object))) !== FALSE) {
+		if ($object instanceof \stdClass && array_search($propertyName, array_keys(get_object_vars($object))) !== FALSE) {
 			return TRUE;
 		} elseif (array_search($propertyName, array_keys(get_class_vars(get_class($object)))) !== FALSE) {
 			return TRUE;
@@ -294,13 +296,13 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 */
 	static public function isPropertyGettable($object, $propertyName) {
 		if (!is_object($object)) {
-			throw new InvalidArgumentException(('$object must be an object, ' . gettype($object)) . ' given.', 1259828921);
+			throw new \InvalidArgumentException(('$object must be an object, ' . gettype($object)) . ' given.', 1259828921);
 		}
-		if ($object instanceof ArrayAccess && isset($object[$propertyName]) === TRUE) {
+		if ($object instanceof \ArrayAccess && isset($object[$propertyName]) === TRUE) {
 			return TRUE;
-		} elseif ($object instanceof stdClass && array_search($propertyName, array_keys(get_object_vars($object))) !== FALSE) {
+		} elseif ($object instanceof \stdClass && array_search($propertyName, array_keys(get_object_vars($object))) !== FALSE) {
 			return TRUE;
-		} elseif ($object instanceof ArrayAccess && isset($object[$propertyName]) === TRUE) {
+		} elseif ($object instanceof \ArrayAccess && isset($object[$propertyName]) === TRUE) {
 			return TRUE;
 		}
 		if (is_callable(array($object, 'get' . ucfirst($propertyName)))) {
@@ -322,7 +324,7 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 */
 	static public function getGettableProperties($object) {
 		if (!is_object($object)) {
-			throw new InvalidArgumentException(('$object must be an object, ' . gettype($object)) . ' given.', 1237301370);
+			throw new \InvalidArgumentException(('$object must be an object, ' . gettype($object)) . ' given.', 1237301370);
 		}
 		$properties = array();
 		foreach (self::getGettablePropertyNames($object) as $propertyName) {
@@ -347,5 +349,6 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	}
 
 }
+
 
 ?>

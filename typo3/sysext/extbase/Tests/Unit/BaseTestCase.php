@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Dbal\Tests;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,10 +29,10 @@
 /**
  * Base testcase for the Extbase extension.
  */
-abstract class Tx_Extbase_Tests_Unit_BaseTestCase extends tx_phpunit_testcase {
+abstract class BaseTestCase extends tx_phpunit_testcase {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface The object manager
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
 	 */
 	protected $objectManager;
 
@@ -41,7 +43,7 @@ abstract class Tx_Extbase_Tests_Unit_BaseTestCase extends tx_phpunit_testcase {
 	 * @return void
 	 */
 	public function runBare() {
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$objectManager = \t3lib_div::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$this->objectManager = clone $objectManager;
 		parent::runBare();
 	}
@@ -74,7 +76,7 @@ abstract class Tx_Extbase_Tests_Unit_BaseTestCase extends tx_phpunit_testcase {
 	 */
 	protected function buildAccessibleProxy($className) {
 		$accessibleClassName = uniqid('AccessibleTestProxy');
-		$class = new ReflectionClass($className);
+		$class = new \ReflectionClass($className);
 		$abstractModifier = $class->isAbstract() ? 'abstract ' : '';
 		eval(((((('
 			' . $abstractModifier) . 'class ') . $accessibleClassName) . ' extends ') . $className) . ' {
@@ -111,5 +113,6 @@ abstract class Tx_Extbase_Tests_Unit_BaseTestCase extends tx_phpunit_testcase {
 	}
 
 }
+
 
 ?>

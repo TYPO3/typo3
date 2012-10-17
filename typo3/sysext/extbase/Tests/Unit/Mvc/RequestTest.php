@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -23,35 +25,35 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class RequestTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function aSingleArgumentCanBeSetWithSetArgumentAndRetrievedWithGetArgument() {
-		$request = new Tx_Extbase_MVC_Request();
+		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
 		$request->setArgument('someArgumentName', 'theValue');
 		$this->assertEquals('theValue', $request->getArgument('someArgumentName'));
 	}
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception_InvalidArgumentName
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function setArgumentThrowsExceptionIfTheGivenArgumentNameIsNoString() {
-		$request = new Tx_Extbase_MVC_Request();
+		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
 		$request->setArgument(123, 'theValue');
 	}
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception_InvalidArgumentName
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function setArgumentThrowsExceptionIfTheGivenArgumentNameIsAnEmptyString() {
-		$request = new Tx_Extbase_MVC_Request();
+		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
 		$request->setArgument('', 'theValue');
 	}
 
@@ -62,8 +64,8 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 */
 	public function setArgumentThrowsExceptionIfTheGivenArgumentValueIsAnObject() {
 		$this->markTestSkipped('Differing behavior from FLOW3 because of backwards compatibility reasons.');
-		$request = new Tx_Extbase_MVC_Request();
-		$request->setArgument('theKey', new stdClass());
+		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
+		$request->setArgument('theKey', new \stdClass());
 	}
 
 	/**
@@ -72,7 +74,7 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 */
 	public function setArgumentsOverridesAllExistingArguments() {
 		$arguments = array('key1' => 'value1', 'key2' => 'value2');
-		$request = new Tx_Extbase_MVC_Request();
+		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
 		$request->setArgument('someKey', 'shouldBeOverridden');
 		$request->setArguments($arguments);
 		$actualResult = $request->getArguments();
@@ -84,7 +86,7 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function setArgumentsCallsSetArgumentForEveryArrayEntry() {
-		$request = $this->getMock('Tx_Extbase_MVC_Request', array('setArgument'));
+		$request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('setArgument'));
 		$request->expects($this->at(0))->method('setArgument')->with('key1', 'value1');
 		$request->expects($this->at(1))->method('setArgument')->with('key2', 'value2');
 		$request->setArguments(array('key1' => 'value1', 'key2' => 'value2'));
@@ -94,7 +96,7 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 * @test
 	 */
 	public function setArgumentShouldSetControllerExtensionNameIfPackageKeyIsGiven() {
-		$request = $this->getMock('Tx_Extbase_MVC_Request', array('setControllerExtensionName'));
+		$request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('setControllerExtensionName'));
 		$request->expects($this->any())->method('setControllerExtensionName')->with('MyExtension');
 		$request->setArgument('@extension', 'MyExtension');
 		$this->assertFalse($request->hasArgument('@extension'));
@@ -104,7 +106,7 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 * @test
 	 */
 	public function setArgumentShouldSetControllerSubpackageKeyIfSubpackageKeyIsGiven() {
-		$request = $this->getMock('Tx_Extbase_MVC_Request', array('setControllerSubpackageKey'));
+		$request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('setControllerSubpackageKey'));
 		$request->expects($this->any())->method('setControllerSubpackageKey')->with('MySubPackage');
 		$request->setArgument('@subpackage', 'MySubPackage');
 		$this->assertFalse($request->hasArgument('@subpackage'));
@@ -114,7 +116,7 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 * @test
 	 */
 	public function setArgumentShouldSetControllerNameIfControllerIsGiven() {
-		$request = $this->getMock('Tx_Extbase_MVC_Request', array('setControllerName'));
+		$request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('setControllerName'));
 		$request->expects($this->any())->method('setControllerName')->with('MyController');
 		$request->setArgument('@controller', 'MyController');
 		$this->assertFalse($request->hasArgument('@controller'));
@@ -124,7 +126,7 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 * @test
 	 */
 	public function setArgumentShouldSetControllerActionNameIfActionIsGiven() {
-		$request = $this->getMock('Tx_Extbase_MVC_Request', array('setControllerActionName'));
+		$request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('setControllerActionName'));
 		$request->expects($this->any())->method('setControllerActionName')->with('foo');
 		$request->setArgument('@action', 'foo');
 		$this->assertFalse($request->hasArgument('@action'));
@@ -134,7 +136,7 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 * @test
 	 */
 	public function setArgumentShouldSetFormatIfFormatIsGiven() {
-		$request = $this->getMock('Tx_Extbase_MVC_Request', array('setFormat'));
+		$request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('setFormat'));
 		$request->expects($this->any())->method('setFormat')->with('txt');
 		$request->setArgument('@format', 'txt');
 		$this->assertFalse($request->hasArgument('@format'));
@@ -144,7 +146,7 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 * @test
 	 */
 	public function internalArgumentsShouldNotBeReturnedAsNormalArgument() {
-		$request = new Tx_Extbase_MVC_Request();
+		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
 		$request->setArgument('__referrer', 'foo');
 		$this->assertFalse($request->hasArgument('__referrer'));
 	}
@@ -153,7 +155,7 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 * @test
 	 */
 	public function internalArgumentsShouldBeStoredAsInternalArguments() {
-		$request = new Tx_Extbase_MVC_Request();
+		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
 		$request->setArgument('__referrer', 'foo');
 		$this->assertSame('foo', $request->getInternalArgument('__referrer'));
 	}
@@ -162,7 +164,7 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 * @test
 	 */
 	public function hasInternalArgumentShouldReturnNullIfArgumentNotFound() {
-		$request = new Tx_Extbase_MVC_Request();
+		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
 		$this->assertNull($request->getInternalArgument('__nonExistingInternalArgument'));
 	}
 
@@ -171,8 +173,8 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setArgumentAcceptsObjectIfArgumentIsInternal() {
-		$request = new Tx_Extbase_MVC_Request();
-		$object = new stdClass();
+		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
+		$object = new \stdClass();
 		$request->setArgument('__theKey', $object);
 		$this->assertSame($object, $request->getInternalArgument('__theKey'));
 	}
@@ -187,7 +189,7 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 			'dænishÅrgument' => 'görman välju',
 			'3a' => '3v'
 		);
-		$request = new Tx_Extbase_MVC_Request();
+		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
 		$request->setArguments($arguments);
 		$this->assertEquals($arguments, $request->getArguments());
 	}
@@ -197,7 +199,7 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function hasArgumentTellsIfAnArgumentExists() {
-		$request = new Tx_Extbase_MVC_Request();
+		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
 		$request->setArgument('existingArgument', 'theValue');
 		$this->assertTrue($request->hasArgument('existingArgument'));
 		$this->assertFalse($request->hasArgument('notExistingArgument'));
@@ -208,7 +210,7 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function theActionNameCanBeSetAndRetrieved() {
-		$request = $this->getMock('Tx_Extbase_MVC_Request', array('getControllerObjectName'), array(), '', FALSE);
+		$request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('getControllerObjectName'), array(), '', FALSE);
 		$request->expects($this->once())->method('getControllerObjectName')->will($this->returnValue(''));
 		$request->setControllerActionName('theAction');
 		$this->assertEquals('theAction', $request->getControllerActionName());
@@ -219,7 +221,7 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function theRepresentationFormatCanBeSetAndRetrieved() {
-		$request = new Tx_Extbase_MVC_Request();
+		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
 		$request->setFormat('html');
 		$this->assertEquals('html', $request->getFormat());
 	}
@@ -229,7 +231,7 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 */
 	public function theRepresentationFormatIsAutomaticallyLowercased() {
 		$this->markTestSkipped('Different behavior from FLOW3 because of backwards compatibility.');
-		$request = new Tx_Extbase_MVC_Request();
+		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
 		$request->setFormat('hTmL');
 		$this->assertEquals('html', $request->getFormat());
 	}
@@ -239,12 +241,13 @@ class Tx_Extbase_Tests_Unit_MVC_RequestTest extends Tx_Extbase_Tests_Unit_BaseTe
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function aFlagCanBeSetIfTheRequestNeedsToBeDispatchedAgain() {
-		$request = new Tx_Extbase_MVC_Request();
+		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
 		$this->assertFalse($request->isDispatched());
 		$request->setDispatched(TRUE);
 		$this->assertTrue($request->isDispatched());
 	}
 
 }
+
 
 ?>

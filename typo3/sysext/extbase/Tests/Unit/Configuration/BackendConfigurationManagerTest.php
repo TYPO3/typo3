@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,7 +26,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class BackendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @var array
@@ -37,7 +39,7 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	protected $postBackup;
 
 	/**
-	 * @var t3lib_DB
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	protected $typo3DbBackup;
 
@@ -47,12 +49,12 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	protected $extConfBackup;
 
 	/**
-	 * @var Tx_Extbase_Configuration_BackendConfigurationManager
+	 * @var \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager
 	 */
 	protected $backendConfigurationManager;
 
 	/**
-	 * @var Tx_Extbase_Service_TypoScriptService
+	 * @var \TYPO3\CMS\Extbase\Service\TypoScriptService
 	 */
 	protected $mockTypoScriptService;
 
@@ -60,13 +62,13 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	 * Sets up this testcase
 	 */
 	public function setUp() {
-		$this->getBackup = t3lib_div::_GET();
-		$this->postBackup = t3lib_div::_POST();
+		$this->getBackup = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
+		$this->postBackup = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
 		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
-		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array());
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array());
 		$this->extConfBackup = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase'];
-		$this->backendConfigurationManager = $this->getAccessibleMock('Tx_Extbase_Configuration_BackendConfigurationManager', array('getTypoScriptSetup'));
-		$this->mockTypoScriptService = $this->getAccessibleMock('Tx_Extbase_Service_TypoScriptService');
+		$this->backendConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\BackendConfigurationManager', array('getTypoScriptSetup'));
+		$this->mockTypoScriptService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
 		$this->backendConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
 	}
 
@@ -74,7 +76,7 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	 * Tears down this testcase
 	 */
 	public function tearDown() {
-		t3lib_div::_GETset($this->getBackup);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset($this->getBackup);
 		$_POST = $this->postBackup;
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase'] = $this->extConfBackup;
 	}
@@ -83,14 +85,14 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	 * @test
 	 */
 	public function getTypoScriptSetupCanBeTested() {
-		$this->markTestIncomplete('This method can\'t be tested with the current TYPO3 version, because we can\'t mock objects returned from t3lib_div::makeInstance().');
+		$this->markTestIncomplete('This method can\'t be tested with the current TYPO3 version, because we can\'t mock objects returned from TYPO3\\CMS\\Core\\Utility\\GeneralUtility::makeInstance().');
 	}
 
 	/**
 	 * @test
 	 */
 	public function getCurrentPageIdReturnsPageIdFromGet() {
-		t3lib_div::_GETset(array('id' => 123));
+		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('id' => 123));
 		$expectedResult = 123;
 		$actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
 		$this->assertEquals($expectedResult, $actualResult);
@@ -100,7 +102,7 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	 * @test
 	 */
 	public function getCurrentPageIdReturnsPageIdFromPost() {
-		t3lib_div::_GETset(array('id' => 123));
+		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('id' => 123));
 		$_POST['id'] = 321;
 		$expectedResult = 321;
 		$actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
@@ -138,7 +140,7 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	public function getCurrentPageIdReturnsDefaultStoragePidIfIdIsNotSetNoRootTemplateAndRootPageWasFound() {
 		$GLOBALS['TYPO3_DB']->expects($this->at(0))->method('exec_SELECTgetRows')->with('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1')->will($this->returnValue(array()));
 		$GLOBALS['TYPO3_DB']->expects($this->at(1))->method('exec_SELECTgetRows')->with('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1')->will($this->returnValue(array()));
-		$expectedResult = Tx_Extbase_Configuration_AbstractConfigurationManager::DEFAULT_BACKEND_STORAGE_PID;
+		$expectedResult = \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager::DEFAULT_BACKEND_STORAGE_PID;
 		$actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
 		$this->assertEquals($expectedResult, $actualResult);
 	}
@@ -322,7 +324,7 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 			),
 			'mvc' => array(
 				'requestHandlers' => array(
-					'Tx_Extbase_MVC_Web_FrontendRequestHandler' => 'SomeRequestHandler'
+					'TYPO3\\CMS\\Extbase\\Mvc\\Web\\FrontendRequestHandler' => 'SomeRequestHandler'
 				)
 			)
 		);
@@ -354,8 +356,8 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 			),
 			'mvc' => array(
 				'requestHandlers' => array(
-					'Tx_Extbase_MVC_Web_FrontendRequestHandler' => 'Tx_Extbase_MVC_Web_FrontendRequestHandler',
-					'Tx_Extbase_MVC_Web_BackendRequestHandler' => 'Tx_Extbase_MVC_Web_BackendRequestHandler'
+					'TYPO3\\CMS\\Extbase\\Mvc\\Web\\FrontendRequestHandler' => 'TYPO3\\CMS\\Extbase\\Mvc\\Web\\FrontendRequestHandler',
+					'TYPO3\\CMS\\Extbase\\Mvc\\Web\\BackendRequestHandler' => 'TYPO3\\CMS\\Extbase\\Mvc\\Web\\BackendRequestHandler'
 				)
 			)
 		);
@@ -364,5 +366,6 @@ class Tx_Extbase_Tests_Unit_Configuration_BackendConfigurationManagerTest extend
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Property\TypeConverter;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -26,7 +28,7 @@
  *
  * @api experimental! This class is experimental and subject to change!
  */
-class Tx_Extbase_Property_TypeConverter_FolderConverter extends Tx_Extbase_Property_TypeConverter_AbstractFileFolderConverter implements t3lib_Singleton {
+class FolderConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileFolderConverter implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var array<string>
@@ -36,21 +38,22 @@ class Tx_Extbase_Property_TypeConverter_FolderConverter extends Tx_Extbase_Prope
 	/**
 	 * @var string
 	 */
-	protected $targetType = 'Tx_Extbase_Domain_Model_Folder';
+	protected $targetType = 'TYPO3\\CMS\\Extbase\\Domain\\Model\\Folder';
 
 	/**
 	 * @var string
 	 */
-	protected $expectedObjectType = 't3lib_file_Folder';
+	protected $expectedObjectType = 'TYPO3\\CMS\\Core\\Resource\\Folder';
 
 	/**
 	 * @param string $source
-	 * @return t3lib_file_Folder
+	 * @return \TYPO3\CMS\Core\Resource\Folder
 	 */
 	protected function getObject($source) {
 		return $this->fileFactory->getFolderObjectFromCombinedIdentifier($source);
 	}
 
 }
+
 
 ?>

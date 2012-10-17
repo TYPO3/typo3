@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Property\TypeConverter;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -26,7 +28,7 @@
  *
  * @api experimental! This class is experimental and subject to change!
  */
-class Tx_Extbase_Property_TypeConverter_FileReferenceConverter extends Tx_Extbase_Property_TypeConverter_AbstractFileFolderConverter implements t3lib_Singleton {
+class FileReferenceConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFileFolderConverter implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var array<string>
@@ -36,21 +38,22 @@ class Tx_Extbase_Property_TypeConverter_FileReferenceConverter extends Tx_Extbas
 	/**
 	 * @var string
 	 */
-	protected $targetType = 'Tx_Extbase_Domain_Model_FileReference';
+	protected $targetType = 'TYPO3\\CMS\\Extbase\\Domain\\Model\\FileReference';
 
 	/**
 	 * @var string
 	 */
-	protected $expectedObjectType = 't3lib_file_FileReference';
+	protected $expectedObjectType = 'TYPO3\\CMS\\Core\\Resource\\FileReference';
 
 	/**
 	 * @param integer $source
-	 * @return t3lib_file_FileReference
+	 * @return \TYPO3\CMS\Core\Resource\FileReference
 	 */
 	protected function getObject($source) {
 		return $this->fileFactory->getFileReferenceObject($source);
 	}
 
 }
+
 
 ?>

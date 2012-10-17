@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +35,7 @@
  * @scope prototype
  * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0. Is only needed for old property mapper.
  */
-class Tx_Extbase_MVC_Controller_ArgumentsValidator extends Tx_Extbase_Validation_Validator_AbstractObjectValidator {
+class ArgumentsValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractObjectValidator {
 
 	/**
 	 * Checks if the given value (ie. an Arguments object) is valid.
@@ -45,8 +47,8 @@ class Tx_Extbase_MVC_Controller_ArgumentsValidator extends Tx_Extbase_Validation
 	 * @return boolean TRUE if all arguments are valid, FALSE if an error occured
 	 */
 	public function isValid($arguments) {
-		if (!$arguments instanceof Tx_Extbase_MVC_Controller_Arguments) {
-			throw new InvalidArgumentException(('Expected Tx_Extbase_MVC_Controller_Arguments, ' . gettype($arguments)) . ' given.', 1241079561);
+		if (!$arguments instanceof \TYPO3\CMS\Extbase\Mvc\Controller\Arguments) {
+			throw new \InvalidArgumentException(('Expected TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments, ' . gettype($arguments)) . ' given.', 1241079561);
 		}
 		$this->errors = array();
 		$result = TRUE;
@@ -65,7 +67,7 @@ class Tx_Extbase_MVC_Controller_ArgumentsValidator extends Tx_Extbase_Validation
 	 * @return boolean TRUE if this validator can validate instances of the given object or FALSE if it can't
 	 */
 	public function canValidate($object) {
-		return $object instanceof Tx_Extbase_MVC_Controller_Arguments;
+		return $object instanceof \TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 	}
 
 	/**
@@ -80,8 +82,8 @@ class Tx_Extbase_MVC_Controller_ArgumentsValidator extends Tx_Extbase_Validation
 	 * @return boolean TRUE if the argument is valid, FALSE if an error occured
 	 */
 	public function isPropertyValid($arguments, $argumentName) {
-		if (!$arguments instanceof Tx_Extbase_MVC_Controller_Arguments) {
-			throw new InvalidArgumentException(('Expected Tx_Extbase_MVC_Controller_Arguments, ' . gettype($arguments)) . ' given.', 1241079562);
+		if (!$arguments instanceof \TYPO3\CMS\Extbase\Mvc\Controller\Arguments) {
+			throw new \InvalidArgumentException(('Expected TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments, ' . gettype($arguments)) . ' given.', 1241079562);
 		}
 		$argument = $arguments[$argumentName];
 		$validatorConjunction = $argument->getValidator();
@@ -109,11 +111,12 @@ class Tx_Extbase_MVC_Controller_ArgumentsValidator extends Tx_Extbase_Validation
 	 */
 	protected function addErrorsForArgument(array $errors, $argumentName) {
 		if (!isset($this->errors[$argumentName])) {
-			$this->errors[$argumentName] = new Tx_Extbase_MVC_Controller_ArgumentError($argumentName);
+			$this->errors[$argumentName] = new \TYPO3\CMS\Extbase\Mvc\Controller\ArgumentError($argumentName);
 		}
 		$this->errors[$argumentName]->addErrors($errors);
 	}
 
 }
+
 
 ?>

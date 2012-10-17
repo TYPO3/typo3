@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\BeforeExtbase14;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,7 +36,7 @@
  * @subpackage extbase
  * @version $Id: FloatValidator_testcase.php 2428 2010-07-20 10:18:51Z jocrau $
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_FloatValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class FloatValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * Data provider with valid floating point numbers
@@ -74,7 +76,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_FloatValidatorT
 	 * @param mixed $number
 	 */
 	public function floatValidatorReturnsTrueForAValidFloat($number) {
-		$floatValidator = new Tx_Extbase_Validation_Validator_FloatValidator();
+		$floatValidator = new \TYPO3\CMS\Extbase\Validation\Validator\FloatValidator();
 		$this->assertTrue($floatValidator->isValid($number), "Validator declared {$number} as invalid though it is valid.");
 	}
 
@@ -84,7 +86,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_FloatValidatorT
 	 * @param mixed $number
 	 */
 	public function floatValidatorReturnsFalseForAnInvalidFloat($number) {
-		$floatValidator = $this->getMock('Tx_Extbase_Validation_Validator_FloatValidator', array('addError'), array(), '', FALSE);
+		$floatValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\FloatValidator', array('addError'), array(), '', FALSE);
 		$this->assertFalse($floatValidator->isValid($number), "Validator declared {$number} as valid though it is invalid.");
 	}
 
@@ -92,12 +94,13 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_FloatValidatorT
 	 * @test
 	 */
 	public function floatValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
-		$floatValidator = new Tx_Extbase_Validation_Validator_FloatValidator();
-		$floatValidator = $this->getMock('Tx_Extbase_Validation_Validator_FloatValidator', array('addError'), array(), '', FALSE);
+		$floatValidator = new \TYPO3\CMS\Extbase\Validation\Validator\FloatValidator();
+		$floatValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\FloatValidator', array('addError'), array(), '', FALSE);
 		$floatValidator->expects($this->once())->method('addError')->with('The given subject was not a valid float.', 1221560288);
 		$floatValidator->isValid(123456);
 	}
 
 }
+
 
 ?>

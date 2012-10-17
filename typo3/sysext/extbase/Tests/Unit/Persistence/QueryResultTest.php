@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,25 +23,25 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class Tx_Extbase_Tests_Unit_Persistence_QueryResultTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class QueryResultTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Persistence_QueryResult
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
 	 */
 	protected $queryResult;
 
 	/**
-	 * @var Tx_Extbase_Persistence_QueryInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 */
 	protected $mockQuery;
 
 	/**
-	 * @var Tx_Extbase_Persistence_ManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
 	 */
 	protected $mockPersistenceManager;
 
 	/**
-	 * @var Tx_Extbase_Persistence_Mapper_DataMapper
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
 	 */
 	protected $mockDataMapper;
 
@@ -54,12 +56,12 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryResultTest extends Tx_Extbase_Tests
 	 * @return void
 	 */
 	public function setUp() {
-		$this->mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
+		$this->mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
 		$this->mockPersistenceManager->expects($this->any())->method('getObjectDataByQuery')->will($this->returnValue(array('one', 'two')));
 		$this->mockPersistenceManager->expects($this->any())->method('getObjectCountByQuery')->will($this->returnValue(2));
-		$this->mockDataMapper = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMapper');
-		$this->mockQuery = $this->getMock('Tx_Extbase_Persistence_QueryInterface');
-		$this->queryResult = new Tx_Extbase_Persistence_QueryResult($this->mockQuery);
+		$this->mockDataMapper = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper');
+		$this->mockQuery = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface');
+		$this->queryResult = new \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult($this->mockQuery);
 		$this->queryResult->injectPersistenceManager($this->mockPersistenceManager);
 		$this->queryResult->injectDataMapper($this->mockDataMapper);
 		$this->sampleResult = array(array('foo' => 'Foo1', 'bar' => 'Bar1'), array('foo' => 'Foo2', 'bar' => 'Bar2'));
@@ -70,7 +72,7 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryResultTest extends Tx_Extbase_Tests
 	 * @test
 	 */
 	public function getQueryReturnsQueryObject() {
-		$this->assertInstanceOf('Tx_Extbase_Persistence_QueryInterface', $this->queryResult->getQuery());
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface', $this->queryResult->getQuery());
 	}
 
 	/**
@@ -118,7 +120,7 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryResultTest extends Tx_Extbase_Tests
 	 * @test
 	 */
 	public function countDoesNotInitializeProxy() {
-		$queryResult = $this->getMock('Tx_Extbase_Persistence_QueryResult', array('initialize'), array($this->mockQuery));
+		$queryResult = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult', array('initialize'), array($this->mockQuery));
 		$queryResult->injectPersistenceManager($this->mockPersistenceManager);
 		$queryResult->expects($this->never())->method('initialize');
 		$queryResult->count();
@@ -128,7 +130,7 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryResultTest extends Tx_Extbase_Tests
 	 * @test
 	 */
 	public function countCallsGetObjectCountByQueryOnPersistenceManager() {
-		$queryResult = $this->getMock('Tx_Extbase_Persistence_QueryResult', array('initialize'), array($this->mockQuery));
+		$queryResult = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult', array('initialize'), array($this->mockQuery));
 		$queryResult->injectPersistenceManager($this->mockPersistenceManager);
 		$this->assertEquals(2, $queryResult->count());
 	}
@@ -158,7 +160,7 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryResultTest extends Tx_Extbase_Tests
 	 * @test
 	 */
 	public function initializeExecutesQueryWithArrayFetchMode() {
-		$queryResult = $this->getAccessibleMock('Tx_Extbase_Persistence_QueryResult', array('dummy'), array($this->mockQuery));
+		$queryResult = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult', array('dummy'), array($this->mockQuery));
 		$queryResult->injectPersistenceManager($this->mockPersistenceManager);
 		$queryResult->injectDataMapper($this->mockDataMapper);
 		$this->mockPersistenceManager->expects($this->once())->method('getObjectDataByQuery')->with($this->mockQuery)->will($this->returnValue(array('FAKERESULT')));
@@ -169,12 +171,13 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryResultTest extends Tx_Extbase_Tests
 	 * @test
 	 */
 	public function usingCurrentOnTheQueryResultReturnsAWarning() {
-		$queryResult = new Tx_Extbase_Persistence_QueryResult($this->mockQuery);
-		$expectedResult = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the Tx_Extbase_Persistence_QueryResult. To retrieve the first result, you can use the getFirst() method.';
+		$queryResult = new \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult($this->mockQuery);
+		$expectedResult = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult. To retrieve the first result, you can use the getFirst() method.';
 		$actualResult = current($queryResult);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
 }
+
 
 ?>

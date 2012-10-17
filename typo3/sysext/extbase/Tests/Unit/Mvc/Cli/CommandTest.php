@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -21,20 +23,20 @@
 /**
  * Testcase for the CLI Command class
  */
-class Tx_Extbase_Tests_Unit_MVC_CLI_CommandTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class CommandTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_MVC_CLI_Command
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\Command
 	 */
 	protected $command;
 
 	/**
-	 * @var Tx_Extbase_Reflection_MethodReflection
+	 * @var \TYPO3\CMS\Extbase\Reflection\MethodReflection
 	 */
 	protected $mockMethodReflection;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $mockObjectManager;
 
@@ -42,10 +44,10 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_CommandTest extends Tx_Extbase_Tests_Unit_Ba
 	 * @return void
 	 */
 	public function setUp() {
-		$this->command = $this->getAccessibleMock('Tx_Extbase_MVC_CLI_Command', array('getCommandMethodReflection'), array(), '', FALSE);
-		$this->mockMethodReflection = $this->getMock('Tx_Extbase_Reflection_MethodReflection', array(), array(), '', FALSE);
+		$this->command = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Command', array('getCommandMethodReflection'), array(), '', FALSE);
+		$this->mockMethodReflection = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\MethodReflection', array(), array(), '', FALSE);
 		$this->command->expects($this->any())->method('getCommandMethodReflection')->will($this->returnValue($this->mockMethodReflection));
-		$this->mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
+		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$this->command->injectObjectManager($this->mockObjectManager);
 	}
 
@@ -69,7 +71,7 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_CommandTest extends Tx_Extbase_Tests_Unit_Ba
 	 * @param string $expectedCommandIdentifier
 	 */
 	public function constructRendersACommandIdentifierByTheGivenControllerAndCommandName($controllerClassName, $commandName, $expectedCommandIdentifier) {
-		$command = new Tx_Extbase_MVC_CLI_Command($controllerClassName, $commandName);
+		$command = new \TYPO3\CMS\Extbase\Mvc\Cli\Command($controllerClassName, $commandName);
 		$this->assertEquals($expectedCommandIdentifier, $command->getCommandIdentifier());
 	}
 
@@ -93,7 +95,7 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_CommandTest extends Tx_Extbase_Tests_Unit_Ba
 	 * @param string $controllerClassName
 	 */
 	public function constructThrowsExceptionIfCommandClassNameIsInvalid($controllerClassName) {
-		new Tx_Extbase_MVC_CLI_Command($controllerClassName, 'foo');
+		new \TYPO3\CMS\Extbase\Mvc\Cli\Command($controllerClassName, 'foo');
 	}
 
 	/**
@@ -110,7 +112,7 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_CommandTest extends Tx_Extbase_Tests_Unit_Ba
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function hasArgumentsReturnsTrueIfCommandExpectsArguments() {
-		$mockParameterReflection = $this->getMock('Tx_Extbase_Reflection_ParameterReflection', array(), array(), '', FALSE);
+		$mockParameterReflection = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ParameterReflection', array(), array(), '', FALSE);
 		$this->mockMethodReflection->expects($this->atLeastOnce())->method('getParameters')->will($this->returnValue(array($mockParameterReflection)));
 		$this->assertTrue($this->command->hasArguments());
 	}
@@ -129,22 +131,23 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_CommandTest extends Tx_Extbase_Tests_Unit_Ba
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getArgumentDefinitionsReturnsArrayOfArgumentDefinitionIfCommandExpectsArguments() {
-		$mockParameterReflection = $this->getMock('Tx_Extbase_Reflection_ParameterReflection', array(), array(), '', FALSE);
-		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service');
+		$mockParameterReflection = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ParameterReflection', array(), array(), '', FALSE);
+		$mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service');
 		$mockMethodParameters = array('argument1' => array('optional' => FALSE), 'argument2' => array('optional' => TRUE));
 		$mockReflectionService->expects($this->atLeastOnce())->method('getMethodParameters')->will($this->returnValue($mockMethodParameters));
 		$this->command->injectReflectionService($mockReflectionService);
 		$this->mockMethodReflection->expects($this->atLeastOnce())->method('getParameters')->will($this->returnValue(array($mockParameterReflection)));
 		$this->mockMethodReflection->expects($this->atLeastOnce())->method('getTagsValues')->will($this->returnValue(array('param' => array('@param $argument1 argument1 description', '@param $argument2 argument2 description'))));
-		$mockCommandArgumentDefinition1 = $this->getMock('Tx_Extbase_MVC_CLI_CommandArgumentDefinition', array(), array(), '', FALSE);
-		$mockCommandArgumentDefinition2 = $this->getMock('Tx_Extbase_MVC_CLI_CommandArgumentDefinition', array(), array(), '', FALSE);
-		$this->mockObjectManager->expects($this->at(0))->method('get')->with('Tx_Extbase_MVC_CLI_CommandArgumentDefinition', 'argument1', TRUE, 'argument1 description')->will($this->returnValue($mockCommandArgumentDefinition1));
-		$this->mockObjectManager->expects($this->at(1))->method('get')->with('Tx_Extbase_MVC_CLI_CommandArgumentDefinition', 'argument2', FALSE, 'argument2 description')->will($this->returnValue($mockCommandArgumentDefinition2));
+		$mockCommandArgumentDefinition1 = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandArgumentDefinition', array(), array(), '', FALSE);
+		$mockCommandArgumentDefinition2 = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandArgumentDefinition', array(), array(), '', FALSE);
+		$this->mockObjectManager->expects($this->at(0))->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandArgumentDefinition', 'argument1', TRUE, 'argument1 description')->will($this->returnValue($mockCommandArgumentDefinition1));
+		$this->mockObjectManager->expects($this->at(1))->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandArgumentDefinition', 'argument2', FALSE, 'argument2 description')->will($this->returnValue($mockCommandArgumentDefinition2));
 		$expectedResult = array($mockCommandArgumentDefinition1, $mockCommandArgumentDefinition2);
 		$actualResult = $this->command->getArgumentDefinitions();
 		$this->assertSame($expectedResult, $actualResult);
 	}
 
 }
+
 
 ?>

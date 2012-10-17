@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\BeforeExtbase14;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,13 +36,13 @@
  * @subpackage extbase
  * @version $Id: GenericObjectValidator_testcase.php 1408 2009-10-08 13:15:09Z jocrau $
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_GenericObjectValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function isValidReturnsFalseIfTheValueIsNoObject() {
-		$validator = $this->getMock('Tx_Extbase_Validation_Validator_GenericObjectValidator', array('addError'), array(), '', FALSE);
+		$validator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\GenericObjectValidator', array('addError'), array(), '', FALSE);
 		$this->assertFalse($validator->isValid('foo'));
 	}
 
@@ -49,8 +51,8 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_GenericObjectVa
 	 */
 	public function isValidChecksAllPropertiesForWhichAPropertyValidatorExists() {
 		$mockPropertyValidators = array('foo' => 'validator', 'bar' => 'validator');
-		$mockObject = new stdClass();
-		$validator = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_Validator_GenericObjectValidator'), array('addError', 'isPropertyValid'), array(), '', FALSE);
+		$mockObject = new \stdClass();
+		$validator = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Validation\\Validator\\GenericObjectValidator'), array('addError', 'isPropertyValid'), array(), '', FALSE);
 		$validator->_set('propertyValidators', $mockPropertyValidators);
 		$validator->expects($this->at(0))->method('isPropertyValid')->with($mockObject, 'foo')->will($this->returnValue(TRUE));
 		$validator->expects($this->at(1))->method('isPropertyValid')->with($mockObject, 'bar')->will($this->returnValue(TRUE));
@@ -58,5 +60,6 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_GenericObjectVa
 	}
 
 }
+
 
 ?>

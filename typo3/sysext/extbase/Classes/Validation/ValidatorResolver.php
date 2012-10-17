@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @subpackage Validation
  * @version $Id$
  */
-class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
+class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Match validator names and options
@@ -66,12 +68,12 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 			)
 		/ixS';
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Extbase_Reflection_Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\Service
 	 */
 	protected $reflectionService;
 
@@ -83,20 +85,20 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 	/**
 	 * Injects the object manager
 	 *
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager A reference to the object manager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager A reference to the object manager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
 	/**
 	 * Injects the reflection service
 	 *
-	 * @param Tx_Extbase_Reflection_Service $reflectionService
+	 * @param \TYPO3\CMS\Extbase\Reflection\Service $reflectionService
 	 * @return void
 	 */
-	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
 
@@ -107,7 +109,7 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 	 *
 	 * @param string $validatorName Either one of the built-in data types or fully qualified validator class name
 	 * @param array $validatorOptions Options to be passed to the validator
-	 * @return Tx_Extbase_Validation_Validator_ValidatorInterface Validator or NULL if none found.
+	 * @return \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface Validator or NULL if none found.
 	 */
 	public function createValidator($validatorName, array $validatorOptions = array()) {
 		$validatorClassName = $this->resolveValidatorObjectName($validatorName);
@@ -115,7 +117,7 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 			return NULL;
 		}
 		$validator = $this->objectManager->get($validatorClassName, $validatorOptions);
-		if (!$validator instanceof Tx_Extbase_Validation_Validator_ValidatorInterface) {
+		if (!$validator instanceof \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface) {
 			return NULL;
 		}
 		if (method_exists($validator, 'setOptions')) {
@@ -132,7 +134,7 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 	 * NULL is returned.
 	 *
 	 * @param string $dataType The data type to search a validator for. Usually the fully qualified object name
-	 * @return Tx_Extbase_Validation_Validator_ConjunctionValidator The validator conjunction or NULL
+	 * @return \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator The validator conjunction or NULL
 	 */
 	public function getBaseValidatorConjunction($dataType) {
 		if (!isset($this->baseValidatorConjunctions[$dataType])) {
@@ -171,12 +173,12 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 				foreach ($parsedAnnotation['validators'] as $validatorConfiguration) {
 					$newValidator = $this->createValidator($validatorConfiguration['validatorName'], $validatorConfiguration['validatorOptions']);
 					if ($newValidator === NULL) {
-						throw new Tx_Extbase_Validation_Exception_NoSuchValidator(((((('Invalid validate annotation in ' . $className) . '->') . $methodName) . '(): Could not resolve class name for  validator "') . $validatorConfiguration['validatorName']) . '".', 1239853109);
+						throw new \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException(((((('Invalid validate annotation in ' . $className) . '->') . $methodName) . '(): Could not resolve class name for  validator "') . $validatorConfiguration['validatorName']) . '".', 1239853109);
 					}
 					if (isset($validatorConjunctions[$parsedAnnotation['argumentName']])) {
 						$validatorConjunctions[$parsedAnnotation['argumentName']]->addValidator($newValidator);
 					} else {
-						throw new Tx_Extbase_Validation_Exception_InvalidValidationConfiguration(((((('Invalid validate annotation in ' . $className) . '->') . $methodName) . '(): Validator specified for argument name "') . $parsedAnnotation['argumentName']) . '", but this argument does not exist.', 1253172726);
+						throw new \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException(((((('Invalid validate annotation in ' . $className) . '->') . $methodName) . '(): Validator specified for argument name "') . $parsedAnnotation['argumentName']) . '", but this argument does not exist.', 1253172726);
 					}
 				}
 			}
@@ -198,10 +200,10 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 	 * name F3\Foo\Domain\Validator\QuuxValidator
 	 *
 	 * @param string $dataType The data type to build the validation conjunction for. Needs to be the fully qualified object name.
-	 * @return Tx_Extbase_Validation_Validator_ConjunctionValidator The validator conjunction or NULL
+	 * @return \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator The validator conjunction or NULL
 	 */
 	protected function buildBaseValidatorConjunction($dataType) {
-		$validatorConjunction = $this->objectManager->get('Tx_Extbase_Validation_Validator_ConjunctionValidator');
+		$validatorConjunction = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator');
 		// Model based validator
 		if (strpos($dataType, '_') !== FALSE && class_exists($dataType)) {
 			$validatorCount = 0;
@@ -216,7 +218,7 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 					foreach ($parsedAnnotation['validators'] as $validatorConfiguration) {
 						$newValidator = $this->createValidator($validatorConfiguration['validatorName'], $validatorConfiguration['validatorOptions']);
 						if ($newValidator === NULL) {
-							throw new Tx_Extbase_Validation_Exception_NoSuchValidator(((((('Invalid validate annotation in ' . $dataType) . '::') . $classPropertyName) . ': Could not resolve class name for  validator "') . $validatorConfiguration['validatorName']) . '".', 1241098027);
+							throw new \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException(((((('Invalid validate annotation in ' . $dataType) . '::') . $classPropertyName) . ': Could not resolve class name for  validator "') . $validatorConfiguration['validatorName']) . '".', 1241098027);
 						}
 						$objectValidator->addPropertyValidator($classPropertyName, $newValidator);
 						$validatorCount++;
@@ -351,5 +353,6 @@ class Tx_Extbase_Validation_ValidatorResolver implements t3lib_Singleton {
 	}
 
 }
+
 
 ?>

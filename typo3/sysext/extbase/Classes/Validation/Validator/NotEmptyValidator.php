@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @subpackage Validation\Validator
  * @version $Id$
  */
-class Tx_Extbase_Validation_Validator_NotEmptyValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class NotEmptyValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
 	 * Checks if the given property ($propertyValue) is not empty (NULL or empty string).
@@ -55,5 +57,6 @@ class Tx_Extbase_Validation_Validator_NotEmptyValidator extends Tx_Extbase_Valid
 	}
 
 }
+
 
 ?>

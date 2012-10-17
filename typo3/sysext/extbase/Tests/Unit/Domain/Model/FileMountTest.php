@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,15 +34,15 @@
  * @entity
  * @api
  */
-class Tx_Extbase_Tests_Unit_Domain_Model_FileMountTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class FileMountTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Domain_Model_FileMount
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\FileMount
 	 */
 	protected $fixture = NULL;
 
 	public function setUp() {
-		$this->fixture = new Tx_Extbase_Domain_Model_FileMount();
+		$this->fixture = new \TYPO3\CMS\Extbase\Domain\Model\FileMount();
 	}
 
 	public function tearDown() {
@@ -95,5 +97,6 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FileMountTest extends Tx_Extbase_Tests_
 	}
 
 }
+
 
 ?>

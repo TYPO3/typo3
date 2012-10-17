@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -43,8 +45,9 @@
  * @version $ID:
  * @api
  */
-interface Tx_Extbase_Validation_Validator_ValidatorInterface
+interface ValidatorInterface
 {
 
 }
+
 ?>

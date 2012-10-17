@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,15 +29,15 @@
  * @package Extbase
  * @subpackage Utility
  */
-class Tx_Extbase_Tests_Unit_Utility_LocalizationTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Utility_Localization
+	 * @var \TYPO3\CMS\Extbase\Utility\LocalizationUtility
 	 */
 	protected $localization;
 
 	public function setUp() {
-		$this->localization = $this->getAccessibleMock('Tx_Extbase_Utility_Localization', array('dummy'));
+		$this->localization = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Utility\\LocalizationUtility', array('dummy'));
 	}
 
 	public function tearDown() {
@@ -70,16 +72,17 @@ class Tx_Extbase_Tests_Unit_Utility_LocalizationTest extends Tx_Extbase_Tests_Un
 	 * @test
 	 */
 	public function translateForEmptyStringKeyReturnsNull() {
-		$this->assertNull(Tx_Extbase_Utility_Localization::translate('', 'extbase'));
+		$this->assertNull(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('', 'extbase'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function translateForEmptyStringKeyWithArgumentsReturnsNull() {
-		$this->assertNull(Tx_Extbase_Utility_Localization::translate('', 'extbase', array('argument')));
+		$this->assertNull(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('', 'extbase', array('argument')));
 	}
 
 }
+
 
 ?>

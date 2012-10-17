@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Reflection\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,9 +33,10 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class Tx_Extbase_Reflection_Exception_UnknownClass extends Tx_Extbase_Reflection_Exception {
+class UnknownClassException extends \TYPO3\CMS\Extbase\Reflection\Exception {
 
 
 }
+
 
 ?>

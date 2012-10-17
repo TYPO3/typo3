@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +35,7 @@
  * @scope session
  * @api
  */
-class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
+class FlashMessages implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Add another flash message.
@@ -50,13 +52,13 @@ class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 	 * @return void
 	 * @api
 	 */
-	public function add($message, $title = '', $severity = t3lib_FlashMessage::OK) {
+	public function add($message, $title = '', $severity = \TYPO3\CMS\Core\Messaging\FlashMessage::OK) {
 		if (!is_string($message)) {
-			throw new InvalidArgumentException(('The flash message must be string, ' . gettype($message)) . ' given.', 1243258395);
+			throw new \InvalidArgumentException(('The flash message must be string, ' . gettype($message)) . ' given.', 1243258395);
 		}
-		/** @var $flashMessage t3lib_FlashMessage */
-		$flashMessage = t3lib_div::makeInstance('t3lib_FlashMessage', $message, $title, $severity, TRUE);
-		t3lib_FlashMessageQueue::addMessage($flashMessage);
+		/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
+		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, $title, $severity, TRUE);
+		\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
 	}
 
 	/**
@@ -67,7 +69,7 @@ class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 	 * @see t3lib_FlashMessage
 	 */
 	public function getAllMessages() {
-		return t3lib_FlashMessageQueue::getAllMessages();
+		return \TYPO3\CMS\Core\Messaging\FlashMessageQueue::getAllMessages();
 	}
 
 	/**
@@ -77,7 +79,7 @@ class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 	 * @api
 	 */
 	public function flush() {
-		t3lib_FlashMessageQueue::getAllMessagesAndFlush();
+		\TYPO3\CMS\Core\Messaging\FlashMessageQueue::getAllMessagesAndFlush();
 	}
 
 	/**
@@ -88,9 +90,10 @@ class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 	 * @api
 	 */
 	public function getAllMessagesAndFlush() {
-		return t3lib_FlashMessageQueue::getAllMessagesAndFlush();
+		return \TYPO3\CMS\Core\Messaging\FlashMessageQueue::getAllMessagesAndFlush();
 	}
 
 }
+
 
 ?>

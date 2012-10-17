@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Cli;
+
 /***************************************************************
  *  Copyright notice
  *  All rights reserved
@@ -27,44 +29,44 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_MVC_CLI_RequestBuilder {
+class RequestBuilder {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Extbase_Reflection_Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\Service
 	 */
 	protected $reflectionService;
 
 	/**
-	 * @var Tx_Extbase_MVC_CLI_CommandManager
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager
 	 */
 	protected $commandManager;
 
 	/**
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
 	/**
-	 * @param Tx_Extbase_Reflection_Service $reflectionService
+	 * @param \TYPO3\CMS\Extbase\Reflection\Service $reflectionService
 	 * @return void
 	 */
-	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
 
 	/**
-	 * @param Tx_Extbase_MVC_CLI_CommandManager $commandManager
+	 * @param \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager $commandManager
 	 * @return void
 	 */
-	public function injectCommandManager(Tx_Extbase_MVC_CLI_CommandManager $commandManager) {
+	public function injectCommandManager(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager $commandManager) {
 		$this->commandManager = $commandManager;
 	}
 
@@ -76,12 +78,12 @@ class Tx_Extbase_MVC_CLI_RequestBuilder {
 	 * name (like in $argv) but start with command right away.
 	 *
 	 * @param mixed $commandLine The command line, either as a string or as an array
-	 * @return Tx_Extbase_MVC_CLI_Request The CLI request as an object
+	 * @return \TYPO3\CMS\Extbase\Mvc\Cli\Request The CLI request as an object
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function build($commandLine = '') {
-		$request = $this->objectManager->get('Tx_Extbase_MVC_CLI_Request');
-		$request->setControllerObjectName('Tx_Extbase_Command_HelpCommandController');
+		$request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Request');
+		$request->setControllerObjectName('TYPO3\\CMS\\Extbase\\Command\\HelpCommandController');
 		$rawCommandLineArguments = is_array($commandLine) ? $commandLine : explode(' ', $commandLine);
 		if (count($rawCommandLineArguments) === 0) {
 			$request->setControllerCommandName('helpStub');
@@ -90,7 +92,7 @@ class Tx_Extbase_MVC_CLI_RequestBuilder {
 		$commandIdentifier = trim(array_shift($rawCommandLineArguments));
 		try {
 			$command = $this->commandManager->getCommandByIdentifier($commandIdentifier);
-		} catch (Tx_Extbase_MVC_Exception_Command $exception) {
+		} catch (\TYPO3\CMS\Extbase\Mvc\Exception\CommandException $exception) {
 			$request->setArgument('exception', $exception);
 			$request->setControllerCommandName('error');
 			return $request;
@@ -148,7 +150,7 @@ class Tx_Extbase_MVC_CLI_RequestBuilder {
 					$commandLineArguments[$optionalArguments[$argumentName]['parameterName']] = $argumentValue;
 				} elseif (isset($requiredArguments[$argumentName])) {
 					if ($decidedToUseUnnamedArguments) {
-						throw new Tx_Extbase_MVC_Exception_InvalidArgumentMixing(sprintf('Unexpected named argument "%s". If you use unnamed arguments, all required arguments must be passed without a name.', $argumentName), 1309971821);
+						throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentMixingException(sprintf('Unexpected named argument "%s". If you use unnamed arguments, all required arguments must be passed without a name.', $argumentName), 1309971821);
 					}
 					$decidedToUseNamedArguments = TRUE;
 					$argumentValue = $this->getValueOfCurrentCommandLineOption($rawArgument, $rawCommandLineArguments, $requiredArguments[$argumentName]['type']);
@@ -158,7 +160,7 @@ class Tx_Extbase_MVC_CLI_RequestBuilder {
 			} else {
 				if (count($requiredArguments) > 0) {
 					if ($decidedToUseNamedArguments) {
-						throw new Tx_Extbase_MVC_Exception_InvalidArgumentMixing(sprintf('Unexpected unnamed argument "%s". If you use named arguments, all required arguments must be passed named.', $rawArgument), 1309971820);
+						throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentMixingException(sprintf('Unexpected unnamed argument "%s". If you use named arguments, all required arguments must be passed named.', $rawArgument), 1309971820);
 					}
 					$argument = array_shift($requiredArguments);
 					$commandLineArguments[$argument['parameterName']] = $rawArgument;
@@ -228,5 +230,6 @@ class Tx_Extbase_MVC_CLI_RequestBuilder {
 	}
 
 }
+
 
 ?>

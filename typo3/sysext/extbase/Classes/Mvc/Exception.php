@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,9 +33,10 @@
  * @subpackage MVC
  * @version $ID:$
  */
-class Tx_Extbase_MVC_Exception extends Tx_Extbase_Exception {
+class Exception extends \TYPO3\CMS\Extbase\Exception {
 
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @entity
  * @api
  */
-class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_AbstractEntity {
+class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * @var string
@@ -148,7 +150,7 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	public function __construct($username = '', $password = '') {
 		$this->username = $username;
 		$this->password = $password;
-		$this->usergroup = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->usergroup = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 	}
 
 	/**
@@ -201,29 +203,29 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	 * @return void
 	 * @api
 	 */
-	public function setUsergroup(Tx_Extbase_Persistence_ObjectStorage $usergroup) {
+	public function setUsergroup(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $usergroup) {
 		$this->usergroup = $usergroup;
 	}
 
 	/**
 	 * Adds a usergroup to the frontend user
 	 *
-	 * @param Tx_Extbase_Domain_Model_FrontendUserGroup $usergroup
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $usergroup
 	 * @return void
 	 * @api
 	 */
-	public function addUsergroup(Tx_Extbase_Domain_Model_FrontendUserGroup $usergroup) {
+	public function addUsergroup(\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $usergroup) {
 		$this->usergroup->attach($usergroup);
 	}
 
 	/**
 	 * Removes a usergroup from the frontend user
 	 *
-	 * @param Tx_Extbase_Domain_Model_FrontendUserGroup $usergroup
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $usergroup
 	 * @return void
 	 * @api
 	 */
-	public function removeUsergroup(Tx_Extbase_Domain_Model_FrontendUserGroup $usergroup) {
+	public function removeUsergroup(\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $usergroup) {
 		$this->usergroup->detach($usergroup);
 	}
 
@@ -231,7 +233,7 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	 * Returns the usergroups. Keep in mind that the property is called "usergroup"
 	 * although it can hold several usergroups.
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage An object storage containing the usergroup
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage An object storage containing the usergroup
 	 * @api
 	 */
 	public function getUsergroup() {
@@ -581,7 +583,7 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	 * @return void
 	 * @api
 	 */
-	public function setLastlogin(DateTime $lastlogin) {
+	public function setLastlogin(\DateTime $lastlogin) {
 		$this->lastlogin = $lastlogin;
 	}
 
@@ -617,5 +619,6 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	}
 
 }
+
 
 ?>

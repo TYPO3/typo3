@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Property\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,9 +33,10 @@
  * @subpackage Property\Exception
  * @version $Id$
  */
-class Tx_Extbase_Property_Exception_InvalidSource extends Tx_Extbase_Property_Exception {
+class InvalidSource extends \TYPO3\CMS\Extbase\Property\Exception {
 
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +34,7 @@
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-interface Tx_Extbase_Persistence_QOM_BindVariableValueInterface extends Tx_Extbase_Persistence_QOM_StaticOperandInterface
+interface BindVariableValueInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\StaticOperandInterface
 {
 	/**
 	 * Gets the name of the bind variable.
@@ -42,4 +44,5 @@ interface Tx_Extbase_Persistence_QOM_BindVariableValueInterface extends Tx_Extba
 	public function getBindVariableName();
 
 }
+
 ?>

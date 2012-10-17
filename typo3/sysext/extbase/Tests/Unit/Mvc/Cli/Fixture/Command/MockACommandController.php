@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli\Fixture\Command;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -21,7 +23,7 @@
 /**
  * A mock CLI Command
  */
-class Tx_Extbase_MVC_Fixture_CLI_Command_MockACommandController extends Tx_Extbase_MVC_CLI_Command {
+class MockACommandController extends \TYPO3\CMS\Extbase\Mvc\Cli\Command {
 
 	public function fooCommand() {
 
@@ -35,5 +37,6 @@ class Tx_Extbase_MVC_Fixture_CLI_Command_MockACommandController extends Tx_Extba
 	}
 
 }
+
 
 ?>

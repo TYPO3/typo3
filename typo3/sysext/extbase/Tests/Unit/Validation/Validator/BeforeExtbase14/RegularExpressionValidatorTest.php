@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\BeforeExtbase14;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,13 +36,13 @@
  * @subpackage extbase
  * @version $Id: RegularExpressionValidator_testcase.php 2428 2010-07-20 10:18:51Z jocrau $
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_RegularExpressionValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class RegularExpressionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function regularExpressionValidatorMatchesABasicExpressionCorrectly() {
-		$regularExpressionValidator = $this->getMock('Tx_Extbase_Validation_Validator_RegularExpressionValidator', array('addError'), array(), '', FALSE);
+		$regularExpressionValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\RegularExpressionValidator', array('addError'), array(), '', FALSE);
 		$regularExpressionValidator->setOptions(array('regularExpression' => '/^simple[0-9]expression$/'));
 		$this->assertTrue($regularExpressionValidator->isValid('simple1expression'));
 		$this->assertFalse($regularExpressionValidator->isValid('simple1expressions'));
@@ -50,12 +52,13 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_RegularExpressi
 	 * @test
 	 */
 	public function regularExpressionValidatorCreatesTheCorrectErrorIfTheExpressionDidNotMatch() {
-		$regularExpressionValidator = $this->getMock('Tx_Extbase_Validation_Validator_RegularExpressionValidator', array('addError'), array(), '', FALSE);
+		$regularExpressionValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\RegularExpressionValidator', array('addError'), array(), '', FALSE);
 		$regularExpressionValidator->expects($this->once())->method('addError')->with('The given subject did not match the pattern.', 1221565130);
 		$regularExpressionValidator->setOptions(array('regularExpression' => '/^simple[0-9]expression$/'));
 		$regularExpressionValidator->isValid('some subject that will not match');
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Controller;
+
 /***************************************************************
  *  Copyright notice
  *  All rights reserved
@@ -27,21 +29,21 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Controller_CommandControllerInterface {
+class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandControllerInterface {
 
 	const MAXIMUM_LINE_LENGTH = 79;
 	/**
-	 * @var Tx_Extbase_MVC_CLI_Request
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\Request
 	 */
 	protected $request;
 
 	/**
-	 * @var Tx_Extbase_MVC_CLI_Response
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\Response
 	 */
 	protected $response;
 
 	/**
-	 * @var Tx_Extbase_MVC_Controller_Arguments
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\Arguments
 	 */
 	protected $arguments;
 
@@ -53,56 +55,56 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 	protected $commandMethodName = '';
 
 	/**
-	 * @var Tx_Extbase_Reflection_Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\Service
 	 */
 	protected $reflectionService;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @param Tx_Extbase_Reflection_Service $reflectionService
+	 * @param \TYPO3\CMS\Extbase\Reflection\Service $reflectionService
 	 * @return void
 	 */
-	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
 
 	/**
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
-		$this->arguments = $this->objectManager->create('Tx_Extbase_MVC_Controller_Arguments');
+		$this->arguments = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments');
 	}
 
 	/**
 	 * Checks if the current request type is supported by the controller.
 	 *
-	 * @param Tx_Extbase_MVC_RequestInterface $request The current request
+	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The current request
 	 * @return boolean TRUE if this request type is supported, otherwise FALSE
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function canProcessRequest(Tx_Extbase_MVC_RequestInterface $request) {
-		return $request instanceof Tx_Extbase_MVC_CLI_Request;
+	public function canProcessRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request) {
+		return $request instanceof \TYPO3\CMS\Extbase\Mvc\Cli\Request;
 	}
 
 	/**
 	 * Processes a command line request.
 	 *
-	 * @param Tx_Extbase_MVC_RequestInterface $request The request object
-	 * @param Tx_Extbase_MVC_ResponseInterface $response The response, modified by this controller
+	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
+	 * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this controller
 	 * @return void
 	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestTypeException if the controller doesn't support the current request type
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
-	public function processRequest(Tx_Extbase_MVC_RequestInterface $request, Tx_Extbase_MVC_ResponseInterface $response) {
+	public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
 		if (!$this->canProcessRequest($request)) {
-			throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType(((get_class($this) . ' does not support requests of type "') . get_class($request)) . '".', 1300787096);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException(((get_class($this) . ' does not support requests of type "') . get_class($request)) . '".', 1300787096);
 		}
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
@@ -125,7 +127,7 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 	protected function resolveCommandMethodName() {
 		$commandMethodName = $this->request->getControllerCommandName() . 'Command';
 		if (!is_callable(array($this, $commandMethodName))) {
-			throw new Tx_Extbase_MVC_Exception_NoSuchCommand(((('A command method "' . $commandMethodName) . '()" does not exist in controller "') . get_class($this)) . '".', 1300902143);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException(((('A command method "' . $commandMethodName) . '()" does not exist in controller "') . get_class($this)) . '".', 1300902143);
 		}
 		return $commandMethodName;
 	}
@@ -147,7 +149,7 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 				$dataType = 'array';
 			}
 			if ($dataType === NULL) {
-				throw new Tx_Extbase_MVC_Exception_InvalidArgumentType(((((('The argument type for parameter $' . $parameterName) . ' of method ') . get_class($this)) . '->') . $this->commandMethodName) . '() could not be detected.', 1306755296);
+				throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException(((((('The argument type for parameter $' . $parameterName) . ' of method ') . get_class($this)) . '->') . $this->commandMethodName) . '() could not be detected.', 1306755296);
 			}
 			$defaultValue = isset($parameterInfo['defaultValue']) ? $parameterInfo['defaultValue'] : NULL;
 			$this->arguments->addNewArgument($parameterName, $dataType, $parameterInfo['optional'] === FALSE, $defaultValue);
@@ -167,8 +169,8 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 			if ($this->request->hasArgument($argumentName)) {
 				$argument->setValue($this->request->getArgument($argumentName));
 			} elseif ($argument->isRequired()) {
-				$exception = new Tx_Extbase_MVC_Exception_Command(('Required argument "' . $argumentName) . '" is not set.', 1306755520);
-				$this->forward('error', 'Tx_Extbase_Command_HelpCommandController', array('exception' => $exception));
+				$exception = new \TYPO3\CMS\Extbase\Mvc\Exception\CommandException(('Required argument "' . $argumentName) . '" is not set.', 1306755520);
+				$this->forward('error', 'TYPO3\\CMS\\Extbase\\Command\\HelpCommandController', array('exception' => $exception));
 			}
 		}
 	}
@@ -192,7 +194,7 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 		}
 		$this->request->setArguments($arguments);
 		$this->arguments->removeAll();
-		throw new Tx_Extbase_MVC_Exception_StopAction();
+		throw new \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException();
 	}
 
 	/**
@@ -255,7 +257,7 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 	 */
 	protected function quit($exitCode = 0) {
 		$this->response->setExitCode($exitCode);
-		throw new Tx_Extbase_MVC_Exception_StopAction();
+		throw new \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException();
 	}
 
 	/**
@@ -271,5 +273,6 @@ class Tx_Extbase_MVC_Controller_CommandController implements Tx_Extbase_MVC_Cont
 	}
 
 }
+
 
 ?>

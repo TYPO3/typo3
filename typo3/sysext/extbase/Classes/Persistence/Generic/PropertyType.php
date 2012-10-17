@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -45,7 +47,7 @@
  * @subpackage Persistence
  * @version $Id$
  */
-final class Tx_Extbase_Persistence_PropertyType {
+final class PropertyType {
 
 	/**
 	 * This constant can be used within a property definition to specify that
@@ -311,32 +313,33 @@ final class Tx_Extbase_Persistence_PropertyType {
 	static public function valueFromType($type) {
 		switch (strtolower($type)) {
 		case 'string':
-			return Tx_Extbase_Persistence_PropertyType::STRING;
+			return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::STRING;
 			break;
 		case 'boolean':
-			return Tx_Extbase_Persistence_PropertyType::BOOLEAN;
+			return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::BOOLEAN;
 			break;
 		case 'integer':
-			return Tx_Extbase_Persistence_PropertyType::LONG;
+			return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::LONG;
 			break;
 		case 'float':
 
 		case 'double':
-			return Tx_Extbase_Persistence_PropertyType::DOUBLE;
+			return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::DOUBLE;
 			break;
 		case 'integer':
 
 		case 'int':
-			return Tx_Extbase_Persistence_PropertyType::INTEGER;
+			return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::INTEGER;
 			break;
 		case 'datetime':
-			return Tx_Extbase_Persistence_PropertyType::DATE;
+			return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::DATE;
 			break;
 		default:
-			return Tx_Extbase_Persistence_PropertyType::UNDEFINED;
+			return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::UNDEFINED;
 		}
 	}
 
 }
+
 
 ?>

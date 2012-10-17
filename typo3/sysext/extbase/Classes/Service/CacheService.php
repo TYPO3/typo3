@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,7 +29,7 @@
  * @package Extbase
  * @subpackage Service
  */
-class Tx_Extbase_Service_CacheService implements t3lib_Singleton {
+class CacheService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Clears the page cache
@@ -78,5 +80,6 @@ class Tx_Extbase_Service_CacheService implements t3lib_Singleton {
 	}
 
 }
+
 
 ?>

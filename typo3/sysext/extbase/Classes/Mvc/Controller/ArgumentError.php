@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,7 +36,7 @@
  * @scope prototype
  * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
  */
-class Tx_Extbase_MVC_Controller_ArgumentError extends Tx_Extbase_Validation_PropertyError {
+class ArgumentError extends \TYPO3\CMS\Extbase\Validation\PropertyError {
 
 	/**
 	 * @var string The default (english) error message.
@@ -47,5 +49,6 @@ class Tx_Extbase_MVC_Controller_ArgumentError extends Tx_Extbase_Validation_Prop
 	protected $code = 1245107351;
 
 }
+
 
 ?>

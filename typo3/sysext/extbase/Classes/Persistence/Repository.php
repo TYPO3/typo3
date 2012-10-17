@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                          *
  *                                                                        *
@@ -18,39 +20,39 @@
  * @subpackage Persistence
  * @api
  */
-class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_RepositoryInterface, t3lib_Singleton {
+class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var Tx_Extbase_Persistence_IdentityMap
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap
 	 */
 	protected $identityMap;
 
 	/**
 	 * Objects of this repository
 	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
 	 */
 	protected $addedObjects;
 
 	/**
 	 * Objects removed but not found in $this->addedObjects at removal time
 	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
 	 */
 	protected $removedObjects;
 
 	/**
-	 * @var Tx_Extbase_Persistence_QueryFactoryInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface
 	 */
 	protected $queryFactory;
 
 	/**
-	 * @var Tx_Extbase_Persistence_ManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
 	 */
 	protected $persistenceManager;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -65,52 +67,53 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	protected $defaultOrderings = array();
 
 	/**
-	 * @var Tx_Extbase_Persistence_QuerySettingsInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
 	 */
 	protected $defaultQuerySettings = NULL;
 
 	/**
 	 * Constructs a new Repository
 	 *
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 */
-	public function __construct(Tx_Extbase_Object_ObjectManagerInterface $objectManager = NULL) {
-		$this->addedObjects = new Tx_Extbase_Persistence_ObjectStorage();
-		$this->removedObjects = new Tx_Extbase_Persistence_ObjectStorage();
-		$this->objectType = preg_replace(array('/_Repository_(?!.*_Repository_)/', '/Repository$/'), array('_Model_', ''), $this->getRepositoryClassName());
+	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager = NULL) {
+		$this->addedObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$this->removedObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$nsSeperator = strpos($this->getRepositoryClassName(), '\\') !== FALSE ? '\\\\' : '_';
+		$this->objectType = preg_replace(array('/' . $nsSeperator . 'Repository' . $nsSeperator . '(?!.*' . $nsSeperator . 'Repository' . $nsSeperator . ')/', '/Repository$/'), array($nsSeperator . 'Model' . $nsSeperator, ''), $this->getRepositoryClassName());
 		if ($objectManager === NULL) {
 			// Legacy creation, in case the object manager is NOT injected
 			// If ObjectManager IS there, then all properties are automatically injected
-			$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-			$this->injectIdentityMap($this->objectManager->get('Tx_Extbase_Persistence_IdentityMap'));
-			$this->injectQueryFactory($this->objectManager->get('Tx_Extbase_Persistence_QueryFactory'));
-			$this->injectPersistenceManager($this->objectManager->get('Tx_Extbase_Persistence_Manager'));
+			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+			$this->injectIdentityMap($this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\IdentityMap'));
+			$this->injectQueryFactory($this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryFactory'));
+			$this->injectPersistenceManager($this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager'));
 		} else {
 			$this->objectManager = $objectManager;
 		}
 	}
 
 	/**
-	 * @param Tx_Extbase_Persistence_IdentityMap $identityMap
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap $identityMap
 	 * @return void
 	 */
-	public function injectIdentityMap(Tx_Extbase_Persistence_IdentityMap $identityMap) {
+	public function injectIdentityMap(\TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap $identityMap) {
 		$this->identityMap = $identityMap;
 	}
 
 	/**
-	 * @param Tx_Extbase_Persistence_QueryFactory $queryFactory
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory $queryFactory
 	 * @return void
 	 */
-	public function injectQueryFactory(Tx_Extbase_Persistence_QueryFactory $queryFactory) {
+	public function injectQueryFactory(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory $queryFactory) {
 		$this->queryFactory = $queryFactory;
 	}
 
 	/**
-	 * @param Tx_Extbase_Persistence_ManagerInterface $persistenceManager
+	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
 	 * @return void
 	 */
-	public function injectPersistenceManager(Tx_Extbase_Persistence_ManagerInterface $persistenceManager) {
+	public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager) {
 		$this->persistenceManager = $persistenceManager;
 		$this->persistenceManager->registerRepositoryClassName($this->getRepositoryClassName());
 	}
@@ -124,7 +127,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 */
 	public function add($object) {
 		if (!$object instanceof $this->objectType) {
-			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType(('The object given to add() was not of the type (' . $this->objectType) . ') this repository manages.', 1248363335);
+			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\IllegalObjectTypeException(('The object given to add() was not of the type (' . $this->objectType) . ') this repository manages.', 1248363335);
 		}
 		$this->addedObjects->attach($object);
 		if ($this->removedObjects->contains($object)) {
@@ -141,7 +144,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 */
 	public function remove($object) {
 		if (!$object instanceof $this->objectType) {
-			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType(('The object given to remove() was not of the type (' . $this->objectType) . ') this repository manages.', 1248363335);
+			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\IllegalObjectTypeException(('The object given to remove() was not of the type (' . $this->objectType) . ') this repository manages.', 1248363335);
 		}
 		if ($this->addedObjects->contains($object)) {
 			$this->addedObjects->detach($object);
@@ -161,10 +164,10 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 */
 	public function replace($existingObject, $newObject) {
 		if (!$existingObject instanceof $this->objectType) {
-			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType(('The existing object given to replace was not of the type (' . $this->objectType) . ') this repository manages.', 1248363434);
+			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\IllegalObjectTypeException(('The existing object given to replace was not of the type (' . $this->objectType) . ') this repository manages.', 1248363434);
 		}
 		if (!$newObject instanceof $this->objectType) {
-			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType(('The new object given to replace was not of the type (' . $this->objectType) . ') this repository manages.', 1248363439);
+			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\IllegalObjectTypeException(('The new object given to replace was not of the type (' . $this->objectType) . ') this repository manages.', 1248363439);
 		}
 		$backend = $this->persistenceManager->getBackend();
 		$session = $this->persistenceManager->getSession();
@@ -184,7 +187,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			$this->addedObjects->detach($existingObject);
 			$this->addedObjects->attach($newObject);
 		} else {
-			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The "existing object" is unknown to the persistence backend.', 1238068475);
+			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnknownObjectException('The "existing object" is unknown to the persistence backend.', 1238068475);
 		}
 	}
 
@@ -196,14 +199,14 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 */
 	public function update($modifiedObject) {
 		if (!$modifiedObject instanceof $this->objectType) {
-			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType(('The modified object given to update() was not of the type (' . $this->objectType) . ') this repository manages.', 1249479625);
+			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\IllegalObjectTypeException(('The modified object given to update() was not of the type (' . $this->objectType) . ') this repository manages.', 1249479625);
 		}
 		$uid = $modifiedObject->getUid();
 		if ($uid !== NULL) {
 			$existingObject = $this->findByUid($uid);
 			$this->replace($existingObject, $modifiedObject);
 		} else {
-			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The "modified object" is does not have an existing counterpart in this repository.', 1249479819);
+			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnknownObjectException('The "modified object" is does not have an existing counterpart in this repository.', 1249479819);
 		}
 	}
 
@@ -214,7 +217,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * added to the repository. Those are only objects *added*, not objects
 	 * fetched from the underlying storage.
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage the objects
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage the objects
 	 */
 	public function getAddedObjects() {
 		return $this->addedObjects;
@@ -224,7 +227,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * Returns an Tx_Extbase_Persistence_ObjectStorage with objects remove()d from the repository
 	 * that had been persisted to the storage layer before.
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage the objects
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage the objects
 	 */
 	public function getRemovedObjects() {
 		return $this->removedObjects;
@@ -259,7 +262,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @api
 	 */
 	public function removeAll() {
-		$this->addedObjects = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->addedObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 		foreach ($this->findAll() as $object) {
 			$this->remove($object);
 		}
@@ -303,18 +306,18 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	/**
 	 * Sets the default query settings to be used in this repository
 	 *
-	 * @param Tx_Extbase_Persistence_QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
 	 * @return void
 	 * @api
 	 */
-	public function setDefaultQuerySettings(Tx_Extbase_Persistence_QuerySettingsInterface $defaultQuerySettings) {
+	public function setDefaultQuerySettings(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings) {
 		$this->defaultQuerySettings = $defaultQuerySettings;
 	}
 
 	/**
 	 * Returns a query for objects of this repository
 	 *
-	 * @return Tx_Extbase_Persistence_QueryInterface
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 * @api
 	 */
 	public function createQuery() {
@@ -333,7 +336,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 *
 	 * @param string $methodName The name of the magic method
 	 * @param string $arguments The arguments of the magic method
-	 * @throws Tx_Extbase_Persistence_Exception_UnsupportedMethod
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException
 	 * @return mixed
 	 * @api
 	 */
@@ -354,7 +357,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			$result = $query->matching($query->equals($propertyName, $arguments[0]))->execute()->count();
 			return $result;
 		}
-		throw new Tx_Extbase_Persistence_Exception_UnsupportedMethod(('The method "' . $methodName) . '" is not supported by the repository.', 1233180480);
+		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException(('The method "' . $methodName) . '" is not supported by the repository.', 1233180480);
 	}
 
 	/**
@@ -367,5 +370,6 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	}
 
 }
+
 
 ?>

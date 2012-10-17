@@ -19,14 +19,16 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 require_once 'AbstractValidatorTestcase.php';
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+
 /**
  * Testcase for the regular expression validator
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_RegularExpressionValidatorTest extends Tx_Extbase_Tests_Unit_Validation_Validator_AbstractValidatorTestcase {
+class RegularExpressionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase {
 
-	protected $validatorClassName = 'Tx_Extbase_Validation_Validator_RegularExpressionValidator';
+	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\RegularExpressionValidator';
 
 	/**
 	 * @test
@@ -45,9 +47,10 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_RegularExpressionValidatorTest 
 	public function regularExpressionValidatorCreatesTheCorrectErrorIfTheExpressionDidNotMatch() {
 		$this->validatorOptions(array('regularExpression' => '/^simple[0-9]expression$/'));
 		$errors = $this->validator->validate('some subject that will not match')->getErrors();
-		$this->assertEquals(array(new Tx_Extbase_Validation_Error('The given subject did not match the pattern.', 1221565130)), $errors);
+		$this->assertEquals(array(new \Tx_Extbase_Validation_Error('The given subject did not match the pattern.', 1221565130)), $errors);
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Reflection;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
  * @subpackage Reflection
  * @version $Id$
  */
-class Tx_Extbase_Reflection_DocCommentParser {
+class DocCommentParser {
 
 	/**
 	 * @var string The description as found in the doc comment
@@ -81,7 +83,7 @@ class Tx_Extbase_Reflection_DocCommentParser {
 	 */
 	public function getTagValues($tagName) {
 		if (!$this->isTaggedWith($tagName)) {
-			throw new RuntimeException(('Tag "' . $tagName) . '" does not exist.', 1169128255);
+			throw new \RuntimeException(('Tag "' . $tagName) . '" does not exist.', 1169128255);
 		}
 		return $this->tags[$tagName];
 	}
@@ -123,5 +125,6 @@ class Tx_Extbase_Reflection_DocCommentParser {
 	}
 
 }
+
 
 ?>

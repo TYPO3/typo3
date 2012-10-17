@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Core;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,13 +32,13 @@
  * @package Extbase
  * @version $ID:$
  */
-class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
+class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 
 	/**
 	 * Back reference to the parent content object
 	 * This has to be public as it is set directly from TYPO3
 	 *
-	 * @var tslib_cObj
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	public $cObj;
 
@@ -48,27 +50,27 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 	protected $context;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManager
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var t3lib_cache_Manager
+	 * @var \TYPO3\CMS\Core\Cache\CacheManager
 	 */
 	protected $cacheManager;
 
 	/**
-	 * @var Tx_Extbase_Reflection_Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\Service
 	 */
 	protected $reflectionService;
 
 	/**
-	 * @var Tx_Extbase_Persistence_Manager
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
 	 */
 	protected $persistenceManager;
 
@@ -86,10 +88,10 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 	public function initialize($configuration) {
 		if (!defined('TYPO3_cliMode') || TYPO3_cliMode !== TRUE) {
 			if (!isset($configuration['extensionName']) || strlen($configuration['extensionName']) === 0) {
-				throw new RuntimeException('Invalid configuration: "extensionName" is not set', 1290623020);
+				throw new \RuntimeException('Invalid configuration: "extensionName" is not set', 1290623020);
 			}
 			if (!isset($configuration['pluginName']) || strlen($configuration['pluginName']) === 0) {
-				throw new RuntimeException('Invalid configuration: "pluginName" is not set', 1290623027);
+				throw new \RuntimeException('Invalid configuration: "pluginName" is not set', 1290623027);
 			}
 		}
 		$this->initializeObjectManager();
@@ -107,7 +109,7 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 	 * @see initialize()
 	 */
 	protected function initializeObjectManager() {
-		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 	}
 
 	/**
@@ -118,8 +120,8 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 	 * @see initialize()
 	 */
 	public function initializeConfiguration($configuration) {
-		$this->configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$contentObject = isset($this->cObj) ? $this->cObj : t3lib_div::makeInstance('tslib_cObj');
+		$this->configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$contentObject = isset($this->cObj) ? $this->cObj : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$this->configurationManager->setContentObject($contentObject);
 		$this->configurationManager->setConfiguration($configuration);
 	}
@@ -132,11 +134,11 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 	 * @see initialize()
 	 */
 	public function configureObjectManager() {
-		$typoScriptSetup = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		if (!is_array($typoScriptSetup['config.']['tx_extbase.']['objects.'])) {
 			return;
 		}
-		$objectContainer = t3lib_div::makeInstance('Tx_Extbase_Object_Container_Container');
+		$objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\Container\\Container');
 		foreach ($typoScriptSetup['config.']['tx_extbase.']['objects.'] as $classNameWithDot => $classConfiguration) {
 			if (isset($classConfiguration['className'])) {
 				$originalClassName = rtrim($classNameWithDot, '.');
@@ -162,7 +164,7 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 	 * @see initialize()
 	 */
 	protected function initializeReflection() {
-		$this->reflectionService = $this->objectManager->get('Tx_Extbase_Reflection_Service');
+		$this->reflectionService = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\Service');
 		$this->reflectionService->setDataCache($this->cacheManager->getCache('extbase_reflection'));
 		if (!$this->reflectionService->isInitialized()) {
 			$this->reflectionService->initialize();
@@ -176,7 +178,7 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 	 * @see initialize()
 	 */
 	public function initializePersistence() {
-		$this->persistenceManager = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
+		$this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
 	}
 
 	/**
@@ -204,11 +206,11 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 	 */
 	protected function handleCommandLineRequest() {
 		$commandLine = isset($_SERVER['argv']) ? $_SERVER['argv'] : array();
-		$request = $this->objectManager->get('Tx_Extbase_MVC_CLI_RequestBuilder')->build(array_slice($commandLine, 1));
-		$response = $this->objectManager->get('Tx_Extbase_MVC_CLI_Response');
+		$request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\RequestBuilder')->build(array_slice($commandLine, 1));
+		$response = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
 		$extensionName = $request->getControllerExtensionName();
 		$this->configurationManager->setConfiguration(array('extensionName' => $extensionName));
-		$this->objectManager->get('Tx_Extbase_MVC_Dispatcher')->dispatch($request, $response);
+		$this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Dispatcher')->dispatch($request, $response);
 		$content = $response->getContent();
 		$this->resetSingletons();
 		return $content;
@@ -218,7 +220,7 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 	 * @return string
 	 */
 	protected function handleWebRequest() {
-		$requestHandlerResolver = $this->objectManager->get('Tx_Extbase_MVC_RequestHandlerResolver');
+		$requestHandlerResolver = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\RequestHandlerResolver');
 		$requestHandler = $requestHandlerResolver->resolveRequestHandler();
 		$response = $requestHandler->handleRequest();
 		// If response is NULL after handling the request we need to stop
@@ -262,12 +264,12 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 		$moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature];
 		// Check permissions and exit if the user has no permission for entry
 		$GLOBALS['BE_USER']->modAccess($moduleConfiguration, TRUE);
-		if (t3lib_div::_GP('id')) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id')) {
 			// Check page access
 			$permClause = $GLOBALS['BE_USER']->getPagePermsClause(TRUE);
-			$access = is_array(t3lib_BEfunc::readPageAccess((int) t3lib_div::_GP('id'), $permClause));
+			$access = is_array(\TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess((int) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'), $permClause));
 			if (!$access) {
-				throw new RuntimeException('You don\'t have access to this page', 1289917924);
+				throw new \RuntimeException('You don\'t have access to this page', 1289917924);
 			}
 		}
 		// BACK_PATH is the path from the typo3/ directory from within the
@@ -284,5 +286,6 @@ class Tx_Extbase_Core_Bootstrap implements Tx_Extbase_Core_BootstrapInterface {
 	}
 
 }
+
 
 ?>

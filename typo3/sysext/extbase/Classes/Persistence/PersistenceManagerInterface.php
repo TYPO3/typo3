@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                          *
  *                                                                        *
@@ -17,7 +19,7 @@
  * @package Extbase
  * @subpackage Persistence
  */
-interface Tx_Extbase_Persistence_PersistenceManagerInterface
+interface PersistenceManagerInterface
 {
 	/**
 	 * Commits new objects and changes to objects in the current persistence
@@ -56,20 +58,20 @@ interface Tx_Extbase_Persistence_PersistenceManagerInterface
 	/**
 	 * Returns the number of records matching the query.
 	 *
-	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
 	 * @return integer
 	 * @api
 	 */
-	public function getObjectCountByQuery(Tx_Extbase_Persistence_QueryInterface $query);
+	public function getObjectCountByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query);
 
 	/**
 	 * Returns the object data matching the $query.
 	 *
-	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
 	 * @return array
 	 * @api
 	 */
-	public function getObjectDataByQuery(Tx_Extbase_Persistence_QueryInterface $query);
+	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query);
 
 	/**
 	 * Registers a repository
@@ -80,4 +82,5 @@ interface Tx_Extbase_Persistence_PersistenceManagerInterface
 	public function registerRepositoryClassName($className);
 
 }
+
 ?>

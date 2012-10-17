@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Tests_Unit_Reflection_Fixture_ArrayAccessClass implements ArrayAccess {
+class ArrayAccessClass implements ArrayAccess {
 
 	protected $array = array();
 
@@ -71,5 +73,6 @@ class Tx_Extbase_Tests_Unit_Reflection_Fixture_ArrayAccessClass implements Array
 	}
 
 }
+
 
 ?>

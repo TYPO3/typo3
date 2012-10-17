@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,17 +36,17 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Tx_Extbase_Validation_Validator_ConjunctionValidator extends Tx_Extbase_Validation_Validator_AbstractCompositeValidator {
+class ConjunctionValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator {
 
 	/**
 	 * Checks if the given value is valid according to the validators of the conjunction.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @return Tx_Extbase_Error_Result
+	 * @return \TYPO3\CMS\Extbase\Error\Result
 	 * @api
 	 */
 	public function validate($value) {
-		$result = new Tx_Extbase_Error_Result();
+		$result = new \TYPO3\CMS\Extbase\Error\Result();
 		foreach ($this->validators as $validator) {
 			$result->merge($validator->validate($value));
 		}
@@ -72,5 +74,6 @@ class Tx_Extbase_Validation_Validator_ConjunctionValidator extends Tx_Extbase_Va
 	}
 
 }
+
 
 ?>

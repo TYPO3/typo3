@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
  * @package Extbase
  * @subpackage Service
  */
-class Tx_Extbase_Service_TypoScriptService implements t3lib_Singleton {
+class TypoScriptService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Removes all trailing dots recursively from TS settings array
@@ -89,5 +91,6 @@ class Tx_Extbase_Service_TypoScriptService implements t3lib_Singleton {
 	}
 
 }
+
 
 ?>

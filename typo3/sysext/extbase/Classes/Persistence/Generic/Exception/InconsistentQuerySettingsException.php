@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,9 +30,10 @@
  * @subpackage Persistence\Storage\Exception
  * @version $ID:$
  */
-class Tx_Extbase_Persistence_Generic_Exception_InconsistentQuerySettings extends Tx_Extbase_Persistence_Exception {
+class InconsistentQuerySettingsException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
 
 
 }
+
 
 ?>

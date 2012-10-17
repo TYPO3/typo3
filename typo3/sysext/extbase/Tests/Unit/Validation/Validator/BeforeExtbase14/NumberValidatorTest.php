@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\BeforeExtbase14;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,13 +36,13 @@
  * @subpackage extbase
  * @version $Id: NumberValidator_testcase.php 2428 2010-07-20 10:18:51Z jocrau $
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_NumberValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class NumberValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function numberValidatorReturnsTrueForASimpleInteger() {
-		$numberValidator = new Tx_Extbase_Validation_Validator_NumberValidator();
+		$numberValidator = new \TYPO3\CMS\Extbase\Validation\Validator\NumberValidator();
 		$this->assertTrue($numberValidator->isValid(1029437));
 	}
 
@@ -48,7 +50,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_NumberValidator
 	 * @test
 	 */
 	public function numberValidatorReturnsFalseForAString() {
-		$numberValidator = $this->getMock('Tx_Extbase_Validation_Validator_NumberValidator', array('addError'), array(), '', FALSE);
+		$numberValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberValidator', array('addError'), array(), '', FALSE);
 		$this->assertFalse($numberValidator->isValid('not a number'));
 	}
 
@@ -56,11 +58,12 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_NumberValidator
 	 * @test
 	 */
 	public function numberValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
-		$numberValidator = $this->getMock('Tx_Extbase_Validation_Validator_NumberValidator', array('addError'), array(), '', FALSE);
+		$numberValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberValidator', array('addError'), array(), '', FALSE);
 		$numberValidator->expects($this->once())->method('addError')->with('The given subject was not a valid number.', 1221563685);
 		$numberValidator->isValid('this is not a number');
 	}
 
 }
+
 
 ?>

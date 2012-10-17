@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Cli;
+
 /***************************************************************
  *  Copyright notice
  *  All rights reserved
@@ -27,10 +29,10 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_MVC_CLI_Command {
+class Command {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -50,14 +52,14 @@ class Tx_Extbase_MVC_CLI_Command {
 	protected $commandIdentifier;
 
 	/**
-	 * @var Tx_Extbase_Reflection_MethodReflection
+	 * @var \TYPO3\CMS\Extbase\Reflection\MethodReflection
 	 */
 	protected $commandMethodReflection;
 
 	/**
 	 * Reflection service
 	 *
-	 * @var Tx_Extbase_Reflection_Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\Service
 	 */
 	private $reflectionService;
 
@@ -73,24 +75,24 @@ class Tx_Extbase_MVC_CLI_Command {
 		$this->controllerCommandName = $controllerCommandName;
 		$classNameParts = explode('_', $controllerClassName);
 		if (count($classNameParts) !== 4 || strpos($classNameParts[3], 'CommandController') === FALSE) {
-			throw new InvalidArgumentException(('Invalid controller class name "' . $controllerClassName) . '"', 1305100019);
+			throw new \InvalidArgumentException(('Invalid controller class name "' . $controllerClassName) . '"', 1305100019);
 		}
-		$extensionKey = t3lib_div::camelCaseToLowerCaseUnderscored($classNameParts[1]);
+		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($classNameParts[1]);
 		$this->commandIdentifier = strtolower(((($extensionKey . ':') . substr($classNameParts[3], 0, -17)) . ':') . $controllerCommandName);
 	}
 
 	/**
-	 * @param Tx_Extbase_Reflection_Service $reflectionService Reflection service
+	 * @param \TYPO3\CMS\Extbase\Reflection\Service $reflectionService Reflection service
 	 */
-	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
 
 	/**
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager A reference to the object manager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager A reference to the object manager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -182,7 +184,7 @@ class Tx_Extbase_MVC_CLI_Command {
 			array_shift($explodedAnnotation);
 			$description = implode(' ', $explodedAnnotation);
 			$required = $commandParameterDefinition['optional'] !== TRUE;
-			$commandArgumentDefinitions[] = $this->objectManager->get('Tx_Extbase_MVC_CLI_CommandArgumentDefinition', $commandParameterName, $required, $description);
+			$commandArgumentDefinitions[] = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandArgumentDefinition', $commandParameterName, $required, $description);
 			$i++;
 		}
 		return $commandArgumentDefinitions;
@@ -235,15 +237,16 @@ class Tx_Extbase_MVC_CLI_Command {
 	}
 
 	/**
-	 * @return Tx_Extbase_Reflection_MethodReflection
+	 * @return \TYPO3\CMS\Extbase\Reflection\MethodReflection
 	 */
 	protected function getCommandMethodReflection() {
 		if ($this->commandMethodReflection === NULL) {
-			$this->commandMethodReflection = $this->objectManager->get('Tx_Extbase_Reflection_MethodReflection', $this->controllerClassName, $this->controllerCommandName . 'Command');
+			$this->commandMethodReflection = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\MethodReflection', $this->controllerClassName, $this->controllerCommandName . 'Command');
 		}
 		return $this->commandMethodReflection;
 	}
 
 }
+
 
 ?>

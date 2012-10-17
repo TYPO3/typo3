@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\BeforeExtbase14;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,7 +36,7 @@
  * @subpackage extbase
  * @version $Id: IntegerValidator_testcase.php 2428 2010-07-20 10:18:51Z jocrau $
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_IntegerValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * Data provider with valid integer numbers
@@ -72,7 +74,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_IntegerValidato
 	 * @param mixed $number
 	 */
 	public function integerValidatorReturnsTrueForAValidInteger($number) {
-		$integerValidator = new Tx_Extbase_Validation_Validator_IntegerValidator();
+		$integerValidator = new \TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator();
 		$this->assertTrue($integerValidator->isValid($number), "Validator declared {$number} as invalid though it is valid.");
 	}
 
@@ -82,7 +84,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_IntegerValidato
 	 * @param mixed $number
 	 */
 	public function integerValidatorReturnsFalseForAnInvalidInteger($number) {
-		$integerValidator = $this->getMock('Tx_Extbase_Validation_Validator_IntegerValidator', array('addError'), array(), '', FALSE);
+		$integerValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\IntegerValidator', array('addError'), array(), '', FALSE);
 		$this->assertFalse($integerValidator->isValid($number), "Validator declared {$number} as valid though it is invalid.");
 	}
 
@@ -90,11 +92,12 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_IntegerValidato
 	 * @test
 	 */
 	public function integerValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
-		$integerValidator = $this->getMock('Tx_Extbase_Validation_Validator_IntegerValidator', array('addError'), array(), '', FALSE);
+		$integerValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\IntegerValidator', array('addError'), array(), '', FALSE);
 		$integerValidator->expects($this->once())->method('addError')->with('The given subject was not a valid integer.', 1221560494);
 		$integerValidator->isValid('not a number');
 	}
 
 }
+
 
 ?>

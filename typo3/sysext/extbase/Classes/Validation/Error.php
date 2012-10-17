@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +35,7 @@
  * @version $ID:$
  * @scope prototype
  */
-class Tx_Extbase_Validation_Error extends Tx_Extbase_Error_Error {
+class Error extends \TYPO3\CMS\Extbase\Error\Error {
 
 	/**
 	 * @var string The default (english) error message.
@@ -46,5 +48,6 @@ class Tx_Extbase_Validation_Error extends Tx_Extbase_Error_Error {
 	protected $code = 1201447005;
 
 }
+
 
 ?>

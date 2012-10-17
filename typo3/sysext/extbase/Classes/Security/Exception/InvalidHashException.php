@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Security\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,9 +32,10 @@
  * @package Extbase
  * @subpackage Security\Exception
  */
-class Tx_Extbase_Security_Exception_InvalidHash extends Tx_Extbase_Security_Exception {
+class InvalidHashException extends \TYPO3\CMS\Extbase\Security\Exception {
 
 
 }
+
 
 ?>

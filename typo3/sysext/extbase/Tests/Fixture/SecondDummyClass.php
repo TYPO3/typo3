@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Fixture;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -21,9 +23,10 @@
 /**
  * Second Dummy Class
  */
-class Tx_Extbase_Fixture_SecondDummyClass {
+class SecondDummyClass {
 
 
 }
+
 
 ?>

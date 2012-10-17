@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,9 +33,10 @@
  * @subpackage MVC\Exception
  * @version $Id$
  */
-class Tx_Extbase_MVC_Exception_InvalidTemplateResource extends Tx_Extbase_MVC_Exception {
+class InvalidTemplateResourceException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 
 
 }
+
 
 ?>

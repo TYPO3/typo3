@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Web;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,19 +29,19 @@
 /**
  * A request handler which can handle web requests invoked by the backend.
  */
-class Tx_Extbase_MVC_Web_BackendRequestHandler extends Tx_Extbase_MVC_Web_AbstractRequestHandler {
+class BackendRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHandler {
 
 	/**
 	 * Handles the web request. The response will automatically be sent to the client.
 	 *
-	 * @return Tx_Extbase_MVC_Web_Response
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Response
 	 */
 	public function handleRequest() {
 		$request = $this->requestBuilder->build();
-		/** @var $requestHashService Tx_Extbase_Security_Channel_RequestHashService */
-		$requestHashService = $this->objectManager->get('Tx_Extbase_Security_Channel_RequestHashService');
+		/** @var $requestHashService \TYPO3\CMS\Extbase\Security\Channel\RequestHashService */
+		$requestHashService = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService');
 		$requestHashService->verifyRequest($request);
-		$response = $this->objectManager->create('Tx_Extbase_MVC_Web_Response');
+		$response = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Response');
 		$this->dispatcher->dispatch($request, $response);
 		return $response;
 	}
@@ -54,5 +56,6 @@ class Tx_Extbase_MVC_Web_BackendRequestHandler extends Tx_Extbase_MVC_Web_Abstra
 	}
 
 }
+
 
 ?>

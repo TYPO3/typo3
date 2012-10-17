@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +31,7 @@
  * @version $ID:$
  */
 // SK: PHPDoc ;-)
-class Tx_Extbase_Persistence_Mapper_ColumnMap {
+class ColumnMap {
 
 	/**
 	 * Constants reflecting the type of relation
@@ -283,5 +285,6 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	}
 
 }
+
 
 ?>

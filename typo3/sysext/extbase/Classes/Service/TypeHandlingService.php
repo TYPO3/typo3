@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,12 +29,12 @@
  * @package Extbase
  * @subpackage Service
  */
-class Tx_Extbase_Service_TypeHandlingService implements t3lib_Singleton {
+class TypeHandlingService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * A property type parse pattern.
 	 */
-	const PARSE_TYPE_PATTERN = '/^\\\\?(?P<type>integer|int|float|double|boolean|bool|string|DateTime|Tx_[a-zA-Z0-9_]+|array|ArrayObject|SplObjectStorage)(?:<(?P<elementType>[a-zA-Z0-9_]+)>)?/';
+	const PARSE_TYPE_PATTERN = '/^\\\\?(?P<type>integer|int|float|double|boolean|bool|string|DateTime|Tx_[a-zA-Z0-9_]+|[a-zA-Z0-9\\\\_]+|array|ArrayObject|SplObjectStorage)(?:<(?P<elementType>[a-zA-Z0-9\\\\_]+)>)?/';
 	/**
 	 * A type pattern to detect literal types.
 	 */
@@ -48,15 +50,15 @@ class Tx_Extbase_Service_TypeHandlingService implements t3lib_Singleton {
 		if (preg_match(self::PARSE_TYPE_PATTERN, $type, $matches)) {
 			$type = self::normalizeType($matches['type']);
 			$elementType = isset($matches['elementType']) ? self::normalizeType($matches['elementType']) : NULL;
-			if ($elementType !== NULL && !in_array($type, array('array', 'ArrayObject', 'SplObjectStorage', 'Tx_Extbase_Persistence_ObjectStorage'))) {
-				throw new InvalidArgumentException(((('Type "' . $type) . '" must not have an element type hint (') . $elementType) . ').', 1309255650);
+			if ($elementType !== NULL && !in_array($type, array('array', 'ArrayObject', 'SplObjectStorage', 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage', 'Tx_Extbase_Persistence_ObjectStorage'))) {
+				throw new \InvalidArgumentException(((('Type "' . $type) . '" must not have an element type hint (') . $elementType) . ').', 1309255650);
 			}
 			return array(
 				'type' => $type,
 				'elementType' => $elementType
 			);
 		} else {
-			throw new InvalidArgumentException('Invalid type encountered: ' . var_export($type, TRUE), 1309255651);
+			throw new \InvalidArgumentException('Invalid type encountered: ' . var_export($type, TRUE), 1309255651);
 		}
 	}
 
@@ -81,6 +83,7 @@ class Tx_Extbase_Service_TypeHandlingService implements t3lib_Singleton {
 			$type = 'float';
 			break;
 		}
+		$type = ltrim($type, '\\');
 		return $type;
 	}
 
@@ -105,5 +108,6 @@ class Tx_Extbase_Service_TypeHandlingService implements t3lib_Singleton {
 	}
 
 }
+
 
 ?>

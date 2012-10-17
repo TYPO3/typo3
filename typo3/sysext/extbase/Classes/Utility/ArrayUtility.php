@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @subpackage Utility
  * @api
  */
-class Tx_Extbase_Utility_Arrays {
+class ArrayUtility {
 
 	/**
 	 * Explodes a $string delimited by $delimeter and passes each item in the array through intval().
@@ -308,5 +310,6 @@ class Tx_Extbase_Utility_Arrays {
 	}
 
 }
+
 
 ?>

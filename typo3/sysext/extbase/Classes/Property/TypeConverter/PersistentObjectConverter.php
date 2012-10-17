@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Property\TypeConverter;
+
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -33,7 +35,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Extbase_Property_TypeConverter_AbstractTypeConverter implements t3lib_Singleton {
+class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter implements \TYPO3\CMS\Core\SingletonInterface {
 
 	const CONFIGURATION_MODIFICATION_ALLOWED = 1;
 	const CONFIGURATION_CREATION_ALLOWED = 2;
@@ -54,41 +56,41 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 	protected $priority = 1;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Extbase_Persistence_ManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
 	 */
 	protected $persistenceManager;
 
 	/**
-	 * @var Tx_Extbase_Reflection_Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\Service
 	 */
 	protected $reflectionService;
 
 	/**
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
 	/**
-	 * @param Tx_Extbase_Persistence_ManagerInterface $persistenceManager
+	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
 	 * @return void
 	 */
-	public function injectPersistenceManager(Tx_Extbase_Persistence_ManagerInterface $persistenceManager) {
+	public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager) {
 		$this->persistenceManager = $persistenceManager;
 	}
 
 	/**
-	 * @param Tx_Extbase_Reflection_Service $reflectionService
+	 * @param \TYPO3\CMS\Extbase\Reflection\Service $reflectionService
 	 * @return void
 	 */
-	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
 
@@ -101,8 +103,8 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function canConvertFrom($source, $targetType) {
-		$isValueObject = is_subclass_of($targetType, 'Tx_Extbase_DomainObject_AbstractValueObject');
-		$isEntity = is_subclass_of($targetType, 'Tx_Extbase_DomainObject_AbstractEntity');
+		$isValueObject = is_subclass_of($targetType, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractValueObject');
+		$isEntity = is_subclass_of($targetType, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity');
 		return $isEntity || $isValueObject;
 	}
 
@@ -128,18 +130,18 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 	 *
 	 * @param string $targetType
 	 * @param string $propertyName
-	 * @param Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration
+	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
 	 * @return string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function getTypeOfChildProperty($targetType, $propertyName, Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration) {
-		$configuredTargetType = $configuration->getConfigurationFor($propertyName)->getConfigurationValue('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', self::CONFIGURATION_TARGET_TYPE);
+	public function getTypeOfChildProperty($targetType, $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration) {
+		$configuredTargetType = $configuration->getConfigurationFor($propertyName)->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', self::CONFIGURATION_TARGET_TYPE);
 		if ($configuredTargetType !== NULL) {
 			return $configuredTargetType;
 		}
 		$schema = $this->reflectionService->getClassSchema($targetType);
 		if (!$schema->hasProperty($propertyName)) {
-			throw new Tx_Extbase_Property_Exception_InvalidTargetException(((('Property "' . $propertyName) . '" was not found in target object of type "') . $targetType) . '".', 1297978366);
+			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException(((('Property "' . $propertyName) . '" was not found in target object of type "') . $targetType) . '".', 1297978366);
 		}
 		$propertyInformation = $schema->getProperty($propertyName);
 		return $propertyInformation['type'] . ($propertyInformation['elementType'] !== NULL ? ('<' . $propertyInformation['elementType']) . '>' : '');
@@ -151,22 +153,22 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 	 * @param mixed $source
 	 * @param string $targetType
 	 * @param array $convertedChildProperties
-	 * @param Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration
+	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
 	 * @return object the target type
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration = NULL) {
+	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
 		if (is_array($source)) {
 			$object = $this->handleArrayData($source, $targetType, $convertedChildProperties, $configuration);
 		} elseif (is_string($source)) {
 			$object = $this->fetchObjectFromPersistence($source, $targetType);
 		} else {
-			throw new InvalidArgumentException('Only strings and arrays are accepted.', 1305630314);
+			throw new \InvalidArgumentException('Only strings and arrays are accepted.', 1305630314);
 		}
 		foreach ($convertedChildProperties as $propertyName => $propertyValue) {
-			$result = Tx_Extbase_Reflection_ObjectAccess::setProperty($object, $propertyName, $propertyValue);
+			$result = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($object, $propertyName, $propertyValue);
 			if ($result === FALSE) {
-				throw new Tx_Extbase_Property_Exception_InvalidTargetException(((('Property "' . $propertyName) . '" could not be set in target object of type "') . $targetType) . '".', 1297935345);
+				throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException(((('Property "' . $propertyName) . '" could not be set in target object of type "') . $targetType) . '".', 1297935345);
 			}
 		}
 		return $object;
@@ -178,23 +180,23 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 	 * @param array $source
 	 * @param string $targetType
 	 * @param array $convertedChildProperties
-	 * @param Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration
+	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
 	 * @return object
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function handleArrayData(array $source, $targetType, array &$convertedChildProperties, Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration = NULL) {
+	protected function handleArrayData(array $source, $targetType, array &$convertedChildProperties, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
 		if (isset($source['__identity'])) {
 			$object = $this->fetchObjectFromPersistence($source['__identity'], $targetType);
 			if (count($source) > 1) {
-				if ($configuration === NULL || $configuration->getConfigurationValue('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', self::CONFIGURATION_MODIFICATION_ALLOWED) !== TRUE) {
-					throw new Tx_Extbase_Property_Exception_InvalidPropertyMappingConfigurationException('Modification of persistent objects not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_MODIFICATION_ALLOWED" to TRUE.', 1297932028);
+				if ($configuration === NULL || $configuration->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', self::CONFIGURATION_MODIFICATION_ALLOWED) !== TRUE) {
+					throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException('Modification of persistent objects not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_MODIFICATION_ALLOWED" to TRUE.', 1297932028);
 				}
 				$object = clone $object;
 			}
 			return $object;
 		} else {
-			if ($configuration === NULL || $configuration->getConfigurationValue('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', self::CONFIGURATION_CREATION_ALLOWED) !== TRUE) {
-				throw new Tx_Extbase_Property_Exception_InvalidPropertyMappingConfigurationException('Creation of objects not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_CREATION_ALLOWED" to TRUE');
+			if ($configuration === NULL || $configuration->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', self::CONFIGURATION_CREATION_ALLOWED) !== TRUE) {
+				throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException('Creation of objects not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_CREATION_ALLOWED" to TRUE');
 			}
 			return $this->buildObject($convertedChildProperties, $targetType);
 		}
@@ -213,10 +215,10 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 		if (is_numeric($identity)) {
 			$object = $this->persistenceManager->getObjectByIdentifier($identity, $targetType);
 		} else {
-			throw new Tx_Extbase_Property_Exception_InvalidSourceException(('The identity property "' . $identity) . '" is no UID.', 1297931020);
+			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException(('The identity property "' . $identity) . '" is no UID.', 1297931020);
 		}
 		if ($object === NULL) {
-			throw new Tx_Extbase_Property_Exception_TargetNotFoundException(('Object with identity "' . print_r($identity, TRUE)) . '" not found.', 1297933823);
+			throw new \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException(('Object with identity "' . print_r($identity, TRUE)) . '" not found.', 1297933823);
 		}
 		return $object;
 	}
@@ -229,14 +231,14 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 	 * @param array &$possibleConstructorArgumentValues
 	 * @param string $objectType
 	 * @return object The created instance
-	 * @throws Tx_Extbase_Property_Exception_InvalidTargetException if a required constructor argument is missing
+	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException if a required constructor argument is missing
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	protected function buildObject(array &$possibleConstructorArgumentValues, $objectType) {
 		try {
 			$constructorSignature = $this->reflectionService->getMethodParameters($objectType, '__construct');
-		} catch (ReflectionException $reflectionException) {
+		} catch (\ReflectionException $reflectionException) {
 			$constructorSignature = array();
 		}
 		$constructorArguments = array();
@@ -247,12 +249,13 @@ class Tx_Extbase_Property_TypeConverter_PersistentObjectConverter extends Tx_Ext
 			} elseif ($constructorArgumentInformation['optional'] === TRUE) {
 				$constructorArguments[] = $constructorArgumentInformation['defaultValue'];
 			} else {
-				throw new Tx_Extbase_Property_Exception_InvalidTargetException(((('Missing constructor argument "' . $constructorArgumentName) . '" for object of type "') . $objectType) . '".', 1268734872);
+				throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException(((('Missing constructor argument "' . $constructorArgumentName) . '" for object of type "') . $objectType) . '".', 1268734872);
 			}
 		}
 		return call_user_func_array(array($this->objectManager, 'create'), array_merge(array($objectType), $constructorArguments));
 	}
 
 }
+
 
 ?>

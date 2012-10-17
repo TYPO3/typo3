@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Property;
+
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -23,23 +25,24 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Property_PropertyMappingConfigurationBuilder implements t3lib_Singleton {
+class PropertyMappingConfigurationBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Builds the default property mapping configuration.
 	 *
 	 * @param string $type the implementation class name of the PropertyMappingConfiguration to instanciate; must be a subclass of Tx_Extbase_Property_PropertyMappingConfiguration
-	 * @return Tx_Extbase_Property_PropertyMappingConfiguration
+	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
 	 */
-	public function build($type = 'Tx_Extbase_Property_PropertyMappingConfiguration') {
+	public function build($type = 'TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfiguration') {
 		$configuration = new $type();
-		$configuration->setTypeConverterOptions('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', array(
-			Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE,
-			Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED => TRUE
+		$configuration->setTypeConverterOptions('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', array(
+			\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE,
+			\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED => TRUE
 		));
 		return $configuration;
 	}
 
 }
+
 
 ?>

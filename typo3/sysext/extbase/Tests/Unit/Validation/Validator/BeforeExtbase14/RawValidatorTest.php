@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\BeforeExtbase14;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,20 +36,21 @@
  * @subpackage extbase
  * @version $Id: RawValidator_testcase.php 1408 2009-10-08 13:15:09Z jocrau $
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_RawValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class RawValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function theRawValidatorAlwaysReturnsTRUE() {
-		$rawValidator = new Tx_Extbase_Validation_Validator_RawValidator();
+		$rawValidator = new \TYPO3\CMS\Extbase\Validation\Validator\RawValidator();
 		$this->assertTrue($rawValidator->isValid('simple1expression'));
 		$this->assertTrue($rawValidator->isValid(''));
 		$this->assertTrue($rawValidator->isValid(NULL));
 		$this->assertTrue($rawValidator->isValid(FALSE));
-		$this->assertTrue($rawValidator->isValid(new ArrayObject()));
+		$this->assertTrue($rawValidator->isValid(new \ArrayObject()));
 	}
 
 }
+
 
 ?>

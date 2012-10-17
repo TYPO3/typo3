@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,22 +34,22 @@
  * @version $ID:$
  * @api
  */
-class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controller_AbstractController {
+class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractController {
 
 	/**
-	 * @var Tx_Extbase_Reflection_Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\Service
 	 */
 	protected $reflectionService;
 
 	/**
-	 * @var Tx_Extbase_Service_CacheService
+	 * @var \TYPO3\CMS\Extbase\Service\CacheService
 	 */
 	protected $cacheService;
 
 	/**
 	 * The current view, as resolved by resolveView()
 	 *
-	 * @var Tx_Extbase_MVC_View_ViewInterface
+	 * @var \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
 	 * @api
 	 */
 	protected $view = NULL;
@@ -79,7 +81,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @var string
 	 * @api
 	 */
-	protected $defaultViewObjectName = 'Tx_Fluid_View_TemplateView';
+	protected $defaultViewObjectName = 'TYPO3\\CMS\\Fluid\\View\\TemplateView';
 
 	/**
 	 * Name of the action method
@@ -98,18 +100,18 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	protected $errorMethodName = 'errorAction';
 
 	/**
-	 * @param Tx_Extbase_Reflection_Service $reflectionService
+	 * @param \TYPO3\CMS\Extbase\Reflection\Service $reflectionService
 	 * @return void
 	 */
-	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
 
 	/**
-	 * @param Tx_Extbase_Service_CacheService $cacheService
+	 * @param \TYPO3\CMS\Extbase\Service\CacheService $cacheService
 	 * @return void
 	 */
-	public function injectCacheService(Tx_Extbase_Service_CacheService $cacheService) {
+	public function injectCacheService(\TYPO3\CMS\Extbase\Service\CacheService $cacheService) {
 		$this->cacheService = $cacheService;
 	}
 
@@ -120,31 +122,31 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * replace / modify the supporteRequestTypes property or override this
 	 * method.
 	 *
-	 * @param Tx_Extbase_MVC_RequestInterface $request The current request
+	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The current request
 	 * @return boolean TRUE if this request type is supported, otherwise FALSE
 	 */
-	public function canProcessRequest(Tx_Extbase_MVC_RequestInterface $request) {
+	public function canProcessRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request) {
 		return parent::canProcessRequest($request);
 	}
 
 	/**
 	 * Handles a request. The result output is returned by altering the given response.
 	 *
-	 * @param Tx_Extbase_MVC_RequestInterface $request The request object
-	 * @param Tx_Extbase_MVC_ResponseInterface $response The response, modified by this handler
+	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
+	 * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this handler
 	 * @return void
 	 */
-	public function processRequest(Tx_Extbase_MVC_RequestInterface $request, Tx_Extbase_MVC_ResponseInterface $response) {
+	public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
 		if (!$this->canProcessRequest($request)) {
-			throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType((((get_class($this) . ' does not support requests of type "') . get_class($request)) . '". Supported types are: ') . implode(' ', $this->supportedRequestTypes), 1187701131);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException((((get_class($this) . ' does not support requests of type "') . get_class($request)) . '". Supported types are: ') . implode(' ', $this->supportedRequestTypes), 1187701131);
 		}
-		if ($response instanceof Tx_Extbase_MVC_Web_Response) {
+		if ($response instanceof \TYPO3\CMS\Extbase\Mvc\Web\Response) {
 			$response->setRequest($request);
 		}
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
-		$this->uriBuilder = $this->objectManager->create('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		$this->uriBuilder = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
 		$this->uriBuilder->setRequest($request);
 		$this->actionMethodName = $this->resolveActionMethodName();
 		$this->initializeActionMethodArguments();
@@ -183,7 +185,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 				$dataType = 'array';
 			}
 			if ($dataType === NULL) {
-				throw new Tx_Extbase_MVC_Exception_InvalidArgumentType(((((('The argument type for parameter $' . $parameterName) . ' of method ') . get_class($this)) . '->') . $this->actionMethodName) . '() could not be detected.', 1253175643);
+				throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException(((((('The argument type for parameter $' . $parameterName) . ' of method ') . get_class($this)) . '->') . $this->actionMethodName) . '() could not be detected.', 1253175643);
 			}
 			$defaultValue = isset($parameterInfo['defaultValue']) ? $parameterInfo['defaultValue'] : NULL;
 			$this->arguments->addNewArgument($parameterName, $dataType, $parameterInfo['optional'] === FALSE, $defaultValue);
@@ -229,12 +231,12 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * Resolves and checks the current action method name
 	 *
 	 * @return string Method name of the current action
-	 * @throws Tx_Extbase_MVC_Exception_NoSuchAction if the action specified in the request object does not exist (and if there's no default action either).
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException if the action specified in the request object does not exist (and if there's no default action either).
 	 */
 	protected function resolveActionMethodName() {
 		$actionMethodName = $this->request->getControllerActionName() . 'Action';
 		if (!method_exists($this, $actionMethodName)) {
-			throw new Tx_Extbase_MVC_Exception_NoSuchAction(((('An action "' . $actionMethodName) . '" does not exist in controller "') . get_class($this)) . '".', 1186669086);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException(((('An action "' . $actionMethodName) . '" does not exist in controller "') . get_class($this)) . '".', 1186669086);
 		}
 		return $actionMethodName;
 	}
@@ -296,7 +298,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 				$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
 			}
 		}
-		if ($actionResult === NULL && $this->view instanceof Tx_Extbase_MVC_View_ViewInterface) {
+		if ($actionResult === NULL && $this->view instanceof \TYPO3\CMS\Extbase\Mvc\View\ViewInterface) {
 			$this->response->appendContent($this->view->render());
 		} elseif (is_string($actionResult) && strlen($actionResult) > 0) {
 			$this->response->appendContent($actionResult);
@@ -330,7 +332,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 			}
 		}
 		if (!isset($view)) {
-			$view = $this->objectManager->create('Tx_Extbase_MVC_View_NotFoundView');
+			$view = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\View\\NotFoundView');
 			$view->assign('errorMessage', ('No template was found. View could not be resolved for action "' . $this->request->getControllerActionName()) . '"');
 		}
 		$view->setControllerContext($this->controllerContext);
@@ -345,20 +347,20 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	}
 
 	/**
-	 * @param Tx_Extbase_MVC_View_ViewInterface $view
+	 * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
 	 * @return void
 	 */
-	protected function setViewConfiguration(Tx_Extbase_MVC_View_ViewInterface $view) {
+	protected function setViewConfiguration(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view) {
 		// Template Path Override
-		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ((isset($extbaseFrameworkConfiguration['view']['templateRootPath']) && strlen($extbaseFrameworkConfiguration['view']['templateRootPath']) > 0) && method_exists($view, 'setTemplateRootPath')) {
-			$view->setTemplateRootPath(t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath']));
+			$view->setTemplateRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath']));
 		}
 		if ((isset($extbaseFrameworkConfiguration['view']['layoutRootPath']) && strlen($extbaseFrameworkConfiguration['view']['layoutRootPath']) > 0) && method_exists($view, 'setLayoutRootPath')) {
-			$view->setLayoutRootPath(t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['view']['layoutRootPath']));
+			$view->setLayoutRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['layoutRootPath']));
 		}
 		if ((isset($extbaseFrameworkConfiguration['view']['partialRootPath']) && strlen($extbaseFrameworkConfiguration['view']['partialRootPath']) > 0) && method_exists($view, 'setPartialRootPath')) {
-			$view->setPartialRootPath(t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['view']['partialRootPath']));
+			$view->setPartialRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['partialRootPath']));
 		}
 	}
 
@@ -391,11 +393,11 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * Override this method to solve assign variables common for all actions
 	 * or prepare the view in another way before the action is called.
 	 *
-	 * @param Tx_Extbase_MVC_View_ViewInterface $view The view to be initialized
+	 * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view The view to be initialized
 	 * @return void
 	 * @api
 	 */
-	protected function initializeView(Tx_Extbase_MVC_View_ViewInterface $view) {
+	protected function initializeView(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view) {
 
 	}
 
@@ -430,7 +432,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
 			$errorFlashMessage = $this->getErrorFlashMessage();
 			if ($errorFlashMessage !== FALSE) {
-				$this->flashMessageContainer->add($errorFlashMessage, '', t3lib_FlashMessage::ERROR);
+				$this->flashMessageContainer->add($errorFlashMessage, '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			}
 			$referringRequest = $this->request->getReferringRequest();
 			if ($referringRequest !== NULL) {
@@ -451,7 +453,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 			$this->request->setErrors($this->argumentsMappingResults->getErrors());
 			$errorFlashMessage = $this->getErrorFlashMessage();
 			if ($errorFlashMessage !== FALSE) {
-				$this->flashMessageContainer->add($errorFlashMessage, '', t3lib_FlashMessage::ERROR);
+				$this->flashMessageContainer->add($errorFlashMessage, '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			}
 			$referrer = $this->request->getInternalArgument('__referrer');
 			if ($referrer !== NULL) {
@@ -486,7 +488,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * In case the @dontverifyrequesthash-Annotation has been set, this suppresses the exception.
 	 *
 	 * @return void
-	 * @throws Tx_Extbase_MVC_Exception_InvalidOrNoRequestHash In case request hash checking failed
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidOrNoRequestHashException In case request hash checking failed
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
@@ -495,7 +497,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 			// If the new property mapper is enabled, the request hash is not needed anymore.
 			return;
 		}
-		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) {
+		if (!$this->request instanceof \TYPO3\CMS\Extbase\Mvc\Web\Request) {
 			return;
 		}
 		// We only want to check it for now for web requests.
@@ -505,14 +507,14 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		// all good
 		$verificationNeeded = FALSE;
 		foreach ($this->arguments as $argument) {
-			if ($argument->getOrigin() == Tx_Extbase_MVC_Controller_Argument::ORIGIN_NEWLY_CREATED || $argument->getOrigin() == Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE_AND_MODIFIED) {
+			if ($argument->getOrigin() == \TYPO3\CMS\Extbase\Mvc\Controller\Argument::ORIGIN_NEWLY_CREATED || $argument->getOrigin() == \TYPO3\CMS\Extbase\Mvc\Controller\Argument::ORIGIN_PERSISTENCE_AND_MODIFIED) {
 				$verificationNeeded = TRUE;
 			}
 		}
 		if ($verificationNeeded) {
 			$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
 			if (!isset($methodTagsValues['dontverifyrequesthash'])) {
-				throw new Tx_Extbase_MVC_Exception_InvalidOrNoRequestHash('Request hash (HMAC) checking failed. The parameter __hmac was invalid or not set, and objects were modified.', 1255082824);
+				throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidOrNoRequestHashException('Request hash (HMAC) checking failed. The parameter __hmac was invalid or not set, and objects were modified.', 1255082824);
 			}
 		}
 	}
@@ -524,7 +526,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @return void
 	 */
 	protected function clearCacheOnError() {
-		$extbaseSettings = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$extbaseSettings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
 			if (isset($GLOBALS['TSFE'])) {
 				$pageUid = $GLOBALS['TSFE']->id;
@@ -534,5 +536,6 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	}
 
 }
+
 
 ?>

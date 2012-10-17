@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Fixture;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +34,7 @@
  * @version $ID:$
  * @entity
  */
-class Tx_Extbase_Tests_Fixtures_Entity extends Tx_Extbase_DomainObject_AbstractEntity {
+class Entity extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * The entity's name
@@ -70,5 +72,6 @@ class Tx_Extbase_Tests_Fixtures_Entity extends Tx_Extbase_DomainObject_AbstractE
 	}
 
 }
+
 
 ?>

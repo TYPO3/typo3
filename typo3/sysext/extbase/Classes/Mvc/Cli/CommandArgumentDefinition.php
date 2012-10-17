@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Cli;
+
 /***************************************************************
  *  Copyright notice
  *  All rights reserved
@@ -27,7 +29,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_MVC_CLI_CommandArgumentDefinition {
+class CommandArgumentDefinition {
 
 	/**
 	 * @var string
@@ -91,5 +93,6 @@ class Tx_Extbase_MVC_CLI_CommandArgumentDefinition {
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Security;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,9 +34,10 @@
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser Public License, version 3 or later
  */
-class Tx_Extbase_Security_Exception extends Tx_Extbase_Exception {
+class Exception extends \TYPO3\CMS\Extbase\Exception {
 
 
 }
+
 
 ?>

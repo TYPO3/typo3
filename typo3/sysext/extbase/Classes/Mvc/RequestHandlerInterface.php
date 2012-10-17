@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,12 +31,12 @@
  *
  * @api
  */
-interface Tx_Extbase_MVC_RequestHandlerInterface
+interface RequestHandlerInterface
 {
 	/**
 	 * Handles a raw request and returns the respsonse.
 	 *
-	 * @return Tx_Extbase_MVC_ResponseInterface
+	 * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
 	 * @api
 	 */
 	public function handleRequest();
@@ -58,4 +60,5 @@ interface Tx_Extbase_MVC_RequestHandlerInterface
 	public function getPriority();
 
 }
+
 ?>

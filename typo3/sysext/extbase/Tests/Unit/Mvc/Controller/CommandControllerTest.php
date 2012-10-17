@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -26,22 +28,22 @@
 /**
  * Testcase for the Command Controller
  */
-class Tx_Extbase_Tests_Unit_MVC_Controller_CommandControllerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class CommandControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_MVC_Controller_CommandController
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\CommandController
 	 */
 	protected $commandController;
 
 	public function setUp() {
-		$this->commandController = $this->getAccessibleMock('Tx_Extbase_MVC_Controller_CommandController', array('dummy'));
+		$this->commandController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\CommandController', array('dummy'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function outputAppendsGivenStringToTheResponseContent() {
-		$mockResponse = $this->getMock('Tx_Extbase_MVC_CLI_Response');
+		$mockResponse = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
 		$mockResponse->expects($this->once())->method('appendContent')->with('some text');
 		$this->commandController->_set('response', $mockResponse);
 		$this->commandController->_call('output', 'some text');
@@ -51,7 +53,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_CommandControllerTest extends Tx_Extb
 	 * @test
 	 */
 	public function outputReplacesArgumentsInGivenString() {
-		$mockResponse = $this->getMock('Tx_Extbase_MVC_CLI_Response');
+		$mockResponse = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
 		$mockResponse->expects($this->once())->method('appendContent')->with('some text');
 		$this->commandController->_set('response', $mockResponse);
 		$this->commandController->_call('output', '%2$s %1$s', array('text', 'some'));
@@ -61,7 +63,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_CommandControllerTest extends Tx_Extb
 	 * @test
 	 */
 	public function outputLineAppendsGivenStringAndNewlineToTheResponseContent() {
-		$mockResponse = $this->getMock('Tx_Extbase_MVC_CLI_Response');
+		$mockResponse = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
 		$mockResponse->expects($this->once())->method('appendContent')->with('some text' . PHP_EOL);
 		$this->commandController->_set('response', $mockResponse);
 		$this->commandController->_call('outputLine', 'some text');
@@ -69,25 +71,26 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_CommandControllerTest extends Tx_Extb
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception_StopAction
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
 	 */
 	public function quitThrowsStopActionException() {
-		$mockResponse = $this->getMock('Tx_Extbase_MVC_CLI_Response');
+		$mockResponse = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
 		$this->commandController->_set('response', $mockResponse);
 		$this->commandController->_call('quit');
 	}
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception_StopAction
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
 	 */
 	public function quitSetsResponseExitCode() {
-		$mockResponse = $this->getMock('Tx_Extbase_MVC_CLI_Response');
+		$mockResponse = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
 		$mockResponse->expects($this->once())->method('setExitCode')->with(123);
 		$this->commandController->_set('response', $mockResponse);
 		$this->commandController->_call('quit', 123);
 	}
 
 }
+
 
 ?>

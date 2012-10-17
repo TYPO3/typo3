@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,9 +29,10 @@
 /**
  * A "No Such Command" exception
  */
-class Tx_Extbase_MVC_Exception_NoSuchCommand extends Tx_Extbase_MVC_Exception_Command {
+class NoSuchCommandException extends \TYPO3\CMS\Extbase\Mvc\Exception\CommandException {
 
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\DomainObject;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,14 +23,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class Tx_Extbase_Tests_Unit_DomainObject_AbstractEntityTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class AbstractEntityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithSimpleProperties() {
 		$domainObjectName = uniqid('DomainObject_');
-		eval(('class ' . $domainObjectName) . ' extends Tx_Extbase_DomainObject_AbstractEntity {
+		eval(('class ' . $domainObjectName) . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
 			public $foo;
 			public $bar;
 		}');
@@ -44,7 +46,7 @@ class Tx_Extbase_Tests_Unit_DomainObject_AbstractEntityTest extends Tx_Extbase_T
 	 */
 	public function objectIsDirtyAfterCallingMemorizeCleanStateWithSimplePropertiesAndModifyingThePropertiesAfterwards() {
 		$domainObjectName = uniqid('DomainObject_');
-		eval(('class ' . $domainObjectName) . ' extends Tx_Extbase_DomainObject_AbstractEntity {
+		eval(('class ' . $domainObjectName) . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
 			public $foo;
 			public $bar;
 		}');
@@ -61,12 +63,12 @@ class Tx_Extbase_Tests_Unit_DomainObject_AbstractEntityTest extends Tx_Extbase_T
 	 */
 	public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithObjectProperties() {
 		$domainObjectName = uniqid('DomainObject_');
-		eval(('class ' . $domainObjectName) . ' extends Tx_Extbase_DomainObject_AbstractEntity {
+		eval(('class ' . $domainObjectName) . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
 			public $foo;
 			public $bar;
 		}');
 		$domainObject = new $domainObjectName();
-		$domainObject->foo = new DateTime();
+		$domainObject->foo = new \DateTime();
 		$domainObject->bar = 'It is raining outside';
 		$domainObject->_memorizeCleanState();
 		$this->assertFalse($domainObject->_isDirty());
@@ -77,12 +79,12 @@ class Tx_Extbase_Tests_Unit_DomainObject_AbstractEntityTest extends Tx_Extbase_T
 	 */
 	public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithOtherDomainObjectsAsProperties() {
 		$domainObjectName = uniqid('DomainObject_');
-		eval(('class ' . $domainObjectName) . ' extends Tx_Extbase_DomainObject_AbstractEntity {
+		eval(('class ' . $domainObjectName) . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
 			public $foo;
 			public $bar;
 		}');
 		$secondDomainObjectName = uniqid('DomainObject_');
-		eval(('class ' . $secondDomainObjectName) . ' extends Tx_Extbase_DomainObject_AbstractEntity {
+		eval(('class ' . $secondDomainObjectName) . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
 			public $foo;
 			public $bar;
 		}');
@@ -96,5 +98,6 @@ class Tx_Extbase_Tests_Unit_DomainObject_AbstractEntityTest extends Tx_Extbase_T
 	}
 
 }
+
 
 ?>

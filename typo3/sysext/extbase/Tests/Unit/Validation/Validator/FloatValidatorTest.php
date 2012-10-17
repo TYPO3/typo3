@@ -19,14 +19,16 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 require_once 'AbstractValidatorTestcase.php';
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+
 /**
  * Testcase for the float validator
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_FloatValidatorTest extends Tx_Extbase_Tests_Unit_Validation_Validator_AbstractValidatorTestcase {
+class FloatValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase {
 
-	protected $validatorClassName = 'Tx_Extbase_Validation_Validator_FloatValidator';
+	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\FloatValidator';
 
 	/**
 	 * Data provider with valid floats
@@ -89,5 +91,6 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_FloatValidatorTest extends Tx_E
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,10 +32,10 @@
  * @api
  * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0. Please use Tx_Extbase_Service_TypeHandlingService instead
  */
-class Tx_Extbase_Utility_TypeHandling {
+class TypeHandlingUtility {
 
 	/**
-	 * @var Tx_Extbase_Service_TypeHandlingService
+	 * @var \TYPO3\CMS\Extbase\Service\TypeHandlingService
 	 */
 	static protected $typeHandlingService = NULL;
 
@@ -42,9 +44,9 @@ class Tx_Extbase_Utility_TypeHandling {
 	 */
 	static protected function getTypeHandlingService() {
 		if (self::$typeHandlingService === NULL) {
-			require_once t3lib_extMgm::extPath('extbase', 'Classes/Service/TypeHandlingService.php');
-			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-			self::$typeHandlingService = $objectManager->get('Tx_Extbase_Service_TypeHandlingService');
+			require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase', 'Classes/Service/TypeHandlingService.php');
+			$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+			self::$typeHandlingService = $objectManager->get('TYPO3\\CMS\\Extbase\\Service\\TypeHandlingService');
 		}
 		return self::$typeHandlingService;
 	}
@@ -61,7 +63,7 @@ class Tx_Extbase_Utility_TypeHandling {
 	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0 - Use Tx_Extbase_Service_TypoScriptService instead
 	 */
 	static public function parseType($type) {
-		t3lib_div::logDeprecatedFunction();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$typeHandlingService = self::getTypeHandlingService();
 		return $typeHandlingService->parseType($type);
 	}
@@ -77,11 +79,12 @@ class Tx_Extbase_Utility_TypeHandling {
 	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0 - Use Tx_Extbase_Service_TypoScriptService instead
 	 */
 	static public function normalizeType($type) {
-		t3lib_div::logDeprecatedFunction();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$typeHandlingService = self::getTypeHandlingService();
 		return $typeHandlingService->normalizeType($type);
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,8 +33,9 @@
  * @subpackage Persistence\QOM
  * @version $Id$
  */
-interface Tx_Extbase_Persistence_QOM_JoinConditionInterface
+interface JoinConditionInterface
 {
 
 }
+
 ?>

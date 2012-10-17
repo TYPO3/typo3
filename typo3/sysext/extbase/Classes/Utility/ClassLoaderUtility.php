@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @subpackage Utility
  * @version $Id$
  */
-class Tx_Extbase_Utility_ClassLoader {
+class ClassLoaderUtility {
 
 	/**
 	 * Loads php files containing classes or interfaces found in the classes directory of
@@ -43,11 +45,11 @@ class Tx_Extbase_Utility_ClassLoader {
 	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0. TYPO3 core autoloader handles extbase files as well
 	 */
 	static public function loadClass($className) {
-		t3lib_div::logDeprecatedFunction();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$classNameParts = explode('_', $className, 3);
-		$extensionKey = t3lib_div::camelCaseToLowerCaseUnderscored($classNameParts[1]);
-		if (t3lib_extMgm::isLoaded($extensionKey)) {
-			$classFilePathAndName = ((t3lib_extMgm::extPath($extensionKey) . 'Classes/') . strtr($classNameParts[2], '_', '/')) . '.php';
+		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($classNameParts[1]);
+		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extensionKey)) {
+			$classFilePathAndName = ((\TYPO3\CMS\Core\Extension\ExtensionManager::extPath($extensionKey) . 'Classes/') . strtr($classNameParts[2], '_', '/')) . '.php';
 			if (file_exists($classFilePathAndName)) {
 				require_once $classFilePathAndName;
 			}
@@ -55,5 +57,6 @@ class Tx_Extbase_Utility_ClassLoader {
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
  * @subpackage Persistence\Mapper
  * @version $ID:$
  */
-class Tx_Extbase_Persistence_Mapper_DataMap {
+class DataMap {
 
 	/**
 	 * The class name
@@ -217,10 +219,10 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	/**
 	 * Adds a given column map to the data map.
 	 *
-	 * @param Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap The column map
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap The column map
 	 * @return void
 	 */
-	public function addColumnMap(Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap) {
+	public function addColumnMap(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap) {
 		$this->columnMaps[$columnMap->getPropertyName()] = $columnMap;
 	}
 
@@ -473,5 +475,6 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	}
 
 }
+
 
 ?>

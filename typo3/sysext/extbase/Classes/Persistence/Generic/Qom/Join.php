@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,15 +34,15 @@
  * @version $Id$
  * @scope prototype
  */
-class Tx_Extbase_Persistence_QOM_Join implements Tx_Extbase_Persistence_QOM_JoinInterface {
+class Join implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface {
 
 	/**
-	 * @var Tx_Extbase_Persistence_QOM_SourceInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface
 	 */
 	protected $left;
 
 	/**
-	 * @var Tx_Extbase_Persistence_QOM_SourceInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface
 	 */
 	protected $right;
 
@@ -50,19 +52,19 @@ class Tx_Extbase_Persistence_QOM_Join implements Tx_Extbase_Persistence_QOM_Join
 	protected $joinType;
 
 	/**
-	 * @var Tx_Extbase_Persistence_QOM_JoinConditionInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinConditionInterface
 	 */
 	protected $joinCondition;
 
 	/**
 	 * Constructs the Join instance
 	 *
-	 * @param Tx_Extbase_Persistence_QOM_SourceInterface $left the left node-tuple source; non-null
-	 * @param Tx_Extbase_Persistence_QOM_SourceInterface $right the right node-tuple source; non-null
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $left the left node-tuple source; non-null
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $right the right node-tuple source; non-null
 	 * @param string $joinType one of QueryObjectModelConstants.JCR_JOIN_TYPE_*
-	 * @param Tx_Extbase_Persistence_QOM_JoinConditionInterface $join Condition the join condition; non-null
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinConditionInterface $join Condition the join condition; non-null
 	 */
-	public function __construct(Tx_Extbase_Persistence_QOM_SourceInterface $left, Tx_Extbase_Persistence_QOM_SourceInterface $right, $joinType, Tx_Extbase_Persistence_QOM_JoinConditionInterface $joinCondition) {
+	public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $left, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $right, $joinType, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinConditionInterface $joinCondition) {
 		$this->left = $left;
 		$this->right = $right;
 		$this->joinType = $joinType;
@@ -72,7 +74,7 @@ class Tx_Extbase_Persistence_QOM_Join implements Tx_Extbase_Persistence_QOM_Join
 	/**
 	 * Gets the left node-tuple source.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_SourceInterface the left source; non-null
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface the left source; non-null
 	 */
 	public function getLeft() {
 		return $this->left;
@@ -81,7 +83,7 @@ class Tx_Extbase_Persistence_QOM_Join implements Tx_Extbase_Persistence_QOM_Join
 	/**
 	 * Gets the right node-tuple source.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_SourceInterface the right source; non-null
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface the right source; non-null
 	 */
 	public function getRight() {
 		return $this->right;
@@ -106,5 +108,6 @@ class Tx_Extbase_Persistence_QOM_Join implements Tx_Extbase_Persistence_QOM_Join
 	}
 
 }
+
 
 ?>

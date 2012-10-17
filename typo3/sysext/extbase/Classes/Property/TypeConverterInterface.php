@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Property;
+
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -26,7 +28,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-interface Tx_Extbase_Property_TypeConverterInterface
+interface TypeConverterInterface
 {
 	/**
 	 * Returns the list of source types the TypeConverter can handle.
@@ -80,11 +82,11 @@ interface Tx_Extbase_Property_TypeConverterInterface
 	 *
 	 * @param string $targetType
 	 * @param string $propertyName
-	 * @param Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration
+	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
 	 * @return string the type of $propertyName in $targetType
 	 * @api
 	 */
-	public function getTypeOfChildProperty($targetType, $propertyName, Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration);
+	public function getTypeOfChildProperty($targetType, $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration);
 
 	/**
 	 * Actually convert from $source to $targetType, taking into account the fully
@@ -100,11 +102,12 @@ interface Tx_Extbase_Property_TypeConverterInterface
 	 * @param mixed $source
 	 * @param string $targetType
 	 * @param array $convertedChildProperties
-	 * @param Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration
+	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
 	 * @return mixed the target type
 	 * @api
 	 */
-	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration = NULL);
+	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL);
 
 }
+
 ?>

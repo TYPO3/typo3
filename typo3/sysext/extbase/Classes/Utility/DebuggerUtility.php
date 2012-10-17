@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Utility;
+
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -28,12 +30,12 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class Tx_Extbase_Utility_Debugger {
+class DebuggerUtility {
 
 	const PLAINTEXT_INDENT = '   ';
 	const HTML_INDENT = '&nbsp;&nbsp;&nbsp;';
 	/**
-	 * @var Tx_Extbase_Persistence_ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
 	 */
 	static protected $renderedObjects;
 
@@ -44,13 +46,13 @@ class Tx_Extbase_Utility_Debugger {
 	 */
 	static protected $blacklistedClassNames = array(
 		'PHPUnit_Framework_MockObject_InvocationMocker',
-		'Tx_Extbase_Persistence_IdentityMap',
-		'Tx_Extbase_Reflection_Service',
-		'Tx_Extbase_Object_ObjectManager',
-		'Tx_Extbase_Persistence_Mapper_DataMapper',
-		'Tx_Extbase_Persistence_Manager',
-		'Tx_Extbase_Persistence_QOM_QueryObjectModelFactory',
-		'tslib_cObj'
+		'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\IdentityMap',
+		'TYPO3\\CMS\\Extbase\\Reflection\\Service',
+		'TYPO3\\CMS\\Extbase\\Object\\ObjectManager',
+		'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper',
+		'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager',
+		'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory',
+		'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
 	);
 
 	/**
@@ -80,7 +82,7 @@ class Tx_Extbase_Utility_Debugger {
 	 * @return void
 	 */
 	static protected function clearState() {
-		self::$renderedObjects = new Tx_Extbase_Persistence_ObjectStorage();
+		self::$renderedObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 	}
 
 	/**
@@ -159,7 +161,7 @@ class Tx_Extbase_Utility_Debugger {
 	 * @return string
 	 */
 	static protected function renderObject($object, $level, $plainText = FALSE, $ansiColors = FALSE) {
-		if ($object instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
+		if ($object instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
 			$object = $object->_loadRealInstance();
 		}
 		$header = self::renderHeader($object, $level, $plainText, $ansiColors);
@@ -183,7 +185,7 @@ class Tx_Extbase_Utility_Debugger {
 	 */
 	static protected function isBlacklisted($value) {
 		$result = FALSE;
-		if ($value instanceof ReflectionProperty) {
+		if ($value instanceof \ReflectionProperty) {
 			$result = (bool) preg_match((('/' . implode('|', self::$blacklistedPropertyNames)) . '/'), $value->getName());
 		} elseif (is_object($value)) {
 			$result = (bool) preg_match((('/' . implode('|', self::$blacklistedClassNames)) . '/'), get_class($value));
@@ -219,7 +221,7 @@ class Tx_Extbase_Utility_Debugger {
 		} else {
 			$dump .= ('<span class="debug-type">' . $className) . '</span>';
 		}
-		if ($object instanceof t3lib_Singleton) {
+		if ($object instanceof \TYPO3\CMS\Core\SingletonInterface) {
 			$scope = 'singleton';
 		} else {
 			$scope = 'prototype';
@@ -229,7 +231,7 @@ class Tx_Extbase_Utility_Debugger {
 		} else {
 			$dump .= $scope ? ('<span class="debug-scope">' . $scope) . '</span>' : '';
 		}
-		if ($object instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
+		if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject) {
 			if ($object->_isDirty()) {
 				$persistenceType = 'modified';
 			} elseif ($object->_isNew()) {
@@ -238,12 +240,12 @@ class Tx_Extbase_Utility_Debugger {
 				$persistenceType = 'persistent';
 			}
 		}
-		if ($object instanceof Tx_Extbase_Persistence_ObjectStorage && $object->_isDirty()) {
+		if ($object instanceof \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage && $object->_isDirty()) {
 			$persistenceType = 'modified';
 		}
-		if ($object instanceof Tx_Extbase_DomainObject_AbstractEntity) {
+		if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractEntity) {
 			$domainObjectType = 'entity';
-		} elseif ($object instanceof Tx_Extbase_DomainObject_AbstractValueObject) {
+		} elseif ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject) {
 			$domainObjectType = 'valueobject';
 		} else {
 			$domainObjectType = 'object';
@@ -261,22 +263,22 @@ class Tx_Extbase_Utility_Debugger {
 			}
 		} elseif (self::$renderedObjects->contains($object) && !$plainText) {
 			$dump = ((('<a href="javascript:;" onclick="document.location.hash=\'#' . spl_object_hash($object)) . '\';" class="debug-seeabove">') . $dump) . '<span class="debug-filtered">see above</span></a>';
-		} elseif ($level >= self::$maxDepth && !$object instanceof DateTime) {
+		} elseif ($level >= self::$maxDepth && !$object instanceof \DateTime) {
 			if ($plainText) {
 				$dump .= ' ' . self::ansiEscapeWrap('max depth', '47;30', $ansiColors);
 			} else {
 				$dump .= '<span class="debug-filtered">max depth</span>';
 			}
-		} elseif (($level > 1 && !$object instanceof DateTime) && !$plainText) {
+		} elseif (($level > 1 && !$object instanceof \DateTime) && !$plainText) {
 			$dump = ((('<input type="checkbox" id="' . spl_object_hash($object)) . '" /><span class="debug-header">') . $dump) . '</span>';
 		}
-		if ($object instanceof Countable) {
+		if ($object instanceof \Countable) {
 			$dump .= count($object) > 0 ? (' (' . count($object)) . ' items)' : ' (empty)';
 		}
-		if ($object instanceof DateTime) {
-			$dump .= (((' (' . $object->format(DateTime::RFC3339)) . ', ') . $object->getTimestamp()) . ')';
+		if ($object instanceof \DateTime) {
+			$dump .= (((' (' . $object->format(\DateTime::RFC3339)) . ', ') . $object->getTimestamp()) . ')';
 		}
-		if ($object instanceof Tx_Extbase_DomainObject_DomainObjectInterface && !$object->_isNew()) {
+		if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface && !$object->_isNew()) {
 			$dump .= (((' (uid=' . $object->getUid()) . ', pid=') . $object->getPid()) . ')';
 		}
 		return $dump;
@@ -291,14 +293,14 @@ class Tx_Extbase_Utility_Debugger {
 	 */
 	static protected function renderContent($object, $level, $plainText, $ansiColors) {
 		$dump = '';
-		if ($object instanceof Tx_Extbase_Persistence_ObjectStorage || $object instanceof Iterator) {
+		if ($object instanceof \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage || $object instanceof \Iterator) {
 			$dump .= self::renderCollection($object, $level, $plainText, $ansiColors);
 		} else {
 			self::$renderedObjects->attach($object);
 			if (!$plainText) {
 				$dump .= ((('<a name="' . spl_object_hash($object)) . '" id="') . spl_object_hash($object)) . '"></a>';
 			}
-			$classReflection = new ReflectionClass(get_class($object));
+			$classReflection = new \ReflectionClass(get_class($object));
 			$properties = $classReflection->getProperties();
 			foreach ($properties as $property) {
 				if (self::isBlacklisted($property)) {
@@ -307,7 +309,7 @@ class Tx_Extbase_Utility_Debugger {
 				$dump .= ((((PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level)) . ($plainText ? '' : '<span class="debug-property">')) . self::ansiEscapeWrap($property->getName(), '37', $ansiColors)) . ($plainText ? '' : '</span>')) . ' => ';
 				$property->setAccessible(TRUE);
 				$dump .= self::renderDump($property->getValue($object), $level, $plainText, $ansiColors);
-				if (($object instanceof Tx_Extbase_DomainObject_AbstractDomainObject && !$object->_isNew()) && $object->_isDirty($property->getName())) {
+				if (($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject && !$object->_isNew()) && $object->_isDirty($property->getName())) {
 					if ($plainText) {
 						$dump .= ' ' . self::ansiEscapeWrap('modified', '43;30', $ansiColors);
 					} else {
@@ -430,5 +432,6 @@ class Tx_Extbase_Utility_Debugger {
 	}
 
 }
+
 
 ?>

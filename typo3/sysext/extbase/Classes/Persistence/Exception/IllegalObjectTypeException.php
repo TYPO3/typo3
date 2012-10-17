@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                          *
  *                                                                        *
@@ -17,9 +19,10 @@
  * @package Extbase
  * @subpackage Persistence\Exception
  */
-class Tx_Extbase_Persistence_Exception_IllegalObjectType extends Tx_Extbase_Persistence_Exception {
+class IllegalObjectTypeException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
 
 
 }
+
 
 ?>

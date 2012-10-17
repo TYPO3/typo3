@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\SignalSlot;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  *
  * @api
  */
-class Tx_Extbase_SignalSlot_Dispatcher implements t3lib_Singleton {
+class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var boolean
@@ -39,7 +41,7 @@ class Tx_Extbase_SignalSlot_Dispatcher implements t3lib_Singleton {
 	protected $isInitialized = FALSE;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -64,7 +66,7 @@ class Tx_Extbase_SignalSlot_Dispatcher implements t3lib_Singleton {
 		if ($this->isInitialized) {
 			return;
 		}
-		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$this->isInitialized = TRUE;
 	}
 
@@ -85,10 +87,10 @@ class Tx_Extbase_SignalSlot_Dispatcher implements t3lib_Singleton {
 		$object = NULL;
 		if (is_object($slotClassNameOrObject)) {
 			$object = $slotClassNameOrObject;
-			$method = $slotClassNameOrObject instanceof Closure ? '__invoke' : $slotMethodName;
+			$method = $slotClassNameOrObject instanceof \Closure ? '__invoke' : $slotMethodName;
 		} else {
 			if ($slotMethodName === '') {
-				throw new InvalidArgumentException('The slot method name must not be empty (except for closures).', 1229531659);
+				throw new \InvalidArgumentException('The slot method name must not be empty (except for closures).', 1229531659);
 			}
 			$class = $slotClassNameOrObject;
 			$method = $slotMethodName;
@@ -111,7 +113,7 @@ class Tx_Extbase_SignalSlot_Dispatcher implements t3lib_Singleton {
 	 * @param string $signalName Name of the signal
 	 * @param array $signalArguments arguments passed to the signal method
 	 * @return void
-	 * @throws Tx_Extbase_SignalSlot_Exception_InvalidSlotException if the slot is not valid
+	 * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException if the slot is not valid
 	 * @api
 	 */
 	public function dispatch($signalClassName, $signalName, array $signalArguments = array()) {
@@ -124,10 +126,10 @@ class Tx_Extbase_SignalSlot_Dispatcher implements t3lib_Singleton {
 				$object = $slotInformation['object'];
 			} else {
 				if (!isset($this->objectManager)) {
-					throw new Tx_Extbase_SignalSlot_Exception_InvalidSlotException(sprintf('Cannot dispatch %s::%s to class %s. The object manager is not yet available in the Signal Slot Dispatcher and therefore it cannot dispatch classes.', $signalClassName, $signalName, $slotInformation['class']), 1298113624);
+					throw new \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException(sprintf('Cannot dispatch %s::%s to class %s. The object manager is not yet available in the Signal Slot Dispatcher and therefore it cannot dispatch classes.', $signalClassName, $signalName, $slotInformation['class']), 1298113624);
 				}
 				if (!$this->objectManager->isRegistered($slotInformation['class'])) {
-					throw new Tx_Extbase_SignalSlot_Exception_InvalidSlotException(('The given class "' . $slotInformation['class']) . '" is not a registered object.', 1245673367);
+					throw new \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException(('The given class "' . $slotInformation['class']) . '" is not a registered object.', 1245673367);
 				}
 				$object = $this->objectManager->get($slotInformation['class']);
 			}
@@ -135,7 +137,7 @@ class Tx_Extbase_SignalSlot_Dispatcher implements t3lib_Singleton {
 				$signalArguments[] = ($signalClassName . '::') . $signalName;
 			}
 			if (!method_exists($object, $slotInformation['method'])) {
-				throw new Tx_Extbase_SignalSlot_Exception_InvalidSlotException(((('The slot method ' . get_class($object)) . '->') . $slotInformation['method']) . '() does not exist.', 1245673368);
+				throw new \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException(((('The slot method ' . get_class($object)) . '->') . $slotInformation['method']) . '() does not exist.', 1245673368);
 			}
 			call_user_func_array(array($object, $slotInformation['method']), $signalArguments);
 		}
@@ -154,5 +156,6 @@ class Tx_Extbase_SignalSlot_Dispatcher implements t3lib_Singleton {
 	}
 
 }
+
 
 ?>

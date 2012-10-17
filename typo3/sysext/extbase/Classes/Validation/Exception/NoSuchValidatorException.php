@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,9 +33,10 @@
  * @subpackage Validation\Exception
  * @version $ID:$
  */
-class Tx_Extbase_Validation_Exception_NoSuchValidator extends Tx_Extbase_Validation_Exception {
+class NoSuchValidatorException extends \TYPO3\CMS\Extbase\Validation\Exception {
 
 
 }
+
 
 ?>

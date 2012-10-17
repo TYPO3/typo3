@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +32,7 @@
  * @package Extbase
  * @subpackage Persistence
  */
-class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, ArrayAccess, Tx_Extbase_Persistence_ObjectMonitoringInterface {
+class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface {
 
 	/**
 	 * This field is only needed to make debugging easier:
@@ -40,7 +42,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	 *
 	 * @var string
 	 */
-	private $warning = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the Tx_Extbase_Persistence_ObjectStorage. To retrieve the first result, you can use the rewind() and current() methods.';
+	private $warning = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage. To retrieve the first result, you can use the rewind() and current() methods.';
 
 	/**
 	 * An array holding the objects and the stored information. The key of the array items ist the
@@ -220,10 +222,10 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	/**
 	 * Adds all objects-data pairs from a different storage in the current storage.
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage $objectStorage
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objectStorage
 	 * @return void
 	 */
-	public function addAll(Tx_Extbase_Persistence_ObjectStorage $objectStorage) {
+	public function addAll(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objectStorage) {
 		foreach ($objectStorage as $object) {
 			$this->attach($object, $objectStorage->getInfo());
 		}
@@ -232,10 +234,10 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	/**
 	 * Removes objects contained in another storage from the current storage.
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage $objectStorage The storage containing the elements to remove.
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objectStorage The storage containing the elements to remove.
 	 * @return void
 	 */
-	public function removeAll(Tx_Extbase_Persistence_ObjectStorage $objectStorage) {
+	public function removeAll(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objectStorage) {
 		foreach ($objectStorage as $object) {
 			$this->detach($object);
 		}
@@ -262,7 +264,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	 * @throws RuntimeException
 	 */
 	public function serialize() {
-		throw new RuntimeException('An ObjectStorage instance cannot be serialized.', 1267700868);
+		throw new \RuntimeException('An ObjectStorage instance cannot be serialized.', 1267700868);
 	}
 
 	/**
@@ -272,7 +274,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	 * @throws RuntimeException
 	 */
 	public function unserialize($serialized) {
-		throw new RuntimeException('A ObjectStorage instance cannot be unserialized.', 1267700870);
+		throw new \RuntimeException('A ObjectStorage instance cannot be unserialized.', 1267700870);
 	}
 
 	/**
@@ -294,5 +296,6 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	}
 
 }
+
 
 ?>

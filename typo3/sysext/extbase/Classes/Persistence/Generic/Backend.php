@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,67 +34,67 @@
  * @subpackage Persistence
  * @version $Id$
  */
-class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendInterface, t3lib_Singleton {
+class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface, \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var Tx_Extbase_Persistence_Session
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
 	 */
 	protected $session;
 
 	/**
-	 * @var Tx_Extbase_Persistence_ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
 	 */
 	protected $aggregateRootObjects;
 
 	/**
-	 * @var Tx_Extbase_Persistence_ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
 	 */
 	protected $visitedDuringPersistence;
 
 	/**
-	 * @var Tx_Extbase_Persistence_IdentityMap
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap
 	 */
 	protected $identityMap;
 
 	/**
-	 * @var Tx_Extbase_Reflection_Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\Service
 	 */
 	protected $reflectionService;
 
 	/**
-	 * @var Tx_Extbase_Persistence_QueryFactoryInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface
 	 */
 	protected $queryFactory;
 
 	/**
-	 * @var Tx_Extbase_Persistence_QOM_QueryObjectModelFactory
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory
 	 */
 	protected $qomFactory;
 
 	/**
-	 * @var Tx_Extbase_Persistence_Storage_BackendInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface
 	 */
 	protected $storageBackend;
 
 	/**
-	 * @var Tx_Extbase_Persistence_Mapper_DataMapper
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
 	 */
 	protected $dataMapper;
 
 	/**
 	 * The TYPO3 reference index object
 	 *
-	 * @var t3lib_refindex
+	 * @var \TYPO3\CMS\Core\Database\ReferenceIndex
 	 */
 	protected $referenceIndex;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @var Tx_Extbase_SignalSlot_Dispatcher
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
 	 */
 	protected $signalSlotDispatcher;
 
@@ -101,91 +103,91 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 *
 	 * @return void
 	 */
-	public function __construct(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function __construct(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
-		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$frameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
-			$this->referenceIndex = t3lib_div::makeInstance('t3lib_refindex');
+			$this->referenceIndex = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
 		}
 	}
 
 	/**
-	 * @param Tx_Extbase_Persistence_Session $session
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session $session
 	 * @return void
 	 */
-	public function injectSession(Tx_Extbase_Persistence_Session $session) {
+	public function injectSession(\TYPO3\CMS\Extbase\Persistence\Generic\Session $session) {
 		$this->session = $session;
 	}
 
 	/**
-	 * @param Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface $storageBackend
 	 * @return void
 	 */
-	public function injectStorageBackend(Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend) {
+	public function injectStorageBackend(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface $storageBackend) {
 		$this->storageBackend = $storageBackend;
 	}
 
 	/**
 	 * Injects the DataMapper to map nodes to objects
 	 *
-	 * @param Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
 	 * @return void
 	 */
-	public function injectDataMapper(Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper) {
+	public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper) {
 		$this->dataMapper = $dataMapper;
 	}
 
 	/**
 	 * Injects the identity map
 	 *
-	 * @param Tx_Extbase_Persistence_IdentityMap $identityMap
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap $identityMap
 	 * @return void
 	 */
-	public function injectIdentityMap(Tx_Extbase_Persistence_IdentityMap $identityMap) {
+	public function injectIdentityMap(\TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap $identityMap) {
 		$this->identityMap = $identityMap;
 	}
 
 	/**
 	 * Injects the Reflection Service
 	 *
-	 * @param Tx_Extbase_Reflection_Service
+	 * @param \TYPO3\CMS\Extbase\Reflection\Service
 	 * @return void
 	 */
-	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
 
 	/**
 	 * Injects the QueryFactory
 	 *
-	 * @param Tx_Extbase_Persistence_QueryFactoryInterface $queryFactory
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory
 	 * @return void
 	 */
-	public function injectQueryFactory(Tx_Extbase_Persistence_QueryFactoryInterface $queryFactory) {
+	public function injectQueryFactory(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory) {
 		$this->queryFactory = $queryFactory;
 	}
 
 	/**
 	 * Injects the QueryObjectModelFactory
 	 *
-	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelFactory $qomFactory
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory
 	 * @return void
 	 */
-	public function injectQomFactory(Tx_Extbase_Persistence_QOM_QueryObjectModelFactory $qomFactory) {
+	public function injectQomFactory(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory) {
 		$this->qomFactory = $qomFactory;
 	}
 
 	/**
-	 * @param Tx_Extbase_SignalSlot_Dispatcher $signalSlotDispatcher
+	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
 	 */
-	public function injectSignalSlotDispatcher(Tx_Extbase_SignalSlot_Dispatcher $signalSlotDispatcher) {
+	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
 		$this->signalSlotDispatcher = $signalSlotDispatcher;
 	}
 
 	/**
 	 * Returns the repository session
 	 *
-	 * @return Tx_Extbase_Persistence_Session
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Session
 	 */
 	public function getSession() {
 		return $this->session;
@@ -194,7 +196,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Returns the Data Mapper
 	 *
-	 * @return Tx_Extbase_Persistence_Mapper_DataMapper
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
 	 */
 	public function getDataMapper() {
 		return $this->dataMapper;
@@ -203,7 +205,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Returns the current QOM factory
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_QueryObjectModelFactory
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory
 	 */
 	public function getQomFactory() {
 		return $this->qomFactory;
@@ -212,7 +214,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Returns the current identityMap
 	 *
-	 * @return Tx_Extbase_Persistence_IdentityMap
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap
 	 */
 	public function getIdentityMap() {
 		return $this->identityMap;
@@ -221,7 +223,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Returns the reflection service
 	 *
-	 * @return Tx_Extbase_Reflection_Service
+	 * @return \TYPO3\CMS\Extbase\Reflection\Service
 	 */
 	public function getReflectionService() {
 		return $this->reflectionService;
@@ -230,22 +232,22 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Returns the number of records matching the query.
 	 *
-	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
 	 * @return integer
 	 * @api
 	 */
-	public function getObjectCountByQuery(Tx_Extbase_Persistence_QueryInterface $query) {
+	public function getObjectCountByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
 		return $this->storageBackend->getObjectCountByQuery($query);
 	}
 
 	/**
 	 * Returns the object data matching the $query.
 	 *
-	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
 	 * @return array
 	 * @api
 	 */
-	public function getObjectDataByQuery(Tx_Extbase_Persistence_QueryInterface $query) {
+	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
 		return $this->storageBackend->getObjectDataByQuery($query);
 	}
 
@@ -257,7 +259,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @return string The identifier for the object if it is known, or NULL
 	 */
 	public function getIdentifierByObject($object) {
-		if ($object instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
+		if ($object instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
 			$object = $object->_loadRealInstance();
 			if (!is_object($object)) {
 				return NULL;
@@ -316,7 +318,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	public function replaceObject($existingObject, $newObject) {
 		$existingUid = $this->getIdentifierByObject($existingObject);
 		if ($existingUid === NULL) {
-			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The given object is unknown to this persistence backend.', 1238070163);
+			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnknownObjectException('The given object is unknown to this persistence backend.', 1238070163);
 		}
 		$this->identityMap->unregisterObject($existingObject);
 		$this->identityMap->registerObject($newObject, $existingUid);
@@ -325,20 +327,20 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Sets the aggregate root objects
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage $objects
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objects
 	 * @return void
 	 */
-	public function setAggregateRootObjects(Tx_Extbase_Persistence_ObjectStorage $objects) {
+	public function setAggregateRootObjects(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objects) {
 		$this->aggregateRootObjects = $objects;
 	}
 
 	/**
 	 * Sets the deleted objects
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage $objects
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objects
 	 * @return void
 	 */
-	public function setDeletedObjects(Tx_Extbase_Persistence_ObjectStorage $objects) {
+	public function setDeletedObjects(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objects) {
 		$this->deletedObjects = $objects;
 	}
 
@@ -358,7 +360,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @return void
 	 */
 	protected function persistObjects() {
-		$this->visitedDuringPersistence = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->visitedDuringPersistence = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 		foreach ($this->aggregateRootObjects as $object) {
 			if (!$this->identityMap->hasObject($object)) {
 				$this->insertObject($object);
@@ -372,10 +374,10 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Persists the given object.
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be inserted
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to be inserted
 	 * @return void
 	 */
-	protected function persistObject(Tx_Extbase_DomainObject_DomainObjectInterface $object) {
+	protected function persistObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object) {
 		if (isset($this->visitedDuringPersistence[$object])) {
 			return;
 		}
@@ -388,16 +390,16 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				continue;
 			}
 			$columnMap = $dataMap->getColumnMap($propertyName);
-			if ($propertyValue instanceof Tx_Extbase_Persistence_ObjectStorage) {
+			if ($propertyValue instanceof \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage) {
 				if ($object->_isNew() || $propertyValue->_isDirty()) {
 					$this->persistObjectStorage($propertyValue, $object, $propertyName, $row);
 				}
 				foreach ($propertyValue as $containedObject) {
-					if ($containedObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+					if ($containedObject instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
 						$queue[] = $containedObject;
 					}
 				}
-			} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+			} elseif ($propertyValue instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
 				if ($object->_isDirty($propertyName)) {
 					if ($propertyValue->_isNew()) {
 						$this->insertObject($propertyValue);
@@ -426,10 +428,10 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @return bool
 	 */
 	protected function propertyValueIsLazyLoaded($propertyValue) {
-		if ($propertyValue instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
+		if ($propertyValue instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
 			return TRUE;
 		}
-		if ($propertyValue instanceof Tx_Extbase_Persistence_LazyObjectStorage) {
+		if ($propertyValue instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage) {
 			if ($propertyValue->isInitialized() === FALSE) {
 				return TRUE;
 			}
@@ -442,25 +444,25 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * gets persisted immediately. Objects which were removed from the property were detached from the parent object. They will not be
 	 * deleted by default. You have to annotate the property with "@cascade remove" if you want them to be deleted as well.
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage $objectStorage The object storage to be persisted.
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object. One of the properties holds the object storage.
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objectStorage The object storage to be persisted.
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object. One of the properties holds the object storage.
 	 * @param string $propertyName The name of the property holding the object storage.
 	 * @param array $row The row array of the parent object to be persisted. It's passed by reference and gets filled with either a comma separated list of uids (csv) or the number of contained objects.
 	 * @return void
 	 */
-	protected function persistObjectStorage(Tx_Extbase_Persistence_ObjectStorage $objectStorage, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, array &$row) {
+	protected function persistObjectStorage(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objectStorage, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, array &$row) {
 		$className = get_class($parentObject);
 		$columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
 		$columnName = $columnMap->getColumnName();
 		$propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
 		foreach ($this->getRemovedChildObjects($parentObject, $propertyName) as $removedObject) {
-			if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY && $propertyMetaData['cascade'] === 'remove') {
+			if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY && $propertyMetaData['cascade'] === 'remove') {
 				$this->removeObject($removedObject);
 			} else {
 				$this->detachObjectFromParentObject($removedObject, $parentObject, $propertyName);
 			}
 		}
-		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+		if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$this->deleteAllRelationsFromRelationtable($parentObject, $propertyName);
 		}
 		$currentUids = array();
@@ -484,14 +486,14 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * Returns the removed objects determined by a comparison of the clean property value
 	 * with the actual property value.
 	 *
-	 * @param Tx_Extbase_DomainObject_AbstractEntity $object The object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $object The object
 	 * @param string $parentPropertyName The name of the property
 	 * @return array An array of removed objects
 	 */
-	protected function getRemovedChildObjects(Tx_Extbase_DomainObject_AbstractEntity $object, $propertyName) {
+	protected function getRemovedChildObjects(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity $object, $propertyName) {
 		$removedObjects = array();
 		$cleanPropertyValue = $object->_getCleanProperty($propertyName);
-		if (is_array($cleanPropertyValue) || $cleanPropertyValue instanceof Iterator) {
+		if (is_array($cleanPropertyValue) || $cleanPropertyValue instanceof \Iterator) {
 			$propertyValue = $object->_getProperty($propertyName);
 			foreach ($cleanPropertyValue as $containedObject) {
 				if (!$propertyValue->contains($containedObject)) {
@@ -505,15 +507,15 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Updates the fields defining the relation between the object and the parent object.
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object
-	 * @param Tx_Extbase_DomainObject_AbstractEntity $parentObject
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject
 	 * @param string $parentPropertyName
 	 * @return void
 	 */
-	protected function attachObjectToParentObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, Tx_Extbase_DomainObject_AbstractEntity $parentObject, $parentPropertyName, $sortingPosition = 0) {
+	protected function attachObjectToParentObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject, $parentPropertyName, $sortingPosition = 0) {
 		$parentDataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 		$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
-		if ($parentColumnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
+		if ($parentColumnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
 			$row = array();
 			$parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
 			if ($parentKeyFieldName !== NULL) {
@@ -530,7 +532,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			if (count($row) > 0) {
 				$this->updateObject($object, $row);
 			}
-		} elseif ($parentColumnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+		} elseif ($parentColumnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$this->insertRelationInRelationtable($object, $parentObject, $parentPropertyName, $sortingPosition);
 		}
 	}
@@ -538,15 +540,15 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Updates the fields defining the relation between the object and the parent object.
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object
-	 * @param Tx_Extbase_DomainObject_AbstractEntity $parentObject
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject
 	 * @param string $parentPropertyName
 	 * @return void
 	 */
-	protected function detachObjectFromParentObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, Tx_Extbase_DomainObject_AbstractEntity $parentObject, $parentPropertyName) {
+	protected function detachObjectFromParentObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject, $parentPropertyName) {
 		$parentDataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 		$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
-		if ($parentColumnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
+		if ($parentColumnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
 			$row = array();
 			$parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
 			if ($parentKeyFieldName !== NULL) {
@@ -563,7 +565,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			if (count($row) > 0) {
 				$this->updateObject($object, $row);
 			}
-		} elseif ($parentColumnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+		} elseif ($parentColumnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$this->deleteRelationFromRelationtable($object, $parentObject, $parentPropertyName);
 		}
 	}
@@ -571,11 +573,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Inserts an object in the storage backend
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be insterted in the storage
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to be insterted in the storage
 	 * @return void
 	 */
-	protected function insertObject(Tx_Extbase_DomainObject_DomainObjectInterface $object) {
-		if ($object instanceof Tx_Extbase_DomainObject_AbstractValueObject) {
+	protected function insertObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object) {
+		if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject) {
 			$result = $this->getUidOfAlreadyPersistedValueObject($object);
 			if ($result !== FALSE) {
 				$object->_setProperty('uid', (int) $result);
@@ -593,7 +595,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		if ((int) $uid >= 1) {
 			$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterInsertObject', array('object' => $object));
 		}
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $uid);
 		}
@@ -603,23 +605,23 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Tests, if the given Value Object already exists in the storage backend and if so, it returns the uid.
 	 *
-	 * @param Tx_Extbase_DomainObject_AbstractValueObject $object The object to be tested
+	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject $object The object to be tested
 	 * @return mixed The matching uid if an object was found, else FALSE
 	 */
-	protected function getUidOfAlreadyPersistedValueObject(Tx_Extbase_DomainObject_AbstractValueObject $object) {
+	protected function getUidOfAlreadyPersistedValueObject(\TYPO3\CMS\Extbase\DomainObject\AbstractValueObject $object) {
 		return $this->storageBackend->getUidOfAlreadyPersistedValueObject($object);
 	}
 
 	/**
 	 * Inserts mm-relation into a relation table
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The related object
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The related object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object
 	 * @param string $propertyName The name of the parent object's property where the related objects are stored in
 	 * @param int $sortingPosition Defaults to NULL
 	 * @return int The uid of the inserted row
 	 */
-	protected function insertRelationInRelationtable(Tx_Extbase_DomainObject_DomainObjectInterface $object, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $sortingPosition = NULL) {
+	protected function insertRelationInRelationtable(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $sortingPosition = NULL) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 		$columnMap = $dataMap->getColumnMap($propertyName);
 		$row = array(
@@ -649,11 +651,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Delete all mm-relations of a parent from a relation table
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object
 	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
 	 * @return bool
 	 */
-	protected function deleteAllRelationsFromRelationtable(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
+	protected function deleteAllRelationsFromRelationtable(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $parentPropertyName) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 		$columnMap = $dataMap->getColumnMap($parentPropertyName);
 		$relationTableName = $columnMap->getRelationTableName();
@@ -671,12 +673,12 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Delete an mm-relation from a relation table
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $relatedObject The related object
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $relatedObject The related object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object
 	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
 	 * @return bool
 	 */
-	protected function deleteRelationFromRelationtable(Tx_Extbase_DomainObject_DomainObjectInterface $relatedObject, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
+	protected function deleteRelationFromRelationtable(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $relatedObject, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $parentPropertyName) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 		$columnMap = $dataMap->getColumnMap($parentPropertyName);
 		$relationTableName = $columnMap->getRelationTableName();
@@ -690,11 +692,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Updates a given object in the storage
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be updated
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to be updated
 	 * @param array $row Row to be stored
 	 * @return bool
 	 */
-	protected function updateObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, array $row) {
+	protected function updateObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, array $row) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$this->addCommonFieldsToRow($object, $row);
 		$row['uid'] = $object->getUid();
@@ -708,7 +710,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		if ($res === TRUE) {
 			$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterUpdateObject', array('object' => $object));
 		}
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $row['uid']);
 		}
@@ -718,11 +720,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Adds common databse fields to a row
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
 	 * @param array $row
 	 * @return void
 	 */
-	protected function addCommonFieldsToRow(Tx_Extbase_DomainObject_DomainObjectInterface $object, array &$row) {
+	protected function addCommonFieldsToRow(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, array &$row) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$this->addCommonDateFieldsToRow($object, $row);
 		if ($dataMap->getRecordTypeColumnName() !== NULL && $dataMap->getRecordType() !== NULL) {
@@ -736,11 +738,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Adjustes the common date fields of the given row to the current time
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
 	 * @param array $row The row to be updated
 	 * @return void
 	 */
-	protected function addCommonDateFieldsToRow(Tx_Extbase_DomainObject_DomainObjectInterface $object, array &$row) {
+	protected function addCommonDateFieldsToRow(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, array &$row) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		if ($object->_isNew() && $dataMap->getCreationDateColumnName() !== NULL) {
 			$row[$dataMap->getCreationDateColumnName()] = $GLOBALS['EXEC_TIME'];
@@ -760,17 +762,17 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$this->removeObject($object);
 			$this->identityMap->unregisterObject($object);
 		}
-		$this->deletedObjects = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->deletedObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 	}
 
 	/**
 	 * Deletes an object
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be removed from the storage
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to be removed from the storage
 	 * @param bool $markAsDeleted Wether to just flag the row deleted (default) or really delete it
 	 * @return void
 	 */
-	protected function removeObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, $markAsDeleted = TRUE) {
+	protected function removeObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, $markAsDeleted = TRUE) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$tableName = $dataMap->getTableName();
 		if ($markAsDeleted === TRUE && $dataMap->getDeletedFlagColumnName() !== NULL) {
@@ -788,7 +790,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterRemoveObject', array('object' => $object));
 		}
 		$this->removeRelatedObjects($object);
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex->updateRefIndexTable($tableName, $object->getUid());
 		}
@@ -797,10 +799,10 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Remove related objects
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to scanned for related objects
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to scanned for related objects
 	 * @return void
 	 */
-	protected function removeRelatedObjects(Tx_Extbase_DomainObject_DomainObjectInterface $object) {
+	protected function removeRelatedObjects(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object) {
 		$className = get_class($object);
 		$dataMap = $this->dataMapper->getDataMap($className);
 		$classSchema = $this->reflectionService->getClassSchema($className);
@@ -809,11 +811,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$columnMap = $dataMap->getColumnMap($propertyName);
 			$propertyMetaData = $classSchema->getProperty($propertyName);
 			if ($propertyMetaData['cascade'] === 'remove') {
-				if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
+				if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
 					foreach ($propertyValue as $containedObject) {
 						$this->removeObject($containedObject);
 					}
-				} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+				} elseif ($propertyValue instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
 					$this->removeObject($propertyValue);
 				}
 			}
@@ -828,14 +830,14 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * - If there is a TypoScript configuration "classes.CLASSNAME.newRecordStoragePid", that is used to store new records.
 	 * - If there is no such TypoScript configuration, it uses the first value of The "storagePid" taken for reading records.
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
 	 * @return int the storage Page ID where the object should be stored
 	 */
-	protected function determineStoragePageIdForNewRecord(Tx_Extbase_DomainObject_DomainObjectInterface $object = NULL) {
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+	protected function determineStoragePageIdForNewRecord(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object = NULL) {
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ($object !== NULL) {
-			if (Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($object, 'pid')) {
-				$pid = Tx_Extbase_Reflection_ObjectAccess::getProperty($object, 'pid');
+			if (\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($object, 'pid')) {
+				$pid = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($object, 'pid');
 				if (isset($pid)) {
 					return (int) $pid;
 				}
@@ -845,7 +847,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				return (int) $frameworkConfiguration['persistence']['classes'][$className]['newRecordStoragePid'];
 			}
 		}
-		$storagePidList = t3lib_div::intExplode(',', $frameworkConfiguration['persistence']['storagePid']);
+		$storagePidList = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $frameworkConfiguration['persistence']['storagePid']);
 		return (int) $storagePidList[0];
 	}
 
@@ -856,9 +858,9 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @return mixed
 	 */
 	protected function getPlainValue($input) {
-		if ($input instanceof DateTime) {
+		if ($input instanceof \DateTime) {
 			return $input->format('U');
-		} elseif ($input instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+		} elseif ($input instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
 			return $input->getUid();
 		} elseif (is_bool($input)) {
 			return $input === TRUE ? 1 : 0;
@@ -868,5 +870,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,9 +34,10 @@
  * @version $Id$
  * @scope prototype
  */
-class Tx_Extbase_Persistence_QOM_Operand implements Tx_Extbase_Persistence_QOM_OperandInterface {
+class Operand implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OperandInterface {
 
 
 }
+
 
 ?>

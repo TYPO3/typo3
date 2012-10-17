@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -23,15 +25,15 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Tests_Unit_Property_TypeConverter_ArrayConverterTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class ArrayConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Property_TypeConverter_ArrayConverter
+	 * @var \TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter
 	 */
 	protected $converter;
 
 	public function setUp() {
-		$this->converter = new Tx_Extbase_Property_TypeConverter_ArrayConverter();
+		$this->converter = new \TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter();
 	}
 
 	/**
@@ -54,5 +56,6 @@ class Tx_Extbase_Tests_Unit_Property_TypeConverter_ArrayConverterTest extends Tx
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Command;
+
 /***************************************************************
  *  Copyright notice
  *  All rights reserved
@@ -24,10 +26,10 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Command_HelpCommandController extends Tx_Extbase_MVC_Controller_CommandController {
+class HelpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
 
 	/**
-	 * @var Tx_Extbase_MVC_CLI_CommandManager
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager
 	 */
 	protected $commandManager;
 
@@ -37,11 +39,11 @@ class Tx_Extbase_Command_HelpCommandController extends Tx_Extbase_MVC_Controller
 	protected $commandsByExtensionsAndControllers = array();
 
 	/**
-	 * @param Tx_Extbase_MVC_CLI_CommandManager $commandManager
+	 * @param \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager $commandManager
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function injectCommandManager(Tx_Extbase_MVC_CLI_CommandManager $commandManager) {
+	public function injectCommandManager(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager $commandManager) {
 		$this->commandManager = $commandManager;
 	}
 
@@ -55,7 +57,7 @@ class Tx_Extbase_Command_HelpCommandController extends Tx_Extbase_MVC_Controller
 	 * @internal
 	 */
 	public function helpStubCommand() {
-		$this->outputLine('Extbase %s', array(t3lib_extMgm::getExtensionVersion('extbase')));
+		$this->outputLine('Extbase %s', array(\TYPO3\CMS\Core\Extension\ExtensionManager::getExtensionVersion('extbase')));
 		$this->outputLine('usage: ./cli_dispatch.phpsh extbase <command identifier>');
 		$this->outputLine();
 		$this->outputLine('See \'./cli_dispatch.phpsh extbase help\' for a list of all available commands.');
@@ -77,7 +79,7 @@ class Tx_Extbase_Command_HelpCommandController extends Tx_Extbase_MVC_Controller
 		} else {
 			try {
 				$command = $this->commandManager->getCommandByIdentifier($commandIdentifier);
-			} catch (Tx_Extbase_MVC_Exception_Command $exception) {
+			} catch (\TYPO3\CMS\Extbase\Mvc\Exception\CommandException $exception) {
 				$this->outputLine($exception->getMessage());
 				return;
 			}
@@ -90,7 +92,7 @@ class Tx_Extbase_Command_HelpCommandController extends Tx_Extbase_MVC_Controller
 	 */
 	protected function displayHelpIndex() {
 		$this->buildCommandsIndex();
-		$this->outputLine('Extbase %s', array(t3lib_extMgm::getExtensionVersion('extbase')));
+		$this->outputLine('Extbase %s', array(\TYPO3\CMS\Core\Extension\ExtensionManager::getExtensionVersion('extbase')));
 		$this->outputLine('usage: ./cli_dispatch.phpsh extbase <command identifier>');
 		$this->outputLine();
 		$this->outputLine('The following commands are currently available:');
@@ -114,10 +116,10 @@ class Tx_Extbase_Command_HelpCommandController extends Tx_Extbase_MVC_Controller
 	/**
 	 * Render help text for a single command
 	 *
-	 * @param Tx_Extbase_MVC_CLI_Command $command
+	 * @param \TYPO3\CMS\Extbase\Mvc\Cli\Command $command
 	 * @return void
 	 */
-	protected function displayHelpForCommand(Tx_Extbase_MVC_CLI_Command $command) {
+	protected function displayHelpForCommand(\TYPO3\CMS\Extbase\Mvc\Cli\Command $command) {
 		$this->outputLine();
 		$this->outputLine($command->getShortDescription());
 		$this->outputLine();
@@ -188,13 +190,13 @@ class Tx_Extbase_Command_HelpCommandController extends Tx_Extbase_MVC_Controller
 	 * Displays an error message
 	 *
 	 * @internal
-	 * @param Tx_Extbase_MVC_Exception_Command $exception
+	 * @param \TYPO3\CMS\Extbase\Mvc\Exception\CommandException $exception
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function errorCommand(Tx_Extbase_MVC_Exception_Command $exception) {
+	public function errorCommand(\TYPO3\CMS\Extbase\Mvc\Exception\CommandException $exception) {
 		$this->outputLine($exception->getMessage());
-		if ($exception instanceof Tx_Extbase_MVC_Exception_AmbiguousCommandIdentifier) {
+		if ($exception instanceof \TYPO3\CMS\Extbase\Mvc\Exception\AmbiguousCommandIdentifierException) {
 			$this->outputLine('Please specify the complete command identifier. Matched commands:');
 			foreach ($exception->getMatchingCommands() as $matchingCommand) {
 				$this->outputLine('    %s', array($matchingCommand->getCommandIdentifier()));
@@ -228,5 +230,6 @@ class Tx_Extbase_Command_HelpCommandController extends Tx_Extbase_MVC_Controller
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,9 +31,10 @@
  * @version $Id$
  * @api
  */
-class Tx_Extbase_Domain_Repository_FrontendUserGroupRepository extends Tx_Extbase_Persistence_Repository {
+class FrontendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
 
 }
+
 
 ?>

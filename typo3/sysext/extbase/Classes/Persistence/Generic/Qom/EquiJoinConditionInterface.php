@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -35,7 +37,7 @@
  * @subpackage Persistence\QOM
  * @version $Id$
  */
-interface Tx_Extbase_Persistence_QOM_EquiJoinConditionInterface extends Tx_Extbase_Persistence_QOM_JoinConditionInterface
+interface EquiJoinConditionInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinConditionInterface
 {
 	/**
 	 * Gets the name of the child selector.
@@ -52,4 +54,5 @@ interface Tx_Extbase_Persistence_QOM_EquiJoinConditionInterface extends Tx_Extba
 	public function getParentSelectorName();
 
 }
+
 ?>

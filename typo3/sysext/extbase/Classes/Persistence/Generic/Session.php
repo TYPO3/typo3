@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,13 +30,13 @@
  * @subpackage Persistence
  * @version $ID:$
  */
-class Tx_Extbase_Persistence_Session implements t3lib_singleton {
+class Session implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Objects which were reconstituted. The relevant objects are registered by
 	 * the Tx_Extbase_Persistence_Mapper_DataMapper.
 	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
 	 */
 	protected $reconstitutedObjects;
 
@@ -42,7 +44,7 @@ class Tx_Extbase_Persistence_Session implements t3lib_singleton {
 	 * Constructs a new Session
 	 */
 	public function __construct() {
-		$this->reconstitutedObjects = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->reconstitutedObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 	}
 
 	/**
@@ -51,17 +53,17 @@ class Tx_Extbase_Persistence_Session implements t3lib_singleton {
 	 * @param object $object
 	 * @return void
 	 */
-	public function registerReconstitutedObject(Tx_Extbase_DomainObject_DomainObjectInterface $object) {
+	public function registerReconstitutedObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object) {
 		$this->reconstitutedObjects->attach($object);
 	}
 
 	/**
 	 * Unregisters a reconstituted object
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
 	 * @return void
 	 */
-	public function unregisterReconstitutedObject(Tx_Extbase_DomainObject_DomainObjectInterface $object) {
+	public function unregisterReconstitutedObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object) {
 		$this->reconstitutedObjects->detach($object);
 	}
 
@@ -76,5 +78,6 @@ class Tx_Extbase_Persistence_Session implements t3lib_singleton {
 	}
 
 }
+
 
 ?>

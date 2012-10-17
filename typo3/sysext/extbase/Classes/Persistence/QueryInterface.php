@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                          *
  *                                                                        *
@@ -18,7 +20,7 @@
  * @subpackage Persistence
  * @api
  */
-interface Tx_Extbase_Persistence_QueryInterface
+interface QueryInterface
 {
 	/**
 	 * The '=' comparison operator.
@@ -98,7 +100,7 @@ interface Tx_Extbase_Persistence_QueryInterface
 	/**
 	 * Gets the node-tuple source for this query.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_SourceInterface the node-tuple source; non-NULL
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface the node-tuple source; non-NULL
 	 */
 	public function getSource();
 
@@ -118,7 +120,7 @@ interface Tx_Extbase_Persistence_QueryInterface
 	 * )
 	 *
 	 * @param array $orderings The property names to order by
-	 * @return Tx_Extbase_Persistence_QueryInterface
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 * @api
 	 */
 	public function setOrderings(array $orderings);
@@ -128,7 +130,7 @@ interface Tx_Extbase_Persistence_QueryInterface
 	 * for chaining (fluid interface)
 	 *
 	 * @param integer $limit
-	 * @return Tx_Extbase_Persistence_QueryInterface
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 * @api
 	 */
 	public function setLimit($limit);
@@ -138,7 +140,7 @@ interface Tx_Extbase_Persistence_QueryInterface
 	 * allow for chaining (fluid interface)
 	 *
 	 * @param integer $offset
-	 * @return Tx_Extbase_Persistence_QueryInterface
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 * @api
 	 */
 	public function setOffset($offset);
@@ -148,7 +150,7 @@ interface Tx_Extbase_Persistence_QueryInterface
 	 * for chaining (fluid interface)
 	 *
 	 * @param object $constraint Some constraint, depending on the backend
-	 * @return Tx_Extbase_Persistence_QueryInterface
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 * @api
 	 */
 	public function matching($constraint);
@@ -275,19 +277,20 @@ interface Tx_Extbase_Persistence_QueryInterface
 	 * Sets the Query Settings. These Query settings must match the settings expected by
 	 * the specific Storage Backend.
 	 *
-	 * @param Tx_Extbase_Persistence_QuerySettingsInterface $querySettings The Query Settings
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The Query Settings
 	 * @return void
 	 * @api This method is not part of FLOW3 API
 	 */
-	public function setQuerySettings(Tx_Extbase_Persistence_QuerySettingsInterface $querySettings);
+	public function setQuerySettings(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings);
 
 	/**
 	 * Returns the Query Settings.
 	 *
-	 * @return Tx_Extbase_Persistence_QuerySettingsInterface $querySettings The Query Settings
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The Query Settings
 	 * @api This method is not part of FLOW3 API
 	 */
 	public function getQuerySettings();
 
 }
+
 ?>

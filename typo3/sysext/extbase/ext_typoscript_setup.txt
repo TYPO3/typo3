@@ -1,17 +1,26 @@
 config.tx_extbase {
 	objects {
-		Tx_Extbase_Persistence_Storage_BackendInterface {
-			className = Tx_Extbase_Persistence_Storage_Typo3DbBackend
+		TYPO3\CMS\Extbase\Persistence\QueryInterface {
+			className = TYPO3\CMS\Extbase\Persistence\Generic\Query
 		}
-		Tx_Extbase_Persistence_QuerySettingsInterface {
-			className = Tx_Extbase_Persistence_Typo3QuerySettings
+		TYPO3\CMS\Extbase\Persistence\QueryResultInterface {
+			className = TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
+		}
+		TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface {
+			className = TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+		}
+		TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface {
+			className = TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend
+		}
+		TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface {
+			className = TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings
 		}
 	}
 	mvc {
 		requestHandlers {
-			Tx_Extbase_MVC_Web_FrontendRequestHandler = Tx_Extbase_MVC_Web_FrontendRequestHandler
-			Tx_Extbase_MVC_Web_BackendRequestHandler = Tx_Extbase_MVC_Web_BackendRequestHandler
-			Tx_Extbase_MVC_CLI_RequestHandler = Tx_Extbase_MVC_CLI_RequestHandler
+			TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler = TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler
+			TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler = TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler
+			TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler = TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler
 		}
 		throwPageNotFoundExceptionIfActionCantBeResolved = 0
 	}
@@ -19,7 +28,7 @@ config.tx_extbase {
 		enableAutomaticCacheClearing = 1
 		updateReferenceIndex = 0
 		classes {
-			Tx_Extbase_Domain_Model_FileMount {
+			TYPO3\CMS\Extbase\Domain\Model\FileMount {
 				mapping {
 					tableName = sys_filemounts
 					columns {
@@ -29,7 +38,7 @@ config.tx_extbase {
 					}
 				}
 			}
-			Tx_Extbase_Domain_Model_BackendUser {
+			TYPO3\CMS\Extbase\Domain\Model\BackendUser {
 				mapping {
 					tableName = be_users
 					columns {
@@ -44,7 +53,7 @@ config.tx_extbase {
 					}
 				}
 			}
-			Tx_Extbase_Domain_Model_BackendUserGroup {
+			TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup {
 				mapping {
 					tableName = be_groups
 					columns {
@@ -65,19 +74,19 @@ config.tx_extbase {
 					}
 				}
 			}
-			Tx_Extbase_Domain_Model_FrontendUser {
+			TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 				mapping {
 					tableName = fe_users
-					recordType = Tx_Extbase_Domain_Model_FrontendUser
+					recordType = TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 					columns {
 						lockToDomain.mapOnProperty = lockToDomain
 					}
 				}
 			}
-			Tx_Extbase_Domain_Model_FrontendUserGroup {
+			TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup {
 				mapping {
 					tableName = fe_groups
-					recordType = Tx_Extbase_Domain_Model_FrontendUserGroup
+					recordType = TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup
 					columns {
 						lockToDomain.mapOnProperty = lockToDomain
 					}

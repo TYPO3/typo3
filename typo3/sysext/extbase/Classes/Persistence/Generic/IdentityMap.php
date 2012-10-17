@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,10 +33,10 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @see Tx_Extbase_Persistence_Mapper_DataMapper , Tx_Extbase_Persistence_Backend
  */
-class Tx_Extbase_Persistence_IdentityMap implements t3lib_Singleton {
+class IdentityMap implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var Tx_Extbase_Persistence_ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
 	 */
 	protected $objectMap;
 
@@ -49,7 +51,7 @@ class Tx_Extbase_Persistence_IdentityMap implements t3lib_Singleton {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function __construct() {
-		$this->objectMap = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->objectMap = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 	}
 
 	/**
@@ -98,10 +100,10 @@ class Tx_Extbase_Persistence_IdentityMap implements t3lib_Singleton {
 	 */
 	public function getIdentifierByObject($object) {
 		if (!is_object($object)) {
-			throw new InvalidArgumentException(('Object expected, ' . gettype($object)) . ' given.', 1246892972);
+			throw new \InvalidArgumentException(('Object expected, ' . gettype($object)) . ' given.', 1246892972);
 		}
 		if (!isset($this->objectMap[$object])) {
-			throw new Tx_Extbase_Persistence_Exception_UnknownObject(('The given object (class: ' . get_class($object)) . ') is not registered in this Identity Map.', 1246892970);
+			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnknownObjectException(('The given object (class: ' . get_class($object)) . ') is not registered in this Identity Map.', 1246892970);
 		}
 		return $this->objectMap[$object];
 	}
@@ -131,5 +133,6 @@ class Tx_Extbase_Persistence_IdentityMap implements t3lib_Singleton {
 	}
 
 }
+
 
 ?>

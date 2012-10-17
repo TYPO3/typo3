@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,15 +34,15 @@
  * @entity
  * @api
  */
-class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class FrontendUserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Domain_Model_FrontendUser
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 	 */
 	protected $fixture = NULL;
 
 	public function setUp() {
-		$this->fixture = new Tx_Extbase_Domain_Model_FrontendUser();
+		$this->fixture = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUser();
 	}
 
 	public function tearDown() {
@@ -83,8 +85,8 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	 * @test
 	 */
 	public function setUsergroupSetsUsergroup() {
-		$usergroup = new Tx_Extbase_Persistence_ObjectStorage();
-		$usergroup->attach(new Tx_Extbase_Domain_Model_FrontendUserGroup('foo'));
+		$usergroup = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$usergroup->attach(new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo'));
 		$this->fixture->setUsergroup($usergroup);
 		$this->assertSame($usergroup, $this->fixture->getUsergroup());
 	}
@@ -93,7 +95,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	 * @test
 	 */
 	public function addUsergroupAddsUserGroup() {
-		$usergroup = new Tx_Extbase_Domain_Model_FrontendUserGroup('foo');
+		$usergroup = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo');
 		$this->assertEquals(count($this->fixture->getUsergroup()), 0);
 		$this->fixture->addUsergroup($usergroup);
 		$this->assertEquals(count($this->fixture->getUsergroup()), 1);
@@ -103,7 +105,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	 * @test
 	 */
 	public function removeUsergroupRemovesUsergroup() {
-		$usergroup = new Tx_Extbase_Domain_Model_FrontendUserGroup('foo');
+		$usergroup = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo');
 		$this->fixture->addUsergroup($usergroup);
 		$this->assertEquals(count($this->fixture->getUsergroup()), 1);
 		$this->fixture->removeUsergroup($usergroup);
@@ -399,5 +401,6 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserTest extends Tx_Extbase_Tes
 	}
 
 }
+
 
 ?>

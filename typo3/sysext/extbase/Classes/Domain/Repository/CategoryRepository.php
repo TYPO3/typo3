@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +32,7 @@
  * @subpackage Domain\Repository
  * @api
  */
-class Tx_Extbase_Domain_Repository_CategoryRepository extends Tx_Extbase_Persistence_Repository {
+class CategoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
 	/**
 	 * Initializes the repository.
@@ -38,12 +40,13 @@ class Tx_Extbase_Domain_Repository_CategoryRepository extends Tx_Extbase_Persist
 	 * @return void
 	 */
 	public function initializeObject() {
-		/** @var $querySettings Tx_Extbase_Persistence_Typo3QuerySettings */
-		$querySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
+		/** @var $querySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
+		$querySettings = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 		$querySettings->setRespectStoragePage(FALSE);
 		$this->setDefaultQuerySettings($querySettings);
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,33 +29,33 @@
  * @package Extbase
  * @subpackage Service
  */
-class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
+class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	const PLUGIN_TYPE_PLUGIN = 'list_type';
 	const PLUGIN_TYPE_CONTENT_ELEMENT = 'CType';
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
@@ -69,7 +71,7 @@ class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
 	public function getPluginNamespace($extensionName, $pluginName) {
 		$pluginSignature = strtolower(($extensionName . '_') . $pluginName);
 		$defaultPluginNamespace = 'tx_' . $pluginSignature;
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
 		if (!isset($frameworkConfiguration['view']['pluginNamespace']) || empty($frameworkConfiguration['view']['pluginNamespace'])) {
 			return $defaultPluginNamespace;
 		}
@@ -89,7 +91,7 @@ class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
 	 * @return string name of the target plugin (UpperCamelCase) or NULL if no matching plugin configuration was found
 	 */
 	public function getPluginNameByAction($extensionName, $controllerName, $actionName) {
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		// check, whether the current plugin is configured to handle the action
 		if ($extensionName === $frameworkConfiguration['extensionName']) {
 			if (isset($frameworkConfiguration['controllerConfiguration'][$controllerName]) && in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['actions'])) {
@@ -114,7 +116,7 @@ class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
 			}
 		}
 		if (count($pluginNames) > 1) {
-			throw new Tx_Extbase_Exception(((((('There is more than one plugin that can handle this request (Extension: "' . $extensionName) . '", Controller: "') . $controllerName) . '", action: "') . $actionName) . '"). Please specify "pluginName" argument', 1280825466);
+			throw new \TYPO3\CMS\Extbase\Exception(((((('There is more than one plugin that can handle this request (Extension: "' . $extensionName) . '", Controller: "') . $controllerName) . '", action: "') . $actionName) . '"). Please specify "pluginName" argument', 1280825466);
 		}
 		return count($pluginNames) > 0 ? $pluginNames[0] : NULL;
 	}
@@ -129,7 +131,7 @@ class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
 	 * @return boolean TRUE if the specified plugin action is cacheable, otherwise FALSE
 	 */
 	public function isActionCacheable($extensionName, $pluginName, $controllerName, $actionName) {
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
 		if (((isset($frameworkConfiguration['controllerConfiguration'][$controllerName]) && is_array($frameworkConfiguration['controllerConfiguration'][$controllerName])) && is_array($frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])) && in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])) {
 			return FALSE;
 		}
@@ -148,7 +150,7 @@ class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
 	 * @return integer uid of the target page or NULL if target page could not be determined
 	 */
 	public function getTargetPidByPlugin($extensionName, $pluginName) {
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
 		if (!isset($frameworkConfiguration['view']['defaultPid']) || empty($frameworkConfiguration['view']['defaultPid'])) {
 			return NULL;
 		}
@@ -156,7 +158,7 @@ class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
 		if ($frameworkConfiguration['view']['defaultPid'] === 'auto') {
 			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('pid', 'tt_content', (((('list_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($pluginSignature, 'tt_content')) . ' AND CType="list"') . $GLOBALS['TSFE']->sys_page->enableFields('tt_content')) . ' AND sys_language_uid=') . $GLOBALS['TSFE']->sys_language_uid, '', '', 2);
 			if (count($pages) > 1) {
-				throw new Tx_Extbase_Exception(((('There is more than one "' . $pluginSignature) . '" plugin in the current page tree. Please remove one plugin or set the TypoScript configuration "plugin.tx_') . $pluginSignature) . '.view.defaultPid" to a fixed page id', 1280773643);
+				throw new \TYPO3\CMS\Extbase\Exception(((('There is more than one "' . $pluginSignature) . '" plugin in the current page tree. Please remove one plugin or set the TypoScript configuration "plugin.tx_') . $pluginSignature) . '.view.defaultPid" to a fixed page id', 1280773643);
 			}
 			return count($pages) > 0 ? $pages[0]['pid'] : NULL;
 		}
@@ -195,5 +197,6 @@ class Tx_Extbase_Service_ExtensionService implements t3lib_Singleton {
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\BeforeExtbase14;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,13 +36,13 @@
  * @subpackage extbase
  * @version $Id: AlphanumericValidator_testcase.php 2428 2010-07-20 10:18:51Z jocrau $
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_AlphanumericValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function alphanumericValidatorReturnsTrueForAnAlphanumericString() {
-		$alphanumericValidator = new Tx_Extbase_Validation_Validator_AlphanumericValidator();
+		$alphanumericValidator = new \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator();
 		$this->assertTrue($alphanumericValidator->isValid('12ssDF34daweidf'));
 	}
 
@@ -48,7 +50,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_AlphanumericVal
 	 * @test
 	 */
 	public function alphanumericValidatorReturnsFalseForAStringWithSpecialCharacters() {
-		$alphanumericValidator = $this->getMock('Tx_Extbase_Validation_Validator_AlphanumericValidator', array('addError'), array(), '', FALSE);
+		$alphanumericValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\AlphanumericValidator', array('addError'), array(), '', FALSE);
 		$this->assertFalse($alphanumericValidator->isValid('adsf%&/$jklsfdö'));
 	}
 
@@ -56,11 +58,12 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_AlphanumericVal
 	 * @test
 	 */
 	public function alphanumericValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
-		$alphanumericValidator = $this->getMock('Tx_Extbase_Validation_Validator_AlphanumericValidator', array('addError'), array(), '', FALSE);
+		$alphanumericValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\AlphanumericValidator', array('addError'), array(), '', FALSE);
 		$alphanumericValidator->expects($this->once())->method('addError')->with('The given subject was not a valid alphanumeric string.', 1221551320);
 		$alphanumericValidator->isValid('adsf%&/$jklsfdö');
 	}
 
 }
+
 
 ?>

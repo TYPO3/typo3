@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +32,7 @@
  * @subpackage Utility
  * @version $ID:$
  */
-class Tx_Extbase_Utility_FrontendSimulator {
+class FrontendSimulatorUtility {
 
 	/**
 	 * @var mixed
@@ -45,11 +47,11 @@ class Tx_Extbase_Utility_FrontendSimulator {
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	static public function simulateFrontendEnvironment(tslib_cObj $cObj = NULL) {
+	static public function simulateFrontendEnvironment(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj = NULL) {
 		self::$tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
-		$GLOBALS['TSFE'] = new stdClass();
+		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->cObjectDepthCounter = 100;
-		$GLOBALS['TSFE']->cObj = $cObj !== NULL ? $cObj : t3lib_div::makeInstance('tslib_cObj');
+		$GLOBALS['TSFE']->cObj = $cObj !== NULL ? $cObj : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 	}
 
 	/**
@@ -66,5 +68,6 @@ class Tx_Extbase_Utility_FrontendSimulator {
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Security\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,9 +33,10 @@
  * @subpackage Security\Exception
  * @version $Id$
  */
-class Tx_Extbase_Security_Exception_SyntacticallyWrongRequestHash extends Tx_Extbase_Security_Exception {
+class SyntacticallyWrongRequestHashException extends \TYPO3\CMS\Extbase\Security\Exception {
 
 
 }
+
 
 ?>

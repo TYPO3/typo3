@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\BeforeExtbase14;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,7 +36,7 @@
  * @subpackage extbase
  * @version $Id: EmailAddressValidator_testcase.php 2428 2010-07-20 10:18:51Z jocrau $
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_EmailAddressValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class EmailAddressValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * Data provider with valid email addresses
@@ -57,7 +59,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_EmailAddressVal
 	 * @param mixed $address
 	 */
 	public function emailAddressValidatorReturnsTrueForAValidEmailAddress($address) {
-		$emailAddressValidator = new Tx_Extbase_Validation_Validator_EmailAddressValidator();
+		$emailAddressValidator = new \TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator();
 		$this->assertTrue($emailAddressValidator->isValid($address), "{$address} was declared to be invalid, but it is valid.");
 	}
 
@@ -84,7 +86,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_EmailAddressVal
 	 * @param mixed $address
 	 */
 	public function emailAddressValidatorReturnsFalseForAnInvalidEmailAddress($address) {
-		$emailAddressValidator = $this->getMock('Tx_Extbase_Validation_Validator_EmailAddressValidator', array('addError'), array(), '', FALSE);
+		$emailAddressValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator', array('addError'), array(), '', FALSE);
 		$this->assertFalse($emailAddressValidator->isValid($address));
 	}
 
@@ -92,11 +94,12 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_EmailAddressVal
 	 * @test
 	 */
 	public function emailValidatorCreatesTheCorrectErrorForAnInvalidEmailAddress() {
-		$emailAddressValidator = $this->getMock('Tx_Extbase_Validation_Validator_EmailAddressValidator', array('addError'), array(), '', FALSE);
+		$emailAddressValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator', array('addError'), array(), '', FALSE);
 		$emailAddressValidator->expects($this->once())->method('addError')->with('The given subject was not a valid email address.', 1221559976);
 		$emailAddressValidator->isValid('notAValidMail@Address');
 	}
 
 }
+
 
 ?>

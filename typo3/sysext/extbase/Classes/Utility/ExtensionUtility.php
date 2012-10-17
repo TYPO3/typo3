@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,12 +30,12 @@
  * @package Extbase
  * @subpackage Utility
  */
-class Tx_Extbase_Utility_Extension {
+class ExtensionUtility {
 
 	const PLUGIN_TYPE_PLUGIN = 'list_type';
 	const PLUGIN_TYPE_CONTENT_ELEMENT = 'CType';
 	/**
-	 * @var Tx_Extbase_Service_ExtensionService
+	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService
 	 */
 	static protected $extensionService = NULL;
 
@@ -42,9 +44,9 @@ class Tx_Extbase_Utility_Extension {
 	 */
 	static protected function getExtensionService() {
 		if (self::$extensionService === NULL) {
-			require_once t3lib_extMgm::extPath('extbase', 'Classes/Service/ExtensionService.php');
-			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-			self::$extensionService = $objectManager->get('Tx_Extbase_Service_ExtensionService');
+			require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase', 'Classes/Service/ExtensionService.php');
+			$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+			self::$extensionService = $objectManager->get('TYPO3\\CMS\\Extbase\\Service\\ExtensionService');
 		}
 		return self::$extensionService;
 	}
@@ -70,10 +72,10 @@ class Tx_Extbase_Utility_Extension {
 	 */
 	static public function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = array(), $pluginType = self::PLUGIN_TYPE_PLUGIN) {
 		if (empty($pluginName)) {
-			throw new InvalidArgumentException('The plugin name must not be empty', 1239891987);
+			throw new \InvalidArgumentException('The plugin name must not be empty', 1239891987);
 		}
 		if (empty($extensionName)) {
-			throw new InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
+			throw new \InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
 		}
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$pluginSignature = (strtolower($extensionName) . '_') . strtolower($pluginName);
@@ -81,9 +83,9 @@ class Tx_Extbase_Utility_Extension {
 			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName] = array();
 		}
 		foreach ($controllerActions as $controllerName => $actionsList) {
-			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerName] = array('actions' => t3lib_div::trimExplode(',', $actionsList));
+			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerName] = array('actions' => \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $actionsList));
 			if (!empty($nonCacheableControllerActions[$controllerName])) {
-				$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerName]['nonCacheableActions'] = t3lib_div::trimExplode(',', $nonCacheableControllerActions[$controllerName]);
+				$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerName]['nonCacheableActions'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $nonCacheableControllerActions[$controllerName]);
 			}
 		}
 		$pluginTemplate = ('plugin.tx_' . strtolower($extensionName)) . ' {
@@ -102,7 +104,7 @@ class Tx_Extbase_Utility_Extension {
 		defaultPid =
 	}
 }';
-		t3lib_extMgm::addTypoScript($extensionName, 'setup', (('
+		\TYPO3\CMS\Core\Extension\ExtensionManager::addTypoScript($extensionName, 'setup', (('
 # Setting ' . $extensionName) . ' plugin TypoScript
 ') . $pluginTemplate);
 		switch ($pluginType) {
@@ -110,7 +112,7 @@ class Tx_Extbase_Utility_Extension {
 			$pluginContent = trim(((((((('
 tt_content.list.20.' . $pluginSignature) . ' = USER
 tt_content.list.20.') . $pluginSignature) . ' {
-	userFunc = Tx_Extbase_Core_Bootstrap->run
+	userFunc = TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run
 	extensionName = ') . $extensionName) . '
 	pluginName = ') . $pluginName) . '
 }');
@@ -122,17 +124,17 @@ tt_content.') . $pluginSignature) . ' {
 	10 = < lib.stdheader
 	20 = USER
 	20 {
-		userFunc = Tx_Extbase_Core_Bootstrap->run
+		userFunc = TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run
 		extensionName = ') . $extensionName) . '
 		pluginName = ') . $pluginName) . '
 	}
 }');
 			break;
 		default:
-			throw new InvalidArgumentException(('The pluginType "' . $pluginType) . '" is not suported', 1289858856);
+			throw new \InvalidArgumentException(('The pluginType "' . $pluginType) . '" is not suported', 1289858856);
 		}
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType'] = $pluginType;
-		t3lib_extMgm::addTypoScript($extensionName, 'setup', (('
+		\TYPO3\CMS\Core\Extension\ExtensionManager::addTypoScript($extensionName, 'setup', (('
 # Setting ' . $extensionName) . ' plugin TypoScript
 ') . $pluginContent, 43);
 	}
@@ -149,14 +151,14 @@ tt_content.') . $pluginSignature) . ' {
 	 */
 	static public function registerPlugin($extensionName, $pluginName, $pluginTitle, $pluginIconPathAndFilename = NULL) {
 		if (empty($pluginName)) {
-			throw new InvalidArgumentException('The plugin name must not be empty', 1239891987);
+			throw new \InvalidArgumentException('The plugin name must not be empty', 1239891987);
 		}
 		if (empty($extensionName)) {
-			throw new InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
+			throw new \InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
 		}
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$pluginSignature = (strtolower($extensionName) . '_') . strtolower($pluginName);
-		t3lib_extMgm::addPlugin(array($pluginTitle, $pluginSignature, $pluginIconPathAndFilename), $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType']);
+		\TYPO3\CMS\Core\Extension\ExtensionManager::addPlugin(array($pluginTitle, $pluginSignature, $pluginIconPathAndFilename), $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType']);
 	}
 
 	/**
@@ -171,7 +173,7 @@ tt_content.') . $pluginSignature) . ' {
 		$iconPathAndFilename = $moduleConfiguration['icon'];
 		if (substr($iconPathAndFilename, 0, 4) === 'EXT:') {
 			list($extensionKey, $relativePath) = explode('/', substr($iconPathAndFilename, 4), 2);
-			$iconPathAndFilename = t3lib_extMgm::extPath($extensionKey) . $relativePath;
+			$iconPathAndFilename = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($extensionKey) . $relativePath;
 		}
 		// TODO: skin support
 		$moduleLabels = array(
@@ -204,18 +206,18 @@ tt_content.') . $pluginSignature) . ' {
 	 */
 	static public function registerModule($extensionName, $mainModuleName = '', $subModuleName = '', $position = '', array $controllerActions, array $moduleConfiguration = array()) {
 		if (empty($extensionName)) {
-			throw new InvalidArgumentException('The extension name must not be empty', 1239891989);
+			throw new \InvalidArgumentException('The extension name must not be empty', 1239891989);
 		}
-		$extensionKey = t3lib_div::camelCaseToLowerCaseUnderscored($extensionName);
+		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$defaultModuleConfiguration = array(
 			'access' => 'admin',
 			'icon' => 'EXT:extbase/ext_icon.gif',
 			'labels' => '',
-			'extRelPath' => t3lib_extMgm::extRelPath($extensionKey) . 'Classes/'
+			'extRelPath' => \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($extensionKey) . 'Classes/'
 		);
 		if (strlen($mainModuleName) > 0 && !array_key_exists($mainModuleName, $GLOBALS['TBE_MODULES'])) {
-			$mainModuleName = $extensionName . t3lib_div::underscoredToUpperCamelCase($mainModuleName);
+			$mainModuleName = $extensionName . \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($mainModuleName);
 		} else {
 			$mainModuleName = strlen($mainModuleName) > 0 ? $mainModuleName : 'web';
 		}
@@ -223,26 +225,26 @@ tt_content.') . $pluginSignature) . ' {
 		if ($mainModuleName === 'web') {
 			$defaultModuleConfiguration['navigationComponentId'] = 'typo3-pagetree';
 		}
-		$moduleConfiguration = t3lib_div::array_merge_recursive_overrule($defaultModuleConfiguration, $moduleConfiguration);
+		$moduleConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($defaultModuleConfiguration, $moduleConfiguration);
 		$moduleSignature = $mainModuleName;
 		if (strlen($subModuleName) > 0) {
-			$subModuleName = $extensionName . t3lib_div::underscoredToUpperCamelCase($subModuleName);
+			$subModuleName = $extensionName . \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($subModuleName);
 			$moduleSignature .= '_' . $subModuleName;
 		}
 		$moduleConfiguration['name'] = $moduleSignature;
 		$moduleConfiguration['script'] = 'mod.php?M=' . rawurlencode($moduleSignature);
 		$moduleConfiguration['extensionName'] = $extensionName;
-		$moduleConfiguration['configureModuleFunction'] = array('Tx_Extbase_Utility_Extension', 'configureModule');
+		$moduleConfiguration['configureModuleFunction'] = array('TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility', 'configureModule');
 		$GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
 		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature])) {
 			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature] = array();
 		}
 		foreach ($controllerActions as $controllerName => $actions) {
 			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature]['controllers'][$controllerName] = array(
-				'actions' => t3lib_div::trimExplode(',', $actions)
+				'actions' => \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $actions)
 			);
 		}
-		t3lib_extMgm::addModule($mainModuleName, $subModuleName, $position);
+		\TYPO3\CMS\Core\Extension\ExtensionManager::addModule($mainModuleName, $subModuleName, $position);
 	}
 
 	/**
@@ -269,14 +271,14 @@ tt_content.') . $pluginSignature) . ' {
 	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0
 	 */
 	static public function createAutoloadRegistryForExtension($extensionKey, $extensionPath, $additionalAutoloadClasses = array()) {
-		t3lib_div::logDeprecatedFunction();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$classNameToFileMapping = array();
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionKey)));
 		$errors = self::buildAutoloadRegistryForSinglePath($classNameToFileMapping, $extensionPath . 'Classes/', '.*tslib.*', '$extensionClassesPath . \'|\'');
 		if ($errors) {
 			return $errors;
 		}
-		$globalPrefix = ('$extensionClassesPath = t3lib_extMgm::extPath(\'' . $extensionKey) . '\') . \'Classes/\';';
+		$globalPrefix = ('$extensionClassesPath = TYPO3\\CMS\\Core\\Extension\\ExtensionManager::extPath(\'' . $extensionKey) . '\') . \'Classes/\';';
 		$errors = array();
 		foreach ($classNameToFileMapping as $className => $fileName) {
 			if (!(strpos($className, 'tx_' . strtolower($extensionName)) === 0)) {
@@ -304,7 +306,7 @@ tt_content.') . $pluginSignature) . ' {
 	 */
 	protected function generateAutoloadPhpFileData($classNameToFileMapping, $globalPrefix = '') {
 		$output = '<?php' . PHP_EOL;
-		$output .= '// DO NOT CHANGE THIS FILE! It is automatically generated by Tx_Extbase_Utility_Extension::createAutoloadRegistryForExtension.' . PHP_EOL;
+		$output .= '// DO NOT CHANGE THIS FILE! It is automatically generated by TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::createAutoloadRegistryForExtension.' . PHP_EOL;
 		$output .= ('// This file was generated on ' . date('Y-m-d H:i')) . PHP_EOL;
 		$output .= PHP_EOL;
 		$output .= $globalPrefix . PHP_EOL;
@@ -328,7 +330,7 @@ tt_content.') . $pluginSignature) . ' {
 	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0
 	 */
 	static protected function buildAutoloadRegistryForSinglePath(&$classNameToFileMapping, $path, $excludeRegularExpression = '', $valueWrap = '\'|\'') {
-		$extensionFileNames = t3lib_div::removePrefixPathFromList(t3lib_div::getAllFilesAndFoldersInPath(array(), $path, 'php', FALSE, 99, $excludeRegularExpression), $path);
+		$extensionFileNames = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList(\TYPO3\CMS\Core\Utility\GeneralUtility::getAllFilesAndFoldersInPath(array(), $path, 'php', FALSE, 99, $excludeRegularExpression), $path);
 		foreach ($extensionFileNames as $extensionFileName) {
 			$classNamesInFile = self::extractClassNames($path . $extensionFileName);
 			if (!count($classNamesInFile)) {
@@ -367,11 +369,11 @@ tt_content.') . $pluginSignature) . ' {
 				$token = self::findToken($tokens, array(T_STRING), array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT));
 				if ($token === false) {
 					// unexpected end of file or token: remove found names because of parse error
-					t3lib_div::sysLog(('Parse error in "' . $filePath) . '".', 'Core', 2);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(('Parse error in "' . $filePath) . '".', 'Core', 2);
 					$classNames = array();
 					break;
 				}
-				$token = t3lib_div::strtolower($token);
+				$token = \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($token);
 				// exclude XLASS classes
 				if (strncmp($token, 'ux_', 3)) {
 					$classNames[] = $token;
@@ -381,7 +383,7 @@ tt_content.') . $pluginSignature) . ' {
 			// TODO: parse PHP - skip coments and strings, apply regexp only on the remaining PHP code
 			$matches = array();
 			preg_match_all('/^[ \\t]*(?:(?:abstract|final)?[ \\t]*(?:class|interface))[ \\t\\n\\r]+([a-zA-Z][a-zA-Z_0-9]*)/mS', $fileContent, $matches);
-			$classNames = array_map('t3lib_div::strtolower', $matches[1]);
+			$classNames = array_map('TYPO3\\CMS\\Core\\Utility\\GeneralUtility::strtolower', $matches[1]);
 		}
 		return $classNames;
 	}
@@ -430,7 +432,7 @@ tt_content.') . $pluginSignature) . ' {
 	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0 - Use Tx_Extbase_Service_ExtensionService instead
 	 */
 	static public function getPluginNamespace($extensionName, $pluginName) {
-		t3lib_div::logDeprecatedFunction();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$extensionService = self::getExtensionService();
 		return $extensionService->getPluginNamespace($extensionName, $pluginName);
 	}
@@ -449,7 +451,7 @@ tt_content.') . $pluginSignature) . ' {
 	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0 - Use Tx_Extbase_Service_ExtensionService instead
 	 */
 	static public function getPluginNameByAction($extensionName, $controllerName, $actionName) {
-		t3lib_div::logDeprecatedFunction();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$extensionService = self::getExtensionService();
 		return $extensionService->getPluginNameByAction($extensionName, $controllerName, $actionName);
 	}
@@ -465,7 +467,7 @@ tt_content.') . $pluginSignature) . ' {
 	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0 - Use Tx_Extbase_Service_ExtensionService instead
 	 */
 	static public function isActionCacheable($extensionName, $pluginName, $controllerName, $actionName) {
-		t3lib_div::logDeprecatedFunction();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$extensionService = self::getExtensionService();
 		return $extensionService->isActionCacheable($extensionName, $pluginName, $controllerName, $actionName);
 	}
@@ -483,11 +485,12 @@ tt_content.') . $pluginSignature) . ' {
 	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0 - Use Tx_Extbase_Service_ExtensionService instead
 	 */
 	static public function getTargetPidByPlugin($extensionName, $pluginName) {
-		t3lib_div::logDeprecatedFunction();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$extensionService = self::getExtensionService();
 		return $extensionService->getTargetPidByPlugin($extensionName, $pluginName);
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Controller;
+
 /***************************************************************
  *  Copyright notice
  *  All rights reserved
@@ -27,8 +29,9 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-interface Tx_Extbase_MVC_Controller_CommandControllerInterface extends Tx_Extbase_MVC_Controller_ControllerInterface
+interface CommandControllerInterface extends \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface
 {
 
 }
+
 ?>

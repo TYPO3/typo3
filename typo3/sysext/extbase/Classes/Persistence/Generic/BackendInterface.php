@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,23 +33,23 @@
  * @subpackage Persistence
  * @version $Id$
  */
-interface Tx_Extbase_Persistence_BackendInterface
+interface BackendInterface
 {
 	/**
 	 * Sets the aggregate root objects
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage $objects
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objects
 	 * @return void
 	 */
-	public function setAggregateRootObjects(Tx_Extbase_Persistence_ObjectStorage $objects);
+	public function setAggregateRootObjects(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objects);
 
 	/**
 	 * Sets the deleted objects
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage $objects
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objects
 	 * @return void
 	 */
-	public function setDeletedObjects(Tx_Extbase_Persistence_ObjectStorage $objects);
+	public function setDeletedObjects(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objects);
 
 	/**
 	 * Commits the current persistence session
@@ -101,4 +103,5 @@ interface Tx_Extbase_Persistence_BackendInterface
 	public function replaceObject($existingObject, $newObject);
 
 }
+
 ?>

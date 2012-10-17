@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                          *
  *                                                                        *
@@ -17,12 +19,12 @@
  * @package Extbase
  * @subpackage Persistence
  */
-interface Tx_Extbase_Persistence_QueryResultInterface extends Countable, Iterator, ArrayAccess
+interface QueryResultInterface extends \Countable, \Iterator, \ArrayAccess
 {
 	/**
 	 * Returns a clone of the query object
 	 *
-	 * @return Tx_Extbase_Persistence_QueryInterface
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 * @api
 	 */
 	public function getQuery();
@@ -44,4 +46,5 @@ interface Tx_Extbase_Persistence_QueryResultInterface extends Countable, Iterato
 	public function toArray();
 
 }
+
 ?>

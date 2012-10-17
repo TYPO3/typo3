@@ -21,10 +21,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once t3lib_extMgm::extPath('extbase') . 'Tests/Unit/Object/Container/Fixtures/Testclasses.php';
-require_once t3lib_extMgm::extPath('extbase') . 'Tests/Unit/Fixtures/ClassWithInjectProperties.php';
-require_once t3lib_extMgm::extPath('extbase') . 'Tests/Unit/Fixtures/DummyClass.php';
-require_once t3lib_extMgm::extPath('extbase') . 'Tests/Unit/Fixtures/SecondDummyClass.php';
+require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Tests/Unit/Object/Container/Fixtures/Testclasses.php';
+require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Tests/Unit/Fixtures/ClassWithInjectProperties.php';
+require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Tests/Unit/Fixtures/DummyClass.php';
+require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Tests/Unit/Fixtures/SecondDummyClass.php';
+namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
+
 /**
  * Testcase for class t3lib_object_ClassInfoFactory.
  *
@@ -33,10 +35,10 @@ require_once t3lib_extMgm::extPath('extbase') . 'Tests/Unit/Fixtures/SecondDummy
  * @package TYPO3
  * @subpackage t3lib
  */
-class Tx_Extbase_Tests_Unit_Object_Container_ClassInfoFactoryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class ClassInfoFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Object_Container_ClassInfoFactory
+	 * @var \TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory
 	 */
 	private $classInfoFactory;
 
@@ -44,12 +46,12 @@ class Tx_Extbase_Tests_Unit_Object_Container_ClassInfoFactoryTest extends Tx_Ext
 
 	 */
 	public function setUp() {
-		$this->classInfoFactory = new Tx_Extbase_Object_Container_ClassInfoFactory();
+		$this->classInfoFactory = new \Tx_Extbase_Object_Container_ClassInfoFactory();
 	}
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_Object_Container_Exception_UnknownObjectException
+	 * @expectedException \TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException
 	 */
 	public function buildClassInfoFromClassNameThrowsExceptionIfGivenClassNameCantBeReflected() {
 		$this->classInfoFactory->buildClassInfoFromClassName('SomeNonExistingClass');
@@ -67,8 +69,8 @@ class Tx_Extbase_Tests_Unit_Object_Container_ClassInfoFactoryTest extends Tx_Ext
 	 * @test
 	 */
 	public function buildClassInfoDetectsPropertiesToInjectByAnnotation() {
-		$classInfo = $this->classInfoFactory->buildClassInfoFromClassName('Tx_Extbase_Fixture_ClassWithInjectProperties');
-		$this->assertEquals(array('secondDummyClass' => 'Tx_Extbase_Fixture_SecondDummyClass'), $classInfo->getInjectProperties());
+		$classInfo = $this->classInfoFactory->buildClassInfoFromClassName('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithInjectProperties');
+		$this->assertEquals(array('secondDummyClass' => 'TYPO3\\CMS\\Extbase\\Tests\\Fixture\\SecondDummyClass'), $classInfo->getInjectProperties());
 	}
 
 	/**
@@ -79,5 +81,6 @@ class Tx_Extbase_Tests_Unit_Object_Container_ClassInfoFactoryTest extends Tx_Ext
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,7 +36,7 @@
  * @version $Id$
  * @scope prototype
  */
-class Tx_Extbase_Validation_Validator_RegularExpressionValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class RegularExpressionValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
 	 * Returns TRUE, if the given property ($value) matches the given regular expression.
@@ -63,5 +65,6 @@ class Tx_Extbase_Validation_Validator_RegularExpressionValidator extends Tx_Extb
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Property\TypeConverter;
+
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -29,7 +31,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-abstract class Tx_Extbase_Property_TypeConverter_AbstractTypeConverter implements Tx_Extbase_Property_TypeConverterInterface, t3lib_Singleton {
+abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\TypeConverterInterface, \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * The source types this converter can convert.
@@ -56,16 +58,16 @@ abstract class Tx_Extbase_Property_TypeConverter_AbstractTypeConverter implement
 	protected $priority;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManager
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected $objectManager;
 
 	/**
 	 * Injects the object manager.
 	 *
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -129,14 +131,15 @@ abstract class Tx_Extbase_Property_TypeConverter_AbstractTypeConverter implement
 	 *
 	 * @param string $targetType
 	 * @param string $propertyName
-	 * @param Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration
+	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
 	 * @return string
 	 * @api
 	 */
-	public function getTypeOfChildProperty($targetType, $propertyName, Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration) {
+	public function getTypeOfChildProperty($targetType, $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration) {
 
 	}
 
 }
+
 
 ?>

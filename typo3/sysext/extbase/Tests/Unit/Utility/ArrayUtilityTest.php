@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,34 +31,34 @@
  *
  * @author Tymoteusz Motylewski <t.motylewski@gmail.com>
  */
-class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class ArrayUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function containsMultipleTypesReturnsFalseOnEmptyArray() {
-		$this->assertFalse(Tx_Extbase_Utility_Arrays::containsMultipleTypes(array()));
+		$this->assertFalse(\TYPO3\CMS\Extbase\Utility\ArrayUtility::containsMultipleTypes(array()));
 	}
 
 	/**
 	 * @test
 	 */
 	public function containsMultipleTypesReturnsFalseOnArrayWithIntegers() {
-		$this->assertFalse(Tx_Extbase_Utility_Arrays::containsMultipleTypes(array(1, 2, 3)));
+		$this->assertFalse(\TYPO3\CMS\Extbase\Utility\ArrayUtility::containsMultipleTypes(array(1, 2, 3)));
 	}
 
 	/**
 	 * @test
 	 */
 	public function containsMultipleTypesReturnsFalseOnArrayWithObjects() {
-		$this->assertFalse(Tx_Extbase_Utility_Arrays::containsMultipleTypes(array(new \stdClass(), new \stdClass(), new \stdClass())));
+		$this->assertFalse(\TYPO3\CMS\Extbase\Utility\ArrayUtility::containsMultipleTypes(array(new \stdClass(), new \stdClass(), new \stdClass())));
 	}
 
 	/**
 	 * @test
 	 */
 	public function containsMultipleTypesReturnsTrueOnMixedArray() {
-		$this->assertTrue(Tx_Extbase_Utility_Arrays::containsMultipleTypes(array(1, 'string', 1.25, new \stdClass())));
+		$this->assertTrue(\TYPO3\CMS\Extbase\Utility\ArrayUtility::containsMultipleTypes(array(1, 'string', 1.25, new \stdClass())));
 	}
 
 	/**
@@ -64,7 +66,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 	 */
 	public function getValueByPathReturnsTheValueOfANestedArrayByFollowingTheGivenSimplePath() {
 		$array = array('Foo' => 'the value');
-		$this->assertSame('the value', Tx_Extbase_Utility_Arrays::getValueByPath($array, array('Foo')));
+		$this->assertSame('the value', \TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($array, array('Foo')));
 	}
 
 	/**
@@ -72,7 +74,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 	 */
 	public function getValueByPathReturnsTheValueOfANestedArrayByFollowingTheGivenPath() {
 		$array = array('Foo' => array('Bar' => array('Baz' => array(2 => 'the value'))));
-		$this->assertSame('the value', Tx_Extbase_Utility_Arrays::getValueByPath($array, array('Foo', 'Bar', 'Baz', 2)));
+		$this->assertSame('the value', \TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($array, array('Foo', 'Bar', 'Baz', 2)));
 	}
 
 	/**
@@ -82,7 +84,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 		$path = 'Foo.Bar.Baz.2';
 		$array = array('Foo' => array('Bar' => array('Baz' => array(2 => 'the value'))));
 		$expectedResult = 'the value';
-		$actualResult = Tx_Extbase_Utility_Arrays::getValueByPath($array, $path);
+		$actualResult = \TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($array, $path);
 		$this->assertSame($expectedResult, $actualResult);
 	}
 
@@ -92,7 +94,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 	 */
 	public function getValueByPathThrowsExceptionIfPathIsNoArrayOrString() {
 		$array = array('Foo' => array('Bar' => array('Baz' => array(2 => 'the value'))));
-		Tx_Extbase_Utility_Arrays::getValueByPath($array, NULL);
+		\TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($array, NULL);
 	}
 
 	/**
@@ -100,7 +102,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 	 */
 	public function getValueByPathReturnsNullIfTheSegementsOfThePathDontExist() {
 		$array = array('Foo' => array('Bar' => array('Baz' => array(2 => 'the value'))));
-		$this->assertNull(Tx_Extbase_Utility_Arrays::getValueByPath($array, array('Foo', 'Bar', 'Bax', 2)));
+		$this->assertNull(\TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($array, array('Foo', 'Bar', 'Bax', 2)));
 	}
 
 	/**
@@ -108,7 +110,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 	 */
 	public function getValueByPathReturnsNullIfThePathHasMoreSegmentsThanTheGivenArray() {
 		$array = array('Foo' => array('Bar' => array('Baz' => 'the value')));
-		$this->assertNull(Tx_Extbase_Utility_Arrays::getValueByPath($array, array('Foo', 'Bar', 'Baz', 'Bux')));
+		$this->assertNull(\TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($array, array('Foo', 'Bar', 'Baz', 'Bux')));
 	}
 
 	/**
@@ -120,7 +122,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 		$object->b = new \stdClass();
 		$object->b->c = 'w';
 		$object->d = array('i' => 'foo', 'j' => 12, 'k' => TRUE, 'l' => new \stdClass());
-		$array = Tx_Extbase_Utility_Arrays::convertObjectToArray($object);
+		$array = \TYPO3\CMS\Extbase\Utility\ArrayUtility::convertObjectToArray($object);
 		$expected = array(
 			'a' => 'v',
 			'b' => array(
@@ -143,7 +145,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 		$array = array();
 		$path = array('foo', 'bar', 'baz');
 		$expectedValue = array('foo' => array('bar' => array('baz' => 'The Value')));
-		$actualValue = Tx_Extbase_Utility_Arrays::setValueByPath($array, $path, 'The Value');
+		$actualValue = \TYPO3\CMS\Extbase\Utility\ArrayUtility::setValueByPath($array, $path, 'The Value');
 		$this->assertSame($expectedValue, $actualValue);
 	}
 
@@ -154,7 +156,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 		$array = array();
 		$path = 'foo.bar.baz';
 		$expectedValue = array('foo' => array('bar' => array('baz' => 'The Value')));
-		$actualValue = Tx_Extbase_Utility_Arrays::setValueByPath($array, $path, 'The Value');
+		$actualValue = \TYPO3\CMS\Extbase\Utility\ArrayUtility::setValueByPath($array, $path, 'The Value');
 		$this->assertSame($expectedValue, $actualValue);
 	}
 
@@ -165,7 +167,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 		$array = array('foo' => array('bar' => 'should be overriden'), 'bar' => 'Baz');
 		$path = array('foo', 'bar', 'baz');
 		$expectedValue = array('foo' => array('bar' => array('baz' => 'The Value')), 'bar' => 'Baz');
-		$actualValue = Tx_Extbase_Utility_Arrays::setValueByPath($array, $path, 'The Value');
+		$actualValue = \TYPO3\CMS\Extbase\Utility\ArrayUtility::setValueByPath($array, $path, 'The Value');
 		$this->assertSame($expectedValue, $actualValue);
 	}
 
@@ -175,7 +177,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 	 */
 	public function setValueByPathThrowsExceptionIfPathIsNoArrayOrString() {
 		$array = array('Foo' => array('Bar' => array('Baz' => array(2 => 'the value'))));
-		Tx_Extbase_Utility_Arrays::setValueByPath($array, NULL, 'Some Value');
+		\TYPO3\CMS\Extbase\Utility\ArrayUtility::setValueByPath($array, NULL, 'Some Value');
 	}
 
 	/**
@@ -184,7 +186,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 	 */
 	public function setValueByPathThrowsExceptionIfSubjectIsNoArray() {
 		$subject = 'foobar';
-		Tx_Extbase_Utility_Arrays::setValueByPath($subject, 'foo', 'bar');
+		\TYPO3\CMS\Extbase\Utility\ArrayUtility::setValueByPath($subject, 'foo', 'bar');
 	}
 
 	/**
@@ -193,7 +195,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 	 */
 	public function setValueByPathThrowsExceptionIfSubjectIsNoArrayAccess() {
 		$subject = new \stdClass();
-		Tx_Extbase_Utility_Arrays::setValueByPath($subject, 'foo', 'bar');
+		\TYPO3\CMS\Extbase\Utility\ArrayUtility::setValueByPath($subject, 'foo', 'bar');
 	}
 
 	/**
@@ -201,7 +203,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 	 */
 	public function setValueByLeavesInputArrayUnchanged() {
 		$subject = ($subjectBackup = array('foo' => 'bar'));
-		Tx_Extbase_Utility_Arrays::setValueByPath($subject, 'foo', 'baz');
+		\TYPO3\CMS\Extbase\Utility\ArrayUtility::setValueByPath($subject, 'foo', 'baz');
 		$this->assertSame($subject, $subjectBackup);
 	}
 
@@ -212,7 +214,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 		$array = array('foo' => array('bar' => array('baz' => 'Some Value')), 'bar' => 'Baz');
 		$path = array('foo', 'bar', 'nonExistingKey');
 		$expectedValue = $array;
-		$actualValue = Tx_Extbase_Utility_Arrays::unsetValueByPath($array, $path);
+		$actualValue = \TYPO3\CMS\Extbase\Utility\ArrayUtility::unsetValueByPath($array, $path);
 		$this->assertSame($expectedValue, $actualValue);
 	}
 
@@ -223,7 +225,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 		$array = array('foo' => array('bar' => array('baz' => 'Some Value')), 'bar' => 'Baz');
 		$path = array('foo', 'bar', 'baz');
 		$expectedValue = array('foo' => array('bar' => array()), 'bar' => 'Baz');
-		$actualValue = Tx_Extbase_Utility_Arrays::unsetValueByPath($array, $path);
+		$actualValue = \TYPO3\CMS\Extbase\Utility\ArrayUtility::unsetValueByPath($array, $path);
 		$this->assertSame($expectedValue, $actualValue);
 	}
 
@@ -234,7 +236,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 		$array = array('foo' => array('bar' => array('baz' => 'Some Value')), 'bar' => 'Baz');
 		$path = 'foo.bar.baz';
 		$expectedValue = array('foo' => array('bar' => array()), 'bar' => 'Baz');
-		$actualValue = Tx_Extbase_Utility_Arrays::unsetValueByPath($array, $path);
+		$actualValue = \TYPO3\CMS\Extbase\Utility\ArrayUtility::unsetValueByPath($array, $path);
 		$this->assertSame($expectedValue, $actualValue);
 	}
 
@@ -245,7 +247,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 		$array = array('foo' => array('bar' => array('baz' => 'Some Value')), 'bar' => 'Baz');
 		$path = array('foo');
 		$expectedValue = array('bar' => 'Baz');
-		$actualValue = Tx_Extbase_Utility_Arrays::unsetValueByPath($array, $path);
+		$actualValue = \TYPO3\CMS\Extbase\Utility\ArrayUtility::unsetValueByPath($array, $path);
 		$this->assertSame($expectedValue, $actualValue);
 	}
 
@@ -255,7 +257,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 	 */
 	public function unsetValueByPathThrowsExceptionIfPathIsNoArrayOrString() {
 		$array = array('Foo' => array('Bar' => array('Baz' => array(2 => 'the value'))));
-		Tx_Extbase_Utility_Arrays::unsetValueByPath($array, NULL);
+		\TYPO3\CMS\Extbase\Utility\ArrayUtility::unsetValueByPath($array, NULL);
 	}
 
 	/**
@@ -264,7 +266,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 	public function removeEmptyElementsRecursivelyRemovesNullValues() {
 		$array = array('EmptyElement' => NULL, 'Foo' => array('Bar' => array('Baz' => array('NotNull' => '', 'AnotherEmptyElement' => NULL))));
 		$expectedResult = array('Foo' => array('Bar' => array('Baz' => array('NotNull' => ''))));
-		$actualResult = Tx_Extbase_Utility_Arrays::removeEmptyElementsRecursively($array);
+		$actualResult = \TYPO3\CMS\Extbase\Utility\ArrayUtility::removeEmptyElementsRecursively($array);
 		$this->assertSame($expectedResult, $actualResult);
 	}
 
@@ -274,7 +276,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 	public function removeEmptyElementsRecursivelyRemovesEmptySubArrays() {
 		$array = array('EmptyElement' => array(), 'Foo' => array('Bar' => array('Baz' => array('AnotherEmptyElement' => NULL))), 'NotNull' => 123);
 		$expectedResult = array('NotNull' => 123);
-		$actualResult = Tx_Extbase_Utility_Arrays::removeEmptyElementsRecursively($array);
+		$actualResult = \TYPO3\CMS\Extbase\Utility\ArrayUtility::removeEmptyElementsRecursively($array);
 		$this->assertSame($expectedResult, $actualResult);
 	}
 
@@ -383,7 +385,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 	 * @dataProvider arrayMergeRecursiveOverruleData
 	 */
 	public function arrayMergeRecursiveOverruleMergesSimpleArrays(array $inputArray1, array $inputArray2, $dontAddNewKeys, $emptyValuesOverride, array $expected) {
-		$this->assertSame($expected, Tx_Extbase_Utility_Arrays::arrayMergeRecursiveOverrule($inputArray1, $inputArray2, $dontAddNewKeys, $emptyValuesOverride));
+		$this->assertSame($expected, \TYPO3\CMS\Extbase\Utility\ArrayUtility::arrayMergeRecursiveOverrule($inputArray1, $inputArray2, $dontAddNewKeys, $emptyValuesOverride));
 	}
 
 	/**
@@ -392,7 +394,7 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 	public function integerExplodeReturnsArrayOfIntegers() {
 		$inputString = '1,2,3,4,5,6';
 		$expected = array(1, 2, 3, 4, 5, 6);
-		$this->assertSame($expected, Tx_Extbase_Utility_Arrays::integerExplode(',', $inputString));
+		$this->assertSame($expected, \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $inputString));
 	}
 
 	/**
@@ -401,9 +403,10 @@ class Tx_Extbase_Tests_Unit_Utility_ArraysTest extends Tx_Extbase_Tests_Unit_Bas
 	public function integerExplodeReturnsZeroForStringValues() {
 		$inputString = '1,abc,3,,5';
 		$expected = array(1, 0, 3, 0, 5);
-		$this->assertSame($expected, Tx_Extbase_Utility_Arrays::integerExplode(',', $inputString));
+		$this->assertSame($expected, \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $inputString));
 	}
 
 }
+
 
 ?>

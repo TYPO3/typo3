@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Security\Channel;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -43,18 +45,18 @@
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton {
+class RequestHashService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var Tx_Extbase_Security_Cryptography_HashService
+	 * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService
 	 */
 	protected $hashService;
 
 	/**
-	 * @param Tx_Extbase_Security_Cryptography_HashService $hashService
+	 * @param \TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService
 	 * @return void
 	 */
-	public function injectHashService(Tx_Extbase_Security_Cryptography_HashService $hashService) {
+	public function injectHashService(\TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService) {
 		$this->hashService = $hashService;
 	}
 
@@ -79,11 +81,11 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 				}
 				// Strip off closing ] if needed
 				if (!is_array($currentPosition)) {
-					throw new Tx_Extbase_Security_Exception_InvalidArgumentForRequestHashGeneration(('The form field name "' . $formField) . '" collides with a previous form field name which declared the field as string. (String overridden by Array)', 1255072196);
+					throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForRequestHashGenerationException(('The form field name "' . $formField) . '" collides with a previous form field name which declared the field as string. (String overridden by Array)', 1255072196);
 				}
 				if ($i == count($formFieldParts) - 1) {
 					if (isset($currentPosition[$formFieldPart]) && is_array($currentPosition[$formFieldPart])) {
-						throw new Tx_Extbase_Security_Exception_InvalidArgumentForRequestHashGeneration(('The form field name "' . $formField) . '" collides with a previous form field name which declared the field as array. (Array overridden by String)', 1255072587);
+						throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForRequestHashGenerationException(('The form field name "' . $formField) . '" collides with a previous form field name which declared the field as array. (Array overridden by String)', 1255072587);
 					}
 					// Last iteration - add a string
 					if ($formFieldPart === '') {
@@ -93,7 +95,7 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 					}
 				} else {
 					if ($formFieldPart === '') {
-						throw new Tx_Extbase_Security_Exception_InvalidArgumentForRequestHashGeneration(('The form field name "' . $formField) . '" is invalid. Reason: "[]" used not as last argument.', 1255072832);
+						throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForRequestHashGenerationException(('The form field name "' . $formField) . '" is invalid. Reason: "[]" used not as last argument.', 1255072832);
 					}
 					if (!isset($currentPosition[$formFieldPart])) {
 						$currentPosition[$formFieldPart] = array();
@@ -125,18 +127,18 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 	 *
 	 * In the end, $request->setHmacVerified is set depending on the value.
 	 *
-	 * @param Tx_Extbase_MVC_Web_Request $request The request to verify
+	 * @param \TYPO3\CMS\Extbase\Mvc\Web\Request $request The request to verify
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function verifyRequest(Tx_Extbase_MVC_Web_Request $request) {
+	public function verifyRequest(\TYPO3\CMS\Extbase\Mvc\Web\Request $request) {
 		if (!$request->getInternalArgument('__hmac')) {
 			$request->setHmacVerified(FALSE);
 			return;
 		}
 		$hmac = $request->getInternalArgument('__hmac');
 		if (strlen($hmac) < 40) {
-			throw new Tx_Extbase_Security_Exception_SyntacticallyWrongRequestHash('Request hash too short. This is a probably manipulation attempt!', 1255089361);
+			throw new \TYPO3\CMS\Extbase\Security\Exception\SyntacticallyWrongRequestHashException('Request hash too short. This is a probably manipulation attempt!', 1255089361);
 		}
 		$serializedFieldNames = substr($hmac, 0, -40);
 		// TODO: Constant for hash length needs to be introduced
@@ -185,5 +187,6 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 	}
 
 }
+
 
 ?>

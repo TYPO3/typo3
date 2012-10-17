@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -39,7 +41,7 @@
  * @subpackage Persistence\QOM
  * @version $Id$
  */
-interface Tx_Extbase_Persistence_QOM_PropertyValueInterface extends Tx_Extbase_Persistence_QOM_DynamicOperandInterface
+interface PropertyValueInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface
 {
 	/**
 	 * Gets the name of the selector against which to evaluate this operand.
@@ -56,4 +58,5 @@ interface Tx_Extbase_Persistence_QOM_PropertyValueInterface extends Tx_Extbase_P
 	public function getPropertyName();
 
 }
+
 ?>

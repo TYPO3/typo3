@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,10 +34,10 @@
  * @version $ID:$
  * @scope prototype
  */
-class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
+class Arguments extends \ArrayObject {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -59,10 +61,10 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	/**
 	 * Injects the object manager
 	 *
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -76,8 +78,8 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 * @throws InvalidArgumentException if the argument is not a valid Controller Argument object
 	 */
 	public function offsetSet($offset, $value) {
-		if (!$value instanceof Tx_Extbase_MVC_Controller_Argument) {
-			throw new InvalidArgumentException('Controller arguments must be valid Tx_Extbase_MVC_Controller_Argument objects.', 1187953786);
+		if (!$value instanceof \TYPO3\CMS\Extbase\Mvc\Controller\Argument) {
+			throw new \InvalidArgumentException('Controller arguments must be valid TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument objects.', 1187953786);
 		}
 		$argumentName = $value->getName();
 		parent::offsetSet($argumentName, $value);
@@ -92,8 +94,8 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 * @throws InvalidArgumentException if the argument is not a valid Controller Argument object
 	 */
 	public function append($value) {
-		if (!$value instanceof Tx_Extbase_MVC_Controller_Argument) {
-			throw new InvalidArgumentException('Controller arguments must be valid Tx_Extbase_MVC_Controller_Argument objects.', 1187953786);
+		if (!$value instanceof \TYPO3\CMS\Extbase\Mvc\Controller\Argument) {
+			throw new \InvalidArgumentException('Controller arguments must be valid TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument objects.', 1187953786);
 		}
 		$this->offsetSet(NULL, $value);
 	}
@@ -128,13 +130,13 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 * Returns the value at the specified index
 	 *
 	 * @param mixed $offset Offset
-	 * @return Tx_Extbase_MVC_Controller_Argument The requested argument object
-	 * @throws Tx_Extbase_MVC_Exception_NoSuchArgument if the argument does not exist
+	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument The requested argument object
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException if the argument does not exist
 	 */
 	public function offsetGet($offset) {
 		$translatedOffset = $this->translateToLongArgumentName($offset);
 		if ($translatedOffset === '') {
-			throw new Tx_Extbase_MVC_Exception_NoSuchArgument(('The argument "' . $offset) . '" does not exist.', 1216909923);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException(('The argument "' . $offset) . '" does not exist.', 1216909923);
 		}
 		return parent::offsetGet($translatedOffset);
 	}
@@ -148,11 +150,11 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 * @param string $dataType Name of one of the built-in data types
 	 * @param boolean $isRequired TRUE if this argument should be marked as required
 	 * @param mixed $defaultValue Default value of the argument. Only makes sense if $isRequired==FALSE
-	 * @return Tx_Extbase_MVC_Controller_Argument The new argument
+	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument The new argument
 	 */
 	public function addNewArgument($name, $dataType = 'Text', $isRequired = FALSE, $defaultValue = NULL) {
-		/** @var $argument Tx_Extbase_MVC_Controller_Argument */
-		$argument = $this->objectManager->create('Tx_Extbase_MVC_Controller_Argument', $name, $dataType);
+		/** @var $argument \TYPO3\CMS\Extbase\Mvc\Controller\Argument */
+		$argument = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', $name, $dataType);
 		$argument->setRequired($isRequired);
 		$argument->setDefaultValue($defaultValue);
 		$this->addArgument($argument);
@@ -166,10 +168,10 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 *
 	 * Note that the argument will be cloned, not referenced.
 	 *
-	 * @param Tx_Extbase_MVC_Controller_Argument $argument The argument to add
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument The argument to add
 	 * @return void
 	 */
-	public function addArgument(Tx_Extbase_MVC_Controller_Argument $argument) {
+	public function addArgument(\TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument) {
 		$this->offsetSet(NULL, $argument);
 	}
 
@@ -177,12 +179,12 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 * Returns an argument specified by name
 	 *
 	 * @param string $argumentName Name of the argument to retrieve
-	 * @return Tx_Extbase_MVC_Controller_Argument
-	 * @throws Tx_Extbase_MVC_Exception_NoSuchArgument
+	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
 	 */
 	public function getArgument($argumentName) {
 		if (!$this->offsetExists($argumentName)) {
-			throw new Tx_Extbase_MVC_Exception_NoSuchArgument(('An argument "' . $argumentName) . '" does not exist.', 1195815178);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException(('An argument "' . $argumentName) . '" does not exist.', 1195815178);
 		}
 		return $this->offsetGet($argumentName);
 	}
@@ -230,7 +232,7 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 */
 	public function __call($methodName, array $arguments) {
 		if (substr($methodName, 0, 3) !== 'set') {
-			throw new LogicException(('Unknown method "' . $methodName) . '".', 1210858451);
+			throw new \LogicException(('Unknown method "' . $methodName) . '".', 1210858451);
 		}
 		$firstLowerCaseArgumentName = $this->translateToLongArgumentName(strtolower($methodName[3]) . substr($methodName, 4));
 		$firstUpperCaseArgumentName = $this->translateToLongArgumentName(ucfirst(substr($methodName, 3)));
@@ -280,10 +282,10 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	/**
 	 * Get all property mapping / validation errors
 	 *
-	 * @return Tx_Extbase_Error_Result
+	 * @return \TYPO3\CMS\Extbase\Error\Result
 	 */
 	public function getValidationResults() {
-		$results = new Tx_Extbase_Error_Result();
+		$results = new \TYPO3\CMS\Extbase\Error\Result();
 		foreach ($this as $argument) {
 			$argumentValidationResults = $argument->getValidationResults();
 			if ($argumentValidationResults === NULL) {
@@ -295,5 +297,6 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	}
 
 }
+
 
 ?>

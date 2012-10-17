@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Web;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                          *
  *                                                                        *
@@ -18,7 +20,7 @@
  * @subpackage MVC\Web
  * @api
  */
-class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
+class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 
 	/**
 	 * The HTTP headers which will be sent in the response
@@ -51,7 +53,7 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	/**
 	 * The Request which generated the Response
 	 *
-	 * @var Tx_Extbase_MVC_Web_Request
+	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Request
 	 */
 	protected $request;
 
@@ -119,10 +121,10 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	 */
 	public function setStatus($code, $message = NULL) {
 		if (!is_int($code)) {
-			throw new InvalidArgumentException(('The HTTP status code must be of type integer, ' . gettype($code)) . ' given.', 1220526013);
+			throw new \InvalidArgumentException(('The HTTP status code must be of type integer, ' . gettype($code)) . ' given.', 1220526013);
 		}
 		if ($message === NULL && !isset($this->statusMessages[$code])) {
-			throw new InvalidArgumentException(('No message found for HTTP status code "' . $code) . '".', 1220526014);
+			throw new \InvalidArgumentException(('No message found for HTTP status code "' . $code) . '".', 1220526014);
 		}
 		$this->statusCode = $code;
 		$this->statusMessage = $message === NULL ? $this->statusMessages[$code] : $message;
@@ -149,7 +151,7 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	 */
 	public function setHeader($name, $value, $replaceExistingHeader = TRUE) {
 		if (strtoupper(substr($name, 0, 4)) === 'HTTP') {
-			throw new InvalidArgumentException('The HTTP status header must be set via setStatus().', 1220541963);
+			throw new \InvalidArgumentException('The HTTP status header must be set via setStatus().', 1220541963);
 		}
 		if ($replaceExistingHeader === TRUE || !isset($this->headers[$name])) {
 			$this->headers[$name] = array($value);
@@ -221,7 +223,7 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	 */
 	public function addAdditionalHeaderData($additionalHeaderData) {
 		if (!is_string($additionalHeaderData)) {
-			throw new InvalidArgumentException(('The additiona header data must be of type String, ' . gettype($additionalHeaderData)) . ' given.', 1237370877);
+			throw new \InvalidArgumentException(('The additiona header data must be of type String, ' . gettype($additionalHeaderData)) . ' given.', 1237370877);
 		}
 		if ($this->request->isCached()) {
 			if (TYPO3_MODE === 'FE') {
@@ -246,19 +248,20 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	}
 
 	/**
-	 * @param Tx_Extbase_MVC_Web_Request $request
+	 * @param \TYPO3\CMS\Extbase\Mvc\Web\Request $request
 	 */
-	public function setRequest(Tx_Extbase_MVC_Web_Request $request) {
+	public function setRequest(\TYPO3\CMS\Extbase\Mvc\Web\Request $request) {
 		$this->request = $request;
 	}
 
 	/**
-	 * @return Tx_Extbase_MVC_Web_Request
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Request
 	 */
 	public function getRequest() {
 		return $this->request;
 	}
 
 }
+
 
 ?>

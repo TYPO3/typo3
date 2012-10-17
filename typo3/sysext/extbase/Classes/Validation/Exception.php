@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,9 +33,10 @@
  * @subpackage Validation
  * @version $ID:$
  */
-class Tx_Extbase_Validation_Exception extends Tx_Extbase_Exception {
+class Exception extends \TYPO3\CMS\Extbase\Exception {
 
 
 }
+
 
 ?>

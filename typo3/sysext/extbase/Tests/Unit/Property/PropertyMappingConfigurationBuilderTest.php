@@ -19,21 +19,23 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 require_once __DIR__ . '/../Fixtures/ClassWithSetters.php';
+namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
+
 /**
  * Testcase for the Property Mapper
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @covers Tx_Extbase_Property_PropertyMappingConfigurationBuilder
+ * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder
  */
-class Tx_Extbase_Tests_Unit_Property_PropertyMappingConfigurationBuilderTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class PropertyMappingConfigurationBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Property_PropertyMappingConfigurationBuilder
+	 * @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder
 	 */
 	protected $propertyMappingConfigurationBuilder;
 
 	public function setUp() {
-		$this->propertyMappingConfigurationBuilder = new Tx_Extbase_Property_PropertyMappingConfigurationBuilder();
+		$this->propertyMappingConfigurationBuilder = new \Tx_Extbase_Property_PropertyMappingConfigurationBuilder();
 	}
 
 	/**
@@ -42,12 +44,13 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMappingConfigurationBuilderTest ext
 	 */
 	public function getTargetPropertyNameShouldReturnTheUnmodifiedPropertyNameWithoutConfiguration() {
 		$defaultConfiguration = $this->propertyMappingConfigurationBuilder->build();
-		$this->assertTrue($defaultConfiguration->getConfigurationValue('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
-		$this->assertTrue($defaultConfiguration->getConfigurationValue('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
-		$this->assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
-		$this->assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter', Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
+		$this->assertTrue($defaultConfiguration->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
+		$this->assertTrue($defaultConfiguration->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
+		$this->assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
+		$this->assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -72,10 +74,10 @@
  * @version $Id$
  * @scope prototype
  */
-class Tx_Extbase_Persistence_QOM_Comparison implements Tx_Extbase_Persistence_QOM_ComparisonInterface {
+class Comparison implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface {
 
 	/**
-	 * @var Tx_Extbase_Persistence_QOM_DynamicOperandInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface
 	 */
 	protected $operand1;
 
@@ -92,11 +94,11 @@ class Tx_Extbase_Persistence_QOM_Comparison implements Tx_Extbase_Persistence_QO
 	/**
 	 * Constructs this Comparison instance
 	 *
-	 * @param Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand1
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand1
 	 * @param int $operator one of Tx_Extbase_Persistence_QueryInterface.OPERATOR_*
 	 * @param mixed $operand2
 	 */
-	public function __construct(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand1, $operator, $operand2) {
+	public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand1, $operator, $operand2) {
 		$this->operand1 = $operand1;
 		$this->operator = $operator;
 		$this->operand2 = $operand2;
@@ -105,7 +107,7 @@ class Tx_Extbase_Persistence_QOM_Comparison implements Tx_Extbase_Persistence_QO
 	/**
 	 * Gets the first operand.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_DynamicOperandInterface the operand; non-null
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface the operand; non-null
 	 */
 	public function getOperand1() {
 		return $this->operand1;
@@ -130,5 +132,6 @@ class Tx_Extbase_Persistence_QOM_Comparison implements Tx_Extbase_Persistence_QO
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +32,7 @@
  * @subpackage Persistence
  * @version $ID:$
  */
-interface Tx_Extbase_Persistence_ObjectMonitoringInterface
+interface ObjectMonitoringInterface
 {
 	/**
 	 * Register an object's clean state, e.g. after it has been reconstituted
@@ -48,4 +50,5 @@ interface Tx_Extbase_Persistence_ObjectMonitoringInterface
 	public function _isDirty();
 
 }
+
 ?>

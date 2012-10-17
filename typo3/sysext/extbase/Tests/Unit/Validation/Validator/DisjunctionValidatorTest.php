@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -23,19 +25,19 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_DisjunctionValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class DisjunctionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function allValidatorsInTheDisjunctionAreCalledEvenIfOneReturnsNoError() {
-		$validatorDisjunction = new Tx_Extbase_Validation_Validator_DisjunctionValidator(array());
-		$validatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
-		$validatorObject->expects($this->once())->method('validate')->will($this->returnValue(new Tx_Extbase_Error_Result()));
-		$errors = new Tx_Extbase_Error_Result();
-		$errors->addError(new Tx_Extbase_Error_Error('Error', 123));
-		$secondValidatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
+		$validatorDisjunction = new \TYPO3\CMS\Extbase\Validation\Validator\DisjunctionValidator(array());
+		$validatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
+		$validatorObject->expects($this->once())->method('validate')->will($this->returnValue(new \TYPO3\CMS\Extbase\Error\Result()));
+		$errors = new \TYPO3\CMS\Extbase\Error\Result();
+		$errors->addError(new \TYPO3\CMS\Extbase\Error\Error('Error', 123));
+		$secondValidatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
 		$secondValidatorObject->expects($this->exactly(1))->method('validate')->will($this->returnValue($errors));
 		$validatorDisjunction->addValidator($validatorObject);
 		$validatorDisjunction->addValidator($secondValidatorObject);
@@ -47,12 +49,12 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_DisjunctionValidatorTest extend
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function validateReturnsNoErrorsIfOneValidatorReturnsNoError() {
-		$validatorDisjunction = new Tx_Extbase_Validation_Validator_DisjunctionValidator(array());
-		$validatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
-		$validatorObject->expects($this->any())->method('validate')->will($this->returnValue(new Tx_Extbase_Error_Result()));
-		$errors = new Tx_Extbase_Error_Result();
-		$errors->addError(new Tx_Extbase_Error_Error('Error', 123));
-		$secondValidatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
+		$validatorDisjunction = new \TYPO3\CMS\Extbase\Validation\Validator\DisjunctionValidator(array());
+		$validatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
+		$validatorObject->expects($this->any())->method('validate')->will($this->returnValue(new \TYPO3\CMS\Extbase\Error\Result()));
+		$errors = new \TYPO3\CMS\Extbase\Error\Result();
+		$errors->addError(new \TYPO3\CMS\Extbase\Error\Error('Error', 123));
+		$secondValidatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
 		$secondValidatorObject->expects($this->any())->method('validate')->will($this->returnValue($errors));
 		$validatorDisjunction->addValidator($validatorObject);
 		$validatorDisjunction->addValidator($secondValidatorObject);
@@ -64,16 +66,16 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_DisjunctionValidatorTest extend
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function validateReturnsAllErrorsIfAllValidatorsReturnErrrors() {
-		$validatorDisjunction = new Tx_Extbase_Validation_Validator_DisjunctionValidator(array());
-		$error1 = new Tx_Extbase_Error_Error('Error', 123);
-		$error2 = new Tx_Extbase_Error_Error('Error2', 123);
-		$errors1 = new Tx_Extbase_Error_Result();
+		$validatorDisjunction = new \TYPO3\CMS\Extbase\Validation\Validator\DisjunctionValidator(array());
+		$error1 = new \TYPO3\CMS\Extbase\Error\Error('Error', 123);
+		$error2 = new \TYPO3\CMS\Extbase\Error\Error('Error2', 123);
+		$errors1 = new \TYPO3\CMS\Extbase\Error\Result();
 		$errors1->addError($error1);
-		$validatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
+		$validatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
 		$validatorObject->expects($this->any())->method('validate')->will($this->returnValue($errors1));
-		$errors2 = new Tx_Extbase_Error_Result();
+		$errors2 = new \TYPO3\CMS\Extbase\Error\Result();
 		$errors2->addError($error2);
-		$secondValidatorObject = $this->getMock('Tx_Extbase_Validation_Validator_ValidatorInterface', array('validate'));
+		$secondValidatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
 		$secondValidatorObject->expects($this->any())->method('validate')->will($this->returnValue($errors2));
 		$validatorDisjunction->addValidator($validatorObject);
 		$validatorDisjunction->addValidator($secondValidatorObject);
@@ -81,5 +83,6 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_DisjunctionValidatorTest extend
 	}
 
 }
+
 
 ?>

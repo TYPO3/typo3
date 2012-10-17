@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,9 +33,10 @@
  * @subpackage MVC\Exception
  * @version $Id$
  */
-class Tx_Extbase_MVC_Exception_InfiniteLoop extends Tx_Extbase_MVC_Exception {
+class InfiniteLoopException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 
 
 }
+
 
 ?>

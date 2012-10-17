@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Cli;
+
 /***************************************************************
  *  Copyright notice
  *  All rights reserved
@@ -28,7 +30,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Tx_Extbase_MVC_CLI_Response extends Tx_Extbase_MVC_Response {
+class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 
 	/**
 	 * @var integer
@@ -44,7 +46,7 @@ class Tx_Extbase_MVC_CLI_Response extends Tx_Extbase_MVC_Response {
 	 */
 	public function setExitCode($exitCode) {
 		if (!is_integer($exitCode)) {
-			throw new InvalidArgumentException(sprintf('Tried to set invalid exit code. The value must be integer, %s given.', gettype($exitCode)), 1312222064);
+			throw new \InvalidArgumentException(sprintf('Tried to set invalid exit code. The value must be integer, %s given.', gettype($exitCode)), 1312222064);
 		}
 		$this->exitCode = $exitCode;
 	}
@@ -72,5 +74,6 @@ class Tx_Extbase_MVC_CLI_Response extends Tx_Extbase_MVC_Response {
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +34,7 @@
  * @version $Id$
  * @scope prototype
  */
-class Tx_Extbase_Validation_Validator_NumberRangeValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class NumberRangeValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
 	 * Returns TRUE, if the given property ($propertyValue) is a valid number in the given range.
@@ -69,5 +71,6 @@ class Tx_Extbase_Validation_Validator_NumberRangeValidator extends Tx_Extbase_Va
 	}
 
 }
+
 
 ?>

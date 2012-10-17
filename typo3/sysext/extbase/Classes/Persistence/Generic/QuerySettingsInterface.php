@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,13 +33,13 @@
  * @subpackage Persistence
  * @version $Id$
  */
-interface Tx_Extbase_Persistence_QuerySettingsInterface
+interface QuerySettingsInterface
 {
 	/**
 	 * Sets the flag if the storage page should be respected for the query.
 	 *
 	 * @param boolean $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
-	 * @return Tx_Extbase_Persistence_QuerySettingsInterface instance of $this to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
 	 * @api
 	 */
 	public function setRespectStoragePage($respectStoragePage);
@@ -53,7 +55,7 @@ interface Tx_Extbase_Persistence_QuerySettingsInterface
 	 * Sets the pid(s) of the storage page(s) that should be respected for the query.
 	 *
 	 * @param array $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
-	 * @return Tx_Extbase_Persistence_QuerySettingsInterface instance of $this to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
 	 * @api
 	 */
 	public function setStoragePageIds(array $storagePageIds);
@@ -69,7 +71,7 @@ interface Tx_Extbase_Persistence_QuerySettingsInterface
 	 * Sets the flag if a  and language overlay should be performed.
 	 *
 	 * @param boolean $respectEnableFields TRUE if a  and language overlay should be performed.
-	 * @return Tx_Extbase_Persistence_QuerySettingsInterface instance of $this to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
 	 * @api
 	 */
 	public function setRespectSysLanguage($respectSysLanguage);
@@ -156,4 +158,5 @@ interface Tx_Extbase_Persistence_QuerySettingsInterface
 	public function getReturnRawQueryResult();
 
 }
+
 ?>

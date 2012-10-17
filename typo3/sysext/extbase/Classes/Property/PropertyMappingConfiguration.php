@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Property;
+
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -24,7 +26,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class Tx_Extbase_Property_PropertyMappingConfiguration implements Tx_Extbase_Property_PropertyMappingConfigurationInterface {
+class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface {
 
 	/**
 	 * multi-dimensional array which stores type-converter specific configuration:
@@ -46,7 +48,7 @@ class Tx_Extbase_Property_PropertyMappingConfiguration implements Tx_Extbase_Pro
 	/**
 	 * The parent PropertyMappingConfiguration. If a configuration value for the current entry is not found, we propagate the question to the parent.
 	 *
-	 * @var Tx_Extbase_Property_PropertyMappingConfigurationInterface
+	 * @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface
 	 */
 	protected $parentConfiguration;
 
@@ -58,18 +60,18 @@ class Tx_Extbase_Property_PropertyMappingConfiguration implements Tx_Extbase_Pro
 	protected $mapping = array();
 
 	/**
-	 * @var Tx_Extbase_Property_TypeConverterInterface
+	 * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface
 	 */
 	protected $typeConverter = NULL;
 
 	/**
 	 * Set the parent PropertyMappingConfiguration. Only used internally!
 	 *
-	 * @param Tx_Extbase_Property_PropertyMappingConfigurationInterface $parentConfiguration
+	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $parentConfiguration
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function setParent(Tx_Extbase_Property_PropertyMappingConfigurationInterface $parentConfiguration) {
+	protected function setParent(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $parentConfiguration) {
 		$this->parentConfiguration = $parentConfiguration;
 	}
 
@@ -88,7 +90,7 @@ class Tx_Extbase_Property_PropertyMappingConfiguration implements Tx_Extbase_Pro
 	 * Returns the sub-configuration for the passed $propertyName. Must ALWAYS return a valid configuration object!
 	 *
 	 * @param string $propertyName
-	 * @return Tx_Extbase_Property_PropertyMappingConfigurationInterface the property mapping configuration for the given $propertyName.
+	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface the property mapping configuration for the given $propertyName.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
@@ -96,7 +98,7 @@ class Tx_Extbase_Property_PropertyMappingConfiguration implements Tx_Extbase_Pro
 		if (isset($this->subConfigurationForProperty[$propertyName])) {
 			return $this->subConfigurationForProperty[$propertyName];
 		}
-		return new Tx_Extbase_Property_PropertyMappingConfiguration();
+		return new \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration();
 	}
 
 	/**
@@ -174,7 +176,7 @@ class Tx_Extbase_Property_PropertyMappingConfiguration implements Tx_Extbase_Pro
 	 * $configuration->forProperty('foo.bar')->setTypeConverterOption(....)
 	 *
 	 * @param string $propertyPath
-	 * @return Tx_Extbase_Property_PropertyMappingConfiguration (or a subclass thereof)
+	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration (or a subclass thereof)
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
@@ -187,7 +189,7 @@ class Tx_Extbase_Property_PropertyMappingConfiguration implements Tx_Extbase_Pro
 	 * Traverse the property configuration. Only used by forProperty().
 	 *
 	 * @param array $splittedPropertyPath
-	 * @return Tx_Extbase_Property_PropertyMappingConfiguration (or a subclass thereof)
+	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration (or a subclass thereof)
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function traverseProperties(array $splittedPropertyPath) {
@@ -206,7 +208,7 @@ class Tx_Extbase_Property_PropertyMappingConfiguration implements Tx_Extbase_Pro
 	/**
 	 * Return the type converter set for this configuration.
 	 *
-	 * @return Tx_Extbase_Property_TypeConverterInterface
+	 * @return \TYPO3\CMS\Extbase\Property\TypeConverterInterface
 	 * @api
 	 */
 	public function getTypeConverter() {
@@ -216,14 +218,15 @@ class Tx_Extbase_Property_PropertyMappingConfiguration implements Tx_Extbase_Pro
 	/**
 	 * Set a type converter which should be used for this specific conversion.
 	 *
-	 * @param Tx_Extbase_Property_TypeConverterInterface $typeConverter
+	 * @param \TYPO3\CMS\Extbase\Property\TypeConverterInterface $typeConverter
 	 * @return void
 	 * @api
 	 */
-	public function setTypeConverter(Tx_Extbase_Property_TypeConverterInterface $typeConverter) {
+	public function setTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverterInterface $typeConverter) {
 		$this->typeConverter = $typeConverter;
 	}
 
 }
+
 
 ?>

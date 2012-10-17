@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Web\Routing;
+
 /*                                                                        *
  * This script is part of the TYPO3 project - inspiring people to share!  *
  *                                                                        *
@@ -19,27 +21,27 @@
  * @version $Id$
  * @api
  */
-class Tx_Extbase_MVC_Web_Routing_UriBuilder {
+class UriBuilder {
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @var Tx_Extbase_Service_ExtensionService
+	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService
 	 */
 	protected $extensionService;
 
 	/**
 	 * An instance of tslib_cObj
 	 *
-	 * @var tslib_cObj
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	protected $contentObject;
 
 	/**
-	 * @var Tx_Extbase_MVC_Web_Request
+	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Request
 	 */
 	protected $request;
 
@@ -116,18 +118,18 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	protected $argumentPrefix = NULL;
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
 	/**
-	 * @param Tx_Extbase_Service_ExtensionService $extensionService
+	 * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
 	 * @return void
 	 */
-	public function injectExtensionService(Tx_Extbase_Service_ExtensionService $extensionService) {
+	public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService) {
 		$this->extensionService = $extensionService;
 	}
 
@@ -143,16 +145,16 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	/**
 	 * Sets the current request
 	 *
-	 * @param Tx_Extbase_MVC_Request $request
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @param \TYPO3\CMS\Extbase\Mvc\Request $request
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 */
-	public function setRequest(Tx_Extbase_MVC_Request $request) {
+	public function setRequest(\TYPO3\CMS\Extbase\Mvc\Request $request) {
 		$this->request = $request;
 		return $this;
 	}
 
 	/**
-	 * @return Tx_Extbase_MVC_Web_Request
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Request
 	 */
 	public function getRequest() {
 		return $this->request;
@@ -164,7 +166,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * array('prefix1' => array('foo' => 'bar')) gets "&prefix1[foo]=bar"
 	 *
 	 * @param array $arguments
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */
 	public function setArguments(array $arguments) {
@@ -184,7 +186,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * If specified, adds a given HTML anchor to the URI (#...)
 	 *
 	 * @param string $section
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */
 	public function setSection($section) {
@@ -204,7 +206,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * Specifies the format of the target (e.g. "html" or "xml")
 	 *
 	 * @param string $format
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */
 	public function setFormat($format) {
@@ -224,7 +226,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * If set, the URI is prepended with the current base URI. Defaults to FALSE.
 	 *
 	 * @param boolean $createAbsoluteUri
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */
 	public function setCreateAbsoluteUri($createAbsoluteUri) {
@@ -251,7 +253,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * Sets the scheme that should be used for absolute URIs in FE mode
 	 *
 	 * @param string $absoluteUriScheme the scheme to be used for absolute URIs
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 */
 	public function setAbsoluteUriScheme($absoluteUriScheme) {
 		$this->absoluteUriScheme = $absoluteUriScheme;
@@ -262,7 +264,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * If set, the current query parameters will be merged with $this->arguments. Defaults to FALSE.
 	 *
 	 * @param boolean $addQueryString
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 * @see TSref/typolink.addQueryString
 	 */
@@ -284,7 +286,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * Only active if addQueryString is set
 	 *
 	 * @param array $argumentsToBeExcludedFromQueryString
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 * @see TSref/typolink.addQueryString.exclude
 	 * @see setAddQueryString()
@@ -306,7 +308,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * Specifies the prefix to be used for all arguments.
 	 *
 	 * @param string $argumentPrefix
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 */
 	public function setArgumentPrefix($argumentPrefix) {
 		$this->argumentPrefix = (string) $argumentPrefix;
@@ -324,7 +326,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * If set, URIs for pages without access permissions will be created
 	 *
 	 * @param boolean $linkAccessRestrictedPages
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */
 	public function setLinkAccessRestrictedPages($linkAccessRestrictedPages) {
@@ -344,7 +346,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * Uid of the target page
 	 *
 	 * @param integer $targetPageUid
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */
 	public function setTargetPageUid($targetPageUid) {
@@ -366,7 +368,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * Sets the page type of the target URI. Defaults to 0
 	 *
 	 * @param integer $targetPageType
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */
 	public function setTargetPageType($targetPageType) {
@@ -387,7 +389,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * This overrules the useCacheHash setting
 	 *
 	 * @param boolean $noCache
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */
 	public function setNoCache($noCache) {
@@ -408,7 +410,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 * If noCache is set, this setting will be ignored.
 	 *
 	 * @param boolean $useCacheHash
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */
 	public function setUseCacheHash($useCacheHash) {
@@ -438,7 +440,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	/**
 	 * Resets all UriBuilder options to their default value
 	 *
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 * @api
 	 */
 	public function reset() {
@@ -503,7 +505,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 			$pluginNamespace = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
 			$prefixedControllerArguments = array($pluginNamespace => $controllerArguments);
 		}
-		$this->arguments = t3lib_div::array_merge_recursive_overrule($this->arguments, $prefixedControllerArguments);
+		$this->arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->arguments, $prefixedControllerArguments);
 		return $this->build();
 	}
 
@@ -559,17 +561,17 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 */
 	public function buildBackendUri() {
 		if ($this->addQueryString === TRUE) {
-			$arguments = t3lib_div::_GET();
+			$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
 			foreach ($this->argumentsToBeExcludedFromQueryString as $argumentToBeExcluded) {
 				unset($arguments[$argumentToBeExcluded]);
 			}
 		} else {
 			$arguments = array(
-				'M' => t3lib_div::_GET('M'),
-				'id' => t3lib_div::_GET('id')
+				'M' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('M'),
+				'id' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('id')
 			);
 		}
-		$arguments = t3lib_div::array_merge_recursive_overrule($arguments, $this->arguments);
+		$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($arguments, $this->arguments);
 		$arguments = $this->convertDomainObjectsToIdentityArrays($arguments);
 		$this->lastArguments = $arguments;
 		$uri = 'mod.php?' . http_build_query($arguments, NULL, '&');
@@ -615,7 +617,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		if (count($this->arguments) > 0) {
 			$arguments = $this->convertDomainObjectsToIdentityArrays($this->arguments);
 			$this->lastArguments = $arguments;
-			$typolinkConfiguration['additionalParams'] = t3lib_div::implodeArrayForUrl(NULL, $arguments);
+			$typolinkConfiguration['additionalParams'] = \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl(NULL, $arguments);
 		}
 		if ($this->addQueryString === TRUE) {
 			$typolinkConfiguration['addQueryString'] = 1;
@@ -649,19 +651,19 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	protected function convertDomainObjectsToIdentityArrays(array $arguments) {
 		foreach ($arguments as $argumentKey => $argumentValue) {
 			// if we have a LazyLoadingProxy here, make sure to get the real instance for further processing
-			if ($argumentValue instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
+			if ($argumentValue instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
 				$argumentValue = $argumentValue->_loadRealInstance();
 				// also update the value in the arguments array, because the lazyLoaded object could be
 				// hidden and thus the $argumentValue would be NULL.
 				$arguments[$argumentKey] = $argumentValue;
 			}
-			if ($argumentValue instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
+			if ($argumentValue instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject) {
 				if ($argumentValue->getUid() !== NULL) {
 					$arguments[$argumentKey] = $argumentValue->getUid();
-				} elseif ($argumentValue instanceof Tx_Extbase_DomainObject_AbstractValueObject) {
+				} elseif ($argumentValue instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject) {
 					$arguments[$argumentKey] = $this->convertTransientObjectToArray($argumentValue);
 				} else {
-					throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue(('Could not serialize Domain Object ' . get_class($argumentValue)) . '. It is neither an Entity with identity properties set, nor a Value Object.', 1260881688);
+					throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException(('Could not serialize Domain Object ' . get_class($argumentValue)) . '. It is neither an Entity with identity properties set, nor a Value Object.', 1260881688);
 				}
 			} elseif (is_array($argumentValue)) {
 				$arguments[$argumentKey] = $this->convertDomainObjectsToIdentityArrays($argumentValue);
@@ -673,14 +675,14 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	/**
 	 * Converts a given object recursively into an array.
 	 *
-	 * @param Tx_Extbase_DomainObject_AbstractDomainObject $object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject $object
 	 * @return array
 	 */
 	// TODO Refactore this into convertDomainObjectsToIdentityArrays()
-	public function convertTransientObjectToArray(Tx_Extbase_DomainObject_AbstractDomainObject $object) {
+	public function convertTransientObjectToArray(\TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject $object) {
 		$result = array();
 		foreach ($object->_getProperties() as $propertyName => $propertyValue) {
-			if ($propertyValue instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
+			if ($propertyValue instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject) {
 				if ($propertyValue->getUid() !== NULL) {
 					$result[$propertyName] = $propertyValue->getUid();
 				} else {
@@ -696,5 +698,6 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	}
 
 }
+
 
 ?>

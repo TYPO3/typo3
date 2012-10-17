@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Property;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +35,7 @@
  * @scope prototype
  * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
  */
-class Tx_Extbase_Property_MappingResults {
+class MappingResults {
 
 	/**
 	 * @var array An array of the occured errors
@@ -49,10 +51,10 @@ class Tx_Extbase_Property_MappingResults {
 	 * Adds an error to the mapping results. This might be for example a
 	 * validation or mapping error
 	 *
-	 * @param Tx_Extbase_Error_Error $error The occured error
+	 * @param \TYPO3\CMS\Extbase\Error\Error $error The occured error
 	 * @param string $propertyName The name of the property which caused the error
 	 */
-	public function addError(Tx_Extbase_Error_Error $error, $propertyName) {
+	public function addError(\TYPO3\CMS\Extbase\Error\Error $error, $propertyName) {
 		$this->errors[$propertyName] = $error;
 	}
 
@@ -104,5 +106,6 @@ class Tx_Extbase_Property_MappingResults {
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,7 +29,7 @@
  * @package Extbase
  * @subpackage Service
  */
-class Tx_Extbase_Service_FlexFormService implements t3lib_Singleton {
+class FlexFormService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Parses the flexForm content and converts it to an array
@@ -43,7 +45,7 @@ class Tx_Extbase_Service_FlexFormService implements t3lib_Singleton {
 	 */
 	public function convertFlexFormContentToArray($flexFormContent, $languagePointer = 'lDEF', $valuePointer = 'vDEF') {
 		$settings = array();
-		$flexFormArray = t3lib_div::xml2array($flexFormContent);
+		$flexFormArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($flexFormContent);
 		$flexFormArray = isset($flexFormArray['data']) ? $flexFormArray['data'] : array();
 		foreach (array_values($flexFormArray) as $languages) {
 			if (!is_array($languages[$languagePointer])) {
@@ -117,5 +119,6 @@ class Tx_Extbase_Service_FlexFormService implements t3lib_Singleton {
 	}
 
 }
+
 
 ?>

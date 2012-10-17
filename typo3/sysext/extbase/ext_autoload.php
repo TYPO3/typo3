@@ -1,5 +1,5 @@
 <?php
-$extensionPath = t3lib_extMgm::extPath('extbase');
+$extensionPath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase');
 $extensionClassesPath = $extensionPath . 'Classes/';
 return array(
 	'tx_extbase_tests_unit_basetestcase' => $extensionPath . 'Tests/Unit/BaseTestCase.php',

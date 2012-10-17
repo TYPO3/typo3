@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,12 +34,12 @@
  * @subpackage Persistence\QOM
  * @version $Id$
  */
-interface Tx_Extbase_Persistence_QOM_OrderingInterface
+interface OrderingInterface
 {
 	/**
 	 * The operand by which to order.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_DynamicOperandInterface the operand; non-null
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface the operand; non-null
 	 */
 	public function getOperand();
 
@@ -49,4 +51,5 @@ interface Tx_Extbase_Persistence_QOM_OrderingInterface
 	public function getOrder();
 
 }
+
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\DomainObject;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,9 +31,10 @@
  * @subpackage DomainObject
  * @version $ID:$
  */
-abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainObject_AbstractDomainObject {
+abstract class AbstractEntity extends \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject {
 
 
 }
+
 
 ?>

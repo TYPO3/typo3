@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\DomainObject;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +32,7 @@
  * @subpackage DomainObject
  * @version $ID:$
  */
-abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbase_DomainObject_DomainObjectInterface, Tx_Extbase_Persistence_ObjectMonitoringInterface {
+abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface, \TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface {
 
 	/**
 	 * @var int The uid of the record. The uid is only unique in the context of the database table.
@@ -221,7 +223,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 			// "isClone" set to TRUE, so we manually have to set it to FALSE
 			// again. Possible fix: Somehow get rid of the "isClone" property,
 			// which is currently needed in Fluid.
-			if ($propertyValue instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
+			if ($propertyValue instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject) {
 				$this->_cleanProperties[$propertyName]->_setClone(FALSE);
 			}
 		} else {
@@ -261,7 +263,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 */
 	public function _isDirty($propertyName = NULL) {
 		if (($this->uid !== NULL && is_array($this->_cleanProperties)) && $this->uid != $this->_getCleanProperty('uid')) {
-			throw new Tx_Extbase_Persistence_Exception_TooDirty(('The uid "' . $this->uid) . '" has been modified, that is simply too much.', 1222871239);
+			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\TooDirtyException(('The uid "' . $this->uid) . '" has been modified, that is simply too much.', 1222871239);
 		}
 		if ($propertyName === NULL) {
 			foreach ($this->_getCleanProperties() as $propertyName => $cleanPropertyValue) {
@@ -289,9 +291,9 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 		// In case it is an object and it implements the ObjectMonitoringInterface, we call _isDirty() instead of a simple comparison of objects.
 		// We do this, because if the object itself contains a lazy loaded property, the comparison of the objects might fail even if the object didn't change
 		if (is_object($currentValue)) {
-			if ($currentValue instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+			if ($currentValue instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
 				$result = (!is_object($previousValue) || get_class($previousValue) !== get_class($currentValue)) || $currentValue->getUid() !== $previousValue->getUid();
-			} elseif ($currentValue instanceof Tx_Extbase_Persistence_ObjectMonitoringInterface) {
+			} elseif ($currentValue instanceof \TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface) {
 				$result = (!is_object($previousValue) || $currentValue->_isDirty()) || get_class($previousValue) !== get_class($currentValue);
 			} else {
 				// For all other objects we do only a simple comparison (!=) as we want cloned objects to return the same values.
@@ -343,5 +345,6 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	}
 
 }
+
 
 ?>

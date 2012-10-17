@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,9 +33,10 @@
  * @subpackage Persistence\Exception
  * @version $ID:$
  */
-class Tx_Extbase_Persistence_Exception_InvalidClass extends Tx_Extbase_Persistence_Exception {
+class InvalidClassException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
 
 
 }
+
 
 ?>

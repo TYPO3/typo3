@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @subpackage Validation\Validator
  * @version $Id$
  */
-class Tx_Extbase_Validation_Validator_IntegerValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class IntegerValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
 	 * Checks if the given value is a valid integer.
@@ -51,5 +53,6 @@ class Tx_Extbase_Validation_Validator_IntegerValidator extends Tx_Extbase_Valida
 	}
 
 }
+
 
 ?>

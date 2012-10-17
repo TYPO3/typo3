@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,19 +33,19 @@
  * @subpackage Persistence\QOM
  * @version $Id$
  */
-interface Tx_Extbase_Persistence_QOM_JoinInterface extends Tx_Extbase_Persistence_QOM_SourceInterface
+interface JoinInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface
 {
 	/**
 	 * Gets the left node-tuple source.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_SourceInterface the left source; non-null
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface the left source; non-null
 	 */
 	public function getLeft();
 
 	/**
 	 * Gets the right node-tuple source.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_SourceInterface the right source; non-null
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface the right source; non-null
 	 */
 	public function getRight();
 
@@ -62,4 +64,5 @@ interface Tx_Extbase_Persistence_QOM_JoinInterface extends Tx_Extbase_Persistenc
 	public function getJoinCondition();
 
 }
+
 ?>

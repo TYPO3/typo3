@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +35,7 @@
  * @scope prototype
  * @api
  */
-class Tx_Extbase_MVC_Response implements Tx_Extbase_MVC_ResponseInterface {
+class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface {
 
 	/**
 	 * @var string The response content
@@ -83,5 +85,6 @@ class Tx_Extbase_MVC_Response implements Tx_Extbase_MVC_ResponseInterface {
 	}
 
 }
+
 
 ?>

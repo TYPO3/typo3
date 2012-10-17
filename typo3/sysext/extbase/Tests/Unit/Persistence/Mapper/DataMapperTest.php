@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Mapper;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,17 +29,17 @@
 /**
  * Testcase for Tx_Extbase_Persistence_Mapper_DataMapper
  */
-class Tx_Extbase_Tests_Unit_Persistence_Mapper_DataMapperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class DataMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function mapMapsArrayToObjectByCallingmapToObject() {
 		$rows = array(array('uid' => '1234'));
-		$object = new stdClass();
-		$dataMapper = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMapper', array('mapSingleRow', 'getTargetType'));
+		$object = new \stdClass();
+		$dataMapper = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('mapSingleRow', 'getTargetType'));
 		$dataMapper->expects($this->any())->method('getTargetType')->will($this->returnArgument(1));
-		$dataMapFactory = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMapFactory');
+		$dataMapFactory = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory');
 		$dataMapper->injectDataMapFactory($dataMapFactory);
 		$dataMapper->expects($this->once())->method('mapSingleRow')->with($rows[0])->will($this->returnValue($object));
 		$dataMapper->map(get_class($object), $rows);
@@ -48,11 +50,11 @@ class Tx_Extbase_Tests_Unit_Persistence_Mapper_DataMapperTest extends Tx_Extbase
 	 */
 	public function mapSingleRowReturnsObjectFromIdentityMapIfAvailable() {
 		$row = array('uid' => '1234');
-		$object = new stdClass();
-		$identityMap = $this->getMock('Tx_Extbase_Persistence_IdentityMap');
+		$object = new \stdClass();
+		$identityMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\IdentityMap');
 		$identityMap->expects($this->once())->method('hasIdentifier')->with('1234')->will($this->returnValue(TRUE));
 		$identityMap->expects($this->once())->method('getObjectByIdentifier')->with('1234')->will($this->returnValue($object));
-		$dataMapper = $this->getAccessibleMock('Tx_Extbase_Persistence_Mapper_DataMapper', array('dummy'));
+		$dataMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('dummy'));
 		$dataMapper->injectIdentityMap($identityMap);
 		$dataMapper->_call('mapSingleRow', get_class($object), $row);
 	}
@@ -62,7 +64,7 @@ class Tx_Extbase_Tests_Unit_Persistence_Mapper_DataMapperTest extends Tx_Extbase
 	 */
 	public function thawPropertiesSetsPropertyValues() {
 		$className = 'Class' . md5(uniqid(mt_rand(), TRUE));
-		eval(('class ' . $className) . ' extends Tx_Extbase_DomainObject_AbstractEntity { public $firstProperty; public $secondProperty; public $thirdProperty; public $fourthProperty; }');
+		eval(('class ' . $className) . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity { public $firstProperty; public $secondProperty; public $thirdProperty; public $fourthProperty; }');
 		$object = new $className();
 		$row = array(
 			'uid' => '1234',
@@ -72,28 +74,28 @@ class Tx_Extbase_Tests_Unit_Persistence_Mapper_DataMapperTest extends Tx_Extbase
 			'fourthProperty' => FALSE
 		);
 		$columnMaps = array(
-			'uid' => new Tx_Extbase_Persistence_Mapper_ColumnMap('uid', 'uid'),
-			'pid' => new Tx_Extbase_Persistence_Mapper_ColumnMap('pid', 'pid'),
-			'firstProperty' => new Tx_Extbase_Persistence_Mapper_ColumnMap('firstProperty', 'firstProperty'),
-			'secondProperty' => new Tx_Extbase_Persistence_Mapper_ColumnMap('secondProperty', 'secondProperty'),
-			'thirdProperty' => new Tx_Extbase_Persistence_Mapper_ColumnMap('thirdProperty', 'thirdProperty')
+			'uid' => new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap('uid', 'uid'),
+			'pid' => new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap('pid', 'pid'),
+			'firstProperty' => new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap('firstProperty', 'firstProperty'),
+			'secondProperty' => new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap('secondProperty', 'secondProperty'),
+			'thirdProperty' => new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap('thirdProperty', 'thirdProperty')
 		);
-		$dataMap = $this->getAccessibleMock('Tx_Extbase_Persistence_Mapper_DataMap', array('dummy'), array($className, $className));
+		$dataMap = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap', array('dummy'), array($className, $className));
 		$dataMap->_set('columnMaps', $columnMaps);
 		$dataMaps = array(
 			$className => $dataMap
 		);
-		$classSchema = new Tx_Extbase_Reflection_ClassSchema($className);
-		$classSchema->injectTypeHandlingService(new Tx_Extbase_Service_TypeHandlingService());
+		$classSchema = new \TYPO3\CMS\Extbase\Reflection\ClassSchema($className);
+		$classSchema->injectTypeHandlingService(new \TYPO3\CMS\Extbase\Service\TypeHandlingService());
 		$classSchema->addProperty('pid', 'integer');
 		$classSchema->addProperty('uid', 'integer');
 		$classSchema->addProperty('firstProperty', 'string');
 		$classSchema->addProperty('secondProperty', 'integer');
 		$classSchema->addProperty('thirdProperty', 'float');
 		$classSchema->addProperty('fourthProperty', 'boolean');
-		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array('getClassSchema'));
+		$mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service', array('getClassSchema'));
 		$mockReflectionService->expects($this->any())->method('getClassSchema')->will($this->returnValue($classSchema));
-		$dataMapper = $this->getAccessibleMock('Tx_Extbase_Persistence_Mapper_DataMapper', array('dummy'));
+		$dataMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('dummy'));
 		$dataMapper->_set('dataMaps', $dataMaps);
 		$dataMapper->injectReflectionService($mockReflectionService);
 		$dataMapper->_call('thawProperties', $object, $row);
@@ -109,13 +111,13 @@ class Tx_Extbase_Tests_Unit_Persistence_Mapper_DataMapperTest extends Tx_Extbase
 	 * @test
 	 */
 	public function fetchRelatedEagerReturnsNullForEmptyRelationHasOne() {
-		$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap('columnName', 'propertyName');
-		$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE);
-		$dataMap = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMap', array('getColumnMap'));
+		$columnMap = new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap('columnName', 'propertyName');
+		$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_ONE);
+		$dataMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap', array('getColumnMap'));
 		$dataMap->expects($this->any())->method('getColumnMap')->will($this->returnValue($columnMap));
-		$dataMapper = $this->getAccessibleMock('Tx_Extbase_Persistence_Mapper_DataMapper', array('getDataMap'));
+		$dataMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('getDataMap'));
 		$dataMapper->expects($this->any())->method('getDataMap')->will($this->returnValue($dataMap));
-		$result = $dataMapper->_call('fetchRelatedEager', $this->getMock('Tx_Extbase_DomainObject_AbstractEntity'), 'SomeName', '');
+		$result = $dataMapper->_call('fetchRelatedEager', $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity'), 'SomeName', '');
 		$this->assertEquals(NULL, $result);
 	}
 
@@ -125,16 +127,17 @@ class Tx_Extbase_Tests_Unit_Persistence_Mapper_DataMapperTest extends Tx_Extbase
 	 * @test
 	 */
 	public function fetchRelatedEagerReturnsEmptyArrayForEmptyRelationNotHasOne() {
-		$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap('columnName', 'propertyName');
-		$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_BELONGS_TO_MANY);
-		$dataMap = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMap', array('getColumnMap'));
+		$columnMap = new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap('columnName', 'propertyName');
+		$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_BELONGS_TO_MANY);
+		$dataMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap', array('getColumnMap'));
 		$dataMap->expects($this->any())->method('getColumnMap')->will($this->returnValue($columnMap));
-		$dataMapper = $this->getAccessibleMock('Tx_Extbase_Persistence_Mapper_DataMapper', array('getDataMap'));
+		$dataMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('getDataMap'));
 		$dataMapper->expects($this->any())->method('getDataMap')->will($this->returnValue($dataMap));
-		$result = $dataMapper->_call('fetchRelatedEager', $this->getMock('Tx_Extbase_DomainObject_AbstractEntity'), 'SomeName', '');
+		$result = $dataMapper->_call('fetchRelatedEager', $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity'), 'SomeName', '');
 		$this->assertEquals(array(), $result);
 	}
 
 }
+
 
 ?>

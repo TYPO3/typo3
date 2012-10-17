@@ -19,14 +19,16 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 require_once 'AbstractValidatorTestcase.php';
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+
 /**
  * Testcase for the string length validator
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_StringLengthValidatorTest extends Tx_Extbase_Tests_Unit_Validation_Validator_AbstractValidatorTestcase {
+class StringLengthValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase {
 
-	protected $validatorClassName = 'Tx_Extbase_Validation_Validator_StringLengthValidator';
+	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringLengthValidator';
 
 	/**
 	 * @test
@@ -120,11 +122,11 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_StringLengthValidatorTest exten
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_Validation_Exception_InvalidValidationOptions
+	 * @expectedException \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function stringLengthValidatorThrowsAnExceptionIfMinLengthIsGreaterThanMaxLength() {
-		$this->validator = $this->getMock('Tx_Extbase_Validation_Validator_StringLengthValidator', array('addError'), array(), '', FALSE);
+		$this->validator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringLengthValidator', array('addError'), array(), '', FALSE);
 		$this->validatorOptions(array('minimum' => 101, 'maximum' => 100));
 		$this->validator->validate('1234567890');
 	}
@@ -143,7 +145,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_StringLengthValidatorTest exten
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function stringLengthValidatorCanHandleAnObjectWithAToStringMethod() {
-		$this->validator = $this->getMock('Tx_Extbase_Validation_Validator_StringLengthValidator', array('addError'), array(), '', FALSE);
+		$this->validator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringLengthValidator', array('addError'), array(), '', FALSE);
 		$this->validatorOptions(array('minimum' => 5, 'maximum' => 100));
 		$className = 'TestClass' . md5(uniqid(mt_rand(), TRUE));
 		eval(('
@@ -159,11 +161,11 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_StringLengthValidatorTest exten
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_Validation_Exception_InvalidSubject
+	 * @expectedException \TYPO3\CMS\Extbase\Validation\Exception\InvalidSubjectException
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function stringLengthValidatorThrowsAnExceptionIfTheGivenObjectCanNotBeConvertedToAString() {
-		$this->validator = $this->getMock('Tx_Extbase_Validation_Validator_StringLengthValidator', array('addError'), array(), '', FALSE);
+		$this->validator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringLengthValidator', array('addError'), array(), '', FALSE);
 		$this->validatorOptions(array('minimum' => 5, 'maximum' => 100));
 		$className = 'TestClass' . md5(uniqid(mt_rand(), TRUE));
 		eval(('
@@ -176,5 +178,6 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_StringLengthValidatorTest exten
 	}
 
 }
+
 
 ?>

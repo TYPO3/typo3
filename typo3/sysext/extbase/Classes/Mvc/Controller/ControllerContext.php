@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,53 +36,53 @@
  * @scope prototype
  * @api
  */
-class Tx_Extbase_MVC_Controller_ControllerContext {
+class ControllerContext {
 
 	/**
-	 * @var Tx_Extbase_MVC_Request
+	 * @var \TYPO3\CMS\Extbase\Mvc\Request
 	 */
 	protected $request;
 
 	/**
-	 * @var Tx_Extbase_MVC_Response
+	 * @var \TYPO3\CMS\Extbase\Mvc\Response
 	 */
 	protected $response;
 
 	/**
-	 * @var Tx_Extbase_MVC_Controller_Arguments
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\Arguments
 	 */
 	protected $arguments;
 
 	/**
-	 * @var Tx_Extbase_Property_MappingResults
+	 * @var \TYPO3\CMS\Extbase\Property\MappingResults
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	protected $argumentsMappingResults;
 
 	/**
-	 * @var Tx_Extbase_MVC_Web_Routing_UriBuilder
+	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
 	 */
 	protected $uriBuilder;
 
 	/**
-	 * @var Tx_Extbase_MVC_Controller_FlashMessages
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages
 	 */
 	protected $flashMessageContainer;
 
 	/**
 	 * Set the request of the controller
 	 *
-	 * @param Tx_Extbase_MVC_Request $request
+	 * @param \TYPO3\CMS\Extbase\Mvc\Request $request
 	 * @return void
 	 */
-	public function setRequest(Tx_Extbase_MVC_Request $request) {
+	public function setRequest(\TYPO3\CMS\Extbase\Mvc\Request $request) {
 		$this->request = $request;
 	}
 
 	/**
 	 * Get the request of the controller
 	 *
-	 * @return Tx_Extbase_MVC_Request
+	 * @return \TYPO3\CMS\Extbase\Mvc\Request
 	 * @api
 	 */
 	public function getRequest() {
@@ -90,17 +92,17 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	/**
 	 * Set the response of the controller
 	 *
-	 * @param Tx_Extbase_MVC_Response $response
+	 * @param \TYPO3\CMS\Extbase\Mvc\Response $response
 	 * @return void
 	 */
-	public function setResponse(Tx_Extbase_MVC_Response $response) {
+	public function setResponse(\TYPO3\CMS\Extbase\Mvc\Response $response) {
 		$this->response = $response;
 	}
 
 	/**
 	 * Get the response of the controller
 	 *
-	 * @return Tx_Extbase_MVC_Request
+	 * @return \TYPO3\CMS\Extbase\Mvc\Request
 	 * @api
 	 */
 	public function getResponse() {
@@ -110,17 +112,17 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	/**
 	 * Set the arguments of the controller
 	 *
-	 * @param Tx_Extbase_MVC_Controller_Arguments $arguments
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\Arguments $arguments
 	 * @return void
 	 */
-	public function setArguments(Tx_Extbase_MVC_Controller_Arguments $arguments) {
+	public function setArguments(\TYPO3\CMS\Extbase\Mvc\Controller\Arguments $arguments) {
 		$this->arguments = $arguments;
 	}
 
 	/**
 	 * Get the arguments of the controller
 	 *
-	 * @return Tx_Extbase_MVC_Controller_Arguments
+	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\Arguments
 	 * @api
 	 */
 	public function getArguments() {
@@ -130,18 +132,18 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	/**
 	 * Set the arguments mapping results of the controller
 	 *
-	 * @param Tx_Extbase_Property_MappingResults $argumentsMappingResults
+	 * @param \TYPO3\CMS\Extbase\Property\MappingResults $argumentsMappingResults
 	 * @return void
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
-	public function setArgumentsMappingResults(Tx_Extbase_Property_MappingResults $argumentsMappingResults) {
+	public function setArgumentsMappingResults(\TYPO3\CMS\Extbase\Property\MappingResults $argumentsMappingResults) {
 		$this->argumentsMappingResults = $argumentsMappingResults;
 	}
 
 	/**
 	 * Get the arguments mapping results of the controller
 	 *
-	 * @return Tx_Extbase_Property_MappingResults
+	 * @return \TYPO3\CMS\Extbase\Property\MappingResults
 	 * @api
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
@@ -152,15 +154,15 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	/**
 	 * Tx_Extbase_MVC_Web_Routing_UriBuilder $uriBuilder
 	 *
-	 * @param Tx_Extbase_MVC_Web_Routing_UriBuilder $uriBuilder
+	 * @param \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder
 	 * @return void
 	 */
-	public function setUriBuilder(Tx_Extbase_MVC_Web_Routing_UriBuilder $uriBuilder) {
+	public function setUriBuilder(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder) {
 		$this->uriBuilder = $uriBuilder;
 	}
 
 	/**
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
 	 * @api
 	 */
 	public function getUriBuilder() {
@@ -170,28 +172,28 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	/**
 	 * Set the flash messages
 	 *
-	 * @param Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages $flashMessageContainer
 	 * @return void
 	 */
-	public function setFlashMessageContainer(Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer) {
+	public function setFlashMessageContainer(\TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages $flashMessageContainer) {
 		$this->flashMessageContainer = $flashMessageContainer;
 	}
 
 	/**
 	 * Get the flash messages
 	 *
-	 * @return Tx_Extbase_MVC_Controller_FlashMessages
+	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages
 	 * @deprecated since Extbase 1.1; will be removed in Extbase 6.0
 	 */
 	public function getFlashMessages() {
-		t3lib_div::logDeprecatedFunction();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		return $this->flashMessageContainer;
 	}
 
 	/**
 	 * Get the flash messages
 	 *
-	 * @return Tx_Extbase_MVC_Controller_FlashMessages
+	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages
 	 * @api
 	 */
 	public function getFlashMessageContainer() {
@@ -199,5 +201,6 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +34,7 @@
  * @version $Id$
  * @scope prototype
  */
-class Tx_Extbase_Validation_Validator_StringValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class StringValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
 	 * Returns TRUE, if the given property ($value) is a valid string.
@@ -53,5 +55,6 @@ class Tx_Extbase_Validation_Validator_StringValidator extends Tx_Extbase_Validat
 	}
 
 }
+
 
 ?>

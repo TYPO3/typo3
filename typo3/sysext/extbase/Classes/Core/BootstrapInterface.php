@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Core;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                          *
  *                                                                        *
@@ -16,7 +18,7 @@
  *
  * @package Extbase
  */
-interface Tx_Extbase_Core_BootstrapInterface
+interface BootstrapInterface
 {
 	/**
 	 * Runs the the Extbase Framework by resolving an appropriate Request Handler and passing control to it.
@@ -40,4 +42,5 @@ interface Tx_Extbase_Core_BootstrapInterface
 	public function callModule($moduleSignature);
 
 }
+
 ?>

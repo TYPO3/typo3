@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\SignalSlot\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,9 +33,10 @@
  * @subpackage SignalSlot
  * @api
  */
-class Tx_Extbase_SignalSlot_Exception_InvalidSlotException extends Tx_Extbase_Object_Exception {
+class InvalidSlotException extends \TYPO3\CMS\Extbase\Object\Exception {
 
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Scheduler;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,41 +32,41 @@
  * @package Extbase
  * @subpackage Scheduler
  */
-class Tx_Extbase_Scheduler_TaskExecutor implements t3lib_Singleton {
+class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Extbase_MVC_CLI_CommandManager
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager
 	 */
 	protected $commandManager;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @param Tx_Extbase_Object_ObjectManager $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManager $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
 	/**
-	 * @param Tx_Extbase_MVC_CLI_CommandManager $commandManager
+	 * @param \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager $commandManager
 	 */
-	public function injectCommandManager(Tx_Extbase_MVC_CLI_CommandManager $commandManager) {
+	public function injectCommandManager(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager $commandManager) {
 		$this->commandManager = $commandManager;
 	}
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
@@ -76,12 +78,12 @@ class Tx_Extbase_Scheduler_TaskExecutor implements t3lib_Singleton {
 	 */
 	protected function initialize(array $configuration) {
 		// initialize configuration
-		$this->configurationManager->setContentObject(t3lib_div::makeInstance('tslib_cObj'));
+		$this->configurationManager->setContentObject(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'));
 		$this->configurationManager->setConfiguration($configuration);
 		// configure object container
-		$typoScriptSetup = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		if (isset($typoScriptSetup['config.']['tx_extbase.']['objects.'])) {
-			$objectContainer = t3lib_div::makeInstance('Tx_Extbase_Object_Container_Container');
+			$objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\Container\\Container');
 			foreach ($typoScriptSetup['config.']['tx_extbase.']['objects.'] as $classNameWithDot => $classConfiguration) {
 				if (isset($classConfiguration['className'])) {
 					$originalClassName = rtrim($classNameWithDot, '.');
@@ -90,7 +92,7 @@ class Tx_Extbase_Scheduler_TaskExecutor implements t3lib_Singleton {
 			}
 		}
 		// initialize reflection
-		$reflectionService = $this->objectManager->get('Tx_Extbase_Reflection_Service');
+		$reflectionService = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\Service');
 		$reflectionService->setDataCache($GLOBALS['typo3CacheManager']->getCache('extbase_reflection'));
 		if (!$reflectionService->isInitialized()) {
 			$reflectionService->initialize();
@@ -103,17 +105,17 @@ class Tx_Extbase_Scheduler_TaskExecutor implements t3lib_Singleton {
 	 * If errors occur during Task execution they are thrown as Exceptions which
 	 * must be caught manually if you manually execute Tasks through your code.
 	 *
-	 * @param Tx_Extbase_Scheduler_Task $task the task to execute
+	 * @param \TYPO3\CMS\Extbase\Scheduler\Task $task the task to execute
 	 * @return void
 	 */
-	public function execute(Tx_Extbase_Scheduler_Task $task) {
+	public function execute(\TYPO3\CMS\Extbase\Scheduler\Task $task) {
 		$commandIdentifier = $task->getCommandIdentifier();
 		list($extensionKey, $controllerName, $commandName) = explode(':', $commandIdentifier);
-		$extensionName = t3lib_div::underscoredToUpperCamelCase($extensionKey);
+		$extensionName = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($extensionKey);
 		$this->initialize(array('extensionName' => $extensionName));
-		$request = $this->objectManager->create('Tx_Extbase_MVC_CLI_Request');
-		$dispatcher = $this->objectManager->get('Tx_Extbase_MVC_Dispatcher');
-		$response = $this->objectManager->create('Tx_Extbase_MVC_CLI_Response');
+		$request = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Request');
+		$dispatcher = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Dispatcher');
+		$response = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
 		// execute command
 		$command = $this->commandManager->getCommandByIdentifier($commandIdentifier);
 		$request->setControllerObjectName($command->getControllerClassName());
@@ -130,12 +132,13 @@ class Tx_Extbase_Scheduler_TaskExecutor implements t3lib_Singleton {
 	 */
 	protected function shutdown() {
 		// shutdown
-		$persistenceManager = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
+		$persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
 		$persistenceManager->persistAll();
-		$reflectionService = $this->objectManager->get('Tx_Extbase_Reflection_Service');
+		$reflectionService = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\Service');
 		$reflectionService->shutdown();
 	}
 
 }
+
 
 ?>

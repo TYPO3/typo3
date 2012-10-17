@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +35,7 @@
  * @scope prototype
  * @api
  */
-class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
+class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 
 	const PATTERN_MATCH_FORMAT = '/^[a-z0-9]{1,5}$/';
 	/**
@@ -98,14 +100,14 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	/**
 	 * If this request is a forward because of an error, the original request gets filled.
 	 *
-	 * @var Tx_Extbase_MVC_Request
+	 * @var \TYPO3\CMS\Extbase\Mvc\Request
 	 */
 	protected $originalRequest = NULL;
 
 	/**
 	 * If the request is a forward because of an error, these mapping results get filled here.
 	 *
-	 * @var Tx_Extbase_Error_Result
+	 * @var \TYPO3\CMS\Extbase\Error\Result
 	 */
 	protected $originalRequestMappingResults = NULL;
 
@@ -145,7 +147,7 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 * controller name
 	 *
 	 * @return string The controller's Object Name
-	 * @throws Tx_Extbase_MVC_Exception_NoSuchController if the controller does not exist
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchControllerException if the controller does not exist
 	 * @api
 	 */
 	public function getControllerObjectName() {
@@ -156,7 +158,7 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 		// TODO implement getCaseSensitiveObjectName()
 		$objectName = $lowercaseObjectName;
 		if ($objectName === FALSE) {
-			throw new Tx_Extbase_MVC_Exception_NoSuchController(('The controller object "' . $lowercaseObjectName) . '" does not exist.', 1220884009);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchControllerException(('The controller object "' . $lowercaseObjectName) . '" does not exist.', 1220884009);
 		}
 		return $objectName;
 	}
@@ -212,7 +214,7 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 *
 	 * @param string $controllerExtensionName The extension name.
 	 * @return void
-	 * @throws Tx_Extbase_MVC_Exception_InvalidExtensionName if the extension name is not valid
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException if the extension name is not valid
 	 */
 	public function setControllerExtensionName($controllerExtensionName) {
 		if ($controllerExtensionName !== NULL) {
@@ -237,7 +239,7 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 * @api
 	 */
 	public function getControllerExtensionKey() {
-		return t3lib_div::camelCaseToLowerCaseUnderscored($this->controllerExtensionName);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($this->controllerExtensionName);
 	}
 
 	/**
@@ -269,10 +271,10 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 */
 	public function setControllerName($controllerName) {
 		if (!is_string($controllerName) && $controllerName !== NULL) {
-			throw new Tx_Extbase_MVC_Exception_InvalidControllerName(('The controller name must be a valid string, ' . gettype($controllerName)) . ' given.', 1187176358);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException(('The controller name must be a valid string, ' . gettype($controllerName)) . ' given.', 1187176358);
 		}
 		if (strpos($controllerName, '_') !== FALSE) {
-			throw new Tx_Extbase_MVC_Exception_InvalidControllerName('The controller name must not contain underscores.', 1217846412);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException('The controller name must not contain underscores.', 1217846412);
 		}
 		if ($controllerName !== NULL) {
 			$this->controllerName = $controllerName;
@@ -297,14 +299,14 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 *
 	 * @param string $actionName: Name of the action to execute by the controller
 	 * @return void
-	 * @throws Tx_Extbase_MVC_Exception_InvalidActionName if the action name is not valid
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException if the action name is not valid
 	 */
 	public function setControllerActionName($actionName) {
 		if (!is_string($actionName) && $actionName !== NULL) {
-			throw new Tx_Extbase_MVC_Exception_InvalidActionName(((('The action name must be a valid string, ' . gettype($actionName)) . ' given (') . $actionName) . ').', 1187176358);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException(((('The action name must be a valid string, ' . gettype($actionName)) . ' given (') . $actionName) . ').', 1187176358);
 		}
 		if ($actionName[0] !== strtolower($actionName[0]) && $actionName !== NULL) {
-			throw new Tx_Extbase_MVC_Exception_InvalidActionName(('The action name must start with a lower case letter, "' . $actionName) . '" does not match this criteria.', 1218473352);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException(('The action name must start with a lower case letter, "' . $actionName) . '" does not match this criteria.', 1218473352);
 		}
 		if ($actionName !== NULL) {
 			$this->controllerActionName = $actionName;
@@ -340,7 +342,7 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 */
 	public function setArgument($argumentName, $value) {
 		if (!is_string($argumentName) || strlen($argumentName) == 0) {
-			throw new Tx_Extbase_MVC_Exception_InvalidArgumentName('Invalid argument name.', 1210858767);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException('Invalid argument name.', 1210858767);
 		}
 		if ($argumentName[0] === '_' && $argumentName[1] === '_') {
 			$this->internalArguments[$argumentName] = $value;
@@ -396,12 +398,12 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 *
 	 * @param string $argumentName Name of the argument
 	 * @return string Value of the argument
-	 * @throws Tx_Extbase_MVC_Exception_NoSuchArgument if such an argument does not exist
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException if such an argument does not exist
 	 * @api
 	 */
 	public function getArgument($argumentName) {
 		if (!isset($this->arguments[$argumentName])) {
-			throw new Tx_Extbase_MVC_Exception_NoSuchArgument(('An argument "' . $argumentName) . '" does not exist for this request.', 1176558158);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException(('An argument "' . $argumentName) . '" does not exist for this request.', 1176558158);
 		}
 		return $this->arguments[$argumentName];
 	}
@@ -463,36 +465,36 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	/**
 	 * Returns the original request. Filled only if a property mapping error occured.
 	 *
-	 * @return Tx_Extbase_MVC_Request the original request.
+	 * @return \TYPO3\CMS\Extbase\Mvc\Request the original request.
 	 */
 	public function getOriginalRequest() {
 		return $this->originalRequest;
 	}
 
 	/**
-	 * @param Tx_Extbase_MVC_Request $originalRequest
+	 * @param \TYPO3\CMS\Extbase\Mvc\Request $originalRequest
 	 * @return void
 	 */
-	public function setOriginalRequest(Tx_Extbase_MVC_Request $originalRequest) {
+	public function setOriginalRequest(\TYPO3\CMS\Extbase\Mvc\Request $originalRequest) {
 		$this->originalRequest = $originalRequest;
 	}
 
 	/**
 	 * Get the request mapping results for the original request.
 	 *
-	 * @return Tx_Extbase_Error_Result
+	 * @return \TYPO3\CMS\Extbase\Error\Result
 	 */
 	public function getOriginalRequestMappingResults() {
 		if ($this->originalRequestMappingResults === NULL) {
-			return new Tx_Extbase_Error_Result();
+			return new \TYPO3\CMS\Extbase\Error\Result();
 		}
 		return $this->originalRequestMappingResults;
 	}
 
 	/**
-	 * @param Tx_Extbase_Error_Result $originalRequestMappingResults
+	 * @param \TYPO3\CMS\Extbase\Error\Result $originalRequestMappingResults
 	 */
-	public function setOriginalRequestMappingResults(Tx_Extbase_Error_Result $originalRequestMappingResults) {
+	public function setOriginalRequestMappingResults(\TYPO3\CMS\Extbase\Error\Result $originalRequestMappingResults) {
 		$this->originalRequestMappingResults = $originalRequestMappingResults;
 	}
 
@@ -520,5 +522,6 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	}
 
 }
+
 
 ?>

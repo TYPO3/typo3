@@ -40,7 +40,7 @@
 abstract class Tx_Extbase_Tests_Functional_BaseTestCase extends Tx_Phpunit_Database_TestCase {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface The object manager
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager
 	 */
 	protected $objectManager;
 
@@ -51,7 +51,7 @@ abstract class Tx_Extbase_Tests_Functional_BaseTestCase extends Tx_Phpunit_Datab
 	 * @return void
 	 */
 	public function runBare() {
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$this->objectManager = clone $objectManager;
 		parent::runBare();
 	}

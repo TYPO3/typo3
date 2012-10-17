@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +34,7 @@
  * @version $Id$
  * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
  */
-interface Tx_Extbase_Validation_Validator_ObjectValidatorInterface extends Tx_Extbase_Validation_Validator_ValidatorInterface
+interface ObjectValidatorInterface extends \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface
 {
 	/**
 	 * Checks the given object can be validated by the validator implementation
@@ -54,4 +56,5 @@ interface Tx_Extbase_Validation_Validator_ObjectValidatorInterface extends Tx_Ex
 	public function isPropertyValid($object, $propertyName);
 
 }
+
 ?>

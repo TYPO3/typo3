@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Configuration;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
  * @subpackage Configuration
  * @version $ID:$
  */
-class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Configuration_AbstractConfigurationManager {
+class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager {
 
 	/**
 	 * @var array
@@ -42,7 +44,7 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 	 */
 	public function getTypoScriptSetup() {
 		if ($this->typoScriptSetupCache === NULL) {
-			$template = t3lib_div::makeInstance('t3lib_TStemplate');
+			$template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\TemplateService');
 			// do not log time-performance information
 			$template->tt_track = 0;
 			$template->init();
@@ -50,8 +52,8 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 			$rootline = array();
 			$pageId = $this->getCurrentPageId();
 			if ($pageId > 0) {
-				/** @var $sysPage t3lib_pageSelect */
-				$sysPage = t3lib_div::makeInstance('t3lib_pageSelect');
+				/** @var $sysPage \TYPO3\CMS\Frontend\Page\PageRepository */
+				$sysPage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 				// Get the rootline for the current page
 				$rootline = $sysPage->getRootLine($this->getCurrentPageId(), '', TRUE);
 			}
@@ -80,7 +82,7 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 		if ($pluginName !== NULL) {
 			$pluginSignature = strtolower(($extensionName . '_') . $pluginName);
 			if (is_array($setup['module.'][('tx_' . $pluginSignature) . '.'])) {
-				$pluginConfiguration = t3lib_div::array_merge_recursive_overrule($pluginConfiguration, $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['module.'][('tx_' . $pluginSignature) . '.']));
+				$pluginConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($pluginConfiguration, $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['module.'][('tx_' . $pluginSignature) . '.']));
 			}
 		}
 		return $pluginConfiguration;
@@ -112,7 +114,7 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 	 * @return integer current page id. If no page is selected current root page id is returned
 	 */
 	protected function getCurrentPageId() {
-		$pageId = (int) t3lib_div::_GP('id');
+		$pageId = (int) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 		if ($pageId > 0) {
 			return $pageId;
 		}
@@ -150,13 +152,14 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 	protected function getContextSpecificFrameworkConfiguration(array $frameworkConfiguration) {
 		if (!isset($frameworkConfiguration['mvc']['requestHandlers'])) {
 			$frameworkConfiguration['mvc']['requestHandlers'] = array(
-				'Tx_Extbase_MVC_Web_FrontendRequestHandler' => 'Tx_Extbase_MVC_Web_FrontendRequestHandler',
-				'Tx_Extbase_MVC_Web_BackendRequestHandler' => 'Tx_Extbase_MVC_Web_BackendRequestHandler'
+				'TYPO3\\CMS\\Extbase\\Mvc\\Web\\FrontendRequestHandler' => 'TYPO3\\CMS\\Extbase\\Mvc\\Web\\FrontendRequestHandler',
+				'TYPO3\\CMS\\Extbase\\Mvc\\Web\\BackendRequestHandler' => 'TYPO3\\CMS\\Extbase\\Mvc\\Web\\BackendRequestHandler'
 			);
 		}
 		return $frameworkConfiguration;
 	}
 
 }
+
 
 ?>

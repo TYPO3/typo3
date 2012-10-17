@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Configuration;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -26,21 +28,21 @@
  * @subpackage Configuration
  * @version $ID:$
  */
-interface Tx_Extbase_Configuration_ConfigurationManagerInterface extends t3lib_Singleton
+interface ConfigurationManagerInterface extends \TYPO3\CMS\Core\SingletonInterface
 {
 	const CONFIGURATION_TYPE_FRAMEWORK = 'Framework';
 	const CONFIGURATION_TYPE_SETTINGS = 'Settings';
 	const CONFIGURATION_TYPE_FULL_TYPOSCRIPT = 'FullTypoScript';
 	/**
-	 * @param tslib_cObj $contentObject
+	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject
 	 * @return void
 	 */
-	public function setContentObject(tslib_cObj $contentObject = NULL);
+	public function setContentObject(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject = NULL);
 
 	/**
 	 * Get the content object
 	 *
-	 * @return tslib_cObj
+	 * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 * @api (v4 only)
 	 */
 	public function getContentObject();
@@ -80,4 +82,5 @@ interface Tx_Extbase_Configuration_ConfigurationManagerInterface extends t3lib_S
 	public function isFeatureEnabled($featureName);
 
 }
+
 ?>

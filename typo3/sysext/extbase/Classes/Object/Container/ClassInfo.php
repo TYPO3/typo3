@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Object\Container;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +32,7 @@
  *
  * @author Daniel Pötzinger
  */
-class Tx_Extbase_Object_Container_ClassInfo {
+class ClassInfo {
 
 	/**
 	 * The classname of the class where the infos belong to
@@ -172,5 +174,6 @@ class Tx_Extbase_Object_Container_ClassInfo {
 	}
 
 }
+
 
 ?>

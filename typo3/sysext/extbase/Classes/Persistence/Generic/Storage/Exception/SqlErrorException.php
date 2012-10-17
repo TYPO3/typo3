@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -25,15 +27,16 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * An Bad Constraint exception
+ * An SQL exception
  *
  * @package Extbase
  * @subpackage Persistence\Storage\Exception
  * @version $ID:$
  */
-class Tx_Extbase_Persistence_Storage_Exception_BadConstraint extends Tx_Extbase_Persistence_Exception {
+class SqlErrorException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
 
 
 }
+
 
 ?>

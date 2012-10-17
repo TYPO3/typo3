@@ -19,14 +19,16 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 require_once 'AbstractValidatorTestcase.php';
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+
 /**
  * Testcase for the text validator
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_TextValidatorTest extends Tx_Extbase_Tests_Unit_Validation_Validator_AbstractValidatorTestcase {
+class TextValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase {
 
-	protected $validatorClassName = 'Tx_Extbase_Validation_Validator_TextValidator';
+	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\TextValidator';
 
 	/**
 	 * @test
@@ -67,10 +69,11 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_TextValidatorTest extends Tx_Ex
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function textValidatorCreatesTheCorrectErrorIfTheSubjectContainsHtmlEntities() {
-		$expected = array(new Tx_Extbase_Validation_Error('The given subject was not a valid text (e.g. contained XML tags).', 1221565786));
+		$expected = array(new \Tx_Extbase_Validation_Error('The given subject was not a valid text (e.g. contained XML tags).', 1221565786));
 		$this->assertEquals($expected, $this->validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->getErrors());
 	}
 
 }
+
 
 ?>

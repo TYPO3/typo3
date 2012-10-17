@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Error;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                          *
  *                                                                        *
@@ -23,15 +25,15 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Tests_Unit_Error_ResultTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class ResultTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Error_Result
+	 * @var \TYPO3\CMS\Extbase\Error\Result
 	 */
 	protected $result;
 
 	public function setUp() {
-		$this->result = new Tx_Extbase_Error_Result();
+		$this->result = new \TYPO3\CMS\Extbase\Error\Result();
 	}
 
 	/**
@@ -106,7 +108,7 @@ class Tx_Extbase_Tests_Unit_Error_ResultTest extends Tx_Extbase_Tests_Unit_BaseT
 	 */
 	public function forPropertyShouldReturnSubResult() {
 		$container2 = $this->result->forProperty('foo.bar');
-		$this->assertInstanceOf('Tx_Extbase_Error_Result', $container2);
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Error\\Result', $container2);
 		$this->assertSame($container2, $this->result->forProperty('foo')->forProperty('bar'));
 	}
 
@@ -236,7 +238,7 @@ class Tx_Extbase_Tests_Unit_Error_ResultTest extends Tx_Extbase_Tests_Unit_BaseT
 		$error1 = $this->getMockMessage('Error');
 		$error2 = $this->getMockMessage('Error');
 		$error3 = $this->getMockMessage('Error');
-		$otherResult = new Tx_Extbase_Error_Result();
+		$otherResult = new \TYPO3\CMS\Extbase\Error\Result();
 		$otherResult->addNotice($notice1);
 		$otherResult->forProperty('foo.bar')->addNotice($notice2);
 		$this->result->forProperty('foo')->addNotice($notice3);
@@ -256,5 +258,6 @@ class Tx_Extbase_Tests_Unit_Error_ResultTest extends Tx_Extbase_Tests_Unit_BaseT
 	}
 
 }
+
 
 ?>

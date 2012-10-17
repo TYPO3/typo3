@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Scheduler;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,39 +29,39 @@
  * @package Extbase
  * @subpackage Scheduler
  */
-class Tx_Extbase_Scheduler_FieldProvider implements Tx_Scheduler_AdditionalFieldProvider {
+class FieldProvider implements Tx_Scheduler_AdditionalFieldProvider {
 
 	/**
-	 * @var Tx_Extbase_MVC_CLI_CommandManager
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager
 	 */
 	protected $commandManager;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Extbase_Reflection_Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\Service
 	 */
 	protected $reflectionService;
 
 	/**
-	 * @var Tx_Extbase_Scheduler_Task
+	 * @var \TYPO3\CMS\Extbase\Scheduler\Task
 	 */
 	protected $task;
 
 	/**
 	 * Constructor
 	 *
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
-	 * @param Tx_Extbase_MVC_CLI_CommandManager $commandManager
-	 * @param Tx_Extbase_Reflection_Service $reflectionService
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager $commandManager
+	 * @param \TYPO3\CMS\Extbase\Reflection\Service $reflectionService
 	 */
-	public function __construct(Tx_Extbase_Object_ObjectManagerInterface $objectManager = NULL, Tx_Extbase_MVC_CLI_CommandManager $commandManager = NULL, Tx_Extbase_Reflection_Service $reflectionService = NULL) {
-		$this->objectManager = $objectManager !== NULL ? $objectManager : t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		$this->commandManager = $commandManager !== NULL ? $commandManager : $this->objectManager->get('Tx_Extbase_MVC_CLI_CommandManager');
-		$this->reflectionService = $reflectionService !== NULL ? $reflectionService : $this->objectManager->get('Tx_Extbase_Reflection_Service');
+	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager = NULL, \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager $commandManager = NULL, \TYPO3\CMS\Extbase\Reflection\Service $reflectionService = NULL) {
+		$this->objectManager = $objectManager !== NULL ? $objectManager : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->commandManager = $commandManager !== NULL ? $commandManager : $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager');
+		$this->reflectionService = $reflectionService !== NULL ? $reflectionService : $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\Service');
 	}
 
 	/**
@@ -71,7 +73,7 @@ class Tx_Extbase_Scheduler_FieldProvider implements Tx_Scheduler_AdditionalField
 	 * @return array Additional fields
 	 * @see interfaces/tx_scheduler_AdditionalFieldProvider#getAdditionalFields($taskInfo, $task, $schedulerModule)
 	 */
-	public function getAdditionalFields(array &$taskInfo, $task, Tx_Scheduler_Module $schedulerModule) {
+	public function getAdditionalFields(array &$taskInfo, $task, \Tx_Scheduler_Module $schedulerModule) {
 		$this->task = $task;
 		if ($this->task !== NULL) {
 			$this->task->setScheduler();
@@ -95,7 +97,7 @@ class Tx_Extbase_Scheduler_FieldProvider implements Tx_Scheduler_AdditionalField
 	 * @param Tx_Scheduler_Module $schedulerModule
 	 * @return boolean
 	 */
-	public function validateAdditionalFields(array &$submittedData, Tx_Scheduler_Module $schedulerModule) {
+	public function validateAdditionalFields(array &$submittedData, \Tx_Scheduler_Module $schedulerModule) {
 		return TRUE;
 	}
 
@@ -106,7 +108,7 @@ class Tx_Extbase_Scheduler_FieldProvider implements Tx_Scheduler_AdditionalField
 	 * @param Tx_Scheduler_Task $task
 	 * @return boolean
 	 */
-	public function saveAdditionalFields(array $submittedData, Tx_Scheduler_Task $task) {
+	public function saveAdditionalFields(array $submittedData, \Tx_Scheduler_Task $task) {
 		$task->setCommandIdentifier($submittedData['task_extbase']['action']);
 		$task->setArguments($submittedData['task_extbase']['arguments']);
 		return TRUE;
@@ -184,17 +186,17 @@ class Tx_Extbase_Scheduler_FieldProvider implements Tx_Scheduler_AdditionalField
 		if (!$extensionName) {
 			list($extensionName, $commandControllerName, $commandName) = explode(':', $this->task->getCommandIdentifier());
 		}
-		$label = Tx_Extbase_Utility_Localization::translate($localLanguageKey, $extensionName);
+		$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($localLanguageKey, $extensionName);
 		return $label;
 	}
 
 	/**
 	 * Gets the data type required for the argument value
 	 *
-	 * @param Tx_Extbase_MVC_CLI_CommandArgumentDefinition $argument
+	 * @param \TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition $argument
 	 * @return string the argument type
 	 */
-	protected function getArgumentType(Tx_Extbase_MVC_CLI_CommandArgumentDefinition $argument) {
+	protected function getArgumentType(\TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition $argument) {
 		$command = $this->commandManager->getCommandByIdentifier($this->task->getCommandIdentifier());
 		$controllerClassName = $command->getControllerClassName();
 		$methodName = $command->getControllerCommandName() . 'Command';
@@ -211,10 +213,10 @@ class Tx_Extbase_Scheduler_FieldProvider implements Tx_Scheduler_AdditionalField
 	/**
 	 * Get a human-readable label for a command argument
 	 *
-	 * @param Tx_Extbase_MVC_CLI_CommandArgumentDefinition $argument
+	 * @param \TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition $argument
 	 * @return string
 	 */
-	protected function getArgumentLabel(Tx_Extbase_MVC_CLI_CommandArgumentDefinition $argument) {
+	protected function getArgumentLabel(\TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition $argument) {
 		$argumentName = $argument->getName();
 		list($extensionName, $commandControllerName, $commandName) = explode(':', $this->task->getCommandIdentifier());
 		$path = array('command', $commandControllerName, $commandName, 'arguments', $argumentName);
@@ -237,10 +239,10 @@ class Tx_Extbase_Scheduler_FieldProvider implements Tx_Scheduler_AdditionalField
 	/**
 	 * Gets the default value of argument
 	 *
-	 * @param Tx_Extbase_MVC_CLI_CommandArgumentDefinition $argument
+	 * @param \TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition $argument
 	 * @return mixed
 	 */
-	protected function getDefaultArgumentValue(Tx_Extbase_MVC_CLI_CommandArgumentDefinition $argument) {
+	protected function getDefaultArgumentValue(\TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition $argument) {
 		$type = $this->getArgumentType($argument);
 		$argumentName = $argument->getName();
 		$command = $this->commandManager->getCommandByIdentifier($this->task->getCommandIdentifier());
@@ -276,7 +278,7 @@ class Tx_Extbase_Scheduler_FieldProvider implements Tx_Scheduler_AdditionalField
 	 */
 	protected function renderSelectField($name, array $options, $selectedOptionValue) {
 		$html = array(
-			('<select name="tx_scheduler[task_extbase][' . htmlspecialchars($name)) . ']">'
+			('<select name="TYPO3\\CMS\\Scheduler\\Scheduler[task_extbase][' . htmlspecialchars($name)) . ']">'
 		);
 		foreach ($options as $optionValue => $optionLabel) {
 			$selected = $optionValue === $selectedOptionValue ? ' selected="selected"' : '';
@@ -289,14 +291,14 @@ class Tx_Extbase_Scheduler_FieldProvider implements Tx_Scheduler_AdditionalField
 	/**
 	 * Renders a field for defining an argument's value
 	 *
-	 * @param Tx_Extbase_MVC_CLI_CommandArgumentDefinition $argument
+	 * @param \TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition $argument
 	 * @param mixed $currentValue
 	 * @return string
 	 */
-	protected function renderField(Tx_Extbase_MVC_CLI_CommandArgumentDefinition $argument, $currentValue) {
+	protected function renderField(\TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition $argument, $currentValue) {
 		$type = $this->getArgumentType($argument);
 		$name = $argument->getName();
-		$fieldName = ('tx_scheduler[task_extbase][arguments][' . htmlspecialchars($name)) . ']';
+		$fieldName = ('TYPO3\\CMS\\Scheduler\\Scheduler[task_extbase][arguments][' . htmlspecialchars($name)) . ']';
 		if ($type === 'boolean') {
 			// checkbox field for boolean values.
 			$html = ('<input type="hidden" name="' . $fieldName) . '" value="0" />';
@@ -309,5 +311,6 @@ class Tx_Extbase_Scheduler_FieldProvider implements Tx_Scheduler_AdditionalField
 	}
 
 }
+
 
 ?>

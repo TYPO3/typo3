@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +34,7 @@
  * @version $Id$
  * @scope prototype
  */
-class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_Validation_Validator_AbstractObjectValidator {
+class GenericObjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractObjectValidator {
 
 	/**
 	 * @var array
@@ -40,7 +42,7 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	protected $propertyValidators = array();
 
 	/**
-	 * @var Tx_Extbase_Persistence_ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
 	 */
 	static protected $instancesCurrentlyUnderValidation;
 
@@ -50,19 +52,19 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 * If at least one error occurred, the result is FALSE.
 	 *
 	 * @param mixed $object
-	 * @return Tx_Extbase_Error_Result
+	 * @return \TYPO3\CMS\Extbase\Error\Result
 	 * @api
 	 */
 	public function validate($object) {
-		$messages = new Tx_Extbase_Error_Result();
+		$messages = new \TYPO3\CMS\Extbase\Error\Result();
 		if (self::$instancesCurrentlyUnderValidation === NULL) {
-			self::$instancesCurrentlyUnderValidation = new Tx_Extbase_Persistence_ObjectStorage();
+			self::$instancesCurrentlyUnderValidation = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 		}
 		if ($object === NULL) {
 			return $messages;
 		}
 		if (!is_object($object)) {
-			$messages->addError(new Tx_Extbase_Validation_Error('Object expected, "%1$d" given.', 1241099149, array(gettype($object))));
+			$messages->addError(new \TYPO3\CMS\Extbase\Validation\Error('Object expected, "%1$d" given.', 1241099149, array(gettype($object))));
 			return $messages;
 		}
 		if (self::$instancesCurrentlyUnderValidation->contains($object)) {
@@ -89,10 +91,10 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 */
 	protected function getPropertyValue($object, $propertyName) {
 		// TODO: add support for lazy loading proxies, if needed
-		if (Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($object, $propertyName)) {
-			return Tx_Extbase_Reflection_ObjectAccess::getProperty($object, $propertyName);
+		if (\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($object, $propertyName)) {
+			return \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($object, $propertyName);
 		} else {
-			return Tx_Extbase_Reflection_ObjectAccess::getProperty($object, $propertyName, TRUE);
+			return \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($object, $propertyName, TRUE);
 		}
 	}
 
@@ -102,11 +104,11 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 *
 	 * @param mixed $value The value to be validated
 	 * @param array $validators The validators to be called on the value
-	 * @param Tx_Extbase_Error_Result $messages the result object to which the validation errors should be added
+	 * @param \TYPO3\CMS\Extbase\Error\Result $messages the result object to which the validation errors should be added
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function checkProperty($value, $validators, Tx_Extbase_Error_Result $messages) {
+	protected function checkProperty($value, $validators, \TYPO3\CMS\Extbase\Error\Result $messages) {
 		foreach ($validators as $validator) {
 			$messages->merge($validator->validate($value));
 		}
@@ -160,14 +162,14 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 */
 	public function isPropertyValid($object, $propertyName) {
 		if (!is_object($object)) {
-			throw new InvalidArgumentException(('Object expected, ' . gettype($object)) . ' given.', 1241099149);
+			throw new \InvalidArgumentException(('Object expected, ' . gettype($object)) . ' given.', 1241099149);
 		}
 		if (!isset($this->propertyValidators[$propertyName])) {
 			return TRUE;
 		}
 		$result = TRUE;
 		foreach ($this->propertyValidators[$propertyName] as $validator) {
-			if ($validator->isValid(Tx_Extbase_Reflection_ObjectAccess::getProperty($object, $propertyName)) === FALSE) {
+			if ($validator->isValid(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($object, $propertyName)) === FALSE) {
 				$this->addErrorsForProperty($validator->getErrors(), $propertyName);
 				$result = FALSE;
 			}
@@ -183,7 +185,7 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 */
 	protected function addErrorsForProperty($errors, $propertyName) {
 		if (!isset($this->errors[$propertyName])) {
-			$this->errors[$propertyName] = new Tx_Extbase_Validation_PropertyError($propertyName);
+			$this->errors[$propertyName] = new \TYPO3\CMS\Extbase\Validation\PropertyError($propertyName);
 		}
 		$this->errors[$propertyName]->addErrors($errors);
 	}
@@ -192,17 +194,18 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 * Adds the given validator for validation of the specified property.
 	 *
 	 * @param string $propertyName Name of the property to validate
-	 * @param Tx_Extbase_Validation_Validator_ValidatorInterface $validator The property validator
+	 * @param \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator The property validator
 	 * @return void
 	 * @api
 	 */
-	public function addPropertyValidator($propertyName, Tx_Extbase_Validation_Validator_ValidatorInterface $validator) {
+	public function addPropertyValidator($propertyName, \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator) {
 		if (!isset($this->propertyValidators[$propertyName])) {
-			$this->propertyValidators[$propertyName] = new Tx_Extbase_Persistence_ObjectStorage();
+			$this->propertyValidators[$propertyName] = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 		}
 		$this->propertyValidators[$propertyName]->attach($validator);
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Exception;
+
 /***************************************************************
  *  Copyright notice
  *  All rights reserved
@@ -29,9 +31,10 @@
  * @subpackage MVC\Exception
  * @version $Id$
  */
-class Tx_Extbase_MVC_Exception_InvalidArgumentMixing extends Tx_Extbase_MVC_Exception {
+class InvalidArgumentMixingException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\View;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,10 +34,10 @@
  * @version $ID:$
  * @api
  */
-abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_ViewInterface {
+abstract class AbstractView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface {
 
 	/**
-	 * @var Tx_Extbase_MVC_Controller_ControllerContext
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
 	 * @api
 	 */
 	protected $controllerContext;
@@ -51,10 +53,10 @@ abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_V
 	/**
 	 * Sets the current controller context
 	 *
-	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
 	 * @return void
 	 */
-	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
+	public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext) {
 		$this->controllerContext = $controllerContext;
 	}
 
@@ -64,7 +66,7 @@ abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_V
 	 *
 	 * @param string $key Key of variable
 	 * @param object $value Value of object
-	 * @return Tx_Extbase_MVC_View_AbstractView an instance of $this, to enable chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\View\AbstractView an instance of $this, to enable chaining
 	 * @api
 	 */
 	public function assign($key, $value) {
@@ -76,7 +78,7 @@ abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_V
 	 * Add multiple variables to $this->viewData.
 	 *
 	 * @param array $values array in the format array(key1 => value1, key2 => value2).
-	 * @return Tx_Extbase_MVC_View_AbstractView an instance of $this, to enable chaining
+	 * @return \TYPO3\CMS\Extbase\Mvc\View\AbstractView an instance of $this, to enable chaining
 	 * @api
 	 */
 	public function assignMultiple(array $values) {
@@ -92,11 +94,11 @@ abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_V
 	 * By default we assume that the view implementation can handle all kinds of
 	 * contexts. Override this method if that is not the case.
 	 *
-	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
 	 * @return boolean TRUE if the view has something useful to display, otherwise FALSE
 	 * @api
 	 */
-	public function canRender(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
+	public function canRender(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext) {
 		return TRUE;
 	}
 
@@ -113,5 +115,6 @@ abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_V
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Repository;
+
 /***************************************************************
  * Copyright notice
  *
@@ -30,17 +32,17 @@
  * @subpackage Domain\Repository
  * @api
  */
-class Tx_Extbase_Tests_Unit_Domain_Repository_BackendUserRepositoryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class BackendUserRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function initializeObjectSetsRespectStoragePidToFalse() {
-		$objectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$fixture = new Tx_Extbase_Domain_Repository_BackendUserRepository($objectManager);
-		$querySettings = $this->getMock('Tx_Extbase_Persistence_Typo3QuerySettings');
+		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$fixture = new \TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository($objectManager);
+		$querySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 		$querySettings->expects($this->once())->method('setRespectStoragePage')->with(FALSE);
-		$objectManager->expects($this->once())->method('create')->with('Tx_Extbase_Persistence_Typo3QuerySettings')->will($this->returnValue($querySettings));
+		$objectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings')->will($this->returnValue($querySettings));
 		$fixture->initializeObject();
 	}
 
@@ -48,15 +50,16 @@ class Tx_Extbase_Tests_Unit_Domain_Repository_BackendUserRepositoryTest extends 
 	 * @test
 	 */
 	public function initializeObjectSetsDefaultQuerySettings() {
-		$objectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		/** @var $fixture Tx_Extbase_Domain_Repository_BackendUserRepository */
-		$fixture = $this->getMock('Tx_Extbase_Domain_Repository_BackendUserRepository', array('setDefaultQuerySettings'), array($objectManager));
-		$querySettings = $this->getMock('Tx_Extbase_Persistence_Typo3QuerySettings');
-		$objectManager->expects($this->once())->method('create')->with('Tx_Extbase_Persistence_Typo3QuerySettings')->will($this->returnValue($querySettings));
+		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		/** @var $fixture \TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository */
+		$fixture = $this->getMock('TYPO3\\CMS\\Extbase\\Domain\\Repository\\BackendUserGroupRepository', array('setDefaultQuerySettings'), array($objectManager));
+		$querySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+		$objectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings')->will($this->returnValue($querySettings));
 		$fixture->expects($this->once())->method('setDefaultQuerySettings')->with($querySettings);
 		$fixture->initializeObject();
 	}
 
 }
+
 
 ?>

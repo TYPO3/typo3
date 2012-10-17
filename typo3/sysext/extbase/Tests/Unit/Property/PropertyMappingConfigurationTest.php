@@ -19,21 +19,23 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 require_once __DIR__ . '/../Fixtures/ClassWithSetters.php';
+namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
+
 /**
  * Testcase for the Property Mapper
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @covers Tx_Extbase_Property_PropertyMappingConfiguration
+ * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
  */
-class Tx_Extbase_Tests_Unit_Property_PropertyMappingConfigurationTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Property_PropertyMappingConfiguration
+	 * @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
 	 */
 	protected $propertyMappingConfiguration;
 
 	public function setUp() {
-		$this->propertyMappingConfiguration = new Tx_Extbase_Property_PropertyMappingConfiguration();
+		$this->propertyMappingConfiguration = new \Tx_Extbase_Property_PropertyMappingConfiguration();
 	}
 
 	/**
@@ -109,13 +111,13 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMappingConfigurationTest extends Tx
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getTypeConverterReturnsTypeConverterIfItHasBeenSet() {
-		$mockTypeConverter = $this->getMock('Tx_Extbase_Property_TypeConverterInterface');
+		$mockTypeConverter = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\TypeConverterInterface');
 		$this->propertyMappingConfiguration->setTypeConverter($mockTypeConverter);
 		$this->assertSame($mockTypeConverter, $this->propertyMappingConfiguration->getTypeConverter());
 	}
 
 	/**
-	 * @return Tx_Extbase_Property_PropertyMappingConfiguration
+	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function buildChildConfigurationForSingleProperty() {
@@ -135,5 +137,6 @@ class Tx_Extbase_Tests_Unit_Property_PropertyMappingConfigurationTest extends Tx
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Configuration;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
  * @subpackage Configuration
  * @version $ID:$
  */
-abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements t3lib_Singleton {
+abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Default backend storage PID
@@ -42,17 +44,17 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 	protected $configuration = array();
 
 	/**
-	 * @var tslib_cObj
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	protected $contentObject;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Extbase_Service_TypoScriptService
+	 * @var \TYPO3\CMS\Extbase\Service\TypoScriptService
 	 */
 	protected $typoScriptService;
 
@@ -78,26 +80,26 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 	protected $configurationCache = array();
 
 	/**
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
 	/**
-	 * @param Tx_Extbase_Service_TypoScriptService $typoScriptService
+	 * @param \TYPO3\CMS\Extbase\Service\TypoScriptService $typoScriptService
 	 * @return void
 	 */
-	public function injectTypoScriptService(Tx_Extbase_Service_TypoScriptService $typoScriptService) {
+	public function injectTypoScriptService(\TYPO3\CMS\Extbase\Service\TypoScriptService $typoScriptService) {
 		$this->typoScriptService = $typoScriptService;
 	}
 
 	/**
-	 * @param tslib_cObj $contentObject
+	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject
 	 * @return void
 	 */
-	public function setContentObject(tslib_cObj $contentObject = NULL) {
+	public function setContentObject(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject = NULL) {
 		$this->contentObject = $contentObject;
 	}
 
@@ -149,7 +151,7 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 		// only merge $this->configuration and override switchableControllerActions when retrieving configuration of the current plugin
 		if ($extensionName === NULL || $extensionName === $this->extensionName && $pluginName === $this->pluginName) {
 			$pluginConfiguration = $this->getPluginConfiguration($this->extensionName, $this->pluginName);
-			$pluginConfiguration = t3lib_div::array_merge_recursive_overrule($pluginConfiguration, $this->configuration);
+			$pluginConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($pluginConfiguration, $this->configuration);
 			$pluginConfiguration['controllerConfiguration'] = $this->getSwitchableControllerActions($this->extensionName, $this->pluginName);
 			if (isset($this->configuration['switchableControllerActions'])) {
 				$this->overrideSwitchableControllerActions($pluginConfiguration, $this->configuration['switchableControllerActions']);
@@ -158,7 +160,7 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 			$pluginConfiguration = $this->getPluginConfiguration($extensionName, $pluginName);
 			$pluginConfiguration['controllerConfiguration'] = $this->getSwitchableControllerActions($extensionName, $pluginName);
 		}
-		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, $pluginConfiguration);
+		$frameworkConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($frameworkConfiguration, $pluginConfiguration);
 		// only load context specific configuration when retrieving configuration of the current plugin
 		if ($extensionName === NULL || $extensionName === $this->extensionName && $pluginName === $this->pluginName) {
 			$frameworkConfiguration = $this->getContextSpecificFrameworkConfiguration($frameworkConfiguration);
@@ -168,12 +170,12 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 			stdWrap. Than we convert the configuration to normal TypoScript
 			and apply the stdWrap to the storagePid */
 			if (TYPO3_MODE !== 'FE') {
-				Tx_Extbase_Utility_FrontendSimulator::simulateFrontendEnvironment($this->getContentObject());
+				\TYPO3\CMS\Extbase\Utility\FrontendSimulatorUtility::simulateFrontendEnvironment($this->getContentObject());
 			}
 			$configuration = $this->typoScriptService->convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
 			$frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrap($configuration['storagePid'], $configuration['storagePid.']);
 			if (TYPO3_MODE !== 'FE') {
-				Tx_Extbase_Utility_FrontendSimulator::resetFrontendEnvironment();
+				\TYPO3\CMS\Extbase\Utility\FrontendSimulatorUtility::resetFrontendEnvironment();
 			}
 		}
 		// 1st level cache
@@ -274,5 +276,6 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager implements 
 	abstract protected function getSwitchableControllerActions($extensionName, $pluginName);
 
 }
+
 
 ?>

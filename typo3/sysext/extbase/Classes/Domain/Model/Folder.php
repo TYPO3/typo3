@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,9 +32,10 @@
  * @entity
  * @api experimental! This class is experimental and subject to change!
  */
-class Tx_Extbase_Domain_Model_Folder extends Tx_Extbase_Domain_Model_AbstractFileFolder {
+class Folder extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder {
 
 
 }
+
 
 ?>

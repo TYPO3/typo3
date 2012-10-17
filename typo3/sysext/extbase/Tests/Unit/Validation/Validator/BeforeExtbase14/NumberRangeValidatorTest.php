@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\BeforeExtbase14;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,13 +36,13 @@
  * @subpackage extbase
  * @version $Id: NumberRangeValidator_testcase.php 2428 2010-07-20 10:18:51Z jocrau $
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_NumberRangeValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class NumberRangeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function numberRangeValidatorReturnsTrueForASimpleIntegerInRange() {
-		$numberRangeValidator = new Tx_Extbase_Validation_Validator_NumberRangeValidator();
+		$numberRangeValidator = new \TYPO3\CMS\Extbase\Validation\Validator\NumberRangeValidator();
 		$numberRangeValidator->setOptions(array('startRange' => 0, 'endRange' => 1000));
 		$this->assertTrue($numberRangeValidator->isValid(10.5));
 	}
@@ -49,7 +51,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_NumberRangeVali
 	 * @test
 	 */
 	public function numberRangeValidatorReturnsFalseForANumberOutOfRange() {
-		$numberRangeValidator = $this->getMock('Tx_Extbase_Validation_Validator_NumberRangeValidator', array('addError'), array(), '', FALSE);
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError'), array(), '', FALSE);
 		$numberRangeValidator->setOptions(array('startRange' => 0, 'endRange' => 1000));
 		$this->assertFalse($numberRangeValidator->isValid(1000.1));
 	}
@@ -58,7 +60,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_NumberRangeVali
 	 * @test
 	 */
 	public function numberRangeValidatorReturnsTrueForANumberInReversedRange() {
-		$numberRangeValidator = $this->getMock('Tx_Extbase_Validation_Validator_NumberRangeValidator', array('addError'), array(), '', FALSE);
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError'), array(), '', FALSE);
 		$numberRangeValidator->setOptions(array('startRange' => 1000, 'endRange' => 0));
 		$this->assertTrue($numberRangeValidator->isValid(100));
 	}
@@ -67,7 +69,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_NumberRangeVali
 	 * @test
 	 */
 	public function numberRangeValidatorReturnsFalseForAString() {
-		$numberRangeValidator = $this->getMock('Tx_Extbase_Validation_Validator_NumberRangeValidator', array('addError'), array(), '', FALSE);
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError'), array(), '', FALSE);
 		$numberRangeValidator->setOptions(array('startRange' => 0, 'endRange' => 1000));
 		$this->assertFalse($numberRangeValidator->isValid('not a number'));
 	}
@@ -76,7 +78,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_NumberRangeVali
 	 * @test
 	 */
 	public function numberRangeValidatorCreatesTheCorrectErrorForANumberOutOfRange() {
-		$numberRangeValidator = $this->getMock('Tx_Extbase_Validation_Validator_NumberRangeValidator', array('addError'), array(), '', FALSE);
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError'), array(), '', FALSE);
 		$numberRangeValidator->expects($this->once())->method('addError')->with('The given subject was not in the valid range (%1$d - %2$d).', 1221561046, array(1, 42));
 		$numberRangeValidator->setOptions(array('startRange' => 1, 'endRange' => 42));
 		$numberRangeValidator->isValid(4711);
@@ -86,12 +88,13 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_NumberRangeVali
 	 * @test
 	 */
 	public function numberRangeValidatorCreatesTheCorrectErrorForAStringSubject() {
-		$numberRangeValidator = $this->getMock('Tx_Extbase_Validation_Validator_NumberRangeValidator', array('addError'), array(), '', FALSE);
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError'), array(), '', FALSE);
 		$numberRangeValidator->expects($this->once())->method('addError')->with('The given subject was not a valid number.', 1221563685);
 		$numberRangeValidator->setOptions(array('startRange' => 0, 'endRange' => 42));
 		$numberRangeValidator->isValid('this is not between 0 an 42');
 	}
 
 }
+
 
 ?>

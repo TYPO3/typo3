@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +35,7 @@
  * @entity
  * @api
  */
-class Tx_Extbase_Domain_Model_BackendUserGroup extends Tx_Extbase_DomainObject_AbstractEntity {
+class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	const FILE_OPPERATIONS = 1;
 	const FILE_UNZIP = 2;
@@ -52,7 +54,7 @@ class Tx_Extbase_Domain_Model_BackendUserGroup extends Tx_Extbase_DomainObject_A
 	protected $description = '';
 
 	/**
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_BackendUserGroup>
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup>
 	 */
 	protected $subGroups;
 
@@ -125,7 +127,7 @@ class Tx_Extbase_Domain_Model_BackendUserGroup extends Tx_Extbase_DomainObject_A
 	 * Constructs this backend usergroup
 	 */
 	public function __construct() {
-		$this->subGroups = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->subGroups = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 	}
 
 	/**
@@ -169,30 +171,30 @@ class Tx_Extbase_Domain_Model_BackendUserGroup extends Tx_Extbase_DomainObject_A
 	/**
 	 * Setter for the sub groups
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage $subGroups
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $subGroups
 	 * @return void
 	 */
-	public function setSubGroups(Tx_Extbase_Persistence_ObjectStorage $subGroups) {
+	public function setSubGroups(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $subGroups) {
 		$this->subGroups = $subGroups;
 	}
 
 	/**
 	 * Adds a sub group to this backend user group
 	 *
-	 * @param Tx_Extbase_Domain_Model_BackendUserGroup $beGroup
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup $beGroup
 	 * @return void
 	 */
-	public function addSubGroup(Tx_Extbase_Domain_Model_BackendUserGroup $beGroup) {
+	public function addSubGroup(\TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup $beGroup) {
 		$this->subGroups->attach($beGroup);
 	}
 
 	/**
 	 * Removes sub group from this backend user group
 	 *
-	 * @param Tx_Extbase_Domain_Model_BackendUserGroup $groupToDelete
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup $groupToDelete
 	 * @return void
 	 */
-	public function removeSubGroup(Tx_Extbase_Domain_Model_BackendUserGroup $groupToDelete) {
+	public function removeSubGroup(\TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup $groupToDelete) {
 		$this->subGroups->detach($groupToDelete);
 	}
 
@@ -209,7 +211,7 @@ class Tx_Extbase_Domain_Model_BackendUserGroup extends Tx_Extbase_DomainObject_A
 	/**
 	 * Getter of sub groups
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
 	 */
 	public function getSubGroups() {
 		return $this->subGroups;
@@ -583,5 +585,6 @@ class Tx_Extbase_Domain_Model_BackendUserGroup extends Tx_Extbase_DomainObject_A
 	}
 
 }
+
 
 ?>

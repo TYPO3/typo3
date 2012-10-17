@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\BeforeExtbase14;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,13 +36,13 @@
  * @subpackage extbase
  * @version $Id: NotEmptyValidator_testcase.php 2428 2010-07-20 10:18:51Z jocrau $
  */
-class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_NotEmptyValidatorTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class NotEmptyValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
 	 */
 	public function notEmptyValidatorReturnsTrueForASimpleString() {
-		$notEmptyValidator = new Tx_Extbase_Validation_Validator_NotEmptyValidator();
+		$notEmptyValidator = new \TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator();
 		$this->assertTrue($notEmptyValidator->isValid('a not empty string'));
 	}
 
@@ -48,7 +50,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_NotEmptyValidat
 	 * @test
 	 */
 	public function notEmptyValidatorReturnsFalseForAnEmptyString() {
-		$notEmptyValidator = $this->getMock('Tx_Extbase_Validation_Validator_NotEmptyValidator', array('addError'), array(), '', FALSE);
+		$notEmptyValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NotEmptyValidator', array('addError'), array(), '', FALSE);
 		$this->assertFalse($notEmptyValidator->isValid(''));
 	}
 
@@ -56,7 +58,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_NotEmptyValidat
 	 * @test
 	 */
 	public function notEmptyValidatorReturnsFalseForANullValue() {
-		$notEmptyValidator = $this->getMock('Tx_Extbase_Validation_Validator_NotEmptyValidator', array('addError'), array(), '', FALSE);
+		$notEmptyValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NotEmptyValidator', array('addError'), array(), '', FALSE);
 		$this->assertFalse($notEmptyValidator->isValid(NULL));
 	}
 
@@ -64,7 +66,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_NotEmptyValidat
 	 * @test
 	 */
 	public function notEmptyValidatorCreatesTheCorrectErrorForAnEmptySubject() {
-		$notEmptyValidator = $this->getMock('Tx_Extbase_Validation_Validator_NotEmptyValidator', array('addError'), array(), '', FALSE);
+		$notEmptyValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NotEmptyValidator', array('addError'), array(), '', FALSE);
 		$notEmptyValidator->expects($this->once())->method('addError')->with('The given subject was empty.', 1221560718);
 		$notEmptyValidator->isValid('');
 	}
@@ -73,11 +75,12 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_NotEmptyValidat
 	 * @test
 	 */
 	public function notEmptyValidatorCreatesTheCorrectErrorForANullValue() {
-		$notEmptyValidator = $this->getMock('Tx_Extbase_Validation_Validator_NotEmptyValidator', array('addError'), array(), '', FALSE);
+		$notEmptyValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NotEmptyValidator', array('addError'), array(), '', FALSE);
 		$notEmptyValidator->expects($this->once())->method('addError')->with('The given subject was NULL.', 1221560910);
 		$notEmptyValidator->isValid(NULL);
 	}
 
 }
+
 
 ?>

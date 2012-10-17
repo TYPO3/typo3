@@ -1,5 +1,7 @@
 <?php
 ?> <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,15 +35,15 @@
  * @entity
  * @api
  */
-class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserGroupTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class FrontendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Domain_Model_FrontendUserGroup
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup
 	 */
 	protected $fixture = NULL;
 
 	public function setUp() {
-		$this->fixture = new Tx_Extbase_Domain_Model_FrontendUserGroup();
+		$this->fixture = new \Tx_Extbase_Domain_Model_FrontendUserGroup();
 	}
 
 	public function tearDown() {
@@ -52,7 +54,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserGroupTest extends Tx_Extbas
 	 * @test
 	 */
 	public function getTitleInitiallyReturnsEmptyString() {
-		$this->fixture = new Tx_Extbase_Domain_Model_FrontendUserGroup();
+		$this->fixture = new \Tx_Extbase_Domain_Model_FrontendUserGroup();
 		$this->assertSame('', $this->fixture->getTitle());
 	}
 
@@ -61,7 +63,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserGroupTest extends Tx_Extbas
 	 */
 	public function getTitleInitiallyReturnsGivenTitleFromConstruct() {
 		$title = 'foo bar';
-		$this->fixture = new Tx_Extbase_Domain_Model_FrontendUserGroup($title);
+		$this->fixture = new \Tx_Extbase_Domain_Model_FrontendUserGroup($title);
 		$this->assertSame($title, $this->fixture->getTitle());
 	}
 
@@ -110,7 +112,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserGroupTest extends Tx_Extbas
 	 * @test
 	 */
 	public function addSubgroupAddsSubgroup() {
-		$group1 = new Tx_Extbase_Domain_Model_FrontendUserGroup('foo');
+		$group1 = new \Tx_Extbase_Domain_Model_FrontendUserGroup('foo');
 		$this->assertEquals(count($this->fixture->getSubgroup()), 0);
 		$this->fixture->addSubgroup($group1);
 		$this->assertEquals(count($this->fixture->getSubgroup()), 1);
@@ -120,8 +122,8 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserGroupTest extends Tx_Extbas
 	 * @test
 	 */
 	public function removeSubgroupRemovesSubgroup() {
-		$group1 = new Tx_Extbase_Domain_Model_FrontendUserGroup('foo');
-		$group2 = new Tx_Extbase_Domain_Model_FrontendUserGroup('bar');
+		$group1 = new \Tx_Extbase_Domain_Model_FrontendUserGroup('foo');
+		$group2 = new \Tx_Extbase_Domain_Model_FrontendUserGroup('bar');
 		$this->fixture->addSubgroup($group1);
 		$this->fixture->addSubgroup($group2);
 		$this->assertEquals(count($this->fixture->getSubgroup()), 2);
@@ -135,13 +137,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_FrontendUserGroupTest extends Tx_Extbas
 	 * @test
 	 */
 	public function setSubgroupSetsSubgroups() {
-		$subgroup = new Tx_Extbase_Persistence_ObjectStorage();
-		$group = new Tx_Extbase_Domain_Model_FrontendUserGroup('foo');
+		$subgroup = new \Tx_Extbase_Persistence_ObjectStorage();
+		$group = new \Tx_Extbase_Domain_Model_FrontendUserGroup('foo');
 		$subgroup->attach($group);
 		$this->fixture->setSubgroup($subgroup);
 		$this->assertSame($subgroup, $this->fixture->getSubgroup());
 	}
 
 }
+
 
 ?>

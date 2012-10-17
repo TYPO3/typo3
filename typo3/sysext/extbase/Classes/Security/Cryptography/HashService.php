@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Security\Cryptography;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +34,7 @@
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser Public License, version 3 or later
  */
-class Tx_Extbase_Security_Cryptography_HashService implements t3lib_singleton {
+class HashService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Generate a hash for a given string
@@ -42,7 +44,7 @@ class Tx_Extbase_Security_Cryptography_HashService implements t3lib_singleton {
 	 * @deprecated since Extbase 6.0, will be removed in Extbase 6.2
 	 */
 	public function generateHash($string) {
-		t3lib_div::logDeprecatedFunction();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		return $this->generateHmac($string);
 	}
 
@@ -51,15 +53,15 @@ class Tx_Extbase_Security_Cryptography_HashService implements t3lib_singleton {
 	 *
 	 * @param string $string The string for which a hash should be generated
 	 * @return string The hash of the string
-	 * @throws Tx_Extbase_Security_Exception_InvalidArgumentForHashGeneration if something else than a string was given as parameter
+	 * @throws \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException if something else than a string was given as parameter
 	 */
 	public function generateHmac($string) {
 		if (!is_string($string)) {
-			throw new Tx_Extbase_Security_Exception_InvalidArgumentForHashGeneration(('A hash can only be generated for a string, but "' . gettype($string)) . '" was given.', 1255069587);
+			throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException(('A hash can only be generated for a string, but "' . gettype($string)) . '" was given.', 1255069587);
 		}
 		$encryptionKey = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 		if (!$encryptionKey) {
-			throw new Tx_Extbase_Security_Exception_InvalidArgumentForHashGeneration('Encryption Key was empty!', 1255069597);
+			throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException('Encryption Key was empty!', 1255069597);
 		}
 		return hash_hmac('sha1', $string, $encryptionKey);
 	}
@@ -86,7 +88,7 @@ class Tx_Extbase_Security_Cryptography_HashService implements t3lib_singleton {
 	 * @deprecated since Extbase 6.0, will be removed in Extbase 6.2
 	 */
 	public function validateHash($string, $hash) {
-		t3lib_div::logDeprecatedFunction();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		return $this->validateHmac($string, $hash);
 	}
 
@@ -110,24 +112,25 @@ class Tx_Extbase_Security_Cryptography_HashService implements t3lib_singleton {
 	 * @param string $string The string with the HMAC appended (in the format 'string<HMAC>')
 	 * @return string the original string without the HMAC, if validation was successful
 	 * @see validateHmac()
-	 * @throws Tx_Extbase_Security_Exception_InvalidArgumentForHashGeneration if the given string is not well-formatted
-	 * @throws Tx_Extbase_Security_Exception_InvalidHash if the hash did not fit to the data.
+	 * @throws \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException if the given string is not well-formatted
+	 * @throws \TYPO3\CMS\Extbase\Security\Exception\InvalidHashException if the hash did not fit to the data.
 	 * @todo Mark as API once it is more stable
 	 */
 	public function validateAndStripHmac($string) {
 		if (!is_string($string)) {
-			throw new Tx_Extbase_Security_Exception_InvalidArgumentForHashGeneration(('A hash can only be validated for a string, but "' . gettype($string)) . '" was given.', 1320829762);
+			throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException(('A hash can only be validated for a string, but "' . gettype($string)) . '" was given.', 1320829762);
 		}
 		if (strlen($string) < 40) {
-			throw new Tx_Extbase_Security_Exception_InvalidArgumentForHashGeneration(('A hashed string must contain at least 40 characters, the given string was only ' . strlen($string)) . ' characters long.', 1320830276);
+			throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException(('A hashed string must contain at least 40 characters, the given string was only ' . strlen($string)) . ' characters long.', 1320830276);
 		}
 		$stringWithoutHmac = substr($string, 0, -40);
 		if ($this->validateHmac($stringWithoutHmac, substr($string, -40)) !== TRUE) {
-			throw new Tx_Extbase_Security_Exception_InvalidHash('The given string was not appended with a valid HMAC.', 1320830018);
+			throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidHashException('The given string was not appended with a valid HMAC.', 1320830018);
 		}
 		return $stringWithoutHmac;
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Property\Exception;
+
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -24,9 +26,10 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class Tx_Extbase_Property_Exception_DuplicateObjectException extends Tx_Extbase_Property_Exception {
+class DuplicateObjectException extends \TYPO3\CMS\Extbase\Property\Exception {
 
 
 }
+
 
 ?>

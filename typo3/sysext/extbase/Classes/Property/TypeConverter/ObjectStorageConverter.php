@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Property\TypeConverter;
+
 /*                                                                        *
  * This script belongs to the Extbase framework                           *
  *                                                                        *
@@ -24,18 +26,18 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class Tx_Extbase_Property_TypeConverter_ObjectStorageConverter extends Tx_Extbase_Property_TypeConverter_AbstractTypeConverter implements t3lib_Singleton {
+class ObjectStorageConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var Tx_Extbase_Service_TypeHandlingService
+	 * @var \TYPO3\CMS\Extbase\Service\TypeHandlingService
 	 */
 	protected $typeHandlingService;
 
 	/**
-	 * @param Tx_Extbase_Service_TypeHandlingService $typeHandlingService
+	 * @param \TYPO3\CMS\Extbase\Service\TypeHandlingService $typeHandlingService
 	 * @return void
 	 */
-	public function injectTypeHandlingService(Tx_Extbase_Service_TypeHandlingService $typeHandlingService) {
+	public function injectTypeHandlingService(\TYPO3\CMS\Extbase\Service\TypeHandlingService $typeHandlingService) {
 		$this->typeHandlingService = $typeHandlingService;
 	}
 
@@ -47,7 +49,7 @@ class Tx_Extbase_Property_TypeConverter_ObjectStorageConverter extends Tx_Extbas
 	/**
 	 * @var string
 	 */
-	protected $targetType = 'Tx_Extbase_Persistence_ObjectStorage';
+	protected $targetType = 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage';
 
 	/**
 	 * @var integer
@@ -74,12 +76,12 @@ class Tx_Extbase_Property_TypeConverter_ObjectStorageConverter extends Tx_Extbas
 	 * @param array $source
 	 * @param string $targetType
 	 * @param array $convertedChildProperties
-	 * @param Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration
+	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
 	 * @return array
 	 * @api
 	 */
-	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration = NULL) {
-		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
+	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
+		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 		foreach ($convertedChildProperties as $subProperty) {
 			$objectStorage->attach($subProperty);
 		}
@@ -91,15 +93,16 @@ class Tx_Extbase_Property_TypeConverter_ObjectStorageConverter extends Tx_Extbas
 	 *
 	 * @param string $targetType
 	 * @param string $propertyName
-	 * @param Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration
+	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
 	 * @return string
 	 * @api
 	 */
-	public function getTypeOfChildProperty($targetType, $propertyName, Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration) {
+	public function getTypeOfChildProperty($targetType, $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration) {
 		$parsedTargetType = $this->typeHandlingService->parseType($targetType);
 		return $parsedTargetType['elementType'];
 	}
 
 }
+
 
 ?>

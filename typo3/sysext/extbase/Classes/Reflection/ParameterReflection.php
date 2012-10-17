@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Reflection;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
  * @subpackage Reflection
  * @version $Id$
  */
-class Tx_Extbase_Reflection_ParameterReflection extends ReflectionParameter {
+class ParameterReflection extends \ReflectionParameter {
 
 	/**
 	 * The constructor, initializes the reflection parameter
@@ -43,26 +45,27 @@ class Tx_Extbase_Reflection_ParameterReflection extends ReflectionParameter {
 	/**
 	 * Returns the declaring class
 	 *
-	 * @return Tx_Extbase_Reflection_ClassReflection The declaring class
+	 * @return \TYPO3\CMS\Extbase\Reflection\ClassReflection The declaring class
 	 */
 	public function getDeclaringClass() {
-		return new Tx_Extbase_Reflection_ClassReflection(parent::getDeclaringClass()->getName());
+		return new \TYPO3\CMS\Extbase\Reflection\ClassReflection(parent::getDeclaringClass()->getName());
 	}
 
 	/**
 	 * Returns the parameter class
 	 *
-	 * @return Tx_Extbase_Reflection_ClassReflection The parameter class
+	 * @return \TYPO3\CMS\Extbase\Reflection\ClassReflection The parameter class
 	 */
 	public function getClass() {
 		try {
 			$class = parent::getClass();
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			return NULL;
 		}
-		return is_object($class) ? new Tx_Extbase_Reflection_ClassReflection($class->getName()) : NULL;
+		return is_object($class) ? new \TYPO3\CMS\Extbase\Reflection\ClassReflection($class->getName()) : NULL;
 	}
 
 }
+
 
 ?>

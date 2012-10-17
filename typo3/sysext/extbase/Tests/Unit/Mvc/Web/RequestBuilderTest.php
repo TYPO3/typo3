@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,15 +26,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_MVC_Web_RequestBuilder
+	 * @var \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder
 	 */
 	protected $requestBuilder;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $mockConfigurationManager;
 
@@ -42,17 +44,17 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 	protected $configuration;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $mockObjectManager;
 
 	/**
-	 * @var Tx_Extbase_Service_ExtensionService
+	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService
 	 */
 	protected $mockExtensionService;
 
 	/**
-	 * @var Tx_Extbase_MVC_Web_Request
+	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Request
 	 */
 	protected $mockRequest;
 
@@ -72,7 +74,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 	protected $serverBackup = array();
 
 	public function setUp() {
-		$this->requestBuilder = $this->getAccessibleMock('Tx_Extbase_MVC_Web_RequestBuilder', array('dummy'));
+		$this->requestBuilder = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\RequestBuilder', array('dummy'));
 		$this->configuration = array(
 			'userFunc' => 'Tx_Extbase_Dispatcher->dispatch',
 			'pluginName' => 'Pi1',
@@ -91,10 +93,10 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 				)
 			)
 		);
-		$this->mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
-		$this->mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request');
-		$this->mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$this->mockExtensionService = $this->getMock('Tx_Extbase_Service_ExtensionService');
+		$this->mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$this->mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
+		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$this->mockExtensionService = $this->getMock('TYPO3\\CMS\\Extbase\\Service\\ExtensionService');
 		$this->getBackup = $_GET;
 		$this->postBackup = $_POST;
 		$this->serverBackup = $_SERVER;
@@ -106,7 +108,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 	protected function injectDependencies() {
 		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
 		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
-		$this->mockObjectManager->expects($this->any())->method('create')->with('Tx_Extbase_MVC_Web_Request')->will($this->returnValue($this->mockRequest));
+		$this->mockObjectManager->expects($this->any())->method('create')->with('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request')->will($this->returnValue($this->mockRequest));
 		$this->requestBuilder->injectObjectManager($this->mockObjectManager);
 		$pluginNamespace = 'tx_' . strtolower((($this->configuration['extensionName'] . '_') . $this->configuration['pluginName']));
 		$this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue($pluginNamespace));
@@ -169,7 +171,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 	 */
 	public function buildSetsRequestRequestUri() {
 		$this->injectDependencies();
-		$expectedRequestUri = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
+		$expectedRequestUri = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
 		$this->mockRequest->expects($this->once())->method('setRequestUri')->with($expectedRequestUri);
 		$this->requestBuilder->build();
 	}
@@ -179,7 +181,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 	 */
 	public function buildSetsRequestBaseUri() {
 		$this->injectDependencies();
-		$expectedBaseUri = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		$expectedBaseUri = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 		$this->mockRequest->expects($this->once())->method('setBaseUri')->with($expectedBaseUri);
 		$this->requestBuilder->build();
 	}
@@ -197,11 +199,11 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception
 	 */
 	public function buildThrowsExceptionIfExtensionNameIsNotConfigured() {
 		unset($this->configuration['extensionName']);
-		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		$mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
 		$this->requestBuilder->injectConfigurationManager($mockConfigurationManager);
 		$this->requestBuilder->build();
@@ -209,11 +211,11 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception
 	 */
 	public function buildThrowsExceptionIfPluginNameIsNotConfigured() {
 		unset($this->configuration['pluginName']);
-		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		$mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
 		$this->requestBuilder->injectConfigurationManager($mockConfigurationManager);
 		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
@@ -222,7 +224,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception
 	 */
 	public function buildThrowsExceptionIfControllerConfigurationIsEmptyOrNotSet() {
 		$this->configuration['controllerConfiguration'] = array();
@@ -234,7 +236,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception
 	 */
 	public function buildThrowsExceptionIfControllerConfigurationHasNoDefaultActionDefined() {
 		$this->configuration['controllerConfiguration']['TheFirstController'] = array();
@@ -246,7 +248,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception
 	 */
 	public function buildThrowsExceptionIfNoDefaultControllerCanBeResolved() {
 		$this->configuration['controllerConfiguration'] = array(
@@ -349,7 +351,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception
 	 */
 	public function buildThrowsExceptionIfDefaultControllerCantBeDetermined() {
 		$this->configuration['controllerConfiguration'] = array();
@@ -390,7 +392,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception_InvalidControllerName
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException
 	 */
 	public function buildThrowsInvalidControllerNameExceptionIfSpecifiedControllerIsNotAllowed() {
 		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
@@ -407,7 +409,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 	/**
 	 * @test
-	 * @expectedException t3lib_error_http_PageNotFoundException
+	 * @expectedException \TYPO3\CMS\Core\Error\Http\PageNotFoundException
 	 */
 	public function buildThrowsPageNotFoundExceptionIfEnabledAndSpecifiedControllerIsNotAllowed() {
 		$this->configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved'] = 1;
@@ -441,7 +443,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception
 	 */
 	public function buildThrowsExceptionIfDefaultActionCantBeDetermined() {
 		$this->configuration['controllerConfiguration'] = array();
@@ -497,7 +499,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception_InvalidActionName
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException
 	 */
 	public function buildThrowsInvalidActionNameExceptionIfSpecifiedActionIsNotAllowed() {
 		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
@@ -514,7 +516,7 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 
 	/**
 	 * @test
-	 * @expectedException t3lib_error_http_PageNotFoundException
+	 * @expectedException \TYPO3\CMS\Core\Error\Http\PageNotFoundException
 	 */
 	public function buildThrowsPageNotFoundExceptionIfEnabledAndSpecifiedActionIsNotAllowed() {
 		$this->configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved'] = 1;
@@ -735,11 +737,12 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 				)
 			)
 		);
-		$requestBuilder = $this->getAccessibleMock('Tx_Extbase_MVC_Web_RequestBuilder', array('dummy'), array(), '', FALSE);
+		$requestBuilder = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\RequestBuilder', array('dummy'), array(), '', FALSE);
 		$result = $requestBuilder->_call('untangleFilesArray', $convolutedFiles);
 		$this->assertSame($untangledFiles, $result);
 	}
 
 }
+
 
 ?>

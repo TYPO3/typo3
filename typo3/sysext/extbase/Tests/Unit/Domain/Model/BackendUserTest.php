@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,15 +36,15 @@
  * @entity
  * @api
  */
-class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class BackendUserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Domain_Model_BackendUser
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\BackendUser
 	 */
 	protected $fixture = NULL;
 
 	public function setUp() {
-		$this->fixture = new Tx_Extbase_Domain_Model_BackendUser();
+		$this->fixture = new \TYPO3\CMS\Extbase\Domain\Model\BackendUser();
 	}
 
 	public function tearDown() {
@@ -273,5 +275,6 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserTest extends Tx_Extbase_Test
 	}
 
 }
+
 
 ?>

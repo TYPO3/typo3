@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,20 +34,20 @@
  * @version $Id$
  * @api
  */
-class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerInterface, t3lib_Singleton {
+class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface, \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var Tx_Extbase_Persistence_BackendInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\BackendInterface
 	 */
 	protected $backend;
 
 	/**
-	 * @var Tx_Extbase_Persistence_Session
+	 * @var \TYPO3\CMS\Extbase\Persistence\Session
 	 */
 	protected $session;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterfaceException
 	 */
 	protected $objectManager;
 
@@ -59,37 +61,37 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	/**
 	 * Injects the Persistence Backend
 	 *
-	 * @param Tx_Extbase_Persistence_BackendInterface $backend The persistence backend
+	 * @param \TYPO3\CMS\Extbase\Persistence\BackendInterface $backend The persistence backend
 	 * @return void
 	 */
-	public function injectBackend(Tx_Extbase_Persistence_BackendInterface $backend) {
+	public function injectBackend(\TYPO3\CMS\Extbase\Persistence\BackendInterface $backend) {
 		$this->backend = $backend;
 	}
 
 	/**
 	 * Injects the Persistence Session
 	 *
-	 * @param Tx_Extbase_Persistence_Session $session The persistence session
+	 * @param \TYPO3\CMS\Extbase\Persistence\Session $session The persistence session
 	 * @return void
 	 */
-	public function injectSession(Tx_Extbase_Persistence_Session $session) {
+	public function injectSession(\TYPO3\CMS\Extbase\Persistence\Session $session) {
 		$this->session = $session;
 	}
 
 	/**
 	 * Injects the object manager
 	 *
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterfaceException $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterfaceException $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
 	/**
 	 * Returns the current persistence session
 	 *
-	 * @return Tx_Extbase_Persistence_Session
+	 * @return \TYPO3\CMS\Extbase\Persistence\Session
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function getSession() {
@@ -99,7 +101,7 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	/**
 	 * Returns the persistence backend
 	 *
-	 * @return Tx_Extbase_Persistence_BackendInterface
+	 * @return \TYPO3\CMS\Extbase\Persistence\BackendInterface
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function getBackend() {
@@ -119,22 +121,22 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	/**
 	 * Returns the number of records matching the query.
 	 *
-	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
 	 * @return integer
 	 * @api
 	 */
-	public function getObjectCountByQuery(Tx_Extbase_Persistence_QueryInterface $query) {
+	public function getObjectCountByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
 		return $this->backend->getObjectCountByQuery($query);
 	}
 
 	/**
 	 * Returns the object data matching the $query.
 	 *
-	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
 	 * @return array
 	 * @api
 	 */
-	public function getObjectDataByQuery(Tx_Extbase_Persistence_QueryInterface $query) {
+	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
 		return $this->backend->getObjectDataByQuery($query);
 	}
 
@@ -175,8 +177,8 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	 * @api
 	 */
 	public function persistAll() {
-		$aggregateRootObjects = new Tx_Extbase_Persistence_ObjectStorage();
-		$removedObjects = new Tx_Extbase_Persistence_ObjectStorage();
+		$aggregateRootObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$removedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		// fetch and inspect objects from all known repositories
 		foreach ($this->repositoryClassNames as $repositoryClassName) {
 			$repository = $this->objectManager->get($repositoryClassName);
@@ -203,5 +205,6 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	}
 
 }
+
 
 ?>

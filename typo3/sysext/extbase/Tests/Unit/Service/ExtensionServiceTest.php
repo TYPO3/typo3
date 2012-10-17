@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,7 +29,7 @@
  * @package Extbase
  * @subpackage extbase
  */
-class Tx_Extbase_Tests_Unit_Service_ExtensionServiceTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class ExtensionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * Contains backup of $TYPO3_CONF_VARS
@@ -37,7 +39,7 @@ class Tx_Extbase_Tests_Unit_Service_ExtensionServiceTest extends Tx_Extbase_Test
 	protected $typo3ConfVars = array();
 
 	/**
-	 * @var t3lib_DB
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	protected $typo3DbBackup;
 
@@ -47,21 +49,21 @@ class Tx_Extbase_Tests_Unit_Service_ExtensionServiceTest extends Tx_Extbase_Test
 	protected $tsfeBackup;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $mockConfigurationManager;
 
 	/**
-	 * @var Tx_Extbase_Service_ExtensionService
+	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService
 	 */
 	protected $extensionService;
 
 	public function setUp() {
 		$this->typo3ConfVars = $GLOBALS['TYPO3_CONF_VARS'];
 		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
-		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('fullQuoteStr', 'exec_SELECTgetRows'));
-		$this->extensionService = new Tx_Extbase_Service_ExtensionService();
-		$this->mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('fullQuoteStr', 'exec_SELECTgetRows'));
+		$this->extensionService = new \TYPO3\CMS\Extbase\Service\ExtensionService();
+		$this->mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		$this->extensionService->injectConfigurationManager($this->mockConfigurationManager);
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'] = array(
 			'ExtensionName' => array(
@@ -136,7 +138,7 @@ class Tx_Extbase_Tests_Unit_Service_ExtensionServiceTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function pluginNamespaceCanBeOverridden() {
-		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->with(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'SomeExtension', 'SomePlugin')->will($this->returnValue(array('view' => array('pluginNamespace' => 'overridden_plugin_namespace'))));
+		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->with(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'SomeExtension', 'SomePlugin')->will($this->returnValue(array('view' => array('pluginNamespace' => 'overridden_plugin_namespace'))));
 		$expectedResult = 'overridden_plugin_namespace';
 		$actualResult = $this->extensionService->getPluginNamespace('SomeExtension', 'SomePlugin');
 		$this->assertEquals($expectedResult, $actualResult);
@@ -167,17 +169,17 @@ class Tx_Extbase_Tests_Unit_Service_ExtensionServiceTest extends Tx_Extbase_Test
 	 * @param mixed $expectedResult
 	 */
 	public function getPluginNameByActionTests($extensionName, $controllerName, $actionName, $expectedResult) {
-		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->with(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->will($this->returnValue(array('view' => array('pluginNamespace' => 'overridden_plugin_namespace'))));
+		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->with(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->will($this->returnValue(array('view' => array('pluginNamespace' => 'overridden_plugin_namespace'))));
 		$actualResult = $this->extensionService->getPluginNameByAction($extensionName, $controllerName, $actionName);
 		$this->assertEquals($expectedResult, $actualResult, ((((('Failing for $extensionName: "' . $extensionName) . '", $controllerName: "') . $controllerName) . '", $actionName: "') . $actionName) . '" - ');
 	}
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_Exception
+	 * @expectedException \TYPO3\CMS\Extbase\Exception
 	 */
 	public function getPluginNameByActionThrowsExceptionIfMoreThanOnePluginMatches() {
-		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->with(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->will($this->returnValue(array('view' => array('pluginNamespace' => 'overridden_plugin_namespace'))));
+		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->with(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->will($this->returnValue(array('view' => array('pluginNamespace' => 'overridden_plugin_namespace'))));
 		$this->extensionService->getPluginNameByAction('ExtensionName', 'ControllerName', 'otherAction');
 	}
 
@@ -185,7 +187,7 @@ class Tx_Extbase_Tests_Unit_Service_ExtensionServiceTest extends Tx_Extbase_Test
 	 * @test
 	 */
 	public function getPluginNameByActionReturnsCurrentIfItCanHandleTheActionEvenIfMoreThanOnePluginMatches() {
-		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->with(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->will($this->returnValue(array('extensionName' => 'CurrentExtension', 'pluginName' => 'CurrentPlugin', 'controllerConfiguration' => array('ControllerName' => array('actions' => array('otherAction'))))));
+		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->with(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->will($this->returnValue(array('extensionName' => 'CurrentExtension', 'pluginName' => 'CurrentPlugin', 'controllerConfiguration' => array('ControllerName' => array('actions' => array('otherAction'))))));
 		$actualResult = $this->extensionService->getPluginNameByAction('CurrentExtension', 'ControllerName', 'otherAction');
 		$expectedResult = 'CurrentPlugin';
 		$this->assertEquals($expectedResult, $actualResult);
@@ -249,7 +251,7 @@ class Tx_Extbase_Tests_Unit_Service_ExtensionServiceTest extends Tx_Extbase_Test
 	public function getTargetPidByPluginSignatureDeterminesTheTargetPidIfDefaultPidIsAuto() {
 		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue(array('view' => array('defaultPid' => 'auto'))));
 		$pluginSignature = 'extensionname_someplugin';
-		$GLOBALS['TSFE']->sys_page = $this->getMock('t3lib_pageSelect', array('enableFields'));
+		$GLOBALS['TSFE']->sys_page = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('enableFields'));
 		$GLOBALS['TSFE']->sys_page->expects($this->once())->method('enableFields')->with('tt_content')->will($this->returnValue(' AND enable_fields'));
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('fullQuoteStr')->with($pluginSignature, 'tt_content')->will($this->returnValue('"pluginSignature"'));
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_SELECTgetRows')->with('pid', 'tt_content', 'list_type="pluginSignature" AND CType="list" AND enable_fields AND sys_language_uid=', '', '')->will($this->returnValue(array(array('pid' => '321'))));
@@ -263,7 +265,7 @@ class Tx_Extbase_Tests_Unit_Service_ExtensionServiceTest extends Tx_Extbase_Test
 	 */
 	public function getTargetPidByPluginSignatureReturnsNullIfTargetPidCouldNotBeDetermined() {
 		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue(array('view' => array('defaultPid' => 'auto'))));
-		$GLOBALS['TSFE']->sys_page = $this->getMock('t3lib_pageSelect', array('enableFields'));
+		$GLOBALS['TSFE']->sys_page = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('enableFields'));
 		$GLOBALS['TSFE']->sys_page->expects($this->once())->method('enableFields')->will($this->returnValue(' AND enable_fields'));
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('fullQuoteStr')->will($this->returnValue('"pluginSignature"'));
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_SELECTgetRows')->will($this->returnValue(array()));
@@ -272,11 +274,11 @@ class Tx_Extbase_Tests_Unit_Service_ExtensionServiceTest extends Tx_Extbase_Test
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_Exception
+	 * @expectedException \TYPO3\CMS\Extbase\Exception
 	 */
 	public function getTargetPidByPluginSignatureThrowsExceptionIfMoreThanOneTargetPidsWereFound() {
 		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue(array('view' => array('defaultPid' => 'auto'))));
-		$GLOBALS['TSFE']->sys_page = $this->getMock('t3lib_pageSelect', array('enableFields'));
+		$GLOBALS['TSFE']->sys_page = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('enableFields'));
 		$GLOBALS['TSFE']->sys_page->expects($this->once())->method('enableFields')->will($this->returnValue(' AND enable_fields'));
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('fullQuoteStr')->will($this->returnValue('"pluginSignature"'));
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_SELECTgetRows')->will($this->returnValue(array(array('pid' => 123), array('pid' => 124))));
@@ -337,5 +339,6 @@ class Tx_Extbase_Tests_Unit_Service_ExtensionServiceTest extends Tx_Extbase_Test
 	}
 
 }
+
 
 ?>

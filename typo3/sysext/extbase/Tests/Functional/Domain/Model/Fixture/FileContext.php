@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture;
+
 /***************************************************************
  * Copyright notice
  *
@@ -30,10 +32,10 @@
  * @entity
  * @api
  */
-class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Extbase_DomainObject_AbstractEntity {
+class FileContext extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
-	 * @var Tx_Extbase_Domain_Model_File
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\File
 	 */
 	protected $file;
 
@@ -43,7 +45,7 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	protected $files;
 
 	/**
-	 * @var Tx_Extbase_Domain_Model_FileReference
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
 	 */
 	protected $fileReference;
 
@@ -53,7 +55,7 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	protected $fileReferences;
 
 	/**
-	 * @var Tx_Extbase_Domain_Model_StaticFileCollection
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection
 	 */
 	protected $staticFileCollection;
 
@@ -63,7 +65,7 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	protected $staticFileCollections;
 
 	/**
-	 * @var Tx_Extbase_Domain_Model_FolderBasedFileCollection
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection
 	 */
 	protected $folderBasedFileCollection;
 
@@ -73,7 +75,7 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	protected $folderBasedFileCollections;
 
 	/**
-	 * @var Tx_Extbase_Domain_Model_Folder
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\Folder
 	 */
 	protected $folder;
 
@@ -83,27 +85,27 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	protected $folders;
 
 	public function __construct() {
-		$this->files = new Tx_Extbase_Persistence_ObjectStorage();
-		$this->fileReferences = new Tx_Extbase_Persistence_ObjectStorage();
-		$this->staticFileCollections = new Tx_Extbase_Persistence_ObjectStorage();
-		$this->folderBasedFileCollections = new Tx_Extbase_Persistence_ObjectStorage();
-		$this->folders = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->files = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$this->fileReferences = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$this->staticFileCollections = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$this->folderBasedFileCollections = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$this->folders = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 	}
 
 	/**
 	 * FILE
 	 */
 	/**
-	 * @return Tx_Extbase_Domain_Model_File
+	 * @return \TYPO3\CMS\Extbase\Domain\Model\File
 	 */
 	public function getFile() {
 		return $this->file;
 	}
 
 	/**
-	 * @param Tx_Extbase_Domain_Model_File $file
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\File $file
 	 */
-	public function setFile(Tx_Extbase_Domain_Model_File $file) {
+	public function setFile(\TYPO3\CMS\Extbase\Domain\Model\File $file) {
 		$this->file = $file;
 	}
 
@@ -117,21 +119,21 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	/**
 	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_File> $files
 	 */
-	public function setFiles(Tx_Extbase_Persistence_ObjectStorage $files) {
+	public function setFiles(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $files) {
 		$this->files = $files;
 	}
 
 	/**
-	 * @param Tx_Extbase_Domain_Model_File $file
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\File $file
 	 */
-	public function addFile(Tx_Extbase_Domain_Model_File $file) {
+	public function addFile(\TYPO3\CMS\Extbase\Domain\Model\File $file) {
 		$this->files->attach($file);
 	}
 
 	/**
-	 * @param Tx_Extbase_Domain_Model_File $file
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\File $file
 	 */
-	public function removeFile(Tx_Extbase_Domain_Model_File $file) {
+	public function removeFile(\TYPO3\CMS\Extbase\Domain\Model\File $file) {
 		$this->files->detach($file);
 	}
 
@@ -139,16 +141,16 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	 * COLLECTION
 	 */
 	/**
-	 * @return Tx_Extbase_Domain_Model_StaticFileCollection
+	 * @return \TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection
 	 */
 	public function getStaticFileCollection() {
 		return $this->staticFileCollection;
 	}
 
 	/**
-	 * @param Tx_Extbase_Domain_Model_StaticFileCollection $staticFileCollection
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection $staticFileCollection
 	 */
-	public function setStaticFileCollection(Tx_Extbase_Domain_Model_StaticFileCollection $staticFileCollection) {
+	public function setStaticFileCollection(\TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection $staticFileCollection) {
 		$this->staticFileCollection = $staticFileCollection;
 	}
 
@@ -162,35 +164,35 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	/**
 	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_StaticFileCollection> $staticFileCollections
 	 */
-	public function setStaticFileCollections(Tx_Extbase_Persistence_ObjectStorage $staticFileCollections) {
+	public function setStaticFileCollections(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $staticFileCollections) {
 		$this->staticFileCollections = $staticFileCollections;
 	}
 
 	/**
-	 * @param Tx_Extbase_Domain_Model_StaticFileCollection $staticFileCollection
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection $staticFileCollection
 	 */
-	public function addStaticFileCollection(Tx_Extbase_Domain_Model_StaticFileCollection $staticFileCollection) {
+	public function addStaticFileCollection(\TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection $staticFileCollection) {
 		$this->staticFileCollections->attach($staticFileCollection);
 	}
 
 	/**
-	 * @param Tx_Extbase_Domain_Model_StaticFileCollection $staticFileCollection
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection $staticFileCollection
 	 */
-	public function removeStaticFileCollection(Tx_Extbase_Domain_Model_StaticFileCollection $staticFileCollection) {
+	public function removeStaticFileCollection(\TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection $staticFileCollection) {
 		$this->staticFileCollections->detach($staticFileCollection);
 	}
 
 	/**
-	 * @return Tx_Extbase_Domain_Model_FolderBasedFileCollection
+	 * @return \TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection
 	 */
 	public function getFolderBasedFileCollection() {
 		return $this->folderBasedFileCollection;
 	}
 
 	/**
-	 * @param Tx_Extbase_Domain_Model_FolderBasedFileCollection $folderBasedFileCollection
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection $folderBasedFileCollection
 	 */
-	public function setFolderBasedFileCollection(Tx_Extbase_Domain_Model_FolderBasedFileCollection $folderBasedFileCollection) {
+	public function setFolderBasedFileCollection(\TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection $folderBasedFileCollection) {
 		$this->folderBasedFileCollection = $folderBasedFileCollection;
 	}
 
@@ -204,21 +206,21 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	/**
 	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FolderBasedFileCollection> $folderBasedFileCollections
 	 */
-	public function setFolderBasedFileCollections(Tx_Extbase_Persistence_ObjectStorage $folderBasedFileCollections) {
+	public function setFolderBasedFileCollections(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $folderBasedFileCollections) {
 		$this->folderBasedFileCollections = $folderBasedFileCollections;
 	}
 
 	/**
-	 * @param Tx_Extbase_Domain_Model_FolderBasedFileCollection $folderBasedFileCollection
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection $folderBasedFileCollection
 	 */
-	public function addFolderBasedFileCollection(Tx_Extbase_Domain_Model_FolderBasedFileCollection $folderBasedFileCollection) {
+	public function addFolderBasedFileCollection(\TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection $folderBasedFileCollection) {
 		$this->folderBasedFileCollections->attach($folderBasedFileCollection);
 	}
 
 	/**
-	 * @param Tx_Extbase_Domain_Model_FolderBasedFileCollection $folderBasedFileCollection
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection $folderBasedFileCollection
 	 */
-	public function removeFolderBasedFileCollection(Tx_Extbase_Domain_Model_FolderBasedFileCollection $folderBasedFileCollection) {
+	public function removeFolderBasedFileCollection(\TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection $folderBasedFileCollection) {
 		$this->folderBasedFileCollections->detach($folderBasedFileCollection);
 	}
 
@@ -226,16 +228,16 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	 * REFERENCE
 	 */
 	/**
-	 * @return Tx_Extbase_Domain_Model_FileReference
+	 * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference
 	 */
 	public function getFileReference() {
 		return $this->fileReference;
 	}
 
 	/**
-	 * @param Tx_Extbase_Domain_Model_FileReference $fileReference
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $fileReference
 	 */
-	public function setFileReference(Tx_Extbase_Domain_Model_FileReference $fileReference) {
+	public function setFileReference(\TYPO3\CMS\Extbase\Domain\Model\FileReference $fileReference) {
 		$this->fileReference = $fileReference;
 	}
 
@@ -249,21 +251,21 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	/**
 	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FileReference> $fileReferences
 	 */
-	public function setFileReferences(Tx_Extbase_Persistence_ObjectStorage $fileReferences) {
+	public function setFileReferences(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $fileReferences) {
 		$this->fileReferences = $fileReferences;
 	}
 
 	/**
-	 * @param Tx_Extbase_Domain_Model_FileReference $fileReference
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $fileReference
 	 */
-	public function addFileReference(Tx_Extbase_Domain_Model_FileReference $fileReference) {
+	public function addFileReference(\TYPO3\CMS\Extbase\Domain\Model\FileReference $fileReference) {
 		$this->fileReferences->attach($fileReference);
 	}
 
 	/**
-	 * @param Tx_Extbase_Domain_Model_FileReference $fileReference
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $fileReference
 	 */
-	public function removeFileReference(Tx_Extbase_Domain_Model_FileReference $fileReference) {
+	public function removeFileReference(\TYPO3\CMS\Extbase\Domain\Model\FileReference $fileReference) {
 		$this->fileReferences->detach($fileReference);
 	}
 
@@ -271,16 +273,16 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	 * FOLDER
 	 */
 	/**
-	 * @return Tx_Extbase_Domain_Model_Folder
+	 * @return \TYPO3\CMS\Extbase\Domain\Model\Folder
 	 */
 	public function getFolder() {
 		return $this->folder;
 	}
 
 	/**
-	 * @param Tx_Extbase_Domain_Model_Folder $folder
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\Folder $folder
 	 */
-	public function setFolder(Tx_Extbase_Domain_Model_Folder $folder) {
+	public function setFolder(\TYPO3\CMS\Extbase\Domain\Model\Folder $folder) {
 		$this->folder = $folder;
 	}
 
@@ -294,24 +296,25 @@ class Tx_Extbase_Tests_Functional_Domain_Model_Fixture_FileContext extends Tx_Ex
 	/**
 	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_Folder> $folders
 	 */
-	public function setFolders(Tx_Extbase_Persistence_ObjectStorage $folders) {
+	public function setFolders(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $folders) {
 		$this->folders = $folders;
 	}
 
 	/**
-	 * @param Tx_Extbase_Domain_Model_Folder $folder
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\Folder $folder
 	 */
-	public function addFolder(Tx_Extbase_Domain_Model_Folder $folder) {
+	public function addFolder(\TYPO3\CMS\Extbase\Domain\Model\Folder $folder) {
 		$this->folders->attach($folder);
 	}
 
 	/**
-	 * @param Tx_Extbase_Domain_Model_Folder $folder
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\Folder $folder
 	 */
-	public function removeFolder(Tx_Extbase_Domain_Model_Folder $folder) {
+	public function removeFolder(\TYPO3\CMS\Extbase\Domain\Model\Folder $folder) {
 		$this->folders->detach($folder);
 	}
 
 }
+
 
 ?>

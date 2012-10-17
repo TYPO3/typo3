@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Fixture;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -23,7 +25,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Fixtures_ClassWithSetters {
+class ClassWithSetters {
 
 	/**
 	 * @var mixed
@@ -67,5 +69,6 @@ class Tx_Extbase_Fixtures_ClassWithSetters {
 	}
 
 }
+
 
 ?>

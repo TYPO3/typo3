@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @subpackage Persistence\Storage
  * @version $Id$
  */
-interface Tx_Extbase_Persistence_Storage_BackendInterface
+interface BackendInterface
 {
 	/**
 	 * Adds a row to the storage
@@ -66,20 +68,21 @@ interface Tx_Extbase_Persistence_Storage_BackendInterface
 	/**
 	 * Returns the number of items matching the query.
 	 *
-	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
 	 * @return integer
 	 * @api
 	 */
-	public function getObjectCountByQuery(Tx_Extbase_Persistence_QueryInterface $query);
+	public function getObjectCountByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query);
 
 	/**
 	 * Returns the object data matching the $query.
 	 *
-	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
 	 * @return array
 	 * @api
 	 */
-	public function getObjectDataByQuery(Tx_Extbase_Persistence_QueryInterface $query);
+	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query);
 
 }
+
 ?>

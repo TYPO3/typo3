@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,7 +36,7 @@
  * @scope prototype
  * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
  */
-class Tx_Extbase_Validation_PropertyError extends Tx_Extbase_Validation_Error {
+class PropertyError extends \TYPO3\CMS\Extbase\Validation\Error {
 
 	/**
 	 * @var string The default (english) error message.
@@ -95,5 +97,6 @@ class Tx_Extbase_Validation_PropertyError extends Tx_Extbase_Validation_Error {
 	}
 
 }
+
 
 ?>

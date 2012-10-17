@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,14 +35,15 @@
  * @subpackage Persistence\QOM
  * @version $Id$
  */
-interface Tx_Extbase_Persistence_QOM_NotInterface extends Tx_Extbase_Persistence_QOM_ConstraintInterface
+interface NotInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface
 {
 	/**
 	 * Gets the constraint negated by this Not constraint.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_ConstraintInterface the constraint; non-null
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint; non-null
 	 */
 	public function getConstraint();
 
 }
+
 ?>

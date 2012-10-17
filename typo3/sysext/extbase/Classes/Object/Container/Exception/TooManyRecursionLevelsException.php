@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Object\Container\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,9 +29,10 @@
 /**
  * Exception thrown if cache cannot be built.
  */
-class Tx_Extbase_Object_Container_Exception_TooManyRecursionLevelsException extends Tx_Extbase_Object_Exception {
+class TooManyRecursionLevelsException extends \TYPO3\CMS\Extbase\Object\Exception {
 
 
 }
+
 
 ?>

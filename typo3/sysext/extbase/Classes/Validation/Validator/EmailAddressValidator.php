@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @subpackage Validation\Validator
  * @version $Id$
  */
-class Tx_Extbase_Validation_Validator_EmailAddressValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class EmailAddressValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
 	 * Checks if the given value is a valid email address.
@@ -42,7 +44,7 @@ class Tx_Extbase_Validation_Validator_EmailAddressValidator extends Tx_Extbase_V
 	 */
 	public function isValid($value) {
 		$this->errors = array();
-		if (is_string($value) && t3lib_div::validEmail($value)) {
+		if (is_string($value) && \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($value)) {
 			return TRUE;
 		}
 		$this->addError('The given subject was not a valid email address.', 1221559976);
@@ -50,5 +52,6 @@ class Tx_Extbase_Validation_Validator_EmailAddressValidator extends Tx_Extbase_V
 	}
 
 }
+
 
 ?>

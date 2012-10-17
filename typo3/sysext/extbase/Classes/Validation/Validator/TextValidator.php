@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Validation\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @subpackage Validation\Validator
  * @version $Id$
  */
-class Tx_Extbase_Validation_Validator_TextValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class TextValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
 	 * Returns TRUE, if the given property ($propertyValue) is a valid text (contains no XML tags).
@@ -51,5 +53,6 @@ class Tx_Extbase_Validation_Validator_TextValidator extends Tx_Extbase_Validatio
 	}
 
 }
+
 
 ?>

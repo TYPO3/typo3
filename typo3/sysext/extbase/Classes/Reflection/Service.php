@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Reflection;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,10 +32,10 @@
  * @version $Id$
  * @api
  */
-class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
+class Service implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -45,7 +47,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	protected $initialized = FALSE;
 
 	/**
-	 * @var t3lib_cache_frontend_VariableFrontend
+	 * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
 	 */
 	protected $dataCache;
 
@@ -134,7 +136,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	protected $classSchemata = array();
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
@@ -149,18 +151,18 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	protected $methodReflections;
 
 	/**
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
@@ -169,10 +171,10 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 *
 	 * The cache must be set before initializing the Reflection Service.
 	 *
-	 * @param t3lib_cache_frontend_VariableFrontend $dataCache Cache for the Reflection service
+	 * @param \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend $dataCache Cache for the Reflection service
 	 * @return void
 	 */
-	public function setDataCache(t3lib_cache_frontend_VariableFrontend $dataCache) {
+	public function setDataCache(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend $dataCache) {
 		$this->dataCache = $dataCache;
 	}
 
@@ -183,9 +185,9 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 */
 	public function initialize() {
 		if ($this->initialized) {
-			throw new Tx_Extbase_Reflection_Exception('The Reflection Service can only be initialized once.', 1232044696);
+			throw new \TYPO3\CMS\Extbase\Reflection\Exception('The Reflection Service can only be initialized once.', 1232044696);
 		}
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$this->cacheIdentifier = 'ReflectionData_' . $frameworkConfiguration['extensionName'];
 		$this->loadFromCache();
 		$this->initialized = TRUE;
@@ -229,7 +231,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * Returns the class schema for the given class
 	 *
 	 * @param mixed $classNameOrObject The class name or an object
-	 * @return Tx_Extbase_Reflection_ClassSchema
+	 * @return \TYPO3\CMS\Extbase\Reflection\ClassSchema
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function getClassSchema($classNameOrObject) {
@@ -382,7 +384,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @return void
 	 */
 	protected function reflectClass($className) {
-		$class = new Tx_Extbase_Reflection_ClassReflection($className);
+		$class = new \TYPO3\CMS\Extbase\Reflection\ClassReflection($className);
 		$this->reflectedClassNames[$className] = time();
 		foreach ($class->getTagsValues() as $tag => $values) {
 			if (array_search($tag, $this->ignoredTags) === FALSE) {
@@ -418,21 +420,21 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * Builds class schemata from classes annotated as entities or value objects
 	 *
 	 * @param string $className
-	 * @return Tx_Extbase_Reflection_ClassSchema The class schema
+	 * @return \TYPO3\CMS\Extbase\Reflection\ClassSchema The class schema
 	 */
 	protected function buildClassSchema($className) {
 		if (!class_exists($className)) {
-			throw new Tx_Extbase_Reflection_Exception_UnknownClass(('The classname "' . $className) . '" was not found and thus can not be reflected.', 1278450972);
+			throw new \TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException(('The classname "' . $className) . '" was not found and thus can not be reflected.', 1278450972);
 		}
-		$classSchema = $this->objectManager->create('Tx_Extbase_Reflection_ClassSchema', $className);
-		if (is_subclass_of($className, 'Tx_Extbase_DomainObject_AbstractEntity')) {
-			$classSchema->setModelType(Tx_Extbase_Reflection_ClassSchema::MODELTYPE_ENTITY);
+		$classSchema = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Reflection\\ClassSchema', $className);
+		if (is_subclass_of($className, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity')) {
+			$classSchema->setModelType(\TYPO3\CMS\Extbase\Reflection\ClassSchema::MODELTYPE_ENTITY);
 			$possibleRepositoryClassName = str_replace('_Model_', '_Repository_', $className) . 'Repository';
 			if (class_exists($possibleRepositoryClassName)) {
 				$classSchema->setAggregateRoot(TRUE);
 			}
-		} elseif (is_subclass_of($className, 'Tx_Extbase_DomainObject_AbstractValueObject')) {
-			$classSchema->setModelType(Tx_Extbase_Reflection_ClassSchema::MODELTYPE_VALUEOBJECT);
+		} elseif (is_subclass_of($className, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractValueObject')) {
+			$classSchema->setModelType(\TYPO3\CMS\Extbase\Reflection\ClassSchema::MODELTYPE_VALUEOBJECT);
 		} else {
 			return NULL;
 		}
@@ -461,7 +463,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @param ReflectionMethod|NULL $method
 	 * @return array Parameter information array
 	 */
-	protected function convertParameterReflectionToArray(ReflectionParameter $parameter, $parameterPosition, ReflectionMethod $method = NULL) {
+	protected function convertParameterReflectionToArray(\ReflectionParameter $parameter, $parameterPosition, \ReflectionMethod $method = NULL) {
 		$parameterInformation = array(
 			'position' => $parameterPosition,
 			'byReference' => $parameter->isPassedByReference() ? TRUE : FALSE,
@@ -496,11 +498,11 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 *
 	 * @param string $className Name of the class containing the method
 	 * @param string $methodName Name of the method to return the Reflection for
-	 * @return Tx_Extbase_Reflection_MethodReflection the method Reflection object
+	 * @return \TYPO3\CMS\Extbase\Reflection\MethodReflection the method Reflection object
 	 */
 	protected function getMethodReflection($className, $methodName) {
 		if (!isset($this->methodReflections[$className][$methodName])) {
-			$this->methodReflections[$className][$methodName] = new Tx_Extbase_Reflection_MethodReflection($className, $methodName);
+			$this->methodReflections[$className][$methodName] = new \TYPO3\CMS\Extbase\Reflection\MethodReflection($className, $methodName);
 			$this->dataCacheNeedsUpdate = TRUE;
 		}
 		return $this->methodReflections[$className][$methodName];
@@ -527,7 +529,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 */
 	protected function saveToCache() {
 		if (!is_object($this->dataCache)) {
-			throw new Tx_Extbase_Reflection_Exception('A cache must be injected before initializing the Reflection Service.', 1232044697);
+			throw new \TYPO3\CMS\Extbase\Reflection\Exception('A cache must be injected before initializing the Reflection Service.', 1232044697);
 		}
 		$data = array();
 		$propertyNames = array(
@@ -547,5 +549,6 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	}
 
 }
+
 
 ?>

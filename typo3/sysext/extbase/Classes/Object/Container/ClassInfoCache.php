@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Object\Container;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +31,7 @@
  *
  * @author Daniel Pötzinger
  */
-class Tx_Extbase_Object_Container_ClassInfoCache {
+class ClassInfoCache {
 
 	/**
 	 * @var array
@@ -37,7 +39,7 @@ class Tx_Extbase_Object_Container_ClassInfoCache {
 	private $level1Cache = array();
 
 	/**
-	 * @var t3lib_cache_frontend_VariableFrontend
+	 * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
 	 */
 	private $level2Cache;
 
@@ -89,5 +91,6 @@ class Tx_Extbase_Object_Container_ClassInfoCache {
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -37,14 +39,15 @@
  * @subpackage Persistence\QOM
  * @version $Id$
  */
-interface Tx_Extbase_Persistence_QOM_UpperCaseInterface extends Tx_Extbase_Persistence_QOM_DynamicOperandInterface
+interface UpperCaseInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface
 {
 	/**
 	 * Gets the operand whose value is converted to a upper-case string.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_DynamicOperandInterface the operand; non-null
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface the operand; non-null
 	 */
 	public function getOperand();
 
 }
+
 ?>

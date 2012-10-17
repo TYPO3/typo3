@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -40,7 +42,7 @@
  * @version $Id$
  * @scope prototype
  */
-class Tx_Extbase_Persistence_QOM_Selector implements Tx_Extbase_Persistence_QOM_SelectorInterface {
+class Selector implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface {
 
 	/**
 	 * @var string
@@ -83,5 +85,6 @@ class Tx_Extbase_Persistence_QOM_Selector implements Tx_Extbase_Persistence_QOM_
 	}
 
 }
+
 
 ?>

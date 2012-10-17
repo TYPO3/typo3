@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +34,7 @@
  * @subpackage Utility
  * @version $Id$
  */
-class Tx_Extbase_Utility_ExtbaseRequirementsCheck implements tx_reports_StatusProvider {
+class ExtbaseRequirementsCheckUtility implements \TYPO3\CMS\Reports\StatusProviderInterface {
 
 	/**
 	 * Compiles a collection of system status checks as a status report.
@@ -51,40 +53,41 @@ class Tx_Extbase_Utility_ExtbaseRequirementsCheck implements tx_reports_StatusPr
 	/**
 	 * Check whether doc comments are preserved or stipped off PHP by PHP accelerators.
 	 *
-	 * @return tx_reports_reports_status_Status
+	 * @return \TYPO3\CMS\Reports\Status
 	 */
 	protected function checkIfDocCommentsArePreserved() {
-		$method = new ReflectionMethod('Tx_Extbase_Core_Bootstrap', 'run');
+		$method = new \ReflectionMethod('TYPO3\\CMS\\Extbase\\Core\\Bootstrap', 'run');
 		if (strlen($method->getDocComment()) > 0) {
 			$value = 'Preserved';
 			$message = '';
-			$status = tx_reports_reports_status_Status::OK;
+			$status = \TYPO3\CMS\Reports\Status::OK;
 		} else {
 			$value = 'Stripped';
 			$message = 'The PHP Doc comments are stripped from the PHP files. All extensions based on Extbase will not work correctly.<br />Are you using a PHP Accelerator like eAccelerator? If you use eAccelerator, please recompile it with the compile flag <b>--with-eaccelerator-doc-comment-inclusion</b>. See <a href="http://eaccelerator.net/ticket/229">the eAccelerator bugtracker</a> for more details.';
-			$status = tx_reports_reports_status_Status::ERROR;
+			$status = \TYPO3\CMS\Reports\Status::ERROR;
 		}
-		return t3lib_div::makeInstance('tx_reports_reports_status_Status', 'PHP Doc Comments', $value, $message, $status);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', 'PHP Doc Comments', $value, $message, $status);
 	}
 
 	/**
 	 * Check whether dbal extension is installed
 	 *
-	 * @return tx_reports_reports_status_Status
+	 * @return \TYPO3\CMS\Reports\Status
 	 */
 	protected function checkIfDbalExtensionIsInstalled() {
-		if (t3lib_extMgm::isLoaded('dbal')) {
+		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('dbal')) {
 			$value = 'DBAL is loaded';
 			$message = 'The Database Abstraction Layer Extension (dbal) is loaded. Extbase does not fully support dbal at the moment. If you are aware of this fact or don\'t make use of the incompatible parts on this installation, you can ignore this notice.';
-			$status = tx_reports_reports_status_Status::INFO;
+			$status = \TYPO3\CMS\Reports\Status::INFO;
 		} else {
 			$value = 'DBAL is not loaded';
 			$message = '';
-			$status = tx_reports_reports_status_Status::OK;
+			$status = \TYPO3\CMS\Reports\Status::OK;
 		}
-		return t3lib_div::makeInstance('tx_reports_reports_status_Status', 'DBAL Extension', $value, $message, $status);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', 'DBAL Extension', $value, $message, $status);
 	}
 
 }
+
 
 ?>

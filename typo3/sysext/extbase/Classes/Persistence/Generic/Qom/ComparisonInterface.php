@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -72,12 +74,12 @@
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-interface Tx_Extbase_Persistence_QOM_ComparisonInterface extends Tx_Extbase_Persistence_QOM_ConstraintInterface
+interface ComparisonInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface
 {
 	/**
 	 * Gets the first operand.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_DynamicOperandInterface the operand; non-null
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface the operand; non-null
 	 */
 	public function getOperand1();
 
@@ -91,9 +93,10 @@ interface Tx_Extbase_Persistence_QOM_ComparisonInterface extends Tx_Extbase_Pers
 	/**
 	 * Gets the second operand.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_StaticOperandInterface the operand; non-null
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\StaticOperandInterface the operand; non-null
 	 */
 	public function getOperand2();
 
 }
+
 ?>

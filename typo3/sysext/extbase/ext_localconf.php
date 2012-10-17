@@ -2,10 +2,10 @@
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
-require_once t3lib_extMgm::extPath('extbase') . 'Classes/MVC/Dispatcher.php';
-require_once t3lib_extMgm::extPath('extbase') . 'Classes/Utility/Extension.php';
+require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Classes/Mvc/Dispatcher.php';
+require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Classes/Utility/Extension.php';
 // Register caches if not already done in localconf.php or a previously loaded extension.
-// We do not set frontend and backend: The cache manager uses t3lib_cache_frontend_VariableFrontend
+// We do not set frontend and backend: The cache manager uses t3lib_Cache\Frontend\VariableFrontend
 // and t3lib_cache_backend_DbBackend by default if not set otherwise.
 // This default is perfectly fine for our reflection and object cache.
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_reflection'])) {
@@ -24,26 +24,26 @@ if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations
 // the code below is NO PUBLIC API! It's just to make sure that
 // Extbase works correctly in the backend if the page tree is empty or no
 // template is defined.
-$extbaseObjectContainer = t3lib_div::makeInstance('Tx_Extbase_Object_Container_Container');
+$extbaseObjectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\Container\\Container');
 // Singleton
-$extbaseObjectContainer->registerImplementation('Tx_Extbase_Persistence_Storage_BackendInterface', 'Tx_Extbase_Persistence_Storage_Typo3DbBackend');
-$extbaseObjectContainer->registerImplementation('Tx_Extbase_Persistence_QuerySettingsInterface', 'Tx_Extbase_Persistence_Typo3QuerySettings');
+$extbaseObjectContainer->registerImplementation('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\BackendInterface', 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend');
+$extbaseObjectContainer->registerImplementation('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface', 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 unset($extbaseObjectContainer);
 // Register type converters
-Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_ArrayConverter');
-Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_BooleanConverter');
-Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_DateTimeConverter');
-Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_FloatConverter');
-Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_IntegerConverter');
-Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_ObjectStorageConverter');
-Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter');
-Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_StringConverter');
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\ArrayConverter');
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\BooleanConverter');
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter');
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\FloatConverter');
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\IntegerConverter');
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\ObjectStorageConverter');
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter');
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\StringConverter');
 // Experimental FAL<->extbase converters
-Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_FileConverter');
-Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_FileReferenceConverter');
-Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_FolderBasedFileCollectionConverter');
-Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_StaticFileCollectionConverter');
-Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_FolderConverter');
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\FileConverter');
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\FileReferenceConverter');
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\FolderBasedFileCollectionConverter');
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\StaticFileCollectionConverter');
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\FolderConverter');
 # $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'EXT:extbase/Classes/Persistence/Hook/TCEMainValueObjectUpdater.php:tx_Extbase_Persistence_Hook_TCEMainValueObjectUpdater';
 if (TYPO3_MODE === 'BE') {
 	// registers Extbase at the cli_dispatcher with key "extbase".
@@ -52,6 +52,6 @@ if (TYPO3_MODE === 'BE') {
 		'_CLI_lowlevel'
 	);
 	// register help command
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'Tx_Extbase_Command_HelpCommandController';
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'TYPO3\\CMS\\Extbase\\Command\\HelpCommandController';
 }
 ?>

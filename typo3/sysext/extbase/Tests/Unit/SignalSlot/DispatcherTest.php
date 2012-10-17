@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\SignalSlot;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,15 +32,15 @@
  * @package Extbase
  * @subpackage Tests
  */
-class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_SignalSlot_Dispatcher
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
 	 */
 	protected $signalSlotDispatcher;
 
 	public function setUp() {
-		$accessibleClassName = $this->buildAccessibleProxy('Tx_Extbase_SignalSlot_Dispatcher');
+		$accessibleClassName = $this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
 		$this->signalSlotDispatcher = new $accessibleClassName();
 	}
 
@@ -103,7 +105,7 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 		$slotClassName = uniqid('Mock_');
 		eval(('class ' . $slotClassName) . ' { function slot($foo, $baz) { $this->arguments = array($foo, $baz); } }');
 		$mockSlot = new $slotClassName();
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$mockObjectManager->expects($this->once())->method('isRegistered')->with($slotClassName)->will($this->returnValue(TRUE));
 		$mockObjectManager->expects($this->once())->method('get')->with($slotClassName)->will($this->returnValue($mockSlot));
 		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
@@ -115,10 +117,10 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_SignalSlot_Exception_InvalidSlotException
+	 * @expectedException \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
 	 */
 	public function dispatchThrowsAnExceptionIfTheSpecifiedClassOfASlotIsUnknown() {
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$mockObjectManager->expects($this->once())->method('isRegistered')->with('NonExistingClassName')->will($this->returnValue(FALSE));
 		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
 		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
@@ -128,13 +130,13 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_SignalSlot_Exception_InvalidSlotException
+	 * @expectedException \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
 	 */
 	public function dispatchThrowsAnExceptionIfTheSpecifiedSlotMethodDoesNotExist() {
 		$slotClassName = uniqid('Mock_');
 		eval(('class ' . $slotClassName) . ' { function slot($foo, $baz) { $this->arguments = array($foo, $baz); } }');
 		$mockSlot = new $slotClassName();
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$mockObjectManager->expects($this->once())->method('isRegistered')->with($slotClassName)->will($this->returnValue(TRUE));
 		$mockObjectManager->expects($this->once())->method('get')->with($slotClassName)->will($this->returnValue($mockSlot));
 		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
@@ -152,7 +154,7 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 		$mockSlot = function () use(&$arguments) {
 			($arguments = func_get_args());
 		};
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$this->signalSlotDispatcher->connect('SignalClassName', 'methodName', $mockSlot, NULL, TRUE);
 		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
 		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
@@ -161,5 +163,6 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 	}
 
 }
+
 
 ?>

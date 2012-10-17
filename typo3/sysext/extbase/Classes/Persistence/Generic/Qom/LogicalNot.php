@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,17 +36,17 @@
  * @version $Id$
  * @scope prototype
  */
-class Tx_Extbase_Persistence_QOM_LogicalNot implements Tx_Extbase_Persistence_QOM_NotInterface {
+class LogicalNot implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\NotInterface {
 
 	/**
-	 * @var Tx_Extbase_Persistence_QOM_ConstraintInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface
 	 */
 	protected $constraint;
 
 	/**
-	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint
 	 */
-	public function __construct(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint) {
+	public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint) {
 		$this->constraint = $constraint;
 	}
 
@@ -61,12 +63,13 @@ class Tx_Extbase_Persistence_QOM_LogicalNot implements Tx_Extbase_Persistence_QO
 	/**
 	 * Gets the constraint negated by this Not constraint.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_ConstraintInterface the constraint; non-null
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint; non-null
 	 */
 	public function getConstraint() {
 		return $this->constraint;
 	}
 
 }
+
 
 ?>

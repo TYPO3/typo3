@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,9 +31,10 @@
  *
  * @package Extbase
  */
-class Tx_Extbase_MVC_Exception_RequiredArgumentMissing extends Tx_Extbase_MVC_Exception {
+class RequiredArgumentMissingException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 
 
 }
+
 
 ?>

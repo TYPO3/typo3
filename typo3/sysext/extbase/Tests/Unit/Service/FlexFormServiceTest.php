@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,15 +29,15 @@
  * @package Extbase
  * @subpackage extbase
  */
-class Tx_Extbase_Tests_Unit_Service_FlexFormServiceTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class FlexFormServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Service_FlexFormService
+	 * @var \TYPO3\CMS\Extbase\Service\FlexFormService
 	 */
 	protected $flexFormService;
 
 	public function setUp() {
-		$this->flexFormService = new Tx_Extbase_Service_FlexFormService();
+		$this->flexFormService = new \TYPO3\CMS\Extbase\Service\FlexFormService();
 	}
 
 	/**
@@ -117,5 +119,6 @@ class Tx_Extbase_Tests_Unit_Service_FlexFormServiceTest extends Tx_Extbase_Tests
 	}
 
 }
+
 
 ?>

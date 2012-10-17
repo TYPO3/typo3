@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -21,35 +23,35 @@
 /**
  * Testcase for the MVC CLI Request Builder
  */
-class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_MVC_CLI_RequestBuilder
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder
 	 */
 	protected $requestBuilder;
 
 	/**
-	 * @var Tx_Extbase_MVC_CLI_Request
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\Request
 	 */
 	protected $request;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $mockObjectManager;
 
 	/**
-	 * @var Tx_Extbase_MVC_CLI_Command
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\Command
 	 */
 	protected $mockCommand;
 
 	/**
-	 * @var Tx_Extbase_MVC_CLI_CommandManager
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager
 	 */
 	protected $mockCommandManager;
 
 	/**
-	 * @var Tx_Extbase_Reflection_Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\Service
 	 */
 	protected $mockReflectionService;
 
@@ -59,16 +61,16 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setUp() {
-		$this->request = $this->getAccessibleMock('Tx_Extbase_MVC_CLI_Request', array('dummy'));
-		$this->mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$this->mockObjectManager->expects($this->any())->method('get')->with('Tx_Extbase_MVC_CLI_Request')->will($this->returnValue($this->request));
-		$this->mockCommand = $this->getMock('Tx_Extbase_MVC_CLI_Command', array(), array(), '', FALSE);
+		$this->request = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Request', array('dummy'));
+		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$this->mockObjectManager->expects($this->any())->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Request')->will($this->returnValue($this->request));
+		$this->mockCommand = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Command', array(), array(), '', FALSE);
 		$this->mockCommand->expects($this->any())->method('getControllerClassName')->will($this->returnValue('Tx_SomeExtensionName_Command_DefaultCommandController'));
 		$this->mockCommand->expects($this->any())->method('getControllerCommandName')->will($this->returnValue('list'));
-		$this->mockCommandManager = $this->getMock('Tx_Extbase_MVC_CLI_CommandManager');
+		$this->mockCommandManager = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager');
 		$this->mockCommandManager->expects($this->any())->method('getCommandByIdentifier')->with('some_extension_name:default:list')->will($this->returnValue($this->mockCommand));
-		$this->mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service');
-		$this->requestBuilder = new Tx_Extbase_MVC_CLI_RequestBuilder();
+		$this->mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service');
+		$this->requestBuilder = new \TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder();
 		$this->requestBuilder->injectObjectManager($this->mockObjectManager);
 		$this->requestBuilder->injectReflectionService($this->mockReflectionService);
 		$this->requestBuilder->injectCommandManager($this->mockCommandManager);
@@ -96,11 +98,11 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 		// The following call is only made to satisfy PHPUnit. For some weird reason PHPUnit complains that the
 		// mocked method ("getObjectNameByClassName") does not exist _if the mock object is not used_.
 		$this->mockCommandManager->getCommandByIdentifier('some_extension_name:default:list');
-		$mockCommandManager = $this->getMock('Tx_Extbase_MVC_CLI_CommandManager');
-		$mockCommandManager->expects($this->any())->method('getCommandByIdentifier')->with('test:default:list')->will($this->throwException(new Tx_Extbase_MVC_Exception_NoSuchCommand()));
+		$mockCommandManager = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager');
+		$mockCommandManager->expects($this->any())->method('getCommandByIdentifier')->with('test:default:list')->will($this->throwException(new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException()));
 		$this->requestBuilder->injectCommandManager($mockCommandManager);
 		$request = $this->requestBuilder->build('test:default:list');
-		$this->assertSame('Tx_Extbase_Command_HelpCommandController', $request->getControllerObjectName());
+		$this->assertSame('TYPO3\\CMS\\Extbase\\Command\\HelpCommandController', $request->getControllerObjectName());
 	}
 
 	/**
@@ -288,7 +290,7 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception_InvalidArgumentMixing
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentMixingException
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function ifNamedArgumentsAreUsedAllRequiredArgumentsMustBeNamed() {
@@ -302,7 +304,7 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception_InvalidArgumentMixing
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentMixingException
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function ifUnnamedArgumentsAreUsedAllRequiredArgumentsMustBeUnnamed() {
@@ -350,5 +352,6 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Web;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,10 +33,10 @@
  * @subpackage MVC\Web
  * @scope prototype
  */
-class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
+class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -74,37 +76,37 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	protected $allowedControllerActions = array();
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @var Tx_Extbase_Service_ExtensionService
+	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService
 	 */
 	protected $extensionService;
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
 	/**
 	 * Injects the object manager
 	 *
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
 	/**
-	 * @param Tx_Extbase_Service_ExtensionService $extensionService
+	 * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
 	 * @return void
 	 */
-	public function injectExtensionService(Tx_Extbase_Service_ExtensionService $extensionService) {
+	public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService) {
 		$this->extensionService = $extensionService;
 	}
 
@@ -112,12 +114,12 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	 * @return void
 	 */
 	protected function loadDefaultValues() {
-		$configuration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$configuration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if (empty($configuration['extensionName'])) {
-			throw new Tx_Extbase_MVC_Exception('"extensionName" is not properly configured. Request can\'t be dispatched!', 1289843275);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception('"extensionName" is not properly configured. Request can\'t be dispatched!', 1289843275);
 		}
 		if (empty($configuration['pluginName'])) {
-			throw new Tx_Extbase_MVC_Exception('"pluginName" is not properly configured. Request can\'t be dispatched!', 1289843277);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception('"pluginName" is not properly configured. Request can\'t be dispatched!', 1289843277);
 		}
 		$this->extensionName = $configuration['extensionName'];
 		$this->pluginName = $configuration['pluginName'];
@@ -134,25 +136,25 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	/**
 	 * Builds a web request object from the raw HTTP information and the configuration
 	 *
-	 * @return Tx_Extbase_MVC_Web_Request The web request as an object
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Request The web request as an object
 	 */
 	public function build() {
 		$this->loadDefaultValues();
 		$pluginNamespace = $this->extensionService->getPluginNamespace($this->extensionName, $this->pluginName);
-		$parameters = t3lib_div::_GPmerged($pluginNamespace);
+		$parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged($pluginNamespace);
 		$files = $this->untangleFilesArray($_FILES);
 		if (isset($files[$pluginNamespace]) && is_array($files[$pluginNamespace])) {
-			$parameters = Tx_Extbase_Utility_Arrays::arrayMergeRecursiveOverrule($parameters, $files[$pluginNamespace]);
+			$parameters = \TYPO3\CMS\Extbase\Utility\ArrayUtility::arrayMergeRecursiveOverrule($parameters, $files[$pluginNamespace]);
 		}
 		$controllerName = $this->resolveControllerName($parameters);
 		$actionName = $this->resolveActionName($controllerName, $parameters);
-		$request = $this->objectManager->create('Tx_Extbase_MVC_Web_Request');
+		$request = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
 		$request->setPluginName($this->pluginName);
 		$request->setControllerExtensionName($this->extensionName);
 		$request->setControllerName($controllerName);
 		$request->setControllerActionName($actionName);
-		$request->setRequestUri(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
-		$request->setBaseUri(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
+		$request->setRequestUri(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
+		$request->setBaseUri(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
 		$request->setMethod(isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : NULL);
 		if (is_string($parameters['format']) && strlen($parameters['format'])) {
 			$request->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));
@@ -172,24 +174,24 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	 *
 	 * @param array $parameters
 	 * @return string
-	 * @throws Tx_Extbase_MVC_Exception if the controller could not be resolved
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception if the controller could not be resolved
 	 */
 	protected function resolveControllerName(array $parameters) {
 		if (!isset($parameters['controller']) || strlen($parameters['controller']) === 0) {
 			if (strlen($this->defaultControllerName) === 0) {
-				throw new Tx_Extbase_MVC_Exception(((('The default controller for extension "' . $this->extensionName) . '" and plugin "') . $this->pluginName) . '" can not be determined. Please check for Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.', 1316104317);
+				throw new \TYPO3\CMS\Extbase\Mvc\Exception(((('The default controller for extension "' . $this->extensionName) . '" and plugin "') . $this->pluginName) . '" can not be determined. Please check for TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1316104317);
 			}
 			return $this->defaultControllerName;
 		}
 		$allowedControllerNames = array_keys($this->allowedControllerActions);
 		if (!in_array($parameters['controller'], $allowedControllerNames)) {
-			$configuration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+			$configuration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 			if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (bool) $configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
-				throw new t3lib_error_http_PageNotFoundException('The requested resource was not found', 1313857897);
+				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException('The requested resource was not found', 1313857897);
 			} elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (bool) $configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
 				return $this->defaultControllerName;
 			}
-			throw new Tx_Extbase_MVC_Exception_InvalidControllerName(('The controller "' . $parameters['controller']) . '" is not allowed by this plugin. Please check for Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.', 1313855173);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException(('The controller "' . $parameters['controller']) . '" is not allowed by this plugin. Please check for TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1313855173);
 		}
 		return filter_var($parameters['controller'], FILTER_SANITIZE_STRING);
 	}
@@ -208,20 +210,20 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 		$defaultActionName = is_array($this->allowedControllerActions[$controllerName]) ? current($this->allowedControllerActions[$controllerName]) : '';
 		if (!isset($parameters['action']) || strlen($parameters['action']) === 0) {
 			if (strlen($defaultActionName) === 0) {
-				throw new Tx_Extbase_MVC_Exception(('The default action can not be determined for controller "' . $controllerName) . '". Please check Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.', 1295479651);
+				throw new \TYPO3\CMS\Extbase\Mvc\Exception(('The default action can not be determined for controller "' . $controllerName) . '". Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1295479651);
 			}
 			return $defaultActionName;
 		}
 		$actionName = $parameters['action'];
 		$allowedActionNames = $this->allowedControllerActions[$controllerName];
 		if (!in_array($actionName, $allowedActionNames)) {
-			$configuration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+			$configuration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 			if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (bool) $configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
-				throw new t3lib_error_http_PageNotFoundException('The requested resource was not found', 1313857897);
+				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException('The requested resource was not found', 1313857897);
 			} elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (bool) $configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
 				return $defaultActionName;
 			}
-			throw new Tx_Extbase_MVC_Exception_InvalidActionName(((('The action "' . $actionName) . '" (controller "') . $controllerName) . '") is not allowed by this plugin. Please check Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.', 1313855175);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException(((('The action "' . $actionName) . '" (controller "') . $controllerName) . '") is not allowed by this plugin. Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1313855175);
 		}
 		return filter_var($actionName, FILTER_SANITIZE_STRING);
 	}
@@ -253,10 +255,10 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 			} else {
 				$fileInformation = array();
 				foreach ($convolutedFiles[$fieldPath[0]] as $key => $subStructure) {
-					$fileInformation[$key] = Tx_Extbase_Utility_Arrays::getValueByPath($subStructure, array_slice($fieldPath, 1));
+					$fileInformation[$key] = \TYPO3\CMS\Extbase\Utility\ArrayUtility::getValueByPath($subStructure, array_slice($fieldPath, 1));
 				}
 			}
-			$untangledFiles = Tx_Extbase_Utility_Arrays::setValueByPath($untangledFiles, $fieldPath, $fileInformation);
+			$untangledFiles = \TYPO3\CMS\Extbase\Utility\ArrayUtility::setValueByPath($untangledFiles, $fieldPath, $fileInformation);
 		}
 		return $untangledFiles;
 	}
@@ -286,5 +288,6 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	}
 
 }
+
 
 ?>

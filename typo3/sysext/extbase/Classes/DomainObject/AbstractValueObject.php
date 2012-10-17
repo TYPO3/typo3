@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\DomainObject;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +31,7 @@
  * @subpackage DomainObject
  * @version $ID:$
  */
-abstract class Tx_Extbase_DomainObject_AbstractValueObject extends Tx_Extbase_DomainObject_AbstractDomainObject {
+abstract class AbstractValueObject extends \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject {
 
 	/**
 	 * Returns the value of the Value Object. Must be overwritten by a concrete value object.
@@ -41,5 +43,6 @@ abstract class Tx_Extbase_DomainObject_AbstractValueObject extends Tx_Extbase_Do
 	}
 
 }
+
 
 ?>

@@ -1,5 +1,7 @@
 <?php
 ?> <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,15 +36,15 @@
  * @entity
  * @api
  */
-class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class BackendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Domain_Model_BackendUserGroup
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup
 	 */
 	protected $fixture = NULL;
 
 	public function setUp() {
-		$this->fixture = new Tx_Extbase_Domain_Model_BackendUserGroup();
+		$this->fixture = new \Tx_Extbase_Domain_Model_BackendUserGroup();
 	}
 
 	public function tearDown() {
@@ -85,7 +87,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 * @test
 	 */
 	public function setSubGroupsSetsSubgroups() {
-		$subGroups = new Tx_Extbase_Persistence_ObjectStorage();
+		$subGroups = new \Tx_Extbase_Persistence_ObjectStorage();
 		$this->fixture->setSubGroups($subGroups);
 		$this->assertSame($subGroups, $this->fixture->getSubGroups());
 	}
@@ -94,9 +96,9 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 * @test
 	 */
 	public function anSubGroupCanBeRemoved() {
-		$group1 = new Tx_Extbase_Domain_Model_BackendUserGroup();
+		$group1 = new \Tx_Extbase_Domain_Model_BackendUserGroup();
 		$group1->setTitle('foo');
-		$group2 = new Tx_Extbase_Domain_Model_BackendUserGroup();
+		$group2 = new \Tx_Extbase_Domain_Model_BackendUserGroup();
 		$group2->setTitle('bar');
 		$this->fixture->addSubGroup($group1);
 		$this->fixture->addSubGroup($group2);
@@ -111,9 +113,9 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	 * @test
 	 */
 	public function allSubGroupsCanBeRemoved() {
-		$group1 = new Tx_Extbase_Domain_Model_BackendUserGroup();
+		$group1 = new \Tx_Extbase_Domain_Model_BackendUserGroup();
 		$group1->setTitle('foo');
-		$group2 = new Tx_Extbase_Domain_Model_BackendUserGroup();
+		$group2 = new \Tx_Extbase_Domain_Model_BackendUserGroup();
 		$group2->setTitle('bar');
 		$this->fixture->addSubGroup($group1);
 		$this->fixture->addSubGroup($group2);
@@ -483,5 +485,6 @@ class Tx_Extbase_Tests_Unit_Domain_Model_BackendUserGroupTest extends Tx_Extbase
 	}
 
 }
+
 
 ?>

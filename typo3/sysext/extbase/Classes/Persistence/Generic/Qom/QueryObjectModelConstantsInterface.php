@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +34,7 @@
  * @version $Id$
  * @deprecated since Extbase 1.1; use Tx_Extbase_Persistence_QueryInterface::* instead
  */
-interface Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface
+interface QueryObjectModelConstantsInterface
 {
 	/**
 	 * An inner join.
@@ -83,4 +85,5 @@ interface Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface
 	 */
 	const JCR_ORDER_DESCENDING = '{http://www.jcp.org/jcr/1.0}orderDescending';
 }
+
 ?>

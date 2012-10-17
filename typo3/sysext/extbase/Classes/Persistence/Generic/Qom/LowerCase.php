@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -38,31 +40,32 @@
  * @version $Id$
  * @scope prototype
  */
-class Tx_Extbase_Persistence_QOM_LowerCase implements Tx_Extbase_Persistence_QOM_LowerCaseInterface {
+class LowerCase implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\LowerCaseInterface {
 
 	/**
-	 * @var Tx_Extbase_Persistence_QOM_DynamicOperandInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface
 	 */
 	protected $operand;
 
 	/**
 	 * Constructs this LowerCase instance
 	 *
-	 * @param Tx_Extbase_Persistence_QOM_DynamicOperandInterface $constraint
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $constraint
 	 */
-	public function __construct(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand) {
+	public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand) {
 		$this->operand = $operand;
 	}
 
 	/**
 	 * Gets the operand whose value is converted to a lower-case string.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_DynamicOperandInterface the operand; non-null
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface the operand; non-null
 	 */
 	public function getOperand() {
 		return $this->operand;
 	}
 
 }
+
 
 ?>

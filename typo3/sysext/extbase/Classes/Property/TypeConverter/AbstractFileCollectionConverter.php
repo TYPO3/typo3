@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Property\TypeConverter;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -26,7 +28,7 @@
  *
  * @api experimental! This class is experimental and subject to change!
  */
-abstract class Tx_Extbase_Property_TypeConverter_AbstractFileCollectionConverter extends Tx_Extbase_Property_TypeConverter_AbstractTypeConverter {
+abstract class AbstractFileCollectionConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter {
 
 	/**
 	 * @var integer
@@ -39,14 +41,14 @@ abstract class Tx_Extbase_Property_TypeConverter_AbstractFileCollectionConverter
 	protected $expectedObjectType;
 
 	/**
-	 * @var t3lib_file_Factory
+	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
 	 */
 	protected $fileFactory;
 
 	/**
-	 * @param t3lib_file_Factory $fileFactory
+	 * @param \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory
 	 */
-	public function injectFileFactory(t3lib_file_Factory $fileFactory) {
+	public function injectFileFactory(\TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory) {
 		$this->fileFactory = $fileFactory;
 	}
 
@@ -57,16 +59,16 @@ abstract class Tx_Extbase_Property_TypeConverter_AbstractFileCollectionConverter
 	 * @param integer $source
 	 * @param string $targetType
 	 * @param array $convertedChildProperties
-	 * @param Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration
-	 * @return Tx_Extbase_Domain_Model_AbstractFileCollection
+	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
+	 * @return \TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection
 	 * @api
 	 */
-	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), Tx_Extbase_Property_PropertyMappingConfigurationInterface $configuration = NULL) {
+	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
 		$object = $this->getObject($source);
 		if (empty($this->expectedObjectType) || !$object instanceof $this->expectedObjectType) {
-			throw new Tx_Extbase_Property_Exception((('Expected object of type "' . $this->expectedObjectType) . '" but got ') . get_class($object), 1342895975);
+			throw new \TYPO3\CMS\Extbase\Property\Exception((('Expected object of type "' . $this->expectedObjectType) . '" but got ') . get_class($object), 1342895975);
 		}
-		/** @var $subject Tx_Extbase_Domain_Model_AbstractFileCollection */
+		/** @var $subject \TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection */
 		$subject = $this->objectManager->create($targetType);
 		$subject->setObject($object);
 		return $subject;
@@ -74,10 +76,11 @@ abstract class Tx_Extbase_Property_TypeConverter_AbstractFileCollectionConverter
 
 	/**
 	 * @param integer $source
-	 * @return t3lib_file_Collection_AbstractFileCollection
+	 * @return \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection
 	 */
 	abstract protected function getObject($source);
 
 }
+
 
 ?>

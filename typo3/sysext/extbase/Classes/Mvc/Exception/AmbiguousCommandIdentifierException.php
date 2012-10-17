@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +31,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_MVC_Exception_AmbiguousCommandIdentifier extends Tx_Extbase_MVC_Exception_Command {
+class AmbiguousCommandIdentifierException extends \TYPO3\CMS\Extbase\Mvc\Exception\CommandException {
 
 	/**
 	 * @var array<Tx_Extbase_MVC_CLI_Command>
@@ -46,7 +48,7 @@ class Tx_Extbase_MVC_Exception_AmbiguousCommandIdentifier extends Tx_Extbase_MVC
 	 * @see Exception
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function __construct($message = '', $code = 0, Exception $previousException = NULL, array $matchingCommands) {
+	public function __construct($message = '', $code = 0, \Exception $previousException = NULL, array $matchingCommands) {
 		$this->matchingCommands = $matchingCommands;
 		parent::__construct($message, $code, $previousException);
 	}
@@ -59,5 +61,6 @@ class Tx_Extbase_MVC_Exception_AmbiguousCommandIdentifier extends Tx_Extbase_MVC
 	}
 
 }
+
 
 ?>

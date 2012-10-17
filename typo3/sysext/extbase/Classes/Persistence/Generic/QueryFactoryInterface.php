@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,15 +33,16 @@
  * @subpackage Persistence
  * @version $Id$
  */
-interface Tx_Extbase_Persistence_QueryFactoryInterface
+interface QueryFactoryInterface
 {
 	/**
 	 * Creates a query object working on the given class name
 	 *
 	 * @param string $className The class name
-	 * @return Tx_Extbase_Persistence_QueryInterface
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 */
 	public function create($className);
 
 }
+
 ?>

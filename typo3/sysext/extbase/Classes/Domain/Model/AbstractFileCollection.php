@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,27 +32,28 @@
  * @entity
  * @api experimental! This class is experimental and subject to change!
  */
-abstract class Tx_Extbase_Domain_Model_AbstractFileCollection extends Tx_Extbase_DomainObject_AbstractEntity {
+abstract class AbstractFileCollection extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
-	 * @var t3lib_file_Collection_AbstractFileCollection
+	 * @var \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection
 	 */
 	protected $object;
 
 	/**
-	 * @param t3lib_file_Collection_AbstractFileCollection $object
+	 * @param \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection $object
 	 */
-	public function setObject(t3lib_file_Collection_AbstractFileCollection $object) {
+	public function setObject(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection $object) {
 		$this->object = $object;
 	}
 
 	/**
-	 * @return t3lib_file_Collection_AbstractFileCollection
+	 * @return \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection
 	 */
 	public function getObject() {
 		return $this->object;
 	}
 
 }
+
 
 ?>

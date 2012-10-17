@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,10 +30,10 @@
  * @subpackage Utility
  * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0. Please use Tx_Extbase_Service_TypoScriptService instead
  */
-class Tx_Extbase_Utility_TypoScript {
+class TypoScriptUtility {
 
 	/**
-	 * @var Tx_Extbase_Service_TypoScriptService
+	 * @var \TYPO3\CMS\Extbase\Service\TypoScriptService
 	 */
 	static protected $typoScriptService = NULL;
 
@@ -40,9 +42,9 @@ class Tx_Extbase_Utility_TypoScript {
 	 */
 	static protected function getTypoScriptService() {
 		if (self::$typoScriptService === NULL) {
-			require_once t3lib_extMgm::extPath('extbase', 'Classes/Service/TypoScriptService.php');
-			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-			self::$typoScriptService = $objectManager->get('Tx_Extbase_Service_TypoScriptService');
+			require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase', 'Classes/Service/TypoScriptService.php');
+			$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+			self::$typoScriptService = $objectManager->get('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
 		}
 		return self::$typoScriptService;
 	}
@@ -58,7 +60,7 @@ class Tx_Extbase_Utility_TypoScript {
 	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0 - Use Tx_Extbase_Service_TypoScriptService instead
 	 */
 	static public function convertTypoScriptArrayToPlainArray(array $settings) {
-		t3lib_div::logDeprecatedFunction();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$typoScriptService = self::getTypoScriptService();
 		return $typoScriptService->convertTypoScriptArrayToPlainArray($settings);
 	}
@@ -76,7 +78,7 @@ class Tx_Extbase_Utility_TypoScript {
 	 * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0 - Use Tx_Extbase_Service_TypoScriptService instead
 	 */
 	static public function convertPlainArrayToTypoScriptArray($plainArray) {
-		t3lib_div::logDeprecatedFunction();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		if (!is_array($plainArray)) {
 			return array();
 		}
@@ -85,5 +87,6 @@ class Tx_Extbase_Utility_TypoScript {
 	}
 
 }
+
 
 ?>

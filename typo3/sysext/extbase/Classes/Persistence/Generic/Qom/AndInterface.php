@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,21 +36,22 @@
  * @subpackage Persistence\QOM
  * @version $Id$
  */
-interface Tx_Extbase_Persistence_QOM_AndInterface extends Tx_Extbase_Persistence_QOM_ConstraintInterface
+interface AndInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface
 {
 	/**
 	 * Gets the first constraint.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_ConstraintInterface the constraint; non-null
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint; non-null
 	 */
 	public function getConstraint1();
 
 	/**
 	 * Gets the second constraint.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_ConstraintInterface the constraint; non-null
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface the constraint; non-null
 	 */
 	public function getConstraint2();
 
 }
+
 ?>

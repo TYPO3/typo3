@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,35 +24,35 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class Tx_Extbase_Tests_Unit_Persistence_QueryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class QueryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Persistence_Query
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 */
 	protected $query;
 
 	/**
-	 * @var Tx_Extbase_Persistence_QuerySettingsInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
 	 */
 	protected $querySettings;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Extbase_Persistence_ManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
 	 */
 	protected $persistenceManager;
 
 	/**
-	 * @var Tx_Extbase_Persistence_BackendInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 */
 	protected $backend;
 
 	/**
-	 * @var Tx_Extbase_Persistence_Mapper_DataMapper
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
 	 */
 	protected $dataMapper;
 
@@ -60,17 +62,17 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryTest extends Tx_Extbase_Tests_Unit_
 	 * @return void
 	 */
 	public function setUp() {
-		$this->objectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$this->query = new Tx_Extbase_Persistence_Query('someType');
+		$this->objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$this->query = new \TYPO3\CMS\Extbase\Persistence\Generic\Query('someType');
 		$this->query->injectObjectManager($this->objectManager);
-		$this->querySettings = $this->getMock('Tx_Extbase_Persistence_QuerySettingsInterface');
+		$this->querySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
 		$this->query->setQuerySettings($this->querySettings);
-		$this->persistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
-		$this->backend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
+		$this->persistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
+		$this->backend = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\BackendInterface');
 		$this->backend->expects($this->any())->method('getQomFactory')->will($this->returnValue(NULL));
 		$this->persistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($this->backend));
 		$this->query->injectPersistenceManager($this->persistenceManager);
-		$this->dataMapper = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMapper');
+		$this->dataMapper = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper');
 		$this->query->injectDataMapper($this->dataMapper);
 	}
 
@@ -78,8 +80,8 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryTest extends Tx_Extbase_Tests_Unit_
 	 * @test
 	 */
 	public function executeReturnsQueryResultInstanceAndInjectsItself() {
-		$queryResult = $this->getMock('Tx_Extbase_Persistence_QueryResult', array(), array(), '', FALSE);
-		$this->objectManager->expects($this->once())->method('create')->with('Tx_Extbase_Persistence_QueryResultInterface', $this->query)->will($this->returnValue($queryResult));
+		$queryResult = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult', array(), array(), '', FALSE);
+		$this->objectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Persistence\\QueryResultInterface', $this->query)->will($this->returnValue($queryResult));
 		$actualResult = $this->query->execute();
 		$this->assertSame($queryResult, $actualResult);
 	}
@@ -149,14 +151,15 @@ class Tx_Extbase_Tests_Unit_Persistence_QueryTest extends Tx_Extbase_Tests_Unit_
 	 * @param string $expectedOperand
 	 */
 	public function equalsForCaseSensitiveFalseLowercasesOperand($propertyName, $operand, $expectedOperand) {
-		/** @var $qomFactory Tx_Extbase_Persistence_QOM_QueryObjectModelFactory */
-		$qomFactory = $this->getMock('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory', array('comparison'));
-		$qomFactory->injectObjectManager(t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager'));
+		/** @var $qomFactory \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory */
+		$qomFactory = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory', array('comparison'));
+		$qomFactory->injectObjectManager(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager'));
 		$qomFactory->expects($this->once())->method('comparison')->with($this->anything(), $this->anything(), $expectedOperand);
 		$this->query->injectQomFactory($qomFactory);
 		$this->query->equals($propertyName, $operand, FALSE);
 	}
 
 }
+
 
 ?>

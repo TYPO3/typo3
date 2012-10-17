@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Configuration\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,9 +36,10 @@
  * @subpackage Configuration\Exception
  * @version $ID:$
  */
-class Tx_Extbase_Configuration_Exception_ParseError extends Tx_Extbase_Configuration_Exception {
+class ParseError extends \TYPO3\CMS\Extbase\Configuration\Exception {
 
 
 }
+
 
 ?>

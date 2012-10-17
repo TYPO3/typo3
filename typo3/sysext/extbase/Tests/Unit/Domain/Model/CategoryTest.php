@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
+
 /***************************************************************
  * Copyright notice
  *
@@ -28,15 +30,15 @@
  * @subpackage Domain\Model
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class Tx_Extbase_Tests_Unit_Domain_Model_CategoryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class CategoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_Domain_Model_Category
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\Category
 	 */
 	private $fixture = NULL;
 
 	public function setUp() {
-		$this->fixture = new Tx_Extbase_Domain_Model_Category();
+		$this->fixture = new \TYPO3\CMS\Extbase\Domain\Model\Category();
 	}
 
 	public function tearDown() {
@@ -84,7 +86,7 @@ class Tx_Extbase_Tests_Unit_Domain_Model_CategoryTest extends Tx_Extbase_Tests_U
 	 * @test
 	 */
 	public function setParentSetsParent() {
-		$parent = new Tx_Extbase_Domain_Model_Category();
+		$parent = new \TYPO3\CMS\Extbase\Domain\Model\Category();
 		$this->fixture->setParent($parent);
 		$this->assertSame($parent, $this->fixture->getParent());
 	}
@@ -93,15 +95,15 @@ class Tx_Extbase_Tests_Unit_Domain_Model_CategoryTest extends Tx_Extbase_Tests_U
 	 * @test
 	 */
 	public function getItemsInitiallyReturnsEmptyStorage() {
-		$this->assertEquals(new Tx_Extbase_Persistence_ObjectStorage(), $this->fixture->getItems());
+		$this->assertEquals(new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage(), $this->fixture->getItems());
 	}
 
 	/**
 	 * @test
 	 */
 	public function setItemsSetsItems() {
-		$items = new Tx_Extbase_Persistence_ObjectStorage();
-		$items->attach($this->getMockForAbstractClass('Tx_Extbase_DomainObject_AbstractEntity'));
+		$items = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$items->attach($this->getMockForAbstractClass('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity'));
 		$this->fixture->setItems($items);
 		$this->assertEquals($items, $this->fixture->getItems());
 	}
@@ -110,8 +112,8 @@ class Tx_Extbase_Tests_Unit_Domain_Model_CategoryTest extends Tx_Extbase_Tests_U
 	 * @test
 	 */
 	public function addItemAttachesItem() {
-		/** @var Tx_Extbase_DomainObject_AbstractEntity $item */
-		$item = $this->getMockForAbstractClass('Tx_Extbase_DomainObject_AbstractEntity');
+		/** @var \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $item */
+		$item = $this->getMockForAbstractClass('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity');
 		$this->fixture->addItem($item);
 		$this->assertTrue($this->fixture->getItems()->contains($item));
 	}
@@ -120,13 +122,14 @@ class Tx_Extbase_Tests_Unit_Domain_Model_CategoryTest extends Tx_Extbase_Tests_U
 	 * @test
 	 */
 	public function removeItemDetachesItem() {
-		/** @var Tx_Extbase_DomainObject_AbstractEntity $item */
-		$item = $this->getMockForAbstractClass('Tx_Extbase_DomainObject_AbstractEntity');
+		/** @var \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $item */
+		$item = $this->getMockForAbstractClass('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity');
 		$this->fixture->addItem($item);
 		$this->fixture->removeItem($item);
 		$this->assertFalse($this->fixture->getItems()->contains($item));
 	}
 
 }
+
 
 ?>

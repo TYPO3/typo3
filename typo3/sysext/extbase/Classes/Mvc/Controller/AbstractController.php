@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,15 +34,15 @@
  * @version $ID:$
  * @api
  */
-abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbase_MVC_Controller_ControllerInterface {
+abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Extbase_MVC_Web_Routing_UriBuilder
+	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
 	 */
 	protected $uriBuilder;
 
@@ -60,7 +62,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	/**
 	 * The current request.
 	 *
-	 * @var Tx_Extbase_MVC_Request
+	 * @var \TYPO3\CMS\Extbase\Mvc\Request
 	 * @api
 	 */
 	protected $request;
@@ -68,31 +70,31 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	/**
 	 * The response which will be returned by this action controller
 	 *
-	 * @var Tx_Extbase_MVC_Response
+	 * @var \TYPO3\CMS\Extbase\Mvc\Response
 	 * @api
 	 */
 	protected $response;
 
 	/**
-	 * @var Tx_Extbase_Property_Mapper
+	 * @var \TYPO3\CMS\Extbase\Property\Mapper
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	protected $deprecatedPropertyMapper;
 
 	/**
-	 * @var Tx_Extbase_Validation_ValidatorResolver
+	 * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
 	 */
 	protected $validatorResolver;
 
 	/**
-	 * @var Tx_Extbase_MVC_Controller_Arguments Arguments passed to the controller
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\Arguments Arguments passed to the controller
 	 */
 	protected $arguments;
 
 	/**
 	 * The results of the mapping of request arguments to controller arguments
 	 *
-	 * @var Tx_Extbase_Property_MappingResults
+	 * @var \TYPO3\CMS\Extbase\Property\MappingResults
 	 * @api
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
@@ -105,16 +107,16 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 *
 	 * @var array
 	 */
-	protected $supportedRequestTypes = array('Tx_Extbase_MVC_Request');
+	protected $supportedRequestTypes = array('TYPO3\\CMS\\Extbase\\Mvc\\Request');
 
 	/**
-	 * @var Tx_Extbase_MVC_Controller_ControllerContext
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
 	 * @api
 	 */
 	protected $controllerContext;
 
 	/**
-	 * @var Tx_Extbase_MVC_Controller_FlashMessages
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages
 	 * @deprecated since Extbase 1.1; will be removed in Extbase 6.0
 	 */
 	protected $flashMessages;
@@ -122,13 +124,13 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	/**
 	 * The flash messages. Use $this->flashMessageContainer->add(...) to add a new Flash message.
 	 *
-	 * @var Tx_Extbase_MVC_Controller_FlashMessages
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages
 	 * @api
 	 */
 	protected $flashMessageContainer;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
@@ -140,53 +142,53 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	}
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
-		$this->settings = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
+		$this->settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
 	}
 
 	/**
 	 * Injects the property mapper
 	 *
-	 * @param Tx_Extbase_Property_Mapper $deprecatedPropertyMapper The property mapper
+	 * @param \TYPO3\CMS\Extbase\Property\Mapper $deprecatedPropertyMapper The property mapper
 	 * @return void
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
-	public function injectDeprecatedPropertyMapper(Tx_Extbase_Property_Mapper $deprecatedPropertyMapper) {
+	public function injectDeprecatedPropertyMapper(\TYPO3\CMS\Extbase\Property\Mapper $deprecatedPropertyMapper) {
 		$this->deprecatedPropertyMapper = $deprecatedPropertyMapper;
 	}
 
 	/**
 	 * Injects the object manager
 	 *
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
-		$this->arguments = $this->objectManager->create('Tx_Extbase_MVC_Controller_Arguments');
+		$this->arguments = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments');
 	}
 
 	/**
 	 * Injects the validator resolver
 	 *
-	 * @param Tx_Extbase_Validation_ValidatorResolver $validatorResolver
+	 * @param \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver
 	 * @return void
 	 */
-	public function injectValidatorResolver(Tx_Extbase_Validation_ValidatorResolver $validatorResolver) {
+	public function injectValidatorResolver(\TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver) {
 		$this->validatorResolver = $validatorResolver;
 	}
 
 	/**
 	 * Injects the flash messages container
 	 *
-	 * @param Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages $flashMessageContainer
 	 * @return void
 	 */
-	public function injectFlashMessageContainer(Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer) {
+	public function injectFlashMessageContainer(\TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages $flashMessageContainer) {
 		$this->flashMessageContainer = $flashMessageContainer;
 		// @deprecated since Extbase 1.1; will be removed in Extbase 6.0
 		$this->flashMessages = $flashMessageContainer;
@@ -199,11 +201,11 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * replace / modify the supporteRequestTypes property or override this
 	 * method.
 	 *
-	 * @param Tx_Extbase_MVC_RequestInterface $request The current request
+	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The current request
 	 * @return boolean TRUE if this request type is supported, otherwise FALSE
 	 * @api
 	 */
-	public function canProcessRequest(Tx_Extbase_MVC_RequestInterface $request) {
+	public function canProcessRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request) {
 		foreach ($this->supportedRequestTypes as $supportedRequestType) {
 			if ($request instanceof $supportedRequestType) {
 				return TRUE;
@@ -215,21 +217,21 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	/**
 	 * Processes a general request. The result can be returned by altering the given response.
 	 *
-	 * @param Tx_Extbase_MVC_RequestInterface $request The request object
-	 * @param Tx_Extbase_MVC_ResponseInterface $response The response, modified by this handler
+	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
+	 * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this handler
 	 * @return void
-	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestType if the controller doesn't support the current request type
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException if the controller doesn't support the current request type
 	 * @api
 	 */
-	public function processRequest(Tx_Extbase_MVC_RequestInterface $request, Tx_Extbase_MVC_ResponseInterface $response) {
+	public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
 		if (!$this->canProcessRequest($request)) {
-			throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType((((get_class($this) . ' does not support requests of type "') . get_class($request)) . '". Supported types are: ') . implode(' ', $this->supportedRequestTypes), 1187701131);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException((((get_class($this) . ' does not support requests of type "') . get_class($request)) . '". Supported types are: ') . implode(' ', $this->supportedRequestTypes), 1187701131);
 		}
 		$response->setRequest($request);
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
-		$this->uriBuilder = $this->objectManager->create('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		$this->uriBuilder = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
 		$this->uriBuilder->setRequest($request);
 		$this->initializeControllerArgumentsBaseValidators();
 		$this->mapRequestArgumentsToControllerArguments();
@@ -239,11 +241,11 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	/**
 	 * Initialize the controller context
 	 *
-	 * @return Tx_Extbase_MVC_Controller_ControllerContext ControllerContext to be passed to the view
+	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext ControllerContext to be passed to the view
 	 * @api
 	 */
 	protected function buildControllerContext() {
-		$controllerContext = $this->objectManager->create('Tx_Extbase_MVC_Controller_ControllerContext');
+		$controllerContext = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext');
 		$controllerContext->setRequest($this->request);
 		$controllerContext->setResponse($this->response);
 		if ($this->arguments !== NULL) {
@@ -268,7 +270,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @param string $extensionName Name of the extension containing the controller to forward to. If not specified, the current extension is assumed.
 	 * @param array $arguments Arguments to pass to the target action
 	 * @return void
-	 * @throws Tx_Extbase_MVC_Exception_StopAction
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
 	 * @see redirect()
 	 * @api
 	 */
@@ -284,7 +286,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 		if ($arguments !== NULL) {
 			$this->request->setArguments($arguments);
 		}
-		throw new Tx_Extbase_MVC_Exception_StopAction();
+		throw new \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException();
 	}
 
 	/**
@@ -303,14 +305,14 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @param integer $delay (optional) The delay in seconds. Default is no delay.
 	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
 	 * @return void
-	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestType If the request is not a web request
-	 * @throws Tx_Extbase_MVC_Exception_StopAction
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException If the request is not a web request
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
 	 * @see forward()
 	 * @api
 	 */
 	protected function redirect($actionName, $controllerName = NULL, $extensionName = NULL, array $arguments = NULL, $pageUid = NULL, $delay = 0, $statusCode = 303) {
-		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) {
-			throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
+		if (!$this->request instanceof \TYPO3\CMS\Extbase\Mvc\Web\Request) {
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException('redirect() only supports web requests.', 1220539734);
 		}
 		if ($controllerName === NULL) {
 			$controllerName = $this->request->getControllerName();
@@ -327,20 +329,20 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @param mixed $uri A string representation of a URI
 	 * @param integer $delay (optional) The delay in seconds. Default is no delay.
 	 * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
-	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestType If the request is not a web request
-	 * @throws Tx_Extbase_MVC_Exception_StopAction
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException If the request is not a web request
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
 	 * @api
 	 */
 	protected function redirectToUri($uri, $delay = 0, $statusCode = 303) {
-		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) {
-			throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
+		if (!$this->request instanceof \TYPO3\CMS\Extbase\Mvc\Web\Request) {
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException('redirect() only supports web requests.', 1220539734);
 		}
 		$uri = $this->addBaseUriIfNecessary($uri);
 		$escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
 		$this->response->setContent(((('<html><head><meta http-equiv="refresh" content="' . intval($delay)) . ';url=') . $escapedUri) . '"/></head></html>');
 		$this->response->setStatus($statusCode);
 		$this->response->setHeader('Location', (string) $uri);
-		throw new Tx_Extbase_MVC_Exception_StopAction();
+		throw new \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException();
 	}
 
 	/**
@@ -350,7 +352,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @return string
 	 */
 	protected function addBaseUriIfNecessary($uri) {
-		return t3lib_div::locationHeaderUrl((string) $uri);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl((string) $uri);
 	}
 
 	/**
@@ -361,20 +363,20 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @param integer $statusCode The HTTP status code
 	 * @param string $statusMessage A custom HTTP status message
 	 * @param string $content Body content which further explains the status
-	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestType If the request is not a web request
-	 * @throws Tx_Extbase_MVC_Exception_StopAction
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException If the request is not a web request
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
 	 * @api
 	 */
 	public function throwStatus($statusCode, $statusMessage = NULL, $content = NULL) {
-		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) {
-			throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType('throwStatus() only supports web requests.', 1220539739);
+		if (!$this->request instanceof \TYPO3\CMS\Extbase\Mvc\Web\Request) {
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException('throwStatus() only supports web requests.', 1220539739);
 		}
 		$this->response->setStatus($statusCode, $statusMessage);
 		if ($content === NULL) {
 			$content = $this->response->getStatus();
 		}
 		$this->response->setContent($content);
-		throw new Tx_Extbase_MVC_Exception_StopAction();
+		throw new \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException();
 	}
 
 	/**
@@ -404,7 +406,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 				if ($this->request->hasArgument($argumentName)) {
 					$argument->setValue($this->request->getArgument($argumentName));
 				} elseif ($argument->isRequired()) {
-					throw new Tx_Extbase_MVC_Controller_Exception_RequiredArgumentMissingException(('Required argument "' . $argumentName) . '" is not set.', 1298012500);
+					throw new \TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException(('Required argument "' . $argumentName) . '" is not set.', 1298012500);
 				}
 			}
 		} else {
@@ -416,12 +418,13 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 					$optionalPropertyNames[] = $propertyName;
 				}
 			}
-			$validator = $this->objectManager->create('Tx_Extbase_MVC_Controller_ArgumentsValidator');
+			$validator = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ArgumentsValidator');
 			$this->deprecatedPropertyMapper->mapAndValidate($allPropertyNames, $this->request->getArguments(), $this->arguments, $optionalPropertyNames, $validator);
 			$this->argumentsMappingResults = $this->deprecatedPropertyMapper->getMappingResults();
 		}
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Cli;
+
 /***************************************************************
  *  Copyright notice
  *  All rights reserved
@@ -28,10 +30,10 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class Tx_Extbase_MVC_CLI_Request implements Tx_Extbase_MVC_RequestInterface {
+class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -75,15 +77,15 @@ class Tx_Extbase_MVC_CLI_Request implements Tx_Extbase_MVC_RequestInterface {
 	protected $commandLineArguments;
 
 	/**
-	 * @var Tx_Extbase_MVC_CLI_Command | NULL
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\Command | NULL
 	 */
 	protected $command = NULL;
 
 	/**
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager A reference to the object manager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager A reference to the object manager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -177,12 +179,12 @@ class Tx_Extbase_MVC_CLI_Request implements Tx_Extbase_MVC_RequestInterface {
 	/**
 	 * Returns the command object for this request
 	 *
-	 * @return Tx_Extbase_MVC_CLI_Command
+	 * @return \TYPO3\CMS\Extbase\Mvc\Cli\Command
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getCommand() {
 		if ($this->command === NULL) {
-			$this->command = $this->objectManager->get('Tx_Extbase_MVC_CLI_Command', $this->controllerObjectName, $this->controllerCommandName);
+			$this->command = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Command', $this->controllerObjectName, $this->controllerCommandName);
 		}
 		return $this->command;
 	}
@@ -196,7 +198,7 @@ class Tx_Extbase_MVC_CLI_Request implements Tx_Extbase_MVC_RequestInterface {
 	 */
 	public function setArgument($argumentName, $value) {
 		if (!is_string($argumentName) || $argumentName === '') {
-			throw new Tx_Extbase_MVC_Exception_InvalidArgumentName('Invalid argument name.', 1300893885);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException('Invalid argument name.', 1300893885);
 		}
 		$this->arguments[$argumentName] = $value;
 	}
@@ -217,11 +219,11 @@ class Tx_Extbase_MVC_CLI_Request implements Tx_Extbase_MVC_RequestInterface {
 	 *
 	 * @param string $argumentName Name of the argument
 	 * @return string Value of the argument
-	 * @throws Tx_Extbase_MVC_Exception_NoSuchArgument if such an argument does not exist
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException if such an argument does not exist
 	 */
 	public function getArgument($argumentName) {
 		if (!isset($this->arguments[$argumentName])) {
-			throw new Tx_Extbase_MVC_Exception_NoSuchArgument(('An argument "' . $argumentName) . '" does not exist for this request.', 1300893886);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException(('An argument "' . $argumentName) . '" does not exist for this request.', 1300893886);
 		}
 		return $this->arguments[$argumentName];
 	}
@@ -270,5 +272,6 @@ class Tx_Extbase_MVC_CLI_Request implements Tx_Extbase_MVC_RequestInterface {
 	}
 
 }
+
 
 ?>

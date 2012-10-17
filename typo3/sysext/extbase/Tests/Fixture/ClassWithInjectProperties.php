@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Fixture;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -25,19 +27,20 @@
 /**
  * @author Felix Oertel, <f@oer.tel>
  */
-class Tx_Extbase_Fixture_ClassWithInjectProperties {
+class ClassWithInjectProperties {
 
 	/**
-	 * @var Tx_Extbase_Fixture_DummyClass
+	 * @var \TYPO3\CMS\Extbase\Tests\Fixture\DummyClass
 	 */
 	protected $dummyClass;
 
 	/**
-	 * @var Tx_Extbase_Fixture_SecondDummyClass
+	 * @var \TYPO3\CMS\Extbase\Tests\Fixture\SecondDummyClass
 	 * @inject
 	 */
 	protected $secondDummyClass;
 
 }
+
 
 ?>

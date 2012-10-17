@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Web;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,10 +35,10 @@
  * @scope prototype
  * @api
  */
-class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
+class Request extends \TYPO3\CMS\Extbase\Mvc\Request {
 
 	/**
-	 * @var Tx_Extbase_Security_Cryptography_HashService
+	 * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService
 	 */
 	protected $hashService;
 
@@ -72,22 +74,22 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	protected $isCached = FALSE;
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @param Tx_Extbase_Security_Cryptography_HashService $hashService
+	 * @param \TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService
 	 */
-	public function injectHashService(Tx_Extbase_Security_Cryptography_HashService $hashService) {
+	public function injectHashService(\TYPO3\CMS\Extbase\Security\Cryptography\HashService $hashService) {
 		$this->hashService = $hashService;
 	}
 
 	/**
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
@@ -96,11 +98,11 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	 *
 	 * @param string $method Name of the request method
 	 * @return void
-	 * @throws Tx_Extbase_MVC_Exception_InvalidRequestMethod if the request method is not supported
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidRequestMethodException if the request method is not supported
 	 */
 	public function setMethod($method) {
 		if ($method === '' || strtoupper($method) !== $method) {
-			throw new Tx_Extbase_MVC_Exception_InvalidRequestMethod(('The request method "' . $method) . '" is not supported.', 1217778382);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidRequestMethodException(('The request method "' . $method) . '" is not supported.', 1217778382);
 		}
 		$this->method = $method;
 	}
@@ -209,7 +211,7 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	public function getReferringRequest() {
 		if (isset($this->internalArguments['__referrer']) && is_array($this->internalArguments['__referrer'])) {
 			$referrerArray = $this->internalArguments['__referrer'];
-			$referringRequest = new Tx_Extbase_MVC_Web_Request();
+			$referringRequest = new \TYPO3\CMS\Extbase\Mvc\Web\Request();
 			$arguments = array();
 			if (isset($referrerArray['arguments'])) {
 				$serializedArgumentsWithHmac = $referrerArray['arguments'];
@@ -217,12 +219,13 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 				$arguments = unserialize(base64_decode($serializedArguments));
 				unset($referrerArray['arguments']);
 			}
-			$referringRequest->setArguments(Tx_Extbase_Utility_Arrays::arrayMergeRecursiveOverrule($arguments, $referrerArray));
+			$referringRequest->setArguments(\TYPO3\CMS\Extbase\Utility\ArrayUtility::arrayMergeRecursiveOverrule($arguments, $referrerArray));
 			return $referringRequest;
 		}
 		return NULL;
 	}
 
 }
+
 
 ?>

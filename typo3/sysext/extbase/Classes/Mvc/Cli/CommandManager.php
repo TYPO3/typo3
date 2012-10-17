@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc\Cli;
+
 /***************************************************************
  *  Copyright notice
  *  All rights reserved
@@ -27,10 +29,10 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_MVC_CLI_CommandManager implements t3lib_Singleton {
+class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -45,10 +47,10 @@ class Tx_Extbase_MVC_CLI_CommandManager implements t3lib_Singleton {
 	protected $shortCommandIdentifiers = NULL;
 
 	/**
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager A reference to the object manager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager A reference to the object manager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -70,7 +72,7 @@ class Tx_Extbase_MVC_CLI_CommandManager implements t3lib_Singleton {
 				}
 				foreach (get_class_methods($className) as $methodName) {
 					if (substr($methodName, -7, 7) === 'Command') {
-						$this->availableCommands[] = $this->objectManager->get('Tx_Extbase_MVC_CLI_Command', $className, substr($methodName, 0, -7));
+						$this->availableCommands[] = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Command', $className, substr($methodName, 0, -7));
 					}
 				}
 			}
@@ -84,9 +86,9 @@ class Tx_Extbase_MVC_CLI_CommandManager implements t3lib_Singleton {
 	 * If more than one Command matches an AmbiguousCommandIdentifierException is thrown that contains the matched Commands
 	 *
 	 * @param string $commandIdentifier command identifier in the format foo:bar:baz
-	 * @return Tx_Extbase_MVC_CLI_Command
-	 * @throws Tx_Extbase_MVC_Exception_NoSuchCommand if no matching command is available
-	 * @throws Tx_Extbase_MVC_Exception_AmbiguousCommandIdentifier if more than one Command matches the identifier (the exception contains the matched commands)
+	 * @return \TYPO3\CMS\Extbase\Mvc\Cli\Command
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException if no matching command is available
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\AmbiguousCommandIdentifierException if more than one Command matches the identifier (the exception contains the matched commands)
 	 * @api
 	 */
 	public function getCommandByIdentifier($commandIdentifier) {
@@ -102,10 +104,10 @@ class Tx_Extbase_MVC_CLI_CommandManager implements t3lib_Singleton {
 			}
 		}
 		if (count($matchedCommands) === 0) {
-			throw new Tx_Extbase_MVC_Exception_NoSuchCommand(('No command could be found that matches the command identifier "' . $commandIdentifier) . '".', 1310556663);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException(('No command could be found that matches the command identifier "' . $commandIdentifier) . '".', 1310556663);
 		}
 		if (count($matchedCommands) > 1) {
-			throw new Tx_Extbase_MVC_Exception_AmbiguousCommandIdentifier(('More than one command matches the command identifier "' . $commandIdentifier) . '"', 1310557169, NULL, $matchedCommands);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\AmbiguousCommandIdentifierException(('More than one command matches the command identifier "' . $commandIdentifier) . '"', 1310557169, NULL, $matchedCommands);
 		}
 		return current($matchedCommands);
 	}
@@ -113,13 +115,13 @@ class Tx_Extbase_MVC_CLI_CommandManager implements t3lib_Singleton {
 	/**
 	 * Returns the shortest, non-ambiguous command identifier for the given command
 	 *
-	 * @param Tx_Extbase_MVC_CLI_Command $command The command
+	 * @param \TYPO3\CMS\Extbase\Mvc\Cli\Command $command The command
 	 * @return string The shortest possible command identifier
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
-	public function getShortestIdentifierForCommand(Tx_Extbase_MVC_CLI_Command $command) {
+	public function getShortestIdentifierForCommand(\TYPO3\CMS\Extbase\Mvc\Cli\Command $command) {
 		if ($command->getCommandIdentifier() === 'extbase:help:help') {
 			return 'help';
 		}
@@ -165,12 +167,12 @@ class Tx_Extbase_MVC_CLI_CommandManager implements t3lib_Singleton {
 	 * Returns TRUE if the specified command identifier matches the identifier of the specified command.
 	 * This is the case, if the identifiers are the same or if at least the last two command parts match (case sensitive).
 	 *
-	 * @param Tx_Extbase_MVC_CLI_Command $command
+	 * @param \TYPO3\CMS\Extbase\Mvc\Cli\Command $command
 	 * @param string $commandIdentifier command identifier in the format foo:bar:baz (all lower case)
 	 * @return boolean TRUE if the specified command identifier matches this commands identifier
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	protected function commandMatchesIdentifier(Tx_Extbase_MVC_CLI_Command $command, $commandIdentifier) {
+	protected function commandMatchesIdentifier(\TYPO3\CMS\Extbase\Mvc\Cli\Command $command, $commandIdentifier) {
 		$commandIdentifierParts = explode(':', $command->getCommandIdentifier());
 		$searchedCommandIdentifierParts = explode(':', $commandIdentifier);
 		$extensionKey = array_shift($commandIdentifierParts);
@@ -187,5 +189,6 @@ class Tx_Extbase_MVC_CLI_CommandManager implements t3lib_Singleton {
 	}
 
 }
+
 
 ?>

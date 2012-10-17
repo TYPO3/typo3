@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -36,7 +38,7 @@
  * @version $Id$
  * @scope prototype
  */
-class Tx_Extbase_Persistence_QOM_EquiJoinCondition implements Tx_Extbase_Persistence_QOM_JoinConditionInterface {
+class EquiJoinCondition implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinConditionInterface {
 
 	/**
 	 * @var string
@@ -111,5 +113,6 @@ class Tx_Extbase_Persistence_QOM_EquiJoinCondition implements Tx_Extbase_Persist
 	}
 
 }
+
 
 ?>

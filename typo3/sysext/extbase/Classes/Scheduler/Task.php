@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Scheduler;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,7 +29,7 @@
  * @package Extbase
  * @subpackage Scheduler
  */
-class Tx_Extbase_Scheduler_Task extends Tx_Scheduler_Task {
+class Task extends Tx_Scheduler_Task {
 
 	/**
 	 * @var string
@@ -45,17 +47,17 @@ class Tx_Extbase_Scheduler_Task extends Tx_Scheduler_Task {
 	protected $defaults = array();
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Extbase_MVC_CLI_CommandManager
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager
 	 */
 	protected $commandManager;
 
 	/**
-	 * @var Tx_Extbase_Scheduler_TaskExecutor
+	 * @var \TYPO3\CMS\Extbase\Scheduler\TaskExecutor
 	 */
 	protected $taskExecutor;
 
@@ -65,14 +67,14 @@ class Tx_Extbase_Scheduler_Task extends Tx_Scheduler_Task {
 	 * @return boolean TRUE on successful execution, FALSE on error
 	 */
 	public function execute() {
-		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		$this->commandManager = $this->objectManager->get('Tx_Extbase_MVC_CLI_CommandManager');
-		$this->taskExecutor = $this->objectManager->get('Tx_Extbase_Scheduler_TaskExecutor');
+		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->commandManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager');
+		$this->taskExecutor = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Scheduler\\TaskExecutor');
 		try {
 			$this->taskExecutor->execute($this);
 			return TRUE;
-		} catch (Exception $e) {
-			t3lib_div::sysLog($e->getMessage(), $this->commandIdentifier, 3);
+		} catch (\Exception $e) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($e->getMessage(), $this->commandIdentifier, 3);
 			return FALSE;
 		}
 	}
@@ -150,5 +152,6 @@ class Tx_Extbase_Scheduler_Task extends Tx_Scheduler_Task {
 	}
 
 }
+
 
 ?>

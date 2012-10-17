@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Reflection;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +32,7 @@
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Reflection_ClassSchema {
+class ClassSchema {
 
 	/**
 	 * Available model types
@@ -80,7 +82,7 @@ class Tx_Extbase_Reflection_ClassSchema {
 	protected $identityProperties = array();
 
 	/**
-	 * @var Tx_Extbase_Service_TypeHandlingService
+	 * @var \TYPO3\CMS\Extbase\Service\TypeHandlingService
 	 */
 	protected $typeHandlingService;
 
@@ -95,10 +97,10 @@ class Tx_Extbase_Reflection_ClassSchema {
 	}
 
 	/**
-	 * @param Tx_Extbase_Service_TypeHandlingService $typeHandlingService
+	 * @param \TYPO3\CMS\Extbase\Service\TypeHandlingService $typeHandlingService
 	 * @return void
 	 */
-	public function injectTypeHandlingService(Tx_Extbase_Service_TypeHandlingService $typeHandlingService) {
+	public function injectTypeHandlingService(\TYPO3\CMS\Extbase\Service\TypeHandlingService $typeHandlingService) {
 		$this->typeHandlingService = $typeHandlingService;
 	}
 
@@ -162,7 +164,7 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 */
 	public function setModelType($modelType) {
 		if ($modelType < self::MODELTYPE_ENTITY || $modelType > self::MODELTYPE_VALUEOBJECT) {
-			throw new InvalidArgumentException(('"' . $modelType) . '" is an invalid model type.', 1212519195);
+			throw new \InvalidArgumentException(('"' . $modelType) . '" is an invalid model type.', 1212519195);
 		}
 		$this->modelType = $modelType;
 	}
@@ -220,7 +222,7 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 */
 	public function setUuidPropertyName($propertyName) {
 		if (!array_key_exists($propertyName, $this->properties)) {
-			throw new InvalidArgumentException(('Property "' . $propertyName) . '" must be added to the class schema before it can be marked as UUID property.', 1233863842);
+			throw new \InvalidArgumentException(('Property "' . $propertyName) . '" must be added to the class schema before it can be marked as UUID property.', 1233863842);
 		}
 		$this->uuidPropertyName = $propertyName;
 	}
@@ -246,10 +248,10 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 */
 	public function markAsIdentityProperty($propertyName) {
 		if (!array_key_exists($propertyName, $this->properties)) {
-			throw new InvalidArgumentException(('Property "' . $propertyName) . '" must be added to the class schema before it can be marked as identity property.', 1233775407);
+			throw new \InvalidArgumentException(('Property "' . $propertyName) . '" must be added to the class schema before it can be marked as identity property.', 1233775407);
 		}
 		if ($this->properties[$propertyName]['lazy'] === TRUE) {
-			throw new InvalidArgumentException(('Property "' . $propertyName) . '" must not be makred for lazy loading to be marked as identity property.', 1239896904);
+			throw new \InvalidArgumentException(('Property "' . $propertyName) . '" must not be makred for lazy loading to be marked as identity property.', 1239896904);
 		}
 		$this->identityProperties[$propertyName] = $this->properties[$propertyName]['type'];
 	}
@@ -266,5 +268,6 @@ class Tx_Extbase_Reflection_ClassSchema {
 	}
 
 }
+
 
 ?>

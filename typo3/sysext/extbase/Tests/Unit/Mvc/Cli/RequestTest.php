@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -21,15 +23,15 @@
 /**
  * Testcase for the CLI Request class
  */
-class Tx_Extbase_Tests_Unit_MVC_CLI_RequestTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class RequestTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Extbase_MVC_CLI_Request
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\Request
 	 */
 	protected $request;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $mockObjectManager;
 
@@ -37,8 +39,8 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestTest extends Tx_Extbase_Tests_Unit_Ba
 	 * Sets up this test case
 	 */
 	public function setUp() {
-		$this->request = new Tx_Extbase_MVC_CLI_Request();
-		$this->mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
+		$this->request = new \TYPO3\CMS\Extbase\Mvc\Cli\Request();
+		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$this->request->injectObjectManager($this->mockObjectManager);
 	}
 
@@ -49,7 +51,7 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestTest extends Tx_Extbase_Tests_Unit_Ba
 	public function getCommandReturnsTheCommandObjectReflectingTheRequestInformation() {
 		$this->request->setControllerObjectName('Tx_Extbase_Command_CacheCommandController');
 		$this->request->setControllerCommandName('flush');
-		$this->mockObjectManager->expects($this->once())->method('get')->with('Tx_Extbase_MVC_CLI_Command', 'Tx_Extbase_Command_CacheCommandController', 'flush');
+		$this->mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Command', 'Tx_Extbase_Command_CacheCommandController', 'flush');
 		$this->request->getCommand();
 	}
 
@@ -63,10 +65,11 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestTest extends Tx_Extbase_Tests_Unit_Ba
 		$this->request->getCommand();
 		$this->request->setControllerObjectName('Tx_SomeExtension_Command_BeerCommandController');
 		$this->request->setControllerCommandName('drink');
-		$this->mockObjectManager->expects($this->once())->method('get')->with('Tx_Extbase_MVC_CLI_Command', 'Tx_SomeExtension_Command_BeerCommandController', 'drink');
+		$this->mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Command', 'Tx_SomeExtension_Command_BeerCommandController', 'drink');
 		$this->request->getCommand();
 	}
 
 }
+
 
 ?>

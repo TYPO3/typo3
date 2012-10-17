@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\DomainObject;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +34,7 @@
  * @subpackage DomainObject
  * @version $ID:$
  */
-interface Tx_Extbase_DomainObject_DomainObjectInterface
+interface DomainObjectInterface
 {
 	/**
 	 * Getter for uid.
@@ -88,4 +90,5 @@ interface Tx_Extbase_DomainObject_DomainObjectInterface
 	public function _getProperties();
 
 }
+
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,9 +35,10 @@
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Extbase_Persistence_Exception_RepositoryException extends RuntimeException {
+class RepositoryException extends \RuntimeException {
 
 
 }
+
 
 ?>

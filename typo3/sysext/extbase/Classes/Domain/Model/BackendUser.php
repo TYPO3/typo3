@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,7 +36,7 @@
  * @entity
  * @api
  */
-class Tx_Extbase_Domain_Model_BackendUser extends Tx_Extbase_DomainObject_AbstractEntity {
+class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * @var string
@@ -290,5 +292,6 @@ class Tx_Extbase_Domain_Model_BackendUser extends Tx_Extbase_DomainObject_Abstra
 	}
 
 }
+
 
 ?>

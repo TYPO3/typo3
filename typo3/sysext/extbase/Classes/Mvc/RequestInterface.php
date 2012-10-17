@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Mvc;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @scope prototype
  * @api
  */
-interface Tx_Extbase_MVC_RequestInterface
+interface RequestInterface
 {
 	/**
 	 * Sets the dispatched flag
@@ -59,7 +61,7 @@ interface Tx_Extbase_MVC_RequestInterface
 	 * controller name
 	 *
 	 * @return string The controller's Object Name
-	 * @throws Tx_Extbase_MVC_Exception_NoSuchController if the controller does not exist
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchControllerException if the controller does not exist
 	 * @api
 	 */
 	public function getControllerObjectName();
@@ -89,7 +91,7 @@ interface Tx_Extbase_MVC_RequestInterface
 	 *
 	 * @param string $argumentName Name of the argument
 	 * @return string Value of the argument
-	 * @throws Tx_Extbase_MVC_Exception_NoSuchArgument if such an argument does not exist
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException if such an argument does not exist
 	 * @api
 	 */
 	public function getArgument($argumentName);
@@ -112,4 +114,5 @@ interface Tx_Extbase_MVC_RequestInterface
 	public function getArguments();
 
 }
+
 ?>

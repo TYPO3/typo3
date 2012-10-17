@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -39,7 +41,7 @@
  * @subpackage Persistence\QOM
  * @version $Id$
  */
-interface Tx_Extbase_Persistence_QOM_SelectorInterface extends Tx_Extbase_Persistence_QOM_SourceInterface
+interface SelectorInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface
 {
 	/**
 	 * Gets the name of the required node type.
@@ -57,4 +59,5 @@ interface Tx_Extbase_Persistence_QOM_SelectorInterface extends Tx_Extbase_Persis
 	public function getSelectorName();
 
 }
+
 ?>

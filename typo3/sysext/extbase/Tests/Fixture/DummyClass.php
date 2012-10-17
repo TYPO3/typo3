@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Fixture;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -21,12 +23,13 @@
 /**
  * Dummy Class
  */
-class Tx_Extbase_Fixture_DummyClass {
+class DummyClass {
 
 	public function someMethod() {
 
 	}
 
 }
+
 
 ?>
