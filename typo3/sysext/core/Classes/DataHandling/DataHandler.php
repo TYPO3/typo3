@@ -2775,6 +2775,10 @@ class DataHandler {
 					// So it copies (and localized) content from workspace...
 					$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $uid);
 					if (is_array($row)) {
+						// Ignore placeholders
+						if ($row['t3ver_state'] > 0) {
+							return;
+						}
 						// Initializing:
 						$theNewID = uniqid('NEW');
 						$enableField = isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) ? $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] : '';
@@ -6250,9 +6254,9 @@ class DataHandler {
 	public function int_pageTreeInfo($CPtable, $pid, $counter, $rootID) {
 		if ($counter) {
 			$addW = !$this->admin ? ' AND ' . $this->BE_USER->getPagePermsClause($this->pMap['show']) : '';
-			$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . intval($pid) . $this->deleteClause('pages') . $addW, '', 'sorting DESC');
+			$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,t3ver_state', 'pages', 'pid=' . intval($pid) . $this->deleteClause('pages') . $addW, '', 'sorting DESC');
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
-				if ($row['uid'] != $rootID) {
+				if ($row['uid'] != $rootID && ($row['t3ver_state'] == 0 || $this->BE_USER->workspace !== 0)) {
 					$CPtable[$row['uid']] = $pid;
 					// If the uid is NOT the rootID of the copyaction and if we are supposed to walk further down
 					if ($counter - 1) {
