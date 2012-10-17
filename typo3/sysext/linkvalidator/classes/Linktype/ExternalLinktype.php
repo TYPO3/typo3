@@ -54,7 +54,6 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 	 */
 	protected $additionalHeaders = array();
 
-
 	/**
 	 * Checks a given URL for validity
 	 *
@@ -66,7 +65,6 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 	public function checkLink($url, $softRefEntry, $reference) {
 		$errorParams = array();
 		$isValidUrl = TRUE;
-
 		if (isset($this->urlReports[$url])) {
 			if (!$this->urlReports[$url]) {
 				if (is_array($this->urlErrorParams[$url])) {
@@ -75,37 +73,32 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 			}
 			return $this->urlReports[$url];
 		}
-
 		$config = array(
 			'follow_redirects' => TRUE,
-			'strict_redirects' => TRUE,
+			'strict_redirects' => TRUE
 		);
-
-			/** @var t3lib_http_Request|HTTP_Request2 $request  */
+		/** @var t3lib_http_Request|HTTP_Request2 $request */
 		$request = t3lib_div::makeInstance('t3lib_http_Request', $url, 'HEAD', $config);
-			// Observe cookies
+		// Observe cookies
 		$request->setCookieJar(TRUE);
-
 		try {
-				/** @var HTTP_Request2_Response $response  */
+			/** @var HTTP_Request2_Response $response */
 			$response = $request->send();
-				// HEAD was not allowed, now trying GET
+			// HEAD was not allowed, now trying GET
 			if (isset($response) && $response->getStatus() === 405) {
 				$request->setMethod('GET');
 				$request->setHeader('Range', 'bytes = 0 - 4048');
-					/** @var HTTP_Request2_Response $response  */
+				/** @var HTTP_Request2_Response $response */
 				$response = $request->send();
 			}
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			$isValidUrl = FALSE;
-				// A redirect loop occurred
+			// A redirect loop occurred
 			if ($e->getCode() === 40) {
-					// Parse the exception for more information
+				// Parse the exception for more information
 				$trace = $e->getTrace();
 				$traceUrl = $trace[0]['args'][0]->getUrl()->getUrl();
 				$traceCode = $trace[0]['args'][1]->getStatus();
-
 				$errorParams['errorType'] = 'loop';
 				$errorParams['location'] = $traceUrl;
 				$errorParams['errorCode'] = $traceCode;
@@ -114,20 +107,16 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 			}
 			$errorParams['message'] = $e->getMessage();
 		}
-
 		if (isset($response) && $response->getStatus() >= 300) {
 			$isValidUrl = FALSE;
 			$errorParams['errorType'] = $response->getStatus();
 			$errorParams['message'] = $response->getReasonPhrase();
 		}
-
 		if (!$isValidUrl) {
 			$this->setErrorParams($errorParams);
 		}
-
 		$this->urlReports[$url] = $isValidUrl;
 		$this->urlErrorParams[$url] = $errorParams;
-
 		return $isValidUrl;
 	}
 
@@ -140,34 +129,27 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 	public function getErrorMessage($errorParams) {
 		$errorType = $errorParams['errorType'];
 		switch ($errorType) {
-			case 300:
-				$response = sprintf($GLOBALS['LANG']->getLL('list.report.externalerror'), $errorType);
-				break;
-
-			case 403:
-				$response = $GLOBALS['LANG']->getLL('list.report.pageforbidden403');
-				break;
-
-			case 404:
-				$response = $GLOBALS['LANG']->getLL('list.report.pagenotfound404');
-				break;
-
-			case 500:
-				$response = $GLOBALS['LANG']->getLL('list.report.internalerror500');
-				break;
-
-			case 'loop':
-				$response = sprintf($GLOBALS['LANG']->getLL('list.report.redirectloop'), $errorParams['errorCode'], $errorParams['location']);
-				break;
-
-			case 'exception':
-				$response = sprintf($GLOBALS['LANG']->getLL('list.report.httpexception'), $errorParams['message']);
-				break;
-
-			default:
-				$response = sprintf($GLOBALS['LANG']->getLL('list.report.otherhttpcode'), $errorType, $errorParams['message']);
+		case 300:
+			$response = sprintf($GLOBALS['LANG']->getLL('list.report.externalerror'), $errorType);
+			break;
+		case 403:
+			$response = $GLOBALS['LANG']->getLL('list.report.pageforbidden403');
+			break;
+		case 404:
+			$response = $GLOBALS['LANG']->getLL('list.report.pagenotfound404');
+			break;
+		case 500:
+			$response = $GLOBALS['LANG']->getLL('list.report.internalerror500');
+			break;
+		case 'loop':
+			$response = sprintf($GLOBALS['LANG']->getLL('list.report.redirectloop'), $errorParams['errorCode'], $errorParams['location']);
+			break;
+		case 'exception':
+			$response = sprintf($GLOBALS['LANG']->getLL('list.report.httpexception'), $errorParams['message']);
+			break;
+		default:
+			$response = sprintf($GLOBALS['LANG']->getLL('list.report.otherhttpcode'), $errorType, $errorParams['message']);
 		}
-
 		return $response;
 	}
 
@@ -180,12 +162,10 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 	 * @return string Fetched type
 	 */
 	public function fetchType($value, $type, $key) {
-		preg_match_all('/((?:http|https))(?::\/\/)(?:[^\s<>]+)/i', $value['tokenValue'], $urls, PREG_PATTERN_ORDER);
-
+		preg_match_all('/((?:http|https))(?::\\/\\/)(?:[^\\s<>]+)/i', $value['tokenValue'], $urls, PREG_PATTERN_ORDER);
 		if (!empty($urls[0][0])) {
 			$type = 'external';
 		}
-
 		return $type;
 	}
 

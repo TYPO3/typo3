@@ -2,6 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
+ *  (c) 2005 - 2010 Jochen Rieger (j.rieger@connecta.ag)
  *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
@@ -21,50 +22,30 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
- * This class provides interface implementation.
+ * This class provides Check File Links plugin implementation
  *
+ * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  * @package TYPO3
  * @subpackage linkvalidator
  */
-interface tx_linkvalidator_linktype_Interface {
+class tx_linkvalidator_linktype_File extends tx_linkvalidator_linktype_Abstract {
 
 	/**
-	 * Checks a given link for validity
+	 * Checks a given URL + /path/filename.ext for validity
 	 *
 	 * @param string $url Url to check
 	 * @param array $softRefEntry The soft reference entry which builds the context of that url
 	 * @param tx_linkvalidator_Processor $reference Parent instance of tx_linkvalidator_Processor
-	 * @return string Validation error message or success code
+	 * @return boolean TRUE on success or FALSE on error
 	 */
-	public function checkLink($url, $softRefEntry, $reference);
-
-	/**
-	 * Base type fetching method, based on the type that softRefParserObj returns.
-	 *
-	 * @param array $value Reference properties
-	 * @param string $type Current type
-	 * @param string $key Validator hook name
-	 * @return string Fetched type
-	 */
-	public function fetchType($value, $type, $key);
-
-	/**
-	 * Get the value of the private property errorParams.
-	 *
-	 * @return array All parameters needed for the rendering of the error message
-	 */
-	public function getErrorParams();
-
-	/**
-	 * Construct a valid Url for browser output
-	 *
-	 * @param array $row Broken link record
-	 * @return string Parsed broken url
-	 */
-	public function getBrokenUrl($row);
+	public function checkLink($url, $softRefEntry, $reference) {
+		if (!@file_exists((PATH_site . rawurldecode($url)))) {
+			return FALSE;
+		}
+		return TRUE;
+	}
 
 	/**
 	 * Generate the localized error message from the error params saved from the parsing
@@ -72,7 +53,21 @@ interface tx_linkvalidator_linktype_Interface {
 	 * @param array $errorParams All parameters needed for the rendering of the error message
 	 * @return string Validation error message
 	 */
-	public function getErrorMessage($errorParams);
+	public function getErrorMessage($errorParams) {
+		$response = $GLOBALS['LANG']->getLL('list.report.filenotexisting');
+		return $response;
+	}
+
+	/**
+	 * Construct a valid Url for browser output
+	 *
+	 * @param array $row Broken link record
+	 * @return string Parsed broken url
+	 */
+	public function getBrokenUrl($row) {
+		$brokenUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $row['url'];
+		return $brokenUrl;
+	}
 
 }
 

@@ -36,7 +36,6 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	const HIDDEN = 'hidden';
 	const MOVED = 'moved';
 	const NOTEXISTING = 'notExisting';
-
 	/**
 	 * All parameters needed for rendering the error message
 	 *
@@ -69,11 +68,9 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	public function checkLink($url, $softRefEntry, $reference) {
 		$anchor = '';
 		$this->responseContent = TRUE;
-
-			// Might already contain values - empty it
+		// Might already contain values - empty it
 		unset($this->errorParams);
-
-			// defines the linked page and anchor (if any).
+		// defines the linked page and anchor (if any).
 		if (strpos($url, '#c') !== FALSE) {
 			$parts = explode('#c', $url);
 			$page = $parts[0];
@@ -81,29 +78,21 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 		} else {
 			$page = $url;
 		}
-
-			// Check if the linked page is OK
+		// Check if the linked page is OK
 		$this->responsePage = $this->checkPage($page, $softRefEntry, $reference);
-
-			// Check if the linked content element is OK
+		// Check if the linked content element is OK
 		if ($anchor) {
-
-				// Check if the content element is OK
+			// Check if the content element is OK
 			$this->responseContent = $this->checkContent($page, $anchor, $softRefEntry, $reference);
-
 		}
-
-		if ((is_array($this->errorParams['page']) && !$this->responsePage)
-			|| (is_array($this->errorParams['content']) && !$this->responseContent)) {
+		if (is_array($this->errorParams['page']) && !$this->responsePage || is_array($this->errorParams['content']) && !$this->responseContent) {
 			$this->setErrorParams($this->errorParams);
 		}
-
-		if (($this->responsePage === TRUE) && ($this->responseContent === TRUE)) {
+		if ($this->responsePage === TRUE && $this->responseContent === TRUE) {
 			$response = TRUE;
 		} else {
 			$response = FALSE;
 		}
-
 		return $response;
 	}
 
@@ -116,22 +105,15 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	 * @return boolean TRUE on success or FALSE on error
 	 */
 	protected function checkPage($page, $softRefEntry, $reference) {
-		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-			'uid, title, deleted, hidden, starttime, endtime',
-			'pages',
-			'uid = ' . intval($page)
-		);
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, title, deleted, hidden, starttime, endtime', 'pages', 'uid = ' . intval($page));
 		$this->responsePage = TRUE;
-
 		if ($row) {
 			if ($row['deleted'] == '1') {
 				$this->errorParams['errorType']['page'] = self::DELETED;
 				$this->errorParams['page']['title'] = $row['title'];
 				$this->errorParams['page']['uid'] = $row['uid'];
 				$this->responsePage = FALSE;
-			} elseif ($row['hidden'] == '1'
-				|| $GLOBALS['EXEC_TIME'] < intval($row['starttime'])
-				|| ($row['endtime'] && intval($row['endtime']) < $GLOBALS['EXEC_TIME'])) {
+			} elseif (($row['hidden'] == '1' || $GLOBALS['EXEC_TIME'] < intval($row['starttime'])) || $row['endtime'] && intval($row['endtime']) < $GLOBALS['EXEC_TIME']) {
 				$this->errorParams['errorType']['page'] = self::HIDDEN;
 				$this->errorParams['page']['title'] = $row['title'];
 				$this->errorParams['page']['uid'] = $row['uid'];
@@ -142,7 +124,6 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 			$this->errorParams['page']['uid'] = intval($page);
 			$this->responsePage = FALSE;
 		}
-
 		return $this->responsePage;
 	}
 
@@ -156,52 +137,41 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	 * @return boolean TRUE on success or FALSE on error
 	 */
 	protected function checkContent($page, $anchor, $softRefEntry, $reference) {
-			// Get page ID on which the content element in fact is located
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-			'uid, pid, header, deleted, hidden, starttime, endtime',
-			'tt_content',
-			'uid = ' . intval($anchor)
-		);
+		// Get page ID on which the content element in fact is located
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, pid, header, deleted, hidden, starttime, endtime', 'tt_content', 'uid = ' . intval($anchor));
 		$this->responseContent = TRUE;
-
-			// this content element exists
+		// this content element exists
 		if ($res) {
-				// page ID on which this CE is in fact located.
+			// page ID on which this CE is in fact located.
 			$correctPageID = $res['pid'];
-
-				// Check if the element is on the linked page
-				// (The element might have been moved to another page)
+			// Check if the element is on the linked page
+			// (The element might have been moved to another page)
 			if (!($correctPageID === $page)) {
 				$this->errorParams['errorType']['content'] = self::MOVED;
 				$this->errorParams['content']['uid'] = intval($anchor);
 				$this->errorParams['content']['wrongPage'] = intval($page);
 				$this->errorParams['content']['rightPage'] = intval($correctPageID);
 				$this->responseContent = FALSE;
-
 			} else {
-					// The element is located on the page to which the link is pointing
+				// The element is located on the page to which the link is pointing
 				if ($res['deleted'] == '1') {
 					$this->errorParams['errorType']['content'] = self::DELETED;
 					$this->errorParams['content']['title'] = $res['header'];
 					$this->errorParams['content']['uid'] = $res['uid'];
 					$this->responseContent = FALSE;
-				} elseif ($res['hidden'] == '1'
-					|| $GLOBALS['EXEC_TIME'] < intval($res['starttime'])
-					|| ($res['endtime'] && intval($res['endtime']) < $GLOBALS['EXEC_TIME'])) {
+				} elseif (($res['hidden'] == '1' || $GLOBALS['EXEC_TIME'] < intval($res['starttime'])) || $res['endtime'] && intval($res['endtime']) < $GLOBALS['EXEC_TIME']) {
 					$this->errorParams['errorType']['content'] = self::HIDDEN;
 					$this->errorParams['content']['title'] = $res['header'];
 					$this->errorParams['content']['uid'] = $res['uid'];
 					$this->responseContent = FALSE;
 				}
 			}
-
 		} else {
-				// The content element does not exist
+			// The content element does not exist
 			$this->errorParams['errorType']['content'] = self::NOTEXISTING;
 			$this->errorParams['content']['uid'] = intval($anchor);
 			$this->responseContent = FALSE;
 		}
-
 		return $this->responseContent;
 	}
 
@@ -213,66 +183,57 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	 */
 	public function getErrorMessage($errorParams) {
 		$errorType = $errorParams['errorType'];
-
 		if (is_array($errorParams['page'])) {
 			switch ($errorType['page']) {
-				case self::DELETED:
-					$errorPage = $GLOBALS['LANG']->getLL('list.report.pagedeleted');
-					$errorPage = str_replace('###title###', $errorParams['page']['title'], $errorPage);
-					$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
-					break;
-
-				case self::HIDDEN:
-					$errorPage = $GLOBALS['LANG']->getLL('list.report.pagenotvisible');
-					$errorPage = str_replace('###title###', $errorParams['page']['title'], $errorPage);
-					$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
-					break;
-
-				default:
-					$errorPage = $GLOBALS['LANG']->getLL('list.report.pagenotexisting');
-					$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
+			case self::DELETED:
+				$errorPage = $GLOBALS['LANG']->getLL('list.report.pagedeleted');
+				$errorPage = str_replace('###title###', $errorParams['page']['title'], $errorPage);
+				$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
+				break;
+			case self::HIDDEN:
+				$errorPage = $GLOBALS['LANG']->getLL('list.report.pagenotvisible');
+				$errorPage = str_replace('###title###', $errorParams['page']['title'], $errorPage);
+				$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
+				break;
+			default:
+				$errorPage = $GLOBALS['LANG']->getLL('list.report.pagenotexisting');
+				$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
 			}
 		}
-
 		if (is_array($errorParams['content'])) {
 			switch ($errorType['content']) {
-				case self::DELETED:
-					$errorContent = $GLOBALS['LANG']->getLL('list.report.contentdeleted');
-					$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
-					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
-					break;
-
-				case self::HIDDEN:
-					$errorContent = $GLOBALS['LANG']->getLL('list.report.contentnotvisible');
-					$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
-					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
-					break;
-
-				case self::MOVED:
-					$errorContent = $GLOBALS['LANG']->getLL('list.report.contentmoved');
-					$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
-					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
-					$errorContent = str_replace('###wrongpage###', $errorParams['content']['wrongPage'], $errorContent);
-					$errorContent = str_replace('###rightpage###', $errorParams['content']['rightPage'], $errorContent);
-					break;
-
-				default:
-					$errorContent = $GLOBALS['LANG']->getLL('list.report.contentnotexisting');
-					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
+			case self::DELETED:
+				$errorContent = $GLOBALS['LANG']->getLL('list.report.contentdeleted');
+				$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
+				$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
+				break;
+			case self::HIDDEN:
+				$errorContent = $GLOBALS['LANG']->getLL('list.report.contentnotvisible');
+				$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
+				$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
+				break;
+			case self::MOVED:
+				$errorContent = $GLOBALS['LANG']->getLL('list.report.contentmoved');
+				$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
+				$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
+				$errorContent = str_replace('###wrongpage###', $errorParams['content']['wrongPage'], $errorContent);
+				$errorContent = str_replace('###rightpage###', $errorParams['content']['rightPage'], $errorContent);
+				break;
+			default:
+				$errorContent = $GLOBALS['LANG']->getLL('list.report.contentnotexisting');
+				$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
 			}
 		}
-
 		if (isset($errorPage) && isset($errorContent)) {
-			$response = $errorPage . '<br />' . $errorContent;
+			$response = ($errorPage . '<br />') . $errorContent;
 		} elseif (isset($errorPage)) {
 			$response = $errorPage;
 		} elseif (isset($errorContent)) {
 			$response = $errorContent;
 		} else {
-				// This should not happen
+			// This should not happen
 			$response = $GLOBALS['LANG']->getLL('list.report.noinformation');
 		}
-
 		return $response;
 	}
 
@@ -285,16 +246,17 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	public function getBrokenUrl($row) {
 		$domain = rtrim(t3lib_div::getIndpEnv('TYPO3_SITE_URL'), '/');
 		$rootLine = t3lib_BEfunc::BEgetRootLine($row['record_pid']);
-			// checks alternate domains
+		// checks alternate domains
 		if (count($rootLine) > 0) {
-				$protocol = t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
-				$domainRecord = t3lib_BEfunc::firstDomainRecord($rootLine);
-				if (!empty($domainRecord)) {
-					$domain = $protocol . $domainRecord;
-				}
+			$protocol = t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
+			$domainRecord = t3lib_BEfunc::firstDomainRecord($rootLine);
+			if (!empty($domainRecord)) {
+				$domain = $protocol . $domainRecord;
+			}
 		}
-		return $domain . '/index.php?id=' . $row['url'];
+		return ($domain . '/index.php?id=') . $row['url'];
 	}
+
 }
 
 ?>

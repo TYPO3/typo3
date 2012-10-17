@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * This class provides Scheduler plugin implementation
  *
@@ -230,7 +229,6 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		$this->configuration = $configuration;
 	}
 
-
 	/**
 	 * Function execute from the Scheduler
 	 *
@@ -239,16 +237,12 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	public function execute() {
 		$this->setCliArguments();
 		$successfullyExecuted = TRUE;
-		if (!file_exists($file = t3lib_div::getFileAbsFileName($this->emailTemplateFile)) && !empty($this->email)) {
-			throw new Exception(
-				$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidEmailTemplateFile'),
-				'1295476972'
-			);
+		if (!file_exists(($file = t3lib_div::getFileAbsFileName($this->emailTemplateFile))) && !empty($this->email)) {
+			throw new Exception($GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidEmailTemplateFile'), '1295476972');
 		}
 		$htmlFile = t3lib_div::getURL($file);
 		$this->templateMail = t3lib_parsehtml::getSubpart($htmlFile, '###REPORT_TEMPLATE###');
-
-			// The array to put the content into
+		// The array to put the content into
 		$html = array();
 		$pageSections = '';
 		$this->dif = FALSE;
@@ -262,10 +256,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		if ($this->totalBrokenLink != $this->oldTotalBrokenLink) {
 			$this->dif = TRUE;
 		}
-		if ($this->totalBrokenLink > 0
-			&& (!$this->emailOnBrokenLinkOnly || $this->dif)
-			&& !empty($this->email)
-		) {
+		if (($this->totalBrokenLink > 0 && (!$this->emailOnBrokenLinkOnly || $this->dif)) && !empty($this->email)) {
 			$successfullyExecuted = $this->reportEmail($pageSections, $modTS);
 		}
 		return $successfullyExecuted;
@@ -282,46 +273,37 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		$pageSections = '';
 		$pageIds = '';
 		$oldLinkCounts = array();
-
 		$modTS = $this->loadModTSconfig($page);
 		$searchFields = $this->getSearchField($modTS);
 		$linkTypes = $this->getLinkTypes($modTS);
-
-			/** @var tx_linkvalidator_processor $processor */
+		/** @var tx_linkvalidator_processor $processor */
 		$processor = t3lib_div::makeInstance('tx_linkvalidator_Processor');
-
 		if ($page === 0) {
 			$rootLineHidden = FALSE;
 		} else {
 			$pageRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . $page);
 			$rootLineHidden = $processor->getRootLineIsHidden($pageRow);
 		}
-
 		if (!$rootLineHidden || $modTS['checkhidden'] == 1) {
 			$pageIds = $processor->extGetTreeList($page, $this->depth, 0, '1=1', $modTS['checkhidden']);
 			if ($pageRow['hidden'] == 0 || $modTS['checkhidden'] == 1) {
-					// tx_linkvalidator_Processor::extGetTreeList always adds trailing comma:
+				// tx_linkvalidator_Processor::extGetTreeList always adds trailing comma:
 				$pageIds .= $page;
 			}
 		}
-
 		if (!empty($pageIds)) {
 			$processor->init($searchFields, $pageIds);
-
 			if (!empty($this->email)) {
 				$oldLinkCounts = $processor->getLinkCounts($page);
 				$this->oldTotalBrokenLink += $oldLinkCounts['brokenlinkCount'];
 			}
-
 			$processor->getLinkStatistics($linkTypes, $modTS['checkhidden']);
-
 			if (!empty($this->email)) {
 				$linkCounts = $processor->getLinkCounts($page);
 				$this->totalBrokenLink += $linkCounts['brokenlinkCount'];
 				$pageSections = $this->buildMail($page, $pageIds, $linkCounts, $oldLinkCounts);
 			}
 		}
-
 		return $pageSections;
 	}
 
@@ -340,10 +322,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 			foreach ($parseObj->errors as $errorInfo) {
 				$parseErrorMessage .= $errorInfo[0] . '<br />';
 			}
-			throw new Exception(
-				$parseErrorMessage,
-				'1295476989'
-			);
+			throw new Exception($parseErrorMessage, '1295476989');
 		}
 		$TSconfig = $parseObj->setup;
 		$modTS = $modTS['properties'];
@@ -381,8 +360,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		$linkTypes = array();
 		$typesTmp = t3lib_div::trimExplode(',', $modTS['linktypes'], 1);
 		if (is_array($typesTmp)) {
-			if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])
-				&& is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
+			if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $type => $value) {
 					if (in_array($type, $typesTmp)) {
 						$linkTypes[$type] = 1;
@@ -408,16 +386,14 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		$validEmailList = array();
 		/** @var boolean $sendEmail */
 		$sendEmail = TRUE;
-
 		$markerArray['totalBrokenLink'] = $this->totalBrokenLink;
 		$markerArray['totalBrokenLink_old'] = $this->oldTotalBrokenLink;
-
-			// Hook
+		// Hook
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['reportEmailMarkers'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['reportEmailMarkers'] as $userFunc) {
 				$params = array(
 					'pObj' => &$this,
-					'markerArray' => $markerArray,
+					'markerArray' => $markerArray
 				);
 				$newMarkers = t3lib_div::callUserFunction($userFunc, $params, $this);
 				if (is_array($newMarkers)) {
@@ -426,9 +402,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 				unset($params);
 			}
 		}
-
 		$content = t3lib_parsehtml::substituteMarkerArray($content, $markerArray, '###|###', TRUE, TRUE);
-
 		/** @var t3lib_mail_Message $mail */
 		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
 		if (empty($modTS['mail.']['fromemail'])) {
@@ -440,31 +414,21 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		if (t3lib_div::validEmail($modTS['mail.']['fromemail'])) {
 			$mail->setFrom(array($modTS['mail.']['fromemail'] => $modTS['mail.']['fromname']));
 		} else {
-			throw new Exception(
-				$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidFromEmail'),
-				'1295476760'
-			);
+			throw new Exception($GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidFromEmail'), '1295476760');
 		}
 		if (t3lib_div::validEmail($modTS['mail.']['replytoemail'])) {
 			$mail->setReplyTo(array($modTS['mail.']['replytoemail'] => $modTS['mail.']['replytoname']));
 		}
-
 		if (!empty($modTS['mail.']['subject'])) {
 			$mail->setSubject($modTS['mail.']['subject']);
 		} else {
-			throw new Exception(
-				$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.noSubject'),
-				'1295476808'
-			);
+			throw new Exception($GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.noSubject'), '1295476808');
 		}
 		if (!empty($this->email)) {
 			$emailList = t3lib_div::trimExplode(',', $this->email);
 			foreach ($emailList as $emailAdd) {
 				if (!t3lib_div::validEmail($emailAdd)) {
-					throw new Exception(
-						$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidToEmail'),
-						'1295476821'
-					);
+					throw new Exception($GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidToEmail'), '1295476821');
 				} else {
 					$validEmailList[] = $emailAdd;
 				}
@@ -475,15 +439,12 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 		} else {
 			$sendEmail = FALSE;
 		}
-
 		if ($sendEmail) {
 			$mail->setBody($content, 'text/html');
 			$mail->send();
 		}
-
 		return $sendEmail;
 	}
-
 
 	/**
 	 * Build the mail content
@@ -496,8 +457,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 	 */
 	protected function buildMail($curPage, $pageList, array $markerArray, array $oldBrokenLink) {
 		$pageSectionHTML = t3lib_parsehtml::getSubpart($this->templateMail, '###PAGE_SECTION###');
-
-			// Hook
+		// Hook
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['buildMailMarkers'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['buildMailMarkers'] as $userFunc) {
 				$params = array(
@@ -505,7 +465,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 					'pageList' => $pageList,
 					'markerArray' => $markerArray,
 					'oldBrokenLink' => $oldBrokenLink,
-					'pObj' => &$this,
+					'pObj' => &$this
 				);
 				$newMarkers = t3lib_div::callUserFunction($userFunc, $params, $this);
 				if (is_array($newMarkers)) {
@@ -514,7 +474,6 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 				unset($params);
 			}
 		}
-
 		if (is_array($markerArray)) {
 			foreach ($markerArray as $markerKey => $markerValue) {
 				if (empty($oldBrokenLink[$markerKey])) {
@@ -527,14 +486,12 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 			}
 		}
 		$markerArray['title'] = t3lib_BEfunc::getRecordTitle('pages', t3lib_BEfunc::getRecord('pages', $curPage));
-
 		$content = '';
 		if ($markerArray['brokenlinkCount'] > 0) {
 			$content = t3lib_parsehtml::substituteMarkerArray($pageSectionHTML, $markerArray, '###|###', TRUE, TRUE);
 		}
 		return $content;
 	}
-
 
 	/**
 	 * Simulate cli call with setting the required options to the $_SERVER['argv']
@@ -555,6 +512,7 @@ class tx_linkvalidator_tasks_Validator extends tx_scheduler_Task {
 			$this->countInARun
 		);
 	}
+
 }
 
 ?>
