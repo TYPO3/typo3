@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Core\Mail;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Hook subscriber for using Swift Mailer with the t3lib_utility_mail function
  *
@@ -73,7 +74,7 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 	 * @param string $messageBody Raw body (may be multipart)
 	 * @param array $additionalHeaders Additional mail headers
 	 * @param array $additionalParameters Extra parameters for the mail() command
-	 * @param bool $fakeSending If set fake sending a mail
+	 * @param boolean $fakeSending If set fake sending a mail
 	 * @throws \TYPO3\CMS\Core\Exception
 	 * @return bool
 	 */
@@ -141,69 +142,70 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 			$this->boundary = $matches[1];
 			return;
 		}
+
+		// Ignore empty header-values (like from an 'Reply-To:' without an email-address)
+		$headerValue = trim($headerValue);
+		if (empty($headerValue)) {
+			return;
+		}
+
 		// process other, real headers
 		if ($this->messageHeaders->has($headerName)) {
 			$header = $this->messageHeaders->get($headerName);
 			$headerType = $header->getFieldType();
 			switch ($headerType) {
-			case \Swift_Mime_Header::TYPE_TEXT:
-				$header->setValue($headerValue);
-				break;
-			case \Swift_Mime_Header::TYPE_PARAMETERIZED:
-				$header->setValue(rtrim($headerValue, ';'));
-				break;
-			case \Swift_Mime_Header::TYPE_MAILBOX:
-				$addressList = $this->parseAddresses($headerValue);
-				if (count($addressList) > 0) {
-					$header->setNameAddresses($addressList);
-				}
-				break;
-			case \Swift_Mime_Header::TYPE_DATE:
-				$header->setTimeStamp(strtotime($headerValue));
-				break;
-			case \Swift_Mime_Header::TYPE_ID:
-				// remove '<' and '>' from ID headers
-				$header->setId(trim($headerValue, '<>'));
-				break;
-			case \Swift_Mime_Header::TYPE_PATH:
-				$header->setAddress($headerValue);
-				break;
+				case \Swift_Mime_Header::TYPE_TEXT:
+					$header->setValue($headerValue);
+					break;
+				case \Swift_Mime_Header::TYPE_PARAMETERIZED:
+					$header->setValue(rtrim($headerValue, ';'));
+					break;
+				case \Swift_Mime_Header::TYPE_MAILBOX:
+					$addressList = $this->parseAddresses($headerValue);
+					if (count($addressList) > 0) {
+						$header->setNameAddresses($addressList);
+					}
+					break;
+				case \Swift_Mime_Header::TYPE_DATE:
+					$header->setTimeStamp(strtotime($headerValue));
+					break;
+				case \Swift_Mime_Header::TYPE_ID:
+					// remove '<' and '>' from ID headers
+					$header->setId(trim($headerValue, '<>'));
+					break;
+				case \Swift_Mime_Header::TYPE_PATH:
+					$header->setAddress($headerValue);
+					break;
 			}
 		} else {
 			switch ($headerName) {
-			case 'From':
-
-			case 'To':
-
-			case 'Cc':
-
-			case 'Bcc':
-
-			case 'Reply-To':
-
-			case 'Sender':
-				$addressList = $this->parseAddresses($headerValue);
-				if (count($addressList) > 0) {
-					$this->messageHeaders->addMailboxHeader($headerName, $addressList);
-				}
-				break;
-			case 'Date':
-				$this->messageHeaders->addDateHeader($headerName, strtotime($headerValue));
-				break;
-			case 'Message-ID':
-				// remove '<' and '>' from ID headers
-				$this->messageHeaders->addIdHeader($headerName, trim($headerValue, '<>'));
-			case 'Return-Path':
-				$this->messageHeaders->addPathHeader($headerName, $headerValue);
-				break;
-			case 'Content-Type':
-
-			case 'Content-Disposition':
-				$this->messageHeaders->addParameterizedHeader($headerName, rtrim($headerValue, ';'));
-				break;
-			default:
-				$this->messageHeaders->addTextheader($headerName, $headerValue);
-				break;
+				case 'From':
+				case 'To':
+				case 'Cc':
+				case 'Bcc':
+				case 'Reply-To':
+				case 'Sender':
+					$addressList = $this->parseAddresses($headerValue);
+					if (count($addressList) > 0) {
+						$this->messageHeaders->addMailboxHeader($headerName, $addressList);
+					}
+					break;
+				case 'Date':
+					$this->messageHeaders->addDateHeader($headerName, strtotime($headerValue));
+					break;
+				case 'Message-ID':
+					// remove '<' and '>' from ID headers
+					$this->messageHeaders->addIdHeader($headerName, trim($headerValue, '<>'));
+				case 'Return-Path':
+					$this->messageHeaders->addPathHeader($headerName, $headerValue);
+					break;
+				case 'Content-Type':
+				case 'Content-Disposition':
+					$this->messageHeaders->addParameterizedHeader($headerName, rtrim($headerValue, ';'));
+					break;
+				default:
+					$this->messageHeaders->addTextheader($headerName, $headerValue);
+					break;
 			}
 		}
 	}
@@ -276,12 +278,12 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 	protected function decode($text, $encoding) {
 		$result = $text;
 		switch ($encoding) {
-		case 'quoted-printable':
-			$result = quoted_printable_decode($text);
-			break;
-		case 'base64':
-			$result = base64_decode($text);
-			break;
+			case 'quoted-printable':
+				$result = quoted_printable_decode($text);
+				break;
+			case 'base64':
+				$result = base64_decode($text);
+				break;
 		}
 		return $result;
 	}
@@ -339,6 +341,5 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 	}
 
 }
-
 
 ?>
