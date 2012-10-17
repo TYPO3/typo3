@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * This class provides a task to cleanup ol preview links.
  *
@@ -35,17 +34,13 @@ class Tx_Workspaces_Service_CleanupPreviewLinkTask extends tx_scheduler_Task {
 	 * Cleanup old preview links.
 	 * endtime < $GLOBALS['EXEC_TIME']
 	 *
-	 * @return	boolean
+	 * @return 	boolean
 	 */
 	public function execute() {
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
-				// table
-			'sys_preview',
-				// where
-			'endtime < ' . intval($GLOBALS['EXEC_TIME'])
-		);
-
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_preview', 'endtime < ' . intval($GLOBALS['EXEC_TIME']));
 		return TRUE;
 	}
+
 }
+
 ?>

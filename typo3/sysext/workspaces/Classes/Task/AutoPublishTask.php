@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * This class provides a wrapper around the autopublication
  * mechanism of workspaces, as a Scheduler task
@@ -37,16 +36,18 @@ class Tx_Workspaces_Service_AutoPublishTask extends tx_scheduler_Task {
 	 * Call on the workspace logic to publish workspaces whose publication date
 	 * is in the past
 	 *
-	 * @return	boolean
+	 * @return 	boolean
 	 */
 	public function execute() {
 		$autopubObj = t3lib_div::makeInstance('Tx_Workspaces_Service_AutoPublish');
-			// Publish the workspaces that need to be
+		// Publish the workspaces that need to be
 		$autopubObj->autoPublishWorkspaces();
-			// There's no feedback from the publishing process,
-			// so there can't be any failure.
-			// TODO: This could certainly be improved.
+		// There's no feedback from the publishing process,
+		// so there can't be any failure.
+		// TODO: This could certainly be improved.
 		return TRUE;
 	}
+
 }
+
 ?>

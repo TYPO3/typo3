@@ -24,22 +24,21 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Interface for classes which perform pre or post processing
  *
  * @author Tolleiv Nietsch <typo3@tolleiv.de>
- * @package	TYPO3
+ * @package 	TYPO3
  * @subpackage t3lib
  */
 class Tx_Workspaces_ExtDirect_PagetreeCollectionsProcessor implements t3lib_tree_pagetree_interfaces_CollectionProcessor {
 
 	/**
 	 * @abstract
-	 * @param  t3lib_tree_pagetree_Node $node
-	 * @param  int $mountPoint
-	 * @param  int $level
-	 * @param  t3lib_tree_pagetree_NodeCollection $nodeCollection
+	 * @param t3lib_tree_pagetree_Node $node
+	 * @param int $mountPoint
+	 * @param int $level
+	 * @param t3lib_tree_pagetree_NodeCollection $nodeCollection
 	 * @return void
 	 */
 	public function postProcessGetNodes($node, $mountPoint, $level, $nodeCollection) {
@@ -51,10 +50,10 @@ class Tx_Workspaces_ExtDirect_PagetreeCollectionsProcessor implements t3lib_tree
 
 	/**
 	 * @abstract
-	 * @param  t3lib_tree_pagetree_Node $node
-	 * @param  string $searchFilter
-	 * @param  int $mountPoint
-	 * @param  t3lib_tree_pagetree_NodeCollection $nodeCollection
+	 * @param t3lib_tree_pagetree_Node $node
+	 * @param string $searchFilter
+	 * @param int $mountPoint
+	 * @param t3lib_tree_pagetree_NodeCollection $nodeCollection
 	 * @return void
 	 */
 	public function postProcessFilteredNodes($node, $searchFilter, $mountPoint, $nodeCollection) {
@@ -66,8 +65,8 @@ class Tx_Workspaces_ExtDirect_PagetreeCollectionsProcessor implements t3lib_tree
 
 	/**
 	 * @abstract
-	 * @param  string $searchFilter
-	 * @param  t3lib_tree_pagetree_NodeCollection $nodeCollection
+	 * @param string $searchFilter
+	 * @param t3lib_tree_pagetree_NodeCollection $nodeCollection
 	 * @return void
 	 */
 	public function postProcessGetTreeMounts($searchFilter, $nodeCollection) {
@@ -85,10 +84,11 @@ class Tx_Workspaces_ExtDirect_PagetreeCollectionsProcessor implements t3lib_tree
 	 * @return void
 	 */
 	protected function highlightVersionizedElements(t3lib_tree_Node $node) {
-		if (!$node->getCls() && count(t3lib_BEfunc::countVersionsOfRecordsOnPage($GLOBALS['BE_USER']->workspace, $node->getId(), TRUE)))	{
+		if (!$node->getCls() && count(t3lib_BEfunc::countVersionsOfRecordsOnPage($GLOBALS['BE_USER']->workspace, $node->getId(), TRUE))) {
 			$node->setCls('ver-versions');
 		}
 	}
+
 }
 
 ?>

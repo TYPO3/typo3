@@ -24,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Befunc service
  *
@@ -33,12 +32,13 @@
  * @subpackage Service
  */
 class Tx_Workspaces_Service_Befunc implements t3lib_Singleton {
+
 	/**
 	 * Gets a singleton instance of this object.
 	 *
 	 * @return Tx_Workspaces_Service_Befunc
 	 */
-	public static function getInstance() {
+	static public function getInstance() {
 		return t3lib_div::makeInstance('Tx_Workspaces_Service_Befunc');
 	}
 
@@ -46,13 +46,13 @@ class Tx_Workspaces_Service_Befunc implements t3lib_Singleton {
 	 * Hooks into the t3lib_beFunc::viewOnClick and redirects to the workspace preview
 	 * only if we're in a workspace and if the frontend-preview is disabled.
 	 *
-	 * @param  $pageUid
-	 * @param  $backPath
-	 * @param  $rootLine
-	 * @param  $anchorSection
-	 * @param  $viewScript
-	 * @param  $additionalGetVars
-	 * @param  $switchFocus
+	 * @param $pageUid
+	 * @param $backPath
+	 * @param $rootLine
+	 * @param $anchorSection
+	 * @param $viewScript
+	 * @param $additionalGetVars
+	 * @param $switchFocus
 	 * @return void
 	 */
 	public function preProcess(&$pageUid, $backPath, $rootLine, $anchorSection, &$viewScript, $additionalGetVars, $switchFocus) {
@@ -88,8 +88,8 @@ class Tx_Workspaces_Service_Befunc implements t3lib_Singleton {
 	 * Use that hook to show a info message in case someone starts editing
 	 * a staged element
 	 *
-	 * @param  $params
-	 * @param  $form
+	 * @param $params
+	 * @param $form
 	 * @return boolean
 	 */
 	public function makeEditForm_accessCheck($params, &$form) {
@@ -100,17 +100,13 @@ class Tx_Workspaces_Service_Befunc implements t3lib_Singleton {
 				$stageName = $stages->getStageTitle($record['t3ver_stage']);
 				$editingName = $stages->getStageTitle(Tx_Workspaces_Service_Stages::STAGE_EDIT_ID);
 				$message = $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:info.elementAlreadyModified');
-				$flashMessage = t3lib_div::makeInstance(
-					't3lib_FlashMessage',
-					sprintf($message, $stageName, $editingName),
-					'',
-					t3lib_FlashMessage::INFO,
-					TRUE
-				);
+				$flashMessage = t3lib_div::makeInstance('t3lib_FlashMessage', sprintf($message, $stageName, $editingName), '', t3lib_FlashMessage::INFO, TRUE);
 				t3lib_FlashMessageQueue::addMessage($flashMessage);
 			}
 		}
 		return $params['hasAccess'];
 	}
+
 }
+
 ?>

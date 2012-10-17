@@ -35,7 +35,7 @@ $TCA['sys_workspace'] = array(
 				'show_thumbs' => '1',
 				'wizards' => array(
 					'suggest' => array(
-						'type' => 'suggest',
+						'type' => 'suggest'
 					)
 				)
 			)
@@ -53,7 +53,7 @@ $TCA['sys_workspace'] = array(
 				'show_thumbs' => '1',
 				'wizards' => array(
 					'suggest' => array(
-						'type' => 'suggest',
+						'type' => 'suggest'
 					)
 				)
 			)
@@ -63,14 +63,14 @@ $TCA['sys_workspace'] = array(
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
-					'allowed' => 'pages',
+				'allowed' => 'pages',
 				'size' => '3',
 				'maxitems' => 25,
 				'autoSizeMax' => 10,
 				'show_thumbs' => '1',
 				'wizards' => array(
 					'suggest' => array(
-						'type' => 'suggest',
+						'type' => 'suggest'
 					)
 				)
 			)
@@ -85,7 +85,7 @@ $TCA['sys_workspace'] = array(
 				'maxitems' => 25,
 				'autoSizeMax' => 10,
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
-				'iconsInOptionTags' => 1,
+				'iconsInOptionTags' => 1
 			)
 		),
 		'publish_time' => array(
@@ -109,10 +109,10 @@ $TCA['sys_workspace'] = array(
 				'checkbox' => '0',
 				'default' => '0',
 				'range' => array(
-					'upper' => mktime(0, 0, 0, 12, 31, 2020),
+					'upper' => mktime(0, 0, 0, 12, 31, 2020)
 				)
 			),
-			'displayCond' => 'FALSE'			// this feature doesn't work yet therefore it's not shown by default
+			'displayCond' => 'FALSE'
 		),
 		'freeze' => array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.freeze',
@@ -143,7 +143,7 @@ $TCA['sys_workspace'] = array(
 					array('', 0),
 					array('Swap-Into-Workspace on Auto-publish', 1),
 					array('Disable Swap-Into-Workspace', 2)
-				),
+				)
 			)
 		),
 		'publish_access' => array(
@@ -152,8 +152,8 @@ $TCA['sys_workspace'] = array(
 				'type' => 'check',
 				'items' => array(
 					array('Publish only content in publish stage', 0),
-					array('Only workspace owner can publish', 0),
-				),
+					array('Only workspace owner can publish', 0)
+				)
 			)
 		),
 		'stagechg_notification' => array(
@@ -164,21 +164,21 @@ $TCA['sys_workspace'] = array(
 					array('', 0),
 					array('Notify users on next stage only', 1),
 					array('Notify all users on any change', 10)
-				),
+				)
 			)
 		),
-		'custom_stages' => Array (
+		'custom_stages' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.custom_stages',
-			'config' => Array (
+			'config' => array(
 				'type' => 'inline',
 				'foreign_table' => 'sys_workspace_stage',
 				'appearance' => 'useSortable,expandSingle',
 				'foreign_field' => 'parentid',
 				'foreign_table_field' => 'parenttable',
-				'minitems' => 0,
-				),
-				'default' => 0
+				'minitems' => 0
+			),
+			'default' => 0
 		),
 		'edit_notification_mode' => array(
 			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.edit_notification_mode',
@@ -188,7 +188,7 @@ $TCA['sys_workspace'] = array(
 					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.0', 0),
 					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.1', 1),
 					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.2', 2)
-				),
+				)
 			)
 		),
 		'edit_notification_defaults' => array(
@@ -205,7 +205,7 @@ $TCA['sys_workspace'] = array(
 				'show_thumbs' => '1',
 				'wizards' => array(
 					'suggest' => array(
-						'type' => 'suggest',
+						'type' => 'suggest'
 					)
 				)
 			)
@@ -214,7 +214,7 @@ $TCA['sys_workspace'] = array(
 			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.edit_allow_notificaton_settings',
 			'config' => array(
 				'type' => 'check',
-				'default' => 1,
+				'default' => 1
 			)
 		),
 		'publish_notification_mode' => array(
@@ -225,7 +225,7 @@ $TCA['sys_workspace'] = array(
 					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.0', 0),
 					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.1', 1),
 					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.2', 2)
-				),
+				)
 			)
 		),
 		'publish_notification_defaults' => array(
@@ -242,7 +242,7 @@ $TCA['sys_workspace'] = array(
 				'show_thumbs' => '1',
 				'wizards' => array(
 					'suggest' => array(
-						'type' => 'suggest',
+						'type' => 'suggest'
 					)
 				)
 			)
@@ -251,9 +251,9 @@ $TCA['sys_workspace'] = array(
 			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.publish_allow_notificaton_settings',
 			'config' => array(
 				'type' => 'check',
-				'default' => 1,
+				'default' => 1
 			)
-		),
+		)
 	),
 	'types' => array(
 		'0' => array('showitem' => 'title,description,
@@ -262,11 +262,9 @@ $TCA['sys_workspace'] = array(
 			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.mountpoints,db_mountpoints,file_mountpoints,
 			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.publishing,publish_time,unpublish_time,
 			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_filemounts.tabs.staging,custom_stages,
-			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.other,freeze,live_edit,disable_autocreate,swap_modes,publish_access'
-		)
+			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.other,freeze,live_edit,disable_autocreate,swap_modes,publish_access')
 	)
 );
-
 /**
  * Workspace stages - Defines the single workspace stages which are related to a workspace.
  */
@@ -295,7 +293,7 @@ $TCA['sys_workspace_stage'] = array(
 				'show_thumbs' => '1',
 				'wizards' => array(
 					'suggest' => array(
-						'type' => 'suggest',
+						'type' => 'suggest'
 					)
 				)
 			)
@@ -308,18 +306,18 @@ $TCA['sys_workspace_stage'] = array(
 				'cols' => 30
 			)
 		),
-		'parentid' => Array (
+		'parentid' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace_stage.parentid',
-			'config' => Array (
-				'type' => 'passthrough',
+			'config' => array(
+				'type' => 'passthrough'
 			)
 		),
-		'parenttable' => Array (
+		'parenttable' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace_stage.parenttable',
-			'config' => Array (
-				'type' => 'passthrough',
+			'config' => array(
+				'type' => 'passthrough'
 			)
 		),
 		'notification_mode' => array(
@@ -330,7 +328,7 @@ $TCA['sys_workspace_stage'] = array(
 					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.0', 0),
 					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.1', 1),
 					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace.notification_mode.2', 2)
-				),
+				)
 			)
 		),
 		'notification_defaults' => array(
@@ -347,7 +345,7 @@ $TCA['sys_workspace_stage'] = array(
 				'show_thumbs' => '1',
 				'wizards' => array(
 					'suggest' => array(
-						'type' => 'suggest',
+						'type' => 'suggest'
 					)
 				)
 			)
@@ -356,16 +354,14 @@ $TCA['sys_workspace_stage'] = array(
 			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xml:sys_workspace_stage.allow_notificaton_settings',
 			'config' => array(
 				'type' => 'check',
-				'default' => 1,
+				'default' => 1
 			)
-		),
+		)
 	),
 	'types' => array(
 		'0' => array('showitem' => '
 			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.general,title,responsible_persons,
-			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.notification_settings,notification_mode,notification_defaults,allow_notificaton_settings,default_mailcomment'
-		)
+			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:tabs.notification_settings,notification_mode,notification_defaults,allow_notificaton_settings,default_mailcomment')
 	)
 );
-
 ?>

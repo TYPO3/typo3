@@ -24,13 +24,13 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * @author Oliver Hader <oliver.hader@typo3.org>
  * @package Workspaces
  * @subpackage Domain
  */
 class Tx_Workspaces_Domain_Model_CombinedRecord {
+
 	/**
 	 * @var string
 	 */
@@ -54,14 +54,10 @@ class Tx_Workspaces_Domain_Model_CombinedRecord {
 	 * @param integer $versionId Id of the datbase version-record row
 	 * @return Tx_Workspaces_Domain_Model_CombinedRecord
 	 */
-	public static function create($table, $liveId, $versionId) {
+	static public function create($table, $liveId, $versionId) {
 		$liveRecord = Tx_Workspaces_Domain_Model_DatabaseRecord::create($table, $liveId);
 		$versionRecord = Tx_Workspaces_Domain_Model_DatabaseRecord::create($table, $versionId);
-
-		return t3lib_div::makeInstance(
-			'Tx_Workspaces_Domain_Model_CombinedRecord',
-			$table, $liveRecord, $versionRecord
-		);
+		return t3lib_div::makeInstance('Tx_Workspaces_Domain_Model_CombinedRecord', $table, $liveRecord, $versionRecord);
 	}
 
 	/**
@@ -72,14 +68,10 @@ class Tx_Workspaces_Domain_Model_CombinedRecord {
 	 * @param array $versionRow The relevant database version-record row
 	 * @return Tx_Workspaces_Domain_Model_CombinedRecord
 	 */
-	public static function createFromArrays($table, array $liveRow, array $versionRow) {
+	static public function createFromArrays($table, array $liveRow, array $versionRow) {
 		$liveRecord = Tx_Workspaces_Domain_Model_DatabaseRecord::createFromArray($table, $liveRow);
 		$versionRecord = Tx_Workspaces_Domain_Model_DatabaseRecord::createFromArray($table, $versionRow);
-
-		return t3lib_div::makeInstance(
-			'Tx_Workspaces_Domain_Model_CombinedRecord',
-			$table, $liveRecord, $versionRecord
-		);
+		return t3lib_div::makeInstance('Tx_Workspaces_Domain_Model_CombinedRecord', $table, $liveRecord, $versionRecord);
 	}
 
 	/**
@@ -169,5 +161,7 @@ class Tx_Workspaces_Domain_Model_CombinedRecord {
 	public function getVersiondId() {
 		return $this->getVersionRecord()->getUid();
 	}
+
 }
+
 ?>

@@ -24,13 +24,13 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * @author Oliver Hader <oliver.hader@typo3.org>
  * @package Workspaces
  * @subpackage Service
  */
 class Tx_Workspaces_Service_History implements t3lib_Singleton {
+
 	/**
 	 * @var array
 	 */
@@ -64,15 +64,12 @@ class Tx_Workspaces_Service_History implements t3lib_Singleton {
 	public function getHistory($table, $id) {
 		$history = array();
 		$i = 0;
-
 		foreach ($this->getHistoryObject($table, $id)->changeLog as $entry) {
 			if ($i++ > 20) {
 				break;
 			}
-
 			$history[] = $this->getHistoryEntry($entry);
 		}
-
 		return $history;
 	}
 
@@ -88,16 +85,12 @@ class Tx_Workspaces_Service_History implements t3lib_Singleton {
 		if (!empty($entry['action'])) {
 			$differences = $entry['action'];
 		} else {
-			$differences = implode(
-				'<br/>',
-				$this->getDifferences($entry)
-			);
+			$differences = implode('<br/>', $this->getDifferences($entry));
 		}
-
 		return array(
 			'datetime' => htmlspecialchars(t3lib_BEfunc::datetime($entry['tstamp'])),
 			'user' => htmlspecialchars($this->getUserName($entry['user'])),
-			'differences' => $differences,
+			'differences' => $differences
 		);
 	}
 
@@ -111,26 +104,17 @@ class Tx_Workspaces_Service_History implements t3lib_Singleton {
 	protected function getDifferences(array $entry) {
 		$differences = array();
 		$tableName = $entry['tablename'];
-
 		if (is_array($entry['newRecord'])) {
 			$fields = array_keys($entry['newRecord']);
-
 			foreach ($fields as $field) {
 				t3lib_div::loadTCA($tableName);
-
 				if (!empty($GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type']) && $GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type'] !== 'passthrough') {
-
-						// Create diff-result:
-					$fieldDifferences = $this->getDifferencesObject()->makeDiffDisplay(
-						t3lib_BEfunc::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, TRUE),
-						t3lib_BEfunc::getProcessedValue($tableName ,$field, $entry['newRecord'][$field], 0, TRUE)
-					);
-
+					// Create diff-result:
+					$fieldDifferences = $this->getDifferencesObject()->makeDiffDisplay(t3lib_BEfunc::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, TRUE), t3lib_BEfunc::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, TRUE));
 					$differences[] = nl2br($fieldDifferences);
 				}
 			}
 		}
-
 		return $differences;
 	}
 
@@ -142,11 +126,9 @@ class Tx_Workspaces_Service_History implements t3lib_Singleton {
 	 */
 	protected function getUserName($user) {
 		$userName = 'unknown';
-
 		if (!empty($this->backendUserNames[$user]['username'])) {
 			$userName = $this->backendUserNames[$user]['username'];
 		}
-
 		return $userName;
 	}
 
@@ -161,12 +143,10 @@ class Tx_Workspaces_Service_History implements t3lib_Singleton {
 		if (!isset($this->historyObjects[$table][$id])) {
 			/** @var $historyObject recordHistory */
 			$historyObject = t3lib_div::makeInstance('recordHistory');
-			$historyObject->element = $table . ':' . $id;
+			$historyObject->element = ($table . ':') . $id;
 			$historyObject->createChangeLog();
-
 			$this->historyObjects[$table][$id] = $historyObject;
 		}
-
 		return $this->historyObjects[$table][$id];
 	}
 
@@ -179,8 +159,9 @@ class Tx_Workspaces_Service_History implements t3lib_Singleton {
 		if (!isset($this->differencesObject)) {
 			$this->differencesObject = t3lib_div::makeInstance('t3lib_diff');
 		}
-
 		return $this->differencesObject;
 	}
+
 }
+
 ?>

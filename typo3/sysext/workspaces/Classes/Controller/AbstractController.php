@@ -24,9 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-require_once(PATH_site . TYPO3_mainDir . 'template.php');
-
+require_once (PATH_site . TYPO3_mainDir) . 'template.php';
 /**
  * Abstract action controller.
  *
@@ -35,6 +33,7 @@ require_once(PATH_site . TYPO3_mainDir . 'template.php');
  * @subpackage Controller
  */
 class Tx_Workspaces_Controller_AbstractController extends Tx_Extbase_MVC_Controller_ActionController {
+
 	/**
 	 * @var string Key of the extension this controller belongs to
 	 */
@@ -58,36 +57,31 @@ class Tx_Workspaces_Controller_AbstractController extends Tx_Extbase_MVC_Control
 	protected function initializeAction() {
 		// @todo Evaluate how the intval() call can be used with Extbase validators/filters
 		$this->pageId = intval(t3lib_div::_GP('id'));
-
 		$icons = array(
 			'language' => t3lib_iconWorks::getSpriteIconClasses('flags-multiple'),
 			'integrity' => t3lib_iconWorks::getSpriteIconClasses('status-dialog-information'),
 			'success' => t3lib_iconWorks::getSpriteIconClasses('status-dialog-ok'),
 			'info' => t3lib_iconWorks::getSpriteIconClasses('status-dialog-information'),
 			'warning' => t3lib_iconWorks::getSpriteIconClasses('status-dialog-warning'),
-			'error' => t3lib_iconWorks::getSpriteIconClasses('status-dialog-error'),
+			'error' => t3lib_iconWorks::getSpriteIconClasses('status-dialog-error')
 		);
-
 		$this->pageRenderer->addInlineSetting('Workspaces', 'icons', $icons);
 		$this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);
-		$this->pageRenderer->addInlineSetting('Workspaces', 'depth', ($this->pageId === 0 ? 999 : 1));
+		$this->pageRenderer->addInlineSetting('Workspaces', 'depth', $this->pageId === 0 ? 999 : 1);
 		$this->pageRenderer->addInlineSetting('Workspaces', 'language', $this->getLanguageSelection());
-
 		$this->pageRenderer->addCssFile(t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/StyleSheet/module.css');
-
 		$this->pageRenderer->addInlineLanguageLabelArray(array(
-			'title'			=> $GLOBALS['LANG']->getLL('title'),
-			'path'			=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.path'),
-			'table'			=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.table'),
-			'depth'			=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_perm.xml:Depth'),
-			'depth_0'		=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_0'),
-			'depth_1'		=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_1'),
-			'depth_2'		=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_2'),
-			'depth_3'		=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_3'),
-			'depth_4'		=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_4'),
-			'depth_infi'	=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_infi'),
+			'title' => $GLOBALS['LANG']->getLL('title'),
+			'path' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.path'),
+			'table' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.table'),
+			'depth' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_perm.xml:Depth'),
+			'depth_0' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_0'),
+			'depth_1' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_1'),
+			'depth_2' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_2'),
+			'depth_3' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_3'),
+			'depth_4' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_4'),
+			'depth_infi' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_infi')
 		));
-
 		$this->pageRenderer->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xml');
 	}
 
@@ -102,18 +96,12 @@ class Tx_Workspaces_Controller_AbstractController extends Tx_Extbase_MVC_Control
 	public function processRequest(Tx_Extbase_MVC_RequestInterface $request, Tx_Extbase_MVC_ResponseInterface $response) {
 		$this->template = t3lib_div::makeInstance('template');
 		$this->pageRenderer = $this->template->getPageRenderer();
-
 		$GLOBALS['SOBE'] = new stdClass();
 		$GLOBALS['SOBE']->doc = $this->template;
-
 		parent::processRequest($request, $response);
-
-		$pageHeader = $this->template->startpage(
-			$GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:module.title')
-		);
+		$pageHeader = $this->template->startpage($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:module.title'));
 		$pageEnd = $this->template->endPage();
-
-		$response->setContent($pageHeader . $response->getContent() . $pageEnd);
+		$response->setContent(($pageHeader . $response->getContent()) . $pageEnd);
 	}
 
 	/**
@@ -123,12 +111,12 @@ class Tx_Workspaces_Controller_AbstractController extends Tx_Extbase_MVC_Control
 	 */
 	protected function getLanguageSelection() {
 		$language = 'all';
-
 		if (isset($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['language'])) {
 			$language = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['language'];
 		}
-
 		return $language;
 	}
+
 }
+
 ?>

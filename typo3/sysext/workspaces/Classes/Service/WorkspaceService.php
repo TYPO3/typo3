@@ -24,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Workspace service
  *
@@ -33,6 +32,7 @@
  * @subpackage Service
  */
 class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
+
 	/**
 	 * @var array
 	 */
@@ -41,22 +41,19 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	const TABLE_WORKSPACE = 'sys_workspace';
 	const SELECT_ALL_WORKSPACES = -98;
 	const LIVE_WORKSPACE_ID = 0;
-
 	/**
 	 * retrieves the available workspaces from the database and checks whether
 	 * they're available to the current BE user
 	 *
-	 * @return	array	array of worspaces available to the current user
+	 * @return 	array	array of worspaces available to the current user
 	 */
 	public function getAvailableWorkspaces() {
 		$availableWorkspaces = array();
-
-			// add default workspaces
+		// add default workspaces
 		if ($GLOBALS['BE_USER']->checkWorkspace(array('uid' => (string) self::LIVE_WORKSPACE_ID))) {
 			$availableWorkspaces[self::LIVE_WORKSPACE_ID] = self::getWorkspaceTitle(self::LIVE_WORKSPACE_ID);
 		}
-
-			// add custom workspaces (selecting all, filtering by BE_USER check):
+		// add custom workspaces (selecting all, filtering by BE_USER check):
 		$customWorkspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, title, adminusers, members', 'sys_workspace', 'pid = 0' . t3lib_BEfunc::deleteClause('sys_workspace'), '', 'title');
 		if (count($customWorkspaces)) {
 			foreach ($customWorkspaces as $workspace) {
@@ -65,7 +62,6 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 				}
 			}
 		}
-
 		return $availableWorkspaces;
 	}
 
@@ -89,45 +85,39 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	 * @param integer $wsId
 	 * @return string
 	 */
-	public static function getWorkspaceTitle($wsId) {
+	static public function getWorkspaceTitle($wsId) {
 		$title = FALSE;
 		switch ($wsId) {
-			case self::LIVE_WORKSPACE_ID:
-				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:shortcut_onlineWS');
-				break;
-			default:
-				$labelField = $GLOBALS['TCA']['sys_workspace']['ctrl']['label'];
-				$wsRecord = t3lib_beFunc::getRecord('sys_workspace', $wsId, 'uid,' . $labelField);
-				if (is_array($wsRecord)) {
-					$title = $wsRecord[$labelField];
-				}
+		case self::LIVE_WORKSPACE_ID:
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:shortcut_onlineWS');
+			break;
+		default:
+			$labelField = $GLOBALS['TCA']['sys_workspace']['ctrl']['label'];
+			$wsRecord = t3lib_beFunc::getRecord('sys_workspace', $wsId, 'uid,' . $labelField);
+			if (is_array($wsRecord)) {
+				$title = $wsRecord[$labelField];
+			}
 		}
-
 		if ($title === FALSE) {
 			throw new InvalidArgumentException('No such workspace defined');
 		}
-
 		return $title;
 	}
-
 
 	/**
 	 * Building tcemain CMD-array for swapping all versions in a workspace.
 	 *
-	 * @param	integer		Real workspace ID, cannot be ONLINE (zero).
-	 * @param	boolean		If set, then the currently online versions are swapped into the workspace in exchange for the offline versions. Otherwise the workspace is emptied.
-	 * @param	integer		$pageId: ...
-	 * @param	integer		$language Select specific language only
-	 * @return	array		Command array for tcemain
+	 * @param 	integer		Real workspace ID, cannot be ONLINE (zero).
+	 * @param 	boolean		If set, then the currently online versions are swapped into the workspace in exchange for the offline versions. Otherwise the workspace is emptied.
+	 * @param 	integer		$pageId: ...
+	 * @param 	integer		$language Select specific language only
+	 * @return 	array		Command array for tcemain
 	 */
 	public function getCmdArrayForPublishWS($wsid, $doSwap, $pageId = 0, $language = NULL) {
-
 		$wsid = intval($wsid);
 		$cmd = array();
-
-		if ($wsid >= -1 && $wsid!==0) {
-
-				// Define stage to select:
+		if ($wsid >= -1 && $wsid !== 0) {
+			// Define stage to select:
 			$stage = -99;
 			if ($wsid > 0) {
 				$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $wsid);
@@ -135,14 +125,12 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 					$stage = Tx_Workspaces_Service_Stages::STAGE_PUBLISH_ID;
 				}
 			}
-
-				// Select all versions to swap:
-			$versions = $this->selectVersionsInWorkspace($wsid, 0, $stage, ($pageId ? $pageId : -1), 0, 'tables_modify', $language);
-
-				// Traverse the selection to build CMD array:
+			// Select all versions to swap:
+			$versions = $this->selectVersionsInWorkspace($wsid, 0, $stage, $pageId ? $pageId : -1, 0, 'tables_modify', $language);
+			// Traverse the selection to build CMD array:
 			foreach ($versions as $table => $records) {
 				foreach ($records as $rec) {
-						// Build the cmd Array:
+					// Build the cmd Array:
 					$cmd[$table][$rec['t3ver_oid']]['version'] = array('action' => 'swap', 'swapWith' => $rec['uid'], 'swapIntoWS' => $doSwap ? 1 : 0);
 				}
 			}
@@ -150,69 +138,60 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 		return $cmd;
 	}
 
-
 	/**
 	 * Building tcemain CMD-array for releasing all versions in a workspace.
 	 *
-	 * @param	integer		Real workspace ID, cannot be ONLINE (zero).
-	 * @param	boolean		Run Flush (TRUE) or ClearWSID (FALSE) command
-	 * @param	integer		$pageId: ...
-	 * @param	integer		$language Select specific language only
-	 * @return	array		Command array for tcemain
+	 * @param 	integer		Real workspace ID, cannot be ONLINE (zero).
+	 * @param 	boolean		Run Flush (TRUE) or ClearWSID (FALSE) command
+	 * @param 	integer		$pageId: ...
+	 * @param 	integer		$language Select specific language only
+	 * @return 	array		Command array for tcemain
 	 */
 	public function getCmdArrayForFlushWS($wsid, $flush = TRUE, $pageId = 0, $language = NULL) {
-
 		$wsid = intval($wsid);
 		$cmd = array();
-
-		if ($wsid >= -1 && $wsid!==0) {
-				// Define stage to select:
+		if ($wsid >= -1 && $wsid !== 0) {
+			// Define stage to select:
 			$stage = -99;
-
-				// Select all versions to swap:
-			$versions = $this->selectVersionsInWorkspace($wsid, 0, $stage, ($pageId ? $pageId : -1), 0, 'tables_modify', $language);
-
-				// Traverse the selection to build CMD array:
+			// Select all versions to swap:
+			$versions = $this->selectVersionsInWorkspace($wsid, 0, $stage, $pageId ? $pageId : -1, 0, 'tables_modify', $language);
+			// Traverse the selection to build CMD array:
 			foreach ($versions as $table => $records) {
 				foreach ($records as $rec) {
 					// Build the cmd Array:
-					$cmd[$table][$rec['uid']]['version'] = array('action' => ($flush ? 'flush' : 'clearWSID'));
+					$cmd[$table][$rec['uid']]['version'] = array('action' => $flush ? 'flush' : 'clearWSID');
 				}
 			}
 		}
 		return $cmd;
 	}
 
-
 	/**
 	 * Select all records from workspace pending for publishing
 	 * Used from backend to display workspace overview
 	 * User for auto-publishing for selecting versions for publication
 	 *
-	 * @param	integer		Workspace ID. If -99, will select ALL versions from ANY workspace. If -98 will select all but ONLINE. >=-1 will select from the actual workspace
-	 * @param	integer		Lifecycle filter: 1 = select all drafts (never-published), 2 = select all published one or more times (archive/multiple), anything else selects all.
-	 * @param	integer		Stage filter: -99 means no filtering, otherwise it will be used to select only elements with that stage. For publishing, that would be "10"
-	 * @param	integer		Page id: Live page for which to find versions in workspace!
-	 * @param	integer		Recursion Level - select versions recursive - parameter is only relevant if $pageId != -1
-	 * @param	string		How to collect records for "listing" or "modify" these tables. Support the permissions of each type of record (@see t3lib_userAuthGroup::check).
-	 * @parem	integer		$language Select specific language only
-	 * @return	array		Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oidfields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid"
+	 * @param 	integer		Workspace ID. If -99, will select ALL versions from ANY workspace. If -98 will select all but ONLINE. >=-1 will select from the actual workspace
+	 * @param 	integer		Lifecycle filter: 1 = select all drafts (never-published), 2 = select all published one or more times (archive/multiple), anything else selects all.
+	 * @param 	integer		Stage filter: -99 means no filtering, otherwise it will be used to select only elements with that stage. For publishing, that would be "10
+	 * @param 	integer		Page id: Live page for which to find versions in workspace!
+	 * @param 	integer		Recursion Level - select versions recursive - parameter is only relevant if $pageId != -1
+	 * @param 	string		How to collect records for "listing" or "modify" these tables. Support the permissions of each type of record (@see t3lib_userAuthGroup::check).
+	 * @parem 	integer		$language Select specific language only
+	 * @return 	array		Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oidfields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid
 	 */
 	public function selectVersionsInWorkspace($wsid, $filter = 0, $stage = -99, $pageId = -1, $recursionLevel = 0, $selectionType = 'tables_select', $language = NULL) {
-
 		$wsid = intval($wsid);
 		$filter = intval($filter);
 		$output = array();
-
-			// Contains either nothing or a list with live-uids
+		// Contains either nothing or a list with live-uids
 		if ($pageId != -1 && $recursionLevel > 0) {
 			$pageList = $this->getTreeUids($pageId, $wsid, $recursionLevel);
 		} elseif ($pageId != -1) {
 			$pageList = $pageId;
 		} else {
 			$pageList = '';
-
-				// check if person may only see a "virtual" page-root
+			// check if person may only see a "virtual" page-root
 			$mountPoints = array_map('intval', $GLOBALS['BE_USER']->returnWebmounts());
 			$mountPoints = array_unique($mountPoints);
 			if (!in_array(0, $mountPoints)) {
@@ -223,17 +202,13 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 				$pageList = implode(',', $tempPageIds);
 			}
 		}
-
-			// Traversing all tables supporting versioning:
+		// Traversing all tables supporting versioning:
 		foreach ($GLOBALS['TCA'] as $table => $cfg) {
-
-				// we do not collect records from tables without permissions on them.
-			if (! $GLOBALS['BE_USER']->check($selectionType, $table)) {
+			// we do not collect records from tables without permissions on them.
+			if (!$GLOBALS['BE_USER']->check($selectionType, $table)) {
 				continue;
 			}
-
 			if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-
 				$recs = $this->selectAllVersionsFromPages($table, $pageList, $wsid, $filter, $stage, $language);
 				if (intval($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) === 2) {
 					$moveRecs = $this->getMoveToPlaceHolderFromPages($table, $pageList, $wsid, $filter, $stage);
@@ -262,78 +237,60 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	protected function selectAllVersionsFromPages($table, $pageList, $wsid, $filter, $stage, $language = NULL) {
 		$isTableLocalizable = t3lib_BEfunc::isTableLocalizable($table);
 		$languageParentField = '';
-
-			// If table is not localizable, but localized reocrds shall
-			// be collected, an empty result array needs to be returned:
+		// If table is not localizable, but localized reocrds shall
+		// be collected, an empty result array needs to be returned:
 		if ($isTableLocalizable === FALSE && $language > 0) {
 			return array();
 		} elseif ($isTableLocalizable) {
-			$languageParentField = 'A.' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . ', ';
+			$languageParentField = ('A.' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) . ', ';
 		}
-
-		$fields = 'A.uid, A.t3ver_oid, A.t3ver_stage, ' . $languageParentField . 'B.pid AS wspid, B.pid AS livepid';
-
+		$fields = ('A.uid, A.t3ver_oid, A.t3ver_stage, ' . $languageParentField) . 'B.pid AS wspid, B.pid AS livepid';
 		if ($isTableLocalizable) {
 			$fields .= ', A.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'];
 		}
-
-		$from = $table . ' A,' . $table . ' B';
-
-			// Table A is the offline version and pid=-1 defines offline
+		$from = (($table . ' A,') . $table) . ' B';
+		// Table A is the offline version and pid=-1 defines offline
 		$where = 'A.pid=-1 AND A.t3ver_state!=4';
-
 		if ($pageList) {
-			$pidField = ($table==='pages' ? 'uid' : 'pid');
-			$pidConstraint = strstr($pageList, ',') ? ' IN (' . $pageList . ')' : '=' . $pageList;
-			$where .= ' AND B.' . $pidField . $pidConstraint;
+			$pidField = $table === 'pages' ? 'uid' : 'pid';
+			$pidConstraint = strstr($pageList, ',') ? (' IN (' . $pageList) . ')' : '=' . $pageList;
+			$where .= (' AND B.' . $pidField) . $pidConstraint;
 		}
-
 		if ($isTableLocalizable && t3lib_utility_Math::canBeInterpretedAsInteger($language)) {
-			$where .= ' AND A.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . $language;
+			$where .= ((' AND A.' . $GLOBALS['TCA'][$table]['ctrl']['languageField']) . '=') . $language;
 		}
-
-		/**
-		 * For "real" workspace numbers, select by that.
-		 * If = -98, select all that are NOT online (zero).
-		 * Anything else below -1 will not select on the wsid and therefore select all!
-		 */
+		/** For "real" workspace numbers, select by that.
+		If = -98, select all that are NOT online (zero).
+		Anything else below -1 will not select on the wsid and therefore select all! */
 		if ($wsid > self::SELECT_ALL_WORKSPACES) {
 			$where .= ' AND A.t3ver_wsid=' . $wsid;
 		} elseif ($wsid === self::SELECT_ALL_WORKSPACES) {
 			$where .= ' AND A.t3ver_wsid!=0';
 		}
-
-		/**
-		 * lifecycle filter:
-		 * 1 = select all drafts (never-published),
-		 * 2 = select all published one or more times (archive/multiple)
-		 */
-		if ($filter===1 || $filter===2) {
+		/** lifecycle filter:
+		1 = select all drafts (never-published),
+		2 = select all published one or more times (archive/multiple) */
+		if ($filter === 1 || $filter === 2) {
 			$where .= ' AND A.t3ver_count ' . ($filter === 1 ? '= 0' : '> 0');
 		}
-
 		if ($stage != -99) {
 			$where .= ' AND A.t3ver_stage=' . intval($stage);
 		}
-
-			// Table B (online) must have PID >= 0 to signify being online.
+		// Table B (online) must have PID >= 0 to signify being online.
 		$where .= ' AND B.pid>=0';
-			// ... and finally the join between the two tables.
+		// ... and finally the join between the two tables.
 		$where .= ' AND A.t3ver_oid=B.uid';
 		$where .= t3lib_BEfunc::deleteClause($table, 'A');
 		$where .= t3lib_BEfunc::deleteClause($table, 'B');
-
-		/**
-		 * Select all records from this table in the database from the workspace
-		 * This joins the online version with the offline version as tables A and B
-		 * Order by UID, mostly to have a sorting in the backend overview module which doesn't "jump around" when swapping.
-		 */
+		/** Select all records from this table in the database from the workspace
+		This joins the online version with the offline version as tables A and B
+		Order by UID, mostly to have a sorting in the backend overview module which doesn't "jump around" when swapping. */
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fields, $from, $where, '', 'B.uid');
 		return is_array($res) ? $res : array();
 	}
 
 	/**
-	 *	Find all moved records at their new position.
+	 * Find all moved records at their new position.
 	 *
 	 * @param string $table
 	 * @param string $pageList
@@ -343,70 +300,54 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	 * @return array
 	 */
 	protected function getMoveToPlaceHolderFromPages($table, $pageList, $wsid, $filter, $stage) {
-
-		/**
-		 * Aliases:
-		 * A - moveTo placeholder
-		 * B - online record
-		 * C - moveFrom placeholder
-		 */
+		/** Aliases:
+		A - moveTo placeholder
+		B - online record
+		C - moveFrom placeholder */
 		$fields = 'A.pid AS wspid, B.uid AS t3ver_oid, C.uid AS uid, B.pid AS livepid';
-		$from = $table . ' A, ' . $table . ' B,' . $table . ' C';
+		$from = (((($table . ' A, ') . $table) . ' B,') . $table) . ' C';
 		$where = 'A.t3ver_state=3 AND B.pid>0 AND B.t3ver_state=0 AND B.t3ver_wsid=0 AND C.pid=-1 AND C.t3ver_state=4';
-
 		if ($wsid > self::SELECT_ALL_WORKSPACES) {
-			$where .= ' AND A.t3ver_wsid=' . $wsid . ' AND C.t3ver_wsid=' . $wsid;
+			$where .= ((' AND A.t3ver_wsid=' . $wsid) . ' AND C.t3ver_wsid=') . $wsid;
 		} elseif ($wsid === self::SELECT_ALL_WORKSPACES) {
 			$where .= ' AND A.t3ver_wsid!=0 AND C.t3ver_wsid!=0 ';
 		}
-
-		/**
-		 * lifecycle filter:
-		 * 1 = select all drafts (never-published),
-		 * 2 = select all published one or more times (archive/multiple)
-		 */
-		if ($filter===1 || $filter===2) {
+		/** lifecycle filter:
+		1 = select all drafts (never-published),
+		2 = select all published one or more times (archive/multiple) */
+		if ($filter === 1 || $filter === 2) {
 			$where .= ' AND C.t3ver_count ' . ($filter === 1 ? '= 0' : '> 0');
 		}
-
 		if ($stage != -99) {
 			$where .= ' AND C.t3ver_stage=' . intval($stage);
 		}
-
 		if ($pageList) {
-			$pidField = ($table==='pages' ? 'B.uid' : 'A.pid');
-			$pidConstraint = strstr($pageList, ',') ? ' IN (' . $pageList . ')' : '=' . $pageList;
-			$where .= ' AND ' . $pidField . $pidConstraint;
+			$pidField = $table === 'pages' ? 'B.uid' : 'A.pid';
+			$pidConstraint = strstr($pageList, ',') ? (' IN (' . $pageList) . ')' : '=' . $pageList;
+			$where .= (' AND ' . $pidField) . $pidConstraint;
 		}
-
 		$where .= ' AND A.t3ver_move_id = B.uid AND B.uid = C.t3ver_oid';
 		$where .= t3lib_BEfunc::deleteClause($table, 'A');
 		$where .= t3lib_BEfunc::deleteClause($table, 'B');
 		$where .= t3lib_BEfunc::deleteClause($table, 'C');
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fields, $from, $where, '', 'A.uid');
-
 		return is_array($res) ? $res : array();
 	}
-
 
 	/**
 	 * Find all page uids recursive starting from a specific page
 	 *
-	 * @param	 integer	$pageId
-	 * @param	 integer	$wsid
-	 * @param	 integer	$recursionLevel
-	 * @return	string	Comma sep. uid list
+	 * @param 	 integer	$pageId
+	 * @param 	 integer	$wsid
+	 * @param 	 integer	$recursionLevel
+	 * @return 	string	Comma sep. uid list
 	 */
 	protected function getTreeUids($pageId, $wsid, $recursionLevel) {
-		/**
-		 * Reusing existing functionality with the drawback that
-		 * mount points are not covered yet
-		 **/
+		/** Reusing existing functionality with the drawback that
+		mount points are not covered yet */
 		$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-
 		/** @var $searchObj t3lib_fullsearch */
 		$searchObj = t3lib_div::makeInstance('t3lib_fullsearch');
-
 		if ($pageId > 0) {
 			$pageList = $searchObj->getTreeList($pageId, $recursionLevel, 0, $perms_clause);
 		} else {
@@ -421,27 +362,16 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 			}
 			$pageList = implode(',', $newList);
 		}
-
 		unset($searchObj);
 		if (intval($GLOBALS['TCA']['pages']['ctrl']['versioningWS']) === 2 && $pageList) {
-				// Remove the "subbranch" if a page was moved away
-			$movedAwayPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-				'uid, pid, t3ver_move_id',
-				'pages',
-				't3ver_move_id IN (' . $pageList . ') AND t3ver_wsid=' . intval($wsid) . t3lib_BEfunc::deleteClause('pages'),
-				'',
-				'uid',
-				'',
-				't3ver_move_id'
-			);
+			// Remove the "subbranch" if a page was moved away
+			$movedAwayPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, pid, t3ver_move_id', 'pages', ((('t3ver_move_id IN (' . $pageList) . ') AND t3ver_wsid=') . intval($wsid)) . t3lib_BEfunc::deleteClause('pages'), '', 'uid', '', 't3ver_move_id');
 			$pageIds = t3lib_div::intExplode(',', $pageList, TRUE);
-
-				// move all pages away
+			// move all pages away
 			$newList = array_diff($pageIds, array_keys($movedAwayPages));
-
-				// keep current page in the list
+			// keep current page in the list
 			$newList[] = $pageId;
-				// move back in if still connected to the "remaining" pages
+			// move back in if still connected to the "remaining" pages
 			do {
 				$changed = FALSE;
 				foreach ($movedAwayPages as $uid => $rec) {
@@ -452,18 +382,8 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 				}
 			} while ($changed);
 			$pageList = implode(',', $newList);
-
-				// In case moving pages is enabled we need to replace all move-to pointer with their origin
-			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-				'uid, t3ver_move_id',
-				'pages',
-				'uid IN (' . $pageList . ')' . t3lib_BEfunc::deleteClause('pages'),
-				'',
-				'uid',
-				'',
-				'uid'
-			);
-
+			// In case moving pages is enabled we need to replace all move-to pointer with their origin
+			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, t3ver_move_id', 'pages', (('uid IN (' . $pageList) . ')') . t3lib_BEfunc::deleteClause('pages'), '', 'uid', '', 'uid');
 			$newList = array();
 			$pageIds = t3lib_div::intExplode(',', $pageList, TRUE);
 			if (!in_array($pageId, $pageIds)) {
@@ -489,7 +409,7 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	 * @return array
 	 */
 	protected function filterPermittedElements($recs, $table) {
-		$checkField = ($table == 'pages') ? 'uid' : 'wspid';
+		$checkField = $table == 'pages' ? 'uid' : 'wspid';
 		$permittedElements = array();
 		if (is_array($recs)) {
 			foreach ($recs as $rec) {
@@ -503,21 +423,19 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	}
 
 	/**
-	* Check current be users language access on given record.
-	*
-	* @param string $table Name of the table
-	* @param array $record Record row to be checked
-	* @return boolean
-	*/
+	 * Check current be users language access on given record.
+	 *
+	 * @param string $table Name of the table
+	 * @param array $record Record row to be checked
+	 * @return boolean
+	 */
 	protected function isLanguageAccessibleForCurrentUser($table, array $record) {
 		$languageUid = 0;
-
 		if (t3lib_BEfunc::isTableLocalizable($table)) {
 			$languageUid = $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
 		} else {
 			return TRUE;
 		}
-
 		return $GLOBALS['BE_USER']->checkLanguageAccess($languageUid);
 	}
 
@@ -527,7 +445,7 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	 *
 	 * @return bool
 	 */
-	public static function isOldStyleWorkspaceUsed() {
+	static public function isOldStyleWorkspaceUsed() {
 		$oldStyleWorkspaceIsUsed = FALSE;
 		$cacheKey = 'workspace-oldstyleworkspace-notused';
 		$cacheResult = $GLOBALS['BE_USER']->getSessionData($cacheKey);
@@ -550,20 +468,18 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	 * @param $language Language for which to check the page
 	 * @return bool
 	 */
-	public static function isNewPage($id, $language = 0) {
+	static public function isNewPage($id, $language = 0) {
 		$isNewPage = FALSE;
-			// If the language is not default, check state of overlay
+		// If the language is not default, check state of overlay
 		if ($language > 0) {
 			$whereClause = 'pid = ' . $id;
-			$whereClause .= ' AND ' .$GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . ' = ' . $language;
+			$whereClause .= ((' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField']) . ' = ') . $language;
 			$whereClause .= ' AND t3ver_wsid = ' . $GLOBALS['BE_USER']->workspace;
 			$whereClause .= t3lib_BEfunc::deleteClause('pages_language_overlay');
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('t3ver_state', 'pages_language_overlay', $whereClause);
-			if (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
+			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$isNewPage = (int) $row['t3ver_state'] === 1;
 			}
-
-			// Otherwise check state of page itself
 		} else {
 			$rec = t3lib_BEfunc::getRecord('pages', $id, 't3ver_state');
 			if (is_array($rec)) {
@@ -577,12 +493,12 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	 * Generates a view link for a page.
 	 *
 	 * @static
-	 * @param  $table
-	 * @param  $uid
-	 * @param  $record
+	 * @param $table
+	 * @param $uid
+	 * @param $record
 	 * @return string
 	 */
-	public static function viewSingleRecord($table, $uid, $record=NULL) {
+	static public function viewSingleRecord($table, $uid, $record = NULL) {
 		$viewUrl = '';
 		if ($table == 'pages') {
 			$viewUrl = t3lib_BEfunc::viewOnClick(t3lib_BEfunc::getLiveVersionIdOfRecord('pages', $uid));
@@ -603,8 +519,8 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	/**
 	 * Determine whether this page for the current
 	 *
-	 * @param  $pageUid
-	 * @param  $workspaceUid
+	 * @param $pageUid
+	 * @param $workspaceUid
 	 * @return boolean
 	 */
 	public function canCreatePreviewLink($pageUid, $workspaceUid) {
@@ -630,13 +546,12 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	public function generateWorkspacePreviewLink($uid) {
 		$previewObject = t3lib_div::makeInstance('Tx_Version_Preview');
 		$timeToLiveHours = $previewObject->getPreviewLinkLifetime();
-		$previewKeyword = $previewObject->compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], ($timeToLiveHours*3600), $this->getCurrentWorkspace());
-
+		$previewKeyword = $previewObject->compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], $timeToLiveHours * 3600, $this->getCurrentWorkspace());
 		$linkParams = array(
 			'ADMCMD_prev' => $previewKeyword,
 			'id' => $uid
 		);
-		return t3lib_BEfunc::getViewDomain($uid) . '/index.php?' . t3lib_div::implodeArrayForUrl('', $linkParams);
+		return (t3lib_BEfunc::getViewDomain($uid) . '/index.php?') . t3lib_div::implodeArrayForUrl('', $linkParams);
 	}
 
 	/**
@@ -647,29 +562,24 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 	 * @return string the preview link without the trailing '/'
 	 */
 	public function generateWorkspaceSplittedPreviewLink($uid, $addDomain = FALSE) {
-			// In case a $pageUid is submitted we need to make sure it points to a live-page
-		if ($uid >  0) {
+		// In case a $pageUid is submitted we need to make sure it points to a live-page
+		if ($uid > 0) {
 			$uid = $this->getLivePageUid($uid);
 		}
-
 		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 		/** @var $uriBuilder Tx_Extbase_MVC_Web_Routing_UriBuilder */
 		$uriBuilder = $objectManager->create('Tx_Extbase_MVC_Web_Routing_UriBuilder');
-		/**
-		 *  This seems to be very harsh to set this directly to "/typo3 but the viewOnClick also
-		 *  has /index.php as fixed value here and dealing with the backPath is very error-prone
-		 *
-		 *  @todo make sure this would work in local extension installation too
-		 */
+		/** This seems to be very harsh to set this directly to "/typo3 but the viewOnClick also
+		has /index.php as fixed value here and dealing with the backPath is very error-prone
+
+		@todo make sure this would work in local extension installation too */
 		$backPath = '/' . TYPO3_mainDir;
 		$redirect = $backPath . 'index.php?redirect_url=';
-			// @todo why do we need these additional params? the URIBuilder should add the controller, but he doesn't :(
+		// @todo why do we need these additional params? the URIBuilder should add the controller, but he doesn't :(
 		$additionalParams = '&tx_workspaces_web_workspacesworkspaces%5Bcontroller%5D=Preview&M=web_WorkspacesWorkspaces&id=';
-		$viewScript = $backPath . $uriBuilder->setArguments(array('tx_workspaces_web_workspacesworkspaces' => array('previewWS' => $GLOBALS['BE_USER']->workspace)))
-												->uriFor('index', array(), 'Tx_Workspaces_Controller_PreviewController', 'workspaces', 'web_workspacesworkspaces') . $additionalParams;
-
+		$viewScript = ($backPath . $uriBuilder->setArguments(array('tx_workspaces_web_workspacesworkspaces' => array('previewWS' => $GLOBALS['BE_USER']->workspace)))->uriFor('index', array(), 'Tx_Workspaces_Controller_PreviewController', 'workspaces', 'web_workspacesworkspaces')) . $additionalParams;
 		if ($addDomain === TRUE) {
-			return t3lib_BEfunc::getViewDomain($uid) . $redirect . urlencode($viewScript) . $uid;
+			return ((t3lib_BEfunc::getViewDomain($uid) . $redirect) . urlencode($viewScript)) . $uid;
 		} else {
 			return $viewScript;
 		}
@@ -687,13 +597,14 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 		if (!isset($this->pageCache[$uid])) {
 			$pageRecord = t3lib_beFunc::getRecord('pages', $uid);
 			if (is_array($pageRecord)) {
-				$this->pageCache[$uid] = ($pageRecord['t3ver_oid'] ? $pageRecord['t3ver_oid'] : $uid);
+				$this->pageCache[$uid] = $pageRecord['t3ver_oid'] ? $pageRecord['t3ver_oid'] : $uid;
 			} else {
 				throw new InvalidArgumentException('uid is supposed to point to an existing page - given value was:' . $uid, 1290628113);
 			}
 		}
-
 		return $this->pageCache[$uid];
 	}
+
 }
+
 ?>

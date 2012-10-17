@@ -24,41 +24,37 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * @author Oliver Hader <oliver.hader@typo3.org>
  * @package Workspaces
  * @subpackage Service
  */
 class Tx_Workspaces_Service_Integrity {
+
 	/**
 	 * Succes status - everything is fine
 	 *
 	 * @var integer
 	 */
 	const STATUS_Succes = 100;
-
 	/**
 	 * Info status - nothing is wrong, but a notice is shown
 	 *
 	 * @var integer
 	 */
 	const STATUS_Info = 101;
-
 	/**
 	 * Warning status - user interaction might be required
 	 *
 	 * @var integer
 	 */
 	const STATUS_Warning = 102;
-
 	/**
 	 * Error status - user interaction is required
 	 *
 	 * @var integer
 	 */
 	const STATUS_Error = 103;
-
 	/**
 	 * @var array
 	 */
@@ -66,7 +62,7 @@ class Tx_Workspaces_Service_Integrity {
 		self::STATUS_Succes => 'success',
 		self::STATUS_Info => 'info',
 		self::STATUS_Warning => 'warning',
-		self::STATUS_Error => 'error',
+		self::STATUS_Error => 'error'
 	);
 
 	/**
@@ -80,10 +76,10 @@ class Tx_Workspaces_Service_Integrity {
 	 * are identifiers of table and the version-id.
 	 *
 	 * 'tx_table:123' => array(
-	 *     array(
-	 *         'status' => 'warning',
-	 *         'message' => 'Element cannot be...',
-	 *     )
+	 * array(
+	 * 'status' => 'warning',
+	 * 'message' => 'Element cannot be...',
+	 * )
 	 * )
 	 *
 	 * @var array
@@ -132,43 +128,21 @@ class Tx_Workspaces_Service_Integrity {
 	 */
 	protected function checkLocalization(Tx_Workspaces_Domain_Model_CombinedRecord $element) {
 		$table = $element->getTable();
-
 		if (t3lib_BEfunc::isTableLocalizable($table)) {
 			$languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
 			$languageParentField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
-
 			$versionRow = $element->getVersionRecord()->getRow();
-
 			// If element is a localization:
 			if ($versionRow[$languageField] > 0) {
 				// Get localization parent from live workspace:
-				$languageParentRecord = t3lib_BEfunc::getRecord(
-					$table, $versionRow[$languageParentField], 'uid,t3ver_state'
-				);
-
+				$languageParentRecord = t3lib_BEfunc::getRecord($table, $versionRow[$languageParentField], 'uid,t3ver_state');
 				// If localization parent is a "new placeholder" record:
 				if ($languageParentRecord['t3ver_state'] == 1) {
 					$title = t3lib_BEfunc::getRecordTitle($table, $versionRow);
-
 					// Add warning for current versionized record:
-					$this->addIssue(
-						$element->getLiveRecord()->getIdentifier(),
-						self::STATUS_Warning,
-						sprintf(
-							Tx_Extbase_Utility_Localization::translate('integrity.dependsOnDefaultLanguageRecord', 'workspaces'),
-							$title
-						)
-					);
-
+					$this->addIssue($element->getLiveRecord()->getIdentifier(), self::STATUS_Warning, sprintf(Tx_Extbase_Utility_Localization::translate('integrity.dependsOnDefaultLanguageRecord', 'workspaces'), $title));
 					// Add info for related localization parent record:
-					$this->addIssue(
-						$table . ':' . $languageParentRecord['uid'],
-						self::STATUS_Info,
-						sprintf(
-							Tx_Extbase_Utility_Localization::translate('integrity.isDefaultLanguageRecord', 'workspaces'),
-							$title
-						)
-					);
+					$this->addIssue(($table . ':') . $languageParentRecord['uid'], self::STATUS_Info, sprintf(Tx_Extbase_Utility_Localization::translate('integrity.isDefaultLanguageRecord', 'workspaces'), $title));
 				}
 			}
 		}
@@ -183,7 +157,6 @@ class Tx_Workspaces_Service_Integrity {
 	 */
 	public function getStatus($identifier = NULL) {
 		$status = self::STATUS_Succes;
-
 		if ($identifier === NULL) {
 			foreach ($this->issues as $idenfieriferIssues) {
 				foreach ($idenfieriferIssues as $issue) {
@@ -199,7 +172,6 @@ class Tx_Workspaces_Service_Integrity {
 				}
 			}
 		}
-
 		return $status;
 	}
 
@@ -226,7 +198,6 @@ class Tx_Workspaces_Service_Integrity {
 		} elseif (isset($this->issues[$identifier])) {
 			return $this->issues[$identifier];
 		}
-
 		return array();
 	}
 
@@ -239,7 +210,6 @@ class Tx_Workspaces_Service_Integrity {
 	 */
 	public function getIssueMessages($identifier = NULL, $asString = FALSE) {
 		$messages = array();
-
 		if ($identifier === NULL) {
 			foreach ($this->issues as $idenfieriferIssues) {
 				foreach ($idenfieriferIssues as $issue) {
@@ -251,11 +221,9 @@ class Tx_Workspaces_Service_Integrity {
 				$messages[] = $issue['message'];
 			}
 		}
-
 		if ($asString) {
-			$messages = implode('<br/>' , $messages);
+			$messages = implode('<br/>', $messages);
 		}
-
 		return $messages;
 	}
 
@@ -271,11 +239,12 @@ class Tx_Workspaces_Service_Integrity {
 		if (!isset($this->issues[$identifier])) {
 			$this->issues[$identifier] = array();
 		}
-
 		$this->issues[$identifier][] = array(
 			'status' => $status,
-			'message' => $message,
+			'message' => $message
 		);
 	}
+
 }
+
 ?>

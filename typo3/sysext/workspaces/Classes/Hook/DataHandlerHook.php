@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
@@ -25,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Tcemain service
  *
@@ -62,7 +60,7 @@ class Tx_Workspaces_Service_Tcemain {
 	 * executed
 	 *
 	 * @param t3lib_TCEmain $tcemainObj reference to the main tcemain object
-	 * @return	void
+	 * @return 	void
 	 */
 	public function processCmdmap_afterFinish(t3lib_TCEmain $tcemainObj) {
 		$this->flushWorkspaceCacheEntriesByWorkspaceId($tcemainObj->BE_USER->workspace);
@@ -78,14 +76,11 @@ class Tx_Workspaces_Service_Tcemain {
 	 */
 	protected function resetStageOfElements($stageId) {
 		$fields = array('t3ver_stage' => Tx_Workspaces_Service_Stages::STAGE_EDIT_ID);
-
 		foreach ($this->getTcaTables() as $tcaTable) {
 			if (t3lib_BEfunc::isTableWorkspaceEnabled($tcaTable)) {
-
 				$where = 't3ver_stage = ' . intval($stageId);
 				$where .= ' AND t3ver_wsid > 0 AND pid=-1';
 				$where .= t3lib_BEfunc::deleteClause($tcaTable);
-
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tcaTable, $where, $fields);
 			}
 		}
@@ -99,13 +94,11 @@ class Tx_Workspaces_Service_Tcemain {
 	 */
 	protected function flushWorkspaceElements($workspaceId) {
 		$command = array();
-
 		foreach ($this->getTcaTables() as $tcaTable) {
 			if (t3lib_BEfunc::isTableWorkspaceEnabled($tcaTable)) {
 				$where = '1=1';
 				$where .= t3lib_BEfunc::getWorkspaceWhereClause($tcaTable, $workspaceId);
 				$where .= t3lib_BEfunc::deleteClause($tcaTable);
-
 				$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $tcaTable, $where, '', '', '', 'uid');
 				if (is_array($records)) {
 					foreach (array_keys($records) as $recordId) {
@@ -114,7 +107,6 @@ class Tx_Workspaces_Service_Tcemain {
 				}
 			}
 		}
-
 		if (count($command)) {
 			$tceMain = $this->getTceMain();
 			$tceMain->start(array(), $command);
@@ -153,5 +145,7 @@ class Tx_Workspaces_Service_Tcemain {
 		$workspacesCache->flushByTag($workspaceId);
 		$workspacesCache->flushByTag(Tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES);
 	}
+
 }
+
 ?>

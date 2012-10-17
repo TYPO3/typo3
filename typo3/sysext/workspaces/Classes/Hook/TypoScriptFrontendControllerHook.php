@@ -24,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Frontend hooks
  *
@@ -43,19 +42,16 @@ class Tx_Workspaces_Service_Fehooks {
 		if ($pObj->fePreview != 2) {
 			return;
 		}
-
-		$previewParts = $GLOBALS['TSFE']->cObj->cObjGetSingle(
-			'FLUIDTEMPLATE',
-			array(
-				'file' => 'EXT:workspaces/Resources/Private/Templates/Preview/Preview.html',
-				'variables.' => array(
-					'backendDomain' => 'TEXT',
-					'backendDomain.' => array('value' => $GLOBALS['BE_USER']->getSessionData('workspaces.backend_domain'))
-				)
+		$previewParts = $GLOBALS['TSFE']->cObj->cObjGetSingle('FLUIDTEMPLATE', array(
+			'file' => 'EXT:workspaces/Resources/Private/Templates/Preview/Preview.html',
+			'variables.' => array(
+				'backendDomain' => 'TEXT',
+				'backendDomain.' => array('value' => $GLOBALS['BE_USER']->getSessionData('workspaces.backend_domain'))
 			)
-		);
+		));
 		$GLOBALS['TSFE']->content = str_ireplace('</body>', $previewParts . '</body>', $GLOBALS['TSFE']->content);
-
 	}
+
 }
+
 ?>
