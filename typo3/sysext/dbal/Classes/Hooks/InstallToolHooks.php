@@ -24,12 +24,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Hooks for TYPO3 Install Tool.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
- *
  * @package TYPO3
  * @subpackage dbal
  */
@@ -61,7 +59,6 @@ class tx_dbal_installtool {
 	public function __construct() {
 		$this->supportedDrivers = $this->getSupportedDrivers();
 		$this->availableDrivers = $this->getAvailableDrivers();
-
 		$configDriver =& $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['handlerCfg']['_DEFAULT']['config']['driver'];
 		$this->driver = t3lib_div::_GET('driver');
 		if (!$this->driver && $configDriver) {
@@ -101,12 +98,12 @@ class tx_dbal_installtool {
 	 */
 	public function executeStepOutput(array &$markers, $step, tx_install $instObj) {
 		switch ($step) {
-			case 2:
-				$this->createConnectionForm($markers, $instObj);
-				break;
-			case 3:
-				$this->createDatabaseForm($markers, $instObj);
-				break;
+		case 2:
+			$this->createConnectionForm($markers, $instObj);
+			break;
+		case 3:
+			$this->createDatabaseForm($markers, $instObj);
+			break;
 		}
 	}
 
@@ -120,43 +117,45 @@ class tx_dbal_installtool {
 	 */
 	public function executeWriteLocalconf(array &$lines, $step, tx_install $instObj) {
 		switch ($step) {
-			case 3:
-			case 4:
-				$driver = $instObj->INSTALL['Database']['typo_db_driver'];
-				if (!$driver && $this->driver) {
-					// Driver was already configured
-					break;
-				}
-				$driverConfig = '';
-				switch ($driver) {
-					case 'oci8':
-						$driverConfig = array(
-							'driverOptions' => array(
-								'connectSID' =>  ($instObj->INSTALL['Database']['typo_db_type'] === 'sid' ? TRUE : FALSE)
-							)
-						);
-						break;
-					case 'mssql':
-					case 'odbc_mssql':
-						$driverConfig = array(
-							'useNameQuote' => TRUE,
-							'quoteClob' => FALSE
-						);
-						break;
-					case 'mysql':
-						return;
-				}
-				$config = array(
-					'_DEFAULT' => array(
-						'type' => 'adodb',
-						'config' => array(
-							'driver' =>  $driver,
-							$driverConfig
-						)
+		case 3:
+
+		case 4:
+			$driver = $instObj->INSTALL['Database']['typo_db_driver'];
+			if (!$driver && $this->driver) {
+				// Driver was already configured
+				break;
+			}
+			$driverConfig = '';
+			switch ($driver) {
+			case 'oci8':
+				$driverConfig = array(
+					'driverOptions' => array(
+						'connectSID' => $instObj->INSTALL['Database']['typo_db_type'] === 'sid' ? TRUE : FALSE
 					)
 				);
-				t3lib_Configuration::setLocalConfigurationValuesByPathValuePairs('EXTCONF/dbal/handlerCfg', $config);
 				break;
+			case 'mssql':
+
+			case 'odbc_mssql':
+				$driverConfig = array(
+					'useNameQuote' => TRUE,
+					'quoteClob' => FALSE
+				);
+				break;
+			case 'mysql':
+				return;
+			}
+			$config = array(
+				'_DEFAULT' => array(
+					'type' => 'adodb',
+					'config' => array(
+						'driver' => $driver,
+						$driverConfig
+					)
+				)
+			);
+			t3lib_Configuration::setLocalConfigurationValuesByPathValuePairs('EXTCONF/dbal/handlerCfg', $config);
+			break;
 		}
 	}
 
@@ -172,125 +171,102 @@ class tx_dbal_installtool {
 		if (!$this->driver) {
 			$this->driver = $this->getDefaultDriver();
 		}
-
 		// Get the template file
-		$templateFile = @file_get_contents(
-			t3lib_extMgm::extPath('dbal') . $this->templateFilePath . 'install.html'
-		);
+		$templateFile = @file_get_contents(((t3lib_extMgm::extPath('dbal') . $this->templateFilePath) . 'install.html'));
 		// Get the template part from the file
-		$template = t3lib_parsehtml::getSubpart(
-			$templateFile, '###TEMPLATE###'
-		);
-
+		$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 		// Get the subpart for the connection form
-		$formSubPart = t3lib_parsehtml::getSubpart(
-			$template, '###CONNECTION_FORM###'
-		);
+		$formSubPart = t3lib_parsehtml::getSubpart($template, '###CONNECTION_FORM###');
 		if ($this->getNumberOfAvailableDrivers() == 1 && $this->getDefaultDriver() === 'mysql') {
 			// Only MySQL is actually available (PDO support may be compiled in
 			// PHP itself and as such DBAL was activated, behaves as if DBAL were
 			// not activated
 			$driverSubPart = '<input type="hidden" name="TYPO3_INSTALL[Database][typo_db_driver]" value="mysql" />';
 		} else {
-			$driverTemplate = t3lib_parsehtml::getSubpart(
-				$formSubPart, '###DATABASE_DRIVER###'
-			);
+			$driverTemplate = t3lib_parsehtml::getSubpart($formSubPart, '###DATABASE_DRIVER###');
 			$driverSubPart = $this->prepareDatabaseDrivers($driverTemplate);
 		}
-		$formSubPart = t3lib_parsehtml::substituteSubpart(
-			$formSubPart,
-			'###DATABASE_DRIVER###',
-			$driverSubPart
-		);
-
+		$formSubPart = t3lib_parsehtml::substituteSubpart($formSubPart, '###DATABASE_DRIVER###', $driverSubPart);
 		// Get the subpart related to selected database driver
 		if ($this->driver === '' || $this->driver === 'mysql') {
-			$driverOptionsSubPart = t3lib_parsehtml::getSubpart(
-				$template, '###DRIVER_MYSQL###'
-			);
+			$driverOptionsSubPart = t3lib_parsehtml::getSubpart($template, '###DRIVER_MYSQL###');
 		} else {
-			$driverOptionsSubPart = t3lib_parsehtml::getSubpart(
-				$template, '###DRIVER_' . t3lib_div::strtoupper($this->driver) . '###'
-			);
+			$driverOptionsSubPart = t3lib_parsehtml::getSubpart($template, ('###DRIVER_' . t3lib_div::strtoupper($this->driver)) . '###');
 			if ($driverOptionsSubPart === '') {
-				$driverOptionsSubPart = t3lib_parsehtml::getSubpart(
-					$template, '###DRIVER_DEFAULT###'
-				);
+				$driverOptionsSubPart = t3lib_parsehtml::getSubpart($template, '###DRIVER_DEFAULT###');
 			}
 		}
-
 		// Define driver-specific markers
 		$driverMarkers = array();
 		switch ($this->driver) {
-			case 'mssql':
-				$driverMarkers = array(
-					'labelUsername' => 'Username',
-					'username' => TYPO3_db_username,
-					'labelPassword' => 'Password',
-					'password' => TYPO3_db_password,
-					'labelHost' => 'Host',
-					'host' => TYPO3_db_host ? TYPO3_db_host : 'windows',
-					'labelDatabase' => 'Database',
-					'database' => TYPO3_db,
-				);
-				$nextStep = $instObj->step + 2;
-				break;
-			case 'odbc_mssql':
-				$driverMarkers = array(
-					'labelUsername' => 'Username',
-					'username' => TYPO3_db_username,
-					'labelPassword' => 'Password',
-					'password' => TYPO3_db_password,
-					'labelHost' => 'Host',
-					'host' => TYPO3_db_host ? TYPO3_db_host : 'windows',
-					'database' => 'dummy_string',
-				);
-				$nextStep = $instObj->step + 2;
-				break;
-			case 'oci8':
-				$driverMarkers = array(
-					'labelUsername' => 'Username',
-					'username' => TYPO3_db_username,
-					'labelPassword' => 'Password',
-					'password' => TYPO3_db_password,
-					'labelHost' => 'Host',
-					'host' => TYPO3_db_host ? TYPO3_db_host : 'localhost',
-					'labelType' => 'Type',
-					'labelSID' => 'SID',
-					'labelServiceName' => 'Service Name',
-					'labelDatabase' => 'Name',
-					'database' => TYPO3_db,
-				);
-				$nextStep = $instObj->step + 2;
-				break;
-			case 'postgres':
-				$driverMarkers = array(
-					'labelUsername' => 'Username',
-					'username' => TYPO3_db_username,
-					'labelPassword' => 'Password',
-					'password' => TYPO3_db_password,
-					'labelHost' => 'Host',
-					'host' => TYPO3_db_host ? TYPO3_db_host : 'localhost',
-					'labelDatabase' => 'Database',
-					'database' => TYPO3_db,
-				);
-				$nextStep = $instObj->step + 2;
-				break;
-			default:
-				$driverMarkers = array(
-					'labelUsername' => 'Username',
-					'username' => TYPO3_db_username,
-					'labelPassword' => 'Password',
-					'password' => TYPO3_db_password,
-					'labelHost' => 'Host',
-					'host' => TYPO3_db_host ? TYPO3_db_host : 'localhost',
-					'labelDatabase' => 'Database',
-					'database' => TYPO3_db,
-				);
-				$nextStep = $instObj->step + 1;
-				break;
+		case 'mssql':
+			$driverMarkers = array(
+				'labelUsername' => 'Username',
+				'username' => TYPO3_db_username,
+				'labelPassword' => 'Password',
+				'password' => TYPO3_db_password,
+				'labelHost' => 'Host',
+				'host' => TYPO3_db_host ? TYPO3_db_host : 'windows',
+				'labelDatabase' => 'Database',
+				'database' => TYPO3_db
+			);
+			$nextStep = $instObj->step + 2;
+			break;
+		case 'odbc_mssql':
+			$driverMarkers = array(
+				'labelUsername' => 'Username',
+				'username' => TYPO3_db_username,
+				'labelPassword' => 'Password',
+				'password' => TYPO3_db_password,
+				'labelHost' => 'Host',
+				'host' => TYPO3_db_host ? TYPO3_db_host : 'windows',
+				'database' => 'dummy_string'
+			);
+			$nextStep = $instObj->step + 2;
+			break;
+		case 'oci8':
+			$driverMarkers = array(
+				'labelUsername' => 'Username',
+				'username' => TYPO3_db_username,
+				'labelPassword' => 'Password',
+				'password' => TYPO3_db_password,
+				'labelHost' => 'Host',
+				'host' => TYPO3_db_host ? TYPO3_db_host : 'localhost',
+				'labelType' => 'Type',
+				'labelSID' => 'SID',
+				'labelServiceName' => 'Service Name',
+				'labelDatabase' => 'Name',
+				'database' => TYPO3_db
+			);
+			$nextStep = $instObj->step + 2;
+			break;
+		case 'postgres':
+			$driverMarkers = array(
+				'labelUsername' => 'Username',
+				'username' => TYPO3_db_username,
+				'labelPassword' => 'Password',
+				'password' => TYPO3_db_password,
+				'labelHost' => 'Host',
+				'host' => TYPO3_db_host ? TYPO3_db_host : 'localhost',
+				'labelDatabase' => 'Database',
+				'database' => TYPO3_db
+			);
+			$nextStep = $instObj->step + 2;
+			break;
+		default:
+			$driverMarkers = array(
+				'labelUsername' => 'Username',
+				'username' => TYPO3_db_username,
+				'labelPassword' => 'Password',
+				'password' => TYPO3_db_password,
+				'labelHost' => 'Host',
+				'host' => TYPO3_db_host ? TYPO3_db_host : 'localhost',
+				'labelDatabase' => 'Database',
+				'database' => TYPO3_db
+			);
+			$nextStep = $instObj->step + 1;
+			break;
 		}
-
 		// Add header marker for main template
 		$markers['header'] = 'Connect to your database host';
 		// Define the markers content for the subpart
@@ -304,15 +280,8 @@ class tx_dbal_installtool {
 			'llDescription' => 'If you have not already created a username and password to access the database, please do so now. This can be done using tools provided by your host.'
 		);
 		$subPartMarkers = array_merge($subPartMarkers, $driverMarkers);
-
 		// Add step marker for main template
-		$markers['step'] = t3lib_parsehtml::substituteMarkerArray(
-			$formSubPart,
-			$subPartMarkers,
-			'###|###',
-			1,
-			1
-		);
+		$markers['step'] = t3lib_parsehtml::substituteMarkerArray($formSubPart, $subPartMarkers, '###|###', 1, 1);
 	}
 
 	/**
@@ -324,9 +293,8 @@ class tx_dbal_installtool {
 	protected function prepareDatabaseDrivers($template) {
 		$subParts = array(
 			'abstractionLayer' => t3lib_parsehtml::getSubpart($template, '###ABSTRACTION_LAYER###'),
-			'vendor' => t3lib_parsehtml::getSubpart($template, '###VENDOR###'),
+			'vendor' => t3lib_parsehtml::getSubpart($template, '###VENDOR###')
 		);
-
 		// Create the drop-down list of available drivers
 		$dropdown = '';
 		foreach ($this->availableDrivers as $abstractionLayer => $drivers) {
@@ -335,40 +303,20 @@ class tx_dbal_installtool {
 				$markers = array(
 					'driver' => $driver,
 					'labelvendor' => $label,
-					'onclick' => 'document.location=\'index.php?TYPO3_INSTALL[type]=config&mode=123&step=2&driver=' . $driver . '\';',
-					'selected' => '',
+					'onclick' => ('document.location=\'index.php?TYPO3_INSTALL[type]=config&mode=123&step=2&driver=' . $driver) . '\';',
+					'selected' => ''
 				);
 				if ($driver === $this->driver) {
 					$markers['selected'] .= ' selected="selected"';
 				}
-				$options[] = t3lib_parsehtml::substituteMarkerArray(
-					$subParts['vendor'],
-					$markers,
-					'###|###',
-					1
-				);
+				$options[] = t3lib_parsehtml::substituteMarkerArray($subParts['vendor'], $markers, '###|###', 1);
 			}
-			$subPart = t3lib_parsehtml::substituteSubpart(
-				$subParts['abstractionLayer'],
-				'###VENDOR###',
-				implode("\n", $options)
-			);
-			$dropdown .= t3lib_parsehtml::substituteMarker(
-				$subPart,
-				'###LABELABSTRACTIONLAYER###',
-				$abstractionLayer
-			);
+			$subPart = t3lib_parsehtml::substituteSubpart($subParts['abstractionLayer'], '###VENDOR###', implode('
+', $options));
+			$dropdown .= t3lib_parsehtml::substituteMarker($subPart, '###LABELABSTRACTIONLAYER###', $abstractionLayer);
 		}
-		$form = t3lib_parsehtml::substituteSubpart(
-			$template,
-			'###ABSTRACTION_LAYER###',
-			$dropdown
-		);
-		$form = t3lib_parsehtml::substituteMarker(
-			$form,
-			'###LABELDRIVER###',
-			'Driver'
-		);
+		$form = t3lib_parsehtml::substituteSubpart($template, '###ABSTRACTION_LAYER###', $dropdown);
+		$form = t3lib_parsehtml::substituteMarker($form, '###LABELDRIVER###', 'Driver');
 		return $form;
 	}
 
@@ -384,27 +332,27 @@ class tx_dbal_installtool {
 				'mysql' => array(
 					'label' => 'MySQL/MySQLi (recommended)',
 					'combine' => 'OR',
-					'extensions' => array('mysql', 'mysqli'),
+					'extensions' => array('mysql', 'mysqli')
 				),
 				'mssql' => array(
 					'label' => 'Microsoft SQL Server',
-					'extensions' => array('mssql'),
+					'extensions' => array('mssql')
 				),
 				'oci8' => array(
 					'label' => 'Oracle OCI8',
-					'extensions' => array('oci8'),
+					'extensions' => array('oci8')
 				),
 				'postgres' => array(
 					'label' => 'PostgreSQL',
-					'extensions' => array('pgsql'),
+					'extensions' => array('pgsql')
 				)
 			),
 			'ODBC' => array(
 				'odbc_mssql' => array(
 					'label' => 'Microsoft SQL Server',
-					'extensions' => array('odbc', 'mssql'),
-				),
-			),
+					'extensions' => array('odbc', 'mssql')
+				)
+			)
 		);
 		return $supportedDrivers;
 	}
@@ -423,7 +371,6 @@ class tx_dbal_installtool {
 				} else {
 					$isAvailable = TRUE;
 				}
-
 				// Loop through each PHP module dependency to ensure it is loaded
 				foreach ($info['extensions'] as $extension) {
 					if (isset($info['combine']) && $info['combine'] === 'OR') {
@@ -432,7 +379,6 @@ class tx_dbal_installtool {
 						$isAvailable &= extension_loaded($extension);
 					}
 				}
-
 				if ($isAvailable) {
 					if (!isset($availableDrivers[$abstractionLayer])) {
 						$availableDrivers[$abstractionLayer] = array();
@@ -480,60 +426,42 @@ class tx_dbal_installtool {
 	 * @param tx_install $instObj
 	 */
 	protected function createDatabaseForm(array &$markers, tx_install $instObj) {
-		$error_missingConnect = '
+		$error_missingConnect = ((('
 			<p class="typo3-message message-error">
 				<strong>
 					There is no connection to the database!
 				</strong>
 				<br />
-				(Username: <em>' . TYPO3_db_username . '</em>,
-				Host: <em>' . TYPO3_db_host . '</em>,
+				(Username: <em>' . TYPO3_db_username) . '</em>,
+				Host: <em>') . TYPO3_db_host) . '</em>,
 				Using Password: YES)
 				<br />
 				Go to Step 1 and enter a valid username and password!
 			</p>
 		';
-
 		// Add header marker for main template
 		$markers['header'] = 'Select database';
 		// There should be a database host connection at this point
-		if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(
-			TYPO3_db_host, TYPO3_db_username, TYPO3_db_password
-		)) {
+		if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
 			// Get the template file
-			$templateFile = @file_get_contents(
-				t3lib_extMgm::extPath('dbal') . $this->templateFilePath . 'install.html'
-			);
+			$templateFile = @file_get_contents(((t3lib_extMgm::extPath('dbal') . $this->templateFilePath) . 'install.html'));
 			// Get the template part from the file
-			$template = t3lib_parsehtml::getSubpart(
-				$templateFile, '###TEMPLATE###'
-			);
+			$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 			// Get the subpart for the database choice step
-			$formSubPart = t3lib_parsehtml::getSubpart(
-				$template, '###DATABASE_FORM###'
-			);
+			$formSubPart = t3lib_parsehtml::getSubpart($template, '###DATABASE_FORM###');
 			// Get the subpart for the database options
-			$step3DatabaseOptionsSubPart = t3lib_parsehtml::getSubpart(
-				$formSubPart, '###DATABASEOPTIONS###'
-			);
-
+			$step3DatabaseOptionsSubPart = t3lib_parsehtml::getSubpart($formSubPart, '###DATABASEOPTIONS###');
 			$dbArr = $instObj->getDatabaseList();
 			$dbIncluded = FALSE;
 			foreach ($dbArr as $dbname) {
 				// Define the markers content for database options
 				$step3DatabaseOptionMarkers = array(
 					'databaseValue' => htmlspecialchars($dbname),
-					'databaseSelected' => ($dbname === TYPO3_db) ? 'selected="selected"' : '',
+					'databaseSelected' => $dbname === TYPO3_db ? 'selected="selected"' : '',
 					'databaseName' => htmlspecialchars($dbname)
 				);
 				// Add the option HTML to an array
-				$step3DatabaseOptions[] = t3lib_parsehtml::substituteMarkerArray(
-					$step3DatabaseOptionsSubPart,
-					$step3DatabaseOptionMarkers,
-					'###|###',
-					1,
-					1
-				);
+				$step3DatabaseOptions[] = t3lib_parsehtml::substituteMarkerArray($step3DatabaseOptionsSubPart, $step3DatabaseOptionMarkers, '###|###', 1, 1);
 				if ($dbname === TYPO3_db) {
 					$dbIncluded = TRUE;
 				}
@@ -546,20 +474,10 @@ class tx_dbal_installtool {
 					'databaseName' => htmlspecialchars(TYPO3_db) . ' (NO ACCESS!)'
 				);
 				// Add the option HTML to an array
-				$step3DatabaseOptions[] = t3lib_parsehtml::substituteMarkerArray(
-					$step3DatabaseOptionsSubPart,
-					$step3DatabaseOptionMarkers,
-					'###|###',
-					1,
-					1
-				);
+				$step3DatabaseOptions[] = t3lib_parsehtml::substituteMarkerArray($step3DatabaseOptionsSubPart, $step3DatabaseOptionMarkers, '###|###', 1, 1);
 			}
 			// Substitute the subpart for the database options
-			$content = t3lib_parsehtml::substituteSubpart(
-				$formSubPart,
-				'###DATABASEOPTIONS###',
-				implode(chr(10), $step3DatabaseOptions)
-			);
+			$content = t3lib_parsehtml::substituteSubpart($formSubPart, '###DATABASEOPTIONS###', implode(chr(10), $step3DatabaseOptions));
 			// Define the markers content
 			$step3SubPartMarkers = array(
 				'step' => $instObj->step + 1,
@@ -569,13 +487,7 @@ class tx_dbal_installtool {
 				'continue' => 'Continue'
 			);
 			// Add step marker for main template
-			$markers['step'] = t3lib_parsehtml::substituteMarkerArray(
-				$content,
-				$step3SubPartMarkers,
-				'###|###',
-				1,
-				1
-			);
+			$markers['step'] = t3lib_parsehtml::substituteMarkerArray($content, $step3SubPartMarkers, '###|###', 1, 1);
 		} else {
 			// Add step marker for main template when no connection
 			$markers['step'] = $error_missingConnect;
@@ -583,4 +495,5 @@ class tx_dbal_installtool {
 	}
 
 }
+
 ?>

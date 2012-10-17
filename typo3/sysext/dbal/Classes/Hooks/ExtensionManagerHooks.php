@@ -24,12 +24,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Hooks for TYPO3 Extension Manager.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
- *
  * @package TYPO3
  * @subpackage dbal
  */
@@ -85,21 +83,15 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 	 */
 	public function preProcessDatabaseUpdates($extKey, array $extInfo, array $diff, t3lib_install $instObj, tx_em_Install $parent) {
 		$content = '';
-
 		// Remapping is only mandatory for Oracle:
-		if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['handlerCfg']['_DEFAULT']['type'] !== 'adodb'
-				|| $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['handlerCfg']['_DEFAULT']['config']['driver'] !== 'oci8') {
-
+		if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['handlerCfg']['_DEFAULT']['type'] !== 'adodb' || $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['handlerCfg']['_DEFAULT']['config']['driver'] !== 'oci8') {
 			// Not using Oracle
 			return '';
 		}
-
 		$this->init();
-
 		if (t3lib_div::_GP('dbal')) {
 			$this->updateMapping(t3lib_div::_GP('dbal'), $instObj);
 		}
-
 		// Search all table and field names which should be remapped
 		$tableCandidates = array();
 		$fieldsCandidates = array();
@@ -113,38 +105,15 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 						$fieldsCandidates[$table] = array();
 					}
 					$fieldsCandidates[$table][$field] = array(
-						'fullName' => $field,
-					);
-				}
-
-			}
-
-			/*
-			if (!isset($config['keys'])) {
-				continue;	// Process next table
-			}
-
-			foreach ($config['keys'] as $field => $def) {
-				if ($field !== 'PRIMARY' && $this->needsMapping($table, $field, TRUE)) {
-					if (!t3lib_div::inArray($tableCandidates, $table)) {
-						$tableCandidates[] = $table;
-					}
-					if (!isset($fieldsCandidates[$table])) {
-						$fieldsCandidates[$table] = array();
-					}
-					$fieldsCandidates[$table][$field] = array(
-						'fullName' => $table . '_' . $field,
+						'fullName' => $field
 					);
 				}
 			}
-			*/
 		}
-
 		if ($tableCandidates || $fieldsCandidates) {
 			$mappingSuggestions = $this->getMappingSuggestions($extKey, $extInfo, $tableCandidates, $fieldsCandidates);
 			$content .= $this->generateMappingForm($tableCandidates, $fieldsCandidates, $mappingSuggestions);
 		}
-
 		return $content;
 	}
 
@@ -158,7 +127,6 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 	 */
 	protected function needsMapping($table, $field = '', $isKeyField = FALSE) {
 		$needsRemapping = FALSE;
-
 		// Take existing DBAL mapping into account
 		$origTable = $table;
 		if (isset($this->mapping[$origTable])) {
@@ -171,7 +139,6 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 				}
 			}
 		}
-
 		if ($field === '') {
 			if (substr($table, -3) === '_mm') {
 				$needsRemapping = strlen($table) > $this->maxIdentifierLength;
@@ -181,9 +148,8 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 		} elseif (!$isKeyField) {
 			$needsRemapping = strlen($field) > $this->maxIdentifierLength;
 		} else {
-			$needsRemapping = strlen($table . '_' . $field) > $this->maxIdentifierLength;
+			$needsRemapping = strlen(($table . '_') . $field) > $this->maxIdentifierLength;
 		}
-
 		return $needsRemapping;
 	}
 
@@ -200,37 +166,35 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 	public function getMappingSuggestions($extKey, array $extInfo, array $tables, array $fields) {
 		$suggestions = array();
 		switch ($extKey) {
-			case 'direct_mail':
-				$suggestions['sys_dmail_ttaddress_category_mm'] = array(
-					'mapTableName' => 'sys_dmail_ttaddress_cat_mm',
-				);
-				$suggestions['sys_dmail_ttcontent_category_mm'] = array(
-					'mapTableName' => 'sys_dmail_ttcontent_cat_mm',
-				);
-				break;
-			case 'extbase':
-				$suggestions['tx_extbase_cache_reflection_tags'] = array(
-					'mapTableName' => 'tx_extbase_cache_reflect_tags',
-				);
-				break;
-			case 'templavoila':
-				$suggestions['tx_templavoila_datastructure'] = array(
-					'mapTableName' => 'tx_templavoila_ds',
-				);
-				$suggestions['tx_templavoila_tmplobj'] = array(
-					'mapTableName' => 'tx_templavoila_tmpl',
-				);
-				break;
-			default:
-				$dependencies = array_keys($extInfo['EM_CONF']['constraints']['depends']);
-				if (t3lib_div::inArray($dependencies, 'extbase')) {
-					$this->storeExtbaseMappingSuggestions($suggestions, $extKey, $extInfo, $tables, $fields);
-				}
+		case 'direct_mail':
+			$suggestions['sys_dmail_ttaddress_category_mm'] = array(
+				'mapTableName' => 'sys_dmail_ttaddress_cat_mm'
+			);
+			$suggestions['sys_dmail_ttcontent_category_mm'] = array(
+				'mapTableName' => 'sys_dmail_ttcontent_cat_mm'
+			);
+			break;
+		case 'extbase':
+			$suggestions['tx_extbase_cache_reflection_tags'] = array(
+				'mapTableName' => 'tx_extbase_cache_reflect_tags'
+			);
+			break;
+		case 'templavoila':
+			$suggestions['tx_templavoila_datastructure'] = array(
+				'mapTableName' => 'tx_templavoila_ds'
+			);
+			$suggestions['tx_templavoila_tmplobj'] = array(
+				'mapTableName' => 'tx_templavoila_tmpl'
+			);
+			break;
+		default:
+			$dependencies = array_keys($extInfo['EM_CONF']['constraints']['depends']);
+			if (t3lib_div::inArray($dependencies, 'extbase')) {
+				$this->storeExtbaseMappingSuggestions($suggestions, $extKey, $extInfo, $tables, $fields);
+			}
 		}
-
 		// Existing mapping take precedence over suggestions
 		$suggestions = t3lib_div::array_merge_recursive_overrule($suggestions, $this->mapping);
-
 		return $suggestions;
 	}
 
@@ -248,7 +212,7 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 		foreach ($tables as $table) {
 			// Remove the "domain_model" part of the table name
 			$suggestions[$table] = array(
-				'mapTableName' => str_replace('domain_model_', '', $table),
+				'mapTableName' => str_replace('domain_model_', '', $table)
 			);
 		}
 	}
@@ -265,34 +229,19 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 		$out = array();
 		$tableId = uniqid('table');
 		$label = 'DBAL Mapping';
-		$description = sprintf('Some table names are longer than %s characters and/or some field names are longer than %s characters.'
-				. ' This is incompatible with your database:'
-				. ' <ul style="list-style: square; margin: 3px 1em; padding: 3px 1em;">'
-				. '		<li>Table names should be short enough to let ADOdb generates a sequence of the form {table}_uid for the'
-				. '			auto-increment "uid" field within %s characters;</li>'
-				. '		<li>Field names may not contain more than %s characters.</li>'
-				. ' </ul>',
-				$this->maxIdentifierLength - $this->tableNameCharacterReservation,
-			$this->maxIdentifierLength,
-			$this->maxIdentifierLength,
-			$this->maxIdentifierLength
-		);
-
+		$description = sprintf(((((('Some table names are longer than %s characters and/or some field names are longer than %s characters.' . ' This is incompatible with your database:') . ' <ul style="list-style: square; margin: 3px 1em; padding: 3px 1em;">') . '		<li>Table names should be short enough to let ADOdb generates a sequence of the form {table}_uid for the') . '			auto-increment "uid" field within %s characters;</li>') . '		<li>Field names may not contain more than %s characters.</li>') . ' </ul>', $this->maxIdentifierLength - $this->tableNameCharacterReservation, $this->maxIdentifierLength, $this->maxIdentifierLength, $this->maxIdentifierLength);
 		$tables = array_unique(array_merge($tables, array_keys($fields)));
 		foreach ($tables as $table) {
 			$newTableName = $table;
 			if (isset($suggestions[$table]) && isset($suggestions[$table]['mapTableName'])) {
 				$newTableName = $suggestions[$table]['mapTableName'];
 			}
-			$out[] = '
+			$out[] = (((((((((((('
 				<tr>
-					<td style="padding-top: 1em;"><label for="table-' . $table . '">' . $table . '</label></td>
+					<td style="padding-top: 1em;"><label for="table-' . $table) . '">') . $table) . '</label></td>
 					<td style="padding-top: 1em;">=&gt;</td>
-					<td style="padding-top: 1em;"><input type="text" size="35" id="table-' . $table . '" name="dbal[tables][' . $table . ']" value="' . $newTableName . '" /> '
-					. strlen($newTableName) . ' characters'
-					. '</td>
+					<td style="padding-top: 1em;"><input type="text" size="35" id="table-') . $table) . '" name="dbal[tables][') . $table) . ']" value="') . $newTableName) . '" /> ') . strlen($newTableName)) . ' characters') . '</td>
 				</tr>';
-
 			if (isset($fields[$table])) {
 				foreach ($fields[$table] as $field => $info) {
 					$newFieldName = $field;
@@ -301,28 +250,24 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 							$newFieldName = $suggestions[$table]['mapFieldNames'][$field];
 						}
 					}
-					$newFieldFullName = preg_replace('/^' . $table . '/', $newTableName, $info['fullName']);
-					$newFieldFullName = preg_replace('/' . $field . '$/', $newFieldName, $newFieldFullName);
-					$out[] = '
+					$newFieldFullName = preg_replace(('/^' . $table) . '/', $newTableName, $info['fullName']);
+					$newFieldFullName = preg_replace(('/' . $field) . '$/', $newFieldName, $newFieldFullName);
+					$out[] = ((((((((((((((((('
 						<tr>
-							<td>&nbsp;&nbsp;&nbsp;&nbsp;<label for="field-' . $table . '_' . $field . '">' . $field . '</label></td>
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;<label for="field-' . $table) . '_') . $field) . '">') . $field) . '</label></td>
 							<td>=&gt;</td>
-							<td><input type="text" size="35" id="field-' . $table . '_' . $field . '" name="dbal[fields][' . $table . '][' . $field . ']" value="' . $newFieldName . '" /> '
-							. ($info['fullname'] !== $field ? strlen($newFieldFullName) . ' characters: ' . $newFieldFullName : '')
-							. '</td>
+							<td><input type="text" size="35" id="field-') . $table) . '_') . $field) . '" name="dbal[fields][') . $table) . '][') . $field) . ']" value="') . $newFieldName) . '" /> ') . ($info['fullname'] !== $field ? (strlen($newFieldFullName) . ' characters: ') . $newFieldFullName : '')) . '</td>
 						</tr>';
 				}
 			}
 		}
-
 		// Compile rows:
-		$content = '
+		$content = ((((((('
 			<!-- Remapping database fields / tables -->
-			<h3>' . $label . '</h3>
-			<p>' . $description . '</p>
-			<table border="0" cellpadding="2" cellspacing="2" id="' . $tableId . '" class="remap-db-table-fields">' . implode('', $out) . '
+			<h3>' . $label) . '</h3>
+			<p>') . $description) . '</p>
+			<table border="0" cellpadding="2" cellspacing="2" id="') . $tableId) . '" class="remap-db-table-fields">') . implode('', $out)) . '
 			</table>';
-
 		return $content;
 	}
 
@@ -336,7 +281,6 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 	 */
 	public function updateMapping(array $data, t3lib_install $instObj) {
 		$newMapping = $this->mapping;
-
 		foreach ($data['tables'] as $table => $newName) {
 			$newName = trim($newName);
 			if ($newName && $newName !== $table) {
@@ -360,7 +304,6 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 				}
 			}
 		}
-
 		// Sort table and field names
 		foreach ($newMapping as $table => &$config) {
 			if (isset($config['mapFieldNames'])) {
@@ -368,14 +311,12 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 			}
 		}
 		ksort($newMapping);
-
 		// Write new mapping to localconf.php
 		$key = '$TYPO3_CONF_VARS[\'EXTCONF\'][\'dbal\'][\'mapping\']';
 		$instObj->allowUpdateLocalConf = 1;
 		$instObj->updateIdentity = 'TYPO3 Extension Manager';
 		$lines = $instObj->writeToLocalconf_control();
 		$instObj->setArrayValueInLocalconfFile($lines, $key, $newMapping);
-
 		if ($instObj->writeToLocalconf($lines)) {
 			$this->mapping = $newMapping;
 		}
@@ -395,7 +336,9 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 	 * @return string Either empty string or table create strings
 	 */
 	public function appendTableDefinitions($extKey, array $extInfo, $fileContent, t3lib_install $instObj, t3lib_install_Sql $instSqlObj, tx_em_Install $parent) {
-		// currently not used
+
 	}
+
 }
+
 ?>

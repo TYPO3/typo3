@@ -24,13 +24,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Autoloader included from Install Tool that lets DBAL load itself
  * if it makes sense.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
- *
  * @package TYPO3
  * @subpackage dbal
  */
@@ -45,26 +43,25 @@ class tx_dbal_autoloader {
 	public function execute(tx_install $instObj) {
 		if ($instObj->mode == '123') {
 			switch ($instObj->step) {
-				case 1:
-					if (!t3lib_extMgm::isLoaded('dbal') && $this->isDbalSupported()) {
-						$this->activateDbal();
-
-						// Reload page to have Install Tool actually load DBAL
-						$redirectUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
-						t3lib_utility_Http::redirect($redirectUrl);
-					}
-					break;
-				case 2:
-					if (!t3lib_extMgm::isLoaded('dbal') && $this->isDbalSupported()) {
-						$this->activateDbal();
-					}
-					break;
-				case 3:
-					$driver = $instObj->INSTALL['Database']['typo_db_driver'];
-					if ($driver === 'mysql') {
-						$this->deactivateDbal();
-					}
-					break;
+			case 1:
+				if (!t3lib_extMgm::isLoaded('dbal') && $this->isDbalSupported()) {
+					$this->activateDbal();
+					// Reload page to have Install Tool actually load DBAL
+					$redirectUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
+					t3lib_utility_Http::redirect($redirectUrl);
+				}
+				break;
+			case 2:
+				if (!t3lib_extMgm::isLoaded('dbal') && $this->isDbalSupported()) {
+					$this->activateDbal();
+				}
+				break;
+			case 3:
+				$driver = $instObj->INSTALL['Database']['typo_db_driver'];
+				if ($driver === 'mysql') {
+					$this->deactivateDbal();
+				}
+				break;
 			}
 		}
 	}
@@ -75,9 +72,7 @@ class tx_dbal_autoloader {
 	 * @return boolean
 	 */
 	protected function isDbalSupported() {
-		return extension_loaded('odbc')
-				|| extension_loaded('pdo')
-				|| extension_loaded('oci8');
+		return (extension_loaded('odbc') || extension_loaded('pdo')) || extension_loaded('oci8');
 	}
 
 	/**
@@ -107,9 +102,7 @@ class tx_dbal_autoloader {
 			t3lib_extMgm::unloadExtension('adodb');
 		}
 	}
+
 }
 
-// Make instance:
-$SOBE = t3lib_div::makeInstance('tx_dbal_autoloader');
-$SOBE->execute($this);
 ?>

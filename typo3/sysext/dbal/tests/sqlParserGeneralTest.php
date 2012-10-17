@@ -21,15 +21,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
-require_once('BaseTestCase.php');
-
+require_once 'BaseTestCase.php';
 /**
  * Testcase for class ux_t3lib_sqlparser
  *
  * @author Xavier Perseguers <xavier@typo3.org>
- *
  * @package TYPO3
  * @subpackage dbal
  */
@@ -45,7 +41,7 @@ class sqlParserGeneralTest extends BaseTestCase {
 	 */
 	public function setUp() {
 		$className = self::buildAccessibleProxy('ux_t3lib_sqlparser');
-		$this->fixture = new $className;
+		$this->fixture = new $className();
 	}
 
 	/**
@@ -65,9 +61,9 @@ class sqlParserGeneralTest extends BaseTestCase {
 		if (!is_string($sql)) {
 			return $sql;
 		}
-
-		$sql = str_replace("\n", ' ', $sql);
-		$sql = preg_replace('/\s+/', ' ', $sql);
+		$sql = str_replace('
+', ' ', $sql);
+		$sql = preg_replace('/\\s+/', ' ', $sql);
 		return trim($sql);
 	}
 
@@ -75,31 +71,17 @@ class sqlParserGeneralTest extends BaseTestCase {
 	 * @test
 	 */
 	public function canExtractPartsOfAQuery() {
-		$parseString = "SELECT   *\nFROM pages WHERE pid IN (1,2,3,4)";
+		$parseString = 'SELECT   *
+FROM pages WHERE pid IN (1,2,3,4)';
 		$regex = '^SELECT[[:space:]]+(.*)[[:space:]]+';
 		$trimAll = TRUE;
 		$fields = $this->fixture->_callRef('nextPart', $parseString, $regex, $trimAll);
-
-		$this->assertEquals(
-			'*',
-			$fields
-		);
-		$this->assertEquals(
-			'FROM pages WHERE pid IN (1,2,3,4)',
-			$parseString
-		);
-
+		$this->assertEquals('*', $fields);
+		$this->assertEquals('FROM pages WHERE pid IN (1,2,3,4)', $parseString);
 		$regex = '^FROM ([^)]+) WHERE';
 		$table = $this->fixture->_callRef('nextPart', $parseString, $regex);
-
-		$this->assertEquals(
-			'pages',
-			$table
-		);
-		$this->assertEquals(
-			'pages WHERE pid IN (1,2,3,4)',
-			$parseString
-		);
+		$this->assertEquals('pages', $table);
+		$this->assertEquals('pages WHERE pid IN (1,2,3,4)', $parseString);
 	}
 
 	/**
@@ -109,7 +91,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$parseString = '1024';
 		$value = $this->fixture->_callRef('getValue', $parseString);
 		$expected = array(1024);
-
 		$this->assertEquals($expected, $value);
 	}
 
@@ -121,7 +102,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$parseString = '"some owner\\\'s string"';
 		$value = $this->fixture->_callRef('getValue', $parseString);
 		$expected = array('some owner\'s string', '"');
-
 		$this->assertEquals($expected, $value);
 	}
 
@@ -130,10 +110,9 @@ class sqlParserGeneralTest extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=13104
 	 */
 	public function canGetStringValueWithSingleQuote() {
-		$parseString = "'some owner\'s string'";
+		$parseString = '\'some owner\\\'s string\'';
 		$value = $this->fixture->_callRef('getValue', $parseString);
-		$expected = array('some owner\'s string', "'");
-
+		$expected = array('some owner\'s string', '\'');
 		$this->assertEquals($expected, $value);
 	}
 
@@ -142,10 +121,9 @@ class sqlParserGeneralTest extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=13104
 	 */
 	public function canGetStringValueWithDoubleQuote() {
-		$parseString = '"the \"owner\" is here"';
+		$parseString = '"the \\"owner\\" is here"';
 		$value = $this->fixture->_callRef('getValue', $parseString);
 		$expected = array('the "owner" is here', '"');
-
 		$this->assertEquals($expected, $value);
 	}
 
@@ -162,7 +140,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 			array(3),
 			array(4)
 		);
-
 		$this->assertEquals($expected, $values);
 	}
 
@@ -170,9 +147,8 @@ class sqlParserGeneralTest extends BaseTestCase {
 	 * @test
 	 */
 	public function parseWhereClauseReturnsArray() {
-		$parseString = 'uid IN (1,2) AND (starttime < ' . time() . ' OR cruser_id + 10 < 20)';
+		$parseString = ('uid IN (1,2) AND (starttime < ' . time()) . ' OR cruser_id + 10 < 20)';
 		$where = $this->fixture->parseWhereClause($parseString);
-
 		$this->assertTrue(is_array($where), $where);
 		$this->assertTrue(empty($parseString), 'parseString is not empty');
 	}
@@ -184,19 +160,16 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$sql = 'SELECT * FROM pages';
 		$expected = $sql;
 		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
-
 		$this->assertEquals($expected, $actual);
 	}
 
 	/**
 	 * @test
-	 * http://bugs.typo3.org/view.php?id=13504
 	 */
 	public function canParseTruncateTable() {
 		$sql = 'TRUNCATE TABLE be_users';
 		$expected = $sql;
 		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
-
 		$this->assertEquals($expected, $actual);
 	}
 
@@ -207,10 +180,8 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function canParseAndCompileBetweenOperator() {
 		$parseString = '((scheduled BETWEEN 1265068628 AND 1265068828 ) OR scheduled <= 1265068728) AND NOT exec_time AND NOT process_id AND page_id=1 AND parameters_hash = \'854e9a2a77\'';
 		$where = $this->fixture->parseWhereClause($parseString);
-
 		$this->assertTrue(is_array($where), $where);
 		$this->assertTrue(empty($parseString), 'parseString is not empty');
-
 		$whereClause = $this->cleanSql($this->fixture->compileWhereClause($where));
 		$expected = '((scheduled BETWEEN 1265068628 AND 1265068828) OR scheduled <= 1265068728) AND NOT exec_time AND NOT process_id AND page_id = 1 AND parameters_hash = \'854e9a2a77\'';
 		$this->assertEquals($expected, $whereClause);
@@ -218,29 +189,25 @@ class sqlParserGeneralTest extends BaseTestCase {
 
 	/**
 	 * @test
-	 * http://bugs.typo3.org/view.php?id=13430
 	 */
 	public function canParseInsertWithoutSpaceAfterValues() {
-		$parseString = "INSERT INTO static_country_zones VALUES('483', '0', 'NL', 'NLD', '528', 'DR', 'Drenthe', '');";
+		$parseString = 'INSERT INTO static_country_zones VALUES(\'483\', \'0\', \'NL\', \'NLD\', \'528\', \'DR\', \'Drenthe\', \'\');';
 		$components = $this->fixture->_callRef('parseINSERT', $parseString);
-
 		$this->assertTrue(is_array($components), $components);
 		$insert = $this->cleanSql($this->fixture->_callRef('compileINSERT', $components));
-		$expected = "INSERT INTO static_country_zones VALUES ('483', '0', 'NL', 'NLD', '528', 'DR', 'Drenthe', '')";
+		$expected = 'INSERT INTO static_country_zones VALUES (\'483\', \'0\', \'NL\', \'NLD\', \'528\', \'DR\', \'Drenthe\', \'\')';
 		$this->assertEquals($expected, $insert);
 	}
 
 	/**
 	 * @test
-	 * http://bugs.typo3.org/view.php?id=13430
 	 */
 	public function canParseInsertWithSpaceAfterValues() {
-		$parseString = "INSERT INTO static_country_zones VALUES ('483', '0', 'NL', 'NLD', '528', 'DR', 'Drenthe', '');";
+		$parseString = 'INSERT INTO static_country_zones VALUES (\'483\', \'0\', \'NL\', \'NLD\', \'528\', \'DR\', \'Drenthe\', \'\');';
 		$components = $this->fixture->_callRef('parseINSERT', $parseString);
-
 		$this->assertTrue(is_array($components), $components);
 		$insert = $this->cleanSql($this->fixture->_callRef('compileINSERT', $components));
-		$expected = "INSERT INTO static_country_zones VALUES ('483', '0', 'NL', 'NLD', '528', 'DR', 'Drenthe', '')";
+		$expected = 'INSERT INTO static_country_zones VALUES (\'483\', \'0\', \'NL\', \'NLD\', \'528\', \'DR\', \'Drenthe\', \'\')';
 		$this->assertEquals($expected, $insert);
 	}
 
@@ -249,45 +216,38 @@ class sqlParserGeneralTest extends BaseTestCase {
 	 */
 	public function canParseInsertWithFields() {
 		$parseString = 'INSERT INTO static_territories (uid, pid, tr_iso_nr, tr_parent_iso_nr, tr_name_en) ';
-		$parseString .= "VALUES ('1', '0', '2', '0', 'Africa');";
+		$parseString .= 'VALUES (\'1\', \'0\', \'2\', \'0\', \'Africa\');';
 		$components = $this->fixture->_callRef('parseINSERT', $parseString);
-
 		$this->assertTrue(is_array($components), $components);
 		$insert = $this->cleanSql($this->fixture->_callRef('compileINSERT', $components));
 		$expected = 'INSERT INTO static_territories (uid, pid, tr_iso_nr, tr_parent_iso_nr, tr_name_en) ';
-		$expected .= "VALUES ('1', '0', '2', '0', 'Africa')";
+		$expected .= 'VALUES (\'1\', \'0\', \'2\', \'0\', \'Africa\')';
 		$this->assertEquals($expected, $insert);
 	}
 
 	/**
 	 * @test
-	 * http://bugs.typo3.org/view.php?id=13209
 	 */
 	public function canParseExtendedInsert() {
-		$parseString = "INSERT INTO static_territories VALUES ('1', '0', '2', '0', 'Africa'),('2', '0', '9', '0', 'Oceania')," .
-				"('3', '0', '19', '0', 'Americas'),('4', '0', '142', '0', 'Asia');";
+		$parseString = 'INSERT INTO static_territories VALUES (\'1\', \'0\', \'2\', \'0\', \'Africa\'),(\'2\', \'0\', \'9\', \'0\', \'Oceania\'),' . '(\'3\', \'0\', \'19\', \'0\', \'Americas\'),(\'4\', \'0\', \'142\', \'0\', \'Asia\');';
 		$components = $this->fixture->_callRef('parseINSERT', $parseString);
-
 		$this->assertTrue(is_array($components), $components);
 		$insert = $this->cleanSql($this->fixture->_callRef('compileINSERT', $components));
-		$expected = "INSERT INTO static_territories VALUES ('1', '0', '2', '0', 'Africa'), ('2', '0', '9', '0', 'Oceania'), " .
-				"('3', '0', '19', '0', 'Americas'), ('4', '0', '142', '0', 'Asia')";
+		$expected = 'INSERT INTO static_territories VALUES (\'1\', \'0\', \'2\', \'0\', \'Africa\'), (\'2\', \'0\', \'9\', \'0\', \'Oceania\'), ' . '(\'3\', \'0\', \'19\', \'0\', \'Americas\'), (\'4\', \'0\', \'142\', \'0\', \'Asia\')';
 		$this->assertEquals($expected, $insert);
 	}
 
 	/**
 	 * @test
-	 * http://bugs.typo3.org/view.php?id=13209
 	 */
 	public function canParseExtendedInsertWithFields() {
 		$parseString = 'INSERT INTO static_territories (uid, pid, tr_iso_nr, tr_parent_iso_nr, tr_name_en) ';
-		$parseString .= "VALUES ('1', '0', '2', '0', 'Africa'),('2', '0', '9', '0', 'Oceania');";
+		$parseString .= 'VALUES (\'1\', \'0\', \'2\', \'0\', \'Africa\'),(\'2\', \'0\', \'9\', \'0\', \'Oceania\');';
 		$components = $this->fixture->_callRef('parseINSERT', $parseString);
-
 		$this->assertTrue(is_array($components), $components);
 		$insert = $this->cleanSql($this->fixture->_callRef('compileINSERT', $components));
 		$expected = 'INSERT INTO static_territories (uid, pid, tr_iso_nr, tr_parent_iso_nr, tr_name_en) ';
-		$expected .= "VALUES ('1', '0', '2', '0', 'Africa'), ('2', '0', '9', '0', 'Oceania')";
+		$expected .= 'VALUES (\'1\', \'0\', \'2\', \'0\', \'Africa\'), (\'2\', \'0\', \'9\', \'0\', \'Oceania\')';
 		$this->assertEquals($expected, $insert);
 	}
 
@@ -298,7 +258,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function canParseIfNullOperator() {
 		$parseString = 'IFNULL(tt_news_cat_mm.uid_foreign,0) IN (21,22)';
 		$whereParts = $this->fixture->parseWhereClause($parseString);
-
 		$this->assertTrue(is_array($whereParts), $whereParts);
 		$this->assertTrue(empty($parseString), 'parseString is not empty');
 	}
@@ -316,7 +275,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$parseString .= 'OR tt_news.fe_group=\'0\') OR (tt_news.fe_group LIKE \'%,-1,%\' OR tt_news.fe_group LIKE \'-1,%\' ';
 		$parseString .= 'OR tt_news.fe_group LIKE \'%,-1\' OR tt_news.fe_group=\'-1\'))';
 		$whereParts = $this->fixture->parseWhereClause($parseString);
-
 		$this->assertTrue(is_array($whereParts), $whereParts);
 		$this->assertTrue(empty($parseString), 'parseString is not empty');
 	}
@@ -328,7 +286,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function canCompileIfNullOperator() {
 		$parseString = 'SELECT * FROM tx_irfaq_q_cat_mm WHERE IFNULL(tx_irfaq_q_cat_mm.uid_foreign,0) = 1';
 		$components = $this->fixture->_callRef('parseSELECT', $parseString);
-
 		$this->assertTrue(is_array($components), $components);
 		$select = $this->cleanSql($this->fixture->_callRef('compileSELECT', $components));
 		$expected = 'SELECT * FROM tx_irfaq_q_cat_mm WHERE IFNULL(tx_irfaq_q_cat_mm.uid_foreign, 0) = 1';
@@ -342,7 +299,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function canParseAlterEngineStatement() {
 		$parseString = 'ALTER TABLE tx_realurl_pathcache ENGINE=InnoDB';
 		$components = $this->fixture->_callRef('parseALTERTABLE', $parseString);
-
 		$this->assertTrue(is_array($components), $components);
 		$alterTable = $this->cleanSql($this->fixture->_callRef('compileALTERTABLE', $components));
 		$expected = 'ALTER TABLE tx_realurl_pathcache ENGINE = InnoDB';
@@ -357,7 +313,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function canParseAlterCharacterSetStatement() {
 		$parseString = 'ALTER TABLE `index_phash` DEFAULT CHARACTER SET utf8';
 		$components = $this->fixture->_callRef('parseALTERTABLE', $parseString);
-
 		$this->assertTrue(is_array($components), $components);
 		$alterTable = $this->cleanSql($this->fixture->_callRef('compileALTERTABLE', $components));
 		$expected = 'ALTER TABLE index_phash DEFAULT CHARACTER SET utf8';
@@ -372,7 +327,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function canParseFindInSetStatement() {
 		$parseString = 'SELECT * FROM fe_users WHERE FIND_IN_SET(10, usergroup)';
 		$components = $this->fixture->_callRef('parseSELECT', $parseString);
-
 		$this->assertTrue(is_array($components), $components);
 		$selectTable = $this->cleanSql($this->fixture->_callRef('compileSELECT', $components));
 		$expected = 'SELECT * FROM fe_users WHERE FIND_IN_SET(10, usergroup)';
@@ -386,7 +340,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function canParseSingleQuote() {
 		$parseString = 'SELECT * FROM pages WHERE title=\'1\\\'\' AND deleted=0';
 		$components = $this->fixture->_callRef('parseSELECT', $parseString);
-
 		$this->assertTrue(is_array($components), $components);
 		$this->assertTrue(empty($components['parseString']), 'parseString is not empty');
 	}
@@ -394,14 +347,12 @@ class sqlParserGeneralTest extends BaseTestCase {
 	///////////////////////////////////////
 	// Tests concerning JOINs
 	///////////////////////////////////////
-
 	/**
 	 * @test
 	 */
 	public function parseFromTablesWithInnerJoinReturnsArray() {
 		$parseString = 'be_users INNER JOIN pages ON pages.cruser_id = be_users.uid';
 		$tables = $this->fixture->parseFromTables($parseString);
-
 		$this->assertTrue(is_array($tables), $tables);
 		$this->assertTrue(empty($parseString), 'parseString is not empty');
 	}
@@ -412,7 +363,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function parseFromTablesWithLeftOuterJoinReturnsArray() {
 		$parseString = 'be_users LEFT OUTER JOIN pages ON be_users.uid = pages.cruser_id';
 		$tables = $this->fixture->parseFromTables($parseString);
-
 		$this->assertTrue(is_array($tables), $tables);
 		$this->assertTrue(empty($parseString), 'parseString is not empty');
 	}
@@ -424,7 +374,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function parseFromTablesWithRightOuterJoinReturnsArray() {
 		$parseString = 'tx_powermail_fieldsets RIGHT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid';
 		$tables = $this->fixture->parseFromTables($parseString);
-
 		$this->assertTrue(is_array($tables), $tables);
 		$this->assertTrue(empty($parseString), 'parseString is not empty');
 	}
@@ -435,7 +384,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function parseFromTablesWithMultipleJoinsReturnsArray() {
 		$parseString = 'be_users LEFT OUTER JOIN pages ON be_users.uid = pages.cruser_id INNER JOIN cache_pages cp ON cp.page_id = pages.uid';
 		$tables = $this->fixture->parseFromTables($parseString);
-
 		$this->assertTrue(is_array($tables), $tables);
 		$this->assertTrue(empty($parseString), 'parseString is not empty');
 	}
@@ -447,7 +395,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function parseFromTablesWithMultipleJoinsAndParenthesesReturnsArray() {
 		$parseString = 'tx_powermail_fieldsets RIGHT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid LEFT JOIN tx_powermail_fields ON tx_powermail_fieldsets.uid = tx_powermail_fields.fieldset';
 		$tables = $this->fixture->parseFromTables($parseString);
-
 		$this->assertTrue(is_array($tables), $tables);
 		$this->assertTrue(empty($parseString), 'parseString is not empty');
 	}
@@ -459,7 +406,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$sql = 'SELECT pages.uid, be_users.username FROM be_users INNER JOIN pages ON pages.cruser_id = be_users.uid';
 		$expected = 'SELECT pages.uid, be_users.username FROM be_users INNER JOIN pages ON pages.cruser_id=be_users.uid';
 		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
-
 		$this->assertEquals($expected, $actual);
 	}
 
@@ -470,7 +416,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$sql = 'SELECT * FROM tt_news_cat INNER JOIN tt_news_cat_mm ON tt_news_cat.uid = tt_news_cat_mm.uid_foreign INNER JOIN tt_news ON tt_news.uid = tt_news_cat_mm.uid_local';
 		$expected = 'SELECT * FROM tt_news_cat INNER JOIN tt_news_cat_mm ON tt_news_cat.uid=tt_news_cat_mm.uid_foreign INNER JOIN tt_news ON tt_news.uid=tt_news_cat_mm.uid_local';
 		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
-
 		$this->assertEquals($expected, $actual);
 	}
 
@@ -482,7 +427,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$sql = 'SELECT * FROM T1 LEFT OUTER JOIN T2 ON T2.pid = T1.uid AND T2.size = 4 WHERE T1.cr_userid = 1';
 		$expected = 'SELECT * FROM T1 LEFT OUTER JOIN T2 ON T2.pid=T1.uid AND T2.size=4 WHERE T1.cr_userid = 1';
 		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
-
 		$this->assertEquals($expected, $actual);
 	}
 
@@ -494,14 +438,12 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$sql = 'SELECT * FROM T1 LEFT OUTER JOIN T2 ON T2.size < 4 OR T2.pid = T1.uid WHERE T1.cr_userid = 1';
 		$expected = 'SELECT * FROM T1 LEFT OUTER JOIN T2 ON T2.size<4 OR T2.pid=T1.uid WHERE T1.cr_userid = 1';
 		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
-
 		$this->assertEquals($expected, $actual);
 	}
 
 	///////////////////////////////////////
 	// Tests concerning DB management
 	///////////////////////////////////////
-
 	/**
 	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=4466
@@ -525,7 +467,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 				KEY bk_realurl02 (tablename,field_alias,field_id,value_alias(220),expire)
 			);
 		';
-
 		$createTables = $this->fixture->_callRef('parseCREATETABLE', $parseString);
 		$this->assertTrue(is_array($createTables), $createTables);
 	}
@@ -546,10 +487,8 @@ class sqlParserGeneralTest extends BaseTestCase {
 			)
 		';
 		$parseString = $sql;
-
 		$createTables = $this->fixture->_callRef('parseCREATETABLE', $parseString);
 		$this->assertTrue(is_array($createTables), $createTables);
-
 		$actual = $this->fixture->_callRef('compileCREATETABLE', $createTables);
 		$this->assertEquals($this->cleanSql($sql), $this->cleanSql($actual[0]));
 	}
@@ -573,7 +512,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$expected = $sql;
 		$alterTables = $this->fixture->_callRef('parseALTERTABLE', $sql);
 		$queries = $this->fixture->compileSQL($alterTables);
-
 		$this->assertTrue(is_array($queries), $queries);
 		$this->assertTrue(count($queries) == 1, $queries);
 		$this->assertEquals($expected, $queries[0]);
@@ -582,7 +520,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 	///////////////////////////////////////
 	// Tests concerning subqueries
 	///////////////////////////////////////
-
 	/**
 	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=12758
@@ -590,7 +527,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function inWhereClauseSupportsSubquery() {
 		$parseString = 'process_id IN (SELECT process_id FROM tx_crawler_process WHERE active=0 AND deleted=0)';
 		$whereParts = $this->fixture->parseWhereClause($parseString);
-
 		$this->assertTrue(is_array($whereParts), $whereParts);
 		$this->assertTrue(empty($parseString), 'parseString is not empty');
 	}
@@ -603,7 +539,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$sql = 'SELECT * FROM tx_crawler_queue WHERE process_id IN (SELECT process_id FROM tx_crawler_process WHERE active=0 AND deleted=0)';
 		$expected = 'SELECT * FROM tx_crawler_queue WHERE process_id IN (SELECT process_id FROM tx_crawler_process WHERE active = 0 AND deleted = 0)';
 		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
-
 		$this->assertEquals($expected, $actual);
 	}
 
@@ -614,7 +549,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function whereClauseSupportsExistsKeyword() {
 		$parseString = 'EXISTS (SELECT * FROM tx_crawler_queue WHERE tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0)';
 		$whereParts = $this->fixture->parseWhereClause($parseString);
-
 		$this->assertTrue(is_array($whereParts), $whereParts);
 		$this->assertTrue(empty($parseString), 'parseString is not empty');
 	}
@@ -627,14 +561,12 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$sql = 'SELECT * FROM tx_crawler_process WHERE active = 0 AND NOT EXISTS (SELECT * FROM tx_crawler_queue WHERE tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0)';
 		$expected = 'SELECT * FROM tx_crawler_process WHERE active = 0 AND NOT EXISTS (SELECT * FROM tx_crawler_queue WHERE tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0)';
 		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
-
 		$this->assertEquals($expected, $actual);
 	}
 
 	///////////////////////////////////////
 	// Tests concerning advanced operators
 	///////////////////////////////////////
-
 	/**
 	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=13135
@@ -642,7 +574,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function caseWithBooleanConditionIsSupportedInFields() {
 		$parseString = 'CASE WHEN 1>0 THEN 2 ELSE 1 END AS foo, other_column';
 		$fieldList = $this->fixture->parseFieldList($parseString);
-
 		$this->assertTrue(is_array($fieldList), $fieldList);
 		$this->assertTrue(empty($parseString), 'parseString is not empty');
 	}
@@ -655,7 +586,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$sql = 'SELECT CASE WHEN 1>0 THEN 2 ELSE 1 END AS foo, other_column FROM mytable';
 		$expected = 'SELECT CASE WHEN 1 > 0 THEN 2 ELSE 1 END AS foo, other_column FROM mytable';
 		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
-
 		$this->assertEquals($expected, $actual);
 	}
 
@@ -666,7 +596,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function caseWithMultipleWhenIsSupportedInFields() {
 		$parseString = 'CASE column WHEN 1 THEN \'one\' WHEN 2 THEN \'two\' ELSE \'out of range\' END AS number';
 		$fieldList = $this->fixture->parseFieldList($parseString);
-
 		$this->assertTrue(is_array($fieldList), $fieldList);
 		$this->assertTrue(empty($parseString), 'parseString is not empty');
 	}
@@ -679,7 +608,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$sql = 'SELECT CASE column WHEN 1 THEN \'one\' WHEN 2 THEN \'two\' ELSE \'out of range\' END AS number FROM mytable';
 		$expected = 'SELECT CASE column WHEN 1 THEN \'one\' WHEN 2 THEN \'two\' ELSE \'out of range\' END AS number FROM mytable';
 		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
-
 		$this->assertEquals($expected, $actual);
 	}
 
@@ -691,7 +619,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$sql = 'SELECT * FROM tx_templavoila_tmplobj WHERE LOCATE(\'(fce)\', datastructure)>0';
 		$expected = 'SELECT * FROM tx_templavoila_tmplobj WHERE LOCATE(\'(fce)\', datastructure) > 0';
 		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
-
 		$this->assertEquals($expected, $actual);
 	}
 
@@ -703,7 +630,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$sql = 'SELECT * FROM tx_templavoila_tmplobj WHERE LOCATE(\'(fce)\'  , datastructure  ,10)>0';
 		$expected = 'SELECT * FROM tx_templavoila_tmplobj WHERE LOCATE(\'(fce)\', datastructure, 10) > 0';
 		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
-
 		$this->assertEquals($expected, $actual);
 	}
 
@@ -716,14 +642,12 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$sql = 'SELECT *, CASE WHEN LOCATE(\'(fce)\', datastructure)>0 THEN 2 ELSE 1 END AS scope FROM tx_templavoila_tmplobj';
 		$expected = 'SELECT *, CASE WHEN LOCATE(\'(fce)\', datastructure) > 0 THEN 2 ELSE 1 END AS scope FROM tx_templavoila_tmplobj';
 		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
-
 		$this->assertEquals($expected, $actual);
 	}
 
 	///////////////////////////////////////
 	// Tests concerning prepared queries
 	///////////////////////////////////////
-
 	/**
 	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=15457
@@ -732,7 +656,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$sql = 'SELECT * FROM pages WHERE pid = :pid ORDER BY title';
 		$expected = 'SELECT * FROM pages WHERE pid = :pid ORDER BY title';
 		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
-
 		$this->assertEquals($expected, $actual);
 	}
 
@@ -744,7 +667,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$sql = 'SELECT * FROM pages WHERE pid = ? ORDER BY title';
 		$expected = 'SELECT * FROM pages WHERE pid = ? ORDER BY title';
 		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
-
 		$this->assertEquals($expected, $actual);
 	}
 
@@ -755,7 +677,6 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function parametersAreReferenced() {
 		$sql = 'SELECT * FROM pages WHERE pid = :pid1 OR pid = :pid2';
 		$components = $this->fixture->_callRef('parseSELECT', $sql);
-
 		$this->assertTrue(is_array($components['parameters']), 'References to parameters not found');
 		$this->assertEquals(2, count($components['parameters']));
 		$this->assertTrue(is_array($components['parameters']), 'References to parameters not found');
@@ -770,12 +691,10 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function sameParameterIsReferencedInSubquery() {
 		$sql = 'SELECT * FROM pages WHERE uid = :pageId OR uid IN (SELECT uid FROM pages WHERE pid = :pageId)';
 		$pageId = 12;
-
 		$components = $this->fixture->_callRef('parseSELECT', $sql);
 		$components['parameters'][':pageId'][0] = $pageId;
 		$query = $this->cleanSql($this->fixture->_callRef('compileSELECT', $components));
 		$expected = 'SELECT * FROM pages WHERE uid = 12 OR uid IN (SELECT uid FROM pages WHERE pid = 12)';
-
 		$this->assertEquals($expected, $query);
 	}
 
@@ -786,12 +705,10 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function namedParametersMayBeSafelyReplaced() {
 		$sql = 'SELECT * FROM pages WHERE pid = :pid AND title NOT LIKE \':pid\'';
 		$pid = 12;
-
 		$components = $this->fixture->_callRef('parseSELECT', $sql);
 		$components['parameters'][':pid'][0] = $pid;
 		$query = $this->cleanSql($this->fixture->_callRef('compileSELECT', $components));
-		$expected = 'SELECT * FROM pages WHERE pid = ' . $pid . ' AND title NOT LIKE \':pid\'';
-
+		$expected = ('SELECT * FROM pages WHERE pid = ' . $pid) . ' AND title NOT LIKE \':pid\'';
 		$this->assertEquals($expected, $query);
 	}
 
@@ -802,16 +719,15 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function questionMarkParametersMayBeSafelyReplaced() {
 		$sql = 'SELECT * FROM pages WHERE pid = ? AND timestamp < ? AND title != \'How to test?\'';
 		$parameterValues = array(12, 1281782690);
-
 		$components = $this->fixture->_callRef('parseSELECT', $sql);
 		for ($i = 0; $i < count($components['parameters']['?']); $i++) {
 			$components['parameters']['?'][$i][0] = $parameterValues[$i];
 		}
 		$query = $this->cleanSql($this->fixture->_callRef('compileSELECT', $components));
 		$expected = 'SELECT * FROM pages WHERE pid = 12 AND timestamp < 1281782690 AND title != \'How to test?\'';
-
 		$this->assertEquals($expected, $query);
 	}
+
 }
 
 ?>

@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * The mother of all test cases.
  *
@@ -29,10 +28,7 @@
  * capabilities.
  *
  * @author Robert Lemke <robert@typo3.org>
- *
- * This method is backported from FLOW3's BaseTestCase class.
  * @link https://svn.typo3.org/FLOW3/Packages/Testing/trunk/Classes/BaseTestCase.php
- *
  * @package TYPO3
  * @subpackage dbal
  */
@@ -50,8 +46,8 @@ abstract class BaseTestCase extends tx_phpunit_testcase {
 		$accessibleClassName = uniqid('AccessibleTestProxy');
 		$class = new ReflectionClass($className);
 		$abstractModifier = $class->isAbstract() ? 'abstract ' : '';
-		eval('
-			' . $abstractModifier . 'class ' . $accessibleClassName . ' extends ' . $className . ' {
+		eval(((((('
+			' . $abstractModifier) . 'class ') . $accessibleClassName) . ' extends ') . $className) . ' {
 				public function _call($methodName) {
 					return call_user_func_array(array($this, $methodName), array_slice(func_get_args(), 1));
 				}
@@ -82,6 +78,7 @@ abstract class BaseTestCase extends tx_phpunit_testcase {
 		');
 		return $accessibleClassName;
 	}
+
 }
 
 ?>

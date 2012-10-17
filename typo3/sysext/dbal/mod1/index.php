@@ -2,7 +2,8 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2011 Xavier Perseguers <xavier@typo3.org>
+ *  (c) 2004-2009 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2004-2009 Karsten Dambekalns (karsten@typo3.org)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -13,9 +14,6 @@
  *
  *  The GNU General Public License can be found at
  *  http://www.gnu.org/copyleft/gpl.html.
- *  A copy is found in the textfile GPL.txt and important notices to the license
- *  from the author is found in LICENSE.txt distributed with these scripts.
- *
  *
  *  This script is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -25,28 +23,22 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Cache engine helper for generated queries.
+ * Module 'DBAL Debug' for the 'dbal' extension.
  *
- * @author Xavier Perseguers <xavier@typo3.org>
- * @package TYPO3
- * @subpackage dbal
+ * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author 	Karsten Dambekalns <karsten@typo3.org>
  */
-class tx_dbal_querycache {
-
-	/**
-	 * Returns a proper cache key.
-	 *
-	 * @param 	mixed		$config
-	 * @return 	void
-	 */
-	static public function getCacheKey($config) {
-		if (is_array($config)) {
-			return md5(serialize($config));
-		} else {
-			return $config;
-		}
-	}
-
-}
-
+$LANG->includeLLFile('EXT:dbal/mod1/locallang.xml');
+$BE_USER->modAccess($MCONF, 1);
+/*
+ * @deprecated since 6.0, the classname tx_dbal_module1 and this file is obsolete
+ * and will be removed by 7.0. The class was renamed and is now located at:
+ * typo3/sysext/dbal/Classes/Controller/ModuleController.php
+ */
+require_once t3lib_extMgm::extPath('dbal') . 'Classes/Controller/ModuleController.php';
+// Make instance:
+$SOBE = t3lib_div::makeInstance('tx_dbal_module1');
+$SOBE->init();
+$SOBE->main();
+$SOBE->printContent();
 ?>

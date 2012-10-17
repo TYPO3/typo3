@@ -21,13 +21,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Fake ADOdb connection factory.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
- *
  * @package TYPO3
  * @subpackage dbal
  */
@@ -41,21 +38,17 @@ class FakeDbConnection {
 	 * @param string $driver Driver to use (e.g., 'oci8')
 	 * @return ADOConnection
 	 */
-	public static function connect(ux_t3lib_db $db, $driver) {
+	static public function connect(ux_t3lib_db $db, $driver) {
 		// Make sure to have a clean configuration
 		$db->clearCachedFieldInfo();
 		$db->_call('initInternalVariables');
-
-		require_once(t3lib_extMgm::extPath('adodb') . 'adodb/adodb.inc.php');
-		require_once(t3lib_extMgm::extPath('adodb') . 'adodb/drivers/adodb-' . $driver . '.inc.php');
-
+		require_once t3lib_extMgm::extPath('adodb') . 'adodb/adodb.inc.php';
+		require_once ((t3lib_extMgm::extPath('adodb') . 'adodb/drivers/adodb-') . $driver) . '.inc.php';
 		$handlerKey = '_DEFAULT';
 		$db->lastHandlerKey = $handlerKey;
 		$db->handlerInstance[$handlerKey] = t3lib_div::makeInstance('ADODB_' . $driver);
-
 		// From method handler_init()
 		$db->handlerInstance[$handlerKey]->DataDictionary = NewDataDictionary($db->handlerInstance[$handlerKey]);
-
 		// DataDictionary being set, a connectionID may be arbitrarily chosen
 		$db->handlerInstance[$handlerKey]->_connectionID = rand(1, 1000);
 	}
