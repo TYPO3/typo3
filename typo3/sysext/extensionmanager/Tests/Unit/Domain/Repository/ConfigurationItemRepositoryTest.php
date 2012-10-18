@@ -38,7 +38,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	protected $backupGlobals = TRUE;
 
 	/**
-	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository
+	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	public $configurationItemRepository;
 
@@ -55,7 +55,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 			'TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager',
 			array('dummy')
 		);
-		$this->configurationItemRepository->_set('configurationManager', $configurationManagerMock);
+		$this->configurationItemRepository->injectConfigurationManager($configurationManagerMock);
 	}
 
 	/**
@@ -221,18 +221,25 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	 * @return void
 	 */
 	public function mergeWithExistingConfigurationOverwritesDefaultKeysWithCurrent() {
-		$this->markTestSkipped('Skipped this test until ConfigurationManager is made non static.');
+		$configurationManagerMock = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$configurationManagerMock
+				->expects($this->once())
+				->method('getConfigurationValueByPath')
+				->with('EXT/extConf/testextensionkey')
+				->will($this->returnValue(
+					serialize(array(
+						'FE.' => array(
+							'enabled' => '1',
+							'saltedPWHashingMethod' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\SaltInterface_sha1'
+						),
+						'CLI.' => array(
+							'enabled' => '0'
+						)
+					))
+				));
+		$this->configurationItemRepository->injectConfigurationManager($configurationManagerMock);
 
-		$backupExtConf = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'];
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['testextensionkey'] = serialize(array(
-			'FE.' => array(
-				'enabled' => '1',
-				'saltedPWHashingMethod' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\SaltInterface_sha1'
-			),
-			'CLI.' => array(
-				'enabled' => '0'
-			)
-		));
 		$defaultConfiguration = array(
 			'FE.enabled' => array(
 				'value' => '0'
@@ -264,9 +271,8 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 				'value' => '0'
 			)
 		);
-		$result = $this->configurationItemRepository->mergeWithExistingConfiguration($defaultConfiguration, array('key' => 'testextensionkey'));
+		$result = $this->configurationItemRepository->_call('mergeWithExistingConfiguration', $defaultConfiguration, array('key' => 'testextensionkey'));
 		$this->assertEquals($expectedResult, $result);
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'] = $backupExtConf;
 	}
 
 	/**

@@ -43,7 +43,7 @@ class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Act
 	/**
 	 * Renders a configure extension link if the extension has configuration options
 	 *
-	 * @param string $extension
+	 * @param array $extension
 	 * @return string the rendered a tag
 	 */
 	public function render($extension) {

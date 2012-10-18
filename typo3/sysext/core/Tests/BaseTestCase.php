@@ -65,10 +65,10 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * @param boolean $callOriginalClone whether to call the __clone method
 	 * @param boolean $callAutoload whether to call any autoload function
 	 *
-	 * @return PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
+	 * @return \PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
 	 *         a mock of $originalClassName with access methods added
 	 *
-	 * @see Tx_Extbase_Tests_Unit_BaseTestCase::getAccessibleMock
+	 * @see \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getAccessibleMock
 	 */
 	protected function getAccessibleMock(
 		$originalClassName, array $methods = array(), array $arguments = array(), $mockClassName = '',

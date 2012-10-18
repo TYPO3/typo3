@@ -43,7 +43,7 @@ class DownloadExtensionDataViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\
 	/**
 	 * Renders an install link
 	 *
-	 * @param string $extension
+	 * @param array $extension
 	 * @return string the rendered a tag
 	 */
 	public function render($extension) {
