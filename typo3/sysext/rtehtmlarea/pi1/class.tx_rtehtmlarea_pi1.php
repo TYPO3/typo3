@@ -187,20 +187,24 @@ class tx_rtehtmlarea_pi1 {
 						fwrite($filehandle, $cmd, strlen($cmd));
 					}
 					$cmd = '#' . LF;
-					fwrite($filehandle, $cmd, strlen($cmd));
-						// Assemble the Aspell command
-					$AspellCommand = ((TYPO3_OS === 'WIN') ? 'type ' : 'cat ') . escapeshellarg($tmpFileName) . ' | '
-						. $this->AspellDirectory
-						. ' -a --mode=none'
-						. ($this->personalDictionaryPath ? ' --home-dir=' . escapeshellarg($this->personalDictionaryPath) : '')
-						. ' --lang=' . escapeshellarg($this->dictionary)
-						. ' --encoding=' . escapeshellarg($mainDictionaryCharacterSet)
-						. ' 2>&1';
-					$AspellAnswer = shell_exec($AspellCommand);
-						// Close and delete the temporary file
-					fclose($filehandle);
-					t3lib_div::unlink_tempfile($tmpFileName);
-					echo 'Personal word list was updated.';
+					$result = fwrite($filehandle, $cmd, strlen($cmd));
+					if ($result === FALSE) {
+						t3lib_div::sysLog('SpellChecker tempfile write error: ' . $tmpFileName, $this->extKey, t3lib_div::SYSLOG_SEVERITY_ERROR);
+					} else {
+							// Assemble the Aspell command
+						$AspellCommand = ((TYPO3_OS === 'WIN') ? 'type ' : 'cat ') . escapeshellarg($tmpFileName) . ' | '
+							. $this->AspellDirectory
+							. ' -a --mode=none'
+							. ($this->personalDictionaryPath ? ' --home-dir=' . escapeshellarg($this->personalDictionaryPath) : '')
+							. ' --lang=' . escapeshellarg($this->dictionary)
+							. ' --encoding=' . escapeshellarg($mainDictionaryCharacterSet)
+							. ' 2>&1';
+						$AspellAnswer = shell_exec($AspellCommand);
+							// Close and delete the temporary file
+						fclose($filehandle);
+						t3lib_div::unlink_tempfile($tmpFileName);
+						echo 'Personal word list was updated.';
+					}
 				} else {
 					t3lib_div::sysLog('SpellChecker tempfile open error: ' . $tmpFileName, $this->extKey, t3lib_div::SYSLOG_SEVERITY_ERROR);
 					echo 'SpellChecker tempfile open error.';
@@ -280,7 +284,15 @@ var selectedDictionary = "' . $this->dictionary . '";
 	 * @return string path to the main dictionary
 	 */
 	protected function setMainDictionaryPath() {
-		$this->mainDictionaryPath = trim(shell_exec($this->AspellDirectory . ' config dict-dir'));
+		$this->mainDictionaryPath = '';
+		$aspellCommand = $this->AspellDirectory . ' config dict-dir';
+		$aspellResult = shell_exec($aspellCommand);
+		if ($aspellResult) {
+			$this->mainDictionaryPath = trim($aspellResult);
+		}
+		if (!$aspellResult || !$this->mainDictionaryPath) {
+			t3lib_div::sysLog('SpellChecker main dictionary path retrieval error: ' . $aspellCommand, $this->extKey, t3lib_div::SYSLOG_SEVERITY_ERROR);
+		}
 		return $this->mainDictionaryPath;
 	}
 
@@ -291,20 +303,36 @@ var selectedDictionary = "' . $this->dictionary . '";
 	 */
 	protected function getMainDictionaryCharacterSet() {
 		$characterSet = '';
+		if ($this->mainDictionaryPath) {
+			// Keep only the first part of the dictionary name
+			$mainDictionary = preg_split('/[-_]/', $this->dictionary, 2);
 			// Read the options of the dictionary
-		$dictionaryHandle = fopen($this->mainDictionaryPath . '/' . $this->dictionary . '.dat', 'rb');
-		$dictionaryContent = fread($dictionaryHandle, 500);
-		fclose($dictionaryHandle);
-			// Get the line that contains the character set option
-		$dictionaryContent = preg_split('/charset\s*/', $dictionaryContent, 2);
-		if ($dictionaryContent[1]) {
-				// Isolate the character set
-			$dictionaryContent = t3lib_div::trimExplode(LF, $dictionaryContent[1]);
-			$characterSet = $dictionaryContent[0];
+			$dictionaryFileName = $this->mainDictionaryPath . '/' . $mainDictionary[0] . '.dat';
+			$dictionaryHandle = fopen($dictionaryFileName, 'rb');
+			if (!$dictionaryHandle) {
+				t3lib_div::sysLog('SpellChecker main dictionary open error: ' . $dictionaryFileName, $this->extKey, t3lib_div::SYSLOG_SEVERITY_ERROR);
+			} else {
+				$dictionaryContent = fread($dictionaryHandle, 500);
+				if ($dictionaryContent === FALSE) {
+					t3lib_div::sysLog('SpellChecker main dictionary read error: ' . $dictionaryFileName, $this->extKey, t3lib_div::SYSLOG_SEVERITY_ERROR);
+				} else {
+					fclose($dictionaryHandle);
+						// Get the line that contains the character set option
+					$dictionaryContent = preg_split('/charset\s*/', $dictionaryContent, 2);
+					if ($dictionaryContent[1]) {
+							// Isolate the character set
+						$dictionaryContent = t3lib_div::trimExplode(LF, $dictionaryContent[1]);
+						$characterSet = $dictionaryContent[0];
+						// Fix Aspell character set oddity (i.e. iso8859-1)
+						$characterSet = str_replace('iso', 'iso-', $characterSet);
+						$characterSet = str_replace('--', '-', $characterSet);
+					}
+					if (!$characterSet) {
+						t3lib_div::sysLog('SpellChecker main dictionary character set retrieval error: ' . $dictionaryContent[1], $this->extKey, t3lib_div::SYSLOG_SEVERITY_ERROR);
+					}
+				}
+			}
 		}
-			// Fix Aspell character set oddity (i.e. iso8859-1)
-		$characterSet = str_replace('iso', 'iso-', $characterSet);
-		$characterSet = str_replace('--', '-', $characterSet);
 		return $characterSet;
 	}
 
@@ -333,19 +361,30 @@ var selectedDictionary = "' . $this->dictionary . '";
 	 * @return void
 	 */
 	protected function fixPersonalDictionaryCharacterSet() {
+		if ($this->personalDictionaryPath) {
 			// Fix the options of the personl word list and of the replacement pairs files
-		$fileNames = array();
-		$fileNames[0] = $this->personalDictionaryPath . '/' . '.aspell.' . $this->dictionary . '.pws';
-		$fileNames[1] = $this->personalDictionaryPath . '/' . '.aspell.' . $this->dictionary . '.prepl';
-		foreach ($fileNames as $fileName) {
-			if (file_exists($fileName)) {
-				$fileContent = file_get_contents($fileName);
-				$fileContent = explode(LF, $fileContent);
-				if (strpos($fileContent[0], 'utf-8') === FALSE) {
-					$fileContent[0] .= ' utf-8';
+			// Aspell creates such files only for the main dictionary
+			$fileNames = array();
+			$mainDictionary = preg_split('/[-_]/', $this->dictionary, 2);
+			$fileNames[0] = $this->personalDictionaryPath . '/' . '.aspell.' . $mainDictionary[0] . '.pws';
+			$fileNames[1] = $this->personalDictionaryPath . '/' . '.aspell.' . $mainDictionary[0] . '.prepl';
+			foreach ($fileNames as $fileName) {
+				if (file_exists($fileName)) {
+					$fileContent = file_get_contents($fileName);
+					if ($fileContent === FALSE) {
+						t3lib_div::sysLog('SpellChecker personal word list read error: ' . $fileName, $this->extKey, t3lib_div::SYSLOG_SEVERITY_ERROR);
+					} else {
+						$fileContent = explode(LF, $fileContent);
+						if (strpos($fileContent[0], 'utf-8') === FALSE) {
+							$fileContent[0] .= ' utf-8';
+							$fileContent = implode(LF, $fileContent);
+							$result = file_put_contents($fileName, $fileContent);
+							if ($result === FALSE) {
+								t3lib_div::sysLog('SpellChecker personal word list write error: ' . $fileName, $this->extKey, t3lib_div::SYSLOG_SEVERITY_ERROR);
+							}
+						}
+					}
 				}
-				$fileContent = implode(LF, $fileContent);
-				file_put_contents($fileName, $fileContent);
 			}
 		}
 	}
