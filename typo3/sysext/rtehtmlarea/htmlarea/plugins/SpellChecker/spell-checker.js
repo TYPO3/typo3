@@ -424,7 +424,7 @@ HTMLArea.SpellChecker = HTMLArea.Plugin.extend({
 				cmd: 'learn',
 				enablePersonalDicts: this.enablePersonalDicts,
 				userUid: this.userUid,
-				dictionary: this.contentISOLanguage,
+				dictionary: this.dialog.find('itemId', 'dictionary')[0].getValue(),
 				pspell_charset: this.contentCharset,
 				pspell_mode: this.spellCheckerMode
 			};
