@@ -31,11 +31,44 @@
  * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
 abstract class Tx_Core_Tests_Unit_Core_Fixtures_LegacyClassFixture {
+
+	/**
+	 * @param t3lib_div $foo
+	 */
 	public function foo(t3lib_div $foo) {
 	}
+
+	/**
+	 * @param t3lib_div $foo
+	 * @param $baz
+	 */
+	public function baz(t3lib_div $foo,
+						$baz) {
+	}
+
+	/**
+	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @param Tx_News_Domain_Model_DemandInterface $demand
+	 */
+	abstract protected function createConstraintsFromDemand(Tx_Extbase_Persistence_QueryInterface $query,
+												   Tx_News_Domain_Model_DemandInterface $demand);
+
+	/**
+	 * @abstract
+	 * @param t3lib_div $bar
+	 * @return mixed
+	 */
 	abstract public function bar(t3lib_div $bar);
+
+	/**
+	 *
+	 */
 	public function nothing() {
 	}
+
+	/**
+	 * @param Tx_Core_Tests_Unit_Core_Fixtures_LegacyClassFixture $nothing
+	 */
 	protected function stillNothing(Tx_Core_Tests_Unit_Core_Fixtures_LegacyClassFixture $nothing) {
 	}
 }
