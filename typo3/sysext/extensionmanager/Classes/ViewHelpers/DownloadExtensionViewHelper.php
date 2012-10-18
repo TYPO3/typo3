@@ -51,8 +51,8 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
 		$pathSelector = '<ul>';
 		foreach ($installPaths as $installPathType => $installPath) {
 			$pathSelector .= '<li>
-				<input type="radio" id="' . $extension->getExtensionKey() . '-downloadPath-' . $installPathType . '" name="' . $this->getFieldNamePrefix('downloadPath') . '[downloadPath]" class="downloadPath" value="' . $installPathType . '"' . ($installPathType == 'Local' ? 'checked="checked"' : '') . '/>
-				<label for="' . $extension->getExtensionKey() . '-downloadPath-' . $installPathType . '">' . $installPathType . '</label>
+				<input type="radio" id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '" name="' . htmlspecialchars($this->getFieldNamePrefix('downloadPath')) . '[downloadPath]" class="downloadPath" value="' . htmlspecialchars($installPathType) . '"' . ($installPathType == 'Local' ? 'checked="checked"' : '') . '/>
+				<label for="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '">' . htmlspecialchars($installPathType) . '</label>
 			</li>';
 		}
 		$pathSelector .= '</ul>';
@@ -61,13 +61,13 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
 		$uriBuilder->reset();
 		$uriBuilder->setFormat('json');
 		$uri = $uriBuilder->uriFor($action, array(
-			'extension' => $extension->getUid()
+			'extension' => (int)$extension->getUid()
 		), 'Download');
 		$this->tag->addAttribute('href', $uri);
 		$label = '<input type="submit" value="' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.downloadViewHelper.submit', 'extensionmanager') . '" />';
 		$this->tag->setContent($label . $pathSelector);
 		$this->tag->addAttribute('class', 'download');
-		return '<div id="' . $extension->getExtensionKey() . '-downloadFromTer" class="downloadFromTer">' . $this->tag->render() . '</div>';
+		return '<div id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadFromTer" class="downloadFromTer">' . $this->tag->render() . '</div>';
 	}
 
 }
