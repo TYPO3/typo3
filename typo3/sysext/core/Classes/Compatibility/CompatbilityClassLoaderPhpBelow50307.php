@@ -125,13 +125,13 @@ class CompatbilityClassLoaderPhpBelow50307 extends \TYPO3\CMS\Core\Core\ClassLoa
 			ini_set('pcre.backtrack_limit', $fileLength);
 		}
 		$fileContent = preg_replace_callback(
-			'/function\s+([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\s*\((.*?\$.*?)\)(\s*[{;])/im',
+			'/function\s+([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\s*\((.*?\$.*?)\)(\s*[{;])/ims',
 			function($matches) use($classAliasMap) {
 			if (isset($matches[1]) && isset($matches[2])) {
 				list($functionName, $argumentList) = array_slice($matches, 1, 2);
 				$arguments = explode(',', $argumentList);
 				$arguments = array_map('trim', $arguments);
-				$arguments = preg_replace_callback('/([\\a-z0-9_]+\s+)?((\s*[&]*\s*\$[a-z0-9_]+)(\s*=\s*.+)?)/im', function($argumentMatches) use($classAliasMap) {
+				$arguments = preg_replace_callback('/([\\a-z0-9_]+\s+)?((\s*[&]*\s*\$[a-z0-9_]+)(\s*=\s*.+)?)/ims', function($argumentMatches) use($classAliasMap) {
 					if (isset($argumentMatches[1]) && isset($argumentMatches[2])) {
 						$typeHint = strtolower(ltrim(trim($argumentMatches[1]), '\\'));
 						if (isset($classAliasMap[$typeHint])) {
