@@ -1945,7 +1945,7 @@ class ResourceStorage {
 			if (!empty($this->storageRecord['processingfolder'])) {
 				$processingFolder = $this->storageRecord['processingfolder'];
 			}
-			$processingFolder = trim($processingFolder, '/');
+			$processingFolder = '/' . trim($processingFolder, '/') . '/';
 			// this way, we also worry about deeplinked folders like typo3temp/_processed_
 			if ($this->driver->folderExists($processingFolder) === FALSE) {
 				$processingFolderParts = explode('/', $processingFolder);
