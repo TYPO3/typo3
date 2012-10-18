@@ -1958,6 +1958,7 @@ class ResourceStorage {
 					}
 				}
 			}
+			$processingFolder = '/' . trim($processingFolder, '/') . '/';
 			$this->processingFolder = $this->driver->getFolder($processingFolder);
 		}
 		return $this->processingFolder;
