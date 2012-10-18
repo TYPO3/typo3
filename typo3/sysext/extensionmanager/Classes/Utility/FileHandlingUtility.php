@@ -238,6 +238,18 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Get version of an available or installed extension
+	 *
+	 * @param string $extension
+	 * @return string
+	 */
+	public function getExtensionVersion($extension) {
+		$extensionData = $this->installUtility->enrichExtensionWithDetails($extension);
+		$version = $extensionData['version'];
+		return $version;
+	}
+
+	/**
 	 * Create a zip file from an extension
 	 *
 	 * @param array $extension
@@ -245,7 +257,8 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function createZipFileFromExtension($extension) {
 		$extensionPath = $this->getAbsoluteExtensionPath($extension);
-		$fileName = PATH_site . 'typo3temp/' . $extension . '.zip';
+		$version = $this->getExtensionVersion($extension);
+		$fileName = PATH_site . 'typo3temp/' . $extension . '_' . $version . '.zip';
 		$zip = new \ZipArchive();
 		$zip->open($fileName, \ZipArchive::CREATE);
 		$iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($extensionPath));
