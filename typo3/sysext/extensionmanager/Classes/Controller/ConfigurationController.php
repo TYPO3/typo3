@@ -52,10 +52,9 @@ class ConfigurationController extends \TYPO3\CMS\Extensionmanager\Controller\Abs
 	 * Show the extension configuration form. The whole form field handling is done
 	 * in the corresponding view helper
 	 *
-	 * @return void
+	 * @param array $extension
 	 */
-	public function showConfigurationFormAction() {
-		$extension = $this->request->getArgument('extension');
+	public function showConfigurationFormAction($extension) {
 		$extension = array_merge($extension, $GLOBALS['TYPO3_LOADED_EXT'][$extension['key']]);
 		$configuration = $this->configurationItemRepository->findByExtension($extension);
 		$this->view->assign('configuration', $configuration)->assign('extension', $extension);

@@ -56,6 +56,11 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 	protected $installUtility;
 
 	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility
+	 */
+	protected $downloadUtility;
+
+	/**
 	 * @param \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility
 	 * @return void
 	 */
@@ -90,11 +95,6 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 	}
 
 	/**
-	 * @var \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility
-	 */
-	protected $downloadUtility;
-
-	/**
 	 * @param \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility $downloadUtility
 	 * @return void
 	 */
@@ -105,16 +105,10 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 	/**
 	 * Check extension dependencies
 	 *
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
 	 * @throws \Exception
-	 * @return void
 	 */
-	public function checkDependenciesAction() {
-		if (!$this->request->hasArgument('extension')) {
-			throw new \Exception('Required argument extension not set.', 1334433342);
-		}
-		$extensionUid = $this->request->getArgument('extension');
-		/** @var $extension \TYPO3\CMS\Extensionmanager\Domain\Model\Extension */
-		$extension = $this->extensionRepository->findByUid(intval($extensionUid));
+	public function checkDependenciesAction(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
 		$dependencyTypes = $this->managementService->getAndResolveDependencies($extension);
 		$message = '';
 		if (count($dependencyTypes) > 0) {
