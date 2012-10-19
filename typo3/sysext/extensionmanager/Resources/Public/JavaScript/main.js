@@ -3,17 +3,16 @@
 
 	$(document).ready(function() {
 		manageExtensionListing();
-		$("#typo3-extension-configuration-forms ul").tabs("div.category");
-
-		$('#resetSearch').live('click', function (e) {
-			datatable.fnFilter('');
-		});
+		$("#typo3-extension-configuration-forms div.tabs").tabs();
 
 		$('.onClickMaskExtensionManager').click(function() {
 			$('.typo3-extension-manager').mask();
 		});
 
 		resetSearchField();
+		$('#resetSearch').click(function() {
+			datatable.fnFilter('');
+		});
 	});
 
 	function getUrlVars() {
