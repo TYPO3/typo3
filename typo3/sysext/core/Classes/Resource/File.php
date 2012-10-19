@@ -37,14 +37,14 @@ class File extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	 * File indexing status. True, if the file is indexed in the database;
 	 * NULL is the default value, this means that the index status is unknown
 	 *
-	 * @var bool
+	 * @var boolean
 	 */
 	protected $indexed = NULL;
 
 	/**
 	 * Set to TRUE while this file is being indexed - used to prevent some endless loops
 	 *
-	 * @var bool
+	 * @var boolean
 	 */
 	protected $indexingInProgress = FALSE;
 
@@ -139,7 +139,7 @@ class File extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	/**
 	 * Returns TRUE if this file is indexed
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isIndexed() {
 		if ($this->indexed === NULL && !$this->indexingInProgress) {
@@ -274,12 +274,12 @@ class File extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	/**
 	 * Returns a modified version of the file.
 	 *
-	 * @param string $context the context of the configuration (see above)
+	 * @param string $taskType The task type of this processing
 	 * @param array $configuration the processing configuration, see manual for that
 	 * @return \TYPO3\CMS\Core\Resource\ProcessedFile The processed file
 	 */
-	public function process($context, array $configuration) {
-		return $this->getStorage()->processFile($this, $context, $configuration);
+	public function process($taskType, array $configuration) {
+		return $this->getStorage()->processFile($this, $taskType, $configuration);
 	}
 
 	/**

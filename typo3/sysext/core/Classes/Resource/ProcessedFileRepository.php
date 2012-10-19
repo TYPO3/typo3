@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Core\Resource;
+use \TYPO3\CMS\Core\Utility;
 
 /***************************************************************
  *  Copyright notice
@@ -33,7 +34,7 @@ namespace TYPO3\CMS\Core\Resource;
  * @author Benjamin Mack <benni@typo3.org>
  * @author Ingmar Schlecht <ingmar@typo3.org>
  */
-class ProcessedFileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
+class ProcessedFileRepository extends AbstractRepository {
 
 	/**
 	 * The main object type of this class. In some cases (fileReference) this
@@ -53,64 +54,127 @@ class ProcessedFileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepositor
 	protected $table = 'sys_file_processedfile';
 
 	/**
-	 * Creates an object managed by this repository.
-	 *
-	 * @param array $databaseRow
-	 * @return \TYPO3\CMS\Core\Resource\File
+	 * @var ResourceFactory
 	 */
-	protected function createDomainObject(array $databaseRow) {
-		return $this->factory->getFileObject($databaseRow['uid'], $databaseRow);
+	protected $resourceFactory;
+
+	/**
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected $databaseConnection;
+
+	/**
+	 * Creates this object.
+	 */
+	public function __construct() {
+		$this->resourceFactory = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		$this->databaseConnection = $GLOBALS['TYPO3_DB'];
 	}
 
 	/**
-	 * Loads index-data into processedFileObject
+	 * Creates a ProcessedFile object from a file object and a processing configuration
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\ProcessedFile $processedFileObject
-	 * @return boolean
+	 * @param FileInterface $originalFile
+	 * @param string $taskType
+	 * @param array $configuration
+	 * @return ProcessedFile
 	 */
-	public function populateDataOfProcessedFileObject(\TYPO3\CMS\Core\Resource\ProcessedFile $processedFileObject) {
-		/** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
-		$recordData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->table, 'original=' . intval($processedFileObject->getOriginalFile()->getUid()) . ' AND checksum=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($processedFileObject->calculateChecksum(), $this->table) . ' AND deleted=0');
-		// Update the properties if the data was found
-		if (is_array($recordData)) {
-			$processedFileObject->updateProperties($recordData);
-			return TRUE;
-		} else {
-			return FALSE;
-		}
+	public function createNewProcessedFileObject(FileInterface $originalFile, $taskType, array $configuration) {
+		return Utility\GeneralUtility::makeInstance(
+			$this->objectType,
+			$originalFile,
+			$taskType,
+			$configuration
+		);
+	}
+
+	/**
+	 * @param array $databaseRow
+	 * @return ProcessedFile
+	 */
+	protected function createDomainObject(array $databaseRow) {
+		$originalFile = $this->resourceFactory->getFileObject(intval($databaseRow['original']));
+		$originalFile->setStorage($this->resourceFactory->getStorageObject($originalFile->getProperty('storage')));
+		$taskType = $databaseRow['task_type'];
+		$configuration = unserialize($databaseRow['configuration']);
+
+		return Utility\GeneralUtility::makeInstance(
+			$this->objectType,
+			$originalFile,
+			$taskType,
+			$configuration,
+			$databaseRow
+		);
 	}
 
 	/**
 	 * Adds a processedfile object in the database
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\ProcessedFile $processedFile
+	 * @param ProcessedFile $processedFile
 	 * @return void
 	 */
 	public function add($processedFile) {
-		$insertFields = $processedFile->toArray();
-		$insertFields['crdate'] = ($insertFields['tstamp'] = time());
-		// @todo: make sure that the toArray method only
-		// contains fields that actually *exist* in the table
-		$GLOBALS['TYPO3_DB']->exec_INSERTquery($this->table, $insertFields);
+		if ($processedFile->isPersisted()) {
+			$this->update($processedFile);
+		} else {
+			$insertFields = $processedFile->toArray();
+			$insertFields['crdate'] = $insertFields['tstamp'] = time();
+			$insertFields = $this->cleanUnavailableColumns($insertFields);
+			$this->databaseConnection->exec_INSERTquery($this->table, $insertFields);
+			$uid = $this->databaseConnection->sql_insert_id();
+			$processedFile->updateProperties(array('uid' => $uid));
+		}
 	}
 
 	/**
 	 * Updates an existing file object in the database
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\ProcessedFile $processedFile
+	 * @param ProcessedFile $processedFile
 	 * @return void
 	 */
 	public function update($processedFile) {
-		$uid = intval($processedFile->getProperty('uid'));
-		if ($uid > 0) {
-			// @todo: make sure that the toArray method only
-			// contains fields that actually *exist* in the table
-			$updateFields = $processedFile->toArray();
+		if ($processedFile->isPersisted()) {
+			$uid = intval($processedFile->getProperty('uid'));
+			$updateFields = $this->cleanUnavailableColumns($processedFile->toArray());
 			$updateFields['tstamp'] = time();
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->table, 'uid=' . $uid, $updateFields);
+			$this->databaseConnection->exec_UPDATEquery($this->table, 'uid=' . intval($uid), $updateFields);
 		}
 	}
 
+	/**
+	 * @param File $file
+	 * @param string $taskType The task that should be executed on the file
+	 * @param array $configuration
+	 *
+	 * @return ProcessedFile
+	 */
+	public function findOneByOriginalFileAndTaskTypeAndConfiguration(FileInterface $file, $taskType, array $configuration) {
+		$databaseRow = $this->databaseConnection->exec_SELECTgetSingleRow(
+			'*',
+			$this->table,
+			'original=' . intval($file->getUid()) .
+				' AND task_type=' . $this->databaseConnection->fullQuoteStr($taskType, $this->table) .
+				' AND configuration=' . $this->databaseConnection->fullQuoteStr(serialize($configuration), $this->table)
+		);
+
+		if (is_array($databaseRow)) {
+			$processedFile = $this->createDomainObject($databaseRow);
+		} else {
+			$processedFile = $this->createNewProcessedFileObject($file, $taskType, $configuration);
+		}
+		return $processedFile;
+	}
+
+	/**
+	 * Removes all array keys which cannot be persisted
+	 *
+	 * @param array $data
+	 *
+	 * @return array
+	 */
+	protected function cleanUnavailableColumns(array $data) {
+		return array_intersect_key($data, $this->databaseConnection->admin_get_fields($this->table));
+	}
 }
 
 
