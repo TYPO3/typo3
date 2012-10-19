@@ -5084,7 +5084,7 @@ class ContentObjectRenderer {
 								3 => $processedFileObject->getPublicUrl(),
 								'origFile' => $fileObject->getPublicUrl(),
 								'origFile_mtime' => $fileObject->getModificationTime(),
-								// This is needed by tslib_gifbuilder, ln 100ff in order for the setup-array to create a unique filename hash.
+								// This is needed by tslib_gifbuilder, in order for the setup-array to create a unique filename hash.
 								'originalFile' => $fileObject,
 								'processedFile' => $processedFileObject,
 								'fileCacheHash' => $hash
