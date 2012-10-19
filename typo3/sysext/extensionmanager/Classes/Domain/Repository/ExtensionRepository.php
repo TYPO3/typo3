@@ -109,7 +109,11 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 */
 	public function findOneByExtensionKeyAndVersion($extensionKey, $version) {
 		$query = $this->createQuery();
-		$query->matching($query->logicalAnd($query->equals('extensionKey', $extensionKey), $query->equals('version', $version)));
+		$query->matching($query->logicalAnd(
+			$query->equals('extensionKey', $extensionKey),
+			$query->equals('version', $version),
+			$query->greaterThanOrEqual('reviewState', 0)
+		));
 		return $query->setLimit(1)->execute()->getFirst();
 	}
 
@@ -143,7 +147,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 					OR
 					title LIKE ' . $quotedSearchStringForLike . '
 				)
-				AND current_version=1
+				AND current_version=1 AND review_state >= 0
 				HAVING position > 0';
 		$order = 'position desc';
 		$result = $this->databaseConnection->exec_SELECTgetRows($select, $from, $where, '', $order);
@@ -254,9 +258,16 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 */
 	protected function addDefaultConstraints(\TYPO3\CMS\Extbase\Persistence\Generic\Query $query) {
 		if ($query->getConstraint()) {
-			$query->matching($query->logicalAnd($query->getConstraint(), $query->equals('current_version', TRUE)));
+			$query->matching($query->logicalAnd(
+				$query->getConstraint(),
+				$query->equals('current_version', TRUE),
+				$query->greaterThanOrEqual('reviewState', 0)
+			));
 		} else {
-			$query->matching($query->equals('current_version', TRUE));
+			$query->matching($query->logicalAnd(
+				$query->equals('current_version', TRUE),
+				$query->greaterThanOrEqual('reviewState', 0)
+			));
 		}
 		return $query;
 	}
