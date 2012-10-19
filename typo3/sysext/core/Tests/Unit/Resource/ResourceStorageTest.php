@@ -144,6 +144,9 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$this->assertEquals($uri . '/', $this->fixture->getBaseUri());
 	}
 
+	/**
+	 * @return array
+	 */
 	public function capabilitiesDataProvider() {
 		return array(
 			'only public' => array(

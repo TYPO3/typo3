@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Resource;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Andreas Wolf <andreas.wolf@ikt-werk.de>
+ *  (c) 2011 Andreas Wolf <andreas.wolf@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * NOTE: This class is part of the lowlevel FAL API and should not be used from outside the FAL package.
  *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
+ * @author Andreas Wolf <andreas.wolf@typo3.org>
  */
 class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 
@@ -442,26 +442,6 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		$fileReferenceObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileReference', $fileReferenceData);
 		return $fileReferenceObject;
 	}
-
-	/**
-	 * Generates a new object of the type \TYPO3\CMS\Core\Resource\ProcessedFile
-	 * additionally checks if this processed file already exists in the DB
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $originalFileObject
-	 * @param string $context The context the file is processed in
-	 * @param array $configuration The processing configuration
-	 * @return \TYPO3\CMS\Core\Resource\ProcessedFile
-	 */
-	public function getProcessedFileObject(\TYPO3\CMS\Core\Resource\FileInterface $originalFileObject, $context, array $configuration) {
-		/** @var \TYPO3\CMS\Core\Resource\ProcessedFile $processedFileObject */
-		$processedFileObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFile', $originalFileObject, $context, $configuration);
-		/* @var \TYPO3\CMS\Core\Resource\ProcessedFileRepository $repository */
-		$repository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository');
-		// Check if this file already exists in the DB
-		$repository->populateDataOfProcessedFileObject($processedFileObject);
-		return $processedFileObject;
-	}
-
 }
 
 
