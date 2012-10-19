@@ -113,8 +113,5 @@ class UpdateFromTerController extends \TYPO3\CMS\Extensionmanager\Controller\Abs
 		}
 		$this->view->assign('updated', $updated)->assign('repository', $repository)->assign('errorMessage', $errorMessage);
 	}
-
 }
-
-
 ?>
