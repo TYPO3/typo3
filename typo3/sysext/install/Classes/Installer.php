@@ -2232,14 +2232,22 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 					At least a value of 400 is suggested.
 				</p>
 			';
+			$suhosinSuggestionGetMaxValueLength = '
+				<p>
+					At least a value of 2000 is suggested.
+				</p>
+			';
 			$suhosinRequestMaxVars = ini_get('suhosin.request.max_vars');
 			$suhosinPostMaxVars = ini_get('suhosin.post.max_vars');
+			$suhosinGetMaxValueLength = ini_get('suhosin.get.max_value_length');
 			$suhosinRequestMaxVarsType = $suhosinRequestMaxVars < 400 ? 2 : -1;
 			$suhosinPostMaxVarsType = $suhosinPostMaxVars < 400 ? 2 : -1;
-			$suhosinType = $suhosinRequestMaxVars < 400 || $suhosinPostMaxVars < 400 ? 2 : -1;
+			$suhosinGetMaxValueLengthType = $suhosinGetMaxValueLength < 2000 ? 2 : -1;
+			$suhosinType = $suhosinRequestMaxVars < 400 || $suhosinPostMaxVars < 400 || $suhosinGetMaxValueLength < 2000 ? 2 : -1;
 			$this->message($ext, 'Suhosin/Hardened PHP is loaded', $suhosinDescription, $suhosinType);
 			$this->message($ext, 'suhosin.request.max_vars: ' . $suhosinRequestMaxVars, $suhosinSuggestion, $suhosinRequestMaxVarsType);
 			$this->message($ext, 'suhosin.post.max_vars: ' . $suhosinPostMaxVars, $suhosinSuggestion, $suhosinPostMaxVarsType);
+			$this->message($ext, 'suhosin.get.max_value_length: ' . $suhosinGetMaxValueLength, $suhosinSuggestionGetMaxValueLength, $suhosinGetMaxValueLengthType);
 		} else {
 			$this->message($ext, 'Suhosin/Hardened PHP is not loaded', $suhosinDescription, 0);
 		}
