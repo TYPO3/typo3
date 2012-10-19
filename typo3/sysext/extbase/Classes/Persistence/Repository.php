@@ -89,8 +89,8 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager = NULL) {
 		$this->addedObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 		$this->removedObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
-		$nsSeperator = strpos($this->getRepositoryClassName(), '\\') !== FALSE ? '\\\\' : '_';
-		$this->objectType = preg_replace(array('/' . $nsSeperator . 'Repository' . $nsSeperator . '(?!.*' . $nsSeperator . 'Repository' . $nsSeperator . ')/', '/Repository$/'), array($nsSeperator . 'Model' . $nsSeperator, ''), $this->getRepositoryClassName());
+		$nsSeparator = strpos($this->getRepositoryClassName(), '\\') !== FALSE ? '\\\\' : '_';
+		$this->objectType = preg_replace(array('/' . $nsSeparator . 'Repository' . $nsSeparator . '(?!.*' . $nsSeparator . 'Repository' . $nsSeparator . ')/', '/Repository$/'), array($nsSeparator . 'Model' . $nsSeparator, ''), $this->getRepositoryClassName());
 		if ($objectManager === NULL) {
 			// Legacy creation, in case the object manager is NOT injected
 			// If ObjectManager IS there, then all properties are automatically injected
