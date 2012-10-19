@@ -26,6 +26,10 @@ namespace TYPO3\CMS\Core\Resource\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Core\Utility;
+
 /**
  * File processing service
  *
@@ -34,347 +38,146 @@ namespace TYPO3\CMS\Core\Resource\Service;
 class FileProcessingService {
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\ResourceStorage
+	 * @var Resource\ResourceStorage
 	 */
 	protected $storage;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\Driver\AbstractDriver
+	 * @var Resource\Driver\AbstractDriver
 	 */
 	protected $driver;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected $signalSlotDispatcher;
+
+	/**
+	 * @var \TYPO3\CMS\Core\Log\Logger
+	 */
+	protected $logger;
+
+	const SIGNAL_PreFileProcess = 'preFileProcess';
+	const SIGNAL_PostFileProcess = 'postFileProcess';
+
+	/**
 	 * Creates this object.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage
-	 * @param \TYPO3\CMS\Core\Resource\Driver\AbstractDriver $driver
+	 * @param Resource\ResourceStorage $storage
+	 * @param Resource\Driver\AbstractDriver $driver
 	 */
-	public function __construct(\TYPO3\CMS\Core\Resource\ResourceStorage $storage, \TYPO3\CMS\Core\Resource\Driver\AbstractDriver $driver) {
+	public function __construct(Resource\ResourceStorage $storage, Resource\Driver\AbstractDriver $driver) {
 		$this->storage = $storage;
 		$this->driver = $driver;
+
+		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
+		$logManager = Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager');
+		$this->logger = $logManager->getLogger(__CLASS__);
 	}
 
 	/**
-	 * Processes the file.
+	 * Processes a file
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\ProcessedFile $processedFile
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
-	 * @param string $context
+	 * @param Resource\FileInterface $fileObject The file object
+	 * @param Resource\ResourceStorage $targetStorage The storage to store the processed file in
+	 * @param string $taskType
 	 * @param array $configuration
-	 * @return \TYPO3\CMS\Core\Resource\ProcessedFile
+	 *
+	 * @return Resource\ProcessedFile
+	 * @throws \InvalidArgumentException
 	 */
-	public function process(\TYPO3\CMS\Core\Resource\ProcessedFile $processedFile, \TYPO3\CMS\Core\Resource\FileInterface $file, $context, array $configuration = array()) {
-		switch ($context) {
-		case $processedFile::CONTEXT_IMAGEPREVIEW:
-			$this->processImagePreview($processedFile, $file, $configuration);
-			break;
-		case $processedFile::CONTEXT_IMAGECROPSCALEMASK:
-			$this->processImageCropResizeMask($processedFile, $file, $configuration);
-			break;
-		default:
-			throw new \RuntimeException('Unknown processing context "' . $context . '"');
+	public function processFile(Resource\FileInterface $fileObject, Resource\ResourceStorage $targetStorage, $taskType, $configuration) {
+		/** @var $processedFileRepository Resource\ProcessedFileRepository */
+		$processedFileRepository = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository');
+
+		$processedFile = $processedFileRepository->findOneByOriginalFileAndTaskTypeAndConfiguration($fileObject, $taskType, $configuration);
+
+		// set the storage of the processed file
+		// Pre-process the file
+		$this->emitPreFileProcess($processedFile, $fileObject, $taskType, $configuration);
+
+		// Only handle the file if it is not processed yet
+		// (maybe modified or already processed by a signal)
+		// or (in case of preview images) already in the DB/in the processing folder
+		if (!$processedFile->isProcessed()) {
+			$this->process($processedFile, $targetStorage);
 		}
-		if ($processedFile->isProcessed()) {
-			// DB-query to update all info
-			/** @var $processedFileRepository \TYPO3\CMS\Core\Resource\ProcessedFileRepository */
-			$processedFileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository');
-			if ($processedFile->hasProperty('uid') && $processedFile->getProperty('uid') > 0) {
-				$processedFileRepository->update($processedFile);
-			} else {
-				$processedFileRepository->add($processedFile);
-			}
-		}
+
+		// Post-process (enrich) the file
+		$this->emitPostFileProcess($processedFile, $fileObject, $taskType, $configuration);
+
 		return $processedFile;
 	}
 
 	/**
-	 * This method actually does the processing of files locally
+	 * Processes the file
 	 *
-	 * takes the original file (on remote storages this will be fetched from the remote server)
-	 * does the IM magic on the local server by creating a temporary typo3temp/ file
-	 * copies the typo3temp/ file to the processingfolder of the target storage
-	 * removes the typo3temp/ file
+	 * @param Resource\ProcessedFile $processedFile
+	 * @param Resource\ResourceStorage $targetStorage The storage to put the processed file into
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\ProcessedFile $processedFile
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @throws \RuntimeException
+	 */
+	protected function process(Resource\ProcessedFile $processedFile, Resource\ResourceStorage $targetStorage) {
+		$targetFolder = $targetStorage->getProcessingFolder();
+		if (!is_object($targetFolder)) {
+			throw new \RuntimeException('Could not get processing folder for storage ' . $this->storage->getName(), 1350514301);
+		}
+
+		// We only have to trigger the file processing if the file either is new, does not exist or the
+		// original file has changed since the last processing run (the last case has to trigger a reprocessing
+		// even if the original file was used until now)
+		if ($processedFile->isNew() || (!$processedFile->usesOriginalFile() && !$processedFile->exists()) ||
+			$processedFile->isOutdated()) {
+
+			$task = $processedFile->getTask();
+			/** @var $processor Resource\Processing\LocalImageProcessor */
+			$processor = Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor');
+			$processor->processTask($task);
+
+			if ($processedFile->isProcessed()) {
+				/** @var $processedFileRepository Resource\ProcessedFileRepository */
+				$processedFileRepository = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository');
+				$processedFileRepository->add($processedFile);
+			}
+		}
+	}
+
+	/**
+	 * Get the SignalSlot dispatcher
+	 *
+	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected function getSignalSlotDispatcher() {
+		if (!isset($this->signalSlotDispatcher)) {
+			$this->signalSlotDispatcher = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')
+				->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+		}
+		return $this->signalSlotDispatcher;
+	}
+
+	/**
+	 * Emits file pre-processing signal.
+	 *
+	 * @param Resource\ProcessedFile $processedFile
+	 * @param Resource\FileInterface $file
+	 * @param string $context
 	 * @param array $configuration
-	 * @return void
 	 */
-	protected function processImagePreview(\TYPO3\CMS\Core\Resource\ProcessedFile $processedFile, \TYPO3\CMS\Core\Resource\FileInterface $file, array $configuration) {
-		// Merge custom configuration with default configuration
-		$configuration = array_merge(array('width' => 64, 'height' => 64), $configuration);
-		$configuration['width'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($configuration['width'], 1, 1000);
-		$configuration['height'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($configuration['height'], 1, 1000);
-		$originalFileName = $file->getForLocalProcessing(FALSE);
-		// Create a temporary file in typo3temp/
-		if ($file->getExtension() === 'jpg') {
-			$targetFileExtension = '.jpg';
-		} else {
-			$targetFileExtension = '.png';
-		}
-		$targetFolder = $this->storage->getProcessingFolder();
-		$targetFileName = 'preview_' . $processedFile->calculateChecksum() . $targetFileExtension;
-		// Do the actual processing
-		if (!$targetFolder->hasFile($targetFileName)) {
-			// Create the thumb filename in typo3temp/preview_....jpg
-			$temporaryFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::tempnam('preview_') . $targetFileExtension;
-			// Check file extension
-			if ($file->getType() != $file::FILETYPE_IMAGE && !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $file->getExtension())) {
-				// Create a default image
-				$this->getTemporaryImageWithText($temporaryFileName, 'Not imagefile!', 'No ext!', $file->getName());
-			} else {
-				// Create the temporary file
-				if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
-					$parameters = '-sample ' . $configuration['width'] . 'x' . $configuration['height'] . ' ' . $this->wrapFileName($originalFileName) . '[0] ' . $this->wrapFileName($temporaryFileName);
-					$cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::imageMagickCommand('convert', $parameters);
-					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
-					if (!file_exists($temporaryFileName)) {
-						// Create a error gif
-						$this->getTemporaryImageWithText($temporaryFileName, 'No thumb', 'generated!', $file->getName());
-					}
-				}
-			}
-			// Temporary image could have been created
-			if (file_exists($temporaryFileName)) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($temporaryFileName);
-				// Copy the temporary file to the processedFolder
-				// this is done here, as the driver can do this without worrying
-				// about existing ProcessedFile objects
-				// or permissions in the storage
-				// for "remote" storages this means "uploading" the file to the storage again
-				// for the virtual storage, it is merely a thing of "copying a file from typo3temp/ to typo3temp/_processed_"
-				$this->driver->addFile($temporaryFileName, $targetFolder, $targetFileName, $processedFile);
-				// Remove the temporary file as it's not needed anymore
-				\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($temporaryFileName);
-				$processedFile->setProcessed(TRUE);
-			}
-		} else {
-			// the file already exists, nothing to do locally, but still mark the file as processed and save the data
-			// and update the fields, as they might have not been set
-			if ($processedFile->getProperty('identifier') == '') {
-				$identifier = $targetFolder->getIdentifier() . $targetFileName;
-				$processedFile->updateProperties(array('name' => $targetFileName, 'identifier' => $identifier));
-			}
-			$processedFile->setProcessed(TRUE);
-		}
+	protected function emitPreFileProcess(Resource\ProcessedFile $processedFile, Resource\FileInterface $file, $context, array $configuration = array()) {
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFileProcess, array($this, $this->driver, $processedFile, $file, $context, $configuration));
 	}
 
 	/**
-	 * Escapes a file name so it can safely be used on the command line.
+	 * Emits file post-processing signal.
 	 *
-	 * @param string $inputName filename to safeguard, must not be empty
-	 * @return string $inputName escaped as needed
-	 */
-	protected function wrapFileName($inputName) {
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
-			$currentLocale = setlocale(LC_CTYPE, 0);
-			setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
-			$escapedInputName = escapeshellarg($inputName);
-			setlocale(LC_CTYPE, $currentLocale);
-		} else {
-			$escapedInputName = escapeshellarg($inputName);
-		}
-		return $escapedInputName;
-	}
-
-	/**
-	 * Creates error image based on gfx/notfound_thumb.png
-	 * Requires GD lib enabled, otherwise it will exit with the three
-	 * textstrings outputted as text. Outputs the image stream to browser and exits!
-	 *
-	 * @param string $filename Name of the file
-	 * @param string $textline1 Text line 1
-	 * @param string $textline2 Text line 2
-	 * @param string $textline3 Text line 3
-	 * @return void
-	 */
-	protected function getTemporaryImageWithText($filename, $textline1, $textline2, $textline3) {
-		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
-			throw new \RuntimeException('TYPO3 Fatal Error: No gdlib. ' . $textline1 . ' ' . $textline2 . ' ' . $textline3, 1270853952);
-		}
-		// Creates the basis for the error image
-		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) {
-			$im = imagecreatefrompng(PATH_typo3 . 'gfx/notfound_thumb.png');
-		} else {
-			$im = imagecreatefromgif(PATH_typo3 . 'gfx/notfound_thumb.gif');
-		}
-		// Sets background color and print color.
-		$white = imageColorAllocate($im, 255, 255, 255);
-		$black = imageColorAllocate($im, 0, 0, 0);
-		// Prints the text strings with the build-in font functions of GD
-		$x = 0;
-		$font = 0;
-		if ($textline1) {
-			imagefilledrectangle($im, $x, 9, 56, 16, $white);
-			imageString($im, $font, $x, 9, $textline1, $black);
-		}
-		if ($textline2) {
-			imagefilledrectangle($im, $x, 19, 56, 26, $white);
-			imageString($im, $font, $x, 19, $textline2, $black);
-		}
-		if ($textline3) {
-			imagefilledrectangle($im, $x, 29, 56, 36, $white);
-			imageString($im, $font, $x, 29, substr($textline3, -14), $black);
-		}
-		// Outputting the image stream and exit
-		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) {
-			imagePng($im, $filename);
-		} else {
-			imageGif($im, $filename);
-		}
-	}
-
-	/**
-	 * This method actually does the processing of files locally
-	 *
-	 * takes the original file (on remote storages this will be fetched from the remote server)
-	 * does the IM magic on the local server by creating a temporary typo3temp/ file
-	 * copies the typo3temp/ file to the processingfolder of the target storage
-	 * removes the typo3temp/ file
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\ProcessedFile $processedFile
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param Resource\ProcessedFile $processedFile
+	 * @param Resource\FileInterface $file
+	 * @param $context
 	 * @param array $configuration
-	 * @return void
 	 */
-	protected function processImageCropResizeMask(\TYPO3\CMS\Core\Resource\ProcessedFile $processedFile, \TYPO3\CMS\Core\Resource\FileInterface $file, array $configuration) {
-		// checks to see if m (the mask array) is defined
-		$doMasking = is_array($configuration['maskImages']) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'];
-		// @todo: is it ok that we use tslib (=FE) here?
-		/** @var $gifBuilder \TYPO3\CMS\Frontend\Imaging\GifBuilder */
-		$gifBuilder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
-		$gifBuilder->init();
-		// @todo: this is not clean yet
-		if (!trim($configuration['fileExtension'])) {
-			$configuration['fileExtension'] = 'web';
-			$targetFileExtension = $file->getExtension();
-		} elseif ($doMasking) {
-			$targetFileExtension = $file->getExtension() == $gifBuilder->gifExtension ? $gifBuilder->gifExtension : 'jpg';
-		} else {
-			$targetFileExtension = $configuration['fileExtension'];
-		}
-		$originalFileName = $file->getForLocalProcessing(FALSE);
-		$targetFolder = $this->storage->getProcessingFolder();
-		$targetFileName = 'previewcrm_' . $processedFile->calculateChecksum() . '.' . $targetFileExtension;
-		// @todo: implement meaningful TempFileIndex
-		if ($configuration['useSample']) {
-			$gifBuilder->scalecmd = '-sample';
-		}
-		$options = array();
-		if ($configuration['maxWidth']) {
-			$options['maxW'] = $configuration['maxWidth'];
-		}
-		if ($configuration['maxHeight']) {
-			$options['maxH'] = $configuration['maxHeight'];
-		}
-		if ($configuration['minWidth']) {
-			$options['minW'] = $configuration['minWidth'];
-		}
-		if ($configuration['minHeight']) {
-			$options['minH'] = $configuration['minHeight'];
-		}
-		$options['noScale'] = $configuration['noScale'];
-		$configuration['additionalParameters'] = $this->modifyImageMagickStripProfileParameters($configuration['additionalParameters'], $configuration);
-		// Do the actual processing
-		if (!$targetFolder->hasFile($targetFileName)) {
-			if (!$doMasking) {
-				// Normal situation (no masking)
-				// the result info is an array with 0=width,1=height,2=extension,3=filename
-				list($targetWidth, $targetHeight, $targetExtension, $temporaryFileName) = $gifBuilder->imageMagickConvert($originalFileName, $configuration['fileExtension'], $configuration['width'], $configuration['height'], $configuration['additionalParameters'], $configuration['frame'], $options);
-			} else {
-				$temporaryFileName = $gifBuilder->tempPath . $targetFileName;
-				$maskImage = $configuration['maskImages']['maskImage'];
-				$maskBackgroundImage = $configuration['maskImages']['backgroundImage'];
-				if ($maskImage instanceof \TYPO3\CMS\Core\Resource\FileInterface && $maskBackgroundImage instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
-					$negate = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_negate_mask'] ? ' -negate' : '';
-					$temporaryExtension = 'png';
-					if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_gif']) {
-						// If ImageMagick version 5+
-						$temporaryExtension = $gifBuilder->gifExtension;
-					}
-					$tempFileInfo = $gifBuilder->imageMagickConvert($originalFileName, $temporaryExtension, $configuration['width'], $configuration['height'], $configuration['additionalParameters'], $configuration['frame'], $options);
-					if (is_array($tempFileInfo)) {
-						$maskBottomImage = $configuration['maskImages']['maskBottomImage'];
-						if ($maskBottomImage instanceof $maskBottomImage) {
-							$maskBottomImageMask = $configuration['maskImages']['maskBottomImageMask'];
-						}
-						//	Scaling:	****
-						$tempScale = array();
-						$command = '-geometry ' . $tempFileInfo[0] . 'x' . $tempFileInfo[1] . '!';
-						$command = $this->modifyImageMagickStripProfileParameters($command, $configuration);
-						$tmpStr = $gifBuilder->randomName();
-						//	m_mask
-						$tempScale['m_mask'] = $tmpStr . '_mask.' . $temporaryExtension;
-						$gifBuilder->imageMagickExec($maskImage->getForLocalProcessing(TRUE), $tempScale['m_mask'], $command . $negate);
-						//	m_bgImg
-						$tempScale['m_bgImg'] = $tmpStr . '_bgImg.' . trim($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_noloss']);
-						$gifBuilder->imageMagickExec($maskBackgroundImage->getForLocalProcessing(), $tempScale['m_bgImg'], $command);
-						//	m_bottomImg / m_bottomImg_mask
-						if ($maskBottomImage instanceof \TYPO3\CMS\Core\Resource\FileInterface && $maskBottomImageMask instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
-							$tempScale['m_bottomImg'] = $tmpStr . '_bottomImg.' . $temporaryExtension;
-							$gifBuilder->imageMagickExec($maskBottomImage->getForLocalProcessing(), $tempScale['m_bottomImg'], $command);
-							$tempScale['m_bottomImg_mask'] = $tmpStr . '_bottomImg_mask.' . $temporaryExtension;
-							$gifBuilder->imageMagickExec($maskBottomImageMask->getForLocalProcessing(), $tempScale['m_bottomImg_mask'], $command . $negate);
-							// BEGIN combining:
-							// The image onto the background
-							$gifBuilder->combineExec($tempScale['m_bgImg'], $tempScale['m_bottomImg'], $tempScale['m_bottomImg_mask'], $tempScale['m_bgImg']);
-						}
-						// The image onto the background
-						$gifBuilder->combineExec($tempScale['m_bgImg'], $tempFileInfo[3], $tempScale['m_mask'], $temporaryFileName);
-						// Unlink the temp-images...
-						foreach ($tempScale as $file) {
-							if (@is_file($file)) {
-								unlink($file);
-							}
-						}
-					}
-				}
-				// Finish off
-				list($targetWidth, $targetHeight) = $gifBuilder->getImageDimensions($temporaryFileName);
-			}
-			// Temporary image was created
-			if (file_exists($temporaryFileName)) {
-				$updatedProperties = array('width' => $targetWidth, 'height' => $targetHeight);
-				// ImageMagick did not have to do anything, as it is already there...
-				if ($originalFileName !== $temporaryFileName) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($temporaryFileName);
-					// Copy the temporary file to the processedFolder
-					// this is done here, as the driver can do this without worrying
-					// about existing ProcessedFile objects
-					// or permissions in the storage
-					// for "remote" storages this means "uploading" the file to the storage again
-					// for the virtual storage, it is merely a thing of "copying a file from typo3temp/ to typo3temp/_processed_"
-					$this->driver->addFile($temporaryFileName, $targetFolder, $targetFileName, $processedFile);
-					// Remove the temporary file as it's not needed anymore
-					\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($temporaryFileName);
-				} else {
-
-				}
-				$processedFile->updateProperties($updatedProperties);
-				$processedFile->setProcessed(TRUE);
-			}
-		}
+	protected function emitPostFileProcess(Resource\ProcessedFile $processedFile, Resource\FileInterface $file, $context, array $configuration = array()) {
+		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFileProcess, array($this, $this->driver, $processedFile, $file, $context, $configuration));
 	}
-
-	/**
-	 * Modifies the parameters for ImageMagick for stripping of profile information.
-	 *
-	 * @param string $parameters The parameters to be modified (if required)
-	 * @param array $configuration The TypoScript configuration of [IMAGE].file
-	 * @return string
-	 */
-	protected function modifyImageMagickStripProfileParameters($parameters, array $configuration) {
-		// Strips profile information of image to save some space:
-		if (isset($configuration['stripProfile'])) {
-			if ($configuration['stripProfile']) {
-				$parameters = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_stripProfileCommand'] . $parameters;
-			} else {
-				$parameters .= '###SkipStripProfile###';
-			}
-		}
-		return $parameters;
-	}
-
 }
 
 
