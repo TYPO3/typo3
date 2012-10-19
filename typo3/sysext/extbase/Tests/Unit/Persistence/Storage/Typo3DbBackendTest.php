@@ -129,12 +129,10 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'languageField' => 'sys_language_uid',
 			'delete' => 'deleted'
 		);
-		$tsfe = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', false);
-		$tsfe->sys_language_uid = 0;
-		$GLOBALS['TSFE'] = $tsfe;
 		$sql = array();
+		$languageUid = 0;
 		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', false);
-		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql);
+		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql, $languageUid);
 		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.sys_language_uid IN (0,-1))'));
 		$this->assertSame($expectedSql, $sql);
 	}
@@ -147,12 +145,10 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$GLOBALS['TCA'][$table]['ctrl'] = array(
 			'languageField' => 'sys_language_uid'
 		);
-		$tsfe = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', false);
-		$tsfe->sys_language_uid = 2;
-		$GLOBALS['TSFE'] = $tsfe;
 		$sql = array();
+		$languageUid = 2;
 		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', false);
-		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql);
+		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql, $languageUid);
 		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.sys_language_uid IN (2,-1))'));
 		$this->assertSame($expectedSql, $sql);
 	}
@@ -166,12 +162,10 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'languageField' => 'sys_language_uid',
 			'transOrigPointerField' => 'l10n_parent'
 		);
-		$tsfe = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', false);
-		$tsfe->sys_language_uid = 2;
-		$GLOBALS['TSFE'] = $tsfe;
 		$sql = array();
+		$languageUid = 2;
 		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', false);
-		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql);
+		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql, $languageUid);
 		$expectedSql = array('additionalWhereClause' => array('(' . $table . '.sys_language_uid IN (2,-1) OR (' . $table . '.sys_language_uid=0 AND ' . $table . '.uid NOT IN (SELECT ' . $table . '.l10n_parent FROM ' . $table . ' WHERE ' . $table . '.l10n_parent>0 AND ' . $table . '.sys_language_uid>0)))'));
 		$this->assertSame($expectedSql, $sql);
 	}
@@ -186,12 +180,35 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'transOrigPointerField' => 'l10n_parent',
 			'delete' => 'deleted'
 		);
-		$tsfe = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', false);
-		$tsfe->sys_language_uid = 2;
-		$GLOBALS['TSFE'] = $tsfe;
 		$sql = array();
+		$languageUid = 2;
 		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', false);
-		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql);
+		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql, $languageUid);
+		$expectedSql = array('additionalWhereClause' => array(
+			'(' . $table . '.sys_language_uid IN (2,-1)' .
+					' OR (' . $table . '.sys_language_uid=0 AND ' . $table . '.uid NOT IN (' .
+						'SELECT ' . $table . '.l10n_parent FROM ' . $table .
+						' WHERE ' . $table . '.l10n_parent>0 AND ' .
+							$table . '.sys_language_uid>0 AND ' .
+							$table . '.deleted=0)))')
+		);
+		$this->assertSame($expectedSql, $sql);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addSysLanguageStatementWorksInBackendContextWithSubselectionTakesDeleteStatementIntoAccountIfNecessary() {
+		$table = uniqid('tx_coretest_table');
+		$GLOBALS['TCA'][$table]['ctrl'] = array(
+			'languageField' => 'sys_language_uid',
+			'transOrigPointerField' => 'l10n_parent',
+			'delete' => 'deleted'
+		);
+		$sql = array();
+		$languageUid = 2;
+		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', false);
+		$mockTypo3DbBackend->_callRef('addSysLanguageStatement', $table, $sql, $languageUid);
 		$expectedSql = array('additionalWhereClause' => array(
 			'(' . $table . '.sys_language_uid IN (2,-1)' .
 					' OR (' . $table . '.sys_language_uid=0 AND ' . $table . '.uid NOT IN (' .

@@ -80,6 +80,13 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	protected $respectSysLanguage = TRUE;
 
 	/**
+	 * The language uid for the language overlay.
+	 *
+	 * @var integer
+	 */
+	protected $sysLanguageUid = 0;
+
+	/**
 	 * Flag if the the query result should be returned as raw QueryResult.
 	 *
 	 * @var boolean
@@ -97,6 +104,14 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 		$configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		if (TYPO3_MODE === 'BE' && $configurationManager->isFeatureEnabled('ignoreAllEnableFieldsInBe')) {
 			$this->setIgnoreEnableFields(TRUE);
+		}
+
+		// Set correct language uid for frontend handling
+		if (isset($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE'])) {
+			$this->setSysLanguageUid($GLOBALS['TSFE']->sys_language_content);
+		} elseif (intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('L'))) {
+			// Set language from 'L' parameter
+			$this->setSysLanguageUid(intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('L')));
 		}
 	}
 
@@ -160,6 +175,26 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 */
 	public function getRespectSysLanguage() {
 		return $this->respectSysLanguage;
+	}
+
+	/**
+	 * Sets the language uid for the language overlay.
+	 *
+	 * @param integer $sysLanguageUid language uid for the language overlay
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+	 * @api
+	 */
+	public function setSysLanguageUid($sysLanguageUid) {
+		$this->sysLanguageUid = $sysLanguageUid;
+	}
+
+	/**
+	 * Returns the language uid for the language overlay
+	 *
+	 * @return integer language uid for the language overlay
+	 */
+	public function getSysLanguageUid() {
+		return $this->sysLanguageUid;
 	}
 
 	/**

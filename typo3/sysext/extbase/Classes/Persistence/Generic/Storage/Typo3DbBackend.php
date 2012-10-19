@@ -270,7 +270,13 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		$this->checkSqlErrors($sql);
 		$rows = $this->getRowsFromResult($query->getSource(), $result);
 		$this->databaseHandle->sql_free_result($result);
-		$rows = $this->doLanguageAndWorkspaceOverlay($query->getSource(), $rows);
+		// Get language uid from querySettings.
+		// Ensure the backend handling is not broken (fallback to Get parameter 'L' if needed)
+		$languageUid = NULL;
+		if ($query->getQuerySettings()->getSysLanguageUid()) {
+			$languageUid = $query->getQuerySettings()->getSysLanguageUid();
+		}
+		$rows = $this->doLanguageAndWorkspaceOverlay($query->getSource(), $rows, $languageUid);
 		// TODO: implement $objectData = $this->processObjectRecords($statementHandle);
 		return $rows;
 	}
@@ -805,7 +811,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	protected function addAdditionalWhereClause(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings, $tableName, &$sql) {
 		$this->addVisibilityConstraintStatement($querySettings, $tableName, $sql);
 		if ($querySettings->getRespectSysLanguage()) {
-			$this->addSysLanguageStatement($tableName, $sql);
+			$this->addSysLanguageStatement($tableName, $sql, $querySettings->getSysLanguageUid());
 		}
 		if ($querySettings->getRespectStoragePage()) {
 			$this->addPageIdStatement($tableName, $sql, $querySettings->getStoragePageIds());
@@ -915,31 +921,28 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 *
 	 * @param string $tableName The database table name
 	 * @param array &$sql The query parts
+	 * @param integer $languageUid The language uid to pay attention
 	 * @return void
 	 */
-	protected function addSysLanguageStatement($tableName, array &$sql) {
+	protected function addSysLanguageStatement($tableName, array &$sql, $languageUid = 0) {
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
 			if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])) {
 				// Select all entries for the current language
-				if (isset($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE'])) {
-					$additionalWhereClause = $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (' . $GLOBALS['TSFE']->sys_language_uid . ',-1)';
-					// If any language is set -> get those entries which are not translated yet
-					// They will be removed by t3lib_page::getRecordOverlay if not matching overlay mode
-					if ($GLOBALS['TSFE']->sys_language_uid && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])) {
-						$additionalWhereClause .= ' OR (' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0' .
-							' AND ' . $tableName . '.uid NOT IN (' . 'SELECT ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] .
-							' FROM ' . $tableName .
-							' WHERE ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] . '>0' .
-							' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '>0';
+				$additionalWhereClause = $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (' . intval($languageUid) . ',-1)';
+				// If any language is set -> get those entries which are not translated yet
+				// They will be removed by t3lib_page::getRecordOverlay if not matching overlay mode
+				if (intval($languageUid) && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])) {
+					$additionalWhereClause .= ' OR (' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0' .
+						' AND ' . $tableName . '.uid NOT IN (' . 'SELECT ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] .
+						' FROM ' . $tableName .
+						' WHERE ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] . '>0' .
+						' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '>0';
 
-						// Add delete clause to ensure all entries are loaded
-						if (isset($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
-							$additionalWhereClause .= ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . '=0';
-						}
-						$additionalWhereClause .= '))';
+					// Add delete clause to ensure all entries are loaded
+					if (isset($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
+						$additionalWhereClause .= ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . '=0';
 					}
-				} else {
-					$additionalWhereClause = $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (0,-1)';
+					$additionalWhereClause .= '))';
 				}
 				$sql['additionalWhereClause'][] = '(' . $additionalWhereClause . ')';
 			}

@@ -80,6 +80,22 @@ interface QuerySettingsInterface
 	public function getRespectSysLanguage();
 
 	/**
+	 * Sets the language uid for the language overlay.
+	 *
+	 * @param integer $sysLanguageUid language uid for the language overlay
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
+	 * @api
+	 */
+	public function setSysLanguageUid($sysLanguageUid);
+
+	/**
+	 * Returns the language uid for the language overlay
+	 *
+	 * @return integer language uid for the language overlay
+	 */
+	public function getSysLanguageUid();
+
+	/**
 	 * Sets a flag indicating whether all or some enable fields should be ignored. If TRUE, all enable fields are ignored.
 	 * If--in addition to this--enableFieldsToBeIgnored is set, only fields specified there are ignored. If FALSE, all
 	 * enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
