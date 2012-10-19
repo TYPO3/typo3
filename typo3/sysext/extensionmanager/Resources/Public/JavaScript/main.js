@@ -3,9 +3,9 @@
 
 	$(document).ready(function() {
 		manageExtensionListing();
-		$("#typo3-extension-configuration-forms ul").tabs("div.category");
+		$("#typo3-extension-configuration-forms div.tabs").tabs();
 
-		$('#resetSearch').live('click', function (e) {
+		$('#resetSearch').click(function (e) {
 			datatable.fnFilter('');
 		});
 
