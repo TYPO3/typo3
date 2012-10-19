@@ -77,14 +77,19 @@ class ListController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCont
 	}
 
 	/**
+	 * Add the needed JavaScript files for all actions
+	 */
+	public function initializeAction() {
+		$this->pageRenderer->addJsFile('../t3lib/js/extjs/notifications.js');
+		$this->pageRenderer->addInlineLanguageLabelFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
+	}
+
+	/**
 	 * Shows list of extensions present in the system
 	 *
 	 * @return void
 	 */
 	public function indexAction() {
-		$this->pageRenderer->addJsFile('../t3lib/js/extjs/notifications.js');
-		$this->pageRenderer->addInlineLanguageLabelFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
-		$this->pageRenderer->addJsFile(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('lang') . 'res/js/be/typo3lang.js');
 		$availableExtensions = $this->listUtility->getAvailableExtensions();
 		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensions($availableExtensions);
 		$availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation($availableAndInstalledExtensions);
@@ -95,67 +100,28 @@ class ListController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCont
 	 * Shows extensions from TER
 	 * Either all extensions or depending on a search param
 	 *
-	 * @return void
+	 * @param string $search
 	 */
-	public function terAction() {
-		$this->pageRenderer->addJsFile('../t3lib/js/extjs/notifications.js');
-		$search = $this->getSearchParam();
-		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
-		if (is_string($search) && !empty($search)) {
+	public function terAction($search = '') {
+		if (!empty($search)) {
 			$extensions = $this->extensionRepository->findByTitleOrAuthorNameOrExtensionKey($search);
 		} else {
 			$extensions = $this->extensionRepository->findAll();
 		}
-		$this->view->assign('extensions', $extensions)->assign('search', $search)->assign('availableAndInstalled', $availableAndInstalledExtensions);
+		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
+		$this->view->assign('extensions', $extensions)
+				->assign('search', $search)
+				->assign('availableAndInstalled', $availableAndInstalledExtensions);
 	}
 
 	/**
 	 * Shows all versions of a specific extension
 	 *
-	 * @return void
+	 * @param string $extensionKey
 	 */
-	public function showAllVersionsAction() {
-		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/notifications.js');
-		$extensions = array();
-		$extensionKey = '';
-		if ($this->request->hasArgument('allVersions') && $this->request->getArgument('allVersions') == 1 && $this->request->hasArgument('extensionKey') && is_string($this->request->getArgument('extensionKey'))) {
-			$extensionKey = $this->request->getArgument('extensionKey');
-			$extensions = $this->extensionRepository->findByExtensionKeyOrderedByVersion($extensionKey);
-		} else {
-			$this->redirect('ter');
-		}
+	public function showAllVersionsAction($extensionKey) {
+		$extensions = $this->extensionRepository->findByExtensionKeyOrderedByVersion($extensionKey);
 		$this->view->assign('extensions', $extensions)->assign('extensionKey', $extensionKey);
 	}
-
-	/**
-	 * Gets the search parameter either from the url or out
-	 * of the session if present
-	 *
-	 * @return string
-	 */
-	public function getSearchParam() {
-		$search = '';
-		if ($this->request->hasArgument('search') && is_string($this->request->getArgument('search'))) {
-			$search = $this->request->getArgument('search');
-		}
-		return $search;
-	}
-
-	/**
-	 * Gets instance of template if exists or create a new one.
-	 * Saves instance in viewHelperVariableContainer
-	 *
-	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate $doc
-	 */
-	public function getDocInstance() {
-		if (!isset($GLOBALS['SOBE']->doc)) {
-			$GLOBALS['SOBE']->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-			$GLOBALS['SOBE']->doc->backPath = $GLOBALS['BACK_PATH'];
-		}
-		return $GLOBALS['SOBE']->doc;
-	}
-
 }
-
-
 ?>
