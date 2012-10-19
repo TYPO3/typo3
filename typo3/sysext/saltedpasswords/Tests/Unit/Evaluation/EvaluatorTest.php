@@ -50,7 +50,10 @@ class EvaluatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function setUp() {
 		$this->fixture = $this->getMock('TYPO3\\CMS\\Saltedpasswords\\Evaluation\\Evaluator', array('dummy'));
+
+		// Make sure SaltedPasswordsUtility::isUsageEnabled() returns TRUE
 		unset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords']);
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] = 'rsa';
 	}
 
 	/**
