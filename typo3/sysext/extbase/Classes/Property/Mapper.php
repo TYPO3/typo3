@@ -297,7 +297,7 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 			} elseif (is_array($propertyValue)) {
 				if (isset($propertyValue['__identity'])) {
 					$existingObject = $this->findObjectByUid($targetType, $propertyValue['__identity']);
-					if ($existingObject === NULL) {
+					if ($existingObject === FALSE) {
 						throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Querying the repository for the specified object was not successful.', 1237305720);
 					}
 					unset($propertyValue['__identity']);
