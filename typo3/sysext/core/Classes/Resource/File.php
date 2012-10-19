@@ -274,12 +274,12 @@ class File extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	/**
 	 * Returns a modified version of the file.
 	 *
-	 * @param string $context the context of the configuration (see above)
+	 * @param string $taskType The task type of this processing
 	 * @param array $configuration the processing configuration, see manual for that
 	 * @return \TYPO3\CMS\Core\Resource\ProcessedFile The processed file
 	 */
-	public function process($context, array $configuration) {
-		return $this->getStorage()->processFile($this, $context, $configuration);
+	public function process($taskType, array $configuration) {
+		return $this->getStorage()->processFile($this, $taskType, $configuration);
 	}
 
 	/**
