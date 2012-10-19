@@ -443,7 +443,7 @@ abstract class AbstractDriver {
 	 * @param string $itemIdentifier
 	 * @param string $parentIdentifier
 	 * @param array $additionalInformation Additional information about the inspected item
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function applyFilterMethodsToDirectoryItem(array $filterMethods, $itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation = array()) {
 		foreach ($filterMethods as $filter) {

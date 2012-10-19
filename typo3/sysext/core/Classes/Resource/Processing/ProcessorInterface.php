@@ -1,8 +1,10 @@
 <?php
+namespace TYPO3\CMS\Core\Resource\Processing;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2012 Andreas Wolf <andreas.wolf@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,21 +26,27 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Gateway for TCE (TYPO3 Core Engine) file-handling through POST forms.
- * This script serves as the fileadministration part of the TYPO3 Core Engine.
- * Basically it includes two libraries which are used to manipulate files on the server.
- *
- * For syntax and API information, see the document 'TYPO3 Core APIs'
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * Interface for file processors. All classes capable of processing a file have to implement this interface.
  */
-require_once 'init.php';
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\FileController');
-$SOBE->init();
-$SOBE->main();
-$SOBE->finish();
+interface ProcessorInterface {
+
+	/**
+	 * Returns TRUE if this processor can process the given task.
+	 *
+	 * @param TaskInterface $task
+	 * @return boolean
+	 */
+	public function canProcessTask(TaskInterface $task);
+
+	/**
+	 * Processes the given task and sets the processing result in the task object.
+	 *
+	 * @param TaskInterface $task
+	 * @return void
+	 */
+	public function processTask(TaskInterface $task);
+}
+
 ?>
