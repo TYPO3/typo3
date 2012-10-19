@@ -206,6 +206,10 @@ return array(
 					'TYPO3\\CMS\\Core\\Resource\\Filter\\FileNameFilter',
 					'filterHiddenFilesAndFolders'
 				)
+			),
+			'processingTaskTypes' => array(
+				'Image.Preview' => 'TYPO3\\CMS\\Core\\Resource\\Processing\\ImagePreviewTask',
+				'Image.CropScaleMask' => 'TYPO3\\CMS\\Core\\Resource\\Processing\\ImageCropScaleMaskTask'
 			)
 		)
 	),
