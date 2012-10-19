@@ -52,7 +52,7 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestC
 	public function isValidChecksAllPropertiesForWhichAPropertyValidatorExists() {
 		$mockPropertyValidators = array('foo' => 'validator', 'bar' => 'validator');
 		$mockObject = new \stdClass();
-		$validator = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Validation\\Validator\\GenericObjectValidator'), array('addError', 'isPropertyValid'), array(), '', FALSE);
+		$validator = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\GenericObjectValidator', array('addError', 'isPropertyValid'), array(), '', FALSE);
 		$validator->_set('propertyValidators', $mockPropertyValidators);
 		$validator->expects($this->at(0))->method('isPropertyValid')->with($mockObject, 'foo')->will($this->returnValue(TRUE));
 		$validator->expects($this->at(1))->method('isPropertyValid')->with($mockObject, 'bar')->will($this->returnValue(TRUE));

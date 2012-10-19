@@ -103,7 +103,7 @@ class ArgumentBehaviorBeforeExtbase14Test extends \TYPO3\CMS\Extbase\Tests\Unit\
 	 */
 	public function setValueTriesToConvertAnUidIntoTheRealObjectIfTheDataTypeClassSchemaIsSet() {
 		$object = new \StdClass();
-		$argument = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument'), array('findObjectByUid'), array(), '', FALSE);
+		$argument = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('findObjectByUid'), array(), '', FALSE);
 		$this->enableDeprecatedPropertyMapperInArgument($argument);
 		$argument->expects($this->once())->method('findObjectByUid')->with('42')->will($this->returnValue($object));
 		$argument->_set('dataTypeClassSchema', 'stdClass');
@@ -157,7 +157,7 @@ class ArgumentBehaviorBeforeExtbase14Test extends \TYPO3\CMS\Extbase\Tests\Unit\
 		$mockValidatorConjunction = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator');
 		$mockValidatorConjunction->expects($this->at(0))->method('addValidator')->with($validator1);
 		$mockValidatorConjunction->expects($this->at(1))->method('addValidator')->with($validator2);
-		$argument = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument'), array('dummy'), array(), '', FALSE);
+		$argument = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('dummy'), array(), '', FALSE);
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$mockObjectManager->expects($this->never())->method('create');
 		$mockObjectManager->expects($this->at(0))->method('get')->with('Validator1')->will($this->returnValue($validator1));

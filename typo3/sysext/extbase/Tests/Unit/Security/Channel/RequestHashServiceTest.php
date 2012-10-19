@@ -159,9 +159,9 @@ class RequestHashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 			)
 		);
 		$mockHash = '12345';
-		$hashService = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Security\\Cryptography\\HashService'), array('generateHash'));
+		$hashService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Security\\Cryptography\\HashService', array('generateHash'));
 		$hashService->expects($this->once())->method('generateHash')->with(serialize($formFieldArray))->will($this->returnValue($mockHash));
-		$requestHashService = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService'), array('dummy'));
+		$requestHashService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService', array('dummy'));
 		$requestHashService->_set('hashService', $hashService);
 		$expected = serialize($formFieldArray) . $mockHash;
 		$actual = $requestHashService->_call('serializeAndHashFormFieldArray', $formFieldArray);
@@ -173,7 +173,7 @@ class RequestHashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	 * @author Sebastian Kurfürst
 	 */
 	public function verifyRequestHashSetsHmacVerifiedToFalseIfRequestDoesNotHaveAnHmacArgument() {
-		$request = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request'), array('getInternalArgument', 'setHmacVerified'));
+		$request = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request', array('getInternalArgument', 'setHmacVerified'));
 		$request->expects($this->any())->method('getInternalArgument')->with('__hmac')->will($this->returnValue(FALSE));
 		$request->expects($this->once())->method('setHmacVerified')->with(FALSE);
 		$requestHashService = new \TYPO3\CMS\Extbase\Security\Channel\RequestHashService();
@@ -186,7 +186,7 @@ class RequestHashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	 * @author Sebastian Kurfürst
 	 */
 	public function verifyRequestHashThrowsExceptionIfHmacIsShortherThan40Characters() {
-		$request = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request'), array('getInternalArgument', 'setHmacVerified'));
+		$request = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request', array('getInternalArgument', 'setHmacVerified'));
 		$request->expects($this->any())->method('getInternalArgument')->with('__hmac')->will($this->returnValue('abc'));
 		$requestHashService = new \TYPO3\CMS\Extbase\Security\Channel\RequestHashService();
 		$requestHashService->verifyRequest($request);
@@ -197,12 +197,12 @@ class RequestHashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	 * @author Sebastian Kurfürst
 	 */
 	public function verifyRequestHashValidatesTheHashAndSetsHmacVerifiedToFalseIfHashCouldNotBeVerified() {
-		$request = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request'), array('getInternalArgument', 'setHmacVerified'));
+		$request = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request', array('getInternalArgument', 'setHmacVerified'));
 		$request->expects($this->any())->method('getInternalArgument')->with('__hmac')->will($this->returnValue('11111' . '0000000000000000000000000000000000000000'));
 		$request->expects($this->once())->method('setHmacVerified')->with(FALSE);
 		$hashService = $this->getMock('TYPO3\\CMS\\Extbase\\Security\\Cryptography\\HashService', array('validateHash'));
 		$hashService->expects($this->once())->method('validateHash')->with('11111', '0000000000000000000000000000000000000000')->will($this->returnValue(FALSE));
-		$requestHashService = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService'), array('dummy'));
+		$requestHashService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService', array('dummy'));
 		$requestHashService->_set('hashService', $hashService);
 		$requestHashService->verifyRequest($request);
 	}
@@ -213,7 +213,7 @@ class RequestHashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	 */
 	public function verifyRequestHashValidatesTheHashAndSetsHmacVerifiedToTrueIfArgumentsAreIncludedInTheAllowedArgumentList() {
 		$data = serialize(array('a' => 1));
-		$request = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request'), array('getInternalArgument', 'getArguments', 'setHmacVerified'));
+		$request = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request', array('getInternalArgument', 'getArguments', 'setHmacVerified'));
 		$request->expects($this->any())->method('getInternalArgument')->with('__hmac')->will($this->returnValue($data . '0000000000000000000000000000000000000000'));
 		$request->expects($this->once())->method('getArguments')->will($this->returnValue(array(
 			'__hmac' => 'ABC',
@@ -223,7 +223,7 @@ class RequestHashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$request->expects($this->once())->method('setHmacVerified')->with(TRUE);
 		$hashService = $this->getMock('TYPO3\\CMS\\Extbase\\Security\\Cryptography\\HashService', array('validateHash'));
 		$hashService->expects($this->once())->method('validateHash')->with($data, '0000000000000000000000000000000000000000')->will($this->returnValue(TRUE));
-		$requestHashService = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService'), array('checkFieldNameInclusion'));
+		$requestHashService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService', array('checkFieldNameInclusion'));
 		$requestHashService->expects($this->once())->method('checkFieldNameInclusion')->with(array('a' => 'bla'), array('a' => 1))->will($this->returnValue(TRUE));
 		$requestHashService->_set('hashService', $hashService);
 		$requestHashService->verifyRequest($request);
@@ -235,7 +235,7 @@ class RequestHashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	 */
 	public function verifyRequestHashValidatesTheHashAndSetsHmacVerifiedToFalseIfNotAllArgumentsAreIncludedInTheAllowedArgumentList() {
 		$data = serialize(array('a' => 1));
-		$request = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request'), array('getInternalArgument', 'getArguments', 'setHmacVerified'));
+		$request = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request', array('getInternalArgument', 'getArguments', 'setHmacVerified'));
 		$request->expects($this->any())->method('getInternalArgument')->with('__hmac')->will($this->returnValue($data . '0000000000000000000000000000000000000000'));
 		$request->expects($this->once())->method('getArguments')->will($this->returnValue(array(
 			'__hmac' => 'ABC',
@@ -246,7 +246,7 @@ class RequestHashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$request->expects($this->once())->method('setHmacVerified')->with(FALSE);
 		$hashService = $this->getMock('TYPO3\\CMS\\Extbase\\Security\\Cryptography\\HashService', array('validateHash'));
 		$hashService->expects($this->once())->method('validateHash')->with($data, '0000000000000000000000000000000000000000')->will($this->returnValue(TRUE));
-		$requestHashService = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService'), array('checkFieldNameInclusion'));
+		$requestHashService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService', array('checkFieldNameInclusion'));
 		$requestHashService->expects($this->once())->method('checkFieldNameInclusion')->with(array('a' => 'bla', 'b' => 'blubb'), array('a' => 1))->will($this->returnValue(FALSE));
 		$requestHashService->_set('hashService', $hashService);
 		$requestHashService->verifyRequest($request);
@@ -422,7 +422,7 @@ class RequestHashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	 * @param mixed $expectedResult
 	 */
 	public function checkFieldNameInclusionWorks($requestArguments, $allowedFields, $expectedResult) {
-		$requestHashService = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService'), array('dummy'));
+		$requestHashService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService', array('dummy'));
 		$this->assertEquals($expectedResult, $requestHashService->_call('checkFieldNameInclusion', $requestArguments, $allowedFields));
 	}
 
