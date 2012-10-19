@@ -5084,7 +5084,7 @@ class ContentObjectRenderer {
 								3 => $processedFileObject->getPublicUrl(),
 								'origFile' => $fileObject->getPublicUrl(),
 								'origFile_mtime' => $fileObject->getModificationTime(),
-								// This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder, line 100ff
+								// This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder,
 								// in order for the setup-array to create a unique filename hash.
 								'originalFile' => $fileObject,
 								'processedFile' => $processedFileObject,
@@ -7750,6 +7750,5 @@ class ContentObjectRenderer {
 	}
 
 }
-
 
 ?>

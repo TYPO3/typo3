@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Resource\Service;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Andreas Wolf <andreas.wolf@ikt-werk.de>
+ *  (c) 2011 Andreas Wolf <andreas.wolf@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Core\Resource\Service;
 /**
  * Thumbnail service
  *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
+ * @author Andreas Wolf <andreas.wolf@typo3.org>
  */
 class ImageProcessingService {
 
