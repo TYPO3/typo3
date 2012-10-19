@@ -86,8 +86,6 @@ class ResourceStorage {
 	const SIGNAL_PostFolderDelete = 'postFolderDelete';
 	const SIGNAL_PreFolderRename = 'preFolderRename';
 	const SIGNAL_PostFolderRename = 'postFolderRename';
-	const SIGNAL_PreFileProcess = 'preFileProcess';
-	const SIGNAL_PostFileProcess = 'postFileProcess';
 	const SIGNAL_PreGeneratePublicUrl = 'preGeneratePublicUrl';
 	/**
 	 * The storage driver instance belonging to this storage.
@@ -744,27 +742,21 @@ class ResourceStorage {
 	}
 
 	/**
-	 * Returns a publicly accessible URL for a file.
+	 * Passes a file to the File Processing Services and returns the resulting ProcessedFile object.
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\FileInterface $fileObject The file object
 	 * @param string $context
 	 * @param array $configuration
+	 *
 	 * @return \TYPO3\CMS\Core\Resource\ProcessedFile
+	 * @throws \InvalidArgumentException
 	 */
 	public function processFile(\TYPO3\CMS\Core\Resource\FileInterface $fileObject, $context, array $configuration) {
-		$processedFile = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getProcessedFileObject($fileObject, $context, $configuration);
-		// set the storage of the processed file
-		$processedFile->setStorage($this);
-		// Pre-process the file by an accordant slot
-		$this->emitPreFileProcess($processedFile, $fileObject, $context, $configuration);
-		// Only handle the file is not processed yet
-		// (maybe modified or already processed by a signal)
-		// or (in case of preview images) already in the DB/in the processing folder
-		if (!$processedFile->isProcessed()) {
-			$processedFile = $this->getFileProcessingService()->process($processedFile, $fileObject, $context, $configuration);
+		if ($fileObject->getStorage() != $this) {
+			throw new \InvalidArgumentException('Cannot process files of foreign storage');
 		}
-		// Post-process (enrich) the file by an accordant slot
-		$this->emitPostFileProcess($processedFile, $fileObject, $context, $configuration);
+		$processedFile = $this->getFileProcessingService()->processFile($fileObject, $this, $context, $configuration);
+
 		return $processedFile;
 	}
 
@@ -1802,30 +1794,6 @@ class ResourceStorage {
 	 */
 	protected function emitPostFolderDeleteSignal(\TYPO3\CMS\Core\Resource\Folder $folder) {
 		$this->getSignalSlotDispatcher()->dispatch('\TYPO3\CMS\Core\Resource\ResourceStorage', self::SIGNAL_PostFolderDelete, array($folder));
-	}
-
-	/**
-	 * Emits file pre-processing signal.
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\ProcessedFile $processedFile
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
-	 * @param string $context
-	 * @param array $configuration
-	 */
-	protected function emitPreFileProcess(\TYPO3\CMS\Core\Resource\ProcessedFile $processedFile, \TYPO3\CMS\Core\Resource\FileInterface $file, $context, array $configuration = array()) {
-		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFileProcess, array($this, $this->driver, $processedFile, $file, $context, $configuration));
-	}
-
-	/**
-	 * Emits file post-processing signal.
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\ProcessedFile $processedFile
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
-	 * @param $context
-	 * @param array $configuration
-	 */
-	protected function emitPostFileProcess(\TYPO3\CMS\Core\Resource\ProcessedFile $processedFile, \TYPO3\CMS\Core\Resource\FileInterface $file, $context, array $configuration = array()) {
-		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFileProcess, array($this, $this->driver, $processedFile, $file, $context, $configuration));
 	}
 
 	/**
