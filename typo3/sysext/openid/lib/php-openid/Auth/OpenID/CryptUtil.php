@@ -37,7 +37,7 @@ class Auth_OpenID_CryptUtil {
      * @param int $num_bytes The length of the return value
      * @return string $bytes random bytes
      */
-    function getBytes($num_bytes)
+    static function getBytes($num_bytes)
     {
         static $f = null;
         $bytes = '';
@@ -77,7 +77,7 @@ class Auth_OpenID_CryptUtil {
      * @return string $result A string of randomly-chosen characters
      * from $chrs
      */
-    function randomString($length, $population = null)
+    static function randomString($length, $population = null)
     {
         if ($population === null) {
             return Auth_OpenID_CryptUtil::getBytes($length);
@@ -104,6 +104,19 @@ class Auth_OpenID_CryptUtil {
 
         return $str;
     }
+
+    static function constEq($s1, $s2)
+    {
+        if (strlen($s1) != strlen($s2)) {
+            return false;
+        }
+
+        $result = true;
+        $length = strlen($s1);
+        for ($i = 0; $i < $length; $i++) {
+            $result &= ($s1[$i] == $s2[$i]);
+        }
+        return $result;
+    }
 }
 
-?>
