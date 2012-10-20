@@ -376,7 +376,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 			return array('', array());
 		}
 		// also don't show hidden files
-		if ($folderName === '..' || $folderName === '.' || $folderName === '' || \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($folderName, '.') === TRUE) {
+		if ($folderName === '..' || $folderName === '.' || $folderName === '') {
 			return array('', array());
 		}
 		// remove the trailing slash from the folder name (the trailing slash comes from the DirectoryIterator)
