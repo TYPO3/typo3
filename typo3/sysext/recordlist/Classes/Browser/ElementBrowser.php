@@ -1474,7 +1474,7 @@ class ElementBrowser {
 			} else {
 				$filter = new \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter();
 				$filter->setAllowedFileExtensions($extensionList);
-				$folder->getStorage()->setFileAndFolderNameFilters(array(array($filter, 'filterFileList')));
+				$folder->setFileAndFolderNameFilters(array(array($filter, 'filterFileList')));
 
 				$items = $folder->getFiles();
 			}
@@ -1533,7 +1533,7 @@ class ElementBrowser {
 	 * Render list of files.
 	 *
 	 * @param array $files List of files. See t3lib_div::getFilesInDir
-	 * @param string \TYPO3\CMS\Core\Resource\Folder $folder If set a header with a folder icon and folder name are shown
+	 * @param string|\TYPO3\CMS\Core\Resource\Folder $folder If set a header with a folder icon and folder name are shown
 	 * @param boolean $noThumbs Whether to show thumbnails or not. If set, no thumbnails are shown.
 	 * @return string HTML output
 	 * @todo Define visibility
