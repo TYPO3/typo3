@@ -177,6 +177,8 @@ class Auth_OpenID_OpenIDStore {
      * interface.
      *
      * @param string $nonce The nonce to use.
+     * @param integer ???
+     * @param ??? ???
      *
      * @return bool Whether or not the nonce was valid.
      */

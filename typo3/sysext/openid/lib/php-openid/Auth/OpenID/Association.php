@@ -203,6 +203,7 @@ class Auth_OpenID_Association {
      * Parse an association as stored by serialize().  This is the
      * inverse of serialize.
      *
+     * @param string $class_name ???
      * @param string $assoc_s Association as serialized by serialize()
      * @return Auth_OpenID_Association $result instance of this class
      */
@@ -274,10 +275,7 @@ class Auth_OpenID_Association {
      * Generate a signature for some fields in a dictionary
      *
      * @access private
-     * @param array $fields The fields to sign, in order; this is an
-     * array of strings.
-     * @param array $data Dictionary of values to sign (an array of
-     * string => string pairs).
+     * @param string Message to sign
      * @return string $signature The signature, base64 encoded
      */
     function signMessage($message)

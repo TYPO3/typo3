@@ -290,7 +290,7 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 	 * @param 	string		$key: some key identifying the style sheet
 	 * @param 	string		$href: uri to the style sheet file
 	 * @param 	string		$title: value for the title attribute of the link element
-	 * @return 	string		$relation: value for the rel attribute of the link element
+	 * @param 	string		$relation: value for the rel attribute of the link element
 	 * @return 	void
 	 */
 	protected function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet') {

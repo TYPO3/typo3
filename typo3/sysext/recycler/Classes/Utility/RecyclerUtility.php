@@ -41,9 +41,8 @@ class RecyclerUtility {
 	 * Checks the page access rights (Code for access check mostly taken from alt_doc.php)
 	 * as well as the table access rights of the user.
 	 *
-	 * @param 	string		$cmd: The command that sould be performed ('new' or 'edit')
 	 * @param 	string		$table: The table to check access for
-	 * @param 	string		$theUid: The record uid of the table
+	 * @param 	string		???
 	 * @return 	boolean		Returns TRUE is the user has access, or FALSE if not
 	 */
 	static public function checkAccess($table, $row) {

@@ -33,6 +33,7 @@ class FolderTree extends \rteFolderTree {
 	 *
 	 * @param 	string		HTML string to wrap, probably an image tag.
 	 * @param 	string		Command for 'PM' get var
+	 * @param	boolean		???
 	 * @return 	string		Link-wrapped input string
 	 * @access private
 	 */

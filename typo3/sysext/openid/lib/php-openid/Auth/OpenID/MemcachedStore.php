@@ -40,6 +40,7 @@ class Auth_OpenID_MemcachedStore extends Auth_OpenID_OpenIDStore {
      * Just saves memcached object as property.
      *
      * @param resource connection Memcache connection resourse
+     * @param boolean ???
      */
     function Auth_OpenID_MemcachedStore($connection, $compress = false)
     {

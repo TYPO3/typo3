@@ -300,10 +300,6 @@ class Auth_Yadis_Yadis {
      *
      * @param string $uri The URI on which to perform Yadis discovery.
      *
-     * @param array $http_response An array reference where the HTTP
-     * response object will be stored (see {@link
-     * Auth_Yadis_HTTPResponse}.
-     *
      * @param Auth_Yadis_HTTPFetcher $fetcher An instance of a
      * Auth_Yadis_HTTPFetcher subclass.
      *

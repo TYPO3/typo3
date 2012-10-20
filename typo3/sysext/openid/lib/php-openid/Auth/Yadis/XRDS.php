@@ -270,6 +270,7 @@ class Auth_Yadis_XRDS {
      * XRDS XML is valid.
      *
      * @param string $xml_string An XRDS XML string.
+     * @param array ???
      * @return mixed $xrds An instance of Auth_Yadis_XRDS or null,
      * depending on the validity of $xml_string
      */

@@ -605,11 +605,6 @@ class Auth_OpenID_GenericConsumer {
      * filesystem-backed store, see the {@link Auth_OpenID_FileStore} module.
      * As a last resort, if it isn't possible for the server to store
      * state at all, an instance of {@link Auth_OpenID_DumbStore} can be used.
-     *
-     * @param bool $immediate This is an optional boolean value.  It
-     * controls whether the library uses immediate mode, as explained
-     * in the module description.  The default value is False, which
-     * disables immediate mode.
      */
     function Auth_OpenID_GenericConsumer($store)
     {
@@ -1398,7 +1393,8 @@ class Auth_OpenID_GenericConsumer {
     /**
      * Adapt a POST response to a Message.
      *
-     * @param $response Result of a POST to an OpenID endpoint.
+     * @param string Result of a POST to an OpenID endpoint.
+     * @param string ???
      *
      * @access private
      */
@@ -2049,6 +2045,7 @@ class Auth_OpenID_SuccessResponse extends Auth_OpenID_ConsumerResponse {
      *
      * @param string $prefix The extension namespace from which to
      * extract the extension data.
+     * @param boolean ???
      */
     function extensionResponse($namespace_uri, $require_signed)
     {
