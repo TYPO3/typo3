@@ -103,8 +103,6 @@ class StagesService {
 
 	/**
 	 * constructor for workspace library
-	 *
-	 * @param int current workspace id
 	 */
 	public function __construct() {
 		$this->setWorkspaceId($GLOBALS['BE_USER']->workspace);
@@ -363,7 +361,6 @@ class StagesService {
 	 * Recursive function to get all next stages for a record depending on user permissions
 	 *
 	 * @param 	array	next stages
-	 * @param 	int		stage id
 	 * @param 	int		current stage id of the record
 	 * @return 	array	next stages
 	 */
@@ -394,7 +391,6 @@ class StagesService {
 	/**
 	 * Get next stage in process for given stage id
 	 *
-	 * @param int			workspace id
 	 * @param int			stageid
 	 * @return int			id
 	 */
@@ -424,8 +420,6 @@ class StagesService {
 	 * Recursive function to get all prev stages for a record depending on user permissions
 	 *
 	 * @param 	array	prev stages
-	 * @param 	int		workspace id
-	 * @param 	int		stage id
 	 * @param 	int		current stage id of the record
 	 * @return 	array	prev stages
 	 */

@@ -179,7 +179,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param 	integer		Page id: Live page for which to find versions in workspace!
 	 * @param 	integer		Recursion Level - select versions recursive - parameter is only relevant if $pageId != -1
 	 * @param 	string		How to collect records for "listing" or "modify" these tables. Support the permissions of each type of record (@see t3lib_userAuthGroup::check).
-	 * @parem 	integer		$language Select specific language only
+	 * @param 	integer		$language Select specific language only
 	 * @return 	array		Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oidfields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid
 	 */
 	public function selectVersionsInWorkspace($wsid, $filter = 0, $stage = -99, $pageId = -1, $recursionLevel = 0, $selectionType = 'tables_select', $language = NULL) {
