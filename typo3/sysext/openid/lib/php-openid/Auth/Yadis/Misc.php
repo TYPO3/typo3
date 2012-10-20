@@ -56,4 +56,3 @@ function Auth_Yadis_startswith($s, $stuff)
     return strpos($s, $stuff) === 0;
 }
 
-?>

@@ -94,7 +94,7 @@ class Auth_OpenID_Association {
      * @return association An {@link Auth_OpenID_Association}
      * instance.
      */
-    function fromExpiresIn($expires_in, $handle, $secret, $assoc_type)
+    static function fromExpiresIn($expires_in, $handle, $secret, $assoc_type)
     {
         $issued = time();
         $lifetime = $expires_in;
@@ -132,7 +132,7 @@ class Auth_OpenID_Association {
         $handle, $secret, $issued, $lifetime, $assoc_type)
     {
         if (!in_array($assoc_type,
-                      Auth_OpenID_getSupportedAssociationTypes())) {
+                      Auth_OpenID_getSupportedAssociationTypes(), true)) {
             $fmt = 'Unsupported association type (%s)';
             trigger_error(sprintf($fmt, $assoc_type), E_USER_ERROR);
         }
@@ -206,7 +206,7 @@ class Auth_OpenID_Association {
      * @param string $assoc_s Association as serialized by serialize()
      * @return Auth_OpenID_Association $result instance of this class
      */
-    function deserialize($class_name, $assoc_s)
+    static function deserialize($class_name, $assoc_s)
     {
         $pairs = Auth_OpenID_KVForm::toArray($assoc_s, $strict = true);
         $keys = array();
@@ -374,7 +374,7 @@ class Auth_OpenID_Association {
         }
 
         $calculated_sig = $this->getMessageSignature($message);
-        return $calculated_sig == $sig;
+        return Auth_OpenID_CryptUtil::constEq($calculated_sig, $sig);
     }
 }
 
@@ -469,18 +469,16 @@ function Auth_OpenID_getOnlyEncryptedOrder()
     return $result;
 }
 
-function &Auth_OpenID_getDefaultNegotiator()
+function Auth_OpenID_getDefaultNegotiator()
 {
-    $x = new Auth_OpenID_SessionNegotiator(
+    return new Auth_OpenID_SessionNegotiator(
                  Auth_OpenID_getDefaultAssociationOrder());
-    return $x;
 }
 
-function &Auth_OpenID_getEncryptedNegotiator()
+function Auth_OpenID_getEncryptedNegotiator()
 {
-    $x = new Auth_OpenID_SessionNegotiator(
+    return new Auth_OpenID_SessionNegotiator(
                  Auth_OpenID_getOnlyEncryptedOrder());
-    return $x;
 }
 
 /**
@@ -610,4 +608,3 @@ class Auth_OpenID_SessionNegotiator {
     }
 }
 
-?>

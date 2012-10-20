@@ -101,7 +101,7 @@ class Auth_OpenID_Parse {
      * Starts with the tag name at a word boundary, where the tag name
      * is not a namespace
      */
-    var $_tag_expr = "<%s\b(?!:)([^>]*?)(?:\/>|>(.*?)(?:<\/?%s\s*>|\Z))";
+    var $_tag_expr = "<%s\b(?!:)([^>]*?)(?:\/>|>(.*)(?:<\/?%s\s*>|\Z))";
 
     var $_attr_find = '\b(\w+)=("[^"]*"|\'[^\']*\'|[^\'"\s\/<>]+)';
 
@@ -215,10 +215,34 @@ class Auth_OpenID_Parse {
             return $str;
         }
     }
+    
+    function match($regexp, $text, &$match)
+    {
+        if (!is_callable('mb_ereg_search_init')) {
+            if (!preg_match($regexp, $text, $match)) {
+                return false;
+            }
+            $match = $match[0];
+            return true;
+        }
+
+        $regexp = substr($regexp, 1, strlen($regexp) - 2 - strlen($this->_re_flags));
+        mb_ereg_search_init($text);
+        if (!mb_ereg_search($regexp)) {
+            return false;
+        }
+        $match = mb_ereg_search_getregs();
+        return true;
+    }
 
     /**
      * Find all link tags in a string representing a HTML document and
      * return a list of their attributes.
+     *
+     * @todo This is quite ineffective and may fail with the default
+     *       pcre.backtrack_limit of 100000 in PHP 5.2, if $html is big.
+     *       It should rather use stripos (in PHP5) or strpos()+strtoupper()
+     *       in PHP4 to manage this.
      *
      * @param string $html The text to parse
      * @return array $list An array of arrays of attributes, one for each
@@ -244,18 +268,23 @@ class Auth_OpenID_Parse {
         $stripped = substr($stripped, $html_begin,
                            $html_end - $html_begin);
 
+        // Workaround to prevent PREG_BACKTRACK_LIMIT_ERROR:
+        $old_btlimit = ini_set( 'pcre.backtrack_limit', -1 );
+
         // Try to find the <HEAD> tag.
         $head_re = $this->headFind();
-        $head_matches = array();
-        if (!preg_match($head_re, $stripped, $head_matches)) {
-            return array();
+        $head_match = array();
+        if (!$this->match($head_re, $stripped, $head_match)) {
+                     ini_set( 'pcre.backtrack_limit', $old_btlimit );
+                     return array();
         }
 
         $link_data = array();
         $link_matches = array();
 
-        if (!preg_match_all($this->_link_find, $head_matches[0],
+        if (!preg_match_all($this->_link_find, $head_match[0],
                             $link_matches)) {
+            ini_set( 'pcre.backtrack_limit', $old_btlimit );
             return array();
         }
 
@@ -273,6 +302,7 @@ class Auth_OpenID_Parse {
             $link_data[] = $link_attrs;
         }
 
+        ini_set( 'pcre.backtrack_limit', $old_btlimit );
         return $link_data;
     }
 
@@ -349,4 +379,3 @@ function Auth_OpenID_legacy_discover($html_text, $server_rel,
     }
 }
 
-?>
