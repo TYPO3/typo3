@@ -32,7 +32,7 @@ class Auth_OpenID_MySQLStore extends Auth_OpenID_SQLStore {
 
         $this->sql['assoc_table'] =
             "CREATE TABLE %s (\n".
-            "  server_url BLOB NOT NULL,\n".
+            "  server_url VARCHAR(2047) NOT NULL,\n".
             "  handle VARCHAR(255) NOT NULL,\n".
             "  secret BLOB NOT NULL,\n".
             "  issued INTEGER NOT NULL,\n".
@@ -75,4 +75,3 @@ class Auth_OpenID_MySQLStore extends Auth_OpenID_SQLStore {
     }
 }
 
-?>

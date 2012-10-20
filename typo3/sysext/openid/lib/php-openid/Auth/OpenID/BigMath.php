@@ -351,8 +351,7 @@ function Auth_OpenID_math_extensions()
                   'class' => 'Auth_OpenID_GmpMathWrapper');
     }
 
-    $result[] = array(
-                      'modules' => array('bcmath', 'php_bcmath'),
+    $result[] = array('modules' => array('bcmath', 'php_bcmath'),
                       'extension' => 'bcmath',
                       'class' => 'Auth_OpenID_BcMathWrapper');
 
@@ -365,29 +364,9 @@ function Auth_OpenID_math_extensions()
 function Auth_OpenID_detectMathLibrary($exts)
 {
     $loaded = false;
-    $hasDl = function_exists('dl');
 
     foreach ($exts as $extension) {
-        // See if the extension specified is already loaded.
-        if ($extension['extension'] &&
-            extension_loaded($extension['extension'])) {
-            $loaded = true;
-        }
-
-        // Try to load dynamic modules.
-        if (!$loaded && $hasDl) {
-            foreach ($extension['modules'] as $module) {
-                if (@dl($module . "." . PHP_SHLIB_SUFFIX)) {
-                    $loaded = true;
-                    break;
-                }
-            }
-        }
-
-        // If the load succeeded, supply an instance of
-        // Auth_OpenID_MathWrapper which wraps the specified
-        // module's functionality.
-        if ($loaded) {
+        if (extension_loaded($extension['extension'])) {
             return $extension;
         }
     }
@@ -406,7 +385,7 @@ function Auth_OpenID_detectMathLibrary($exts)
  * instance of a wrapper for that extension module.  If no extension
  * module is found, an instance of {@link Auth_OpenID_MathWrapper} is
  * returned, which wraps the native PHP integer implementation.  The
- * proper calling convention for this method is $lib =&
+ * proper calling convention for this method is $lib =
  * Auth_OpenID_getMathLib().
  *
  * This function checks for the existence of specific long number
@@ -417,7 +396,7 @@ function Auth_OpenID_detectMathLibrary($exts)
  *
  * @package OpenID
  */
-function &Auth_OpenID_getMathLib()
+function Auth_OpenID_getMathLib()
 {
     // The instance of Auth_OpenID_MathWrapper that we choose to
     // supply will be stored here, so that subseqent calls to this
@@ -469,4 +448,4 @@ function Auth_OpenID_noMathSupport()
     return defined('Auth_OpenID_NO_MATH_SUPPORT');
 }
 
-?>
+

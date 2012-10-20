@@ -106,4 +106,3 @@ function Auth_OpenID_mkNonce($when = null)
     return $time_str . $salt;
 }
 
-?>
