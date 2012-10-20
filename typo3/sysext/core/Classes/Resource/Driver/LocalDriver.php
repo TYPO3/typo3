@@ -147,16 +147,20 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 */
 	public function getPublicUrl(\TYPO3\CMS\Core\Resource\ResourceInterface $fileOrFolder, $relativeToCurrentScript = FALSE) {
 		if ($this->configuration['pathType'] === 'relative' && rtrim($this->configuration['basePath'], '/') !== '') {
-			$publicUrl = rtrim($this->configuration['basePath'], '/') . '/' . ltrim($fileOrFolder->getIdentifier(), '/');
+			$filePath = trim($this->configuration['basePath'], '/') . '/' . ltrim($fileOrFolder->getIdentifier(), '/');
+
+			// If requested, make the path relative to the current script in order to make it possible
+			// to use the relative file
+			if ($relativeToCurrentScript) {
+				$publicUrl = \TYPO3\CMS\Core\Utility\PathUtility::getRelativePathTo(dirname(PATH_site . $filePath)) . basename($fileOrFolder->getName());
+			} else {
+				// TODO does this work in backend context?
+				$publicUrl = $GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::rawUrlEncodeFP($filePath);
+			}
 		} elseif (isset($this->baseUri)) {
 			$publicUrl = $this->baseUri . ltrim($fileOrFolder->getIdentifier(), '/');
 		} else {
 			throw new \TYPO3\CMS\Core\Resource\Exception('Public URL of file cannot be determined', 1329765518);
-		}
-		// If requested, make the path relative to the current script in order to make it possible
-		// to use the relative file
-		if ($relativeToCurrentScript) {
-			$publicUrl = \TYPO3\CMS\Core\Utility\PathUtility::getRelativePathTo(dirname((PATH_site . $publicUrl))) . basename($publicUrl);
 		}
 		return $publicUrl;
 	}

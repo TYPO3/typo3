@@ -1325,7 +1325,7 @@ class ContentObjectRenderer {
 			} else {
 				$params = isset($conf['params.']) ? ' ' . $this->stdWrap($conf['params'], $conf['params.']) : '';
 			}
-			$theValue = '<img src="' . htmlspecialchars(($GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::rawUrlEncodeFP($info[3]))) . '" width="' . $info[0] . '" height="' . $info[1] . '"' . $this->getBorderAttr((' border="' . intval($conf['border']) . '"')) . $params . $altParam . (!empty($GLOBALS['TSFE']->xhtmlDoctype) ? ' /' : '') . '>';
+			$theValue = '<img src="' . htmlspecialchars($info[3]) . '" width="' . $info[0] . '" height="' . $info[1] . '"' . $this->getBorderAttr((' border="' . intval($conf['border']) . '"')) . $params . $altParam . (!empty($GLOBALS['TSFE']->xhtmlDoctype) ? ' /' : '') . '>';
 			$linkWrap = isset($conf['linkWrap.']) ? $this->stdWrap($conf['linkWrap'], $conf['linkWrap.']) : $conf['linkWrap'];
 			if ($linkWrap) {
 				$theValue = $this->linkWrap($theValue, $linkWrap);
