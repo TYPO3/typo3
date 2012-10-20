@@ -166,7 +166,12 @@ class SystemStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	 * @return \TYPO3\CMS\Reports\Status The server software as a status
 	 */
 	protected function getWebserverStatus() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_webServer'), $_SERVER['SERVER_SOFTWARE']);
+		$message = '';
+		if (TYPO3_OS === 'WIN') {
+			$message .= '<p>' . $GLOBALS['LANG']->getLL('status_webServer_infoText') . '</p>';
+			$message .= '<div class="typo3-message message-warning">' . $GLOBALS['LANG']->getLL('status_webServer_threadStackSize') . '</div>';
+		}
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_webServer'), $_SERVER['SERVER_SOFTWARE'], $message);
 	}
 
 	/**
