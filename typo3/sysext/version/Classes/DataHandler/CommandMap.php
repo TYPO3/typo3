@@ -82,7 +82,8 @@ class CommandMap {
 	/**
 	 * Creates this object.
 	 *
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $parent
+	 * @param \TYPO3\CMS\Version\Hook\DataHandlerHook $parent
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain
 	 * @param array $commandMap
 	 */
 	public function __construct(\TYPO3\CMS\Version\Hook\DataHandlerHook $parent, \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain, array $commandMap) {

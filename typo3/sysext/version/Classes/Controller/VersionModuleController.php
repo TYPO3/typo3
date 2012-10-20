@@ -828,8 +828,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	/**
 	 * Links to stage change of a version
 	 *
-	 * @param 	string		Table name
-	 * @param 	array		Offline record (version)
 	 * @return 	string		HTML content, mainly link tags and images.
 	 * @todo Define visibility
 	 */

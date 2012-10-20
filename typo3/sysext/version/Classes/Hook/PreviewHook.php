@@ -206,7 +206,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * returns the input code value from the admin command variable
 	 *
-	 * @param input code
+	 * @return input code
 	 */
 	protected function getPreviewInputCode() {
 		$inputCode = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($this->previewKey);
