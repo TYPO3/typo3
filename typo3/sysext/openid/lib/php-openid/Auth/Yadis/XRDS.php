@@ -257,9 +257,9 @@ class Auth_Yadis_XRDS {
      */
     function Auth_Yadis_XRDS($xmlParser, $xrdNodes)
     {
-        $this->parser =& $xmlParser;
+        $this->parser = $xmlParser;
         $this->xrdNode = $xrdNodes[count($xrdNodes) - 1];
-        $this->allXrdNodes =& $xrdNodes;
+        $this->allXrdNodes = $xrdNodes;
         $this->serviceList = array();
         $this->_parse();
     }
@@ -273,7 +273,7 @@ class Auth_Yadis_XRDS {
      * @return mixed $xrds An instance of Auth_Yadis_XRDS or null,
      * depending on the validity of $xml_string
      */
-    function &parseXRDS($xml_string, $extra_ns_map = null)
+    static function parseXRDS($xml_string, $extra_ns_map = null)
     {
         $_null = null;
 
@@ -354,7 +354,7 @@ class Auth_Yadis_XRDS {
         foreach ($services as $node) {
             $s = new Auth_Yadis_Service();
             $s->element = $node;
-            $s->parser =& $this->parser;
+            $s->parser = $this->parser;
 
             $priority = $s->getPriority();
 
@@ -428,6 +428,7 @@ class Auth_Yadis_XRDS {
                 $matches = 0;
 
                 foreach ($filters as $filter) {
+
                     if (call_user_func_array($filter, array(&$service))) {
                         $matches++;
 
@@ -475,4 +476,3 @@ class Auth_Yadis_XRDS {
     }
 }
 
-?>

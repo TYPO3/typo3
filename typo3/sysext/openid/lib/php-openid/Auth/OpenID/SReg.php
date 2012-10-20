@@ -94,7 +94,7 @@ Auth_OpenID_registerNamespaceAlias(Auth_OpenID_SREG_NS_URI_1_1, 'sreg');
  * $endpoint: The endpoint object as returned by OpenID discovery.
  * returns whether an sreg type was advertised by the endpoint
  */
-function Auth_OpenID_supportsSReg(&$endpoint)
+function Auth_OpenID_supportsSReg($endpoint)
 {
     return ($endpoint->usesExtension(Auth_OpenID_SREG_NS_URI_1_1) ||
             $endpoint->usesExtension(Auth_OpenID_SREG_NS_URI_1_0));
@@ -122,7 +122,7 @@ class Auth_OpenID_SRegBase extends Auth_OpenID_Extension {
      *
      * @access private
      */
-    function _getSRegNS(&$message)
+    static function _getSRegNS($message)
     {
         $alias = null;
         $found_ns_uri = null;
@@ -173,7 +173,7 @@ class Auth_OpenID_SRegRequest extends Auth_OpenID_SRegBase {
     /**
      * Initialize an empty simple registration request.
      */
-    function build($required=null, $optional=null,
+    static function build($required=null, $optional=null,
                    $policy_url=null,
                    $sreg_ns_uri=Auth_OpenID_SREG_NS_URI,
                    $cls='Auth_OpenID_SRegRequest')
@@ -213,7 +213,7 @@ class Auth_OpenID_SRegRequest extends Auth_OpenID_SRegBase {
      *
      * Returns the newly created simple registration request
      */
-    function fromOpenIDRequest($request, $cls='Auth_OpenID_SRegRequest')
+    static function fromOpenIDRequest($request, $cls='Auth_OpenID_SRegRequest')
     {
 
         $obj = call_user_func_array(array($cls, 'build'),
@@ -442,7 +442,7 @@ class Auth_OpenID_SRegResponse extends Auth_OpenID_SRegBase {
      * string (unicode) value. For instance, the nickname should be
      * stored under the key 'nickname'.
      */
-    function extractResponse($request, $data)
+    static function extractResponse($request, $data)
     {
         $obj = new Auth_OpenID_SRegResponse();
         $obj->ns_uri = $request->ns_uri;
@@ -471,7 +471,7 @@ class Auth_OpenID_SRegResponse extends Auth_OpenID_SRegBase {
      * Returns a simple registration response containing the data that
      * was supplied with the C{id_res} response.
      */
-    function fromSuccessResponse(&$success_response, $signed_only=true)
+    static function fromSuccessResponse($success_response, $signed_only=true)
     {
         global $Auth_OpenID_sreg_data_fields;
 
@@ -518,4 +518,4 @@ class Auth_OpenID_SRegResponse extends Auth_OpenID_SRegBase {
     }
 }
 
-?>
+

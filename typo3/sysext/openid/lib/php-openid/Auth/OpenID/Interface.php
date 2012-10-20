@@ -194,4 +194,3 @@ class Auth_OpenID_OpenIDStore {
     }
 
 }
-?>
