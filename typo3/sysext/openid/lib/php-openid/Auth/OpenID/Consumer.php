@@ -29,7 +29,7 @@
  * identity check.
  *
  * LIBRARY DESIGN
- *
+ * 
  * This consumer library is designed with that flow in mind.  The goal
  * is to make it as easy as possible to perform the above steps
  * securely.
@@ -265,7 +265,7 @@ class Auth_OpenID_Consumer {
             $session = new Auth_Yadis_PHPSession();
         }
 
-        $this->session =& $session;
+        $this->session = $session;
 
         if ($consumer_cls !== null) {
             $this->consumer = new $consumer_cls($store);
@@ -339,7 +339,7 @@ class Auth_OpenID_Consumer {
                                            $this->consumer->fetcher);
 
         // Reset the 'stale' attribute of the manager.
-        $m =& $disco->getManager();
+        $m = $disco->getManager();
         if ($m) {
             $m->stale = false;
             $disco->session->set($disco->session_key,
@@ -370,7 +370,7 @@ class Auth_OpenID_Consumer {
      * @return Auth_OpenID_AuthRequest $auth_request An OpenID
      * authentication request object.
      */
-    function &beginWithoutDiscovery($endpoint, $anonymous=false)
+    function beginWithoutDiscovery($endpoint, $anonymous=false)
     {
         $loader = new Auth_OpenID_ServiceEndpointLoader();
         $auth_req = $this->consumer->begin($endpoint);
@@ -427,7 +427,7 @@ class Auth_OpenID_Consumer {
             $loader->fromSession($endpoint_data);
 
         $message = Auth_OpenID_Message::fromPostArgs($query);
-        $response = $this->consumer->complete($message, $endpoint,
+        $response = $this->consumer->complete($message, $endpoint, 
                                               $current_url);
         $this->session->del($this->_token_key);
 
@@ -467,7 +467,7 @@ class Auth_OpenID_DiffieHellmanSHA1ConsumerSession {
 
     function getRequest()
     {
-        $math =& Auth_OpenID_getMathLib();
+        $math = Auth_OpenID_getMathLib();
 
         $cpub = $math->longToBase64($this->dh->public);
 
@@ -496,7 +496,7 @@ class Auth_OpenID_DiffieHellmanSHA1ConsumerSession {
             return null;
         }
 
-        $math =& Auth_OpenID_getMathLib();
+        $math = Auth_OpenID_getMathLib();
 
         $spub = $math->base64ToLong($response->getArg(Auth_OpenID_OPENID_NS,
                                                       'dh_server_public'));
@@ -613,9 +613,9 @@ class Auth_OpenID_GenericConsumer {
      */
     function Auth_OpenID_GenericConsumer($store)
     {
-        $this->store =& $store;
-        $this->negotiator =& Auth_OpenID_getDefaultNegotiator();
-        $this->_use_assocs = ($this->store ? true : false);
+        $this->store = $store;
+        $this->negotiator = Auth_OpenID_getDefaultNegotiator();
+        $this->_use_assocs = (is_null($this->store) ? false : true);
 
         $this->fetcher = Auth_Yadis_Yadis::getHTTPFetcher();
 
@@ -666,7 +666,7 @@ class Auth_OpenID_GenericConsumer {
                                         '_completeInvalid');
 
         return call_user_func_array(array($this, $method),
-                                    array($message, $endpoint, $return_to));
+                                    array($message, &$endpoint, $return_to));
     }
 
     /**
@@ -957,11 +957,11 @@ class Auth_OpenID_GenericConsumer {
             }
 
             if (!$assoc->checkMessageSignature($message)) {
-				// If we get a "bad signature" here, it means that the association
-				// is unrecoverabley corrupted in some way. Any futher attempts
-				// to login with this association is likely to fail. Drop it.
-				$this->store->removeAssociation($server_url, $assoc_handle);
-				return new Auth_OpenID_FailureResponse(null,
+                // If we get a "bad signature" here, it means that the association
+                // is unrecoverabley corrupted in some way. Any futher attempts
+                // to login with this association is likely to fail. Drop it.
+                $this->store->removeAssociation($server_url, $assoc_handle);
+                return new Auth_OpenID_FailureResponse(null,
                                                        "Bad signature");
             }
         } else {
@@ -1182,12 +1182,12 @@ class Auth_OpenID_GenericConsumer {
      */
     function _discoverAndVerify($claimed_id, $to_match_endpoints)
     {
-
-
         // oidutil.log('Performing discovery on %s' % (claimed_id,))
-        list($unused, $services) = call_user_func($this->discoverMethod,
-                                                  $claimed_id,
-                                                  $this->fetcher);
+        list($unused, $services) = call_user_func_array($this->discoverMethod,
+                                                        array(
+                                                            $claimed_id,
+                                                            &$this->fetcher,
+                                                        ));
 
         if (!$services) {
             return new Auth_OpenID_FailureResponse(null,
@@ -1202,7 +1202,7 @@ class Auth_OpenID_GenericConsumer {
     /**
      * @access private
      */
-    function _verifyDiscoveryServices($claimed_id,
+    function _verifyDiscoveryServices($claimed_id, 
                                       $services, $to_match_endpoints)
     {
         // Search the services resulting from discovery to find one
@@ -1210,7 +1210,7 @@ class Auth_OpenID_GenericConsumer {
 
         foreach ($services as $endpoint) {
             foreach ($to_match_endpoints as $to_match_endpoint) {
-                $result = $this->_verifyDiscoverySingle($endpoint,
+                $result = $this->_verifyDiscoverySingle($endpoint, 
                                                         $to_match_endpoint);
 
                 if (!Auth_OpenID::isFailure($result)) {
@@ -1222,8 +1222,8 @@ class Auth_OpenID_GenericConsumer {
         }
 
         return new Auth_OpenID_FailureResponse(null,
-          sprintf('No matching endpoint found after discovering %s',
-                  $claimed_id));
+          sprintf('No matching endpoint found after discovering %s: %s',
+                  $claimed_id, $result->message));
     }
 
     /**
@@ -1301,7 +1301,8 @@ class Auth_OpenID_GenericConsumer {
             Auth_OpenID_OPENID2_NS => array_merge($basic_sig_fields,
                                                   array('response_nonce',
                                                         'claimed_id',
-                                                        'assoc_handle')),
+                                                        'assoc_handle',
+                                                        'op_endpoint')),
             Auth_OpenID_OPENID1_NS => array_merge($basic_sig_fields,
                                                   array('nonce'))
             );
@@ -1367,7 +1368,7 @@ class Auth_OpenID_GenericConsumer {
             }
         }
         $ca_message = $message->copy();
-        $ca_message->setArg(Auth_OpenID_OPENID_NS, 'mode',
+        $ca_message->setArg(Auth_OpenID_OPENID_NS, 'mode', 
                             'check_authentication');
         return $ca_message;
     }
@@ -1402,7 +1403,7 @@ class Auth_OpenID_GenericConsumer {
      *
      * @access private
      */
-    function _httpResponseToMessage($response, $server_url)
+    static function _httpResponseToMessage($response, $server_url)
     {
         // Should this function be named Message.fromHTTPResponse instead?
         $response_message = Auth_OpenID_Message::fromKVForm($response->body);
@@ -1605,7 +1606,7 @@ class Auth_OpenID_GenericConsumer {
 
         $expires_in = Auth_OpenID::intval($expires_in_str);
         if ($expires_in === false) {
-
+            
             $err = sprintf("Could not parse expires_in from association ".
                            "response %s", print_r($assoc_response, true));
             return new Auth_OpenID_FailureResponse(null, $err);
@@ -1756,7 +1757,7 @@ class Auth_OpenID_AuthRequest {
     function Auth_OpenID_AuthRequest($endpoint, $assoc)
     {
         $this->assoc = $assoc;
-        $this->endpoint =& $endpoint;
+        $this->endpoint = $endpoint;
         $this->return_to_args = array();
         $this->message = new Auth_OpenID_Message(
             $endpoint->preferredNamespace());
@@ -1952,7 +1953,7 @@ class Auth_OpenID_AuthRequest {
     function htmlMarkup($realm, $return_to=null, $immediate=false,
                         $form_tag_attrs=null)
     {
-        $form = $this->formMarkup($realm, $return_to, $immediate,
+        $form = $this->formMarkup($realm, $return_to, $immediate, 
                                   $form_tag_attrs);
 
         if (Auth_OpenID::isFailure($form)) {
@@ -2094,7 +2095,7 @@ class Auth_OpenID_SuccessResponse extends Auth_OpenID_ConsumerResponse {
 
         foreach ($msg_args as $key => $value) {
             if (!$this->isSigned($ns_uri, $key)) {
-                return null;
+                unset($msg_args[$key]);
             }
         }
 
@@ -2172,7 +2173,7 @@ class Auth_OpenID_ServerErrorContainer {
     /**
      * @access private
      */
-    function fromMessage($message)
+    static function fromMessage($message)
     {
         $error_text = $message->getArg(
            Auth_OpenID_OPENID_NS, 'error', '<no error message supplied>');
@@ -2232,4 +2233,4 @@ class Auth_OpenID_SetupNeededResponse extends Auth_OpenID_ConsumerResponse {
     }
 }
 
-?>
+

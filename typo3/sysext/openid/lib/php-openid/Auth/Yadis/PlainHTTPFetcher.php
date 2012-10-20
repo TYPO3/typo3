@@ -83,8 +83,6 @@ class Auth_Yadis_PlainHTTPFetcher extends Auth_Yadis_HTTPFetcher {
                              "User-Agent: $user_agent",
                              "Host: ".$parts['host'].
                                 ($specify_port ? ":".$parts['port'] : ""),
-                             "Range: 0-".
-                                (1024*Auth_OpenID_FETCHER_MAX_RESPONSE_KB),
                              "Port: ".$parts['port']);
 
             $errno = 0;
@@ -124,7 +122,7 @@ class Auth_Yadis_PlainHTTPFetcher extends Auth_Yadis_HTTPFetcher {
             $code = $http_code[1];
 
             if (in_array($code, array('301', '302'))) {
-                $url = $this->_findRedirect($headers);
+                $url = $this->_findRedirect($headers, $url);
                 $redir = true;
             } else {
                 $redir = false;
@@ -248,4 +246,3 @@ class Auth_Yadis_PlainHTTPFetcher extends Auth_Yadis_HTTPFetcher {
     }
 }
 
-?>

@@ -10,7 +10,7 @@ require_once 'Auth/Yadis/XRI.php';
 class Auth_Yadis_ProxyResolver {
     function Auth_Yadis_ProxyResolver($fetcher, $proxy_url = null)
     {
-        $this->fetcher =& $fetcher;
+        $this->fetcher = $fetcher;
         $this->proxy_url = $proxy_url;
         if (!$this->proxy_url) {
             $this->proxy_url = Auth_Yadis_getDefaultProxy();
@@ -69,4 +69,4 @@ class Auth_Yadis_ProxyResolver {
     }
 }
 
-?>
+

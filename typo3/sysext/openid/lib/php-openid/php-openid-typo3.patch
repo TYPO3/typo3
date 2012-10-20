@@ -1,9 +1,8 @@
-diff -b -r -u Auth/Yadis/ParanoidHTTPFetcher.php Auth/Yadis/ParanoidHTTPFetcher.php
---- Auth/Yadis/ParanoidHTTPFetcher.php	2008-09-09 21:12:13.000000000 +0200
-+++ Auth/Yadis/ParanoidHTTPFetcher.php	2008-09-24 22:24:11.000000000 +0200
-@@ -130,6 +130,19 @@
-             curl_setopt($c, CURLOPT_RANGE, 
-                         "0-".(1024 * Auth_OpenID_FETCHER_MAX_RESPONSE_KB));
+--- Auth/Yadis/ParanoidHTTPFetcher.php	2012-10-21 00:26:52.036842042 +0200
++++ Auth/Yadis/ParanoidHTTPFetcher.php	2012-10-21 00:33:46.515660341 +0200
+@@ -142,6 +142,19 @@
+                 }
+             }
  
 +			// <TYPO3-specific>
 +			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
@@ -21,9 +20,9 @@ diff -b -r -u Auth/Yadis/ParanoidHTTPFetcher.php Auth/Yadis/ParanoidHTTPFetcher.
              curl_exec($c);
  
              $code = curl_getinfo($c, CURLINFO_HTTP_CODE);
-@@ -194,6 +207,19 @@
-         curl_setopt($c, CURLOPT_WRITEFUNCTION,
-                     array(&$this, "_writeData"));
+@@ -226,6 +239,19 @@
+             }
+         }
  
 +		// <TYPO3-specific>
 +		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
@@ -41,21 +40,3 @@ diff -b -r -u Auth/Yadis/ParanoidHTTPFetcher.php Auth/Yadis/ParanoidHTTPFetcher.
          curl_exec($c);
  
          $code = curl_getinfo($c, CURLINFO_HTTP_CODE);
-Index: typo3/sysext/openid/lib/php-openid/Auth/OpenID/Consumer.php
-===================================================================
---- typo3/sysext/openid/lib/php-openid/Auth/OpenID/Consumer.php	(revision 7119)
-+++ typo3/sysext/openid/lib/php-openid/Auth/OpenID/Consumer.php	(working copy)
-@@ -957,7 +957,11 @@
-             }
- 
-             if (!$assoc->checkMessageSignature($message)) {
--                return new Auth_OpenID_FailureResponse(null,
-+				// If we get a "bad signature" here, it means that the association
-+				// is unrecoverabley corrupted in some way. Any futher attempts
-+				// to login with this association is likely to fail. Drop it.
-+				$this->store->removeAssociation($server_url, $assoc_handle);
-+				return new Auth_OpenID_FailureResponse(null,
-                                                        "Bad signature");
-             }
-         } else {
-
