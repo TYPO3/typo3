@@ -80,6 +80,50 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 	}
 
 	/**
+	 * @return array
+	 */
+	public function invalidRelativePathDataProvider() {
+		return array(
+			array('../../'),
+			array('/foo/bar'),
+			array('foo//bar'),
+			array('foo/bar' . chr(0)),
+		);
+	}
+
+	/**
+	 * @param string $invalidRelativePath
+	 * @test
+	 * @dataProvider invalidRelativePathDataProvider
+	 * @expectedException \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 */
+	public function getAbsolutePathThrowsExceptionForInvalidRelativePaths($invalidRelativePath) {
+		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('dummy'));
+		$fileHandlerMock->_call('getAbsolutePath', $invalidRelativePath);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function validRelativePathDataProvider() {
+		return array(
+			array('foo/../bar', PATH_site . 'bar'),
+			array('bas', PATH_site . 'bas'),
+		);
+	}
+
+	/**
+	 * @param string $validRelativePath
+	 * @param string $expectedAbsolutePath
+	 * @test
+	 * @dataProvider validRelativePathDataProvider
+	 */
+	public function getAbsolutePathReturnsAbsolutePathForValidRelativePaths($validRelativePath, $expectedAbsolutePath) {
+		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('dummy'));
+		$this->assertSame($expectedAbsolutePath, $fileHandlerMock->_call('getAbsolutePath', $validRelativePath));
+	}
+
+	/**
 	 * @test
 	 * @return void
 	 */
@@ -260,7 +304,99 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$this->assertTrue(file_exists($rootPath . 'ext_emconf.php'));
 	}
 
-}
+	/**
+	 * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility
+	 */
+	protected function getPreparedFileHandlingMockForDirectoryCreationTests() {
+		/** @var $fileHandlerMock \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility|\PHPUnit_Framework_MockObject_MockObject */
+		$fileHandlerMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('createNestedDirectory', 'getAbsolutePath', 'directoryExists'));
+		$fileHandlerMock->expects($this->any())
+			->method('getAbsolutePath')
+			->will($this->returnArgument(0));
+		return $fileHandlerMock;
+	}
 
+	/**
+	 * @test
+	 */
+	public function uploadFolderIsNotCreatedIfNotRequested() {
+		$fileHandlerMock = $this->getPreparedFileHandlingMockForDirectoryCreationTests();
+		$fileHandlerMock->expects($this->never())
+			->method('createNestedDirectory');
+		$fileHandlerMock->ensureConfiguredDirectoriesExist(array(
+				'key' => 'foo_bar',
+				'uploadfolder' => 0,
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function additionalFoldersAreNotCreatedIfNotRequested() {
+		$fileHandlerMock = $this->getPreparedFileHandlingMockForDirectoryCreationTests();
+		$fileHandlerMock->expects($this->never())
+			->method('createNestedDirectory');
+		$fileHandlerMock->ensureConfiguredDirectoriesExist(array(
+				'key' => 'foo_bar',
+				'createDirs' => '',
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function configuredUploadFolderIsCreatedIfRequested() {
+		$fileHandlerMock = $this->getPreparedFileHandlingMockForDirectoryCreationTests();
+		$fileHandlerMock->expects($this->once())
+			->method('createNestedDirectory')
+			->with('uploads/tx_foobar/');
+		$fileHandlerMock->ensureConfiguredDirectoriesExist(array(
+				'key' => 'foo_bar',
+				'uploadfolder' => 1,
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function configuredAdditionalDirectoriesAreCreatedIfRequested() {
+		$fileHandlerMock = $this->getPreparedFileHandlingMockForDirectoryCreationTests();
+		$fileHandlerMock->expects($this->exactly(2))
+			->method('createNestedDirectory')
+			->will($this->returnCallback(function($path) {
+					if (!in_array($path, array('foo/bar', 'baz/foo'))) {
+						throw new \Exception('Path "' . $path . '" is not expected to be created');
+					}
+
+				})
+			);
+		$fileHandlerMock->ensureConfiguredDirectoriesExist(array(
+				'key' => 'foo_bar',
+				'createDirs' => 'foo/bar, baz/foo',
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function configuredDirectoriesAreNotCreatedIfTheyAlreadyExist() {
+		$fileHandlerMock = $this->getPreparedFileHandlingMockForDirectoryCreationTests();
+		$fileHandlerMock->expects($this->exactly(3))
+			->method('directoryExists')
+			->will($this->returnValue(TRUE));
+		$fileHandlerMock->expects($this->never())
+			->method('createNestedDirectory');
+		$fileHandlerMock->ensureConfiguredDirectoriesExist(array(
+				'key' => 'foo_bar',
+				'uploadfolder' => 1,
+				'createDirs' => 'foo/bar, baz/foo',
+			)
+		);
+	}
+}
 
 ?>
