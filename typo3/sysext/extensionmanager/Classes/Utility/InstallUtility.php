@@ -53,7 +53,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility
 	 */
-	protected $filehandlingUtility;
+	protected $fileHandlingUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
@@ -87,8 +87,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $filehandlingUtility
 	 * @return void
 	 */
-	public function injectFilehandlingUtility(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $filehandlingUtility) {
-		$this->filehandlingUtility = $filehandlingUtility;
+	public function injectFileHandlingUtility(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility) {
+		$this->fileHandlingUtility = $fileHandlingUtility;
 	}
 
 	/**
@@ -157,7 +157,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Wrapper function for unloading extensions
 	 *
 	 * @param string $extensionKey
-	 * @return void
 	 */
 	protected function unloadExtension($extensionKey) {
 		\TYPO3\CMS\Core\Extension\ExtensionManager::unloadExtension($extensionKey);
@@ -174,6 +173,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	public function install($extensionKey) {
 		$extension = $this->enrichExtensionWithDetails($extensionKey);
 		$this->processDatabaseUpdates($extension);
+		$this->ensureConfiguredDirectoriesExist($extension);
 		if ($extension['clearcacheonload']) {
 			$GLOBALS['typo3CacheManager']->flushCaches();
 		}
@@ -196,8 +196,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Fetch additional information for an extension key
 	 *
 	 * @param string $extensionKey
-	 * @internal
-	 * @return mixed
+	 * @access private
+	 * @return array
 	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
 	 */
 	public function enrichExtensionWithDetails($extensionKey) {
@@ -212,13 +212,21 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Creates directories as requested in ext_emconf.php
+	 *
+	 * @param array $extension
+	 */
+	protected function ensureConfiguredDirectoriesExist(array $extension) {
+		$this->fileHandlingUtility->ensureConfiguredDirectoriesExist($extension);
+	}
+
+	/**
 	 * Gets the content of the ext_tables.sql and ext_tables_static+adt.sql files
 	 * Additionally adds the table definitions for the cache tables
 	 *
-	 * @param string $extension
-	 * @return void
+	 * @param array $extension
 	 */
-	public function processDatabaseUpdates($extension) {
+	public function processDatabaseUpdates(array $extension) {
 		$extTablesSqlFile = PATH_site . $extension['siteRelPath'] . '/ext_tables.sql';
 		if (file_exists($extTablesSqlFile)) {
 			$extTablesSqlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extTablesSqlFile);
@@ -327,9 +335,9 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function removeExtension($extension) {
-		$absolutePath = $this->filehandlingUtility->getAbsoluteExtensionPath($extension);
-		if ($this->filehandlingUtility->isValidExtensionPath($absolutePath)) {
-			$this->filehandlingUtility->removeDirectory($absolutePath);
+		$absolutePath = $this->fileHandlingUtility->getAbsoluteExtensionPath($extension);
+		if ($this->fileHandlingUtility->isValidExtensionPath($absolutePath)) {
+			$this->fileHandlingUtility->removeDirectory($absolutePath);
 		} else {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('No valid extension path given.', 1342875724);
 		}

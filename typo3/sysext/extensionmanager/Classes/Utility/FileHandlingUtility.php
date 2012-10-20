@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Extensionmanager\Utility;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -117,8 +118,23 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function createDirectoriesForExtensionFiles(array $directories, $rootPath) {
 		foreach ($directories as $directory) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($rootPath . $directory);
+			$this->createNestedDirectory($rootPath . $directory);
 		}
+	}
+
+	/**
+	 * Wrapper for utility method to create directory recusively
+	 *
+	 * @param string $directory Absolute path
+	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 */
+	protected function createNestedDirectory($directory) {
+		try {
+			GeneralUtility::mkdir_deep($directory);
+		} catch(\RuntimeException $exception) {
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf($GLOBALS['LANG']->getLL('clearMakeExtDir_could_not_create_dir'), $this->getRelativePath($directory)), 1337280416);
+		}
+
 	}
 
 	/**
@@ -130,7 +146,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function writeExtensionFiles(array $files, $rootPath) {
 		foreach ($files as $file) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($rootPath . $file['name'], $file['content']);
+			GeneralUtility::writeFile($rootPath . $file['name'], $file['content']);
 		}
 	}
 
@@ -147,7 +163,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$paths = \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnInstallPaths();
 		$path = $paths[$pathType];
 		if (!$path || !is_dir($path) || !$extensionkey) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf('ERROR: The extension install path "%s" was no directory!', $path), 1337280417);
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf('ERROR: The extension install path "%s" was no directory!', $this->getRelativePath($path)), 1337280417);
 		} else {
 			$extDirPath = $path . $extensionkey . '/';
 			if (is_dir($extDirPath)) {
@@ -166,10 +182,66 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function addDirectory($extDirPath) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($extDirPath);
+		GeneralUtility::mkdir($extDirPath);
 		if (!is_dir($extDirPath)) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf($GLOBALS['LANG']->getLL('clearMakeExtDir_could_not_create_dir'), $extDirPath), 1337280416);
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf($GLOBALS['LANG']->getLL('clearMakeExtDir_could_not_create_dir'), $this->getRelativePath($extDirPath)), 1337280416);
 		}
+	}
+
+	/**
+	 * Creates directories configured in ext_emconf.php if not already present
+	 *
+	 * @param array $extension
+	 */
+	public function ensureConfiguredDirectoriesExist(array $extension) {
+		foreach ($this->getAbsolutePathsToConfiguredDirectories($extension) as $directory) {
+			if (!$this->directoryExists($directory)) {
+				$this->createNestedDirectory($directory);
+			}
+		}
+	}
+
+	/**
+	 * Wrapper method for directory existance check
+	 *
+	 * @param string $directory
+	 * @return boolean
+	 */
+	protected function directoryExists($directory) {
+		return is_dir($directory);
+	}
+
+	/**
+	 * Checks configuration and returns an array of absolute paths that should be created
+	 *
+	 * @param array $extension
+	 * @return array
+	 */
+	protected function getAbsolutePathsToConfiguredDirectories(array $extension) {
+		$requestedDirectories = array();
+		$requestUploadFolder = isset($extension['uploadfolder']) ? (boolean)$extension['uploadfolder'] : FALSE;
+		if ($requestUploadFolder) {
+			$requestedDirectories[] = $this->getAbsolutePath($this->getPathToUploadFolder($extension));
+		}
+
+		$requestCreateDirectories = empty($extension['createDirs']) ? FALSE : (string)$extension['createDirs'];
+		if ($requestCreateDirectories) {
+			foreach (GeneralUtility::trimExplode(',', $extension['createDirs']) as $directoryToCreate) {
+				$requestedDirectories[] = $this->getAbsolutePath($directoryToCreate);
+			}
+		}
+
+		return $requestedDirectories;
+	}
+
+	/**
+	 * Upload folders always reside in “uploads/tx_[extKey-with-no-underscore]”
+	 *
+	 * @param array $extension
+	 * @return string
+	 */
+	protected function getPathToUploadFolder($extension) {
+		return 'uploads/tx_' . str_replace('_', '', $extension['key']) . '/';
 	}
 
 	/**
@@ -180,9 +252,9 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function removeDirectory($extDirPath) {
-		$res = \TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($extDirPath, TRUE);
+		$res = GeneralUtility::rmdir($extDirPath, TRUE);
 		if ($res === FALSE) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf($GLOBALS['LANG']->getLL('clearMakeExtDir_could_not_remove_dir'), $extDirPath), 1337280415);
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf($GLOBALS['LANG']->getLL('clearMakeExtDir_could_not_remove_dir'), $this->getRelativePath($extDirPath)), 1337280415);
 		}
 	}
 
@@ -196,7 +268,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function writeEmConfToFile(array $extensionData, $rootPath, \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension = NULL) {
 		$emConfContent = $this->emConfUtility->constructEmConf($extensionData, $extension);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($rootPath . 'ext_emconf.php', $emConfContent);
+		GeneralUtility::writeFile($rootPath . 'ext_emconf.php', $emConfContent);
 	}
 
 	/**
@@ -208,7 +280,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	public function isValidExtensionPath($path) {
 		$allowedPaths = \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnAllowedInstallPaths();
 		foreach ($allowedPaths as $allowedPath) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($path, $allowedPath)) {
+			if (GeneralUtility::isFirstPartOfStr($path, $allowedPath)) {
 				return TRUE;
 			}
 		}
@@ -221,8 +293,22 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $relativePath
 	 * @return string
 	 */
-	public function returnAbsolutePath($relativePath) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath(PATH_site . $relativePath);
+	protected function getAbsolutePath($relativePath) {
+		$absolutePath = GeneralUtility::getFileAbsFileName(GeneralUtility::resolveBackPath(PATH_site . $relativePath));
+		if (empty($absolutePath)) {
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Illegal relative path given', 1350742864);
+		}
+		return $absolutePath;
+	}
+
+	/**
+	 * Returns relative path
+	 *
+	 * @param string $absolutePath
+	 * @return string
+	 */
+	protected function getRelativePath($absolutePath) {
+		return substr($absolutePath, strlen(PATH_site));
 	}
 
 	/**
@@ -233,7 +319,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getAbsoluteExtensionPath($extension) {
 		$extension = $this->installUtility->enrichExtensionWithDetails($extension);
-		$absolutePath = $this->returnAbsolutePath($extension['siteRelPath']);
+		$absolutePath = $this->getAbsolutePath($extension['siteRelPath']);
 		return $absolutePath;
 	}
 
@@ -258,7 +344,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	public function createZipFileFromExtension($extension) {
 		$extensionPath = $this->getAbsoluteExtensionPath($extension);
 		$version = $this->getExtensionVersion($extension);
-		$fileName = PATH_site . 'typo3temp/' . $extension . '_' . $version . '.zip';
+		$fileName = $this->getAbsolutePath('typo3temp/' . $extension . '_' . $version . '.zip');
 		$zip = new \ZipArchive();
 		$zip->open($fileName, \ZipArchive::CREATE);
 		$iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($extensionPath));
@@ -293,20 +379,20 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 					$dir = substr(zip_entry_name($zipEntry), 0, $last);
 					$file = substr(zip_entry_name($zipEntry), strrpos(zip_entry_name($zipEntry), DIRECTORY_SEPARATOR) + 1);
 					if (!is_dir($dir)) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($extensionDir . $dir);
+						GeneralUtility::mkdir_deep($extensionDir . $dir);
 					}
 					if (strlen(trim($file)) > 0) {
-						$return = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($extensionDir . $dir . '/' . $file, zip_entry_read($zipEntry, zip_entry_filesize($zipEntry)));
+						$return = GeneralUtility::writeFile($extensionDir . $dir . '/' . $file, zip_entry_read($zipEntry, zip_entry_filesize($zipEntry)));
 						if ($return === FALSE) {
-							throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Could not write file ' . $file, 1344691048);
+							throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Could not write file ' . $this->getRelativePath($file), 1344691048);
 						}
 					}
 				} else {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($extensionDir . zip_entry_name($zipEntry), zip_entry_read($zipEntry, zip_entry_filesize($zipEntry)));
+					GeneralUtility::writeFile($extensionDir . zip_entry_name($zipEntry), zip_entry_read($zipEntry, zip_entry_filesize($zipEntry)));
 				}
 			}
 		} else {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Unable to open zip file ' . $file, 1344691049);
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Unable to open zip file ' . $this->getRelativePath($file), 1344691049);
 		}
 	}
 
