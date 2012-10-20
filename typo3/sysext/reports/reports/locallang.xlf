@@ -165,6 +165,18 @@
 			<trans-unit id="status_webServer" xml:space="preserve">
 				<source>Web Server</source>
 			</trans-unit>
+			<trans-unit id="status_webServer_infoText" xml:space="preserve">
+				<source>For your Web Server some notifications have been found:</source>
+			</trans-unit>
+			<trans-unit id="status_webServer_threadStackSize" xml:space="preserve">
+				<source><![CDATA[Fluid uses complex regular expressions which require a lot of stack space during the first processing.
+On Windows the default stack size for Apache is a lot smaller than on unix.
+You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
+<br />&lt;IfModule mpm_winnt_module&gt;
+<br />ThreadStackSize 8388608
+<br />&lt;/IfModule&gt;
+<br />Restart Apache after this change.]]></source>
+			</trans-unit>
 			<trans-unit id="status_phpModules" xml:space="preserve">
 				<source>PHP Modules</source>
 			</trans-unit>
