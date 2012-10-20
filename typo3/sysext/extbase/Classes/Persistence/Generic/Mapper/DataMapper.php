@@ -449,7 +449,6 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
 	 * @param $propertyName
-	 * @param $result
 	 * @param mixed $result The result
 	 * @return mixed
 	 */

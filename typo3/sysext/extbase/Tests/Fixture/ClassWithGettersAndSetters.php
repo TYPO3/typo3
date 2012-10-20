@@ -63,7 +63,7 @@ class ClassWithGettersAndSetters {
 	}
 
 	/**
-	 * @param mixed $value
+	 * @return mixed
 	 */
 	protected function getProperty1() {
 		return $this->property1;
