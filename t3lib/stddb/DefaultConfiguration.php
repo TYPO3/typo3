@@ -200,7 +200,7 @@ return array(
 					'label' => 'Local filesystem'
 				)
 			),
-			'callbackFilterMethods' => array(
+			'defaultFilterCallbacks' => array(
 				array(
 					'TYPO3\\CMS\\Core\\Resource\\Filter\\FileNameFilter',
 					'filterHiddenFilesAndFolders'

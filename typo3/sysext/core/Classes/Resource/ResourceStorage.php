@@ -830,7 +830,7 @@ class ResourceStorage {
 	 * @return void
 	 */
 	public function resetFileAndFolderNameFiltersToDefault() {
-		$this->fileAndFolderNameFilters = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['callbackFilterMethods'];
+		$this->fileAndFolderNameFilters = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['defaultFilterCallbacks'];
 	}
 
 	/**

@@ -210,7 +210,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 */
 	public function fileAndFolderListFiltersAreInitializedWithDefaultFilters() {
 		$this->prepareFixture(array());
-		$this->assertEquals($GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['callbackFilterMethods'], $this->fixture->getFileAndFolderNameFilters());
+		$this->assertEquals($GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['defaultFilterCallbacks'], $this->fixture->getFileAndFolderNameFilters());
 	}
 
 	/**
