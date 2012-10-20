@@ -1,6 +1,6 @@
 <f:form enctype="multipart/form-data" method="post" controller="UploadExtensionFile" action="extract" format="json" additionalAttributes="{target:'typo3-extensionmanager-upload-target'}">
-	<f:translate key="uploadTemplate.extensionLabel"/>:
+	<f:translate key="uploadTemplate.extensionLabel" />:
 	<f:form.upload name="extensionFile"/>
 	<f:form.submit value="{f:translate(key:'uploadTemplate.uploadButton')}" id="extensionUpload"/>
-	<iframe id="typo3-extensionmanager-upload-target" style="display: none;"></iframe>
+	<iframe id="typo3-extensionmanager-upload-target" name="typo3-extensionmanager-upload-target" style="display: none;"></iframe>
 </f:form>
