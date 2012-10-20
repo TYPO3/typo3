@@ -109,9 +109,9 @@ class Auth_Yadis_ParanoidHTTPFetcher extends Auth_Yadis_HTTPFetcher {
             }
 
             curl_setopt($c, CURLOPT_WRITEFUNCTION,
-                        array(&$this, "_writeData"));
+                        array($this, "_writeData"));
             curl_setopt($c, CURLOPT_HEADERFUNCTION,
-                        array(&$this, "_writeHeader"));
+                        array($this, "_writeHeader"));
 
             if ($extra_headers) {
                 curl_setopt($c, CURLOPT_HTTPHEADER, $extra_headers);
@@ -127,8 +127,20 @@ class Auth_Yadis_ParanoidHTTPFetcher extends Auth_Yadis_HTTPFetcher {
                         Auth_OpenID_USER_AGENT.' '.$curl_user_agent);
             curl_setopt($c, CURLOPT_TIMEOUT, $off);
             curl_setopt($c, CURLOPT_URL, $url);
-            curl_setopt($c, CURLOPT_RANGE,
-                        "0-".(1024 * Auth_OpenID_FETCHER_MAX_RESPONSE_KB));
+
+            if (defined('Auth_OpenID_VERIFY_HOST')) {
+                // set SSL verification options only if Auth_OpenID_VERIFY_HOST
+                // is explicitly set, otherwise use system default.
+                if (Auth_OpenID_VERIFY_HOST) {
+                    curl_setopt($c, CURLOPT_SSL_VERIFYPEER, true);
+                    curl_setopt($c, CURLOPT_SSL_VERIFYHOST, 2);
+                    if (defined('Auth_OpenID_CAINFO')) {
+                        curl_setopt($c, CURLOPT_CAINFO, Auth_OpenID_CAINFO);
+                    }
+                } else {
+                    curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+                }
+            }
 
 			// <TYPO3-specific>
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
@@ -157,12 +169,18 @@ class Auth_Yadis_ParanoidHTTPFetcher extends Auth_Yadis_HTTPFetcher {
             }
 
             if (in_array($code, array(301, 302, 303, 307))) {
-                $url = $this->_findRedirect($headers);
+                $url = $this->_findRedirect($headers, $url);
                 $redir = true;
             } else {
                 $redir = false;
                 curl_close($c);
 
+                if (defined('Auth_OpenID_VERIFY_HOST') &&
+                    Auth_OpenID_VERIFY_HOST == true &&
+                    $this->isHTTPS($url)) {
+                    Auth_OpenID::log('OpenID: Verified SSL host %s using '.
+                                     'curl/get', $url);
+                }
                 $new_headers = array();
 
                 foreach ($headers as $header) {
@@ -205,7 +223,21 @@ class Auth_Yadis_ParanoidHTTPFetcher extends Auth_Yadis_HTTPFetcher {
         curl_setopt($c, CURLOPT_TIMEOUT, $this->timeout);
         curl_setopt($c, CURLOPT_URL, $url);
         curl_setopt($c, CURLOPT_WRITEFUNCTION,
-                    array(&$this, "_writeData"));
+                    array($this, "_writeData"));
+
+        if (defined('Auth_OpenID_VERIFY_HOST')) {
+            // set SSL verification options only if Auth_OpenID_VERIFY_HOST
+            // is explicitly set, otherwise use system default.
+            if (Auth_OpenID_VERIFY_HOST) {
+                curl_setopt($c, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($c, CURLOPT_SSL_VERIFYHOST, 2);
+                if (defined('Auth_OpenID_CAINFO')) {
+                    curl_setopt($c, CURLOPT_CAINFO, Auth_OpenID_CAINFO);
+                }
+            } else {
+                curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+            }
+        }
 
 		// <TYPO3-specific>
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
@@ -226,9 +258,17 @@ class Auth_Yadis_ParanoidHTTPFetcher extends Auth_Yadis_HTTPFetcher {
 
         if (!$code) {
             Auth_OpenID::log("Got no response code when fetching %s", $url);
+            Auth_OpenID::log("CURL error (%s): %s",
+                             curl_errno($c), curl_error($c));
             return null;
         }
 
+        if (defined('Auth_OpenID_VERIFY_HOST') &&
+            Auth_OpenID_VERIFY_HOST == true &&
+            $this->isHTTPS($url)) {
+            Auth_OpenID::log('OpenID: Verified SSL host %s using '.
+                             'curl/post', $url);
+        }
         $body = $this->data;
 
         curl_close($c);
@@ -251,4 +291,3 @@ class Auth_Yadis_ParanoidHTTPFetcher extends Auth_Yadis_HTTPFetcher {
     }
 }
 
-?>

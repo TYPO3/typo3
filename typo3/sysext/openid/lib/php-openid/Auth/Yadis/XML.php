@@ -91,7 +91,7 @@ class Auth_Yadis_XMLParser {
      * @return array $node_list An array of matching opaque node
      * objects to be used with other methods of this parser class.
      */
-    function evalXPath($xpath, $node = null)
+    function &evalXPath($xpath, $node = null)
     {
         // Not implemented.
     }
@@ -310,20 +310,16 @@ $__Auth_Yadis_defaultParser = null;
  * @param Auth_Yadis_XMLParser $parser An instance of a
  * Auth_Yadis_XMLParser subclass.
  */
-function Auth_Yadis_setDefaultParser(&$parser)
+function Auth_Yadis_setDefaultParser($parser)
 {
     global $__Auth_Yadis_defaultParser;
-    $__Auth_Yadis_defaultParser =& $parser;
+    $__Auth_Yadis_defaultParser = $parser;
 }
 
 function Auth_Yadis_getSupportedExtensions()
 {
-    return array(
-                 'dom' => array('classname' => 'Auth_Yadis_dom',
-                       'libname' => array('dom.so', 'dom.dll')),
-                 'domxml' => array('classname' => 'Auth_Yadis_domxml',
-                       'libname' => array('domxml.so', 'php_domxml.dll')),
-                 );
+    return array('dom'    => 'Auth_Yadis_dom',
+                 'domxml' => 'Auth_Yadis_domxml');
 }
 
 /**
@@ -332,43 +328,25 @@ function Auth_Yadis_getSupportedExtensions()
  * Auth_Yadis_setDefaultParser has been called, the parser used in
  * that call will be returned instead.
  */
-function &Auth_Yadis_getXMLParser()
+function Auth_Yadis_getXMLParser()
 {
     global $__Auth_Yadis_defaultParser;
-
+    
     if (isset($__Auth_Yadis_defaultParser)) {
         return $__Auth_Yadis_defaultParser;
     }
-
-    $p = null;
-    $classname = null;
-
-    $extensions = Auth_Yadis_getSupportedExtensions();
-
-    // Return a wrapper for the resident implementation, if any.
-    foreach ($extensions as $name => $params) {
-        if (!extension_loaded($name)) {
-            foreach ($params['libname'] as $libname) {
-                if (@dl($libname)) {
-                    $classname = $params['classname'];
-                }
-            }
-        } else {
-            $classname = $params['classname'];
-        }
-        if (isset($classname)) {
-            $p = new $classname();
-            return $p;
-        }
-    }
-
-    if (!isset($p)) {
-        trigger_error('No XML parser was found', E_USER_ERROR);
-    } else {
+    
+    foreach(Auth_Yadis_getSupportedExtensions() as $extension => $classname)
+    {
+      if (extension_loaded($extension))
+      {
+        $p = new $classname();
         Auth_Yadis_setDefaultParser($p);
+        return $p;
+      }
     }
-
-    return $p;
+    
+    return false;
 }
 
-?>
+

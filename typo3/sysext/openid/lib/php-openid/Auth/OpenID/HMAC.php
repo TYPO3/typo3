@@ -60,6 +60,13 @@ function Auth_OpenID_HMACSHA1($key, $text)
         $key = Auth_OpenID_SHA1($key, true);
     }
 
+    if (function_exists('hash_hmac') &&
+        function_exists('hash_algos') &&
+        (in_array('sha1', hash_algos()))) {
+        return hash_hmac('sha1', $text, $key, true);
+    }
+    // Home-made solution
+
     $key = str_pad($key, Auth_OpenID_SHA1_BLOCKSIZE, chr(0x00));
     $ipad = str_repeat(chr(0x36), Auth_OpenID_SHA1_BLOCKSIZE);
     $opad = str_repeat(chr(0x5c), Auth_OpenID_SHA1_BLOCKSIZE);
@@ -96,4 +103,3 @@ if (function_exists('hash_hmac') &&
     define('Auth_OpenID_HMACSHA256_SUPPORTED', false);
 }
 
-?>

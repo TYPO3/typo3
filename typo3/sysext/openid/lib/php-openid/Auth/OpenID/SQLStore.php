@@ -14,16 +14,6 @@
  */
 
 /**
- * Require the PEAR DB module because we'll need it for the SQL-based
- * stores implemented here.  We silence any errors from the inclusion
- * because it might not be present, and a user of the SQL stores may
- * supply an Auth_OpenID_DatabaseConnection instance that implements
- * its own storage.
- */
-global $__Auth_OpenID_PEAR_AVAILABLE;
-$__Auth_OpenID_PEAR_AVAILABLE = @include_once 'DB.php';
-
-/**
  * @access private
  */
 require_once 'Auth/OpenID/Interface.php';
@@ -89,8 +79,6 @@ class Auth_OpenID_SQLStore extends Auth_OpenID_OpenIDStore {
                                   $associations_table = null,
                                   $nonces_table = null)
     {
-        global $__Auth_OpenID_PEAR_AVAILABLE;
-
         $this->associations_table_name = "oid_associations";
         $this->nonces_table_name = "oid_nonces";
 
@@ -113,7 +101,7 @@ class Auth_OpenID_SQLStore extends Auth_OpenID_OpenIDStore {
         // constant, so only try to use it if PEAR is present.  Note
         // that Auth_Openid_Databaseconnection instances need not
         // implement ::setFetchMode for this reason.
-        if ($__Auth_OpenID_PEAR_AVAILABLE) {
+        if (is_subclass_of($this->connection, 'db_common')) {
             $this->connection->setFetchMode(DB_FETCHMODE_ASSOC);
         }
 
@@ -482,7 +470,7 @@ class Auth_OpenID_SQLStore extends Auth_OpenID_OpenIDStore {
         global $Auth_OpenID_SKEW;
 
         if ( abs($timestamp - time()) > $Auth_OpenID_SKEW ) {
-            return False;
+            return false;
         }
 
         return $this->_add_nonce($server_url, $timestamp, $salt);
@@ -566,4 +554,4 @@ class Auth_OpenID_SQLStore extends Auth_OpenID_OpenIDStore {
     }
 }
 
-?>
+
