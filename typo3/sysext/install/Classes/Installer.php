@@ -2274,6 +2274,20 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 			';
 			$this->message($ext, 'PHPdoc comments are stripped', $description, 2);
 		}
+		// ThreadStackSize on Windows systems with Apache
+		$threadStackSizeDescription = '
+			<p>
+				Fluid uses complex regular expressions which require a lot of stack space during the first processing.
+				On Windows the default stack size for Apache is a lot smaller than on unix.
+				You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
+				<br /><br />&lt;IfModule mpm_winnt_module&gt;
+				<br />ThreadStackSize 8388608
+				<br />&lt;/IfModule&gt;
+				<br /><br />Restart Apache after this change.
+			</p>';
+		if (TYPO3_OS === 'WIN' && substr($_SERVER['SERVER_SOFTWARE'], 0, 6) === 'Apache') {
+			$this->message($ext, 'ThreadStackSize', $threadStackSizeDescription, 2);
+		}
 	}
 
 	/**
