@@ -105,7 +105,7 @@ class Auth_Yadis_DiscoveryResult {
     function usedYadisLocation()
     {
         // Was the Yadis protocol's indirection used?
-        return $this->normalized_uri != $this->xrds_uri;
+        return ($this->xrds_uri && $this->normalized_uri != $this->xrds_uri);
     }
 
     function isXRDS()
@@ -141,7 +141,7 @@ function Auth_Yadis_getServiceEndpoints($input_url, $xrds_parse_func,
     }
 
     $yadis_result = call_user_func_array($discover_func,
-                                         array($input_url, $fetcher));
+                                         array($input_url, &$fetcher));
 
     if ($yadis_result === null) {
         return array($input_url, array());
@@ -196,7 +196,7 @@ function Auth_Yadis_getServiceEndpoints($input_url, $xrds_parse_func,
  * The filter functions (whose names appear in the array passed to
  * services()) take the following form:
  *
- * <pre>  function myFilter(&$service) {
+ * <pre>  function myFilter($service) {
  *       // Query $service object here.  Return true if the service
  *       // matches your query; false if not.
  *  }</pre>
@@ -207,7 +207,7 @@ function Auth_Yadis_getServiceEndpoints($input_url, $xrds_parse_func,
  * this contrived example):
  *
  * <pre>
- *  function URIMatcher(&$service) {
+ *  function URIMatcher($service) {
  *      foreach ($service->getElements('xrd:URI') as $uri) {
  *          if (preg_match("/some_pattern/",
  *                         $service->parser->content($uri))) {
@@ -250,7 +250,7 @@ class Auth_Yadis_Yadis {
      * If Auth_Yadis_CURL_OVERRIDE is defined, this method will always
      * return a {@link Auth_Yadis_PlainHTTPFetcher}.
      */
-    function getHTTPFetcher($timeout = 20)
+    static function getHTTPFetcher($timeout = 20)
     {
         if (Auth_Yadis_Yadis::curlPresent() &&
             (!defined('Auth_Yadis_CURL_OVERRIDE'))) {
@@ -261,7 +261,7 @@ class Auth_Yadis_Yadis {
         return $fetcher;
     }
 
-    function curlPresent()
+    static function curlPresent()
     {
         return function_exists('curl_init');
     }
@@ -269,7 +269,7 @@ class Auth_Yadis_Yadis {
     /**
      * @access private
      */
-    function _getHeader($header_list, $names)
+   static function _getHeader($header_list, $names)
     {
         foreach ($header_list as $name => $value) {
             foreach ($names as $n) {
@@ -285,7 +285,7 @@ class Auth_Yadis_Yadis {
     /**
      * @access private
      */
-    function _getContentType($content_type_header)
+    static function _getContentType($content_type_header)
     {
         if ($content_type_header) {
             $parts = explode(";", $content_type_header);
@@ -317,7 +317,7 @@ class Auth_Yadis_Yadis {
      * Auth_Yadis_Yadis, depending on whether the discovery
      * succeeded.
      */
-    function discover($uri, $fetcher,
+    static function discover($uri, $fetcher,
                       $extra_ns_map = null, $timeout = 20)
     {
         $result = new Auth_Yadis_DiscoveryResult($uri);
@@ -379,4 +379,4 @@ class Auth_Yadis_Yadis {
     }
 }
 
-?>
+

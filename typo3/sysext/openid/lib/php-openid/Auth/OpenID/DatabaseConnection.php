@@ -128,4 +128,3 @@ class Auth_OpenID_DatabaseConnection {
     }
 }
 
-?>

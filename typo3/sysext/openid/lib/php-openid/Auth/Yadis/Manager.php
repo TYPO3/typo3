@@ -387,11 +387,11 @@ class Auth_Yadis_Discovery {
      * @param string $session_key_suffix The optional session key
      * suffix override.
      */
-    function Auth_Yadis_Discovery(&$session, $url,
+    function Auth_Yadis_Discovery($session, $url,
                                       $session_key_suffix = null)
     {
         /// Initialize a discovery object
-        $this->session =& $session;
+        $this->session = $session;
         $this->url = $url;
         if ($session_key_suffix === null) {
             $session_key_suffix = $this->DEFAULT_SUFFIX;
@@ -405,15 +405,17 @@ class Auth_Yadis_Discovery {
      * Return the next authentication service for the pair of
      * user_input and session. This function handles fallback.
      */
-    function getNextService($discover_cb, &$fetcher)
+    function getNextService($discover_cb, $fetcher)
     {
         $manager = $this->getManager();
         if (!$manager || (!$manager->services)) {
             $this->destroyManager();
 
-            list($yadis_url, $services) = call_user_func($discover_cb,
-                                                         $this->url,
-                                                         $fetcher);
+            list($yadis_url, $services) = call_user_func_array($discover_cb,
+                                                               array(
+                                                                $this->url,
+                                                                &$fetcher,
+                                                               ));
 
             $manager = $this->createManager($services, $yadis_url);
         }
@@ -466,7 +468,7 @@ class Auth_Yadis_Discovery {
      * @param $force True if the manager should be returned regardless
      * of whether it's a manager for $this->url.
      */
-    function &getManager($force=false)
+    function getManager($force=false)
     {
         // Extract the YadisServiceManager for this object's URL and
         // suffix from the session.
@@ -481,16 +483,13 @@ class Auth_Yadis_Discovery {
 
         if ($manager && ($manager->forURL($this->url) || $force)) {
             return $manager;
-        } else {
-            $unused = null;
-            return $unused;
         }
     }
 
     /**
      * @access private
      */
-    function &createManager($services, $yadis_url = null)
+    function createManager($services, $yadis_url = null)
     {
         $key = $this->getSessionKey();
         if ($this->getManager()) {
@@ -504,10 +503,6 @@ class Auth_Yadis_Discovery {
             $this->session->set($this->session_key,
                                 serialize($loader->toSession($manager)));
             return $manager;
-        } else {
-            // Oh, PHP.
-            $unused = null;
-            return $unused;
         }
     }
 
@@ -526,4 +521,3 @@ class Auth_Yadis_Discovery {
     }
 }
 
-?>
