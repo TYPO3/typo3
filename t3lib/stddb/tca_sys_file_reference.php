@@ -10,6 +10,7 @@ $TCA['sys_file_reference'] = array(
 	'feInterface' => $TCA['sys_file_reference']['feInterface'],
 	'columns' => array(
 		't3ver_label' => array(
+			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel',
 			'config' => array(
 				'type' => 'input',
@@ -18,7 +19,7 @@ $TCA['sys_file_reference'] = array(
 			)
 		),
 		'sys_language_uid' => array(
-			'exclude' => 1,
+			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
 			'config' => array(
 				'type' => 'select',
@@ -32,7 +33,7 @@ $TCA['sys_file_reference'] = array(
 		),
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'exclude' => 1,
+			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.l18n_parent',
 			'config' => array(
 				'type' => 'select',
@@ -44,12 +45,13 @@ $TCA['sys_file_reference'] = array(
 			)
 		),
 		'l10n_diffsource' => array(
+			'exclude' => 0,
 			'config' => array(
 				'type' => 'passthrough'
 			)
 		),
 		'hidden' => array(
-			'exclude' => 1,
+			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
 			'config' => array(
 				'type' => 'check',
