@@ -38,7 +38,7 @@ class Auth_OpenID_AX {
      * @return bool true if $thing is an Auth_OpenID_AX_Error; false
      * if not.
      */
-    function isError($thing)
+    static function isError($thing)
     {
         return is_a($thing, 'Auth_OpenID_AX_Error');
     }
@@ -191,7 +191,7 @@ class Auth_OpenID_AX_AttrInfo {
      * Construct an attribute information object.  For parameter
      * details, see the constructor.
      */
-    function make($type_uri, $count=1, $required=false,
+    static function make($type_uri, $count=1, $required=false,
                   $alias=null)
     {
         if ($alias !== null) {
@@ -386,7 +386,7 @@ class Auth_OpenID_AX_FetchRequest extends Auth_OpenID_AX_Message {
      * Auth_OpenID_AX_FetchRequest extracted from the request message if
      * successful
      */
-    function &fromOpenIDRequest($request)
+    static function fromOpenIDRequest($request)
     {
         $m = $request->message;
         $obj = new Auth_OpenID_AX_FetchRequest();
@@ -484,7 +484,7 @@ class Auth_OpenID_AX_FetchRequest extends Auth_OpenID_AX_Message {
                          Auth_OpenID::arrayGet($ax_args, 'required'));
 
         foreach ($required as $type_uri) {
-            $attrib =& $this->requested_attributes[$type_uri];
+            $attrib = $this->requested_attributes[$type_uri];
             $attrib->required = true;
         }
 
@@ -573,7 +573,7 @@ class Auth_OpenID_AX_KeyValueMessage extends Auth_OpenID_AX_Message {
      * @param type_uri: The URI for the attribute
      * @param values: A list of values to send for this attribute.
      */
-    function setValues($type_uri, $values)
+    function setValues($type_uri, &$values)
     {
         $this->data[$type_uri] =& $values;
     }
@@ -652,7 +652,7 @@ class Auth_OpenID_AX_KeyValueMessage extends Auth_OpenID_AX_Message {
         foreach ($aliases->iteritems() as $pair) {
             list($type_uri, $alias) = $pair;
 
-            if (array_key_exists('count.' . $alias, $ax_args)) {
+            if (array_key_exists('count.' . $alias, $ax_args) && ($ax_args['count.' . $alias] !== Auth_OpenID_AX_UNLIMITED_VALUES)) {
 
                 $count_key = 'count.' . $alias;
                 $count_s = $ax_args[$count_key];
@@ -922,7 +922,7 @@ class Auth_OpenID_AX_FetchResponse extends Auth_OpenID_AX_KeyValueMessage {
      * @return $response A FetchResponse containing the data from the
      * OpenID message
      */
-    function fromSuccessResponse($success_response, $signed=true)
+    static function fromSuccessResponse($success_response, $signed=true)
     {
         $obj = new Auth_OpenID_AX_FetchResponse();
         if ($signed) {
@@ -980,7 +980,7 @@ class Auth_OpenID_AX_StoreResponse extends Auth_OpenID_AX_Message {
      * Returns Auth_OpenID_AX_Error on error or an
      * Auth_OpenID_AX_StoreResponse object on success.
      */
-    function &make($succeeded=true, $error_message=null)
+    function make($succeeded=true, $error_message=null)
     {
         if (($succeeded) && ($error_message !== null)) {
             return new Auth_OpenID_AX_Error('An error message may only be '.
@@ -1020,4 +1020,3 @@ class Auth_OpenID_AX_StoreResponse extends Auth_OpenID_AX_Message {
     }
 }
 
-?>
