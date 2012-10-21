@@ -79,7 +79,8 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 						'target' => 'Dansk label for key1',
 					)
 				),
-				'key2' => array( //not translated in dk => no target (llxml)
+				// not translated in dk => no target (llxml)
+				'key2' => array(
 					array(
 						'source' => 'English label for key2',
 					)
@@ -89,13 +90,15 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 						'source' => 'English label for key3',
 					)
 				),
-				'key4' => array( //not translated in dk => empty target (xlif)
+				// not translated in dk => empty target (xliff)
+				'key4' => array(
 					array(
 						'source' => 'English label for key4',
 						'target' => '',
 					)
 				),
-				'key5' => array( //not translated in dk => empty target (xlif)
+				// not translated in dk => empty target (xliff)
+				'key5' => array(
 					array(
 						'source' => 'English label for key5',
 						'target' => '',
@@ -107,7 +110,8 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 					)
 				),
 			),
-			'dk_alt' => array( //fallback language for labels which are not translated in dk
+			// fallback language for labels which are not translated in dk
+			'dk_alt' => array(
 				'key1' => array(
 					array(
 						'source' => 'English label for key1',
@@ -124,7 +128,8 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 						'source' => 'English label for key3',
 					)
 				),
-				'key4' => array( //not translated in dk_alt => empty target (xlif)
+				// not translated in dk_alt => empty target (xliff)
+				'key4' => array(
 					array(
 						'source' => 'English label for key4',
 						'target' => '',
@@ -243,6 +248,99 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$this->localization->_setStatic('alternativeLanguageKeys', $altLanguageKeys);
 
 		$this->assertEquals($expected, $this->localization->translate($key, 'extensionKey', $arguments));
+	}
+
+	/**
+	 * @return array
+	 */
+	public function loadTypoScriptLabelsProvider() {
+		return array(
+			'override labels with typoscript' => array(
+				'LOCAL_LANG' => array(
+					'extensionKey' => array(
+						'dk' => array(
+							'key1' => array(
+								array(
+									'source' => 'English label for key1',
+									'target' => 'Dansk label for key1',
+								)
+							),
+							'key2' => array(
+								array(
+									'source' => 'English label for key2',
+								)
+							),
+							'key3.subkey1' => array(
+								array(
+									'source' => 'English label for key3',
+								)
+							),
+						),
+					),
+				),
+				'typoscript LOCAL_LANG' => array(
+					'dk' => array(
+					'key1' => 'key1 value from TS',
+					'key3' => array(
+							'subkey1' => 'key3.subkey1 value from TS',
+							// this key doesn't exist in xml files
+							'subkey2' => array(
+								'subsubkey' => 'key3.subkey2.subsubkey value from TS'
+							)
+						),
+					)
+				),
+				'language key' => 'dk',
+				'expected' => array(
+					'key1' => array(
+						array(
+							'source' => 'English label for key1',
+							'target' => 'key1 value from TS',
+						)
+					),
+					'key2' => array(
+						array(
+							'source' => 'English label for key2',
+						)
+					),
+					'key3.subkey1' => array(
+						array(
+							'source' => 'English label for key3',
+							'target' => 'key3.subkey1 value from TS',
+						)
+					),
+					'key3.subkey2.subsubkey' => array(
+						array(
+							'target' => 'key3.subkey2.subsubkey value from TS',
+						)
+					),
+				),
+			)
+		);
+	}
+
+	/**
+	 * @param array $LOCAL_LANG
+	 * @param array $typoscriptLocalLang
+	 * @param string $languageKey
+	 * @param array $expected
+	 * @return void
+	 * @dataProvider loadTypoScriptLabelsProvider
+	 * @test
+	 */
+	public function loadTypoScriptLabels(array $LOCAL_LANG, array $typoscriptLocalLang, $languageKey, array $expected) {
+		$this->localization->_setStatic('LOCAL_LANG', $LOCAL_LANG);
+		$this->localization->_setStatic('languageKey', $languageKey);
+
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$frameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$frameworkConfiguration['_LOCAL_LANG']  = $typoscriptLocalLang;
+		$configurationManager->setConfiguration($frameworkConfiguration);
+
+		$this->localization->_call('loadTypoScriptLabels', 'extensionKey');
+		$result = $this->localization->_getStatic('LOCAL_LANG');
+		$this->assertSame($expected, $result['extensionKey'][$languageKey]);
 	}
 }
 

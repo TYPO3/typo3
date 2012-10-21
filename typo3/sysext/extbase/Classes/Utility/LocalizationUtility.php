@@ -216,7 +216,7 @@ class LocalizationUtility {
 			}
 			foreach ($labels as $labelKey => $labelValue) {
 				if (is_string($labelValue)) {
-					self::$LOCAL_LANG[$extensionName][$languageKey][$labelKey] = $labelValue;
+					self::$LOCAL_LANG[$extensionName][$languageKey][$labelKey][0]['target'] = $labelValue;
 					if (is_object($GLOBALS['LANG'])) {
 						self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = $GLOBALS['LANG']->csConvObj->charSetArray[$languageKey];
 					} else {
@@ -224,7 +224,9 @@ class LocalizationUtility {
 					}
 				} elseif (is_array($labelValue)) {
 					$labelValue = self::flattenTypoScriptLabelArray($labelValue, $labelKey);
-					self::$LOCAL_LANG[$extensionName][$languageKey] = array_merge(self::$LOCAL_LANG[$extensionName][$languageKey], $labelValue);
+					foreach ($labelValue as $key => $value) {
+						self::$LOCAL_LANG[$extensionName][$languageKey][$key][0]['target'] = $value;
+					}
 				}
 			}
 		}
