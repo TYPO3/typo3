@@ -139,7 +139,13 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		foreach ($unserializedDependencies as $dependencyType => $dependencyValues) {
 			foreach ($dependencyValues as $dependency => $versions) {
 				if ($dependencyType && $dependency) {
-					list($highest, $lowest) = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionsStringToVersionNumbers($versions);
+					$versionNumbers = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionsStringToVersionNumbers($versions);
+					$lowest = $versionNumbers[0];
+					if (count($versionNumbers) === 2) {
+						$highest = $versionNumbers[1];
+					} else {
+						$highest = '';
+					}
 					/** @var $dependencyObject \TYPO3\CMS\Extensionmanager\Domain\Model\Dependency */
 					$dependencyObject = $this->objectManager->create('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency');
 					$dependencyObject->setType($dependencyType);
@@ -287,7 +293,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 						$this->managementService->markExtensionForDownload($latestCompatibleExtensionByIntegerVersionDependency);
 					}
 				} else {
-					throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Something went wrong.');
+					throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Could not resolve dependency for "' . $dependency->getIdentifier() . '"');
 				}
 			} else {
 				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('No compatible version found for extension ' . $extensionKey);

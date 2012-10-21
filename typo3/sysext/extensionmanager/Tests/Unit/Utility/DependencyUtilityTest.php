@@ -115,7 +115,18 @@ class DependencyUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 					'',
 					'4.4.99'
 				)
-			)
+			),
+			'only one value' => array(
+				array(
+					'depends' => array(
+						'typo3' => '4.4.99'
+					)
+				),
+				array(
+					'4.4.99',
+					'',
+				)
+			),
 		);
 	}
 
@@ -134,8 +145,8 @@ class DependencyUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('setHighestVersion', 'setLowestVersion'));
 		$objectManagerMock->expects($this->any())->method('create')->will($this->returnValue($dependencyModelMock));
 		$dependencyUtility->_set('objectManager', $objectManagerMock);
-		$dependencyModelMock->expects($this->atLeastOnce())->method('setHighestVersion')->with($returnValue[0]);
-		$dependencyModelMock->expects($this->atLeastOnce())->method('setLowestVersion')->with($returnValue[1]);
+		$dependencyModelMock->expects($this->atLeastOnce())->method('setLowestVersion')->with($this->identicalTo($returnValue[0]));
+		$dependencyModelMock->expects($this->atLeastOnce())->method('setHighestVersion')->with($this->identicalTo($returnValue[1]));
 		$dependencyUtility->convertDependenciesToObjects($serializedDependencies);
 	}
 

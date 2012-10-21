@@ -143,9 +143,11 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 					OR
 					extension_key LIKE ' . $quotedSearchStringForLike . '
 					OR
+					title LIKE ' . $quotedSearchStringForLike . '
+					OR
 					description LIKE ' . $quotedSearchStringForLike . '
 					OR
-					title LIKE ' . $quotedSearchStringForLike . '
+					author_name LIKE ' . $quotedSearchStringForLike . '
 				)
 				AND current_version=1 AND review_state >= 0
 				HAVING position > 0';
