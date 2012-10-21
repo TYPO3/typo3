@@ -109,20 +109,40 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 	 * @throws \Exception
 	 */
 	public function checkDependenciesAction(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
-		$dependencyTypes = $this->managementService->getAndResolveDependencies($extension);
 		$message = '';
-		if (count($dependencyTypes) > 0) {
-			// @todo translate and beautify
-			$message = 'The following dependencies have to be resolved before installation:<br /><br />';
-			foreach ($dependencyTypes as $dependencyType => $dependencies) {
-				$message .= '<h3>Extensions marked for ' . $dependencyType . ':</h3>';
-				foreach ($dependencies as $extensionKey => $dependency) {
-					$message .= $extensionKey . '<br />';
+		$title = '';
+		$hasDependiencies = FALSE;
+		$hasErrors = FALSE;
+		try {
+			$dependencyTypes = $this->managementService->getAndResolveDependencies($extension);
+			if (count($dependencyTypes) > 0) {
+				$hasDependiencies = TRUE;
+				$message = $this->translate('downloadExtension.dependencies.headline');
+				foreach ($dependencyTypes as $dependencyType => $dependencies) {
+					$extensions = '';
+					foreach ($dependencies as $extensionKey => $dependency) {
+						$extensions .= htmlspecialchars($extensionKey) . '<br />';
+					}
+					$message .= $this->translate('downloadExtension.dependencies.typeHeadline',
+						array(
+							$this->translate('downloadExtension.dependencyType.' . $dependencyType),
+							$extensions
+						)
+					);
 				}
-				$message .= 'Shall these dependencies be resolved automatically?';
+				$title = $this->translate('downloadExtension.dependencies.reloveAutomatically');
 			}
+			$this->view->assign('dependencies', $dependencyTypes);
+		} catch (\Exception $e) {
+			$hasErrors = TRUE;
+			$title = $this->translate('downloadExtension.dependencies.errorTitle');
+			$message = $e->getMessage();
 		}
-		$this->view->assign('dependencies', $dependencyTypes)->assign('extension', $extension)->assign('message', $message);
+		$this->view->assign('extension', $extension)
+				->assign('hasDependencies', $hasDependiencies)
+				->assign('hasErrors', $hasErrors)
+				->assign('message', $message)
+				->assign('title', $title);
 	}
 
 	/**
@@ -201,6 +221,14 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 			$updateComments[$updatableVersion->getVersion()] = $updatableVersion->getUpdateComment();
 		}
 		$this->view->assign('updateComments', $updateComments)->assign('extensionKey', $extensionKey);
+	}
+
+	/**
+	 * @param $key
+	 * @return NULL|string
+	 */
+	protected function translate($key, $arguments = NULL) {
+		return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, 'extensionmanager', $arguments);
 	}
 
 }

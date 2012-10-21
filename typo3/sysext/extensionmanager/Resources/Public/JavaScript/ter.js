@@ -38,36 +38,38 @@ jQuery(document).ready(function() {
 });
 
 function bindDownload() {
-	jQuery('.downloadFromTer form').each(function() {
-		jQuery(this).submit(function(){
-			var url = jQuery(this).attr('href');
-				// do this because else form gets send twice - why?
-			jQuery(this).attr('href', 'javascript:void();');
-			downloadPath = jQuery(this).find('input.downloadPath:checked').val();
-			jQuery.ajax({
-				url: url,
-				dataType: 'json',
-				success: getDependencies
-			});
-			return false;
+	var installButtons = jQuery('.downloadFromTer form.download input[type=submit]');
+	installButtons.off('click');
+	installButtons.on('click', function(event) {
+		event.preventDefault();
+		var url = jQuery(event.currentTarget.form).attr('href');
+		downloadPath = jQuery(event.currentTarget.form).find('input.downloadPath:checked').val();
+		jQuery.ajax({
+			url: url,
+			dataType: 'json',
+			success: getDependencies
 		});
 	});
 }
 
 function getDependencies(data) {
-	if (data.dependencies.length) {
+	if (data.hasDependencies) {
 		TYPO3.Dialog.QuestionDialog({
-			title: TYPO3.l10n.localize('extensionList.dependencies.title'),
+			title: data.title,
 			msg: data.message,
 			url: data.url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager[downloadPath]=' + downloadPath,
 			fn: getResolveDependenciesAndInstallResult
 		});
 	} else {
-		var button = 'yes';
-		var dialog = new Array();
-		var dummy = '';
-		dialog['url'] = data.url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager[downloadPath]=' + downloadPath;
-		getResolveDependenciesAndInstallResult(button, dummy, dialog)
+		if(data.hasErrors) {
+			TYPO3.Flashmessage.display(TYPO3.Severity.error, data.title, data.message, 10);
+		} else {
+			var button = 'yes';
+			var dialog = [];
+			var dummy = '';
+			dialog['url'] = data.url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager[downloadPath]=' + downloadPath;
+			getResolveDependenciesAndInstallResult(button, dummy, dialog)
+		}
 	}
 	return false;
 }
