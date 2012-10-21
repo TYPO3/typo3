@@ -105,9 +105,13 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 * @return bool|int
 	 */
 	public function getFileIndexStatus(\TYPO3\CMS\Core\Resource\File $fileObject) {
-		$mount = $fileObject->getStorage()->getUid();
+		$storageUid = $fileObject->getStorage()->getUid();
 		$identifier = $fileObject->getIdentifier();
-		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid,storage,identifier', $this->table, sprintf('storage=%u AND identifier=%s', $mount, $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, $this->table)));
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			'uid,storage,identifier',
+			$this->table,
+			sprintf('storage=%u AND identifier=%s', $storageUid, $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, $this->table))
+		);
 		if (!is_array($row)) {
 			return FALSE;
 		} else {
@@ -123,9 +127,13 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 * @return bool|array
 	 */
 	public function getFileIndexRecord(\TYPO3\CMS\Core\Resource\File $fileObject) {
-		$mount = $fileObject->getStorage()->getUid();
+		$storageUid = $fileObject->getStorage()->getUid();
 		$identifier = $fileObject->getIdentifier();
-		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->table, sprintf('storage=%u AND identifier=%s', $mount, $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, $this->table)));
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			'*',
+			$this->table,
+			sprintf('storage=%u AND identifier=%s', $storageUid, $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, $this->table))
+		);
 		if (!is_array($row)) {
 			return FALSE;
 		} else {
@@ -142,7 +150,19 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	public function getFileIndexRecordsForFolder(\TYPO3\CMS\Core\Resource\Folder $folder) {
 		$identifier = $folder->getIdentifier();
 		$storage = $folder->getStorage()->getUid();
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $this->table, sprintf('storage=%u AND identifier LIKE "%s" AND NOT identifier LIKE "%s"', $storage, $GLOBALS['TYPO3_DB']->escapeStrForLike($identifier, $this->table) . '%', $GLOBALS['TYPO3_DB']->escapeStrForLike($identifier, $this->table) . '%/%'), '', '', '', 'identifier');
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			$this->table,
+			sprintf('storage=%u AND identifier LIKE "%s" AND NOT identifier LIKE "%s"',
+					$storage,
+					$GLOBALS['TYPO3_DB']->escapeStrForLike($identifier, $this->table) . '%',
+					$GLOBALS['TYPO3_DB']->escapeStrForLike($identifier, $this->table) . '%/%'
+			),
+			'',
+			'',
+			'',
+			'identifier'
+		);
 		return (array) $rows;
 	}
 
@@ -157,12 +177,15 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 		if (preg_match('/[^a-f0-9]*/i', $hash)) {
 
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->table, 'sha1=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($hash, $this->table));
+		$resultRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			$this->table,
+			'sha1=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($hash, $this->table)
+		);
 		$objects = array();
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		foreach ($resultRows as $row) {
 			$objects[] = $this->createDomainObject($row);
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $objects;
 	}
 
@@ -171,20 +194,30 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 *
 	 * @param int $tableName Table name of the related record
 	 * @param int $fieldName Field name of the related record
-	 * @param int $uid The UID of the related record
+	 * @param int $uid The UID of the related record (needs to be the localized uid, as translated IRRE elements relate to them)
 	 * @return array An array of objects, empty if no objects found
+	 * @throws \InvalidArgumentException
 	 * @api
 	 */
 	public function findByRelation($tableName, $fieldName, $uid) {
 		$itemList = array();
-		if (!is_numeric($uid)) {
-			throw new \InvalidArgumentException('Uid of related record has to be numeric.', 1316789798);
+		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($uid)) {
+			throw new \InvalidArgumentException('Uid of related record has to be an integer.', 1316789798);
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_file_reference', 'tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_file_reference') . ' AND deleted=0' . ' AND hidden=0' . ' AND uid_foreign=' . intval($uid) . ' AND fieldname=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($fieldName, 'sys_file_reference'), '', 'sorting_foreign');
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$itemList[] = $this->createFileReferenceObject($row);
+		$references = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			'sys_file_reference',
+			'tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_file_reference') .
+				' AND deleted = 0' .
+				' AND hidden = 0' .
+				' AND uid_foreign=' . intval($uid) .
+				' AND fieldname=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($fieldName, 'sys_file_reference'),
+			'',
+			'sorting_foreign'
+		);
+		foreach ($references as $referenceRecord) {
+			$itemList[] = $this->createFileReferenceObject($referenceRecord);
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $itemList;
 	}
 
@@ -193,14 +226,21 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 *
 	 * @param integer $uid The UID of the sys_file_reference record
 	 * @return \TYPO3\CMS\Core\Resource\FileReference|boolean
+	 * @throws \InvalidArgumentException
 	 * @api
 	 */
 	public function findFileReferenceByUid($uid) {
 		$fileReferenceObject = FALSE;
-		if (!is_numeric($uid)) {
-			throw new \InvalidArgumentException('uid of record has to be numeric.', 1316889798);
+		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($uid)) {
+			throw new \InvalidArgumentException('uid of record has to be an integer.', 1316889798);
 		}
-		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_reference', 'uid=' . $uid . ' AND deleted=0' . ' AND hidden=0');
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			'*',
+			'sys_file_reference',
+			'uid=' . $uid .
+				' AND deleted=0' .
+				' AND hidden=0'
+		);
 		if (is_array($row)) {
 			$fileReferenceObject = $this->createFileReferenceObject($row);
 		}
@@ -236,6 +276,5 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	}
 
 }
-
 
 ?>
