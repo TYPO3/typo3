@@ -220,7 +220,7 @@ class Tx_Extbase_Utility_Localization {
 			}
 			foreach ($labels as $labelKey => $labelValue) {
 				if (is_string($labelValue)) {
-					self::$LOCAL_LANG[$extensionName][$languageKey][$labelKey] = $labelValue;
+					self::$LOCAL_LANG[$extensionName][$languageKey][$labelKey][0]['target'] = $labelValue;
 						// For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset" and if that is not set, assumed to be that of the individual system languages
 					if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) && strlen($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) > 0) {
 						self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
@@ -231,7 +231,9 @@ class Tx_Extbase_Utility_Localization {
 					}
 				} elseif (is_array($labelValue)) {
 					$labelValue = self::flattenTypoScriptLabelArray($labelValue, $labelKey);
-					self::$LOCAL_LANG[$extensionName][$languageKey] = array_merge(self::$LOCAL_LANG[$extensionName][$languageKey], $labelValue);
+					foreach ($labelValue as $key => $value) {
+						self::$LOCAL_LANG[$extensionName][$languageKey][$key][0]['target'] = $value;
+					}
 				}
 			}
 		}
