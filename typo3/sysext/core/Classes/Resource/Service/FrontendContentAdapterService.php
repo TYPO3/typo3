@@ -71,6 +71,9 @@ class FrontendContentAdapterService {
 	 * @return void
 	 */
 	static public function modifyDBRow(&$row, $table) {
+		if (isset($row['_MIGRATED']) && $row['_MIGRATED'] === TRUE) {
+			return;
+		}
 		if (array_key_exists($table, static::$migrateFields)) {
 			foreach (static::$migrateFields[$table] as $migrateFieldName => $oldFieldNames) {
 				if ($row !== NULL && isset($row[$migrateFieldName])) {
@@ -111,6 +114,7 @@ class FrontendContentAdapterService {
 				}
 			}
 		}
+		$row['_MIGRATED'] = TRUE;
 	}
 
 }
