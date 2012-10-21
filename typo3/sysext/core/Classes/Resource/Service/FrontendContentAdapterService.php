@@ -48,7 +48,6 @@ class FrontendContentAdapterService {
 			),
 			'media' => array(
 				'paths' => 'media',
-				'captions' => 'imagecaption'
 			)
 		),
 		'pages' => array(
@@ -76,7 +75,7 @@ class FrontendContentAdapterService {
 				if ($row !== NULL && isset($row[$migrateFieldName])) {
 					/** @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
 					$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-					$files = $fileRepository->findByRelation($table, $migrateFieldName, $row['uid']);
+					$files = $fileRepository->findByRelation($table, $migrateFieldName, intval($row['_LOCALIZED_UID']) ?: intval($row['uid']));
 					$fileFieldContents = array(
 						'paths' => array(),
 						'titleTexts' => array(),
