@@ -148,22 +148,15 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 	/**
 	 * Install an extension from TER
 	 *
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
+	 * @param string $downloadPath
 	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
-	 * @return void
 	 */
-	public function installFromTerAction() {
+	public function installFromTerAction(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension, $downloadPath) {
 		$result = FALSE;
 		$errorMessage = '';
 		try {
-			if (!$this->request->hasArgument('extension')) {
-				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Required argument extension not set.', 1334433342);
-			}
-			$extensionUid = $this->request->getArgument('extension');
-			if ($this->request->hasArgument('downloadPath')) {
-				$this->downloadUtility->setDownloadPath($this->request->getArgument('downloadPath'));
-			}
-			/** @var $extension \TYPO3\CMS\Extensionmanager\Domain\Model\Extension */
-			$extension = $this->extensionRepository->findByUid(intval($extensionUid));
+			$this->downloadUtility->setDownloadPath($downloadPath);
 			$this->prepareExtensionForImport($extension);
 			$result = $this->managementService->resolveDependenciesAndInstall($extension);
 		} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
