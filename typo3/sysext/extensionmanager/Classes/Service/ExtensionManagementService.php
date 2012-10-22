@@ -129,12 +129,21 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension|array $extension
 	 * @return array
 	 */
-	public function resolveDependenciesAndInstall(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
+	public function resolveDependenciesAndInstall($extension) {
+		if (!is_array($extension) && !$extension instanceof \TYPO3\CMS\Extensionmanager\Domain\Model\Extension) {
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Extension must be array or object.', 1350891642);
+		}
 		$this->dependencyUtility->buildExtensionDependenciesTree($extension);
-		$this->downloadQueue->addExtensionToQueue($extension);
+		if ($extension instanceof \TYPO3\CMS\Extensionmanager\Domain\Model\Extension) {
+			// We have a TER Extension, which should be downloaded first.
+			$this->downloadQueue->addExtensionToQueue($extension);
+			$extensionKey = $extension->getExtensionKey();
+		} else {
+			$extensionKey = $extension['key'];
+		}
 		$queue = $this->downloadQueue->getExtensionQueue();
 		$downloadedDependencies = array();
 		$updatedDependencies = array();
@@ -147,7 +156,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 			$updatedDependencies = $this->uninstallDependenciesToBeUpdated($queue['update']);
 		}
 		// add extension at the end of the download queue
-		$this->downloadQueue->addExtensionToInstallQueue($extension->getExtensionKey());
+		$this->downloadQueue->addExtensionToInstallQueue($extensionKey);
 		$installQueue = $this->downloadQueue->getExtensionInstallStorage();
 		if (count($installQueue) > 0) {
 			$installedDependencies = $this->installDependencies($installQueue);

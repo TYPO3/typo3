@@ -121,11 +121,18 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
-	 * @return void
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension|array $extension
+	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
 	 */
 	public function buildExtensionDependenciesTree($extension) {
-		$dependencies = $extension->getDependencies();
+		if (!is_array($extension) && !$extension instanceof \TYPO3\CMS\Extensionmanager\Domain\Model\Extension) {
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Extension must be array or object.', 1350891642);
+		}
+		if ($extension instanceof \TYPO3\CMS\Extensionmanager\Domain\Model\Extension) {
+			$dependencies = $extension->getDependencies();
+		} else {
+			$dependencies = $this->convertDependenciesToObjects(serialize($extension['constraints']));
+		}
 		$this->checkDependencies($dependencies);
 	}
 

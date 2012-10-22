@@ -47,6 +47,11 @@ class ActionController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCo
 	protected $fileHandlingUtility;
 
 	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService
+	 */
+	protected $managementService;
+
+	/**
 	 * @param \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility
 	 */
 	public function injectInstallUtility(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility) {
@@ -61,6 +66,13 @@ class ActionController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCo
 	}
 
 	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService $managementService
+	 */
+	public function injectManagementService(\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService $managementService) {
+		$this->managementService = $managementService;
+	}
+
+	/**
 	 * Toggle extension installation state action
 	 *
 	 * @param string $extension
@@ -72,7 +84,9 @@ class ActionController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCo
 			$this->installUtility->uninstall($extension);
 		} else {
 			// install
-			$this->installUtility->install($extension);
+			$this->managementService->resolveDependenciesAndInstall(
+				$this->installUtility->enrichExtensionWithDetails($extension)
+			);
 		}
 		$this->redirect('index', 'List');
 	}
