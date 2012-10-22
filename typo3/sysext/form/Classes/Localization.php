@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Form;
  * @package TYPO3
  * @subpackage form
  */
-class Localization implements \TYPO3\CMS\Core\SingletonInterface {
+class Localization {
 
 	/**
 	 * File reference to the local language file
@@ -44,7 +44,7 @@ class Localization implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $localLanguageFile File reference to the local language file
 	 */
-	public function __construct($localLanguageFile) {
+	public function __construct($localLanguageFile = 'LLL:EXT:form/Resources/Private/Language/locallang_controller.xml') {
 		$this->localLanguageFile = (string) $localLanguageFile;
 	}
 
