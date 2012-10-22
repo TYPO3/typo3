@@ -1060,7 +1060,34 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					)
 				),
 				'There is an animal, an animal and an animal around the block! Yeah!'
-			)
+			),
+			'replacement with optionSplit, normal pattern' => array(
+				'There_is_a_cat,_a_dog_and_a_tiger_in_da_hood!_Yeah!',
+				array(
+					'replacement.' => array(
+						'10.' => array(
+							'search' => '_',
+							'replace' => '1 || 2 || 3',
+							'useOptionSplitReplace' => '1'
+						),
+					)
+				),
+				'There1is2a3cat,3a3dog3and3a3tiger3in3da3hood!3Yeah!'
+			),
+			'replacement with optionSplit, using regex' => array(
+				'There is a cat, a dog and a tiger in da hood! Yeah!',
+				array(
+					'replacement.' => array(
+						'10.' => array(
+							'search' => '#(a) (Cat|Dog|Tiger)#i',
+							'replace' => '${1} tiny ${2} || ${1} midsized ${2} || ${1} big ${2}',
+							'useOptionSplitReplace' => '1',
+							'useRegExp' => '1'
+						)
+					)
+				),
+				'There is a tiny cat, a midsized dog and a big tiger in da hood! Yeah!'
+			),
 		);
 		return $data;
 	}
