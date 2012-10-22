@@ -80,7 +80,11 @@ class RecordsContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 				$GLOBALS['TSFE']->sys_page->versionOL($val['table'], $row);
 				// Language overlay:
 				if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL) {
-					$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($val['table'], $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
+					if ($val['table'] === 'pages') {
+						$row = $GLOBALS['TSFE']->sys_page->getPageOverlay($row);
+					} else {
+						$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($val['table'], $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
+					}
 				}
 				// Might be unset in the content overlay things...
 				if (is_array($row)) {
