@@ -4476,10 +4476,15 @@ class ContentObjectRenderer {
 			// Gets the strings
 			$search = isset($configuration['search.']) ? $this->stdWrap($configuration['search'], $configuration['search.']) : $configuration['search'];
 			$replace = isset($configuration['replace.']) ? $this->stdWrap($configuration['replace'], $configuration['replace.']) : $configuration['replace'];
-			// Determines whether regular expression shall be used:
+			// Determines whether regular expression shall be used
 			if (isset($configuration['useRegExp']) || $configuration['useRegExp.']) {
 				$useRegularExpression = isset($configuration['useRegExp.']) ? $this->stdWrap($configuration['useRegExp'], $configuration['useRegExp.']) : $configuration['useRegExp'];
 			}
+			// Determines whether replace-pattern uses option-split
+			if (isset($configuration['useOptionSplitReplace']) || isset($configuration['useOptionSplitReplace.'])) {
+				$useOptionSplitReplace = isset($configuration['useOptionSplitReplace.']) ? $this->stdWrap($configuration['useOptionSplitReplace'], $configuration['useOptionSplitReplace.']) : $configuration['useOptionSplitReplace'];
+			}
+
 			// Performs a replacement by preg_replace()
 			if (isset($useRegularExpression)) {
 				// Get separator-character which precedes the string and separates search-string from the modifiers
@@ -4491,9 +4496,38 @@ class ContentObjectRenderer {
 					$modifiers = str_replace('e', '', $modifiers);
 					$search = substr($search, 0, ($startModifiers + 1)) . $modifiers;
 				}
-				$content = preg_replace($search, $replace, $content);
+				if (empty($useOptionSplitReplace)) {
+					$content = preg_replace($search, $replace, $content);
+				} else {
+					// init for replacement
+					$splitCount = preg_match_all($search, $content, $matches);
+					$replaceArray = $GLOBALS['TSFE']->tmpl->splitConfArray(array($replace), $splitCount);
+					$replaceCount = 0;
+
+					$replaceCallback = function($match) use ($replaceArray, $search, &$replaceCount) {
+						$replaceCount++;
+						return preg_replace($search, $replaceArray[$replaceCount - 1][0], $match[0]);
+					};
+					$content = preg_replace_callback($search, $replaceCallback, $content);
+				}
 			} else {
-				$content = str_replace($search, $replace, $content);
+				if (empty($useOptionSplitReplace)) {
+					$content = str_replace($search, $replace, $content);
+				} else {
+					// turn search-string into a preg-pattern
+					$searchPreg = '#' . preg_quote($search, '#') . '#';
+
+					// init for replacement
+					$splitCount = preg_match_all($searchPreg, $content, $matches);
+					$replaceArray = $GLOBALS['TSFE']->tmpl->splitConfArray(array($replace), $splitCount);
+					$replaceCount = 0;
+
+					$replaceCallback = function($match) use ($replaceArray, $search, &$replaceCount) {
+						$replaceCount++;
+						return $replaceArray[$replaceCount - 1][0];
+					};
+					$content = preg_replace_callback($searchPreg, $replaceCallback, $content);
+				}
 			}
 		}
 		return $content;
