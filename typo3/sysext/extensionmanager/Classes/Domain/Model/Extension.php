@@ -339,21 +339,23 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return mixed
 	 */
 	public function getDefaultState($state = NULL) {
+		$defaultState = '';
 		if (is_null($state)) {
 			$defaultState = self::$defaultStates;
 		} else {
 			if (is_string($state)) {
-				// default state
-				$stateIndex = 999;
-				if (array_key_exists(strtolower($state), self::$defaultStates)) {
-					$stateIndex = self::$defaultStates[strtolower($state)];
+				$stateIndex = array_search(strtolower($state), self::$defaultStates);
+				if ($stateIndex === FALSE) {
+					// default state
+					$stateIndex = 999;
 				}
 				$defaultState = $stateIndex;
 			} else {
 				if (is_int($state) && $state >= 0) {
-					$stateTitle = array_search($state, self::$defaultStates);
-					// default state
-					if (!$stateTitle) {
+					if (array_key_exists($state, self::$defaultStates)) {
+						$stateTitle = self::$defaultStates[$state];
+					} else {
+						// default state
 						$stateTitle = 'n/a';
 					}
 					$defaultState = $stateTitle;
