@@ -4,6 +4,11 @@ jQuery(document).ready(function() {
 	jQuery('td[title]').tooltip({offset: [-10, -60], position: 'bottom right'});
 	jQuery("#typo3-extension-configuration-forms ul").tabs("div.category");
 
+	jQuery('#resetSearch').live('click', function (e) {
+		datatable.fnFilter('');
+	});
+
+	resetSearchField();
 });
 
 function getUrlVars() {
@@ -71,7 +76,8 @@ function bindActions() {
 				success: updateExtension
 			});
 		});
-	})
+	});
+
 }
 
 function updateExtension(data) {
@@ -131,4 +137,21 @@ function removeExtension(data) {
 	} else {
 		TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.l10n.localize('extensionList.removalConfirmation.title'), data.message, 15);
 	}
+}
+
+function resetSearchField() {
+	var dataTablesFilter = find(".dataTables_filter");
+	jQuery('.dataTables_wrapper').find('.dataTables_filter').append(jQuery('<span />', {
+		'class':'t3-icon t3-icon-actions t3-icon-actions-input t3-icon-input-clear t3-tceforms-input-clearer',
+		'id':'resetSearch',
+		'style':'display:none'
+	}));
+	jQuery('#typo3-extension-list_filter').mouseout(function() {
+		jQuery(this).find('#resetSearch').css('display', 'none');
+	});
+	jQuery('#typo3-extension-list_filter').mouseover(function() {
+		if (jQuery(this).find('input').val()) {
+			jQuery(this).find('#resetSearch').css('display', 'inline-block');
+		}
+	})
 }
