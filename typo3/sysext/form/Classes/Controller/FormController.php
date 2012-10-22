@@ -68,7 +68,6 @@ class FormController {
 	 * @return void
 	 */
 	public function initialize(array $typoscript) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Localization', 'LLL:EXT:form/Resources/Private/Language/locallang_controller.xml');
 		$this->typoscriptFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Domain\\Factory\\TypoScriptFactory');
 		$this->localizationHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Localization');
 		$this->requestHandler = $this->typoscriptFactory->setRequestHandler($typoscript);
