@@ -3721,7 +3721,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						} else {
 							$this->errorMessages[] = '
 								The NEW database name \'' . $newdbname . '\' was
-								not alphanumeric, a-zA-Z0-9_- (...not created)
+								not alphanumeric, a-zA-Z0-9_ (...not created)
 							';
 						}
 					}
@@ -3923,7 +3923,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @return void
 	 */
 	function outputExitBasedOnStep($content) {
-		if ($this->step) {
+		if ($this->step && empty($this->errorMessages)) {
 			t3lib_utility_Http::redirect($this->action);
 		} else {
 			$this->output($this->outputWrapper($content));
