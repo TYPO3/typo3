@@ -71,7 +71,7 @@
 				var dialog = [];
 				var dummy = '';
 				dialog['url'] = data.url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager[downloadPath]=' + downloadPath;
-				getResolveDependenciesAndInstallResult(button, dummy, dialog)
+				getResolveDependenciesAndInstallResult(button, dummy, dialog);
 			}
 		}
 		return false;

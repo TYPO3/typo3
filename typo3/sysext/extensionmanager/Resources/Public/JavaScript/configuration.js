@@ -21,7 +21,7 @@
 				$(this).siblings('.offset').attr(
 					'value',
 					$(this).parent().children('.tempOffset1').attr('value') + ',' + $(this).parent().children('.tempOffset2').attr('value'));
-			})
+			});
 		});
 
 		$('.wrap').each(function() {
@@ -38,7 +38,7 @@
 				$(this).siblings('.wrap').attr(
 					'value',
 					$(this).parent().children('.tempWrap1').attr('value') + '|' + $(this).parent().children('.tempWrap2').attr('value'));
-			})
+			});
 		});
 	}
 }(jQuery));

@@ -4,7 +4,7 @@
 	$(document).ready(function() {
 		$('.updateFromTer a').each(function() {
 			$(this).data('href', $(this).attr('href'));
-			$(this).attr('href', 'javascript:void(0);');
+			$(this).attr('href', '#');
 			$(this).click(function() {
 					// force update on click
 				updateFromTer($(this).data('href'), 1);
@@ -14,9 +14,8 @@
 	});
 
 	function updateFromTer(url, forceUpdate) {
-		var url = url;
 		if (forceUpdate == 1) {
-			url = url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager%5BforceUpdateCheck%5D=1'
+			url = url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager%5BforceUpdateCheck%5D=1';
 		}
 		$('.updateFromTer .spinner').show();
 		$('#terTableWrapper').mask();
@@ -52,7 +51,7 @@
 	function transformPaginatorToAjax() {
 		$('.f3-widget-paginator a').each(function() {
 			$(this).data('href', $(this).attr('href'));
-			$(this).attr('href', 'javascript:void(0);');
+			$(this).attr('href', '#');
 			$(this).click(function() {
 				$('#terTableWrapper').mask();
 				$.ajax({

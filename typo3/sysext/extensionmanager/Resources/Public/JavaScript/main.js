@@ -3,7 +3,7 @@
 
 	$(document).ready(function() {
 		manageExtensionListing();
-		$('th[title]').tooltip({offset: [-10, -30], position: 'bottom right', tipClass: 'headerTooltip'})
+		$('th[title]').tooltip({offset: [-10, -30], position: 'bottom right', tipClass: 'headerTooltip'});
 		$('td[title]').tooltip({offset: [-10, -60], position: 'bottom right'});
 		$("#typo3-extension-configuration-forms ul").tabs("div.category");
 
@@ -47,7 +47,7 @@
 		$('td[title], tr[title]').tooltip({offset: [-10, -60], position: 'bottom right'});
 		$('.removeExtension').not('.transformed').each(function() {
 			$(this).data('href', $(this).attr('href'));
-			$(this).attr('href', 'javascript:void(0);');
+			$(this).attr('href', '#');
 			$(this).addClass('transformed');
 			$(this).click(function() {
 				if ($(this).hasClass('isLoadedWarning')) {
@@ -57,19 +57,19 @@
 						url: $(this).data('href'),
 						fn: function(button, dummy, dialog) {
 							if (button == 'yes') {
-								confirmDeletionAndDelete(dialog.url)
+								confirmDeletionAndDelete(dialog.url);
 							}
 						}
 					});
 				} else {
 					confirmDeletionAndDelete($(this).data('href'));
 				}
-			})
+			});
 		});
 
 		$('.t3-icon-system-extension-update').parent().each(function() {
 			$(this).data('href', $(this).attr('href'));
-			$(this).attr('href', 'javascript:void(0);');
+			$(this).attr('href', '#');
 			$(this).addClass('transformed');
 			$(this).click(function() {
 				$('#typo3-extension-manager').mask();
@@ -156,6 +156,6 @@
 			if ($(this).find('input').val()) {
 				$(this).find('#resetSearch').css('display', 'inline-block');
 			}
-		})
+		});
 	}
 }(jQuery));
