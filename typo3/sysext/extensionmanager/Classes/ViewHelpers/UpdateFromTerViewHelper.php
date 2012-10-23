@@ -55,7 +55,7 @@ class UpdateFromTerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionVi
 		$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.updateFromTer.label', 'extensionmanager');
 		$this->tag->setContent($label);
 		$this->tag->addAttribute('class', 'text');
-		return '<div class="updateFromTer">' . $this->tag->render() . '<span class="spinner"></span></div>';
+		return '<div class="splash-receivedata x-mask-loading is-shown"><div class="spinner"></div>' . $this->tag->render() . '</div>';
 	}
 
 }
