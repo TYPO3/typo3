@@ -31,9 +31,10 @@ class FolderTree extends \rteFolderTree {
 	/**
 	 * Wrap the plus/minus icon in a link
 	 *
-	 * @param 	string		HTML string to wrap, probably an image tag.
-	 * @param 	string		Command for 'PM' get var
-	 * @return 	string		Link-wrapped input string
+	 * @param string $icon HTML string to wrap, probably an image tag.
+	 * @param string $cmd Command for 'PM' get var
+	 * @param boolean $isExpand If expanded
+	 * @return string Link-wrapped input string
 	 * @access private
 	 */
 	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {

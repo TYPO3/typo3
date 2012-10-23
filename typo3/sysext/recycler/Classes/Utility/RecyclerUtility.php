@@ -41,10 +41,9 @@ class RecyclerUtility {
 	 * Checks the page access rights (Code for access check mostly taken from alt_doc.php)
 	 * as well as the table access rights of the user.
 	 *
-	 * @param 	string		$cmd: The command that sould be performed ('new' or 'edit')
-	 * @param 	string		$table: The table to check access for
-	 * @param 	string		$theUid: The record uid of the table
-	 * @return 	boolean		Returns TRUE is the user has access, or FALSE if not
+	 * @param string $table The table to check access for
+	 * @param string $row Record array
+	 * @return boolean Returns TRUE is the user has access, or FALSE if not
 	 */
 	static public function checkAccess($table, $row) {
 		// Checking if the user has permissions? (Only working as a precaution, because the final permission check is always down in TCE. But it's good to notify the user on beforehand...)

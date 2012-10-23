@@ -488,6 +488,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	 * Clean the to be applied usergroups from not allowed ones
 	 *
 	 * @param array $appliedUsergroups Array of to be applied user groups
+	 * @param array $actionRecord The action record
 	 * @return array Cleaned array
 	 */
 	protected function fixUserGroup($appliedUsergroups, $actionRecord) {
