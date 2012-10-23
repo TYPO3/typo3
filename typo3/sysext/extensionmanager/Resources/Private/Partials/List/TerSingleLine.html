@@ -1,20 +1,26 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
+
 <td>
-	{extension.title} ({extension.version})
+	<em:downloadExtension extension="{extension}" />
+</td>
+<td>
+	{extension.title}
 </td>
 <td>
 	{extension.extensionKey}
 </td>
 <td>
-	{extension.description}
+	{extension.version}
+	<em:showExtensionVersions extension="{extension}" />
 </td>
 <td>
-	{extension.authorName} {extension.authorEmail}
+	{extension.description}
+
+	<div class="author">
+		<div class="author-name">{extension.authorName}</div>
+		<div class="author-email">{extension.authorEmail}</div>
+	</div>
 </td>
 <td class="{extension.stateString}">
 	{extension.stateString}
-</td>
-<td>
-	<em:downloadExtension extension="{extension}" />
-	<em:showExtensionVersions extension="{extension}" />
 </td>
