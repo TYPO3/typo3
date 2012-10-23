@@ -1,6 +1,12 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 <td>
-	{extension.title} ({extension.version})
+	<em:downloadExtension extension="{extension}" />
+</td>
+<td>
+	{extension.title}
+</td>
+<td>
+	{extension.version}
 </td>
 <td>
 	{extension.updateComment}
@@ -10,7 +16,4 @@
 </td>
 <td class="{extension.stateString}">
 	{extension.stateString}
-</td>
-<td>
-	<em:downloadExtension extension="{extension}" />
 </td>

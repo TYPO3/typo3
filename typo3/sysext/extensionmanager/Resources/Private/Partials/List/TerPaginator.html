@@ -1,3 +1,5 @@
+{namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
+
 <div id="terTableWrapper">
 <f:widget.paginate objects="{extensions}" as="paginatedExtensions" configuration="{itemsPerPage: 10, maximumNumberOfLinks: 2}">
 	<table id="terTable" class="typo3-extension-list">
@@ -11,4 +13,6 @@
 		</f:if>
 	</table>
 </f:widget.paginate>
+
+<em:updateFromTer />
 </div>
