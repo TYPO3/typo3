@@ -578,7 +578,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @param 	string		$key: some key identifying the style sheet
 	 * @param 	string		$href: uri to the style sheet file
 	 * @param 	string		$title: value for the title attribute of the link element
-	 * @return 	string		$relation: value for the rel attribute of the link element
+	 * @param 	string		$relation: value for the rel attribute of the link element
 	 * @return 	void
 	 */
 	protected function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet') {
@@ -862,6 +862,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @param 	string		$table: The table that includes this RTE (optional, necessary for IRRE).
 	 * @param 	string		$uid: The uid of that table that includes this RTE (optional, necessary for IRRE).
 	 * @param 	string		$field: The field of that record that includes this RTE (optional).
+	 * @param	string		$textAreaId ID of the textarea, to have a unigue number for the editor
 	 * @return 	string		the Javascript code for configuring the RTE
 	 * @todo Define visibility
 	 */
@@ -1118,6 +1119,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @param 	string		$label: A label to insert at the beginning of the name of the file
 	 * @param 	string		$fileExtension: The file extension of the file, defaulting to 'js'
 	 * @param 	string		$contents: The contents to write into the file if no $sourceFileName is provided
+	 * @param	boolean		$concatenate Not used anymore
 	 * @return 	string		The name of the file writtten to typo3temp/rtehtmlarea
 	 */
 	public function writeTemporaryFile($sourceFileName = '', $label, $fileExtension = 'js', $contents = '', $concatenate = FALSE) {

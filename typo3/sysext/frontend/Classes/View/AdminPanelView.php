@@ -560,6 +560,7 @@ class AdminPanelView {
 	 *
 	 * @param string $sectionSuffix The code for the display_ label/key
 	 * @param string $sectionTitle Input string
+	 * @param string $className The classname for the <a> tag
 	 * @return string $className Linked input string
 	 * @see extGetHead()
 	 */
@@ -573,7 +574,8 @@ class AdminPanelView {
 	 *
 	 * @param string $title Key to label
 	 * @param string $content The HTML content for the forth table cell.
-	 * @return string $checkboxContent HTML table row.
+	 * @param string $checkboxContent The HTML for a checkbox or hidden fields
+	 * @return string HTML table row.
 	 * @see extGetHead()
 	 */
 	public function extGetItem($title, $content = '', $checkboxContent = '') {

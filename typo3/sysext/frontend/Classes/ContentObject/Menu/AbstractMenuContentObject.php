@@ -1649,7 +1649,6 @@ class AbstractMenuContentObject {
 	 * Return MPvar string for entry $key in ->menuArr
 	 *
 	 * @param integer $key Pointer to element in ->menuArr
-	 * @param string Implode token.
 	 * @return string MP vars for element.
 	 * @see link()
 	 * @todo Define visibility
