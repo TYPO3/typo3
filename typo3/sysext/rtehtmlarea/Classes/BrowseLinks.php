@@ -958,6 +958,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * Localize a label obtained from Page TSConfig
 	 *
 	 * @param 	string		string: the label to be localized
+	 * @param 	integer???	???
 	 * @return 	string		Localized string.
 	 */
 	public function getPageConfigLabel($string, $JScharCode = 1) {

@@ -788,6 +788,7 @@ class PageRepository {
 	 * like t3lib_pageSelect::getHash()
 	 *
 	 * @param string $hash The hash-string which was used to store the data value
+	 * @param integer ???
 	 * @return string The "content" field of the "cache_hash" cache entry.
 	 * @see tslib_TStemplate::start(), storeHash()
 	 */

@@ -269,7 +269,7 @@ class DeletedRecords {
 	 * There is a special handling for the characters '%' and '_'.
 	 *
 	 * @param 	string		$value: The value to be escaped for like conditions
-	 * @paran 	string		$tableName: The name of the table the query should be used for
+	 * @param 	string		$tableName: The name of the table the query should be used for
 	 * @return 	string		The escaped value to be used for like conditions
 	 */
 	protected function escapeValueForLike($value, $tableName) {

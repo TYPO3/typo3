@@ -5125,7 +5125,7 @@ class ContentObjectRenderer {
 	 *
 	 * @param string $parameters The parameters to be modified (if required)
 	 * @param array $configuration The TypoScript configuration of [IMAGE].file
-	 * @param string The modified parameters
+	 * @return string The modified parameters
 	 */
 	protected function modifyImageMagickStripProfileParameters($parameters, array $configuration) {
 		// Strips profile information of image to save some space:

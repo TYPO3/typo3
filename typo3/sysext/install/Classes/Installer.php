@@ -6682,6 +6682,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	 * Should be used by all errors that occur before even starting the install tool process.
 	 *
 	 * @param string The content of the error
+	 * @param string ???
 	 * @return void
 	 */
 	protected function outputErrorAndExit($content, $title = 'Install Tool error') {
