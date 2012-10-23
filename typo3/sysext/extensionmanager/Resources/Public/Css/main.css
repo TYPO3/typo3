@@ -1725,3 +1725,44 @@ button.ui-button::-moz-focus-inner {
 .dataTables_paginate {
   float: left;
   margin: 10px 0 0; }
+
+#terTableWrapper {
+  position: relative; }
+#terTableWrapper .splash-receivedata {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -20px 0 0 -150px; }
+#terTableWrapper .splash-receivedata a {
+  display: inline-block;
+  width: 200px;
+  vertical-align: top;
+  padding: 3px 20px; }
+#terTableWrapper .splash-receivedata.is-shown {
+  display: block; }
+#terTableWrapper .spinner {
+  display: inline-block; }
+
+.is-loading {
+  opacity: 0; }
+
+.typo3-extensionmanager-headerRowRight .splash-receivedata {
+  position: relative; }
+.typo3-extensionmanager-headerRowRight .splash-receivedata .spinner {
+  display: none; }
+
+.is-hidden {
+  display: none; }
+
+.typo3-extension-list .t3-icon, .typo3-extension-list .t3-icon:hover {
+  border: none;
+  background-color: transparent; }
+.typo3-extension-list .author {
+  display: none; }
+
+.versions-all {
+  display: inline-block;
+  width: 20px;
+  text-indent: -200px;
+  overflow: hidden; }
