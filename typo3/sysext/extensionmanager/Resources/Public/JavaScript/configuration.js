@@ -1,40 +1,44 @@
-jQuery(document).ready(function() {
-	configurationFieldSupport();
-	jQuery(".validate").validator();
-});
+// IIFE for faster access to $ and save $ use
+(function ($) {
 
-function configurationFieldSupport() {
-	jQuery('.offset').each(function() {
-		jQuery(this).hide();
-		val = jQuery(this).attr('value');
-		valArr = val.split(',');
-
-		jQuery(this).wrap('<div class="offsetSelector"></div>');
-		jQuery(this).parent().append('x: <input value="' + jQuery.trim(valArr[0]) + '" class="tempOffset1 tempOffset">');
-		jQuery(this).parent().append('<span>, </span>');
-		jQuery(this).parent().append('y: <input value="' + jQuery.trim(valArr[1]) + '" class="tempOffset2 tempOffset">');
-
-		jQuery(this).siblings('.tempOffset').keyup(function() {
-			jQuery(this).siblings('.offset').attr(
-				'value',
-				jQuery(this).parent().children('.tempOffset1').attr('value') + ',' + jQuery(this).parent().children('.tempOffset2').attr('value'));
-		})
+	$(document).ready(function() {
+		configurationFieldSupport();
+		$(".validate").validator();
 	});
 
-	jQuery('.wrap').each(function() {
-		jQuery(this).hide();
-		val = jQuery(this).attr('value');
-		valArr = val.split('|');
+	function configurationFieldSupport() {
+		$('.offset').each(function() {
+			$(this).hide();
+			val = $(this).attr('value');
+			valArr = val.split(',');
 
-		jQuery(this).wrap('<div class="wrapSelector"></div>');
-		jQuery(this).parent().append('<input value="' + jQuery.trim(valArr[0]) + '" class="tempWrap1 tempWrap">');
-		jQuery(this).parent().append('<span>|</span>');
-		jQuery(this).parent().append('<input value="' + jQuery.trim(valArr[1]) + '" class="tempWrap2 tempWrap">');
+			$(this).wrap('<div class="offsetSelector"></div>');
+			$(this).parent().append('x: <input value="' + $.trim(valArr[0]) + '" class="tempOffset1 tempOffset">');
+			$(this).parent().append('<span>, </span>');
+			$(this).parent().append('y: <input value="' + $.trim(valArr[1]) + '" class="tempOffset2 tempOffset">');
 
-		jQuery(this).siblings('.tempWrap').keyup(function() {
-			jQuery(this).siblings('.wrap').attr(
-				'value',
-				jQuery(this).parent().children('.tempWrap1').attr('value') + '|' + jQuery(this).parent().children('.tempWrap2').attr('value'));
-		})
-	});
-}
+			$(this).siblings('.tempOffset').keyup(function() {
+				$(this).siblings('.offset').attr(
+					'value',
+					$(this).parent().children('.tempOffset1').attr('value') + ',' + $(this).parent().children('.tempOffset2').attr('value'));
+			});
+		});
+
+		$('.wrap').each(function() {
+			$(this).hide();
+			val = $(this).attr('value');
+			valArr = val.split('|');
+
+			$(this).wrap('<div class="wrapSelector"></div>');
+			$(this).parent().append('<input value="' + $.trim(valArr[0]) + '" class="tempWrap1 tempWrap">');
+			$(this).parent().append('<span>|</span>');
+			$(this).parent().append('<input value="' + $.trim(valArr[1]) + '" class="tempWrap2 tempWrap">');
+
+			$(this).siblings('.tempWrap').keyup(function() {
+				$(this).siblings('.wrap').attr(
+					'value',
+					$(this).parent().children('.tempWrap1').attr('value') + '|' + $(this).parent().children('.tempWrap2').attr('value'));
+			});
+		});
+	}
+}(jQuery));

@@ -1,3 +1,59 @@
+
+
+
+// Loader
+#terTableWrapper {
+	position: relative;
+
+	.splash-receivedata {
+		display: none;
+
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin: -20px 0 0 -150px;
+
+		a {
+			display: inline-block;
+			width: 200px;
+			vertical-align: top;
+			padding: 3px 20px;
+		}
+
+		&.is-shown {
+			display: block;
+		}
+	}
+
+	.spinner {
+		display: inline-block;
+	}
+}
+
+
+.is-loading {
+	opacity: 0;
+}
+
+
+// In header
+.typo3-extensionmanager-headerRowRight {
+
+	.splash-receivedata {
+		position: relative;
+
+		.spinner {
+			display: none;
+		}
+	}
+}
+
+// If something is hidden
+.is-hidden {
+	display: none;
+}
+
+
 .typo3-extension-list-ter {
 
 
