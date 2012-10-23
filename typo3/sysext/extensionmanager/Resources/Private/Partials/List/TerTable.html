@@ -1,19 +1,17 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 <thead>
 	<tr>
+		<th><f:translate key="extensionList.header.extensionActions"/></th>
 		<th><f:translate key="extensionList.header.extensionName"/></th>
 		<th><f:translate key="extensionList.header.extensionKey"/></th>
+		<th><f:translate key="extensionList.header.version"/></th>
 		<th><f:translate key="extensionList.header.description"/></th>
-		<th><f:translate key="extensionList.header.author"/></th>
 		<th><f:translate key="extensionList.header.extensionState"/></th>
-		<th><f:translate key="extensionList.header.extensionActions"/></th>
 	</tr>
 </thead>
 <tbody>
 <f:for each="{paginatedExtensions}" as="extension">
-	<f:cycle values="{0: 'odd', 1: 'even'}" as="zebraClass">
-		<tr class="{zebraClass} {em:installationStateCssClass(needle:extension.extensionKey, haystack:availableAndInstalled)}">
-	</f:cycle>
+	<tr class="{em:installationStateCssClass(needle:extension.extensionKey, haystack:availableAndInstalled)}">
 	<f:render partial="List/TerSingleLine.html" arguments="{extension:extension}" />
 	</tr>
 </f:for>

@@ -48,7 +48,7 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
 	 */
 	public function render(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
 		$installPaths = \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnAllowedInstallPaths();
-		$pathSelector = '<ul>';
+		$pathSelector = '<ul class="is-hidden">';
 		foreach ($installPaths as $installPathType => $installPath) {
 			$pathSelector .= '<li>
 				<input type="radio" id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '" name="' . htmlspecialchars($this->getFieldNamePrefix('downloadPath')) . '[downloadPath]" class="downloadPath" value="' . htmlspecialchars($installPathType) . '"' . ($installPathType == 'Local' ? 'checked="checked"' : '') . '/>
@@ -64,7 +64,11 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
 			'extension' => (int)$extension->getUid()
 		), 'Download');
 		$this->tag->addAttribute('href', $uri);
-		$label = '<input type="submit" value="' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.downloadViewHelper.submit', 'extensionmanager') . '" />';
+
+		// @TODO Clean-up
+		$iconClasses = "t3-icon t3-icon-actions t3-icon-system-extension-import";
+		$label = '<input title="' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.downloadViewHelper.submit', 'extensionmanager') . '" type="submit" class="' . $iconClasses . '" value="' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.downloadViewHelper.submit', 'extensionmanager') . '">';
+
 		$this->tag->setContent($label . $pathSelector);
 		$this->tag->addAttribute('class', 'download');
 		return '<div id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadFromTer" class="downloadFromTer">' . $this->tag->render() . '</div>';

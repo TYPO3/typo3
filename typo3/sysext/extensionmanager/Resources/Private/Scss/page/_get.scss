@@ -54,7 +54,26 @@
 }
 
 
-.typo3-extension-list-ter {
+.typo3-extension-list {
+
+	// Import extension
+	.t3-icon,
+	.t3-icon:hover {
+		border: none;
+		background-color: transparent;
+	}
+
+	// Hide author for now
+	.author {
+		display: none;
+	}
+}
 
 
+// Show all versions
+.versions-all {
+	display: inline-block;
+	width: 20px;
+	text-indent: -200px;
+	overflow: hidden;
 }

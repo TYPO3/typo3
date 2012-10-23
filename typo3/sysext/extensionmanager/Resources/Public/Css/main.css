@@ -1757,3 +1757,15 @@ button.ui-button::-moz-focus-inner {
 
 .is-hidden {
   display: none; }
+
+.typo3-extension-list .t3-icon, .typo3-extension-list .t3-icon:hover {
+  border: none;
+  background-color: transparent; }
+.typo3-extension-list .author {
+  display: none; }
+
+.versions-all {
+  display: inline-block;
+  width: 20px;
+  text-indent: -200px;
+  overflow: hidden; }
