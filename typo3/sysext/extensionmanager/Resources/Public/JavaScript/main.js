@@ -28,7 +28,7 @@
 	function manageExtensionListing() {
 		datatable = $('#typo3-extension-list').dataTable({
 			"sPaginationType":"full_numbers",
-			"b$UI":true,
+			"bJQueryUI":true,
 			"bLengthChange":false,
 			'iDisplayLength':15,
 			"bStateSave":true,
