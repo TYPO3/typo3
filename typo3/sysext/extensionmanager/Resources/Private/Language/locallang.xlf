@@ -227,7 +227,7 @@
 				<source>Show all versions</source>
 			</trans-unit>
 			<trans-unit id="extensionList.updateFromTer.label" xml:space="preserve">
-				<source>Update Extension List</source>
+				<source>Retrieving Extension-List from TYPO3 Extension Repository (TER)</source>
 			</trans-unit>
 			<trans-unit id="task.updateExtensionListTask.name" xml:space="preserve">
 				<source>Update extension list</source>

@@ -29,7 +29,11 @@
 					<em:updateFromTer />
 				</div>
 			</div>
-			<f:render partial="List/TerPaginator" arguments="{extensions:extensions, showVersionList:showVersionList,  availableAndInstalled:availableAndInstalled}" />
+			<div id="terTableWrapper">
+				<f:render partial="List/TerPaginator" arguments="{extensions:extensions, showVersionList:showVersionList,  availableAndInstalled:availableAndInstalled}" />
+				<div class="splash-receivedata x-mask-loading"><div class="spinner"><f:translate key="extensionList.updateFromTer.label"/></div></div>
+			</div>
+
 		</f:else>
 	</f:if>
 
