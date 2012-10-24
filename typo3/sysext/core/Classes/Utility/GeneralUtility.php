@@ -3871,7 +3871,7 @@ Connection: close
 		global $TCA;
 		if (isset($TCA[$table])) {
 			$tca =& $TCA[$table];
-			if (!$tca['columns']) {
+			if (is_array($tca['ctrl']) && !$tca['columns']) {
 				$dcf = $tca['ctrl']['dynamicConfigFile'];
 				if ($dcf) {
 					if (!strcmp(substr($dcf, 0, 6), 'T3LIB:')) {
