@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
+use TYPO3\CMS\Core\Utility;
 
 /***************************************************************
  *  Copyright notice
@@ -42,6 +43,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $backupGlobals = TRUE;
 
 	/**
+	 * Absolute path to files that must be removed
+	 * after a test - handled in tearDown
+	 *
+	 * @var array
+	 */
+	protected $testFilesToDelete = array();
+
+	/**
 	 * @var array A backup of registered singleton instances
 	 */
 	protected $singletonInstances = array();
@@ -52,6 +61,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function tearDown() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
+		foreach ($this->testFilesToDelete as $absoluteFileName) {
+			Utility\GeneralUtility::unlink_tempfile($absoluteFileName);
+		}
 	}
 
 	///////////////////////////
@@ -1872,7 +1884,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	////////////////////////////////////////
-	// Tests concerning sanitizeLocalUrl
+	// Tests concerning unlink_tempfile
 	////////////////////////////////////////
 
 	/**
@@ -1916,6 +1928,31 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertNull($returnValue);
 	}
 
+	////////////////////////////////////////
+	// Tests concerning loadTCA
+	////////////////////////////////////////
+
+	/**
+	 * @test
+	 * @expectedException \RuntimeException
+	 */
+	public function loadTCAIncludesConfiguredDynamicConfigFile() {
+		$dynamicConfigurationAbsoluteFilePath = PATH_site . 'typo3temp/' . uniqid('testLoadTca_');
+		file_put_contents(
+			$dynamicConfigurationAbsoluteFilePath,
+			'<?php throw new \RuntimeException(\'foo\', 1310203814); ?>'
+		);
+		$this->testFilesToDelete[] = $dynamicConfigurationAbsoluteFilePath;
+
+		$testTableName = uniqid('testTable_');
+		$GLOBALS['TCA'][$testTableName] = array(
+			'ctrl' => array(
+				'dynamicConfigFile' => $dynamicConfigurationAbsoluteFilePath,
+			),
+		);
+
+		Utility\GeneralUtility::loadTCA($testTableName);
+	}
 
 	//////////////////////////////////////
 	// Tests concerning addSlashesOnArray
