@@ -72,14 +72,14 @@ class EmConfUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$code = '<?php
 
 /***************************************************************
-* Extension Manager/Repository config file for ext "' . $extensionData['extKey'] . '".
-*
-* Auto generated ' . date('d-m-Y H:i') . '
-*
-* Manual updates:
-* Only the data in the array - everything else is removed by next
-* writing. "version" and "dependencies" must not be touched!
-***************************************************************/
+ * Extension Manager/Repository config file for ext "' . $extensionData['extKey'] . '".
+ *
+ * Auto generated ' . date('d-m-Y H:i') . '
+ *
+ * Manual updates:
+ * Only the data in the array - everything else is removed by next
+ * writing. "version" and "dependencies" must not be touched!
+ ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = ' . $emConf . ';
 
