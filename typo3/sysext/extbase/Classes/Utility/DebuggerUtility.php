@@ -186,9 +186,9 @@ class DebuggerUtility {
 	static protected function isBlacklisted($value) {
 		$result = FALSE;
 		if ($value instanceof \ReflectionProperty) {
-			$result = (bool) preg_match(('/' . implode('|', self::$blacklistedPropertyNames) . '/'), $value->getName());
+			$result = (strpos(implode('|', self::$blacklistedPropertyNames), $value->getName()) > 0);
 		} elseif (is_object($value)) {
-			$result = (bool) preg_match(('/' . implode('|', self::$blacklistedClassNames) . '/'), get_class($value));
+			$result = (strpos(implode('|', self::$blacklistedClassNames), get_class($value)) > 0);
 		}
 		return $result;
 	}
@@ -255,7 +255,7 @@ class DebuggerUtility {
 		} else {
 			$dump .= '<span class="debug-ptype">' . $persistenceType . ' ' . $domainObjectType . '</span>';
 		}
-		if (preg_match('/' . implode('|', self::$blacklistedClassNames) . '/', get_class($object)) !== 0) {
+		if (strpos(implode('|', self::$blacklistedClassNames), get_class($object)) > 0) {
 			if ($plainText) {
 				$dump .= ' ' . self::ansiEscapeWrap('filtered', '47;30', $ansiColors);
 			} else {
