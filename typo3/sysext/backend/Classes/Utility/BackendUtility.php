@@ -155,7 +155,17 @@ class BackendUtility {
 	 */
 	static public function getRecordsByField($theTable, $theField, $theValue, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '', $useDeleteClause = TRUE) {
 		if (is_array($GLOBALS['TCA'][$theTable])) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $theTable, $theField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($theValue, $theTable) . ($useDeleteClause ? self::deleteClause($theTable) . ' ' : '') . self::versioningPlaceholderClause($theTable) . ' ' . $whereClause, $groupBy, $orderBy, $limit);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'*',
+				$theTable,
+				$theField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($theValue, $theTable) .
+					($useDeleteClause ? self::deleteClause($theTable) . ' ' : '') .
+					self::versioningPlaceholderClause($theTable) . ' ' .
+					$whereClause,
+				$groupBy,
+				$orderBy,
+				$limit
+			);
 			$rows = array();
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$rows[] = $row;
