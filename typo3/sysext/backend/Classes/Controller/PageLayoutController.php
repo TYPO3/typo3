@@ -1049,10 +1049,23 @@ class PageLayoutController {
 	 */
 	public function exec_languageQuery($id) {
 		if ($id) {
-			$exQ = \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages_language_overlay') . ($GLOBALS['BE_USER']->isAdmin() ? '' : ' AND sys_language.hidden=0');
-			return $GLOBALS['TYPO3_DB']->exec_SELECTquery('sys_language.*', 'pages_language_overlay,sys_language', 'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . intval($id) . $exQ, 'pages_language_overlay.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.static_lang_isocode,sys_language.flag', 'sys_language.title');
+			$exQ = \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages_language_overlay') .
+				($GLOBALS['BE_USER']->isAdmin() ? '' : ' AND sys_language.hidden=0');
+			return $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'sys_language.*',
+				'pages_language_overlay,sys_language',
+				'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . intval($id) . $exQ,
+				'pages_language_overlay.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.static_lang_isocode,sys_language.flag',
+				'sys_language.title'
+			);
 		} else {
-			return $GLOBALS['TYPO3_DB']->exec_SELECTquery('sys_language.*', 'sys_language', 'sys_language.hidden=0', '', 'sys_language.title');
+			return $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'sys_language.*',
+				'sys_language',
+				'sys_language.hidden=0',
+				'',
+				'sys_language.title'
+			);
 		}
 	}
 
