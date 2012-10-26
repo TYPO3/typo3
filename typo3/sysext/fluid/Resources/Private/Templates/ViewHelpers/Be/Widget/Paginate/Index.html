@@ -1,0 +1,103 @@
+<f:if condition="{configuration.insertAbove}">
+	<f:render section="paginator" arguments="{pagination: pagination, position:'top', recordsLabel: configuration.recordsLabel}" />
+</f:if>
+
+<f:renderChildren arguments="{contentArguments}" />
+
+<f:if condition="{configuration.insertBelow}">
+	<f:render section="paginator" arguments="{pagination: pagination, position:'bottom', recordsLabel: configuration.recordsLabel}" />
+</f:if>
+
+<f:section name="paginator">
+	<div id="typo3-dblist-pagination">
+		<f:if condition="{pagination.hasLessPages}">
+			<f:then>
+				<f:be.buttons.icon
+					uri="{f:widget.uri(arguments:{currentPage: 1})}"
+					icon="actions-view-paging-first"
+					title="{f:translate(key:'widget.pagination.first')}"
+				/>
+				<f:be.buttons.icon
+					uri="{f:widget.uri(arguments:{currentPage: pagination.previousPage})}"
+					icon="actions-view-paging-previous"
+					title="{f:translate(key:'widget.pagination.previous')}"
+				/>
+			</f:then>
+			<f:else>
+				<f:be.buttons.icon
+					uri=""
+					icon="actions-view-paging-first-disabled"
+				/>
+				<f:be.buttons.icon
+					uri=""
+					icon="actions-view-paging-previous-disabled"
+				/>
+			</f:else>
+		</f:if>
+		<span class="bar"> </span>
+		<span class="pageIndicator">
+			<f:if condition="{recordsLabel}">
+				<f:then>
+					{recordsLabel}
+				</f:then>
+				<f:else>
+					<f:translate key="widget.pagination.records" />
+				</f:else>
+			</f:if>
+			{pagination.startRecord} - {pagination.endRecord}</span>
+		<span class="bar"> </span>
+		<span class="pageIndicator">
+			<f:translate key="widget.pagination.page" />
+			<span>
+				<form id="paginator-form-{position}" onsubmit="goToPage{position}(this); return false;" style="display:inline;">
+				<script type="text/javascript">
+					function goToPage{position}(formObject) {
+						var url = '{f:widget.uri(arguments:{currentPage: 987654321})}';
+						var page = formObject.elements['paginator-target-page'].value;
+						if (page > {pagination.numberOfPages}) {
+							page = {pagination.numberOfPages};
+						} else if (page < 1) {
+							page = 1;
+						}
+						url = url.replace('987654321', page);
+						self.location.href= url;
+					}
+				</script>
+				<f:form.textfield id="paginator-{position}" name="paginator-target-page" size="5" value="{pagination.current}" />
+				</form>
+			</span>
+			/ {pagination.numberOfPages}
+		</span>
+		<span class="bar"> </span>
+		<f:if condition="{pagination.hasMorePages}">
+			<f:then>
+				<f:be.buttons.icon
+					uri="{f:widget.uri(arguments:{currentPage: pagination.nextPage})}"
+					icon="actions-view-paging-next"
+					title="{f:translate(key:'widget.pagination.next')}"
+				/>
+				<f:be.buttons.icon
+					uri="{f:widget.uri(arguments:{currentPage: pagination.numberOfPages})}"
+					icon="actions-view-paging-last"
+					title="{f:translate(key:'widget.pagination.last')}"
+				/>
+			</f:then>
+			<f:else>
+				<f:be.buttons.icon
+					uri="{f:widget.uri(arguments:{currentPage: pagination.nextPage})}"
+					icon="actions-view-paging-next-disabled"
+				/>
+				<f:be.buttons.icon
+					uri="{f:widget.uri(arguments:{currentPage: pagination.numberOfPages})}"
+					icon="actions-view-paging-last-disabled"
+				/>
+			</f:else>
+		</f:if>
+		<span class="bar"> </span>
+		<f:be.buttons.icon
+			uri="{f:widget.uri(arguments:{currentPage: pagination.current})}"
+			icon="actions-system-refresh"
+			title="{f:translate(key:'widget.pagination.refresh')}"
+		/>
+	</div>
+</f:section>
