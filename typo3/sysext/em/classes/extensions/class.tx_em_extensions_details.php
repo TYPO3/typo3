@@ -315,15 +315,15 @@ class tx_em_Extensions_Details {
 
 		$code = '<?php
 
-########################################################################
-# Extension Manager/Repository config file for ext "' . $extKey . '".
-#
-# Auto generated ' . date('d-m-Y H:i') . '
-#
-# Manual updates:
-# Only the data in the array - everything else is removed by next
-# writing. "version" and "dependencies" must not be touched!
-########################################################################
+/***************************************************************
+ * Extension Manager/Repository config file for ext "' . $extKey . '".
+ *
+ * Auto generated ' . date('d-m-Y H:i') . '
+ *
+ * Manual updates:
+ * Only the data in the array - everything else is removed by next
+ * writing. "version" and "dependencies" must not be touched!
+ ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 
