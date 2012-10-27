@@ -39,18 +39,26 @@ class TreeDataProviderFactory {
 	 * Gets the data provider, depending on TCA configuration
 	 *
 	 * @param array $tcaConfiguration
-	 * @return \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider
+	 * @param $table
+	 * @param $field
+	 * @param $currentValue
+	 * @return DatabaseTreeDataProvider
 	 * @throws \InvalidArgumentException
 	 */
 	static public function getDataProvider(array $tcaConfiguration, $table, $field, $currentValue) {
+		/** @var $dataProvider \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider */
 		$dataProvider = NULL;
+		if (!empty($tcaConfiguration['treeDataProvider'])) {
+			$dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($tcaConfiguration['treeDataProvider'], $tcaConfiguration);
+		}
 		if (!isset($tcaConfiguration['internal_type'])) {
 			$tcaConfiguration['internal_type'] = 'db';
 		}
-		if ($tcaConfiguration['internal_type'] == 'db') {
+		if ($tcaConfiguration['internal_type'] === 'db') {
 			$unselectableUids = array();
-			/** @var $dataProvider \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider */
-			$dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\DatabaseTreeDataProvider');
+			if ($dataProvider === NULL) {
+				$dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\DatabaseTreeDataProvider');
+			}
 			if (isset($tcaConfiguration['foreign_table'])) {
 				$tableName = $tcaConfiguration['foreign_table'];
 				$dataProvider->setTableName($tableName);
@@ -97,10 +105,10 @@ class TreeDataProviderFactory {
 			} else {
 				throw new \InvalidArgumentException('TCA Tree configuration is invalid: "treeConfig" array is missing', 1288215890);
 			}
-		} elseif ($tcaConfiguration['internal_type'] == 'file') {
+		} elseif ($tcaConfiguration['internal_type'] === 'file' && $dataProvider === NULL) {
 			// TODO Not implemented yet
 			throw new \InvalidArgumentException('TCA Tree configuration is invalid: tree for "internal_type=file" not implemented yet', 1288215891);
-		} else {
+		} elseif ($dataProvider === NULL) {
 			throw new \InvalidArgumentException('TCA Tree configuration is invalid: tree for "internal_type=' . $tcaConfiguration['internal_type'] . '" not implemented yet', 1288215892);
 		}
 		return $dataProvider;
