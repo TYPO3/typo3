@@ -93,6 +93,7 @@ class tx_version_tcemain {
 		if ($command == 'version') {
 			$commandIsProcessed = TRUE;
 			$action = (string) $value['action'];
+			$comment = (isset($value['comment']) && $value['comment'] ? $value['comment'] : $this->generalComment);
 			switch ($action) {
 
 				case 'new':
@@ -110,7 +111,12 @@ class tx_version_tcemain {
 				break;
 
 				case 'swap':
-					$this->version_swap($table, $id, $value['swapWith'], $value['swapIntoWS'], $tcemainObj);
+					$this->version_swap($table, $id, $value['swapWith'], $value['swapIntoWS'],
+						$tcemainObj,
+						$comment,
+						TRUE,
+						$value['notificationAlternativeRecipients']
+					);
 				break;
 
 				case 'clearWSID':
@@ -125,7 +131,7 @@ class tx_version_tcemain {
 					$elementIds = t3lib_div::trimExplode(',', $id, TRUE);
 					foreach ($elementIds as $elementId) {
 						$this->version_setStage($table, $elementId, $value['stageId'],
-							(isset($value['comment']) && $value['comment'] ? $value['comment'] : $this->generalComment),
+							$comment,
 							TRUE,
 							$tcemainObj,
 							$value['notificationAlternativeRecipients']
@@ -757,9 +763,12 @@ class tx_version_tcemain {
 	 * @param integer $swapWith UID of the archived version to swap with!
 	 * @param boolean $swapIntoWS If set, swaps online into workspace instead of publishing out of workspace.
 	 * @param t3lib_TCEmain $tcemainObj TCEmain object
+	 * @param string $comment Notification comment
+	 * @param boolean $notificationEmailInfo Accumulate state changes in memory for compiled notification email?
+	 * @param array $notificationAlternativeRecipients comma separated list of recipients to notificate instead of normal be_users
 	 * @return void
 	 */
-	protected function version_swap($table, $id, $swapWith, $swapIntoWS=0, t3lib_TCEmain $tcemainObj) {
+	protected function version_swap($table, $id, $swapWith, $swapIntoWS = 0, t3lib_TCEmain $tcemainObj, $comment = '', $notificationEmailInfo = FALSE, $notificationAlternativeRecipients = array()) {
 
 			// First, check if we may actually edit the online record
 		if ($tcemainObj->checkRecordUpdateAccess($table, $id)) {
@@ -956,6 +965,19 @@ class tx_version_tcemain {
 											}
 											$theLogId = $tcemainObj->log($table, $swapWith, 2, $propArr['pid'], 0, $label, 10, array($propArr['header'], $table . ':' . $swapWith), $propArr['event_pid']);
 											$tcemainObj->setHistory($table, $swapWith, $theLogId);
+
+											$stageId = -20; // Tx_Workspaces_Service_Stages::STAGE_PUBLISH_EXECUTE_ID;
+											if ($notificationEmailInfo) {
+												$notificationEmailInfoKey = $wsAccess['uid'] . ':' . $stageId . ':' . $comment;
+												$this->notificationEmailInfo[$notificationEmailInfoKey]['shared'] = array($wsAccess, $stageId, $comment);
+												$this->notificationEmailInfo[$notificationEmailInfoKey]['elements'][] = $table . ':' . $id;
+												$this->notificationEmailInfo[$notificationEmailInfoKey]['alternativeRecipients'] = $notificationAlternativeRecipients;
+											} else {
+												$this->notifyStageChange($wsAccess, $stageId, $table, $id, $comment, $tcemainObj, $notificationAlternativeRecipients);
+											}
+												// Write to log with stageId -20
+											$tcemainObj->newlog2('Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', $table, $id);
+											$tcemainObj->log($table, $id, 6, 0, 0, 'Published', 30, array('comment' => $comment, 'stage' => $stageId));
 
 												// Clear cache:
 											$tcemainObj->clear_cache($table, $id);
