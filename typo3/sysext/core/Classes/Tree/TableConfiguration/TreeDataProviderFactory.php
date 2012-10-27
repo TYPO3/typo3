@@ -51,6 +51,11 @@ class TreeDataProviderFactory {
 			$unselectableUids = array();
 			/** @var $dataProvider \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider */
 			$dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\DatabaseTreeDataProvider');
+
+			if (isset($tcaConfiguration['treeProvider'])) {
+				$dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($tcaConfiguration['treeProvider']);
+			}
+
 			if (isset($tcaConfiguration['foreign_table'])) {
 				$tableName = $tcaConfiguration['foreign_table'];
 				$dataProvider->setTableName($tableName);
