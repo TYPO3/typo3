@@ -73,5 +73,4 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 }
 
-
 ?>
