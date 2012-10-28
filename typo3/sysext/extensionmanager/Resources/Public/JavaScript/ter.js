@@ -84,7 +84,7 @@
 				url: newUrl,
 				dataType: 'json',
 				success: function (data) {
-					$('#typo3-extension-manager').unmask();
+					$('.typo3-extension-manager').unmask();
 					if (data.errorMessage.length) {
 						TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.l10n.localize('extensionList.dependenciesResolveDownloadError.title'), data.errorMessage, 5);
 					} else {
@@ -102,7 +102,7 @@
 				}
 			});
 		} else {
-			$('#typo3-extension-manager').unmask();
+			$('.typo3-extension-manager').unmask();
 		}
 	}
 }(jQuery));

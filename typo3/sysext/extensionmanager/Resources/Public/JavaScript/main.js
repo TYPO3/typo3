@@ -72,7 +72,7 @@
 			$(this).attr('href', '#');
 			$(this).addClass('transformed');
 			$(this).click(function() {
-				$('#typo3-extension-manager').mask();
+				$('.typo3-extension-manager').mask();
 				$.ajax({
 					url: $(this).data('href'),
 					dataType: 'json',
@@ -102,13 +102,13 @@
 						url: dialog.url,
 						dataType: 'json',
 						success: function(data) {
-							$('#typo3-extension-manager').unmask();
+							$('.typo3-extension-manager').unmask();
 							TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.l10n.localize('extensionList.updateFlashMessage.title'),
 									TYPO3.l10n.localize('extensionList.updateFlashMessage.message').replace(/\{0\}/g, data.extension), 15);
 						}
 					});
 				} else {
-					$('#typo3-extension-manager').unmask();
+					$('.typo3-extension-manager').unmask();
 				}
 			}
 		});
@@ -122,7 +122,7 @@
 			url: url,
 			fn: function(button, dummy, dialog) {
 				if (button == 'yes') {
-					$('#typo3-extension-manager').mask();
+					$('.typo3-extension-manager').mask();
 					$.ajax({
 						url: dialog.url,
 						dataType: 'json',
@@ -134,7 +134,7 @@
 	}
 
 	function removeExtension(data) {
-		$('#typo3-extension-manager').unmask();
+		$('.typo3-extension-manager').unmask();
 		if (data.success) {
 			datatable.fnDeleteRow(datatable.fnGetPosition(document.getElementById(data.extension)));
 		} else {

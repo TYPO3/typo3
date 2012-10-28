@@ -17,42 +17,42 @@
 		9:'{f:uri.resource(path:\'JavaScript/upload.js\')}'
 		}">
 
-<div id="typo3-docheader">
-	<div id="typo3-docheader-row1">
-		<f:render section="docHeaderRow1" />
+	<div id="typo3-docheader">
+		<div class="typo3-docheader-functions">
+			<f:render section="docHeaderRow2" />
+		</div>
+		<div class="typo3-docheader-buttons">
+			<f:render section="docHeaderRow1" />
+		</div>
 	</div>
-	<div id="typo3-docheader-row2">
-		<f:render section="docHeaderRow2" />
-	</div>
-</div>
-<div id="typo3-docbody">
-	<div id="typo3-extension-manager">
-		<h2><f:translate key="extensionManager">Extension Manager</f:translate></h2>
+	<div id="typo3-docbody">
+		<div id="typo3-inner-docbody" class="typo3-extension-manager">
+			<h2><f:translate key="extensionManager">Extension Manager</f:translate></h2>
 
-		<div id="typo3-extension-main-menu">
-			<div class="tabs">
-				<ul>
-					<li>
-						<f:link.action action="index" controller="List" class="{f:if(condition:'{0: actionName} == {0: \'index\'}', then:'current', else: '')}">
-							<f:translate key="manageExtensions" />
-						</f:link.action>
-					</li>
-					<li>
-						<f:link.action action="ter" controller="List" class="{f:if(condition:'{0: actionName} == {0: \'ter\'}', then:'current', else: '')}">
-							<f:translate key="getExtensions" />
-						</f:link.action>
-					</li>
-					<f:if condition="{0: actionName} == {0: 'showAllVersions'}">
+			<div id="typo3-extension-main-menu">
+				<div class="tabs">
+					<ul>
 						<li>
-							<f:link.action action="ter" controller="List" class="current">
-								<f:translate key="showAllVersions" /> "{extensionKey}"
+							<f:link.action action="index" controller="List" class="{f:if(condition:'{0: actionName} == {0: \'index\'}', then:'current', else: '')}">
+								<f:translate key="manageExtensions" />
 							</f:link.action>
 						</li>
-					</f:if>
-				</ul>
+						<li>
+							<f:link.action action="ter" controller="List" class="{f:if(condition:'{0: actionName} == {0: \'ter\'}', then:'current', else: '')}">
+								<f:translate key="getExtensions" />
+							</f:link.action>
+						</li>
+						<f:if condition="{0: actionName} == {0: 'showAllVersions'}">
+							<li>
+								<f:link.action action="ter" controller="List" class="current">
+									<f:translate key="showAllVersions" /> "{extensionKey}"
+								</f:link.action>
+							</li>
+						</f:if>
+					</ul>
+				</div>
 			</div>
+			<div class="contentWrapper"><f:render section="Content" /></div>
 		</div>
-		<div class="contentWrapper"><f:render section="Content" /></div>
 	</div>
-</div>
 </em:be.container>
