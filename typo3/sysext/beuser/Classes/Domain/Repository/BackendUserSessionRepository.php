@@ -43,7 +43,13 @@ class BackendUserSessionRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
 	 */
 	public function findByBackendUser(\TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser) {
 		$sessions = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ses_id AS id, ses_iplock AS ip, ses_tstamp AS timestamp', 'be_sessions', 'ses_userid = "' . $backendUser->getUid() . '"', '', 'ses_tstamp ASC');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'ses_id AS id, ses_iplock AS ip, ses_tstamp AS timestamp',
+			'be_sessions',
+			'ses_userid = "' . intval($backendUser->getUid()) . '"',
+			'',
+			'ses_tstamp ASC'
+		);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$sessions[] = array(
 				'id' => $row['id'],
@@ -55,6 +61,5 @@ class BackendUserSessionRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
 	}
 
 }
-
 
 ?>

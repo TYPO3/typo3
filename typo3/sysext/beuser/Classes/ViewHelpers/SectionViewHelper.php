@@ -52,5 +52,4 @@ class SectionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 
 }
 
-
 ?>

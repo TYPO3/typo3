@@ -40,6 +40,7 @@ class ModuleDataStorageService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var string
 	 */
 	const KEY = 'tx_beuser';
+
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 * @inject
@@ -72,6 +73,5 @@ class ModuleDataStorageService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
 
 ?>

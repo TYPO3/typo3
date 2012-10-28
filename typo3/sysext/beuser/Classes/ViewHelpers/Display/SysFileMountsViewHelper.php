@@ -42,8 +42,14 @@ class SysFileMountsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
 		if (!$uids) {
 			return '';
 		}
+
 		$content = '';
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, title', 'sys_filemounts', '', 'title ASC');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'uid, title',
+			'sys_filemounts',
+			'uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($uids) . ')',
+			'title ASC'
+		);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$content .= '<li>' . $row['title'] . ' [' . $row['uid'] . ']</li>';
 		}
@@ -51,6 +57,5 @@ class SysFileMountsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
 	}
 
 }
-
 
 ?>
