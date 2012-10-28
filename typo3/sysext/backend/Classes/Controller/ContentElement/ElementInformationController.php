@@ -431,20 +431,23 @@ class ElementInformationController {
 	 * @todo Define visibility
 	 */
 	public function makeRef($table, $ref) {
-		// Look up the path:
+		// Files reside in sys_file table
 		if ($table === '_FILE') {
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_file_reference', 'uid_local=' . $ref->getUid());
+			$selectTable = 'sys_file';
+			$selectUid = $ref->getUid();
 		} else {
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') . ' AND ref_uid=' . intval($ref) . ' AND deleted=0');
+			$selectTable = $table;
+			$selectUid = $ref;
 		}
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($selectTable, 'sys_refindex') . ' AND ref_uid=' . intval($selectUid) . ' AND deleted=0');
 		// Compile information for title tag:
 		$infoData = array();
 		if (count($rows)) {
 			$infoData[] = '<tr class="t3-row-header">' . '<td>&nbsp;</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.table') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.title') . '</td>' . '<td>[uid]</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.field') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.flexpointer') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.softrefKey') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.sorting') . '</td>' . '</tr>';
 		}
 		foreach ($rows as $row) {
-			if ($table === '_FILE') {
-				$row = $this->mapFileReferenceOnRefIndex($row);
+			if ($row['tablename'] === 'sys_file_reference') {
+				$row = $this->transformFileReferenceToRecordReference($row);
 			}
 			$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($row['tablename'], $row['recuid']);
 			$parentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $record['pid']);
@@ -462,10 +465,11 @@ class ElementInformationController {
 	 * Maps results from the fal file reference table on the
 	 * structure of  the normal reference index table.
 	 *
-	 * @param array $fileReference
+	 * @param array $referenceRecord
 	 * @return array
 	 */
-	protected function mapFileReferenceOnRefIndex(array $fileReference) {
+	protected function transformFileReferenceToRecordReference(array $referenceRecord) {
+		$fileReference = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_reference', 'uid=' . (int)$referenceRecord['recuid']);
 		return array(
 			'recuid' => $fileReference['uid_foreign'],
 			'tablename' => $fileReference['tablenames'],
