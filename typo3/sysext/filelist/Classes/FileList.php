@@ -754,7 +754,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			return '-';
 		}
 		// Look up the path:
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('sys_file', 'sys_refindex') . ' AND ref_uid = ' . $fileOrFolderObject->getUid() . ' AND deleted=0');
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('sys_file', 'sys_refindex') . ' AND ref_uid = ' . $fileOrFolderObject->getUid() . ' AND deleted=0');
 		return $this->generateReferenceToolTip($rows, '\'_FILE\', \'' . $fileOrFolderObject->getCombinedIdentifier() . '\'');
 	}
 
