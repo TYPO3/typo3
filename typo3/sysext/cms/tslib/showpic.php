@@ -218,7 +218,7 @@ class SC_tslib_showpic {
 		if ($this->frame) {
 			$this->frame = intval($this->frame);
 		}
-		$imgInfo = $img->imageMagickConvert($this->file,'web',$this->width.$max,$this->height,$img->IMparams($this->effects),$this->frame,'');
+		$imgInfo = $img->imageMagickConvert($this->file,'web',$this->width.$max,$this->height,$img->IMparams($this->effects),$this->frame);
 
 			// Create HTML output:
 		$this->content='';
