@@ -386,14 +386,14 @@ class GraphicalFunctions {
 			$imgInf = pathinfo($conf['file']);
 			$imgExt = strtolower($imgInf['extension']);
 			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->gdlibExtensions, $imgExt)) {
-				$BBimage = $this->imageMagickConvert($conf['file'], $this->gifExtension, '', '', '', '', '');
+				$BBimage = $this->imageMagickConvert($conf['file'], $this->gifExtension);
 			} else {
 				$BBimage = $this->getImageDimensions($conf['file']);
 			}
 			$maskInf = pathinfo($conf['mask']);
 			$maskExt = strtolower($maskInf['extension']);
 			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->gdlibExtensions, $maskExt)) {
-				$BBmask = $this->imageMagickConvert($conf['mask'], $this->gifExtension, '', '', '', '', '');
+				$BBmask = $this->imageMagickConvert($conf['mask'], $this->gifExtension);
 			} else {
 				$BBmask = $this->getImageDimensions($conf['mask']);
 			}
@@ -471,7 +471,7 @@ class GraphicalFunctions {
 	public function copyImageOntoImage(&$im, $conf, $workArea) {
 		if ($conf['file']) {
 			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->gdlibExtensions, $conf['BBOX'][2])) {
-				$conf['BBOX'] = $this->imageMagickConvert($conf['BBOX'][3], $this->gifExtension, '', '', '', '', '');
+				$conf['BBOX'] = $this->imageMagickConvert($conf['BBOX'][3], $this->gifExtension);
 				$conf['file'] = $conf['BBOX'][3];
 			}
 			$cpImg = $this->imageCreateFromFile($conf['file']);
@@ -1795,7 +1795,7 @@ class GraphicalFunctions {
 			$tmpStr = $this->randomName();
 			$theFile = $tmpStr . '.' . $this->gifExtension;
 			$this->ImageWrite($im, $theFile);
-			$theNewFile = $this->imageMagickConvert($theFile, $this->gifExtension, $conf['width'], $conf['height'], $conf['params'], '', '');
+			$theNewFile = $this->imageMagickConvert($theFile, $this->gifExtension, $conf['width'], $conf['height'], $conf['params']);
 			$tmpImg = $this->imageCreateFromFile($theNewFile[3]);
 			if ($tmpImg) {
 				ImageDestroy($im);
@@ -2203,7 +2203,7 @@ class GraphicalFunctions {
 	 * @see getImageScale(), typo3/show_item.php, fileList_ext::renderImage(), tslib_cObj::getImgResource(), SC_tslib_showpic::show(), maskImageOntoImage(), copyImageOntoImage(), scale()
 	 * @todo Define visibility
 	 */
-	public function imageMagickConvert($imagefile, $newExt = '', $w = '', $h = '', $params = '', $frame = '', $options = '', $mustCreate = 0) {
+	public function imageMagickConvert($imagefile, $newExt = '', $w = '', $h = '', $params = '', $frame = '', $options = array(), $mustCreate = FALSE) {
 		if ($this->NO_IMAGE_MAGICK) {
 			// Returning file info right away
 			return $this->getImageDimensions($imagefile);
@@ -2242,7 +2242,7 @@ class GraphicalFunctions {
 				if ($noScale && !$data['crs'] && !$params && !$frame && $newExt == $info[2] && !$mustCreate) {
 					// Set the new width and height before returning,
 					// if the noScale option is set
-					if ($options['noScale']) {
+					if (!empty($options['noScale'])) {
 						$info[0] = $data[0];
 						$info[1] = $data[1];
 					}
@@ -2418,7 +2418,7 @@ class GraphicalFunctions {
 		$w = intval($w);
 		$h = intval($h);
 		// If there are max-values...
-		if ($options['maxW']) {
+		if (!empty($options['maxW'])) {
 			// If width is given...
 			if ($w) {
 				if ($w > $options['maxW']) {
@@ -2434,7 +2434,7 @@ class GraphicalFunctions {
 				}
 			}
 		}
-		if ($options['maxH']) {
+		if (!empty($options['maxH'])) {
 			// If height is given...
 			if ($h) {
 				if ($h > $options['maxH']) {
@@ -2496,13 +2496,13 @@ class GraphicalFunctions {
 		$out[0] = $info[0];
 		$out[1] = $info[1];
 		// Set minimum-measures!
-		if ($options['minW'] && $out[0] < $options['minW']) {
+		if (isset($options['minW']) && $out[0] < $options['minW']) {
 			if (($max || $crs) && $out[0]) {
 				$out[1] = round($out[1] * $options['minW'] / $out[0]);
 			}
 			$out[0] = $options['minW'];
 		}
-		if ($options['minH'] && $out[1] < $options['minH']) {
+		if (isset($options['minH']) && $out[1] < $options['minH']) {
 			if (($max || $crs) && $out[1]) {
 				$out[0] = round($out[0] * $options['minH'] / $out[1]);
 			}
