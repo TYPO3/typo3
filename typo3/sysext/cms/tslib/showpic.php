@@ -232,7 +232,7 @@ class SC_tslib_showpic {
 		$this->height = t3lib_div::intInRange($this->height,0);
 		$this->width = t3lib_div::intInRange($this->width,0);
 		if ($this->frame)	{$this->frame = intval($this->frame);}
-		$imgInfo = $img->imageMagickConvert($this->file,'web',$this->width.$max,$this->height,$img->IMparams($this->effects),$this->frame,'');
+		$imgInfo = $img->imageMagickConvert($this->file,'web',$this->width.$max,$this->height,$img->IMparams($this->effects),$this->frame);
 
 			// Create HTML output:
 		$this->content='';
