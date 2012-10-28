@@ -113,7 +113,10 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 		}
 		// Switch user permanently or only until logout
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SwitchUser')) {
-			$this->switchUser(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SwitchUser'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('switchBackUser'));
+			$this->switchUser(
+				\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SwitchUser'),
+				\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('switchBackUser')
+			);
 		}
 		$compareUserList = $this->moduleData->getCompareUserList();
 		$this->view->assign('demand', $demand);
@@ -220,6 +223,5 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 	}
 
 }
-
 
 ?>

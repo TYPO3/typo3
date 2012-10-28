@@ -47,5 +47,4 @@ class SwitchUserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 
 }
 
-
 ?>

@@ -40,7 +40,7 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
 	 */
 	public function findByUidList($uidList) {
 		$query = $this->createQuery();
-		return $query->matching($query->in('uid', $uidList))->execute();
+		return $query->matching($query->in('uid', $GLOBALS['TYPO3_DB']::cleanIntArray($uidList)))->execute();
 	}
 
 	/**
@@ -57,7 +57,10 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
 		$query->setOrderings(array('userName' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING));
 		// Username
 		if ($demand->getUserName() !== '') {
-			$constraints[] = $query->like('userName', '%' . $demand->getUserName() . '%');
+			$constraints[] = $query->like(
+				'userName',
+				'%' . $GLOBALS['TYPO3_DB']->escapeStrForLike($demand->getUserName(), 'be_users') . '%'
+			);
 		}
 		// Only display admin users
 		if ($demand->getUserType() == \TYPO3\CMS\Beuser\Domain\Model\Demand::USERTYPE_ADMINONLY) {
@@ -86,7 +89,12 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
 		// In backend user group
 		// @TODO: Refactor for real n:m relations
 		if ($demand->getBackendUserGroup()) {
-			$constraints[] = $query->logicalOr($query->equals('usergroup', $demand->getBackendUserGroup()->getUid()), $query->like('usergroup', $demand->getBackendUserGroup()->getUid() . ',%'), $query->like('usergroup', '%,' . $demand->getBackendUserGroup()->getUid()), $query->like('usergroup', '%,' . $demand->getBackendUserGroup()->getUid() . ',%'));
+			$constraints[] = $query->logicalOr(
+				$query->equals('usergroup', intval($demand->getBackendUserGroup()->getUid())),
+				$query->like('usergroup', intval($demand->getBackendUserGroup()->getUid()) . ',%'),
+				$query->like('usergroup', '%,' . intval($demand->getBackendUserGroup()->getUid())),
+				$query->like('usergroup', '%,' . intval($demand->getBackendUserGroup()->getUid()) . ',%')
+			);
 			$query->contains('usergroup', $demand->getBackendUserGroup());
 		}
 		$query->matching($query->logicalAnd($constraints));
@@ -122,6 +130,5 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
 	}
 
 }
-
 
 ?>

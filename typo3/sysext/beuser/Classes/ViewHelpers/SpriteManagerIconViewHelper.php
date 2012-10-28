@@ -45,5 +45,4 @@ class SpriteManagerIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abstra
 
 }
 
-
 ?>

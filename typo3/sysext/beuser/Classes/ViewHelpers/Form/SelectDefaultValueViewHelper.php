@@ -49,5 +49,4 @@ class SelectDefaultValueViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\Sel
 
 }
 
-
 ?>

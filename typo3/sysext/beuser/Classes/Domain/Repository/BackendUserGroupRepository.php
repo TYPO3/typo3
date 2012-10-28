@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Beuser\Domain\Repository;
  */
 class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
-
 }
-
 
 ?>
