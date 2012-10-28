@@ -4035,7 +4035,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 							die('Error: ' . $theFile . ' was not a file');
 						}
 						$imageProc->imageMagickConvert_forceFileNameBody = 'read_' . $ext;
-						$fileInfo = $imageProc->imageMagickConvert($theFile, 'jpg', '', '', '', '', '', 1);
+						$fileInfo = $imageProc->imageMagickConvert($theFile, 'jpg', '', '', '', '', array(), TRUE);
 						$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands);
 						$this->message($headCode, 'Read ' . strtoupper($ext), $result[0], $result[1]);
 					}
@@ -4047,7 +4047,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 						die('Error: ' . $theFile . ' was not a file');
 					}
 					$imageProc->imageMagickConvert_forceFileNameBody = 'read_pdf';
-					$fileInfo = $imageProc->imageMagickConvert($theFile, 'jpg', '170', '', '', '', '', 1);
+					$fileInfo = $imageProc->imageMagickConvert($theFile, 'jpg', '170', '', '', '', array(), TRUE);
 					$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands);
 					$this->message($headCode, 'Read PDF', $result[0], $result[1]);
 				}
@@ -4058,7 +4058,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 						die('Error: ' . $theFile . ' was not a file');
 					}
 					$imageProc->imageMagickConvert_forceFileNameBody = 'read_ai';
-					$fileInfo = $imageProc->imageMagickConvert($theFile, 'jpg', '170', '', '', '', '', 1);
+					$fileInfo = $imageProc->imageMagickConvert($theFile, 'jpg', '170', '', '', '', array(), TRUE);
 					$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands);
 					$this->message($headCode, 'Read AI', $result[0], $result[1]);
 				}
@@ -4095,7 +4095,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 					die('Error: ' . $theFile . ' was not a file');
 				}
 				$imageProc->imageMagickConvert_forceFileNameBody = 'write_gif';
-				$fileInfo = $imageProc->imageMagickConvert($theFile, 'gif', '', '', '', '', '', 1);
+				$fileInfo = $imageProc->imageMagickConvert($theFile, 'gif', '', '', '', '', array(), TRUE);
 				if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress']) {
 					clearstatcache();
 					$prevSize = \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(@filesize($fileInfo[3]));
@@ -4112,7 +4112,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				$imageProc->IM_commands = array();
 				$theFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.gif';
 				$imageProc->imageMagickConvert_forceFileNameBody = 'write_png';
-				$fileInfo = $imageProc->imageMagickConvert($theFile, 'png', '', '', '', '', '', 1);
+				$fileInfo = $imageProc->imageMagickConvert($theFile, 'png', '', '', '', '', array(), TRUE);
 				$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands);
 				$this->message($headCode, 'Write PNG', $result[0], $result[1]);
 			} else {
@@ -4145,7 +4145,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 					die('Error: ' . $theFile . ' was not a file');
 				}
 				$imageProc->imageMagickConvert_forceFileNameBody = 'scale_gif';
-				$fileInfo = $imageProc->imageMagickConvert($theFile, 'gif', '150', '', '', '', '', 1);
+				$fileInfo = $imageProc->imageMagickConvert($theFile, 'gif', '150', '', '', '', array(), TRUE);
 				if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress']) {
 					clearstatcache();
 					$prevSize = \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(@filesize($fileInfo[3]));
@@ -4164,7 +4164,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 					die('Error: ' . $theFile . ' was not a file');
 				}
 				$imageProc->imageMagickConvert_forceFileNameBody = 'scale_png';
-				$fileInfo = $imageProc->imageMagickConvert($theFile, 'png', '150', '', '', '', '', 1);
+				$fileInfo = $imageProc->imageMagickConvert($theFile, 'png', '150', '', '', '', array(), TRUE);
 				$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands);
 				$this->message($headCode, 'PNG to PNG, 150 pixels wide', $result[0], $result[1]);
 				$imageProc->IM_commands = array();
@@ -4173,7 +4173,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 					die('Error: ' . $theFile . ' was not a file');
 				}
 				$imageProc->imageMagickConvert_forceFileNameBody = 'scale_jpg';
-				$fileInfo = $imageProc->imageMagickConvert($theFile, 'jpg', '150', '', '', '', '', 1);
+				$fileInfo = $imageProc->imageMagickConvert($theFile, 'jpg', '150', '', '', '', array(), TRUE);
 				$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands);
 				$this->message($headCode, 'GIF to JPG, 150 pixels wide', $result[0], $result[1]);
 			} else {

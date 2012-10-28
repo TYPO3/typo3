@@ -1431,7 +1431,7 @@ class ContentObjectRenderer {
 					$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_gifbuilder');
 					$gifCreator->init();
 					$gifCreator->mayScaleUp = 0;
-					$dims = $gifCreator->getImageScale($gifCreator->getImageDimensions($imageFile), $conf['width'], $conf['height'], '');
+					$dims = $gifCreator->getImageScale($gifCreator->getImageDimensions($imageFile), $conf['width'], $conf['height'], array());
 					$JSwindowExpand = isset($conf['JSwindow.']['expand.']) ? $this->stdWrap($conf['JSwindow.']['expand'], $conf['JSwindow.']['expand.']) : $conf['JSwindow.']['expand'];
 					$offset = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $JSwindowExpand . ',');
 					$newWindow = isset($conf['JSwindow.']['newWindow.']) ? $this->stdWrap($conf['JSwindow.']['newWindow'], $conf['JSwindow.']['newWindow.']) : $conf['JSwindow.']['newWindow'];
@@ -5105,7 +5105,7 @@ class ContentObjectRenderer {
 			$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_gifbuilder');
 			/** @var $gifCreator tslib_gifbuilder */
 			$gifCreator->init();
-			$info = $gifCreator->imageMagickConvert($theImage, 'WEB', '', '', '', '', '');
+			$info = $gifCreator->imageMagickConvert($theImage, 'WEB');
 			$info['origFile'] = $theImage;
 			// This is needed by tslib_gifbuilder, ln 100ff in order for the setup-array to create a unique filename hash.
 			$info['origFile_mtime'] = @filemtime($theImage);
