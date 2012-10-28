@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-require_once __DIR__ . '/../Fixtures/ClassWithSetters.php';
 
 /**
  * Testcase for the Property Mapper

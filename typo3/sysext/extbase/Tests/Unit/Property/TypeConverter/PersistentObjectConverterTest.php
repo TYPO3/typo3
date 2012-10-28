@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-require_once __DIR__ . '/../../Fixtures/ClassWithSetters.php';
-require_once __DIR__ . '/../../Fixtures/ClassWithSettersAndConstructor.php';
 
 /**
  * Testcase for the String to String converter

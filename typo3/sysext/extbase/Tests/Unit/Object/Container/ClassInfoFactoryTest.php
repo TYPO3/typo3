@@ -24,9 +24,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Tests/Unit/Object/Container/Fixtures/Testclasses.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Tests/Unit/Fixtures/ClassWithInjectProperties.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Tests/Unit/Fixtures/DummyClass.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Tests/Unit/Fixtures/SecondDummyClass.php';
 
 /**
  * Testcase for class t3lib_object_ClassInfoFactory.
