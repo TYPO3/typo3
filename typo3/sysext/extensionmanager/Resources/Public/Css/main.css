@@ -1513,9 +1513,6 @@ button.ui-button::-moz-focus-inner {
   border-bottom: 0;
   padding-top: 8px; }
 
-#typo3-extension-manager {
-  margin: 15px 12px; }
-
 .contentWrapper .ui-widget-header {
   background: none;
   border: none;
@@ -1605,7 +1602,7 @@ button.ui-button::-moz-focus-inner {
 .typo3-extension-list tr.available td {
   background-color: #E1E1aa; }
 
-#typo3-extension-manager .insecure {
+.typo3-extension-manager .insecure {
   color: #ff2262; }
 
 .headerTooltip, .tooltip {
