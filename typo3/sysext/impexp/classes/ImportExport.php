@@ -310,7 +310,7 @@ class ImportExport {
 		$this->compress = function_exists('gzcompress');
 		$this->dontCompress = $dontCompress;
 		$this->mode = $mode;
-		$this->fileadminFolderName = !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']) ? $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] : 'fileadmin';
+		$this->fileadminFolderName = !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']) ? rtrim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') : 'fileadmin';
 	}
 
 	/**************************
