@@ -455,7 +455,7 @@ abstract class AbstractRecordList {
 				$htmlCode .= ' onclick="' . htmlspecialchars(('top.launchView(' . $launchViewParameter . '); return false;')) . '"';
 			}
 			$htmlCode .= ' title="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(implode(' / ', $result), 100)) . '">';
-			$htmlCode .= count($result);
+			$htmlCode .= count($references);
 			$htmlCode .= '</a>';
 		}
 		return $htmlCode;
