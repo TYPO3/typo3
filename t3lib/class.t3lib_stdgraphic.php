@@ -347,14 +347,14 @@ class t3lib_stdGraphic {
 			$imgInf = pathinfo($conf['file']);
 			$imgExt = strtolower($imgInf['extension']);
 			if (!t3lib_div::inList($this->gdlibExtensions, $imgExt)) {
-				$BBimage = $this->imageMagickConvert($conf['file'], $this->gifExtension, '', '', '', '', '');
+				$BBimage = $this->imageMagickConvert($conf['file'], $this->gifExtension);
 			} else {
 				$BBimage = $this->getImageDimensions($conf['file']);
 			}
 			$maskInf = pathinfo($conf['mask']);
 			$maskExt = strtolower($maskInf['extension']);
 			if (!t3lib_div::inList($this->gdlibExtensions, $maskExt)) {
-				$BBmask = $this->imageMagickConvert($conf['mask'], $this->gifExtension, '', '', '', '', '');
+				$BBmask = $this->imageMagickConvert($conf['mask'], $this->gifExtension);
 			} else {
 				$BBmask = $this->getImageDimensions($conf['mask']);
 			}
@@ -415,7 +415,7 @@ class t3lib_stdGraphic {
 	function copyImageOntoImage(&$im, $conf, $workArea) {
 		if ($conf['file']) {
 			if (!t3lib_div::inList($this->gdlibExtensions, $conf['BBOX'][2])) {
-				$conf['BBOX'] = $this->imageMagickConvert($conf['BBOX'][3], $this->gifExtension, '', '', '', '', '');
+				$conf['BBOX'] = $this->imageMagickConvert($conf['BBOX'][3], $this->gifExtension);
 				$conf['file'] = $conf['BBOX'][3];
 			}
 			$cpImg = $this->imageCreateFromFile($conf['file']);
@@ -1792,7 +1792,7 @@ class t3lib_stdGraphic {
 			$tmpStr = $this->randomName();
 			$theFile = $tmpStr . '.' . $this->gifExtension;
 			$this->ImageWrite($im, $theFile);
-			$theNewFile = $this->imageMagickConvert($theFile, $this->gifExtension, $conf['width'], $conf['height'], $conf['params'], '', '');
+			$theNewFile = $this->imageMagickConvert($theFile, $this->gifExtension, $conf['width'], $conf['height'], $conf['params']);
 			$tmpImg = $this->imageCreateFromFile($theNewFile[3]);
 			if ($tmpImg) {
 				ImageDestroy($im);
@@ -2226,7 +2226,7 @@ class t3lib_stdGraphic {
 	 * @return	array		[0]/[1] is w/h, [2] is file extension and [3] is the filename.
 	 * @see getImageScale(), typo3/show_item.php, fileList_ext::renderImage(), tslib_cObj::getImgResource(), SC_tslib_showpic::show(), maskImageOntoImage(), copyImageOntoImage(), scale()
 	 */
-	function imageMagickConvert($imagefile, $newExt = '', $w = '', $h = '', $params = '', $frame = '', $options = '', $mustCreate = 0) {
+	function imageMagickConvert($imagefile, $newExt = '', $w = '', $h = '', $params = '', $frame = '', $options = array(), $mustCreate = FALSE) {
 		if ($this->NO_IMAGE_MAGICK) {
 				// Returning file info right away
 			return $this->getImageDimensions($imagefile);
@@ -2268,7 +2268,7 @@ class t3lib_stdGraphic {
 				if ($noScale && !$data['crs'] && !$params && !$frame && $newExt == $info[2] && !$mustCreate) {
 						// set the new width and height before returning,
 						// if the noScale option is set
-					if ($options['noScale']) {
+					if (!empty($options['noScale'])) {
 						$info[0] = $data[0];
 						$info[1] = $data[1];
 					}
@@ -2468,7 +2468,7 @@ class t3lib_stdGraphic {
 		$w = intval($w);
 		$h = intval($h);
 			// if there are max-values...
-		if ($options['maxW']) {
+		if (!empty($options['maxW'])) {
 			if ($w) { // if width is given...
 				if ($w > $options['maxW']) {
 					$w = $options['maxW'];
@@ -2481,7 +2481,7 @@ class t3lib_stdGraphic {
 				}
 			}
 		}
-		if ($options['maxH']) {
+		if (!empty($options['maxH'])) {
 			if ($h) { // if height is given...
 				if ($h > $options['maxH']) {
 					$h = $options['maxH'];
@@ -2539,13 +2539,13 @@ class t3lib_stdGraphic {
 		$out[0] = $info[0];
 		$out[1] = $info[1];
 			// Set minimum-measures!
-		if ($options['minW'] && $out[0] < $options['minW']) {
+		if (isset($options['minW']) && $out[0] < $options['minW']) {
 			if (($max || $crs) && $out[0]) {
 				$out[1] = round($out[1] * $options['minW'] / $out[0]);
 			}
 			$out[0] = $options['minW'];
 		}
-		if ($options['minH'] && $out[1] < $options['minH']) {
+		if (isset($options['minH']) && $out[1] < $options['minH']) {
 			if (($max || $crs) && $out[1]) {
 				$out[0] = round($out[0] * $options['minH'] / $out[1]);
 			}
