@@ -212,6 +212,7 @@ TYPO3.ModuleMenu.App = {
 		this.selectedModule = mod;
 
 		params = this.includeId(mod, params);
+		console.log(params);
 		var record = this.getRecordFromName(mod);
 
 		if (record) {
@@ -271,7 +272,7 @@ TYPO3.ModuleMenu.App = {
 			//get id
 		var section = mod.split('_')[0];
 		if (top.fsMod.recentIds[section]) {
-			params = 'id=' + top.fsMod.recentIds[section] + '&' + params;
+			params = Ext.urlEncode({'id': top.fsMod.recentIds[section]}) + '&' + params;
 		}
 
 		return params;

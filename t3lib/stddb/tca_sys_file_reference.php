@@ -67,7 +67,8 @@ $TCA['sys_file_reference'] = array(
 				'size' => 1,
 				'maxitems' => 1,
 				'minitems' => 0,
-				'allowed' => 'sys_file'
+				'allowed' => 'sys_file',
+				'foreign_table' => 'sys_file',
 			)
 		),
 		'uid_foreign' => array(
