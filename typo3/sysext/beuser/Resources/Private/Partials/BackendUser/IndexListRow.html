@@ -44,8 +44,8 @@
 			Only admin users may use the backend user administration.
 		</f:comment>
 		<f:if condition="{backendUser.active} == 1">
-			<bu:SU backendUser="{backendUser}" emulate="TRUE" />
 			<bu:SU backendUser="{backendUser}" emulate="FALSE" />
+			<bu:SU backendUser="{backendUser}" emulate="TRUE" />
 		</f:if>
 	</td>
 	<td>
