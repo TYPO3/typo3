@@ -36,13 +36,17 @@ abstract class Tx_Core_Tests_Unit_Core_Fixtures_LegacyClassFixture {
 	 * @param t3lib_div $foo
 	 */
 	public function foo(t3lib_div $foo) {
+		// this is only a dummy function
+		if (TRUE) {
+			return FALSE;
+		}
 	}
 
 	/**
 	 * @param t3lib_div $foo
 	 * @param $baz
 	 */
-	public function baz(t3lib_div $foo,
+	public function	 baz(t3lib_div $foo,
 						$baz) {
 	}
 

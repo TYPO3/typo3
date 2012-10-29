@@ -439,7 +439,8 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$classPathOfFileToRewrite = realpath(__DIR__ . '/Fixtures/LegacyClassFixture.php');
 		$rewrittenContent = $classLoader->_call('rewriteMethodTypeHintsFromClassPath', $classPathOfFileToRewrite);
 		$originalContent = file_get_contents($classPathOfFileToRewrite);
-		$this->assertNotEquals($originalContent, $rewrittenContent);
+		$this->assertNotEquals($originalContent, $rewrittenContent, 'File content has been rewritten');
+		$this->assertContains('// this is only a dummy function' . LF . TAB . TAB . 'if', $rewrittenContent, 'Comment not touched, newline after function ignored');
 		$this->assertContains('public function foo(\TYPO3\CMS\Core\Utility\GeneralUtility $foo) {', $rewrittenContent, 'One line and one parameter');
 		$this->assertContains('public function baz(\TYPO3\CMS\Core\Utility\GeneralUtility $foo, $baz) {', $rewrittenContent, 'Multi line and more parameters');
 		$this->assertContains('protected function createConstraintsFromDemand(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query, Tx_News_Domain_Model_DemandInterface $demand);', $rewrittenContent, 'Multi line abstract and second parameter with own typehint not in aliasmap');
