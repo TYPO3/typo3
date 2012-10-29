@@ -29,9 +29,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 /**
  * The Query Object Model Factory
  *
- * @package Extbase
- * @subpackage Persistence\QOM
- * @version $Id$
  * @scope prototype
  */
 class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {

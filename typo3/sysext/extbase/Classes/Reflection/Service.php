@@ -27,9 +27,6 @@ namespace TYPO3\CMS\Extbase\Reflection;
  * A backport of the FLOW3 reflection service for aquiring reflection based information.
  * Most of the code is based on the FLOW3 reflection service.
  *
- * @package Extbase
- * @subpackage Reflection
- * @version $Id$
  * @api
  */
 class Service implements \TYPO3\CMS\Core\SingletonInterface {

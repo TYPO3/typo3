@@ -25,9 +25,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
  ***************************************************************/
 /**
  * Testcase for class Tx_Extbase_Service_CacheService
- *
- * @package Extbase
- * @subpackage extbase
  */
 class CacheServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

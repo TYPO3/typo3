@@ -27,14 +27,7 @@ namespace TYPO3\CMS\Extbase\Configuration\Exception;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * @version $Id$
- */
-/**
  * A No Such File exception
- *
- * @package Extbase
- * @subpackage Configuration\Exception
- * @version $ID:$
  */
 class NoSuchFileException extends \TYPO3\CMS\Extbase\Configuration\Exception {
 

@@ -28,9 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  *
  * @see Tx_Extbase_DomainObject_AbstractEntity
  * @see Tx_Extbase_DomainObject_AbstractValueObject
- * @package Extbase
- * @subpackage Persistence
- * @version $ID:$
  */
 interface ObjectMonitoringInterface
 {

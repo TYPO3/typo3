@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Validation;
  ***************************************************************/
 /**
  * Validator resolver to automatically find a appropriate validator for a given subject
- *
- * @package Extbase
- * @subpackage Validation
- * @version $Id$
  */
 class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 

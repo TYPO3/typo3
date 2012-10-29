@@ -30,10 +30,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * A QueryObjectModelFactory creates instances of the JCR query object model.
  *
  * Refer to QueryObjectModelInterface for a description of the query object model.
- *
- * @package Extbase
- * @subpackage Persistence\QOM
- * @version $Id: QueryObjectModelFactoryInterface.php 1971 2010-03-08 16:59:04Z jocrau $
  */
 interface QueryObjectModelFactoryInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface
 {

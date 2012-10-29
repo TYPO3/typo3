@@ -26,9 +26,6 @@ namespace TYPO3\CMS\Extbase\Utility;
 /**
  * Localization helper which should be used to fetch localized labels.
  *
- * @package Extbase
- * @subpackage Utility
- * @version $ID:$
  * @api
  */
 class LocalizationUtility {

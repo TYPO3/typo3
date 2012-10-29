@@ -29,9 +29,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 /**
  * A statement acting as a constraint.
  *
- * @package Extbase
- * @subpackage Persistence\QOM
- * @version $Id$
  * @scope prototype
  */
 class Statement {

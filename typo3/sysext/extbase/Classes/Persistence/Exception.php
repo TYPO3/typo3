@@ -15,10 +15,6 @@ namespace TYPO3\CMS\Extbase\Persistence;
  *                                                                        */
 /**
  * A generic Persistence exception
- *
- * @package Extbase
- * @subpackage Persistence
- * @version $ID:$
  */
 class Exception extends \TYPO3\CMS\Extbase\Exception {
 

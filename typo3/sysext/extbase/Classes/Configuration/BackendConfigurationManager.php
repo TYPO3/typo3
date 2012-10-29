@@ -25,10 +25,6 @@ namespace TYPO3\CMS\Extbase\Configuration;
  ***************************************************************/
 /**
  * A general purpose configuration manager used in backend mode.
- *
- * @package Extbase
- * @subpackage Configuration
- * @version $ID:$
  */
 class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager {
 

@@ -27,10 +27,6 @@ namespace TYPO3\CMS\Extbase\Utility;
  * Utilities to simulate a frontend in backend context.
  *
  * ONLY USED INTERNALLY, MIGHT CHANGE WITHOUT NOTICE!
- *
- * @package Extbase
- * @subpackage Utility
- * @version $ID:$
  */
 class FrontendSimulatorUtility {
 

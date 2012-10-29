@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  * This model represents a category (for anything).
  *
  * @author Fabien Udriot <fabien.udriot@typo3.org>
- * @package Extbase
- * @subpackage Domain\Model
  * @scope prototype
  * @entity
  * @api

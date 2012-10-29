@@ -25,10 +25,6 @@ namespace TYPO3\CMS\Extbase\Reflection;
  ***************************************************************/
 /**
  * Extended version of the ReflectionProperty
- *
- * @package Extbase
- * @subpackage Reflection
- * @version $Id$
  */
 class PropertyReflection extends \ReflectionProperty {
 

@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Validation\Exception;
  ***************************************************************/
 /**
  * A "NoSuchValidator" Exception
- *
- * @package Extbase
- * @subpackage Validation\Exception
- * @version $ID:$
  */
 class NoSuchValidatorException extends \TYPO3\CMS\Extbase\Validation\Exception {
 

@@ -25,10 +25,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  ***************************************************************/
 /**
  * The persistence session - acts as a Unit of Work for Extbase persistence framework.
- *
- * @package Extbase
- * @subpackage Persistence
- * @version $ID:$
  */
 class Session implements \TYPO3\CMS\Core\SingletonInterface {
 

@@ -28,9 +28,6 @@ namespace TYPO3\CMS\Extbase\Core;
  * by TS Setup, flexForm and returns the content to the v4 framework.
  *
  * This class is the main entry point for extbase extensions.
- *
- * @package Extbase
- * @version $ID:$
  */
 class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 

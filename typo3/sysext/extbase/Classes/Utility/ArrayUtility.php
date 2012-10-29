@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Utility;
 /**
  * The array functions from the good old t3lib_div plus new code.
  *
- * @package Extbase
- * @subpackage Utility
  * @api
  */
 class ArrayUtility {

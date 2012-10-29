@@ -15,9 +15,6 @@ namespace TYPO3\CMS\Extbase\Persistence;
  *                                                                        */
 /**
  * A lazy result list that is returned by Query::execute()
- *
- * @package Extbase
- * @subpackage Persistence
  */
 interface QueryResultInterface extends \Countable, \Iterator, \ArrayAccess
 {

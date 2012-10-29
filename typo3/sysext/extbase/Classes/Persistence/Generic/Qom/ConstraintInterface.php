@@ -31,10 +31,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * the joins between them.
  *
  * To be included in the query results, a tuple must satisfy the constraint.
- *
- * @package Extbase
- * @subpackage Persistence\QOM
- * @version $Id$
  */
 interface ConstraintInterface
 {

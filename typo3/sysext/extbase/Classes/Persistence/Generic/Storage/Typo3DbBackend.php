@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
  ***************************************************************/
 /**
  * A Storage backend
- *
- * @package Extbase
- * @subpackage Persistence\Storage
- * @version $Id$
  */
 class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface, \TYPO3\CMS\Core\SingletonInterface {
 

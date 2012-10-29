@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
  ***************************************************************/
 /**
  * An "Invalid URI Pattern" exception
- *
- * @package Extbase
- * @subpackage MVC\Exception
- * @version $Id$
  */
 class InvalidUriPatternException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 

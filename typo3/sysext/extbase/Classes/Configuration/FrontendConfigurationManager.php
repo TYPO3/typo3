@@ -27,10 +27,6 @@ namespace TYPO3\CMS\Extbase\Configuration;
  * A general purpose configuration manager used in frontend mode.
  *
  * Should NOT be singleton, as a new configuration manager is needed per plugin.
- *
- * @package Extbase
- * @subpackage Configuration
- * @version $ID:$
  */
 class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager {
 

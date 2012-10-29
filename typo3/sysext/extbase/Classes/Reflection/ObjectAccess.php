@@ -30,10 +30,6 @@ namespace TYPO3\CMS\Extbase\Reflection;
  * - if public getter/setter method exists, call it.
  * - if public property exists, return/set the value of it.
  * - else, throw exception
- *
- * @package Extbase
- * @subpackage Reflection
- * @version $Id$
  */
 class ObjectAccess {
 

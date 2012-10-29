@@ -23,11 +23,6 @@ namespace TYPO3\CMS\Extbase\Configuration;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * @package Extbase
- * @subpackage Configuration
- * @version $ID:$
- */
 interface ConfigurationManagerInterface extends \TYPO3\CMS\Core\SingletonInterface
 {
 	const CONFIGURATION_TYPE_FRAMEWORK = 'Framework';

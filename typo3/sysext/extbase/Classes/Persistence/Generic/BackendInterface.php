@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  ***************************************************************/
 /**
  * A persistence backend interface
- *
- * @package Extbase
- * @subpackage Persistence
- * @version $Id$
  */
 interface BackendInterface
 {

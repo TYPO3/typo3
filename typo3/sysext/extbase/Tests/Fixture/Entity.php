@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
  ***************************************************************/
 /**
  * An entity
- *
- * @package Extbase
- * @subpackage extbase
- * @version $ID:$
  * @entity
  */
 class Entity extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {

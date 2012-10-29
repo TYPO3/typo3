@@ -28,9 +28,6 @@ namespace TYPO3\CMS\Extbase\Object;
  ***************************************************************/
 /**
  * Interface for the TYPO3 Object Manager
- *
- * @package Extbase
- * @subpackage Object
  */
 interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface
 {

@@ -29,9 +29,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 /**
  * The controller context contains information from the controller
  *
- * @package Extbase
- * @subpackage MVC\Controller
- * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @api

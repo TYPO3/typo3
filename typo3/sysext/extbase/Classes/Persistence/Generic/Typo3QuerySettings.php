@@ -30,9 +30,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  * Query settings. This class is NOT part of the FLOW3 API.
  * It reflects the settings unique to TYPO3 4.x.
  *
- * @package Extbase
- * @subpackage Persistence
- * @version $Id$
  * @api
  */
 class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface {

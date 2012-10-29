@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Object\Exception;
  ***************************************************************/
 /**
  * "Cannot reconstitute object" Exception
- *
- * @package Extbase
- * @subpackage Object\Exception
- * @version $Id$
  */
 class CannotReconstituteObjectException extends \TYPO3\CMS\Extbase\Object\Exception {
 

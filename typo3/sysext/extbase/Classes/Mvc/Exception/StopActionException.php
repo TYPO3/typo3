@@ -33,10 +33,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
  * continues dispatching the request or returns control to the request handler.
  *
  * See the Action Controller's forward() and redirectToUri() methods for more information.
- *
- * @package Extbase
- * @subpackage MVC\Exception
- * @version $Id$
  */
 class StopActionException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 

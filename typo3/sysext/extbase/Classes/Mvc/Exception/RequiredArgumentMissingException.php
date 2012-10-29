@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
  ***************************************************************/
 /**
  * An "Required Argument Missing" exception
- *
- * @package Extbase
  */
 class RequiredArgumentMissingException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 

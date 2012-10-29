@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Configuration;
  ***************************************************************/
 /**
  * A generic Configuration Exception
- *
- * @package Extbase
- * @subpackage Configuration
- * @version $ID:$
  */
 class Exception extends \TYPO3\CMS\Extbase\Exception {
 

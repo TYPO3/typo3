@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  ***************************************************************/
 /**
  * A persistence query factory interface
- *
- * @package Extbase
- * @subpackage Persistence
- * @version $Id$
  */
 interface QueryFactoryInterface
 {

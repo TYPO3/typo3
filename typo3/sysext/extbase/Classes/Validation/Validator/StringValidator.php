@@ -29,9 +29,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 /**
  * Validator for string length
  *
- * @package Extbase
- * @subpackage Validation\Validator
- * @version $Id$
  * @scope prototype
  */
 class StringValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {

@@ -25,10 +25,6 @@ namespace TYPO3\CMS\Extbase\Reflection;
  ***************************************************************/
 /**
  * Extended version of the ReflectionParameter
- *
- * @package Extbase
- * @subpackage Reflection
- * @version $Id$
  */
 class ParameterReflection extends \ReflectionParameter {
 

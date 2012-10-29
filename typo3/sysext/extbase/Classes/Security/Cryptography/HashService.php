@@ -31,7 +31,6 @@ namespace TYPO3\CMS\Extbase\Security\Cryptography;
  *
  * It will use some salt / encryption key in the future.
  *
- * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser Public License, version 3 or later
  */
 class HashService implements \TYPO3\CMS\Core\SingletonInterface {

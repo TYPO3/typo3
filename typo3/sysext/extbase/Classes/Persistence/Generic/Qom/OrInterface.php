@@ -33,10 +33,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * satisfy constraint1 but not constraint2, or
  * satisfy constraint2 but not constraint1, or
  * satisfy both constraint1 and constraint2.
- *
- * @package Extbase
- * @subpackage Persistence\QOM
- * @version $Id$
  */
 interface OrInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface
 {

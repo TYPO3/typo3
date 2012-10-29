@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  ***************************************************************/
 /**
  * Validator for text
- *
- * @package Extbase
- * @subpackage Validation\Validator
- * @version $Id$
  */
 class TextValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 

@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  ***************************************************************/
 /**
  * Evaluates to the value of a bind variable.
- *
- * @package Extbase
- * @subpackage Persistence\QOM
- * @version $Id$
  * @scope prototype
  */
 class BindVariableValue extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\StaticOperand implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\BindVariableValueInterface {

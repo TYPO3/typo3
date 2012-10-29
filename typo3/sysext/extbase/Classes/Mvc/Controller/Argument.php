@@ -29,9 +29,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 /**
  * A controller argument
  *
- * @package Extbase
- * @subpackage MVC\Controller
- * @version $ID:$
  * @scope prototype
  * @api
  */

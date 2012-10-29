@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Object\Container\Exception;
  ***************************************************************/
 /**
  * "Unknown Object" Exception
- *
- * @package Extbase
- * @subpackage Object\Exception
- * @version $Id: UnknownObjectException.php 2703 2010-11-10 11:28:01Z sebastian $
  */
 class UnknownObjectException extends \TYPO3\CMS\Extbase\Object\Exception {
 

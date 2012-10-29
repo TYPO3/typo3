@@ -15,9 +15,6 @@ namespace TYPO3\CMS\Extbase\Persistence;
  *                                                                        */
 /**
  * The Extbase Persistence Manager interface
- *
- * @package Extbase
- * @subpackage Persistence
  */
 interface PersistenceManagerInterface
 {

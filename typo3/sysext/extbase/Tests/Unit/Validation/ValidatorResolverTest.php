@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation;
  ***************************************************************/
 /**
  * Testcase for the validator resolver
- *
- * @package Extbase
- * @subpackage extbase
- * @version $Id: ValidatorResolver_testcase.php 2708 2010-11-10 18:56:01Z bwaidelich $
  */
 class ValidatorResolverTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

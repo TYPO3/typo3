@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Persistence;
 /**
  * The base repository - will usually be extended by a more concrete repository.
  *
- * @package Extbase
- * @subpackage Persistence
  * @api
  */
 class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, \TYPO3\CMS\Core\SingletonInterface {

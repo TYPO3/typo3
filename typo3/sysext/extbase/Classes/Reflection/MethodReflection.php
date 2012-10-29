@@ -25,10 +25,6 @@ namespace TYPO3\CMS\Extbase\Reflection;
  ***************************************************************/
 /**
  * Extended version of the ReflectionMethod
- *
- * @package Extbase
- * @subpackage Reflection
- * @version $Id$
  */
 class MethodReflection extends \ReflectionMethod {
 

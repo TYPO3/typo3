@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
  ***************************************************************/
 /**
  * An "Unsupported Request Type" exception
- *
- * @package Extbase
- * @subpackage MVC\Exception
- * @version $Id$
  */
 class UnsupportedRequestTypeException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 

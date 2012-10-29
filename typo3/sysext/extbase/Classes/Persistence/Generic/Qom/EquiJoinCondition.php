@@ -33,9 +33,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * the selector2Name node has a property named property2Name, and
  * the value of property property1Name is equal to the value of property property2Name.
  *
- * @package Extbase
- * @subpackage Persistence\QOM
- * @version $Id$
  * @scope prototype
  */
 class EquiJoinCondition implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinConditionInterface {

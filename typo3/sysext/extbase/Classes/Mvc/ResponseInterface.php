@@ -29,7 +29,6 @@ namespace TYPO3\CMS\Extbase\Mvc;
 /**
  * A generic and very basic response implementation
  *
- * @version $Id$
  * @api
  */
 interface ResponseInterface

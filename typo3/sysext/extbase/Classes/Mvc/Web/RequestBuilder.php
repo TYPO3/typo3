@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
 /**
  * Builds a web request.
  *
- * @package Extbase
- * @subpackage MVC\Web
  * @scope prototype
  */
 class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {

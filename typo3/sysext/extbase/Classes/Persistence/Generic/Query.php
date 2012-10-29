@@ -29,9 +29,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 /**
  * The Query class used to run queries against the database
  *
- * @package Extbase
- * @subpackage Persistence
- * @version $Id$
  * @scope prototype
  * @api
  */

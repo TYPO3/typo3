@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
  ***************************************************************/
 /**
  * An "Invalid Argument Name" exception
- *
- * @package Extbase
- * @subpackage MVC\Exception
- * @version $Id$
  */
 class InvalidArgumentNameException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 

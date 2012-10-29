@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  ***************************************************************/
 /**
  * Abstract validator
- *
- * @package Extbase
- * @subpackage Validation\Validator
- * @version $Id$
  */
 abstract class AbstractValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {
 

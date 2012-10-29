@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Validation;
  ***************************************************************/
 /**
  * A generic validation exception
- *
- * @package Extbase
- * @subpackage Validation
- * @version $ID:$
  */
 class Exception extends \TYPO3\CMS\Extbase\Exception {
 

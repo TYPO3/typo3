@@ -29,7 +29,6 @@ namespace TYPO3\CMS\Extbase\Reflection\Exception;
 /**
  * An "Invalid Property Type" exception
  *
- * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class InvalidPropertyTypeException extends \TYPO3\CMS\Extbase\Reflection\Exception {

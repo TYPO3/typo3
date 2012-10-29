@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  ***************************************************************/
 /**
  * Performs a join between two node-tuple sources.
- *
- * @package Extbase
- * @subpackage Persistence\QOM
- * @version $Id$
  */
 interface JoinInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface
 {

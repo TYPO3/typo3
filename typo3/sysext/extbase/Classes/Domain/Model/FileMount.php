@@ -29,7 +29,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  * This model represents a file mount.
  *
  * @author Markus Günther <mail@markus-guenther.de>
- * @package Extbase
  * @scope prototype
  * @entity
  * @api

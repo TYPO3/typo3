@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  ***************************************************************/
 /**
  * A validator which accepts any input
- *
- * @package Extbase
- * @subpackage Validation\Validator
- * @version $Id$
  */
 class RawValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {
 

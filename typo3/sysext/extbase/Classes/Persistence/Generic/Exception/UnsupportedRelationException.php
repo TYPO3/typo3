@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  ***************************************************************/
 /**
  * An "Unsupported Order" exception: The order you specified in the query is not supported by now.
- *
- * @package Extbase
- * @subpackage Persistence\Exception
- * @version $ID:$
  */
 class UnsupportedRelationException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
 

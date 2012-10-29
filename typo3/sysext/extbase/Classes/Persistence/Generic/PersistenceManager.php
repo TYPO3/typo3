@@ -29,9 +29,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 /**
  * The Extbase Persistence Manager
  *
- * @package Extbase
- * @subpackage Persistence
- * @version $Id$
  * @api
  */
 class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface, \TYPO3\CMS\Core\SingletonInterface {

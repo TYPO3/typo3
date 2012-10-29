@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Web\Routing;
 /**
  * An URI Builder
  *
- * @package Extbase
- * @subpackage MVC\Web\Routing
- * @version $Id$
  * @api
  */
 class UriBuilder {

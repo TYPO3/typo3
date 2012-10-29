@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  ***************************************************************/
 /**
  * Validator for general numbers
- *
- * @package Extbase
- * @subpackage Validation\Validator
- * @version $Id$
  */
 class NumberValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 

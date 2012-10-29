@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  ***************************************************************/
 /**
  * Validator for floats
- *
- * @package Extbase
- * @subpackage Validation\Validator
- * @version $Id$
  */
 class FloatValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 

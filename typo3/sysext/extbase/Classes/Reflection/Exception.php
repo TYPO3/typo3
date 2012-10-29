@@ -25,10 +25,6 @@ namespace TYPO3\CMS\Extbase\Reflection;
  ***************************************************************/
 /**
  * A generic Reflection Exception
- *
- * @package Extbase
- * @subpackage Reflection
- * @version $Id$
  */
 class Exception extends \TYPO3\CMS\Extbase\Exception {
 

@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Mvc\View;
  ***************************************************************/
 /**
  * An abstract View
- *
- * @package Extbase
- * @subpackage MVC\View
- * @version $ID:$
  * @api
  */
 abstract class AbstractView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface {

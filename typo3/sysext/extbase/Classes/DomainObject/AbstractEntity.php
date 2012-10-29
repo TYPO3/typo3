@@ -26,10 +26,6 @@ namespace TYPO3\CMS\Extbase\DomainObject;
 /**
  * An abstract Entity. An Entity is an object fundamentally defined not by its attributes,
  * but by a thread of continuity and identity (e.g. a person).
- *
- * @package Extbase
- * @subpackage DomainObject
- * @version $ID:$
  */
 abstract class AbstractEntity extends \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject {
 

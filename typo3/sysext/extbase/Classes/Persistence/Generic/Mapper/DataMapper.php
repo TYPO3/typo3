@@ -25,10 +25,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
  ***************************************************************/
 /**
  * A mapper to map database tables configured in $TCA on domain objects.
- *
- * @package Extbase
- * @subpackage Persistence\Mapper
- * @version $ID:$
  */
 class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 

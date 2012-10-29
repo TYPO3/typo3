@@ -26,9 +26,6 @@ namespace TYPO3\CMS\Extbase\Domain\Repository;
 /**
  * A Frontend User repository
  *
- * @package Extbase
- * @subpackage Domain\Repository
- * @version $Id$
  * @api
  */
 class FrontendUserRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {

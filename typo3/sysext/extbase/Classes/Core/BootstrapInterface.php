@@ -15,8 +15,6 @@ namespace TYPO3\CMS\Extbase\Core;
  *                                                                        */
 /**
  * Bootstrap Interface
- *
- * @package Extbase
  */
 interface BootstrapInterface
 {

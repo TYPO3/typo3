@@ -34,10 +34,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * to a string.
  *
  * If operand evaluates to null, the LowerCase operand also evaluates to null.
- *
- * @package Extbase
- * @subpackage Persistence\QOM
- * @version $Id$
  */
 interface LowerCaseInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface
 {

@@ -25,9 +25,6 @@ namespace TYPO3\CMS\Extbase\Service;
  ***************************************************************/
 /**
  * Cache clearing helper functions
- *
- * @package Extbase
- * @subpackage Service
  */
 class CacheService implements \TYPO3\CMS\Core\SingletonInterface {
 

@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
  ***************************************************************/
 /**
  * Storage backend interface
- *
- * @package Extbase
- * @subpackage Persistence\Storage
- * @version $Id$
  */
 interface BackendInterface
 {

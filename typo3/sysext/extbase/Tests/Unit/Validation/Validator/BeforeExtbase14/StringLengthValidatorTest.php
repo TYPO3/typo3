@@ -31,10 +31,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\BeforeExtbase14;
  *
  * This testcase checks the expected behavior for Extbase < 1.4.0, to make sure
  * we do not break backwards compatibility.
- *
- * @package Extbase
- * @subpackage extbase
- * @version $Id: StringLengthValidator_testcase.php 1408 2009-10-08 13:15:09Z jocrau $
  */
 class StringLengthValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

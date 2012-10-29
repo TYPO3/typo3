@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
  ***************************************************************/
 /**
  * Testcase for class Tx_Extbase_Service_TypoScriptService
- *
- * @package Extbase
  */
 class TypoScriptServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

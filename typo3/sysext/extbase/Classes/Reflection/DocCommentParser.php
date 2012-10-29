@@ -25,10 +25,6 @@ namespace TYPO3\CMS\Extbase\Reflection;
  ***************************************************************/
 /**
  * A little parser which creates tag objects from doc comments
- *
- * @package Extbase
- * @subpackage Reflection
- * @version $Id$
  */
 class DocCommentParser {
 

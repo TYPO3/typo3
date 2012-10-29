@@ -27,10 +27,6 @@ namespace TYPO3\CMS\Extbase\DomainObject;
  * A generic Domain Object.
  *
  * All Model domain objects need to inherit from either AbstractEntity or AbstractValueObject, as this provides important framework information.
- *
- * @package Extbase
- * @subpackage DomainObject
- * @version $ID:$
  */
 abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface, \TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface {
 

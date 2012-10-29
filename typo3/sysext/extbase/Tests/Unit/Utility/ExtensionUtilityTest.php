@@ -25,9 +25,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  ***************************************************************/
 /**
  * Testcase for class Tx_Extbase_Utility_Extension
- *
- * @package Extbase
- * @subpackage extbase
  */
 class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

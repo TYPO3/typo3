@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
  ***************************************************************/
 /**
  * A "No Such Controller" exception
- *
- * @package Extbase
- * @subpackage MVC\Exception
- * @version $Id$
  */
 class NoSuchControllerException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 

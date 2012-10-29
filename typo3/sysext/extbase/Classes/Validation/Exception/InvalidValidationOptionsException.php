@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Validation\Exception;
  ***************************************************************/
 /**
  * A "InvalidValidationOptions" Exception
- *
- * @package Extbase
- * @subpackage Validation\Exception
- * @version $ID:$
  */
 class InvalidValidationOptionsException extends \TYPO3\CMS\Extbase\Validation\Exception {
 

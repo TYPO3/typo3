@@ -29,10 +29,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 /**
  * A proxy that can replace any object and replaces itself in it's parent on
  * first access (call, get, set, isset, unset).
- *
- * @package Extbase
- * @subpackage Persistence
- * @version $Id$
  */
 class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage implements \TYPO3\CMS\Extbase\Persistence\Generic\LoadingStrategyInterface {
 

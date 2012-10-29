@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
  ***************************************************************/
 /**
  * An "Invalid Marker" exception
- *
- * @package Extbase
- * @subpackage MVC\Exception
- * @version $Id$
  */
 class InvalidMarkerException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 

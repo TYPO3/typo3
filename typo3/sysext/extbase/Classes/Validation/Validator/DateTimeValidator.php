@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  ***************************************************************/
 /**
  * Validator for DateTime objects
- *
- * @package Extbase
- * @subpackage Validation\Validator
- * @version $Id$
  */
 class DateTimeValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 

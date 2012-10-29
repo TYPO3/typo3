@@ -30,9 +30,6 @@ namespace TYPO3\CMS\Extbase\Validation;
  * Objects of this kind contain a list of validation errors which occurred during
  * validation.
  *
- * @package Extbase
- * @subpackage Validation
- * @version $ID:$
  * @scope prototype
  */
 class Error extends \TYPO3\CMS\Extbase\Error\Error {

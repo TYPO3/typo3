@@ -25,10 +25,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
  ***************************************************************/
 /**
  * A column map to map a column configured in $TCA on a property of a domain object.
- *
- * @package Extbase
- * @subpackage Persistence\Mapper
- * @version $ID:$
  */
 // SK: PHPDoc ;-)
 class ColumnMap {

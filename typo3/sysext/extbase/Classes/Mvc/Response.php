@@ -29,9 +29,6 @@ namespace TYPO3\CMS\Extbase\Mvc;
 /**
  * A generic and very basic response implementation
  *
- * @package Extbase
- * @subpackage MVC
- * @version $ID:$
  * @scope prototype
  * @api
  */

@@ -29,7 +29,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 /**
  * Base class for constraints in the QOM.
  *
- * @version $Id: Constraint.php 3616 2010-01-13 16:30:32Z k-fish $
  * @api
  * @scope prototype
  */

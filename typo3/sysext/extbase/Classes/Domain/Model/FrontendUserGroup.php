@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 /**
  * A Frontend User Group
  *
- * @package Extbase
- * @subpackage Domain\Model
  * @scope prototype
  * @entity
  * @api

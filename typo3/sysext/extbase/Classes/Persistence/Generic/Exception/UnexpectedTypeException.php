@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  ***************************************************************/
 /**
  * An "Unexpected Type" exception.
- *
- * @package Extbase
- * @subpackage Persistence\Exception
- * @version $ID:$
  */
 class UnexpectedTypeException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
 

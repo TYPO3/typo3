@@ -31,10 +31,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\BeforeExtbase14;
  *
  * This testcase checks the expected behavior for Extbase < 1.4.0, to make sure
  * we do not break backwards compatibility.
- *
- * @package Extbase
- * @subpackage extbase
- * @version $Id: EmailAddressValidator_testcase.php 2428 2010-07-20 10:18:51Z jocrau $
  */
 class EmailAddressValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

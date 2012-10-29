@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Object;
  ***************************************************************/
 /**
  * A generic Object Exception
- *
- * @package Extbase
- * @subpackage Object
- * @version $Id$
  */
 class Exception extends \TYPO3\CMS\Extbase\Exception {
 

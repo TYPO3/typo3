@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Object;
  ***************************************************************/
 /**
  * "Invalid object" Exception
- *
- * @package Extbase
- * @subpackage Object\Exception
- * @version $Id$
  */
 class InvalidObjectException extends \TYPO3\CMS\Extbase\Object\Exception {
 

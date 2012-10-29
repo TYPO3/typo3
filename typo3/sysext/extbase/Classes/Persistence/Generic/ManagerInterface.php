@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 /**
  * The Extbase Persistence Manager interface
  *
- * @package Extbase
- * @subpackage Persistence
  * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
  */
 interface ManagerInterface extends \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface

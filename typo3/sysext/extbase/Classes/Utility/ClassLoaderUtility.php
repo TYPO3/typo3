@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Utility;
  ***************************************************************/
 /**
  * Autoloader of Extbase
- *
- * @package Extbase
- * @subpackage Utility
- * @version $Id$
  */
 class ClassLoaderUtility {
 

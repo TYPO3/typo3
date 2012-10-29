@@ -40,9 +40,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  * Please see the source file for proper documentation of the above methods.
  *
- * @package Extbase
- * @subpackage Validation\Validator
- * @version $ID:
  * @api
  */
 interface ValidatorInterface

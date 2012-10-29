@@ -26,9 +26,6 @@ namespace TYPO3\CMS\Extbase\Utility;
 /**
  * PHP type handling functions
  *
- * @package Extbase
- * @subpackage Utility
- * @version $ID:$
  * @api
  * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0. Please use Tx_Extbase_Service_TypeHandlingService instead
  */

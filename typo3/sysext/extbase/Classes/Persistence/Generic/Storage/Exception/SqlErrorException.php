@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception;
  ***************************************************************/
 /**
  * An SQL exception
- *
- * @package Extbase
- * @subpackage Persistence\Storage\Exception
- * @version $ID:$
  */
 class SqlErrorException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
 

@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  ***************************************************************/
 /**
  * An "Invalid Class" exception
- *
- * @package Extbase
- * @subpackage Persistence\Exception
- * @version $ID:$
  */
 class InvalidClassException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
 

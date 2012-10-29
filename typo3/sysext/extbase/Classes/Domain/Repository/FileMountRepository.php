@@ -29,7 +29,6 @@ namespace TYPO3\CMS\Extbase\Domain\Repository;
  * Repository for Tx_Extbase_Domain_Model_FileMount.
  *
  * @author Markus Günther <mail@markus-guenther.de>
- * @package Extbase
  * @api
  */
 class FileMountRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {

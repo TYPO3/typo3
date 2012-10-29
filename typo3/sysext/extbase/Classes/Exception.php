@@ -28,9 +28,6 @@ namespace TYPO3\CMS\Extbase;
  ***************************************************************/
 /**
  * A generic Extbase exception
- *
- * @package Extbase
- * @version $ID: $
  */
 class Exception extends \Exception {
 

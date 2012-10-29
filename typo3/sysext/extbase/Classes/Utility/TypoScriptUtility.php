@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Extbase\Utility;
 /**
  * Utilities to manage and convert Typoscript Code
  *
- * @package Extbase
- * @subpackage Utility
  * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0. Please use Tx_Extbase_Service_TypoScriptService instead
  */
 class TypoScriptUtility {

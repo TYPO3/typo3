@@ -69,9 +69,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * the string "\x" matches the character "x", and
  * all other characters match themselves.
  *
- * @package Extbase
- * @subpackage Persistence\QOM
- * @version $Id$
  * @scope prototype
  */
 class Comparison implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface {

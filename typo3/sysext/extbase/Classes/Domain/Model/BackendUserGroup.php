@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  * This model represents a backend usergroup.
  *
  * @author Markus Günther <mail@markus-guenther.de>
- * @package Extbase
- * @subpackage Domain\Model
  * @scope prototype
  * @entity
  * @api

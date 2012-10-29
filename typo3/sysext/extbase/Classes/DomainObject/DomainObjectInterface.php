@@ -30,9 +30,6 @@ namespace TYPO3\CMS\Extbase\DomainObject;
  *
  * @see Tx_Extbase_DomainObject_AbstractEntity
  * @see Tx_Extbase_DomainObject_AbstractValueObject
- * @package Extbase
- * @subpackage DomainObject
- * @version $ID:$
  */
 interface DomainObjectInterface
 {

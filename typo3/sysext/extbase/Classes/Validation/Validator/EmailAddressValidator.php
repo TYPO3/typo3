@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  ***************************************************************/
 /**
  * Validator for email addresses
- *
- * @package Extbase
- * @subpackage Validation\Validator
- * @version $Id$
  */
 class EmailAddressValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 

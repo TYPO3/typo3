@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture;
 /**
  * A file context object (File Abstraction Layer)
  *
- * @package Extbase
- * @subpackage Domain\Model
  * @scope prototype
  * @entity
  * @api

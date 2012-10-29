@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Object;
  ***************************************************************/
 /**
  * "Unknown Interface" Exception
- *
- * @package Extbase
- * @subpackage Object\Exception
- * @version $Id$
  */
 class UnknownInterfaceException extends \TYPO3\CMS\Extbase\Object\Exception {
 

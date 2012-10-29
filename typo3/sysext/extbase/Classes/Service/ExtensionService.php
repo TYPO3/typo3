@@ -25,9 +25,6 @@ namespace TYPO3\CMS\Extbase\Service;
  ***************************************************************/
 /**
  * Utilities to process FlexForms
- *
- * @package Extbase
- * @subpackage Service
  */
 class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 

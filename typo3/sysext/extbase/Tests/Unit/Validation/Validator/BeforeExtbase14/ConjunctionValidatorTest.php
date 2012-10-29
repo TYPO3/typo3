@@ -31,10 +31,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\BeforeExtbase14;
  *
  * This testcase checks the expected behavior for Extbase < 1.4.0, to make sure
  * we do not break backwards compatibility.
- *
- * @package Extbase
- * @subpackage extbase
- * @version $Id: ConjunctionValidator_testcase.php 1729 2009-11-25 21:37:20Z stucki $
  */
 class ConjunctionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

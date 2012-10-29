@@ -29,9 +29,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 /**
  * A multi action controller. This is by far the most common base class for Controllers.
  *
- * @package Extbase
- * @subpackage MVC\Controller
- * @version $ID:$
  * @api
  */
 class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractController {

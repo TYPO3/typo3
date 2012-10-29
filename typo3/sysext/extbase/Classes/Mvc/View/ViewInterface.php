@@ -29,9 +29,6 @@ namespace TYPO3\CMS\Extbase\Mvc\View;
 /**
  * Interface of a view
  *
- * @package Extbase
- * @subpackage MVC\View
- * @version $ID:$
  * @api
  */
 interface ViewInterface

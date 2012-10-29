@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Persistence;
 /**
  * Contract for a repository
  *
- * @package Extbase
- * @subpackage Persistence
  * @api
  */
 interface RepositoryInterface

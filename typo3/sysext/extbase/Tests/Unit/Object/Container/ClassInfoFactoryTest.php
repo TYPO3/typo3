@@ -33,8 +33,6 @@ require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'T
  *
  * @author Daniel Pötzinger
  * @author Bastian Waidelich <bastian@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ClassInfoFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

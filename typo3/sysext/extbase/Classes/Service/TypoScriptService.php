@@ -26,9 +26,6 @@ namespace TYPO3\CMS\Extbase\Service;
  ***************************************************************/
 /**
  * Utilities to manage and convert TypoScript
- *
- * @package Extbase
- * @subpackage Service
  */
 class TypoScriptService implements \TYPO3\CMS\Core\SingletonInterface {
 

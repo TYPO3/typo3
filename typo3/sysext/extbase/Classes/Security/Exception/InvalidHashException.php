@@ -28,9 +28,6 @@ namespace TYPO3\CMS\Extbase\Security\Exception;
  ***************************************************************/
 /**
  * A "InvalidHash" Exception, thrown when a HMAC validation failed.
- *
- * @package Extbase
- * @subpackage Security\Exception
  */
 class InvalidHashException extends \TYPO3\CMS\Extbase\Security\Exception {
 

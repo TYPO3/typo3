@@ -25,10 +25,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
  ***************************************************************/
 /**
  * A factory for a data map to map a single table configured in $TCA on a domain object.
- *
- * @package Extbase
- * @subpackage Persistence\Mapper
- * @version $ID:$
  */
 class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 

@@ -29,9 +29,6 @@ namespace TYPO3\CMS\Extbase\Mvc\View;
 /**
  * The not found view - a special case.
  *
- * @package Extbase
- * @subpackage MVC\View
- * @version $Id: EmptyView.php 2517 2010-08-04 17:56:45Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class NotFoundView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView {

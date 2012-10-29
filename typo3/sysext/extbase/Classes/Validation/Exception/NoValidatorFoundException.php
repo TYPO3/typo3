@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Validation\Exception;
  ***************************************************************/
 /**
  * A "NoValidatorFound" Exception
- *
- * @package Extbase
- * @subpackage Validation\Exception
- * @version $ID:$
  */
 class NoValidatorFoundException extends \TYPO3\CMS\Extbase\Validation\Exception {
 

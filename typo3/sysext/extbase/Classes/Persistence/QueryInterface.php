@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Persistence;
 /**
  * A persistence query interface
  *
- * @package Extbase
- * @subpackage Persistence
  * @api
  */
 interface QueryInterface

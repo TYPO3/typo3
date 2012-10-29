@@ -25,9 +25,6 @@ namespace TYPO3\CMS\Extbase\Service;
  ***************************************************************/
 /**
  * PHP type handling functions
- *
- * @package Extbase
- * @subpackage Service
  */
 class TypeHandlingService implements \TYPO3\CMS\Core\SingletonInterface {
 

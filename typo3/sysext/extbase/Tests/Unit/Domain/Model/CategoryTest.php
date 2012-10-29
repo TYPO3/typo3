@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
 /**
  * Testcase for the \TYPO3\CMS\Extbase\Domain\Model\Category class.
  *
- * @package Extbase
- * @subpackage Domain\Model
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class CategoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {

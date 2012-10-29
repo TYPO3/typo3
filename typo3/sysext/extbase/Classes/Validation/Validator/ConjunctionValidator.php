@@ -30,9 +30,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  * Validator to chain many validators in a conjunction (logical and). So every
  * validator has to be valid, to make the whole conjunction valid.
  *
- * @package Extbase
- * @subpackage Validation\Validator
- * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */

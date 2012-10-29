@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  ***************************************************************/
 /**
  * A query settings interface. This interface is NOT part of the FLOW3 API.
- *
- * @package Extbase
- * @subpackage Persistence
- * @version $Id$
  */
 interface QuerySettingsInterface
 {

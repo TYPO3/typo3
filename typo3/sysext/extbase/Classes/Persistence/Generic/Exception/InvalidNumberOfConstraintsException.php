@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  ***************************************************************/
 /**
  * An "Invalid Number of Constraints" exception.
- *
- * @package Extbase
- * @subpackage Persistence\Exception
- * @version $ID:$
  */
 class InvalidNumberOfConstraintsException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
 

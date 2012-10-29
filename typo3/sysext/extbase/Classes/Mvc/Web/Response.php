@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
 /**
  * A web specific response implementation
  *
- * @package Extbase
- * @subpackage MVC\Web
  * @api
  */
 class Response extends \TYPO3\CMS\Extbase\Mvc\Response {

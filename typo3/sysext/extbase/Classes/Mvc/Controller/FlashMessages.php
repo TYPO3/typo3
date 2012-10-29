@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  * This is a container for all Flash Messages. It is of scope session, but as Extbase
  * has no session scope, we need to save it manually.
  *
- * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope session
  * @api

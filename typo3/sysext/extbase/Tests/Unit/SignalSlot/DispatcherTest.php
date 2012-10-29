@@ -28,9 +28,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\SignalSlot;
  ***************************************************************/
 /**
  * Testcase for the Signal Dispatcher Class
- *
- * @package Extbase
- * @subpackage Tests
  */
 class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

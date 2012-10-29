@@ -25,10 +25,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  ***************************************************************/
 /**
  * Thrown if a setting set is not available in the current context.
- *
- * @package Extbase
- * @subpackage Persistence\Storage\Exception
- * @version $ID:$
  */
 class InconsistentQuerySettingsException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
 

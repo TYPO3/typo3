@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
  * Testcase for Tx_Extbase_Domain_Model_BackendUserGroup.
  *
  * @author Markus Günther <mail@markus-guenther>
- * @package Extbase
- * @subpackage Domain\Model
  * @scope prototype
  * @entity
  * @api

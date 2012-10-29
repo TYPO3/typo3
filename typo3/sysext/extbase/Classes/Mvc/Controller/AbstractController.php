@@ -29,9 +29,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 /**
  * An abstract base class for Controllers
  *
- * @package Extbase
- * @subpackage MVC\Controller
- * @version $ID:$
  * @api
  */
 abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface {

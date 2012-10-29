@@ -29,9 +29,6 @@ namespace TYPO3\CMS\Extbase\Property;
 /**
  * The Mapping Results
  *
- * @package Extbase
- * @subpackage Property
- * @version $Id$
  * @scope prototype
  * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
  */

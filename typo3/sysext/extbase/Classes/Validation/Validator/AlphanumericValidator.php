@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  ***************************************************************/
 /**
  * Validator for alphanumeric strings
- *
- * @package Extbase
- * @subpackage Validation\Validator
- * @version $Id$
  * @scope prototype
  */
 class AlphanumericValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {

@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Object\Exception;
  ***************************************************************/
 /**
  * "Cannot build object" Exception
- *
- * @package Extbase
- * @subpackage Object\Exception
- * @version $Id$
  */
 class CannotBuildObjectException extends \TYPO3\CMS\Extbase\Object\Exception {
 

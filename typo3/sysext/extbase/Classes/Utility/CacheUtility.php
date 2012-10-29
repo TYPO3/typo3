@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Utility;
 /**
  * Cache clearing helper functions
  *
- * @package Extbase
- * @subpackage Utility
  * @deprecated since Extbase 1.4.0; will be removed in Extbase 6.0. Please use Tx_Extbase_Service_CacheService instead
  */
 class CacheUtility {

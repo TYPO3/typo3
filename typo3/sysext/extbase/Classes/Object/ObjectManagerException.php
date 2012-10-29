@@ -28,9 +28,6 @@ namespace TYPO3\CMS\Extbase\Object;
  ***************************************************************/
 /**
  * Implementation of the default Extbase Object Manager
- *
- * @package Extbase
- * @subpackage Object
  */
 class ObjectManagerException implements \TYPO3\CMS\Extbase\Object\ObjectManagerInterfaceException {
 

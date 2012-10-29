@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Repository;
 /**
  * Testcase for the Tx_Extbase_Domain_Repository_CategoryRepository class.
  *
- * @package Extbase
- * @subpackage Domain\Repository
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class CategoryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {

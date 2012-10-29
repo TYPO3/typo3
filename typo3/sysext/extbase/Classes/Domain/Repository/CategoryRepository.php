@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Extbase\Domain\Repository;
  *
  * @author Fabien Udriot <fabien.udriot@typo3.org>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
- * @package Extbase
- * @subpackage Domain\Repository
  * @api
  */
 class CategoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {

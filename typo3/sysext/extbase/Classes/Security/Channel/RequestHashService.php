@@ -42,7 +42,6 @@ namespace TYPO3\CMS\Extbase\Security\Channel;
  *
  * Note: It is crucially important that a private key is computed into the hash value! This is done inside the HashService.
  *
- * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class RequestHashService implements \TYPO3\CMS\Core\SingletonInterface {

@@ -28,9 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  * SplObjectStorage introduced in PHP 5.3.
  *
  * Opposed to the SplObjectStorage the ObjectStorage does not implement the Serializable interface.
- *
- * @package Extbase
- * @subpackage Persistence
  */
 class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface {
 

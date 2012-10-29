@@ -29,9 +29,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 /**
  * Validator for general numbers
  *
- * @package Extbase
- * @subpackage Validation\Validator
- * @version $Id$
  * @scope prototype
  */
 class NumberRangeValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {

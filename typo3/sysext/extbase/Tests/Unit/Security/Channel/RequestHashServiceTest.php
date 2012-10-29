@@ -29,7 +29,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Security\Channel;
 /**
  * Testcase for the Request Hash Service
  *
- * @version $Id: RequestHashService_testcase.php 2334 2010-06-14 16:28:25Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser Public License, version 3 or later
  */
 class RequestHashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {

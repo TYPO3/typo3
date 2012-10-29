@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 /**
  * A file object (File Abstraction Layer)
  *
- * @package Extbase
- * @subpackage Domain\Model
  * @scope prototype
  * @entity
  * @api experimental! This class is experimental and subject to change!

@@ -29,9 +29,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 /**
  * A composite of controller arguments
  *
- * @package Extbase
- * @subpackage MVC\Controller
- * @version $ID:$
  * @scope prototype
  */
 class Arguments extends \ArrayObject {

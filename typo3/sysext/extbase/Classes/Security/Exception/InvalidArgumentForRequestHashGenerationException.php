@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Security\Exception;
  ***************************************************************/
 /**
  * An "InvalidArgumentForRequestHashGeneration" exception
- *
- * @package Extbase
- * @subpackage Security\Exception
- * @version $Id$
  */
 class InvalidArgumentForRequestHashGenerationException extends \TYPO3\CMS\Extbase\Security\Exception {
 

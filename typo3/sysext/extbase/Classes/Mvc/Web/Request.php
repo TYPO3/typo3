@@ -29,9 +29,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
 /**
  * Represents a web request.
  *
- * @package Extbase
- * @subpackage MVC\Web
- * @version $ID:$
  * @scope prototype
  * @api
  */

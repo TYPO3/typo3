@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 /**
  * Interface for controllers
  *
- * @package Extbase
- * @version $ID:$
  * @api
  */
 interface ControllerInterface

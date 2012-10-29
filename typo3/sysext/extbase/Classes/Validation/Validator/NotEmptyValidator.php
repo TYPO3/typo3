@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  ***************************************************************/
 /**
  * Validator for not empty values
- *
- * @package Extbase
- * @subpackage Validation\Validator
- * @version $Id$
  */
 class NotEmptyValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 

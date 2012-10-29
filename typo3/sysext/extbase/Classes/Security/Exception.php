@@ -31,7 +31,6 @@ namespace TYPO3\CMS\Extbase\Security;
  *
  * It will use some salt / encryption key in the future.
  *
- * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser Public License, version 3 or later
  */
 class Exception extends \TYPO3\CMS\Extbase\Exception {

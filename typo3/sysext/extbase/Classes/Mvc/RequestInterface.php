@@ -29,7 +29,6 @@ namespace TYPO3\CMS\Extbase\Mvc;
 /**
  * Contract for a request.
  *
- * @version $Id$
  * @scope prototype
  * @api
  */

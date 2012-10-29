@@ -25,9 +25,6 @@ namespace TYPO3\CMS\Extbase\Scheduler;
  ***************************************************************/
 /**
  * Field provider for Extbase CommandController Scheduler task
- *
- * @package Extbase
- * @subpackage Scheduler
  */
 class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 

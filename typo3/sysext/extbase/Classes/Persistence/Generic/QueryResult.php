@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 /**
  * A lazy result list that is returned by Query::execute()
  *
- * @package Extbase
- * @subpackage Persistence
  * @scope prototype
  * @api
  */

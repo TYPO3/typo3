@@ -28,9 +28,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
  ***************************************************************/
 /**
  * Base command exception
- *
- * @package Extbase
- * @subpackage MVC\Exception
  */
 class CommandException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 

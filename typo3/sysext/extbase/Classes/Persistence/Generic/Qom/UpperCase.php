@@ -35,9 +35,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * If operand evaluates to null, the UpperCase operand also evaluates to null.
  *
- * @package Extbase
- * @subpackage Persistence\QOM
- * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */

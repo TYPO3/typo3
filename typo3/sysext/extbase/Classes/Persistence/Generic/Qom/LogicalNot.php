@@ -31,9 +31,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * To satisfy the Not constraint, the node-tuple must not satisfy constraint.
  *
- * @package Extbase
- * @subpackage Persistence\QOM
- * @version $Id$
  * @scope prototype
  */
 class LogicalNot implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\NotInterface {

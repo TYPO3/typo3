@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Repository;
  *
  * @author Markus Günther <mail@markus-guenther.de>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
- * @package Extbase
- * @subpackage Domain\Repository
  * @api
  */
 class BackendUserRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {

@@ -15,9 +15,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Exception;
  *                                                                        */
 /**
  * An "Invalid Object Type" exception
- *
- * @package Extbase
- * @subpackage Persistence\Exception
  */
 class IllegalObjectTypeException extends \TYPO3\CMS\Extbase\Persistence\Exception {
 

@@ -28,9 +28,6 @@ namespace TYPO3\CMS\Extbase\SignalSlot\Exception;
  ***************************************************************/
 /**
  * "Invalid Slot" Exception
- *
- * @package Extbase
- * @subpackage SignalSlot
  * @api
  */
 class InvalidSlotException extends \TYPO3\CMS\Extbase\Object\Exception {

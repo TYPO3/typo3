@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  ***************************************************************/
 /**
  * An "Invalid Property Type" exception
- *
- * @package Extbase
- * @subpackage Persistence\Exception
- * @version $ID:$
  */
 class InvalidPropertyTypeException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
 

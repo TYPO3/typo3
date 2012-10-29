@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Object;
  ***************************************************************/
 /**
  * "Unresolved Dependencies" Exception
- *
- * @package Extbase
- * @subpackage Object\Exception
- * @version $Id$
  */
 class UnresolvedDependenciesException extends \TYPO3\CMS\Extbase\Object\Exception {
 

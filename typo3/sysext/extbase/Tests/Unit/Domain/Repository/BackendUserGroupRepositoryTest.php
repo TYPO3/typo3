@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Repository;
  * Testcase for Tx_Extbase_Domain_Repository_BackendUserRepository.
  *
  * @author Markus Günther <mail@markus-guenther.de>
- * @package Extbase
- * @subpackage Domain\Repository
  * @api
  */
 class BackendUserGroupRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {

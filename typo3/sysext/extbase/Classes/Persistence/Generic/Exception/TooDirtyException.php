@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  ***************************************************************/
 /**
  * A "Too Dirty" exception
- *
- * @package Extbase
- * @subpackage Persistence\Exception
- * @version $ID:$
  */
 class TooDirtyException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
 

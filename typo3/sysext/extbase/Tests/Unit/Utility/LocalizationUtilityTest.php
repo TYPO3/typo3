@@ -25,9 +25,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  ***************************************************************/
 /**
  * Testcase for class Tx_Extbase_Utility_Localization
- *
- * @package Extbase
- * @subpackage Utility
  */
 class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

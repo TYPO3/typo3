@@ -26,7 +26,6 @@ namespace TYPO3\CMS\Extbase\Domain\Repository;
 /**
  * Testcase for the Tx_Extbase_Domain_Repository_FileMountRepository class.
  *
- * @package Extbase
  * @author Markus Günther <mail@markus-guenther.de>
  */
 class FileMountRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {

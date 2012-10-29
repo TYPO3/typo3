@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Mvc;
  ***************************************************************/
 /**
  * A generic MVC exception
- *
- * @package Extbase
- * @subpackage MVC
- * @version $ID:$
  */
 class Exception extends \TYPO3\CMS\Extbase\Exception {
 

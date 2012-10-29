@@ -31,10 +31,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * To satisfy the And constraint, a node-tuple must satisfy both constraint1 and
  * constraint2.
- *
- * @package Extbase
- * @subpackage Persistence\QOM
- * @version $Id$
  */
 interface AndInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface
 {

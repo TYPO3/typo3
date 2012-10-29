@@ -29,7 +29,6 @@ namespace TYPO3\CMS\Extbase\Reflection\Exception;
 /**
  * An "Property not accessible" exception
  *
- * @version $Id: InvalidPropertyType.php 1729 2009-11-25 21:37:20Z stucki $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class PropertyNotAccessibleException extends \TYPO3\CMS\Extbase\Reflection\Exception {

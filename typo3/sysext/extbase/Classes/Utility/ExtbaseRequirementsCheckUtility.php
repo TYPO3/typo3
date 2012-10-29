@@ -29,10 +29,6 @@ namespace TYPO3\CMS\Extbase\Utility;
 /**
  * A checker which hooks into the backend module "Reports" checking whether there
  * is a PHP accelerator in place which strips off Doc Comments.
- *
- * @package Extbase
- * @subpackage Utility
- * @version $Id$
  */
 class ExtbaseRequirementsCheckUtility implements \TYPO3\CMS\Reports\StatusProviderInterface {
 

@@ -30,9 +30,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  * Main exception thrown by classes in this package. May contain an error
  * message and/or another nested exception.
  *
- * @package Extbase
- * @subpackage Persistence\Exception
- * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class RepositoryException extends \RuntimeException {

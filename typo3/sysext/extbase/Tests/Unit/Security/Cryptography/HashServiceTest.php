@@ -26,7 +26,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Security\Cryptography;
 /**
  * Testcase for the Hash Service
  *
- * @version $Id: HashService_testcase.php 1729 2009-11-25 21:37:20Z stucki $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser Public License, version 3 or later
  */
 class HashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {

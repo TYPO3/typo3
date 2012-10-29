@@ -15,9 +15,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Exception;
  *                                                                        */
 /**
  * An "Unknown Object" exception
- *
- * @package Extbase
- * @subpackage Persistence\Exception
  */
 class UnknownObjectException extends \TYPO3\CMS\Extbase\Persistence\Exception {
 

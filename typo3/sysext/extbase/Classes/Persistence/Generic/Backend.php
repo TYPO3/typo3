@@ -29,10 +29,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 /**
  * A persistence backend. This backend maps objects to the relational model of the storage backend.
  * It persists all added, removed and changed objects.
- *
- * @package Extbase
- * @subpackage Persistence
- * @version $Id$
  */
 class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface, \TYPO3\CMS\Core\SingletonInterface {
 

@@ -46,9 +46,6 @@ namespace TYPO3\CMS\Extbase\Property;
  *
  * Now the target object equals the source object.
  *
- * @package Extbase
- * @subpackage Property
- * @version $Id$
  * @api
  * @deprecated since Extbase 1.4.0
  */

@@ -28,10 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  ***************************************************************/
 /**
  * An interface for the lazy loading strategies.
- *
- * @package Extbase
- * @subpackage Persistence
- * @version $Id$
  */
 interface LoadingStrategyInterface
 {

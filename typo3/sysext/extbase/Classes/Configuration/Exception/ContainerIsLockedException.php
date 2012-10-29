@@ -27,14 +27,7 @@ namespace TYPO3\CMS\Extbase\Configuration\Exception;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * @version $Id$
- */
-/**
  * A Container Is Locked exception
- *
- * @package Extbase
- * @subpackage Configuration\Exception
- * @version $ID:$
  */
 class ContainerIsLockedException extends \TYPO3\CMS\Extbase\Configuration\Exception {
 

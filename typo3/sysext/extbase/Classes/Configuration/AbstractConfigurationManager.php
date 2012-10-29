@@ -25,10 +25,6 @@ namespace TYPO3\CMS\Extbase\Configuration;
  ***************************************************************/
 /**
  * Abstract base class for a general purpose configuration manager
- *
- * @package Extbase
- * @subpackage Configuration
- * @version $ID:$
  */
 abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 
