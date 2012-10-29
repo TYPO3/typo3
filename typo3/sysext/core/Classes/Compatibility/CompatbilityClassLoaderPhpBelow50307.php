@@ -71,10 +71,10 @@ class CompatbilityClassLoaderPhpBelow50307 extends \TYPO3\CMS\Core\Core\ClassLoa
 	 * @static
 	 * @param string $classPath
 	 */
-	static public function requireClassFileOnce($classPath) {
-		if (GeneralUtility::isFirstPartOfStr($classPath, PATH_typo3 . 'sysext/')) {
-				// Do nothing for sysextensions. They are already using the proper type hints.
-			GeneralUtility::requireOnce($classPath);
+	static public function requireClassFileOnce($classPath, $className) {
+		if (!in_array(substr($className, 0, 3), array('tx_', 'Tx_', 'user_'))) {
+				// Do nothing for system extensions or external libraries. They are already using the proper type hints or do not use them at all.
+			static::requireClassFile($classPath);
 		} else {
 			$cacheIdentifier = static::getClassPathCacheIdentifier($classPath);
 			/** @var $phpCodeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
@@ -118,23 +118,25 @@ class CompatbilityClassLoaderPhpBelow50307 extends \TYPO3\CMS\Core\Core\ClassLoa
 	static protected function rewriteMethodTypeHintsFromClassPath($classPath) {
 		$pcreBacktrackLimitOriginal = ini_get('pcre.backtrack_limit');
 		$classAliasMap = static::$aliasToClassNameMapping;
-		$fileContent = file_get_contents($classPath);
+		$fileContent = static::getClassFileContent($classPath);
 		$fileLength = strlen($fileContent);
+		$hasReplacements = FALSE;
 		// when the class file is bigger than the original pcre backtrace limit increase the limit
 		if ($pcreBacktrackLimitOriginal < $fileLength) {
 			ini_set('pcre.backtrack_limit', $fileLength);
 		}
 		$fileContent = preg_replace_callback(
-			'/function\s+([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\s*\((.*?\$.*?)\)(\s*[{;])/ims',
-			function($matches) use($classAliasMap) {
+			'/function[ \t]+([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\s*\((.*?\$.*?)\)(\s*[{;])/ims',
+			function($matches) use($classAliasMap, &$hasReplacements) {
 			if (isset($matches[1]) && isset($matches[2])) {
 				list($functionName, $argumentList) = array_slice($matches, 1, 2);
 				$arguments = explode(',', $argumentList);
 				$arguments = array_map('trim', $arguments);
-				$arguments = preg_replace_callback('/([\\a-z0-9_]+\s+)?((\s*[&]*\s*\$[a-z0-9_]+)(\s*=\s*.+)?)/ims', function($argumentMatches) use($classAliasMap) {
+				$arguments = preg_replace_callback('/([\\a-z0-9_]+\s+)?((\s*[&]*\s*\$[a-z0-9_]+)(\s*=\s*.+)?)/ims', function($argumentMatches) use($classAliasMap, &$hasReplacements)  {
 					if (isset($argumentMatches[1]) && isset($argumentMatches[2])) {
 						$typeHint = strtolower(ltrim(trim($argumentMatches[1]), '\\'));
 						if (isset($classAliasMap[$typeHint])) {
+							$hasReplacements = TRUE;
 							return '\\' . $classAliasMap[$typeHint] . ' ' . $argumentMatches[2];
 						}
 					}
@@ -151,7 +153,31 @@ class CompatbilityClassLoaderPhpBelow50307 extends \TYPO3\CMS\Core\Core\ClassLoa
 		if ($pcreBacktrackLimitOriginal < $fileLength) {
 			ini_set('pcre.backtrack_limit', $pcreBacktrackLimitOriginal);
 		}
+
+		if (!$hasReplacements) {
+			$fileContent = 'require_once \'' . $classPath . '\';';
+		}
+
 		return $fileContent;
+	}
+
+	/**
+	 * Wrapper method to be able to mock in unit tests
+	 *
+	 * @param string $classPath
+	 */
+	protected static function requireClassFile($classPath) {
+		GeneralUtility::requireOnce($classPath);
+	}
+
+	/**
+	 * Wrapper method to be able to mock in unit tests
+	 *
+	 * @param string $classPath
+	 * @return string
+	 */
+	protected static function getClassFileContent($classPath) {
+		return file_get_contents($classPath);
 	}
 
 }
