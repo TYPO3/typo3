@@ -1098,7 +1098,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		// Load full table description:
 		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
 		// If show info is set...;
-		if ($this->tt_contentConfig['showInfo']) {
+		if ($this->tt_contentConfig['showInfo'] && $GLOBALS['BE_USER']->recordEditAccessInternals('tt_content', $row)) {
 			// Render control panel for the element:
 			if ($this->tt_contentConfig['showCommands'] && $this->doEdit) {
 				// Edit content element:
@@ -1417,7 +1417,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	public function linkEditContent($str, $row) {
 		$addButton = '';
 		$onClick = '';
-		if ($this->doEdit) {
+		if ($this->doEdit && $GLOBALS['BE_USER']->recordEditAccessInternals('tt_content', $row)) {
 			// Setting onclick action for content link:
 			$onClick = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tt_content][' . $row['uid'] . ']=edit', $this->backPath);
 		}
@@ -1592,11 +1592,13 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	public function getIcon($table, $row) {
 		// Initialization
 		$alttext = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordIconAltText($row, $table);
-		$iconImg = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row, array('title' => $alttext));
+		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row, array('title' => $alttext));
 		$this->counter++;
 		// The icon with link
-		$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, $table, $row['uid']);
-		return $theIcon;
+		if ($GLOBALS['BE_USER']->recordEditAccessInternals($table, $row)) {
+			$icon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($icon, $table, $row['uid']);
+		}
+		return $icon;
 	}
 
 	/**
