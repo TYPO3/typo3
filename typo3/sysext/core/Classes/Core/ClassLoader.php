@@ -150,7 +150,7 @@ class ClassLoader {
 		$classPath = static::getClassPathByRegistryLookup($lookUpClassName);
 		if ($classPath && !class_exists($realClassName, FALSE)) {
 			// Include the required file that holds the class
-			static::requireClassFileOnce($classPath);
+			static::requireClassFileOnce($classPath, $className);
 			try {
 				// Regular expression for a valid classname taken from
 				// http://www.php.net/manual/en/language.oop5.basic.php
