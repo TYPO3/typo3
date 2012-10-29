@@ -40,10 +40,10 @@ class SuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 	 * @return string
 	 */
 	public function render(\TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser, $emulate = FALSE) {
-		if ($backendUser->getIsAdministrator()) {
+		if ($backendUser->getUid() == $GLOBALS['BE_USER']->user['uid']) {
 			return '';
 		}
-		$title = $GLOBALS['LANG']->getLL('switchUserTo', TRUE) . ' ' . $backendUser->getUserName() . ' ' . $GLOBALS['LANG']->getLL('switchBackMode', TRUE);
+		$title = $GLOBALS['LANG']->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:' . ($emulate ? 'switchBackMode' : 'changeToMode'));
 		return '<a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('SwitchUser' => $backendUser->getUid(), 'switchBackUser' => $emulate)) . '" target="_top" title="' . htmlspecialchars($title) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(('actions-system-backend-user-' . ($emulate ? 'emulate' : 'switch'))) . '</a>';
 	}
 
