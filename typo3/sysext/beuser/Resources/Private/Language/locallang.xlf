@@ -114,6 +114,12 @@
 			<trans-unit id="backendUserGroups" xml:space="preserve">
 				<source>Member of groups</source>
 			</trans-unit>
+			<trans-unit id="changeToMode" xml:space="preserve">
+				<source>[change-to mode]</source>
+			</trans-unit>
+			<trans-unit id="switchBackMode" xml:space="preserve">
+				<source>[switch-back mode]</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
