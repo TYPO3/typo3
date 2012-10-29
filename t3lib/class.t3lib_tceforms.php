@@ -2418,7 +2418,7 @@ class t3lib_TCEforms {
 	function getSingleField_typeFlex($table, $field, $row, &$PA) {
 
 			// Data Structure:
-		$dataStructArray = t3lib_BEfunc::getFlexFormDS($PA['fieldConf']['config'], $row, $table);
+		$dataStructArray = t3lib_BEfunc::getFlexFormDS($PA['fieldConf']['config'], $row, $table, $field);
 		$item = '';
 
 			// Manipulate Flexform DS via TSConfig and group access lists
