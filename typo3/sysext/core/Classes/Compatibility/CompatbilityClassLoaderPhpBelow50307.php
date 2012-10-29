@@ -70,21 +70,42 @@ class CompatbilityClassLoaderPhpBelow50307 extends \TYPO3\CMS\Core\Core\ClassLoa
 	 *
 	 * @static
 	 * @param string $classPath
+	 * @param string $className
+	 * @return void
 	 */
-	static public function requireClassFileOnce($classPath) {
-		if (GeneralUtility::isFirstPartOfStr($classPath, PATH_typo3 . 'sysext/')) {
-				// Do nothing for sysextensions. They are already using the proper type hints.
-			GeneralUtility::requireOnce($classPath);
+	static public function requireClassFileOnce($classPath, $className) {
+		if (
+			GeneralUtility::isFirstPartOfStr($className, 'tx_')
+			|| GeneralUtility::isFirstPartOfStr($className, 'Tx_')
+			|| GeneralUtility::isFirstPartOfStr($className, 'ux_')
+			|| GeneralUtility::isFirstPartOfStr($className, 'Ux_')
+			|| GeneralUtility::isFirstPartOfStr($className, 'user_')
+			|| GeneralUtility::isFirstPartOfStr($className, 'User_')
+		) {
+			// If class in question starts with one of the allowed old prefixes
+			static::checkClassCacheEntryAndRequire($classPath);
 		} else {
-			$cacheIdentifier = static::getClassPathCacheIdentifier($classPath);
-			/** @var $phpCodeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
-			$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
-			if (!$phpCodeCache->has($cacheIdentifier)) {
-				$classCode = static::rewriteMethodTypeHintsFromClassPath($classPath);
-				$phpCodeCache->set($cacheIdentifier, $classCode, array(), 0);
-			}
-			$phpCodeCache->requireOnce($cacheIdentifier);
+			// Do nothing for system extensions or external libraries.
+			// They are already using the proper type hints or do not use them at all.
+			static::requireClassFile($classPath);
 		}
+	}
+
+	/**
+	 * Require class file from cache and create if it doesn't exist yet
+	 *
+	 * @param $classPath
+	 * @return void
+	 */
+	static protected function checkClassCacheEntryAndRequire($classPath) {
+		$cacheIdentifier = static::getClassPathCacheIdentifier($classPath);
+		/** @var $phpCodeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
+		$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
+		if (!$phpCodeCache->has($cacheIdentifier)) {
+			$classCode = static::rewriteMethodTypeHintsFromClassPath($classPath);
+			$phpCodeCache->set($cacheIdentifier, $classCode, array(), 0);
+		}
+		$phpCodeCache->requireOnce($cacheIdentifier);
 	}
 
 	/**
@@ -95,15 +116,15 @@ class CompatbilityClassLoaderPhpBelow50307 extends \TYPO3\CMS\Core\Core\ClassLoa
 	 * @return string
 	 */
 	static protected function getClassPathCacheIdentifier($classPath) {
-			// The relative class path is part of the cache identifier
+		// The relative class path is part of the cache identifier
 		$relativeClassPath = (GeneralUtility::isFirstPartOfStr($classPath, PATH_site)) ? substr($classPath, strlen(PATH_site)) : $classPath;
 		$fileExtension = strrchr($classPath, '.');
 		$fileNameWithoutExtension = substr(basename($classPath), 0, strlen($fileExtension) * -1);
-			// The class content has to be part of the identifier too
-			// otherwise the old class files get loaded from cache
+		// The class content has to be part of the identifier too
+		// otherwise the old class files get loaded from cache
 		$fileSha1 = sha1_file($classPath);
 		$cacheIdentifier = 'ClassLoader_' . $fileNameWithoutExtension . '_' . substr(sha1($fileSha1 . '|' . $relativeClassPath), 0, 20);
-			// Clean up identifier to be a valid cache entry identifier
+		// Clean up identifier to be a valid cache entry identifier
 		$cacheIdentifier = preg_replace('/[^a-zA-Z0-9_%\-&]/i', '_', $cacheIdentifier);
 		return $cacheIdentifier;
 	}
@@ -118,23 +139,25 @@ class CompatbilityClassLoaderPhpBelow50307 extends \TYPO3\CMS\Core\Core\ClassLoa
 	static protected function rewriteMethodTypeHintsFromClassPath($classPath) {
 		$pcreBacktrackLimitOriginal = ini_get('pcre.backtrack_limit');
 		$classAliasMap = static::$aliasToClassNameMapping;
-		$fileContent = file_get_contents($classPath);
+		$fileContent = static::getClassFileContent($classPath);
 		$fileLength = strlen($fileContent);
+		$hasReplacements = FALSE;
 		// when the class file is bigger than the original pcre backtrace limit increase the limit
 		if ($pcreBacktrackLimitOriginal < $fileLength) {
 			ini_set('pcre.backtrack_limit', $fileLength);
 		}
 		$fileContent = preg_replace_callback(
-			'/function\s+([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\s*\((.*?\$.*?)\)(\s*[{;])/ims',
-			function($matches) use($classAliasMap) {
+			'/function[ \t]+([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\s*\((.*?\$.*?)\)(\s*[{;])/ims',
+			function($matches) use($classAliasMap, &$hasReplacements) {
 			if (isset($matches[1]) && isset($matches[2])) {
 				list($functionName, $argumentList) = array_slice($matches, 1, 2);
 				$arguments = explode(',', $argumentList);
 				$arguments = array_map('trim', $arguments);
-				$arguments = preg_replace_callback('/([\\a-z0-9_]+\s+)?((\s*[&]*\s*\$[a-z0-9_]+)(\s*=\s*.+)?)/ims', function($argumentMatches) use($classAliasMap) {
+				$arguments = preg_replace_callback('/([\\a-z0-9_]+\s+)?((\s*[&]*\s*\$[a-z0-9_]+)(\s*=\s*.+)?)/ims', function($argumentMatches) use($classAliasMap, &$hasReplacements)  {
 					if (isset($argumentMatches[1]) && isset($argumentMatches[2])) {
 						$typeHint = strtolower(ltrim(trim($argumentMatches[1]), '\\'));
 						if (isset($classAliasMap[$typeHint])) {
+							$hasReplacements = TRUE;
 							return '\\' . $classAliasMap[$typeHint] . ' ' . $argumentMatches[2];
 						}
 					}
@@ -151,7 +174,31 @@ class CompatbilityClassLoaderPhpBelow50307 extends \TYPO3\CMS\Core\Core\ClassLoa
 		if ($pcreBacktrackLimitOriginal < $fileLength) {
 			ini_set('pcre.backtrack_limit', $pcreBacktrackLimitOriginal);
 		}
+
+		if (!$hasReplacements) {
+			$fileContent = 'require_once \'' . $classPath . '\';';
+		}
+
 		return $fileContent;
+	}
+
+	/**
+	 * Wrapper method to be able to mock in unit tests
+	 *
+	 * @param string $classPath
+	 */
+	protected static function requireClassFile($classPath) {
+		GeneralUtility::requireOnce($classPath);
+	}
+
+	/**
+	 * Wrapper method to be able to mock in unit tests
+	 *
+	 * @param string $classPath
+	 * @return string
+	 */
+	protected static function getClassFileContent($classPath) {
+		return file_get_contents($classPath);
 	}
 
 }
