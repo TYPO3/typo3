@@ -150,7 +150,11 @@ class ClassLoader {
 		$classPath = static::getClassPathByRegistryLookup($lookUpClassName);
 		if ($classPath && !class_exists($realClassName, FALSE)) {
 			// Include the required file that holds the class
-			static::requireClassFileOnce($classPath);
+			// Handing over the class name here is only done for the
+			// compatibility class loader so that it can skip class names
+			// which do not require rewriting. We can remove this bad
+			// code smell once we can get rid of the compatibility class loader.
+			static::requireClassFileOnce($classPath, $className);
 			try {
 				// Regular expression for a valid classname taken from
 				// http://www.php.net/manual/en/language.oop5.basic.php
