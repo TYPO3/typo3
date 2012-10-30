@@ -139,10 +139,11 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	 *
 	 * @param mixed $identifier
 	 * @param string $objectType
+	 * @param boolean $useLazyLoading Set to TRUE if you want to use lazy loading for this object
 	 * @return object The object for the identifier if it is known, or NULL
 	 * @api
 	 */
-	public function getObjectByIdentifier($identifier, $objectType) {
+	public function getObjectByIdentifier($identifier, $objectType = NULL, $useLazyLoading = FALSE) {
 		return $this->backend->getObjectByIdentifier($identifier, $objectType);
 	}
 
@@ -181,6 +182,129 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 		}
 	}
 
+	/**
+	 * Adds an object to the persistence.
+	 *
+	 * @param object $object The object to add
+	 * @return void
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
+	 * @api
+	 */
+	public function add($object) {
+		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
+	}
+
+	/**
+	 * Removes an object to the persistence.
+	 *
+	 * @param object $object The object to remove
+	 * @return void
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
+	 * @api
+	 */
+	public function remove($object) {
+		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
+	}
+
+	/**
+	 * Update an object in the persistence.
+	 *
+	 * @param object $object The modified object
+	 * @return void
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
+	 * @api
+	 */
+	public function update($object) {
+		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
+	}
+
+	/**
+	 * Injects the Extbase settings, called by Extbase.
+	 *
+	 * @param array $settings
+	 * @return void
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
+	 * @api
+	 */
+	public function injectSettings(array $settings) {
+		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
+	}
+
+	/**
+	 * Initializes the persistence manager, called by Extbase.
+	 *
+	 * @return void
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
+	 * @api
+	 */
+	public function initialize() {
+		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
+	}
+
+	/**
+	 * Clears the in-memory state of the persistence.
+	 *
+	 * Managed instances become detached, any fetches will
+	 * return data directly from the persistence "backend".
+	 *
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
+	 * @return void
+	 */
+	public function clearState() {
+		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
+	}
+
+	/**
+	 * Checks if the given object has ever been persisted.
+	 *
+	 * @param object $object The object to check
+	 * @return boolean TRUE if the object is new, FALSE if the object exists in the repository
+	 * @api
+	 */
+	public function isNewObject($object) {
+		return $this->backend->isNewObject($object);
+	}
+
+	/**
+	 * Converts the given object into an array containing the identity of the domain object.
+	 *
+	 * @param object $object The object to be converted
+	 * @return array The identity array in the format array('__identity' => '...')
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException if the given object is not known to the Persistence Manager
+	 * @api
+	 */
+	public function convertObjectToIdentityArray($object) {
+		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
+	}
+
+	/**
+	 * Recursively iterates through the given array and turns objects
+	 * into arrays containing the identity of the domain object.
+	 *
+	 * @param array $array The array to be iterated over
+	 * @return array The modified array without objects
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException if array contains objects that are not known to the Persistence Manager
+	 * @api
+	 * @see convertObjectToIdentityArray()
+	 */
+	public function convertObjectsToIdentityArrays(array $array) {
+		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
+	}
+
+	/**
+	 * Return a query object for the given type.
+	 *
+	 * @param string $type
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
+	 * @api
+	 */
+	public function createQueryForType($type) {
+		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
+	}
 }
 
 

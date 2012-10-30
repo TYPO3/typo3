@@ -436,7 +436,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 		$childClassName = $this->getType(get_class($parentObject), $propertyName);
 		$right = $this->qomFactory->selector($childClassName, $columnMap->getChildTableName());
 		$joinCondition = $this->qomFactory->equiJoinCondition($columnMap->getRelationTableName(), $columnMap->getChildKeyFieldName(), $columnMap->getChildTableName(), 'uid');
-		$source = $this->qomFactory->join($left, $right, \TYPO3\CMS\Extbase\Persistence\QueryInterface::JCR_JOIN_TYPE_INNER, $joinCondition);
+		$source = $this->qomFactory->join($left, $right, \TYPO3\CMS\Extbase\Persistence\Generic\Query::JCR_JOIN_TYPE_INNER, $joinCondition);
 		return $source;
 	}
 

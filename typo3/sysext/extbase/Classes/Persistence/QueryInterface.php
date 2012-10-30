@@ -19,90 +19,89 @@ namespace TYPO3\CMS\Extbase\Persistence;
  * @api
  */
 interface QueryInterface {
+
 	/**
 	 * The '=' comparison operator.
-	 *
 	 * @api
 	 */
 	const OPERATOR_EQUAL_TO = 1;
+
 	/**
 	 * The '!=' comparison operator.
-	 *
 	 * @api
 	 */
 	const OPERATOR_NOT_EQUAL_TO = 2;
+
 	/**
 	 * The '<' comparison operator.
-	 *
 	 * @api
 	 */
 	const OPERATOR_LESS_THAN = 3;
+
 	/**
 	 * The '<=' comparison operator.
-	 *
 	 * @api
 	 */
 	const OPERATOR_LESS_THAN_OR_EQUAL_TO = 4;
+
 	/**
 	 * The '>' comparison operator.
-	 *
 	 * @api
 	 */
 	const OPERATOR_GREATER_THAN = 5;
+
 	/**
 	 * The '>=' comparison operator.
-	 *
 	 * @api
 	 */
 	const OPERATOR_GREATER_THAN_OR_EQUAL_TO = 6;
+
 	/**
 	 * The 'like' comparison operator.
-	 *
 	 * @api
 	 */
 	const OPERATOR_LIKE = 7;
+
 	/**
-	 * The 'contains' comparison operator.
-	 *
+	 * The 'contains' comparison operator for collections.
 	 * @api
 	 */
 	const OPERATOR_CONTAINS = 8;
+
 	/**
 	 * The 'in' comparison operator.
-	 *
 	 * @api
 	 */
 	const OPERATOR_IN = 9;
+
+	/**
+	 * The 'is NULL' comparison operator.
+	 * @api
+	 */
+	const OPERATOR_IS_NULL = 10;
+
+	/**
+	 * The 'is empty' comparison operator for collections.
+	 * @api
+	 */
+	const OPERATOR_IS_EMPTY = 11;
+
 	/**
 	 * Constants representing the direction when ordering result sets.
 	 */
 	const ORDER_ASCENDING = 'ASC';
 	const ORDER_DESCENDING = 'DESC';
-	/**
-	 * An inner join.
-	 */
-	const JCR_JOIN_TYPE_INNER = '{http://www.jcp.org/jcr/1.0}joinTypeInner';
-	/**
-	 * A left-outer join.
-	 */
-	const JCR_JOIN_TYPE_LEFT_OUTER = '{http://www.jcp.org/jcr/1.0}joinTypeLeftOuter';
-	/**
-	 * A right-outer join.
-	 */
-	const JCR_JOIN_TYPE_RIGHT_OUTER = '{http://www.jcp.org/jcr/1.0}joinTypeRightOuter';
-	/**
-	 * Charset of strings in QOM
-	 */
-	const CHARSET = 'utf-8';
+
 	/**
 	 * Gets the node-tuple source for this query.
 	 *
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface the node-tuple source; non-NULL
+	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
 	 */
 	public function getSource();
 
 	/**
-	 * Executes the query against the backend and returns the result
+	 * Executes the query and returns the result.
 	 *
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
 	 * @api
@@ -112,8 +111,8 @@ interface QueryInterface {
 	/**
 	 * Sets the property names to order the result by. Expected like this:
 	 * array(
-	 * 'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
-	 * 'bar' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
+	 *  'foo' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
+	 *  'bar' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
 	 * )
 	 *
 	 * @param array $orderings The property names to order by
@@ -124,7 +123,7 @@ interface QueryInterface {
 
 	/**
 	 * Sets the maximum size of the result set to limit. Returns $this to allow
-	 * for chaining (fluid interface)
+	 * for chaining (fluid interface).
 	 *
 	 * @param integer $limit
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
@@ -134,7 +133,7 @@ interface QueryInterface {
 
 	/**
 	 * Sets the start offset of the result set to offset. Returns $this to
-	 * allow for chaining (fluid interface)
+	 * allow for chaining (fluid interface).
 	 *
 	 * @param integer $offset
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
@@ -144,7 +143,7 @@ interface QueryInterface {
 
 	/**
 	 * The constraint used to limit the result set. Returns $this to allow
-	 * for chaining (fluid interface)
+	 * for chaining (fluid interface).
 	 *
 	 * @param object $constraint Some constraint, depending on the backend
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
@@ -153,7 +152,9 @@ interface QueryInterface {
 	public function matching($constraint);
 
 	/**
-	 * Performs a logical conjunction of the two given constraints.
+	 * Performs a logical conjunction of the two given constraints. The method
+	 * takes one or more constraints and concatenates them with a boolean AND.
+	 * It also accepts a single array of constraints to be concatenated.
 	 *
 	 * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
 	 * @return object
@@ -162,7 +163,9 @@ interface QueryInterface {
 	public function logicalAnd($constraint1);
 
 	/**
-	 * Performs a logical disjunction of the two given constraints
+	 * Performs a logical disjunction of the two given constraints. The method
+	 * takes one or more constraints and concatenates them with a boolean OR.
+	 * It also accepts a single array of constraints to be concatenated.
 	 *
 	 * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
 	 * @return object
@@ -180,33 +183,44 @@ interface QueryInterface {
 	public function logicalNot($constraint);
 
 	/**
-	 * Returns an equals criterion used for matching objects against a query
+	 * Returns an equals criterion used for matching objects against a query.
+	 *
+	 * It matches if the $operand equals the value of the property named
+	 * $propertyName. If $operand is NULL a strict check for NULL is done. For
+	 * strings the comparison can be done with or without case-sensitivity.
 	 *
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
-	 * @param boolean $caseSensitive Whether the equality test should be done case-sensitive
+	 * @param boolean $caseSensitive Whether the equality test should be done case-sensitive for strings
 	 * @return object
 	 * @api
 	 */
 	public function equals($propertyName, $operand, $caseSensitive = TRUE);
 
 	/**
-	 * Returns a like criterion used for matching objects against a query
+	 * Returns a like criterion used for matching objects against a query.
+	 * Matches if the property named $propertyName is like the $operand, using
+	 * standard SQL wildcards.
 	 *
 	 * @param string $propertyName The name of the property to compare against
-	 * @param mixed $operand The value to compare with
+	 * @param string $operand The value to compare with
+	 * @param boolean $caseSensitive Whether the matching should be done case-sensitive
 	 * @return object
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a non-string property
 	 * @api
 	 */
-	public function like($propertyName, $operand);
+	public function like($propertyName, $operand, $caseSensitive = TRUE);
 
 	/**
 	 * Returns a "contains" criterion used for matching objects against a query.
 	 * It matches if the multivalued property contains the given operand.
 	 *
-	 * @param string $propertyName The name of the (multivalued) property to compare against
+	 * If NULL is given as $operand, there will never be a match!
+	 *
+	 * @param string $propertyName The name of the multivalued property to compare against
 	 * @param mixed $operand The value to compare with
 	 * @return object
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a single-valued property
 	 * @api
 	 */
 	public function contains($propertyName, $operand);
@@ -218,6 +232,7 @@ interface QueryInterface {
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with, multivalued
 	 * @return object
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a multi-valued property
 	 * @api
 	 */
 	public function in($propertyName, $operand);
@@ -228,6 +243,7 @@ interface QueryInterface {
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
 	 * @return object
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a multi-valued property or with a non-literal/non-DateTime operand
 	 * @api
 	 */
 	public function lessThan($propertyName, $operand);
@@ -238,6 +254,7 @@ interface QueryInterface {
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
 	 * @return object
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a multi-valued property or with a non-literal/non-DateTime operand
 	 * @api
 	 */
 	public function lessThanOrEqual($propertyName, $operand);
@@ -248,6 +265,7 @@ interface QueryInterface {
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
 	 * @return object
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a multi-valued property or with a non-literal/non-DateTime operand
 	 * @api
 	 */
 	public function greaterThan($propertyName, $operand);
@@ -258,6 +276,7 @@ interface QueryInterface {
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
 	 * @return object
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a multi-valued property or with a non-literal/non-DateTime operand
 	 * @api
 	 */
 	public function greaterThanOrEqual($propertyName, $operand);
@@ -266,6 +285,7 @@ interface QueryInterface {
 	 * Returns the type this query cares for.
 	 *
 	 * @return string
+	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
 	 * @api
 	 */
 	public function getType();
@@ -276,7 +296,8 @@ interface QueryInterface {
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The Query Settings
 	 * @return void
-	 * @api This method is not part of FLOW3 API
+	 * @todo decide whether this can be deprecated somewhen
+	 * @api This method is not part of TYPO3Flow API
 	 */
 	public function setQuerySettings(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings);
 
@@ -284,10 +305,65 @@ interface QueryInterface {
 	 * Returns the Query Settings.
 	 *
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The Query Settings
-	 * @api This method is not part of FLOW3 API
+	 * @todo decide whether this can be deprecated somewhen
+	 * @api This method is not part of  TYPO3Flow API
 	 */
 	public function getQuerySettings();
 
+	/**
+	 * Returns the query result count.
+	 *
+	 * @return integer The query result count
+	 * @api
+	 */
+	public function count();
+
+	/**
+	 * Gets the property names to order the result by, like this:
+	 * array(
+	 *  'foo' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
+	 *  'bar' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+	 * )
+	 *
+	 * @return array
+	 * @api
+	 */
+	public function getOrderings();
+
+	/**
+	 * Returns the maximum size of the result set to limit.
+	 *
+	 * @param integer
+	 * @api
+	 */
+	public function getLimit();
+
+	/**
+	 * Returns the start offset of the result set.
+	 *
+	 * @return integer
+	 * @api
+	 */
+	public function getOffset();
+
+	/**
+	 * Gets the constraint for this query.
+	 *
+	 * @return mixed the constraint, or null if none
+	 * @api
+	 */
+	public function getConstraint();
+
+	/**
+	 * Returns an "isEmpty" criterion used for matching objects against a query.
+	 * It matches if the multivalued property contains no values or is NULL.
+	 *
+	 * @param string $propertyName The name of the multivalued property to compare against
+	 * @return boolean
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a single-valued property
+	 * @api
+	 */
+	public function isEmpty($propertyName);
 }
 
 ?>
