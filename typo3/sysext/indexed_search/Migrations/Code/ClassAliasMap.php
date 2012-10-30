@@ -6,8 +6,6 @@ return array(
 	'Tx_IndexedSearch_Controller_SearchController' => 'TYPO3\\CMS\\IndexedSearch\\Controller\\SearchController',
 	'tx_indexedsearch' => 'TYPO3\\CMS\\IndexedSearch\\Controller\\SearchFormController',
 	'Tx_IndexedSearch_Domain_Repository_IndexSearchRepository' => 'TYPO3\\CMS\\IndexedSearch\\Domain\\Repository\\IndexSearchRepository',
-	'tx_indexedsearch_crawlerhook' => 'TYPO3\\CMS\\IndexedSearch\\Example\\CrawlerHook',
-	'tx_indexedsearch_pihook' => 'TYPO3\\CMS\\IndexedSearch\\Example\\PluginHook',
 	'tx_indexed_search_extparse' => 'TYPO3\\CMS\\IndexedSearch\\FileContentParser',
 	'tx_indexedsearch_files' => 'TYPO3\\CMS\\IndexedSearch\\Hook\\CrawlerFilesHook',
 	'tx_indexedsearch_crawler' => 'TYPO3\\CMS\\IndexedSearch\\Hook\\CrawlerHook',
