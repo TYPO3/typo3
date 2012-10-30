@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  *
  * @api
  */
-class Manager implements \TYPO3\CMS\Extbase\Persistence\Generic\ManagerInterface, \TYPO3\CMS\Core\SingletonInterface {
+class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface, \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
@@ -44,7 +44,7 @@ class Manager implements \TYPO3\CMS\Extbase\Persistence\Generic\ManagerInterface
 	protected $session;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterfaceException
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -78,10 +78,10 @@ class Manager implements \TYPO3\CMS\Extbase\Persistence\Generic\ManagerInterface
 	/**
 	 * Injects the object manager
 	 *
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterfaceException $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterfaceException $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
