@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  * $this->arguments['<argumentName>']
  * ->getPropertyMappingConfiguration()
  * ->forProperty('<propertyName>') // this line can be skipped in order to specify the format for all properties
- * ->setTypeConverterOption('Tx_Extbase_Property_TypeConverter_DateTimeConverter', Tx_Extbase_Property_TypeConverter_DateTimeConverter::CONFIGURATION_DATE_FORMAT, '<dateFormat>');
+ * ->setTypeConverterOption('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT, '<dateFormat>');
  *
  * If the source is of type array, it is possible to override the format in the source:
  * array(
