@@ -56,32 +56,65 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * value of key "someKey" in the current website language
  * the locallang file of extension "some_extension_name" will be used
  * </output>
+ *
+ * <code title="Translate id as in TYPO3 Flow">
+ * <f:translate id="key1" />
+ * </code>
+ * <output>
+ * value of id "key1" in the current website language
+ * </output>
  */
 class TranslateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * Translate a given key or use the tag body as default.
+	 * Initializes arguments for Translate ViewHelper
 	 *
-	 * @param string $key The locallang key
-	 * @param string $default if the given locallang key could not be found, this value is used. . If this argument is not set, child nodes will be used to render the default
-	 * @param boolean $htmlEscape TRUE if the result should be htmlescaped. This won't have an effect for the default value
-	 * @param array $arguments Arguments to be replaced in the resulting string
-	 * @param string $extensionName UpperCamelCased extension key (for example BlogExample)
+	 * @return void
+	 */
+	public function initializeArguments() {
+		/** @deprecated since 6.0 and will be removed in 6.2 */
+		$this->registerArgument('key', 'string', 'Translation Key');
+		$this->registerArgument('id', 'string', 'Translation Key compatible to TYPO3 Flow');
+		$this->registerArgument('default', 'string', 'if the given locallang key could not be found, this value is used. If this argument is not set, child nodes will be used to render the default');
+		$this->registerArgument('htmlEscape', 'boolean', 'TRUE if the result should be htmlescaped. This won\'t have an effect for the default value');
+		$this->registerArgument('arguments', 'array', 'Arguments to be replaced in the resulting string');
+		$this->registerArgument('extensionName', 'string', 'UpperCamelCased extension key (for example BlogExample)');
+	}
+
+	/**
+	 * Wrapper function including a compatibility layer for TYPO3 Flow Translation
+	 *
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
+	 *
 	 * @return string The translated key or tag body if key doesn't exist
 	 */
-	public function render($key, $default = NULL, $htmlEscape = TRUE, array $arguments = NULL, $extensionName = NULL) {
+	public function render() {
+		$id = $this->hasArgument('id') ? $this->arguments['id'] : $this->arguments['key'];
+
+		if (strlen($id) > 0) {
+			return $this->renderTranslation($id);
+		} else {
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException('An argument "key" or "id" has to be provided', 1351584844);
+		}
+	}
+
+	/**
+	 * Translate a given key or use the tag body as default.
+	 *
+	 * @param string $id The locallang id
+	 * @return string The translated key or tag body if key doesn't exist
+	 */
+	protected function renderTranslation($id) {
 		$request = $this->controllerContext->getRequest();
-		$extensionName = $extensionName === NULL ? $request->getControllerExtensionName() : $extensionName;
-		$value = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $extensionName, $arguments);
+		$extensionName = $this->arguments['extensionName'] === NULL ? $request->getControllerExtensionName() : $this->arguments['extensionName'];
+		$value = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($id, $extensionName, $this->arguments['arguments']);
 		if ($value === NULL) {
-			$value = $default !== NULL ? $default : $this->renderChildren();
-		} elseif ($htmlEscape) {
+			$value = $this->arguments['default'] !== NULL ? $this->arguments['default'] : $this->renderChildren();
+		} elseif ($this->arguments['htmlEscape']) {
 			$value = htmlspecialchars($value);
 		}
 		return $value;
 	}
-
 }
-
 
 ?>
