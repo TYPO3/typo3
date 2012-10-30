@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
 class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Repository|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject
+	 * @var \TYPO3\CMS\Extbase\Persistence\Repository|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $repository;
 
@@ -323,7 +323,7 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$existingObject = new \stdClass();
 		$modifiedObject = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface');
 		$modifiedObject->expects($this->once())->method('getUid')->will($this->returnValue('123'));
-		/** @var \TYPO3\CMS\Extbase\Persistence\Repository|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject */
+		/** @var \TYPO3\CMS\Extbase\Persistence\Repository|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$repository = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Repository', array('findByUid', 'replace'), array($this->mockObjectManager));
 		$repository->expects($this->once())->method('findByUid')->with('123')->will($this->returnValue($existingObject));
 		$repository->expects($this->once())->method('replace')->with($existingObject, $modifiedObject);

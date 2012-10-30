@@ -160,7 +160,7 @@ class QueryResultTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function initializeExecutesQueryWithArrayFetchMode() {
-		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject */
+		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$queryResult = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult', array('dummy'), array($this->mockQuery));
 		$queryResult->injectPersistenceManager($this->mockPersistenceManager);
 		$queryResult->injectDataMapper($this->mockDataMapper);
