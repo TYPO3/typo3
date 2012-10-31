@@ -154,7 +154,7 @@ return array(
 	'Tx_Extbase_Persistence_Mapper_DataMapFactory' => 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory',
 	'Tx_Extbase_Persistence_Mapper_DataMapper' => 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper',
 	'Tx_Extbase_Persistence_ObjectMonitoringInterface' => 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectMonitoringInterface',
-	'Tx_Extbase_Persistence_ObjectStorage' => 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage',
+	'Tx_Extbase_Persistence_ObjectStorage' => 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage',
 	'Tx_Extbase_Persistence_Manager' => 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager',
 	'Tx_Extbase_Persistence_PersistenceManagerInterface' => 'TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface',
 	'Tx_Extbase_Persistence_ManagerInterface' => 'TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface',
