@@ -181,11 +181,13 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 		$foundDraftRecords = FALSE;
 		$tables = array_keys($GLOBALS['TCA']);
 		foreach ($tables as $table) {
-			$versioningVer = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($GLOBALS['TCA'][$table]['ctrl']['versioningWS'], 0, 2, 0);
-			if ($versioningVer > 0) {
-				if ($this->hasElementsOnWorkspace($table, -1)) {
-					$foundDraftRecords = TRUE;
-					break;
+			if (is_array($GLOBALS['TCA'][$table])) {
+				$versioningVer = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($GLOBALS['TCA'][$table]['ctrl']['versioningWS'], 0, 2, 0);
+				if ($versioningVer > 0) {
+					if ($this->hasElementsOnWorkspace($table, -1)) {
+						$foundDraftRecords = TRUE;
+						break;
+					}
 				}
 			}
 		}
