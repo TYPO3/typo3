@@ -108,6 +108,13 @@ class LocalConfigurationUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate
 			// Add db settings to array
 			$TYPO3_CONF_VARS['DB'] = $typo3DatabaseVariables;
 			$TYPO3_CONF_VARS = \TYPO3\CMS\Core\Utility\ArrayUtility::sortByKeyRecursive($TYPO3_CONF_VARS);
+			// Build new LocalConfiguration file as the function writeLocalConfiguration depends on it
+			$localConfigurationFile = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getLocalConfigurationFileResource();
+			if (!@is_file($localConfigurationFile)) {
+				$file = @fopen($localConfigurationFile, 'wb');
+				fclose($file);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($localConfigurationFile);
+			}
 			// Write out new LocalConfiguration file
 			\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->writeLocalConfiguration($TYPO3_CONF_VARS);
 			// Write out new AdditionalConfiguration file
