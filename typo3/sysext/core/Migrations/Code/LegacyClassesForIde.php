@@ -2374,7 +2374,7 @@ interface Tx_Extbase_Persistence_ObjectMonitoringInterface extends \TYPO3\CMS\Ex
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Extbase_Persistence_ObjectStorage extends \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage {}
+class Tx_Extbase_Persistence_ObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
