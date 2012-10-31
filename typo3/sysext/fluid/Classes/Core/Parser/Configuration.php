@@ -19,7 +19,7 @@ class Configuration {
 	/**
 	 * Generic interceptors registered with the configuration.
 	 *
-	 * @var array<Tx_Extbase_Persistence_ObjectStorage>
+	 * @var array<\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage>
 	 */
 	protected $interceptors = array();
 
@@ -44,7 +44,7 @@ class Configuration {
 	 * Returns all interceptors for a given Interception Point.
 	 *
 	 * @param integer $interceptionPoint one of the Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_* constants,
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Fluid_Core_Parser_InterceptorInterface>
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<Tx_Fluid_Core_Parser_InterceptorInterface>
 	 */
 	public function getInterceptors($interceptionPoint) {
 		if (isset($this->interceptors[$interceptionPoint]) && $this->interceptors[$interceptionPoint] instanceof \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage) {
