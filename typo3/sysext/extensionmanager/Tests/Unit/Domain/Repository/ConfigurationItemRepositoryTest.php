@@ -181,6 +181,36 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	 * @test
 	 * @return void
 	 */
+	public function extractInformationForConfigFieldsOfTypeOptionsWithLabelsAndValuesAddsGenericTypeAndLabelInformation() {
+		$option = array(
+			'cat' => 'basic',
+			'subcat_name' => 'enable',
+			'subcat' => 'a/enable/100z',
+			'type' => 'options[Minimal (Most features disabled. Administrator needs to enable them using TypoScript. For advanced administrators only.)=MINIMAL,Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.) = TYPICAL,Demo (Show-off configuration. Includes pre-configured styles. Not for production environments.)=DEMO]',
+			'label' => 'Default configuration settings',
+			'name' => 'defaultConfiguration',
+			'value' => 'Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.)',
+			'default_value' => 'Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.)',
+			'genericComparisonValue' => array(
+				'Minimal (Most features disabled. Administrator needs to enable them using TypoScript. For advanced administrators only.)' => 'MINIMAL',
+				'Typical (Most commonly used features are enabled. Select this option if you are unsure which one to use.)' => 'TYPICAL',
+				'Demo (Show-off configuration. Includes pre-configured styles. Not for production environments.)' => 'DEMO'
+			),
+			'typeComparisonValue' => 'options'
+		);
+		$optionModified = $this->configurationItemRepository->_callRef('extractInformationForConfigFieldsOfTypeOptions', $option);
+		$this->assertArrayHasKey('generic', $optionModified);
+		$this->assertArrayHasKey('type', $optionModified);
+		$this->assertArrayHasKey('label', $optionModified);
+		$this->assertEquals($option['genericComparisonValue'], $optionModified['generic']);
+		$this->assertEquals($option['typeComparisonValue'], $optionModified['type']);
+	}
+
+	/**
+	 *
+	 * @test
+	 * @return void
+	 */
 	public function mergeDefaultConfigurationWithNoCurrentValuesReturnsTheDefaultConfiguration() {
 
 			// @TODO: Possible tests that can be added if ConfigurationManager is not static
