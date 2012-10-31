@@ -35,7 +35,7 @@ class DebuggerUtility {
 	const PLAINTEXT_INDENT = '   ';
 	const HTML_INDENT = '&nbsp;&nbsp;&nbsp;';
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	static protected $renderedObjects;
 
@@ -82,7 +82,7 @@ class DebuggerUtility {
 	 * @return void
 	 */
 	static protected function clearState() {
-		self::$renderedObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		self::$renderedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
 	/**
@@ -240,7 +240,7 @@ class DebuggerUtility {
 				$persistenceType = 'persistent';
 			}
 		}
-		if ($object instanceof \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage && $object->_isDirty()) {
+		if ($object instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage && $object->_isDirty()) {
 			$persistenceType = 'modified';
 		}
 		if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractEntity) {
@@ -293,7 +293,7 @@ class DebuggerUtility {
 	 */
 	static protected function renderContent($object, $level, $plainText, $ansiColors) {
 		$dump = '';
-		if ($object instanceof \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage || $object instanceof \Iterator) {
+		if ($object instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage || $object instanceof \Iterator) {
 			$dump .= self::renderCollection($object, $level, $plainText, $ansiColors);
 		} else {
 			self::$renderedObjects->attach($object);

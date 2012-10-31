@@ -51,7 +51,7 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $parent = NULL;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\AbstractEntity>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\AbstractEntity>
 	 * @lazy
 	 */
 	protected $items = NULL;
@@ -64,13 +64,13 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * Initializes all \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage properties.
+	 * Initializes all \TYPO3\CMS\Extbase\Persistence\ObjectStorage properties.
 	 *
 	 * @return void
 	 * @api
 	 */
 	protected function initStorageObjects() {
-		$this->items = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$this->items = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
 	/**
@@ -142,7 +142,7 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns the items within this category.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage the items, might be empty
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage the items, might be empty
 	 * @api
 	 */
 	public function getItems() {
@@ -152,11 +152,11 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets the items within this category.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $items
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $items
 	 * @return void
 	 * @api
 	 */
-	public function setItems(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $items) {
+	public function setItems(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $items) {
 		$this->items = $items;
 	}
 

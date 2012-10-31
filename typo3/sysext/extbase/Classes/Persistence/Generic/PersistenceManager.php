@@ -174,8 +174,8 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	 * @api
 	 */
 	public function persistAll() {
-		$aggregateRootObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
-		$removedObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$aggregateRootObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$removedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		// fetch and inspect objects from all known repositories
 		foreach ($this->repositoryClassNames as $repositoryClassName) {
 			$repository = $this->objectManager->get($repositoryClassName);

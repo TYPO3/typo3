@@ -84,7 +84,7 @@ class BackendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function setSubGroupsSetsSubgroups() {
-		$subGroups = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$subGroups = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$this->fixture->setSubGroups($subGroups);
 		$this->assertSame($subGroups, $this->fixture->getSubGroups());
 	}

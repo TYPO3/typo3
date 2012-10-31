@@ -135,7 +135,7 @@ class FrontendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function setSubgroupSetsSubgroups() {
-		$subgroup = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$subgroup = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$group = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo');
 		$subgroup->attach($group);
 		$this->fixture->setSubgroup($subgroup);

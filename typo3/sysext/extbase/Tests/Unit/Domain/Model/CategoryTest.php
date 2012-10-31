@@ -93,14 +93,14 @@ class CategoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function getItemsInitiallyReturnsEmptyStorage() {
-		$this->assertEquals(new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage(), $this->fixture->getItems());
+		$this->assertEquals(new \TYPO3\CMS\Extbase\Persistence\ObjectStorage(), $this->fixture->getItems());
 	}
 
 	/**
 	 * @test
 	 */
 	public function setItemsSetsItems() {
-		$items = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$items = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$items->attach($this->getMockForAbstractClass('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity'));
 		$this->fixture->setItems($items);
 		$this->assertEquals($items, $this->fixture->getItems());

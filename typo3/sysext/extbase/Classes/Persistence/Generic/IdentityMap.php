@@ -35,7 +35,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 class IdentityMap implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	protected $objectMap;
 
@@ -50,7 +50,7 @@ class IdentityMap implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function __construct() {
-		$this->objectMap = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$this->objectMap = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
 	/**

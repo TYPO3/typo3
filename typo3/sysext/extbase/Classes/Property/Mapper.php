@@ -222,7 +222,7 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 			} else {
 				if ($targetClassSchema !== NULL && $targetClassSchema->hasProperty($propertyName)) {
 					$propertyMetaData = $targetClassSchema->getProperty($propertyName);
-					if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage')) && (strpos($propertyMetaData['elementType'], '_') !== FALSE || $propertyValue === '')) {
+					if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage')) && (strpos($propertyMetaData['elementType'], '_') !== FALSE || $propertyValue === '')) {
 						$objects = array();
 						if (is_array($propertyValue)) {
 							foreach ($propertyValue as $value) {
@@ -235,8 +235,8 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 						// make sure we hand out what is expected
 						if ($propertyMetaData['type'] === 'ArrayObject') {
 							$propertyValue = new \ArrayObject($objects);
-						} elseif ($propertyMetaData['type'] === 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage') {
-							$propertyValue = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+						} elseif ($propertyMetaData['type'] === 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage') {
+							$propertyValue = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 							foreach ($objects as $object) {
 								$propertyValue->attach($object);
 							}

@@ -28,14 +28,14 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	/**
 	 * Objects of this repository
 	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	protected $addedObjects;
 
 	/**
 	 * Objects removed but not found in $this->addedObjects at removal time
 	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	protected $removedObjects;
 
@@ -85,8 +85,8 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 */
 	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager = NULL) {
-		$this->addedObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
-		$this->removedObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$this->addedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->removedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$nsSeparator = strpos($this->getRepositoryClassName(), '\\') !== FALSE ? '\\\\' : '_';
 		$this->objectType = preg_replace(array('/' . $nsSeparator . 'Repository' . $nsSeparator . '(?!.*' . $nsSeparator . 'Repository' . $nsSeparator . ')/', '/Repository$/'), array($nsSeparator . 'Model' . $nsSeparator, ''), $this->getRepositoryClassName());
 		if ($objectManager === NULL) {
@@ -251,17 +251,17 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 * added to the repository. Those are only objects *added*, not objects
 	 * fetched from the underlying storage.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage the objects
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage the objects
 	 */
 	public function getAddedObjects() {
 		return $this->addedObjects;
 	}
 
 	/**
-	 * Returns an \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage with objects remove()d from the repository
+	 * Returns an \TYPO3\CMS\Extbase\Persistence\ObjectStorage with objects remove()d from the repository
 	 * that had been persisted to the storage layer before.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage the objects
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage the objects
 	 */
 	public function getRemovedObjects() {
 		return $this->removedObjects;
@@ -296,7 +296,7 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 * @api
 	 */
 	public function removeAll() {
-		$this->addedObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$this->addedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		foreach ($this->findAll() as $object) {
 			$this->remove($object);
 		}

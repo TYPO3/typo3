@@ -84,7 +84,7 @@ class FrontendUserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function setUsergroupSetsUsergroup() {
-		$usergroup = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$usergroup = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$usergroup->attach(new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo'));
 		$this->fixture->setUsergroup($usergroup);
 		$this->assertSame($usergroup, $this->fixture->getUsergroup());

@@ -49,7 +49,7 @@ class ObjectStorageConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\A
 	/**
 	 * @var string
 	 */
-	protected $targetType = 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage';
+	protected $targetType = 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage';
 
 	/**
 	 * @var integer
@@ -81,7 +81,7 @@ class ObjectStorageConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\A
 	 * @api
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
-		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		foreach ($convertedChildProperties as $subProperty) {
 			$objectStorage->attach($subProperty);
 		}

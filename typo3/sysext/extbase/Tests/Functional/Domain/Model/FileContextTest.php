@@ -90,7 +90,7 @@ class FileContextTest extends \Tx_Extbase_Tests_Functional_BaseTestCase {
 		);
 		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
 		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
-		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage', $fixture->getFiles());
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', $fixture->getFiles());
 		$this->assertEquals(2, $fixture->getFiles()->count());
 		$fixture->getFiles()->rewind();
 		$this->assertEquals(1, $fixture->getFiles()->current()->getObject()->getUid());
@@ -125,7 +125,7 @@ class FileContextTest extends \Tx_Extbase_Tests_Functional_BaseTestCase {
 		);
 		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
 		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
-		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage', $fixture->getFileReferences());
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', $fixture->getFileReferences());
 		$this->assertEquals(2, $fixture->getFileReferences()->count());
 		$fixture->getFileReferences()->rewind();
 		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\FileReference', $fixture->getFileReferences()->current()->getObject());
@@ -171,7 +171,7 @@ class FileContextTest extends \Tx_Extbase_Tests_Functional_BaseTestCase {
 		);
 		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
 		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
-		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage', $fixture->getFolders());
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', $fixture->getFolders());
 		$this->assertEquals(2, $fixture->getFolders()->count());
 		$fixture->getFolders()->rewind();
 		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\Folder', $fixture->getFolders()->current());
@@ -207,7 +207,7 @@ class FileContextTest extends \Tx_Extbase_Tests_Functional_BaseTestCase {
 		);
 		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
 		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
-		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage', $fixture->getStaticFileCollections());
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', $fixture->getStaticFileCollections());
 		$this->assertEquals(1, $fixture->getStaticFileCollections()->count());
 		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\StaticFileCollection', $fixture->getStaticFileCollections()->current());
 		$this->assertEquals(2, $fixture->getStaticFileCollections()->current()->getObject()->getUid());
@@ -237,7 +237,7 @@ class FileContextTest extends \Tx_Extbase_Tests_Functional_BaseTestCase {
 		);
 		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
 		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
-		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage', $fixture->getFolderBasedFileCollections());
+		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', $fixture->getFolderBasedFileCollections());
 		$this->assertEquals(1, $fixture->getFolderBasedFileCollections()->count());
 		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\FolderBasedFileCollection', $fixture->getFolderBasedFileCollections()->current());
 		$this->assertEquals(1, $fixture->getFolderBasedFileCollections()->current()->getObject()->getUid());

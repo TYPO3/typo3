@@ -32,7 +32,7 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Objects which were reconstituted. The relevant objects are registered by
 	 * the Tx_Extbase_Persistence_Mapper_DataMapper.
 	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	protected $reconstitutedObjects;
 
@@ -40,7 +40,7 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Constructs a new Session
 	 */
 	public function __construct() {
-		$this->reconstitutedObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$this->reconstitutedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
 	/**

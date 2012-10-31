@@ -72,8 +72,8 @@ class TypeHandlingServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 			array('ArrayObject<string>', array('type' => 'ArrayObject', 'elementType' => 'string')),
 			array('SplObjectStorage<Tx_Extbase_Bar>', array('type' => 'SplObjectStorage', 'elementType' => 'Tx_Extbase_Bar')),
 			array('SplObjectStorage<\\ExtbaseTeam\\BlogExample\\Foo\\Bar>', array('type' => 'SplObjectStorage', 'elementType' => 'ExtbaseTeam\\BlogExample\\Foo\\Bar')),
-			array('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage<Tx_Extbase_Bar>', array('type' => 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage', 'elementType' => 'Tx_Extbase_Bar')),
-			array('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage<\\ExtbaseTeam\\BlogExample\\Foo\\Bar>', array('type' => 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage', 'elementType' => 'ExtbaseTeam\\BlogExample\\Foo\\Bar')),
+			array('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage<Tx_Extbase_Bar>', array('type' => 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', 'elementType' => 'Tx_Extbase_Bar')),
+			array('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage<\\ExtbaseTeam\\BlogExample\\Foo\\Bar>', array('type' => 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', 'elementType' => 'ExtbaseTeam\\BlogExample\\Foo\\Bar')),
 			array('Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Bar>', array('type' => 'Tx_Extbase_Persistence_ObjectStorage', 'elementType' => 'Tx_Extbase_Bar')),
 			array('Tx_Extbase_Persistence_ObjectStorage<\\ExtbaseTeam\\BlogExample\\Foo\\Bar>', array('type' => 'Tx_Extbase_Persistence_ObjectStorage', 'elementType' => 'ExtbaseTeam\\BlogExample\\Foo\\Bar')),
 		);

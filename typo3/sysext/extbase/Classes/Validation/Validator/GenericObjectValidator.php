@@ -39,7 +39,7 @@ class GenericObjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abs
 	protected $propertyValidators = array();
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	static protected $instancesCurrentlyUnderValidation;
 
@@ -55,7 +55,7 @@ class GenericObjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abs
 	public function validate($object) {
 		$messages = new \TYPO3\CMS\Extbase\Error\Result();
 		if (self::$instancesCurrentlyUnderValidation === NULL) {
-			self::$instancesCurrentlyUnderValidation = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+			self::$instancesCurrentlyUnderValidation = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		}
 		if ($object === NULL) {
 			return $messages;
@@ -198,7 +198,7 @@ class GenericObjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abs
 	 */
 	public function addPropertyValidator($propertyName, \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator) {
 		if (!isset($this->propertyValidators[$propertyName])) {
-			$this->propertyValidators[$propertyName] = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+			$this->propertyValidators[$propertyName] = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		}
 		$this->propertyValidators[$propertyName]->attach($validator);
 	}

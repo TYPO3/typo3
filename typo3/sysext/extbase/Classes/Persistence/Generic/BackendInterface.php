@@ -34,18 +34,18 @@ interface BackendInterface
 	/**
 	 * Sets the aggregate root objects
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objects
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects
 	 * @return void
 	 */
-	public function setAggregateRootObjects(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objects);
+	public function setAggregateRootObjects(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects);
 
 	/**
 	 * Sets the deleted objects
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objects
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects
 	 * @return void
 	 */
-	public function setDeletedObjects(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objects);
+	public function setDeletedObjects(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects);
 
 	/**
 	 * Commits the current persistence session

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Persistence\Generic;
+namespace TYPO3\CMS\Extbase\Persistence;
 
 /***************************************************************
  *  Copyright notice
@@ -39,7 +39,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\E
 	 *
 	 * @var string
 	 */
-	private $warning = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage. To retrieve the first result, you can use the rewind() and current() methods.';
+	private $warning = 'You should never see this warning. If you do, you probably used PHP array functions like current() on the TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage. To retrieve the first result, you can use the rewind() and current() methods.';
 
 	/**
 	 * An array holding the objects and the stored information. The key of the array items ist the
@@ -220,10 +220,10 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\E
 	/**
 	 * Adds all objects-data pairs from a different storage in the current storage.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objectStorage
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objectStorage
 	 * @return void
 	 */
-	public function addAll(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objectStorage) {
+	public function addAll(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objectStorage) {
 		foreach ($objectStorage as $object) {
 			$this->attach($object, $objectStorage->getInfo());
 		}
@@ -232,10 +232,10 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\E
 	/**
 	 * Removes objects contained in another storage from the current storage.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objectStorage The storage containing the elements to remove.
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objectStorage The storage containing the elements to remove.
 	 * @return void
 	 */
-	public function removeAll(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objectStorage) {
+	public function removeAll(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objectStorage) {
 		foreach ($objectStorage as $object) {
 			$this->detach($object);
 		}

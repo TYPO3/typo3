@@ -39,7 +39,7 @@ abstract class AbstractCompositeValidator implements \TYPO3\CMS\Extbase\Validati
 	protected $options = array();
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	protected $validators;
 
@@ -52,7 +52,7 @@ abstract class AbstractCompositeValidator implements \TYPO3\CMS\Extbase\Validati
 	 * Constructs the validator conjunction
 	 */
 	public function __construct() {
-		$this->validators = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$this->validators = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
 	/**

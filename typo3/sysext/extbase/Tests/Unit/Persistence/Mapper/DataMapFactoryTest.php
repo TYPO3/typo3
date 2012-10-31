@@ -82,7 +82,7 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'foreign_table_field' => 'parenttable'
 		);
 		$propertyMetaData = array(
-			'type' => 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage',
+			'type' => 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage',
 			'elementType' => 'Tx_Myext_Domain_Model_Foo'
 		);
 		$mockDataMapFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory', array('setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'), array(), '', FALSE);
@@ -103,7 +103,7 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'MM' => 'tx_myextension_mm'
 		);
 		$propertyMetaData = array(
-			'type' => 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage',
+			'type' => 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage',
 			'elementType' => 'Tx_Myext_Domain_Model_Foo'
 		);
 		$mockDataMapFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory', array('setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'), array(), '', FALSE);
@@ -124,7 +124,7 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'MM' => 'tx_myextension_mm'
 		);
 		$propertyMetaData = array(
-			'type' => 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage',
+			'type' => 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage',
 			'elementType' => 'Tx_Myext_Domain_Model_Foo'
 		);
 		$mockDataMapFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory', array('setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'), array(), '', FALSE);
@@ -146,7 +146,7 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'foreign_selector' => 'uid_foreign'
 		);
 		$propertyMetaData = array(
-			'type' => 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage',
+			'type' => 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage',
 			'elementType' => 'Tx_Myext_Domain_Model_Foo'
 		);
 		$mockDataMapFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory', array('setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'), array(), '', FALSE);

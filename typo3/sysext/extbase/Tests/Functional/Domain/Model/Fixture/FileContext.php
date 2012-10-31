@@ -38,7 +38,7 @@ class FileContext extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $file;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\File>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\File>
 	 */
 	protected $files;
 
@@ -48,7 +48,7 @@ class FileContext extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $fileReference;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
 	 */
 	protected $fileReferences;
 
@@ -58,7 +58,7 @@ class FileContext extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $staticFileCollection;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection>
 	 */
 	protected $staticFileCollections;
 
@@ -68,7 +68,7 @@ class FileContext extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $folderBasedFileCollection;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection>
 	 */
 	protected $folderBasedFileCollections;
 
@@ -78,16 +78,16 @@ class FileContext extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $folder;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Folder>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Folder>
 	 */
 	protected $folders;
 
 	public function __construct() {
-		$this->files = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
-		$this->fileReferences = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
-		$this->staticFileCollections = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
-		$this->folderBasedFileCollections = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
-		$this->folders = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$this->files = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->fileReferences = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->staticFileCollections = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->folderBasedFileCollections = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->folders = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
 	/**
@@ -108,16 +108,16 @@ class FileContext extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\File>
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\File>
 	 */
 	public function getFiles() {
 		return $this->files;
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\File> $files
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\File> $files
 	 */
-	public function setFiles(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $files) {
+	public function setFiles(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $files) {
 		$this->files = $files;
 	}
 
@@ -153,16 +153,16 @@ class FileContext extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection>
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection>
 	 */
 	public function getStaticFileCollections() {
 		return $this->staticFileCollections;
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection> $staticFileCollections
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection> $staticFileCollections
 	 */
-	public function setStaticFileCollections(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $staticFileCollections) {
+	public function setStaticFileCollections(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $staticFileCollections) {
 		$this->staticFileCollections = $staticFileCollections;
 	}
 
@@ -195,16 +195,16 @@ class FileContext extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection>
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection>
 	 */
 	public function getFolderBasedFileCollections() {
 		return $this->folderBasedFileCollections;
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection> $folderBasedFileCollections
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection> $folderBasedFileCollections
 	 */
-	public function setFolderBasedFileCollections(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $folderBasedFileCollections) {
+	public function setFolderBasedFileCollections(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $folderBasedFileCollections) {
 		$this->folderBasedFileCollections = $folderBasedFileCollections;
 	}
 
@@ -240,16 +240,16 @@ class FileContext extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
 	 */
 	public function getFileReferences() {
 		return $this->fileReferences;
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference> $fileReferences
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference> $fileReferences
 	 */
-	public function setFileReferences(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $fileReferences) {
+	public function setFileReferences(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $fileReferences) {
 		$this->fileReferences = $fileReferences;
 	}
 
@@ -285,16 +285,16 @@ class FileContext extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Folder>
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Folder>
 	 */
 	public function getFolders() {
 		return $this->folders;
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Folder> $folders
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Folder> $folders
 	 */
-	public function setFolders(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $folders) {
+	public function setFolders(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $folders) {
 		$this->folders = $folders;
 	}
 
