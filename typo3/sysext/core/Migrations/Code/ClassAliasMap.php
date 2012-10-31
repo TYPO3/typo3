@@ -143,7 +143,6 @@ return array(
 	't3lib_basicFileFunctions' => 'TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility',
 	't3lib_extFileFunctions' => 'TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility',
 	't3lib_extFileFunctions_processDataHook' => 'TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtilityProcessDataHookInterface',
-	't3lib_div' => 'TYPO3\\CMS\\Core\\Utility\\GeneralUtility',
 	't3lib_utility_Http' => 'TYPO3\\CMS\\Core\\Utility\\HttpUtility',
 	't3lib_utility_Mail' => 'TYPO3\\CMS\\Core\\Utility\\MailUtility',
 	't3lib_utility_Math' => 'TYPO3\\CMS\\Core\\Utility\\MathUtility',

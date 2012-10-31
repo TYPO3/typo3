@@ -205,6 +205,11 @@ class SystemEnvironmentBuilder {
 	 */
 	static protected function requireBaseClasses() {
 		require_once __DIR__ . '/../Utility/GeneralUtility.php';
+		// We need the class_alias here for t3lib_div to support updating the introduction package
+		// where a t3lib_div call is hard coded in localconf.php
+		// @deprecated since 6.0, will be removed by 7.0
+		// @see t3lib/class.t3lib_div.php
+		class_alias('\\TYPO3\\CMS\\Core\\Utility\\GeneralUtility', 't3lib_div');
 		require_once __DIR__ . '/../Utility/ArrayUtility.php';
 		require_once __DIR__ . '/../SingletonInterface.php';
 		require_once __DIR__ . '/../Configuration/ConfigurationManager.php';
