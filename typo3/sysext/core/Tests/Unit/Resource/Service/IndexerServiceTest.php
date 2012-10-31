@@ -66,19 +66,29 @@ class IndexerServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function indexFileUpdatesFileProperties() {
+		/** @var $fixture \TYPO3\CMS\Core\Resource\Service\IndexerService|\PHPUnit_Framework_MockObject_MockObject */
+		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', array('gatherFileInformation', 'getRepository'));
+
 		$fileInfo = array(
 			'mount' => 1,
 			'identifier' => '/some/filepath/filename.jpg',
 			'size' => 1234,
-			'uid' => rand(1, 100)
+			'uid' => rand(1, 100),
+			'sha1' => '123',
 		);
-		/** @var $fixture \TYPO3\CMS\Core\Resource\Service\IndexerService */
-		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', array('gatherFileInformation'));
+
 		$fixture->expects($this->any())->method('gatherFileInformation')->will($this->returnValue($fileInfo));
+
+		$repositoryMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository', array('findBySha1Hash'));
+		$repositoryMock->expects($this->any())->method('findBySha1Hash')->will($this->returnValue(array()));
+		$fixture->expects($this->any())->method('getRepository')->will($this->returnValue($repositoryMock));
+
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
 		$GLOBALS['TYPO3_DB']->expects($this->atLeastOnce())->method('sql_insert_id')->will($this->returnValue($fileInfo['uid']));
+
 		$mockedFile = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE);
 		$mockedFile->expects($this->once())->method('updateProperties')->with($this->equalTo($fileInfo));
+
 		$fixture->indexFile($mockedFile);
 	}
 
@@ -87,15 +97,23 @@ class IndexerServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function indexFileSetsCreationdateAndTimestampPropertiesOfRecordToCurrentExecutionTime() {
 		$fileInfo = array();
-		/** @var $fixture \TYPO3\CMS\Core\Resource\Service\IndexerService */
-		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', array('gatherFileInformation'));
+		/** @var $fixture \TYPO3\CMS\Core\Resource\Service\IndexerService|\PHPUnit_Framework_MockObject_MockObject */
+		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', array('gatherFileInformation', 'getRepository'));
+
 		$fixture->expects($this->any())->method('gatherFileInformation')->will($this->returnValue($fileInfo));
+
+		$repositoryMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository', array('findBySha1Hash'));
+		$repositoryMock->expects($this->any())->method('findBySha1Hash')->will($this->returnValue(array()));
+		$fixture->expects($this->any())->method('getRepository')->will($this->returnValue($repositoryMock));
+
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_INSERTquery')->with($this->anything(), $this->equalTo(array(
 			'crdate' => $GLOBALS['EXEC_TIME'],
 			'tstamp' => $GLOBALS['EXEC_TIME']
 		)));
+
 		$mockedFile = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE);
+
 		$fixture->indexFile($mockedFile);
 	}
 
