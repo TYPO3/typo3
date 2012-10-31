@@ -40,7 +40,7 @@ class ViewHelperNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNod
 	 * A mapping RenderingContext -> ViewHelper to only re-initialize ViewHelpers
 	 * when a context change occurs.
 	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	protected $viewHelpersByContext = NULL;
 
@@ -52,7 +52,7 @@ class ViewHelperNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNod
 	 */
 	public function __construct(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper $viewHelper, array $arguments) {
 		$this->uninitializedViewHelper = $viewHelper;
-		$this->viewHelpersByContext = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage');
+		$this->viewHelpersByContext = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		$this->arguments = $arguments;
 		$this->viewHelperClassName = get_class($this->uninitializedViewHelper);
 	}

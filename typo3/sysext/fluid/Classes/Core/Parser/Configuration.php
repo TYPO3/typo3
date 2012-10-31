@@ -19,7 +19,7 @@ class Configuration {
 	/**
 	 * Generic interceptors registered with the configuration.
 	 *
-	 * @var array<\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage>
+	 * @var array<\TYPO3\CMS\Extbase\Persistence\ObjectStorage>
 	 */
 	protected $interceptors = array();
 
@@ -32,7 +32,7 @@ class Configuration {
 	public function addInterceptor(\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface $interceptor) {
 		foreach ($interceptor->getInterceptionPoints() as $interceptionPoint) {
 			if (!isset($this->interceptors[$interceptionPoint])) {
-				$this->interceptors[$interceptionPoint] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage');
+				$this->interceptors[$interceptionPoint] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 			}
 			if (!$this->interceptors[$interceptionPoint]->contains($interceptor)) {
 				$this->interceptors[$interceptionPoint]->attach($interceptor);
@@ -44,13 +44,13 @@ class Configuration {
 	 * Returns all interceptors for a given Interception Point.
 	 *
 	 * @param integer $interceptionPoint one of the Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_* constants,
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<Tx_Fluid_Core_Parser_InterceptorInterface>
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Fluid_Core_Parser_InterceptorInterface>
 	 */
 	public function getInterceptors($interceptionPoint) {
-		if (isset($this->interceptors[$interceptionPoint]) && $this->interceptors[$interceptionPoint] instanceof \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage) {
+		if (isset($this->interceptors[$interceptionPoint]) && $this->interceptors[$interceptionPoint] instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
 			return $this->interceptors[$interceptionPoint];
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 	}
 
 }

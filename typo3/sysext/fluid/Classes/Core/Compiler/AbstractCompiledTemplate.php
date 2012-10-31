@@ -60,7 +60,7 @@ abstract class AbstractCompiledTemplate implements \TYPO3\CMS\Fluid\Core\Parser\
 				return $viewHelperInstance;
 			}
 		} else {
-			$this->viewHelpersByPositionAndContext[$uniqueCounter] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage');
+			$this->viewHelpersByPositionAndContext[$uniqueCounter] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 			$viewHelperInstance = self::$objectContainer->getInstance($viewHelperName);
 			if ($viewHelperInstance instanceof \TYPO3\CMS\Core\SingletonInterface) {
 				$viewHelperInstance->resetState();
