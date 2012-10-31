@@ -70,7 +70,6 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		if (empty($taskUid)) {
 			$fields = array(
 				'crdate' => $GLOBALS['EXEC_TIME'],
-				'classname' => get_class($task),
 				'disable' => $task->isDisabled(),
 				'serialized_task_object' => 'RESERVED'
 			);
