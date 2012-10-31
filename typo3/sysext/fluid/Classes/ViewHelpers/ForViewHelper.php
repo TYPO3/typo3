@@ -62,7 +62,7 @@ class ForViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper 
 	/**
 	 * Iterates through elements of $each and renders child nodes
 	 *
-	 * @param array $each The array or \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage to iterated over
+	 * @param array $each The array or \TYPO3\CMS\Extbase\Persistence\ObjectStorage to iterated over
 	 * @param string $as The name of the iteration variable
 	 * @param string $key The name of the variable to store the current array key
 	 * @param boolean $reverse If enabled, the iterator will start with the last element and proceed reversely

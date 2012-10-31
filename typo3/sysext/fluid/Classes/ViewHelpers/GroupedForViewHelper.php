@@ -73,7 +73,7 @@ class GroupedForViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 	/**
 	 * Iterates through elements of $each and renders child nodes
 	 *
-	 * @param array $each The array or \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage to iterated over
+	 * @param array $each The array or \TYPO3\CMS\Extbase\Persistence\ObjectStorage to iterated over
 	 * @param string $as The name of the iteration variable
 	 * @param string $groupBy Group by this property
 	 * @param string $groupKey The name of the variable to store the current group
