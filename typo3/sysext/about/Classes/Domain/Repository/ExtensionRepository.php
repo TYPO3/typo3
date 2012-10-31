@@ -51,7 +51,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_About_Domain_Model_Extension>
 	 */
 	public function findAllLoaded() {
-		$loadedExtensions = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage');
+		$loadedExtensions = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 		$loadedExtensionsArray = $GLOBALS['TYPO3_LOADED_EXT'];
 		foreach ($loadedExtensionsArray as $extensionKey => $extension) {
 			if (is_array($extension) && $extension['type'] != 'S') {

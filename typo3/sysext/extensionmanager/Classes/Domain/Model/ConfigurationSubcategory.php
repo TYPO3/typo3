@@ -49,11 +49,11 @@ class ConfigurationSubcategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractE
 	 * Constructs this Category
 	 */
 	public function __construct() {
-		$this->items = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$this->items = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $items
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $items
 	 * @return void
 	 */
 	public function setItems($items) {
@@ -61,7 +61,7 @@ class ConfigurationSubcategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractE
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	public function getItems() {
 		return $this->items;

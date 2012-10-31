@@ -40,7 +40,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $title;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup>
 	 * @lazy
 	 */
 	protected $subGroups;
@@ -60,14 +60,14 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $subGroups
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $subGroups
 	 */
 	public function setSubGroups($subGroups) {
 		$this->subGroups = $subGroups;
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	public function getSubGroups() {
 		return $this->subGroups;

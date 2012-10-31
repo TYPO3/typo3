@@ -53,7 +53,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser {
 	protected $fileMountPoints = '';
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup>
 	 */
 	protected $backendUserGroups;
 
@@ -116,14 +116,14 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser {
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $backendUserGroups
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $backendUserGroups
 	 */
 	public function setBackendUserGroups($backendUserGroups) {
 		$this->backendUserGroups = $backendUserGroups;
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	public function getBackendUserGroups() {
 		return $this->backendUserGroups;
