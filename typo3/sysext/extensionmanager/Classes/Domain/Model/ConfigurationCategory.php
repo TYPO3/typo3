@@ -40,7 +40,7 @@ class ConfigurationCategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnti
 	protected $name = '';
 
 	/**
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Extensionmanager_Domain_Model_ConfigurationSubcategory>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationSubcategory>
 	 */
 	protected $subcategories;
 
@@ -53,11 +53,11 @@ class ConfigurationCategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnti
 	 * Constructs this Category
 	 */
 	public function __construct() {
-		$this->subcategories = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$this->subcategories = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $subcategories
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $subcategories
 	 * @return void
 	 */
 	public function setSubcategories($subcategories) {
@@ -65,7 +65,7 @@ class ConfigurationCategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnti
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	public function getSubcategories() {
 		return $this->subcategories;
