@@ -84,7 +84,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollec
 	 * @param integer $id Id of database record to be loaded
 	 * @param boolean $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @param string $tableName the table name
-	 * @return \TYPO3\CMS\Core\Collection\CollectionInterface
+	 * @return \TYPO3\CMS\Core\Category\Collection\CategoryCollection
 	 */
 	static public function load($id, $fillItems = FALSE, $tableName = '') {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA(static::$storageTableName);

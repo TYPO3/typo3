@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Category\Collection;
  * @subpackage t3lib
  * @author Fabien Udriot <fabien.udriot@typo3.org>
  */
-class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Category\Collection\CategoryCollection
@@ -64,11 +64,6 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	private $numberOfRecords = 5;
 
 	/**
-	 * @var \Tx_Phpunit_Framework
-	 */
-	private $testingFramework;
-
-	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	private $database;
@@ -79,7 +74,11 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->database = $GLOBALS['TYPO3_DB'];
+		$this->createDatabase();
+		$this->database = $this->useTestDatabase();
+		$this->importStdDb();
+		$this->importExtensions(array('cms'));
+
 		$this->fixture = new \TYPO3\CMS\Core\Category\Collection\CategoryCollection($this->tableName);
 		$this->collectionRecord = array(
 			'uid' => 0,
@@ -88,9 +87,9 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'table_name' => $this->tableName,
 		);
 		$GLOBALS['TCA'][$this->tableName] = array('ctrl' => array());
+
 		// prepare environment
 		$this->createDummyTable();
-		$this->testingFramework = new \Tx_Phpunit_Framework('sys_category', array('tx_foo'));
 		$this->populateDummyTable();
 		$this->prepareTables();
 		$this->makeRelationBetweenCategoryAndDummyTable();
@@ -102,11 +101,9 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function tearDown() {
-		$this->testingFramework->cleanUp();
-		// clean up environment
-		$this->dropDummyTable();
-		$this->dropDummyField();
-		unset($this->testingFramework);
+		$this->dropDatabase();
+		$this->switchToTypo3Database();
+
 		unset($this->collectionRecord);
 		unset($this->fixture);
 		unset($this->database);
@@ -242,9 +239,10 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	private function populateDummyTable() {
 		for ($index = 1; $index <= $this->numberOfRecords; $index++) {
 			$values = array(
+				'uid' => $index,
 				'title' => uniqid('title')
 			);
-			$this->testingFramework->createRecord($this->tableName, $values);
+			$this->createRecord($this->tableName, $values);
 		}
 	}
 
@@ -260,7 +258,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'uid_foreign' => $index,
 				'tablenames' => $this->tableName
 			);
-			$this->testingFramework->createRecord('sys_category_record_mm', $values);
+			$this->createRecord('sys_category_record_mm', $values);
 		}
 	}
 
@@ -270,23 +268,13 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	private function createDummyTable() {
-		$sql = 'CREATE TABLE {' . $this->tableName . '} (' . LF . TAB .
+		$sql = 'CREATE TABLE ' . $this->tableName . ' (' . LF . TAB .
 			'uid int(11) auto_increment,' . LF . TAB .
 			'pid int(11) unsigned DEFAULT \'0\' NOT NULL,' . LF . TAB .
 			'title tinytext,' . LF . TAB .
 			'tcategories int(11) unsigned DEFAULT \'0\' NOT NULL,' . LF . TAB .
 			'sys_category_is_dummy_record int(11) unsigned DEFAULT \'0\' NOT NULL,' . LF . LF . TAB .
 			'PRIMARY KEY (uid)' . LF . ');';
-		$this->database->sql_query($sql);
-	}
-
-	/**
-	 * Drop dummy table
-	 *
-	 * @return void
-	 */
-	private function dropDummyTable() {
-		$sql = 'DROP TABLE ' . $this->tableName . ';';
 		$this->database->sql_query($sql);
 	}
 
@@ -305,22 +293,8 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'title' => uniqid('title'),
 			'is_dummy_record' => 1
 		);
-		$this->categoryUid = $this->testingFramework->createRecord('sys_category', $values);
+		$this->categoryUid = $this->createRecord('sys_category', $values);
 	}
-
-	/**
-	 * Remove dummy record and drop field
-	 *
-	 * @return void
-	 */
-	private function dropDummyField() {
-		$sql = 'ALTER TABLE %s DROP COLUMN is_dummy_record';
-		foreach ($this->tables as $table) {
-			$_sql = sprintf($sql, $table);
-			$this->database->sql_query($_sql);
-		}
-	}
-
 }
 
 ?>
