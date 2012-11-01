@@ -386,56 +386,61 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		// Set page record in header
 		$this->pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $this->id);
 		// Traverse the TCA table array:
-		foreach ($GLOBALS['TCA'] as $tableName => $value) {
+		$tableNames = array_keys($GLOBALS['TCA']);
+		foreach ($tableNames as $tableName) {
 			// Checking if the table should be rendered:
 			// Checks that we see only permitted/requested tables:
-			if ((!$this->table || $tableName == $this->table) && (!$this->tableList || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->tableList, $tableName)) && $GLOBALS['BE_USER']->check('tables_select', $tableName)) {
-				// Load full table definitions:
-				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName);
-				// Don't show table if hidden by TCA ctrl section
-				$hideTable = $GLOBALS['TCA'][$tableName]['ctrl']['hideTable'] ? TRUE : FALSE;
-				// Don't show table if hidden by pageTSconfig mod.web_list.hideTables
-				if (in_array($tableName, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->hideTables))) {
-					$hideTable = TRUE;
-				}
-				// Override previous selection if table is enabled or hidden by TSconfig TCA override mod.web_list.table
-				if (isset($this->tableTSconfigOverTCA[$tableName . '.']['hideTable'])) {
-					$hideTable = $this->tableTSconfigOverTCA[$tableName . '.']['hideTable'] ? TRUE : FALSE;
-				}
-				if ($hideTable) {
-					continue;
-				}
-				// iLimit is set depending on whether we're in single- or multi-table mode
-				if ($this->table) {
-					$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']) ? intval($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']) : $this->itemsLimitSingleTable;
-				} else {
-					$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']) ? intval($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']) : $this->itemsLimitPerTable;
-				}
-				if ($this->showLimit) {
-					$this->iLimit = $this->showLimit;
-				}
-				// Setting fields to select:
-				if ($this->allFields) {
-					$fields = $this->makeFieldList($tableName);
-					$fields[] = 'tstamp';
-					$fields[] = 'crdate';
-					$fields[] = '_PATH_';
-					$fields[] = '_CONTROL_';
-					if (is_array($this->setFields[$tableName])) {
-						$fields = array_intersect($fields, $this->setFields[$tableName]);
-					} else {
-						$fields = array();
-					}
+			if (!is_array($GLOBALS['TCA'][$tableName]) ||
+				($this->table && $tableName != $this->table) ||
+				($this->tableList && !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->tableList, $tableName)) ||
+				!$GLOBALS['BE_USER']->check('tables_select', $tableName)) {
+				continue;
+			}
+			// Load full table definitions:
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName);
+			// Don't show table if hidden by TCA ctrl section
+			$hideTable = $GLOBALS['TCA'][$tableName]['ctrl']['hideTable'] ? TRUE : FALSE;
+			// Don't show table if hidden by pageTSconfig mod.web_list.hideTables
+			if (in_array($tableName, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->hideTables))) {
+				$hideTable = TRUE;
+			}
+			// Override previous selection if table is enabled or hidden by TSconfig TCA override mod.web_list.table
+			if (isset($this->tableTSconfigOverTCA[$tableName . '.']['hideTable'])) {
+				$hideTable = $this->tableTSconfigOverTCA[$tableName . '.']['hideTable'] ? TRUE : FALSE;
+			}
+			if ($hideTable) {
+				continue;
+			}
+			// iLimit is set depending on whether we're in single- or multi-table mode
+			if ($this->table) {
+				$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']) ? intval($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']) : $this->itemsLimitSingleTable;
+			} else {
+				$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']) ? intval($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']) : $this->itemsLimitPerTable;
+			}
+			if ($this->showLimit) {
+				$this->iLimit = $this->showLimit;
+			}
+			// Setting fields to select:
+			if ($this->allFields) {
+				$fields = $this->makeFieldList($tableName);
+				$fields[] = 'tstamp';
+				$fields[] = 'crdate';
+				$fields[] = '_PATH_';
+				$fields[] = '_CONTROL_';
+				if (is_array($this->setFields[$tableName])) {
+					$fields = array_intersect($fields, $this->setFields[$tableName]);
 				} else {
 					$fields = array();
 				}
-				// Find ID to use (might be different for "versioning_followPages" tables)
-				if (intval($this->searchLevels) == 0) {
-					$this->pidSelect = 'pid=' . intval($this->id);
-				}
-				// Finally, render the list:
-				$this->HTMLcode .= $this->getTable($tableName, $this->id, implode(',', $fields));
+			} else {
+				$fields = array();
 			}
+			// Find ID to use (might be different for "versioning_followPages" tables)
+			if (intval($this->searchLevels) == 0) {
+				$this->pidSelect = 'pid=' . intval($this->id);
+			}
+			// Finally, render the list:
+			$this->HTMLcode .= $this->getTable($tableName, $this->id, implode(',', $fields));
 		}
 	}
 
