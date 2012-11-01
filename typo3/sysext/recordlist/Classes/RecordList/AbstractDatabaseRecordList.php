@@ -389,7 +389,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		foreach ($GLOBALS['TCA'] as $tableName => $value) {
 			// Checking if the table should be rendered:
 			// Checks that we see only permitted/requested tables:
-			if ((!$this->table || $tableName == $this->table) && (!$this->tableList || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->tableList, $tableName)) && $GLOBALS['BE_USER']->check('tables_select', $tableName)) {
+			if ($value && (!$this->table || $tableName == $this->table) && (!$this->tableList || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->tableList, $tableName)) && $GLOBALS['BE_USER']->check('tables_select', $tableName)) {
 				// Load full table definitions:
 				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName);
 				// Don't show table if hidden by TCA ctrl section
