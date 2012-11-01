@@ -1030,7 +1030,10 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		mkdir($basedir . '/someForbiddenFolder');
 		chmod($basedir . '/someForbiddenFolder', 0);
 		clearstatcache();
-		$this->assertEquals(array('r' => FALSE, 'w' => FALSE), $fixture->getFolderPermissions($this->getSimpleFolderMock('/someForbiddenFolder')));
+		$result = $fixture->getFolderPermissions($this->getSimpleFolderMock('/someForbiddenFolder'));
+		// Change permissions back to writable, so the sub-folder can be removed in tearDown
+		chmod($basedir . '/someForbiddenFolder', 0777);
+		$this->assertEquals(array('r' => FALSE, 'w' => FALSE), $result);
 	}
 
 	/**
