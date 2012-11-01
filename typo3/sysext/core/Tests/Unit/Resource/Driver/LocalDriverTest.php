@@ -66,6 +66,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 
 	static public function tearDownAfterClass() {
 		foreach (self::$testDirs as $dir) {
+			chmod($dir, 0777);
 			\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($dir, TRUE);
 		}
 	}
