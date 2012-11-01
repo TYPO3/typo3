@@ -28,7 +28,12 @@
  */
 class tx_beuser_switchbackuser {
 	function switchBack($params, $that)	{
-		if($that->session_table == 'be_sessions' && $that->user['uid'] && $that->user['ses_backuserid']) {
+		if (
+			$that->session_table == 'be_sessions'
+			&& is_array($that->user)
+			&& $that->user['uid']
+			&& $that->user['ses_backuserid']
+		) {
 			$updateData = array(
 				'ses_userid' => $that->user['ses_backuserid'],
 				'ses_backuserid' => 0
