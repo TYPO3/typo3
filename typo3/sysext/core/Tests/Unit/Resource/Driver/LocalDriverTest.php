@@ -810,9 +810,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	/**
 	 * @test
 	 */
-	public function getFolderListDoesNotReturnHiddenFoldersByDefault() {
+	public function getFolderListReturnsHiddenFoldersByDefault() {
 		$dirStructure = array(
-			'.someHiddenFile' => array(),
+			'.someHiddenDir' => array(),
 			'aDir' => array(),
 			'file1' => ''
 		);
@@ -821,7 +821,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			'basePath' => $this->getMountRootUrl()
 		));
 		$fileList = $fixture->getFolderList('/');
-		$this->assertEquals(array('aDir'), array_keys($fileList));
+		$this->assertEquals(array('.someHiddenDir', 'aDir'), array_keys($fileList));
 	}
 
 	/**
