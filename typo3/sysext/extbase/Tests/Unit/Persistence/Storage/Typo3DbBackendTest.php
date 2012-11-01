@@ -29,13 +29,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Storage;
 class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = true;
-
-	/**
 	 * This is the data provider for the statement generation with a basic comparison
 	 *
 	 * @return array An array of data
@@ -292,6 +285,7 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			),
 			'delete' => 'deleted_column'
 		);
+		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->sys_page = new \TYPO3\CMS\Frontend\Page\PageRepository();
 		$GLOBALS['SIM_ACCESS_TIME'] = 123456789;
 		$mockQuerySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings', array('getIgnoreEnableFields', 'getEnableFieldsToBeIgnored', 'getIncludeDeleted'), array(), '', FALSE);
@@ -328,6 +322,7 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			),
 			'delete' => 'deleted_column'
 		);
+		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->sys_page = new \TYPO3\CMS\Frontend\Page\PageRepository();
 		$GLOBALS['SIM_ACCESS_TIME'] = 123456789;
 		$mockQuerySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings', array('dummy'), array(), '', FALSE);

@@ -29,13 +29,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
 class BackendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	protected $typo3DbBackup;

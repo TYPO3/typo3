@@ -29,11 +29,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
 class FrontendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-	 */
-	protected $tsfeBackup;
-
-	/**
 	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	protected $mockContentObject;
@@ -44,11 +39,6 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 	protected $frontendConfigurationManager;
 
 	/**
-	 * @var array
-	 */
-	protected $extConfBackup;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Service\TypoScriptService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $mockTypoScriptService;
@@ -57,21 +47,13 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 	 * Sets up this testcase
 	 */
 	public function setUp() {
-		$this->tsfeBackup = $GLOBALS['TSFE'];
+		$GLOBALS['TSFE'] = new \stdClass();
+		$GLOBALS['TSFE']->tmpl = new \stdClass();
 		$this->mockContentObject = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
-		$this->extConfBackup = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase'];
 		$this->frontendConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\FrontendConfigurationManager', array('dummy'));
 		$this->frontendConfigurationManager->_set('contentObject', $this->mockContentObject);
 		$this->mockTypoScriptService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
 		$this->frontendConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
-	}
-
-	/**
-	 * Tears down this testcase
-	 */
-	public function tearDown() {
-		$GLOBALS['TSFE']->tmpl->setup;
-		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase'] = $this->extConfBackup;
 	}
 
 	/**

@@ -29,21 +29,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 class ExtensionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * Contains backup of $TYPO3_CONF_VARS
-	 *
-	 * @var array
-	 */
-	protected $typo3ConfVars = array();
-
-	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	protected $typo3DbBackup;
-
-	/**
-	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE']
-	 */
-	protected $tsfeBackup;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -56,9 +44,9 @@ class ExtensionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $extensionService;
 
 	public function setUp() {
-		$this->typo3ConfVars = $GLOBALS['TYPO3_CONF_VARS'];
 		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('fullQuoteStr', 'exec_SELECTgetRows'));
+		$GLOBALS['TSFE'] = new \stdClass();
 		$this->extensionService = new \TYPO3\CMS\Extbase\Service\ExtensionService();
 		$this->mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		$this->extensionService->injectConfigurationManager($this->mockConfigurationManager);
@@ -100,8 +88,6 @@ class ExtensionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	}
 
 	public function tearDown() {
-		$GLOBALS['TYPO3_CONF_VARS'] = $this->typo3ConfVars;
-		$GLOBALS['TSFE'] = $this->tsfeBackup;
 		$GLOBALS['TYPO3_DB'] = $this->typo3DbBackup;
 	}
 
