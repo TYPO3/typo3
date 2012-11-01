@@ -215,8 +215,8 @@ class RootlineUtility {
 			$this->pageContext->versionOL('pages', $row, FALSE, TRUE);
 			$this->pageContext->fixVersioningPid('pages', $row);
 			if (is_array($row)) {
-				$row = $this->enrichWithRelationFields($uid, $row);
 				$this->pageContext->getPageOverlay($row, $this->languageUid);
+				$row = $this->enrichWithRelationFields($uid, $row);
 				self::$pageRecordCache[$this->getCacheIdentifier($uid)] = $row;
 			}
 		}
@@ -253,7 +253,11 @@ class RootlineUtility {
 						}
 					}
 					if (isset($configuration['foreign_table_field'])) {
-						$whereClauseParts[] = '`' . trim($configuration['foreign_table_field']) . '` = \'pages\'';
+						if (intval($pageRecord['sys_language_uid']) > 0) {
+							$whereClauseParts[] = '`' . trim($configuration['foreign_table_field']) . '` = \'pages_language_overlay\'';
+						} else {
+							$whereClauseParts[] = '`' . trim($configuration['foreign_table_field']) . '` = \'pages\'';
+						}
 					}
 					$whereClause = implode(' AND ', $whereClauseParts);
 					$whereClause .= $this->pageContext->deleteClause($table);
