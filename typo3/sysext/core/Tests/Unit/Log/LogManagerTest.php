@@ -72,6 +72,13 @@ class LogManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function logManagerTurnsNamespaceStyleLoggerNamesIntoDotStyleLoggerNames() {
+		$this->assertSame('test.a.b', $this->logManagerInstance->getLogger('test\\a\\b')->getName());
+	}
+
+	/**
+	 * @test
+	 */
 	public function managerReturnsSameLoggerOnRepeatedRequest() {
 		$loggerName = uniqid('test.core.log');
 		$this->logManagerInstance->registerLogger($loggerName);
