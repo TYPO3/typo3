@@ -739,11 +739,6 @@ class Tx_Beuser_Domain_Repository_BackendUserSessionRepository extends \TYPO3\CM
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_beuser_switchbackuser extends \TYPO3\CMS\Beuser\Hook\SwitchBackUserHook {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class Tx_Beuser_Service_ModuleDataStorageService extends \TYPO3\CMS\Beuser\Service\ModuleDataStorageService {}
 
 /**
