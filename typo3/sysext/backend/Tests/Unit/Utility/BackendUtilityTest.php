@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
+use TYPO3\CMS\Backend\Utility;
 
 /***************************************************************
  * Copyright notice
@@ -39,7 +40,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	private $fixture;
 
 	public function setUp() {
-		$this->fixture = new \TYPO3\CMS\Backend\Utility\BackendUtility();
+		$this->fixture = new Utility\BackendUtility();
 	}
 
 	public function tearDown() {
@@ -57,9 +58,10 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals('0', $this->fixture->getProcessedValue('tt_content', 'header', '0'));
 	}
 
-	////////////////////////////////////////////
-	// Tests concerning getCommenSelectFields
-	////////////////////////////////////////////
+	/**
+	 * Tests concerning getCommenSelectFields
+	 */
+
 	/**
 	 * Data provider for getCommonSelectFieldsReturnsCorrectFields
 	 *
@@ -174,9 +176,10 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($selectFields, $expectedFields);
 	}
 
-	////////////////////////////////////////////
-	// Tests concerning getLabelFromItemlist
-	////////////////////////////////////////////
+	/**
+	 * Tests concerning getLabelFromItemlist
+	 */
+
 	/**
 	 * Data provider for getLabelFromItemlistReturnsCorrectFields
 	 *
@@ -260,9 +263,10 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($label, $expectedLabel);
 	}
 
-	////////////////////////////////////////////
-	// Tests concerning getLabelFromItemListMerged
-	////////////////////////////////////////////
+	/**
+	 * Tests concerning getLabelFromItemListMerged
+	 */
+
 	/**
 	 * Data provider for getLabelFromItemListMerged
 	 *
@@ -326,6 +330,17 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		unset($GLOBALS['TCA'][$table]);
 		$GLOBALS['TCA'][$table] = $tcaBackup;
 		$this->assertEquals($label, $expectedLabel);
+	}
+
+	/**
+	 * Tests concerning getFuncCheck
+	 */
+
+	/**
+	 * @test
+	 */
+	public function getFuncCheckReturnsInputFieldWithValueOne() {
+		$this->assertStringMatchesFormat('<input %Svalue="1"%S/>', Utility\BackendUtility::getFuncCheck('params', 'test', TRUE));
 	}
 
 }
