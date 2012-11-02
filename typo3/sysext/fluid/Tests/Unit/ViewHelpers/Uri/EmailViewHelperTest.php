@@ -32,29 +32,19 @@ class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 	 */
 	protected $viewHelper;
 
-	/**
-	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-	 */
-	protected $cObjBackup;
-
 	public function setUp() {
 		parent::setUp();
-		$this->cObjBackup = $GLOBALS['TSFE']->cObj;
+		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->cObj = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array(), array(), '', FALSE);
 		$this->viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\Uri\EmailViewHelper();
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
 
-	public function tearDown() {
-		$GLOBALS['TSFE']->cObj = $this->cObjBackup;
-	}
-
 	/**
 	 * @test
 	 */
 	public function renderReturnsFirstResultOfGetMailTo() {
-		#$GLOBALS['TSFE']->cObj->expects($this->once())->method('getMailTo')->with('some@email.tld', 'some@email.tld')->will($this->returnValue(array('mailto:some@email.tld', 'some@email.tld')));
 		$this->viewHelper->initialize();
 		$actualResult = $this->viewHelper->render('some@email.tld');
 		$this->assertEquals('mailto:some@email.tld', $actualResult);

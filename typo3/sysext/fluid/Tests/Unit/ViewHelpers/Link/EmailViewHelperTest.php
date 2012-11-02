@@ -32,22 +32,17 @@ class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 
 	public function setUp() {
 		parent::setUp();
-		$this->cObjBackup = $GLOBALS['TSFE']->cObj;
+		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->cObj = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array(), array(), '', FALSE);
 		$this->viewHelper = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Fluid\\ViewHelpers\\Link\\EmailViewHelper'), array('renderChildren'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
 
-	public function tearDown() {
-		$GLOBALS['TSFE']->cObj = $this->cObjBackup;
-	}
-
 	/**
 	 * @test
 	 */
 	public function renderCorrectlySetsTagNameAndAttributesAndContent() {
-		//$GLOBALS['TSFE']->cObj->expects($this->once())->method('getMailTo')->with('some@email.tld', 'some@email.tld')->will($this->returnValue(array('mailto:some@email.tld', 'some@email.tld')));
 		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('setTagName', 'addAttribute', 'setContent'));
 		$mockTagBuilder->expects($this->once())->method('setTagName')->with('a');
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'mailto:some@email.tld');
@@ -62,7 +57,6 @@ class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 	 * @test
 	 */
 	public function renderSetsTagContentToEmailIfRenderChildrenReturnNull() {
-		//$GLOBALS['TSFE']->cObj->expects($this->once())->method('getMailTo')->with('some@email.tld', 'some@email.tld')->will($this->returnValue(array('mailto:some@email.tld', 'some@email.tld')));
 		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('setTagName', 'addAttribute', 'setContent'));
 		$mockTagBuilder->expects($this->once())->method('setContent')->with('some@email.tld');
 		$this->viewHelper->_set('tag', $mockTagBuilder);
