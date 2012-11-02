@@ -17,6 +17,8 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['removeNotInMenuDoktypeC
 // remove pagetype "advanced" since TYPO3 4.2
 // this is merged with doctype "standard" with tab view to edit
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['mergeAdvancedDoktypeConversion'] = 'TYPO3\\CMS\\Install\\CoreUpdates\\MergeAdvancedUpdate';
+// TYPO3 6.0 - Add new tables for ExtensionManager
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['extensionManagerTables'] = 'TYPO3\\CMS\\Install\\CoreUpdates\\ExtensionManagerTables';
 // add new / outsourced system extensions since TYPO3 4.3
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['installSystemExtensions'] = 'TYPO3\\CMS\\Install\\CoreUpdates\\InstallSysExtsUpdate';
 // change tt_content.imagecols=0 to 1 for proper display in TCEforms since TYPO3 4.3
@@ -44,7 +46,6 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['sysext_file_init'] = 'T
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['sysext_file_images'] = 'TYPO3\\CMS\\Install\\Updates\\TceformsUpdateWizard';
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['sysext_file_uploads'] = 'TYPO3\\CMS\\Install\\Updates\\TtContentUploadsUpdateWizard';
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['sysext_file_filemounts'] = 'TYPO3\\CMS\\Install\\Updates\\FilemountUpdateWizard';
-$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['extensionManagerRepositories'] = 'TYPO3\\CMS\\Install\\CoreUpdates\\ExtensionManagerRepositories';
 // Version 4.7: Migrate the flexforms of MediaElement
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['mediaElementFlexform'] = 'TYPO3\\CMS\\Install\\CoreUpdates\\MediaFlexformUpdate';
 ?>
