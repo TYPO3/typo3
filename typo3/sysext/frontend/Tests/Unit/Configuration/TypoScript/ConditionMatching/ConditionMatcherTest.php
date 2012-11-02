@@ -34,50 +34,31 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatchi
 class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var array
+	 * @var string Name of a key in $GLOBALS for this test
 	 */
-	private $backupGlobalVariables;
+	protected $testGlobalNamespace;
 
 	/**
-	 * @var array
+	 * @var \TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher Class under test
 	 */
-	private $rootline;
-
-	/**
-	 * @var \TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher
-	 */
-	private $matchCondition;
+	protected $matchCondition;
 
 	public function setUp() {
-		$this->backupGlobalVariables = array(
-			'_ENV' => $_ENV,
-			'_GET' => $_GET,
-			'_POST' => $_POST,
-			'_SERVER' => $_SERVER,
-			'TYPO3_CONF_VARS' => $GLOBALS['TYPO3_CONF_VARS'],
-			'T3_VAR' => $GLOBALS['T3_VAR']
-		);
 		$this->testGlobalNamespace = uniqid('TEST');
 		$GLOBALS[$this->testGlobalNamespace] = array();
-		$this->setUpTSFE();
-		$this->matchCondition = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
-	}
-
-	public function tearDown() {
-		foreach ($this->backupGlobalVariables as $key => $data) {
-			$GLOBALS[$key] = $data;
-		}
-		unset($this->matchCondition);
-		unset($this->backupGlobalVariables);
-		unset($GLOBALS[$this->testGlobalNamespace]);
-	}
-
-	private function setUpTSFE() {
-		$this->rootline = array(
+		$GLOBALS['TSFE'] = new \stdClass();
+		$GLOBALS['TSFE']->tmpl = new \stdClass();
+		$GLOBALS['TSFE']->tmpl->rootLine = array(
 			2 => array('uid' => 121, 'pid' => 111),
 			1 => array('uid' => 111, 'pid' => 101),
 			0 => array('uid' => 101, 'pid' => 0)
 		);
+		$this->matchCondition = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
+	}
+
+	public function tearDown() {
+		unset($this->matchCondition);
+		unset($GLOBALS[$this->testGlobalNamespace]);
 	}
 
 	/**
@@ -517,7 +498,6 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function treeLevelConditionMatchesSingleValue() {
-		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
 		$this->assertTrue($this->matchCondition->match('[treeLevel = 2]'));
 	}
 
@@ -527,7 +507,6 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function treeLevelConditionMatchesMultipleValues() {
-		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
 		$this->assertTrue($this->matchCondition->match('[treeLevel = 999,998,2]'));
 	}
 
@@ -537,7 +516,6 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function treeLevelConditionDoesNotMatchFaultyValue() {
-		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
 		$this->assertFalse($this->matchCondition->match('[treeLevel = 999]'));
 	}
 
@@ -547,7 +525,6 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function PIDupinRootlineConditionMatchesSinglePageIdInRootline() {
-		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
 		$GLOBALS['TSFE']->id = 121;
 		$this->assertTrue($this->matchCondition->match('[PIDupinRootline = 111]'));
 	}
@@ -558,7 +535,6 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function PIDupinRootlineConditionMatchesMultiplePageIdsInRootline() {
-		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
 		$GLOBALS['TSFE']->id = 121;
 		$this->assertTrue($this->matchCondition->match('[PIDupinRootline = 999,111,101]'));
 	}
@@ -569,7 +545,6 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function PIDupinRootlineConditionDoesNotMatchPageIdNotInRootline() {
-		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
 		$GLOBALS['TSFE']->id = 121;
 		$this->assertFalse($this->matchCondition->match('[PIDupinRootline = 999]'));
 	}
@@ -580,7 +555,6 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function PIDupinRootlineConditionDoesNotMatchLastPageIdInRootline() {
-		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
 		$GLOBALS['TSFE']->id = 121;
 		$this->assertFalse($this->matchCondition->match('[PIDupinRootline = 121]'));
 	}
@@ -591,7 +565,6 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function PIDinRootlineConditionMatchesSinglePageIdInRootline() {
-		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
 		$GLOBALS['TSFE']->id = 121;
 		$this->assertTrue($this->matchCondition->match('[PIDinRootline = 111]'));
 	}
@@ -602,7 +575,6 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function PIDinRootlineConditionMatchesMultiplePageIdsInRootline() {
-		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
 		$GLOBALS['TSFE']->id = 121;
 		$this->assertTrue($this->matchCondition->match('[PIDinRootline = 999,111,101]'));
 	}
@@ -613,7 +585,6 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function PIDinRootlineConditionMatchesLastPageIdInRootline() {
-		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
 		$GLOBALS['TSFE']->id = 121;
 		$this->assertTrue($this->matchCondition->match('[PIDinRootline = 121]'));
 	}
@@ -624,7 +595,6 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function PIDinRootlineConditionDoesNotMatchPageIdNotInRootline() {
-		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
 		$GLOBALS['TSFE']->id = 121;
 		$this->assertFalse($this->matchCondition->match('[PIDinRootline = 999]'));
 	}
