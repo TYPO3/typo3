@@ -88,7 +88,7 @@ class ActionController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCo
 				$this->installUtility->enrichExtensionWithDetails($extension)
 			);
 		}
-		$this->redirect('index', 'List');
+		$this->redirect('index', 'List', NULL, array(self::TRIGGER_RefreshModuleMenu => TRUE));
 	}
 
 	/**

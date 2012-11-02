@@ -65,11 +65,12 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * @param boolean $enableExtJsDebug if TRUE, debug version of ExtJS is loaded. Use this for development only
 	 * @param array $addCssFiles Custom CSS files to be loaded
 	 * @param array $addJsFiles Custom JavaScript files to be loaded
+	 * @param array $triggers Defined triggers to be forwarded to client (e.g. refreshing backend widgets)
 	 * @return string
 	 * @see template
 	 * @see t3lib_PageRenderer
 	 */
-	public function render($pageTitle = '', $enableJumpToUrl = TRUE, $enableClickMenu = TRUE, $loadPrototype = TRUE, $loadScriptaculous = FALSE, $scriptaculousModule = '', $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $extJsAdapter = '', $enableExtJsDebug = FALSE, $addCssFiles = array(), $addJsFiles = array()) {
+	public function render($pageTitle = '', $enableJumpToUrl = TRUE, $enableClickMenu = TRUE, $loadPrototype = TRUE, $loadScriptaculous = FALSE, $scriptaculousModule = '', $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $extJsAdapter = '', $enableExtJsDebug = FALSE, $addCssFiles = array(), $addJsFiles = array(), array $triggers = array()) {
 		$doc = $this->getDocInstance();
 		$pageRenderer = $doc->getPageRenderer();
 		if ($enableJumpToUrl) {
@@ -107,6 +108,13 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 			foreach ($addJsFiles as $addJsFile) {
 				$pageRenderer->addJsFile($addJsFile);
 			}
+		}
+		// Handle triggers
+		if (!empty($triggers[\TYPO3\CMS\Extensionmanager\Controller\AbstractController::TRIGGER_RefreshModuleMenu])) {
+			$pageRenderer->addJsInlineCode(
+				\TYPO3\CMS\Extensionmanager\Controller\AbstractController::TRIGGER_RefreshModuleMenu,
+				'if (top.TYPO3ModuleMenu.refreshMenu) { top.TYPO3ModuleMenu.refreshMenu(); }'
+			);
 		}
 		$output = $this->renderChildren();
 		$output = $doc->startPage($pageTitle) . $output;
