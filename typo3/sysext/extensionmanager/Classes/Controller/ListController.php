@@ -94,6 +94,7 @@ class ListController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCont
 		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensions($availableExtensions);
 		$availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation($availableAndInstalledExtensions);
 		$this->view->assign('extensions', $availableAndInstalledExtensions);
+		$this->handleTriggerArguments();
 	}
 
 	/**
