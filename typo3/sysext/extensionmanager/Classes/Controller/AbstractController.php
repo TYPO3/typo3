@@ -35,6 +35,15 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  */
 class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
+	const TRIGGER_RefreshModuleMenu = 'refreshModuleMenu';
+
+	/**
+	 * @var array
+	 */
+	protected $triggerArguments = array(
+		self::TRIGGER_RefreshModuleMenu,
+	);
+
 	/**
 	 * Resolve view and initialize the general view-variables extensionName,
 	 * controllerName and actionName based on the request object
@@ -61,7 +70,25 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	protected function translate($key, $arguments = NULL) {
 		return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, 'extensionmanager', $arguments);
 	}
-}
 
+	/**
+	 * Handles trigger arguments, e.g. refreshing the module menu
+	 * widget if an extension with backend modules has been enabled
+	 * or disabled.
+	 *
+	 * @return void
+	 */
+	protected function handleTriggerArguments() {
+		$triggers = array();
+
+		foreach ($this->triggerArguments as $triggerArgument) {
+			if ($this->request->hasArgument($triggerArgument)) {
+				$triggers[$triggerArgument] = $this->request->getArgument($triggerArgument);
+			}
+		}
+
+		$this->view->assign('triggers', $triggers);
+	}
+}
 
 ?>
