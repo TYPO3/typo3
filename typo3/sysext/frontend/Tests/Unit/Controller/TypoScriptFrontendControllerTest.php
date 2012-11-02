@@ -33,13 +33,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
 class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
 	 */
 	private $fixture;
@@ -172,6 +165,7 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 			'',
 			FALSE
 		);
+		$this->fixture->page = array();
 
 		$pageRepository = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository', $pageRepository);
