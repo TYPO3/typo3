@@ -11,7 +11,6 @@ return array(
 	'tx_coreupdates_imagecols' => 'TYPO3\\CMS\\Install\\CoreUpdates\\ImagecolsUpdate',
 	'tx_coreupdates_imagelink' => 'TYPO3\\CMS\\Install\\CoreUpdates\\ImagelinkUpdate',
 	'tx_coreupdates_installsysexts' => 'TYPO3\\CMS\\Install\\CoreUpdates\\InstallSysExtsUpdate',
-	'tx_coreupdates_localConfiguration' => 'TYPO3\\CMS\\Install\\CoreUpdates\\LocalConfigurationUpdate',
 	'tx_coreupdates_mediaFlexform' => 'TYPO3\\CMS\\Install\\CoreUpdates\\MediaFlexformUpdate',
 	'tx_coreupdates_mergeadvanced' => 'TYPO3\\CMS\\Install\\CoreUpdates\\MergeAdvancedUpdate',
 	'tx_coreupdates_migrateworkspaces' => 'TYPO3\\CMS\\Install\\CoreUpdates\\MigrateWorkspacesUpdate',

@@ -5479,11 +5479,6 @@ class tx_coreupdates_installsysexts extends \TYPO3\CMS\Install\CoreUpdates\Insta
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_coreupdates_localConfiguration extends \TYPO3\CMS\Install\CoreUpdates\LocalConfigurationUpdate {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class tx_coreupdates_mediaFlexform extends \TYPO3\CMS\Install\CoreUpdates\MediaFlexformUpdate {}
 
 /**
