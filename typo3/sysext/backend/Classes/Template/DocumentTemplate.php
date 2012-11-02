@@ -804,7 +804,7 @@ class DocumentTemplate {
 		$this->pageRenderer->setCharSet($this->charset);
 		$this->pageRenderer->addMetaTag($this->generator());
 		$this->pageRenderer->addMetaTag('<meta name="robots" content="noindex,follow" />');
-		$this->pageRenderer->setFavIcon('gfx/favicon.ico');
+		$this->pageRenderer->setFavIcon($this->getBackendFavicon());
 		if ($this->useCompatibilityTag) {
 			$this->pageRenderer->addMetaTag($this->xUaCompatible($this->xUaCompatibilityVersion));
 		}
@@ -2047,6 +2047,14 @@ class DocumentTemplate {
 		';
 	}
 
+	/**
+	* Retrieves configured favicon for backend (with fallback)
+	*
+	* @return string
+	*/
+	protected function getBackendFavicon() {
+		return \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/favicon.ico', '', 1);
+	}
 }
 
 
