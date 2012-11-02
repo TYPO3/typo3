@@ -34,13 +34,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	private $cObj;
@@ -65,6 +58,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->tsfe = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
 		$this->tsfe->tmpl = $this->template;
 		$this->tsfe->config = array();
+		$this->tsfe->page = array();
 		$sysPageMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 		$this->tsfe->sys_page = $sysPageMock;
 		$GLOBALS['TSFE'] = $this->tsfe;
