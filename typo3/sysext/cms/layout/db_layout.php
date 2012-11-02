@@ -1381,7 +1381,8 @@ class SC_db_layout {
 			return $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 							'sys_language.*',
 							'pages_language_overlay,sys_language',
-							'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid='.intval($id).$exQ,
+							'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . intval($id) . $exQ .
+								t3lib_BEfunc::versioningPlaceholderClause('pages_language_overlay'),
 							'pages_language_overlay.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.static_lang_isocode,sys_language.flag',
 							'sys_language.title'
 						);
