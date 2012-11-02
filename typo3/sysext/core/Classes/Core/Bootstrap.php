@@ -359,6 +359,7 @@ class Bootstrap {
 	 * Mail sending via Swift Mailer
 	 *
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
+	 * @deprecated since 6.0, will be removed two versions later - will be removed together with \TYPO3\CMS\Core\Utility\MailUtility::mail()
 	 */
 	public function registerSwiftMailer() {
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'][] = 'TYPO3\\CMS\\Core\\Mail\\SwiftMailerAdapter';

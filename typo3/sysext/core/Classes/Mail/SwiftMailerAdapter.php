@@ -32,6 +32,7 @@ namespace TYPO3\CMS\Core\Mail;
  * @author Jigal van Hemert <jigal@xs4all.nl>
  * @package TYPO3
  * @subpackage t3lib
+ * @deprecated since 6.0, will be removed two versions later - will be removed together with \TYPO3\CMS\Core\Utility\MailUtility::mail()
  */
 class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface {
 

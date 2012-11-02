@@ -48,8 +48,10 @@ class MailUtility {
 	 * @return boolean Indicates whether the mail has been sent or not
 	 * @see PHP function mail() []
 	 * @link http://www.php.net/manual/en/function.mail.php
+	 * @deprecated since 6.0, will be removed two versions later - Use \TYPO3\CMS\Core\Mail\Mailer instead
 	 */
 	static public function mail($to, $subject, $messageBody, $additionalHeaders = NULL, $additionalParameters = NULL) {
+		GeneralUtility::logDeprecatedFunction();
 		$success = TRUE;
 		// If the mail does not have a From: header, fall back to the default in TYPO3_CONF_VARS.
 		if (!preg_match('/^From:/im', $additionalHeaders) && $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']) {
