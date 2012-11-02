@@ -121,19 +121,6 @@ class PhpassSaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function createdSaltedHashOfProperStructureForMaximumHashCount() {
-		$password = 'password';
-		$maxHashCount = $this->objectInstance->getMaxHashCount();
-		$this->objectInstance->setHashCount($maxHashCount);
-		$saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-		$this->assertTrue($this->objectInstance->isValidSaltedPW($saltedHashPassword));
-		// reset hashcount
-		$this->objectInstance->setHashCount(NULL);
-	}
-
-	/**
-	 * @test
-	 */
 	public function createdSaltedHashOfProperStructureForMinimumHashCount() {
 		$password = 'password';
 		$minHashCount = $this->objectInstance->getMinHashCount();

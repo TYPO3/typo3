@@ -135,20 +135,6 @@ class BlowfishSaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function createdSaltedHashOfProperStructureForMaximumHashCount() {
-		$this->skipTestIfBlowfishIsNotAvailable();
-		$password = 'password';
-		$maxHashCount = $this->objectInstance->getMaxHashCount();
-		$this->objectInstance->setHashCount($maxHashCount);
-		$saltedHashPassword = $this->objectInstance->getHashedPassword($password);
-		$this->assertTrue($this->objectInstance->isValidSaltedPW($saltedHashPassword));
-		// reset hashcount
-		$this->objectInstance->setHashCount(NULL);
-	}
-
-	/**
-	 * @test
-	 */
 	public function createdSaltedHashOfProperStructureForMinimumHashCount() {
 		$this->skipTestIfBlowfishIsNotAvailable();
 		$password = 'password';
