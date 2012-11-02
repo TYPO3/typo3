@@ -1599,21 +1599,6 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($expectedPort, Utility\GeneralUtility::getIndpEnv('TYPO3_PORT'));
 	}
 
-	/**
-	 * @test
-	 */
-	public function isGetIndpEnvHookCalled() {
-		$hookClassName = uniqid('user_getIndpEnvHook');
-		$hookMock = $this->getMock('stdClass', array('getIndpEnvCustom'), array(), $hookClassName);
-		$hookMock->expects($this->once())->method('getIndpEnvCustom');
-		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance($hookClassName, $hookMock);
-
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['postIndpEnvValue'][$hookClassName] = $hookClassName . '->getIndpEnvCustom';
-
-		\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL');
-	}
-
-
 	//////////////////////////////////
 	// Tests concerning underscoredToUpperCamelCase
 	//////////////////////////////////
