@@ -1,5 +1,5 @@
 <?php
-$extensionPath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('linkvalidator');
+$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('linkvalidator');
 return array(
 	'tx_linkvalidator_linktype_abstract' => $extensionPath . 'classes/linktype/class.tx_linkvalidator_linktype_abstract.php',
 	'tx_linkvalidator_linktype_interface' => $extensionPath . 'classes/linktype/class.tx_linkvalidator_linktype_interface.php',
