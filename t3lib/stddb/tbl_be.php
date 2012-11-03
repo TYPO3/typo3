@@ -311,7 +311,7 @@ $TCA['be_users'] = array(
 				'wizards' => array(
 					'_PADDING' => 4,
 					'0' => array(
-						'type' => \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('tsconfig_help') ? 'popup' : '',
+						'type' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tsconfig_help') ? 'popup' : '',
 						'title' => 'LLL:EXT:lang/locallang_tca.xml:TSconfig_title',
 						'script' => 'wizard_tsconfig.php?mode=beuser',
 						'icon' => 'wizard_tsconfig.gif',
@@ -595,7 +595,7 @@ $TCA['be_groups'] = array(
 				'wizards' => array(
 					'_PADDING' => 4,
 					'0' => array(
-						'type' => \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('tsconfig_help') ? 'popup' : '',
+						'type' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tsconfig_help') ? 'popup' : '',
 						'title' => 'LLL:EXT:lang/locallang_tca.xml:TSconfig_title',
 						'script' => 'wizard_tsconfig.php?mode=beuser',
 						'icon' => 'wizard_tsconfig.gif',

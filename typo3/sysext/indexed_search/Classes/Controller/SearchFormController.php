@@ -2078,7 +2078,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public function makeAccessIndication($id) {
 		if (is_array($this->fe_groups_required[$id]) && count($this->fe_groups_required[$id])) {
-			return '<img src="' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('indexed_search') . 'pi/res/locked.gif" width="12" height="15" vspace="5" title="' . sprintf($this->pi_getLL('res_memberGroups', '', 1), implode(',', array_unique($this->fe_groups_required[$id]))) . '" alt="" />';
+			return '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('indexed_search') . 'pi/res/locked.gif" width="12" height="15" vspace="5" title="' . sprintf($this->pi_getLL('res_memberGroups', '', 1), implode(',', array_unique($this->fe_groups_required[$id]))) . '" alt="" />';
 		}
 	}
 

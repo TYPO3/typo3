@@ -39,7 +39,7 @@ require_once 'init.php';
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/backend/Classes/Controller/FileSystemNavigationFrameController.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('backend') . 'Classes/Controller/FileSystemNavigationFrameController.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/Controller/FileSystemNavigationFrameController.php';
 // Make instance if it is not an AJAX call
 if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
 	$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\FileSystemNavigationFrameController');

@@ -122,7 +122,7 @@ your TYPO3 installation and the usability of the backend.';
 		$extConf = $this->extConf['BE'];
 		// The backend is called over SSL
 		$SSL = ($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] > 0 ? TRUE : FALSE) && $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] != 'superchallenged';
-		$rsaAuthLoaded = \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('rsaauth');
+		$rsaAuthLoaded = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth');
 		if ($extConf['enabled']) {
 			// SSL configured?
 			if ($SSL) {

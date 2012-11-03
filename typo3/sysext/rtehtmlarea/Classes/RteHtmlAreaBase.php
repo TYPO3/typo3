@@ -362,7 +362,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			// Set backPath
 			$this->backPath = $this->TCEform->backPath;
 			// Get the path to this extension:
-			$this->extHttpPath = $this->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($this->ID);
+			$this->extHttpPath = $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->ID);
 			// Get the site URL
 			$this->siteURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 			// Get the host URL
@@ -403,7 +403,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			$this->contentTypo3Language = $this->language == 'en' ? 'default' : $this->language;
 			$this->contentISOLanguage = 'en';
 			$this->contentLanguageUid = $row['sys_language_uid'] > 0 ? $row['sys_language_uid'] : 0;
-			if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('static_info_tables')) {
+			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
 				if ($this->contentLanguageUid) {
 					$tableA = 'sys_language';
 					$tableB = 'static_languages';
@@ -566,7 +566,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 				$pathToSkin = $this->registeredPlugins[$pluginId]->getPathToSkin();
 				if ($pathToSkin) {
 					$key = $this->registeredPlugins[$pluginId]->getExtensionKey();
-					$this->addStyleSheet('rtehtmlarea-plugin-' . $pluginId . '-skin', ($this->is_FE() ? \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath($key) : $this->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($key)) . $pathToSkin);
+					$this->addStyleSheet('rtehtmlarea-plugin-' . $pluginId . '-skin', ($this->is_FE() ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($key) : $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($key)) . $pathToSkin);
 				}
 			}
 		}
@@ -1298,8 +1298,8 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			// extension
 			list($extKey, $local) = explode('/', substr($filename, 4), 2);
 			$newFilename = '';
-			if (strcmp($extKey, '') && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extKey) && strcmp($local, '')) {
-				$newFilename = ($this->is_FE() || $this->isFrontendEditActive() ? \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath($extKey) : $this->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($extKey)) . $local;
+			if (strcmp($extKey, '') && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && strcmp($local, '')) {
+				$newFilename = ($this->is_FE() || $this->isFrontendEditActive() ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($extKey) : $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extKey)) . $local;
 			}
 		} elseif (substr($filename, 0, 1) != '/') {
 			$newFilename = ($this->is_FE() || $this->isFrontendEditActive() ? '' : $this->backPath . '../') . $filename;

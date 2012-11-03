@@ -45,7 +45,7 @@ $LOCAL_LANG_orig = $LOCAL_LANG;
 $LANG->includeLLFile('EXT:cms/layout/locallang_db_new_content_el.xml');
 $LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($LOCAL_LANG_orig, $LOCAL_LANG);
 // Exits if 'cms' extension is not loaded:
-\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms', 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms', 1);
 /**
  * Local position map class
  *
@@ -96,7 +96,7 @@ class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/backend/Classes/Controller/ContentElement/NewContentElementController.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('backend') . 'Classes/Controller/ContentElement/NewContentElementController.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/Controller/ContentElement/NewContentElementController.php';
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ContentElement\\NewContentElementController');
 $SOBE->init();

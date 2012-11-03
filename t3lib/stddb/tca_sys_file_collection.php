@@ -98,7 +98,7 @@ $TCA['sys_file_collection'] = array(
 		'files' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.files',
-			'config' => \TYPO3\CMS\Core\Extension\ExtensionManager::getFileFieldTCAConfig('files')
+			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('files')
 		),
 		'title' => array(
 			'exclude' => 0,

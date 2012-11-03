@@ -66,7 +66,7 @@ class ExtensionManagerRepositories extends \TYPO3\CMS\Install\Updates\AbstractUp
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$result = FALSE;
-		$sqlFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extensionmanager') . DIRECTORY_SEPARATOR . 'ext_tables_static+adt.sql';
+		$sqlFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extensionmanager') . DIRECTORY_SEPARATOR . 'ext_tables_static+adt.sql';
 		$sqlStatements = explode(';', \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($sqlFile));
 
 		foreach ($sqlStatements as $sqlStatement) {

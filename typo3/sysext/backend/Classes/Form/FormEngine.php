@@ -5896,9 +5896,9 @@ function ' . $evalData . '(value) {
 			switch ((string) $parts[2]) {
 			case 'LOADED':
 				if (strtolower($parts[3]) == 'true') {
-					$output = \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($parts[1]) ? TRUE : FALSE;
+					$output = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($parts[1]) ? TRUE : FALSE;
 				} elseif (strtolower($parts[3]) == 'false') {
-					$output = !\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($parts[1]) ? TRUE : FALSE;
+					$output = !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($parts[1]) ? TRUE : FALSE;
 				}
 				break;
 			}
@@ -5993,7 +5993,7 @@ function ' . $evalData . '(value) {
 	 * @todo Define visibility
 	 */
 	public function getAvailableLanguages($onlyIsoCoded = 1, $setDefault = 1) {
-		$isL = \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('static_info_tables');
+		$isL = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables');
 		// Find all language records in the system:
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('static_lang_isocode,title,uid', 'sys_language', 'pid=0 AND hidden=0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_language'), '', 'title');
 		// Traverse them:
@@ -6130,7 +6130,7 @@ function ' . $evalData . '(value) {
 				foreach ($uids as $uid) {
 					if ($sys_language_rec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_language', $uid)) {
 						$this->cachedAdditionalPreviewLanguages[$uid] = array('uid' => $uid);
-						if ($sys_language_rec['static_lang_isocode'] && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('static_info_tables')) {
+						if ($sys_language_rec['static_lang_isocode'] && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
 							$staticLangRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('static_languages', $sys_language_rec['static_lang_isocode'], 'lg_iso_2');
 							if ($staticLangRow['lg_iso_2']) {
 								$this->cachedAdditionalPreviewLanguages[$uid]['uid'] = $uid;

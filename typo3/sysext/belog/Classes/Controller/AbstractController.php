@@ -255,7 +255,7 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	 * @return array Key is uid of workspace, value its label
 	 */
 	protected function createWorkspaceListForSelectOptions() {
-		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces')) {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
 			return array();
 		}
 		$workspaceArray = array();

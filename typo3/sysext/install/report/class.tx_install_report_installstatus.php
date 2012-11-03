@@ -21,11 +21,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install', 'requirements.php');
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install', 'requirements.php');
 /*
  * @deprecated since 6.0, the classname tx_install_report_InstallStatus and this file is obsolete
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/install/Classes/Report/InstallStatusReport.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'Classes/Report/InstallStatusReport.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/Report/InstallStatusReport.php';
 ?>

@@ -38,7 +38,7 @@ class ModuleFunctionController extends mod_user_task {
 			} else {
 				$presets = '';
 			}
-			$icon = '<img src="' . $this->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('impexp') . 'export.gif" width="18" height="16" class="absmiddle" alt="" />';
+			$icon = '<img src="' . $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('impexp') . 'export.gif" width="18" height="16" class="absmiddle" alt="" />';
 			$config = $this->mkMenuConfig($icon . $this->headLink('tx_impexp_modfunc1', 1), '', $presets);
 		}
 		return $config;
@@ -52,7 +52,7 @@ class ModuleFunctionController extends mod_user_task {
 	 */
 	public function main() {
 		if ($id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('display')) {
-			return $this->urlInIframe($this->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('impexp') . 'app/index.php?tx_impexp[action]=export&preset[load]=1&preset[select]=' . $id, 1);
+			return $this->urlInIframe($this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('impexp') . 'app/index.php?tx_impexp[action]=export&preset[load]=1&preset[select]=' . $id, 1);
 		} else {
 			// Thumbnail folder and files:
 			$tempDir = $this->userTempFolder();
