@@ -132,7 +132,7 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	 * @return 	void
 	 */
 	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('workspaces') . 'Resources/Public/JavaScript/workspacemenu.js');
+		$this->backendReference->addJavascriptFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/JavaScript/workspacemenu.js');
 	}
 
 	/**

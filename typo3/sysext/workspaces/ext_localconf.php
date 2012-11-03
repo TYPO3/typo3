@@ -3,7 +3,7 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 if (TYPO3_MODE == 'BE') {
-	$workspaceSelectorToolbarItemClassPath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('workspaces', 'Classes/ExtDirect/WorkspaceSelectorToolbarItem.php');
+	$workspaceSelectorToolbarItemClassPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('workspaces', 'Classes/ExtDirect/WorkspaceSelectorToolbarItem.php');
 	$GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'][] = $workspaceSelectorToolbarItemClassPath;
 }
 // Register the autopublishing task
@@ -29,7 +29,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_acc
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['workspaces_cache'])) {
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['workspaces_cache'] = array();
 }
-\TYPO3\CMS\Core\Extension\ExtensionManager::addUserTSConfig('options.workspaces.considerReferences = 1');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.workspaces.considerReferences = 1');
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php']['postProcessCollections'][] = 'EXT:workspaces/Classes/ExtDirect/PagetreeCollectionsProcessor.php:TYPO3\\CMS\\Workspaces\\ExtDirect\\PagetreeCollectionsProcessor';
-\TYPO3\CMS\Core\Extension\ExtensionManager::addUserTSConfig('options.workspaces.considerReferences = 1');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.workspaces.considerReferences = 1');
 ?>

@@ -23,10 +23,10 @@ if (TYPO3_MODE == 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		)
 	);
 	// register ExtDirect
-	\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Workspaces.ExtDirect', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'Classes/ExtDirect/Server.php:TYPO3\\CMS\\Workspaces\\ExtDirect\\ExtDirectServer', 'web_WorkspacesWorkspaces', 'user,group');
-	\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Workspaces.ExtDirectActions', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'Classes/ExtDirect/ActionHandler.php:TYPO3\\CMS\\Workspaces\\ExtDirect\\ActionHandler', 'web_WorkspacesWorkspaces', 'user,group');
-	\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Workspaces.ExtDirectMassActions', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'Classes/ExtDirect/MassActionHandler.php:TYPO3\\CMS\\Workspaces\\ExtDirect\\MassActionHandler', 'web_WorkspacesWorkspaces', 'user,group');
-	\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Ajax.ExtDirect.ToolbarMenu', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'Classes/ExtDirect/ToolbarMenu.php:TYPO3\\CMS\\Workspaces\\ExtDirect\\ToolbarMenu');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Workspaces.ExtDirect', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/ExtDirect/Server.php:TYPO3\\CMS\\Workspaces\\ExtDirect\\ExtDirectServer', 'web_WorkspacesWorkspaces', 'user,group');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Workspaces.ExtDirectActions', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/ExtDirect/ActionHandler.php:TYPO3\\CMS\\Workspaces\\ExtDirect\\ActionHandler', 'web_WorkspacesWorkspaces', 'user,group');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Workspaces.ExtDirectMassActions', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/ExtDirect/MassActionHandler.php:TYPO3\\CMS\\Workspaces\\ExtDirect\\MassActionHandler', 'web_WorkspacesWorkspaces', 'user,group');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Ajax.ExtDirect.ToolbarMenu', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/ExtDirect/ToolbarMenu.php:TYPO3\\CMS\\Workspaces\\ExtDirect\\ToolbarMenu');
 }
 /**
  * Table "sys_workspace":
@@ -43,7 +43,7 @@ $TCA['sys_workspace'] = array(
 		'typeicon_classes' => array(
 			'default' => 'mimetypes-x-sys_workspace'
 		),
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'tca.php',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
 		'versioningWS_alwaysAllowLiveEdit' => TRUE,
 		'dividers2tabs' => TRUE
 	)
@@ -67,17 +67,17 @@ $TCA['sys_workspace_stage'] = array(
 		'typeicon_classes' => array(
 			'default' => 'mimetypes-x-sys_workspace'
 		),
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'tca.php',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
 		'versioningWS_alwaysAllowLiveEdit' => TRUE,
 		'dividers2tabs' => TRUE
 	)
 );
 // todo move icons to Core sprite or keep them here and remove the todo note ;)
 $icons = array(
-	'sendtonextstage' => \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($_EXTKEY) . 'Resources/Public/Images/version-workspace-sendtonextstage.png',
-	'sendtoprevstage' => \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($_EXTKEY) . 'Resources/Public/Images/version-workspace-sendtoprevstage.png',
-	'generatepreviewlink' => \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($_EXTKEY) . 'Resources/Public/Images/generate-ws-preview-link.png'
+	'sendtonextstage' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Images/version-workspace-sendtonextstage.png',
+	'sendtoprevstage' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Images/version-workspace-sendtoprevstage.png',
+	'generatepreviewlink' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Images/generate-ws-preview-link.png'
 );
 \TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, $_EXTKEY);
-\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('sys_workspace_stage', 'EXT:workspaces/Resources/Private/Language/locallang_csh_sysws_stage.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_workspace_stage', 'EXT:workspaces/Resources/Private/Language/locallang_csh_sysws_stage.xml');
 ?>
