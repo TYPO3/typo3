@@ -2999,16 +2999,6 @@ class Tx_Extbase_Utility_Arrays extends \TYPO3\CMS\Extbase\Utility\ArrayUtility 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Extbase_Utility_Cache extends \TYPO3\CMS\Extbase\Utility\CacheUtility {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extbase_Utility_ClassLoader extends \TYPO3\CMS\Extbase\Utility\ClassLoaderUtility {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class Tx_Extbase_Utility_Debugger extends \TYPO3\CMS\Extbase\Utility\DebuggerUtility {}
 
 /**
@@ -3030,16 +3020,6 @@ class Tx_Extbase_Utility_FrontendSimulator extends \TYPO3\CMS\Extbase\Utility\Fr
  * @deprecated since 6.0 will be removed in 7.0
  */
 class Tx_Extbase_Utility_Localization extends \TYPO3\CMS\Extbase\Utility\LocalizationUtility {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extbase_Utility_TypeHandling extends \TYPO3\CMS\Extbase\Utility\TypeHandlingUtility {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extbase_Utility_TypoScript extends \TYPO3\CMS\Extbase\Utility\TypoScriptUtility {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
