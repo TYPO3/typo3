@@ -229,6 +229,12 @@
 			<trans-unit id="extensionList.updateFromTer.label" xml:space="preserve">
 				<source>Update Extension List</source>
 			</trans-unit>
+			<trans-unit id="task.updateExtensionListTask.name" xml:space="preserve">
+				<source>Update extension list</source>
+			</trans-unit>
+			<trans-unit id="task.updateExtensionListTask.description" xml:space="preserve">
+				<source>Update TER extension list on a regular basis. Once a day is a good interval.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
