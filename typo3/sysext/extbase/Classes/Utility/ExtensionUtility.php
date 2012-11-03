@@ -41,7 +41,7 @@ class ExtensionUtility {
 	 */
 	static protected function getExtensionService() {
 		if (self::$extensionService === NULL) {
-			require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase', 'Classes/Service/ExtensionService.php');
+			require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extbase', 'Classes/Service/ExtensionService.php');
 			$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 			self::$extensionService = $objectManager->get('TYPO3\\CMS\\Extbase\\Service\\ExtensionService');
 		}
@@ -108,7 +108,7 @@ class ExtensionUtility {
 		defaultPid =
 	}
 }';
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addTypoScript($extensionName, 'setup', '
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($extensionName, 'setup', '
 # Setting ' . $extensionName . ' plugin TypoScript
 ' . $pluginTemplate);
 		switch ($pluginType) {
@@ -138,7 +138,7 @@ tt_content.' . $pluginSignature . ' {
 			throw new \InvalidArgumentException('The pluginType "' . $pluginType . '" is not suported', 1289858856);
 		}
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType'] = $pluginType;
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addTypoScript($extensionName, 'setup', '
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($extensionName, 'setup', '
 # Setting ' . $extensionName . ' plugin TypoScript
 ' . $pluginContent, 43);
 	}
@@ -163,7 +163,7 @@ tt_content.' . $pluginSignature . ' {
 		}
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addPlugin(array($pluginTitle, $pluginSignature, $pluginIconPathAndFilename), $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType']);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array($pluginTitle, $pluginSignature, $pluginIconPathAndFilename), $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType']);
 	}
 
 	/**
@@ -178,7 +178,7 @@ tt_content.' . $pluginSignature . ' {
 		$iconPathAndFilename = $moduleConfiguration['icon'];
 		if (substr($iconPathAndFilename, 0, 4) === 'EXT:') {
 			list($extensionKey, $relativePath) = explode('/', substr($iconPathAndFilename, 4), 2);
-			$iconPathAndFilename = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($extensionKey) . $relativePath;
+			$iconPathAndFilename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . $relativePath;
 		}
 		// TODO: skin support
 		$moduleLabels = array(
@@ -226,7 +226,7 @@ tt_content.' . $pluginSignature . ' {
 			'access' => 'admin',
 			'icon' => 'EXT:extbase/ext_icon.gif',
 			'labels' => '',
-			'extRelPath' => \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($extensionKey) . 'Classes/'
+			'extRelPath' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extensionKey) . 'Classes/'
 		);
 		if (strlen($mainModuleName) > 0 && !array_key_exists($mainModuleName, $GLOBALS['TBE_MODULES'])) {
 			$mainModuleName = $extensionName . \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($mainModuleName);
@@ -259,7 +259,7 @@ tt_content.' . $pluginSignature . ' {
 				'actions' => \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $actions)
 			);
 		}
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addModule($mainModuleName, $subModuleName, $position);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule($mainModuleName, $subModuleName, $position);
 	}
 
 	/**
@@ -293,7 +293,7 @@ tt_content.' . $pluginSignature . ' {
 		if ($errors) {
 			return $errors;
 		}
-		$globalPrefix = '$extensionClassesPath = TYPO3\\CMS\\Core\\Extension\\ExtensionManager::extPath(\'' . $extensionKey . '\') . \'Classes/\';';
+		$globalPrefix = '$extensionClassesPath = TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility::extPath(\'' . $extensionKey . '\') . \'Classes/\';';
 		$errors = array();
 		foreach ($classNameToFileMapping as $className => $fileName) {
 			if (!(strpos($className, 'tx_' . strtolower($extensionName)) === 0)) {

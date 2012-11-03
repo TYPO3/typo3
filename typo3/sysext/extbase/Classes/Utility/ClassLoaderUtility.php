@@ -44,8 +44,8 @@ class ClassLoaderUtility {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$classNameParts = explode('_', $className, 3);
 		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($classNameParts[1]);
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extensionKey)) {
-			$classFilePathAndName = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($extensionKey) . 'Classes/' . strtr($classNameParts[2], '_', '/') . '.php';
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {
+			$classFilePathAndName = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'Classes/' . strtr($classNameParts[2], '_', '/') . '.php';
 			if (file_exists($classFilePathAndName)) {
 				require_once $classFilePathAndName;
 			}

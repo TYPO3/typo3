@@ -40,7 +40,7 @@ class TypoScriptUtility {
 	 */
 	static protected function getTypoScriptService() {
 		if (self::$typoScriptService === NULL) {
-			require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase', 'Classes/Service/TypoScriptService.php');
+			require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extbase', 'Classes/Service/TypoScriptService.php');
 			$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 			self::$typoScriptService = $objectManager->get('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
 		}

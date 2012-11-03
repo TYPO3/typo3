@@ -41,7 +41,7 @@ class TypeHandlingUtility {
 	 */
 	static protected function getTypeHandlingService() {
 		if (self::$typeHandlingService === NULL) {
-			require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase', 'Classes/Service/TypeHandlingService.php');
+			require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extbase', 'Classes/Service/TypeHandlingService.php');
 			$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 			self::$typeHandlingService = $objectManager->get('TYPO3\\CMS\\Extbase\\Service\\TypeHandlingService');
 		}

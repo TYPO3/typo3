@@ -57,7 +57,7 @@ class HelpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCon
 	 * @internal
 	 */
 	public function helpStubCommand() {
-		$this->outputLine('Extbase %s', array(\TYPO3\CMS\Core\Extension\ExtensionManager::getExtensionVersion('extbase')));
+		$this->outputLine('Extbase %s', array(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionVersion('extbase')));
 		$this->outputLine('usage: ./cli_dispatch.phpsh extbase <command identifier>');
 		$this->outputLine();
 		$this->outputLine('See \'./cli_dispatch.phpsh extbase help\' for a list of all available commands.');
@@ -92,7 +92,7 @@ class HelpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCon
 	 */
 	protected function displayHelpIndex() {
 		$this->buildCommandsIndex();
-		$this->outputLine('Extbase %s', array(\TYPO3\CMS\Core\Extension\ExtensionManager::getExtensionVersion('extbase')));
+		$this->outputLine('Extbase %s', array(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionVersion('extbase')));
 		$this->outputLine('usage: ./cli_dispatch.phpsh extbase <command identifier>');
 		$this->outputLine();
 		$this->outputLine('The following commands are currently available:');

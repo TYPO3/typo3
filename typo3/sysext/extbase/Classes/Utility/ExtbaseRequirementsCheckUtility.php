@@ -71,7 +71,7 @@ class ExtbaseRequirementsCheckUtility implements \TYPO3\CMS\Reports\StatusProvid
 	 * @return \TYPO3\CMS\Reports\Status
 	 */
 	protected function checkIfDbalExtensionIsInstalled() {
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('dbal')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal')) {
 			$value = 'DBAL is loaded';
 			$message = 'The Database Abstraction Layer Extension (dbal) is loaded. Extbase does not fully support dbal at the moment. If you are aware of this fact or don\'t make use of the incompatible parts on this installation, you can ignore this notice.';
 			$status = \TYPO3\CMS\Reports\Status::INFO;
