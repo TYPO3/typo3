@@ -2911,7 +2911,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				break;
 			case 'adodb':
 				$output = TRUE;
-				require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('adodb') . 'adodb/adodb.inc.php';
+				require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('adodb') . 'adodb/adodb.inc.php';
 				if (!defined('ADODB_FORCE_NULLS')) {
 					define('ADODB_FORCE_NULLS', 1);
 				}

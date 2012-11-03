@@ -174,7 +174,7 @@ class InstallToolHooks {
 			$this->driver = $this->getDefaultDriver();
 		}
 		// Get the template file
-		$templateFile = @file_get_contents((\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('dbal') . $this->templateFilePath . 'install.html'));
+		$templateFile = @file_get_contents((\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('dbal') . $this->templateFilePath . 'install.html'));
 		// Get the template part from the file
 		$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		// Get the subpart for the connection form
@@ -446,7 +446,7 @@ class InstallToolHooks {
 		// There should be a database host connection at this point
 		if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
 			// Get the template file
-			$templateFile = @file_get_contents((\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('dbal') . $this->templateFilePath . 'install.html'));
+			$templateFile = @file_get_contents((\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('dbal') . $this->templateFilePath . 'install.html'));
 			// Get the template part from the file
 			$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 			// Get the subpart for the database choice step

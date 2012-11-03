@@ -46,7 +46,7 @@ class Autoloader {
 		if ($instObj->mode == '123') {
 			switch ($instObj->step) {
 			case 1:
-				if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('dbal') && $this->isDbalSupported()) {
+				if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal') && $this->isDbalSupported()) {
 					$this->activateDbal();
 					// Reload page to have Install Tool actually load DBAL
 					$redirectUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
@@ -54,7 +54,7 @@ class Autoloader {
 				}
 				break;
 			case 2:
-				if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('dbal') && $this->isDbalSupported()) {
+				if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal') && $this->isDbalSupported()) {
 					$this->activateDbal();
 				}
 				break;
@@ -83,11 +83,11 @@ class Autoloader {
 	 * @return void
 	 */
 	protected function activateDbal() {
-		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('adodb')) {
-			\TYPO3\CMS\Core\Extension\ExtensionManager::loadExtension('adodb');
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('adodb')) {
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtension('adodb');
 		}
-		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('dbal')) {
-			\TYPO3\CMS\Core\Extension\ExtensionManager::loadExtension('dbal');
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal')) {
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtension('dbal');
 		}
 	}
 
@@ -97,11 +97,11 @@ class Autoloader {
 	 * @return void
 	 */
 	protected function deactivateDbal() {
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('dbal')) {
-			\TYPO3\CMS\Core\Extension\ExtensionManager::unloadExtension('dbal');
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal')) {
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::unloadExtension('dbal');
 		}
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('adodb')) {
-			\TYPO3\CMS\Core\Extension\ExtensionManager::unloadExtension('adodb');
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('adodb')) {
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::unloadExtension('adodb');
 		}
 	}
 

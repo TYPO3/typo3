@@ -35,7 +35,7 @@ $BE_USER->modAccess($MCONF, 1);
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/dbal/Classes/Controller/ModuleController.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('dbal') . 'Classes/Controller/ModuleController.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('dbal') . 'Classes/Controller/ModuleController.php';
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Dbal\\Controller\\ModuleController');
 $SOBE->init();
