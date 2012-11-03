@@ -52,8 +52,8 @@ class VersionClickMenu {
 			// Adds the regular item
 			$LL = $this->includeLL();
 			// "Versioning" element added:
-			$url = \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('version') . 'cm1/index.php?table=' . rawurlencode($table) . '&uid=' . $uid;
-			$localItems[] = $backRef->linkItem($GLOBALS['LANG']->getLLL('title', $LL), $backRef->excludeIcon('<img src="' . $backRef->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('version') . 'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'), $backRef->urlRefForCM($url), 1);
+			$url = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=' . rawurlencode($table) . '&uid=' . $uid;
+			$localItems[] = $backRef->linkItem($GLOBALS['LANG']->getLLL('title', $LL), $backRef->excludeIcon('<img src="' . $backRef->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'), $backRef->urlRefForCM($url), 1);
 			// "Send to review" element added:
 			/*
 			$url = t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.($table=='pages'?$uid:$backRef->rec['pid']).'&table='.rawurlencode($table).'&uid='.$uid.'&sendToReview=1';

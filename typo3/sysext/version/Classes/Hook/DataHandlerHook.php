@@ -347,7 +347,7 @@ class DataHandlerHook {
 		$elementName = $id ? $table . ':' . $id : $table;
 		if (is_array($workspaceRec)) {
 			// Get the new stage title from workspaces library, if workspaces extension is installed
-			if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces')) {
+			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
 				$stageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
 				$newStage = $stageService->getStageTitle((int) $stageId);
 			} else {
@@ -457,7 +457,7 @@ class DataHandlerHook {
 					'###USER_USERNAME###' => $tcemainObj->BE_USER->user['username']
 				);
 				// add marker for preview links if workspace extension is loaded
-				if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces')) {
+				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
 					$this->workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_Workspaces_Service_Workspaces');
 					// only generate the link if the marker is in the template - prevents database from getting to much entries
 					if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($emailConfig['message'], 'LLL:')) {
