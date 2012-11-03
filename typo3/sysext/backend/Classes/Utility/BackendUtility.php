@@ -2885,7 +2885,7 @@ class BackendUtility {
 	 */
 	static public function getListViewLink($urlParameters = array(), $linkTitle = '', $linkText = '') {
 		$url = self::getModuleUrl('web_list', $urlParameters);
-		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('recordlist') || $url === FALSE) {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('recordlist') || $url === FALSE) {
 			return '';
 		} else {
 			return '<a href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($linkTitle) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-list-open') . htmlspecialchars($linkText) . '</a>';
@@ -3219,7 +3219,7 @@ class BackendUtility {
 	 * @return string Domain name, if found.
 	 */
 	static public function firstDomainRecord($rootLine) {
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 			foreach ($rootLine as $row) {
 				$dRec = self::getRecordsByField('sys_domain', 'pid', $row['uid'], ' AND redirectTo=\'\' AND hidden=0', '', 'sorting');
 				if (is_array($dRec)) {
@@ -3238,7 +3238,7 @@ class BackendUtility {
 	 * @return array Domain record, if found
 	 */
 	static public function getDomainStartPage($domain, $path = '') {
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 			$domain = explode(':', $domain);
 			$domain = strtolower(preg_replace('/\\.$/', '', $domain[0]));
 			// Path is calculated.
@@ -3498,7 +3498,7 @@ class BackendUtility {
 	 * @see t3lib_page::fixVersioningPid()
 	 */
 	static public function fixVersioningPid($table, &$rr, $ignoreWorkspaceMatch = FALSE) {
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('version')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version')) {
 			// Check that the input record is an offline version from a table that supports versioning:
 			if (is_array($rr) && $rr['pid'] == -1 && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 				// Check values for t3ver_oid and t3ver_wsid:
@@ -3544,7 +3544,7 @@ class BackendUtility {
 	 * @see fixVersioningPid()
 	 */
 	static public function workspaceOL($table, &$row, $wsid = -99, $unsetMovePointers = FALSE) {
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('version')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version')) {
 			// If this is FALSE the placeholder is shown raw in the backend.
 			// I don't know if this move can be useful for users to toggle. Technically it can help debugging.
 			$previewMovePlaceholders = TRUE;
@@ -3647,7 +3647,7 @@ class BackendUtility {
 	 * @return array If found, return record, otherwise FALSE
 	 */
 	static public function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields = '*') {
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('version')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version')) {
 			if ($workspace !== 0 && $GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 				// Select workspace version of record:
 				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, $table, 'pid=-1 AND ' . 't3ver_oid=' . intval($uid) . ' AND ' . 't3ver_wsid=' . intval($workspace) . self::deleteClause($table));

@@ -270,8 +270,8 @@ class PagePositionMap {
 	public function onClickEvent($pid, $newPagePID) {
 		$TSconfigProp = $this->getModConfig($newPagePID);
 		if ($TSconfigProp['overrideWithExtension']) {
-			if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($TSconfigProp['overrideWithExtension'])) {
-				$onclick = 'window.location.href=\'' . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($TSconfigProp['overrideWithExtension']) . 'mod1/index.php?cmd=crPage&positionPid=' . $pid . '\';';
+			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($TSconfigProp['overrideWithExtension'])) {
+				$onclick = 'window.location.href=\'' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($TSconfigProp['overrideWithExtension']) . 'mod1/index.php?cmd=crPage&positionPid=' . $pid . '\';';
 				return $onclick;
 			}
 		}

@@ -66,7 +66,7 @@ if (TYPO3_MODE == 'BE' || TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER'])) {
 	$TBE_STYLES['borderschemes'][4] = array('', '', '', 'wrapperTable4');
 	$TBE_STYLES['borderschemes'][5] = array('', '', '', 'wrapperTable5');
 	// Setting the relative path to the extension in temp. variable:
-	$temp_eP = \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($_EXTKEY);
+	$temp_eP = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY);
 	// Alternative dimensions for frameset sizes:
 	// Left menu frame width
 	$TBE_STYLES['dims']['leftMenuFrameW'] = 190;
@@ -79,8 +79,8 @@ if (TYPO3_MODE == 'BE' || TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER'])) {
 	$TBE_STYLES['scriptIDindex']['typo3/alt_clickmenu.php']['mainColors']['bgColor5'] = '#dedede';
 	// Setting up auto detection of alternative icons:
 	$TBE_STYLES['skinImgAutoCfg'] = array(
-		'absDir' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'icons/',
-		'relDir' => \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($_EXTKEY) . 'icons/',
+		'absDir' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'icons/',
+		'relDir' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'icons/',
 		'forceFileExtension' => 'gif',
 		// Force to look for PNG alternatives...
 		'iconSizeWidth' => 16,
@@ -392,7 +392,7 @@ if (TYPO3_MODE == 'BE' || TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER'])) {
 	$TBE_STYLES['extJS']['theme'] = $temp_eP . 'extjs/xtheme-t3skin.css';
 	// Adding HTML template for login screen
 	$TBE_STYLES['htmlTemplates']['templates/login.html'] = 'sysext/t3skin/templates/login.html';
-	$GLOBALS['TBE_STYLES']['stylesheets']['admPanel'] = \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('t3skin') . 'stylesheets/standalone/admin_panel.css';
+	$GLOBALS['TBE_STYLES']['stylesheets']['admPanel'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('t3skin') . 'stylesheets/standalone/admin_panel.css';
 	foreach ($flagNames as $flagName) {
 		\TYPO3\CMS\Backend\Sprite\SpriteManager::addIconSprite(array(
 			'flags-' . $flagName,

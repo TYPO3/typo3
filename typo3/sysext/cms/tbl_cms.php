@@ -601,7 +601,7 @@ $TCA['pages_language_overlay'] = array(
 		'media' => array(
 			'exclude' => 1,
 			'label' => $TCA['pages']['columns']['media']['label'],
-			'config' => \TYPO3\CMS\Core\Extension\ExtensionManager::getFileFieldTCAConfig('media')
+			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('media')
 		),
 		'url' => array(
 			'exclude' => 1,
@@ -1094,8 +1094,8 @@ $TCA['backend_layout'] = array(
 					0 => array(
 						'title' => 'LLL:EXT:cms/locallang_tca.xml:backend_layout.wizard',
 						'type' => 'popup',
-						'icon' => \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('cms') . 'layout/wizard_backend_layout.png',
-						'script' => \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('cms') . 'layout/wizard_backend_layout.php',
+						'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('cms') . 'layout/wizard_backend_layout.png',
+						'script' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('cms') . 'layout/wizard_backend_layout.php',
 						'JSopenParams' => 'height=800,width=800,status=0,menubar=0,scrollbars=0'
 					)
 				)

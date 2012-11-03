@@ -3,7 +3,7 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 // Add the service
-\TYPO3\CMS\Core\Extension\ExtensionManager::addService($_EXTKEY, 'auth', 'TYPO3\\CMS\\Rsaauth\\RsaAuthService', array(
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService($_EXTKEY, 'auth', 'TYPO3\\CMS\\Rsaauth\\RsaAuthService', array(
 	'title' => 'RSA authentication',
 	'description' => 'Authenticates users by using encrypted passwords',
 	'subtype' => 'processLoginDataBE,processLoginDataFE',
@@ -15,7 +15,7 @@ if (!defined('TYPO3_MODE')) {
 	'os' => '',
 	'exec' => '',
 	// Do not put a dependency on openssh here or service loading will fail!
-	'classFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'sv1/class.tx_rsaauth_sv1.php',
+	'classFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'sv1/class.tx_rsaauth_sv1.php',
 	'className' => 'TYPO3\\CMS\\Rsaauth\\RsaAuthService'
 ));
 // Add a hook to the BE login form

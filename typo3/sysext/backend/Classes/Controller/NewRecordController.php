@@ -401,7 +401,7 @@ class NewRecordController {
 							$rowContent = $firstLevel . $newContentIcon . '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('createNewContent') . '</strong>';
 							// If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's wizard instead:
 							$overrideExt = $this->web_list_modTSconfig['properties']['newContentWiz.']['overrideWithExtension'];
-							$pathToWizard = \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($overrideExt) ? \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($overrideExt) . 'mod1/db_new_content_el.php' : 'sysext/cms/layout/db_new_content_el.php';
+							$pathToWizard = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($overrideExt) ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($overrideExt) . 'mod1/db_new_content_el.php' : 'sysext/cms/layout/db_new_content_el.php';
 							$href = $pathToWizard . '?id=' . $this->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
 							$rowContent .= '<br />' . $secondLevel . $newLink . '<br />' . $secondLevelLast . '<a href="' . htmlspecialchars($href) . '">' . $newContentIcon . htmlspecialchars($GLOBALS['LANG']->getLL('clickForWizard')) . '</a>';
 							// Half-line added:
@@ -427,11 +427,11 @@ class NewRecordController {
 										$langFile = $temp[0];
 										$thisTitle = $GLOBALS['LANG']->sL('LLL:EXT:' . $_EXTKEY . '/' . $langFile . ':extension.title');
 										// If no localisation available, read title from ext_emconf.php
-										if (!$thisTitle && is_file(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'ext_emconf.php')) {
-											include \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'ext_emconf.php';
+										if (!$thisTitle && is_file(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'ext_emconf.php')) {
+											include \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'ext_emconf.php';
 											$thisTitle = $EM_CONF[$_EXTKEY]['title'];
 										}
-										$iconFile[$_EXTKEY] = '<img ' . 'src="' . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($_EXTKEY) . $GLOBALS['TYPO3_LOADED_EXT'][$_EXTKEY]['ext_icon'] . '" ' . 'width="16" height="16" ' . 'alt="' . $thisTitle . '" />';
+										$iconFile[$_EXTKEY] = '<img ' . 'src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . $GLOBALS['TYPO3_LOADED_EXT'][$_EXTKEY]['ext_icon'] . '" ' . 'width="16" height="16" ' . 'alt="' . $thisTitle . '" />';
 									} else {
 										$thisTitle = $nameParts[1];
 										$iconFile[$_EXTKEY] = '';

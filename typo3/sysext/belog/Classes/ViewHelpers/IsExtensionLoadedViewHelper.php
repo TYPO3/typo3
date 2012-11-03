@@ -41,7 +41,7 @@ class IsExtensionLoadedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
 	 * @return boolean TRUE if extension is loaded, FALSE otherwise
 	 */
 	public function render($extensionKey) {
-		return \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extensionKey);
+		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey);
 	}
 
 }

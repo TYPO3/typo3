@@ -315,7 +315,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return bool
 	 */
 	protected function isDependentExtensionLoaded($extensionKey) {
-		return \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extensionKey);
+		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey);
 	}
 
 	/**
@@ -323,7 +323,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return boolean
 	 */
 	protected function isLoadedVersionCompatible(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependency) {
-		$extensionVersion = \TYPO3\CMS\Core\Extension\ExtensionManager::getExtensionVersion($dependency->getIdentifier());
+		$extensionVersion = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionVersion($dependency->getIdentifier());
 		return $this->isVersionCompatible($extensionVersion, $dependency);
 	}
 

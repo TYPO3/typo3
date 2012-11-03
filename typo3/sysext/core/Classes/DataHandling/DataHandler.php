@@ -6122,7 +6122,7 @@ class DataHandler {
 	 */
 	public function removeCacheFiles() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return \TYPO3\CMS\Core\Extension\ExtensionManager::removeCacheFiles();
+		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
 	}
 
 	/**
@@ -6483,7 +6483,7 @@ class DataHandler {
 			$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 			if (!$TSConfig['clearCache_disable']) {
 				// If table is "pages":
-				if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms')) {
+				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 					$list_cache = array();
 					if ($table === 'pages' || $table === 'pages_language_overlay') {
 						if ($table === 'pages_language_overlay') {
@@ -6603,7 +6603,7 @@ class DataHandler {
 			if ($this->admin || $this->BE_USER->getTSConfigVal('options.clearCache.all')) {
 				// Clear all caching framework caches
 				$GLOBALS['typo3CacheManager']->flushCaches();
-				if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms')) {
+				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 					$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_treelist');
 				}
 				// Clearing additional cache tables:
@@ -6617,16 +6617,16 @@ class DataHandler {
 					}
 				}
 			}
-			\TYPO3\CMS\Core\Extension\ExtensionManager::removeCacheFiles();
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
 			break;
 		case 'temp_cached':
-			\TYPO3\CMS\Core\Extension\ExtensionManager::removeCacheFiles();
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
 			break;
 		}
 		$tagsToFlush = array();
 		// Clear cache for a page ID!
 		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($cacheCmd)) {
-			if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms')) {
+			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 				$list_cache = array($cacheCmd);
 				// Call pre-processing function for clearing of cache for page ids:
 				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearPageCacheEval'])) {
@@ -6772,7 +6772,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function internal_clearPageCache() {
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 			$GLOBALS['typo3CacheManager']->getCache('cache_pages')->flush();
 		}
 	}

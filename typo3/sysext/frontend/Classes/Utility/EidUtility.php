@@ -121,7 +121,7 @@ class EidUtility {
 	 * @return void
 	 */
 	static public function initExtensionTCA($extensionKey) {
-		$extTablesPath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($extensionKey, 'ext_tables.php');
+		$extTablesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey, 'ext_tables.php');
 		if (file_exists($extTablesPath)) {
 			$GLOBALS['_EXTKEY'] = $extensionKey;
 			require_once $extTablesPath;

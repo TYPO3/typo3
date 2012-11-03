@@ -302,7 +302,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 				$out .= '<input type="Submit" name="update_value" value="' . $GLOBALS['LANG']->getLL('updateButton') . '" />';
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('editProperty'), $out, 0, 0);
 				// Property
-				if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('tsconfig_help')) {
+				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tsconfig_help')) {
 					$url = $BACK_PATH . 'wizard_tsconfig.php?mode=tsref&onlyProperty=1';
 					$params = array();
 					$params['formName'] = 'editForm';
@@ -388,7 +388,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			$pEkey = $bType == 'setup' ? 'config' : 'constants';
 			if (count($tmpl->parserErrors[$pEkey])) {
 				$errMsg = array();
-				$templateAnalyzerInstalled = \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('tstemplate_analyzer');
+				$templateAnalyzerInstalled = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tstemplate_analyzer');
 				foreach ($tmpl->parserErrors[$pEkey] as $inf) {
 					$errorLink = '';
 					if ($templateAnalyzerInstalled) {

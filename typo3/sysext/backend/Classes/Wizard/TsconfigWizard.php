@@ -64,7 +64,7 @@ class TsconfigWizard {
 	 */
 	public function init() {
 		// Check if the tsconfig_help extension is loaded - which is mandatory for this wizard to work.
-		\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('tsconfig_help', 1);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tsconfig_help', 1);
 		// Init GPvars:
 		$this->P = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('P');
 		$this->mode = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('mode');

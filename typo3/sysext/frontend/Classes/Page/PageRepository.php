@@ -1167,7 +1167,7 @@ class PageRepository {
 	 * @todo Define visibility
 	 */
 	public function checkWorkspaceAccess($wsid) {
-		if (!$GLOBALS['BE_USER'] || !\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces')) {
+		if (!$GLOBALS['BE_USER'] || !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
 			return FALSE;
 		}
 		if (isset($this->workspaceCache[$wsid])) {

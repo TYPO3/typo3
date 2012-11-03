@@ -30,5 +30,5 @@ $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_analyzer/locallang.xml');
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/tstemplate_analyzer/Classes/Controller/TemplateAnalyzerModuleFunctionController.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('tstemplate_analyzer') . 'Classes/Controller/TemplateAnalyzerModuleFunctionController.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('tstemplate_analyzer') . 'Classes/Controller/TemplateAnalyzerModuleFunctionController.php';
 ?>

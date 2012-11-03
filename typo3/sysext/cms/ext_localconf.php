@@ -2,13 +2,13 @@
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
-\TYPO3\CMS\Core\Extension\ExtensionManager::addUserTSConfig('
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('
 	options.saveDocView = 1
 	options.saveDocNew = 1
 	options.saveDocNew.pages = 0
 	options.saveDocNew.pages_language_overlay = 1
 ');
-\TYPO3\CMS\Core\Extension\ExtensionManager::addPageTSConfig('
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 mod.wizards.newContentElement {
 	renderMode = tabs
 	wizardItems {

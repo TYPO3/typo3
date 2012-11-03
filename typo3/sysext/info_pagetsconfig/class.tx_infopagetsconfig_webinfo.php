@@ -4,5 +4,5 @@
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/info_pagetsconfig/Classes/Controller/InfoPageTyposcriptConfigController.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('info_pagetsconfig') . 'Classes/Controller/InfoPageTyposcriptConfigController.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('info_pagetsconfig') . 'Classes/Controller/InfoPageTyposcriptConfigController.php';
 ?>

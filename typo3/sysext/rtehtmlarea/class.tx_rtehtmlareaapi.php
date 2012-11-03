@@ -4,7 +4,7 @@
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/rtehtmlarea/Classes/RteHtmlAreaApi.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('rtehtmlarea') . 'Classes/RteHtmlAreaApi.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('rtehtmlarea') . 'Classes/RteHtmlAreaApi.php';
 /**
  * Class alias for backward compatibility (TYPO3 4.5)
  */
