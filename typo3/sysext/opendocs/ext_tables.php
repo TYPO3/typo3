@@ -3,7 +3,7 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 if (TYPO3_MODE == 'BE') {
-	$opendocsPath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('opendocs');
+	$opendocsPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('opendocs');
 	// Register toolbar item
 	$GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'][] = $opendocsPath . 'registerToolbarItem.php';
 	// Register AJAX calls

@@ -59,7 +59,7 @@ class WorkspaceTitleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 		if ($uid === 0) {
 			return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('live', $this->controllerContext->getRequest()->getControllerExtensionName());
 		}
-		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces')) {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
 			return '';
 		}
 		/** @var $workspace \TYPO3\CMS\Belog\Domain\Model\Workspace */

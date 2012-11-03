@@ -707,9 +707,9 @@ class TemplateService {
 			foreach ($include_static_fileArr as $ISF_file) {
 				if (substr($ISF_file, 0, 4) == 'EXT:') {
 					list($ISF_extKey, $ISF_localPath) = explode('/', substr($ISF_file, 4), 2);
-					if (strcmp($ISF_extKey, '') && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($ISF_extKey) && strcmp($ISF_localPath, '')) {
+					if (strcmp($ISF_extKey, '') && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($ISF_extKey) && strcmp($ISF_localPath, '')) {
 						$ISF_localPath = rtrim($ISF_localPath, '/') . '/';
-						$ISF_filePath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($ISF_extKey) . $ISF_localPath;
+						$ISF_filePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($ISF_extKey) . $ISF_localPath;
 						if (@is_dir($ISF_filePath)) {
 							$mExtKey = str_replace('_', '', $ISF_extKey . '/' . $ISF_localPath);
 							$subrow = array(
@@ -1167,8 +1167,8 @@ class TemplateService {
 		if (!strcmp(substr($file, 0, 4), 'EXT:')) {
 			$newFile = '';
 			list($extKey, $script) = explode('/', substr($file, 4), 2);
-			if ($extKey && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extKey)) {
-				$extPath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($extKey);
+			if ($extKey && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey)) {
+				$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey);
 				$newFile = substr($extPath, strlen(PATH_site)) . $script;
 			}
 			if (!@is_file((PATH_site . $newFile))) {
@@ -1188,7 +1188,7 @@ class TemplateService {
 			// If the file is in the media/ folder but it doesn't exist,
 			// it is assumed that it's in the tslib folder
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($file, 'media/') && !is_file(($this->getFileName_backPath . $file))) {
-				$file = \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('cms') . 'tslib/' . $file;
+				$file = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('cms') . 'tslib/' . $file;
 			}
 			if (is_file($this->getFileName_backPath . $file)) {
 				$outFile = $file;

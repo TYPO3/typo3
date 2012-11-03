@@ -291,7 +291,7 @@ class LoginController {
 			'NEWS' => $this->makeLoginNews(),
 			'COPYRIGHT' => \TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice(),
 			'CSS_CLASSES' => !empty($additionalCssClasses) ? 'class="' . implode(' ', $additionalCssClasses) . '"' : '',
-			'CSS_OPENIDCLASS' => 't3-login-openid-' . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('openid') ? 'enabled' : 'disabled'),
+			'CSS_OPENIDCLASS' => 't3-login-openid-' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('openid') ? 'enabled' : 'disabled'),
 			// The labels will be replaced later on, thus the other parts above
 			// can use these markers as well and it will be replaced
 			'HEADLINE' => $GLOBALS['LANG']->getLL('headline', TRUE),

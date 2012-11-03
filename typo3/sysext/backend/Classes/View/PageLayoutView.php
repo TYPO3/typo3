@@ -1865,7 +1865,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		// Traverse tables to check:
 		foreach ($theTables as $tName) {
 			// Check access and whether the proper extensions are loaded:
-			if ($GLOBALS['BE_USER']->check('tables_select', $tName) && (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($tName) || \TYPO3\CMS\Core\Utility\GeneralUtility::inList('fe_users,tt_content', $tName) || isset($this->externalTables[$tName]))) {
+			if ($GLOBALS['BE_USER']->check('tables_select', $tName) && (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($tName) || \TYPO3\CMS\Core\Utility\GeneralUtility::inList('fe_users,tt_content', $tName) || isset($this->externalTables[$tName]))) {
 				// Make query to count records from page:
 				$c = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $tName, 'pid=' . intval($id) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tName) . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause($tName));
 				// If records were found (or if "tt_content" is the table...):

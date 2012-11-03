@@ -2,8 +2,8 @@
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
-\TYPO3\CMS\Core\Extension\ExtensionManager::addPItoST43($_EXTKEY);
-if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('extbase')) {
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY);
+if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('extbase')) {
 	// Configure the Extbase Plugin
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin($_EXTKEY, 'Pi2', array('Search' => 'form,search'), array('Search' => 'form,search'));
 }

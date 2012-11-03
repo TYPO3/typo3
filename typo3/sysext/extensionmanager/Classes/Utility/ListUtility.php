@@ -110,7 +110,7 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 								'siteRelPath' => str_replace(PATH_site, '', $path . $extKey),
 								'type' => $installationType,
 								'key' => $extKey,
-								'ext_icon' => \TYPO3\CMS\Core\Extension\ExtensionManager::getExtensionIcon($path . $extKey . '/')
+								'ext_icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionIcon($path . $extKey . '/')
 							);
 						}
 					}

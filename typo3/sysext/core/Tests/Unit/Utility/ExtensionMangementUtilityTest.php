@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit\Extension;
+namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 /***************************************************************
  *  Copyright notice
@@ -25,14 +25,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Extension;
  ***************************************************************/
 
 /**
- * Testcase for \TYPO3\CMS\Core\Extension\ExtensionManager
+ * Testcase for \TYPO3\CMS\Core\Utility\ExtensionManagementUtility
  *
  * @author Oliver Hader <oliver@typo3.org>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @package TYPO3
  * @subpackage t3lib
  */
-class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var array A backup of registered singleton instances
@@ -73,7 +73,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	public function tearDown() {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::clearExtensionKeyMap();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::clearExtensionKeyMap();
 		foreach ($this->globals as $key => $value) {
 			$GLOBALS[$key] = unserialize($value);
 		}
@@ -89,10 +89,10 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	protected function createAccessibleProxyClass() {
-		$namespace = 'TYPO3\\CMS\\Core\\Extension';
-		$className = 'ExtensionManagerAccessibleProxy';
+		$namespace = 'TYPO3\\CMS\\Core\\Utility';
+		$className = 'ExtensionManagementUtilityAccessibleProxy';
 		if (!class_exists($namespace . '\\' . $className, FALSE)) {
-			eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' . '  public static function createTypo3LoadedExtensionInformationArray() {' . '    return parent::createTypo3LoadedExtensionInformationArray();' . '  }' . '  public static function getTypo3LoadedExtensionInformationCacheIdentifier() {' . '    return parent::getTypo3LoadedExtensionInformationCacheIdentifier();' . '  }' . '  public static function getExtLocalconfCacheIdentifier() {' . '    return parent::getExtLocalconfCacheIdentifier();' . '  }' . '  public static function loadSingleExtLocalconfFiles() {' . '    return parent::loadSingleExtLocalconfFiles();' . '  }' . '  public static function resetExtTablesWasReadFromCacheOnceBoolean() {' . '    self::$extTablesWasReadFromCacheOnce = FALSE;' . '  }' . '  public static function createExtLocalconfCacheEntry() {' . '    return parent::createExtLocalconfCacheEntry();' . '  }' . '  public static function createExtTablesCacheEntry() {' . '    return parent::createExtTablesCacheEntry();' . '  }' . '  public static function getExtTablesCacheIdentifier() {' . '    return parent::getExtTablesCacheIdentifier();' . '  }' . '}');
+			eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility {' . '  public static function createTypo3LoadedExtensionInformationArray() {' . '    return parent::createTypo3LoadedExtensionInformationArray();' . '  }' . '  public static function getTypo3LoadedExtensionInformationCacheIdentifier() {' . '    return parent::getTypo3LoadedExtensionInformationCacheIdentifier();' . '  }' . '  public static function getExtLocalconfCacheIdentifier() {' . '    return parent::getExtLocalconfCacheIdentifier();' . '  }' . '  public static function loadSingleExtLocalconfFiles() {' . '    return parent::loadSingleExtLocalconfFiles();' . '  }' . '  public static function resetExtTablesWasReadFromCacheOnceBoolean() {' . '    self::$extTablesWasReadFromCacheOnce = FALSE;' . '  }' . '  public static function createExtLocalconfCacheEntry() {' . '    return parent::createExtLocalconfCacheEntry();' . '  }' . '  public static function createExtTablesCacheEntry() {' . '    return parent::createExtTablesCacheEntry();' . '  }' . '  public static function getExtTablesCacheIdentifier() {' . '    return parent::getExtTablesCacheIdentifier();' . '  }' . '}');
 		}
 	}
 
@@ -103,14 +103,14 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function isLoadedReturnsTrueIfExtensionIsLoaded() {
-		$this->assertTrue(\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms'));
+		$this->assertTrue(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function isLoadedReturnsFalseIfExtensionIsNotLoadedAndExitIsDisabled() {
-		$this->assertFalse(\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded(uniqid('foobar'), FALSE));
+		$this->assertFalse(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded(uniqid('foobar'), FALSE));
 	}
 
 	/**
@@ -118,7 +118,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException BadFunctionCallException
 	 */
 	public function isLoadedThrowsExceptionIfExtensionIsNotLoaded() {
-		$this->assertFalse(\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded(uniqid('foobar'), TRUE));
+		$this->assertFalse(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded(uniqid('foobar'), TRUE));
 	}
 
 	///////////////////////////////
@@ -130,7 +130,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function extPathThrowsExceptionIfExtensionIsNotLoaded() {
 		$GLOBALS['TYPO3_LOADED_EXT']['foo'] = array();
-		\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('bar');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('bar');
 	}
 
 	/**
@@ -138,7 +138,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function extPathAppendsScriptNameToPath() {
 		$GLOBALS['TYPO3_LOADED_EXT']['foo']['siteRelPath'] = 'foo/';
-		$this->assertSame(PATH_site . 'foo/bar.txt', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('foo', 'bar.txt'));
+		$this->assertSame(PATH_site . 'foo/bar.txt', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('foo', 'bar.txt'));
 	}
 
 	/**
@@ -149,7 +149,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		unset($GLOBALS['TYPO3_LOADED_EXT']);
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = '';
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = '';
-		\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('bar');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('bar');
 	}
 
 	/**
@@ -160,7 +160,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		unset($GLOBALS['TYPO3_LOADED_EXT']);
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = 'foo';
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = '';
-		\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('foo');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('foo');
 	}
 
 	/**
@@ -171,7 +171,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		unset($GLOBALS['TYPO3_LOADED_EXT']);
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = '';
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'] = array('foo');
-		\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('foo');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('foo');
 	}
 
 	//////////////////////
@@ -212,12 +212,12 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @see t3lib_extMgm::getExtensionKeyByPrefix
 	 */
 	public function getExtensionKeyByPrefixForLoadedExtensionWithUnderscoresReturnsExtensionKey() {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::clearExtensionKeyMap();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::clearExtensionKeyMap();
 		$uniqueSuffix = uniqid('test');
 		$extensionKey = 'tt_news' . $uniqueSuffix;
 		$extensionPrefix = 'tx_ttnews' . $uniqueSuffix;
 		$GLOBALS['TYPO3_LOADED_EXT'][$extensionKey] = array();
-		$this->assertEquals($extensionKey, \TYPO3\CMS\Core\Extension\ExtensionManager::getExtensionKeyByPrefix($extensionPrefix));
+		$this->assertEquals($extensionKey, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionKeyByPrefix($extensionPrefix));
 	}
 
 	/**
@@ -225,12 +225,12 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @see t3lib_extMgm::getExtensionKeyByPrefix
 	 */
 	public function getExtensionKeyByPrefixForLoadedExtensionWithoutUnderscoresReturnsExtensionKey() {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::clearExtensionKeyMap();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::clearExtensionKeyMap();
 		$uniqueSuffix = uniqid('test');
 		$extensionKey = 'kickstarter' . $uniqueSuffix;
 		$extensionPrefix = 'tx_kickstarter' . $uniqueSuffix;
 		$GLOBALS['TYPO3_LOADED_EXT'][$extensionKey] = array();
-		$this->assertEquals($extensionKey, \TYPO3\CMS\Core\Extension\ExtensionManager::getExtensionKeyByPrefix($extensionPrefix));
+		$this->assertEquals($extensionKey, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionKeyByPrefix($extensionPrefix));
 	}
 
 	/**
@@ -238,11 +238,11 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @see t3lib_extMgm::getExtensionKeyByPrefix
 	 */
 	public function getExtensionKeyByPrefixForNotLoadedExtensionReturnsFalse() {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::clearExtensionKeyMap();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::clearExtensionKeyMap();
 		$uniqueSuffix = uniqid('test');
 		$extensionKey = 'unloadedextension' . $uniqueSuffix;
 		$extensionPrefix = 'tx_unloadedextension' . $uniqueSuffix;
-		$this->assertFalse(\TYPO3\CMS\Core\Extension\ExtensionManager::getExtensionKeyByPrefix($extensionPrefix));
+		$this->assertFalse(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionKeyByPrefix($extensionPrefix));
 	}
 
 	//////////////////////////////////////
@@ -257,7 +257,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function canAddFieldsToAllTCATypesBeforeExistingOnes() {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', '', 'before:fieldD');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', '', 'before:fieldD');
 		// Checking typeA:
 		$this->assertEquals('fieldA, fieldB, fieldC;labelC;paletteC;specialC, newA, newB, fieldD', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
 		// Checking typeB:
@@ -273,7 +273,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function canAddFieldsToAllTCATypesAfterExistingOnes() {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', '', 'after:fieldC');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', '', 'after:fieldC');
 		// Checking typeA:
 		$this->assertEquals('fieldA, fieldB, fieldC;labelC;paletteC;specialC, newA, newB, fieldD', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
 		// Checking typeB:
@@ -289,7 +289,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function canAddFieldsToTCATypeBeforeExistingOnes() {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', 'typeA', 'before:fieldD');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', 'typeA', 'before:fieldD');
 		// Checking typeA:
 		$this->assertEquals('fieldA, fieldB, fieldC;labelC;paletteC;specialC, newA, newB, fieldD', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
 		// Checking typeB:
@@ -305,7 +305,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function canAddFieldsToTCATypeAfterExistingOnes() {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', 'typeA', 'after:fieldC');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', 'typeA', 'after:fieldC');
 		// Checking typeA:
 		$this->assertEquals('fieldA, fieldB, fieldC;labelC;paletteC;specialC, newA, newB, fieldD', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
 		// Checking typeB:
@@ -322,7 +322,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
 		$typesBefore = $GLOBALS['TCA'][$table]['types'];
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addToAllTCAtypes($table, 'fieldZ', '', 'replace:fieldX');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes($table, 'fieldZ', '', 'replace:fieldX');
 		$this->assertEquals($typesBefore, $GLOBALS['TCA'][$table]['types'], 'It\'s wrong that the "types" array changes here - the replaced field is only on palettes');
 		// unchanged because the palette is not used
 		$this->assertEquals('fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
@@ -344,7 +344,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function canAddFieldsToPaletteBeforeExistingOnes() {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addFieldsToPalette($table, 'paletteA', 'newA, newA, newB, fieldX', 'before:fieldY');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette($table, 'paletteA', 'newA, newA, newB, fieldX', 'before:fieldY');
 		$this->assertEquals('fieldX, newA, newB, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
 	}
 
@@ -357,7 +357,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function canAddFieldsToPaletteAfterExistingOnes() {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addFieldsToPalette($table, 'paletteA', 'newA, newA, newB, fieldX', 'after:fieldX');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette($table, 'paletteA', 'newA, newA, newB, fieldX', 'after:fieldX');
 		$this->assertEquals('fieldX, newA, newB, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
 	}
 
@@ -370,7 +370,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function canAddFieldsToPaletteAfterNotExistingOnes() {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addFieldsToPalette($table, 'paletteA', 'newA, newA, newB, fieldX', 'after:' . uniqid('notExisting'));
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette($table, 'paletteA', 'newA, newA, newB, fieldX', 'after:' . uniqid('notExisting'));
 		$this->assertEquals('fieldX, fieldY, newA, newB', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
 	}
 
@@ -383,7 +383,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function canAddFieldsToAllPalettesOfFieldBeforeExistingOnes() {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addFieldsToAllPalettesOfField($table, 'fieldC', 'newA, newA, newB, fieldX', 'before:fieldY');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToAllPalettesOfField($table, 'fieldC', 'newA, newA, newB, fieldX', 'before:fieldY');
 		$this->assertEquals('fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
 		$this->assertEquals('fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']);
 		$this->assertEquals('fieldX, newA, newB, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']);
@@ -399,7 +399,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function canAddFieldsToAllPalettesOfFieldAfterExistingOnes() {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addFieldsToAllPalettesOfField($table, 'fieldC', 'newA, newA, newB, fieldX', 'after:fieldX');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToAllPalettesOfField($table, 'fieldC', 'newA, newA, newB, fieldX', 'after:fieldX');
 		$this->assertEquals('fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
 		$this->assertEquals('fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']);
 		$this->assertEquals('fieldX, newA, newB, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']);
@@ -415,7 +415,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function canAddFieldsToAllPalettesOfFieldAfterNotExistingOnes() {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addFieldsToAllPalettesOfField($table, 'fieldC', 'newA, newA, newB, fieldX', 'after:' . uniqid('notExisting'));
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToAllPalettesOfField($table, 'fieldC', 'newA, newA, newB, fieldX', 'after:' . uniqid('notExisting'));
 		$this->assertEquals('fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
 		$this->assertEquals('fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']);
 		$this->assertEquals('fieldX, fieldY, newA, newB', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']);
@@ -431,7 +431,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function canAddFieldsToAllPalettesOfFieldWithoutPaletteExistingBefore() {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addFieldsToAllPalettesOfField($table, 'fieldA', 'newA, newA, newB, fieldX');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToAllPalettesOfField($table, 'fieldA', 'newA, newA, newB, fieldX');
 		$this->assertEquals('fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
 		$this->assertEquals('fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']);
 		$this->assertEquals('fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']);
@@ -447,7 +447,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function addTcaSelectItemThrowsExceptionIfTableIsNotOfTypeString() {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addTcaSelectItem(array(), 'foo', array());
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(array(), 'foo', array());
 	}
 
 	/**
@@ -455,7 +455,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function addTcaSelectItemThrowsExceptionIfFieldIsNotOfTypeString() {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addTcaSelectItem('foo', array(), array());
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem('foo', array(), array());
 	}
 
 	/**
@@ -463,7 +463,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function addTcaSelectItemThrowsExceptionIfRelativeToFieldIsNotOfTypeString() {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addTcaSelectItem('foo', 'bar', array(), array());
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem('foo', 'bar', array(), array());
 	}
 
 	/**
@@ -471,7 +471,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function addTcaSelectItemThrowsExceptionIfRelativePositionIsNotOfTypeString() {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addTcaSelectItem('foo', 'bar', array(), 'foo', array());
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem('foo', 'bar', array(), 'foo', array());
 	}
 
 	/**
@@ -479,7 +479,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function addTcaSelectItemThrowsExceptionIfRelativePositionIsNotOneOfValidKeywords() {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addTcaSelectItem('foo', 'bar', array(), 'foo', 'not allowed keyword');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem('foo', 'bar', array(), 'foo', 'not allowed keyword');
 	}
 
 	/**
@@ -488,7 +488,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function addTcaSelectItemThrowsExceptionIfFieldIsNotFoundInTca() {
 		$GLOBALS['TCA'] = array();
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addTcaSelectItem('foo', 'bar', array());
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem('foo', 'bar', array());
 	}
 
 	/**
@@ -572,7 +572,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				)
 			)
 		);
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addTcaSelectItem('testTable', 'testField', array('insertedElement'), $relativeToField, $relativePosition);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem('testTable', 'testField', array('insertedElement'), $relativeToField, $relativePosition);
 		$this->assertEquals($expectedResultArray, $GLOBALS['TCA']['testTable']['columns']['testField']['config']['items']);
 	}
 
@@ -585,7 +585,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function loadTypo3LoadedExtensionInformationDoesNotCallCacheIfCachingIsDenied() {
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->never())->method('getCache');
-		\TYPO3\CMS\Core\Extension\ExtensionManager::loadTypo3LoadedExtensionInformation(FALSE);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadTypo3LoadedExtensionInformation(FALSE);
 	}
 
 	/**
@@ -597,7 +597,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		$mockCache->expects($this->any())->method('has')->will($this->returnValue(TRUE));
 		$mockCache->expects($this->once())->method('requireOnce');
-		\TYPO3\CMS\Core\Extension\ExtensionManager::loadTypo3LoadedExtensionInformation(TRUE);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadTypo3LoadedExtensionInformation(TRUE);
 	}
 
 	/**
@@ -609,7 +609,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		$mockCache->expects($this->any())->method('has')->will($this->returnValue(FALSE));
 		$mockCache->expects($this->once())->method('set');
-		\TYPO3\CMS\Core\Extension\ExtensionManager::loadTypo3LoadedExtensionInformation(TRUE);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadTypo3LoadedExtensionInformation(TRUE);
 	}
 
 	/**
@@ -621,7 +621,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		$mockCache->expects($this->any())->method('has')->will($this->returnValue(FALSE));
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), $this->equalTo(array()));
-		\TYPO3\CMS\Core\Extension\ExtensionManager::loadTypo3LoadedExtensionInformation(TRUE);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadTypo3LoadedExtensionInformation(TRUE);
 	}
 
 	/////////////////////////////////////////
@@ -650,7 +650,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider createTypo3LoadedExtensionInformationArrayReturnsExpectedInformationForCmsExtensionDataProvider
 	 */
 	public function createTypo3LoadedExtensionInformationArrayReturnsExpectedInformationForCmsExtension($arrayKeyToTest, $expectedContent) {
-		$actualArray = \TYPO3\CMS\Core\Extension\ExtensionManagerAccessibleProxy::createTypo3LoadedExtensionInformationArray();
+		$actualArray = \TYPO3\CMS\Core\Utility\ExtensionManagementUtilityAccessibleProxy::createTypo3LoadedExtensionInformationArray();
 		$this->assertStringEndsWith($expectedContent, $actualArray['cms'][$arrayKeyToTest]);
 	}
 
@@ -662,7 +662,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getTypo3LoadedExtensionInformationCacheIdentifierCreatesSha1WithFourtyCharactersAndPrefix() {
 		$prefix = 'loaded_extensions_';
-		$identifier = \TYPO3\CMS\Core\Extension\ExtensionManagerAccessibleProxy::getTypo3LoadedExtensionInformationCacheIdentifier();
+		$identifier = \TYPO3\CMS\Core\Utility\ExtensionManagementUtilityAccessibleProxy::getTypo3LoadedExtensionInformationCacheIdentifier();
 		$this->assertStringStartsWith($prefix, $identifier);
 		$sha1 = str_replace($prefix, '', $identifier);
 		$this->assertEquals(40, strlen($sha1));
@@ -677,7 +677,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function loadExtLocalconfDoesNotReadFromCacheIfCachingIsDenied() {
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->never())->method('getCache');
-		\TYPO3\CMS\Core\Extension\ExtensionManager::loadExtLocalconf(FALSE);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtLocalconf(FALSE);
 	}
 
 	/**
@@ -689,7 +689,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		$mockCache->expects($this->any())->method('has')->will($this->returnValue(TRUE));
 		$mockCache->expects($this->once())->method('requireOnce');
-		\TYPO3\CMS\Core\Extension\ExtensionManager::loadExtLocalconf(TRUE);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtLocalconf(TRUE);
 	}
 
 	/////////////////////////////////////////
@@ -713,7 +713,7 @@ throw new \RuntimeException(\'\', 1340559079);
 				'ext_localconf.php' => $extLocalconfLocation
 			)
 		);
-		\TYPO3\CMS\Core\Extension\ExtensionManagerAccessibleProxy::loadSingleExtLocalconfFiles();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtilityAccessibleProxy::loadSingleExtLocalconfFiles();
 	}
 
 	/////////////////////////////////////////
@@ -741,7 +741,7 @@ throw new \RuntimeException(\'\', 1340559079);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains($uniqueStringInLocalconf), $this->anything());
-		\TYPO3\CMS\Core\Extension\ExtensionManagerAccessibleProxy::createExtLocalconfCacheEntry();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtilityAccessibleProxy::createExtLocalconfCacheEntry();
 	}
 
 	/**
@@ -752,7 +752,7 @@ throw new \RuntimeException(\'\', 1340559079);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), $this->equalTo(array()));
-		\TYPO3\CMS\Core\Extension\ExtensionManagerAccessibleProxy::createExtLocalconfCacheEntry();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtilityAccessibleProxy::createExtLocalconfCacheEntry();
 	}
 
 	/////////////////////////////////////////
@@ -763,7 +763,7 @@ throw new \RuntimeException(\'\', 1340559079);
 	 */
 	public function getExtLocalconfCacheIdentifierCreatesSha1WithFourtyCharactersAndPrefix() {
 		$prefix = 'ext_localconf_';
-		$identifier = \TYPO3\CMS\Core\Extension\ExtensionManagerAccessibleProxy::getExtLocalconfCacheIdentifier();
+		$identifier = \TYPO3\CMS\Core\Utility\ExtensionManagementUtilityAccessibleProxy::getExtLocalconfCacheIdentifier();
 		$this->assertStringStartsWith($prefix, $identifier);
 		$sha1 = str_replace($prefix, '', $identifier);
 		$this->assertEquals(40, strlen($sha1));
@@ -778,7 +778,7 @@ throw new \RuntimeException(\'\', 1340559079);
 	public function loadExtTablesDoesNotReadFromCacheIfCachingIsDenied() {
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->never())->method('getCache');
-		\TYPO3\CMS\Core\Extension\ExtensionManager::loadExtLocalconf(FALSE);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtLocalconf(FALSE);
 	}
 
 	/**
@@ -792,8 +792,8 @@ throw new \RuntimeException(\'\', 1340559079);
 		$mockCache->expects($this->once())->method('requireOnce');
 		// Reset the internal cache access tracking variable of extMgm
 		// This method is only in the ProxyClass!
-		\TYPO3\CMS\Core\Extension\ExtensionManagerAccessibleProxy::resetExtTablesWasReadFromCacheOnceBoolean();
-		\TYPO3\CMS\Core\Extension\ExtensionManager::loadExtTables(TRUE);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtilityAccessibleProxy::resetExtTablesWasReadFromCacheOnceBoolean();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtTables(TRUE);
 	}
 
 	/////////////////////////////////////////
@@ -821,7 +821,7 @@ throw new \RuntimeException(\'\', 1340559079);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains($uniqueStringInTables), $this->anything());
-		\TYPO3\CMS\Core\Extension\ExtensionManagerAccessibleProxy::createExtTablesCacheEntry();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry();
 	}
 
 	/**
@@ -832,7 +832,7 @@ throw new \RuntimeException(\'\', 1340559079);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), $this->equalTo(array()));
-		\TYPO3\CMS\Core\Extension\ExtensionManagerAccessibleProxy::createExtTablesCacheEntry();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry();
 	}
 
 	/////////////////////////////////////////
@@ -843,7 +843,7 @@ throw new \RuntimeException(\'\', 1340559079);
 	 */
 	public function getExtTablesCacheIdentifierCreatesSha1WithFourtyCharactersAndPrefix() {
 		$prefix = 'ext_tables_';
-		$identifier = \TYPO3\CMS\Core\Extension\ExtensionManagerAccessibleProxy::getExtTablesCacheIdentifier();
+		$identifier = \TYPO3\CMS\Core\Utility\ExtensionManagementUtilityAccessibleProxy::getExtTablesCacheIdentifier();
 		$this->assertStringStartsWith($prefix, $identifier);
 		$sha1 = str_replace($prefix, '', $identifier);
 		$this->assertEquals(40, strlen($sha1));
@@ -860,7 +860,7 @@ throw new \RuntimeException(\'\', 1340559079);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		$mockCache->expects($this->once())->method('flush');
-		\TYPO3\CMS\Core\Extension\ExtensionManager::removeCacheFiles();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
 	}
 
 	/////////////////////////////////////////
@@ -886,39 +886,39 @@ throw new \RuntimeException(\'\', 1340559079);
 	 * @dataProvider getExtensionVersionFaultyDataProvider
 	 */
 	public function getExtensionVersionForFaultyExtensionKeyThrowsException($key) {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::getExtensionVersion($key);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionVersion($key);
 	}
 
 	/**
 	 * @test
 	 */
 	public function getExtensionVersionForNotLoadedExtensionReturnsEmptyString() {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::clearExtensionKeyMap();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::clearExtensionKeyMap();
 		$uniqueSuffix = uniqid('test');
 		$extensionKey = 'unloadedextension' . $uniqueSuffix;
-		$this->assertEquals('', \TYPO3\CMS\Core\Extension\ExtensionManager::getExtensionVersion($extensionKey));
+		$this->assertEquals('', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionVersion($extensionKey));
 	}
 
 	/**
 	 * @test
 	 */
 	public function getExtensionVersionForLoadedExtensionReturnsExtensionVersion() {
-		$namespace = 'TYPO3\\CMS\\Core\\Extension';
-		$className = uniqid('ExtensionManager');
+		$namespace = 'TYPO3\\CMS\\Core\\Utility';
+		$className = uniqid('ExtensionManagementUtility');
 		eval(
 			'namespace ' . $namespace .';' .
-			'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' .
+			'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility {' .
 			'  public static function isLoaded() {' .
 			'    return TRUE;' .
 			'  }' .
 			'}'
 		);
 		$className = $namespace . '\\' . $className;
-		\TYPO3\CMS\Core\Extension\ExtensionManager::clearExtensionKeyMap();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::clearExtensionKeyMap();
 		$uniqueSuffix = uniqid('test');
 		$extensionKey = 'unloadedextension' . $uniqueSuffix;
 		$GLOBALS['TYPO3_LOADED_EXT'][$extensionKey] = array(
-			'siteRelPath' => 'typo3/sysext/core/Tests/Unit/Extension/Fixtures/',
+			'siteRelPath' => 'typo3/sysext/core/Tests/Unit/Utility/Fixtures/',
 		);
 		$this->assertEquals('1.2.3', $className::getExtensionVersion($extensionKey));
 	}
@@ -932,7 +932,7 @@ throw new \RuntimeException(\'\', 1340559079);
 	public function getLoadedExtensionListArrayConsidersExtListAsString() {
 		unset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray']);
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = 'foo,bar';
-		$this->assertEquals(array('foo', 'bar'), array_intersect(array('foo', 'bar'), \TYPO3\CMS\Core\Extension\ExtensionManager::getLoadedExtensionListArray()));
+		$this->assertEquals(array('foo', 'bar'), array_intersect(array('foo', 'bar'), \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray()));
 	}
 
 	/**
@@ -941,16 +941,16 @@ throw new \RuntimeException(\'\', 1340559079);
 	public function getLoadedExtensionListArrayConsidersExtListAsArray() {
 		$extList = array('foo', 'bar');
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'] = $extList;
-		$this->assertEquals($extList, array_intersect($extList, \TYPO3\CMS\Core\Extension\ExtensionManager::getLoadedExtensionListArray()));
+		$this->assertEquals($extList, array_intersect($extList, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray()));
 	}
 
 	/**
 	 * @test
 	 */
 	public function getLoadedExtensionListArrayConsidersRequiredExtensions() {
-		$namespace = 'TYPO3\\CMS\\Core\\Extension';
-		$className = uniqid('ExtensionManager');
-		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' . '  public static function getRequiredExtensionListArray() {' . '    return array(\'baz\');' . '  }' . '}');
+		$namespace = 'TYPO3\\CMS\\Core\\Utility';
+		$className = uniqid('ExtensionManagementUtility');
+		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility {' . '  public static function getRequiredExtensionListArray() {' . '    return array(\'baz\');' . '  }' . '}');
 		$className = $namespace . '\\' . $className;
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'] = array();
 		$this->assertEquals(array('baz'), $className::getLoadedExtensionListArray());
@@ -960,9 +960,9 @@ throw new \RuntimeException(\'\', 1340559079);
 	 * @test
 	 */
 	public function getLoadedExtensionListArrayReturnsUniqueList() {
-		$namespace = 'TYPO3\\CMS\\Core\\Extension';
-		$className = uniqid('ExtensionManager');
-		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' . '  public static function getRequiredExtensionListArray() {' . '    return array(\'bar\');' . '  }' . '}');
+		$namespace = 'TYPO3\\CMS\\Core\\Utility';
+		$className = uniqid('ExtensionManagementUtility');
+		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility {' . '  public static function getRequiredExtensionListArray() {' . '    return array(\'bar\');' . '  }' . '}');
 		$className = $namespace . '\\' . $className;
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'] = array('foo', 'bar', 'foo');
 		$this->assertSame(array('bar', 'foo'), $className::getLoadedExtensionListArray());
@@ -976,7 +976,7 @@ throw new \RuntimeException(\'\', 1340559079);
 	 */
 	public function getRequiredExtensionListArrayContainsAdditionalRequiredExtensionsAsString() {
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = 'foo,bar';
-		$this->assertEquals(array('foo', 'bar'), array_intersect(array('foo', 'bar'), \TYPO3\CMS\Core\Extension\ExtensionManager::getLoadedExtensionListArray()));
+		$this->assertEquals(array('foo', 'bar'), array_intersect(array('foo', 'bar'), \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray()));
 	}
 
 	/**
@@ -985,7 +985,7 @@ throw new \RuntimeException(\'\', 1340559079);
 	public function getRequiredExtensionListArrayContainsAdditionalRequiredExtensionsAsArray() {
 		$requiredExtList = array('foo', 'bar');
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = $requiredExtList;
-		$this->assertEquals($requiredExtList, array_intersect($requiredExtList, \TYPO3\CMS\Core\Extension\ExtensionManager::getLoadedExtensionListArray()));
+		$this->assertEquals($requiredExtList, array_intersect($requiredExtList, \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray()));
 	}
 
 	/**
@@ -993,7 +993,7 @@ throw new \RuntimeException(\'\', 1340559079);
 	 */
 	public function getRequiredExtensionListArrayReturnsUniqueList() {
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = 'foo,bar,foo';
-		$this->assertEquals(array('foo', 'bar'), array_intersect(array('foo', 'bar'), \TYPO3\CMS\Core\Extension\ExtensionManager::getLoadedExtensionListArray()));
+		$this->assertEquals(array('foo', 'bar'), array_intersect(array('foo', 'bar'), \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray()));
 	}
 
 	/////////////////////////////////////////
@@ -1004,9 +1004,9 @@ throw new \RuntimeException(\'\', 1340559079);
 	 * @expectedException \RuntimeException
 	 */
 	public function loadExtensionThrowsExceptionIfExtensionIsLoaded() {
-		$namespace = 'TYPO3\\CMS\\Core\\Extension';
-		$className = uniqid('ExtensionManager');
-		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' . '  public static function isLoaded() {' . '    return TRUE;' . '  }' . '}');
+		$namespace = 'TYPO3\\CMS\\Core\\Utility';
+		$className = uniqid('ExtensionManagementUtility');
+		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility {' . '  public static function isLoaded() {' . '    return TRUE;' . '  }' . '}');
 		$className = $namespace . '\\' . $className;
 		$className::loadExtension('test');
 	}
@@ -1020,9 +1020,9 @@ throw new \RuntimeException(\'\', 1340559079);
 			$this->markTestSkipped('Test is not available until update wizard to transform localconf.php was run.');
 		}
 		$extensionKeyToLoad = uniqid('loadMe');
-		$namespace = 'TYPO3\\CMS\\Core\\Extension';
-		$className = uniqid('ExtensionManager');
-		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' . '  public static function writeNewExtensionList($extList) {' . '    if (in_array(' . $extensionKeyToLoad . ', $extList)) {' . '      throw new \\RuntimeException(\'test\');' . '    }' . '  }' . '}');
+		$namespace = 'TYPO3\\CMS\\Core\\Utility';
+		$className = uniqid('ExtensionManagementUtility');
+		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility {' . '  public static function writeNewExtensionList($extList) {' . '    if (in_array(' . $extensionKeyToLoad . ', $extList)) {' . '      throw new \\RuntimeException(\'test\');' . '    }' . '  }' . '}');
 		$className = $namespace . '\\' . $className;
 		$className::loadExtension($extensionKeyToLoad);
 	}
@@ -1035,9 +1035,9 @@ throw new \RuntimeException(\'\', 1340559079);
 	 * @expectedException \RuntimeException
 	 */
 	public function unloadExtensionThrowsExceptionIfExtensionIsNotLoaded() {
-		$namespace = 'TYPO3\\CMS\\Core\\Extension';
-		$className = uniqid('ExtensionManager');
-		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' . '  public static function isLoaded() {' . '    return FALSE;' . '  }' . '}');
+		$namespace = 'TYPO3\\CMS\\Core\\Utility';
+		$className = uniqid('ExtensionManagementUtility');
+		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility {' . '  public static function isLoaded() {' . '    return FALSE;' . '  }' . '}');
 		$className = $namespace . '\\' . $className;
 		$className::unloadExtension('test');
 	}
@@ -1048,9 +1048,9 @@ throw new \RuntimeException(\'\', 1340559079);
 	 */
 	public function unloadExtensionThrowsExceptionIfExtensionIsRequired() {
 		$extensionKey = uniqid('test');
-		$namespace = 'TYPO3\\CMS\\Core\\Extension';
-		$className = uniqid('ExtensionManager');
-		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' . '  public static function isLoaded() {' . '    return TRUE;' . '  }' . '  public static function getRequiredExtensionListArray() {' . '    return array(\'' . $extensionKey . '\');' . '  }' . '}');
+		$namespace = 'TYPO3\\CMS\\Core\\Utility';
+		$className = uniqid('ExtensionManagementUtility');
+		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility {' . '  public static function isLoaded() {' . '    return TRUE;' . '  }' . '  public static function getRequiredExtensionListArray() {' . '    return array(\'' . $extensionKey . '\');' . '  }' . '}');
 		$className = $namespace . '\\' . $className;
 		$className::unloadExtension($extensionKey);
 	}
@@ -1064,9 +1064,9 @@ throw new \RuntimeException(\'\', 1340559079);
 			$this->markTestSkipped('Test is not available until update wizard to transform localconf.php was run.');
 		}
 		$extensionKeyToUnload = uniqid('unloadMe');
-		$namespace = 'TYPO3\\CMS\\Core\\Extension';
-		$className = uniqid('ExtensionManager');
-		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' . '  public static function isLoaded() {' . '    return TRUE;' . '  }' . '  public static function writeNewExtensionList($extList) {' . '    if (!in_array(' . $extensionKeyToUnload . ', $extList)) {' . '      throw new \\RuntimeException(\'test\');' . '    }' . '  }' . '}');
+		$namespace = 'TYPO3\\CMS\\Core\\Utility';
+		$className = uniqid('ExtensionManagementUtility');
+		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility {' . '  public static function isLoaded() {' . '    return TRUE;' . '  }' . '  public static function writeNewExtensionList($extList) {' . '    if (!in_array(' . $extensionKeyToUnload . ', $extList)) {' . '      throw new \\RuntimeException(\'test\');' . '    }' . '  }' . '}');
 		$className = $namespace . '\\' . $className;
 		$className::unloadExtension($extensionKeyToUnload);
 	}
@@ -1087,7 +1087,7 @@ throw new \RuntimeException(\'\', 1340559079);
 		$registryMock = $this->getMock('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', array('add'));
 		$registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, 'categories');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', $registryMock);
-		\TYPO3\CMS\Core\Extension\ExtensionManager::makeCategorizable($extensionKey, $tableName);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable($extensionKey, $tableName);
 		$this->assertNotEmpty($GLOBALS['TCA'][$tableName]['columns']['categories']);
 	}
 
@@ -1105,7 +1105,7 @@ throw new \RuntimeException(\'\', 1340559079);
 		$registryMock = $this->getMock('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', array('add'));
 		$registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, $fieldName);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', $registryMock);
-		\TYPO3\CMS\Core\Extension\ExtensionManager::makeCategorizable($extensionKey, $tableName, $fieldName);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable($extensionKey, $tableName, $fieldName);
 		$this->assertNotEmpty($GLOBALS['TCA'][$tableName]['columns'][$fieldName]);
 	}
 

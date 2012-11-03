@@ -24,11 +24,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('t3editor', 'Classes/class.tx_t3editor.php');
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3editor', 'Classes/class.tx_t3editor.php');
 /*
  * @deprecated since 6.0, the classname tx_t3editor_hooks_tstemplateinfo and this file is obsolete
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/t3editor/Classes/Hook/TypoScriptTemplateInfoHook.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('t3editor') . 'Classes/Hook/TypoScriptTemplateInfoHook.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3editor') . 'Classes/Hook/TypoScriptTemplateInfoHook.php';
 ?>

@@ -1184,7 +1184,7 @@ class t3lib_extjs_ExtDirectRouter extends \TYPO3\CMS\Core\ExtDirect\ExtDirectRou
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class t3lib_extMgm extends \TYPO3\CMS\Core\Extension\ExtensionManager {}
+class t3lib_extMgm extends \TYPO3\CMS\Core\Utility\ExtensionManagementUtility {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0

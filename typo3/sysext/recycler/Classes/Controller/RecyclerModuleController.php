@@ -62,11 +62,11 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	public function initialize() {
 		parent::init();
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('recycler') . 'mod1/mod_template.html');
+		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('recycler') . 'mod1/mod_template.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setExtDirectStateProvider();
 		$this->pageRenderer = $this->doc->getPageRenderer();
-		$this->relativePath = \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('recycler');
+		$this->relativePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('recycler');
 		$this->pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		$this->isAccessibleForCurrentUser = $this->id && is_array($this->pageRecord) || !$this->id && $this->isCurrentUserAdmin();
 		//don't access in workspace

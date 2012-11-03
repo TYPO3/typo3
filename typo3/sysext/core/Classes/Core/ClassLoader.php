@@ -222,9 +222,9 @@ class ClassLoader {
 	 */
 	static protected function createCoreAndExtensionClassAliasMap() {
 		$aliasToClassNameMapping = array();
-		foreach (\TYPO3\CMS\Core\Extension\ExtensionManager::getLoadedExtensionListArray() as $extensionKey) {
+		foreach (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray() as $extensionKey) {
 			try {
-				$extensionClassAliasMap = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($extensionKey, 'Migrations/Code/ClassAliasMap.php');
+				$extensionClassAliasMap = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey, 'Migrations/Code/ClassAliasMap.php');
 				if (@file_exists($extensionClassAliasMap)) {
 					$aliasToClassNameMapping = array_merge($aliasToClassNameMapping, require $extensionClassAliasMap);
 				}
@@ -311,9 +311,9 @@ class ClassLoader {
 		$classRegistry = require(PATH_t3lib . 'core_autoload.php');
 		// At this point during bootstrap the local configuration is initialized,
 		// extMgm is ready to get the list of enabled extensions
-		foreach (\TYPO3\CMS\Core\Extension\ExtensionManager::getLoadedExtensionListArray() as $extensionKey) {
+		foreach (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray() as $extensionKey) {
 			try {
-				$extensionAutoloadFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($extensionKey, 'ext_autoload.php');
+				$extensionAutoloadFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey, 'ext_autoload.php');
 				if (@file_exists($extensionAutoloadFile)) {
 					$classRegistry = array_merge($classRegistry, require $extensionAutoloadFile);
 				}
@@ -358,7 +358,7 @@ class ClassLoader {
 		if ($extensionKey) {
 			try {
 				// This will throw a BadFunctionCallException if the extension is not loaded
-				$extensionPath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($extensionKey);
+				$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
 				$classPath = (substr(strtolower($classNameWithoutVendorAndProduct), 0, 5) === 'tests') ? '' : 'Classes/';
 				$classFilePathAndName = $extensionPath . $classPath . strtr($classNameWithoutVendorAndProduct, $delimiter, '/') . '.php';
 				static::addClassToCache($classFilePathAndName, $className);

@@ -94,7 +94,7 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'][] = $extKey;
 		$this->fakedExtensions[] = $extKey;
-		\TYPO3\CMS\Core\Extension\ExtensionManager::clearExtensionKeyMap();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::clearExtensionKeyMap();
 		return $extKey;
 	}
 

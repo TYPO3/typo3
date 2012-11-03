@@ -54,5 +54,5 @@ define('T3_ERR_SV_PROG_FAILED', -41);
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/core/Classes/Service/AbstractService.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('core') . 'Classes/Service/AbstractService.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') . 'Classes/Service/AbstractService.php';
 ?>

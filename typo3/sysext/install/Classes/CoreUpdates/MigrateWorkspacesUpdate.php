@@ -54,7 +54,7 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 		if ($this->versionNumber >= 4005000) {
 			// If neither version nor workspaces is installed, we're not doing a migration
 			// Present the user with the choice of activating versioning and workspaces
-			if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('version') && !\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces')) {
+			if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
 				$result = TRUE;
 				// Override the default description
 				$description = 'Activates the usage of workspaces in your installation. Workspaces let you edit elements
@@ -64,7 +64,7 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 					install "fluid" and "extbase" too, as they are used by the "workspaces" extension).';
 			} else {
 				\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(FALSE);
-				if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('version') || !\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces')) {
+				if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') || !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
 					$result = TRUE;
 					$reason .= ' Both extensions "version" and "workspaces" need to be
 						present to use the entire versioning and workflow featureset of TYPO3.';
@@ -99,7 +99,7 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 	 */
 	public function getUserInput($inputPrefix) {
 		$content = '';
-		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('version') && !\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces')) {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
 			// We need feedback only if versioning is not activated at all
 			// In such a case we want to leave the user with the choice of not activating the stuff at all
 			$content = '

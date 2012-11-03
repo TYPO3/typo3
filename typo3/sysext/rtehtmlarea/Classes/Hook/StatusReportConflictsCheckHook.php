@@ -50,7 +50,7 @@ class StatusReportConflictsCheckHook implements \TYPO3\CMS\Reports\StatusProvide
 		$conflictingExtensions = array();
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['conflicts'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['conflicts'] as $extensionKey => $version) {
-				if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extensionKey)) {
+				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {
 					$conflictingExtensions[] = $extensionKey;
 				}
 			}

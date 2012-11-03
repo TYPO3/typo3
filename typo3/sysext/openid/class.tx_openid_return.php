@@ -32,7 +32,7 @@ require_once '../../init.php';
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/openid/Classes/OpenidReturn.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('openid') . 'Classes/OpenidReturn.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid') . 'Classes/OpenidReturn.php';
 $module = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Openid\\OpenidReturn');
 /* @var tx_openid_return $module */
 $module->main();

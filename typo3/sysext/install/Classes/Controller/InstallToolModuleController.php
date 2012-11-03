@@ -49,10 +49,10 @@ class InstallToolModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptCl
 	protected function showInstallToolEnableRequest() {
 		// Create instance of object for output of data
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'mod/mod_template.html');
+		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'mod/mod_template.html');
 		$this->doc->form = '<form method="post" id="t3-install-form-unlock" action="">';
 		$this->doc->addStyleSheet('install', 'stylesheets/install/install.css');
-		$this->doc->addStyleSheet('mod-install', \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('install') . 'mod/mod_styles.css');
+		$this->doc->addStyleSheet('mod-install', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('install') . 'mod/mod_styles.css');
 		$markers = ($buttons = array());
 		$markers['CONTENT'] = $this->renderMessage();
 		$content = $this->doc->moduleBody('', $buttons, $markers);

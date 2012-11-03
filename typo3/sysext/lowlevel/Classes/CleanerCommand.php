@@ -125,7 +125,7 @@ This will show you missing files in the TYPO3 system and only report back if err
 		$GLOBALS['BE_USER']->setWorkspace(0);
 		// Print Howto:
 		if ($this->cli_isArg('--showhowto')) {
-			$howto = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('lowlevel') . 'HOWTO_clean_up_TYPO3_installations.txt');
+			$howto = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lowlevel') . 'HOWTO_clean_up_TYPO3_installations.txt');
 			echo wordwrap($howto, 120) . LF;
 			die;
 		}
@@ -309,7 +309,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 		$pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
 		$this->performanceStatistics['genTree()'] = '';
 		// Initialize:
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
 			$this->workspaceIndex = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', 'sys_workspace', '1=1' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace'), '', '', '', 'uid');
 		}
 		$this->workspaceIndex[-1] = TRUE;

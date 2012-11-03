@@ -592,7 +592,7 @@ class AdminPanelView {
 		//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
 		$tsConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
 		$tsConfig = $tsConfig['properties']['newContentWiz.']['overrideWithExtension'];
-		$newContentWizScriptPath = \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($tsConfig) ? \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($tsConfig) . 'mod1/db_new_content_el.php' : TYPO3_mainDir . 'sysext/cms/layout/db_new_content_el.php';
+		$newContentWizScriptPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($tsConfig) ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($tsConfig) . 'mod1/db_new_content_el.php' : TYPO3_mainDir . 'sysext/cms/layout/db_new_content_el.php';
 		$perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
 		$langAllowed = $GLOBALS['BE_USER']->checkLanguageAccess($GLOBALS['TSFE']->sys_language_uid);
 		$id = $GLOBALS['TSFE']->id;
