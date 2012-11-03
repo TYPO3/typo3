@@ -348,7 +348,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		if ($this->templateRootPath !== NULL) {
 			return $this->templateRootPath;
 		} else {
-			return str_replace('@packageResourcesPath', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()) . 'Resources/', $this->templateRootPathPattern);
+			return str_replace('@packageResourcesPath', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()) . 'Resources/', $this->templateRootPathPattern);
 		}
 	}
 
@@ -373,7 +373,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		if ($this->partialRootPath !== NULL) {
 			return $this->partialRootPath;
 		} else {
-			return str_replace('@packageResourcesPath', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()) . 'Resources/', $this->partialRootPathPattern);
+			return str_replace('@packageResourcesPath', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()) . 'Resources/', $this->partialRootPathPattern);
 		}
 	}
 
@@ -398,7 +398,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		if ($this->layoutRootPath !== NULL) {
 			return $this->layoutRootPath;
 		} else {
-			return str_replace('@packageResourcesPath', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()) . 'Resources/', $this->layoutRootPathPattern);
+			return str_replace('@packageResourcesPath', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()) . 'Resources/', $this->layoutRootPathPattern);
 		}
 	}
 
