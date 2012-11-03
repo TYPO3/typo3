@@ -116,7 +116,7 @@ class FormUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Form\Utility\FormUtility
 	 */
 	public function initializePageTsConfig() {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:form/Configuration/PageTS/modWizards.ts">');
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:form/Configuration/PageTS/modWizards.ts">');
 		return $this;
 	}
 

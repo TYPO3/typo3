@@ -273,7 +273,7 @@ abstract class AbstractService {
 	 * @todo Define visibility
 	 */
 	public function deactivateService() {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::deactivateService($this->info['serviceType'], $this->info['serviceKey']);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::deactivateService($this->info['serviceType'], $this->info['serviceKey']);
 	}
 
 	/***************************************

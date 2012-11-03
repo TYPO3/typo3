@@ -552,7 +552,7 @@ class CrawlerHook {
 	 */
 	public function loadIndexerClass() {
 		global $TYPO3_CONF_VARS;
-		require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('indexed_search') . 'class.indexer.php';
+		require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('indexed_search') . 'class.indexer.php';
 	}
 
 	/**

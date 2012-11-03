@@ -313,7 +313,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 		// New standard?
 		if ($newStandardTemplate) {
 			// check wether statictemplates are supported
-			if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('statictemplates')) {
+			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('statictemplates')) {
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title,uid', 'static_template', '', '', 'title');
 				$opt = '';
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {

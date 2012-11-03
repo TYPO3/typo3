@@ -30,5 +30,5 @@ $GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xml');
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/t3editor/Classes/T3Editor.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('t3editor') . 'Classes/T3Editor.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3editor') . 'Classes/T3Editor.php';
 ?>

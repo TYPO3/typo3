@@ -105,7 +105,7 @@ class ExtensionRepository {
 	protected function getExtensionIconWithPath($extensionEntry) {
 		$extensionIcon = $GLOBALS['TYPO3_LOADED_EXT'][$extensionEntry['key']]['ext_icon'];
 		if (empty($extensionIcon)) {
-			$extensionIcon = \TYPO3\CMS\Core\Extension\ExtensionManager::getExtensionIcon(PATH_site . $extensionEntry['siteRelPath'] . '/');
+			$extensionIcon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionIcon(PATH_site . $extensionEntry['siteRelPath'] . '/');
 		}
 
 		if (empty($extensionIcon)) {

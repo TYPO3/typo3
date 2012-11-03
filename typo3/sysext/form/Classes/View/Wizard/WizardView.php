@@ -119,7 +119,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	 */
 	protected function loadJavascript() {
 		$compress = TRUE;
-		$baseUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath('../../../../../' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('form') . 'Resources/Public/JavaScript/Wizard/');
+		$baseUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath('../../../../../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('form') . 'Resources/Public/JavaScript/Wizard/');
 		$javascriptFiles = array(
 			'Initialize.js',
 			'Ux/Ext.ux.merge.js',
@@ -235,7 +235,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	protected function loadCss() {
 		// TODO Set to TRUE when finished
 		$compress = FALSE;
-		$baseUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath('../../../../../' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('form') . 'Resources/Public/CSS/');
+		$baseUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath('../../../../../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('form') . 'Resources/Public/CSS/');
 		$cssFiles = array(
 			'Wizard/Form.css',
 			'Wizard/Wizard.css'

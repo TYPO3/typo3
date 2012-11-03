@@ -284,8 +284,8 @@ class Clipboard {
 		$opt = array();
 		$opt[] = '<option value="" selected="selected">' . $this->clLabel('menu', 'rm') . '</option>';
 		// Import / Export link:
-		if ($elCount && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('impexp')) {
-			$opt[] = '<option value="' . htmlspecialchars(('window.location.href=\'' . $this->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('impexp') . 'app/index.php' . $this->exportClipElementParameters() . '\';')) . '">' . $this->clLabel('export', 'rm') . '</option>';
+		if ($elCount && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('impexp')) {
+			$opt[] = '<option value="' . htmlspecialchars(('window.location.href=\'' . $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('impexp') . 'app/index.php' . $this->exportClipElementParameters() . '\';')) . '">' . $this->clLabel('export', 'rm') . '</option>';
 		}
 		// Edit:
 		if (!$this->fileMode && $elCount) {
@@ -488,7 +488,7 @@ class Clipboard {
 			if ($this->fileMode) {
 				$str = $GLOBALS['TBE_TEMPLATE']->dfw($str);
 			} else {
-				if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('recordlist')) {
+				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('recordlist')) {
 					$str = '<a href="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', array('id' => $rec['pid']), $this->backPath)) . '">' . $str . '</a>';
 				}
 			}
@@ -496,7 +496,7 @@ class Clipboard {
 			if (!$this->fileMode) {
 				$str = $GLOBALS['TBE_TEMPLATE']->dfw($str);
 			} else {
-				if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('filelist')) {
+				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('filelist')) {
 					$str = '<a href="' . htmlspecialchars(($this->backPath . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('file_list') . '&id=' . dirname($rec))) . '">' . $str . '</a>';
 				}
 			}

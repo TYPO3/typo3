@@ -31,5 +31,5 @@ $GLOBALS['LANG']->includeLLFile('EXT:sys_action/locallang.xml');
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/sys_action/Classes/ActionToolbarMenu.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('sys_action') . 'Classes/ActionToolbarMenu.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sys_action') . 'Classes/ActionToolbarMenu.php';
 ?>

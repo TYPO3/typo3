@@ -3,14 +3,14 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 if (TYPO3_MODE == 'BE') {
-	\TYPO3\CMS\Core\Extension\ExtensionManager::addModule('web', 'layout', 'top', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'layout/');
-	\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('_MOD_web_layout', 'EXT:cms/locallang_csh_weblayout.xml');
-	\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('_MOD_web_info', 'EXT:cms/locallang_csh_webinfo.xml');
-	\TYPO3\CMS\Core\Extension\ExtensionManager::insertModuleFunction('web_info', 'tx_cms_webinfo_page', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'web_info/class.tx_cms_webinfo.php', 'LLL:EXT:cms/locallang_tca.xml:mod_tx_cms_webinfo_page');
-	\TYPO3\CMS\Core\Extension\ExtensionManager::insertModuleFunction('web_info', 'tx_cms_webinfo_lang', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'web_info/class.tx_cms_webinfo_lang.php', 'LLL:EXT:cms/locallang_tca.xml:mod_tx_cms_webinfo_lang');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('web', 'layout', 'top', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'layout/');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_layout', 'EXT:cms/locallang_csh_weblayout.xml');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_info', 'EXT:cms/locallang_csh_webinfo.xml');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction('web_info', 'tx_cms_webinfo_page', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'web_info/class.tx_cms_webinfo.php', 'LLL:EXT:cms/locallang_tca.xml:mod_tx_cms_webinfo_page');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction('web_info', 'tx_cms_webinfo_lang', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'web_info/class.tx_cms_webinfo_lang.php', 'LLL:EXT:cms/locallang_tca.xml:mod_tx_cms_webinfo_lang');
 }
 // Add allowed records to pages:
-\TYPO3\CMS\Core\Extension\ExtensionManager::allowTableOnStandardPages('pages_language_overlay,tt_content,sys_template,sys_domain,backend_layout');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('pages_language_overlay,tt_content,sys_template,sys_domain,backend_layout');
 // This is the standard TypoScript content table, tt_content
 $TCA['tt_content'] = array(
 	'ctrl' => array(
@@ -83,7 +83,7 @@ $TCA['tt_content'] = array(
 		),
 		'thumbnail' => 'image',
 		'requestUpdate' => 'list_type,rte_enabled,menu_type',
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'tbl_tt_content.php',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tbl_tt_content.php',
 		'dividers2tabs' => 1,
 		'searchFields' => 'header,header_link,subheader,bodytext,pi_flexform'
 	)
@@ -108,7 +108,7 @@ $TCA['fe_users'] = array(
 			'default' => 'status-user-frontend'
 		),
 		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,disable,starttime,endtime',
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'tbl_cms.php',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tbl_cms.php',
 		'dividers2tabs' => 1,
 		'searchFields' => 'username,name,first_name,last_name,middle_name,address,telephone,fax,email,title,zip,city,country,company'
 	),
@@ -133,7 +133,7 @@ $TCA['fe_groups'] = array(
 			'default' => 'status-user-group-frontend'
 		),
 		'useColumnsForDefaultValues' => 'lockToDomain',
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'tbl_cms.php',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tbl_cms.php',
 		'dividers2tabs' => 1,
 		'searchFields' => 'title,description'
 	)
@@ -154,7 +154,7 @@ $TCA['sys_domain'] = array(
 		'typeicon_classes' => array(
 			'default' => 'mimetypes-x-content-domain'
 		),
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'tbl_cms.php',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tbl_cms.php',
 		'searchFields' => 'domainName,redirectTo'
 	)
 );
@@ -181,7 +181,7 @@ $TCA['pages_language_overlay'] = array(
 		'shadowColumnsForNewPlaceholders' => 'title',
 		'languageField' => 'sys_language_uid',
 		'mainpalette' => 1,
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'tbl_cms.php',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tbl_cms.php',
 		'type' => 'doktype',
 		'typeicon_classes' => array(
 			'default' => 'mimetypes-x-content-page-language-overlay'
@@ -220,7 +220,7 @@ $TCA['sys_template'] = array(
 			'0' => 'template_add.gif'
 		),
 		'dividers2tabs' => 1,
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'tbl_cms.php',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tbl_cms.php',
 		'searchFields' => 'title,constants,config'
 	)
 );
@@ -239,7 +239,7 @@ $TCA['backend_layout'] = array(
 		'enablecolumns' => array(
 			'disabled' => 'hidden'
 		),
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'tbl_cms.php',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tbl_cms.php',
 		'iconfile' => 'backend_layout.gif',
 		'selicon_field' => 'icon',
 		'selicon_field_path' => 'uploads/media',

@@ -87,8 +87,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		parent::init();
 		// Initialize document
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('scheduler') . 'mod1/mod_template.html');
-		$this->doc->getPageRenderer()->addCssFile(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('scheduler') . 'res/tx_scheduler_be.css');
+		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('scheduler') . 'mod1/mod_template.html');
+		$this->doc->getPageRenderer()->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler') . 'res/tx_scheduler_be.css');
 		$this->doc->backPath = $this->backPath;
 		$this->doc->bodyTagId = 'typo3-mod-php';
 		$this->doc->bodyTagAdditions = 'class="tx_scheduler_mod1"';
@@ -132,7 +132,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					}
 				</script>
 			';
-			$this->doc->getPageRenderer()->addInlineSetting('scheduler', 'runningIcon', \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('scheduler') . 'res/gfx/status_running.png');
+			$this->doc->getPageRenderer()->addInlineSetting('scheduler', 'runningIcon', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler') . 'res/gfx/status_running.png');
 			// Prepare main content
 			$this->content = $this->doc->header($GLOBALS['LANG']->getLL('function.' . $this->MOD_SETTINGS['function']));
 			$this->content .= $this->doc->spacer(5);
@@ -630,7 +630,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = $this->doc->getPageRenderer();
 		$pageRenderer->loadExtJS();
-		$pageRenderer->addJsFile(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('scheduler') . 'res/tx_scheduler_be.js');
+		$pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler') . 'res/tx_scheduler_be.js');
 		$pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/tceforms.js');
 		$pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ux/Ext.ux.DateTimePicker.js');
 		// Define settings for Date Picker
@@ -871,7 +871,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 			$pageRenderer = $this->doc->getPageRenderer();
 			$pageRenderer->loadExtJS();
-			$pageRenderer->addJsFile(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('scheduler') . 'res/tx_scheduler_be.js');
+			$pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler') . 'res/tx_scheduler_be.js');
 			// Initialise table layout
 			$tableLayout = array(
 				'table' => array(
@@ -922,7 +922,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				// Define action icons
 				$editAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:edit', TRUE) . '" class="icon">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 				$deleteAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.delete') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:delete', TRUE) . '" class="icon">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
-				$stopAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.stop') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop', TRUE) . '" class="icon"><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, (\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('scheduler') . '/res/gfx/stop.png')) . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop') . '" /></a>';
+				$stopAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.stop') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop', TRUE) . '" class="icon"><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler') . '/res/gfx/stop.png')) . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop') . '" /></a>';
 				// Define some default values
 				$lastExecution = '-';
 				$isRunning = FALSE;
@@ -1027,11 +1027,11 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						} else {
 							$failureDetail = sprintf($GLOBALS['LANG']->getLL('msg.executionFailureReport'), $exception->getCode(), $exception->getMessage());
 						}
-						$failureOutput = ' <img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('scheduler'), 'res/gfx/status_failure.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.failure')) . '" title="' . htmlspecialchars($failureDetail) . '" />';
+						$failureOutput = ' <img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler'), 'res/gfx/status_failure.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.failure')) . '" title="' . htmlspecialchars($failureDetail) . '" />';
 					}
 					// Format the execution status,
 					// including failure feedback, if any
-					$executionStatusOutput = '<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('scheduler'), ('res/gfx/status_' . $executionStatus . '.png')) . ' id="executionstatus_' . $schedulerRecord['uid'] . '" alt="' . htmlspecialchars($GLOBALS['LANG']->getLL(('status.' . $executionStatus))) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL(('status.legend.' . $executionStatus))) . '" />' . $failureOutput;
+					$executionStatusOutput = '<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler'), ('res/gfx/status_' . $executionStatus . '.png')) . ' id="executionstatus_' . $schedulerRecord['uid'] . '" alt="' . htmlspecialchars($GLOBALS['LANG']->getLL(('status.' . $executionStatus))) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL(('status.legend.' . $executionStatus))) . '" />' . $failureOutput;
 					$table[$tr][] = $startExecutionElement;
 					$table[$tr][] = $actions;
 					$table[$tr][] = $schedulerRecord['uid'];
@@ -1071,11 +1071,11 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$content .= $this->doc->spacer(20);
 			$content .= '<h4>' . $GLOBALS['LANG']->getLL('status.legend') . '</h4>
 			<ul>
-				<li><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('scheduler'), 'res/gfx/status_failure.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.failure')) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.failure')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.failure') . '</li>
-				<li><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('scheduler'), 'res/gfx/status_late.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.late')) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.late')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.late') . '</li>
-				<li><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('scheduler'), 'res/gfx/status_running.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.running')) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.running')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.running') . '</li>
-				<li><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('scheduler'), 'res/gfx/status_scheduled.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.scheduled')) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.scheduled')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.scheduled') . '</li>
-				<li><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('scheduler'), 'res/gfx/status_disabled.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.disabled')) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.disabled')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.disabled') . '</li>
+				<li><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler'), 'res/gfx/status_failure.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.failure')) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.failure')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.failure') . '</li>
+				<li><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler'), 'res/gfx/status_late.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.late')) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.late')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.late') . '</li>
+				<li><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler'), 'res/gfx/status_running.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.running')) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.running')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.running') . '</li>
+				<li><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler'), 'res/gfx/status_scheduled.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.scheduled')) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.scheduled')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.scheduled') . '</li>
+				<li><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler'), 'res/gfx/status_disabled.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.disabled')) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.disabled')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.disabled') . '</li>
 			</ul>';
 			$content .= $this->doc->spacer(10);
 			$content .= $this->displayServerTime();

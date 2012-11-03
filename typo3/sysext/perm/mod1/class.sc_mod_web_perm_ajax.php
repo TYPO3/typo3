@@ -27,5 +27,5 @@ $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_web_perm.xml');
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/perm/Classes/Controller/PermissionAjaxController.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('perm') . 'Classes/Controller/PermissionAjaxController.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('perm') . 'Classes/Controller/PermissionAjaxController.php';
 ?>
