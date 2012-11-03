@@ -39,7 +39,7 @@ $BE_USER->modAccess($MCONF, 1);
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/lowlevel/Classes/View/DatabaseIntegrityView.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('lowlevel') . 'Classes/View/DatabaseIntegrityView.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lowlevel') . 'Classes/View/DatabaseIntegrityView.php';
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lowlevel\\View\\DatabaseIntegrityView');
 $SOBE->init();

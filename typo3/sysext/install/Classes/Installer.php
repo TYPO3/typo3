@@ -2766,7 +2766,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	public function checkDatabase() {
 		$ext = 'Check database';
 		$this->message($ext);
-		if (!extension_loaded('mysql') && !\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('dbal')) {
+		if (!extension_loaded('mysql') && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal')) {
 			$this->message($ext, 'MySQL not available', '
 				<p>
 					PHP does not feature MySQL support (which is pretty unusual).
@@ -3636,7 +3636,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	public function isGIF() {
 		// If GIF-functions exists, also do a real test of them:
 		if (function_exists('imagecreatefromgif') && function_exists('imagegif') && $this->ImageTypes() & IMG_GIF) {
-			$im = @imagecreatefromgif((\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.gif'));
+			$im = @imagecreatefromgif((\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/jesus.gif'));
 			return $im ? 1 : 0;
 		}
 	}
@@ -3661,7 +3661,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	 */
 	public function isPNG() {
 		if (function_exists('imagecreatefrompng') && function_exists('imagepng') && $this->ImageTypes() & IMG_PNG) {
-			$im = imagecreatefrompng(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.png');
+			$im = imagecreatefrompng(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/jesus.png');
 			return $im ? 1 : 0;
 		}
 	}
@@ -4030,7 +4030,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				foreach ($extArr as $ext) {
 					if ($this->isExtensionEnabled($ext, $headCode, 'Read ' . strtoupper($ext))) {
 						$imageProc->IM_commands = array();
-						$theFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.' . $ext;
+						$theFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/jesus.' . $ext;
 						if (!@is_file($theFile)) {
 							die('Error: ' . $theFile . ' was not a file');
 						}
@@ -4042,7 +4042,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				}
 				if ($this->isExtensionEnabled('pdf', $headCode, 'Read PDF')) {
 					$imageProc->IM_commands = array();
-					$theFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/pdf_from_imagemagick.pdf';
+					$theFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/pdf_from_imagemagick.pdf';
 					if (!@is_file($theFile)) {
 						die('Error: ' . $theFile . ' was not a file');
 					}
@@ -4053,7 +4053,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				}
 				if ($this->isExtensionEnabled('ai', $headCode, 'Read AI')) {
 					$imageProc->IM_commands = array();
-					$theFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/typo3logotype.ai';
+					$theFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/typo3logotype.ai';
 					if (!@is_file($theFile)) {
 						die('Error: ' . $theFile . ' was not a file');
 					}
@@ -4090,7 +4090,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 			if ($imActive) {
 				// Writing GIF
 				$imageProc->IM_commands = array();
-				$theFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.gif';
+				$theFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/jesus.gif';
 				if (!@is_file($theFile)) {
 					die('Error: ' . $theFile . ' was not a file');
 				}
@@ -4110,7 +4110,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				$this->message($headCode, 'Write GIF', $result[0], $result[1]);
 				// Writing PNG
 				$imageProc->IM_commands = array();
-				$theFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.gif';
+				$theFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/jesus.gif';
 				$imageProc->imageMagickConvert_forceFileNameBody = 'write_png';
 				$fileInfo = $imageProc->imageMagickConvert($theFile, 'png', '', '', '', '', array(), TRUE);
 				$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands);
@@ -4140,7 +4140,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 			if ($imActive) {
 				// Scaling transparent image
 				$imageProc->IM_commands = array();
-				$theFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus2_transp.gif';
+				$theFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/jesus2_transp.gif';
 				if (!@is_file($theFile)) {
 					die('Error: ' . $theFile . ' was not a file');
 				}
@@ -4159,7 +4159,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands, $note);
 				$this->message($headCode, 'GIF to GIF, 150 pixels wide', $result[0], $result[1]);
 				$imageProc->IM_commands = array();
-				$theFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus2_transp.png';
+				$theFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/jesus2_transp.png';
 				if (!@is_file($theFile)) {
 					die('Error: ' . $theFile . ' was not a file');
 				}
@@ -4168,7 +4168,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands);
 				$this->message($headCode, 'PNG to PNG, 150 pixels wide', $result[0], $result[1]);
 				$imageProc->IM_commands = array();
-				$theFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus2_transp.gif';
+				$theFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/jesus2_transp.gif';
 				if (!@is_file($theFile)) {
 					die('Error: ' . $theFile . ' was not a file');
 				}
@@ -4208,9 +4208,9 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				');
 			if ($imActive) {
 				$imageProc->IM_commands = array();
-				$input = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/greenback.gif';
-				$overlay = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.jpg';
-				$mask = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/blackwhite_mask.gif';
+				$input = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/greenback.gif';
+				$overlay = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/jesus.jpg';
+				$mask = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/blackwhite_mask.gif';
 				if (!@is_file($input)) {
 					die('Error: ' . $input . ' was not a file');
 				}
@@ -4227,9 +4227,9 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				$this->message($headCode, 'Combine using a GIF mask with only black and white', $result[0], $result[1]);
 				// Combine
 				$imageProc->IM_commands = array();
-				$input = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/combine_back.jpg';
-				$overlay = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.jpg';
-				$mask = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/combine_mask.jpg';
+				$input = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/combine_back.jpg';
+				$overlay = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/jesus.jpg';
+				$mask = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/combine_mask.jpg';
 				if (!@is_file($input)) {
 					die('Error: ' . $input . ' was not a file');
 				}
@@ -4289,7 +4289,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				$this->message($headCode, 'Create simple image', $result[0], $result[1]);
 				// GD from image with box
 				$imageProc->IM_commands = array();
-				$input = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.' . $imageProc->gifExtension;
+				$input = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/jesus.' . $imageProc->gifExtension;
 				if (!@is_file($input)) {
 					die('Error: ' . $input . ' was not a file');
 				}
@@ -4540,11 +4540,11 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 		if ($imageFile) {
 			// Get the subpart for the images
 			$imageSubpart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###IMAGE###');
-			$verifyFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'verify_imgs/' . basename($imageFile);
+			$verifyFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'verify_imgs/' . basename($imageFile);
 			$destImg = @getImageSize($imageFile);
 			$destImgCode = '<img src="' . $this->backPath . '../' . substr($imageFile, strlen(PATH_site)) . '" ' . $destImg[3] . '>';
 			$verifyImg = @getImageSize($verifyFile);
-			$verifyImgCode = '<img src="' . $this->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('install') . 'verify_imgs/' . basename($verifyFile) . '" ' . $verifyImg[3] . '>';
+			$verifyImgCode = '<img src="' . $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('install') . 'verify_imgs/' . basename($verifyFile) . '" ' . $verifyImg[3] . '>';
 			clearstatcache();
 			$destImg['filesize'] = @filesize($imageFile);
 			clearstatcache();
@@ -4556,7 +4556,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				'destUrl' => $this->backPath . '../' . substr($imageFile, strlen(PATH_site)),
 				'verifyWidth' => $verifyImg[0],
 				'verifyHeight' => $verifyImg[1],
-				'verifyUrl' => $this->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('install') . 'verify_imgs/' . basename($verifyFile),
+				'verifyUrl' => $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('install') . 'verify_imgs/' . basename($verifyFile),
 				'yourServer' => 'Your server:',
 				'yourServerInformation' => \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($destImg['filesize']) . ', ' . $destImg[0] . 'x' . $destImg[1] . ' pixels',
 				'reference' => 'Reference:',
@@ -5460,7 +5460,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				}
 				break;
 			case 'cache':
-				$tableListArr = explode(',', 'cache_pages,cache_pagesection,cache_hash,cache_imagesizes,--div--,sys_log,sys_history,--div--,be_sessions,fe_sessions,fe_session_data' . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('indexed_search') ? ',--div--,index_words,index_rel,index_phash,index_grlist,index_section,index_fulltext' : '') . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('tt_products') ? ',--div--,sys_products_orders,sys_products_orders_mm_tt_products' : '') . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('direct_mail') ? ',--div--,sys_dmail_maillog' : ''));
+				$tableListArr = explode(',', 'cache_pages,cache_pagesection,cache_hash,cache_imagesizes,--div--,sys_log,sys_history,--div--,be_sessions,fe_sessions,fe_session_data' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('indexed_search') ? ',--div--,index_words,index_rel,index_phash,index_grlist,index_section,index_fulltext' : '') . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_products') ? ',--div--,sys_products_orders,sys_products_orders_mm_tt_products' : '') . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('direct_mail') ? ',--div--,sys_dmail_maillog' : ''));
 				if (is_array($this->INSTALL['database_clearcache'])) {
 					$qList = array();
 					// Get the template file
@@ -5580,7 +5580,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	 * @todo Define visibility
 	 */
 	public function updateWizard() {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::removeCacheFiles();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
 		// Forces creation / update of caching framework tables that are needed by some update wizards
 		$cacheTablesConfiguration = implode(LF, $this->sqlHandler->getStatementArray(\TYPO3\CMS\Core\Cache\Cache::getDatabaseTableDefinitions(), 1, '^CREATE TABLE '));
 		$neededTableDefinition = $this->sqlHandler->getFieldDefinitions_fileContent($cacheTablesConfiguration);
@@ -5909,7 +5909,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 		case 'get_form':
 			$content .= $this->generateUpdateDatabaseForm_checkboxes($arr_update['clear_table'], 'Clear tables (use with care!)', FALSE, TRUE);
 			$content .= $this->generateUpdateDatabaseForm_checkboxes($arr_update['add'], 'Add fields');
-			$content .= $this->generateUpdateDatabaseForm_checkboxes($arr_update['change'], 'Changing fields', \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('dbal') ? 0 : 1, 0, $arr_update['change_currentValue']);
+			$content .= $this->generateUpdateDatabaseForm_checkboxes($arr_update['change'], 'Changing fields', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal') ? 0 : 1, 0, $arr_update['change_currentValue']);
 			$content .= $this->generateUpdateDatabaseForm_checkboxes($arr_remove['change'], 'Remove unused fields (rename with prefix)', $this->setAllCheckBoxesByDefault, 1);
 			$content .= $this->generateUpdateDatabaseForm_checkboxes($arr_remove['drop'], 'Drop fields (really!)', $this->setAllCheckBoxesByDefault);
 			$content .= $this->generateUpdateDatabaseForm_checkboxes($arr_update['create_table'], 'Add tables');

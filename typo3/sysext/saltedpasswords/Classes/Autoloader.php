@@ -44,7 +44,7 @@ class Autoloader {
 	public function execute(\TYPO3\CMS\Install\Installer $instObj) {
 		switch ($instObj->step) {
 		case 4:
-			if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('saltedpasswords') && $this->isSaltedPasswordsSupported()) {
+			if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords') && $this->isSaltedPasswordsSupported()) {
 				$this->activateSaltedPasswords();
 			}
 			break;
@@ -80,11 +80,11 @@ class Autoloader {
 	 * @return void
 	 */
 	protected function activateSaltedPasswords() {
-		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('rsaauth')) {
-			\TYPO3\CMS\Core\Extension\ExtensionManager::loadExtension('rsaauth');
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth')) {
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtension('rsaauth');
 		}
-		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('saltedpasswords')) {
-			\TYPO3\CMS\Core\Extension\ExtensionManager::loadExtension('saltedpasswords');
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords')) {
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtension('saltedpasswords');
 		}
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('EXT/extConf/saltedpasswords', 'a:2:{s:3:"FE.";a:2:{s:7:"enabled";s:1:"1";s:21:"saltedPWHashingMethod";s:28:"tx_saltedpasswords_salts_md5";}s:3:"BE.";a:2:{s:7:"enabled";s:1:"1";s:21:"saltedPWHashingMethod";s:28:"tx_saltedpasswords_salts_md5";}}');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'rsa');

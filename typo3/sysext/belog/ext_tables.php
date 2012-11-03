@@ -6,10 +6,10 @@ if (!defined('TYPO3_MODE')) {
 	// Register backend modules, but not in frontend or within upgrade wizards
 if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		// Module Web->Info->Log
-	\TYPO3\CMS\Core\Extension\ExtensionManager::insertModuleFunction(
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_info',
 		'TYPO3\\CMS\\Belog\\Module\\BackendLogModuleBootstrap',
-		\TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'Classes/Module/BackendLogModuleBootstrap.php',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Module/BackendLogModuleBootstrap.php',
 		'Log'
 	);
 

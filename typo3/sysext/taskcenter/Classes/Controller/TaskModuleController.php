@@ -21,10 +21,10 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		parent::init();
 		// Initialize document
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('taskcenter') . 'res/mod_template.html');
+		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('taskcenter') . 'res/mod_template.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->getPageRenderer()->loadScriptaculous('effects,dragdrop');
-		$this->doc->addStyleSheet('tx_taskcenter', '../' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('taskcenter') . 'res/mod_styles.css');
+		$this->doc->addStyleSheet('tx_taskcenter', '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('taskcenter') . 'res/mod_styles.css');
 	}
 
 	/**
@@ -178,7 +178,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$count = 0;
 		// Change the sorting of items to the user's one
 		if ($mainMenu) {
-			$this->doc->getPageRenderer()->addJsFile(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('taskcenter') . 'res/tasklist.js');
+			$this->doc->getPageRenderer()->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('taskcenter') . 'res/tasklist.js');
 			$userSorting = unserialize($GLOBALS['BE_USER']->uc['taskcenter']['sorting']);
 			if (is_array($userSorting)) {
 				$newSorting = array();
@@ -257,7 +257,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	protected function indexAction() {
 		$content = '';
 		$tasks = array();
-		$icon = \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('taskcenter') . 'task/task.gif';
+		$icon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('taskcenter') . 'task/task.gif';
 		// Render the tasks only if there are any available
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']) && count($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']) > 0) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'] as $extKey => $extensionReports) {

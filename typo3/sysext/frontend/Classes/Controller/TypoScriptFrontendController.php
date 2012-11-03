@@ -2594,7 +2594,7 @@ class TypoScriptFrontendController {
 			}
 		}
 		// Finding the ISO code:
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('static_info_tables') && $this->sys_language_content) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables') && $this->sys_language_content) {
 			// using sys_language_content because the ISO code only (currently) affect content selection from FlexForms - which should follow "sys_language_content"
 			$sys_language_row = $this->sys_page->getRawRecord('sys_language', $this->sys_language_content, 'static_lang_isocode');
 			if (is_array($sys_language_row) && $sys_language_row['static_lang_isocode']) {
@@ -4242,7 +4242,7 @@ if (version == "n3") {
 			return FALSE;
 		}
 		if ($returnTitle) {
-			if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces')) {
+			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title', 'sys_workspace', 'uid=' . intval($ws));
 				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					return $row['title'];

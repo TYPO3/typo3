@@ -182,7 +182,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return boolean TRUE if extension is loaded
 	 */
 	public function isLoaded($extensionKey) {
-		return \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extensionKey);
+		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey);
 	}
 
 	/**
@@ -192,7 +192,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function loadExtension($extensionKey) {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::loadExtension($extensionKey);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtension($extensionKey);
 	}
 
 	/**
@@ -202,7 +202,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function unloadExtension($extensionKey) {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::unloadExtension($extensionKey);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::unloadExtension($extensionKey);
 	}
 
 	/**
@@ -272,7 +272,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function reloadCaches() {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::removeCacheFiles();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
 		// Set new extlist / extlistArray for extension load changes at runtime
 		$localConfiguration = $this->configurationManager->getLocalConfiguration();
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $localConfiguration['EXT']['extList'];
@@ -348,7 +348,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function writeExtensionTypoScriptStyleConfigurationToLocalconf($extensionKey, $newConfiguration) {
 		$this->configurationManager->setLocalConfigurationValueByPath('EXT/extConf/' . $extensionKey, serialize($newConfiguration));
-		\TYPO3\CMS\Core\Extension\ExtensionManager::removeCacheFiles();
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
 	}
 
 	/**

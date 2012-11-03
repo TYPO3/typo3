@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 * This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'mod/class.tx_install.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'mod/class.tx_install.php');
 
 /**
  * Testcase for the \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection class.

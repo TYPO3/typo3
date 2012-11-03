@@ -76,7 +76,7 @@ class Plaintext extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$registerRTEinJavascriptString = '';
 		$button = 'pastebehaviour';
 		// Get current TYPO3 User Setting, if available
-		if (TYPO3_MODE === 'BE' && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('setup') && is_array($GLOBALS['TYPO3_USER_SETTINGS']) && is_object($GLOBALS['BE_USER'])) {
+		if (TYPO3_MODE === 'BE' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('setup') && is_array($GLOBALS['TYPO3_USER_SETTINGS']) && is_object($GLOBALS['BE_USER'])) {
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
 				$registerRTEinJavascriptString .= '
 			RTEarea[' . $RTEcounter . '].buttons.' . $button . ' = new Object();';
@@ -100,7 +100,7 @@ class Plaintext extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			$removeButtons[] = 'pastebehaviour';
 		}
 		// Remove pastebehaviour button if TYPO3 User Settings are available
-		if (TYPO3_MODE === 'BE' && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('setup') && is_array($GLOBALS['TYPO3_USER_SETTINGS']) && is_object($GLOBALS['BE_USER'])) {
+		if (TYPO3_MODE === 'BE' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('setup') && is_array($GLOBALS['TYPO3_USER_SETTINGS']) && is_object($GLOBALS['BE_USER'])) {
 			$removeButtons[] = 'pastebehaviour';
 		}
 		return array_diff($show, $removeButtons);

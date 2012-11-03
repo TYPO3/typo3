@@ -243,7 +243,7 @@ class Indexer {
 		$indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
 		// Crawler activation:
 		// Requirements are that the crawler is loaded, a crawler session is running and re-indexing requested as processing instruction:
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('crawler') && $pObj->applicationData['tx_crawler']['running'] && in_array('tx_indexedsearch_reindex', $pObj->applicationData['tx_crawler']['parameters']['procInstructions'])) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('crawler') && $pObj->applicationData['tx_crawler']['running'] && in_array('tx_indexedsearch_reindex', $pObj->applicationData['tx_crawler']['parameters']['procInstructions'])) {
 			// Setting simple log message:
 			$pObj->applicationData['tx_crawler']['log'][] = 'Forced Re-indexing enabled';
 			// Setting variables:
@@ -753,7 +753,7 @@ class Indexer {
 	public function extractLinks($content) {
 		// Get links:
 		$list = $this->extractHyperLinks($content);
-		if ($this->indexerConfig['useCrawlerForExternalFiles'] && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('crawler')) {
+		if ($this->indexerConfig['useCrawlerForExternalFiles'] && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('crawler')) {
 			$this->includeCrawlerClass();
 			$crawler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_crawler_lib');
 		}
@@ -1947,7 +1947,7 @@ class Indexer {
 	 * @todo Define visibility
 	 */
 	public function includeCrawlerClass() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('crawler') . 'class.tx_crawler_lib.php');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('crawler') . 'class.tx_crawler_lib.php');
 	}
 
 	/********************************

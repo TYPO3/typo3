@@ -41,7 +41,7 @@ require_once PATH_t3lib . 'class.t3lib_stdgraphic.php';
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/frontend/Classes/Controller/ShowImageController.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('frontend') . 'Classes/Controller/ShowImageController.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('frontend') . 'Classes/Controller/ShowImageController.php';
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\ShowImageController');
 $SOBE->init();

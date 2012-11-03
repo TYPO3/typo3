@@ -1213,12 +1213,12 @@ class DocumentTemplate {
 					// for EXT:myskin/stylesheets/ syntax
 					if (substr($stylesheetDir, 0, 4) === 'EXT:') {
 						list($extKey, $path) = explode('/', substr($stylesheetDir, 4), 2);
-						if (strcmp($extKey, '') && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extKey) && strcmp($path, '')) {
-							$stylesheetDirectories[] = \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($extKey) . $path;
+						if (strcmp($extKey, '') && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && strcmp($path, '')) {
+							$stylesheetDirectories[] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extKey) . $path;
 						}
 					} else {
 						// For relative paths
-						$stylesheetDirectories[] = \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($skinExtKey) . $stylesheetDir;
+						$stylesheetDirectories[] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($skinExtKey) . $stylesheetDir;
 					}
 				}
 			}
@@ -1772,7 +1772,7 @@ class DocumentTemplate {
 	 * @return string
 	 */
 	public function getVersionSelector($id, $noAction = FALSE) {
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('version')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version')) {
 			$versionGuiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\View\\VersionView');
 			return $versionGuiObj->getVersionSelector($id, $noAction);
 		}

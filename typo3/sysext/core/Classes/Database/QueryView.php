@@ -96,7 +96,7 @@ class QueryView {
 			$opt[] = '<option value="' . $k . '"' . (!strcmp($cur, $v) ? ' selected' : '') . '>' . htmlspecialchars($v) . '</option>';
 		}
 		// Actions:
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('sys_action') && $GLOBALS['BE_USER']->isAdmin()) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('sys_action') && $GLOBALS['BE_USER']->isAdmin()) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_action', 'type=2', '', 'title');
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 				$opt[] = '<option value="0">__Save to Action:__</option>';
@@ -177,7 +177,7 @@ class QueryView {
 	 * @todo Define visibility
 	 */
 	public function saveQueryInAction($uid) {
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('sys_action')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('sys_action')) {
 			$keyArr = explode(',', $this->storeList);
 			$saveArr = array();
 			foreach ($keyArr as $k) {
@@ -251,7 +251,7 @@ class QueryView {
 					$writeArray = $this->loadStoreQueryConfigs($storeQueryConfigs, $storeIndex, $writeArray);
 					$saveStoreArray = 1;
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('query_loaded'), htmlspecialchars($storeArray[$storeIndex])));
-				} elseif ($storeIndex < 0 && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('sys_action')) {
+				} elseif ($storeIndex < 0 && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('sys_action')) {
 					$actionRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_action', abs($storeIndex));
 					if (is_array($actionRecord)) {
 						$dA = unserialize($actionRecord['t2_data']);

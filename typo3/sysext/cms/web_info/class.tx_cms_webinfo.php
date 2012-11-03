@@ -31,11 +31,11 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('cms') . 'layout/class.tx_cms_layout.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('cms') . 'layout/class.tx_cms_layout.php';
 /*
  * @deprecated since 6.0, the classname tx_cms_webinfo_page and this file is obsolete
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/frontend/Classes/Controller/PageInformationController.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('frontend') . 'Classes/Controller/PageInformationController.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('frontend') . 'Classes/Controller/PageInformationController.php';
 ?>
