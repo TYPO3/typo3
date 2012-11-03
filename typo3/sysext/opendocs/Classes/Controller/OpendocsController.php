@@ -174,7 +174,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	 */
 	protected function addJavascriptToBackend() {
 		$this->backendReference->addJavascriptFile(
-			\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($this->EXTKEY) . 'Resources/Public/JavaScript/opendocs.js'
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->EXTKEY) . 'Resources/Public/JavaScript/opendocs.js'
 		);
 	}
 
@@ -186,7 +186,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	protected function addCssToBackend() {
 		$this->backendReference->addCssFile(
 			'opendocs',
-				\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($this->EXTKEY) . '/Resources/Public/Css/opendocs.css'
+				\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->EXTKEY) . '/Resources/Public/Css/opendocs.css'
 		);
 	}
 

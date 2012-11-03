@@ -69,7 +69,7 @@ ob_start();
 	->defineLoggingAndExceptionConstants()
 	->unsetReservedGlobalVariables();
 
-if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms')) {
+if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 	die('<strong>Error:</strong> The main frontend extension "cms" was not loaded. Enable it in the extension manager in the backend.');
 }
 // Timetracking started

@@ -55,7 +55,7 @@ class ModuleController {
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->form = '<form action="" method="post">';
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('indexed_search') . '/mod/mod_template.html');
+		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('indexed_search') . '/mod/mod_template.html');
 		// JavaScript
 		$this->doc->JScodeArray['indexed_search'] = '
 			script_ended = 0;

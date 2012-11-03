@@ -881,7 +881,7 @@ class EditDocumentController {
 			// SAVE button:
 			$buttons['save'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="_savedok" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />'));
 			// SAVE / VIEW button:
-			if ($this->viewId && !$this->noView && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms') && $this->getNewIconMode($this->firstEl['table'], 'saveDocView')) {
+			if ($this->viewId && !$this->noView && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms') && $this->getNewIconMode($this->firstEl['table'], 'saveDocView')) {
 				$buttons['save_view'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save-view', array('html' => '<input type="image" class="c-inputButton" name="_savedokview" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDocShow', 1) . '" />'));
 			}
 			// SAVE / NEW button:
@@ -1289,7 +1289,7 @@ class EditDocumentController {
 	 * @todo Define visibility
 	 */
 	public function editRegularContentFromId() {
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tt_content', 'pid=' . intval($this->editRegularContentFromId) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content') . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tt_content') . ' AND colPos=0 AND sys_language_uid=0', '', 'sorting');
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 				$ecUids = array();
@@ -1382,7 +1382,7 @@ class EditDocumentController {
 	 * @todo Define visibility
 	 */
 	public function setDocument($currentDocFromHandlerMD5 = '', $retUrl = 'alt_doc_nodoc.php') {
-		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms') && !strcmp($retUrl, 'alt_doc_nodoc.php')) {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms') && !strcmp($retUrl, 'alt_doc_nodoc.php')) {
 			return;
 		}
 		if (!$this->modTSconfig['properties']['disableDocSelector'] && is_array($this->docHandler) && count($this->docHandler)) {

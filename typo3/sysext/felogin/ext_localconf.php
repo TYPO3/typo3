@@ -10,7 +10,7 @@ plugin.tx_felogin_pi1 {
   userFunc = tx_felogin_pi1->main
 }
 ');
-\TYPO3\CMS\Core\Extension\ExtensionManager::addTypoScript($_EXTKEY, 'setup', '
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($_EXTKEY, 'setup', '
 # Setting ' . $_EXTKEY . ' plugin TypoScript
 ' . $pluginContent);
 $addLine = '
@@ -21,8 +21,8 @@ tt_content.login {
 	20 = < plugin.tx_felogin_pi1
 }
 ';
-\TYPO3\CMS\Core\Extension\ExtensionManager::addTypoScript($_EXTKEY, 'setup', '# Setting ' . $_EXTKEY . ' plugin TypoScript' . $addLine . '', 43);
-\TYPO3\CMS\Core\Extension\ExtensionManager::addPageTSConfig('
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($_EXTKEY, 'setup', '# Setting ' . $_EXTKEY . ' plugin TypoScript' . $addLine . '', 43);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 mod.wizards.newContentElement.wizardItems.forms {
 	elements {
 		login {
@@ -38,9 +38,9 @@ mod.wizards.newContentElement.wizardItems.forms {
 }
 ');
 // Activate support for kb_md5fepw
-if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('kb_md5fepw') && TYPO3_MODE == 'FE') {
+if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('kb_md5fepw') && TYPO3_MODE == 'FE') {
 	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'][] = 'tx_kbmd5fepw_newloginbox->loginFormOnSubmit';
-	require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('kb_md5fepw') . 'pi1/class.tx_kbmd5fepw_newloginbox.php';
+	require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('kb_md5fepw') . 'pi1/class.tx_kbmd5fepw_newloginbox.php';
 }
 
 

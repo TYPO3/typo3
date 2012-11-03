@@ -78,7 +78,7 @@ class ActionController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCo
 	 * @param string $extension
 	 */
 	protected function toggleExtensionInstallationStateAction($extension) {
-		$installedExtensions = \TYPO3\CMS\Core\Extension\ExtensionManager::getLoadedExtensionListArray();
+		$installedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
 		if (in_array($extension, $installedExtensions)) {
 			// uninstall
 			$this->installUtility->uninstall($extension);
@@ -100,7 +100,7 @@ class ActionController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCo
 		$success = TRUE;
 		$message = '';
 		try {
-			if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extension)) {
+			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extension)) {
 				$this->installUtility->uninstall($extension);
 			}
 			$this->installUtility->removeExtension($extension);

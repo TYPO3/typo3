@@ -113,13 +113,13 @@ class Bootstrap {
 	 */
 	public function registerExtDirectComponents() {
 		if (TYPO3_MODE === 'BE') {
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.DataProvider', 'TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeDataProvider', 'web', 'user,group');
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.Commands', 'TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeCommands', 'web', 'user,group');
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.ContextMenuDataProvider', 'TYPO3\\CMS\\Backend\\ContextMenu\\Pagetree\\Extdirect\\ContextMenuConfiguration', 'web', 'user,group');
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.LiveSearchActions.ExtDirect', 'TYPO3\\CMS\\Backend\\Search\\LiveSearch\\ExtDirect\\LiveSearchDataProvider', 'web_list', 'user,group');
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.BackendUserSettings.ExtDirect', 'TYPO3\\CMS\\Backend\\User\\ExtDirect\\BackendUserSettingsDataProvider');
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.CSH.ExtDirect', 'TYPO3\\CMS\\ContextHelp\\ExtDirect\\ContextHelpDataProvider');
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.ExtDirectStateProvider.ExtDirect', 'TYPO3\\CMS\\Backend\\InterfaceState\\ExtDirect\\DataProvider');
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Components.PageTree.DataProvider', 'TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeDataProvider', 'web', 'user,group');
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Components.PageTree.Commands', 'TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeCommands', 'web', 'user,group');
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Components.PageTree.ContextMenuDataProvider', 'TYPO3\\CMS\\Backend\\ContextMenu\\Pagetree\\Extdirect\\ContextMenuConfiguration', 'web', 'user,group');
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.LiveSearchActions.ExtDirect', 'TYPO3\\CMS\\Backend\\Search\\LiveSearch\\ExtDirect\\LiveSearchDataProvider', 'web_list', 'user,group');
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.BackendUserSettings.ExtDirect', 'TYPO3\\CMS\\Backend\\User\\ExtDirect\\BackendUserSettingsDataProvider');
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.CSH.ExtDirect', 'TYPO3\\CMS\\ContextHelp\\ExtDirect\\ContextHelpDataProvider');
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.ExtDirectStateProvider.ExtDirect', 'TYPO3\\CMS\\Backend\\InterfaceState\\ExtDirect\\DataProvider');
 		}
 		return $this;
 	}
@@ -435,7 +435,7 @@ class Bootstrap {
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
 	public function populateTypo3LoadedExtGlobal($allowCaching = TRUE) {
-		$GLOBALS['TYPO3_LOADED_EXT'] = \TYPO3\CMS\Core\Extension\ExtensionManager::loadTypo3LoadedExtensionInformation($allowCaching);
+		$GLOBALS['TYPO3_LOADED_EXT'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadTypo3LoadedExtensionInformation($allowCaching);
 		return $this;
 	}
 
@@ -449,7 +449,7 @@ class Bootstrap {
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
 	public function loadAdditionalConfigurationFromExtensions($allowCaching = TRUE) {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::loadExtLocalconf($allowCaching);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtLocalconf($allowCaching);
 		return $this;
 	}
 
@@ -492,7 +492,7 @@ class Bootstrap {
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
 	public function requireAdditionalExtensionFiles() {
-		require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('lang') . 'lang.php';
+		require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang') . 'lang.php';
 		return $this;
 	}
 
@@ -683,7 +683,7 @@ class Bootstrap {
 		global $_EXTKEY;
 		// Include standard tables.php file
 		require PATH_t3lib . 'stddb/tables.php';
-		\TYPO3\CMS\Core\Extension\ExtensionManager::loadExtTables($allowCaching);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtTables($allowCaching);
 		// Load additional ext tables script if registered
 		if (TYPO3_extTableDef_script) {
 			include PATH_typo3conf . TYPO3_extTableDef_script;

@@ -31,30 +31,30 @@
  * @author 	Ingmar Schlecht <ingmar@typo3.org>
  */
 // include requirements definition:
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'requirements.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'requirements.php';
 // include session handling
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'mod/class.tx_install_session.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'mod/class.tx_install_session.php';
 // include update classes
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'updates/class.tx_coreupdates_charsetdefaults.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'updates/class.tx_coreupdates_compatversion.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'updates/class.tx_coreupdates_cscsplit.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'updates/class.tx_coreupdates_notinmenu.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'updates/class.tx_coreupdates_mergeadvanced.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'updates/class.tx_coreupdates_installsysexts.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'updates/class.tx_coreupdates_imagescols.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'updates/class.tx_coreupdates_statictemplates.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'updates/class.tx_coreupdates_t3skin.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'updates/class.tx_coreupdates_compressionlevel.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'updates/class.tx_coreupdates_migrateworkspaces.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'updates/class.tx_coreupdates_flagsfromsprite.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'updates/class.tx_coreupdates_addflexformstoacl.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'updates/class.tx_coreupdates_imagelink.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'updates/class.tx_coreupdates_mediaflexform.php';
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'updates/class.tx_coreupdates_localconfiguration.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'updates/class.tx_coreupdates_charsetdefaults.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'updates/class.tx_coreupdates_compatversion.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'updates/class.tx_coreupdates_cscsplit.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'updates/class.tx_coreupdates_notinmenu.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'updates/class.tx_coreupdates_mergeadvanced.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'updates/class.tx_coreupdates_installsysexts.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'updates/class.tx_coreupdates_imagescols.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'updates/class.tx_coreupdates_statictemplates.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'updates/class.tx_coreupdates_t3skin.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'updates/class.tx_coreupdates_compressionlevel.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'updates/class.tx_coreupdates_migrateworkspaces.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'updates/class.tx_coreupdates_flagsfromsprite.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'updates/class.tx_coreupdates_addflexformstoacl.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'updates/class.tx_coreupdates_imagelink.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'updates/class.tx_coreupdates_mediaflexform.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'updates/class.tx_coreupdates_localconfiguration.php';
 /*
  * @deprecated since 6.0, the classname tx_install and this file is obsolete
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/install/Classes/Installer.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'Classes/Installer.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/Installer.php';
 ?>

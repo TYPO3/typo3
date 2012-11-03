@@ -3477,8 +3477,8 @@ Connection: close
 		if (substr($filename, 0, 4) == 'EXT:') {
 			list($extKey, $local) = explode('/', substr($filename, 4), 2);
 			$filename = '';
-			if (strcmp($extKey, '') && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extKey) && strcmp($local, '')) {
-				$filename = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($extKey) . $local;
+			if (strcmp($extKey, '') && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && strcmp($local, '')) {
+				$filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey) . $local;
 			}
 		} elseif (!self::isAbsPath($filename)) {
 			// relative. Prepended with $relPathPrefix
@@ -4323,7 +4323,7 @@ Connection: close
 			'requestedServiceSubType' => $serviceSubType,
 			'requestedExcludeServiceKeys' => $excludeServiceKeys
 		);
-		while ($info = \TYPO3\CMS\Core\Extension\ExtensionManager::findService($serviceType, $serviceSubType, $excludeServiceKeys)) {
+		while ($info = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::findService($serviceType, $serviceSubType, $excludeServiceKeys)) {
 			// provide information about requested service to service object
 			$info = array_merge($info, $requestInfo);
 			// Check persistent object and if found, call directly and exit.
@@ -4358,7 +4358,7 @@ Connection: close
 				}
 			}
 			// deactivate the service
-			\TYPO3\CMS\Core\Extension\ExtensionManager::deactivateService($info['serviceType'], $info['serviceKey']);
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::deactivateService($info['serviceType'], $info['serviceKey']);
 		}
 		return $error;
 	}
