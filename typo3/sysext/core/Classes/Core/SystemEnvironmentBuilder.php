@@ -209,7 +209,7 @@ class SystemEnvironmentBuilder {
 		require_once __DIR__ . '/../Utility/ArrayUtility.php';
 		require_once __DIR__ . '/../SingletonInterface.php';
 		require_once __DIR__ . '/../Configuration/ConfigurationManager.php';
-		require_once __DIR__ . '/../Extension/ExtensionManager.php';
+		require_once __DIR__ . '/../Utility/ExtensionManagementUtility.php';
 		require_once __DIR__ . '/../Cache/Cache.php';
 		require_once __DIR__ . '/../Cache/Exception.php';
 		require_once __DIR__ . '/../Cache/Exception/NoSuchCacheException.php';
@@ -243,7 +243,7 @@ class SystemEnvironmentBuilder {
 	 */
 	static public function setupClassAliasForLegacyBaseClasses() {
 		class_alias('TYPO3\\CMS\\Core\\Utility\\GeneralUtility', 't3lib_div');
-		class_alias('TYPO3\\CMS\\Core\\Extension\\ExtensionManager', 't3lib_extMgm');
+		class_alias('TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility', 't3lib_extMgm');
 	}
 
 	/**

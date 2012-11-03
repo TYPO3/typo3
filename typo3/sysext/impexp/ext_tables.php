@@ -5,14 +5,14 @@ if (!defined('TYPO3_MODE')) {
 if (TYPO3_MODE == 'BE') {
 	$GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][] = array(
 		'name' => 'TYPO3\\CMS\\Impexp\\Clickmenu',
-		'path' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'class.tx_impexp_clickmenu.php'
+		'path' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'class.tx_impexp_clickmenu.php'
 	);
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']['impexp']['tx_impexp_task'] = array(
 		'title' => 'LLL:EXT:impexp/locallang_csh.xml:.alttitle',
 		'description' => 'LLL:EXT:impexp/locallang_csh.xml:.description',
 		'icon' => 'EXT:impexp/export.gif'
 	);
-	\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('xMOD_tx_impexp', 'EXT:impexp/locallang_csh.xml');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_tx_impexp', 'EXT:impexp/locallang_csh.xml');
 	// CSH labels for TYPO3 4.5 and greater.  These labels override the ones set above, while still falling back to the original labels if no translation is available.
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:impexp/locallang_csh.xml'][] = 'EXT:impexp/locallang_csh_45.xml';
 	// Special context menu actions for the import/export module

@@ -167,8 +167,8 @@ class GraphicalMenuFoldout extends \TYPO3\CMS\Frontend\ContentObject\Menu\Graphi
 		$insertBottomColor = $this->mconf['bottomBackColor'] ? 'BACKGROUND-COLOR: ' . $this->mconf['bottomBackColor'] . '; layer-background-color: ' . $this->mconf['bottomBackColor'] : '';
 		$menuOffset = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->mconf['menuOffset'] . ',');
 		$subOffset = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->mconf['subMenuOffset'] . ',');
-		$GLOBALS['TSFE']->additionalHeaderData['gmenu_layer_shared'] = '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('statictemplates') . 'media/scripts/jsfunc.layermenu.js"></script>';
-		$GLOBALS['TSFE']->additionalHeaderData['gmenu_foldout'] = '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('statictemplates') . 'media/scripts/jsfunc.foldout.js"></script>';
+		$GLOBALS['TSFE']->additionalHeaderData['gmenu_layer_shared'] = '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('statictemplates') . 'media/scripts/jsfunc.layermenu.js"></script>';
+		$GLOBALS['TSFE']->additionalHeaderData['gmenu_foldout'] = '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('statictemplates') . 'media/scripts/jsfunc.foldout.js"></script>';
 		$GLOBALS['TSFE']->additionalHeaderData[] .= '
 <style type="text/css">
 	/*<![CDATA[*/

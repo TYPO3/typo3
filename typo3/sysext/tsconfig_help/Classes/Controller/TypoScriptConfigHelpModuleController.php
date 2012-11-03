@@ -150,9 +150,9 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 					// parse the extension names only (no need for all details from the TYPO3_LOADED_EXT table
 					foreach ($extArray as $extName => $dummy) {
 						// check that the extension is really loaded (which should always be the case)
-						if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extName)) {
+						if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extName)) {
 							// extract the content.xml from the manual.sxw ZIP file
-							$manual = $this->getZIPFileContents(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath($extName) . 'doc/manual.sxw', 'content.xml');
+							$manual = $this->getZIPFileContents(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extName) . 'doc/manual.sxw', 'content.xml');
 							// check if the manual file actually exists and if the content.xml could be loaded
 							if ($manual != '') {
 								// if the manual file exists, proceed with the load into the SQL database
@@ -160,7 +160,7 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 								// run the extraction processing and import the data into SQL. Return the number of TS tables found in the open office document
 								$number = $this->loadExtensionManual($extName, $manual);
 								// print a status message with a link to the openoffice manual
-								$content .= $number . ' ' . $GLOBALS['LANG']->getLL('sections') . ' (<a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($extName) . 'doc/manual.sxw">manual</a>)</p>';
+								$content .= $number . ' ' . $GLOBALS['LANG']->getLL('sections') . ' (<a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extName) . 'doc/manual.sxw">manual</a>)</p>';
 							}
 						} else {
 							// This should never happen!
@@ -239,7 +239,7 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 	public function unzip($file, $path) {
 		// We use the unzip class of the Extension Manager here
 		// TODO: move unzip class to core
-		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('em')) {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('em')) {
 			// Em is not loaded, so include the unzip class
 			\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce(PATH_typo3 . 'sysext/em/classes/tools/class.tx_em_tools_unzip.php');
 		}

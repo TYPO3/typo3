@@ -408,7 +408,7 @@ class ShortcutFrameController {
 		array_unshift($this->selOpt, '<option>[' . $GLOBALS['LANG']->getLL('bookmark_selSC', 1) . ']</option>');
 		$this->editLoadedFunc();
 		$this->editPageIdFunc();
-		if (!$this->editLoaded && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms')) {
+		if (!$this->editLoaded && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 			$editIdCode = '<td nowrap="nowrap">' . $GLOBALS['LANG']->getLL('bookmark_editID', 1) . ': <input type="text" value="' . ($this->editError ? htmlspecialchars($this->editPage) : '') . '" name="editPage"' . $this->doc->formWidth(15) . ' onchange="submitEditPage(this.value);" />' . ($this->editError ? '&nbsp;<strong><span class="typo3-red">' . htmlspecialchars($this->editError) . '</span></strong>' : '') . (is_array($this->theEditRec) ? '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('bookmark_loadEdit', 1) . ' \'' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $this->theEditRec, TRUE) . '\'</strong> (' . htmlspecialchars($this->editPath) . ')' : '') . ($this->searchFor ? '&nbsp;' . $GLOBALS['LANG']->getLL('bookmark_searchFor', 1) . ' <strong>\'' . htmlspecialchars($this->searchFor) . '\'</strong>' : '') . '</td>';
 		} else {
 			$editIdCode = '';
@@ -554,7 +554,7 @@ class ShortcutFrameController {
 	 * @todo Define visibility
 	 */
 	public function editPageIdFunc() {
-		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms')) {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 			return;
 		}
 		// EDIT page:
@@ -666,7 +666,7 @@ class ShortcutFrameController {
 			$options[-1] = '[' . $GLOBALS['LANG']->getLL('bookmark_offlineWS') . ']';
 		}
 		// Add custom workspaces (selecting all, filtering by BE_USER check):
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
 			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers', 'sys_workspace', 'pid=0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace'), '', 'title');
 			if (count($workspaces)) {
 				foreach ($workspaces as $rec) {

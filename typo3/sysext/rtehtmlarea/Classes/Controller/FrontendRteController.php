@@ -126,7 +126,7 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		 * =======================================
 		 */
 		// Get the path to this extension:
-		$this->extHttpPath = \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath($this->ID);
+		$this->extHttpPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($this->ID);
 		// Get the site URL
 		$this->siteURL = $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '';
 		// Get the host URL
@@ -173,7 +173,7 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 			$this->language = 'en';
 		}
 		$this->contentLanguageUid = $row['sys_language_uid'] > 0 ? $row['sys_language_uid'] : 0;
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('static_info_tables')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
 			if ($this->contentLanguageUid) {
 				$tableA = 'sys_language';
 				$tableB = 'static_languages';

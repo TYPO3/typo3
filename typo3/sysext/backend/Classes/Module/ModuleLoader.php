@@ -237,7 +237,7 @@ class ModuleLoader {
 	 * @todo Define visibility
 	 */
 	public function checkMod($name, $fullpath) {
-		if ($name == 'user_ws' && !\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('version')) {
+		if ($name == 'user_ws' && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version')) {
 			return FALSE;
 		}
 		// Check for own way of configuring module

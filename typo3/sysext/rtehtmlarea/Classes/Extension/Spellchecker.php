@@ -63,7 +63,7 @@ class Spellchecker extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $spellCheckerModes = array('ultra', 'fast', 'normal', 'bad-spellers');
 
 	public function main($parentObject) {
-		return parent::main($parentObject) && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('static_info_tables') && !in_array($this->htmlAreaRTE->language, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->htmlAreaRTE->ID]['plugins'][$pluginName]['noSpellCheckLanguages'])) && ($this->htmlAreaRTE->contentCharset == 'iso-8859-1' || $this->htmlAreaRTE->contentCharset == 'utf-8');
+		return parent::main($parentObject) && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables') && !in_array($this->htmlAreaRTE->language, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->htmlAreaRTE->ID]['plugins'][$pluginName]['noSpellCheckLanguages'])) && ($this->htmlAreaRTE->contentCharset == 'iso-8859-1' || $this->htmlAreaRTE->contentCharset == 'utf-8');
 	}
 
 	/**

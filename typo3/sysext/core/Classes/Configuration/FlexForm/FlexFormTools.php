@@ -253,7 +253,7 @@ class FlexFormTools {
 	 * @todo Define visibility
 	 */
 	public function getAvailableLanguages() {
-		$isL = \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('static_info_tables');
+		$isL = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables');
 		// Find all language records in the system
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('static_lang_isocode,title,uid', 'sys_language', 'pid=0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_language'), '', 'title');
 		// Traverse them

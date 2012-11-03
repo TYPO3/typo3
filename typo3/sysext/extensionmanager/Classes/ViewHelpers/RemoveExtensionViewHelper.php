@@ -62,7 +62,7 @@ class RemoveExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Action
 		), 'Action');
 		$this->tag->addAttribute('href', $uri);
 		$cssClass = 'removeExtension';
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extension['key'])) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extension['key'])) {
 			$cssClass .= ' isLoadedWarning';
 		}
 		$this->tag->addAttribute('class', $cssClass);

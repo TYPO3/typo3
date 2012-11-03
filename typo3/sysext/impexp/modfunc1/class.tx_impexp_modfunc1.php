@@ -29,11 +29,11 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('impexp', 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('impexp', 1);
 /*
  * @deprecated since 6.0, the classname tx_impexp_modfunc1 and this file is obsolete
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/impexp/classes/Controller/ModuleFunctionController.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('impexp') . 'classes/Controller/ModuleFunctionController.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('impexp') . 'classes/Controller/ModuleFunctionController.php';
 ?>

@@ -4,7 +4,7 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 // Register OpenID authentication service with TYPO3
-\TYPO3\CMS\Core\Extension\ExtensionManager::addService($_EXTKEY, 'auth', 'TYPO3\\CMS\\Openid\\OpenidService', array(
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService($_EXTKEY, 'auth', 'TYPO3\\CMS\\Openid\\OpenidService', array(
 	'title' => 'OpenID Authentication',
 	'description' => 'OpenID authentication service for Frontend and Backend',
 	'subtype' => 'getUserFE,authUserFE,getUserBE,authUserBE',
@@ -14,7 +14,7 @@ if (!defined('TYPO3_MODE')) {
 	'quality' => 50,
 	'os' => '',
 	'exec' => '',
-	'classFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'sv1/class.tx_openid_sv1.php',
+	'classFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'sv1/class.tx_openid_sv1.php',
 	'className' => 'TYPO3\\CMS\\Openid\\OpenidService'
 ));
 // Register eID script that performs final FE user authentication. It will be called by the OpenID provider

@@ -174,8 +174,8 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 	 * @return void
 	 */
 	protected function prepareExtensionForImport(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extension->getExtensionKey())) {
-			\TYPO3\CMS\Core\Extension\ExtensionManager::unloadExtension($extension->getExtensionKey());
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extension->getExtensionKey())) {
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::unloadExtension($extension->getExtensionKey());
 			$this->installUtility->reloadCaches();
 		}
 	}

@@ -219,8 +219,8 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 				// CSV
 				$buttons['csv'] = '<a href="' . htmlspecialchars(($this->listURL() . '&csv=1')) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.csv', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('mimetypes-text-csv') . '</a>';
 				// Export
-				if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('impexp')) {
-					$url = $this->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('impexp') . 'app/index.php?tx_impexp[action]=export';
+				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('impexp')) {
+					$url = $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('impexp') . 'app/index.php?tx_impexp[action]=export';
 					$buttons['export'] = '<a href="' . htmlspecialchars(($url . '&tx_impexp[list][]=' . rawurlencode(($this->table . ':' . $this->id)))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.export', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-export-t3d') . '</a>';
 				}
 			}
@@ -308,7 +308,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 			$selectFields[] = $thumbsCol;
 		}
 		if ($table == 'pages') {
-			if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms')) {
+			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 				$selectFields[] = 'module';
 				$selectFields[] = 'extendToSubpages';
 				$selectFields[] = 'nav_hide';
@@ -791,7 +791,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 							//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
 							$tmpTSc = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
 							$tmpTSc = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
-							$newContentWizScriptPath = $this->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($tmpTSc) ? \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php' : 'sysext/cms/layout/db_new_content_el.php';
+							$newContentWizScriptPath = $this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($tmpTSc) ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php' : 'sysext/cms/layout/db_new_content_el.php';
 							$icon = '<a href="#" onclick="' . htmlspecialchars(('return jumpExt(\'' . $newContentWizScriptPath . '?id=' . $this->id . '\');')) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' . ($table == 'pages' ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-new') : \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new')) . '</a>';
 						} elseif ($table == 'pages' && $this->newWizards) {
 							$icon = '<a href="' . htmlspecialchars(($this->backPath . 'db_new.php?id=' . $this->id . '&pagesOnly=1&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')))) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' . ($table == 'pages' ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-new') : \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new')) . '</a>';
@@ -968,7 +968,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 			return '';
 		}
 		$rowUid = $row['uid'];
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('version') && isset($row['_ORIG_uid'])) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') && isset($row['_ORIG_uid'])) {
 			$rowUid = $row['_ORIG_uid'];
 		}
 		// Initialize:
@@ -1009,7 +1009,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 				// "Revert" link (history/undo)
 				$cells['history'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpExt(\'' . $this->backPath . 'show_rechis.php?element=' . rawurlencode(($table . ':' . $row['uid'])) . '\',\'#latest\');')) . '" title="' . $GLOBALS['LANG']->getLL('history', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-history-open') . '</a>';
 				// Versioning:
-				if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('version') && !\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces')) {
+				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
 					$vers = \TYPO3\CMS\Backend\Utility\BackendUtility::selectVersionsOfRecord($table, $row['uid'], 'uid', $GLOBALS['BE_USER']->workspace, FALSE, $row);
 					// If table can be versionized.
 					if (is_array($vers)) {
@@ -1017,14 +1017,14 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 						if (count($vers) > 1) {
 							$versionIcon = count($vers) - 1;
 						}
-						$cells['version'] = '<a href="' . htmlspecialchars(($this->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('version') . 'cm1/index.php?table=' . rawurlencode($table) . '&uid=' . rawurlencode($row['uid']))) . '" title="' . $GLOBALS['LANG']->getLL('displayVersions', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(('status-version-' . $versionIcon)) . '</a>';
+						$cells['version'] = '<a href="' . htmlspecialchars(($this->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('version') . 'cm1/index.php?table=' . rawurlencode($table) . '&uid=' . rawurlencode($row['uid']))) . '" title="' . $GLOBALS['LANG']->getLL('displayVersions', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(('status-version-' . $versionIcon)) . '</a>';
 					} elseif (!$this->table) {
 						$cells['version'] = $this->spaceIcon;
 					}
 				}
 				// "Edit Perms" link:
-				if ($table == 'pages' && $GLOBALS['BE_USER']->check('modules', 'web_perm') && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('perm')) {
-					$cells['perms'] = '<a href="' . htmlspecialchars((\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('perm') . 'mod1/index.php' . '?id=' . $row['uid'] . '&return_id=' . $row['uid'] . '&edit=1')) . '" title="' . $GLOBALS['LANG']->getLL('permissions', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-locked') . '</a>';
+				if ($table == 'pages' && $GLOBALS['BE_USER']->check('modules', 'web_perm') && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('perm')) {
+					$cells['perms'] = '<a href="' . htmlspecialchars((\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('perm') . 'mod1/index.php' . '?id=' . $row['uid'] . '&return_id=' . $row['uid'] . '&edit=1')) . '" title="' . $GLOBALS['LANG']->getLL('permissions', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-locked') . '</a>';
 				} elseif (!$this->table && $GLOBALS['BE_USER']->check('modules', 'web_perm')) {
 					$cells['perms'] = $this->spaceIcon;
 				}

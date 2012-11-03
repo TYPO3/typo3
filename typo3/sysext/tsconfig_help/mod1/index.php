@@ -29,7 +29,7 @@ $BE_USER->modAccess($MCONF, 1);
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/tsconfig_help/Classes/Controller/TypoScriptConfigHelpModuleController.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('tsconfig_help') . 'Classes/Controller/TypoScriptConfigHelpModuleController.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('tsconfig_help') . 'Classes/Controller/TypoScriptConfigHelpModuleController.php';
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\TsconfigHelp\\Controller\\TypoScriptConfigHelpModuleController');
 $SOBE->init();

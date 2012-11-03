@@ -172,7 +172,7 @@ abstract class RteHtmlAreaApi {
 	 * @return 	string		the full path to the plugin directory
 	 */
 	public function getPathToPluginDirectory() {
-		return $this->relativePathToPluginDirectory ? $this->htmlAreaRTE->httpTypo3Path . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath($this->extensionKey) . $this->relativePathToPluginDirectory : '';
+		return $this->relativePathToPluginDirectory ? $this->htmlAreaRTE->httpTypo3Path . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($this->extensionKey) . $this->relativePathToPluginDirectory : '';
 	}
 
 	/**

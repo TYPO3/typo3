@@ -14,7 +14,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'] 
 	'TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt' => 'EXT:saltedpasswords/Classes/salts/class.tx_saltedpasswords_salts_blowfish.php:TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt',
 	'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt' => 'EXT:saltedpasswords/Classes/salts/class.tx_saltedpasswords_salts_phpass.php:TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt'
 );
-\TYPO3\CMS\Core\Extension\ExtensionManager::addService('saltedpasswords', 'auth', 'TYPO3\\CMS\\Saltedpasswords\\SaltedPasswordService', array(
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService('saltedpasswords', 'auth', 'TYPO3\\CMS\\Saltedpasswords\\SaltedPasswordService', array(
 	'title' => 'FE/BE Authentification salted',
 	'description' => 'Salting of passwords for Frontend and Backend',
 	'subtype' => 'authUserFE,authUserBE',
@@ -24,7 +24,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'] 
 	'quality' => 70,
 	'os' => '',
 	'exec' => '',
-	'classFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('saltedpasswords') . 'sv1/class.tx_saltedpasswords_sv1.php',
+	'classFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('saltedpasswords') . 'sv1/class.tx_saltedpasswords_sv1.php',
 	'className' => 'TYPO3\\CMS\\Saltedpasswords\\SaltedPasswordService'
 ));
 // Use popup window to refresh login instead of the AJAX relogin:

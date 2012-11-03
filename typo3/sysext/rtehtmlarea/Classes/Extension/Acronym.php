@@ -65,7 +65,7 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $abbreviationIndex = 0;
 
 	public function main($parentObject) {
-		return parent::main($parentObject) && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('static_info_tables');
+		return parent::main($parentObject) && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables');
 	}
 
 	/**

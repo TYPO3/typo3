@@ -2306,7 +2306,7 @@ class ImportExport {
 		// Check extension dependencies:
 		if (is_array($this->dat['header']['extensionDependencies'])) {
 			foreach ($this->dat['header']['extensionDependencies'] as $extKey) {
-				if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extKey)) {
+				if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey)) {
 					$this->error('DEPENDENCY: The extension with key "' . $extKey . '" must be installed!');
 				}
 			}

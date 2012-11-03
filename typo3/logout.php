@@ -36,7 +36,7 @@ require 'init.php';
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/backend/Classes/Controller/LogoutController.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('backend') . 'Classes/Controller/LogoutController.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/Controller/LogoutController.php';
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\LogoutController');
 $SOBE->logout();

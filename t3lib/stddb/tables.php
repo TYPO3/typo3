@@ -323,7 +323,7 @@ $TCA['sys_category'] = array(
 		)
 	)
 );
-\TYPO3\CMS\Core\Extension\ExtensionManager::allowTableOnStandardPages('sys_category');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('sys_category');
 /**
  * Table "sys_collection":
  */
@@ -449,7 +449,7 @@ $TCA['sys_file_reference'] = array(
 		'dynamicConfigFile' => 'T3LIB:tca_sys_file_reference.php'
 	)
 );
-\TYPO3\CMS\Core\Extension\ExtensionManager::allowTableOnStandardPages('sys_file_reference');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('sys_file_reference');
 /**
  * Table "sys_file_collection":
  * Represents a list of sys_file records
@@ -586,7 +586,7 @@ $TBE_MODULES = array(
 	'help' => ''
 );
 // Register the pagetree core navigation component
-\TYPO3\CMS\Core\Extension\ExtensionManager::addCoreNavigationComponent('web', 'typo3-pagetree');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent('web', 'typo3-pagetree');
 /**
  * $TBE_STYLES configures backend styles and colors; Basically this contains
  * all the values that can be used to create new skins for TYPO3.
@@ -606,20 +606,20 @@ $TBE_STYLES = array(
  * For information about using the CSH API in TYPO3 you should consult the
  * documentation found in "Inside TYPO3"
  */
-\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('pages', 'EXT:lang/locallang_csh_pages.xml');
-\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('be_users', 'EXT:lang/locallang_csh_be_users.xml');
-\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('be_groups', 'EXT:lang/locallang_csh_be_groups.xml');
-\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('sys_filemounts', 'EXT:lang/locallang_csh_sysfilem.xml');
-\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('sys_language', 'EXT:lang/locallang_csh_syslang.xml');
-\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('sys_news', 'EXT:lang/locallang_csh_sysnews.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('pages', 'EXT:lang/locallang_csh_pages.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_users', 'EXT:lang/locallang_csh_be_users.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_groups', 'EXT:lang/locallang_csh_be_groups.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_filemounts', 'EXT:lang/locallang_csh_sysfilem.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_language', 'EXT:lang/locallang_csh_syslang.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_news', 'EXT:lang/locallang_csh_sysnews.xml');
 // General Core
-\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('xMOD_csh_corebe', 'EXT:lang/locallang_csh_corebe.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_csh_corebe', 'EXT:lang/locallang_csh_corebe.xml');
 // Extension manager
-\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('_MOD_tools_em', 'EXT:lang/locallang_csh_em.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_tools_em', 'EXT:lang/locallang_csh_em.xml');
 // Web > Info
-\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('_MOD_web_info', 'EXT:lang/locallang_csh_web_info.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_info', 'EXT:lang/locallang_csh_web_info.xml');
 // Web > Func
-\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('_MOD_web_func', 'EXT:lang/locallang_csh_web_func.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_func', 'EXT:lang/locallang_csh_web_func.xml');
 // Labels for TYPO3 4.5 and greater.
 // These labels override the ones set above, while still falling back to the original labels
 // if no translation is available.

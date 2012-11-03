@@ -153,7 +153,7 @@ class PermissionModuleController {
 		$this->doc->form = '<form action="' . $GLOBALS['BACK_PATH'] . 'tce_db.php" method="post" name="editform">';
 		$this->doc->loadJavascriptLib('../t3lib/jsfunc.updateform.js');
 		$this->doc->getPageRenderer()->loadPrototype();
-		$this->doc->loadJavascriptLib(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('perm') . 'mod1/perm.js');
+		$this->doc->loadJavascriptLib(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('perm') . 'mod1/perm.js');
 		// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 		// Set up menus:
