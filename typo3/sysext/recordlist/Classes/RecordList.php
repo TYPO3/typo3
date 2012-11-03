@@ -309,7 +309,7 @@ class RecordList {
 			$dblist->start($this->id, $this->table, $this->pointer, $this->search_field, $this->search_levels, $this->showLimit);
 			$dblist->setDispFields();
 			// Render versioning selector:
-			if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('version')) {
+			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version')) {
 				$dblist->HTMLcode .= $this->doc->getVersionSelector($this->id);
 			}
 			// Render the list of tables:

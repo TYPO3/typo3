@@ -98,7 +98,7 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 		}
 
 		foreach ($this->systemExtensions as $extensionKey) {
-			if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extensionKey)) {
+			if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {
 				return TRUE;
 			}
 		}
@@ -128,7 +128,7 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 		$items = array();
 
 		foreach ($this->systemExtensions as $extensionKey) {
-			if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extensionKey)) {
+			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {
 				continue;
 			}
 			$extension = $this->getExtensionDetails($extensionKey);

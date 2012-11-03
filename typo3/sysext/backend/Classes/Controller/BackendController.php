@@ -222,8 +222,8 @@ class BackendController {
 				$absoluteComponentPath = PATH_t3lib . 'js/extjs/' . $componentDirectory;
 				$relativeComponentPath = '../' . str_replace(PATH_site, '', $absoluteComponentPath);
 			} else {
-				$absoluteComponentPath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($info['extKey']) . $componentDirectory;
-				$relativeComponentPath = \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($info['extKey']) . $componentDirectory;
+				$absoluteComponentPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($info['extKey']) . $componentDirectory;
+				$relativeComponentPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($info['extKey']) . $componentDirectory;
 			}
 			$cssFiles = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($absoluteComponentPath . 'css/', 'css');
 			if (file_exists($absoluteComponentPath . 'css/loadorder.txt')) {
@@ -296,7 +296,7 @@ class BackendController {
 		$title = $username;
 		// Link to user setup if it's loaded and user has access
 		$link = '';
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('setup') && $GLOBALS['BE_USER']->check('modules', 'user_setup')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('setup') && $GLOBALS['BE_USER']->check('modules', 'user_setup')) {
 			$link = '<a href="#" onclick="top.goToModule(\'user_setup\'); this.blur(); return false;">';
 		}
 		// Superuser mode
@@ -462,7 +462,7 @@ class BackendController {
 			'moduleMenuWidth' => $this->menuWidth - 1,
 			'topBarHeight' => isset($GLOBALS['TBE_STYLES']['dims']['topFrameH']) ? intval($GLOBALS['TBE_STYLES']['dims']['topFrameH']) : 30,
 			'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? intval($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) : FALSE,
-			'listModulePath' => \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('recordlist') ? \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('recordlist') . 'mod1/' : '',
+			'listModulePath' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('recordlist') ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('recordlist') . 'mod1/' : '',
 			'debugInWindow' => $GLOBALS['BE_USER']->uc['debugInWindow'] ? 1 : 0,
 			'ContextHelpWindows' => array(
 				'width' => 600,
@@ -519,7 +519,7 @@ class BackendController {
 	 * @return void
 	 */
 	protected function handlePageEditing() {
-		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms')) {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 			return;
 		}
 		// EDIT page:

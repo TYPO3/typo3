@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Extension;
+namespace TYPO3\CMS\Core\Utility;
 
 /***************************************************************
  *  Copyright notice
@@ -36,7 +36,7 @@ namespace TYPO3\CMS\Core\Extension;
  * @package TYPO3
  * @subpackage t3lib
  */
-class ExtensionManager {
+class ExtensionManagementUtility {
 
 	static protected $extensionKeyMap;
 
@@ -750,7 +750,7 @@ class ExtensionManager {
 		$moduleConfiguration['name'] = $moduleSignature;
 		$moduleConfiguration['script'] = 'extjspaneldummy.html';
 		$moduleConfiguration['extensionName'] = $extensionName;
-		$moduleConfiguration['configureModuleFunction'] = array('TYPO3\\CMS\\Core\\Extension\\ExtensionManager', 'configureModule');
+		$moduleConfiguration['configureModuleFunction'] = array('TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility', 'configureModule');
 		$GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
 		self::addModule($mainModuleName, $subModuleName, $position);
 	}

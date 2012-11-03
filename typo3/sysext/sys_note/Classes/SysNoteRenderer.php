@@ -46,7 +46,7 @@ class SysNoteRenderer {
 		if ($this->notesAvailable($notes)) {
 			/** @var $fluidView \TYPO3\CMS\Fluid\View\StandaloneView */
 			$fluidView = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-			$templatePathAndFilename = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('sys_note', 'Resources/Private/Template/List.html');
+			$templatePathAndFilename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sys_note', 'Resources/Private/Template/List.html');
 			$fluidView->setTemplatePathAndFilename($templatePathAndFilename);
 			$fluidView->assign('notes', $notes);
 			$out = $fluidView->render();

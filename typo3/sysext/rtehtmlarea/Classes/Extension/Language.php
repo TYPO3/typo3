@@ -64,8 +64,8 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	);
 
 	public function main($parentObject) {
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('static_info_tables') && file_exists(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('static_info_tables') . 'class.tx_staticinfotables_div.php')) {
-			require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('static_info_tables') . 'class.tx_staticinfotables_div.php';
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables') && file_exists(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('static_info_tables') . 'class.tx_staticinfotables_div.php')) {
+			require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('static_info_tables') . 'class.tx_staticinfotables_div.php';
 		} else {
 			$this->pluginButtons = \TYPO3\CMS\Core\Utility\GeneralUtility::rmFromList('language', $this->pluginButtons);
 		}
@@ -113,7 +113,7 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 */
 	public function getLanguages() {
 		$nameArray = array();
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('static_info_tables')) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
 			$where = '1=1';
 			$table = 'static_languages';
 			$lang = \tx_staticinfotables_div::getCurrentLanguage();
@@ -153,7 +153,7 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 * @return 	array		toolbar button array, possibly updated
 	 */
 	public function applyToolbarConstraints($show) {
-		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('static_info_tables')) {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
 			return array_diff($show, array('language'));
 		} else {
 			return $show;

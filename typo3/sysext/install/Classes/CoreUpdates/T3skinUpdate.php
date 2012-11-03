@@ -49,7 +49,7 @@ class T3skinUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 		$description[] = '<strong>The backend skin "t3skin" is not loaded.</strong>
 		TYPO3 4.4 introduced many changes in backend skinning and old backend skins are now incompatible.
 		<strong>Without "t3skin" the backend may be unusable.</strong> Install extension "t3skin".';
-		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('t3skin')) {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3skin')) {
 			$result = TRUE;
 		}
 		return $result;
@@ -75,11 +75,11 @@ class T3skinUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$result = FALSE;
-		if ($this->versionNumber >= 4004000 && !\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('t3skin')) {
+		if ($this->versionNumber >= 4004000 && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3skin')) {
 			// check wether the table can be truncated or if sysext with tca has to be installed
 			if ($this->checkForUpdate($customMessages)) {
 				try {
-					\TYPO3\CMS\Core\Extension\ExtensionManager::loadExtension('t3skin');
+					\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtension('t3skin');
 					$customMessages = 'The system extension "t3skin" was successfully loaded.';
 					$result = TRUE;
 				} catch (\RuntimeException $e) {

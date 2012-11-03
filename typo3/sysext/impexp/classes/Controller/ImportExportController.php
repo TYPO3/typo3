@@ -27,7 +27,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->bodyTagId = 'imp-exp-mod';
-		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('impexp') . '/app/template.html');
+		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('impexp') . '/app/template.html');
 		$this->pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		// JavaScript
 		$this->doc->JScode = $this->doc->wrapScriptTags('
@@ -846,7 +846,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					$extKeysToInstall = array();
 					if (is_array($import->dat['header']['extensionDependencies'])) {
 						foreach ($import->dat['header']['extensionDependencies'] as $extKey) {
-							if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extKey)) {
+							if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey)) {
 								$extKeysToInstall[] = $extKey;
 							}
 						}
@@ -856,7 +856,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						unset($passParams['import_mode']);
 						unset($passParams['import_file']);
 						$thisScriptUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '?M=xMOD_tximpexp&id=' . $this->id . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('tx_impexp', $passParams);
-						$emURL = $this->doc->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('em') . 'classes/index.php?CMD[requestInstallExtensions]=' . implode(',', $extKeysToInstall) . '&returnUrl=' . rawurlencode($thisScriptUrl);
+						$emURL = $this->doc->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('em') . 'classes/index.php?CMD[requestInstallExtensions]=' . implode(',', $extKeysToInstall) . '&returnUrl=' . rawurlencode($thisScriptUrl);
 						$extensionInstallationMessage = 'Before you can install this T3D file you need to install the extensions "' . implode('", "', $extKeysToInstall) . '". Clicking Import will first take you to the Extension Manager so these dependencies can be resolved.';
 					}
 					if ($inData['import_file']) {

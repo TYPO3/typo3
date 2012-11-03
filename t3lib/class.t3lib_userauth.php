@@ -32,11 +32,11 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author René Fritz <r.fritz@colorcube.de>
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('sv') . 'class.tx_sv_authbase.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sv') . 'class.tx_sv_authbase.php';
 /*
  * @deprecated since 6.0, the classname t3lib_userAuth and this file is obsolete
  * and will be removed by 7.0. The class was renamed and is now located at:
  * typo3/sysext/core/Classes/Authentication/AbstractUserAuthentication.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('core') . 'Classes/Authentication/AbstractUserAuthentication.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') . 'Classes/Authentication/AbstractUserAuthentication.php';
 ?>

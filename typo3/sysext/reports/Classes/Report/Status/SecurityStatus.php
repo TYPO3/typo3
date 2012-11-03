@@ -66,7 +66,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$secure = TRUE;
 			// Check against salted password
-			if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('saltedpasswords')) {
+			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords')) {
 				if (\TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled('BE')) {
 					/** @var $saltingObject \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface */
 					$saltingObject = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($row['password']);
@@ -204,7 +204,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$value = $GLOBALS['LANG']->getLL('status_ok');
 		$message = '';
 		$severity = \TYPO3\CMS\Reports\Status::OK;
-		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('saltedpasswords')) {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('saltedpasswords')) {
 			$value = $GLOBALS['LANG']->getLL('status_insecure');
 			$severity = \TYPO3\CMS\Reports\Status::ERROR;
 			$message .= $GLOBALS['LANG']->getLL('status_saltedPasswords_notInstalled');

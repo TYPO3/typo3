@@ -458,7 +458,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			return FALSE;
 		}
 		// Workspaces check:
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces') && $conf['workspaces']) {
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces') && $conf['workspaces']) {
 			if ($this->workspace === 0 && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($conf['workspaces'], 'online') || $this->workspace === -1 && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($conf['workspaces'], 'offline') || $this->workspace > 0 && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($conf['workspaces'], 'custom')) {
 
 			} else {
@@ -1035,7 +1035,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		if ($this->isAdmin()) {
 			return TRUE;
 		}
-		if ($this->workspace !== 0 && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces')) {
+		if ($this->workspace !== 0 && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
 			$stage = intval($stage);
 			$stat = $this->checkWorkspaceCurrent();
 			// Check if custom staging is activated
@@ -1310,7 +1310,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				$this->TSdataArray[] = $this->addTScomment('"admin" user presets:') . '
 					admPanel.enable.all = 1
 				';
-				if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('sys_note')) {
+				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('sys_note')) {
 					$this->TSdataArray[] = '
 							// Setting defaults for sys_note author / email...
 						TCAdefaults.sys_note.author = ' . $this->user['realName'] . '
@@ -1970,7 +1970,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				$wsRec = array('uid' => $wsRec);
 				break;
 			default:
-				if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces')) {
+				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
 					$wsRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, 'sys_workspace', 'pid=0 AND uid=' . intval($wsRec) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace'), '', 'title');
 				}
 				break;
@@ -2085,13 +2085,13 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 */
 	public function getDefaultWorkspace() {
 		$defaultWorkspace = -99;
-		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces') || $this->checkWorkspace(0)) {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces') || $this->checkWorkspace(0)) {
 			// Check online
 			$defaultWorkspace = 0;
 		} elseif ($this->checkWorkspace(-1)) {
 			// Check offline
 			$defaultWorkspace = -1;
-		} elseif (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces')) {
+		} elseif (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
 			// Traverse custom workspaces:
 			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers', 'sys_workspace', 'pid=0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace'), '', 'title');
 			foreach ($workspaces as $rec) {

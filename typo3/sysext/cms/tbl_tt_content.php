@@ -666,7 +666,7 @@ $TCA['tt_content'] = array(
 		),
 		'image' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.images',
-			'config' => \TYPO3\CMS\Core\Extension\ExtensionManager::getFileFieldTCAConfig('image', array(
+			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('image', array(
 				'appearance' => array(
 					'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
 				),
@@ -1428,7 +1428,7 @@ $TCA['tt_content'] = array(
 		),
 		'media' => array(
 			'label' => 'LLL:EXT:cms/locallang_ttc.xml:media',
-			'config' => \TYPO3\CMS\Core\Extension\ExtensionManager::getFileFieldTCAConfig('media', array(
+			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('media', array(
 				'appearance' => array(
 					'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:media.addFileReference'
 				)
@@ -1657,7 +1657,7 @@ $TCA['tt_content'] = array(
 						  </ROOT>
 						</T3DataStructure>
 					',
-					',media' => file_get_contents(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('cms') . 'flexform_media.xml')
+					',media' => file_get_contents(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('cms') . 'flexform_media.xml')
 				),
 				'search' => array(
 					'andWhere' => 'CType=\'list\''

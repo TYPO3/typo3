@@ -72,7 +72,7 @@ class LoginFormHook {
 	public function getLoginScripts(array $params, \TYPO3\CMS\Backend\Controller\LoginController &$pObj) {
 		$content = '';
 		if ($pObj->loginSecurityLevel == 'rsa') {
-			$javascriptPath = \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('rsaauth') . 'resources/';
+			$javascriptPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('rsaauth') . 'resources/';
 			$files = array(
 				'jsbn/jsbn.js',
 				'jsbn/prng4.js',

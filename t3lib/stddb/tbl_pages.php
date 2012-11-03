@@ -93,7 +93,7 @@ $TCA['pages'] = array(
 				'wizards' => array(
 					'_PADDING' => 4,
 					'0' => array(
-						'type' => \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('tsconfig_help') ? 'popup' : '',
+						'type' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tsconfig_help') ? 'popup' : '',
 						'title' => 'TSconfig QuickReference',
 						'script' => 'wizard_tsconfig.php?mode=page',
 						'icon' => 'wizard_tsconfig.gif',
@@ -609,7 +609,7 @@ $TCA['pages'] = array(
 		'media' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.media',
-			'config' => \TYPO3\CMS\Core\Extension\ExtensionManager::getFileFieldTCAConfig('media')
+			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('media')
 		),
 		'is_siteroot' => array(
 			'exclude' => 1,
