@@ -86,26 +86,6 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	}
 
 	/**
-	 * Returns the current persistence session
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Session
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
-	 */
-	public function getSession() {
-		return $this->session;
-	}
-
-	/**
-	 * Returns the persistence backend
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
-	 */
-	public function getBackend() {
-		return $this->backend;
-	}
-
-	/**
 	 * Registers a repository
 	 *
 	 * @param string $className The class name of the repository to be reigistered

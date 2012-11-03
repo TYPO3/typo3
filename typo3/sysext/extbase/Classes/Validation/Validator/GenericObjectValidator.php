@@ -119,7 +119,7 @@ class GenericObjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abs
 	 * @param mixed $value The value that should be validated
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 * @api
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
 	 */
 	public function isValid($value) {
 		if (!is_object($value)) {
@@ -156,7 +156,7 @@ class GenericObjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abs
 	 * @throws \InvalidArgumentException
 	 * @return boolean TRUE if the property value is valid, FALSE if an error occured
 	 * @api
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
 	 */
 	public function isPropertyValid($object, $propertyName) {
 		if (!is_object($object)) {
@@ -179,7 +179,7 @@ class GenericObjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abs
 	 * @param array $errors Array of \TYPO3\CMS\Extbase\Validation\Error
 	 * @param string $propertyName Name of the property to add errors
 	 * @return void
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
 	 */
 	protected function addErrorsForProperty($errors, $propertyName) {
 		if (!isset($this->errors[$propertyName])) {

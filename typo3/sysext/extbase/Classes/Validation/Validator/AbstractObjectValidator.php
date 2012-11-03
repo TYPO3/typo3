@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  ***************************************************************/
 /**
  * An abstract Object Validator
- * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
+ * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
  */
 abstract class AbstractObjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ObjectValidatorInterface {
 

@@ -122,7 +122,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 
 	/**
 	 * @var array Errors that occured during this request
-	 * @deprecated since Extbase 1.4.0, will be removed with Extbase 6.0
+	 * @deprecated since Extbase 1.4.0, will be removed with Extbase 6.1
 	 */
 	protected $errors = array();
 
@@ -509,7 +509,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * @param array $errors An array of Tx_Extbase_Error_Error objects
 	 *
 	 * @return void
-	 * @deprecated since Extbase 1.4.0, will be removed with Extbase 6.0
+	 * @deprecated since Extbase 1.4.0, will be removed with Extbase 6.1
 	 */
 	public function setErrors(array $errors) {
 		$this->errors = $errors;
@@ -519,7 +519,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * Get errors that occured during the request (e.g. argument mapping errors)
 	 *
 	 * @return array The errors that occured during the request
-	 * @deprecated since Extbase 1.4.0, will be removed with Extbase 6.0
+	 * @deprecated since Extbase 1.4.0, will be removed with Extbase 6.1
 	 */
 	public function getErrors() {
 		return $this->errors;

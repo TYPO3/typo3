@@ -60,7 +60,7 @@ abstract class AbstractCompositeValidator implements \TYPO3\CMS\Extbase\Validati
 	 *
 	 * @param array $options Not used
 	 * @return void
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
 	 */
 	public function setOptions(array $options) {
 
@@ -70,7 +70,7 @@ abstract class AbstractCompositeValidator implements \TYPO3\CMS\Extbase\Validati
 	 * Returns an array of errors which occurred during the last isValid() call.
 	 *
 	 * @return array An array of \TYPO3\CMS\Extbase\Validation\Error objects or an empty array if no errors occurred.
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
 	 */
 	public function getErrors() {
 		return $this->errors;

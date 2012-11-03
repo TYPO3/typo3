@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
- * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
+ * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
  */
 class ArgumentError extends \TYPO3\CMS\Extbase\Validation\PropertyError {
 

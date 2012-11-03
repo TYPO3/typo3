@@ -48,12 +48,6 @@ abstract class AbstractRequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestH
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages
-	 * @deprecated since Extbase 1.1; will be removed in Extbase 6.0
-	 */
-	protected $flashMessages;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages
 	 */
 	protected $flashMessageContainer;
 
@@ -71,8 +65,6 @@ abstract class AbstractRequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestH
 	 */
 	public function injectFlashMessageContainer(\TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages $flashMessageContainer) {
 		$this->flashMessageContainer = $flashMessageContainer;
-		// @deprecated since Extbase 1.1; will be removed in Extbase 6.0
-		$this->flashMessages = $flashMessageContainer;
 	}
 
 	/**

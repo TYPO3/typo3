@@ -57,7 +57,7 @@ class ConjunctionValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstr
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @return boolean
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
 	 */
 	public function isValid($value) {
 		$result = TRUE;

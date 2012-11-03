@@ -176,35 +176,6 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 	}
 
 	/**
-	 * Parses the flexForm content and converts it to an array
-	 * The resulting array will be multi-dimensional, as a value "bla.blubb"
-	 * results in two levels, and a value "bla.blubb.bla" results in three levels.
-	 *
-	 * Note: multi-language flexForms are not supported yet
-	 *
-	 * @param string $flexFormContent flexForm xml string
-	 * @return array the processed array
-	 * @deprecated since Extbase 1.4; will be removed in Extbase 6.0
-	 */
-	protected function convertFlexformContentToArray($flexFormContent) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return $this->flexFormService->convertFlexFormContentToArray($flexFormContent);
-	}
-
-	/**
-	 * Parses a flexForm node recursively and takes care of sections etc
-	 *
-	 * @param array $nodeArray The flexForm node to parse
-	 * @param string $valuePointer The valuePointer to use for value retrieval
-	 * @return array
-	 * @deprecated since Extbase 1.4; will be removed in Extbase 6.0
-	 */
-	protected function walkFlexformNode($nodeArray, $valuePointer = 'vDEF') {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return $this->flexFormService->walkFlexFormNode($nodeArray, $valuePointer);
-	}
-
-	/**
 	 * Merge a configuration into the framework configuration.
 	 *
 	 * @param array $frameworkConfiguration the framework configuration to merge the data on

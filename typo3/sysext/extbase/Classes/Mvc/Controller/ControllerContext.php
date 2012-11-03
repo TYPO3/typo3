@@ -52,7 +52,7 @@ class ControllerContext {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Property\MappingResults
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
 	 */
 	protected $argumentsMappingResults;
 
@@ -131,7 +131,7 @@ class ControllerContext {
 	 *
 	 * @param \TYPO3\CMS\Extbase\Property\MappingResults $argumentsMappingResults
 	 * @return void
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
 	 */
 	public function setArgumentsMappingResults(\TYPO3\CMS\Extbase\Property\MappingResults $argumentsMappingResults) {
 		$this->argumentsMappingResults = $argumentsMappingResults;
@@ -142,7 +142,7 @@ class ControllerContext {
 	 *
 	 * @return \TYPO3\CMS\Extbase\Property\MappingResults
 	 * @api
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
+	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
 	 */
 	public function getArgumentsMappingResults() {
 		return $this->argumentsMappingResults;
@@ -174,17 +174,6 @@ class ControllerContext {
 	 */
 	public function setFlashMessageContainer(\TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages $flashMessageContainer) {
 		$this->flashMessageContainer = $flashMessageContainer;
-	}
-
-	/**
-	 * Get the flash messages
-	 *
-	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages
-	 * @deprecated since Extbase 1.1; will be removed in Extbase 6.0
-	 */
-	public function getFlashMessages() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return $this->flashMessageContainer;
 	}
 
 	/**
