@@ -81,9 +81,9 @@ class StandaloneViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $mockConfigurationManager;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer
 	 */
-	protected $mockFlashMessages;
+	protected $mockFlashMessageContainer;
 
 	/**
 	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
@@ -111,7 +111,7 @@ class StandaloneViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->mockObjectManager->expects($this->any())->method('create')->will($this->returnCallback(array($this, 'objectManagerCallback')));
 		$this->mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
 		$this->mockUriBuilder = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
-		$this->mockFlashMessages = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FlashMessages');
+		$this->mockFlashMessageContainer = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FlashMessageContainer');
 		$this->mockContentObject = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$this->mockControllerContext = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext');
 		$this->mockControllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->mockRequest));
@@ -154,8 +154,8 @@ class StandaloneViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			return $this->mockUriBuilder;
 		case 'TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext':
 			return $this->mockControllerContext;
-		case 'TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FlashMessages':
-			return $this->mockFlashMessages;
+		case 'TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FlashMessageContainer':
+			return $this->mockFlashMessageContainer;
 		case 'TYPO3\\CMS\\Fluid\\Core\\Compiler\\TemplateCompiler':
 			return $this->mockTemplateCompiler;
 		}
@@ -226,7 +226,7 @@ class StandaloneViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function constructorInjectsFlashMessageContainerToControllerContext() {
-		$this->mockControllerContext->expects($this->once())->method('setFlashMessageContainer')->with($this->mockFlashMessages);
+		$this->mockControllerContext->expects($this->once())->method('setFlashMessageContainer')->with($this->mockFlashMessageContainer);
 		new \TYPO3\CMS\Fluid\View\StandaloneView();
 	}
 

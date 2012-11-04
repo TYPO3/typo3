@@ -86,7 +86,7 @@ class StandaloneView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		$controllerContext = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext');
 		$controllerContext->setRequest($request);
 		$controllerContext->setUriBuilder($uriBuilder);
-		$flashMessageContainer = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FlashMessages');
+		$flashMessageContainer = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FlashMessageContainer');
 		// singleton
 		$controllerContext->setFlashMessageContainer($flashMessageContainer);
 		$this->setControllerContext($controllerContext);
