@@ -109,10 +109,11 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 */
 	public function findOneByExtensionKeyAndVersion($extensionKey, $version) {
 		$query = $this->createQuery();
+		// Hint: This method must not filter out insecure extensions, if needed,
+		// it should be done on a different level, or with a helper method.
 		$query->matching($query->logicalAnd(
 			$query->equals('extensionKey', $extensionKey),
-			$query->equals('version', $version),
-			$query->greaterThanOrEqual('reviewState', 0)
+			$query->equals('version', $version)
 		));
 		return $query->setLimit(1)->execute()->getFirst();
 	}
