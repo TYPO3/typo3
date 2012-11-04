@@ -58,7 +58,22 @@ class RepositoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		));
 	}
 
+	/**
+	 * Find main typo3.org repository
+	 *
+	 * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Repository
+	 */
+	public function findOneTypo3OrgRepository() {
+		$allRepositories = $this->findAll();
+		$typo3OrgRepository = NULL;
+		foreach ($allRepositories as $repository) {
+			/** @var $repository \TYPO3\CMS\Extensionmanager\Domain\Model\Repository */
+			if ($repository->getTitle() === 'TYPO3.org Main Repository') {
+				$typo3OrgRepository = $repository;
+				break;
+			}
+		}
+		return $typo3OrgRepository;
+	}
 }
-
-
 ?>
