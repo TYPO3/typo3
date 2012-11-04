@@ -308,9 +308,9 @@ class ClassLoader {
 	 * @return array
 	 */
 	static protected function createCoreAndExtensionRegistry() {
-		$classRegistry = require(PATH_t3lib . 'core_autoload.php');
+		$classRegistry = array();
 		// At this point during bootstrap the local configuration is initialized,
-		// extMgm is ready to get the list of enabled extensions
+		// ExtensionManagementUtility is ready to get the list of enabled extensions
 		foreach (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray() as $extensionKey) {
 			try {
 				$extensionAutoloadFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey, 'ext_autoload.php');
