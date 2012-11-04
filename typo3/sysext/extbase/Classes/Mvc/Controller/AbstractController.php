@@ -115,7 +115,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	/**
 	 * The flash messages. Use $this->flashMessageContainer->add(...) to add a new Flash message.
 	 *
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer
 	 * @api
 	 */
 	protected $flashMessageContainer;
@@ -176,10 +176,10 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	/**
 	 * Injects the flash messages container
 	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages $flashMessageContainer
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer
 	 * @return void
 	 */
-	public function injectFlashMessageContainer(\TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages $flashMessageContainer) {
+	public function injectFlashMessageContainer(\TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer) {
 		$this->flashMessageContainer = $flashMessageContainer;
 	}
 

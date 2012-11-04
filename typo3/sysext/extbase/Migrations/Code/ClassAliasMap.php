@@ -61,7 +61,7 @@ return array(
 	'Tx_Extbase_MVC_Controller_ControllerContext' => 'TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext',
 	'Tx_Extbase_MVC_Controller_ControllerInterface' => 'TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerInterface',
 	'Tx_Extbase_MVC_Controller_Exception_RequiredArgumentMissingException' => 'TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Exception\\RequiredArgumentMissingException',
-	'Tx_Extbase_MVC_Controller_FlashMessages' => 'TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FlashMessages',
+	'Tx_Extbase_MVC_Controller_FlashMessages' => 'TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FlashMessageContainer',
 	'Tx_Extbase_MVC_Controller_MvcPropertyMappingConfiguration' => 'TYPO3\\CMS\\Extbase\\Mvc\\Controller\\MvcPropertyMappingConfiguration',
 	'Tx_Extbase_MVC_Dispatcher' => 'TYPO3\\CMS\\Extbase\\Mvc\\Dispatcher',
 	'Tx_Extbase_MVC_Exception' => 'TYPO3\\CMS\\Extbase\\Mvc\\Exception',

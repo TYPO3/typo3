@@ -460,7 +460,7 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function defaultErrorActionSetsArgumentMappingResultsErrorsInRequest() {
 		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array(), array(), '', FALSE);
-		$mockFlashMessages = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FlashMessages', array(), array(), '', FALSE);
+		$mockFlashMessageContainer = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FlashMessageContainer', array(), array(), '', FALSE);
 		$mockError = $this->getMock('TYPO3\\CMS\\Extbase\\Error\\Error', array('getMessage'), array(), '', FALSE);
 		$mockArgumentsMappingResults = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\MappingResults', array('getErrors', 'getWarnings'), array(), '', FALSE);
 		$mockArgumentsMappingResults->expects($this->atLeastOnce())->method('getErrors')->will($this->returnValue(array($mockError)));
@@ -468,7 +468,7 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('pushFlashMessage', 'clearCacheOnError'), array(), '', FALSE);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$mockController->_set('request', $mockRequest);
-		$mockController->_set('flashMessageContainer', $mockFlashMessages);
+		$mockController->_set('flashMessageContainer', $mockFlashMessageContainer);
 		$mockController->_set('argumentsMappingResults', $mockArgumentsMappingResults);
 		$mockRequest->expects($this->once())->method('setErrors')->with(array($mockError));
 		$mockController->_call('errorAction');

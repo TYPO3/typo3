@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  * @scope session
  * @api
  */
-class FlashMessages implements \TYPO3\CMS\Core\SingletonInterface {
+class FlashMessageContainer implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Add another flash message.
