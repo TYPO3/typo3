@@ -58,12 +58,16 @@ class Status {
 	protected $severity;
 
 	/**
-	 * constructor for class tx_reports_report_status_Status
+	 * Construct a status
 	 *
-	 * @param string $title The status' title
-	 * @param string $value The status' value
-	 * @param string $message An optional message further describing the status
-	 * @param integer $severity A severity level, one of
+	 * All values must be given as constructor arguments.
+	 * All strings should be localized.
+	 *
+	 * @param string $title Status title, eg. "Deprecation log"
+	 * @param string $value Status value, eg. "Disabled"
+	 * @param string $message Optional message further describing the title/value combination
+	 * 			Example:, eg "The deprecation log is imporant and does foo, to disable it do bar"
+	 * @param integer $severity A severity level. Use one of the constants above!
 	 */
 	public function __construct($title, $value, $message = '', $severity = self::OK) {
 		$this->title = (string) $title;

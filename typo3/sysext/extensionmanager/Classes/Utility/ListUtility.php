@@ -29,6 +29,11 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
 /**
  * Utility for dealing with extension list related functions
  *
+ * @TODO: Refactor this API class:
+ * - The methods depend on each other, they take each others result, that could be done internally
+ * - There is no good wording to distinguish existing and loaded extensions
+ * - The name 'listUtility' is not good, the methods could be moved to some 'extensionInformationUtility', or a repository?
+ *
  * @author Susanne Moog <typo3@susannemoog.de>
  * @package Extension Manager
  * @subpackage Utility
@@ -92,7 +97,7 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Returns the list of available (installed) extensions
+	 * Returns the list of available, but not necessarily loaded extensions
 	 *
 	 * @return array Array with two sub-arrays, list array (all extensions with info) and category index
 	 * @see getInstExtList()
@@ -123,7 +128,7 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Reduce the available extensions list to only loaded extensions
+	 * Enrich the output of getAvailableExtensions() with an array key installed = 1 if an extension is loaded.
 	 *
 	 * @param array $availableExtensions
 	 * @return array
