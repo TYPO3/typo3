@@ -46,11 +46,11 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	protected $dataMapper;
 
 	/**
-	 * The TYPO3 page select object. Used for language and workspace overlay
+	 * The TYPO3 page repository. Used for language and workspace overlay
 	 *
 	 * @var \TYPO3\CMS\Frontend\Page\PageRepository
 	 */
-	protected $pageSelectObject;
+	protected $pageRepositiory;
 
 	/**
 	 * A first-level TypoScript configuration cache
@@ -272,11 +272,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		$this->databaseHandle->sql_free_result($result);
 		// Get language uid from querySettings.
 		// Ensure the backend handling is not broken (fallback to Get parameter 'L' if needed)
-		$languageUid = NULL;
-		if ($query->getQuerySettings()->getSysLanguageUid()) {
-			$languageUid = $query->getQuerySettings()->getSysLanguageUid();
-		}
-		$rows = $this->doLanguageAndWorkspaceOverlay($query->getSource(), $rows, $languageUid);
+		$rows = $this->doLanguageAndWorkspaceOverlay($query->getSource(), $rows, $query->getQuerySettings());
 		// TODO: implement $objectData = $this->processObjectRecords($statementHandle);
 		return $rows;
 	}
@@ -803,7 +799,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	/**
 	 * Adds additional WHERE statements according to the query settings.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The TYPO3 4.x specific query settings
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The TYPO3 CMS specific query settings
 	 * @param string $tableName The table name to add the additional where clause for
 	 * @param string $sql
 	 * @return void
@@ -811,7 +807,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	protected function addAdditionalWhereClause(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings, $tableName, &$sql) {
 		$this->addVisibilityConstraintStatement($querySettings, $tableName, $sql);
 		if ($querySettings->getRespectSysLanguage()) {
-			$this->addSysLanguageStatement($tableName, $sql, $querySettings->getSysLanguageUid());
+			$this->addSysLanguageStatement($tableName, $sql, $querySettings);
 		}
 		if ($querySettings->getRespectStoragePage()) {
 			$this->addPageIdStatement($tableName, $sql, $querySettings->getStoragePageIds());
@@ -830,7 +826,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
 			if ($this->getTypo3Mode() === 'FE') {
-				$statement = $GLOBALS['TSFE']->sys_page->enableFields($tableName);
+				$statement = $this->getPageRepository()->enableFields($tableName);
 			} else {
 				// TYPO3_MODE === 'BE'
 				$statement = \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableName);
@@ -885,12 +881,12 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		if ($ignoreEnableFields && !$includeDeleted) {
 			if (count($enableFieldsToBeIgnored)) {
 				// array_combine() is necessary because of the way \TYPO3\CMS\Frontend\Page\PageRepository::enableFields() is implemented
-				$statement .= $GLOBALS['TSFE']->sys_page->enableFields($tableName, -1, array_combine($enableFieldsToBeIgnored, $enableFieldsToBeIgnored));
+				$statement .= $this->getPageRepository()->enableFields($tableName, -1, array_combine($enableFieldsToBeIgnored, $enableFieldsToBeIgnored));
 			} else {
-				$statement .= $GLOBALS['TSFE']->sys_page->deleteClause($tableName);
+				$statement .= $this->getPageRepository()->deleteClause($tableName);
 			}
 		} elseif (!$ignoreEnableFields && !$includeDeleted) {
-			$statement .= $GLOBALS['TSFE']->sys_page->enableFields($tableName);
+			$statement .= $this->getPageRepository()->enableFields($tableName);
 		} elseif (!$ignoreEnableFields && $includeDeleted) {
 			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException('Query setting "ignoreEnableFields=FALSE" can not be used together with "includeDeleted=TRUE" in frontend context.', 1327678173);
 		}
@@ -921,17 +917,19 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 *
 	 * @param string $tableName The database table name
 	 * @param array &$sql The query parts
-	 * @param integer $languageUid The language uid to pay attention
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The TYPO3 CMS specific query settings
 	 * @return void
 	 */
-	protected function addSysLanguageStatement($tableName, array &$sql, $languageUid = 0) {
+	protected function addSysLanguageStatement($tableName, array &$sql, $querySettings) {
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
 			if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])) {
 				// Select all entries for the current language
-				$additionalWhereClause = $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (' . intval($languageUid) . ',-1)';
+				$additionalWhereClause = $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (' . intval($querySettings->getSysLanguageUid()) . ',-1)';
 				// If any language is set -> get those entries which are not translated yet
 				// They will be removed by t3lib_page::getRecordOverlay if not matching overlay mode
-				if (intval($languageUid) && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])) {
+				if (isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
+						&& $querySettings->getSysLanguageUid() > 0
+				) {
 					$additionalWhereClause .= ' OR (' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0' .
 						' AND ' . $tableName . '.uid NOT IN (' . 'SELECT ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] .
 						' FROM ' . $tableName .
@@ -1055,70 +1053,87 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source The source (selector od join)
 	 * @param array $rows
-	 * @param null|integer $languageUid
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The TYPO3 CMS specific query settings
 	 * @param null|integer $workspaceUid
 	 * @return array
 	 */
-	protected function doLanguageAndWorkspaceOverlay(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source, array $rows, $languageUid = NULL, $workspaceUid = NULL) {
-		$overlayedRows = array();
-		foreach ($rows as $row) {
-			if (!$this->pageSelectObject instanceof \TYPO3\CMS\Frontend\Page\PageRepository) {
-				if ($this->getTypo3Mode() === 'FE') {
-					if (is_object($GLOBALS['TSFE'])) {
-						$this->pageSelectObject = $GLOBALS['TSFE']->sys_page;
-					} else {
-						$this->pageSelectObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
-					}
-				} else {
-					$this->pageSelectObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
-				}
-			}
+	protected function doLanguageAndWorkspaceOverlay(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source, array $rows, $querySettings, $workspaceUid = NULL) {
+		if ($source instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface) {
+			$tableName = $source->getSelectorName();
+		} elseif ($source instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface) {
+			$tableName = $source->getRight()->getSelectorName();
+		}
+		// If we do not have a table name here, we cannot do an overlay and return the original rows instead.
+		if (isset($tableName)) {
+			$pageRepositiory = $this->getPageRepository();
 			if (is_object($GLOBALS['TSFE'])) {
-				if ($languageUid === NULL) {
-					// get the language UID of the content that should be output
-					$languageUid = $GLOBALS['TSFE']->sys_language_content;
-					$languageMode = $GLOBALS['TSFE']->sys_language_mode;
-				}
+				$languageMode = $GLOBALS['TSFE']->sys_language_mode;
 				if ($workspaceUid !== NULL) {
-					$this->pageSelectObject->versioningWorkspaceId = $workspaceUid;
+					$pageRepositiory->versioningWorkspaceId = $workspaceUid;
 				}
 			} else {
-				if ($languageUid === NULL) {
-					$languageUid = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('L'));
-				}
+				$languageMode = '';
 				if ($workspaceUid === NULL) {
 					$workspaceUid = $GLOBALS['BE_USER']->workspace;
 				}
-				$this->pageSelectObject->versioningWorkspaceId = $workspaceUid;
+				$pageRepositiory->versioningWorkspaceId = $workspaceUid;
 			}
-			if ($source instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface) {
-				$tableName = $source->getSelectorName();
-			} elseif ($source instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface) {
-				$tableName = $source->getRight()->getSelectorName();
-			}
-			// If current row is a translation select its parent
-			if (isset($GLOBALS['TCA'][$tableName]) && isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])) {
-				if (isset($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']]) && $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0) {
-					$row = $this->databaseHandle->exec_SELECTgetSingleRow($tableName . '.*', $tableName, $tableName . '.uid=' . $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] . ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0');
+
+			$overlayedRows = array();
+			foreach ($rows as $row) {
+				// If current row is a translation select its parent
+				if (isset($tableName) && isset($GLOBALS['TCA'][$tableName])
+						&& isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
+						&& isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
+				) {
+					if (isset($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']])
+							&& $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
+					) {
+						$row = $this->databaseHandle->exec_SELECTgetSingleRow(
+							$tableName . '.*',
+							$tableName,
+							$tableName . '.uid=' . (int)$row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] .
+									' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0'
+						);
+					}
+				}
+				$pageRepositiory->versionOL($tableName, $row, TRUE);
+				if ($pageRepositiory->versioningPreview && isset($row['_ORIG_uid'])) {
+					$row['uid'] = $row['_ORIG_uid'];
+				}
+				if ($tableName == 'pages') {
+					$row = $pageRepositiory->getPageOverlay($row, $querySettings->getSysLanguageUid());
+				} elseif (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
+						&& $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== ''
+				) {
+					if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], array(-1, 0))) {
+						$overlayMode = $languageMode === 'strict' ? 'hideNonTranslated' : '';
+						$row = $pageRepositiory->getRecordOverlay($tableName, $row, $querySettings->getSysLanguageUid(), $overlayMode);
+					}
+				}
+				if ($row !== NULL && is_array($row)) {
+					$overlayedRows[] = $row;
 				}
 			}
-			$this->pageSelectObject->versionOL($tableName, $row, TRUE);
-			if ($this->pageSelectObject->versioningPreview && isset($row['_ORIG_uid'])) {
-				$row['uid'] = $row['_ORIG_uid'];
-			}
-			if ($tableName == 'pages') {
-				$row = $this->pageSelectObject->getPageOverlay($row, $languageUid);
-			} elseif (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== '') {
-				if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], array(-1, 0))) {
-					$overlayMode = $languageMode === 'strict' ? 'hideNonTranslated' : '';
-					$row = $this->pageSelectObject->getRecordOverlay($tableName, $row, $languageUid, $overlayMode);
-				}
-			}
-			if ($row !== NULL && is_array($row)) {
-				$overlayedRows[] = $row;
-			}
+		} else {
+			$overlayedRows = $rows;
 		}
 		return $overlayedRows;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Frontend\Page\PageRepository
+	 */
+	protected function getPageRepository() {
+		if (!$this->pageRepositiory instanceof \TYPO3\CMS\Frontend\Page\PageRepository) {
+			if ($this->getTypo3Mode() === 'FE' && is_object($GLOBALS['TSFE'])) {
+				$this->pageRepositiory = $GLOBALS['TSFE']->sys_page;
+			} else {
+				$this->pageRepositiory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+			}
+		}
+
+		return $this->pageRepositiory;
 	}
 
 	/**

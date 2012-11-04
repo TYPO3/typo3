@@ -29,8 +29,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 /**
  * A query settings interface. This interface is NOT part of the FLOW3 API.
  */
-interface QuerySettingsInterface
-{
+interface QuerySettingsInterface {
 	/**
 	 * Sets the flag if the storage page should be respected for the query.
 	 *

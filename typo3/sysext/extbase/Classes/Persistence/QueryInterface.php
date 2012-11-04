@@ -18,8 +18,7 @@ namespace TYPO3\CMS\Extbase\Persistence;
  *
  * @api
  */
-interface QueryInterface
-{
+interface QueryInterface {
 	/**
 	 * The '=' comparison operator.
 	 *
