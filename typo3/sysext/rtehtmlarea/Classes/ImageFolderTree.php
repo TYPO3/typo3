@@ -40,7 +40,7 @@ namespace TYPO3\CMS\Rtehtmlarea;
  * @package TYPO3
  * @subpackage tx_rte
  */
-class ImageFolderTree extends TBE_FolderTree {
+class ImageFolderTree extends \TBE_FolderTree {
 
 	/**
 	 * @todo Define visibility
