@@ -229,11 +229,60 @@
 			<trans-unit id="extensionList.updateFromTer.label" xml:space="preserve">
 				<source>Retrieving Extension-List from TYPO3 Extension Repository (TER)</source>
 			</trans-unit>
+
 			<trans-unit id="task.updateExtensionListTask.name" xml:space="preserve">
 				<source>Update extension list</source>
 			</trans-unit>
 			<trans-unit id="task.updateExtensionListTask.description" xml:space="preserve">
 				<source>Update TER extension list on a regular basis. Once a day is a good interval.</source>
+			</trans-unit>
+			<trans-unit id="report.status.mainRepository.title" xml:space="preserve">
+				<source>Update status of typo3.org main repository extension list</source>
+			</trans-unit>
+			<trans-unit id="report.status.mainRepository.notFound.value" xml:space="preserve">
+				<source>Error</source>
+			</trans-unit>
+			<trans-unit id="report.status.mainRepository.notFound.message" xml:space="preserve">
+				<source>The typo3.org extension repository was not found. Please import the main typo3.org extension repository in the install tool wizard.</source>
+			</trans-unit>
+			<trans-unit id="report.status.mainRepository.notUpToDate.value" xml:space="preserve">
+				<source>Extension list is not up to date!</source>
+			</trans-unit>
+			<trans-unit id="report.status.mainRepository.notUpToDate.message" xml:space="preserve">
+				<source>The Main Repository extension list is older than 7 days. Please update it in the Extension manager or Scheduler.</source>
+			</trans-unit>
+			<trans-unit id="report.status.mainRepository.upToDate.value" xml:space="preserve">
+				<source>OK</source>
+			</trans-unit>
+			<trans-unit id="report.status.loadedExtensions.title" xml:space="preserve">
+				<source>Security status of loaded extensions</source>
+			</trans-unit>
+			<trans-unit id="report.status.loadedExtensions.noInsecureExtensionLoaded.value" xml:space="preserve">
+				<source>OK</source>
+			</trans-unit>
+			<trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.value" xml:space="preserve">
+				<source>%s insecure extension(s) found</source>
+			</trans-unit>
+			<trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message" xml:space="preserve">
+				<source>The following extensions are insecure and usage might damage your system. Please update these extensions as soon as possible or remove them from your system:&lt;br&gt;&lt;br&gt;%s</source>
+			</trans-unit>
+			<trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message.extension" xml:space="preserve">
+				<source>&lt;strong&gt;%1s&lt;/strong&gt; (version %2s)&lt;br&gt;</source>
+			</trans-unit>
+			<trans-unit id="report.status.existingExtensions.title" xml:space="preserve">
+				<source>Security status of existing, but not loaded extensions</source>
+			</trans-unit>
+			<trans-unit id="report.status.existingExtensions.noInsecureExtensionExists.value" xml:space="preserve">
+				<source>OK</source>
+			</trans-unit>
+			<trans-unit id="report.status.existingExtensions.insecureExtensionExists.value" xml:space="preserve">
+				<source>%s insecure extension(s) found</source>
+			</trans-unit>
+			<trans-unit id="report.status.existingExtensions.insecureExtensionExists.message" xml:space="preserve">
+				<source>The following extensions were found on your system, but are currently not installed. Please delete the extensions using the extension manager:&lt;br&gt;&lt;br&gt;%s</source>
+			</trans-unit>
+			<trans-unit id="report.status.existingExtensions.insecureExtensionExists.message.extension" xml:space="preserve">
+				<source>&lt;strong&gt;%1s&lt;/strong&gt; (version %2s)&lt;br&gt;</source>
 			</trans-unit>
 		</body>
 	</file>

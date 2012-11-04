@@ -41,6 +41,9 @@ if (TYPO3_MODE === 'BE') {
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml',
 		)
 	);
-}
 
+	// Register extension status report system
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['Extension Manager'][] =
+		'TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus';
+}
 ?>
