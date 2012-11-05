@@ -1655,7 +1655,7 @@ button.ui-button::-moz-focus-inner {
   background: none;
   border: 0;
   padding: 8px 10px;
-  min-width: 53px;
+  min-width: 68px;
   vertical-align: middle;
   font-weight: bold;
   color: #fff;
