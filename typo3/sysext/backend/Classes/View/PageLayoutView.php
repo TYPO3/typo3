@@ -1322,7 +1322,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						$out .=  '<strong>' . $GLOBALS['LANG']->sL($label, TRUE) . '</strong><br />';
 					} else {
 						$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.noMatchingValue'), $row['list_type']);
-						$out .= \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING)->render();
+						$out .= \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($message), '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING)->render();
 					}
 				} elseif (!empty($row['select_key'])) {
 					$out .= $GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel('tt_content', 'select_key'), 1) . ' ' . $row['select_key'] . '<br />';
@@ -1337,9 +1337,16 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				$out .= '<br />' . $this->linkEditContent($this->renderText($row['imagecaption']), $row) . '<br />';
 				break;
 			default:
-				$out .= '<strong>' . htmlspecialchars($this->CType_labels[$row['CType']]) . '</strong><br />';
-				if ($row['bodytext']) {
-					$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
+				$contentType = $this->CType_labels[$row['CType']];
+
+				if (isset($contentType)) {
+					$out .= '<strong>' . htmlspecialchars($contentType) . '</strong><br />';
+					if ($row['bodytext']) {
+						$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
+					}
+				} else {
+					$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.noMatchingValue'), $row['CType']);
+					$out .= \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($message), '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING)->render();
 				}
 				break;
 			}
