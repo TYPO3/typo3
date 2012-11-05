@@ -37,6 +37,7 @@
 			"aaSorting": [],
 			"fnDrawCallback": bindDownload
 		});
+
 		bindDownload();
 	});
 
@@ -78,18 +79,31 @@
 	}
 
 	function getResolveDependenciesAndInstallResult(button, dummy, dialog) {
+		var newUrl;
+
 		if (button == 'yes') {
-			var newUrl = dialog.url;
+			newUrl = dialog.url;
 			$.ajax({
 				url: newUrl,
 				dataType: 'json',
 				success: function (data) {
+					var successMessage;
+
 					$('.typo3-extension-manager').unmask();
+
 					if (data.errorMessage.length) {
-						TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.l10n.localize('extensionList.dependenciesResolveDownloadError.title'), data.errorMessage, 5);
+						TYPO3.Flashmessage.display(
+							TYPO3.Severity.error,
+							TYPO3.l10n.localize('extensionList.dependenciesResolveDownloadError.title'),
+							data.errorMessage, 5
+						);
 					} else {
-						var successMessage = TYPO3.l10n.localize('extensionList.dependenciesResolveDownloadSuccess.message').replace(/\{0\}/g, data.extension) + ' <br />';
+						successMessage = TYPO3.l10n
+								.localize('extensionList.dependenciesResolveDownloadSuccess.message')
+								.replace(/\{0\}/g, data.extension) + ' <br />';
+
 						successMessage += '<br /><h3>' + TYPO3.l10n.localize('extensionList.dependenciesResolveDownloadSuccess.header') + ':</h3>';
+
 						$.each(data.result, function(index, value) {
 							successMessage += TYPO3.l10n.localize('extensionList.dependenciesResolveDownloadSuccess.item') + ' ' + index + ':<br /><ul>';
 							$.each(value, function(extkey, extdata) {
@@ -97,10 +111,17 @@
 							});
 							successMessage += '</ul>';
 						});
-						TYPO3.Flashmessage.display(TYPO3.Severity.information, TYPO3.l10n.localize('extensionList.dependenciesResolveFlashMessage.title').replace(/\{0\}/g, data.extension), successMessage, 15);
+
+						TYPO3.Flashmessage.display(
+							TYPO3.Severity.information,
+							TYPO3.l10n.localize('extensionList.dependenciesResolveFlashMessage.title').replace(/\{0\}/g, data.extension),
+							successMessage,
+							15
+						);
 					}
 				}
 			});
+
 		} else {
 			$('.typo3-extension-manager').unmask();
 		}
