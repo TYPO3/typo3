@@ -50,7 +50,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 *
 	 * @var \TYPO3\CMS\Frontend\Page\PageRepository
 	 */
-	protected $pageRepositiory;
+	protected $pageRepository;
 
 	/**
 	 * A first-level TypoScript configuration cache
@@ -1065,18 +1065,18 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		}
 		// If we do not have a table name here, we cannot do an overlay and return the original rows instead.
 		if (isset($tableName)) {
-			$pageRepositiory = $this->getPageRepository();
+			$pageRepository = $this->getPageRepository();
 			if (is_object($GLOBALS['TSFE'])) {
 				$languageMode = $GLOBALS['TSFE']->sys_language_mode;
 				if ($workspaceUid !== NULL) {
-					$pageRepositiory->versioningWorkspaceId = $workspaceUid;
+					$pageRepository->versioningWorkspaceId = $workspaceUid;
 				}
 			} else {
 				$languageMode = '';
 				if ($workspaceUid === NULL) {
 					$workspaceUid = $GLOBALS['BE_USER']->workspace;
 				}
-				$pageRepositiory->versioningWorkspaceId = $workspaceUid;
+				$pageRepository->versioningWorkspaceId = $workspaceUid;
 			}
 
 			$overlayedRows = array();
@@ -1097,18 +1097,18 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 						);
 					}
 				}
-				$pageRepositiory->versionOL($tableName, $row, TRUE);
-				if ($pageRepositiory->versioningPreview && isset($row['_ORIG_uid'])) {
+				$pageRepository->versionOL($tableName, $row, TRUE);
+				if ($pageRepository->versioningPreview && isset($row['_ORIG_uid'])) {
 					$row['uid'] = $row['_ORIG_uid'];
 				}
 				if ($tableName == 'pages') {
-					$row = $pageRepositiory->getPageOverlay($row, $querySettings->getSysLanguageUid());
+					$row = $pageRepository->getPageOverlay($row, $querySettings->getSysLanguageUid());
 				} elseif (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
 						&& $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== ''
 				) {
 					if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], array(-1, 0))) {
 						$overlayMode = $languageMode === 'strict' ? 'hideNonTranslated' : '';
-						$row = $pageRepositiory->getRecordOverlay($tableName, $row, $querySettings->getSysLanguageUid(), $overlayMode);
+						$row = $pageRepository->getRecordOverlay($tableName, $row, $querySettings->getSysLanguageUid(), $overlayMode);
 					}
 				}
 				if ($row !== NULL && is_array($row)) {
@@ -1125,15 +1125,15 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @return \TYPO3\CMS\Frontend\Page\PageRepository
 	 */
 	protected function getPageRepository() {
-		if (!$this->pageRepositiory instanceof \TYPO3\CMS\Frontend\Page\PageRepository) {
+		if (!$this->pageRepository instanceof \TYPO3\CMS\Frontend\Page\PageRepository) {
 			if ($this->getTypo3Mode() === 'FE' && is_object($GLOBALS['TSFE'])) {
-				$this->pageRepositiory = $GLOBALS['TSFE']->sys_page;
+				$this->pageRepository = $GLOBALS['TSFE']->sys_page;
 			} else {
-				$this->pageRepositiory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+				$this->pageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 			}
 		}
 
-		return $this->pageRepositiory;
+		return $this->pageRepository;
 	}
 
 	/**
