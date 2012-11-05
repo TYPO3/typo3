@@ -27,6 +27,9 @@
 
 	.spinner {
 		display: inline-block;
+		background-position: 0 center;
+		padding: 10px 0 10px 40px;
+		width: 200px;
 	}
 }
 
@@ -37,6 +40,10 @@
 
 
 // In header
+.typo3-extensionmanager-headerRowLeft {
+	float: left;
+}
+
 .typo3-extensionmanager-headerRowRight {
 
 	.splash-receivedata {

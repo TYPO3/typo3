@@ -1742,10 +1742,16 @@ button.ui-button::-moz-focus-inner {
 #terTableWrapper .splash-receivedata.is-shown {
   display: block; }
 #terTableWrapper .spinner {
-  display: inline-block; }
+  display: inline-block;
+  background-position: 0 center;
+  padding: 10px 0 10px 40px;
+  width: 200px; }
 
 .is-loading {
   opacity: 0; }
+
+.typo3-extensionmanager-headerRowLeft {
+  float: left; }
 
 .typo3-extensionmanager-headerRowRight .splash-receivedata {
   position: relative; }
