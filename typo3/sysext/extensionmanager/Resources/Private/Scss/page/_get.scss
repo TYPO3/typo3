@@ -40,6 +40,10 @@
 
 
 // In header
+.headerRow {
+	@extend %clearfix;
+}
+
 .typo3-extensionmanager-headerRowLeft {
 	float: left;
 }

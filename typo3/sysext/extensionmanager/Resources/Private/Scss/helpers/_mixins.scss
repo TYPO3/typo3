@@ -85,3 +85,11 @@ $useIEFilters: 0;
 }
 
 
+%clearfix {
+	&:before,
+	&:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+}

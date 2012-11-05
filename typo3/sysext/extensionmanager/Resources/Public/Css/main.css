@@ -6,6 +6,11 @@
  *  Questions can be submitted to info@drublic.de
  *
  */
+.headerRow:before, .headerRow:after {
+  content: "";
+  display: table;
+  clear: both; }
+
 /*
  * jQuery UI CSS Framework 1.8.17
  *
