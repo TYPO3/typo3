@@ -118,9 +118,7 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
 	 * @return boolean TRUE if such an entry exists, FALSE if not
 	 */
 	public function has($entryIdentifier) {
-		$success = FALSE;
-		wincache_ucache_get($this->identifierPrefix . $entryIdentifier, $success);
-		return $success;
+		return wincache_ucache_exists($this->identifierPrefix . $entryIdentifier);
 	}
 
 	/**
