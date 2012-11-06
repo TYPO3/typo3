@@ -4150,8 +4150,8 @@ class DataHandler {
 		// Use reference index object to find files in fields:
 		$refIndexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
 		$files = $refIndexObj->getRelations_procFiles($dataValue, $dsArr['TCEforms']['config'], $PA['uid']);
-		// Traverse files and delete them:
-		if (is_array($files)) {
+		// Traverse files and delete them if the field is a regular file field (and not a file_reference field)
+		if (is_array($files) && $dsArr['TCEforms']['config']['internal_type'] == 'file') {
 			foreach ($files as $dat) {
 				if (@is_file($dat['ID_absFile'])) {
 					unlink($dat['ID_absFile']);
