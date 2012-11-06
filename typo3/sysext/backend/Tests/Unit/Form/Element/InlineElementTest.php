@@ -41,6 +41,7 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected function setUp() {
 		// @todo Use $this->buildAccessibleProxy() if properties are protected
 		$this->fixture = new \TYPO3\CMS\Backend\Form\Element\InlineElement();
+		$this->fixture->fObj = new \TYPO3\CMS\Backend\Form\FormEngine();
 	}
 
 	/**
@@ -51,18 +52,95 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * @param array $arguments
+	 * @param array $expectedInlineStructure
+	 * @param array $expectedInlineNames
+	 * @dataProvider pushStructureFillsInlineStructureDataProvider
+	 * @test
+	 */
+	public function pushStructureFillsInlineStructure(array $arguments, array $expectedInlineStructure, array $expectedInlineNames) {
+		$this->fixture->inlineFirstPid = 'pageId';
+
+		call_user_func_array(array($this->fixture, 'pushStructure'), $arguments);
+
+		$this->assertEquals($expectedInlineStructure, $this->fixture->inlineStructure);
+		$this->assertEquals($expectedInlineNames, $this->fixture->inlineNames);
+	}
+
+	public function pushStructureFillsInlineStructureDataProvider() {
+		return array(
+			'regular field' => array(
+				array(
+					'parentTable',
+					'parentUid',
+					'parentField'
+				),
+				array(
+					'stable' => array(
+						array(
+							'table' => 'parentTable',
+							'uid' => 'parentUid',
+							'field' => 'parentField',
+							'config' => array(),
+							'localizationMode' => FALSE,
+						),
+					),
+				),
+				array(
+					'form' => '[parentTable][parentUid][parentField]',
+					'object' => 'data-pageId-parentTable-parentUid-parentField',
+				)
+			),
+			'flexform field' => array(
+				array(
+					'parentTable',
+					'parentUid',
+					'parentField',
+					array(),
+					array(
+						'itemFormElName' => 'data[parentTable][parentUid][parentField][data][sDEF][lDEF][grandParentFlexForm][vDEF]'
+					)
+				),
+				array(
+					'stable' => array(
+						array(
+							'table' => 'parentTable',
+							'uid' => 'parentUid',
+							'field' => 'parentField',
+							'config' => array(),
+							'localizationMode' => FALSE,
+							'flexform' => array(
+								'data', 'sDEF', 'lDEF', 'grandParentFlexForm', 'vDEF',
+							),
+						),
+					),
+				),
+				array(
+					'form' => '[parentTable][parentUid][parentField][data][sDEF][lDEF][grandParentFlexForm][vDEF]',
+					'object' => 'data-pageId-parentTable-parentUid-parentField---data---sDEF---lDEF---grandParentFlexForm---vDEF',
+				)
+			),
+		);
+	}
+
+	/**
 	 * @param string $string
 	 * @param array $expectedInlineStructure
+	 * @param array $expectedInlineNames
 	 * @dataProvider structureStringIsParsedDataProvider
 	 * @test
 	 */
-	public function structureStringIsParsed($string, array $expectedInlineStructure) {
+	public function structureStringIsParsed($string, array $expectedInlineStructure, array $expectedInlineNames) {
 		$this->fixture->parseStructureString($string, FALSE);
 
 		$this->assertEquals('pageId', $this->fixture->inlineFirstPid);
 		$this->assertEquals($expectedInlineStructure, $this->fixture->inlineStructure);
+		$this->assertEquals($expectedInlineNames, $this->fixture->inlineNames);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function structureStringIsParsedDataProvider() {
 		return array(
 			'simple 1-level table structure' => array(
@@ -72,6 +150,7 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 						'table' => 'childTable',
 					),
 				),
+				array()
 			),
 			'simple 1-level table-uid structure' => array(
 				'data-pageId-childTable-childUid',
@@ -81,6 +160,7 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 						'uid' => 'childUid',
 					),
 				),
+				array()
 			),
 			'simple 1-level table-uid-field structure' => array(
 				'data-pageId-childTable-childUid-childField',
@@ -91,6 +171,7 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 						'field' => 'childField',
 					),
 				),
+				array(),
 			),
 			'simple 2-level table structure' => array(
 				'data-pageId-parentTable-parentUid-parentField-childTable',
@@ -105,6 +186,10 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'unstable' => array(
 						'table' => 'childTable',
 					),
+				),
+				array(
+					'form' => '[parentTable][parentUid][parentField]',
+					'object' => 'data-pageId-parentTable-parentUid-parentField',
 				),
 			),
 			'simple 2-level table-uid structure' => array(
@@ -122,6 +207,10 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 						'uid' => 'childUid',
 					),
 				),
+				array(
+					'form' => '[parentTable][parentUid][parentField]',
+					'object' => 'data-pageId-parentTable-parentUid-parentField',
+				),
 			),
 			'simple 2-level table-uid-field structure' => array(
 				'data-pageId-parentTable-parentUid-parentField-childTable-childUid-childField',
@@ -138,6 +227,10 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 						'uid' => 'childUid',
 						'field' => 'childField',
 					),
+				),
+				array(
+					'form' => '[parentTable][parentUid][parentField]',
+					'object' => 'data-pageId-parentTable-parentUid-parentField',
 				),
 			),
 			'simple 3-level table structure' => array(
@@ -158,6 +251,10 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'unstable' => array(
 						'table' => 'childTable',
 					),
+				),
+				array(
+					'form' => '[parentTable][parentUid][parentField]',
+					'object' => 'data-pageId-grandParentTable-grandParentUid-grandParentField-parentTable-parentUid-parentField',
 				),
 			),
 			'simple 3-level table-uid structure' => array(
@@ -180,6 +277,10 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 						'uid' => 'childUid',
 					),
 				),
+				array(
+					'form' => '[parentTable][parentUid][parentField]',
+					'object' => 'data-pageId-grandParentTable-grandParentUid-grandParentField-parentTable-parentUid-parentField',
+				),
 			),
 			'simple 3-level table-uid-field structure' => array(
 				'data-pageId-grandParentTable-grandParentUid-grandParentField-parentTable-parentUid-parentField-childTable-childUid-childField',
@@ -201,6 +302,38 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 						'uid' => 'childUid',
 						'field' => 'childField',
 					),
+				),
+				array(
+					'form' => '[parentTable][parentUid][parentField]',
+					'object' => 'data-pageId-grandParentTable-grandParentUid-grandParentField-parentTable-parentUid-parentField',
+				),
+			),
+			'flexform 3-level table-uid structure' => array(
+				'data-pageId-grandParentTable-grandParentUid-grandParentField---data---sDEF---lDEF---grandParentFlexForm---vDEF-parentTable-parentUid-parentField-childTable-childUid',
+				array(
+					'stable' => array(
+						array(
+							'table' => 'grandParentTable',
+							'uid' => 'grandParentUid',
+							'field' => 'grandParentField',
+							'flexform' => array(
+								'data', 'sDEF', 'lDEF', 'grandParentFlexForm', 'vDEF',
+							),
+						),
+						array(
+							'table' => 'parentTable',
+							'uid' => 'parentUid',
+							'field' => 'parentField',
+						),
+					),
+					'unstable' => array(
+						'table' => 'childTable',
+						'uid' => 'childUid',
+					),
+				),
+				array(
+					'form' => '[parentTable][parentUid][parentField]',
+					'object' => 'data-pageId-grandParentTable-grandParentUid-grandParentField---data---sDEF---lDEF---grandParentFlexForm---vDEF-parentTable-parentUid-parentField',
 				),
 			),
 		);
