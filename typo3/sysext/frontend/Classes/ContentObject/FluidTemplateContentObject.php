@@ -48,7 +48,8 @@ class FluidTemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstr
 	 *
 	 * an example would be
 	 * 10 = FLUIDTEMPLATE
-	 * 10.file = fileadmin/templates/mytemplate.html
+	 * 10.template = FILE
+	 * 10.template.file = fileadmin/templates/mytemplate.html
 	 * 10.partialRootPath = fileadmin/templates/partial/
 	 * 10.variables {
 	 * mylabel = TEXT
@@ -57,21 +58,25 @@ class FluidTemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstr
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string The HTML output
-	 * @author Steffen Ritter <info@steffen-ritter.net>
-	 * @author Benjamin Mack <benni@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @throws \InvalidArgumentException
 	 */
 	public function render($conf = array()) {
 		// check if the needed extensions are installed
 		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('fluid')) {
 			return 'You need to install "Fluid" in order to use the FLUIDTEMPLATE content element';
 		}
-		/** 1. initializing Fluid StandaloneView and setting configuration parameters */
+		/** @var $view \TYPO3\CMS\Fluid\View\StandaloneView */
 		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 		// Fetch the Fluid template
-		$file = isset($conf['file.']) ? $this->cObj->stdWrap($conf['file'], $conf['file.']) : $conf['file'];
-		$templatePathAndFilename = $GLOBALS['TSFE']->tmpl->getFileName($file);
-		$view->setTemplatePathAndFilename($templatePathAndFilename);
+		if (!empty($conf['template']) && !empty($conf['template.'])) {
+			$templateSource = $this->cObj->cObjGetSingle($conf['template'], $conf['template.']);
+			$view->setTemplateSource($templateSource);
+		} else {
+			// TODO: deprecate?
+			$file = isset($conf['file.']) ? $this->cObj->stdWrap($conf['file'], $conf['file.']) : $conf['file'];
+			$templatePathAndFilename = $GLOBALS['TSFE']->tmpl->getFileName($file);
+			$view->setTemplatePathAndFilename($templatePathAndFilename);
+		}
 		// Override the default layout path via typoscript
 		$layoutRootPath = isset($conf['layoutRootPath.']) ? $this->cObj->stdWrap($conf['layoutRootPath'], $conf['layoutRootPath.']) : $conf['layoutRootPath'];
 		if ($layoutRootPath) {
