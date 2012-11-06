@@ -147,6 +147,31 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	/**
 	 * @test
 	 */
+	public function renderSetsTemplateFileByTemplateInView() {
+		$this->addMockViewToFixture();
+
+		$this->contentObjectRenderer
+			->expects($this->any())
+			->method('cObjGetSingle')
+			->with('FILE', array('file' => PATH_site . 'foo/bar.html'))
+			->will($this->returnValue('baz'));
+
+		$this->standaloneView
+			->expects($this->any())
+			->method('setTemplateSource')
+			->with('baz');
+
+		$this->fixture->render(array(
+			'template' => 'FILE',
+			'template.' => array(
+				'file' => PATH_site . 'foo/bar.html'
+			)
+		));
+	}
+
+	/**
+	 * @test
+	 */
 	public function renderSetsLayoutRootPathInView() {
 		$this->addMockViewToFixture();
 		$this->standaloneView
