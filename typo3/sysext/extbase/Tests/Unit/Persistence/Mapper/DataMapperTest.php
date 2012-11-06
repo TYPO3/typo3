@@ -7,7 +7,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Mapper;
  *  (c) 2012 Tymoteusz Motylewski <t.motylewski@gmail.com>
  *  All rights reserved
  *
- *  Part of this class is a backport of the corresponding class of FLOW3.
+ *  Part of This class is a backport of the corresponding class of TYPO3 Flow.
  *  Credits go to the v5 team.
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

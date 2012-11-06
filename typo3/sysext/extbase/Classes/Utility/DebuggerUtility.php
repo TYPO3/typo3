@@ -21,8 +21,8 @@ namespace TYPO3\CMS\Extbase\Utility;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 /**
- * This class is a backport of the corresponding class of FLOW3.
- * All credits go to the v5 team.
+ * This class is a backport of the corresponding class of TYPO3 Flow.
+ * All credits go to the TYPO3 Flow team.
  */
 /**
  * A debugging utility class
