@@ -34,6 +34,8 @@ namespace TYPO3\CMS\Backend\Form\Element;
 class InlineElement {
 
 	const Structure_Separator = '-';
+	const FlexForm_Separator = '---';
+	const FlexForm_Substitute = ':';
 	const Disposal_AttributeName = 'Disposal_AttributeName';
 	const Disposal_AttributeId = 'Disposal_AttributeId';
 	/**
@@ -211,7 +213,7 @@ class InlineElement {
 			}
 		}
 		// Add the current inline job to the structure stack
-		$this->pushStructure($table, $row['uid'], $field, $config);
+		$this->pushStructure($table, $row['uid'], $field, $config, $PA);
 		// e.g. data[<table>][<uid>][<field>]
 		$nameForm = $this->inlineNames['form'];
 		// e.g. data-<pid>-<table1>-<uid1>-<field1>-<table2>-<uid2>-<field2>
@@ -235,7 +237,11 @@ class InlineElement {
 			'top' => array(
 				'table' => $top['table'],
 				'uid' => $top['uid']
-			)
+			),
+			'context' => array(
+				'config' => $config,
+				'hmac' => \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(serialize($config)),
+			),
 		);
 		// Set a hint for nested IRRE and tab elements:
 		$this->inlineData['nested'][$nameObject] = $this->fObj->getDynNestedStack(FALSE, $this->isAjaxCall);
@@ -918,6 +924,7 @@ class InlineElement {
 				$this->processAjaxRequestConstruct($ajaxArguments);
 				// Parse the DOM identifier (string), add the levels to the structure stack (array) and load the TCA config:
 				$this->parseStructureString($ajaxArguments[0], TRUE);
+				$this->injectAjaxConfiguration($ajaxArguments);
 				// Render content:
 				$ajaxObj->setContentFormat('jsonbody');
 				$ajaxObj->setContent(call_user_func_array(array(&$this, $ajaxMethod), $ajaxArguments));
@@ -928,6 +935,34 @@ class InlineElement {
 				break;
 			}
 		}
+	}
+
+	/**
+	 * Injects configuration via AJAX calls.
+	 * The configuration is validated using HMAC to avoid hijacking.
+	 *
+	 * @param array $ajaxArguments
+	 * @return void
+	 */
+	protected function injectAjaxConfiguration(array $ajaxArguments) {
+		$level = $this->calculateStructureLevel(-1);
+
+		if (empty($ajaxArguments['context']) || $level === FALSE) {
+			return;
+		}
+
+		$current = &$this->inlineStructure['stable'][$level];
+		$context = json_decode($ajaxArguments['context'], TRUE);
+
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::hmac(serialize($context['config'])) !== $context['hmac']) {
+			return;
+		}
+
+		$current['config'] = $context['config'];
+		$current['localizationMode'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getInlineLocalizationMode(
+			$current['table'],
+			$current['config']
+		);
 	}
 
 	/**
@@ -1565,17 +1600,30 @@ class InlineElement {
 	 * @param string $uid The uid of the record that embeds the inline data
 	 * @param string $field The field name which this element is supposed to edit
 	 * @param array $config The TCA-configuration of the inline field
+	 * @param array $parameters The full parameter array (PA)
 	 * @return void
 	 * @todo Define visibility
 	 */
-	public function pushStructure($table, $uid, $field = '', $config = array()) {
-		$this->inlineStructure['stable'][] = array(
+	public function pushStructure($table, $uid, $field = '', $config = array(), array $parameters = array()) {
+		$structure = array(
 			'table' => $table,
 			'uid' => $uid,
 			'field' => $field,
 			'config' => $config,
-			'localizationMode' => \TYPO3\CMS\Backend\Utility\BackendUtility::getInlineLocalizationMode($table, $config)
+			'localizationMode' => \TYPO3\CMS\Backend\Utility\BackendUtility::getInlineLocalizationMode($table, $config),
 		);
+
+		// Extract FlexForm parts (if any) from element name,
+		// e.g. array('vDEF', 'lDEF', 'FlexField', 'vDEF')
+		if (!empty($parameters['itemFormElName'])) {
+			$flexFormParts = $this->extractFlexFormParts($parameters['itemFormElName']);
+
+			if ($flexFormParts !== NULL) {
+				$structure['flexform'] = $flexFormParts;
+			}
+		}
+
+		$this->inlineStructure['stable'][] = $structure;
 		$this->updateStructureNames();
 	}
 
@@ -1586,6 +1634,8 @@ class InlineElement {
 	 * @todo Define visibility
 	 */
 	public function popStructure() {
+		$popItem = NULL;
+
 		if (count($this->inlineStructure['stable'])) {
 			$popItem = array_pop($this->inlineStructure['stable']);
 			$this->updateStructureNames();
@@ -1624,18 +1674,32 @@ class InlineElement {
 	 * @todo Define visibility
 	 */
 	public function getStructureItemName($levelData, $disposal = self::Disposal_AttributeId) {
+		$name = NULL;
+
 		if (is_array($levelData)) {
 			$parts = array($levelData['table'], $levelData['uid']);
-			if (isset($levelData['field'])) {
+
+			if (!empty($levelData['field'])) {
 				$parts[] = $levelData['field'];
 			}
+
 			// Use in name attributes:
 			if ($disposal === self::Disposal_AttributeName) {
+				if (!empty($levelData['field']) && !empty($levelData['flexform']) && $this->getStructureLevel(-1) === $levelData) {
+					$parts[] = implode('][', $levelData['flexform']);
+				}
 				$name = '[' . implode('][', $parts) . ']';
+			// Use in object id attributes:
 			} else {
 				$name = implode(self::Structure_Separator, $parts);
+
+				if (!empty($levelData['field']) && !empty($levelData['flexform'])) {
+					array_unshift($levelData['flexform'], $name);
+					$name = implode(self::FlexForm_Separator, $levelData['flexform']);
+				}
 			}
 		}
+
 		return $name;
 	}
 
@@ -1649,15 +1713,33 @@ class InlineElement {
 	 * @todo Define visibility
 	 */
 	public function getStructureLevel($level) {
+		$level = $this->calculateStructureLevel($level);
+
+		if ($level !== FALSE) {
+			return $this->inlineStructure['stable'][$level];
+		} else {
+			return FALSE;
+		}
+	}
+
+	/**
+	 * Calculates structure level.
+	 *
+	 * @param integer $level Which level to return
+	 * @return boolean|integer
+	 */
+	protected function calculateStructureLevel($level) {
+		$result = FALSE;
+
 		$inlineStructureCount = count($this->inlineStructure['stable']);
 		if ($level < 0) {
 			$level = $inlineStructureCount + $level;
 		}
 		if ($level >= 0 && $level < $inlineStructureCount) {
-			return $this->inlineStructure['stable'][$level];
-		} else {
-			return FALSE;
+			$result = $level;
 		}
+
+		return $result;
 	}
 
 	/**
@@ -1696,7 +1778,12 @@ class InlineElement {
 	public function parseStructureString($string, $loadConfig = TRUE) {
 		$unstable = array();
 		$vector = array('table', 'uid', 'field');
+
+		// Substitute FlexForm additon and make parsing a bit easier
+		$string = str_replace(self::FlexForm_Separator, self::FlexForm_Substitute, $string);
+		// The starting pattern of an object identifer (e.g. "data-<firstPidValue>-<anything>)
 		$pattern = '/^' . $this->prependNaming . self::Structure_Separator . '(.+?)' . self::Structure_Separator . '(.+)$/';
+
 		if (preg_match($pattern, $string, $match)) {
 			$this->inlineFirstPid = $match[1];
 			$parts = explode(self::Structure_Separator, $match[2]);
@@ -1715,6 +1802,17 @@ class InlineElement {
 						}
 						$unstable['localizationMode'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getInlineLocalizationMode($unstable['table'], $unstable['config']);
 					}
+
+					// Extract FlexForm from field part (if any)
+					if (strpos($unstable['field'], self::FlexForm_Substitute) !== FALSE) {
+						$fieldParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(self::FlexForm_Substitute, $unstable['field']);
+						$unstable['field'] = array_shift($fieldParts);
+						// FlexForm parts start with data:
+						if (count($fieldParts) > 0 && $fieldParts[0] === 'data') {
+							$unstable['flexform'] = $fieldParts;
+						}
+					}
+
 					$this->inlineStructure['stable'][] = $unstable;
 					$unstable = array();
 				}
@@ -2310,6 +2408,29 @@ class InlineElement {
 		}
 		$result .= '>' . $text . '</a>';
 		return $result;
+	}
+
+	/**
+	 * Extracts FlexForm parts of a form element name like
+	 * data[table][uid][field][sDEF][lDEF][FlexForm][vDEF]
+	 *
+	 * @param string $formElementName The form element name
+	 * @return array|NULL
+	 */
+	protected function extractFlexFormParts($formElementName) {
+		$flexFormParts = NULL;
+
+		$matches = array();
+		$prefix = preg_quote($this->fObj->prependFormFieldNames, '#');
+
+		if (preg_match('#^' . $prefix . '(?:\[[^]]+\]){3}(\[data\](?:\[[^]]+\]){4,})$#', $formElementName, $matches)) {
+			$flexFormParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(
+				'][',
+				trim($matches[1], '[]')
+			);
+		}
+
+		return $flexFormParts;
 	}
 
 }

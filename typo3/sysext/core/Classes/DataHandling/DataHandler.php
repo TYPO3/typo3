@@ -1378,10 +1378,11 @@ class DataHandler {
 	 * @param string $field Field name. Must NOT be set if the call is for a flexform field (since flexforms are not allowed within flexforms).
 	 * @param [type] $uploadedFiles
 	 * @param [type] $tscPID
+	 * @param array $additionalData Additional data to be forwarded to sub-processors
 	 * @return array Returns the evaluated $value as key "value" in this array.
 	 * @todo Define visibility
 	 */
-	public function checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $uploadedFiles, $tscPID) {
+	public function checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $uploadedFiles, $tscPID, array $additionalData = NULL) {
 		$PP = array($table, $id, $curValue, $status, $realPid, $recFID, $tscPID);
 		switch ($tcaFieldConf['type']) {
 		case 'text':
@@ -1407,7 +1408,7 @@ class DataHandler {
 			$res = $this->checkValue_group_select($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field);
 			break;
 		case 'inline':
-			$res = $this->checkValue_inline($res, $value, $tcaFieldConf, $PP, $field);
+			$res = $this->checkValue_inline($res, $value, $tcaFieldConf, $PP, $field, $additionalData);
 			break;
 		case 'flex':
 			// FlexForms are only allowed for real fields.
@@ -1961,6 +1962,7 @@ class DataHandler {
 	 */
 	public function checkValue_flex($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field) {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
+
 		if (is_array($value)) {
 			// This value is necessary for flex form processing to happen on flexform fields in page records when they are copied.
 			// The problem is, that when copying a page, flexfrom XML comes along in the array for the new record - but since $this->checkValue_currentRecord does not have a uid or pid for that sake, the t3lib_BEfunc::getFlexFormDS() function returns no good DS. For new records we do know the expected PID so therefore we send that with this special parameter. Only active when larger than zero.
@@ -2005,6 +2007,7 @@ class DataHandler {
 			// Passthrough...:
 			$res['value'] = $value;
 		}
+
 		return $res;
 	}
 
@@ -2066,10 +2069,11 @@ class DataHandler {
 	 * @param array $tcaFieldConf Field configuration from TCA
 	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
 	 * @param string $field Field name
+	 * @param array $additionalData Additional data to be forwarded to sub-processors
 	 * @return array Modified $res array
 	 * @todo Define visibility
 	 */
-	public function checkValue_inline($res, $value, $tcaFieldConf, $PP, $field) {
+	public function checkValue_inline($res, $value, $tcaFieldConf, $PP, $field, array $additionalData = NULL) {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
 		if (!$tcaFieldConf['foreign_table']) {
 			// Fatal error, inline fields should always have a foreign_table defined
@@ -2087,13 +2091,14 @@ class DataHandler {
 			$this->addNewValuesToRemapStackChildIds($valueArray);
 			$this->remapStack[] = array(
 				'func' => 'checkValue_inline_processDBdata',
-				'args' => array($valueArray, $tcaFieldConf, $id, $status, $table, $field),
+				'args' => array($valueArray, $tcaFieldConf, $id, $status, $table, $field, $additionalData),
 				'pos' => array('valueArray' => 0, 'tcaFieldConf' => 1, 'id' => 2, 'table' => 4),
-				'field' => $field
+				'additionalData' => $additionalData,
+				'field' => $field,
 			);
 			unset($res['value']);
 		} elseif ($value || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($id)) {
-			$res['value'] = $this->checkValue_inline_processDBdata($valueArray, $tcaFieldConf, $id, $status, $table, $field);
+			$res['value'] = $this->checkValue_inline_processDBdata($valueArray, $tcaFieldConf, $id, $status, $table, $field, $additionalData);
 		}
 		return $res;
 	}
@@ -2491,7 +2496,13 @@ class DataHandler {
 							} else {
 								// Default
 								list($CVtable, $CVid, $CVcurValue, $CVstatus, $CVrealPid, $CVrecFID, $CVtscPID) = $pParams;
-								$res = $this->checkValue_SW(array(), $dataValues[$key][$vKey], $dsConf['TCEforms']['config'], $CVtable, $CVid, $dataValues_current[$key][$vKey], $CVstatus, $CVrealPid, $CVrecFID, '', $uploadedFiles[$key][$vKey], array(), $CVtscPID);
+
+								$additionalData = array(
+									'flexFormId' => $CVrecFID,
+									'flexFormPath' => trim(rtrim($structurePath, '/') . '/' . $key . '/' . $vKey, '/'),
+								);
+
+								$res = $this->checkValue_SW(array(), $dataValues[$key][$vKey], $dsConf['TCEforms']['config'], $CVtable, $CVid, $dataValues_current[$key][$vKey], $CVstatus, $CVrealPid, $CVrecFID, '', $uploadedFiles[$key][$vKey], $CVtscPID, $additionalData);
 								// Look for RTE transformation of field:
 								if ($dataValues[$key]['_TRANSFORM_' . $vKey] == 'RTE' && !$this->dontProcessTransformations) {
 									// Unsetting trigger field - we absolutely don't want that into the data storage!
@@ -2551,9 +2562,10 @@ class DataHandler {
 	 * @param string $status Status string ('update' or 'new')
 	 * @param string $table Table name, needs to be passed to t3lib_loadDBGroup
 	 * @param string $field The current field the values are modified for
+	 * @param array $additionalData Additional data to be forwarded to sub-processors
 	 * @return string Modified values
 	 */
-	protected function checkValue_inline_processDBdata($valueArray, $tcaFieldConf, $id, $status, $table, $field) {
+	protected function checkValue_inline_processDBdata($valueArray, $tcaFieldConf, $id, $status, $table, $field, array $additionalData = NULL) {
 		$newValue = '';
 		$foreignTable = $tcaFieldConf['foreign_table'];
 		$valueArray = $this->applyFiltersToValues($tcaFieldConf, $valueArray);
@@ -4784,6 +4796,8 @@ class DataHandler {
 	public function processRemapStack() {
 		// Processes the remap stack:
 		if (is_array($this->remapStack)) {
+			$remapFlexForms = array();
+
 			foreach ($this->remapStack as $remapAction) {
 				// If no position index for the arguments was set, skip this remap action:
 				if (!is_array($remapAction['pos'])) {
@@ -4796,6 +4810,7 @@ class DataHandler {
 				$table = $remapAction['args'][$remapAction['pos']['table']];
 				$valueArray = $remapAction['args'][$remapAction['pos']['valueArray']];
 				$tcaFieldConf = $remapAction['args'][$remapAction['pos']['tcaFieldConf']];
+				$additionalData = $remapAction['additionalData'];
 				// The record is new and has one or more new ids (in case of versioning/workspaces):
 				if (strpos($id, 'NEW') !== FALSE) {
 					// Replace NEW...-ID with real uid:
@@ -4830,7 +4845,19 @@ class DataHandler {
 					$newValue = implode(',', $this->checkValue_checkMax($tcaFieldConf, $newValue));
 				}
 				// Update in database (list of children (csv) or number of relations (foreign_field)):
-				$this->updateDB($table, $id, array($field => $newValue));
+				if (!empty($field)) {
+					$this->updateDB($table, $id, array($field => $newValue));
+				// Collect data to update FlexForms
+				} elseif (!empty($additionalData['flexFormId']) && !empty($additionalData['flexFormPath'])) {
+					$flexFormId = $additionalData['flexFormId'];
+					$flexFormPath = $additionalData['flexFormPath'];
+
+					if (!isset($remapFlexForms[$flexFormId])) {
+						$remapFlexForms[$flexFormId] = array();
+					}
+
+					$remapFlexForms[$flexFormId][$flexFormPath] = $newValue;
+				}
 				// Process waiting Hook: processDatamap_afterDatabaseOperations:
 				if (isset($this->remapStackRecords[$table][$rawId]['processDatamap_afterDatabaseOperations'])) {
 					$hookArgs = $this->remapStackRecords[$table][$rawId]['processDatamap_afterDatabaseOperations'];
@@ -4843,6 +4870,12 @@ class DataHandler {
 							$hookObj->processDatamap_afterDatabaseOperations($hookArgs['status'], $table, $rawId, $hookArgs['fieldArray'], $this);
 						}
 					}
+				}
+			}
+
+			if ($remapFlexForms) {
+				foreach ($remapFlexForms as $flexFormId => $modifications) {
+					$this->updateFlexFormData($flexFormId, $modifications);
 				}
 			}
 		}
@@ -4866,6 +4899,43 @@ class DataHandler {
 		$this->remapStackRecords = array();
 		$this->remapStackActions = array();
 		$this->remapStackRefIndex = array();
+	}
+
+	/**
+	 * Updates FlexForm data.
+	 *
+	 * @param string $flexFormId, e.g. <table>:<uid>:<field>
+	 * @param array $modifications Modifications with paths and values (e.g. 'sDEF/lDEV/field/vDEF' => 'TYPO3')
+	 * @return void
+	 */
+	protected function updateFlexFormData($flexFormId, array $modifications) {
+		list ($table, $uid, $field) = explode(':', $flexFormId, 3);
+		$record = $this->recordInfo($table, $uid, '*');
+
+		if (!$table || !$uid || !$field || !is_array($record)) {
+			return;
+		}
+
+		\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL($table, $record);
+
+		// Get current data structure and value array:
+		$valueStructure = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($record[$field]);
+
+		// Do recursive processing of the XML data:
+		foreach ($modifications as $path => $value) {
+			$valueStructure['data'] = \TYPO3\CMS\Core\Utility\ArrayUtility::setValueByPath(
+				$valueStructure['data'], $path, $value
+			);
+		}
+
+		if (is_array($valueStructure['data'])) {
+			// The return value should be compiled back into XML
+			$values = array(
+				$field => $this->checkValue_flexArray2Xml($valueStructure, TRUE),
+			);
+
+			$this->updateDB($table, $uid, $values);
+		}
 	}
 
 	/**
