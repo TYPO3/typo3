@@ -31,6 +31,8 @@ var inline = {
 	classVisible: 't3-form-field-container-inline-visible',
 	classCollapsed: 't3-form-field-container-inline-collapsed',
 	structureSeparator: '-',
+	flexFormSeparator: '---',
+	flexFormSubstitute: ':',
 	prependFormFieldNames: 'data',
 	noTitleString: '[No title]',
 	lockedAjaxMethod: {},
@@ -60,17 +62,18 @@ var inline = {
 	expandCollapseRecord: function(objectId, expandSingle, returnURL) {
 		var currentUid = this.parseObjectId('none', objectId, 1);
 		var objectPrefix = this.parseObjectId('full', objectId, 0, 1);
+		var escapedObjectId = this.escapeObjectId(objectId);
 
-		var currentObject = TYPO3.jQuery('#' + objectId + '_div');
+		var currentObject = TYPO3.jQuery('#' + escapedObjectId + '_div');
 			// if content is not loaded yet, get it now from server
-		if((TYPO3.jQuery('#' + objectId + '_fields') && $("irre-loading-indicator" + objectId)) || inline.isLoading) {
+		if((TYPO3.jQuery('#' + escapedObjectId + '_fields') && $("irre-loading-indicator" + objectId)) || inline.isLoading) {
 			return false;
 		} else if ($(objectId + '_fields') && $(objectId + '_fields').innerHTML.substr(0,16) == '<!--notloaded-->') {
 			inline.isLoading = true;
 				// add loading-indicator
-			if (TYPO3.jQuery('#' + objectId + '_icon')) {
-				TYPO3.jQuery('#' + objectId + '_icon').hide();
-				TYPO3.jQuery('#' + objectId + '_iconcontainer').addClass('loading-indicator');
+			if (TYPO3.jQuery('#' + escapedObjectId + '_icon')) {
+				TYPO3.jQuery('#' + escapedObjectId + '_icon').hide();
+				TYPO3.jQuery('#' + escapedObjectId + '_iconcontainer').addClass('loading-indicator');
 			}
 			return this.getRecordDetails(objectId, returnURL);
 		}
@@ -101,13 +104,15 @@ var inline = {
 	},
 
 	toggleElement: function(objectId) {
-		var jQueryObject = TYPO3.jQuery('#' + objectId + '_div');
+		var escapedObjectId = this.escapeObjectId(objectId);
+		var jQueryObject = TYPO3.jQuery('#' + escapedObjectId + '_div');
+
 		if (jQueryObject.hasClass(this.classCollapsed)) {
 			jQueryObject.removeClass(this.classCollapsed).addClass(this.classVisible);
-			jQueryObject.find('#' + objectId + '_header .t3-icon-irre-collapsed').removeClass('t3-icon-irre-collapsed').addClass('t3-icon-irre-expanded');
+			jQueryObject.find('#' + escapedObjectId + '_header .t3-icon-irre-collapsed').removeClass('t3-icon-irre-collapsed').addClass('t3-icon-irre-expanded');
 		} else {
 			jQueryObject.removeClass(this.classVisible).addClass(this.classCollapsed);
-			jQueryObject.find('#' + objectId + '_header .t3-icon-irre-expanded').addClass('t3-icon-irre-collapsed').removeClass('t3-icon-irre-expanded');
+			jQueryObject.find('#' + escapedObjectId + '_header .t3-icon-irre-expanded').addClass('t3-icon-irre-collapsed').removeClass('t3-icon-irre-expanded');
 		}
 	},
 	collapseAllRecords: function(objectId, objectPrefix, callingUid) {
@@ -118,14 +123,16 @@ var inline = {
 
 		if (formObj.length) {
 				// the uid of the calling object (last part in objectId)
-			var recObjectId = '';
+			var recObjectId = '', escapedRecordObjectId;
 
 			var records = formObj[0].value.split(',');
 			for (var i=0; i<records.length; i++) {
 				recObjectId = objectPrefix + this.structureSeparator + records[i];
-				var recordEntry = TYPO3.jQuery('#' + recObjectId);
+				escapedRecordObjectId = this.escapeObjectId(recObjectId);
+
+				var recordEntry = TYPO3.jQuery('#' + escapedRecordObjectId);
 				if (records[i] != callingUid && recordEntry.hasClass(this.classVisible)) {
-					TYPO3.jQuery('#' + recObjectId + '_div').removeClass(this.classVisible).addClass(this.classCollapsed);
+					TYPO3.jQuery('#' + escapedRecordObjectId + '_div').removeClass(this.classVisible).addClass(this.classCollapsed);
 					if (this.isNewRecord(recObjectId)) {
 						this.updateExpandedCollapsedStateLocally(recObjectId, 0);
 					} else {
@@ -147,16 +154,18 @@ var inline = {
 	},
 
 	getRecordDetails: function(objectId, returnURL) {
-		inline.makeAjaxCall('getRecordDetails', [inline.getNumberOfRTE(), objectId, returnURL], true);
+		var context = this.getContext(this.parseObjectId('full', objectId, 0, 1));
+		inline.makeAjaxCall('getRecordDetails', [inline.getNumberOfRTE(), objectId, returnURL], true, context);
 		return false;
 	},
 
 	createNewRecord: function(objectId, recordUid) {
 		if (this.isBelowMax(objectId)) {
+			var context = this.getContext(objectId);
 			if (recordUid) {
 				objectId += this.structureSeparator + recordUid;
 			}
-			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId], true);
+			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId], true, context);
 		} else {
 			alert('There are no more relations possible at this moment!');
 		}
@@ -164,21 +173,26 @@ var inline = {
 	},
 
 	synchronizeLocalizeRecords: function(objectId, type) {
+		var context = this.getContext(objectId);
 		var parameters = [this.getNumberOfRTE(), objectId, type];
-		this.makeAjaxCall('synchronizeLocalizeRecords', parameters, true);
+		this.makeAjaxCall('synchronizeLocalizeRecords', parameters, true, context);
 	},
 
 	setExpandedCollapsedState: function(objectId, expand, collapse) {
-		this.makeAjaxCall('setExpandedCollapsedState', [objectId, expand, collapse]);
+		var context = this.getContext(objectId);
+		this.makeAjaxCall('setExpandedCollapsedState', [objectId, expand, collapse], false, context);
 	},
 
-	makeAjaxCall: function(method, params, lock) {
+	makeAjaxCall: function(method, params, lock, context) {
 		var max, url='', urlParams='', options={};
 		if (method && params && params.length && this.lockAjaxMethod(method, lock)) {
 			url = TBE_EDITOR.getBackendPath() + 'ajax.php';
 			urlParams = '&ajaxID=t3lib_TCEforms_inline::'+method;
 			for (var i=0, max=params.length; i<max; i++) {
 				urlParams += '&ajax['+i+']='+params[i];
+			}
+			if (context) {
+				urlParams += '&ajax[context]=' + Object.toJSON(context);
 			}
 			options = {
 				method:		'post',
@@ -207,7 +221,7 @@ var inline = {
 	processAjaxResponse: function(method, xhr, json) {
 		var addTag=null, restart=false, processedCount=0, element=null, errorCatch=[], sourcesWaiting=[];
 		if (!json && xhr) {
-			json = eval('('+xhr.responseText+')');
+			json = xhr.responseJSON;
 		}
 			// If there are elements the should be added to the <HEAD> tag (e.g. for RTEhtmlarea):
 		if (json.headData) {
@@ -291,18 +305,20 @@ var inline = {
 	importNewRecord: function(objectId) {
 		var selector = $(objectId+'_selector');
 		if (selector.selectedIndex != -1) {
+			var context = this.getContext(objectId);
 			var selectedValue = selector.options[selector.selectedIndex].value;
 			if (!this.data.unique || !this.data.unique[objectId]) {
 				selector.options[selector.selectedIndex].selected = false;
 			}
-			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId, selectedValue], true);
+			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId, selectedValue], true, context);
 		}
 		return false;
 	},
 
 		// foreign_selector: used by element browser (type='group/db')
 	importElement: function(objectId, table, uid, type) {
-		inline.makeAjaxCall('createNewRecord', [inline.getNumberOfRTE(), objectId, uid], true);
+		var context = this.getContext(objectId);
+		inline.makeAjaxCall('createNewRecord', [inline.getNumberOfRTE(), objectId, uid], true, context);
 	},
 
 	importElementMultiple: function(objectId, table, uidArray, type) {
@@ -611,7 +627,7 @@ var inline = {
 		Sortable.create(
 			objectId,
 			{
-				format: /^[^_\-](?:[A-Za-z0-9\-\_]*)-(.*)_div$/,
+				format: /^[^_\-](?:[A-Za-z0-9\-\_\.]*)-(.*)_div$/,
 				onUpdate: inline.dragAndDropSorting,
 				tag: 'div',
 				handle: 'sortableHandle',
@@ -833,6 +849,7 @@ var inline = {
 			// Remove from TBE_EDITOR (required fields, required range, etc.):
 		if (TBE_EDITOR && TBE_EDITOR.removeElement) {
 			var removeStack = [];
+			// Iterate over all child records:
 			inlineRecords = Element.select(objectId+'_div', '.inlineRecord');
 				// Remove nested child records from TBE_EDITOR required/range checks:
 			for (i=inlineRecords.length-1; i>=0; i--) {
@@ -939,6 +956,7 @@ var inline = {
 
 	splitObjectId: function(objectId) {
 		objectId = objectId.substr(objectId.indexOf(this.structureSeparator)+1);
+		objectId = objectId.split(this.flexFormSeparator).join(this.flexFormSubstitute);
 		var parts = objectId.split(this.structureSeparator);
 
 		return parts;
@@ -949,8 +967,10 @@ var inline = {
 
 		if (wrap == 'full') {
 			elReturn = this.prependFormFieldNames+'['+parts.join('][')+']';
+			elReturn = elReturn.split(this.flexFormSubstitute).join('][');
 		} else if (wrap == 'parts') {
 			elReturn = '['+parts.join('][')+']';
+			elReturn = elReturn.split(this.flexFormSubstitute).join('][');
 		} else if (wrap == 'none') {
 			elReturn = parts.length > 1 ? parts : parts.join('');
 		}
@@ -963,8 +983,10 @@ var inline = {
 
 		if (wrap == 'full') {
 			elReturn = this.prependFormFieldNames+this.structureSeparator+parts.join(this.structureSeparator);
+			elReturn = elReturn.split(this.flexFormSubstitute).join(this.flexFormSeparator);
 		} else if (wrap == 'parts') {
 			elReturn = this.structureSeparator+parts.join(this.structureSeparator);
+			elReturn = elReturn.split(this.flexFormSubstitute).join(this.flexFormSeparator);
 		} else if (wrap == 'none') {
 			elReturn = parts.length > 1 ? parts : parts.join('');
 		}
@@ -1168,7 +1190,30 @@ var inline = {
   		if ($(element)) {
 			new Effect.Fade(element, { afterFinish: function() { Element.remove(element); }	});
 		}
-  	}
+  	},
+
+	getContext: function(objectId) {
+		var result = null;
+
+		if (objectId !== '' && typeof this.data.config[objectId] !== 'undefined' && typeof this.data.config[objectId].context !== 'undefined') {
+			result = this.data.config[objectId].context;
+		}
+
+		return result;
+	},
+
+	/**
+	 * Escapes object identifiers to be used in jQuery.
+	 *
+	 * @param string objectId
+	 * @return string
+	 */
+	escapeObjectId: function(objectId) {
+		var escapedObjectId;
+		escapedObjectId = objectId.replace(/:/g, '\\:');
+		escapedObjectId = objectId.replace(/\./g, '\\.');
+		return escapedObjectId;
+	}
 }
 
 Object.extend(Array.prototype, {
