@@ -64,7 +64,6 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
 	 * This is useful for the deserialization.
 	 *
 	 * @param array $data
-	 * @return void
 	 */
 	public function __construct(array $data = array()) {
 		if (count($data)) {
@@ -137,7 +136,7 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
 	/**
 	 * Sets the parent node
 	 *
-	 * @param \TYPO3\CMS\Backend\Tree\TreeNode $parentNode
+	 * @param NULL|\TYPO3\CMS\Backend\Tree\TreeNode $parentNode
 	 * @return void
 	 */
 	public function setParentNode(\TYPO3\CMS\Backend\Tree\TreeNode $parentNode = NULL) {

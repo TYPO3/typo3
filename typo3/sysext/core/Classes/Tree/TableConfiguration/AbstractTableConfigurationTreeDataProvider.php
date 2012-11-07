@@ -31,7 +31,6 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
  * @package TYPO3
- * @subpackage t3lib_tree
  */
 abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 
@@ -46,9 +45,14 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
 	protected $levelMaximum = 2;
 
 	/**
-	 * @var t3lib_tree_AbstractNode
+	 * @var \TYPO3\CMS\Backend\Tree\TreeNode
 	 */
 	protected $treeData = NULL;
+
+	/**
+	 * @var string
+	 */
+	protected $treeId;
 
 	/**
 	 * @var string
@@ -138,7 +142,7 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
 	/**
 	 * Gets the expanded state of a given node
 	 *
-	 * @param t3lib_tree_AbstractNode $node
+	 * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
 	 * @return boolean
 	 */
 	protected function isExpanded(\TYPO3\CMS\Backend\Tree\TreeNode $node) {
@@ -250,6 +254,4 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
 	}
 
 }
-
-
 ?>
