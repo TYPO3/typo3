@@ -37,16 +37,18 @@ class PersistenceManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	 * underscore class names instead of namespaced class names
 	 */
 	public function persistAllAddsReconstitutedObjectFromSessionToBackendsAggregateRootObjects() {
+		$className = uniqid('BazFixture');
 		eval ('
-			class Foo_Bar_Domain_Model_BazFixture extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {}
+			class Foo_Bar_Domain_Model_' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {}
 		');
 		eval ('
-			class Foo_Bar_Domain_Repository_BazFixtureRepository {}
+			class Foo_Bar_Domain_Repository_' . $className . 'Repository {}
 		');
 
 		$persistenceSession = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
 		$aggregateRootObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$entity1 = new \Foo_Bar_Domain_Model_BazFixture();
+		$fullClassName = 'Foo_Bar_Domain_Model_' . $className;
+		$entity1 = new $fullClassName();
 		$aggregateRootObjects->attach($entity1);
 		$persistenceSession->registerReconstitutedObject($entity1);
 		$mockTypo3DbBackend = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend'), array('commit','setAggregateRootObjects','setDeletedObjects'), array(), '', FALSE);
@@ -63,18 +65,20 @@ class PersistenceManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	 * @test
 	 */
 	public function persistAllAddsNamespacedReconstitutedObjectFromSessionToBackendsAggregateRootObjects() {
+		$className = uniqid('BazFixture');
 		eval ('
 			namespace Foo\\Bar\\Domain\\Model;
-			class BazFixture extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {}
+			class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {}
 		');
 		eval ('
 			namespace Foo\\Bar\\Domain\\Repository;
-			class BazFixtureRepository {}
+			class  ' . $className . 'Repository {}
 		');
 
 		$persistenceSession = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
 		$aggregateRootObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$entity1 = new \Foo\Bar\Domain\Model\BazFixture();
+		$classNameWithNamespace = 'Foo\\Bar\\Domain\\Model\\' . $className;
+		$entity1 = new $classNameWithNamespace();
 		$aggregateRootObjects->attach($entity1);
 		$persistenceSession->registerReconstitutedObject($entity1);
 		$mockTypo3DbBackend = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend'), array('commit','setAggregateRootObjects','setDeletedObjects'), array(), '', FALSE);

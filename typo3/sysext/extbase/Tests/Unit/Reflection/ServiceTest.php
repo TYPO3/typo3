@@ -71,18 +71,19 @@ class ServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNamespacedClasses() {
+		$className = uniqid('BazFixture');
 		eval ('
 			namespace Foo\\Bar\\Domain\\Model;
-			class BazFixture extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {}
+			class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {}
 		');
 		eval ('
 			namespace Foo\\Bar\\Domain\\Repository;
-			class BazFixtureRepository {}
+			class ' . $className . 'Repository {}
 		');
 
 		$service = new \TYPO3\CMS\Extbase\Reflection\Service();
 		$service->injectObjectManager($this->objectManager);
-		$classSchema = $service->getClassSchema('Foo\\Bar\\Domain\\Model\\BazFixture');
+		$classSchema = $service->getClassSchema('Foo\\Bar\\Domain\\Model\\' . $className);
 		$this->assertTrue($classSchema->isAggregateRoot());
 	}
 
@@ -90,16 +91,17 @@ class ServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNotNamespacedClasses() {
+		$className = uniqid('BazFixture');
 		eval ('
-			class Foo_Bar_Domain_Model_BazFixture extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {}
+			class Foo_Bar_Domain_Model_' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {}
 		');
 		eval ('
-			class Foo_Bar_Domain_Repository_BazFixtureRepository {}
+			class Foo_Bar_Domain_Repository_' . $className . 'Repository {}
 		');
 
 		$service = new \TYPO3\CMS\Extbase\Reflection\Service();
 		$service->injectObjectManager($this->objectManager);
-		$classSchema = $service->getClassSchema('Foo_Bar_Domain_Model_BazFixture');
+		$classSchema = $service->getClassSchema('Foo_Bar_Domain_Model_' . $className);
 		$this->assertTrue($classSchema->isAggregateRoot());
 	}
 
