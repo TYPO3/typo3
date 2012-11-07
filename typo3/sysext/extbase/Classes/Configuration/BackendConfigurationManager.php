@@ -34,7 +34,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 	/**
 	 * @var array
 	 */
-	protected $typoScriptSetupCache = NULL;
+	protected $typoScriptSetupCache = array();
 
 	/**
 	 * Returns TypoScript Setup array from current Environment.
@@ -42,26 +42,27 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 	 * @return array the raw TypoScript setup
 	 */
 	public function getTypoScriptSetup() {
-		if ($this->typoScriptSetupCache === NULL) {
+		$pageId = $this->getCurrentPageId();
+
+		if (!array_key_exists($pageId, $this->typoScriptSetupCache)) {
 			$template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\TemplateService');
 			// do not log time-performance information
 			$template->tt_track = 0;
 			$template->init();
 			// Get the root line
 			$rootline = array();
-			$pageId = $this->getCurrentPageId();
 			if ($pageId > 0) {
 				/** @var $sysPage \TYPO3\CMS\Frontend\Page\PageRepository */
 				$sysPage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 				// Get the rootline for the current page
-				$rootline = $sysPage->getRootLine($this->getCurrentPageId(), '', TRUE);
+				$rootline = $sysPage->getRootLine($pageId, '', TRUE);
 			}
 			// This generates the constants/config + hierarchy info for the template.
 			$template->runThroughTemplates($rootline, 0);
 			$template->generateConfig();
-			$this->typoScriptSetupCache = $template->setup;
+			$this->typoScriptSetupCache[$pageId] = $template->setup;
 		}
-		return $this->typoScriptSetupCache;
+		return $this->typoScriptSetupCache[$pageId];
 	}
 
 	/**
