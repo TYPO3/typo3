@@ -34,7 +34,7 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 	/**
 	 * @var array
 	 */
-	protected $typoScriptSetupCache = NULL;
+	protected $typoScriptSetupCache = array();
 
 	/**
 	 * Returns TypoScript Setup array from current Environment.
@@ -42,7 +42,9 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 	 * @return array the raw TypoScript setup
 	 */
 	public function getTypoScriptSetup() {
-		if ($this->typoScriptSetupCache === NULL) {
+		$pageId = $this->getCurrentPageId();
+
+		if (!array_key_exists($pageId, $this->typoScriptSetupCache)) {
 			$template = t3lib_div::makeInstance('t3lib_TStemplate');
 				// do not log time-performance information
 			$template->tt_track = 0;
@@ -50,13 +52,13 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 				// Get the root line
 			$sysPage = t3lib_div::makeInstance('t3lib_pageSelect');
 				// get the rootline for the current page
-			$rootline = $sysPage->getRootLine($this->getCurrentPageId());
+			$rootline = $sysPage->getRootLine($pageId);
 				// This generates the constants/config + hierarchy info for the template.
 			$template->runThroughTemplates($rootline, 0);
 			$template->generateConfig();
-			$this->typoScriptSetupCache = $template->setup;
+			$this->typoScriptSetupCache[$pageId] = $template->setup;
 		}
-		return $this->typoScriptSetupCache;
+		return $this->typoScriptSetupCache[$pageId];
 	}
 
 	/**
