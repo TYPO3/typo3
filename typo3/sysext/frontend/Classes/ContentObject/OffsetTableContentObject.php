@@ -28,14 +28,8 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  ***************************************************************/
 /**
  * Rendering of tables for offset
- *
- * @see 	tslib_cObj::OTABLE(), tslib_cObj::stdWrap()
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tslib
  */
-class OffsetTableContentObject {
-
+class OffsetTableContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 	/**
 	 * @todo Define visibility
 	 */
@@ -50,6 +44,25 @@ class OffsetTableContentObject {
 	 * @todo Define visibility
 	 */
 	public $tdParams = ' width="99%" valign="top"';
+
+	/**
+	 * Rendering the cObject, OTABLE
+	 *
+	 * @param array $conf Array of TypoScript properties
+	 * @return string Output
+	 */
+	public function render($conf = array()) {
+		$tableParams = isset($conf['tableParams.']) ? $this->cObj->stdWrap($conf['tableParams'], $conf['tableParams.']) : $conf['tableParams'];
+		if ($tableParams) {
+			$this->tableParams = $tableParams;
+		}
+		$offset = isset($conf['offset.']) ? $this->cObj->stdWrap($conf['offset'], $conf['offset.']) : $conf['offset'];
+		$content = $this->start($this->cObj->cObjGet($conf), $offset);
+		if (isset($conf['stdWrap.'])) {
+			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+		}
+		return $content;
+	}
 
 	/**
 	 * Wrapping the input content string in a table which will space it out from top/left/right/bottom
