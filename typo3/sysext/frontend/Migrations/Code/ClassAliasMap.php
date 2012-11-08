@@ -32,7 +32,7 @@ return array(
 	'tslib_content_LoadRegister' => 'TYPO3\\CMS\\Frontend\\ContentObject\\LoadRegisterContentObject',
 	'tslib_content_Media' => 'TYPO3\\CMS\\Frontend\\ContentObject\\MediaContentObject',
 	'tslib_menu' => 'TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\AbstractMenuContentObject',
-	'tslib_menu_filterMenuPagesHook' => 'TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\AbstractMenuContentObject_filterMenuPagesHook',
+	'tslib_menu_filterMenuPagesHook' => 'TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\AbstractMenuFilterPagesHookInterface',
 	'tslib_gmenu' => 'TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\GraphicalMenuContentObject',
 	'tslib_gmenu_foldout' => 'TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\GraphicalMenuFoldout',
 	'tslib_gmenu_layers' => 'TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\GraphicalMenuLayers',
