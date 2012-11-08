@@ -85,7 +85,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Get current configuration of an extension
+	 * Get current configuration of an extension. Will return the configuration as a valued object
 	 *
 	 * @param string $extensionKey
 	 * @return array
@@ -95,6 +95,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$defaultConfig = $this->configurationItemRepository->createArrayFromConstants(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_site . $extension['siteRelPath'] . '/ext_conf_template.txt'), $extension);
 		$currentExtensionConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
 		$currentExtensionConfig = is_array($currentExtensionConfig) ? $currentExtensionConfig : array();
+		$currentExtensionConfig = $this->convertNestedToValuedConfiguration($currentExtensionConfig);
 		$currentFullConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($defaultConfig, $currentExtensionConfig);
 		return $currentFullConfiguration;
 	}
@@ -118,6 +119,23 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		return $nestedConfiguration;
 	}
 
+	/**
+	 * Convert a nested configuration to a valued configuration
+	 *
+	 * array('first.' => array('second' => 1))
+	 * will become
+	 * array('first.second' => array('value' => 1)
+	 * @param array $nestedConfiguration
+	 * @return array
+	 */
+	public function convertNestedToValuedConfiguration(array $nestedConfiguration) {
+		$flatExtensionConfig = \TYPO3\CMS\Core\Utility\ArrayUtility::flatten($nestedConfiguration);
+		$valuedCurrentExtensionConfig = array();
+		foreach ($flatExtensionConfig as $key => $value) {
+			$valuedCurrentExtensionConfig[$key]['value'] = $value;
+		}
+		return $valuedCurrentExtensionConfig;
+	}
 }
 
 
