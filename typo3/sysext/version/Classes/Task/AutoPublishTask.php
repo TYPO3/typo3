@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Version\Task;
  * @package 		TYPO3
  * @subpackage 	tx_version
  */
-class AutoPublishTask extends \TYPO3\CMS\Scheduler\Task {
+class AutoPublishTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
 	 * Method executed from the Scheduler.
