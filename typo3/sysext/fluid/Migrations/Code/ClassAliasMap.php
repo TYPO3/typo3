@@ -124,7 +124,6 @@ return array(
 	'Tx_Fluid_ViewHelpers_Link_ExternalViewHelper' => 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Link\\ExternalViewHelper',
 	'Tx_Fluid_ViewHelpers_Link_PageViewHelper' => 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Link\\PageViewHelper',
 	'Tx_Fluid_ViewHelpers_RenderChildrenViewHelper' => 'TYPO3\\CMS\\Fluid\\ViewHelpers\\RenderChildrenViewHelper',
-	'Tx_Fluid_ViewHelpers_RenderFlashMessagesViewHelper' => 'TYPO3\\CMS\\Fluid\\ViewHelpers\\RenderFlashMessagesViewHelper',
 	'Tx_Fluid_ViewHelpers_RenderViewHelper' => 'TYPO3\\CMS\\Fluid\\ViewHelpers\\RenderViewHelper',
 	'Tx_Fluid_ViewHelpers_SectionViewHelper' => 'TYPO3\\CMS\\Fluid\\ViewHelpers\\SectionViewHelper',
 	'Tx_Fluid_ViewHelpers_Security_IfAuthenticatedViewHelper' => 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Security\\IfAuthenticatedViewHelper',
