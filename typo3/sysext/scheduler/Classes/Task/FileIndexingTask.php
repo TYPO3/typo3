@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  * @package TYPO3
  * @subpackage media
  */
-class FileIndexingTask extends \TYPO3\CMS\Scheduler\Task {
+class FileIndexingTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
 	 * @var string

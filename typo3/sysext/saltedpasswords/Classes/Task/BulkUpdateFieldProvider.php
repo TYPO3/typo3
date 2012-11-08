@@ -123,7 +123,7 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
 	 * @param tx_scheduler_Task|tx_saltedpasswords_Tasks_BulkUpdate $task Reference to the current task object
 	 * @return void
 	 */
-	public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task $task) {
+	public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		if (isset($submittedData['scheduler_saltedpasswordsBulkUpdateCanDeactivateSelf']) && $submittedData['scheduler_saltedpasswordsBulkUpdateCanDeactivateSelf'] === 'IsChecked') {
 			$task->setCanDeactivateSelf(TRUE);
 		} else {

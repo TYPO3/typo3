@@ -36,7 +36,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  * @package TYPO3
  * @subpackage scheduler
  */
-class TableGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task {
+class TableGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
 	 * @var boolean True if all tables should be cleaned up

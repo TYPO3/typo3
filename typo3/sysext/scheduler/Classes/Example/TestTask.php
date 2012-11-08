@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Scheduler\Example;
  * @package 		TYPO3
  * @subpackage 	tx_scheduler
  */
-class TestTask extends \TYPO3\CMS\Scheduler\Task {
+class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
 	 * An email address to be used during the process

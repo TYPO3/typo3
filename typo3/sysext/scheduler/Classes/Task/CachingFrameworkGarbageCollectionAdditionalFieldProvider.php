@@ -95,10 +95,10 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3
 	 * Save selected backends in task object
 	 *
 	 * @param array $submittedData Contains data submitted by the user
-	 * @param \TYPO3\CMS\Scheduler\Task $task Reference to the current task object
+	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Reference to the current task object
 	 * @return void
 	 */
-	public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task $task) {
+	public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		$task->selectedBackends = $submittedData['scheduler_cachingFrameworkGarbageCollection_selectedBackends'];
 	}
 

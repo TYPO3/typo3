@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  * @package TYPO3
  * @subpackage scheduler
  */
-class CachingFrameworkGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task {
+class CachingFrameworkGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
 	 * Backend types that should be cleaned up,

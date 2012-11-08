@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  * @package TYPO3
  * @subpackage scheduler
  */
-class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task {
+class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
 	 * Elapsed period since last modification before a file will
