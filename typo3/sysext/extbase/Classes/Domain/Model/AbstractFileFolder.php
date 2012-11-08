@@ -31,22 +31,22 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 abstract class AbstractFileFolder extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\ResourceInterface|\TYPO3\CMS\Core\Resource\Folder|\TYPO3\CMS\Core\Resource\AbstractFile
+	 * @var \TYPO3\CMS\Core\Resource\ResourceInterface|\TYPO3\CMS\Core\Resource\AbstractFile|\TYPO3\CMS\Core\Resource\Folder|\TYPO3\CMS\Core\Resource\FileReference
 	 */
-	protected $object;
+	protected $originalResource;
 
 	/**
-	 * @param \TYPO3\CMS\Core\Resource\ResourceInterface $object
+	 * @param \TYPO3\CMS\Core\Resource\ResourceInterface $originalResource
 	 */
-	public function setObject(\TYPO3\CMS\Core\Resource\ResourceInterface $object) {
-		$this->object = $object;
+	public function setOriginalResource(\TYPO3\CMS\Core\Resource\ResourceInterface $originalResource) {
+		$this->originalResource = $originalResource;
 	}
 
 	/**
 	 * @return \TYPO3\CMS\Core\Resource\ResourceInterface|\TYPO3\CMS\Core\Resource\Folder|\TYPO3\CMS\Core\Resource\AbstractFile
 	 */
-	public function getObject() {
-		return $this->object;
+	public function getOriginalResource() {
+		return $this->originalResource;
 	}
 }
 

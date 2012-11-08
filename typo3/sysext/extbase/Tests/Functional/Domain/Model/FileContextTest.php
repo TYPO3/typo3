@@ -74,8 +74,8 @@ class FileContextTest extends \Tx_Extbase_Tests_Functional_BaseTestCase {
 		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
 		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
 		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\File', $fixture->getFile());
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\File', $fixture->getFile()->getObject());
-		$this->assertEquals(1, $fixture->getFile()->getObject()->getUid());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\File', $fixture->getFile()->getOriginalResource());
+		$this->assertEquals(1, $fixture->getFile()->getOriginalResource()->getUid());
 	}
 
 	/**
@@ -93,9 +93,9 @@ class FileContextTest extends \Tx_Extbase_Tests_Functional_BaseTestCase {
 		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', $fixture->getFiles());
 		$this->assertEquals(2, $fixture->getFiles()->count());
 		$fixture->getFiles()->rewind();
-		$this->assertEquals(1, $fixture->getFiles()->current()->getObject()->getUid());
+		$this->assertEquals(1, $fixture->getFiles()->current()->getOriginalResource()->getUid());
 		$fixture->getFiles()->next();
-		$this->assertEquals(2, $fixture->getFiles()->current()->getObject()->getUid());
+		$this->assertEquals(2, $fixture->getFiles()->current()->getOriginalResource()->getUid());
 	}
 
 	/**
@@ -108,9 +108,9 @@ class FileContextTest extends \Tx_Extbase_Tests_Functional_BaseTestCase {
 		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
 		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
 		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\FileReference', $fixture->getFileReference());
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\FileReference', $fixture->getFileReference()->getObject());
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\File', $fixture->getFileReference()->getObject()->getOriginalFile());
-		$this->assertEquals(1, $fixture->getFileReference()->getObject()->getOriginalFile()->getUid());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\FileReference', $fixture->getFileReference()->getOriginalResource());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\File', $fixture->getFileReference()->getOriginalResource()->getOriginalFile());
+		$this->assertEquals(1, $fixture->getFileReference()->getOriginalResource()->getOriginalFile()->getUid());
 	}
 
 	/**
@@ -128,13 +128,13 @@ class FileContextTest extends \Tx_Extbase_Tests_Functional_BaseTestCase {
 		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', $fixture->getFileReferences());
 		$this->assertEquals(2, $fixture->getFileReferences()->count());
 		$fixture->getFileReferences()->rewind();
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\FileReference', $fixture->getFileReferences()->current()->getObject());
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\File', $fixture->getFileReferences()->current()->getObject()->getOriginalFile());
-		$this->assertEquals(1, $fixture->getFileReferences()->current()->getObject()->getOriginalFile()->getUid());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\FileReference', $fixture->getFileReferences()->current()->getOriginalResource());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\File', $fixture->getFileReferences()->current()->getOriginalResource()->getOriginalFile());
+		$this->assertEquals(1, $fixture->getFileReferences()->current()->getOriginalResource()->getOriginalFile()->getUid());
 		$fixture->getFileReferences()->next();
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\FileReference', $fixture->getFileReferences()->current()->getObject());
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\File', $fixture->getFileReferences()->current()->getObject()->getOriginalFile());
-		$this->assertEquals(2, $fixture->getFileReferences()->current()->getObject()->getOriginalFile()->getUid());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\FileReference', $fixture->getFileReferences()->current()->getOriginalResource());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\File', $fixture->getFileReferences()->current()->getOriginalResource()->getOriginalFile());
+		$this->assertEquals(2, $fixture->getFileReferences()->current()->getOriginalResource()->getOriginalFile()->getUid());
 	}
 
 	/**
@@ -151,8 +151,8 @@ class FileContextTest extends \Tx_Extbase_Tests_Functional_BaseTestCase {
 		/** @var $fixture \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture\FileContext */
 		$fixture = $this->propertyMapper->convert($data, 'TYPO3\\CMS\\Extbase\\Tests\\Functional\\Domain\\Model\\Fixture\\FileContext', $this->propertyMapperConfiguration);
 		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\Folder', $fixture->getFolder());
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\Folder', $fixture->getFolder()->getObject());
-		$this->assertEquals('/', $fixture->getFolder()->getObject()->getIdentifier());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\Folder', $fixture->getFolder()->getOriginalResource());
+		$this->assertEquals('/', $fixture->getFolder()->getOriginalResource()->getIdentifier());
 	}
 
 	/**
@@ -175,12 +175,12 @@ class FileContextTest extends \Tx_Extbase_Tests_Functional_BaseTestCase {
 		$this->assertEquals(2, $fixture->getFolders()->count());
 		$fixture->getFolders()->rewind();
 		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\Folder', $fixture->getFolders()->current());
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\Folder', $fixture->getFolders()->current()->getObject());
-		$this->assertEquals('/', $fixture->getFolders()->current()->getObject()->getIdentifier());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\Folder', $fixture->getFolders()->current()->getOriginalResource());
+		$this->assertEquals('/', $fixture->getFolders()->current()->getOriginalResource()->getIdentifier());
 		$fixture->getFolders()->next();
 		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\Folder', $fixture->getFolders()->current());
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\Folder', $fixture->getFolders()->current()->getObject());
-		$this->assertEquals('/', $fixture->getFolders()->current()->getObject()->getIdentifier());
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\Folder', $fixture->getFolders()->current()->getOriginalResource());
+		$this->assertEquals('/', $fixture->getFolders()->current()->getOriginalResource()->getIdentifier());
 	}
 
 	/**
