@@ -53,7 +53,7 @@ class FolderConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstract
 	 * @param string $source
 	 * @return \TYPO3\CMS\Core\Resource\Folder
 	 */
-	protected function getObject($source) {
+	protected function getOriginalResource($source) {
 		return $this->fileFactory->getFolderObjectFromCombinedIdentifier($source);
 	}
 }

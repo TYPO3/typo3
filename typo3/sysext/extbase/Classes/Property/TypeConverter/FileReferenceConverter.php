@@ -53,7 +53,7 @@ class FileReferenceConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\A
 	 * @param integer $source
 	 * @return \TYPO3\CMS\Core\Resource\FileReference
 	 */
-	protected function getObject($source) {
+	protected function getOriginalResource($source) {
 		return $this->fileFactory->getFileReferenceObject($source);
 	}
 }
