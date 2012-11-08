@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Workspaces\Task;
  * @package Workspaces
  * @subpackage Service
  */
-class CleanupPreviewLinkTask extends \TYPO3\CMS\Scheduler\Task {
+class CleanupPreviewLinkTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
 	 * Cleanup old preview links.

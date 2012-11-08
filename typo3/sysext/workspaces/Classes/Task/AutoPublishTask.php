@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Workspaces\Task;
  * @package Workspaces
  * @subpackage Service
  */
-class AutoPublishTask extends \TYPO3\CMS\Scheduler\Task {
+class AutoPublishTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
 	 * Method executed from the Scheduler.
