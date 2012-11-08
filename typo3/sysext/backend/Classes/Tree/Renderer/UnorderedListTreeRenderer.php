@@ -50,7 +50,7 @@ class UnorderedListTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\Abstrac
 	 * @return string
 	 */
 	public function renderNode(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node, $recursive = TRUE) {
-		$code = '<li><span class="' . $node->getIcon() . '">&nbsp;</span>' . $node->getLabel();
+		$code = '<li><span class="' . htmlspecialchars($node->getIcon()) . '">&nbsp;</span>' . htmlspecialchars($node->getLabel());
 		if ($recursive && $node->getChildNodes() !== NULL) {
 			$this->recursionLevel++;
 			$code .= $this->renderNodeCollection($node->getChildNodes());

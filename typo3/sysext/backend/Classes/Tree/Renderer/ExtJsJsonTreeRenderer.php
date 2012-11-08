@@ -76,6 +76,13 @@ class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTre
 			'id' => $node->getId(),
 			'uid' => $node->getId()
 		);
+
+		foreach ($nodeArray as &$nodeItem) {
+			if (is_string($nodeItem)) {
+				$nodeItem = htmlspecialchars($nodeItem);
+			}
+		}
+
 		return $nodeArray;
 	}
 
