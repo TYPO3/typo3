@@ -27,25 +27,12 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Searching in database tables, typ. "pages" and "tt_content"
+ * Search class used for the content object SEARCHRESULT
+ * and searching in database tables, typ. "pages" and "tt_content"
  * Used to generate search queries for TypoScript.
  * The class is included from "class.tslib_pagegen.php" based on whether there has been detected content in the GPvar "sword"
- *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author René Fritz	<r.fritz@colorcube.de>
  */
-/**
- * Search class used for the content object SEARCHRESULT
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tslib
- * @see 	tslib_cObj::SEARCHRESULT()
- */
-class SearchResultContentObject {
-
+class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 	/**
 	 * @todo Define visibility
 	 */
@@ -135,6 +122,160 @@ class SearchResultContentObject {
 	 * @todo Define visibility
 	 */
 	public $listOfSearchFields = '';
+
+	/**
+	 * Rendering the cObject, SEARCHRESULT
+	 *
+	 * @param array $conf Array of TypoScript properties
+	 * @return string Output
+	 */
+	public function render($conf = array()) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sword') && \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('scols')) {
+			$this->register_and_explode_search_string(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sword'));
+			$this->register_tables_and_columns(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('scols'), $conf['allowedCols']);
+			// Depth
+			$depth = 100;
+			// The startId is found
+			$theStartId = 0;
+			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('stype'))) {
+				$temp_theStartId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('stype');
+				$rootLine = $GLOBALS['TSFE']->sys_page->getRootLine($temp_theStartId);
+				// The page MUST have a rootline with the Level0-page of the current site inside!!
+				foreach ($rootLine as $val) {
+					if ($val['uid'] == $GLOBALS['TSFE']->tmpl->rootLine[0]['uid']) {
+						$theStartId = $temp_theStartId;
+					}
+				}
+			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('stype')) {
+				if (substr(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('stype'), 0, 1) == 'L') {
+					$pointer = intval(substr(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('stype'), 1));
+					$theRootLine = $GLOBALS['TSFE']->tmpl->rootLine;
+					// location Data:
+					$locDat_arr = explode(':', \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('locationData'));
+					$pId = intval($locDat_arr[0]);
+					if ($pId) {
+						$altRootLine = $GLOBALS['TSFE']->sys_page->getRootLine($pId);
+						ksort($altRootLine);
+						if (count($altRootLine)) {
+							// Check if the rootline has the real Level0 in it!!
+							$hitRoot = 0;
+							$theNewRoot = array();
+							foreach ($altRootLine as $val) {
+								if ($hitRoot || $val['uid'] == $GLOBALS['TSFE']->tmpl->rootLine[0]['uid']) {
+									$hitRoot = 1;
+									$theNewRoot[] = $val;
+								}
+							}
+							if ($hitRoot) {
+								// Override the real rootline if any thing
+								$theRootLine = $theNewRoot;
+							}
+						}
+					}
+					$key = $this->cObj->getKey($pointer, $theRootLine);
+					$theStartId = $theRootLine[$key]['uid'];
+				}
+			}
+			if (!$theStartId) {
+				// If not set, we use current page
+				$theStartId = $GLOBALS['TSFE']->id;
+			}
+			// Generate page-tree
+			$this->pageIdList .= $this->cObj->getTreeList(-1 * $theStartId, $depth);
+			$endClause = 'pages.uid IN (' . $this->pageIdList . ')
+				AND pages.doktype in (' . $GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'] . ($conf['addExtUrlsAndShortCuts'] ? ',3,4' : '') . ')
+				AND pages.no_search=0' . $this->cObj->enableFields($this->fTable) . $this->cObj->enableFields('pages');
+			if ($conf['languageField.'][$this->fTable]) {
+				// (using sys_language_uid which is the ACTUAL language of the page.
+				// sys_language_content is only for selecting DISPLAY content!)
+				$endClause .= ' AND ' . $this->fTable . '.' . $conf['languageField.'][$this->fTable] . ' = ' . intval($GLOBALS['TSFE']->sys_language_uid);
+			}
+			// Build query
+			$this->build_search_query($endClause);
+			// Count...
+			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('scount'))) {
+				$this->res_count = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('scount');
+			} else {
+				$this->count_query();
+			}
+			// Range
+			$spointer = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('spointer'));
+			$range = isset($conf['range.']) ? $this->cObj->stdWrap($conf['range'], $conf['range.']) : $conf['range'];
+			if ($range) {
+				$theRange = intval($range);
+			} else {
+				$theRange = 20;
+			}
+			// Order By:
+			$noOrderBy = isset($conf['noOrderBy.']) ? $this->cObj->stdWrap($conf['noOrderBy'], $conf['noOrderBy.']) : $conf['noOrderBy'];
+			if (!$noOrderBy) {
+				$this->queryParts['ORDERBY'] = 'pages.lastUpdated, pages.tstamp';
+			}
+			$this->queryParts['LIMIT'] = $spointer . ',' . $theRange;
+			// Search...
+			$this->execute_query();
+			if ($GLOBALS['TYPO3_DB']->sql_num_rows($this->result)) {
+				$GLOBALS['TSFE']->register['SWORD_PARAMS'] = $this->get_searchwords();
+				$total = $this->res_count;
+				$rangeLow = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($spointer + 1, 1, $total);
+				$rangeHigh = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($spointer + $theRange, 1, $total);
+				// prev/next url:
+				$target = isset($conf['target.']) ? $this->cObj->stdWrap($conf['target'], $conf['target.']) : $conf['target'];
+				$LD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page, $target, 1, '', '', $this->cObj->getClosestMPvalueForPage($GLOBALS['TSFE']->page['uid']));
+				$targetPart = $LD['target'] ? ' target="' . htmlspecialchars($LD['target']) . '"' : '';
+				$urlParams = $this->cObj->URLqMark($LD['totalURL'], '&sword=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sword')) . '&scols=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('scols')) . '&stype=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('stype')) . '&scount=' . $total);
+				// substitution:
+				$result = $this->cObj->cObjGetSingle($conf['layout'], $conf['layout.'], 'layout');
+				$result = str_replace('###RANGELOW###', $rangeLow, $result);
+				$result = str_replace('###RANGEHIGH###', $rangeHigh, $result);
+				$result = str_replace('###TOTAL###', $total, $result);
+				if ($rangeHigh < $total) {
+					$next = $this->cObj->cObjGetSingle($conf['next'], $conf['next.'], 'next');
+					$next = '<a href="' . htmlspecialchars(($urlParams . '&spointer=' . ($spointer + $theRange))) . '"' . $targetPart . $GLOBALS['TSFE']->ATagParams . '>' . $next . '</a>';
+				} else {
+					$next = '';
+				}
+				$result = str_replace('###NEXT###', $next, $result);
+				if ($rangeLow > 1) {
+					$prev = $this->cObj->cObjGetSingle($conf['prev'], $conf['prev.'], 'prev');
+					$prev = '<a href="' . htmlspecialchars(($urlParams . '&spointer=' . ($spointer - $theRange))) . '"' . $targetPart . $GLOBALS['TSFE']->ATagParams . '>' . $prev . '</a>';
+				} else {
+					$prev = '';
+				}
+				$result = str_replace('###PREV###', $prev, $result);
+				// Searching result
+				$theValue = $this->cObj->cObjGetSingle($conf['resultObj'], $conf['resultObj.'], 'resultObj');
+				$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+				$cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
+				$renderCode = '';
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($this->result)) {
+					// versionOL() here? This is search result displays, is that possible to preview anyway?
+					// Or are records selected here already future versions?
+					$cObj->start($row);
+					$renderCode .= $cObj->cObjGetSingle($conf['renderObj'], $conf['renderObj.'], 'renderObj');
+				}
+				$renderWrap = isset($conf['renderWrap.']) ? $this->cObj->stdWrap($conf['renderWrap'], $conf['renderWrap.']) : $conf['renderWrap'];
+				$theValue .= $this->cObj->wrap($renderCode, $renderWrap);
+				$theValue = str_replace('###RESULT###', $theValue, $result);
+			} else {
+				$theValue = $this->cObj->cObjGetSingle($conf['noResultObj'], $conf['noResultObj.'], 'noResultObj');
+			}
+			$GLOBALS['TT']->setTSlogMessage('Search in fields:   ' . $this->listOfSearchFields);
+			// Wrapping
+			$content = $theValue;
+			$wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
+			if ($wrap) {
+				$content = $this->cObj->wrap($content, $wrap);
+			}
+			if (isset($conf['stdWrap.'])) {
+				$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+			}
+			// returning
+			$GLOBALS['TSFE']->set_no_cache();
+			return $content;
+		}
+		return '';
+	}
 
 	/**
 	 * Creates the $this->tables-array.
