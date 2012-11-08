@@ -98,16 +98,26 @@ class RecordHistory {
 	public $showMarked = FALSE;
 
 	/**
+	 * @var array
+	 */
+	protected $recordCache = array();
+
+	/**
+	 * @var array
+	 */
+	protected $pageAccessCache = array();
+
+	/**
 	 * Constructor for the class
 	 *
 	 * @todo Define visibility
 	 */
 	public function __construct() {
 		// GPvars:
-		$this->element = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('element');
-		$this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
-		$this->lastSyslogId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('diff');
-		$this->rollbackFields = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('rollbackFields');
+		$this->element = $this->getArgument('element');
+		$this->returnUrl = $this->getArgument('returnUrl');
+		$this->lastSyslogId = $this->getArgument('diff');
+		$this->rollbackFields = $this->getArgument('rollbackFields');
 		// Resolve sh_uid if set
 		$this->resolveShUid();
 	}
@@ -122,8 +132,8 @@ class RecordHistory {
 	public function main() {
 		$content = '';
 		// Single-click rollback
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('revert') && \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sumUp')) {
-			$this->rollbackFields = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('revert');
+		if ($this->getArgument('revert') && $this->getArgument('sumUp')) {
+			$this->rollbackFields = $this->getArgument('revert');
 			$this->showInsertDelete = 0;
 			$this->showSubElements = 0;
 			$element = explode(':', $this->element);
@@ -136,8 +146,8 @@ class RecordHistory {
 			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->returnUrl);
 		}
 		// Save snapshot
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('highlight') && !\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('settings')) {
-			$this->toggleHighlight(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('highlight'));
+		if ($this->getArgument('highlight') && !$this->getArgument('settings')) {
+			$this->toggleHighlight($this->getArgument('highlight'));
 		}
 		$content .= $this->displaySettings();
 		if ($this->createChangeLog()) {
@@ -300,7 +310,7 @@ class RecordHistory {
 	public function displaySettings() {
 		// Get current selection from UC, merge data, write it back to UC
 		$currentSelection = is_array($GLOBALS['BE_USER']->uc['moduleData']['history']) ? $GLOBALS['BE_USER']->uc['moduleData']['history'] : array('maxSteps' => '', 'showDiff' => 1, 'showSubElements' => 1, 'showInsertDelete' => 1);
-		$currentSelectionOverride = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('settings');
+		$currentSelectionOverride = $this->getArgument('settings');
 		if ($currentSelectionOverride) {
 			$currentSelection = array_merge($currentSelection, $currentSelectionOverride);
 			$GLOBALS['BE_USER']->uc['moduleData']['history'] = $currentSelection;
@@ -351,12 +361,15 @@ class RecordHistory {
 		$content = '';
 		// Get link to page history if the element history is shown
 		$elParts = explode(':', $this->element);
-		if ($elParts[0] != 'pages') {
+		if (!empty($this->element) && $elParts[0] != 'pages') {
 			$content .= '<strong>' . $GLOBALS['LANG']->getLL('elementHistory', 1) . '</strong><br />';
-			$pid = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($elParts[0], 'uid=' . intval($elParts[1]));
-			$content .= $this->linkPage($GLOBALS['LANG']->getLL('elementHistory_link', 1), array('element' => 'pages:' . $pid['pid']));
+			$pid = $this->getRecord($elParts[0], $elParts[1]);
+
+			if ($this->hasPageAccess('pages', $pid['pid'])) {
+				$content .= $this->linkPage($GLOBALS['LANG']->getLL('elementHistory_link', 1), array('element' => 'pages:' . $pid['pid']));
+			}
 		}
-		$content .= '<form name="settings" action="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '" method="post"><table>' . $displayCode . '</table></form>';
+		$content .= '<form name="settings" action="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) . '" method="post"><table>' . $displayCode . '</table></form>';
 		return $GLOBALS['SOBE']->doc->section($GLOBALS['LANG']->getLL('settings', 1), $content, FALSE, TRUE, FALSE, FALSE);
 	}
 
@@ -628,9 +641,14 @@ class RecordHistory {
 	 */
 	public function createChangeLog() {
 		$elParts = explode(':', $this->element);
+
+		if (empty($this->element)) {
+			return 0;
+		}
+
 		$changeLog = $this->getHistoryData($elParts[0], $elParts[1]);
 		// get history of tables of this page and merge it into changelog
-		if ($elParts[0] == 'pages' && $this->showSubElements) {
+		if ($elParts[0] == 'pages' && $this->showSubElements && $this->hasPageAccess('pages', $elParts[1])) {
 			foreach ($GLOBALS['TCA'] as $tablename => $value) {
 				// check if there are records on the page
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $tablename, 'pid=' . intval($elParts[1]));
@@ -661,9 +679,9 @@ class RecordHistory {
 	 * @todo Define visibility
 	 */
 	public function getHistoryData($table, $uid) {
-		$uid = $this->resolveElement($table, $uid);
 		// If table is found in $GLOBALS['TCA']:
-		if ($GLOBALS['TCA'][$table]) {
+		if ($GLOBALS['TCA'][$table] && $this->hasTableAccess($table) && $this->hasPageAccess($table, $uid)) {
+			$uid = $this->resolveElement($table, $uid);
 			// Selecting the $this->maxSteps most recent states:
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('sys_history.*, sys_log.userid', 'sys_history, sys_log', 'sys_history.sys_log_uid = sys_log.uid
 							AND sys_history.tablename = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_history') . '
@@ -743,7 +761,7 @@ class RecordHistory {
 	public function generateTitle($table, $uid) {
 		$out = $table . ':' . $uid;
 		if ($labelField = $GLOBALS['TCA'][$table]['ctrl']['label']) {
-			$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($table, 'uid=' . intval($uid));
+			$record = $this->getRecord($table, $uid);
 			$out .= ' (' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $record, TRUE) . ')';
 		}
 		return $out;
@@ -830,13 +848,115 @@ class RecordHistory {
 	 * @todo Define visibility
 	 */
 	public function resolveShUid() {
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sh_uid')) {
-			$sh_uid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sh_uid');
+		if ($this->getArgument('sh_uid')) {
+			$sh_uid = $this->getArgument('sh_uid');
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_history', 'uid=' . intval($sh_uid));
 			$record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$this->element = $record['tablename'] . ':' . $record['recuid'];
 			$this->lastSyslogId = $record['sys_log_uid'] - 1;
 		}
+	}
+
+	/**
+	 * Determines whether user has access to a page.
+	 *
+	 * @param string $table
+	 * @param integer $uid
+	 * @return boolean
+	 */
+	protected function hasPageAccess($table, $uid) {
+		$uid = intval($uid);
+
+		if ($table === 'pages') {
+			$pageId = $uid;
+		} else {
+			$record = $this->getRecord($table, $uid);
+			$pageId = $record['pid'];
+		}
+
+		if (!isset($this->pageAccessCache[$pageId])) {
+			$this->pageAccessCache[$pageId] = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess(
+				$pageId, $this->getBackendUser()->getPagePermsClause(1)
+			);
+		}
+
+		return ($this->pageAccessCache[$pageId] !== FALSE);
+	}
+
+	/**
+	 * Determines whether user has access to a table.
+	 *
+	 * @param string $table
+	 * @return boolean
+	 */
+	protected function hasTableAccess($table) {
+		return $this->getBackendUser()->check('tables_select', $table);
+	}
+
+	/**
+	 * Gets a database record.
+	 *
+	 * @param string $table
+	 * @param integer $uid
+	 * @return array|NULL
+	 */
+	protected function getRecord($table, $uid) {
+		if (!isset($this->recordCache[$table][$uid])) {
+			$this->recordCache[$table][$uid] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid, '*', '', FALSE);
+		}
+		return $this->recordCache[$table][$uid];
+	}
+
+	/**
+	 * Gets the current backend user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * Fetches GET/POST arguments and sanitizes the values for
+	 * the expected disposal. Invalid values will be converted
+	 * to an empty string.
+	 *
+	 * @param string $name Name of the argument
+	 * @return array|string|integer
+	 */
+	protected function getArgument($name) {
+		$value = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($name);
+
+		switch ($name) {
+			case 'element':
+				if ($value !== '' && !preg_match('#^[a-z0-9_.]+:[0-9]+$#i', $value)) {
+					$value = '';
+				}
+				break;
+			case 'rollbackFields':
+			case 'revert':
+				if ($value !== '' && !preg_match('#^[a-z0-9_.]+(:[0-9]+(:[a-z0-9_.]+)?)?$#i', $value)) {
+					$value = '';
+				}
+				break;
+			case 'returnUrl':
+				$value = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl($value);
+				break;
+			case 'diff':
+			case 'highlight':
+			case 'sh_uid':
+				$value = intval($value);
+				break;
+			case 'settings':
+				if (!is_array($value)) {
+					$value = array();
+				}
+				break;
+			default:
+				$value = '';
+		}
+
+		return $value;
 	}
 
 }
