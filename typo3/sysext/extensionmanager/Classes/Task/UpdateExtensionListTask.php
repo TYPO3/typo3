@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Extensionmanager\Task;
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class UpdateExtensionListTask extends \TYPO3\CMS\Scheduler\Task {
+class UpdateExtensionListTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
 	 * Public method, called by scheduler.

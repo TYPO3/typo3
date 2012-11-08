@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Saltedpasswords\Task;
  * @package TYPO3
  * @subpackage saltedpasswords
  */
-class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task {
+class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
 	 * @var boolean Whether or not the task is allowed to deactivate itself after processing all existing user records.

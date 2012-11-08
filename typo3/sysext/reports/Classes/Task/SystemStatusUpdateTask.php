@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Reports\Task;
  * @package TYPO3
  * @subpackage reports
  */
-class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task {
+class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
 	 * Email address to send email notification to in case we find problems with

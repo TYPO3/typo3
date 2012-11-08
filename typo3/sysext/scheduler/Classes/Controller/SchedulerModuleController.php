@@ -547,7 +547,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					throw new \LogicException('Runnings tasks cannot not be edited', 1251232849);
 				}
 				// Get the task object
-				/** @var $task \TYPO3\CMS\Scheduler\Task */
+				/** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask */
 				$task = unserialize($taskRecord['serialized_task_object']);
 				// Set some task information
 				$taskInfo['disable'] = $taskRecord['disable'];
@@ -935,7 +935,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				$multiple = '-';
 				$startExecutionElement = '&nbsp;';
 				// Restore the serialized task and pass it a reference to the scheduler object
-				/** @var $task \TYPO3\CMS\Scheduler\Task|\TYPO3\CMS\Scheduler\ProgressProviderInterface */
+				/** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask|\TYPO3\CMS\Scheduler\ProgressProviderInterface */
 				$task = unserialize($schedulerRecord['serialized_task_object']);
 				$class = get_class($task);
 				if ($class === '__PHP_Incomplete_Class' && preg_match('/^O:[0-9]+:"(?P<classname>.+?)"/', $schedulerRecord['serialized_task_object'], $matches) === 1) {
@@ -1094,7 +1094,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		if (!empty($this->submittedData['uid'])) {
 			try {
 				$taskRecord = $this->scheduler->fetchTaskRecord($this->submittedData['uid']);
-				/** @var $task \TYPO3\CMS\Scheduler\Task */
+				/** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask */
 				$task = unserialize($taskRecord['serialized_task_object']);
 			} catch (\OutOfBoundsException $e) {
 				// If the task could not be fetched, issue an error message

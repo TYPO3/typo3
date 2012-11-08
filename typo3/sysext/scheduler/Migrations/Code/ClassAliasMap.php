@@ -10,7 +10,7 @@ return array(
 	'tx_scheduler_FailedExecutionException' => 'TYPO3\\CMS\\Scheduler\\FailedExecutionException',
 	'tx_scheduler_ProgressProvider' => 'TYPO3\\CMS\\Scheduler\\ProgressProviderInterface',
 	'tx_scheduler' => 'TYPO3\\CMS\\Scheduler\\Scheduler',
-	'tx_scheduler_Task' => 'TYPO3\\CMS\\Scheduler\\Task',
+	'tx_scheduler_Task' => 'TYPO3\\CMS\\Scheduler\\Task\\AbstractTask',
 	'tx_scheduler_CachingFrameworkGarbageCollection_AdditionalFieldProvider' => 'TYPO3\\CMS\\Scheduler\\Task\\CachingFrameworkGarbageCollectionAdditionalFieldProvider',
 	'tx_scheduler_CachingFrameworkGarbageCollection' => 'TYPO3\\CMS\\Scheduler\\Task\\CachingFrameworkGarbageCollectionTask',
 	'tx_scheduler_FileIndexing' => 'TYPO3\\CMS\\Scheduler\\Task\\FileIndexingTask',

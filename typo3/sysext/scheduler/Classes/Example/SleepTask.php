@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Scheduler\Example;
  * @package 		TYPO3
  * @subpackage 	tx_scheduler
  */
-class SleepTask extends \TYPO3\CMS\Scheduler\Task {
+class SleepTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
 	 * Number of seconds the task should be sleeping for

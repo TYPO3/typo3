@@ -62,10 +62,10 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Adds a task to the pool
 	 *
-	 * @param \TYPO3\CMS\Scheduler\Task $task The object representing the task to add
+	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task The object representing the task to add
 	 * @return boolean TRUE if the task was successfully added, FALSE otherwise
 	 */
-	public function addTask(\TYPO3\CMS\Scheduler\Task $task) {
+	public function addTask(\TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		$taskUid = $task->getTaskUid();
 		if (empty($taskUid)) {
 			$fields = array(
@@ -129,10 +129,10 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * This method executes the given task and properly marks and records that execution
 	 * It is expected to return FALSE if the task was barred from running or if it was not saved properly
 	 *
-	 * @param \TYPO3\CMS\Scheduler\Task $task The task to execute
+	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task The task to execute
 	 * @return boolean Whether the task was saved successfully to the database or not
 	 */
-	public function executeTask(\TYPO3\CMS\Scheduler\Task $task) {
+	public function executeTask(\TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		// Trigger the saving of the task, as this will calculate its next execution time
 		// This should be calculated all the time, even if the execution is skipped
 		// (in case it is skipped, this pushes back execution to the next possible date)
@@ -199,10 +199,10 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Removes a task completely from the system.
 	 * TODO: find a way to actually kill the existing jobs
 	 *
-	 * @param \TYPO3\CMS\Scheduler\Task $task The object representing the task to delete
+	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task The object representing the task to delete
 	 * @return boolean TRUE if task was successfully deleted, FALSE otherwise
 	 */
-	public function removeTask(\TYPO3\CMS\Scheduler\Task $task) {
+	public function removeTask(\TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		$taskUid = $task->getTaskUid();
 		if (!empty($taskUid)) {
 			$result = $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_scheduler_task', 'uid = ' . $taskUid);
@@ -218,10 +218,10 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Updates a task in the pool
 	 *
-	 * @param \TYPO3\CMS\Scheduler\Task $task Scheduler task object
+	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Scheduler task object
 	 * @return boolean False if submitted task was not of proper class
 	 */
-	public function saveTask(\TYPO3\CMS\Scheduler\Task $task) {
+	public function saveTask(\TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		$taskUid = $task->getTaskUid();
 		if (!empty($taskUid)) {
 			try {
@@ -253,7 +253,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * If there are no due tasks the method throws an exception.
 	 *
 	 * @param integer $uid Primary key of a task
-	 * @return \TYPO3\CMS\Scheduler\Task The fetched task object
+	 * @return \TYPO3\CMS\Scheduler\Task\AbstractTask The fetched task object
 	 */
 	public function fetchTask($uid = 0) {
 		// Define where clause
@@ -275,7 +275,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 			throw new \OutOfBoundsException('No task', 1247827244);
 		} else {
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-			/** @var $task \TYPO3\CMS\Scheduler\Task */
+			/** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask */
 			$task = unserialize($row['serialized_task_object']);
 			if ($this->isValidTaskObject($task)) {
 				// The task is valid, return it
@@ -361,7 +361,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return boolean TRUE if object is a task, FALSE otherwise
 	 */
 	public function isValidTaskObject($task) {
-		return $task instanceof \TYPO3\CMS\Scheduler\Task;
+		return $task instanceof \TYPO3\CMS\Scheduler\Task\AbstractTask;
 	}
 
 	/**
@@ -403,7 +403,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		$tasks = $this->fetchTasksWithCondition('');
 		$nextExecution = FALSE;
 		foreach ($tasks as $task) {
-			/** @var $task \TYPO3\CMS\Scheduler\Task */
+			/** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask */
 			$tempNextExecution = $task->getNextDueExecution();
 			if ($nextExecution === FALSE || $tempNextExecution < $nextExecution) {
 				$nextExecution = $tempNextExecution;

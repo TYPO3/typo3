@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Scheduler;
+namespace TYPO3\CMS\Scheduler\Task;
 
 /***************************************************************
  *  Copyright notice
@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Scheduler;
  * @package 		TYPO3
  * @subpackage 	tx_scheduler
  */
-abstract class Task {
+abstract class AbstractTask {
 
 	/**
 	 * Reference to a scheduler object
