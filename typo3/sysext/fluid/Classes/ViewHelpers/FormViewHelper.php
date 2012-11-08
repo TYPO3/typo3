@@ -168,11 +168,13 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 		$this->addFieldNamePrefixToViewHelperVariableContainer();
 		$this->addFormFieldNamesToViewHelperVariableContainer();
 		$formContent = $this->renderChildren();
-		$content = $this->renderHiddenIdentityField($this->arguments['object'], $this->getFormObjectName());
+		$content = chr(10) . '<div style="display: none">';
+		$content .= $this->renderHiddenIdentityField($this->arguments['object'], $this->getFormObjectName());
 		$content .= $this->renderAdditionalIdentityFields();
 		$content .= $this->renderHiddenReferrerFields();
 		$content .= $this->renderRequestHashField();
 		// Render hmac after everything else has been rendered
+		$content .= chr(10) . '</div>' . chr(10);
 		$content .= $formContent;
 		$this->tag->setContent($content);
 		$this->removeFieldNamePrefixFromViewHelperVariableContainer();
