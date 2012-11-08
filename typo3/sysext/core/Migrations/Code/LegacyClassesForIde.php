@@ -699,92 +699,17 @@ class SC_wizard_tsconfig extends \TYPO3\CMS\Backend\Wizard\TsconfigWizard {}
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Beuser_Controller_BackendUserController extends \TYPO3\CMS\Beuser\Controller\BackendUserController {}
+class t3lib_extjs_ExtDirectRouter extends \TYPO3\CMS\Core\ExtDirect\ExtDirectRouter {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Beuser_Domain_Model_BackendUser extends \TYPO3\CMS\Beuser\Domain\Model\BackendUser {}
+class t3lib_extjs_ExtDirectApi extends \TYPO3\CMS\Core\ExtDirect\ExtDirectApi {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Beuser_Domain_Model_BackendUserGroup extends \TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Beuser_Domain_Model_Demand extends \TYPO3\CMS\Beuser\Domain\Model\Demand {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Beuser_Domain_Model_ModuleData extends \TYPO3\CMS\Beuser\Domain\Model\ModuleData {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Beuser_Domain_Repository_BackendUserGroupRepository extends \TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Beuser_Domain_Repository_BackendUserRepository extends \TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Beuser_Domain_Repository_BackendUserSessionRepository extends \TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Beuser_Service_ModuleDataStorageService extends \TYPO3\CMS\Beuser\Service\ModuleDataStorageService {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Beuser_ViewHelpers_Display_PagesViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\Display\PagesViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Beuser_ViewHelpers_Display_SysFileMountsViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\Display\SysFileMountsViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Beuser_ViewHelpers_Display_SysLanguageViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\Display\SysLanguageViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Beuser_ViewHelpers_Form_SelectDefaultValueViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\Form\SelectDefaultValueViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Beuser_ViewHelpers_IssueCommandViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\IssueCommandViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Beuser_ViewHelpers_SectionViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\SectionViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Beuser_ViewHelpers_SpriteIconForRecordViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\SpriteIconForRecordViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Beuser_ViewHelpers_SpriteManagerIconViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\SpriteManagerIconViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Beuser_ViewHelpers_SUViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\SuViewHelper {}
+class t3lib_extjs_ExtDirectDebug extends \TYPO3\CMS\Core\ExtDirect\ExtDirectDebug {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
@@ -1169,21 +1094,6 @@ class t3lib_exception extends \TYPO3\CMS\Core\Exception {}
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class t3lib_extjs_ExtDirectApi extends \TYPO3\CMS\Core\ExtDirect\ExtDirectApi {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class t3lib_extjs_ExtDirectDebug extends \TYPO3\CMS\Core\ExtDirect\ExtDirectDebug {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class t3lib_extjs_ExtDirectRouter extends \TYPO3\CMS\Core\ExtDirect\ExtDirectRouter {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class t3lib_extMgm extends \TYPO3\CMS\Core\Utility\ExtensionManagementUtility {}
 
 /**
@@ -1554,22 +1464,22 @@ class tx_cssstyledcontent_pi1 extends \TYPO3\CMS\CssStyledContent\Controller\Css
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
+class ux_t3lib_DB extends \ux_TYPO3\CMS\Core\Database\DatabaseConnection {}
+
+/**
+ * @deprecated since 6.0 will be removed in 7.0
+ */
+class ux_t3lib_sqlparser extends \ux_TYPO3\CMS\Core\Database\SqlParser {}
+
+/**
+ * @deprecated since 6.0 will be removed in 7.0
+ */
 class tx_dbal_autoloader extends \TYPO3\CMS\Dbal\Autoloader {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
 class tx_dbal_module1 extends \TYPO3\CMS\Dbal\Controller\ModuleController {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class ux_t3lib_DB extends \ux_TYPO3\CMS\Dbal\Database\DatabaseConnection {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class ux_t3lib_sqlparser extends \ux_TYPO3\CMS\Dbal\Database\SqlParser {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
@@ -1594,7 +1504,7 @@ class tx_dbal_querycache extends \TYPO3\CMS\Dbal\QueryCache {}
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class ux_localRecordList extends \ux_TYPO3\CMS\Dbal\RecordList\RecordList {}
+class ux_localRecordList extends \ux_TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
@@ -2984,12 +2894,12 @@ class Tx_Extbase_SignalSlot_Dispatcher extends \TYPO3\CMS\Extbase\SignalSlot\Dis
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Extbase_Tests_Unit_BaseTestCase extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {}
+class Tx_Extbase_SignalSlot_Exception_InvalidSlotException extends \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Extbase_SignalSlot_Exception_InvalidSlotException extends \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException {}
+class Tx_Extbase_Tests_Unit_BaseTestCase extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
@@ -3174,267 +3084,7 @@ class Tx_Extbase_Validation_ValidatorResolver extends \TYPO3\CMS\Extbase\Validat
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-abstract class Tx_Extensionmanager_Controller_AbstractController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractController {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Controller_ActionController extends \TYPO3\CMS\Extensionmanager\Controller\ActionController {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Controller_ConfigurationController extends \TYPO3\CMS\Extensionmanager\Controller\ConfigurationController {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Controller_DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\DownloadController {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Controller_ListController extends \TYPO3\CMS\Extensionmanager\Controller\ListController {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Controller_UpdateFromTerController extends \TYPO3\CMS\Extensionmanager\Controller\UpdateFromTerController {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Controller_UploadExtensionFileController extends \TYPO3\CMS\Extensionmanager\Controller\UploadExtensionFileController {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Domain_Model_ConfigurationCategory extends \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationCategory {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Domain_Model_ConfigurationItem extends \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Domain_Model_ConfigurationSubcategory extends \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationSubcategory {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Domain_Model_Dependency extends \TYPO3\CMS\Extensionmanager\Domain\Model\Dependency {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Domain_Model_DownloadQueue extends \TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Domain_Model_Extension extends \TYPO3\CMS\Extensionmanager\Domain\Model\Extension {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Domain_Model_Mirrors extends \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Domain_Model_Repository extends \TYPO3\CMS\Extensionmanager\Domain\Model\Repository {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Domain_Repository_ConfigurationItemRepository extends \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Domain_Repository_ExtensionRepository extends \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Domain_Repository_RepositoryRepository extends \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Exception_ExtensionManager extends \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Service_Management extends \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Utility_Configuration extends \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Utility_Connection_Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Utility_Database extends \TYPO3\CMS\Extensionmanager\Utility\DatabaseUtility {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Utility_Dependency extends \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Utility_Download extends \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Utility_EmConf extends \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Utility_FileHandling extends \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Utility_Importer_ExtensionList extends \TYPO3\CMS\Extensionmanager\Utility\Importer\ExtensionListUtility {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Utility_Importer_MirrorList extends \TYPO3\CMS\Extensionmanager\Utility\Importer\MirrorListUtility {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Utility_Install extends \TYPO3\CMS\Extensionmanager\Utility\InstallUtility {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Utility_List extends \TYPO3\CMS\Extensionmanager\Utility\ListUtility {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-abstract class Tx_Extensionmanager_Utility_Parser_ExtensionXmlAbstractParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractExtensionXmlParser {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Utility_Parser_ExtensionXmlPullParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\ExtensionXmlPullParser {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Utility_Parser_ExtensionXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\ExtensionXmlPushParser {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-abstract class Tx_Extensionmanager_Utility_Parser_MirrorXmlAbstractParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractMirrorXmlParser {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Utility_Parser_MirrorXmlPullParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\MirrorXmlPullParser {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Utility_Parser_MirrorXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\MirrorXmlPushParser {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-abstract class Tx_Extensionmanager_Utility_Parser_XmlAbstractParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractXmlParser {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Utility_Parser_XmlParserFactory extends \TYPO3\CMS\Extensionmanager\Utility\Parser\XmlParserFactory {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_Utility_Repository_Helper extends \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_ViewHelpers_Be_ContainerViewHelper extends \TYPO3\CMS\Extensionmanager\ViewHelpers\Be\ContainerViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_ViewHelpers_ConfigureExtensionViewHelper extends \TYPO3\CMS\Extensionmanager\ViewHelpers\ConfigureExtensionViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_ViewHelpers_DownloadExtensionDataViewHelper extends \TYPO3\CMS\Extensionmanager\ViewHelpers\DownloadExtensionDataViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_ViewHelpers_DownloadExtensionViewHelper extends \TYPO3\CMS\Extensionmanager\ViewHelpers\DownloadExtensionViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_ViewHelpers_Form_TypoScriptConstantsViewHelper extends \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_ViewHelpers_Format_ImplodeViewHelper extends \TYPO3\CMS\Extensionmanager\ViewHelpers\Format\ImplodeViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_ViewHelpers_Format_JsonEncodeViewHelper extends \TYPO3\CMS\Extensionmanager\ViewHelpers\Format\JsonEncodeViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_ViewHelpers_ImageViewHelper extends \TYPO3\CMS\Extensionmanager\ViewHelpers\ImageViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_ViewHelpers_InstallationStateCssClassViewHelper extends \TYPO3\CMS\Extensionmanager\ViewHelpers\InstallationStateCssClassViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_ViewHelpers_RemoveExtensionViewHelper extends \TYPO3\CMS\Extensionmanager\ViewHelpers\RemoveExtensionViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_ViewHelpers_ShowExtensionVersionsViewHelper extends \TYPO3\CMS\Extensionmanager\ViewHelpers\ShowExtensionVersionsViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_ViewHelpers_ToggleExtensionInstallationStateViewHelper extends \TYPO3\CMS\Extensionmanager\ViewHelpers\ToggleExtensionInstallationStateViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Extensionmanager_ViewHelpers_UpdateFromTerViewHelper extends \TYPO3\CMS\Extensionmanager\ViewHelpers\UpdateFromTerViewHelper {}
+class tx_em_Tasks_UpdateExtensionList extends \TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
@@ -4090,11 +3740,6 @@ class Tx_Fluid_ViewHelpers_Link_PageViewHelper extends \TYPO3\CMS\Fluid\ViewHelp
  * @deprecated since 6.0 will be removed in 7.0
  */
 class Tx_Fluid_ViewHelpers_RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\RenderChildrenViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Fluid_ViewHelpers_RenderFlashMessagesViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\RenderFlashMessagesViewHelper {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
@@ -5424,7 +5069,7 @@ abstract class tslib_menu extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstrac
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-abstract class tslib_menu_filterMenuPagesHook extends \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject_filterMenuPagesHook {}
+interface tslib_menu_filterMenuPagesHook extends \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuFilterPagesHookInterface {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
@@ -5729,16 +5374,6 @@ class Tx_IndexedSearch_Domain_Repository_IndexSearchRepository extends \TYPO3\CM
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_indexedsearch_crawlerhook extends \TYPO3\CMS\IndexedSearch\Example\CrawlerHook {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_indexedsearch_pihook extends \TYPO3\CMS\IndexedSearch\Example\PluginHook {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class tx_indexed_search_extparse extends \TYPO3\CMS\IndexedSearch\FileContentParser {}
 
 /**
@@ -5854,11 +5489,6 @@ class tx_coreupdates_imagelink extends \TYPO3\CMS\Install\CoreUpdates\ImagelinkU
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_coreupdates_installnewsysexts extends \TYPO3\CMS\Install\CoreUpdates\InstallNewSysextsUpdate {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class tx_coreupdates_installsysexts extends \TYPO3\CMS\Install\CoreUpdates\InstallSysExtsUpdate {}
 
 /**
@@ -5954,6 +5584,71 @@ class Tx_Install_Updates_File_TtContentUploadsUpdateWizard extends \TYPO3\CMS\In
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
+class tx_lang_clearcachemenu extends \TYPO3\CMS\Lang\ClearLanguageCacheMenuItem {}
+
+/**
+ * @deprecated since 6.0 will be removed in 7.0
+ */
+class tx_lang_clearcache extends \TYPO3\CMS\Lang\LanguageCacheClearer {}
+
+/**
+ * @deprecated since 6.0 will be removed in 7.0
+ */
+class language extends \TYPO3\CMS\Lang\LanguageService {}
+
+/**
+ * @deprecated since 6.0 will be removed in 7.0
+ */
+class tx_linkvalidator_Processor extends \TYPO3\CMS\Linkvalidator\LinkAnalyzer {}
+
+/**
+ * @deprecated since 6.0 will be removed in 7.0
+ */
+abstract class tx_linkvalidator_linktype_Abstract extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {}
+
+/**
+ * @deprecated since 6.0 will be removed in 7.0
+ */
+class tx_linkvalidator_linktype_External extends \TYPO3\CMS\Linkvalidator\Linktype\ExternalLinktype {}
+
+/**
+ * @deprecated since 6.0 will be removed in 7.0
+ */
+class tx_linkvalidator_linktype_File extends \TYPO3\CMS\Linkvalidator\Linktype\FileLinktype {}
+
+/**
+ * @deprecated since 6.0 will be removed in 7.0
+ */
+class tx_linkvalidator_linktype_Internal extends \TYPO3\CMS\Linkvalidator\Linktype\InternalLinktype {}
+
+/**
+ * @deprecated since 6.0 will be removed in 7.0
+ */
+class tx_linkvalidator_linktype_LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\LinkHandler {}
+
+/**
+ * @deprecated since 6.0 will be removed in 7.0
+ */
+interface tx_linkvalidator_linktype_Interface extends \TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface {}
+
+/**
+ * @deprecated since 6.0 will be removed in 7.0
+ */
+class tx_linkvalidator_ModFuncReport extends \TYPO3\CMS\Linkvalidator\Report\LinkValidatorReport {}
+
+/**
+ * @deprecated since 6.0 will be removed in 7.0
+ */
+class tx_linkvalidator_tasks_Validator extends \TYPO3\CMS\Linkvalidator\Task\ValidatorTask {}
+
+/**
+ * @deprecated since 6.0 will be removed in 7.0
+ */
+class tx_linkvalidator_tasks_ValidatorAdditionalFieldProvider extends \TYPO3\CMS\Linkvalidator\Task\ValidatorTaskAdditionalFieldProvider {}
+
+/**
+ * @deprecated since 6.0 will be removed in 7.0
+ */
 class tx_lowlevel_admin_core extends \TYPO3\CMS\Lowlevel\AdminCommand {}
 
 /**
@@ -6025,71 +5720,6 @@ class SC_mod_tools_config_index extends \TYPO3\CMS\Lowlevel\View\ConfigurationVi
  * @deprecated since 6.0 will be removed in 7.0
  */
 class SC_mod_tools_dbint_index extends \TYPO3\CMS\Lowlevel\View\DatabaseIntegrityView {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_lang_clearcachemenu extends \TYPO3\CMS\Lang\ClearLanguageCacheMenuItem {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_lang_clearcache extends \TYPO3\CMS\Lang\LanguageCacheClearer {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class language extends \TYPO3\CMS\Lang\LanguageService {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_linkvalidator_Processor extends \TYPO3\CMS\Linkvalidator\LinkAnalyzer {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-abstract class tx_linkvalidator_linktype_Abstract extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_linkvalidator_linktype_External extends \TYPO3\CMS\Linkvalidator\Linktype\ExternalLinktype {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_linkvalidator_linktype_File extends \TYPO3\CMS\Linkvalidator\Linktype\FileLinktype {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_linkvalidator_linktype_Internal extends \TYPO3\CMS\Linkvalidator\Linktype\InternalLinktype {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_linkvalidator_linktype_LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\LinkHandler {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-interface tx_linkvalidator_linktype_Interface extends \TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_linkvalidator_ModFuncReport extends \TYPO3\CMS\Linkvalidator\Report\LinkValidatorReport {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_linkvalidator_tasks_Validator extends \TYPO3\CMS\Linkvalidator\Task\ValidatorTask {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_linkvalidator_tasks_ValidatorAdditionalFieldProvider extends \TYPO3\CMS\Linkvalidator\Task\ValidatorTaskAdditionalFieldProvider {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
@@ -6714,7 +6344,7 @@ class tx_scheduler extends \TYPO3\CMS\Scheduler\Scheduler {}
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_scheduler_Task extends \TYPO3\CMS\Scheduler\Task {}
+abstract class tx_scheduler_Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
@@ -6795,36 +6425,6 @@ class tx_sysaction_task extends \TYPO3\CMS\SysAction\ActionTask {}
  * @deprecated since 6.0 will be removed in 7.0
  */
 class tx_sysactionToolbarMenu extends \TYPO3\CMS\SysAction\ActionToolbarMenu {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_SysNote_Domain_Repository_SysNoteRepository extends \TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_SysNote_Hooks_InfoModule extends \TYPO3\CMS\SysNote\Hook\InfoModuleHook {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_SysNote_Hooks_Page extends \TYPO3\CMS\SysNote\Hook\PageHook {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_SysNote_Hooks_RecordList extends \TYPO3\CMS\SysNote\Hook\RecordListHook {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_SysNote_SysNote extends \TYPO3\CMS\SysNote\SysNoteRenderer {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_SysNote_ViewHelpers_EditLinkViewHelper extends \TYPO3\CMS\SysNote\ViewHelpers\EditLinkViewHelper {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
@@ -6970,11 +6570,6 @@ class wslib extends \TYPO3\CMS\Version\Utility\WorkspacesUtility {}
  * @deprecated since 6.0 will be removed in 7.0
  */
 class tx_version_gui extends \TYPO3\CMS\Version\View\VersionView {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Viewpage_Controller_ViewController extends \TYPO3\CMS\Viewpage\Controller\ViewModuleController {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
