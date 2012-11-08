@@ -48,7 +48,7 @@ class t3lib_tree_Renderer_UnorderedList extends t3lib_tree_Renderer_Abstract {
 	 * @return mixed
 	 */
 	public function renderNode(t3lib_tree_RepresentationNode $node, $recursive = TRUE) {
-		$code = '<li><span class="' . $node->getIcon() . '">&nbsp;</span>' . $node->getLabel();
+		$code = '<li><span class="' . htmlspecialchars($node->getIcon()) . '">&nbsp;</span>' . htmlspecialchars($node->getLabel());
 		if ($recursive && $node->getChildNodes() !== NULL) {
 			$this->recursionLevel++;
 			$code .= $this->renderNodeCollection($node->getChildNodes());
