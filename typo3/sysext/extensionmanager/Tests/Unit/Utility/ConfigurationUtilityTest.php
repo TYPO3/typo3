@@ -126,7 +126,87 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		);
 	}
 
+	/**
+	 * @param array $configuration
+	 * @param array $expected
+	 * @test
+	 * @dataProvider convertNestedToValuedConfigurationDataProvider
+	 */
+	public function convertNestedToValuedConfiguration(array $configuration, array $expected) {
+		/** @var $fixture \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
+		$fixture = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility');
+		$this->assertEquals($expected, $fixture->convertNestedToValuedConfiguration($configuration));
+	}
+
+	/**
+	 * @return array
+	 */
+	public function convertNestedToValuedConfigurationDataProvider() {
+		return array(
+			'plain array' => array(
+				array(
+					'first' => 'value1',
+					'second' => 'value2'
+				),
+				array(
+					'first' => array('value' => 'value1'),
+					'second' => array('value' => 'value2'),
+				)
+			),
+			'two levels' => array(
+				array(
+					'first.' => array('firstSub' => 'value1'),
+					'second.' => array('firstSub' => 'value2'),
+				),
+				array(
+					'first.firstSub' => array('value' => 'value1'),
+					'second.firstSub' => array('value' => 'value2'),
+				)
+			),
+			'three levels' => array(
+				array(
+					'first.' => array('firstSub.' => array('firstSubSub' => 'value1')),
+					'second.' => array('firstSub.' => array('firstSubSub' => 'value2'))
+				),
+				array(
+					'first.firstSub.firstSubSub' => array('value' => 'value1'),
+					'second.firstSub.firstSubSub' => array('value' => 'value2'),
+				)
+			),
+			'mixed' => array(
+				array(
+					'first.' => array('firstSub' => 'value1'),
+					'second.' => array('firstSub.' => array('firstSubSub' => 'value2')),
+					'third' => 'value3'
+				),
+				array(
+					'first.firstSub' => array('value' => 'value1'),
+					'second.firstSub.firstSubSub' => array('value' => 'value2'),
+					'third' => array('value' => 'value3')
+				)
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function thatGetCurrentConfigurationReturnsCorrectExtensionConfigurationAsValuedConfiguration() {
+		$mockedConfigurationItemRepository = $this->getAccessibleMock('\TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository', array(
+			'createArrayFromConstants'
+		));
+		$mockedConfigurationItemRepository->expects($this->any())
+			->method('createArrayFromConstants')
+			->will($this->returnValue(array()));
+		$GLOBALS['TYPO3_LOADED_EXT']['MY_DUMMY_EXT']= array();
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['MY_DUMMY_EXT'] = serialize(array('key1' => 'value1', 'key2.' => array('subkey1' => 'value2')));
+		$configurationUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility');
+		$configurationUtility->injectConfigurationItemRepository($mockedConfigurationItemRepository);
+
+		$configuration = $configurationUtility->getCurrentConfiguration('MY_DUMMY_EXT');
+		$this->assertEquals('value1', $configuration['key1']['value']);
+		$this->assertEquals('value2', $configuration['key2.subkey1']['value']);
+	}
+
 }
-
-
 ?>
