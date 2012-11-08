@@ -234,10 +234,10 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 	 * if the task class matches.
 	 *
 	 * @param array $submittedData Array containing the data submitted by the user
-	 * @param \TYPO3\CMS\Scheduler\Task $task Reference to the current task object
+	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask $task Reference to the current task object
 	 * @return void
 	 */
-	public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task $task) {
+	public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		/** @var $task ValidatorTask */
 		$task->setDepth($submittedData['linkvalidator']['depth']);
 		$task->setPage($submittedData['linkvalidator']['page']);

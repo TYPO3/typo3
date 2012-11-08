@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Linkvalidator\Task;
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class ValidatorTask extends \TYPO3\CMS\Scheduler\Task {
+class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
 	 * @var integer
