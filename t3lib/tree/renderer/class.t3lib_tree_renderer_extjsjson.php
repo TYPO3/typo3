@@ -75,6 +75,12 @@ class t3lib_tree_Renderer_ExtJsJson extends t3lib_tree_Renderer_Abstract {
 			'uid' => $node->getId()
 		);
 
+		foreach ($nodeArray as &$nodeItem) {
+			if (is_string($nodeItem)) {
+				$nodeItem = htmlspecialchars($nodeItem);
+			}
+		}
+
 		return $nodeArray;
 	}
 
