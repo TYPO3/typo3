@@ -33,10 +33,10 @@
  * </output>
  *
  * <code title="All parameters">
- * <f:format.currency currencySign="$" decimalSeparator="." thousandsSeparator=",">54321</f:format.currency>
+ * <f:format.currency currencySign="$" decimalSeparator="." thousandsSeparator="," prependCurrency="TRUE" separateCurrency="FALSE">54321</f:format.currency>
  * </code>
  * <output>
- * 54,321.00 $
+ * $ 54,321.00
  * </output>
  *
  * <code title="Inline notation">
@@ -56,15 +56,22 @@ class Tx_Fluid_ViewHelpers_Format_CurrencyViewHelper extends Tx_Fluid_Core_ViewH
 	 * @param string $currencySign (optional) The currency sign, eg $ or €.
 	 * @param string $decimalSeparator (optional) The separator for the decimal point.
 	 * @param string $thousandsSeparator (optional) The thousands separator.
+	 * @param boolean $prependCurrency (optional) Select if the curreny sign should be prepended.
+	 * @param boolean $separateCurrency (optional) Separate the currency sign from the number by a single space, defaults to true due to backwards compatibility
 	 * @return string the formatted amount.
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
-	public function render($currencySign = '', $decimalSeparator = ',', $thousandsSeparator = '.') {
+	public function render($currencySign = '', $decimalSeparator = ',', $thousandsSeparator = '.', $prependCurrency = FALSE, $separateCurrency = TRUE) {
 		$stringToFormat = $this->renderChildren();
 		$output = number_format($stringToFormat, 2, $decimalSeparator, $thousandsSeparator);
 		if($currencySign !== '') {
-			$output.= ' ' . $currencySign;
+			$currencySeparator = ($separateCurrency) ? ' ' : '';
+			if ($prependCurrency === TRUE) {
+				$output = $currencySign . $currencySeparator . $output;
+			} else {
+				$output = $output . $currencySeparator . $currencySign;
+			}
 		}
 		return $output;
 	}

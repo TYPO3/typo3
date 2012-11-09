@@ -50,6 +50,26 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_CurrencyViewHelperTest extends Tx_E
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
+	public function viewHelperRendersPrependedCurrencySign() {
+		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_CurrencyViewHelper', array('renderChildren'));
+		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(123));
+		$actualResult = $viewHelper->render('foo', ',', '.', TRUE);
+		$this->assertEquals('foo 123,00', $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function viewHelperRespectsCurrencySeparator() {
+		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_CurrencyViewHelper', array('renderChildren'));
+		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(123));
+		$actualResult = $viewHelper->render('foo', ',', '.', TRUE, FALSE);
+		$this->assertEquals('foo123,00', $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
 	public function viewHelperRespectsDecimalSeparator() {
 		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_CurrencyViewHelper', array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(12345));
@@ -90,4 +110,5 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_CurrencyViewHelperTest extends Tx_E
 		$this->assertEquals('-123,46', $actualResult);
 	}
 }
+
 ?>
