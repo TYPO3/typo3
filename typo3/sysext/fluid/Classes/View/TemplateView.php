@@ -97,7 +97,8 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	public function __construct() {
 			$this->injectTemplateParser(Tx_Fluid_Compatibility_TemplateParserBuilder::build());
 			$this->injectObjectManager(t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager'));
-			$this->setRenderingContext($this->objectManager->create('Tx_Fluid_Core_Rendering_RenderingContext'));
+			$this->setRenderingContext($this->objectManager->create
+			('Tx_Fluid_Core_Rendering_RenderingContextInterface'));
 		}
 
 		public function initializeView() {
