@@ -1182,7 +1182,6 @@ tt_content.uploads {
 		# get from file references:
 		references {
 			table = tt_content
-			uid.field = uid
 			fieldName = media
 		}
 
