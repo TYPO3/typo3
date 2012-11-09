@@ -45,7 +45,7 @@ class AdditionalAdditionalElement {
 	 * @param string $class Name of the additional
 	 * @param mixed $value Typoscript configuration to construct value
 	 * @param string $type Typoscript content object
-	 * @return tx_form_Domain_Model_Additional
+	 * @return AdditionalAdditionalElement
 	 */
 	public function addAdditional($class, $type, $value) {
 		$class = strtolower((string) $class);
