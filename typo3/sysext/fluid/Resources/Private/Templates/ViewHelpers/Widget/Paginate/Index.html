@@ -14,10 +14,10 @@
 			<li class="previous">
 				<f:if condition="{pagination.previousPage} > 1">
 					<f:then>
-						<f:widget.link arguments="{currentPage: pagination.previousPage}">previous</f:widget.link>
+						<f:widget.link arguments="{currentPage: pagination.previousPage}"><f:translate key="widget.pagination.previous" /></f:widget.link>
 					</f:then>
 					<f:else>
-						<f:widget.link>previous</f:widget.link>
+						<f:widget.link><f:translate key="widget.pagination.previous" /></f:widget.link>
 					</f:else>
 				</f:if>
 			</li>
@@ -61,7 +61,7 @@
 		</f:if>
 		<f:if condition="{pagination.nextPage}">
 			<li class="next">
-				<f:widget.link arguments="{currentPage: pagination.nextPage}">next</f:widget.link>
+				<f:widget.link arguments="{currentPage: pagination.nextPage}"><f:translate key="widget.pagination.next" /></f:widget.link>
 			</li>
 		</f:if>
 	</ul>
