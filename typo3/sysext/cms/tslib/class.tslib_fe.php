@@ -970,7 +970,7 @@
 	 * @return	void
 	 * @access private
 	 */
-	function getPageAndRootline() {
+	function getPageAndRootline($itera=20) {
 		$this->page = $this->sys_page->getPage($this->id);
 		if (!count($this->page))	{
 				// If no page, we try to find the page before in the rootLine.
@@ -1013,6 +1013,7 @@
 			}
 		}
 
+		$this->pageNotFound=0;
 			// Is the ID a link to another page??
 		if ($this->page['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT) {
 			$this->MP = '';		// We need to clear MP if the page is a shortcut. Reason is if the short cut goes to another page, then we LEAVE the rootline which the MP expects.
@@ -1062,10 +1063,18 @@
 					throw new t3lib_error_http_ServiceUnavailableException($message, 1301648234);
 				}
 			} else {
-				$el = reset($this->rootLine);
-				$this->id = $el['uid'];
-				$this->page = $this->sys_page->getPage($this->id);
-				$this->rootLine = $this->sys_page->getRootLine($this->id,$this->MP);
+				if ($itera>0) {
+					$this->pageNotFound=0;
+					$el = reset($this->rootLine);
+					$this->id = $el['uid'];
+					$this->getPageAndRootline($itera-1);
+				} else {
+					$message = 'The requested page was not accessible due to much shortcut loopings into non accessible pages!';
+					header('HTTP/1.0 403 No Access');
+					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
+					$this->printError($message);
+					exit;
+				}
 			}
 		}
 	}
