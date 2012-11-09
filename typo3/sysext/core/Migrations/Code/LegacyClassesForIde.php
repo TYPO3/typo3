@@ -2809,7 +2809,7 @@ class Tx_Extbase_Reflection_PropertyReflection extends \TYPO3\CMS\Extbase\Reflec
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Extbase_Reflection_Service extends \TYPO3\CMS\Extbase\Reflection\Service {}
+class Tx_Extbase_Reflection_Service extends \TYPO3\CMS\Extbase\Reflection\ReflectionService {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
