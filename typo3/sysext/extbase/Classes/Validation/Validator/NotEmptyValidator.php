@@ -56,7 +56,7 @@ class Tx_Extbase_Validation_Validator_NotEmptyValidator extends Tx_Extbase_Valid
 			$this->addError('The given subject was empty.', 1347992400);
 			return FALSE;
 		}
-		if (is_object($value) && $value instanceof \Countable && $value->count() === 0) {
+		if (is_object($value) && $value instanceof Countable && $value->count() === 0) {
 			$this->addError('The given subject was empty.', 1347992453);
 			return FALSE;
 		}

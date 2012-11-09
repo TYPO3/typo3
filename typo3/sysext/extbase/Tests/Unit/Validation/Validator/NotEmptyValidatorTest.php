@@ -81,8 +81,12 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_NotEmptyValidatorTest extends T
 	 * @author Ingo Pfennigstorf <i.pfennigstorf@gmail.com>
 	 */
 	public function notEmptyValidatorWorksForEmptyArrays() {
-		$this->assertTrue($this->validator->validate(array())->hasErrors());
-		$this->assertFalse($this->validator->validate(array(1 => 2))->hasErrors());
+		$validator = new Tx_Extbase_Validation_Validator_NotEmptyValidator();
+
+		$validator->isValid(array());
+		$this->assertNotEmpty($validator->getErrors());
+		$validator->isValid(array(1 => 2));
+		$this->assertEmpty($validator->getErrors());
 	}
 
 	/**
@@ -90,7 +94,10 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_NotEmptyValidatorTest extends T
 	 * @author Ingo Pfennigstorf <i.pfennigstorf@gmail.com>
 	 */
 	public function notEmptyValidatorWorksForEmptyCountableObjects() {
-		$this->assertTrue($this->validator->validate(new \SplObjectStorage())->hasErrors());
+		$validator = new Tx_Extbase_Validation_Validator_NotEmptyValidator();
+
+		$validator->isValid(new ArrayObject());
+		$this->assertNotEmpty($validator->getErrors());
 	}
 
 	/**
@@ -98,9 +105,12 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_NotEmptyValidatorTest extends T
 	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function notEmptyValidatorWorksForNotEmptyCountableObjects() {
-		$countableObject = new \SplObjectStorage();
-		$countableObject->attach(new \StdClass());
-		$this->assertFalse($this->validator->validate($countableObject)->hasErrors());
+		$validator = new Tx_Extbase_Validation_Validator_NotEmptyValidator();
+		$countableObject = new ArrayObject();
+		$countableObject->attach(new stdClass());
+
+		$validator->isValid($countableObject);
+		$this->assertEmpty($validator->getErrors());
 	}
 }
 
