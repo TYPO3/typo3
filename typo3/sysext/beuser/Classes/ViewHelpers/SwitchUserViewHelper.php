@@ -26,13 +26,13 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Displays 'SU' link with sprite icon to change current backend user to target (non-admin) backendUser
+ * Displays 'SwitchUser' link with sprite icon to change current backend user to target (non-admin) backendUser
  *
  * @author Felix Kopp <felix-source@phorax.com>
  * @package TYPO3
  * @subpackage beuser
  */
-class SuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class SwitchUserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @param \TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser Target backendUser to switch active session to
