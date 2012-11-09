@@ -89,7 +89,7 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 		// initialize reflection
-		$reflectionService = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\Service');
+		$reflectionService = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
 		$reflectionService->setDataCache($GLOBALS['typo3CacheManager']->getCache('extbase_reflection'));
 		if (!$reflectionService->isInitialized()) {
 			$reflectionService->initialize();
@@ -131,7 +131,7 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface {
 		// shutdown
 		$persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
 		$persistenceManager->persistAll();
-		$reflectionService = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\Service');
+		$reflectionService = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
 		$reflectionService->shutdown();
 	}
 

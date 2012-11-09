@@ -260,7 +260,7 @@ return array(
 	'Tx_Extbase_Reflection_ObjectAccess' => 'TYPO3\\CMS\\Extbase\\Reflection\\ObjectAccess',
 	'Tx_Extbase_Reflection_ParameterReflection' => 'TYPO3\\CMS\\Extbase\\Reflection\\ParameterReflection',
 	'Tx_Extbase_Reflection_PropertyReflection' => 'TYPO3\\CMS\\Extbase\\Reflection\\PropertyReflection',
-	'Tx_Extbase_Reflection_Service' => 'TYPO3\\CMS\\Extbase\\Reflection\\Service',
+	'Tx_Extbase_Reflection_Service' => 'TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService',
 	'Tx_Extbase_Scheduler_FieldProvider' => 'TYPO3\\CMS\\Extbase\\Scheduler\\FieldProvider',
 	'Tx_Extbase_Scheduler_Task' => 'TYPO3\\CMS\\Extbase\\Scheduler\\Task',
 	'Tx_Extbase_Scheduler_TaskExecutor' => 'TYPO3\\CMS\\Extbase\\Scheduler\\TaskExecutor',

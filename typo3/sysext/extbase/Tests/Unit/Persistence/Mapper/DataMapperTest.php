@@ -93,7 +93,7 @@ class DataMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$classSchema->addProperty('secondProperty', 'integer');
 		$classSchema->addProperty('thirdProperty', 'float');
 		$classSchema->addProperty('fourthProperty', 'boolean');
-		$mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service', array('getClassSchema'));
+		$mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService', array('getClassSchema'));
 		$mockReflectionService->expects($this->any())->method('getClassSchema')->will($this->returnValue($classSchema));
 		$dataMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('dummy'));
 		$dataMapper->_set('dataMaps', $dataMaps);

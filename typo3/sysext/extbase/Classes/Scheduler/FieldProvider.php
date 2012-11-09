@@ -39,7 +39,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 	protected $objectManager;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Reflection\Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
 	 */
 	protected $reflectionService;
 
@@ -53,12 +53,12 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 	 *
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @param \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager $commandManager
-	 * @param \TYPO3\CMS\Extbase\Reflection\Service $reflectionService
+	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
 	 */
-	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager = NULL, \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager $commandManager = NULL, \TYPO3\CMS\Extbase\Reflection\Service $reflectionService = NULL) {
+	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager = NULL, \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager $commandManager = NULL, \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService = NULL) {
 		$this->objectManager = $objectManager !== NULL ? $objectManager : \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$this->commandManager = $commandManager !== NULL ? $commandManager : $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager');
-		$this->reflectionService = $reflectionService !== NULL ? $reflectionService : $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\Service');
+		$this->reflectionService = $reflectionService !== NULL ? $reflectionService : $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
 	}
 
 	/**

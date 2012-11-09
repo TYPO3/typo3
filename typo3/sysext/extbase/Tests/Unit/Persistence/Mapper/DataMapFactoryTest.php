@@ -421,7 +421,7 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$configurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 		$configurationManager->expects($this->once())->method('getConfiguration')->with('Framework')->will($this->returnValue($configuration));
 		$dataMapFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory', array('test'));
-		$dataMapFactory->injectReflectionService(new \TYPO3\CMS\Extbase\Reflection\Service());
+		$dataMapFactory->injectReflectionService(new \TYPO3\CMS\Extbase\Reflection\ReflectionService());
 		$dataMapFactory->injectObjectManager(new \TYPO3\CMS\Extbase\Object\ObjectManager());
 		$dataMapFactory->injectConfigurationManager($configurationManager);
 		$cacheMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend', array(), array(), '', false);

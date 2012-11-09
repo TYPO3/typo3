@@ -37,7 +37,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $identityMap;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Reflection\Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
 	 */
 	protected $reflectionService;
 
@@ -110,10 +110,10 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Injects the Reflection Service
 	 *
-	 * @param \TYPO3\CMS\Extbase\Reflection\Service
+	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService
 	 * @return void
 	 */
-	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\Service $reflectionService) {
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
 

@@ -132,7 +132,7 @@ class CommandTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function getArgumentDefinitionsReturnsArrayOfArgumentDefinitionIfCommandExpectsArguments() {
 		$mockParameterReflection = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ParameterReflection', array(), array(), '', FALSE);
-		$mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service');
+		$mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
 		$mockMethodParameters = array('argument1' => array('optional' => FALSE), 'argument2' => array('optional' => TRUE));
 		$mockReflectionService->expects($this->atLeastOnce())->method('getMethodParameters')->will($this->returnValue($mockMethodParameters));
 		$this->command->injectReflectionService($mockReflectionService);

@@ -51,7 +51,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $mockCommandManager;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Reflection\Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
 	 */
 	protected $mockReflectionService;
 
@@ -69,7 +69,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->mockCommand->expects($this->any())->method('getControllerCommandName')->will($this->returnValue('list'));
 		$this->mockCommandManager = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager');
 		$this->mockCommandManager->expects($this->any())->method('getCommandByIdentifier')->with('some_extension_name:default:list')->will($this->returnValue($this->mockCommand));
-		$this->mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service');
+		$this->mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
 		$this->requestBuilder = new \TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder();
 		$this->requestBuilder->injectObjectManager($this->mockObjectManager);
 		$this->requestBuilder->injectReflectionService($this->mockReflectionService);

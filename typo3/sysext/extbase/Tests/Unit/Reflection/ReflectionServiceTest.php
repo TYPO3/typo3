@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 /**
  * Some functional tests for the backport of the reflection service
  */
-class ServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class ReflectionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @param array $foo The foo parameter
@@ -40,8 +40,8 @@ class ServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function getMethodTagsValues() {
-		$service = new \TYPO3\CMS\Extbase\Reflection\Service();
-		$tagsValues = $service->getMethodTagsValues('TYPO3\\CMS\\Extbase\\Tests\\Unit\\Reflection\\ServiceTest', 'fixtureMethodForMethodTagsValues');
+		$service = new \TYPO3\CMS\Extbase\Reflection\ReflectionService();
+		$tagsValues = $service->getMethodTagsValues('TYPO3\\CMS\\Extbase\\Tests\\Unit\\Reflection\\ReflectionServiceTest', 'fixtureMethodForMethodTagsValues');
 		$this->assertEquals(array(
 			'param' => array('array $foo The foo parameter'),
 			'return' => array('void')
@@ -52,8 +52,8 @@ class ServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function getMethodParameters() {
-		$service = new \TYPO3\CMS\Extbase\Reflection\Service();
-		$parameters = $service->getMethodParameters('TYPO3\\CMS\\Extbase\\Tests\\Unit\\Reflection\\ServiceTest', 'fixtureMethodForMethodTagsValues');
+		$service = new \TYPO3\CMS\Extbase\Reflection\ReflectionService();
+		$parameters = $service->getMethodParameters('TYPO3\\CMS\\Extbase\\Tests\\Unit\\Reflection\\ReflectionServiceTest', 'fixtureMethodForMethodTagsValues');
 		$this->assertEquals(array(
 			'foo' => array(
 				'position' => 0,
@@ -81,7 +81,7 @@ class ServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			class ' . $className . 'Repository {}
 		');
 
-		$service = new \TYPO3\CMS\Extbase\Reflection\Service();
+		$service = new \TYPO3\CMS\Extbase\Reflection\ReflectionService();
 		$service->injectObjectManager($this->objectManager);
 		$classSchema = $service->getClassSchema('Foo\\Bar\\Domain\\Model\\' . $className);
 		$this->assertTrue($classSchema->isAggregateRoot());
@@ -99,7 +99,7 @@ class ServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			class Foo_Bar_Domain_Repository_' . $className . 'Repository {}
 		');
 
-		$service = new \TYPO3\CMS\Extbase\Reflection\Service();
+		$service = new \TYPO3\CMS\Extbase\Reflection\ReflectionService();
 		$service->injectObjectManager($this->objectManager);
 		$classSchema = $service->getClassSchema('Foo_Bar_Domain_Model_' . $className);
 		$this->assertTrue($classSchema->isAggregateRoot());

@@ -54,7 +54,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	protected $identityMap;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Reflection\Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
 	 */
 	protected $reflectionService;
 
@@ -154,10 +154,10 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	/**
 	 * Injects the Reflection Service
 	 *
-	 * @param \TYPO3\CMS\Extbase\Reflection\Service
+	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService
 	 * @return void
 	 */
-	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\Service $reflectionService) {
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
 
@@ -227,7 +227,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	/**
 	 * Returns the reflection service
 	 *
-	 * @return \TYPO3\CMS\Extbase\Reflection\Service
+	 * @return \TYPO3\CMS\Extbase\Reflection\ReflectionService
 	 */
 	public function getReflectionService() {
 		return $this->reflectionService;

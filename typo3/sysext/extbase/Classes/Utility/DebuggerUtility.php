@@ -47,7 +47,7 @@ class DebuggerUtility {
 	static protected $blacklistedClassNames = array(
 		'PHPUnit_Framework_MockObject_InvocationMocker',
 		'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\IdentityMap',
-		'TYPO3\\CMS\\Extbase\\Reflection\\Service',
+		'TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService',
 		'TYPO3\\CMS\\Extbase\\Object\\ObjectManager',
 		'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper',
 		'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager',

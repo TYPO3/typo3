@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Extbase\Reflection;
  *
  * @api
  */
-class Service implements \TYPO3\CMS\Core\SingletonInterface {
+class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface

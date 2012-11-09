@@ -59,7 +59,7 @@ class Command {
 	/**
 	 * Reflection service
 	 *
-	 * @var \TYPO3\CMS\Extbase\Reflection\Service
+	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
 	 */
 	private $reflectionService;
 
@@ -89,9 +89,9 @@ class Command {
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Reflection\Service $reflectionService Reflection service
+	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService Reflection service
 	 */
-	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\Service $reflectionService) {
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
 

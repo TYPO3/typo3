@@ -199,7 +199,7 @@ class ArgumentTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		/** @var $argument \TYPO3\CMS\Extbase\Mvc\Controller\Argument|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$argument = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('dummy'), array(), '', FALSE);
 		$argument->_set('dataType', $dataType);
-		$reflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service');
+		$reflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
 		$reflectionService->expects($this->once())->method('getClassSchema')->with($dataType);
 		$argument->injectReflectionService($reflectionService);
 	}
@@ -223,7 +223,7 @@ class ArgumentTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		/** @var $argument \TYPO3\CMS\Extbase\Mvc\Controller\Argument|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$argument = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('dummy'), array(), '', FALSE);
 		$argument->_set('dataType', $dataType);
-		$reflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service');
+		$reflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
 		$reflectionService->expects($this->never())->method('getClassSchema');
 		$argument->injectReflectionService($reflectionService);
 	}
