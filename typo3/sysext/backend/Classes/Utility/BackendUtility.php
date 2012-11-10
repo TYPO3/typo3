@@ -832,7 +832,8 @@ class BackendUtility {
 
 	/**
 	 * Finds the Data Structure for a FlexForm field
-	 * NOTE ON data structures for deleted records: This function may fail to deliver the data structure for a record for a few reasons: a) The data structure could be deleted (either with deleted-flagged or hard-deleted), b) the data structure is fetched using the ds_pointerField_searchParent in which case any deleted record on the route to the final location of the DS will make it fail. In theory, we can solve the problem in the case where records that are deleted-flagged keeps us from finding the DS - this is done at the markers ###NOTE_A### where we make sure to also select deleted records. However, we generally want the DS lookup to fail for deleted records since for the working website we expect a deleted-flagged record to be as inaccessible as one that is completely deleted from the DB. Any way we look at it, this may lead to integrity problems of the reference index and even lost files if attached. However, that is not really important considering that a single change to a data structure can instantly invalidate large amounts of the reference index which we do accept as a cost for the flexform features. Other than requiring a reference index update, deletion of/changes in data structure or the failure to look them up when completely deleting records may lead to lost files in the uploads/ folders since those are now without a proper reference.
+	 * NOTE ON data structures for deleted records: This function may fail to deliver the data structure for a record for a few reasons: a) The data structure could be deleted (either with deleted-flagged or hard-deleted), b) the data structure is fetched using the ds_pointerField_searchParent in which case any deleted record on the route to the final location of the DS will make it fail. In theory, we can solve the problem in the case where records that are deleted-flagged keeps us from finding the DS - this is done at the markers ###NOTE_A### where we make sure to also select deleted records. However, we generally want the DS lookup to fail for deleted records since for the working website we expect a deleted-flagged record to be as inaccessible as one that is completely deleted from the DB. Any way we look at it, this may lead to integrity problems of the reference index and even lost files if attached. However, that is not really important considering that a single change to a data structure can instantly 
+invalidate large amounts of the reference index which we do accept as a cost for the flexform features. Other than requiring a reference index update, deletion of/changes in data structure or the failure to look them up when completely deleting records may lead to lost files in the uploads/ folders since those are now without a proper reference.
 	 *
 	 * @param array $conf Field config array
 	 * @param array $row Record data
@@ -1981,7 +1982,9 @@ class BackendUtility {
 						if (is_array($selectUids) && count($selectUids) > 0) {
 							$MMres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, ' . $MMfield, $theColConf['foreign_table'], 'uid IN (' . implode(',', $selectUids) . ')' . self::deleteClause($theColConf['foreign_table']));
 							while ($MMrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($MMres)) {
-								$mmlA[] = $noRecordLookup ? $MMrow['uid'] : self::getRecordTitle($theColConf['foreign_table'], $MMrow, FALSE, $forceResult);
+								$mmlA[array_search($MMrow['uid'], $selectUids)] = $noRecordLookup ?
++									$MMrow['uid'] :
++									self::getRecordTitle($theColConf['foreign_table'], $MMrow, FALSE, $forceResult);
 							}
 							$GLOBALS['TYPO3_DB']->sql_free_result($MMres);
 							if (is_array($mmlA)) {
