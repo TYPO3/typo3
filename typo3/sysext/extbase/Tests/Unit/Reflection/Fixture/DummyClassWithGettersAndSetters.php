@@ -75,7 +75,7 @@ class Tx_Extbase_Tests_Unit_Reflection_Fixture_DummyClassWithGettersAndSetters {
 	}
 
 	public function isBooleanProperty() {
-		return 'method called ' . $this->booleanProperty;
+		return $this->booleanProperty;
 	}
 
 	protected function getPrivateProperty() {
