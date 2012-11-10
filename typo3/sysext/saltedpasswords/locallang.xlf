@@ -3,13 +3,13 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="saltedpasswords">
 		<header/>
 		<body>
-			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_phpass" xml:space="preserve">
+			<trans-unit id="ext.saltedpasswords.title.phpasssalt" xml:space="preserve">
 				<source>Portable PHP password hashing (phpass)</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_md5" xml:space="preserve">
+			<trans-unit id="ext.saltedpasswords.title.md5salt" xml:space="preserve">
 				<source>MD5 salted hashing (secure)</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_blowfish" xml:space="preserve">
+			<trans-unit id="ext.saltedpasswords.title.blowfishsalt" xml:space="preserve">
 				<source>Blowfish salted hashing (advanced)</source>
 			</trans-unit>
 			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.name" xml:space="preserve">
