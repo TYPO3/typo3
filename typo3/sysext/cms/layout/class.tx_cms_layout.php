@@ -2562,7 +2562,7 @@ class tx_cms_layout extends recordList {
 
 				$lines[] = '';
 				$lines[] = array($LANG->getLL('pI_hitsPeriod') . ':', t3lib_BEfunc::date($rrow2[0]) . ' - ' . t3lib_BEfunc::date($rrow2[1]) . ' (' . t3lib_BEfunc::calcAge($rrow2[1] - $rrow2[0], $this->agePrefixes) . ')');
-				$lines[] = array($LANG->getLL('pI_hitsTotal') . ':', $rrow2[0]);
+				$lines[] = array($LANG->getLL('pI_hitsTotal') . ':', $count);
 
 
 				// Last 10 days
