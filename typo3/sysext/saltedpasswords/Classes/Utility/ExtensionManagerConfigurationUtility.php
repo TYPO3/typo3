@@ -335,7 +335,7 @@ Please disable either one of them.';
 			$classInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($reference, 'tx_');
 			if ($classInstance instanceof \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface && $classInstance->isAvailable()) {
 				$sel = $this->extConf[$disposal]['saltedPWHashingMethod'] == $class ? ' selected="selected" ' : '';
-				$label = 'ext.saltedpasswords.title.' . $class;
+				$label = 'ext.saltedpasswords.title.' . strtolower(end(explode('\\', $class)));
 				$p_field .= '<option value="' . htmlspecialchars($class) . '"' . $sel . '>' . $GLOBALS['LANG']->getLL($label) . '</option>';
 			}
 		}
