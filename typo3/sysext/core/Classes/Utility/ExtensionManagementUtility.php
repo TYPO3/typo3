@@ -479,7 +479,11 @@ class ExtensionManagementUtility {
 			),
 			'appearance' => array(
 				'useSortable' => TRUE,
-				'headerThumbnail' => 'uid_local',
+				'headerThumbnail' => array(
+					'field' => 'uid_local',
+					'width' => '64',
+					'height' => '64',
+				),
 				'showPossibleLocalizationRecords' => TRUE,
 				'showRemovedLocalizationRecords' => TRUE,
 				'showSynchronizationLink' => TRUE,
