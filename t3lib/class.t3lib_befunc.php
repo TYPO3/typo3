@@ -3088,7 +3088,7 @@ final class t3lib_BEfunc {
 			$mainParams .= (t3lib_div::_GET('M') ? '&M=' . rawurlencode(t3lib_div::_GET('M')) : '');
 		}
 
-		$onClick = 'jumpToUrl(' . t3lib_div::quoteJSvalue($script . '?' . $mainParams . $addparams . '&' . $elementName) . '=+(this.checked?1:0),this);';
+		$onClick = 'jumpToUrl(' . t3lib_div::quoteJSvalue($script . '?' . $mainParams . $addparams . '&' . $elementName . '=') . '+(this.checked?1:0),this);';
 
 		return
 		'<input' .
