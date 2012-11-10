@@ -139,16 +139,22 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 		try {
 			$l10n = $this->fetchTranslation($extensionKey, $language, $mirrorUrl);
 			if (is_array($l10n)) {
-				$file = PATH_site . 'typo3temp' . DIRECTORY_SEPARATOR . $extensionKey . '-l10n-' . $language . '.zip';
-				$path = 'l10n' . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $extensionKey . DIRECTORY_SEPARATOR;
-				if (!is_dir(PATH_typo3conf . $path)) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(PATH_typo3conf, $path);
+				$absolutePathToZipFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/' . $extensionKey . '-l10n-' . $language . '.zip');
+				$relativeLanguagePath = 'l10n' . '/' . $language . '/';
+				$absoluteLanguagePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_typo3conf . $relativeLanguagePath);
+				$absoluteExtensionLanguagePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(PATH_typo3conf . $relativeLanguagePath. $extensionKey . '/');
+				if (empty($absolutePathToZipFile) || empty($absoluteLanguagePath) || empty($absoluteExtensionLanguagePath)) {
+					throw new \TYPO3\CMS\Lang\Exception\Lang('Given path is invalid.', 1352565336);
 				}
-				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($file, $l10n[0]);
+				if (!is_dir($absoluteLanguagePath)) {
+					\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(PATH_typo3conf, $relativeLanguagePath);
+				}
+				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($absolutePathToZipFile, $l10n[0]);
+				if (is_dir($absoluteExtensionLanguagePath)) {
+					\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($absoluteExtensionLanguagePath, TRUE);
+				}
 
-				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir(PATH_typo3conf . $path . $extensionKey, TRUE);
-
-				if ($this->unzipTranslationFile($file, PATH_typo3conf . $path)) {
+				if ($this->unzipTranslationFile($absolutePathToZipFile, $absoluteLanguagePath)) {
 					$result = TRUE;
 				}
 			}
@@ -198,19 +204,28 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 			}
 
 			while (($zipEntry = zip_read($zip)) !== FALSE) {
-				if (strpos(zip_entry_name($zipEntry), DIRECTORY_SEPARATOR) !== FALSE) {
-					$file = substr(zip_entry_name($zipEntry), strrpos(zip_entry_name($zipEntry), DIRECTORY_SEPARATOR) + 1);
-					if (strlen(trim($file)) > 0) {
-						$return = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(
-							$path . '/' . $file, zip_entry_read($zipEntry, zip_entry_filesize($zipEntry))
-						);
-						if ($return === FALSE) {
-							throw new \TYPO3\CMS\Lang\Exception\Lang('Could not write file ' . $file, 1345304560);
+				$zipEntryName = zip_entry_name($zipEntry);
+				if (strpos($zipEntryName, '/') !== FALSE) {
+					$zipEntryPathSegments =  explode('/', $zipEntryName);
+					$fileName = array_pop($zipEntryPathSegments);
+					// It is a folder, because the last segment is empty, let's create it
+					if (empty($fileName)) {
+						\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path, implode('/', $zipEntryPathSegments));
+					} else {
+						$absoluteTargetPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path . implode('/', $zipEntryPathSegments) . '/' . $fileName);
+						if (strlen(trim($absoluteTargetPath)) > 0) {
+							$return = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(
+								$absoluteTargetPath, zip_entry_read($zipEntry, zip_entry_filesize($zipEntry))
+							);
+							if ($return === FALSE) {
+								throw new \TYPO3\CMS\Lang\Exception\Lang('Could not write file ' . $zipEntryName, 1345304560);
+							}
+						} else {
+							throw new \TYPO3\CMS\Lang\Exception\Lang('Could not write file ' . $zipEntryName, 1352566904);
 						}
 					}
 				} else {
-					$result = FALSE;
-					\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($path . zip_entry_name($zipEntry), zip_entry_read($zipEntry, zip_entry_filesize($zipEntry)));
+					throw new \TYPO3\CMS\Lang\Exception\Lang('Extension directory missing in zip file!', 1352566904);
 				}
 			}
 		} else {
