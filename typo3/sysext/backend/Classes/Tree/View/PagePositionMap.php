@@ -500,7 +500,13 @@ class PagePositionMap {
 	 * @todo Define visibility
 	 */
 	public function insertPositionIcon($row, $vv, $kk, $moveUid, $pid) {
-		$cc = hexdec(substr(md5($row['uid'] . '-' . $vv . '-' . $kk), 0, 4));
+		// @see printContentElementColumns why this is needed (and yes it needs to be done this way)
+		if (is_array($row) && !empty($row['uid'])) {
+			$uid = $row['uid'];
+		} else {
+			$uid = '';
+		}
+		$cc = hexdec(substr(md5($uid . '-' . $vv . '-' . $kk), 0, 4));
 		return '<a href="#" onclick="' . htmlspecialchars($this->onClickInsertRecord($row, $vv, $moveUid, $pid, $this->cur_sys_language)) . '" onmouseover="' . htmlspecialchars(('changeImg(\'mImg' . $cc . '\',0);')) . '" onmouseout="' . htmlspecialchars(('changeImg(\'mImg' . $cc . '\',1);')) . '">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/newrecord2_marker_d.gif', 'width="100" height="8"') . ' name="mImg' . $cc . '" border="0" align="top" title="' . $GLOBALS['LANG']->getLL($this->l_insertNewRecordHere, 1) . '" alt="" />' . '</a>';
 	}
 
