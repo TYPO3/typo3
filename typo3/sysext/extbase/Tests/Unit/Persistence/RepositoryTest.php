@@ -299,7 +299,7 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 		$existingObject = $this->getMock('Tx_Extbase_DomainObject_DomainObjectInterface');
 		$newObject = $this->getMock('Tx_Extbase_DomainObject_DomainObjectInterface');
 
-		$removedObjects = new SplObjectStorage;
+		$removedObjects = new Tx_Extbase_Persistence_ObjectStorage();
 		$removedObjects->attach($existingObject);
 
 		$mockBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
@@ -330,7 +330,7 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 		$existingObject = $this->getMock('Tx_Extbase_DomainObject_DomainObjectInterface');
 		$newObject = $this->getMock('Tx_Extbase_DomainObject_DomainObjectInterface');
 
-		$addedObjects = new SplObjectStorage;
+		$addedObjects = new Tx_Extbase_Persistence_ObjectStorage();
 		$addedObjects->attach($existingObject);
 
 		$mockBackend = $this->getMock('Tx_Extbase_Persistence_BackendInterface');
