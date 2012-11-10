@@ -1,6 +1,11 @@
 <?php
 /***************************************************************
 *  Copyright notice
+
+
+*  BAAR
+*  FOOOOOOOOOOOOOOOOOOOOOO
+asdasd 
 *
 *  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
