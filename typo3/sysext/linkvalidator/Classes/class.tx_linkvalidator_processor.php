@@ -28,4 +28,5 @@ $GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modfuncreport/locallang.xml')
  * typo3/sysext/linkvalidator/Classes/LinkAnalyzer.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('linkvalidator') . 'Classes/LinkAnalyzer.php';
+
 ?>
