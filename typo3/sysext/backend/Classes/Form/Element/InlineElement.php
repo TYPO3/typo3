@@ -546,7 +546,14 @@ class InlineElement {
 				if ($fileUid) {
 					$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($fileUid);
 					if ($fileObject) {
-						$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => 64, 'height' => 64))->getPublicUrl(TRUE);
+						$imageSetup = array('width' => 64, 'height' => 64);
+						if (isset($config['appearance']['headerThumbnailSetup'])) {
+							$imageSetup = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule(
+								$imageSetup,
+								$config['appearance']['headerThumbnailSetup']
+							);
+						}
+						$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup)->getPublicUrl(TRUE);
 						$thumbnail = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($recTitle) . '">';
 					} else {
 						$thumbnail = FALSE;
