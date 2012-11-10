@@ -470,7 +470,8 @@ class t3lib_positionMap {
 	/**
 	 * Creates a linked position icon.
 	 *
-	 * @param	array		Element row.
+	 * @param mixed $row Element row. If this is an array the link will cause an insert after this content element, otherwise
+	 * the link will insert at the first position in the column
 	 * @param	string		Column position value.
 	 * @param	integer		Column key.
 	 * @param	integer		Move uid
@@ -478,7 +479,14 @@ class t3lib_positionMap {
 	 * @return	string
 	 */
 	function insertPositionIcon($row, $vv, $kk, $moveUid, $pid) {
-		$cc = hexdec(substr(md5($row['uid'] . '-' . $vv . '-' . $kk), 0, 4));
+		if (is_array($row) && !empty($row['uid'])) {
+				// Use record uid for the hash when inserting after this content element
+			$uid = $row['uid'];
+		} else {
+				// No uid means insert at first position in the column
+			$uid = '';
+		}
+		$cc = hexdec(substr(md5($uid . '-' . $vv . '-' . $kk), 0, 4));
 		return '<a href="#" onclick="' . htmlspecialchars($this->onClickInsertRecord($row, $vv, $moveUid, $pid, $this->cur_sys_language)) . '" onmouseover="' . htmlspecialchars('changeImg(\'mImg' . $cc . '\',0);') . '" onmouseout="' . htmlspecialchars('changeImg(\'mImg' . $cc . '\',1);') . '">' .
 			   '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/newrecord2_marker_d.gif', 'width="100" height="8"') . ' name="mImg' . $cc . '" border="0" align="top" title="' . $GLOBALS['LANG']->getLL($this->l_insertNewRecordHere, 1) . '" alt="" />' .
 			   '</a>';
@@ -487,7 +495,8 @@ class t3lib_positionMap {
 	/**
 	 * Create on-click event value.
 	 *
-	 * @param	array		The record.
+	 * @param mixed $row The record. If this is not an array with the record data the insert will be for the first position
+	 * in the column
 	 * @param	string		Column position value.
 	 * @param	integer		Move uid
 	 * @param	integer		PID value.
