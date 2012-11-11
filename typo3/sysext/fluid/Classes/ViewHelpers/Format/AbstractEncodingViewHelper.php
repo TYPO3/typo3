@@ -31,14 +31,7 @@ abstract class AbstractEncodingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
 	 */
 	protected function resolveDefaultEncoding() {
 		if (self::$defaultEncoding === NULL) {
-			if (TYPO3_MODE === 'BE') {
-				self::$defaultEncoding = strtoupper($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']);
-			} else {
-				self::$defaultEncoding = strtoupper($GLOBALS['TSFE']->renderCharset);
-			}
-			if (self::$defaultEncoding === NULL) {
-				self::$defaultEncoding = 'UTF-8';
-			}
+			self::$defaultEncoding = 'UTF-8';
 		}
 		return self::$defaultEncoding;
 	}

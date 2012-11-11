@@ -21,7 +21,8 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestC
 	protected $viewHelper;
 
 	public function setUp() {
-		$this->viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\HtmlentitiesViewHelper', array('renderChildren'));
+		$this->viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\HtmlentitiesViewHelper', array('renderChildren','resolveDefaultEncoding'));
+		$this->viewHelper->expects($this->any())->method('resolveDefaultEncoding')->will($this->returnValue('UTF-8'));
 	}
 
 	/**
@@ -62,7 +63,7 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestC
 	 * @test
 	 */
 	public function renderDecodesSimpleString() {
-		$source = 'Some special characters: &' . chr(169) . '"\'';
+		$source = 'Some special characters: &©"\'';
 		$expectedResult = 'Some special characters: &amp;&copy;&quot;\'';
 		$actualResult = $this->viewHelper->render($source);
 		$this->assertEquals($expectedResult, $actualResult);
@@ -72,7 +73,7 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestC
 	 * @test
 	 */
 	public function renderRespectsKeepQuoteArgument() {
-		$source = 'Some special characters: &' . chr(169) . '"\'';
+		$source = 'Some special characters: &©"\'';
 		$expectedResult = 'Some special characters: &amp;&copy;"\'';
 		$actualResult = $this->viewHelper->render($source, TRUE);
 		$this->assertEquals($expectedResult, $actualResult);
