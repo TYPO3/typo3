@@ -489,22 +489,22 @@ class IconUtility {
 	 * Of course it works only if ImageMagick is able to create valid png-images - which you cannot be sure of with older versions (still 5+)
 	 * The only drawback is (apparently) that IM creates true-color png's. The transparency of these will not be shown by MSIE on windows at this time (although it's straight 0%/100% transparency!) and the file size may be larger.
 	 *
-	 * @param resource $dstImg Destination image
-	 * @param resource $srcImg Source image
-	 * @param integer $dstX Destination x-coordinate
-	 * @param integer $dstY Destination y-coordinate
-	 * @param integer $srcX Source x-coordinate
-	 * @param integer $srcY Source y-coordinate
-	 * @param integer $dstWidth Destination width
-	 * @param integer $dstHeight Destination height
-	 * @param integer $srcWidth Source width
-	 * @param integer $srcHeight Source height
+	 * @param resource $destinationImage Destination image
+	 * @param resource $sourceImage Source image
+	 * @param integer $destinationX Destination x-coordinate
+	 * @param integer $destinationY Destination y-coordinate
+	 * @param integer $sourceX Source x-coordinate
+	 * @param integer $sourceY Source y-coordinate
+	 * @param integer $destinationWidth Destination width
+	 * @param integer $destinationHeight Destination height
+	 * @param integer $sourceWidth Source width
+	 * @param integer $sourceHeight Source height
 	 * @return void
 	 * @access private
 	 * @see t3lib_stdGraphic::imagecopyresized()
 	 */
-	static public function imagecopyresized(&$dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight) {
-		imagecopyresized($dstImg, $srcImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $dstWidth, $dstHeight, $srcWidth, $srcHeight);
+	static public function imagecopyresized(&$destinationImage, $sourceImage, $destinationX, $destinationY, $sourceX, $sourceY, $destinationWidth, $destinationHeight, $sourceWidth, $sourceHeight) {
+		imagecopyresized($destinationImage, $sourceImage, $destinationX, $destinationY, $sourceX, $sourceY, $destinationWidth, $destinationHeight, $sourceWidth, $sourceHeight);
 	}
 
 	/**
