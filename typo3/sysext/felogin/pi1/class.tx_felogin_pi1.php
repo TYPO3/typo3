@@ -848,7 +848,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 			if (stristr($key,$this->prefixId) === FALSE) {
 				if (is_array($val)) {
 					foreach ($val as $key1 => $val1) {
-						if ($this->conf['preserveGETvars'] == 'all' || in_array($key . '[' . $key1 .']', $preserveVars)) {
+						if ($this->conf['preserveGETvars'] == 'all' || (is_array($preserveVars) && in_array($key . '[' . $key1 .']', $preserveVars))) {
 							$params .= '&' . $key . '[' . $key1 . ']=' . $val1;
 						}
 					}
