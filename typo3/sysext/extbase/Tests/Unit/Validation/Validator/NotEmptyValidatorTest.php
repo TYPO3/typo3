@@ -96,7 +96,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_NotEmptyValidatorTest extends T
 	public function notEmptyValidatorWorksForEmptyCountableObjects() {
 		$validator = new Tx_Extbase_Validation_Validator_NotEmptyValidator();
 
-		$validator->isValid(new ArrayObject());
+		$validator->isValid(new Tx_Extbase_Persistence_ObjectStorage());
 		$this->assertNotEmpty($validator->getErrors());
 	}
 
@@ -106,7 +106,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_NotEmptyValidatorTest extends T
 	 */
 	public function notEmptyValidatorWorksForNotEmptyCountableObjects() {
 		$validator = new Tx_Extbase_Validation_Validator_NotEmptyValidator();
-		$countableObject = new ArrayObject();
+		$countableObject = new Tx_Extbase_Persistence_ObjectStorage();
 		$countableObject->attach(new stdClass());
 
 		$validator->isValid($countableObject);
