@@ -1,3 +1,12 @@
+2012-11-12  6b2534d                  [RELEASE] Release of TYPO3 4.6.15 (TYPO3 Release Team)
+2012-11-12  f9f79d8                  [TASK] Raise submodule pointer (TYPO3 Release Team)
+2012-11-12  00f7f89                  [TASK] Raise version numbers of system extensions (Steffen Ritter)
+2012-11-11  99fefa4  #42850          [TASK] Fix TYPO3 logos (Helmut Hummel)
+2012-11-10  0e6c1de  #42812          [BUGFIX] getFuncCheck must quotes wrong (Michael Späth)
+2012-11-08  6cf8dde                  [TASK] Set TYPO3 version to 4.6.15-dev (TYPO3 Release Team)
+2012-11-08  0a81b61                  [RELEASE] Release of TYPO3 4.6.14 (TYPO3 Release Team)
+
+
 2012-11-08  948f241                  [RELEASE] Release of TYPO3 4.6.14 (TYPO3 Release Team)
 2012-11-08  c150b27  #42696          [SECURITY] Fix SQL injection and XSS in record history (Oliver Hader)
 2012-11-08  b02026d  #42774          [SECURITY] XSS in TCA Tree (Oliver Hader)
