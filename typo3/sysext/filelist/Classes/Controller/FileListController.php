@@ -83,6 +83,13 @@ class FileListController {
 	public $overwriteExistingFiles;
 
 	/**
+	 * File list instance.
+	 *
+	 * @var \TYPO3\CMS\Filelist\FileList
+	 */
+	public $filelist = NULL;
+
+	/**
 	 * Initialize variables, file object
 	 * Incoming GET vars include id, pointer, table, imagemode
 	 *
@@ -260,6 +267,7 @@ class FileListController {
 				$this->MOD_SETTINGS['displayThumbs'] = $GLOBALS['BE_USER']->uc['thumbnailsByDefault'];
 			}
 			$this->filelist->thumbs = $this->MOD_SETTINGS['displayThumbs'];
+
 			// Create clipboard object and initialize that
 			$this->filelist->clipObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
 			$this->filelist->clipObj->fileMode = 1;
