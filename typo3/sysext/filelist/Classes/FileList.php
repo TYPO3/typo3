@@ -33,6 +33,13 @@ namespace TYPO3\CMS\Filelist;
  */
 class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 
+	/**
+	 * Clipboard instance.
+	 *
+	 * @var \TYPO3\CMS\Backend\Clipboard\Clipboard
+	 */
+	public $clipObj = NULL;
+
 	// default Max items shown
 	/**
 	 * @todo Define visibility
@@ -162,7 +169,10 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	 * @return void
 	 * @todo Define visibility
 	 */
-	public function start(\TYPO3\CMS\Core\Resource\Folder $folderObject, $pointer, $sort, $sortRev, $clipBoard = FALSE, $bigControlPanel = FALSE) {
+	public function start(
+		\TYPO3\CMS\Core\Resource\Folder $folderObject, $pointer, $sort,
+		$sortRev, $clipBoard = FALSE, $bigControlPanel = FALSE
+	) {
 		$this->script = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('file_list');
 		$this->folderObject = $folderObject;
 		$this->counter = 0;
@@ -652,12 +662,85 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	public function makeClip($fileOrFolderObject) {
 		$cells = array();
 		$fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
+
 		$md5 = \TYPO3\CMS\Core\Utility\GeneralUtility::shortmd5($fullIdentifier);
 		// For normal clipboard, add copy/cut buttons:
 		if ($this->clipObj->current == 'normal') {
 			$isSel = $this->clipObj->isSelected('_FILE', $md5);
-			$cells[] = '<a href="' . htmlspecialchars($this->clipObj->selUrlFile($fullIdentifier, 1, ($isSel == 'copy'))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(('actions-edit-copy' . ($isSel == 'copy' ? '-release' : '')), array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.copy', 1))) . '</a>';
-			$cells[] = '<a href="' . htmlspecialchars($this->clipObj->selUrlFile($fullIdentifier, 0, ($isSel == 'cut'))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(('actions-edit-cut' . ($isSel == 'cut' ? '-release' : '')), array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.cut', 1))) . '</a>';
+
+			// Copy URL
+			$cells[] = '<a href="' .
+				htmlspecialchars(
+					$this->clipObj->selUrlFile($fullIdentifier, 1, ($isSel == 'copy'))
+				) .
+				'">' .
+				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(
+					(
+						'actions-edit-copy' . ($isSel == 'copy' ? '-release' : '')
+					),
+					array(
+						'title' => $GLOBALS['LANG']->sL(
+							'LLL:EXT:lang/locallang_core.xml:cm.copy', 1
+						)
+					)
+				) .
+				'</a>';
+
+			// Cut URL
+			$cells[] = '<a href="' .
+				htmlspecialchars(
+					$this->clipObj->selUrlFile($fullIdentifier, 0, ($isSel == 'cut'))
+				) .
+				'">' .
+				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(
+					(
+						'actions-edit-cut' . ($isSel == 'cut' ? '-release' : '')
+					),
+					array(
+						'title' => $GLOBALS['LANG']->sL(
+							'LLL:EXT:lang/locallang_core.xml:cm.cut', 1
+						)
+					)
+				) .
+				'</a>';
+
+			// Delete URL (only files)
+			if (is_a($fileOrFolderObject, 'TYPO3\\CMS\\Core\\Resource\\File')) {
+				$loc = 'top.content.list_frame';
+				if ($GLOBALS['BE_USER']->jsConfirmation(4)) {
+					$conf = 'confirm('
+						. $GLOBALS['LANG']->JScharCode(
+							sprintf(
+								$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.delete'),
+								basename($fullIdentifier)
+							)
+							. \TYPO3\CMS\Backend\Utility\BackendUtility::referenceCount(
+								'_FILE', $fullIdentifier, ' (There are %s reference(s) to this file!)'
+							)
+						)
+						. ')';
+				} else {
+					$conf = '1==1';
+				}
+				$onClick = 'if(' . $loc . ' && ' . $conf . ' ){'
+					. $loc . '.location.href=top.TS.PATH_typo3+\'tce_file.php'
+					. '?redirect=\'+top.rawurlencode('
+					. $loc . '.document.location' . '.pathname+' . $loc . '.document.location' . '.search'
+					. ')+\'' . '&file[delete][0][data]=' . rawurlencode($fullIdentifier)
+					. '&vC=' . $GLOBALS['BE_USER']->veriCode() . '\';}';
+
+				$cells[] = '<a href="#" onclick="' . htmlspecialchars($onClick)
+					. '" title="' . $GLOBALS['LANG']->getLL('deleteItem', TRUE) . '">'
+					. \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(
+						'actions-edit-delete' . ($isSel == 'delete' ? '-release' : ''),
+						array(
+							'title' => $GLOBALS['LANG']->sL(
+								'LLL:EXT:lang/locallang_core.xml:cm.delete', 1
+							)
+						)
+					)
+					. '</a>';
+			}
 		} else {
 			// For numeric pads, add select checkboxes:
 			$n = '_FILE|' . $md5;
