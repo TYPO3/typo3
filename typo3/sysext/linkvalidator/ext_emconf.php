@@ -1,14 +1,14 @@
 <?php
 
-########################################################################
-# Extension Manager/Repository config file for ext "linkvalidator".
-#
-# Auto generated 16-10-2012 12:41
-#
-# Manual updates:
-# Only the data in the array - everything else is removed by next
-# writing. "version" and "dependencies" must not be touched!
-########################################################################
+/***************************************************************
+ * Extension Manager/Repository config file for ext "linkvalidator".
+ *
+ * Auto generated 12-11-2012 19:49
+ *
+ * Manual updates:
+ * Only the data in the array - everything else is removed by next
+ * writing. "version" and "dependencies" must not be touched!
+ ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Linkvalidator',
@@ -30,7 +30,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'doNotLoadInFE' => 1,
 	'lockType' => '',
 	'author_company' => 'Connecta AG / cab services ag / Infoglobe',
-	'version' => '4.7.5',
+	'version' => '4.7.7',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.3.0-0.0.0',
