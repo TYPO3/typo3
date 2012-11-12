@@ -1,3 +1,13 @@
+2012-11-12  a87c411                  [RELEASE] Release of TYPO3 4.7.7 (TYPO3 Release Team)
+2012-11-12  acba620                  [TASK] Raise submodule pointer (TYPO3 Release Team)
+2012-11-12  9a043f4                  [TASK] Raise version numbers of system extensions (Steffen Ritter)
+2012-11-11  681aea5  #39563          [BUGFIX] Regression in t3lib_iconWorks::imagecopyresized (Tymoteusz Motylewski)
+2012-11-11  4ea6cf6  #42850          [TASK] Fix TYPO3 logos (Helmut Hummel)
+2012-11-10  0b15d64  #42812          [BUGFIX] getFuncCheck must quotes wrong (Michael Späth)
+2012-11-08  8c98348                  [TASK] Set TYPO3 version to 4.7.7-dev (TYPO3 Release Team)
+2012-11-08  c5bdb0d                  [RELEASE] Release of TYPO3 4.7.6 (TYPO3 Release Team)
+
+
 2012-11-08  54eab24                  [RELEASE] Release of TYPO3 4.7.6 (TYPO3 Release Team)
 2012-11-08  f5d3162  #42696          [SECURITY] Fix SQL injection and XSS in record history (Oliver Hader)
 2012-11-08  07c3d63  #42774          [SECURITY] XSS in TCA Tree (Oliver Hader)
