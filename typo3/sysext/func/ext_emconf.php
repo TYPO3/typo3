@@ -1,14 +1,14 @@
 <?php
 
-########################################################################
-# Extension Manager/Repository config file for ext "func".
-#
-# Auto generated 16-10-2012 14:06
-#
-# Manual updates:
-# Only the data in the array - everything else is removed by next
-# writing. "version" and "dependencies" must not be touched!
-########################################################################
+/***************************************************************
+ * Extension Manager/Repository config file for ext "func".
+ *
+ * Auto generated 12-11-2012 19:48
+ *
+ * Manual updates:
+ * Only the data in the array - everything else is removed by next
+ * writing. "version" and "dependencies" must not be touched!
+ ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Web>Func',
@@ -33,7 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => '',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '4.7.5',
+	'version' => '4.7.7',
 	'_md5_values_when_last_written' => 'a:6:{s:12:"ext_icon.gif";s:4:"2d41";s:14:"ext_tables.php";s:4:"a355";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"370d";s:13:"mod1/func.gif";s:4:"2d41";s:14:"mod1/index.php";s:4:"b0fe";}',
 	'constraints' => array(
 		'depends' => array(

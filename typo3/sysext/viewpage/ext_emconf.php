@@ -1,14 +1,14 @@
 <?php
 
-########################################################################
-# Extension Manager/Repository config file for ext "viewpage".
-#
-# Auto generated 16-10-2012 14:08
-#
-# Manual updates:
-# Only the data in the array - everything else is removed by next
-# writing. "version" and "dependencies" must not be touched!
-########################################################################
+/***************************************************************
+ * Extension Manager/Repository config file for ext "viewpage".
+ *
+ * Auto generated 12-11-2012 19:50
+ *
+ * Manual updates:
+ * Only the data in the array - everything else is removed by next
+ * writing. "version" and "dependencies" must not be touched!
+ ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Web>View',
@@ -33,7 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => 'Curby Soft Multimedia',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '4.7.5',
+	'version' => '4.7.7',
 	'_md5_values_when_last_written' => 'a:10:{s:12:"ext_icon.gif";s:4:"9b98";s:14:"ext_tables.php";s:4:"a104";s:14:"view/clear.gif";s:4:"cc11";s:13:"view/conf.php";s:4:"24ff";s:15:"view/dummy.html";s:4:"e302";s:17:"view/frameset.php";s:4:"a100";s:14:"view/index.php";s:4:"3fdf";s:15:"view/layout.gif";s:4:"edde";s:22:"view/locallang_mod.xlf";s:4:"dffe";s:13:"view/view.gif";s:4:"1898";}',
 	'constraints' => array(
 		'depends' => array(
