@@ -1,3 +1,14 @@
+2012-11-12  3c7a71d                  [RELEASE] Release of TYPO3 4.5.22 (TYPO3 Release Team)
+2012-11-12  599c098                  [TASK] Raise submodule pointer (TYPO3 Release Team)
+2012-11-12  950a152                  [TASK] Raise version numbers of system extensions (Steffen Ritter)
+2012-11-11  56e6665  #26660          [BUGFIX] imagecopyresized: correct invalid parameters (Stefan Neufeind)
+2012-11-11  dc4ccbd  #42850          [TASK] Fix TYPO3 logos (Helmut Hummel)
+2012-11-10  cd8366d                  [TASK] Raise submodule pointer (TYPO3 Release Team)
+2012-11-10  6757b85  #42812          [BUGFIX] #42812 Most checkboxes (like Extended View) are not working (Michael Späth)
+2012-11-08  9587d6f                  [TASK] Set TYPO3 version to 4.5.22-dev (TYPO3 Release Team)
+2012-11-08  70498f2                  [RELEASE] Release of TYPO3 4.5.21 (TYPO3 Release Team)
+
+
 2012-11-08  c211c0e                  [RELEASE] Release of TYPO3 4.5.21 (TYPO3 Release Team)
 2012-11-08  5245e09  #42696          [SECURITY] Fix SQL injection and XSS in record history (Oliver Hader)
 2012-11-08  ab335bc  #42774          [SECURITY] XSS in TCA Tree (Oliver Hader)
