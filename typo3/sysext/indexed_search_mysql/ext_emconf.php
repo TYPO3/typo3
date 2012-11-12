@@ -1,14 +1,14 @@
 <?php
 
-########################################################################
-# Extension Manager/Repository config file for ext "indexed_search_mysql".
-#
-# Auto generated 16-10-2012 14:06
-#
-# Manual updates:
-# Only the data in the array - everything else is removed by next
-# writing. "version" and "dependencies" must not be touched!
-########################################################################
+/***************************************************************
+ * Extension Manager/Repository config file for ext "indexed_search_mysql".
+ *
+ * Auto generated 12-11-2012 19:49
+ *
+ * Manual updates:
+ * Only the data in the array - everything else is removed by next
+ * writing. "version" and "dependencies" must not be touched!
+ ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'MySQL driver for Indexed Search Engine',
@@ -32,7 +32,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => '',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '4.7.5',
+	'version' => '4.7.7',
 	'_md5_values_when_last_written' => 'a:5:{s:9:"ChangeLog";s:4:"1bb1";s:32:"class.tx_indexedsearch_mysql.php";s:4:"10bb";s:12:"ext_icon.gif";s:4:"4cbf";s:17:"ext_localconf.php";s:4:"6998";s:14:"ext_tables.sql";s:4:"7f93";}',
 	'constraints' => array(
 		'depends' => array(
