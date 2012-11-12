@@ -1952,7 +1952,14 @@ class BackendUtility {
 				// Create NULL-reference
 				$null = NULL;
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['preProcessValue'] as $_funcRef) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $theColConf, $null);
+					$params = array(
+						'value' => &$value,
+						'colConf' => $theColConf,
+						'table' => $table,
+						'col' => $col,
+						'uid' => $uid,
+					);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $params, $null);
 				}
 			}
 			$l = '';
@@ -2103,7 +2110,10 @@ class BackendUtility {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'] as $_funcRef) {
 					$params = array(
 						'value' => $l,
-						'colConf' => $theColConf
+						'colConf' => $theColConf,
+						'table' => $table,
+						'col' => $col,
+						'uid' => $uid,
 					);
 					$l = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $params, $null);
 				}
