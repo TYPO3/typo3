@@ -83,6 +83,13 @@ class FileListController {
 	public $overwriteExistingFiles;
 
 	/**
+	 * File list instance.
+	 *
+	 * @var \TYPO3\CMS\Filelist\FileList
+	 */
+	public $filelist = NULL;
+
+	/**
 	 * Initialize variables, file object
 	 * Incoming GET vars include id, pointer, table, imagemode
 	 *
@@ -260,6 +267,7 @@ class FileListController {
 				$this->MOD_SETTINGS['displayThumbs'] = $GLOBALS['BE_USER']->uc['thumbnailsByDefault'];
 			}
 			$this->filelist->thumbs = $this->MOD_SETTINGS['displayThumbs'];
+
 			// Create clipboard object and initialize that
 			$this->filelist->clipObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
 			$this->filelist->clipObj->fileMode = 1;
@@ -310,8 +318,28 @@ class FileListController {
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 
 			if (top.fsMod) top.fsMod.recentIds["file"] = unescape("' . rawurlencode($this->id) . '");
+
 			function jumpToUrl(URL) {	//
 				window.location.href = URL;
+			}
+
+			function deleteRecord(table,id,url) {
+				if (
+					' . ($GLOBALS['BE_USER']->jsConfirmation(4) ?
+						'confirm(' .
+						$GLOBALS['LANG']->JScharCode(
+							$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_alt_doc.php:deleteWarning')
+						) .
+						')' :
+						'1==1') . '
+				)	{
+					window.location.href = "tce_db.php?cmd["+table+"]["+id+"][delete]=1' .
+					\TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction') .
+					'&redirect="+escape(url)+"&vC=' .
+					$GLOBALS['BE_USER']->veriCode() .
+					'&prErr=1&uPT=1";
+				}
+				return false;
 			}
 
 			' . $this->filelist->CBfunctions());
