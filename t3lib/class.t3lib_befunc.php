@@ -2328,7 +2328,14 @@ final class t3lib_BEfunc {
 					// create NULL-reference
 				$null = NULL;
 				foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['preProcessValue'] as $_funcRef) {
-					t3lib_div::callUserFunction($_funcRef, $theColConf, $null);
+					$params = array(
+						'value' => &$value,
+						'colConf' => $theColConf,
+						'table' => $table,
+						'col' => $col,
+						'uid' => $uid,
+					);
+					t3lib_div::callUserFunction($_funcRef, $params, $null);
 				}
 			}
 
@@ -2481,7 +2488,10 @@ final class t3lib_BEfunc {
 				foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'] as $_funcRef) {
 					$params = array(
 						'value' => $l,
-						'colConf' => $theColConf
+						'colConf' => $theColConf,
+						'table' => $table,
+						'col' => $col,
+						'uid' => $uid,
 					);
 					$l = t3lib_div::callUserFunction($_funcRef, $params, $null);
 				}
