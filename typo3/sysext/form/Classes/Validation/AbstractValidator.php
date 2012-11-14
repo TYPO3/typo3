@@ -101,7 +101,6 @@ abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\Validator
 	 * Constructor
 	 *
 	 * @param array $arguments Typoscript configuration for the validation rule
-	 * @return void
 	 */
 	public function __construct($arguments) {
 		$this->localCobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');

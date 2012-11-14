@@ -53,8 +53,8 @@ class LengthValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	public function validLengthProvider() {
 		return array(
-			'4 ≤ length(myString) ≤ 8' => array(array(4, 8, 'myString')),
-			'8 ≤ length(myString) ≤ 8' => array(array(8, 8, 'myString')),
+			'4 ≤ length(myString) ≤ 8' => array(array(4, 8, 'mäString')),
+			'8 ≤ length(myString) ≤ 8' => array(array(8, 8, 'möString')),
 			'4 ≤ length(myString)'       => array(array(4, NULL, 'myString')),
 			'4 ≤ length(asdf) ≤ 4'     => array(array(4, 4, 'asdf')),
 		);

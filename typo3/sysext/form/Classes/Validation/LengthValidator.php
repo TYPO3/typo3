@@ -47,12 +47,20 @@ class LengthValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	protected $maximum;
 
 	/**
+	 * TYPO3 charset encoding object
+	 *
+	 * @var \TYPO3\CMS\Core\Charset\CharsetConverter
+	 */
+	protected $charsetConverter = NULL;
+
+	/**
 	 * Constructor
 	 *
 	 * @param array $arguments Typoscript configuration
 	 * @return void
 	 */
 	public function __construct($arguments) {
+		$this->charsetConverter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
 		$this->setMinimum($arguments['minimum'])->setMaximum($arguments['maximum']);
 		parent::__construct($arguments);
 	}
@@ -66,7 +74,7 @@ class LengthValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	public function isValid() {
 		if ($this->requestHandler->has($this->fieldName)) {
 			$value = $this->requestHandler->getByMethod($this->fieldName);
-			$length = iconv_strlen($value);
+			$length = $this->charsetConverter->strlen('utf-8', $value);
 			if ($length < $this->minimum) {
 				return FALSE;
 			}
