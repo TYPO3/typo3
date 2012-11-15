@@ -1992,7 +1992,7 @@ tt_content.' . $key . $prefix . ' {
 		// Update the category registry
 		$result = \TYPO3\CMS\Core\Category\CategoryRegistry::getInstance()->add($extensionKey, $tableName, $fieldName, $options);
 		if ($result === FALSE) {
-			$message = 't3lib_categoryRegistry: no category registered for table "%s". Key was already registered.';
+			$message = '\TYPO3\CMS\Core\Category\CategoryRegistry: no category registered for table "%s". Key was already registered.';
 			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog(sprintf($message, $tableName), 'Core', 2);
 		}
 	}
