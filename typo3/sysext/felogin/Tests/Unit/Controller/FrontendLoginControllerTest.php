@@ -295,22 +295,6 @@ class FrontendLoginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return array
 	 */
 	public function getPreserveGetVarsReturnsCorrectResultDataProvider() {
-		$getArray = array(
-			'id' => '10',
-			'L' => '3',
-			'tx_ext2' => 'ext2value',
-			'tx_ext3' => array('ext3key' => 44),
-			'tx_someext' => array(
-				'@widget_0' => array('currentPage' => '3', 'perPage' => '8'),
-				'controller' => 'controller1',
-				'action' => 'action1'
-			),
-			'no_cache' => 1,
-			'logintype' => 'login',
-			'redirect_url' => 'someurl',
-			'cHash' => '1c9b08081c416bada560b4cac62ec64d',
-		);
-
 		return array(
 			'special get var id is not preserved' => array(
 				array(
