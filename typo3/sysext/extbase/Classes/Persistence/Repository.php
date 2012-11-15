@@ -35,40 +35,6 @@ namespace TYPO3\CMS\Extbase\Persistence;
 class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap
-	 */
-	protected $identityMap;
-
-	/**
-	 * Objects of this repository
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
-	 */
-	protected $addedObjects;
-
-	/**
-	 * Objects removed but not found in $this->addedObjects at removal time
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
-	 */
-	protected $removedObjects;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface
-	 */
-	protected $queryFactory;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
-	 */
-	protected $backend;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
-	 */
-	protected $session;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
 	 */
 	protected $persistenceManager;
@@ -79,9 +45,12 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	protected $objectManager;
 
 	/**
+	 * Warning: if you think you want to set this,
+	 * look at RepositoryInterface::ENTITY_CLASSNAME first!
+	 *
 	 * @var string
 	 */
-	protected $objectType;
+	protected $entityClassName;
 
 	/**
 	 * @var array
@@ -89,21 +58,13 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	protected $defaultOrderings = array();
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
-	 */
-	protected $defaultQuerySettings = NULL;
-
-	/**
-	 * Constructs a new Repository
+	 * Initializes a new Repository.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @deprecated since Extbase 6.0.0; will be removed in Extbase 6.2 - Use objectManager to instantiate repository objects instead of GeneralUtility::makeInstance
 	 */
 	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager = NULL) {
-		$this->addedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->removedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$nsSeparator = strpos($this->getRepositoryClassName(), '\\') !== FALSE ? '\\\\' : '_';
-		$this->objectType = preg_replace(array('/' . $nsSeparator . 'Repository' . $nsSeparator . '(?!.*' . $nsSeparator . 'Repository' . $nsSeparator . ')/', '/Repository$/'), array($nsSeparator . 'Model' . $nsSeparator, ''), $this->getRepositoryClassName());
+
 		if ($objectManager === NULL) {
 			// Legacy creation, in case the object manager is NOT injected
 			// If ObjectManager IS there, then all properties are automatically injected
@@ -111,98 +72,58 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 			\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 
 			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-			$this->injectIdentityMap($this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\IdentityMap'));
-			$this->injectQueryFactory($this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryFactory'));
-			$this->injectPersistenceManager($this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager'));
-			$this->injectBackend($this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\BackendInterface'));
-			$this->injectSession($this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Session'));
+			$this->injectPersistenceManager($this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface'));
 		} else {
 			$this->objectManager = $objectManager;
+		}
+
+		if (static::ENTITY_CLASSNAME === NULL) {
+			$this->entityClassName = preg_replace(array('/\\\Domain\\\Repository\\\/', '/_Domain_Repository_/', '/Repository$/'), array('\\Domain\\Model\\', '_Domain_Model_', ''), get_class($this));
+		} else {
+			$this->entityClassName = static::ENTITY_CLASSNAME;
 		}
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap $identityMap
-	 * @return void
-	 */
-	public function injectIdentityMap(\TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap $identityMap) {
-		$this->identityMap = $identityMap;
-	}
-
-	/**
-	 * Injects the Persistence Backend
+	 * Injects the persistence manager
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface $backend The persistence backend
-	 * @return void
-	 */
-	public function injectBackend(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface $backend) {
-		$this->backend = $backend;
-	}
-
-	/**
-	 *
-	 * Injects the Persistence Session
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session $session The persistence session
-	 * @return void
-	 */
-	public function injectSession(\TYPO3\CMS\Extbase\Persistence\Generic\Session $session) {
-		$this->session = $session;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory $queryFactory
-	 * @return void
-	 */
-	public function injectQueryFactory(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory $queryFactory) {
-		$this->queryFactory = $queryFactory;
-	}
-
-	/**
 	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
 	 * @return void
 	 */
 	public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager) {
 		$this->persistenceManager = $persistenceManager;
-		$this->persistenceManager->registerRepositoryClassName($this->getRepositoryClassName());
 	}
 
 	/**
-	 * Adds an object to this repository
+	 * Adds an object to this repository.
 	 *
 	 * @param object $object The object to add
-	 * @throws Exception\IllegalObjectTypeException
 	 * @return void
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
 	 * @api
 	 */
 	public function add($object) {
-		if (!$object instanceof $this->objectType) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The object given to add() was not of the type (' . $this->objectType . ') this repository manages.', 1248363335);
+		if (!is_object($object) || !($object instanceof $this->entityClassName)) {
+			$type = (is_object($object) ? get_class($object) : gettype($object));
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The value given to add() was ' . $type . ' , however the ' . get_class($this) . ' can only store ' . $this->entityClassName . ' instances.', 1298403438);
 		}
-		$this->addedObjects->attach($object);
-		if ($this->removedObjects->contains($object)) {
-			$this->removedObjects->detach($object);
-		}
+		$this->persistenceManager->add($object);
 	}
 
 	/**
 	 * Removes an object from this repository.
 	 *
 	 * @param object $object The object to remove
-	 * @throws Exception\IllegalObjectTypeException
 	 * @return void
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
 	 * @api
 	 */
 	public function remove($object) {
-		if (!$object instanceof $this->objectType) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The object given to remove() was not of the type (' . $this->objectType . ') this repository manages.', 1248363335);
+		if (!is_object($object) || !($object instanceof $this->entityClassName)) {
+			$type = (is_object($object) ? get_class($object) : gettype($object));
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The value given to remove() was ' . $type . ' , however the ' . get_class($this) . ' can only handle ' . $this->entityClassName . ' instances.', 1298403442);
 		}
-		if ($this->addedObjects->contains($object)) {
-			$this->addedObjects->detach($object);
-		}
-		if (!$object->_isNew()) {
-			$this->removedObjects->attach($object);
-		}
+		$this->persistenceManager->remove($object);
 	}
 
 	/**
@@ -210,102 +131,79 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 *
 	 * @param object $existingObject The existing object
 	 * @param object $newObject The new object
-	 * @throws Exception\UnknownObjectException
 	 * @throws Exception\IllegalObjectTypeException
 	 * @return void
 	 * @api
+	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
 	 */
 	public function replace($existingObject, $newObject) {
-		if (!$existingObject instanceof $this->objectType) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The existing object given to replace was not of the type (' . $this->objectType . ') this repository manages.', 1248363434);
+		if (!$existingObject instanceof $this->entityClassName) {
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The existing object given to replace was not of the type (' . $this->entityClassName . ') this repository manages.', 1248363434);
 		}
-		if (!$newObject instanceof $this->objectType) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The new object given to replace was not of the type (' . $this->objectType . ') this repository manages.', 1248363439);
+		if (!$newObject instanceof $this->entityClassName) {
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The new object given to replace was not of the type (' . $this->entityClassName . ') this repository manages.', 1248363439);
 		}
-		$uuid = $this->persistenceManager->getIdentifierByObject($existingObject);
-		if ($uuid !== NULL) {
-			$this->backend->replaceObject($existingObject, $newObject);
-			$this->session->unregisterReconstitutedObject($existingObject);
-			$this->session->registerReconstitutedObject($newObject);
-			if ($this->removedObjects->contains($existingObject)) {
-				$this->removedObjects->detach($existingObject);
-				$this->removedObjects->attach($newObject);
-			} elseif ($this->addedObjects->contains($existingObject)) {
-				$this->addedObjects->detach($existingObject);
-				$this->addedObjects->attach($newObject);
-			}
-		} elseif ($this->addedObjects->contains($existingObject)) {
-			$this->addedObjects->detach($existingObject);
-			$this->addedObjects->attach($newObject);
-		} else {
-			throw new \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException('The "existing object" is unknown to the persistence backend.', 1238068475);
-		}
+
+		$this->persistenceManager->replace($existingObject, $newObject);
 	}
 
 	/**
-	 * Replaces an existing object with the same identifier by the given object
+	 * Schedules a modified object for persistence.
 	 *
-	 * @param object $modifiedObject The modified object
-	 * @throws Exception\UnknownObjectException
-	 * @throws Exception\IllegalObjectTypeException
-	 * @return void
+	 * @param object $object The modified object
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
 	 * @api
 	 */
-	public function update($modifiedObject) {
-		if (!$modifiedObject instanceof $this->objectType) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The modified object given to update() was not of the type (' . $this->objectType . ') this repository manages.', 1249479625);
+	public function update($object) {
+		if (!is_object($object) || !($object instanceof $this->entityClassName)) {
+			$type = (is_object($object) ? get_class($object) : gettype($object));
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The value given to update() was ' . $type . ' , however the ' . get_class($this) . ' can only store ' . $this->entityClassName . ' instances.', 1249479625);
 		}
-		$uid = $modifiedObject->getUid();
-		if ($uid !== NULL) {
-			$existingObject = $this->findByUid($uid);
-			$this->replace($existingObject, $modifiedObject);
-		} else {
-			throw new \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException('The "modified object" is does not have an existing counterpart in this repository.', 1249479819);
-		}
+
+		$this->persistenceManager->update($object);
 	}
 
 	/**
-	 * Returns all addedObjects that have been added to this repository with add().
+	 * Returns all objects of this repository add()ed but not yet persisted to
+	 * the storage layer.
 	 *
-	 * This is a service method for the persistence manager to get all addedObjects
-	 * added to the repository. Those are only objects *added*, not objects
-	 * fetched from the underlying storage.
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage the objects
+	 * @return array An array of objects
+	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
 	 */
 	public function getAddedObjects() {
-		return $this->addedObjects;
+		return $this->persistenceManager->getAddedObjects();
 	}
 
 	/**
-	 * Returns an \TYPO3\CMS\Extbase\Persistence\ObjectStorage with objects remove()d from the repository
-	 * that had been persisted to the storage layer before.
+	 * Returns an array with objects remove()d from the repository that
+	 * had been persisted to the storage layer before.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage the objects
+	 * @return array
+	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
 	 */
 	public function getRemovedObjects() {
-		return $this->removedObjects;
+		return $this->persistenceManager->getRemovedObjects();
 	}
 
 	/**
-	 * Returns all objects of this repository.
+	 * Returns all objects of this repository
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface The query result
 	 * @api
+	 * @see \TYPO3\CMS\Extbase\Persistence\QueryInterface::execute()
 	 */
 	public function findAll() {
-		$result = $this->createQuery()->execute();
-		return $result;
+		return $this->createQuery()->execute();
 	}
 
 	/**
-	 * Returns the total number objects of this repository.
+	 * Counts all objects of this repository
 	 *
-	 * @return integer The object count
+	 * @return integer
 	 * @api
 	 */
 	public function countAll() {
-		return $this->createQuery()->execute()->count();
+		return $this->createQuery()->count();
 	}
 
 	/**
@@ -316,7 +214,6 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 * @api
 	 */
 	public function removeAll() {
-		$this->addedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		foreach ($this->findAll() as $object) {
 			$this->remove($object);
 		}
@@ -328,28 +225,20 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 * @param integer $uid The identifier of the object to find
 	 * @return object The matching object if found, otherwise NULL
 	 * @api
+	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
 	 */
 	public function findByUid($uid) {
-		if ($this->identityMap->hasIdentifier($uid, $this->objectType)) {
-			$object = $this->identityMap->getObjectByIdentifier($uid, $this->objectType);
-		} else {
-			$query = $this->createQuery();
-			$query->getQuerySettings()->setRespectSysLanguage(FALSE);
-			$query->getQuerySettings()->setRespectStoragePage(FALSE);
-			$object = $query->matching($query->equals('uid', $uid))->execute()->getFirst();
-		}
-		return $object;
+		return $this->findByIdentifier($uid);
 	}
 
 	/**
-	 * Sets the property names to order the result by per default.
-	 * Expected like this:
+	 * Sets the property names to order results by. Expected like this:
 	 * array(
-	 * 'foo' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
-	 * 'bar' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+	 *  'foo' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
+	 *  'bar' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
 	 * )
 	 *
-	 * @param array $defaultOrderings The property names to order by
+	 * @param array $defaultOrderings The property names to order by by default
 	 * @return void
 	 * @api
 	 */
@@ -363,9 +252,10 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
 	 * @return void
 	 * @api
+	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
 	 */
 	public function setDefaultQuerySettings(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings) {
-		$this->defaultQuerySettings = $defaultQuerySettings;
+		$this->persistenceManager->setDefaultQuerySettings($defaultQuerySettings);
 	}
 
 	/**
@@ -375,52 +265,69 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 * @api
 	 */
 	public function createQuery() {
-		$query = $this->queryFactory->create($this->objectType);
+		$query = $this->persistenceManager->createQueryForType($this->entityClassName);
 		if ($this->defaultOrderings !== array()) {
 			$query->setOrderings($this->defaultOrderings);
-		}
-		if ($this->defaultQuerySettings !== NULL) {
-			$query->setQuerySettings(clone $this->defaultQuerySettings);
 		}
 		return $query;
 	}
 
 	/**
-	 * Dispatches magic methods (findBy[Property]())
+	 * Magic call method for repository methods.
 	 *
-	 * @param string $methodName The name of the magic method
-	 * @param string $arguments The arguments of the magic method
+	 * Provides three methods
+	 *  - findBy<PropertyName>($value, $caseSensitive = TRUE)
+	 *  - findOneBy<PropertyName>($value, $caseSensitive = TRUE)
+	 *  - countBy<PropertyName>($value, $caseSensitive = TRUE)
+	 *
+	 * @param string $method Name of the method
+	 * @param array $arguments The arguments
+	 *
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException
-	 * @return mixed
+	 *
+	 * @return mixed The result of the repository method
 	 * @api
 	 */
-	public function __call($methodName, $arguments) {
-		if (substr($methodName, 0, 6) === 'findBy' && strlen($methodName) > 7) {
-			$propertyName = strtolower(substr(substr($methodName, 6), 0, 1)) . substr(substr($methodName, 6), 1);
-			$query = $this->createQuery();
-			$result = $query->matching($query->equals($propertyName, $arguments[0]))->execute();
-			return $result;
-		} elseif (substr($methodName, 0, 9) === 'findOneBy' && strlen($methodName) > 10) {
-			$propertyName = strtolower(substr(substr($methodName, 9), 0, 1)) . substr(substr($methodName, 9), 1);
-			$query = $this->createQuery();
-			$object = $query->matching($query->equals($propertyName, $arguments[0]))->setLimit(1)->execute()->getFirst();
-			return $object;
-		} elseif (substr($methodName, 0, 7) === 'countBy' && strlen($methodName) > 8) {
-			$propertyName = strtolower(substr(substr($methodName, 7), 0, 1)) . substr(substr($methodName, 7), 1);
-			$query = $this->createQuery();
-			$result = $query->matching($query->equals($propertyName, $arguments[0]))->execute()->count();
-			return $result;
+	public function __call($method, $arguments) {
+		$query = $this->createQuery();
+		$caseSensitive = isset($arguments[1]) ? (boolean)$arguments[1] : TRUE;
+
+		if (substr($method, 0, 6) === 'findBy' && strlen($method) > 7) {
+			$propertyName = lcfirst(substr($method, 6));
+			return $query->matching($query->equals($propertyName, $arguments[0], $caseSensitive))->execute();
+		} elseif (substr($method, 0, 7) === 'countBy' && strlen($method) > 8) {
+			$propertyName = lcfirst(substr($method, 7));
+			return $query->matching($query->equals($propertyName, $arguments[0], $caseSensitive))->count();
+		} elseif (substr($method, 0, 9) === 'findOneBy' && strlen($method) > 10) {
+			$propertyName = lcfirst(substr($method, 9));
+			return $query->matching($query->equals($propertyName, $arguments[0], $caseSensitive))->execute()->getFirst();
 		}
-		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
+
+		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException('The method "' . $method . '" is not supported by the repository.', 1233180480);
 	}
 
 	/**
-	 * Returns the class name of this class.
+	 * Returns the classname of the entities this repository is managing.
 	 *
-	 * @return string Class name of the repository.
+	 * Note that anything that is an "instanceof" this class is accepted
+	 * by the repository.
+	 *
+	 * @return string
+	 * @api
 	 */
-	protected function getRepositoryClassName() {
-		return get_class($this);
+	public function getEntityClassName() {
+		return $this->entityClassName;
+	}
+
+	/**
+	 * Finds an object matching the given identifier.
+	 *
+	 * @param mixed $identifier The identifier of the object to find
+	 * @return object The matching object if found, otherwise NULL
+	 * @api
+	 */
+	public function findByIdentifier($identifier) {
+		return $this->persistenceManager->getObjectByIdentifier($identifier, $this->entityClassName);
 	}
 }
 

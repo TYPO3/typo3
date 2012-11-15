@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Domain\Repository;
+namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Repository;
 
 /***************************************************************
  * Copyright notice
@@ -50,6 +50,7 @@ class FileMountRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		/** @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManagerInterface */
 		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$fixture = new \TYPO3\CMS\Extbase\Domain\Repository\FileMountRepository($objectManager);
+		$fixture->injectPersistenceManager(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager'));
 		$querySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 		$querySettings->expects($this->once())->method('setRespectStoragePage')->with(FALSE);
 		$objectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings')->will($this->returnValue($querySettings));

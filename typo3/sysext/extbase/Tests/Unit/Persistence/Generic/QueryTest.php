@@ -67,7 +67,7 @@ class QueryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->query->injectObjectManager($this->objectManager);
 		$this->querySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
 		$this->query->setQuerySettings($this->querySettings);
-		$this->persistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
+		$this->persistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
 		$this->backend = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\BackendInterface');
 		$this->backend->expects($this->any())->method('getQomFactory')->will($this->returnValue(NULL));
 		$this->persistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($this->backend));

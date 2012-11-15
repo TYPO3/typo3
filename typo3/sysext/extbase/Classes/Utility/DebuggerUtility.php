@@ -51,7 +51,7 @@ class DebuggerUtility {
 		'TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService',
 		'TYPO3\\CMS\\Extbase\\Object\\ObjectManager',
 		'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper',
-		'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager',
+		'TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface',
 		'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory',
 		'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
 	);

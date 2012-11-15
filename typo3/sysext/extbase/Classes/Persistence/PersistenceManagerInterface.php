@@ -33,6 +33,23 @@ namespace TYPO3\CMS\Extbase\Persistence;
 interface PersistenceManagerInterface {
 
 	/**
+	 * Injects the Extbase settings, called by Extbase.
+	 *
+	 * @param array $settings
+	 * @return void
+	 * @api
+	 */
+	public function injectSettings(array $settings);
+
+	/**
+	 * Initializes the persistence manager, called by Extbase.
+	 *
+	 * @return void
+	 * @api
+	 */
+	public function initialize();
+
+	/**
 	 * Commits new objects and changes to objects in the current persistence
 	 * session into the backend
 	 *
@@ -40,6 +57,25 @@ interface PersistenceManagerInterface {
 	 * @api
 	 */
 	public function persistAll();
+
+	/**
+	 * Clears the in-memory state of the persistence.
+	 *
+	 * Managed instances become detached, any fetches will
+	 * return data directly from the persistence "backend".
+	 *
+	 * @return void
+	 */
+	public function clearState();
+
+	/**
+	 * Checks if the given object has ever been persisted.
+	 *
+	 * @param object $object The object to check
+	 * @return boolean TRUE if the object is new, FALSE if the object exists in the repository
+	 * @api
+	 */
+	public function isNewObject($object);
 
 	/**
 	 * Returns the (internal) identifier for the object, if it is known to the
@@ -66,99 +102,6 @@ interface PersistenceManagerInterface {
 	 * @api
 	 */
 	public function getObjectByIdentifier($identifier, $objectType = NULL, $useLazyLoading = FALSE);
-
-	/**
-	 * Returns the number of records matching the query.
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
-	 * @return integer
-	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
-	 * @api
-	 */
-	public function getObjectCountByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query);
-
-	/**
-	 * Returns the object data matching the $query.
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
-	 * @return array
-	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
-	 * @api
-	 */
-	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query);
-
-	/**
-	 * Registers a repository
-	 *
-	 * @param string $className The class name of the repository to be reigistered
-	 * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
-	 * @return void
-	 */
-	public function registerRepositoryClassName($className);
-
-	/**
-	 * Adds an object to the persistence.
-	 *
-	 * @param object $object The object to add
-	 * @return void
-	 * @api
-	 */
-	public function add($object);
-
-	/**
-	 * Removes an object to the persistence.
-	 *
-	 * @param object $object The object to remove
-	 * @return void
-	 * @api
-	 */
-	public function remove($object);
-
-	/**
-	 * Update an object in the persistence.
-	 *
-	 * @param object $object The modified object
-	 * @return void
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
-	 * @api
-	 */
-	public function update($object);
-
-	/**
-	 * Injects the Extbase settings, called by Extbase.
-	 *
-	 * @param array $settings
-	 * @return void
-	 * @api
-	 */
-	public function injectSettings(array $settings);
-
-	/**
-	 * Initializes the persistence manager, called by Extbase.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initialize();
-
-	/**
-	 * Clears the in-memory state of the persistence.
-	 *
-	 * Managed instances become detached, any fetches will
-	 * return data directly from the persistence "backend".
-	 *
-	 * @return void
-	 */
-	public function clearState();
-
-	/**
-	 * Checks if the given object has ever been persisted.
-	 *
-	 * @param object $object The object to check
-	 * @return boolean TRUE if the object is new, FALSE if the object exists in the repository
-	 * @api
-	 */
-	public function isNewObject($object);
 
 	/**
 	 * Converts the given object into an array containing the identity of the domain object.
@@ -190,6 +133,34 @@ interface PersistenceManagerInterface {
 	 * @api
 	 */
 	public function createQueryForType($type);
+
+	/**
+	 * Adds an object to the persistence.
+	 *
+	 * @param object $object The object to add
+	 * @return void
+	 * @api
+	 */
+	public function add($object);
+
+	/**
+	 * Removes an object to the persistence.
+	 *
+	 * @param object $object The object to remove
+	 * @return void
+	 * @api
+	 */
+	public function remove($object);
+
+	/**
+	 * Update an object in the persistence.
+	 *
+	 * @param object $object The modified object
+	 * @return void
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
+	 * @api
+	 */
+	public function update($object);
 }
 
 ?>

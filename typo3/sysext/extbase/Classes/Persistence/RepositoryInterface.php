@@ -53,51 +53,26 @@ interface RepositoryInterface {
 	public function remove($object);
 
 	/**
-	 * Replaces an object by another.
+	 * Schedules a modified object for persistence.
 	 *
-	 * @param object $existingObject The existing object
-	 * @param object $newObject The new object
+	 * @param object $object The modified object
 	 * @return void
 	 * @api
 	 */
-	public function replace($existingObject, $newObject);
-
-	/**
-	 * Replaces an existing object with the same identifier by the given object
-	 *
-	 * @param object $modifiedObject The modified object
-	 * @api
-	 */
-	public function update($modifiedObject);
-
-	/**
-	 * Returns all objects of this repository add()ed but not yet persisted to
-	 * the storage layer.
-	 *
-	 * @return array An array of objects
-	 */
-	public function getAddedObjects();
-
-	/**
-	 * Returns an array with objects remove()d from the repository that
-	 * had been persisted to the storage layer before.
-	 *
-	 * @return array
-	 */
-	public function getRemovedObjects();
+	public function update($object);
 
 	/**
 	 * Returns all objects of this repository.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface The query result
 	 * @api
 	 */
 	public function findAll();
 
 	/**
-	 * Returns the total number objects of this repository.
+	 * Counts all objects of this repository
 	 *
-	 * @return integer The object count
+	 * @return integer
 	 * @api
 	 */
 	public function countAll();
@@ -114,34 +89,39 @@ interface RepositoryInterface {
 	/**
 	 * Finds an object matching the given identifier.
 	 *
-	 * @param integer $uid The identifier of the object to find
+	 * @param mixed $identifier The identifier of the object to find
 	 * @return object The matching object if found, otherwise NULL
 	 * @api
 	 */
-	public function findByUid($uid);
+	public function findByIdentifier($identifier);
 
 	/**
-	 * Sets the property names to order the result by per default.
-	 * Expected like this:
+	 * Sets the property names to order results by. Expected like this:
 	 * array(
-	 * 'foo' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
-	 * 'bar' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+	 *  'foo' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_ASCENDING,
+	 *  'bar' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_DESCENDING
 	 * )
 	 *
-	 * @param array $defaultOrderings The property names to order by
+	 * @param array $defaultOrderings The property names to order by by default
 	 * @return void
 	 * @api
 	 */
 	public function setDefaultOrderings(array $defaultOrderings);
 
 	/**
-	 * Sets the default query settings to be used in this repository
+	 * Magic call method for repository methods.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
-	 * @return void
+	 * Provides three methods
+	 *  - findBy<PropertyName>($value, $caseSensitive = TRUE)
+	 *  - findOneBy<PropertyName>($value, $caseSensitive = TRUE)
+	 *  - countBy<PropertyName>($value, $caseSensitive = TRUE)
+	 *
+	 * @param string $method Name of the method
+	 * @param array $arguments The arguments
+	 * @return mixed The result of the repository method
 	 * @api
 	 */
-	public function setDefaultQuerySettings(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings);
+	public function __call($method, $arguments);
 
 	/**
 	 * Returns a query for objects of this repository
@@ -150,6 +130,23 @@ interface RepositoryInterface {
 	 * @api
 	 */
 	public function createQuery();
+
+	/**
+	 * If set in an implementation overrides automatic detection of the
+	 * entity class name being managed by the repository.
+	 *
+	 * @var string
+	 * @api
+	 */
+	const ENTITY_CLASSNAME = NULL;
+
+	/**
+	 * Returns the object type this repository is managing.
+	 *
+	 * @return string
+	 * @api
+	 */
+	public function getEntityClassName();
 }
 
 ?>

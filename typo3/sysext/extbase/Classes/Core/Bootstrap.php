@@ -71,7 +71,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 	protected $reflectionService;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
 	 */
 	protected $persistenceManager;
 
@@ -180,7 +180,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 	 * @see initialize()
 	 */
 	public function initializePersistence() {
-		$this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+		$this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
 	}
 
 	/**
