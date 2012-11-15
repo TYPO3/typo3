@@ -1048,7 +1048,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function validEmailInvalidDataProvider() {
 		return array(
+			'empty string' => array(''),
+			'empty array' => array(array()),
+			'integer' => array(42),
+			'float' => array(42.23),
+			'array' => array(array('foo')),
+			'object' => array(new \stdClass()),
 			'@ sign only' => array('@'),
+			'string longer than 320 characters' => array(str_repeat('0123456789', 33)),
 			'duplicate @' => array('test@@example.com'),
 			'duplicate @ combined with further special characters in local part' => array('test!.!@#$%^&*@example.com'),
 			'opening parenthesis in local part' => array('foo(bar@example.com'),

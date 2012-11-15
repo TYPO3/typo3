@@ -1052,7 +1052,7 @@ class GeneralUtility {
 	static public function validEmail($email) {
 		// Enforce maximum length to prevent libpcre recursion crash bug #52929 in PHP
 		// fixed in PHP 5.3.4; length restriction per SMTP RFC 2821
-		if (strlen($email) > 320) {
+		if (!is_string($email) || strlen($email) > 320) {
 			return FALSE;
 		}
 		require_once PATH_typo3 . 'contrib/idna/idna_convert.class.php';
