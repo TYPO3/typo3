@@ -156,13 +156,17 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 					if (is_array($row)) {
 						$langRecUids[$langRow['uid']][] = $row['uid'];
 						$status = $row['_HIDDEN'] ? (\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || $data['row']['l18n_cfg'] & 1 ? 'c-blocked' : 'c-fallback') : 'c-ok';
-						$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_language_overlay', $row, array('class' => 'c-recIcon'));
+						$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord(
+							'pages_language_overlay',
+							$row,
+							array('class' => 'c-recIcon')
+						);
 						$info = $icon . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['title'], $titleLen)) . (strcmp($row['nav_title'], '') ? ' [Nav: <em>' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['nav_title'], $titleLen)) . '</em>]' : '') . ($row['_COUNT'] > 1 ? '<div>' . $LANG->getLL('lang_renderl10n_badThingThereAre', '1') . '</div>' : '');
 						$tCells[] = '<td class="' . $status . ' c-leftLine">' . $info . '</td>';
 						// Edit whole record:
 						$info = '';
 						$editUid = $row['uid'];
-						$params = '&edit[sys_language_overlay][' . $editUid . ']=edit';
+						$params = '&edit[pages_language_overlay][' . $editUid . ']=edit';
 						$info .= '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'])) . '" title="' . $LANG->getLL('lang_renderl10n_editLanguageOverlayRecord', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 						$info .= '<a href="#" onclick="' . htmlspecialchars(('top.loadEditId(' . intval($data['row']['uid']) . ',"&SET[language]=' . $langRow['uid'] . '"); return false;')) . '" title="' . $LANG->getLL('lang_renderl10n_editPageLang', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-open') . '</a>';
 						$info .= str_replace('###LANG_UID###', $langRow['uid'], $viewPageLink);
@@ -177,7 +181,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 							$status = \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || $data['row']['l18n_cfg'] & 1 ? 'c-blocked' : 'c-fallback';
 							$info = '<input type="checkbox" name="newOL[' . $langRow['uid'] . '][' . $data['row']['uid'] . ']" value="1" />';
 							$newOL_js[$langRow['uid']] .= '
-								+(document.webinfoForm[\'newOL[' . $langRow['uid'] . '][' . $data['row']['uid'] . ']\'].checked ? \'&edit[sys_language_overlay][' . $data['row']['uid'] . ']=new\' : \'\')
+								+(document.webinfoForm[\'newOL[' . $langRow['uid'] . '][' . $data['row']['uid'] . ']\'].checked ? \'&edit[pages_language_overlay][' . $data['row']['uid'] . ']=new\' : \'\')
 							';
 						}
 						$tCells[] = '<td class="' . $status . ' c-leftLine">&nbsp;</td>';
@@ -208,13 +212,18 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 				$tCells[] = '<td class="c-leftLine">' . htmlspecialchars($langRow['title']) . '</td>';
 				// Edit language overlay records:
 				if (is_array($langRecUids[$langRow['uid']])) {
-					$params = '&edit[sys_language_overlay][' . implode(',', $langRecUids[$langRow['uid']]) . ']=edit&columnsOnly=title,nav_title,hidden';
+					$params = '&edit[pages_language_overlay][' .
+						implode(',', $langRecUids[$langRow['uid']]) .
+						']=edit&columnsOnly=title,nav_title,hidden';
 					$tCells[] = '<td><a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'])) . '" title="' . $LANG->getLL('lang_renderl10n_editLangOverlays', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a></td>';
 				} else {
 					$tCells[] = '<td>&nbsp;</td>';
 				}
 				// Create new overlay records:
-				$params = '\'' . $newOL_js[$langRow['uid']] . '+\'&columnsOnly=title,hidden,sys_language_uid&defVals[sys_language_overlay][sys_language_uid]=' . $langRow['uid'];
+				$params = '\'' .
+					$newOL_js[$langRow['uid']] .
+					'+\'&columnsOnly=title,hidden,sys_language_uid&defVals[pages_language_overlay][sys_language_uid]=' .
+					$langRow['uid'];
 				$tCells[] = '<td><a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'])) . '" title="' . $LANG->getLL('lang_getlangsta_createNewTranslationHeaders', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . '</a></td>';
 			}
 		}
@@ -263,9 +272,16 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 	 * @todo Define visibility
 	 */
 	public function getLangStatus($pageId, $langId) {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_language_overlay', 'pid=' . intval($pageId) . ' AND sys_language_uid=' . intval($langId) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_language_overlay') . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('sys_language_overlay'));
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'*',
+			'pages_language_overlay',
+			'pid=' . intval($pageId) .
+				' AND sys_language_uid=' . intval($langId) .
+				\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages_language_overlay') .
+				\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages_language_overlay')
+		);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('sys_language_overlay', $row);
+		\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('pages_language_overlay', $row);
 		if (is_array($row)) {
 			$row['_COUNT'] = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 			$row['_HIDDEN'] = $row['hidden'] || intval($row['endtime']) > 0 && intval($row['endtime']) < $GLOBALS['EXEC_TIME'] || $GLOBALS['EXEC_TIME'] < intval($row['starttime']);
