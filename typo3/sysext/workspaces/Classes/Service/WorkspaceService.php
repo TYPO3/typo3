@@ -464,19 +464,19 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Determine whether a specific page is new and not yet available in the LIVE workspace
 	 *
 	 * @static
-	 * @param $id Primary key of the page to check
-	 * @param $language Language for which to check the page
-	 * @return bool
+	 * @param integer $id Primary key of the page to check
+	 * @param integer $language Language for which to check the page
+	 * @return boolean
 	 */
 	static public function isNewPage($id, $language = 0) {
 		$isNewPage = FALSE;
 		// If the language is not default, check state of overlay
 		if ($language > 0) {
-			$whereClause = 'pid = ' . $id;
-			$whereClause .= ' AND ' . $GLOBALS['TCA']['sys_language_overlay']['ctrl']['languageField'] . ' = ' . $language;
-			$whereClause .= ' AND t3ver_wsid = ' . $GLOBALS['BE_USER']->workspace;
-			$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_language_overlay');
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('t3ver_state', 'sys_language_overlay', $whereClause);
+			$whereClause = 'pid = ' . intval($id);
+			$whereClause .= ' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . ' = ' . intval($language);
+			$whereClause .= ' AND t3ver_wsid = ' . intval($GLOBALS['BE_USER']->workspace);
+			$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages_language_overlay');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('t3ver_state', 'pages_language_overlay', $whereClause);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$isNewPage = (int) $row['t3ver_state'] === 1;
 			}
@@ -493,16 +493,16 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Generates a view link for a page.
 	 *
 	 * @static
-	 * @param $table
-	 * @param $uid
-	 * @param $record
+	 * @param string $table
+	 * @param integer $uid
+	 * @param array $record
 	 * @return string
 	 */
 	static public function viewSingleRecord($table, $uid, $record = NULL) {
 		$viewUrl = '';
 		if ($table == 'pages') {
 			$viewUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick(\TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionIdOfRecord('pages', $uid));
-		} elseif ($table == 'sys_language_overlay' || $table == 'tt_content') {
+		} elseif ($table === 'pages_language_overlay' || $table === 'tt_content') {
 			$elementRecord = is_array($record) ? $record : \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionOfRecord($table, $uid);
 			$viewUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($elementRecord['pid']);
 		} else {
@@ -519,8 +519,8 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Determine whether this page for the current
 	 *
-	 * @param $pageUid
-	 * @param $workspaceUid
+	 * @param integer $pageUid
+	 * @param integer $workspaceUid
 	 * @return boolean
 	 */
 	public function canCreatePreviewLink($pageUid, $workspaceUid) {

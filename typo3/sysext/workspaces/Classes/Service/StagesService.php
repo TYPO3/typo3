@@ -114,7 +114,10 @@ class StagesService {
 	 * @return array Current and next highest possible stage
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
-	public function getPreviousStageForElementCollection($workspaceItems, array $byTableName = array('tt_content', 'pages', 'sys_language_overlay')) {
+	public function getPreviousStageForElementCollection(
+		$workspaceItems,
+		array $byTableName = array('tt_content', 'pages', 'pages_language_overlay')
+	) {
 		$currentStage = array();
 		$previousStage = array();
 		$usedStages = array();
@@ -160,7 +163,10 @@ class StagesService {
 	 * @return array Current and next possible stage.
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
-	public function getNextStageForElementCollection($workspaceItems, array $byTableName = array('tt_content', 'pages', 'sys_language_overlay')) {
+	public function getNextStageForElementCollection(
+		$workspaceItems,
+		array $byTableName = array('tt_content', 'pages', 'pages_language_overlay')
+	) {
 		$currentStage = array();
 		$usedStages = array();
 		$nextStage = array();
