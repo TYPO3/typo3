@@ -108,8 +108,7 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 	private function initializeWidgetContext() {
 		$this->widgetContext->setWidgetConfiguration($this->getWidgetConfiguration());
 		$this->initializeWidgetIdentifier();
-		$controllerObjectName = $this->controller instanceof \Tx_Fluid_AOP_ProxyInterface ? $this->controller->FLOW3_AOP_Proxy_getProxyTargetClassName() : get_class($this->controller);
-		$this->widgetContext->setControllerObjectName($controllerObjectName);
+		$this->widgetContext->setControllerObjectName(get_class($this->controller));
 		$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
 		$pluginName = $this->controllerContext->getRequest()->getPluginName();
 		$this->widgetContext->setParentExtensionName($extensionName);
