@@ -303,6 +303,34 @@ class ValidatorResolverTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	}
 
 	/**
+	 * dataProvider for buildBaseValidatorConjunctionAddsValidatorFromConventionToTheReturnedConjunction
+	 * @return array
+	 */
+	public function modelNamesProvider() {
+		return array(
+			'no replace' => array('F3_TestPackage_Quux', 'F3_TestPackage_QuuxValidator'),
+			'replace in not namespaced class' => array('F3_TestPackage_Model_Quux', 'F3_TestPackage_Validator_QuuxValidator'),
+			'replace in namespaced class' => array('F3\TestPackage\Model\Quux', 'F3\TestPackage\Validator\QuuxValidator')
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider modelNamesProvider
+	 */
+	public function buildBaseValidatorConjunctionCreatesValidatorFromClassName($modelClassName, $validatorClassName) {
+		$mockConjunctionValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator', array(), array(), '', FALSE);
+		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface', array(), array(), '', FALSE);
+		$mockObjectManager->expects($this->at(0))->method('get')->with('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator')->will($this->returnValue($mockConjunctionValidator));
+		$validatorResolver = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver', array('resolveValidatorObjectName', 'createValidator'));
+		//$validatorResolver->injectReflectionService($mockReflectionService);
+		$validatorResolver->injectObjectManager($mockObjectManager);
+		$validatorResolver->expects($this->once())->method('createValidator')->with($validatorClassName)->will($this->returnValue(NULL));
+		$result = $validatorResolver->_call('buildBaseValidatorConjunction', $modelClassName);
+		$this->assertSame($mockConjunctionValidator, $result);
+	}
+
+	/**
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
@@ -452,7 +480,34 @@ class ValidatorResolverTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 						array('validatorName' => 'Bar', 'validatorOptions' => array('Quux' => '123', 'Pax' => 'a weird "string" with *freaky* \\stuff'))
 					)
 				)
-			)
+			),
+			'namespaced validator class name' => array(
+				'annotation' => '$var F3\TestPackage\Quux',
+				'expected' => array(
+					'argumentName' => 'var',
+					'validators' => array(
+						array('validatorName' => 'F3\TestPackage\Quux', 'validatorOptions' => array())
+					)
+				)
+			),
+			'shorthand notation for system validator' => array(
+				'annotation' => '$var TYPO3.CMS.Mypkg:MySecond',
+				'expected' => array(
+					'argumentName' => 'var',
+					'validators' => array(
+						array('validatorName' => 'TYPO3.CMS.Mypkg:MySecond', 'validatorOptions' => array())
+					)
+				)
+			),
+			'shorthand notation for custom validator with parameter' => array(
+				'annotation' => '$var Acme.Mypkg:MyThird(Foo="2")',
+				'expected' => array(
+					'argumentName' => 'var',
+					'validators' => array(
+						array('validatorName' => 'Acme.Mypkg:MyThird', 'validatorOptions' => array('Foo' => '2'))
+					)
+				)
+			),
 		);
 	}
 

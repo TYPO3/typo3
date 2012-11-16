@@ -39,7 +39,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	const PATTERN_MATCH_VALIDATORS = '/
 			(?:^|,\\s*)
-			(?P<validatorName>[a-z0-9_:]+)
+			(?P<validatorName>[a-z0-9_:.\\\\]+)
 			\\s*
 			(?:\\(
 				(?P<validatorOptions>(?:\\s*[a-z0-9]+\\s*=\\s*(?:
@@ -230,7 +230,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 		// Custom validator for the class
-		$possibleValidatorClassName = str_replace('_Model_', '_Validator_', $dataType) . 'Validator';
+		$possibleValidatorClassName = str_replace(array('_Model_', '\\Model\\'), array('_Validator_','\\Validator\\'), $dataType) . 'Validator';
 		$customValidator = $this->createValidator($possibleValidatorClassName);
 		if ($customValidator !== NULL) {
 			$validatorConjunction->addValidator($customValidator);
