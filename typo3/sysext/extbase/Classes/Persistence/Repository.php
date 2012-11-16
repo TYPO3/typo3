@@ -110,6 +110,8 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			$this->injectIdentityMap($this->objectManager->get('Tx_Extbase_Persistence_IdentityMap'));
 			$this->injectQueryFactory($this->objectManager->get('Tx_Extbase_Persistence_QueryFactory'));
 			$this->injectPersistenceManager($this->objectManager->get('Tx_Extbase_Persistence_Manager'));
+			$this->injectBackend($this->objectManager->get('Tx_Extbase_Persistence_BackendInterface'));
+			$this->injectSession($this->objectManager->get('Tx_Extbase_Persistence_Session'));
 		} else {
 			$this->objectManager = $objectManager;
 		}
