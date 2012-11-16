@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Version\Controller;
  * Versioning module, including workspace management
  *
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 

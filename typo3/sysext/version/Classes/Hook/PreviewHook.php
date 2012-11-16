@@ -31,7 +31,6 @@ namespace TYPO3\CMS\Version\Hook;
  * preview mode = show a page of a workspace without having to log in
  *
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
- * @package Version
  */
 class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 

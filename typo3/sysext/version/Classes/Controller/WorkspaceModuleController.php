@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Version\Controller;
  * Module: Workspace manager
  *
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 

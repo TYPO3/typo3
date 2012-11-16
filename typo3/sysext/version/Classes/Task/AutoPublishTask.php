@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Version\Task;
  * mechanism of workspaces, as a Scheduler task
  *
  * @author 		François Suter <francois@typo3.org>
- * @package 		TYPO3
- * @subpackage 	tx_version
  */
 class AutoPublishTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

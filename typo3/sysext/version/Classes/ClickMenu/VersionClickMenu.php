@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Version\ClickMenu;
  * "Versioning" item added to click menu of elements.
  *
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class VersionClickMenu {
 
