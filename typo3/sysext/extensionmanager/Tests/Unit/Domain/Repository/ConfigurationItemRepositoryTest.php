@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Repository;
  * Tests for ConfigurationItemRepository
  *
  */
+
 class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
@@ -54,6 +55,13 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 			array('dummy')
 		);
 		$this->configurationItemRepository->injectConfigurationManager($configurationManagerMock);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function tearDown() {
+		unset($this->configurationItemRepository);
 	}
 
 	/**
@@ -397,6 +405,36 @@ TSConstantEditor.advancedbackend {
 		$tsStyleConfig->setup['constants']['TSConstantEditor.'] = $setupTsConstantEditor;
 		$constantsResult = $configurationItemRepositoryMock->createArrayFromConstants($raw, array());
 		$this->assertEquals($expected, $constantsResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertRawConfigurationToObjectReturnsSortedObjectStorage() {
+		$configRaw = '# cat=basic/enable; type=string; label=Item 1: This is the first configuration item
+item1 = one';
+		$extension = array();
+
+		$objectManager = new \TYPO3\CMS\Extbase\Object\ObjectManager();
+		$this->configurationItemRepository->injectObjectManager($objectManager);
+
+		$configurationCategoryObject = new \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationCategory;
+		$configurationCategoryObject->setName('basic');
+		$configurationSubcategoryObject = new \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationSubcategory;
+		$configurationSubcategoryObject->setName('enable');
+		$configurationObject = new \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem;
+		$configurationObject->setName('item1');
+		$configurationObject->setCategory('basic');
+		$configurationObject->setSubCategory('enable');
+		$configurationObject->setLabelHeadline('Item 1');
+		$configurationObject->setLabelText('This is the first configuration item');
+		$configurationObject->setType('string');
+		$configurationObject->setValue('one');
+		$configurationSubcategoryObject->addItem($configurationObject);
+		$configurationCategoryObject->addSubcategory($configurationSubcategoryObject);
+
+		$storageObject = $this->configurationItemRepository->_callRef('convertRawConfigurationToObject', $configRaw, $extension);
+		$this->assertTrue($storageObject->contains($configurationCategoryObject));
 	}
 
 }
