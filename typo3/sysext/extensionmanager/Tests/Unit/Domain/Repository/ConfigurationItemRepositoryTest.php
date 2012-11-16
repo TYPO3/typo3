@@ -57,6 +57,13 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	}
 
 	/**
+	 * @return void
+	 */
+	public function tearDown() {
+		unset($this->configurationItemRepository);
+	}
+
+	/**
 	 *
 	 * @test
 	 * @return void
@@ -397,6 +404,76 @@ TSConstantEditor.advancedbackend {
 		$tsStyleConfig->setup['constants']['TSConstantEditor.'] = $setupTsConstantEditor;
 		$constantsResult = $configurationItemRepositoryMock->createArrayFromConstants($raw, array());
 		$this->assertEquals($expected, $constantsResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertRawConfigurationToArrayReturnsSortedHierarchicArray() {
+		$configRaw = '# cat=basic/enable/10; type=string; label=Item 1: This is the first configuration item
+item1 = one
+
+# cat=basic/enable/20; type=int+; label=Integer Value: Please insert a positive integer value
+integerValue = 1
+
+# cat=advanced/file/10; type=boolean; label=enableJquery: Insert jQuery plugin
+enableJquery = 1';
+		$extension = array();
+
+		$expectedArray = array(
+			'basic' => array(
+				'enable' => array(
+					'item1' => array(
+						'cat' => 'basic',
+						'subcat_name' => 'enable',
+						'subcat' => 'a/enable/10z',
+						'type' => 'string',
+						'label' => 'Item 1: This is the first configuration item',
+						'name' =>'item1',
+						'value' => 'one',
+						'default_value' => 'one',
+						'labels' => array(
+							0 => 'Item 1',
+							1 => 'This is the first configuration item'
+						)
+					),
+					'integerValue' => array(
+						'cat' => 'basic',
+						'subcat_name' => 'enable',
+						'subcat' => 'a/enable/20z',
+						'type' => 'int+',
+						'label' => 'Integer Value: Please insert a positive integer value',
+						'name' =>'integerValue',
+						'value' => '1',
+						'default_value' => '1',
+						'labels' => array(
+							0 => 'Integer Value',
+							1 => 'Please insert a positive integer value'
+						)
+					)
+				)
+			),
+			'advanced' => array(
+				'file' => array(
+					'enableJquery' => array(
+						'cat' => 'advanced',
+						'subcat_name' => 'file',
+						'subcat' => 'c/file/10z',
+						'type' => 'boolean',
+						'label' => 'enableJquery: Insert jQuery plugin',
+						'name' =>'enableJquery',
+						'value' => '1',
+						'default_value' => '1',
+						'labels' => array(
+							0 => 'enableJquery',
+							1 => 'Insert jQuery plugin'
+						)
+					),
+				)
+			)
+		);
+
+		$this->assertSame($expectedArray, $this->configurationItemRepository->_callRef('convertRawConfigurationToArray', $configRaw, $extension));
 	}
 
 }
