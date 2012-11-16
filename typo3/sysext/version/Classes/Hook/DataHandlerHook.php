@@ -90,6 +90,7 @@ class DataHandlerHook {
 			$commandIsProcessed = TRUE;
 			$action = (string) $value['action'];
 			$comment = (isset($value['comment']) && $value['comment'] ? $value['comment'] : $this->generalComment);
+			$notificationAlternativeRecipients = (isset($value['notificationAlternativeRecipients'])) && is_array($value['notificationAlternativeRecipients']) ? $value['notificationAlternativeRecipients'] : array();
 			switch ($action) {
 			case 'new':
 				// check if page / branch versioning is needed,
@@ -109,7 +110,7 @@ class DataHandlerHook {
 						$tcemainObj,
 						$comment,
 						TRUE,
-						$value['notificationAlternativeRecipients']
+						$notificationAlternativeRecipients
 					);
 				break;
 			case 'clearWSID':
@@ -125,7 +126,7 @@ class DataHandlerHook {
 							$comment,
 							TRUE,
 							$tcemainObj,
-							$value['notificationAlternativeRecipients']
+							$notificationAlternativeRecipients
 						);
 				}
 				break;
