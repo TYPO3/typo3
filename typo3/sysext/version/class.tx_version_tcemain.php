@@ -94,6 +94,7 @@ class tx_version_tcemain {
 			$commandIsProcessed = TRUE;
 			$action = (string) $value['action'];
 			$comment = (isset($value['comment']) && $value['comment'] ? $value['comment'] : $this->generalComment);
+			$notificationAlternativeRecipients = (isset($value['notificationAlternativeRecipients'])) && is_array($value['notificationAlternativeRecipients']) ? $value['notificationAlternativeRecipients'] : array();
 			switch ($action) {
 
 				case 'new':
@@ -115,7 +116,7 @@ class tx_version_tcemain {
 						$tcemainObj,
 						$comment,
 						TRUE,
-						$value['notificationAlternativeRecipients']
+						$notificationAlternativeRecipients
 					);
 				break;
 
@@ -134,7 +135,7 @@ class tx_version_tcemain {
 							$comment,
 							TRUE,
 							$tcemainObj,
-							$value['notificationAlternativeRecipients']
+							$notificationAlternativeRecipients
 						);
 					}
 				break;
