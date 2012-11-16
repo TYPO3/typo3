@@ -31,8 +31,6 @@ $GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modfuncreport/locallang.xml')
  *
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  * @author Jochen Rieger <j.rieger@connecta.ag>
- * @package TYPO3
- * @subpackage linkvalidator
  */
 class LinkAnalyzer {
 

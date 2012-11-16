@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Linkvalidator\Task;
  * This class provides Scheduler plugin implementation
  *
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
- * @package TYPO3
- * @subpackage linkvalidator
  */
 class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

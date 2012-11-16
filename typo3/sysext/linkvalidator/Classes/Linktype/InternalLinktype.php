@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  *
  * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
- * @package TYPO3
- * @subpackage linkvalidator
  */
 class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  * @author Philipp Gampe <typo3.dev@philippgampe.info>
- * @package TYPO3
- * @subpackage linkvalidator
  */
 class ExternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 

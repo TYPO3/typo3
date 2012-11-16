@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  * This class provides Check Base plugin implementation
  *
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
- * @package TYPO3
- * @subpackage linkvalidator
  */
 abstract class AbstractLinktype implements \TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface {
 

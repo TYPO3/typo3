@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Linkvalidator\Report;
  *
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  * @author Jochen Rieger <j.rieger@connecta.ag>
- * @package TYPO3
- * @subpackage linkvalidator
  */
 class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 
