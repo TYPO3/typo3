@@ -70,7 +70,8 @@ class ConfigurationItemRepository {
 		$configRaw = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_site . $extension['siteRelPath'] . '/ext_conf_template.txt');
 		$configurationObjectStorage = NULL;
 		if ($configRaw) {
-			$configurationObjectStorage = $this->convertRawConfigurationToObject($configRaw, $extension);
+			$configurationArray = $this->convertRawConfigurationToArray($configRaw, $extension);
+			$configurationObjectStorage = $this->convertHierarchicArrayToObject($configurationArray);
 		}
 		return $configurationObjectStorage;
 	}
@@ -80,9 +81,9 @@ class ConfigurationItemRepository {
 	 *
 	 * @param string $configRaw
 	 * @param array $extension array with extension information
-	 * @return \SplObjectStorage
+	 * @return array
 	 */
-	protected function convertRawConfigurationToObject($configRaw, array $extension) {
+	protected function convertRawConfigurationToArray($configRaw, array $extension) {
 		$defaultConfiguration = $this->createArrayFromConstants($configRaw, $extension);
 		$metaInformation = $this->addMetaInformation($defaultConfiguration);
 		$configuration = $this->mergeWithExistingConfiguration($defaultConfiguration, $extension);
@@ -90,8 +91,22 @@ class ConfigurationItemRepository {
 		foreach ($configuration as $configurationOption) {
 			$hierarchicConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->buildConfigurationArray($configurationOption, $extension), $hierarchicConfiguration);
 		}
-		$configurationObjectStorage = $this->convertHierarchicArrayToObject(\TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($hierarchicConfiguration, $metaInformation));
-		return $configurationObjectStorage;
+
+		// Flip category array as it was merged the other way around
+		$hierarchicConfiguration = array_reverse($hierarchicConfiguration);
+
+		// Sort configurations of each subcategory
+		foreach ($hierarchicConfiguration as &$catConfigurationArray) {
+			foreach ($catConfigurationArray as &$subcatConfigurationArray) {
+				uasort($subcatConfigurationArray, function ($a, $b) {
+					return strnatcmp($a['subcat'], $b['subcat']);
+				});
+			}
+			unset($subcatConfigurationArray);
+		}
+		unset($tempConfiguration);
+
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($hierarchicConfiguration, $metaInformation);
 	}
 
 	/**
