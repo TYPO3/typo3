@@ -90,8 +90,22 @@ class ConfigurationItemRepository {
 		foreach ($configuration as $configurationOption) {
 			$hierarchicConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->buildConfigurationArray($configurationOption, $extension), $hierarchicConfiguration);
 		}
+		foreach ($hierarchicConfiguration as &$catConfigurationArray) {
+			foreach ($catConfigurationArray as &$subcatConfigurationArray) {
+				uasort($subcatConfigurationArray, function ($a, $b) {
+					return strnatcmp($a['subcat'], $b['subcat']);
+				});
+			}
+			unset($subcatConfigurationArray);
+		}
+		unset($tempConfiguration);
+
 		$configurationObjectStorage = $this->convertHierarchicArrayToObject(\TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($hierarchicConfiguration, $metaInformation));
 		return $configurationObjectStorage;
+	}
+
+	public function sortConfigurationSubcat() {
+
 	}
 
 	/**
