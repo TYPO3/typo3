@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Model;
  * Test case for class Tx_Beuser_Domain_Model_BackendUser
  *
  * @author Felix Kopp <felix-source@phorax.com>
- * @package TYPO3
- * @subpackage beuser
  */
 class BackendUserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

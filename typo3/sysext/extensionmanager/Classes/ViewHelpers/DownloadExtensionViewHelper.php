@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  * view helper
  *
  * @author Susanne Moog <susanne.moog@typo3.org>
- * @package Extension Manager
- * @subpackage ViewHelpers
  */
 class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper {
 

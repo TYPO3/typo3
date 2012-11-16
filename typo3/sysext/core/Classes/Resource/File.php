@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Resource;
  * File representation in the file abstraction layer.
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class File extends \TYPO3\CMS\Core\Resource\AbstractFile {
 

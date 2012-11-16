@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\View\Wizard;
  * The form wizard load view
  *
  * @category View
- * @package TYPO3
- * @subpackage form
  * @author Oliver Hader <oliver.hader@typo3.org>
  */
 abstract class AbstractWizardView {

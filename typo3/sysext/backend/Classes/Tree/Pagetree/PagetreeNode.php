@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  * Node designated for the page tree
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 

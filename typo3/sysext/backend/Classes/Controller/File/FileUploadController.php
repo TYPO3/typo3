@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Backend\Controller\File;
  * Script Class for display up to 10 upload fields
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class FileUploadController {
 

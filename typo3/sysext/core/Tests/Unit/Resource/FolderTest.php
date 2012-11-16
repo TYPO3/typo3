@@ -32,8 +32,6 @@ require_once 'vfsStream/vfsStream.php';
 /**
  * Testcase for the storage collection class of the TYPO3 FAL
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Beuser\ViewHelpers\Form;
  * Extends Tx_Fluid_ViewHelpers_Form_SelectViewHelper with empty default value in select input field
  *
  * @author Felix Kopp <felix-source@phorax.com>
- * @package TYPO3
- * @subpackage beuser
  */
 class SelectDefaultValueViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper {
 

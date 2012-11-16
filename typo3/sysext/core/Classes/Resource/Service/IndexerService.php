@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\Resource\Service;
  * should only be accessed through the FileRepository for now
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 

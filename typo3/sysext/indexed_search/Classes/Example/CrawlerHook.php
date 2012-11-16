@@ -34,8 +34,6 @@ namespace TYPO3\CMS\IndexedSearch\Example;
 /**
  * Index search crawler hook example
  *
- * @package TYPO3
- * @subpackage tx_indexedsearch
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class CrawlerHook {

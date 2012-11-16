@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Module;
  * Test class for module menu utilities
  *
  * @author Susanne Moog <typo3@susannemoog.de>
- * @package TYPO3
- * @subpackage backend
  */
 class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

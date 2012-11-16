@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Recycler\Utility;
  * Helper class for the 'recycler' extension.
  *
  * @author 	Julian Kleinhans <typo3@kj187.de>
- * @package 	TYPO3
- * @subpackage 	tx_recycler
  */
 class RecyclerUtility {
 

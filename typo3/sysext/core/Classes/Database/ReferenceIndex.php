@@ -37,8 +37,6 @@ namespace TYPO3\CMS\Core\Database;
  * Anyway, I just wanted to document this finding - I don't think we can find a solution for it. And its very TemplaVoila specific.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ReferenceIndex {
 

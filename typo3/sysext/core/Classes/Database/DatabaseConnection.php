@@ -52,8 +52,6 @@ namespace TYPO3\CMS\Core\Database;
  * Eg. $GLOBALS['TYPO3_DB']->sql_fetch_assoc()
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class DatabaseConnection {
 

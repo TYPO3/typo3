@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Tree\Renderer;
  * Abstract Renderer
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
- * @package TYPO3
- * @subpackage t3lib
  */
 abstract class AbstractTreeRenderer {
 

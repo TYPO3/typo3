@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Backend\View\PageLayout\ExtDirect;
  * Commands for the Page module
  *
  * @author Jigal van Hemert <jigal.van.hemert@typo3.org>
- * @package TYPO3
  */
 class ExtdirectPageCommands {
 

@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Scheduler;
  * Failed execution exception
  *
  * @author 	Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage scheduler
  */
 class FailedExecutionException extends \RuntimeException {
 

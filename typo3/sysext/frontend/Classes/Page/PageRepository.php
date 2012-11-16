@@ -40,8 +40,6 @@ namespace TYPO3\CMS\Frontend\Page;
  * It's important to set the right $where_hid_del in the object so that the functions operate properly
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  * @see tslib_fe::fetch_the_id()
  */
 class PageRepository {

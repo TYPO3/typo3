@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Core\Database;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author Jo Hasenau <info@cybercraft.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class QueryView {
 

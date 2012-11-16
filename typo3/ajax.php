@@ -28,8 +28,6 @@
  * AJAX dispatcher
  *
  * @author Benjamin Mack <mack@xnos.org>
- * @package TYPO3
- * @subpackage core
  */
 $TYPO3_AJAX = TRUE;
 // Include t3lib_div at this time to get the GET/POST methods it provides

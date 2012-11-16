@@ -10,8 +10,6 @@ namespace TYPO3\CMS\Rsaauth;
  * always works, even if other TYPO3 internals change.
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage tx_rsaauth
  */
 class RsaAuthService extends \TYPO3\CMS\Sv\AuthenticationService {
 

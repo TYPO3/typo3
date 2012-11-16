@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Scheduler;
  * @author 	François Suter <francois@typo3.org>
  * @author 	Christian Jul Jensen <julle@typo3.org>
  * @author 	Markus Friedrich <markus.friedrich@dkd.de>
- * @package 		TYPO3
- * @subpackage 	tx_scheduler
  */
 class Execution {
 

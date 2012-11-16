@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Reports\Report\Status;
  * Performs basic checks about the TYPO3 install
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage reports
  */
 class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 

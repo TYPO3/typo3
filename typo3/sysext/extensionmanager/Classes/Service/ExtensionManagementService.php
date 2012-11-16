@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Extensionmanager\Service;
  * Service class for managing multiple step processes (dependencies for example)
  *
  * @author Susanne Moog <susanne.moog@typo3.org>
- * @package Extension Manager
- * @subpackage Utility
  */
 class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 

@@ -38,8 +38,6 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * Class extension tslib_gmenu for the creation of DHTML foldout menus
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tslib
  */
 class GraphicalMenuFoldout extends \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject {
 

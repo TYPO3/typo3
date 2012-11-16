@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Scheduler\CronCommand;
  *
  * @author Markus Friedrich <markus.friedrich@dkd.de>
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage tx_scheduler
  */
 class CronCommand {
 

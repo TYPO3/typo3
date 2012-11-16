@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Scheduler\Example;
  * Aditional fields provider class for usage with the Scheduler's sleep task
  *
  * @author 		François Suter <francois@typo3.org>
- * @package 		TYPO3
- * @subpackage 	tx_scheduler
  */
 class SleepTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 

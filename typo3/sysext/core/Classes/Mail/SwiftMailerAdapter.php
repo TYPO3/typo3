@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Mail;
  * Hook subscriber for using Swift Mailer with the t3lib_utility_mail function
  *
  * @author Jigal van Hemert <jigal@xs4all.nl>
- * @package TYPO3
- * @subpackage t3lib
  */
 class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface {
 

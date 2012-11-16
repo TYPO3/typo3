@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\View\Confirmation\Element;
  * Abstract class for the form element containers (FORM and FIELDSET) view
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class ContainerElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\AbstractElementView {
 

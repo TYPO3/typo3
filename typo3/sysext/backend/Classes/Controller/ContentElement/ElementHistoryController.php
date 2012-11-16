@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
  * Script Class for showing the history module of TYPO3s backend
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  * @see class.show_rechis.inc
  */
 class ElementHistoryController {

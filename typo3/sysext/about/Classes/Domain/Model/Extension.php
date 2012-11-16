@@ -27,8 +27,6 @@ namespace TYPO3\CMS\About\Domain\Model;
 /**
  * An extension helper model to be used in ext:about context
  *
- * @package TYPO3
- * @subpackage about
  * @entity
  * @author Felix Kopp <felix-source@phorax.com>
  */

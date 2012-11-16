@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
  *
- * @package TYPO3
- * @subpackage tslib
  * @author Oliver Hader <oliver@typo3.org>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */

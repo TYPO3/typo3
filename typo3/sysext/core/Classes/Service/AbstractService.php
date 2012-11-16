@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Core\Service;
  * Parent class for "Services" classes
  *
  * @author René Fritz <r.fritz@colorcube.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 abstract class AbstractService {
 

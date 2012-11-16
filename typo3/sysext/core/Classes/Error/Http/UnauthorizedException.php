@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Error\Http;
  * Exception for Error 401 - Unauthorized
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
- * @package TYPO3
- * @subpackage error
  */
 class UnauthorizedException extends \TYPO3\CMS\Core\Error\Http\AbstractClientErrorException {
 

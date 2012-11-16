@@ -40,8 +40,6 @@ namespace TYPO3\CMS\Frontend\Authentication;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author René Fritz <r.fritz@colorcube.de>
- * @package TYPO3
- * @subpackage tslib
  */
 class FrontendUserAuthtenication extends \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication {
 

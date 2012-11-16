@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Rsaauth\Storage;
  * use "split" storage for keys.
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage tx_rsaauth
  */
 class SessionStorage extends \TYPO3\CMS\Rsaauth\Storage\AbstractStorage {
 

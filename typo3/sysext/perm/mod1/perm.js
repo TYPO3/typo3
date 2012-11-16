@@ -31,8 +31,6 @@
 /**
  * @author		Andreas Kundoch <typo3@mehrwert.de>
  * @author		Benjamin Mack <www.xnos.org>
- * @package		TYPO3
- * @subpackage	core
  */
 
 // TYPO3 code extracted from index.php

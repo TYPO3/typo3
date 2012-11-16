@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Install;
  * Secure session handling for the install tool.
  *
  * @author Ernesto Baschny <ernst@cron-it.de>
- * @package TYPO3
- * @subpackage tx_install
  */
 class Session {
 

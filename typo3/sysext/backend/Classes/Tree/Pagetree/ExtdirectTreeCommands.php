@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  * Commands for the Page tree
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ExtdirectTreeCommands {
 

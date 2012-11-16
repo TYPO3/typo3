@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * @see tslib_cObj::CTABLE()
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tslib
  */
 class TableRenderer {
 

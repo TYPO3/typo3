@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Core\FormProtection;
  * For documentation on how to use this class, please see the documentation of
  * the corresponding subclasses, e.g. t3lib_formprotection_BackendFormProtection.
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @author Helmut Hummel <helmut.hummel@typo3.org>
  */

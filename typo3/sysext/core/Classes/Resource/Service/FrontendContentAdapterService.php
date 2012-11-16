@@ -26,7 +26,6 @@ namespace TYPO3\CMS\Core\Resource\Service;
 /**
  * Tslib content adapter to modify $row array ($cObj->data[]) for backwards compatibility
  *
- * @package TYPO3
  * @author Ingmar Schlecht <ingmar@typo3.org>
  * @license http://www.gnu.org/copyleft/gpl.html
  */

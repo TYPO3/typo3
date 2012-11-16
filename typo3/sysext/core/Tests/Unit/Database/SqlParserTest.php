@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
  * Testcase for TYPO3\CMS\Core\Database\SqlParser
  *
  * @author Patrick Schriner <patrick.schriner@diemedialen.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class SqlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

@@ -53,8 +53,6 @@
  * }
  * }
  *
- * @package TYPO3
- * @subpackage tslib
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class user_xmlversion {

@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * initialization processing.
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage tslib
  */
 interface ContentObjectPostInitHookInterface
 {

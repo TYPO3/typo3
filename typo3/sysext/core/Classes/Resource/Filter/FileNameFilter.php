@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Resource\Filter;
  * Utility methods for filtering filenames
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class FileNameFilter {
 

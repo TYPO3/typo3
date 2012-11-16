@@ -5,8 +5,6 @@ namespace TYPO3\CMS\TsconfigHelp\Controller;
  * Module 'TypoScript Help' for the 'tsconfig_help' extension.
  *
  * @author Stephane Schitter <stephane.schitter@free.fr>
- * @package TYPO3
- * @subpackage tx_tsconfighelp
  */
 class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 

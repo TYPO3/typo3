@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Tree\Renderer;
  * Renderer for unordered lists
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
- * @package TYPO3
- * @subpackage t3lib
  */
 class UnorderedListTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer {
 

@@ -37,8 +37,6 @@ namespace TYPO3\CMS\ExtraPageCmOptions;
  * Class, adding extra context menu options
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_extrapagecmoptions
  */
 class ExtraPageContextMenuOptions {
 

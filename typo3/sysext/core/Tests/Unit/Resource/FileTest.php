@@ -29,8 +29,6 @@ require_once 'vfsStream/vfsStream.php';
 /**
  * Testcase for the file class of the TYPO3 FAL
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  * @todo Many, many, many tests are skipped in this test case...
  */

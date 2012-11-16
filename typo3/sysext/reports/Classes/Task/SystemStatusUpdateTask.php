@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Reports\Task;
  * A task that should be run regularly to determine the system's status.
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage reports
  */
 class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

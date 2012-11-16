@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Scheduler\Task;
  * is configured to be cleaned.
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage scheduler
  */
 class CachingFrameworkGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

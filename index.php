@@ -30,8 +30,6 @@
  * Basically this is the "index.php" script which all requests for TYPO3 delivered pages goes to in the frontend (the website)
  *
  * @author René Fritz <r.fritz@colorcube.de>
- * @package TYPO3
- * @subpackage tslib
  */
 
 	// We use require instead of require_once here so we get a fatal error if classes/Bootstrap.php is accidentally included twice

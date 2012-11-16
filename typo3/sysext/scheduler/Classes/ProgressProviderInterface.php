@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Scheduler;
  * Interface for tasks who can provide their progress
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage tx_scheduler
  */
 interface ProgressProviderInterface
 {

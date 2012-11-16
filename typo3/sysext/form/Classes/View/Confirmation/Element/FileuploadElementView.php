@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\View\Confirmation\Element;
  * View object for the upload element
  *
  * @author Rens Admiraal <r.admiraal@drecomm.nl>
- * @package TYPO3
- * @subpackage form
  */
 class FileuploadElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\AbstractElementView {
 

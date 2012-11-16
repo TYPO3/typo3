@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\Http;
  * the right headers for the request type
  *
  * @author Benjamin Mack <mack@xnos.org>
- * @package TYPO3
- * @subpackage core
  */
 class AjaxRequestHandler {
 

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\View;
  * Backend layout for CMS
  *
  * @author GridView Team
- * @package TYPO3
- * @subpackage core
  */
 class BackendLayoutView {
 

@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Lang\Utility\Connection;
  * Extends of extensionmanager ter connection to enrich with translation related methods
  *
  * @author Sebastian Fischer <typo3@evoweb.de>
- * @package TYPO3
- * @subpackage lang
  */
 class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 

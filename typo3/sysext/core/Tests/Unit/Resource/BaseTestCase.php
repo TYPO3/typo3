@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * Basic test case for the t3lib_file tests
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

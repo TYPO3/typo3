@@ -32,8 +32,6 @@
  * XHTML-frames compatible.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 define('TYPO3_PROCEED_IF_NO_USER', 1);
 require 'init.php';

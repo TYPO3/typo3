@@ -15,8 +15,6 @@ require 'SystemEnvironmentBuilder.php';
  * exactly what you are doing!
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage core
  */
 class Bootstrap {
 

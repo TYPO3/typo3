@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\Resource\Collection;
  * This collection is persisted to the database with the accordant folder reference.
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class FolderBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection {
 

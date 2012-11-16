@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Lang;
  * It's only available in the backend and under certain circumstances in the frontend
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  * @see typo3/template.php, template
  */
 class LanguageService {

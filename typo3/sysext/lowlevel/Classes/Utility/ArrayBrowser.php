@@ -39,8 +39,6 @@ namespace TYPO3\CMS\Lowlevel\Utility;
  * See the extension 'lowlevel' /config (Backend module 'Tools > Configuration')
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  * @see SC_mod_tools_config_index::main()
  */
 class ArrayBrowser {

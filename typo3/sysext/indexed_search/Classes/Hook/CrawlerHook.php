@@ -5,8 +5,6 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
  * Crawler hook for indexed search. Works with the "crawler" extension
  *
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_indexedsearch
  */
 class CrawlerHook {
 

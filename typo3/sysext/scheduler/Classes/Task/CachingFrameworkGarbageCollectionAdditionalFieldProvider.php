@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Scheduler\Task;
  * Creates a multi selectbox with all available cache backends to select from.
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage scheduler
  */
 class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 

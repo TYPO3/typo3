@@ -4,7 +4,6 @@ namespace TYPO3\CMS\T3Editor;
 /**
  * Loads TSref information from a XML file an responds to an AJAX call.
  *
- * @package TYPO3
  * @author Stephan Petzl <spetzl@gmx.at>
  * @author Christian Kartnig <office@hahnepeter.de>
  */

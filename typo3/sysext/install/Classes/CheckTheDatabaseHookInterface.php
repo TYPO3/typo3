@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Install;
  * Interface for hook in tx_install::checkTheDatabase
  *
  * @author Thomas Maroschik <tmaroschik@dfau.de>
- * @package TYPO3
- * @subpackage install
  */
 interface CheckTheDatabaseHookInterface
 {

@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\PostProcess;
  * Testcase for PostProcessor
  *
  * @author Susanne Moog, <typo3@susannemoog.de>
- * @package TYPO3
- * @subpackage form
  */
 class PostProcessorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

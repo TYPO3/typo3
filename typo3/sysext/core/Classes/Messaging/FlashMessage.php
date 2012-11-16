@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Messaging;
  * A class representing flash messages.
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class FlashMessage extends \TYPO3\CMS\Core\Messaging\AbstractMessage {
 

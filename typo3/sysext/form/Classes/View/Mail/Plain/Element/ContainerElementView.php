@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\View\Mail\Plain\Element;
  * Main view layer for plain mail container content.
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class ContainerElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\AbstractElementView {
 

@@ -41,8 +41,6 @@ namespace TYPO3\CMS\Frontend\Plugin;
  * Functions are all prefixed "pi_" which is reserved for this class. Those functions can of course be overridden in the extension classes (that is the point...)
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tslib
  */
 class AbstractPlugin {
 

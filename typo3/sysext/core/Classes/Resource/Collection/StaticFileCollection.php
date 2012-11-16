@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\Resource\Collection;
  * to the database with references to all files it contains.
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class StaticFileCollection extends \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection {
 

@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Core\Resource;
  * This merges and compresses CSS and JavaScript files of the TYPO3 Backend.
  *
  * @author 	Steffen Gebert <steffen@steffen-gebert.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ResourceCompressor {
 

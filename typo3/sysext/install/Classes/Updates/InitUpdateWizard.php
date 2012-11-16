@@ -27,7 +27,6 @@ namespace TYPO3\CMS\Install\Updates;
  * Upgrade wizard which creates all sys_file* tables. Required to ensure that all
  * other FAL migration wizards can run properly.
  *
- * @package TYPO3
  * @author Tolleiv Nietsch <info@tolleiv.de>
  * @license http://www.gnu.org/copyleft/gpl.html
  */

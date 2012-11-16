@@ -29,8 +29,6 @@ require_once 'Fixtures/FormProtectionTesting.php';
 /**
  * Testcase for the t3lib_formprotection_Abstract class.
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class AbstractFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

@@ -42,8 +42,6 @@ namespace TYPO3\CMS\Backend\Utility;
  * ALL functions called without making a class instance, eg. "t3lib_iconWorks::getIconImage()"
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class IconUtility {
 

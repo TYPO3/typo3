@@ -38,8 +38,6 @@ namespace TYPO3\CMS\Core\Database;
  *
  * @author Christian Jul Jensen <christian@typo3.com>
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class QueryGenerator {
 

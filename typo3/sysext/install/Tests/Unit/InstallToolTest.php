@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Install\Tests\Unit;
 /**
  * Testcase for class "tx_install"
  *
- * @package TYPO3
- * @subpackage tx_install
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class InstallToolTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

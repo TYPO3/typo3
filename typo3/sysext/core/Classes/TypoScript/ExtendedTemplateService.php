@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\TypoScript;
  * Contains functions for the TS module in TYPO3 backend
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService {
 

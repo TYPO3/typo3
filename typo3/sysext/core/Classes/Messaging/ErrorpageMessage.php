@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\Messaging;
  * Classic Example: "No pages are found on rootlevel"
  *
  * @author Benjamin Mack <benni@typo3.org>
- * @package TYPO3
- * @subpackage t3lib/message
  */
 class ErrorpageMessage extends \TYPO3\CMS\Core\Messaging\AbstractStandaloneMessage {
 

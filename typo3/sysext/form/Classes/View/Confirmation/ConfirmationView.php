@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\View\Confirmation;
  * Main view layer for Forms.
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class ConfirmationView extends \TYPO3\CMS\Form\View\Confirmation\Element\ContainerElementView {
 

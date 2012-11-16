@@ -33,8 +33,6 @@ require_once 'vfsStream/vfsStream.php';
  * Basic functional test class for the File Abstraction Layer (FAL).
  *
  * @author Andreas Wolf <andreas.wolf@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class BaseTestCase extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	public function getStorageObject() {

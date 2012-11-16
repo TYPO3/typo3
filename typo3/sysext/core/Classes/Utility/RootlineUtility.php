@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Utility;
  * A utility resolving and Caching the Rootline generation
  *
  * @author Steffen Ritter <steffen.ritter@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class RootlineUtility {
 

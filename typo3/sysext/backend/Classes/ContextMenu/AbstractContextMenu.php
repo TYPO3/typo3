@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\ContextMenu;
  * Abstract Context Menu
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 abstract class AbstractContextMenu {
 

@@ -27,8 +27,6 @@ namespace TYPO3\CMS\About\Domain\Repository;
 /**
  * Repository for Tx_About_Domain_Model_Extension
  *
- * @package TYPO3
- * @subpackage about
  * @author Felix Kopp <felix-source@phorax.com>
  */
 class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {

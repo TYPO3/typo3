@@ -35,8 +35,6 @@
  * Formmail class, used by the TYPO3 "cms" extension (default frontend) to send email forms.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  * @see tslib_fe::sendFormmail(), t3lib/formmail.php
  * @TODO: Deprecate this class
  */

@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Rtehtmlarea;
  * Script Class
  *
  * @author 	Kasper Skårhøj <kasper@typo3.com>
- * @package TYPO3
- * @subpackage tx_rte
  */
 class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * Utility for dealing with database related operations
  *
  * @author Susanne Moog <susanne.moog@typo3.org>
- * @package Extension Manager
- * @subpackage Utility
  */
 class DatabaseUtility implements \TYPO3\CMS\Core\SingletonInterface {
 

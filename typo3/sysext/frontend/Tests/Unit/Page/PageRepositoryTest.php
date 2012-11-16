@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

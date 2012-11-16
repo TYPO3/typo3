@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  * Testcase for the WinCache cache backend
  *
  * @author Tobias Burger <tobias_burger@hotmail.com>
- * @package TYPO3
- * @subpackage tests
  */
 class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
 /**
  * Testcase for TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
  *
- * @package TYPO3
- * @subpackage tslib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

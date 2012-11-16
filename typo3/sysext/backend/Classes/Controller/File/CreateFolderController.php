@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Backend\Controller\File;
  * Script Class for the create-new script; Displays a form for creating up to 10 folders or one new text file
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class CreateFolderController {
 

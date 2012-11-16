@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Configuration\TypoScript\ConditionMatchin
  * Testcase for class \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher.
  *
  * @author 	Oliver Hader <oliver@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

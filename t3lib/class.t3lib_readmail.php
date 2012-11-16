@@ -36,8 +36,6 @@
  * The class is still just a bunch of miscellaneous functions used to read content out of emails
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class t3lib_readmail {
 

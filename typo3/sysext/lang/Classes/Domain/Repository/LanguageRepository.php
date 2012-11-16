@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Lang\Domain\Repository;
  * Language repository
  *
  * @author Sebastian Fischer <typo3@evoweb.de>
- * @package lang
- * @subpackage LanguageRepository
  */
 class LanguageRepository {
 

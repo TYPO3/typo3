@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *
  * @see http://code.google.com/p/redis/
  * @see http://github.com/owlient/phpredis
- * @package TYPO3
- * @subpackage t3lib_cache
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @api

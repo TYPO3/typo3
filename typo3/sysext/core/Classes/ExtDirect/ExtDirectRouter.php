@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Core\ExtDirect;
  *
  * @author Sebastian Kurfürst <sebastian@typo3.org>
  * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ExtDirectRouter {
 

@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\Category;
  *
  * @author Fabien Udriot <fabien.udriot@typo3.org>
  * @author Oliver Hader <oliver.hader@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 

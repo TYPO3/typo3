@@ -33,8 +33,6 @@ namespace TYPO3\CMS\Core\Page;
  *
  * @author Steffen Kamper <info@sk-typo3.de>
  * @author Kai Vogel <kai.vogel@speedprogs.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 

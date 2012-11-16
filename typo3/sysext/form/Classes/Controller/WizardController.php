@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Form\Controller;
  * The form wizard controller
  *
  * @category Controller
- * @package TYPO3
- * @subpackage form
  * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class WizardController {

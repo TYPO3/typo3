@@ -53,8 +53,6 @@ namespace TYPO3\CMS\Frontend\Imaging;
  * return $gifCreator->getImageDimensions($theImage);
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tslib
  */
 class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 

@@ -33,8 +33,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  * @author Marcus Krause <marcus#exp2010@t3sec.info>
  * @autho Steffen Kamper <info@sk-typo3.de>
  * @sincer 2010-02-19
- * @package Extension Manager
- * @subpackage Utility/Parser
  */
 class MirrorXmlPullParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractMirrorXmlParser implements \SplSubject {
 

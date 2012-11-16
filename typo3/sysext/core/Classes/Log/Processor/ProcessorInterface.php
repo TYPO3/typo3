@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Log\Processor;
  * collect that data yourself.
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface ProcessorInterface
 {

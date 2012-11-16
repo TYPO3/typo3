@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\Validation;
  * Abstract for validation
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\ValidatorInterface {
 

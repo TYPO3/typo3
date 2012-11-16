@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Evaluation;
  * Testcase for SaltedPasswordsUtility
  *
  * @author Marcus Krause <marcus#exp2009@t3sec.info>
- * @package TYPO3
- * @subpackage tx_saltedpasswords
  */
 class EvaluatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

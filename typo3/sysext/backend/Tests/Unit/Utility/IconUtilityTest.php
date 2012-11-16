@@ -31,8 +31,6 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
  *
  * @author Fabien Udriot <fabien.udriot@ecodev.ch>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

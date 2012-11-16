@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  * Views sprite icon for a record (object)
  *
  * @author Felix Kopp <felix-source@phorax.com>
- * @package TYPO3
- * @subpackage beuser
  */
 class SpriteIconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 

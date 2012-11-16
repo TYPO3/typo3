@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
  * Testcase for class \TYPO3\CMS\Core\Configuration\ConfigurationManager
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Core\Tests\Unit;
  * Testcase for TYPO3\CMS\Core\Registry
  *
  * @author 	Bastian Waidelich <bastian@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class RegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

@@ -27,8 +27,6 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
  * Hooks for tslib_fe (TSFE).
  *
  * @author 		Oliver Hader <oliver@typo3.org>
- * @package 		TYPO3
- * @subpackage 	tx_indexedsearch
  */
 class TypoScriptFrontendHook {
 

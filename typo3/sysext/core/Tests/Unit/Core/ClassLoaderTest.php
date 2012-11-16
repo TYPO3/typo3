@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Core;
 /**
  * Testcase for TYPO3\CMS\Core\Core\ClassLoader
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

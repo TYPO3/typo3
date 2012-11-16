@@ -37,8 +37,6 @@ namespace TYPO3\CMS\Backend\Form;
  * Class for getting and transforming data for display in backend forms (TCEforms)
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class DataPreprocessor {
 

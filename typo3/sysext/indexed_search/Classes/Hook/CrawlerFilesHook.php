@@ -6,8 +6,6 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
  * This hook is specifically used to index external files found on pages through the crawler extension.
  *
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_indexedsearch
  * @see tx_indexedsearch_indexer::extractLinks()
  */
 class CrawlerFilesHook {

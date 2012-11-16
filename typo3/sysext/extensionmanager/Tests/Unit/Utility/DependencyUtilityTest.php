@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 /**
  * Test for DependencyUtility
  *
- * @package Extension Manager
- * @subpackage Tests
  */
 class DependencyUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

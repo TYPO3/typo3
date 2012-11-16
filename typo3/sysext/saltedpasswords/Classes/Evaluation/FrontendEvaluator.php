@@ -33,8 +33,6 @@ namespace TYPO3\CMS\Saltedpasswords\Evaluation;
  * @author Marcus Krause <marcus#exp2009@t3sec.info>
  * @author Steffen Ritter <info@rs-websystems.de>
  * @since 2009-06-14
- * @package TYPO3
- * @subpackage tx_saltedpasswords
  */
 class FrontendEvaluator extends \TYPO3\CMS\Saltedpasswords\Evaluation\Evaluator {
 

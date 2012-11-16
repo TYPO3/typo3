@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Scheduler\Controller;
  * @author 		François Suter <francois@typo3.org>
  * @author 		Christian Jul Jensen <julle@typo3.org>
  * @author 		Ingo Renner <ingo@typo3.org>
- * @package 		TYPO3
- * @subpackage 	tx_scheduler
  */
 class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 

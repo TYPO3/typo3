@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Form\Validation;
  * The file type must fit one of the given mime types
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class FileAllowedTypesValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator implements \TYPO3\CMS\Form\Validation\ValidatorInterface {
 

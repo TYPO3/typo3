@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree;
  * Testcase for class \TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection.
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class SortedTreeNodeCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

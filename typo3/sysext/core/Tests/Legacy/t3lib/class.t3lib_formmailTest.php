@@ -29,8 +29,6 @@
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  *
- * @package TYPO3
- * @subpackage t3lib
  */
 class t3lib_formmailTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

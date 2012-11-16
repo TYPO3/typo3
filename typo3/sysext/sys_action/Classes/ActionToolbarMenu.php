@@ -5,8 +5,6 @@ namespace TYPO3\CMS\SysAction;
  * Adds action links to the backend's toolbar
  *
  * @author Steffen Kamper <info@sk-typo3.de>
- * @package TYPO3
- * @subpackage tx_sysaction
  */
 class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface {
 

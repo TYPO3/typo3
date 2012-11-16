@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  * Tree Node Collection
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class PagetreeNodeCollection extends \TYPO3\CMS\Backend\Tree\TreeNodeCollection {
 

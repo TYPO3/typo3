@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Lang\Domain\Model;
  * Model to contain all information from the form requesting to update translations
  *
  * @author Sebastian Fischer <typo3@evoweb.de>
- * @package TYPO3
- * @subpackage lang
  */
 class UpdateTranslationForm extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 /**
  * Testcase for class \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication
  *
- * @package TYPO3
- * @subpackage t3lib
  */
 class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

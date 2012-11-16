@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Core\Error;
  * This file is a backport from FLOW3
  *
  * @author Rupert Germann <rupi@gmx.li>
- * @package TYPO3
- * @subpackage error
  */
 class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 

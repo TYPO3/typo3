@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Core\Cache\Exception;
  *
  * This file is a backport from FLOW3
  *
- * @package TYPO3
- * @subpackage t3lib_cache
  * @api
  */
 class ClassAlreadyLoadedException extends \TYPO3\CMS\Core\Cache\Exception {

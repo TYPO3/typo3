@@ -28,7 +28,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Localization\Parser;
  * Testcase for class \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
- * @package TYPO3
  */
 class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

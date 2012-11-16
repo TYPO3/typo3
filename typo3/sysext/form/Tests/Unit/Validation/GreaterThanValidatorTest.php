@@ -27,8 +27,6 @@
  * Test case for class \TYPO3\CMS\Form\Validation\GreaterThanValidator.
  *
  * @author Andreas Lappe <a.lappe@kuehlhaus.com>
- * @package TYPO3
- * @subpackage form
  */
 class GreaterThanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**

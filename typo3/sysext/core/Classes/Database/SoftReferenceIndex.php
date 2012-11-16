@@ -76,8 +76,6 @@ namespace TYPO3\CMS\Core\Database;
  * - 'url' : URL highlights (with a scheme)
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class SoftReferenceIndex {
 

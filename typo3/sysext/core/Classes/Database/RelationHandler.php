@@ -38,8 +38,6 @@ namespace TYPO3\CMS\Core\Database;
  * Used to process the relations created by the TCA element types "group" and "select" for database records. Manages MM-relations as well.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class RelationHandler {
 

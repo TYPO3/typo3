@@ -30,8 +30,6 @@ require_once 'init.php';
  * Extension of transfer data class
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class transferData extends \TYPO3\CMS\Backend\Form\DataPreprocessor {
 

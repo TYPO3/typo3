@@ -40,8 +40,6 @@ namespace TYPO3\CMS\Backend\Tree\View;
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor René Fritz <r.fritz@colorcube.de>
  * @see t3lib_treeView, t3lib_pageTree
- * @package TYPO3
- * @subpackage t3lib
  */
 class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 

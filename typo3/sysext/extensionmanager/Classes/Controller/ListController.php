@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  * Controller for extension listings (TER or local extensions)
  *
  * @author Susanne Moog <typo3@susannemoog.de>
- * @package Extension Manager
- * @subpackage Controller
  */
 class ListController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractController {
 

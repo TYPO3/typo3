@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Form;
  * Interface for classes which hook into t3lib_TCEforms and do additional dbFileIcons processing
  *
  * @author Andy Grunwald <andreas.grunwald@wmdb.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface DatabaseFileIconsHookInterface
 {

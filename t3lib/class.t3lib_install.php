@@ -33,8 +33,6 @@
  * Class to setup values in localconf.php and verify the TYPO3 DB tables/fields
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  * @deprecated since 6.0, will be removed by 7.0
  */
 class t3lib_install {

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Collection;
  * Implementation of a RecordCollection for static TCA-Records
  *
  * @author Steffen Ritter <typo3@steffen-ritter.net>
- * @package TYPO3
- * @subpackage t3lib
  */
 class StaticRecordCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\EditableCollectionInterface {
 

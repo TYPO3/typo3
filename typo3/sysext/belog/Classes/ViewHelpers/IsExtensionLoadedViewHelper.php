@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  * Returns true, if a specific extension is loaded
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage belog
  */
 class IsExtensionLoadedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

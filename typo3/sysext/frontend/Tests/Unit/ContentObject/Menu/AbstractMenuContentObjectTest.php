@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject
  *
- * @package TYPO3
- * @subpackage tslib
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 class AbstractMenuContentObjectTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {

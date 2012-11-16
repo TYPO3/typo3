@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Scheduler\Example;
  * Aditional fields provider class for usage with the Scheduler's test task
  *
  * @author 		François Suter <francois@typo3.org>
- * @package 		TYPO3
- * @subpackage 	tx_scheduler
  */
 class TestTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 

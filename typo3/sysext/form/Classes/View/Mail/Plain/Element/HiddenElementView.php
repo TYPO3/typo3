@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\View\Mail\Plain\Element;
  * View object for the hidden element
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class HiddenElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\AbstractElementView {
 

@@ -33,8 +33,6 @@ namespace TYPO3\CMS\Scheduler\Task;
  * See ext_localconf.php of scheduler extension for an example
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage scheduler
  */
 class TableGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

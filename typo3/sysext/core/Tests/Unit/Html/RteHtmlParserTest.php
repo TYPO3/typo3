@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Html;
 /**
  * Testcase for \TYPO3\CMS\Core\Html\RteHtmlParser
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Stanislas Rolland <typo3@sjbr.ca>
  */
 class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

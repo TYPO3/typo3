@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  * Submit button model object
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class SubmitElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement {
 

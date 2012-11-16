@@ -7,8 +7,6 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  * Creates a searchform for indexed search. Indexing must be enabled
  * for this to make sense.
  *
- * @package TYPO3
- * @subpackage tx_indexedsearch
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {

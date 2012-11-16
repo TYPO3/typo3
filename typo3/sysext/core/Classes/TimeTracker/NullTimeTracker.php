@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Core\TimeTracker;
  * This is done to save some performance over the real time tracker.
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class NullTimeTracker {
 

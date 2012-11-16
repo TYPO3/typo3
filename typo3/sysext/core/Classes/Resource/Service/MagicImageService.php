@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Resource\Service;
  * Magic image service
  *
  * @author Stanislas Rolland <stanislas.rolland@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class MagicImageService {
 

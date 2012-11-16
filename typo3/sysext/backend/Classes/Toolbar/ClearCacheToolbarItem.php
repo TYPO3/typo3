@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Toolbar;
  * class to render the menu for the cache clearing actions
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage core
  */
 class ClearCacheToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface {
 

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\User\ExtDirect;
  * ExtDirect DataProvider for BE User Settings
  *
  * @author Steffen Kamper <steffen@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class BackendUserSettingsDataProvider {
 

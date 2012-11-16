@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Backend\Controller;
  * Script Class for grid wizard
  *
  * @author T3UXW09 Team1 <modernbe@cybercraft.de>
- * @package TYPO3
- * @subpackage core
  */
 class BackendLayoutWizardController {
 

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Sprite;
  * Sprite build handler
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
- * @package TYPO3
- * @subpackage t3lib
  */
 class SpriteBuildingHandler extends \TYPO3\CMS\Backend\Sprite\AbstractSpriteHandler {
 

@@ -39,8 +39,6 @@ namespace TYPO3\CMS\Backend\Tree\View;
  * Used for pages / tt_content element wizards of various kinds.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class PagePositionMap {
 

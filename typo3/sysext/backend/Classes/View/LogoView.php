@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\View;
  * class to render the TYPO3 logo in the backend
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage core
  */
 class LogoView {
 

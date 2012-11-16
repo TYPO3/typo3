@@ -30,8 +30,6 @@ use TYPO3\CMS\Core\Utility;
  *
  * @author Ingo Renner <ingo@typo3.org>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Repository;
 /**
  * Tests for ConfigurationItemRepository
  *
- * @package Extension Manager
- * @subpackage Tests
  */
 class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

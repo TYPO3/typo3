@@ -31,8 +31,6 @@
  * In fact the two classes t3lib_beuserauth and this class could just as well be one, single class since t3lib_userauthgroup is not - to my knowledge - used separately elsewhere. But for historical reasons they are two separate classes.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  * @deprecated since 6.0, will be removed in 6.2. The functionality was merged wih t3lib_beUserAuth
  */
 abstract class t3lib_userAuthGroup extends t3lib_userAuth {

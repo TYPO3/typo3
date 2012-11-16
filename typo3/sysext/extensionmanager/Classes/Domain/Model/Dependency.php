@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Model;
  * Main extension model
  *
  * @author Susanne Moog <typo3@susannemoog.de>
- * @package Extension Manager
- * @subpackage Model
  */
 class Dependency extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

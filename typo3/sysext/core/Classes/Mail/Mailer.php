@@ -11,8 +11,6 @@ require_once PATH_typo3 . 'contrib/swiftmailer/swift_required.php';
  * for it to work out-of-the-box.
  *
  * @author Ernesto Baschny <ernst@cron-it.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class Mailer extends \Swift_Mailer {
 

@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  * Optgroup model object
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class OptgroupElement extends \TYPO3\CMS\Form\Domain\Model\Element\ContainerElement {
 

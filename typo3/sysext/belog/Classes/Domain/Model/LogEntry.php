@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Belog\Domain\Model;
  *
  * @TODO : This should be stuffed to some more central place
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage belog
  */
 class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

@@ -42,8 +42,6 @@ namespace TYPO3\CMS\Frontend\Utility;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage tslib
  */
 class EidUtility {
 

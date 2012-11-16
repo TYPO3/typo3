@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Log\Writer;
  * Null writer - just forgets about everything
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class NullWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 

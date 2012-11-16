@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Frontend\Utility;
  * used only in EXT:cms/tslib/index_ts.php
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage tx_cms
  */
 class CompressionUtility implements \TYPO3\CMS\Core\SingletonInterface {
 

@@ -33,8 +33,6 @@ namespace TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching;
  * Matches browserinfo, IPnumbers for use with templates
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher {
 

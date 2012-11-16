@@ -6,8 +6,6 @@ namespace TYPO3\CMS\Install;
  *
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author 	Ingmar Schlecht <ingmar@typo3.org>
- * @package TYPO3
- * @subpackage tx_install
  */
 class Installer {
 

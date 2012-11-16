@@ -36,8 +36,6 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  *
  * @author Marcus Krause <marcus#exp2009@t3sec.info>
  * @since 2009-09-06
- * @package TYPO3
- * @subpackage tx_saltedpasswords
  */
 class SaltFactory {
 

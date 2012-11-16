@@ -35,8 +35,6 @@ namespace TYPO3\CMS\Backend\Sprite;
  * A configurable handler class does the business task.
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
- * @package TYPO3
- * @subpackage t3lib
  */
 class SpriteManager {
 

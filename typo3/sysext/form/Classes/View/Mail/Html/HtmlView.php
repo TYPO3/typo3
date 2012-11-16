@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\View\Mail\Html;
  * Main view layer for Forms.
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class HtmlView extends \TYPO3\CMS\Form\View\Mail\Html\Element\ContainerElementView {
 

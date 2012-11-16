@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  * @author Marcus Krause <marcus#exp2010@t3sec.info>
  * @author Steffen Kamper <info@sk-typo3.de>
  * @since 2010-02-09
- * @package Extension Manager
- * @subpackage Utility/Parser
  */
 abstract class AbstractXmlParser {
 

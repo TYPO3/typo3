@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Locking;
  * Testcase for \TYPO3\CMS\Core\Locking\Locker
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage t3lib
  */
 class LockerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

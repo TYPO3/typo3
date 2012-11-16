@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Reports\ViewHelpers;
 /**
  * Render an item of the menu
  *
- * @package TYPO3
- * @subpackage tx_reports
  */
 class ActionMenuItemViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 

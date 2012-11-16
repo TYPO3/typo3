@@ -26,8 +26,6 @@ namespace TYPO3\CMS\SysNote\ViewHelpers;
 /**
  * ViewHelper to create a link to edit a note
  *
- * @package TYPO3
- * @subpackage sys_note
  * @author Georg Ringer <typo3@ringerge.org>
  */
 class EditLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {

@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Backend\Controller;
  * Script Class for redirecting shortcut actions to the correct script
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class ListFrameLoaderController {
 

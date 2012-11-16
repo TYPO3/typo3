@@ -6,8 +6,6 @@ namespace TYPO3\CMS\Saltedpasswords\Utility;
  *
  * @author Steffen Ritter <info@rs-websystems.de>
  * @since 2009-09-04
- * @package TYPO3
- * @subpackage tx_saltedpasswords
  */
 class ExtensionManagerConfigurationUtility {
 

@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Rsaauth\Hook;
  * and supply a proper form tag.
  *
  * @author Helmut Hummel <helmut.hummel@typo3.org>
- * @package TYPO3
- * @subpackage tx_rsaauth
  */
 class UserSetupHook {
 

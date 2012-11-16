@@ -39,8 +39,6 @@ namespace TYPO3\CMS\Backend\Tree\View;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor René Fritz <r.fritz@colorcube.de>
- * @package TYPO3
- * @subpackage t3lib
  * @see class t3lib_treeView
  */
 class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {

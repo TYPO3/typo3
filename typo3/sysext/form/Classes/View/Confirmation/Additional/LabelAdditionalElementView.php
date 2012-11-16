@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\View\Confirmation\Additional;
  * View object for the label tag
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class LabelAdditionalElementView extends \TYPO3\CMS\Form\View\Confirmation\Additional\AdditionalElementView {
 

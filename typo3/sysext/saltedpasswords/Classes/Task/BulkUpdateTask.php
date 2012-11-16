@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Saltedpasswords\Task;
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @author Marcus Krause <marcus#exp2010@t3sec.info>
- * @package TYPO3
- * @subpackage saltedpasswords
  */
 class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

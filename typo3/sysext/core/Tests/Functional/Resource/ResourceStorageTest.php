@@ -33,8 +33,6 @@ require_once 'vfsStream/vfsStream.php';
  * Functional test case for the FAL Storage.
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 

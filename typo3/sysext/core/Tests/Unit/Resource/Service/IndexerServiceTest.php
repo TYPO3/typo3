@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Service;
  * Testcase for the file indexing service
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class IndexerServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

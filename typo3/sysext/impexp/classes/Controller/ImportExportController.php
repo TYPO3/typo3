@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Impexp\Controller;
  * Main script class for the Import / Export facility
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_impexp
  */
 class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 

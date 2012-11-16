@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Openid;
  * Service "OpenID Authentication" for the "openid" extension.
  *
  * @author 	Dmitry Dulepov <dmitry@typo3.org>
- * @package 	TYPO3
- * @subpackage 	tx_openid
  */
 class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 

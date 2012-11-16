@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  * installing, removing, downloading of data or files
  *
  * @author Susanne Moog <typo3@susannemoog.de>
- * @package Extension Manager
- * @subpackage Controller
  */
 class ActionController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractController {
 

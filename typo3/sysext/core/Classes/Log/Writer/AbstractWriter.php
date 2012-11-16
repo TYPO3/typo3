@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Log\Writer;
  * Abstract implementation of a log writer
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 abstract class AbstractWriter implements \TYPO3\CMS\Core\Log\Writer\WriterInterface {
 

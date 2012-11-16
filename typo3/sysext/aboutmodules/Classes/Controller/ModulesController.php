@@ -33,8 +33,6 @@ namespace TYPO3\CMS\Aboutmodules\Controller;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage aboutmodules
  */
 class ModulesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

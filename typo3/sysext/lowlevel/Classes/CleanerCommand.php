@@ -35,8 +35,6 @@ namespace TYPO3\CMS\Lowlevel;
  * Core functions for cleaning and analysing
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_lowlevel
  */
 class CleanerCommand extends \TYPO3\CMS\Core\Controller\CommandLineController {
 

@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  * @author Ingmar Schlecht <ingmar@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, \TYPO3\CMS\Core\SingletonInterface {
 

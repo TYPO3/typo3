@@ -81,8 +81,6 @@ namespace TYPO3\CMS\Core\FormProtection;
 /**
  * Backend form protection
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @author Helmut Hummel <helmut.hummel@typo3.org>
  */

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\TypoScript;
  * Provides a simplified layer for making Constant Editor style configuration forms
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService {
 

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures;
  * This is a testing subclass of the abstract \TYPO3\CMS\Core\FormProtection\AbstractFormProtection
  * class.
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class FormProtectionTesting extends \TYPO3\CMS\Core\FormProtection\AbstractFormProtection {

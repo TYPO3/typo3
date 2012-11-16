@@ -28,8 +28,6 @@ require_once(PATH_typo3 . 'contrib/RemoveXSS/RemoveXSS.php');
  * Testcase for class RemoveXSS
  *
  * @author	Steffen Kamper <info@sk-typo3.de>
- * @package TYPO3
- * @subpackage contrib
  * @ see http://ha.ckers.org/xss.html
  * @ examples from http://ha.ckers.org/xssAttacks.xml
  */

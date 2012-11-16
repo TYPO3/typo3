@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Reports\ViewHelpers;
 /**
  * Render the icon of a report
  *
- * @package TYPO3
- * @subpackage tx_reports
  */
 class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 

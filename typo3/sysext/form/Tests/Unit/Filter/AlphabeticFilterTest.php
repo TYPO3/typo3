@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
  * Testcase for AlphabeticFilter
  *
  * @author Andreas Lappe <a.lappe@kuehlhaus.com>
- * @package TYPO3
- * @subpackage form
  */
 class AlphabeticFilterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

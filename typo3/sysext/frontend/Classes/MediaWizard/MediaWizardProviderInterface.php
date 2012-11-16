@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Frontend\MediaWizard;
  * media wizard providers
  *
  * @author Ernesto Baschny <ernst@cron-it.de>
- * @package TYPO3
- * @subpackage tslib
  */
 interface MediaWizardProviderInterface
 {

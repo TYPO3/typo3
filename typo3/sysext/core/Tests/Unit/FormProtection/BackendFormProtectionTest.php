@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 /**
  * Testcase for the \TYPO3\CMS\Core\FormProtection\BackendFormProtection class.
  *
- * @package TYPO3
- * @subpackage t3lib
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */

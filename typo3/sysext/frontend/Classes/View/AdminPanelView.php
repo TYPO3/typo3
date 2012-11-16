@@ -33,8 +33,6 @@ namespace TYPO3\CMS\Frontend\View;
  * @author Jeff Segars <jeff@webempoweredchurch.org>
  * @author David Slayback <dave@webempoweredchurch.org>
  * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage tslib
  */
 class AdminPanelView {
 

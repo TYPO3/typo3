@@ -35,8 +35,6 @@ namespace TYPO3\CMS\Belog\ViewHelpers\Form;
  * Will lookup number.200 (or whatever optionValue is given) in locallang database
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage belog
  */
 class TranslateLabelSelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper {
 

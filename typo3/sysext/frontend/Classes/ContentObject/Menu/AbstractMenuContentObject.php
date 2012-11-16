@@ -52,8 +52,6 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * $content.=$menu->writeMenu();
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tslib
  * @see tslib_cObj::HMENU()
  */
 class AbstractMenuContentObject {

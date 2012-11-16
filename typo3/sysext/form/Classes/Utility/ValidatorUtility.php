@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\Utility;
  * Static methods for validation
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 

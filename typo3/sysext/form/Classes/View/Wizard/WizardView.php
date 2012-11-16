@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\View\Wizard;
  * The form wizard view
  *
  * @category View
- * @package TYPO3
- * @subpackage form
  * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {

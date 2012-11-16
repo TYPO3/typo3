@@ -34,8 +34,6 @@ namespace TYPO3\CMS\Backend\ContextMenu\Extdirect;
  * for adding specific purposes.
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 abstract class AbstractExtdirectContextMenu extends \TYPO3\CMS\Backend\ContextMenu\AbstractContextMenu {
 

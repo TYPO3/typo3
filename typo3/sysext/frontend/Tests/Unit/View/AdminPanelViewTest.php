@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\View;
 /**
  * Testcase for TYPO3\CMS\Frontend\View\AdminPanelView
  *
- * @package TYPO3
- * @subpackage tslib
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class AdminPanelViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

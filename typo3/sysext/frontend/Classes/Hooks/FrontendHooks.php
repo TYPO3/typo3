@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Frontend\Hooks;
 /**
  * Uses frontend hooks to show preview informations
  *
- * @package TYPO3
- * @subpackage cms
  */
 class FrontendHooks {
 

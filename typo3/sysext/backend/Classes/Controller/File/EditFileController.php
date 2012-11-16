@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Backend\Controller\File;
  * Script Class for rendering the file editing screen
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class EditFileController {
 

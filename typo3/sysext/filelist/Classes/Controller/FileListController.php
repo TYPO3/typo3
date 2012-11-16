@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Filelist\Controller;
  * Script Class for creating the list of files in the File > Filelist module
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class FileListController {
 

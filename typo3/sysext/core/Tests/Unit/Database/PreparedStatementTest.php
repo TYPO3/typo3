@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
  * Testcase for the prepared statement database class
  *
  * @author 	Helmut Hummel <helmut@typo3.org>
- * @package TYPO3
- * @subpackage tests
  */
 class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

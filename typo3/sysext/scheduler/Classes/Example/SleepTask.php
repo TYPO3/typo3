@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Scheduler\Example;
  * This is useful for testing parallel executions
  *
  * @author 		François Suter <francois@typo3.org>
- * @package 		TYPO3
- * @subpackage 	tx_scheduler
  */
 class SleepTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures;
  *
  * This is a fixture subclass for t3lib_utility_math
  *
- * @package TYPO3
- * @subpackage t3lib
  */
 class MathUtilityTestClassWithStringRepresentationFixture {
 

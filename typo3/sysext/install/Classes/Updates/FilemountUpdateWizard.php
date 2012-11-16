@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Install\Updates;
  * b) relative filemounts (base = 1) which aren't related to a storage
  * further we assume that all other filemounts (base > 1) are already related to a storage
  *
- * @package 	 TYPO3
  * @author 	  Tolleiv Nietsch <typo3@tolleiv.de>
  * @license 	 http://www.gnu.org/copyleft/gpl.html
  */

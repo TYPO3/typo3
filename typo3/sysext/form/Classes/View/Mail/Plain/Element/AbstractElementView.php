@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\View\Mail\Plain\Element;
  * The element abstract
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 abstract class AbstractElementView {
 

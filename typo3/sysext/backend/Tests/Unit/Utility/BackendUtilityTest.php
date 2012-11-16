@@ -28,8 +28,6 @@ use TYPO3\CMS\Backend\Utility;
 /**
  * Testcase for \TYPO3\CMS\Core\Utility\BackendUtility
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

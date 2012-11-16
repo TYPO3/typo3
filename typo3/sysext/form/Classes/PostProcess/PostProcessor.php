@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\PostProcess;
  * The post processor
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class PostProcessor {
 

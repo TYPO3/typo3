@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Encoder;
 /**
  * Test cases for TYPO3\CMS\Core\Encoder\JavaScriptEncoder.
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
 class JavaScriptEncoderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

@@ -41,8 +41,6 @@ namespace TYPO3\CMS\Rsaauth\Backend;
  * successfully, the result is a string. Otherwise it is NULL.
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage tx_rsaauth
  */
 abstract class AbstractBackend {
 

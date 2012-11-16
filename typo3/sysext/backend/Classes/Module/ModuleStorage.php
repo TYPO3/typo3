@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Module;
  * Model for the module storage
  *
  * @author Susanne Moog <typo3@susannemoog.de>
- * @package TYPO3
- * @subpackage core
  */
 class ModuleStorage implements \TYPO3\CMS\Core\SingletonInterface {
 

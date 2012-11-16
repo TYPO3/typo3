@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  * Testcase for the DB cache backend
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage tests
  */
 class DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

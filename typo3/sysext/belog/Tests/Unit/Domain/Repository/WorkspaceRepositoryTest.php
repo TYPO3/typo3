@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Repository;
  * Testcase
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
- * @package TYPO3
- * @subpackage belog
  */
 class WorkspaceRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * A contract for a Cache Backend
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  * @api
  */
 interface BackendInterface

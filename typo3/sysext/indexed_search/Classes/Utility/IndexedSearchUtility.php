@@ -33,8 +33,6 @@ namespace TYPO3\CMS\IndexedSearch\Utility;
  * This class is final because it contains only static methods.
  *
  * @author Dmitry Dulepov <dmitry@typo3.com>
- * @package TYPO3
- * @subpackage tx_indexedsearch
  */
 class IndexedSearchUtility {
 

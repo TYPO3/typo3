@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  * Reset button model object
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class ResetElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement {
 

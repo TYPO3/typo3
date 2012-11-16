@@ -39,8 +39,6 @@ namespace TYPO3\CMS\Backend;
  * This includes mainly functions related to the Admin Panel
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\BackendUserAuthentication {
 

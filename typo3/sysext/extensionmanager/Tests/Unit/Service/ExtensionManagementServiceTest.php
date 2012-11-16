@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Service;
 /**
  * Testcase
  *
- * @package Extension Manager
- * @subpackage Tests
  */
 class ExtensionManagementServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

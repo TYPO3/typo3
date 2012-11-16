@@ -41,8 +41,6 @@ $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
  * Local extension of the page tree class
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class localPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView {
 
@@ -64,8 +62,6 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView {
  * Extension of position map for pages
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class ext_posMap_pages extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 
@@ -118,8 +114,6 @@ class ext_posMap_pages extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
  * Extension of position map for content elements
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class ext_posMap_tt_content extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 

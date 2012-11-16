@@ -50,8 +50,6 @@ $LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_over
  * Local position map class
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 

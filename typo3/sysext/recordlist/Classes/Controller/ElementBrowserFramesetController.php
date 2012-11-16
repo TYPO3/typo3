@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Recordlist\Controller;
  * Script Class, putting the frameset together.
  *
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class ElementBrowserFramesetController {
 

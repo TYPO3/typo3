@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  *
  * @author Oliver Hader <oliver@typo3.org>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

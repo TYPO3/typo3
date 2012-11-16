@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Install\Updates;
  * on initializing a new TYPO3 instance.
  *
  * @author Oliver Hader <oliver.hader@typo3.org>
- * @package TYPO3
- * @subpackage install
  */
 interface InstallerProcessInterface {
 

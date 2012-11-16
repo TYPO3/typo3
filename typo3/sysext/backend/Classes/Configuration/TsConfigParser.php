@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Backend\Configuration;
  * A TS-Config parsing class which performs condition evaluation
  *
  * @author Kraft Bernhard <kraftb@kraftb.at>
- * @package TYPO3
- * @subpackage t3lib
  */
 class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser {
 

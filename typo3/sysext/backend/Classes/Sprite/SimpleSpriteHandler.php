@@ -34,8 +34,6 @@ namespace TYPO3\CMS\Backend\Sprite;
  * Without the css classes generated here, icons of for example tca records would be empty.
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
- * @package TYPO3
- * @subpackage t3lib
  */
 class SimpleSpriteHandler extends \TYPO3\CMS\Backend\Sprite\AbstractSpriteHandler {
 

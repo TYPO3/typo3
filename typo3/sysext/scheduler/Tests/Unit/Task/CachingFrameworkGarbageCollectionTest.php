@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\Task;
 /**
  * Testcase for class "tx_scheduler_CachingFrameworkGarbageCollection"
  *
- * @package TYPO3
- * @subpackage tx_scheduler
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class CachingFrameworkGarbageCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

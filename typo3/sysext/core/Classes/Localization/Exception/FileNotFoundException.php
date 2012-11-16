@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Core\Localization\Exception;
 /**
  * File not found exception
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 class FileNotFoundException extends \RuntimeException {

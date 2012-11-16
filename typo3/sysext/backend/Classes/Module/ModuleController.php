@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Module;
  * Class with utility functions for module menu
  *
  * @author Susanne Moog <typo3@susannemoog.de>
- * @package TYPO3
- * @subpackage core
  */
 class ModuleController {
 

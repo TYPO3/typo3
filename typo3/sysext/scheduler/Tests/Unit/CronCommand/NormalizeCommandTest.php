@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\CronCommand;
  * Test case for class "tx_scheduler_CronCmd_Normalize"
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage tx_scheduler
  */
 class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

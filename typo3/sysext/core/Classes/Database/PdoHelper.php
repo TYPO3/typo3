@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\Database;
  * Backport of FLOW3 class PdoHelper, last synced version: 3528
  *
  * @author Karsten Dambekalns <karsten@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class PdoHelper {
 

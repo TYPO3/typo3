@@ -34,8 +34,6 @@ use TYPO3\CMS\Core\Utility;
  * - typo3conf/AdditionalConfiguration.php (optional additional local code blocks)
  * - typo3conf/localconf.php (legacy configuration file)
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Helge Funk <helge.funk@e-net.info>
  */
 class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {

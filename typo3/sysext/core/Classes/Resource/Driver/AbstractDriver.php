@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\Resource\Driver;
  *
  * @author Ingmar Schlecht <ingmar.schlecht@typo3.org>
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @package 	TYPO3
- * @subpackage 	t3lib
  */
 abstract class AbstractDriver {
 

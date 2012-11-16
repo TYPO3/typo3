@@ -36,8 +36,6 @@ namespace TYPO3\CMS\Lowlevel;
  * cleanflexform
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_lowlevel
  */
 class CleanFlexformCommand extends CleanerCommand {
 

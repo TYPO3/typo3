@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Resource\Hook;
  * Utility class to render TCEforms information about a sys_file record
  *
  * @author Benjamin Mack <benni@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class FileInfoHook {
 

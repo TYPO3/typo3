@@ -28,7 +28,6 @@ namespace TYPO3\CMS\Frontend\Controller;
  * eID controller for ExtDirect
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @package 	TYPO3
  */
 class ExtDirectEidController {
 

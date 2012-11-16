@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Impexp\Controller;
  * Export Preset listing for the task center
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_impexp
  */
 class ModuleFunctionController extends mod_user_task {
 

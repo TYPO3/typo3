@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Recordlist;
  * Script Class for the Web > List module; rendering the listing of records on a page
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class RecordList {
 

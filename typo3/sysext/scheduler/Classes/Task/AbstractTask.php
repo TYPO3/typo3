@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Scheduler\Task;
  *
  * @author 	François Suter <francois@typo3.org>
  * @author 	Christian Jul Jensen <julle@typo3.org>
- * @package 		TYPO3
- * @subpackage 	tx_scheduler
  */
 abstract class AbstractTask {
 

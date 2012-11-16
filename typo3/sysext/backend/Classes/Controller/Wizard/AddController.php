@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  * Script Class for adding new items to a group/select field. Performs proper redirection as needed.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class AddController {
 

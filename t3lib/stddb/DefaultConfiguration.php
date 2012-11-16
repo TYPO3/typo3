@@ -26,8 +26,6 @@
  * later populated as $GLOBALS['TYPO3_CONF_VARS']
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage core
  */
 return array(
 	'GFX' => array(

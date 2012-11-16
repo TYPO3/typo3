@@ -30,8 +30,6 @@
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tslib
  */
 if (!is_object($TSFE)) {
 	die('You cannot execute this file directly. It\'s meant to be included from index_ts.php');

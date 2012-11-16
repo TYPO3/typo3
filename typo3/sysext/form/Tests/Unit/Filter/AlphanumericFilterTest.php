@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
  * Test case for class tx_form_System_Filter_Alphanumeric
  *
  * @author Andreas Lappe <a.lappe@kuehlhaus.com>
- * @package TYPO3
- * @subpackage form
  */
 class AlphanumericFilterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

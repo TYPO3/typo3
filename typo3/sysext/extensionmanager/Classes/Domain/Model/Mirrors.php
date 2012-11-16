@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Model;
  * @author Marcus Krause <marcus#exp2010@t3sec.info>
  * @author Steffen Kamper <info@sk-typo3.de>
  * @since 2010-02-11
- * @package Extension Manager
- * @subpackage Model
  */
 class Mirrors extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

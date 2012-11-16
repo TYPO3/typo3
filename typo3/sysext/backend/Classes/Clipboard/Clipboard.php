@@ -38,8 +38,6 @@ namespace TYPO3\CMS\Backend\Clipboard;
  * TYPO3 clipboard for records and files
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class Clipboard {
 

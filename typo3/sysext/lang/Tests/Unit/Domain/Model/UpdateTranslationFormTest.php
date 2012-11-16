@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Lang\Tests\Unit\Domain\Model;
  * Testcase for UpdateTranslationForm
  *
  * @author Wouter Wolters <typo3@wouterwolters.nl>
- * @package TYPO3
- * @subpackage lang
  */
 class UpdateTranslationFormTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

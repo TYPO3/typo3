@@ -29,8 +29,6 @@ require_once 'vfsStream/vfsStream.php';
 /**
  * Testcase for the factory of FAL
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

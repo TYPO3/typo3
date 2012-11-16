@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Install\Report;
  * Provides an installation status report
  *
  * @author 		Ingo Renner <ingo@typo3.org>
- * @package 		TYPO3
- * @subpackage 	tx_install
  */
 class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface {
 

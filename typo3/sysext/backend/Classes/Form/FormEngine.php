@@ -39,8 +39,6 @@ namespace TYPO3\CMS\Backend\Form;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor René Fritz <r.fritz@colorcube.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class FormEngine {
 

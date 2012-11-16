@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Resource;
  * Abstract file representation in the file abstraction layer.
  *
  * @author Ingmar Schlecht <ingmar@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 

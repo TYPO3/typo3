@@ -36,8 +36,6 @@ namespace TYPO3\CMS\Core\Collection;
  * This assumes that entries are sortable and therefore a index can be assigned
  *
  * @author Steffen Ritter <typo3steffen-ritter.net>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface SortableCollectionInterface
 {

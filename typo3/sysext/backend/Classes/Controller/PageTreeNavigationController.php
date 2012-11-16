@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Backend\Controller;
  * Main script class for the page tree navigation frame
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class PageTreeNavigationController {
 

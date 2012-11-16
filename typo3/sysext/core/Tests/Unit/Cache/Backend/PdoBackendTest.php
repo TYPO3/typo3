@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  * Testcase for the PDO cache backend
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage tests
  */
 class PdoBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

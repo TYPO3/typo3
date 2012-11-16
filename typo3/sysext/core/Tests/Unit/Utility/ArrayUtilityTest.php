@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  *
  * @author Susanne Moog <typo3@susanne-moog.de>
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

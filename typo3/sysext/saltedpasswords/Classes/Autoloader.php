@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Saltedpasswords;
  * Autoloader included from Install Tool that lets saltedpasswords load itself
  *
  * @author Helmut Hummel <helmut.hummel@typo3.org>
- * @package TYPO3
- * @subpackage saltedpasswords
  */
 class Autoloader {
 

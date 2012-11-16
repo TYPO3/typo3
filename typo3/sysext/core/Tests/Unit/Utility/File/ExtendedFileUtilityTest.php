@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility\File;
  * Testcase for TYPO3\CMS\Core\Utility\File\ExtendedFileUtility
  *
  * @author Fabien Udriot <fabien.udriot@ecodev.ch>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ExtendedFileUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

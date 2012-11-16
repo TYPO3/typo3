@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Frontend\Controller;
  * Class for displaying page information (records, page record properties)
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_cms
  */
 class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 

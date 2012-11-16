@@ -26,8 +26,6 @@
 /**
  * Test Fixture class for TYPO3\CMS\Core\Core\ClassLoader
  *
- * @package TYPO3
- * @subpackage core
  * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
 abstract class Tx_Core_Tests_Unit_Core_Fixtures_LegacyClassFixture {

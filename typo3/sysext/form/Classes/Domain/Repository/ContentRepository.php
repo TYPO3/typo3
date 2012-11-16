@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Form\Domain\Repository;
  * Repository for tx_form_Domain_Model_Content
  *
  * @category Repository
- * @package TYPO3
- * @subpackage form
  * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ContentRepository {

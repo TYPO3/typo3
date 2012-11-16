@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Lang\Tests\Unit\Domain\Model;
  * Testcase LanguageSelectionForm
  *
  * @author Wouter Wolters <typo3@wouterwolters.nl>
- * @package TYPO3
- * @subpackage lang
  */
 class LanguageSelectionFormTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

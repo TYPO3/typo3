@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Rsaauth\Storage;
  * in the database, part in the database.
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage tx_rsaauth
  */
 class SplitStorage extends \TYPO3\CMS\Rsaauth\Storage\AbstractStorage {
 

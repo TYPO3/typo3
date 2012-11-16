@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\Log;
  * @author Ingo Renner <ingo@typo3.org>
  * @author Steffen Müller <typo3@t3node.com>
  * @author Steffen Gebert <steffen.gebert@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class Logger {
 

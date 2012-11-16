@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Backend\View;
  * tt_content_drawItem processing.
  *
  * @author Oliver Hader <oliver@typo3.org>
- * @package TYPO3
- * @subpackage cms
  */
 interface PageLayoutViewDrawItemHookInterface
 {

@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Core\Resource\Exception;
 /**
  * An exception when the upload goes wrong
  *
- * @package TYPO3
- * @subpackage t3lib_file
  */
 class UploadException extends \TYPO3\CMS\Core\Resource\Exception\AbstractFileOperationException {
 

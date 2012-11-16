@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Resource\Service;
  * File processing service
  *
  * @author Oliver Hader <oliver.hader@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class FileProcessingService {
 

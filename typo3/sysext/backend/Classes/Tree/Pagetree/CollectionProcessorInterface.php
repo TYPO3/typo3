@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  * Interface for classes which perform pre or post processing
  *
  * @author Tolleiv Nietsch <typo3@tolleiv.de>
- * @package 	TYPO3
- * @subpackage t3lib
  */
 interface CollectionProcessorInterface
 {

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Lang\Controller;
  *
  * @author Sebastian Fischer <typo3@evoweb.de>
  * @author Kai Vogel <kai.vogel@speedprogs.de>
- * @package lang
- * @subpackage LanguageController
  */
 class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Backend\View;
  * class to render the TYPO3 backend menu for the modules
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage core
  */
 class ModuleMenuView {
 

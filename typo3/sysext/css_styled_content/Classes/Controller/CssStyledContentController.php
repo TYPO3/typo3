@@ -36,8 +36,6 @@ namespace TYPO3\CMS\CssStyledContent\Controller;
  * Rendering some content elements from tt_content table.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_cssstyledcontent
  */
 class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 

@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  * Handles .t3x or .zip files
  *
  * @author Susanne Moog <typo3@susannemoog.de>
- * @package Extension Manager
- * @subpackage Controller
  */
 class UploadExtensionFileController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractController {
 

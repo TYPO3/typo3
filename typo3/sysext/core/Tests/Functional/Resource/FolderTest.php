@@ -35,7 +35,6 @@ require_once 'vfsStream/vfsStream.php';
  * Functional test case for the FAL folder class.
  *
  * @author Andreas Wolf <andreas.wolf@typo3.org>
- * @package TYPO3
  */
 class FolderTest extends BaseTestCase {
 

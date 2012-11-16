@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *
  * This file is a backport from FLOW3
  *
- * @package TYPO3
- * @subpackage t3lib_cache
  * @author Robert Lemke <robert@typo3.org>
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @author Karsten Dambekalns <karsten@typo3.org>

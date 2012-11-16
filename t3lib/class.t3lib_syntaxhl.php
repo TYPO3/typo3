@@ -33,8 +33,6 @@
  * Syntax Highlighting class.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class t3lib_syntaxhl {
 

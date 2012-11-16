@@ -38,8 +38,6 @@ namespace TYPO3\CMS\Backend\History;
  * Class for the record history display script (show_rechis.php)
  *
  * @author Sebastian Kurfürst <sebastian@garbage-group.de>
- * @package TYPO3
- * @subpackage core
  */
 class RecordHistory {
 

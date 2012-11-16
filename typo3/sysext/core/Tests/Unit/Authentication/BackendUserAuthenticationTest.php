@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 /**
  * Testcase for \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

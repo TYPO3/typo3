@@ -42,8 +42,6 @@ namespace TYPO3\CMS\Frontend\Controller;
  * Main frontend class, instantiated in the index_ts.php script as the global object TSFE
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tslib
  */
 class TypoScriptFrontendController {
 

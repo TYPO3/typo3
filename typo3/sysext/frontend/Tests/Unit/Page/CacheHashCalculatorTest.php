@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
  * Testcase for class t3lib_cacheHeash
  *
  * @author 2012 Tolleiv Nietsch <typo3@tolleiv.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

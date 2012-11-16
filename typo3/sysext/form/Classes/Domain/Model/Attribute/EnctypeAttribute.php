@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
  * Attribute 'enctype'
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class EnctypeAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

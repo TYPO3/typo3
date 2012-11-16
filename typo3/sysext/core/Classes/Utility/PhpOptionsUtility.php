@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Utility;
  * Class to handle php environment specific options / functions
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage t3lib
  */
 class PhpOptionsUtility {
 

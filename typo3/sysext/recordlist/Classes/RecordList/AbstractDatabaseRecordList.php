@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Recordlist\RecordList;
  * Shared between Web>List (db_list.php) and Web>Page (sysext/cms/layout/db_layout.php)
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  * @see localRecordList
  */
 class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {

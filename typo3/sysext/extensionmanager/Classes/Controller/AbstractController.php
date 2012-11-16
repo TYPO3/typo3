@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  * Abstract action controller.
  *
  * @author Susanne Moog <typo3@susannemoog.de>
- * @package Extension Manager
- * @subpackage controller
  */
 class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

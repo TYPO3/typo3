@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Rsaauth\Backend;
  * tx_rsaauth_abstract_backend for the information on using backends.
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage tx_rsaauth
  */
 class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 

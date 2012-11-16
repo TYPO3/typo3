@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  * @author Ingmar Schlecht <ingmar@typo3.org>
- * @package 	TYPO3
- * @subpackage 	t3lib
  */
 class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 

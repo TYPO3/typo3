@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandler;
 /**
  * Testcase for TYPO3\CMS\Core\DataHandling\DataHandler
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @author Tolleiv Nietsch <info@tolleiv.de>
  */

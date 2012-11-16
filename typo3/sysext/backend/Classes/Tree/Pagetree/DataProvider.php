@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  * Page tree data provider.
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 

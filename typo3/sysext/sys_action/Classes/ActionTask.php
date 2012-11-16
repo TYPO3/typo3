@@ -29,8 +29,6 @@ namespace TYPO3\CMS\SysAction;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author Georg Ringer <typo3@ringerge.org>
- * @package TYPO3
- * @subpackage tx_sysaction
  */
 class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 

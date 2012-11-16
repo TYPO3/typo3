@@ -54,8 +54,6 @@
  * (And then also "lib.alt_plaintext.renderObj" is configured extensively - basically with the TypoScript options passed to this class. See the static template "plugin.alt.plaintext")
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tslib
  */
 class user_plaintext {
 

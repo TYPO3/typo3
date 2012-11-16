@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Feedit;
  *
  * @author Jeff Segars <jeff@webempoweredchurch.org>
  * @author David Slayback <dave@webempoweredchurch.org>
- * @package TYPO3
- * @subpackage feedit
  */
 class FrontendEditPanel {
 

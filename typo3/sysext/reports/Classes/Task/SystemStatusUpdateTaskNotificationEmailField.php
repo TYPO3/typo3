@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Reports\Task;
  * issue notifications.
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage reports
  */
 class SystemStatusUpdateTaskNotificationEmailField implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 

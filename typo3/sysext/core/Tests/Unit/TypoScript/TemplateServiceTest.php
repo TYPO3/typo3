@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
 /**
  * Testcase for \TYPO3\CMS\Core\TypoScript\TemplateService
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

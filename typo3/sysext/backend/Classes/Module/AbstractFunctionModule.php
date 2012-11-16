@@ -126,8 +126,6 @@ namespace TYPO3\CMS\Backend\Module;
  * are totally normal "submodules".
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  * @see t3lib_SCbase
  * @see tx_funcwizards_webfunc::init()
  * @see tx_funcwizards_webfunc

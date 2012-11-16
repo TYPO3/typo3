@@ -29,8 +29,6 @@ require_once 'Fixtures/FormProtectionTesting.php';
 /**
  * Testcase for the t3lib_formprotection_Factory class.
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @author Ernesto Baschny <ernst@cron-it.de>
  */
