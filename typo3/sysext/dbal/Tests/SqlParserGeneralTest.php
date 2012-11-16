@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Dbal\Tests;
  * Testcase for class ux_t3lib_sqlparser
  *
  * @author Xavier Perseguers <xavier@typo3.org>
- * @package TYPO3
- * @subpackage dbal
  */
 class SqlParserGeneralTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

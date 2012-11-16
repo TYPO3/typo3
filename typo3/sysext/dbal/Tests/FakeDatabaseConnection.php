@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Dbal\Tests;
  * Fake ADOdb connection factory.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
- * @package TYPO3
- * @subpackage dbal
  */
 class FakeDatabaseConnection {
 

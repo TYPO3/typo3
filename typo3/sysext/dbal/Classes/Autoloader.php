@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Dbal;
  * if it makes sense.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
- * @package TYPO3
- * @subpackage dbal
  */
 class Autoloader {
 

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Dbal\Hooks;
  * Hooks for TYPO3 Install Tool.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
- * @package TYPO3
- * @subpackage dbal
  */
 class InstallToolHooks {
 

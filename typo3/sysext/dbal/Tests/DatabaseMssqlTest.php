@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Dbal\Tests;
  * Testcase for class ux_TYPO3\CMS\Core\Database\DatabaseConnection. Testing MS SQL database handling.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
- * @package TYPO3
- * @subpackage dbal
  */
 class DatabaseMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

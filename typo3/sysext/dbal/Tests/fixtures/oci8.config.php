@@ -3,8 +3,6 @@
  * Oracle configuration
  *
  * @author Xavier Perseguers <xavier@typo3.org>
- * @package TYPO3
- * @subpackage dbal
  */
 global $TYPO3_CONF_VARS;
 $TYPO3_CONF_VARS['EXTCONF']['dbal']['handlerCfg'] = array(

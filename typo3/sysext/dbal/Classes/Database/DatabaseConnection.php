@@ -40,8 +40,6 @@ namespace ux_TYPO3\CMS\Core\Database;
  *
  * @author 	Kasper Skårhøj <kasper@typo3.com>
  * @author 	Karsten Dambekalns <k.dambekalns@fishfarm.de>
- * @package TYPO3
- * @subpackage tx_dbal
  */
 class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 

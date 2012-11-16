@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Dbal\Tests;
  * Testcase for class DatabaseConnection.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
- * @package TYPO3
- * @subpackage dbal
  */
 class DatabaseGeneralTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

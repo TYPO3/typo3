@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Dbal\ExtensionManager;
  * Class that renders fields for the Extension Manager configuration.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
- * @package TYPO3
- * @subpackage dbal
  */
 class MessageDisplay {
 

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Dbal\Hooks;
  * Hooks for TYPO3 Extension Manager.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
- * @package TYPO3
- * @subpackage dbal
  */
 class ExtensionManagerHooks implements tx_em_Index_CheckDatabaseUpdatesHook {
 

@@ -38,8 +38,6 @@ namespace ux_TYPO3\CMS\Recordlist\RecordList;
  *
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author 	Karsten Dambekalns <k.dambekalns@fishfarm.de>
- * @package TYPO3
- * @subpackage DBAL
  */
 class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 

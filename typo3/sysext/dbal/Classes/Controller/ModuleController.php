@@ -6,8 +6,6 @@ namespace TYPO3\CMS\Dbal\Controller;
  *
  * @author 	Kasper Skårhøj <kasper@typo3.com>
  * @author 	Karsten Dambekalns <karsten@typo3.org>
- * @package TYPO3
- * @subpackage dbal
  */
 class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
