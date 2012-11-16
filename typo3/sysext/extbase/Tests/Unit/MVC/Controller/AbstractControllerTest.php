@@ -117,6 +117,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_AbstractControllerTest extends Tx_Ext
 		$mockUriBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 		$mockUriBuilder->expects($this->once())->method('reset')->will($this->returnValue($mockUriBuilder));
 		$mockUriBuilder->expects($this->once())->method('setTargetPageUid')->with(123)->will($this->returnValue($mockUriBuilder));
+		$mockUriBuilder->expects($this->once())->method('setCreateAbsoluteUri')->with(TRUE)->will($this->returnValue($mockUriBuilder));
 		$mockUriBuilder->expects($this->once())->method('uriFor')->with('theActionName', $arguments, 'TheControllerName', 'TheExtensionName')->will($this->returnValue('the uri'));
 
 		$controller = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_AbstractController'), array('redirectToUri'), array(), '', FALSE);
@@ -125,51 +126,6 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_AbstractControllerTest extends Tx_Ext
 		$controller->_set('response', $mockResponse);
 		$controller->_set('uriBuilder', $mockUriBuilder);
 		$controller->_call('redirect', 'theActionName', 'TheControllerName', 'TheExtensionName', $arguments, 123);
-	}
-
-	/**
-	 * @test
-	 */
-	public function theBaseUriIsAddedIfNotAlreadyExists() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request');
-		$mockRequest->expects($this->any())->method('getBaseUri')->will($this->returnValue('http://www.example.com/foo/'));
-
-		$controller = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_AbstractController'), array('dummy'), array(), '', FALSE);
-		$controller->_set('request', $mockRequest);
-		$actualResult = $controller->_call('addBaseUriIfNecessary', 'bar/baz/boom.html');
-		$expectedResult = 'http://www.example.com/foo/bar/baz/boom.html';
-
-		$this->assertEquals($expectedResult, $actualResult);
-	}
-
-	/**
-	 * @test
-	 */
-	public function theBaseUriIsNotAddedIfExternalUri() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request');
-		$mockRequest->expects($this->any())->method('getBaseUri')->will($this->returnValue('http://www.example.com/foo/'));
-
-		$controller = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_AbstractController'), array('dummy'), array(), '', FALSE);
-		$controller->_set('request', $mockRequest);
-		$actualResult = $controller->_call('addBaseUriIfNecessary', 'http://www.anotherexample.com/foo/bar/baz/boom.html');
-		$expectedResult = 'http://www.anotherexample.com/foo/bar/baz/boom.html';
-
-		$this->assertEquals($expectedResult, $actualResult);
-	}
-
-	/**
-	 * @test
-	 */
-	public function theBaseUriIsNotAddedIfAlreadyExists() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request');
-		$mockRequest->expects($this->any())->method('getBaseUri')->will($this->returnValue('http://www.example.com/foo/'));
-
-		$controller = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_AbstractController'), array('dummy'), array(), '', FALSE);
-		$controller->_set('request', $mockRequest);
-		$actualResult = $controller->_call('addBaseUriIfNecessary', 'http://www.example.com/foo/bar/baz/boom.html');
-		$expectedResult = 'http://www.example.com/foo/bar/baz/boom.html';
-
-		$this->assertEquals($expectedResult, $actualResult);
 	}
 
 	/**
