@@ -329,3 +329,4 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 		return $this->getClassInfoCache()->get($className);
 	}
 }
+?>
