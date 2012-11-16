@@ -35,8 +35,6 @@ namespace TYPO3\CMS\Sv;
  * Authentication services class
  *
  * @author René Fritz <r.fritz@colorcube.de>
- * @package TYPO3
- * @subpackage tx_sv
  */
 class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService {
 

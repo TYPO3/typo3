@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Toolbar;
  * Interface for classes which extend the backend by adding items to the top toolbar
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface ToolbarItemHookInterface
 {

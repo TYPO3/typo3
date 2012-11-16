@@ -46,8 +46,6 @@ namespace TYPO3\CMS\Backend\Controller\File;
  * Script Class, handling the calling of methods in the file admin classes.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class FileController {
 

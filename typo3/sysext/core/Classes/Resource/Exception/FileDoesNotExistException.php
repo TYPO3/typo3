@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Core\Resource\Exception;
 /**
  * An exception to throw if a file does not exist
  *
- * @package TYPO3
- * @subpackage t3lib_file
  */
 class FileDoesNotExistException extends \TYPO3\CMS\Core\Resource\Exception {
 

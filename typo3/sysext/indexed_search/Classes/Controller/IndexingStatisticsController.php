@@ -32,8 +32,6 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  * Module extension (addition to function menu) 'Indexed search statistics' for the 'indexed_search' extension.
  *
  * @author 	Dimitri Ebert <dimitri.ebert@dkd.de>
- * @package TYPO3
- * @subpackage tx_indexedsearch
  */
 class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 

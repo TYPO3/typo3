@@ -34,8 +34,6 @@
  * Suggestions for improvement and streamlining is welcome so this powerful class could be used more and effectively.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tslib
  */
 class user_feAdmin {
 

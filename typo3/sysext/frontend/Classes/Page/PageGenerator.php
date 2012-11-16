@@ -42,8 +42,6 @@ namespace TYPO3\CMS\Frontend\Page;
  * eg: TSpagegen::pagegenInit()
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tslib
  */
 class PageGenerator {
 

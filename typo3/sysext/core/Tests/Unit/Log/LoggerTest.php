@@ -33,8 +33,6 @@ require_once 'Fixtures/WriterFailing.php';
  *
  * @author Ingo Renner <ingo@typo3.org>
  * @author Steffen Gebert <steffen.gebert@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class LoggerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

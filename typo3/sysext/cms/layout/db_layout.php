@@ -48,8 +48,6 @@ $BE_USER->modAccess($MCONF, 1);
  * Local extension of position map class
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 

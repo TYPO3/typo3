@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Backend\View;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author Benjamin Mack <bmack@xnos.org>
- * @package TYPO3
- * @subpackage core
  * @see class t3lib_browseTree
  */
 class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {

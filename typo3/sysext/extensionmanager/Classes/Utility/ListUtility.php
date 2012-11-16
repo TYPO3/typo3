@@ -35,8 +35,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * - The name 'listUtility' is not good, the methods could be moved to some 'extensionInformationUtility', or a repository?
  *
  * @author Susanne Moog <typo3@susannemoog.de>
- * @package Extension Manager
- * @subpackage Utility
  */
 class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 

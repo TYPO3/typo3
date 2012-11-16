@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Recycler\Controller;
  *
  * @author Erik Frister <erik_frister@otq-solutions.com>
  * @author Julian Kleinhans <typo3@kj187.de>
- * @package TYPO3
- * @subpackage tx_recycler
  */
 class DeletedRecordsController {
 

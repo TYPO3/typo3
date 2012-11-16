@@ -64,8 +64,6 @@ namespace TYPO3\CMS\Impexp;
  * T3D file Import/Export library (TYPO3 Record Document)
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_impexp
  */
 class ImportExport {
 

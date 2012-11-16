@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Backend\Tree\View;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author René Fritz <r.fritz@colorcube.de>
- * @package TYPO3
- * @subpackage t3lib
  * @see t3lib_browsetree
  * @see t3lib_pagetree
  * @see t3lib_foldertree

@@ -44,8 +44,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * conflict.
  *
  * @author Tobias Burger <tobias_burger@hotmail.com>
- * @package TYPO3
- * @subpackage t3lib_cache
  */
 class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface {
 

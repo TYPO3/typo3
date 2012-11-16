@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Core\Localization\Exception;
 /**
  * Invalid Parser exception
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 class InvalidParserException extends \RuntimeException {

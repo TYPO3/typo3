@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Belog\Domain\Model;
  * Constraints for log entries
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage belog
  */
 class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

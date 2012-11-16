@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Core\Error;
  * This file is a backport from FLOW3
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage error
  */
 abstract class AbstractExceptionHandler implements \TYPO3\CMS\Core\Error\ExceptionHandlerInterface, \TYPO3\CMS\Core\SingletonInterface {
 

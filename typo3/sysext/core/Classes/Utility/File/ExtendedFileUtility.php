@@ -59,8 +59,6 @@ namespace TYPO3\CMS\Core\Utility\File;
  * For example this is a bad idea: you have an ftp-space that is '/www/' and a web-space that is '/www/htdocs/'
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility {
 

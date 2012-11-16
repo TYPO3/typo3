@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Resource\Driver;
  * Driver for the local file system
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @package 	TYPO3
- * @subpackage 	t3lib
  */
 class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 

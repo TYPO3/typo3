@@ -33,8 +33,6 @@ namespace TYPO3\CMS\Core\Resource\Service;
  * Note: This is now also used by sys_file_category table (fieldname "folder")! (Ingmar Schlecht, 19 November 2011)
  *
  * @author Benjamin Mack <benni@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class UserFileMountService {
 

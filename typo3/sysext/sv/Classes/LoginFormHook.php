@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Sv;
  * for the superchallenged authentication.
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage tx_sv
  */
 class LoginFormHook {
 

@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail;
 /**
  * Testcase for the TYPO3\CMS\Core\Mail\Mailer class.
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
 class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

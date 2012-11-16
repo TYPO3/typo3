@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Model;
  * Download Queue - storage for extensions to be downloaded
  *
  * @author Susanne Moog <typo3@susannemoog.de>
- * @package Extension Manager
- * @subpackage Model
  */
 class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface {
 

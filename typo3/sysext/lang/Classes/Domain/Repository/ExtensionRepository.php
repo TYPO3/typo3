@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Lang\Domain\Repository;
  * Extension repository
  *
  * @author Sebastian Fischer <typo3@evoweb.de>
- * @package TYPO3
- * @subpackage lang
  */
 class ExtensionRepository {
 	/**

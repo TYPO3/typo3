@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Scheduler\Task;
  * This class provides Scheduler plugin implementation
  *
  * @author Lorenz Ulrich <lorenz.ulrich@visol.ch>
- * @package TYPO3
- * @subpackage media
  */
 class FileIndexingTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

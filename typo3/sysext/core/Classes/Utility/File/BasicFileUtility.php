@@ -37,8 +37,6 @@ namespace TYPO3\CMS\Core\Utility\File;
  * Contains functions for management, validation etc of files in TYPO3, using the concepts of web- and ftp-space. Please see the comment for the init() function
  *
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  * @see t3lib_basicFileFunctions::init()
  */
 class BasicFileUtility {

@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\Database;
  * after a query has been executed.
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface PostProcessQueryHookInterface
 {

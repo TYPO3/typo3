@@ -35,8 +35,6 @@ namespace TYPO3\CMS\Core\Collection;
  * in an appropriate way itself
  *
  * @author Steffen Ritter <typo3steffen-ritter.net>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface CollectionInterface extends \Iterator, \Serializable, \Countable
 {

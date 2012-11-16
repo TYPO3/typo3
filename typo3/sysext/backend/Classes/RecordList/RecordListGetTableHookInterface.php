@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\RecordList;
  * interface for classes which hook into localRecordList and do additional getTable processing
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface RecordListGetTableHookInterface
 {

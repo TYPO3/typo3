@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\Error;
  * This file is a backport from FLOW3
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage t3lib_error
  */
 class DebugExceptionHandler extends \TYPO3\CMS\Core\Error\AbstractExceptionHandler {
 

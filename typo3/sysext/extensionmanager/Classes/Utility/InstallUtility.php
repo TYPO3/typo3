@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * Extension Manager Install Utility
  *
  * @author Susanne Moog <susanne.moog@typo3.org>
- * @package Extension Manager
- * @subpackage Utility
  */
 class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 

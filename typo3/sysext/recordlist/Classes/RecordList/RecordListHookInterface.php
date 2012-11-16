@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Recordlist\RecordList;
  * Interface for classes which hook into localRecordList and modify clip-icons
  *
  * @author Bernhard Kraft <kraftb@kraftb.at>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface RecordListHookInterface
 {

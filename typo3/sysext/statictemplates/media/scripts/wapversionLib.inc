@@ -73,8 +73,6 @@
  * "&type=97" anymore! This has been a source of error and confusion
  * for many people
  *
- * @package TYPO3
- * @subpackage tslib
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class user_wapversion {

@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
  * Script Class for the New Content element wizard
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class NewContentElementController {
 

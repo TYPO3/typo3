@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\CronCommand;
 /**
  * Testcase for class "tx_scheduler_CronCmd"
  *
- * @package TYPO3
- * @subpackage tx_scheduler
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class CronCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

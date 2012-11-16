@@ -6,8 +6,6 @@ namespace TYPO3\CMS\Opendocs\Controller;
  *
  * @author Benjamin Mack <benni@typo3.org>
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage opendocs
  */
 class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface {
 

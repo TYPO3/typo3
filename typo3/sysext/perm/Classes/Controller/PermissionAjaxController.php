@@ -7,8 +7,6 @@ namespace TYPO3\CMS\Perm\Controller;
  * (user and group)) via new TYPO3AJAX facility
  *
  * @author Andreas Kundoch <typo3@mehrwert.de>
- * @package TYPO3
- * @subpackage core
  * @license GPL
  * @since TYPO3_4-2
  */

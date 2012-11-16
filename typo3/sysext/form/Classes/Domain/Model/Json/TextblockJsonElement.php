@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
  * JSON textblock
  *
  * @author Oliver Hader <oliver.hader@typo3.org>
- * @package TYPO3
- * @subpackage form
  */
 class TextblockJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement {
 

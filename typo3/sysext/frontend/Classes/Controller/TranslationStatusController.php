@@ -35,8 +35,6 @@ namespace TYPO3\CMS\Frontend\Controller;
  * Class for displaying translation status of pages in the tree.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_cms
  */
 class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 

@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Sv\Report;
  * Code inspired by EXT:dam/lib/class.tx_dam_svlist.php by René Fritz
  *
  * @author Francois Suter <francois@typo3.org>
- * @package TYPO3
- * @subpackage sv
  */
 class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 

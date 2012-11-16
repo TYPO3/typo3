@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures;
  * Make method public
  *
  * @author Steffen Ritter <steffen.ritter@typo3.org>
- * @package TYPO3
- * @subpackage test
  */
 class RootlineUtilityTestAccessibleFixture extends \TYPO3\CMS\Core\Utility\RootlineUtility {
 

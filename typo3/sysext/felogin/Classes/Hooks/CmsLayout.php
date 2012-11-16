@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Felogin\Hooks;
 /**
  * Hook to display verbose information about the felogin plugin
  *
- * @package TYPO3
- * @subpackage felogin
  */
 class CmsLayout implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface {
 

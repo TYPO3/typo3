@@ -92,8 +92,6 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  * Script Class for rendering the Form Wizard
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class FormsController {
 

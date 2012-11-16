@@ -35,8 +35,6 @@ require_once('HTTP/Request2.php');
  * Extends \HTTP_Request2 and sets TYPO3 environment defaults
  *
  * @author Philipp Gampe <philipp.gampe@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class HttpRequest extends \HTTP_Request2 {
 

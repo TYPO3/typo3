@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Backend\Sprite;
  * Provides base functionality for all handlers.
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
- * @package TYPO3
- * @subpackage t3lib
  */
 abstract class AbstractSpriteHandler implements \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface {
 

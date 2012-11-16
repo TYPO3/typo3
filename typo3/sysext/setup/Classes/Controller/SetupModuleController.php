@@ -37,8 +37,6 @@ namespace TYPO3\CMS\Setup\Controller;
  * Script class for the Setup module
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_setup
  */
 class SetupModuleController {
 

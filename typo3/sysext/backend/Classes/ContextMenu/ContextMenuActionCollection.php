@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\ContextMenu;
  * Context Menu Action Collection
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ContextMenuActionCollection extends \ArrayObject {
 

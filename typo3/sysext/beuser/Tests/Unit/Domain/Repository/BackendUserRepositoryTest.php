@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Repository;
  * Testcase for the Tx_Beuser_Domain_Repository_BackendUserRepository class.
  *
  * @author Felix Kopp <felix-source@phorax.com>
- * @package TYPO3
- * @subpackage beuser
  */
 class BackendUserRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

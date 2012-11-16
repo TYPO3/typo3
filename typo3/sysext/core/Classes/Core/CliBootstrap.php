@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Core;
  * This class encapsulates cli specific bootstrap methods.
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage core
  */
 class CliBootstrap {
 

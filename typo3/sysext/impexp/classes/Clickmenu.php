@@ -38,8 +38,6 @@ namespace TYPO3\CMS\Impexp;
  * Adding Import/Export clickmenu item
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_impexp
  */
 class Clickmenu {
 

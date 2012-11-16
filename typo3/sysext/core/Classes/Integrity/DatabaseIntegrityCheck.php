@@ -43,8 +43,6 @@ namespace TYPO3\CMS\Core\Integrity;
  * @todo Need to really extend this class when the tcemain library has been updated and the whole API is better defined. There are some known bugs in this library. Further it would be nice with a facility to not only analyze but also clean up!
  * @see SC_mod_tools_dbint_index::func_relations(), SC_mod_tools_dbint_index::func_records()
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class DatabaseIntegrityCheck {
 

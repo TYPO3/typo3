@@ -41,8 +41,6 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * (for BEGIN/END) and also "diff.xmenu_layers.txt"
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tslib
  */
 class GraphicalMenuLayers extends \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject {
 

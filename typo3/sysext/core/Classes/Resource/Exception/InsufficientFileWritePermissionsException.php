@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Core\Resource\Exception;
 /**
  * An exception when something is wrong with the file handling
  *
- * @package TYPO3
- * @subpackage t3lib_file
  */
 class InsufficientFileWritePermissionsException extends \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException {
 

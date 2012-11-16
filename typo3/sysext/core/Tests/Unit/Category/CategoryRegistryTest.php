@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Category;
 /**
  * Testcase for CategoryRegistry
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

@@ -38,8 +38,6 @@
  * (2) generation of XML data as a reply
  *
  * @author Sebastian Kurfürst <sebastian@garbage-group.de>
- * @package TYPO3
- * @subpackage t3lib
  * @deprecated since 6.0, the class will be removed from core with 6.2
  */
 class t3lib_ajax {

@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Core\Localization\Parser;
 /**
  * Abstract class for XML based parser.
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 abstract class AbstractXmlParser implements \TYPO3\CMS\Core\Localization\Parser\LocalizationParserInterface {

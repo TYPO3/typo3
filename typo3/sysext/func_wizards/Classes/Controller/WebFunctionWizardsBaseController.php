@@ -39,8 +39,6 @@ namespace TYPO3\CMS\FuncWizards\Controller;
  * Creates a framework for adding wizard sub-sub-modules under the Wizard function in Web>Info
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_funcwizardswebfunc
  */
 class WebFunctionWizardsBaseController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 

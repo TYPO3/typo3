@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Recycler\Domain\Model;
  * Model class for the 'recycler' extension.
  *
  * @author 	Julian Kleinhans <typo3@kj187.de>
- * @package 	TYPO3
- * @subpackage 	tx_recycler
  */
 class Tables {
 

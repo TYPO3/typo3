@@ -38,8 +38,6 @@ namespace TYPO3\CMS\Backend\View;
  * Child class for the Web > Page module
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList {
 

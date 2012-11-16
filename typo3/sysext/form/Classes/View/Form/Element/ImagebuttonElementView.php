@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\View\Form\Element;
  * View object for the image button element
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class ImagebuttonElementView extends \TYPO3\CMS\Form\View\Form\Element\AbstractElementView {
 

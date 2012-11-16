@@ -42,8 +42,6 @@ namespace TYPO3\CMS\Backend\View;
  * Relative paths MUST BE the first two characters ONLY: eg: '../dir/file.gif', otherwise it is expect to be absolute
  *
  * @author Kasper Skårhøj	<kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ThumbnailView {
 

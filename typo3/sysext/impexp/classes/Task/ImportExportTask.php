@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Impexp\Task;
  *
  * @author Kasper Skårhøj <kasper@typo3.com>
  * @author Georg Ringer <typo3@ringerge.org>
- * @package TYPO3
- * @subpackage 	impexp
  */
 class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 

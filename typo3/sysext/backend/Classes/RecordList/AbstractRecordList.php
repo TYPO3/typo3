@@ -33,8 +33,6 @@ namespace TYPO3\CMS\Backend\RecordList;
  * modules Web>List and File>Filelist
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  * @see typo3/db_list.php
  * @see typo3/sysext/filelist/mod1/index.php
  */

@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * A caching backend which stores cache entries in files, but does not support or
  * care about expiry times and tags.
  *
- * @package TYPO3
- * @subpackage t3lib_cache
  * @api
  */
 class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface {

@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Core\Localization\Parser;
 /**
  * Parser for XML locallang file.
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 class LocallangXmlParser extends \TYPO3\CMS\Core\Localization\Parser\AbstractXmlParser {

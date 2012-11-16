@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Log\Processor;
  * Abstract implementation of a log processor
  *
  * @author Steffen Müller <typo3@t3node.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 abstract class AbstractProcessor implements \TYPO3\CMS\Core\Log\Processor\ProcessorInterface {
 

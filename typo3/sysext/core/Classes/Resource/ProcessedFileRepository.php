@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * @author Benjamin Mack <benni@typo3.org>
  * @author Ingmar Schlecht <ingmar@typo3.org>
- * @package 	TYPO3
- * @subpackage 	t3lib
  */
 class ProcessedFileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 

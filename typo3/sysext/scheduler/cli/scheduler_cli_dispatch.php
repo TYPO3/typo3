@@ -26,8 +26,6 @@
  * This script must be included by the "CLI module dispatcher"
  *
  * @author 		Markus Friedrich <markus.friedrich@dkd.de>
- * @package 		TYPO3
- * @subpackage 	tx_scheduler
  */
 if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI && basename(PATH_thisScript) == 'cli_dispatch.phpsh') {
 	$hasTask = TRUE;

@@ -35,8 +35,6 @@ namespace TYPO3\CMS\Aboutmodules\Utility;
  * Basically it traverses the module structure and generates output based on that.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  * @deprecated since 4.7, will be removed in 6.1
  */
 class FunctionsUtility {

@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Model;
  * Main model for extension configuration categories
  *
  * @author Susanne Moog <typo3@susannemoog.de>
- * @package Extension Manager
- * @subpackage Model
  */
 class ConfigurationCategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

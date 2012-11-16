@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Install\Sql;
  * compare wizard and extension manager.
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage t3lib
  */
 class SchemaMigrator {
 

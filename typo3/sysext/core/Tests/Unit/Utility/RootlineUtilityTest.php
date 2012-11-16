@@ -30,8 +30,6 @@ require_once __DIR__ . '/Fixtures/RootlineUtilityTestAccessibleFixture.php';
  * Testcase for class \TYPO3\CMS\Core\Utility\RootlineUtility
  *
  * @author Steffen Ritter <steffen.ritter@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

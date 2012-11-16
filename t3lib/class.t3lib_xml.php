@@ -29,8 +29,6 @@
  * Doesn't contain a lot of advanced features - pretty straight forward, practical stuff
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  * @deprecated since TYPO3 6.0. It will be removed with TYPO3 6.2, please use other xml helper solutions instead.
  */
 class t3lib_xml {

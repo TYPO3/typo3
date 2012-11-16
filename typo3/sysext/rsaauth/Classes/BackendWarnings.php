@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Rsaauth;
  * RSA configuration and create a warning if the configuration is wrong.
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage tx_rsaauth
  */
 class BackendWarnings {
 

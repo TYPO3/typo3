@@ -39,8 +39,6 @@ namespace TYPO3\CMS\Core;
  *
  * @author Ingo Renner <ingo@typo3.org>
  * @author Bastian Waidelich <bastian@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 

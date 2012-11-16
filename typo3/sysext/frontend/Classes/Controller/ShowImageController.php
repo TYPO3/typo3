@@ -6,8 +6,6 @@ namespace TYPO3\CMS\Frontend\Controller;
  * Instantiated in the bottom of this script.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tslib
  */
 class ShowImageController {
 

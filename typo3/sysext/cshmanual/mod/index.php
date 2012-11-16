@@ -28,8 +28,6 @@
  * Extension of the parse_html class.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class local_t3lib_parsehtml extends \TYPO3\CMS\Core\Html\HtmlParser {
 

@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\Encoder;
  * This class provides encoding for user input that is intended to be used in a JavaScript context.
  * It encodes all characters except alphanumericals and the immune characters to a hex representation.
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Mike Boberski <boberski_michael@bah.com>
  * @author Franz G. Jahn <franzjahn@cron-it.de>
  * @author Helmut Hummel <helmut.hummel@typo3.org>

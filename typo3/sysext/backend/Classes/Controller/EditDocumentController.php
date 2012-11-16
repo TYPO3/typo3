@@ -6,8 +6,6 @@ namespace TYPO3\CMS\Backend\Controller;
  * Notice: It does NOT use tce_db.php to submit data to, rather it handles submissions itself
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class EditDocumentController {
 

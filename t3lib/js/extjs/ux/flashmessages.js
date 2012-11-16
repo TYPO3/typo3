@@ -26,8 +26,6 @@
  *
  *
  * @author Steffen Kamper <info@sk-typo3.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 Ext.ns('TYPO3');
 

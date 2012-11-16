@@ -41,8 +41,6 @@ namespace TYPO3\CMS\Core\TimeTracker;
  * Used by index_ts
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  * @see t3lib_tsfeBeUserAuth, tslib_fe, tslib_cObj, TSpagegen
  */
 class TimeTracker {

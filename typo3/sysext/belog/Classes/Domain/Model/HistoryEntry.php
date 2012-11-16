@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Belog\Domain\Model;
  * Stub model for sys history - only properties required for belog module are added currently
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage belog
  */
 class HistoryEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Belog\Domain\Repository;
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
- * @package TYPO3
- * @subpackage belog
  */
 class WorkspaceRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 

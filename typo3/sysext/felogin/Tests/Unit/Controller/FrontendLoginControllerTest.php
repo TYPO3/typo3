@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
  * Testcase for URL validation in class FrontendLoginController
  *
  * @author Helmut Hummel <helmut@typo3.org>
- * @package TYPO3
- * @subpackage felogin
  */
 class FrontendLoginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

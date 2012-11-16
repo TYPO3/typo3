@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
  * Test case for class \TYPO3\CMS\Form\Validation\RegExpValidator.
  *
  * @author Andreas Lappe <a.lappe@kuehlhaus.com>
- * @package TYPO3
- * @subpackage form
  */
 class RegExpValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**

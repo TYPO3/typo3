@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Backend\Tree;
  * @TODO This class is incomplete, because the methods still need
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  * @author Steffen Ritter <info@steffen-ritter.net>
- * @package TYPO3
- * @subpackage t3lib
  */
 abstract class AbstractTreeStateProvider {
 

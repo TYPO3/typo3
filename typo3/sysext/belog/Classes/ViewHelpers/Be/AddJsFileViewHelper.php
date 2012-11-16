@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Belog\ViewHelpers\Be;
  * View helper to add a additional javascript file to the backend header
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage belog
  */
 class AddJsFileViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 

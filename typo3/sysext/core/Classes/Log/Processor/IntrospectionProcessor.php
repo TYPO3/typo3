@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Core\Log\Processor;
  * Introspection processor to automatically add where the log record came from.
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class IntrospectionProcessor extends \TYPO3\CMS\Core\Log\Processor\AbstractProcessor {
 

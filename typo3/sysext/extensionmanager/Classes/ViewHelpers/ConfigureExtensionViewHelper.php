@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  * View helper for configure extension link
  *
  * @author Susanne Moog <typo3@susannemoog.de>
- * @package Extension Manager
- * @subpackage ViewHelpers
  */
 class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {
 

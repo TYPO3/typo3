@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Sprite;
  * Testcase for TYPO3\CMS\Backend\Sprite\SpriteManager
  *
  * @author Fabien Udriot <fabien.udriot@ecodev.ch>
- * @package TYPO3
- * @subpackage t3lib
  */
 class SpriteManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

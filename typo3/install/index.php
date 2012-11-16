@@ -28,8 +28,6 @@
  * Starter-script for install screen
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 ob_start();
 define('TYPO3_MODE', 'BE');

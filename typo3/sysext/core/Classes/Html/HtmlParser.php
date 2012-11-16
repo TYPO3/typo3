@@ -38,8 +38,6 @@ namespace TYPO3\CMS\Core\Html;
  * You are encouraged to use this class in your own applications
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class HtmlParser {
 

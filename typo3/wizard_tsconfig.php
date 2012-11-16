@@ -39,8 +39,6 @@ $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xml');
  * TypoScript parser extension class.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class ext_TSparser extends t3lib_tsparser_ext {
 

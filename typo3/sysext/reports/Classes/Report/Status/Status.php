@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Reports\Report\Status;
  * The status report
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage reports
  */
 class Status implements \TYPO3\CMS\Reports\ReportInterface {
 

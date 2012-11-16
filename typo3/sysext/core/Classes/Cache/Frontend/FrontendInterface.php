@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Cache\Frontend;
  * Contract for a Cache (frontend)
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage t3lib_cache
  * @api
  */
 interface FrontendInterface

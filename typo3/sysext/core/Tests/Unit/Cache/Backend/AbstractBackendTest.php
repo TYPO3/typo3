@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  * This file is a backport from FLOW3
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage tests
  */
 class AbstractBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

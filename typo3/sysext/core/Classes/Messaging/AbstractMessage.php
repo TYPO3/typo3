@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Core\Messaging;
  *
  * @author Ingo Renner <ingo@typo3.org>
  * @author Benjamin Mack <benni@typo3.org>
- * @package TYPO3
- * @subpackage t3lib/message
  */
 abstract class AbstractMessage {
 

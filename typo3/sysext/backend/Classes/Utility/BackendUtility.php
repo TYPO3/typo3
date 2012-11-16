@@ -35,8 +35,6 @@ namespace TYPO3\CMS\Backend\Utility;
  * Eg. to get a page-record 51 do this: 't3lib_BEfunc::getRecord('pages',51)'
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class BackendUtility {
 

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Resource;
  * Representation of a specific processing of a file.
  *
  * @author Benjamin Mack <benni@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ProcessedFile extends \TYPO3\CMS\Core\Resource\AbstractFile {
 

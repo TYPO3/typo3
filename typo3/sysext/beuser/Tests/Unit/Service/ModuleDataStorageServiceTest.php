@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Service;
  *
  * @author Felix Kopp <felix-source@phorax.com>
  * @author Nikolas Hagelstein <nikolas.hagelstein@gmail.com>
- * @package TYPO3
- * @subpackage beuser
  */
 class ModuleDataStorageServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

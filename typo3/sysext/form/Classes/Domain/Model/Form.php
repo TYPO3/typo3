@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Form\Domain\Model;
  * according to the configuration.
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class Form extends \TYPO3\CMS\Form\Domain\Model\Element\ContainerElement {
 

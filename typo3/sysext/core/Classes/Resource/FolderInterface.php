@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Resource;
  * Interface for folders
  *
  * @author Andreas Wolf <andreas.wolf@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface FolderInterface extends \TYPO3\CMS\Core\Resource\ResourceInterface
 {

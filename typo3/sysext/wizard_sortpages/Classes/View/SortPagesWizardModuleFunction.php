@@ -30,8 +30,6 @@ namespace TYPO3\CMS\WizardSortpages\View;
  * Creates the "Sort pages" wizard
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage wizard_sortpages
  */
 class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 

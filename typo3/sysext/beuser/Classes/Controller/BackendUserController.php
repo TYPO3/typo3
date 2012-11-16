@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Beuser\Controller;
  * Backend module user administration controller
  *
  * @author Felix Kopp <felix-source@phorax.com>
- * @package TYPO3
- * @subpackage beuser
  */
 class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

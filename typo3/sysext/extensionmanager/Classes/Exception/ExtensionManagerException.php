@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Extensionmanager\Exception;
  * An exception when something is wrong within the extension manager
  *
  * @author Susanne Moog <typo3@susannemoog.de>
- * @package Extension Manager
- * @subpackage Exception
  */
 class ExtensionManagerException extends \TYPO3\CMS\Core\Exception {
 

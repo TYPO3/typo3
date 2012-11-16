@@ -28,8 +28,6 @@
  * @author	Julian Kleinhans <typo3@kj187.de>
  * @author  Erik Frister <erik_frister@otq-solutions.com>
  * @author  Steffen Kamper <steffen@typo3.org>
- * @package	TYPO3
- * @subpackage	tx_recycler
  */
 
 Ext.ns('Recycler');

@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salt;
  * Testcases for Md5Salt
  *
  * @author Marcus Krause <marcus#exp2009@t3sec.info>
- * @package TYPO3
- * @subpackage tx_saltedpasswords
  */
 class Md5SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

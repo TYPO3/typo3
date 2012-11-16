@@ -12,8 +12,6 @@ namespace TYPO3\CMS\Perm\Controller;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author Andreas Kundoch <typo3@mehrwert.de>
- * @package TYPO3
- * @subpackage core
  */
 class PermissionModuleController {
 

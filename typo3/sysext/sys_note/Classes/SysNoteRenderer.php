@@ -26,8 +26,6 @@ namespace TYPO3\CMS\SysNote;
 /**
  * Render sys_notes
  *
- * @package TYPO3
- * @subpackage sys_note
  * @author Georg Ringer <typo3@ringerge.org>
  */
 class SysNoteRenderer {

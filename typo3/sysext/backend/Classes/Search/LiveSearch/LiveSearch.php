@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Backend\Search\LiveSearch;
  *
  * @author Michael Klapper <michael.klapper@aoemedia.de>
  * @author Jeff Segars <jeff@webempoweredchurch.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class LiveSearch {
 

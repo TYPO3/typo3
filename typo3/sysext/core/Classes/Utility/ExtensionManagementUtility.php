@@ -33,8 +33,6 @@ namespace TYPO3\CMS\Core\Utility;
  * t3lib_extMgm::isLoaded('my_extension');
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ExtensionManagementUtility {
 

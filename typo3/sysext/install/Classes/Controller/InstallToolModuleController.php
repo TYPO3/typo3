@@ -6,8 +6,6 @@ namespace TYPO3\CMS\Install\Controller;
  * Install Tool, if it's accessed by an authenticated Backend user.
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
- * @package TYPO3
- * @subpackage install
  */
 class InstallToolModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 

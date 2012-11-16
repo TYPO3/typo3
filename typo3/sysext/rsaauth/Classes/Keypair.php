@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Rsaauth;
  * and trasnfer these keys between other PHP classes.
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage tx_rsaauth
  */
 class Keypair {
 

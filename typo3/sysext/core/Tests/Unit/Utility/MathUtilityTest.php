@@ -30,8 +30,6 @@ require_once 'Fixtures/MathUtilityTestClassWithStringRepresentationFixture.php';
  * Testcase for class \TYPO3\CMS\Core\Utility\MathUtility
  *
  * @author Susanne Moog <typo3@susanne-moog.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class MathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

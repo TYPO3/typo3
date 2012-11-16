@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Form\Utility;
  * Takes the incoming Typoscript and converts it to Json
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class TypoScriptToJsonConverter {
 

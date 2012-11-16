@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Repository;
  *
  * @author Marcus Krause <marcus#exp2010@t3sec.info>
  * @author Steffen Kamper <info@sk-typo3.de>
- * @package Extension Manager
- * @subpackage Utility/Repository
  */
 class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 

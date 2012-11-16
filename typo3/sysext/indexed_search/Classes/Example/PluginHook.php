@@ -36,8 +36,6 @@ namespace TYPO3\CMS\IndexedSearch\Example;
  * Hooks are configured in ext_localconf.php as key => hook-reference pairs in $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['pi1_hooks']. See example in ext_localconf.php for "indexed_search"
  * Each hook must have an entry, the key must match the hook-key in class.tx_indexed_search.php and generally the key equals the function name in the hook object (a convension used)
  *
- * @package TYPO3
- * @subpackage tx_indexedsearch
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class PluginHook {

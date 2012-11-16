@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  * view helper for displaying a download extension data link
  *
  * @author Susanne Moog <typo3@susannemoog.de>
- * @package Extension Manager
- * @subpackage ViewHelpers
  */
 class DownloadExtensionDataViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {
 

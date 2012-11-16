@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Messaging;
  * A class which collects and renders flash messages.
  *
  * @author Rupert Germann <rupi@gmx.li>
- * @package TYPO3
- * @subpackage t3lib
  */
 class FlashMessageQueue {
 

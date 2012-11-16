@@ -41,8 +41,6 @@ namespace TYPO3\CMS\Core\Database;
  * </code>
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
- * @package TYPO3
- * @subpackage t3lib
  */
 class PreparedStatement {
 

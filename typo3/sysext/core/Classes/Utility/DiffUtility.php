@@ -38,8 +38,6 @@ namespace TYPO3\CMS\Core\Utility;
  * This class has functions which generates a difference output of a content string
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class DiffUtility {
 

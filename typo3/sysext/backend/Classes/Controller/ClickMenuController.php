@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Backend\Controller;
  * Script Class for the Context Sensitive Menu in TYPO3 (rendered in top frame, normally writing content dynamically to list frames).
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  * @see template::getContextMenuCode()
  */
 class ClickMenuController {
