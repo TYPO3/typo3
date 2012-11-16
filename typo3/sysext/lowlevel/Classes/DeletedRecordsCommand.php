@@ -36,8 +36,6 @@ namespace TYPO3\CMS\Lowlevel;
  * Looking for Deleted records
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_lowlevel
  */
 class DeletedRecordsCommand extends CleanerCommand {
 

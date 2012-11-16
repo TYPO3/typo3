@@ -7,8 +7,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Class for generating the click menu
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  * @internal
  */
 class ClickMenu {

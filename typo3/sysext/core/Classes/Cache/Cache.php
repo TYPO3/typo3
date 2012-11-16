@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Cache;
  * A cache handling helper class
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class Cache {
 

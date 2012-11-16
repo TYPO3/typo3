@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Recordlist\RecordList;
  * Class for rendering of Web>List module
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList {
 

@@ -32,8 +32,6 @@ namespace TYPO3\CMS\About\Controller;
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author Steffen Kamper <steffen@typo3.org>
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage about
  */
 class AboutController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

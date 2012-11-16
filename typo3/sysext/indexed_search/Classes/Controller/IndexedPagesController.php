@@ -5,8 +5,6 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  * Indexing class for TYPO3 frontend
  *
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_indexedsearch
  */
 class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 

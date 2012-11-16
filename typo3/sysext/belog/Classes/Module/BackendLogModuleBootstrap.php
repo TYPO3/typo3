@@ -34,8 +34,6 @@ namespace TYPO3\CMS\Belog\Module;
  * therefore we need to bootstrap extbase on our own here to jump to the WebInfo controller.
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage belog
  */
 class BackendLogModuleBootstrap {
 

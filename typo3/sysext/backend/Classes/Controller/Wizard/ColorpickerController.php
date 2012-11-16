@@ -7,8 +7,6 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  * @author Mathias Schreiber <schreiber@wmdb.de>
  * @author Peter Kühn <peter@kuehn.com>
  * @author Kasper Skårhøj <typo3@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class ColorpickerController {
 

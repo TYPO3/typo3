@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Backend\Toolbar;
  * Class to render the shortcut menu
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage core
  */
 class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface {
 

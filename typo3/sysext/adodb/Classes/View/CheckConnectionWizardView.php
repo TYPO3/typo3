@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Adodb\View;
  * Script Class checking the connection to an ADODB handled database
  *
  * @author Robert Lemke <robert@typo3.org>
- * @package TYPO3
- * @subpackage adodb
  */
 class CheckConnectionWizardView {
 

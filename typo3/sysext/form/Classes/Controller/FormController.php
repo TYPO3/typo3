@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Form\Controller;
  * and are routed to the model and view layers for processing.
  *
  * @category Controller
- * @package TYPO3
- * @subpackage form
  * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class FormController {

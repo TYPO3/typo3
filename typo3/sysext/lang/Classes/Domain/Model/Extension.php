@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Lang\Domain\Model;
  * Extension model
  *
  * @author Sebastian Fischer <typo3@evoweb.de>
- * @package TYPO3
- * @subpackage lang
  */
 class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

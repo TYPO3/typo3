@@ -31,8 +31,6 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
  * Utility for dealing with files and folders
  *
  * @author Susanne Moog <susanne.moog@typo3.org>
- * @package Extension Manager
- * @subpackage Utility
  */
 class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 

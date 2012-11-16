@@ -38,8 +38,6 @@ namespace TYPO3\CMS\Core\Html;
  * Class for parsing HTML for the Rich Text Editor. (also called transformations)
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 

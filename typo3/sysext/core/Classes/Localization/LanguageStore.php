@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Core\Localization;
 /**
  * Language store.
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Dominique Feyer <dominique.feyer@reelpeek.net>
  */
 class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface {

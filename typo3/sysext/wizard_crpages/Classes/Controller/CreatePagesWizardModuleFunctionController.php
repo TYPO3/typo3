@@ -31,8 +31,6 @@ namespace TYPO3\CMS\WizardCrpages\Controller;
  * Creates the "Create pages" wizard
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage wizard_crpages
  */
 class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 

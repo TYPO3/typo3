@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
 /**
  * Testcase for \TYPO3\CMS\Core\Page\PageRenderer
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Steffen Kamper (info@sk-typo3.de)
  */
 class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

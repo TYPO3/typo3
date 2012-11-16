@@ -30,8 +30,6 @@ namespace TYPO3\CMS\About;
  * Interface for custom sections
  *
  * @author Steffen Kamper <steffen@typo3.org>
- * @package TYPO3
- * @subpackage about
  */
 interface CustomSectionsInterface
 {

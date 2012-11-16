@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Rsaauth\Backend;
  * backends.
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage tx_rsaauth
  */
 class PhpBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 

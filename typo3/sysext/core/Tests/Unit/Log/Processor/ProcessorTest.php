@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
  * Testcase for log processors.
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase implements \TYPO3\CMS\Core\Log\Processor\ProcessorInterface {
 

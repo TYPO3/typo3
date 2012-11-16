@@ -38,8 +38,6 @@ namespace TYPO3\CMS\Core\Resource;
  * of the file.
  *
  * @author Ingmar Schlecht <ingmar@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class FileReference implements \TYPO3\CMS\Core\Resource\FileInterface {
 

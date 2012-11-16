@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Lowlevel\View;
  * Script class for the Config module
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_lowlevel
  */
 class ConfigurationView {
 

@@ -33,8 +33,6 @@ namespace TYPO3\CMS\Core\Mail;
  * for it to work out-of-the-box.
  *
  * @author Ernesto Baschny <ernst@cron-it.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class MboxTransport implements \Swift_Transport {
 

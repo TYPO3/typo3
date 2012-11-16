@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Core;
 /**
  * An exception
  *
- * @package TYPO3
- * @subpackage t3lib_error
  */
 class Exception extends \Exception {
 

@@ -43,8 +43,6 @@ namespace TYPO3\CMS\Backend\Module;
  * $this->loadModules->load($TBE_MODULES);
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ModuleLoader {
 

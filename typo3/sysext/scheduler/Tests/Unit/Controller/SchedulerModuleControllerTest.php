@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\Controller;
 /**
  * Testcase for class "tx_scheduler_Module"
  *
- * @package TYPO3
- * @subpackage tx_scheduler
  * @author Andy Grunwald <andreas.grunwald@wmdb.de>
  */
 class SchedulerModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

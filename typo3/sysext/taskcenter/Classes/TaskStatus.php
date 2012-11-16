@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Taskcenter;
  * Status of tasks
  *
  * @author Georg Ringer <typo3@ringerge.org>
- * @package TYPO3
- * @subpackage taskcenter
  */
 class TaskStatus {
 

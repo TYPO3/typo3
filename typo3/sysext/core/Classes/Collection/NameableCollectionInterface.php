@@ -35,8 +35,6 @@ namespace TYPO3\CMS\Core\Collection;
  * being display by the same logic.
  *
  * @author Steffen Ritter <typo3steffen-ritter.net>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface NameableCollectionInterface
 {

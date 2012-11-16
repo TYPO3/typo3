@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * Extension class creating graphic based menus (PNG or GIF files)
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tslib
  */
 class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject {
 

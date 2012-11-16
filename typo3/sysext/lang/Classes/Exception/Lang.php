@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Lang\Exception;
  * An exception when something is wrong within the lang
  *
  * @author Sebastian Fischer <typo3@evoweb.de>
- * @package TYPO3
- * @subpackage lang
  */
 class Lang extends \TYPO3\CMS\Core\Exception {
 

@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Log\Writer;
  * Log writer interface
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface WriterInterface
 {

@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Lang\View\Language;
  * JSON view for "updateTranslation" action in "Language" controller
  *
  * @author Kai Vogel <kai.vogel@speedprogs.de>
- * @package lang
- * @subpackage View
  */
 class UpdateTranslationJson extends CheckTranslationJson {
 

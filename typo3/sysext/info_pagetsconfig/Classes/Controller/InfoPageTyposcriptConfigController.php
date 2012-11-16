@@ -38,8 +38,6 @@ namespace TYPO3\CMS\InfoPagetsconfig\Controller;
  * Page TSconfig viewer
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_infopagetsconfig
  */
 class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 

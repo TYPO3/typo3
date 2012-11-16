@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  * Issue command ViewHelper, see TYPO3 Core Engine method issueCommand
  *
  * @author Felix Kopp <felix-source@phorax.com>
- * @package TYPO3
- * @subpackage beuser
  */
 class IssueCommandViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

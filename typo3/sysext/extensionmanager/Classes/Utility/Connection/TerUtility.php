@@ -34,8 +34,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Connection;
  *
  * @author Karsten Dambekalns <karsten@typo3.org>
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage EM
  */
 class TerUtility {
 

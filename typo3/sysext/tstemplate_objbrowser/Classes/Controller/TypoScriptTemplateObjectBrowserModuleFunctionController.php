@@ -5,8 +5,6 @@ namespace TYPO3\CMS\TstemplateObjbrowser\Controller;
  * This class displays the submodule "TypoScript Object Browser" inside the Web > Template module
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_tstemplateobjbrowser
  */
 class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 

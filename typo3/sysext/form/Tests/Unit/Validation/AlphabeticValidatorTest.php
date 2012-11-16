@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
  * Test case for class \TYPO3\CMS\Form\System\Validation\AlphabeticValidator.
  *
  * @author Andreas Lappe <a.lappe@kuehlhaus.com>
- * @package TYPO3
- * @subpackage form
  */
 class AlphabeticValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**

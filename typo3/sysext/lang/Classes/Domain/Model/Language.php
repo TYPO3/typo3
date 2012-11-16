@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Lang\Domain\Model;
  * Language model
  *
  * @author Sebastian Fischer <typo3@evoweb.de>
- * @package TYPO3
- * @subpackage lang
  */
 class Language extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

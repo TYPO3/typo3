@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Backend\Controller;
  * Script Class, creating the content for the dummy script - which is just blank output.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class DummyController {
 

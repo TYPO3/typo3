@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
  * JSON textarea
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class TextareaJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement {
 

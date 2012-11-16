@@ -39,8 +39,6 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * NOTICE: The contents of this class is copied EXACTLY AS IS from gmenu_layers class! See notes in class (for BEGIN/END) and also 'diff.xmenu_layers.txt'
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tslib
  */
 class TextMenuLayers extends \TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject {
 

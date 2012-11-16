@@ -77,8 +77,6 @@ namespace TYPO3\CMS\Backend;
  * Provides a presets box for BE modules.
  *
  * @author René Fritz <r.fritz@colorcube.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ModuleSettings {
 

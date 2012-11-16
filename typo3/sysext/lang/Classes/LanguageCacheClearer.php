@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Lang;
  * Class to clear temp files of htmlArea RTE
  *
  * @author Dominique Feyer <dominique.feyer@reelpeek.net>
- * @package TYPO3
- * @subpackage tx_Lang
  */
 class LanguageCacheClearer {
 

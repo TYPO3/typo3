@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 /**
  * EmConf utility test
  *
- * @package Extension Manager
- * @subpackage Tests
  */
 class EmConfUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

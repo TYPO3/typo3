@@ -50,8 +50,6 @@
  * please refer to the document "Inside TYPO3"
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 define('TYPO3_MODE', 'BE');
 

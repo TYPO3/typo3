@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
  * Test case for class \TYPO3\CMS\Form\Validation\IntegerValidator.
  *
  * @author Andreas Lappe <a.lappe@kuehlhaus.com>
- * @package TYPO3
- * @subpackage form
  */
 class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**

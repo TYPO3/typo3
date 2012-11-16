@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Domain\Repository\Module;
  * Repository for backend module menu
  *
  * @author Susanne Moog <typo3@susannemoog.de>
- * @package TYPO3
- * @subpackage core
  */
 class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 

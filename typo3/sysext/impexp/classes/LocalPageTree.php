@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Impexp;
  * Extension of the page tree class. Used to get the tree of pages to export.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_impexp
  */
 class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 

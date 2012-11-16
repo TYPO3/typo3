@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
 /**
  * Testcase for TYPO3\CMS\Core\Database\DatabaseConnection
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Ernesto Baschny <ernst@cron-it.de>
  */
 class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

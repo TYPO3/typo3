@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
  * JSON textline
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class TextlineJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement {
 

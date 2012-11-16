@@ -6,8 +6,6 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Unit;
  *
  * @author Dmitry Dulepov <dmitry.dulepov@gmail.com>
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage tx_indexedsearch
  */
 class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

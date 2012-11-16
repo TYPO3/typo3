@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Log;
  * Log levels according to RFC 3164
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class LogLevel {
 

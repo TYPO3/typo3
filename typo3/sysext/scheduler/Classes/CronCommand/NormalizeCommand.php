@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Scheduler\CronCommand;
  * '2-4 10-40/10 * mar * fri'  will be nolmalized to '2,4 10,20,30,40 * * 3 1,2'
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage scheduler
  */
 class NormalizeCommand {
 

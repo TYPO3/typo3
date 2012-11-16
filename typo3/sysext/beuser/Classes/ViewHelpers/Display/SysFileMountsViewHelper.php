@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Beuser\ViewHelpers\Display;
  * Converts comma separated list of sys_filemounts uids to html unordered list (<ul>) with speaking titles
  *
  * @author Felix Kopp <felix-source@phorax.com>
- * @package TYPO3
- * @subpackage beuser
  */
 class SysFileMountsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Belog\Domain\Model;
  *
  * @TODO : This should be extended and put at some more central place
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage belog
  */
 class Workspace extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

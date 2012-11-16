@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * Interface for hooks to fetch the public URL of files
  *
  * @author Oliver Hader <oliver.hader@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface ContentObjectGetPublicUrlForFileHookInterface
 {

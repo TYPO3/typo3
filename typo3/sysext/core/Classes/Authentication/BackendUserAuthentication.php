@@ -34,8 +34,6 @@ namespace TYPO3\CMS\Core\Authentication;
  * functions for the authentication process of backend users.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  * @internal
  */
 class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication {

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Utility;
  * Class to handle debug
  *
  * @author Steffen Kamper <steffen@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class DebugUtility {
 

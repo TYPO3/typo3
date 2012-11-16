@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Lang;
  * Extending class to render the menu for the cache clearing actions, and adding Clear lang/l10n cache option
  *
  * @author Dominique Feyer <dominique.feyer@reelpeek.net>
- * @package TYPO3
- * @subpackage tx_Lang
  */
 class ClearLanguageCacheMenuItem implements \TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface {
 

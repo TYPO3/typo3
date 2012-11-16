@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Rsaauth\Hook;
  * Frontend. Warning: felogin must be USER_INT for this to work!
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage tx_rsaauth
  */
 class FrontendLoginHook {
 

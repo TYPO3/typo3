@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  * Script Class for redirecting a backend user to the editing form when an "Edit wizard" link was clicked in TCEforms somewhere
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class EditController {
 

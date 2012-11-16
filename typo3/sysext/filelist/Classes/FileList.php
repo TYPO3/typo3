@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Filelist;
  * Class for rendering of File>Filelist
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 

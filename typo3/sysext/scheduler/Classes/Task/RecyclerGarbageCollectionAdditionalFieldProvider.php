@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Scheduler\Task;
  * and file modification time in days to select from.
  *
  * @author 2011 Kai Vogel <kai.vogel@speedprogs.de>
- * @package TYPO3
- * @subpackage scheduler
  */
 class RecyclerGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 

@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
  * Testcase for the memoryUsage log processor.
  *
  * @author Steffen Müller <typo3@t3node.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class MemoryUsageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

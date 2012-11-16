@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Error\Http;
  * Exception for Error 503 - Service Unavailable
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
- * @package TYPO3
- * @subpackage error
  */
 class ServiceUnavailableException extends \TYPO3\CMS\Core\Error\Http\AbstractServerErrorException {
 

@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Rsaauth\Storage;
  * This class contains the abstract storage for the RSA private keys
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
- * @package TYPO3
- * @subpackage tx_rsaauth
  */
 abstract class AbstractStorage {
 

@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * Testcase for class \TYPO3\CMS\Core\Utility\VersionNumberUtility
  *
  * @author Susanne Moog <typo3@susanne-moog.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

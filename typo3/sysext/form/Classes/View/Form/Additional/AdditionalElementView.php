@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\View\Form\Additional;
  * Additional elements for FORM object
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class AdditionalElementView extends \TYPO3\CMS\Form\View\Form\Element\AbstractElementView {
 

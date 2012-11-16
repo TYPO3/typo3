@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Cshmanual\Controller;
  * Script Class for rendering the Context Sensitive Help documents, either the single display in the small pop-up window or the full-table view in the larger window.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class HelpModuleController {
 

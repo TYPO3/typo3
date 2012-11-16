@@ -38,8 +38,6 @@ namespace TYPO3\CMS\Core\Localization;
  * - Update 'setup' extension labels (sysext/setup/mod/locallang.xlf)
  * That's it!
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Xavier Perseguers <typo3@perseguers.ch>
  */
 class Locales implements \TYPO3\CMS\Core\SingletonInterface {

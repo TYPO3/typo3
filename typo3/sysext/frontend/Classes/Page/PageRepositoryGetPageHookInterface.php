@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Frontend\Page;
  * Interface for classes which hook into pageSelect and do additional getPage processing
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface PageRepositoryGetPageHookInterface
 {

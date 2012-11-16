@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Scheduler\Example;
  * Class "tx_scheduler_TestTask" provides testing procedures
  *
  * @author 		Markus Friedrich <markus.friedrich@dkd.de>
- * @package 		TYPO3
- * @subpackage 	tx_scheduler
  */
 class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * interface for classes which hook into tslib_menu
  *
  * @author Tolleiv Nietsch <nietsch@aoemedia.de>
- * @package TYPO3
  */
 interface AbstractMenuFilterPagesHookInterface
 {

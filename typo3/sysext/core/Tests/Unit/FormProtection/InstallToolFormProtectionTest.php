@@ -29,8 +29,6 @@ require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('instal
 /**
  * Testcase for the \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection class.
  *
- * @package TYPO3
- * @subpackage t3lib
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */

@@ -34,8 +34,6 @@ require_once dirname(__FILE__) . '/Fixtures/LocalDriverFilenameFilter.php';
 /**
  * Testcase for the local storage driver class of the TYPO3 VFS
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {

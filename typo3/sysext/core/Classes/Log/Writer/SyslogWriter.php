@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Core\Log\Writer;
  *
  * @author Ingo Renner <ingo@typo3.org>
  * @author Steffen Müller <typo3@t3node.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class SyslogWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Collection;
  * Implements the repository for record collections.
  *
  * @author Steffen Ritter <typo3@steffen-ritter.net>
- * @package TYPO3
- * @subpackage t3lib
  */
 class RecordCollectionRepository {
 

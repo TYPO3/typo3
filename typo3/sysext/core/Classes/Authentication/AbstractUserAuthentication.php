@@ -12,8 +12,6 @@ namespace TYPO3\CMS\Core\Authentication;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author René Fritz <r.fritz@colorcube.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 abstract class AbstractUserAuthentication {
 

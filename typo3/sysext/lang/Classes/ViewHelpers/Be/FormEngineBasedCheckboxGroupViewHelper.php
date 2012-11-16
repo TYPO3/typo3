@@ -36,8 +36,6 @@ namespace TYPO3\CMS\Lang\ViewHelpers\Be;
  * <myext:be.formEngineBasedCheckboxGroup name="paymentOptions" options="{options}" optionValueField="id" optionLabelField="firstName" />
  *
  * @author Kai Vogel <kai.vogel@speedprogs.de>
- * @package lang
- * @subpackage ViewHelpers
  */
 class FormEngineBasedCheckboxGroupViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper {
 

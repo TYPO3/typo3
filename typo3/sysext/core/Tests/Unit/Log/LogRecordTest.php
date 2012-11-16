@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log;
  * Testcase for \TYPO3\CMS\Core\Log\LogRecord.
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class RecordTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

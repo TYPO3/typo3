@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Reports\Controller;
 /**
  * Reports controller
  *
- * @package TYPO3
- * @subpackage tx_reports
  */
 class ReportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

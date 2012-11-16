@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Sprite;
  * Interface all handlers in t3lib_spritemanager have to implement.
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface SpriteIconGeneratorInterface
 {

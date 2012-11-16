@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Openid;
  * This class is a TYPO3-specific OpenID store.
  *
  * @author Dmitry Dulepov <dmitry.dulepov@gmail.com>
- * @package TYPO3
- * @subpackage tx_openid
  */
 class OpenidStore extends \Auth_OpenID_OpenIDStore {
 

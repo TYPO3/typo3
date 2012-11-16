@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  * Renders a link to update the extension list from TER
  *
  * @author Susanne Moog <susanne.moog@typo3.org>
- * @package Extension Manager
- * @subpackage ViewHelpers
  */
 class UpdateFromTerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {
 

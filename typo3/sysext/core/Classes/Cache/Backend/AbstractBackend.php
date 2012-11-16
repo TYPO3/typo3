@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * @author Robert Lemke <robert@typo3.org>
  * @author Karsten Dambekalns <karsten@typo3.org>
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage t3lib_cache
  * @api
  */
 abstract class AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\BackendInterface {

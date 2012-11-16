@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\PostProcess;
  * Interface for postprocessors
  *
  * @author Franz Geiger <mail@fx-g.de>
- * @package TYPO3
- * @subpackage form
  */
 interface PostProcessorInterface
 {

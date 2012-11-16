@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Sprite;
  * Sprite generator
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
- * @package TYPO3
- * @subpackage t3lib
  */
 class SpriteGenerator {
 

@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\Filter;
  * Integer filter
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class IntegerFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 

@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\Domain\Model;
  * Content domain model
  *
  * @category Model
- * @package TYPO3
- * @subpackage form
  * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class Content {

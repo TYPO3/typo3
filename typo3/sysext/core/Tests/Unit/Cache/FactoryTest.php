@@ -32,8 +32,6 @@ require_once 'Backend/MockBackend.php';
  * This file is a backport from FLOW3
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage tests
  */
 class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

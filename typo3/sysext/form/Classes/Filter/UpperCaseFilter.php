@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\Filter;
  * Uppercase filter
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class UpperCaseFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 

@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Model;
 /**
  * Download queue test
  *
- * @package Extension Manager
- * @subpackage Tests
  */
 class DownloadQueueTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\ExtDirect;
  * Ext Direct Debug
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ExtDirectDebug {
 

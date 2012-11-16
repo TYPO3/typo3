@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  * Displays a section in backend module template, similar to template::section()
  *
  * @author Felix Kopp <felix-source@phorax.com>
- * @package TYPO3
- * @subpackage beuser
  */
 class SectionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

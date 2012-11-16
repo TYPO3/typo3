@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Core\FormProtection;
 /**
  * Invalid token exception
  *
- * @package TYPO3
- * @subpackage t3lib_formprotection
  * @api
  */
 class Exception extends \UnexpectedValueException {

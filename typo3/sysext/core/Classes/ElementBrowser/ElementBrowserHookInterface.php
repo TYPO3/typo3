@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\ElementBrowser;
  * Interface for classes which hook into browse_links
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface ElementBrowserHookInterface
 {

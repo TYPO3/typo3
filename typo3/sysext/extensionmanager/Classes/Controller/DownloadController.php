@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  * Controller for actions related to the TER download of an extension
  *
  * @author Susanne Moog, <typo3@susannemoog.de>
- * @package Extension Manager
- * @subpackage Controller
  */
 class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractController {
 

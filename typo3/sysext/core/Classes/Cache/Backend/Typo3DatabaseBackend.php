@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 /**
  * A caching backend which stores cache entries in database tables
  *
- * @package TYPO3
- * @subpackage t3lib_cache
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @author Ingo Renner <ingo@typo3.org>
  * @api

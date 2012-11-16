@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
  * Attribute 'maxlength'
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class MaxlengthAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

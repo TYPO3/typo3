@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Install\CoreUpdates;
 /**
  * Move localconf.php to LocalConfiguration.php
  *
- * @package TYPO3
- * @subpackage install
  * @author Helge Funk <helge.funk@e-net.info>
  */
 class LocalConfigurationUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {

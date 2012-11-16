@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Log\Writer;
  * Log writer that writes the log records into a database table.
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class DatabaseWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Domain\Model\Module;
  * Model for menu entries
  *
  * @author Susanne Moog <typo3@susannemoog.de>
- * @package TYPO3
- * @subpackage core
  */
 class BackendModule {
 

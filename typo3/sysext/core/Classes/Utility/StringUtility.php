@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Utility;
  * Class with helper functions for string handling
  *
  * @author Susanne Moog <typo3@susanne-moog.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class StringUtility {
 

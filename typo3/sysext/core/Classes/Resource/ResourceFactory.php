@@ -33,8 +33,6 @@ namespace TYPO3\CMS\Core\Resource;
  * NOTE: This class is part of the lowlevel FAL API and should not be used from outside the FAL package.
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 

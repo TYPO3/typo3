@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Reports\Report\Status;
  * Performs some checks about the install tool protection status
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackag reports
  */
 class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 

@@ -27,7 +27,6 @@ namespace TYPO3\CMS\Install\Updates;
  * Upgrade wizard which goes through all files referenced in the tt_content.media filed
  * and creates sys_file records as well as sys_file_reference records for the individual usages.
  *
- * @package TYPO3
  * @author Steffen Ritter <steffen.ritter@typo3.org>
  * @license http://www.gnu.org/copyleft/gpl.html
  */

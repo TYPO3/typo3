@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Frontend\Page;
  * interface for classes which hook into t3lib_pageSelect
  *
  * @author Tolleiv Nietsch <nietsch@aoemedia.de>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface PageRepositoryGetRecordOverlayHookInterface
 {

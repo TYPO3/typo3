@@ -30,8 +30,6 @@ namespace TYPO3\CMS\ContextHelp\ExtDirect;
  * ExtDirect DataProvider for ContextHelp
  *
  * @author Steffen Kamper <steffen@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ContextHelpDataProvider {
 

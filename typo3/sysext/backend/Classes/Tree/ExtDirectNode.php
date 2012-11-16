@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\Tree;
  * Node for the usage with ExtDirect and ExtJS
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 

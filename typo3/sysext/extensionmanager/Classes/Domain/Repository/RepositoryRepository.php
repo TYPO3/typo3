@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
  * A repository for extension repositories
  *
  * @author Susanne Moog <typo3@susannemoog.de>
- * @package Extension Manager
- * @subpackage Repository
  */
 class RepositoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 

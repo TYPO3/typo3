@@ -5,8 +5,6 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  * Backend module providing boring statistics of the index-tables.
  *
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_indexedsearch
  */
 class ModuleController {
 

@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
  * JSON fieldset
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class FieldsetJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\ContainerJsonElement {
 

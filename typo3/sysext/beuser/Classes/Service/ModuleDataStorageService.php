@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Beuser\Service;
  *
  * @author Felix Kopp <felix-source@phorax.com>
  * @author Nikolas Hagelstein <nikolas.hagelstein@gmail.com>
- * @package TYPO3
- * @subpackage beuser
  */
 class ModuleDataStorageService implements \TYPO3\CMS\Core\SingletonInterface {
 

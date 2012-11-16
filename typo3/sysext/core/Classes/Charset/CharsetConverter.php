@@ -62,8 +62,6 @@ namespace TYPO3\CMS\Core\Charset;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author Martin Kutschker <martin.t.kutschker@blackbox.net>
- * @package TYPO3
- * @subpackage t3lib
  */
 class CharsetConverter {
 

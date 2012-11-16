@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Resource;
  * FileResourceInterface
  *
  * @author Ingmar Schlecht <ingmar@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface ResourceInterface
 {

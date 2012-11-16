@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Taskcenter\Controller;
  * This class provides a taskcenter for BE users
  *
  * @author Georg Ringer <typo3@ringerge.org>
- * @package TYPO3
- * @subpackage taskcenter
  */
 class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 

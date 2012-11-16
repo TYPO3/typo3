@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core\Utility\File;
  * Interface for classes which hook into extFileFunctions and do additional processData processing.
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface ExtendedFileUtilityProcessDataHookInterface
 {

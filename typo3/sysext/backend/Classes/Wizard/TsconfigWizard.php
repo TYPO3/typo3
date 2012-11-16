@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Backend\Wizard;
  * Script Class for rendering the TSconfig/TypoScript property browser.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class TsconfigWizard {
 

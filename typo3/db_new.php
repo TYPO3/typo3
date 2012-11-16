@@ -42,8 +42,6 @@ $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
  * Extension for the tree class that generates the tree of pages in the page-wizard mode
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class localPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView {
 

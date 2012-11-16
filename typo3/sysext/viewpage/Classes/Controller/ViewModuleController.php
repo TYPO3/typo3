@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Viewpage\Controller;
  *
  * @author Felix Kopp <felix-source@phorax.com>
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage viewpage
  */
 class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

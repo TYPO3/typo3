@@ -5,8 +5,6 @@ namespace TYPO3\CMS\Backend\Controller;
  * Class for rendering the TYPO3 backend version 4.2+
  *
  * @author Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage core
  */
 class BackendController {
 

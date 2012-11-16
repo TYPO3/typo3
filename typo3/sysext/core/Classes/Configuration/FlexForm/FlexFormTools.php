@@ -35,8 +35,6 @@ namespace TYPO3\CMS\Core\Configuration\FlexForm;
  * Contains functions for manipulating flex form data
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class FlexFormTools {
 

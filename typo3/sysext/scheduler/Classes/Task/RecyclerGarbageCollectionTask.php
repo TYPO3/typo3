@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Scheduler\Task;
  * given number of days.
  *
  * @author Kai Vogel <kai.vogel@speedprogs.de>
- * @package TYPO3
- * @subpackage scheduler
  */
 class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

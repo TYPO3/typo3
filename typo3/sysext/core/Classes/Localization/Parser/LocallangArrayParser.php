@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Core\Localization\Parser;
 /**
  * Parser for PHP locallang array.
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Dominique Feyer <dfeyer@reelpeek.net>
  * @author Dmitry Dulepov <dmitry.dulepov@gmail.com>
  */

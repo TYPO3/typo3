@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Frontend\View;
  * Interface for classes which hook into tslib_adminpanel
  *
  * @author Georg Ringer <typo3@ringerge.org>
- * @package TYPO3
- * @subpackage cms
  */
 interface AdminPanelViewHookInterface
 {

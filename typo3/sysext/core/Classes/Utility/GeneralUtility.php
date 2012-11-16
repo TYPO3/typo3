@@ -39,8 +39,6 @@ namespace TYPO3\CMS\Core\Utility;
  * So use t3lib_div::[method-name] to refer to the functions, eg. 't3lib_div::milliseconds()'
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class GeneralUtility {
 

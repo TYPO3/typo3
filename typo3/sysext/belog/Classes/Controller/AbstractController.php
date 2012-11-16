@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Belog\Controller;
  * Abstract class to show log entries from sys_log
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage belog
  */
 abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Backend\Template;
  * Please refer to Inside TYPO3 for a discussion of how to use this API.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
  */
 class DocumentTemplate {
 

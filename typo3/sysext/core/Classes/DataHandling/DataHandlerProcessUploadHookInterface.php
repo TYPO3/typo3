@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Core\DataHandling;
  * after the upload of a file.
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
- * @package TYPO3
- * @subpackage t3lib
  */
 interface DataHandlerProcessUploadHookInterface
 {

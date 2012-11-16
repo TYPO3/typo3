@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Form\Domain\Factory;
  * according to the configuration.
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
- * @package TYPO3
- * @subpackage form
  */
 class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 

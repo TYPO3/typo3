@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Backend\ContextMenu\Pagetree;
  * Context Menu Data Provider for the Page Tree
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @package TYPO3
- * @subpackage t3lib
  */
 class ContextMenuDataProvider extends \TYPO3\CMS\Backend\ContextMenu\AbstractContextMenuDataProvider {
 

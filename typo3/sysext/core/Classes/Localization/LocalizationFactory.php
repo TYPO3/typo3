@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Core\Localization;
 /**
  * Provides a language parser factory.
  *
- * @package TYPO3
- * @subpackage t3lib
  * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {

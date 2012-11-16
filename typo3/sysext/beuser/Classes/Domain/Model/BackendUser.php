@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Beuser\Domain\Model;
  * Model for backend user
  *
  * @author Felix Kopp <felix-source@phorax.com>
- * @package TYPO3
- * @subpackage beuser
  */
 class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser {
 

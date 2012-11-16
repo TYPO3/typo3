@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  * Get history entry from for log entry
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @package TYPO3
- * @subpackage belog
  */
 class HistoryEntryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

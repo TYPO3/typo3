@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Core;
  * "empty" interface for singletons (marker interface pattern)
  *
  * @author Martin Kutschker <masi@typo3.org>
- * @package TYPO3
- * @subpackage t3lib
  * @see t3lib_div::makeInstance()
  */
 interface SingletonInterface
