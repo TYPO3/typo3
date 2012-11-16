@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Workspaces\Service;
  * Service for history
  *
  * @author Oliver Hader <oliver.hader@typo3.org>
- * @package Workspaces
- * @subpackage Service
  */
 class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 

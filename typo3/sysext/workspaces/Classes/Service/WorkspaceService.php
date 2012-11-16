@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Workspaces\Service;
  * Workspace service
  *
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
- * @package Workspaces
- * @subpackage Service
  */
 class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 

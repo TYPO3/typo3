@@ -36,8 +36,6 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
  * class to render the workspace selector
  *
  * @author 	Ingo Renner <ingo@typo3.org>
- * @package Workspaces
- * @subpackage ExtDirect
  */
 class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface {
 

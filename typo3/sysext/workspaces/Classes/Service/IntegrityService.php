@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Workspaces\Service;
  * Service for integrity
  *
  * @author Oliver Hader <oliver.hader@typo3.org>
- * @package Workspaces
- * @subpackage Service
  */
 class IntegrityService {
 

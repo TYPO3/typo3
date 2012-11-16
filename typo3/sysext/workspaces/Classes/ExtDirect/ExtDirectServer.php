@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  * ExtDirect server
  *
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
- * @package Workspaces
- * @subpackage ExtDirect
  */
 class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 

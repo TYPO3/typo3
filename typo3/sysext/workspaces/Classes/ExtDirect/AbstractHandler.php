@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  * Abstract ExtDirect handler
  *
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
- * @package Workspaces
- * @subpackage ExtDirect
  */
 abstract class AbstractHandler {
 

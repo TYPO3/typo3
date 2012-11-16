@@ -31,8 +31,6 @@ use TYPO3\CMS\Core\Utility;
  * Implements the preview controller of the workspace module.
  *
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
- * @package Workspaces
- * @subpackage Controller
  */
 class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractController {
 

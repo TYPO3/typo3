@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Workspaces\Controller;
  * Abstract action controller.
  *
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
- * @package Workspaces
- * @subpackage Controller
  */
 class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Workspaces\Controller;
  * Review controller.
  *
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
- * @package Workspaces
- * @subpackage Controller
  */
 class ReviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractController {
 

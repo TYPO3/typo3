@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Workspaces\Domain\Model;
  * Combined record class
  *
  * @author Oliver Hader <oliver.hader@typo3.org>
- * @package Workspaces
- * @subpackage Domain
  */
 class CombinedRecord {
 

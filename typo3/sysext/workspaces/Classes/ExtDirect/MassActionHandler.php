@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  *
  * @author Kasper Skårhøj (kasperYYYY@typo3.com)
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
- * @package Workspaces
- * @subpackage ExtDirect
  */
 class MassActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 
