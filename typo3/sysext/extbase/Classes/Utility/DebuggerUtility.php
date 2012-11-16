@@ -127,24 +127,29 @@ class DebuggerUtility {
 	 * @return string
 	 */
 	static protected function renderArray($array, $level, $plainText = FALSE, $ansiColors = FALSE) {
-		$type = is_array($array) ? 'array' : get_class($array);
+		$content = '';
+		$count = count($array);
+
 		if ($plainText) {
-			$header = self::ansiEscapeWrap($type, '36', $ansiColors);
+			$header = self::ansiEscapeWrap('array', '36', $ansiColors);
 		} else {
-			$header = '<span class="debug-type">' . $type . '</span>';
+			$header = '<span class="debug-type">array</span>';
 		}
-		$header .= count($array) > 0 ? ' (' . count($array) . ' items)' : ' (empty)';
+		$header .= $count > 0 ? '(' . $count . ' item' . ($count > 1 ? 's' : '') . ')' : '(empty)';
 		if ($level >= self::$maxDepth) {
 			if ($plainText) {
-				$content = ' ' . self::ansiEscapeWrap('max depth', '47;30', $ansiColors);
+				$header .= ' ' . self::ansiEscapeWrap('max depth', '47;30', $ansiColors);
 			} else {
-				$content = '<span class="debug-filtered">max depth</span>';
+				$header .= '<span class="debug-filtered">max depth</span>';
 			}
 		} else {
 			$content = self::renderCollection($array, $level, $plainText, $ansiColors);
+			if (!$plainText) {
+				$header = ($level > 1 && $count > 0 ? '<input type="checkbox" /><span class="debug-header" >' : '<span>') . $header . '</span >';
+			}
 		}
-		if ($level > 1 && count($array) > 0 && !$plainText) {
-			$dump = '<span class="debug-tree"><input type="checkbox" /><span class="debug-header">' . $header . '</span><span class="debug-content">' . $content . '</span></span>';
+		if ($level > 1 && $count > 0 && !$plainText) {
+			$dump = '<span class="debug-tree">' . $header . '<span class="debug-content">' . $content . '</span></span>';
 		} else {
 			$dump = $header . $content;
 		}
@@ -216,6 +221,7 @@ class DebuggerUtility {
 		$dump = '';
 		$persistenceType = '';
 		$className = get_class($object);
+		$classReflection = new \ReflectionClass($className);
 		if ($plainText) {
 			$dump .= self::ansiEscapeWrap($className, '36', $ansiColors);
 		} else {
@@ -253,7 +259,7 @@ class DebuggerUtility {
 		if ($plainText) {
 			$dump .= ' ' . self::ansiEscapeWrap(($persistenceType . ' ' . $domainObjectType), '42;30', $ansiColors);
 		} else {
-			$dump .= '<span class="debug-ptype">' . $persistenceType . ' ' . $domainObjectType . '</span>';
+			$dump .= '<span class="debug-ptype">' . ($persistenceType ? $persistenceType . ' ' : '') . $domainObjectType . '</span>';
 		}
 		if (strpos(implode('|', self::$blacklistedClassNames), get_class($object)) > 0) {
 			if ($plainText) {
@@ -270,7 +276,11 @@ class DebuggerUtility {
 				$dump .= '<span class="debug-filtered">max depth</span>';
 			}
 		} elseif ($level > 1 && !$object instanceof \DateTime && !$plainText) {
-			$dump = '<input type="checkbox" id="' . spl_object_hash($object) . '" /><span class="debug-header">' . $dump . '</span>';
+			if (($object instanceof \Countable && count($object) === 0) || (count($classReflection->getProperties()) === 0)) {
+				$dump = '<span>' . $dump . '</span>';
+			} else {
+				$dump = '<input type="checkbox" id="' . spl_object_hash($object) . '" /><span class="debug-header">' . $dump . '</span>';
+			}
 		}
 		if ($object instanceof \Countable) {
 			$dump .= count($object) > 0 ? ' (' . count($object) . ' items)' : ' (empty)';
@@ -293,7 +303,7 @@ class DebuggerUtility {
 	 */
 	static protected function renderContent($object, $level, $plainText, $ansiColors) {
 		$dump = '';
-		if ($object instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage || $object instanceof \Iterator) {
+		if ($object instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage || $object instanceof \Iterator || $object instanceof \ArrayObject) {
 			$dump .= self::renderCollection($object, $level, $plainText, $ansiColors);
 		} else {
 			self::$renderedObjects->attach($object);
@@ -332,7 +342,7 @@ class DebuggerUtility {
 		$dump = '';
 		foreach ($collection as $key => $value) {
 			$dump .= PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level) . ($plainText ? '' : '<span class="debug-property">') . self::ansiEscapeWrap($key, '37', $ansiColors) . ($plainText ? '' : '</span>') . ' => ';
-			$dump .= self::renderDump($value, $level + 1, $plainText, $ansiColors);
+			$dump .= self::renderDump($value, $level, $plainText, $ansiColors);
 		}
 		return $dump;
 	}
@@ -396,12 +406,12 @@ class DebuggerUtility {
 					.Extbase-Utility-Debugger-VarDump-Floating{position:relative;width:96%;margin:40px auto;}
 					.Extbase-Utility-Debugger-VarDump-Top{background:#eee;font:normal bold 12px \'Lucida Grande\',sans-serif;padding:5px;}
 					.Extbase-Utility-Debugger-VarDump-Center{background:#b9b9b9 url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAkCAIAAADD4xdmAAAACXBIWXMAAAsTAAALEwEAmpwYAAAKT2lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVNnVFPpFj333vRCS4iAlEtvUhUIIFJCi4AUkSYqIQkQSoghodkVUcERRUUEG8igiAOOjoCMFVEsDIoK2AfkIaKOg6OIisr74Xuja9a89+bN/rXXPues852zzwfACAyWSDNRNYAMqUIeEeCDx8TG4eQuQIEKJHAAEAizZCFz/SMBAPh+PDwrIsAHvgABeNMLCADATZvAMByH/w/qQplcAYCEAcB0kThLCIAUAEB6jkKmAEBGAYCdmCZTAKAEAGDLY2LjAFAtAGAnf+bTAICd+Jl7AQBblCEVAaCRACATZYhEAGg7AKzPVopFAFgwABRmS8Q5ANgtADBJV2ZIALC3AMDOEAuyAAgMADBRiIUpAAR7AGDIIyN4AISZABRG8lc88SuuEOcqAAB4mbI8uSQ5RYFbCC1xB1dXLh4ozkkXKxQ2YQJhmkAuwnmZGTKBNA/g88wAAKCRFRHgg/P9eM4Ors7ONo62Dl8t6r8G/yJiYuP+5c+rcEAAAOF0ftH+LC+zGoA7BoBt/qIl7gRoXgugdfeLZrIPQLUAoOnaV/Nw+H48PEWhkLnZ2eXk5NhKxEJbYcpXff5nwl/AV/1s+X48/Pf14L7iJIEyXYFHBPjgwsz0TKUcz5IJhGLc5o9H/LcL//wd0yLESWK5WCoU41EScY5EmozzMqUiiUKSKcUl0v9k4t8s+wM+3zUAsGo+AXuRLahdYwP2SycQWHTA4vcAAPK7b8HUKAgDgGiD4c93/+8//UegJQCAZkmScQAAXkQkLlTKsz/HCAAARKCBKrBBG/TBGCzABhzBBdzBC/xgNoRCJMTCQhBCCmSAHHJgKayCQiiGzbAdKmAv1EAdNMBRaIaTcA4uwlW4Dj1wD/phCJ7BKLyBCQRByAgTYSHaiAFiilgjjggXmYX4IcFIBBKLJCDJiBRRIkuRNUgxUopUIFVIHfI9cgI5h1xGupE7yAAygvyGvEcxlIGyUT3UDLVDuag3GoRGogvQZHQxmo8WoJvQcrQaPYw2oefQq2gP2o8+Q8cwwOgYBzPEbDAuxsNCsTgsCZNjy7EirAyrxhqwVqwDu4n1Y8+xdwQSgUXACTYEd0IgYR5BSFhMWE7YSKggHCQ0EdoJNwkDhFHCJyKTqEu0JroR+cQYYjIxh1hILCPWEo8TLxB7iEPENyQSiUMyJ7mQAkmxpFTSEtJG0m5SI+ksqZs0SBojk8naZGuyBzmULCAryIXkneTD5DPkG+Qh8lsKnWJAcaT4U+IoUspqShnlEOU05QZlmDJBVaOaUt2ooVQRNY9aQq2htlKvUYeoEzR1mjnNgxZJS6WtopXTGmgXaPdpr+h0uhHdlR5Ol9BX0svpR+iX6AP0dwwNhhWDx4hnKBmbGAcYZxl3GK+YTKYZ04sZx1QwNzHrmOeZD5lvVVgqtip8FZHKCpVKlSaVGyovVKmqpqreqgtV81XLVI+pXlN9rkZVM1PjqQnUlqtVqp1Q61MbU2epO6iHqmeob1Q/pH5Z/YkGWcNMw09DpFGgsV/jvMYgC2MZs3gsIWsNq4Z1gTXEJrHN2Xx2KruY/R27iz2qqaE5QzNKM1ezUvOUZj8H45hx+Jx0TgnnKKeX836K3hTvKeIpG6Y0TLkxZVxrqpaXllirSKtRq0frvTau7aedpr1Fu1n7gQ5Bx0onXCdHZ4/OBZ3nU9lT3acKpxZNPTr1ri6qa6UbobtEd79up+6Ynr5egJ5Mb6feeb3n+hx9L/1U/W36p/VHDFgGswwkBtsMzhg8xTVxbzwdL8fb8VFDXcNAQ6VhlWGX4YSRudE8o9VGjUYPjGnGXOMk423GbcajJgYmISZLTepN7ppSTbmmKaY7TDtMx83MzaLN1pk1mz0x1zLnm+eb15vft2BaeFostqi2uGVJsuRaplnutrxuhVo5WaVYVVpds0atna0l1rutu6cRp7lOk06rntZnw7Dxtsm2qbcZsOXYBtuutm22fWFnYhdnt8Wuw+6TvZN9un2N/T0HDYfZDqsdWh1+c7RyFDpWOt6azpzuP33F9JbpL2dYzxDP2DPjthPLKcRpnVOb00dnF2e5c4PziIuJS4LLLpc+Lpsbxt3IveRKdPVxXeF60vWdm7Obwu2o26/uNu5p7ofcn8w0nymeWTNz0MPIQ+BR5dE/C5+VMGvfrH5PQ0+BZ7XnIy9jL5FXrdewt6V3qvdh7xc+9j5yn+M+4zw33jLeWV/MN8C3yLfLT8Nvnl+F30N/I/9k/3r/0QCngCUBZwOJgUGBWwL7+Hp8Ib+OPzrbZfay2e1BjKC5QRVBj4KtguXBrSFoyOyQrSH355jOkc5pDoVQfujW0Adh5mGLw34MJ4WHhVeGP45wiFga0TGXNXfR3ENz30T6RJZE3ptnMU85ry1KNSo+qi5qPNo3ujS6P8YuZlnM1VidWElsSxw5LiquNm5svt/87fOH4p3iC+N7F5gvyF1weaHOwvSFpxapLhIsOpZATIhOOJTwQRAqqBaMJfITdyWOCnnCHcJnIi/RNtGI2ENcKh5O8kgqTXqS7JG8NXkkxTOlLOW5hCepkLxMDUzdmzqeFpp2IG0yPTq9MYOSkZBxQqohTZO2Z+pn5mZ2y6xlhbL+xW6Lty8elQfJa7OQrAVZLQq2QqboVFoo1yoHsmdlV2a/zYnKOZarnivN7cyzytuQN5zvn//tEsIS4ZK2pYZLVy0dWOa9rGo5sjxxedsK4xUFK4ZWBqw8uIq2Km3VT6vtV5eufr0mek1rgV7ByoLBtQFr6wtVCuWFfevc1+1dT1gvWd+1YfqGnRs+FYmKrhTbF5cVf9go3HjlG4dvyr+Z3JS0qavEuWTPZtJm6ebeLZ5bDpaql+aXDm4N2dq0Dd9WtO319kXbL5fNKNu7g7ZDuaO/PLi8ZafJzs07P1SkVPRU+lQ27tLdtWHX+G7R7ht7vPY07NXbW7z3/T7JvttVAVVN1WbVZftJ+7P3P66Jqun4lvttXa1ObXHtxwPSA/0HIw6217nU1R3SPVRSj9Yr60cOxx++/p3vdy0NNg1VjZzG4iNwRHnk6fcJ3/ceDTradox7rOEH0x92HWcdL2pCmvKaRptTmvtbYlu6T8w+0dbq3nr8R9sfD5w0PFl5SvNUyWna6YLTk2fyz4ydlZ19fi753GDborZ752PO32oPb++6EHTh0kX/i+c7vDvOXPK4dPKy2+UTV7hXmq86X23qdOo8/pPTT8e7nLuarrlca7nuer21e2b36RueN87d9L158Rb/1tWeOT3dvfN6b/fF9/XfFt1+cif9zsu72Xcn7q28T7xf9EDtQdlD3YfVP1v+3Njv3H9qwHeg89HcR/cGhYPP/pH1jw9DBY+Zj8uGDYbrnjg+OTniP3L96fynQ89kzyaeF/6i/suuFxYvfvjV69fO0ZjRoZfyl5O/bXyl/erA6xmv28bCxh6+yXgzMV70VvvtwXfcdx3vo98PT+R8IH8o/2j5sfVT0Kf7kxmTk/8EA5jz/GMzLdsAAAAgY0hSTQAAeiUAAICDAAD5/wAAgOkAAHUwAADqYAAAOpgAABdvkl/FRgAAACFJREFUeNpi/P//PwMDAwMDAxMDDAx2FsuFR+eGmpsBAwAgmgXHfd6vHgAAAABJRU5ErkJggg==) 0 18px repeat;font:normal normal 11px/18px Monospaced,\'Lucida Console\',monospace;padding:18px 10px;}
-					.Extbase-Utility-Debugger-VarDump-Center pre{background-color:transparent;margin:0;}
+					.Extbase-Utility-Debugger-VarDump-Center pre{background-color:transparent;margin:0;padding:0;}
 					.Extbase-Utility-Debugger-VarDump-Center,.Extbase-Utility-Debugger-VarDump-Center pre,.Extbase-Utility-Debugger-VarDump-Center p,.Extbase-Utility-Debugger-VarDump-Center a,.Extbase-Utility-Debugger-VarDump-Center strong,.Extbase-Utility-Debugger-VarDump-Center .debug-string{font:normal normal 11px/18px Monospaced,\'Lucida Console\',monospace;}
 					.Extbase-Utility-Debugger-VarDump-Center .debug-string{color:#000;white-space:normal;}
 					.Extbase-Utility-Debugger-VarDump-Center .debug-type{color:#004fb0;padding-right:4px;}
 					.Extbase-Utility-Debugger-VarDump-Center .debug-unregistered{background-color:#dce1e8;}
-					.Extbase-Utility-Debugger-VarDump-Center .debug-scope,.Extbase-Utility-Debugger-VarDump-Center .debug-ptype,.Extbase-Utility-Debugger-VarDump-Center .debug-proxy,.Extbase-Utility-Debugger-VarDump-Center .debug-filtered{color:#FFF;font-size:10px;line-height:16px;padding:1px 4px;}
+					.Extbase-Utility-Debugger-VarDump-Center .debug-scope,.Extbase-Utility-Debugger-VarDump-Center .debug-ptype,.Extbase-Utility-Debugger-VarDump-Center .debug-proxy,.Extbase-Utility-Debugger-VarDump-Center .debug-filtered{color:#FFF;font-size:10px;line-height:16px;padding:1px 4px;margin-right:2px;}
 					.Extbase-Utility-Debugger-VarDump-Center .debug-scope{background-color:#3e7fe1;}
 					.Extbase-Utility-Debugger-VarDump-Center .debug-ptype{background-color:#6FBC16;}
 					.Extbase-Utility-Debugger-VarDump-Center .debug-dirty{background-color:#FFFF00;}
