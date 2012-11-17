@@ -545,6 +545,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						if (!isset($rowConfig)) {
 							continue;
 						}
+
+						// grid header
 						$grid .= '<tr>';
 						for ($col = 1; $col <= $colCount; $col++) {
 							$columnConfig = $rowConfig['columns.'][$col . '.'];
@@ -556,11 +558,12 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							// Render the grid cell
 							$colSpan = intval($columnConfig['colspan']);
 							$rowSpan = intval($columnConfig['rowspan']);
-							$grid .= '<td valign="top"' . ($colSpan > 0 ? ' colspan="' . $colSpan . '"' : '') . ($rowSpan > 0 ? ' rowspan="' . $rowSpan . '"' : '') . ' class="t3-gridCell t3-page-column t3-page-column-' . $columnKey . (!isset($columnConfig['colPos']) ? ' t3-gridCell-unassigned' : '') . (isset($columnConfig['colPos']) && !$head[$columnKey] ? ' t3-gridCell-restricted' : '') . ($colSpan > 0 ? ' t3-gridCell-width' . $colSpan : '') . ($rowSpan > 0 ? ' t3-gridCell-height' . $rowSpan : '') . '">';
+
+							$grid .= '<td valign="top"' . ($colSpan > 0 ? ' colspan="' . $colSpan . '"' : '') . ($rowSpan > 0 ? ' rowspan="' . $rowSpan . '"' : '') . ' class="t3-gridCell t3-gridCell-header t3-page-column t3-page-column-' . $columnKey . (!isset($columnConfig['colPos']) ? ' t3-gridCell-unassigned' : '') . (isset($columnConfig['colPos']) && !$head[$columnKey] ? ' t3-gridCell-restricted' : '') . ($colSpan > 0 ? ' t3-gridCell-width' . $colSpan : '') . ($rowSpan > 0 ? ' t3-gridCell-height' . $rowSpan : '') . '">';
 							// Draw the pre-generated header with edit and new buttons if a colPos is assigned.
 							// If not, a new header without any buttons will be generated.
 							if (isset($columnConfig['colPos']) && $head[$columnKey]) {
-								$grid .= $head[$columnKey] . $content[$columnKey];
+								$grid .= $head[$columnKey];
 							} elseif ($columnConfig['colPos']) {
 								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('noAccess'), '', '');
 							} else {
@@ -569,6 +572,28 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$grid .= '</td>';
 						}
 						$grid .= '</tr>';
+
+						// grid content
+						$grid .= '<tr>';
+						for ($col = 1; $col <= $colCount; $col++) {
+							$columnConfig = $rowConfig['columns.'][$col . '.'];
+							if (!isset($columnConfig)) {
+								continue;
+							}
+							// Which tt_content colPos should be displayed inside this cell
+							$columnKey = intval($columnConfig['colPos']);
+							// Render the grid cell
+							$colSpan = intval($columnConfig['colspan']);
+							$rowSpan = intval($columnConfig['rowspan']);
+							// grid content
+							$grid .= '<td valign="top"' . ($colSpan > 0 ? ' colspan="' . $colSpan . '"' : '') . ($rowSpan > 0 ? ' rowspan="' . $rowSpan . '"' : '') . ' class="t3-gridCell t3-gridCell-content t3-page-column t3-page-column-' . $columnKey . (!isset($columnConfig['colPos']) ? ' t3-gridCell-unassigned' : '') . (isset($columnConfig['colPos']) && !$head[$columnKey] ? ' t3-gridCell-restricted' : '') . ($colSpan > 0 ? ' t3-gridCell-width' . $colSpan : '') . ($rowSpan > 0 ? ' t3-gridCell-height' . $rowSpan : '') . '">';
+							if (isset($columnConfig['colPos']) && $head[$columnKey]) {
+								$grid .=  $content[$columnKey];
+							}
+							$grid .= '</td>';
+						}
+						$grid .= '</tr>';
+
 					}
 					$out .= $grid . '</table></div>';
 				}
