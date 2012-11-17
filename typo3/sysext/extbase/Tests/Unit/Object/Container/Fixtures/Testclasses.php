@@ -311,6 +311,13 @@ class t3lib_object_tests_class_with_injectsettings {
 	}
 
 	/**
+	 * @param \t3lib_object_tests_resolveablecyclic1 $c1
+	 */
+	public function injectingFoo(\t3lib_object_tests_resolveablecyclic1 $c1) {
+
+	}
+
+	/**
 	 * @param array $settings
 	 */
 	public function injectSettings(array $settings) {
