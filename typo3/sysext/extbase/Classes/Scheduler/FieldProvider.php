@@ -107,7 +107,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 	 */
 	public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		$task->setCommandIdentifier($submittedData['task_extbase']['action']);
-		$task->setArguments($submittedData['task_extbase']['arguments']);
+		$task->setArguments((array)$submittedData['task_extbase']['arguments']);
 		return TRUE;
 	}
 
