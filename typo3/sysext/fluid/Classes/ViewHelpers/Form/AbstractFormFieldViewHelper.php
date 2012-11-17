@@ -86,12 +86,13 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Get the value of this form element.
 	 * Either returns arguments['value'], or the correct value for Object Access.
 	 *
+	 * @param boolean $convertObjects whether or not to convert objects to identifiers
 	 * @return mixed Value
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	protected function getValue() {
+	protected function getValue($convertObjects = TRUE) {
 		$value = NULL;
 		if ($this->arguments->hasArgument('value')) {
 			$value = $this->arguments['value'];
@@ -99,7 +100,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 			$this->addAdditionalIdentityPropertiesIfNeeded();
 			$value = $this->getPropertyValue();
 		}
-		if (is_object($value)) {
+		if ($convertObjects === TRUE && is_object($value)) {
 			$identifier = $this->persistenceManager->getBackend()->getIdentifierByObject($value);
 			if ($identifier !== NULL) {
 				$value = $identifier;
