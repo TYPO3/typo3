@@ -174,7 +174,7 @@ tt_content.' . $pluginSignature . ' {
 	 * @param string $modulePath Absolute path to module (not used by Extbase currently)
 	 * @return array Configuration of the module
 	 */
-	public function configureModule($moduleSignature, $modulePath) {
+	static public function configureModule($moduleSignature, $modulePath) {
 		$moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature];
 		$iconPathAndFilename = $moduleConfiguration['icon'];
 		if (substr($iconPathAndFilename, 0, 4) === 'EXT:') {
