@@ -2584,11 +2584,13 @@ class TypoScriptFrontendController {
 		if ($this->sys_language_uid && is_array($this->tmpl->rootLine)) {
 			foreach ($this->tmpl->rootLine as $rLk => $value) {
 				$this->tmpl->rootLine[$rLk] = $this->sys_page->getPageOverlay($this->tmpl->rootLine[$rLk]);
+				$this->tmpl->rootLine[$rLk] = $this->sys_page->enrichRecordWithRelationFields($this->tmpl->rootLine[$rLk]);
 			}
 		}
 		if ($this->sys_language_uid && is_array($this->rootLine)) {
 			foreach ($this->rootLine as $rLk => $value) {
 				$this->rootLine[$rLk] = $this->sys_page->getPageOverlay($this->rootLine[$rLk]);
+				$this->rootLine[$rLk] = $this->sys_page->enrichRecordWithRelationFields($this->rootLine[$rLk]);
 			}
 		}
 		// Finding the ISO code:

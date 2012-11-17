@@ -213,8 +213,8 @@ class RootlineUtility {
 			$this->pageContext->versionOL('pages', $row, FALSE, TRUE);
 			$this->pageContext->fixVersioningPid('pages', $row);
 			if (is_array($row)) {
-				$this->pageContext->getPageOverlay($row, $this->languageUid);
-				$row = $this->enrichWithRelationFields($uid, $row);
+				$row = $this->pageContext->getPageOverlay($row, $this->languageUid);
+				$row = $this->pageContext->enrichRecordWithRelationFields($row);
 				self::$pageRecordCache[$this->getCacheIdentifier($uid)] = $row;
 			}
 		}
@@ -222,74 +222,6 @@ class RootlineUtility {
 			throw new \RuntimeException('Broken rootline. Could not resolve page with uid ' . $uid . '.', 1343464101);
 		}
 		return self::$pageRecordCache[$this->getCacheIdentifier($uid)];
-	}
-
-	/**
-	 * Resolve relations as defined in TCA and add them to the provided $pageRecord array.
-	 *
-	 * @param integer $uid Page id
-	 * @param array $pageRecord Array with page data to add relation data to.
-	 * @throws \RuntimeException
-	 * @return array $pageRecord with additional relations
-	 */
-	protected function enrichWithRelationFields($uid, array $pageRecord) {
-		foreach ($GLOBALS['TCA']['pages']['columns'] as $column => $configuration) {
-			if ($this->columnHasRelationToResolve($configuration)) {
-				$configuration = $configuration['config'];
-				if ($configuration['MM']) {
-					/** @var $loadDBGroup \TYPO3\CMS\Core\Database\RelationHandler */
-					$loadDBGroup = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
-					$loadDBGroup->start($pageRecord[$column], $configuration['foreign_table'], $configuration['MM'], $uid, 'pages', $configuration);
-					$relatedUids = $loadDBGroup->tableArray[$configuration['foreign_table']];
-				} elseif ($configuration['foreign_field']) {
-					$table = $configuration['foreign_table'];
-					$field = $configuration['foreign_field'];
-					$whereClauseParts = array('`' . $field . '` = ' . intval($uid));
-					if (isset($configuration['foreign_match_fields']) && is_array($configuration['foreign_match_fields'])) {
-						foreach ($configuration['foreign_match_fields'] as $field => $value) {
-							$whereClauseParts[] = '`' . $field . '` = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table);
-						}
-					}
-					if (isset($configuration['foreign_table_field'])) {
-						if (intval($pageRecord['sys_language_uid']) > 0) {
-							$whereClauseParts[] = '`' . trim($configuration['foreign_table_field']) . '` = \'pages_language_overlay\'';
-						} else {
-							$whereClauseParts[] = '`' . trim($configuration['foreign_table_field']) . '` = \'pages\'';
-						}
-					}
-					$whereClause = implode(' AND ', $whereClauseParts);
-					$whereClause .= $this->pageContext->deleteClause($table);
-					$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $table, $whereClause);
-					if (!is_array($rows)) {
-						throw new \RuntimeException('Could to resolve related records for page ' . $uid . ' and foreign_table ' . htmlspecialchars($configuration['foreign_table']), 1343589452);
-					}
-					$relatedUids = array();
-					foreach ($rows as $row) {
-						$relatedUids[] = $row['uid'];
-					}
-				}
-				$pageRecord[$column] = implode(',', $relatedUids);
-			}
-		}
-		return $pageRecord;
-	}
-
-	/**
-	 * Checks whether the TCA Configuration array of a column
-	 * describes a relation which is not stored as CSV in the record
-	 *
-	 * @param array $configuration TCA configuration to check
-	 * @return boolean TRUE, if it describes a non-CSV relation
-	 */
-	protected function columnHasRelationToResolve(array $configuration) {
-		$configuration = $configuration['config'];
-		if (isset($configuration['MM']) && isset($configuration['type']) && in_array($configuration['type'], array('select', 'inline', 'group'))) {
-			return TRUE;
-		}
-		if (isset($configuration['foreign_field']) && isset($configuration['type']) && in_array($configuration['type'], array('select', 'inline'))) {
-			return TRUE;
-		}
-		return FALSE;
 	}
 
 	/**
