@@ -679,6 +679,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @param $propertyPath
 	 * @param array $sql
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException
 	 */
 	protected function addUnionStatement(&$className, &$tableName, &$propertyPath, array &$sql) {
 		$explodedPropertyPath = explode('.', $propertyPath, 2);
@@ -688,6 +689,11 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		$columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
 		$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 		$childTableName = $columnMap->getChildTableName();
+
+		if ($childTableName === NULL) {
+			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException('The relation information for property "' . $propertyName . '" of class "' . $className . '" is missing.', 1353170925);
+		}
+
 		if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_ONE) {
 			if (isset($parentKeyFieldName)) {
 				$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $tableName . '.uid=' . $childTableName . '.' . $parentKeyFieldName;
