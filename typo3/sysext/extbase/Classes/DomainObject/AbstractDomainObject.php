@@ -85,7 +85,7 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 	 *
 	 * @return int the uid or NULL if none set yet.
 	 */
-	final public function getUid() {
+	public function getUid() {
 		if ($this->uid !== NULL) {
 			return (int) $this->uid;
 		} else {
