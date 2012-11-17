@@ -103,9 +103,10 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 	 * Get the value of this form element.
 	 * Either returns arguments['value'], or the correct value for Object Access.
 	 *
+	 * @param boolean $convertObjects whether or not to convert objects to identifiers
 	 * @return mixed Value
 	 */
-	protected function getValue() {
+	protected function getValue($convertObjects = TRUE) {
 		$value = NULL;
 		if ($this->hasArgument('value')) {
 			$value = $this->arguments['value'];
@@ -115,7 +116,7 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 			$this->addAdditionalIdentityPropertiesIfNeeded();
 			$value = $this->getPropertyValue();
 		}
-		if (is_object($value)) {
+		if ($convertObjects === TRUE && is_object($value)) {
 			$identifier = $this->persistenceManager->getIdentifierByObject($value);
 			if ($identifier !== NULL) {
 				$value = $identifier;
