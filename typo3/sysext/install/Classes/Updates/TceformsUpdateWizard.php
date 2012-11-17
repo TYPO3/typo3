@@ -30,6 +30,11 @@ namespace TYPO3\CMS\Install\Updates;
  * @author Ingmar Schlecht <ingmar@typo3.org>
  * @license http://www.gnu.org/copyleft/gpl.html
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+/**
+ * Updates TCEform references from direct file relations to FAL.
+ */
 class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 
 	/**
@@ -41,6 +46,17 @@ class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 * @var \TYPO3\CMS\Core\Resource\ResourceStorage
 	 */
 	protected $storage;
+
+	/**
+	 * @var \TYPO3\CMS\Core\Log\Logger
+	 */
+	protected $logger;
+
+	public function __construct() {
+		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
+		$logManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
+		$this->logger = $logManager->getLogger(__CLASS__);
+	}
 
 	/**
 	 * Initialize the storage repository.
@@ -145,7 +161,7 @@ class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 				$records = $this->getRecordsFromTable($table, $fieldsToGet);
 				foreach ($records as $record) {
 					foreach ($fieldsToMigrate as $field) {
-						$dbQueries = array_merge($this->migrateField($table, $record, $field, $tableConfiguration[$field]));
+						$dbQueries = array_merge($this->migrateField($table, $record, $field, $tableConfiguration[$field], $customMessages));
 					}
 				}
 			}
@@ -161,7 +177,18 @@ class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 		return $records;
 	}
 
-	protected function migrateField($table, $row, $fieldname, $fieldConfiguration) {
+	/**
+	 * Migrates a single field.
+	 *
+	 * @param string $table
+	 * @param array $row
+	 * @param string $fieldname
+	 * @param array $fieldConfiguration
+	 * @param string $customMessages
+	 * @return array A list of performed database queries
+	 * @throws \Exception
+	 */
+	protected function migrateField($table, $row, $fieldname, $fieldConfiguration, &$customMessages) {
 		$fieldItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $row[$fieldname], TRUE);
 		if (empty($fieldItems) || is_numeric($row[$fieldname])) {
 			return array();
@@ -189,9 +216,26 @@ class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 			if (!PATH_site) {
 				throw new \Exception('PATH_site was undefined.');
 			}
-			// copy file
+
 			$sourcePath = PATH_site . $fieldConfiguration['sourcePath'] . $item;
 			$targetPath = PATH_site . $fileadminDirectory . $fieldConfiguration['targetPath'] . $item;
+
+			// if the source file does not exist, we should just continue, but leave a message in the docs;
+			// ideally, the user would be informed after the update as well.
+			if (!file_exists($sourcePath)) {
+				$this->logger->notice('File ' . $fieldConfiguration['sourcePath'] . $item . ' does not exist. Reference was not migrated.', array('table' => $table, 'record' => $row, 'field' => $fieldname));
+
+				$format = 'File \'%s\' does not exist. Referencing field: %s.%d.%s. The reference was not migrated.';
+				$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Messaging\FlashMessage',
+					sprintf($format, $fieldConfiguration['sourcePath'] . $item, $table, $row['uid'], $fieldname),
+					'', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+				);
+				/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
+				$customMessages .= '<br />' . $message->render();
+
+				continue;
+			}
+
 			if (!is_dir(dirname($targetPath))) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(dirname($targetPath));
 			}
