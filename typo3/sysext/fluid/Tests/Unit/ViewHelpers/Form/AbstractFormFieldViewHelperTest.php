@@ -181,6 +181,46 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_AbstractFormFieldViewHelperTest exten
 	}
 
 	/**
+ 	 * @test
+ 	 */
+	public function getValueConvertsObjectsToIdentifiersByDefault() {
+		$mockObject = $this->getMock('stdClass');
+
+		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
+		$mockPersistenceManager->expects($this->atLeastOnce())->method('getIdentifierByObject')->with($mockObject)->will($this->returnValue('6f487e40-4483-11de-8a39-0800200c9a66'));
+
+		$formViewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper', array('isObjectAccessorMode'), array(), '', FALSE);
+		$formViewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(FALSE));
+		$this->injectDependenciesIntoViewHelper($formViewHelper);
+		$formViewHelper->injectPersistenceManager($mockPersistenceManager);
+
+		$mockArguments = array('value' => $mockObject);
+		$formViewHelper->_set('arguments', $mockArguments);
+
+		$this->assertSame('6f487e40-4483-11de-8a39-0800200c9a66', $formViewHelper->_call('getValue'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getValueDoesNotConvertObjectsIfConvertObjectsIsFalse() {
+		$mockObject = $this->getMock('stdClass');
+
+		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
+		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('6f487e40-4483-11de-8a39-0800200c9a66'));
+
+		$formViewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper', array('isObjectAccessorMode'), array(), '', FALSE);
+		$formViewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(FALSE));
+		$this->injectDependenciesIntoViewHelper($formViewHelper);
+		$formViewHelper->injectPersistenceManager($mockPersistenceManager);
+
+		$mockArguments = array('value' => $mockObject);
+		$formViewHelper->_set('arguments', $mockArguments);
+
+		$this->assertSame($mockObject, $formViewHelper->_call('getValue', FALSE));
+	}
+
+	/**
 	 * @test
 	 */
 	public function isObjectAccessorModeReturnsTrueIfPropertyIsSetAndFormObjectIsGiven() {
