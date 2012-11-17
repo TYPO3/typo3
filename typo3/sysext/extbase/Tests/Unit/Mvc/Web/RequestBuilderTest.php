@@ -59,21 +59,6 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	protected $mockRequest;
 
-	/**
-	 * @var array
-	 */
-	protected $getBackup = array();
-
-	/**
-	 * @var array
-	 */
-	protected $postBackup = array();
-
-	/**
-	 * @var array
-	 */
-	protected $serverBackup = array();
-
 	public function setUp() {
 		$this->requestBuilder = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\RequestBuilder', array('dummy'));
 		$this->configuration = array(
@@ -98,9 +83,6 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
 		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$this->mockExtensionService = $this->getMock('TYPO3\\CMS\\Extbase\\Service\\ExtensionService');
-		$this->getBackup = $_GET;
-		$this->postBackup = $_POST;
-		$this->serverBackup = $_SERVER;
 	}
 
 	/**
@@ -114,12 +96,6 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$pluginNamespace = 'tx_' . strtolower(($this->configuration['extensionName'] . '_' . $this->configuration['pluginName']));
 		$this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue($pluginNamespace));
 		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
-	}
-
-	public function tearDown() {
-		$_GET = $this->getBackup;
-		$_POST = $this->postBackup;
-		$_SERVER = $this->serverBackup;
 	}
 
 	/**
@@ -195,6 +171,45 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$_SERVER['REQUEST_METHOD'] = 'SomeRequestMethod';
 		$expectedMethod = 'SomeRequestMethod';
 		$this->mockRequest->expects($this->once())->method('setMethod')->with($expectedMethod);
+		$this->requestBuilder->build();
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildSetsVendorNameIfConfigured() {
+		$this->injectDependencies();
+		$expectedVendor = 'Vendor';
+		$this->configuration['vendorName'] = $expectedVendor;
+		$mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+		$this->requestBuilder->injectConfigurationManager($mockConfigurationManager);
+		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
+		$this->mockRequest->expects($this->once())->method('setControllerVendorName')->with($expectedVendor);
+		$this->requestBuilder->build();
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildDoesNotSetVendorNameIfNotConfiguredInSecondRequest() {
+		$this->injectDependencies();
+		$expectedVendor = 'Vendor';
+		$this->configuration['vendorName'] = $expectedVendor;
+
+		$mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+		$this->requestBuilder->injectConfigurationManager($mockConfigurationManager);
+		$this->mockRequest->expects($this->once())->method('setControllerVendorName')->with($expectedVendor);
+
+		$this->requestBuilder->build();
+
+		unset($this->configuration['vendorName']);
+		$mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+		$this->requestBuilder->injectConfigurationManager($mockConfigurationManager);
+
+		$this->mockRequest->expects($this->never())->method('setControllerVendorName');
 		$this->requestBuilder->build();
 	}
 

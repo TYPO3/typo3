@@ -128,8 +128,10 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		if (empty($configuration['pluginName'])) {
 			throw new \TYPO3\CMS\Extbase\Mvc\Exception('"pluginName" is not properly configured. Request can\'t be dispatched!', 1289843277);
 		}
-		if (NULL !== $configuration['vendorName']) {
+		if (!empty($configuration['vendorName'])) {
 			$this->vendorName = $configuration['vendorName'];
+		} else {
+			$this->vendorName = NULL;
 		}
 		$this->extensionName = $configuration['extensionName'];
 		$this->pluginName = $configuration['pluginName'];
@@ -160,7 +162,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		$actionName = $this->resolveActionName($controllerName, $parameters);
 		/** @var $request \TYPO3\CMS\Extbase\Mvc\Web\Request */
 		$request = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
-		if (NULL !== $this->vendorName) {
+		if ($this->vendorName !== NULL) {
 			$request->setControllerVendorName($this->vendorName);
 		}
 		$request->setPluginName($this->pluginName);
