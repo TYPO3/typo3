@@ -122,7 +122,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		}
 
 		$sqlString = 'INSERT INTO ' . $tableName . ' (' . implode(', ', $fields) . ') VALUES (' . implode(', ', $values) . ')';
-		$this->replacePlaceholders($sqlString, $parameters);
+		$this->replacePlaceholders($sqlString, $parameters, $tableName);
 		// debug($sqlString,-2);
 		$this->databaseHandle->sql_query($sqlString);
 		$this->checkSqlErrors($sqlString);
@@ -154,7 +154,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$parameters[] = $uid;
 
 		$sqlString = 'UPDATE ' . $tableName . ' SET ' . implode(', ', $fields) . ' WHERE uid=?';
-		$this->replacePlaceholders($sqlString, $parameters);
+		$this->replacePlaceholders($sqlString, $parameters, $tableName);
 		// debug($sqlString,-2);
 		$returnValue = $this->databaseHandle->sql_query($sqlString);
 		$this->checkSqlErrors($sqlString);
@@ -174,7 +174,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	public function removeRow($tableName, array $identifier, $isRelation = FALSE) {
 		$statement = 'DELETE FROM ' . $tableName . ' WHERE ' . $this->parseIdentifier($identifier);
-		$this->replacePlaceholders($statement, $identifier);
+		$this->replacePlaceholders($statement, $identifier, $tableName);
 		if (!$isRelation && isset($identifier['uid'])) {
 			$this->clearPageCache($tableName, $identifier['uid'], $isRelation);
 		}
@@ -193,7 +193,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	public function getRowByIdentifier($tableName, array $identifier) {
 		$statement = 'SELECT * FROM ' . $tableName . ' WHERE ' . $this->parseIdentifier($identifier);
-		$this->replacePlaceholders($statement, $identifier);
+		$this->replacePlaceholders($statement, $identifier, $tableName);
 		// debug($statement,-2);
 		$res = $this->databaseHandle->sql_query($statement);
 		$this->checkSqlErrors($statement);
@@ -233,7 +233,11 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$statementParts = $this->parseQuery($query, $parameters);
 			$sql = $this->buildQuery($statementParts, $parameters);
 		}
-		$this->replacePlaceholders($sql, $parameters);
+		$tableName = 'foo';
+		if (is_array($statementParts && !empty($statementParts['tables'][0]))) {
+			$tableName = $statementParts['tables'][0];
+		}
+		$this->replacePlaceholders($sql, $parameters, $tableName);
 		// debug($sql,-2);
 		$result = $this->databaseHandle->sql_query($sql);
 		$this->checkSqlErrors($sql);
@@ -260,14 +264,14 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		// if limit is set, we need to count the rows "manually" as COUNT(*) ignores LIMIT constraints
 		if (!empty($statementParts['limit'])) {
 			$statement = $this->buildQuery($statementParts, $parameters);
-			$this->replacePlaceholders($statement, $parameters);
+			$this->replacePlaceholders($statement, $parameters, $statementParts['tables'][0]);
 			$result = $this->databaseHandle->sql_query($statement);
 			$this->checkSqlErrors($statement);
 			$count = $this->databaseHandle->sql_num_rows($result);
 		} else {
 			$statementParts['fields'] = array('COUNT(*)');
 			$statement = $this->buildQuery($statementParts, $parameters);
-			$this->replacePlaceholders($statement, $parameters);
+			$this->replacePlaceholders($statement, $parameters, $statementParts['tables'][0]);
 			$result = $this->databaseHandle->sql_query($statement);
 			$this->checkSqlErrors($statement);
 			$rows = $this->getRowsFromResult($query->getSource(), $result);
@@ -369,7 +373,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		if (!empty($sql['additionalWhereClause'])) {
 			$statement .= ' AND ' . implode(' AND ', $sql['additionalWhereClause']);
 		}
-		$this->replacePlaceholders($statement, $parameters);
+		$this->replacePlaceholders($statement, $parameters, $tableName);
 		// debug($statement,-2);
 		$res = $this->databaseHandle->sql_query($statement);
 		$this->checkSqlErrors($statement);
@@ -402,7 +406,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	}
 
 	/**
-	 * Adda a constrint to ensure that the record type of the returned tuples is matching the data type of the repository.
+	 * Add a constraint to ensure that the record type of the returned tuples is matching the data type of the repository.
 	 *
 	 * @param string $className The class name
 	 * @param array &$sql The query parts
@@ -425,7 +429,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				if (count($recordTypes) > 0) {
 					$recordTypeStatements = array();
 					foreach ($recordTypes as $recordType) {
-						$recordTypeStatements[] = $dataMap->getTableName() . '.' . $dataMap->getRecordTypeColumnName() . '=' . $this->databaseHandle->fullQuoteStr($recordType, 'foo');
+						$tableName = $dataMap->getTableName();
+						$recordTypeStatements[] = $tableName . '.' . $dataMap->getRecordTypeColumnName() . '=' . $this->databaseHandle->fullQuoteStr($recordType, $tableName);
 					}
 					$sql['additionalWhereClause'][] = '(' . implode(' OR ', $recordTypeStatements) . ')';
 				}
@@ -739,9 +744,11 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 *
 	 * @param string $sqlString The query part with placeholders
 	 * @param array $parameters The parameters
+	 * @param string $tableName
+	 *
 	 * @return string The query part with replaced placeholders
 	 */
-	protected function replacePlaceholders(&$sqlString, array $parameters) {
+	protected function replacePlaceholders(&$sqlString, array $parameters, $tableName = 'foo') {
 		// TODO profile this method again
 		if (substr_count($sqlString, '?') !== count($parameters)) throw new Tx_Extbase_Persistence_Exception('The number of question marks to replace must be equal to the number of parameters.', 1242816074);
 		$offset = 0;
@@ -753,11 +760,11 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				} elseif (is_array($parameter) || ($parameter instanceof ArrayAccess) || ($parameter instanceof Traversable)) {
 					$items = array();
 					foreach ($parameter as $item) {
-						$items[] = $this->databaseHandle->fullQuoteStr($item, 'foo');
+						$items[] = $this->databaseHandle->fullQuoteStr($item, $tableName);
 					}
 					$parameter = '(' . implode(',', $items) . ')';
 				} else {
-					$parameter = $this->databaseHandle->fullQuoteStr($parameter, 'foo'); // FIXME This may not work with DBAL; check this
+					$parameter = $this->databaseHandle->fullQuoteStr($parameter, $tableName);
 				}
 				$sqlString = substr($sqlString, 0, $markPosition) . $parameter . substr($sqlString, $markPosition + 1);
 			}
