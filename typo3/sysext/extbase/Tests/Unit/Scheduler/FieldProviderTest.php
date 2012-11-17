@@ -44,19 +44,32 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	protected $fieldProvider;
 
+
 	/**
+	 *
 	 * @test
 	 */
 	public function getCommandControllerActionFieldFetchesCorrectClassNames() {
 		$fieldProvider = $fieldProvider = $this->getMock($this->buildAccessibleProxy('\TYPO3\CMS\Extbase\Scheduler\FieldProvider'), array('dummy'));
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'] = array(
-			'TYPO3\\CMS\\Extbase\\Tests\\MockACommandController'
+			'TYPO3\\CMS\\Extbase\\Tests\\MockACommandController',
+			'Acme\\Mypkg\\Command\\MockCCommandController',
+			'Tx_Extbase_Command_MockDCommandController'
 		);
-		eval('namespace TYPO3\\CMS\\Extbase\\Tests; class MockACommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController { function MockACommand() {} } ');
+		eval('
+			namespace TYPO3\\CMS\\Extbase\\Tests; class MockACommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController { function mockBCommand() {} }
+			namespace Acme\\Mypkg\\Command; class MockCCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController { function mockBCommand() {} }
+		');
+		eval('
+			class Tx_Extbase_Command_MockDCommandController extends Tx_Extbase_MVC_Controller_CommandController { function mockBCommand() {} }
+		');
 
 		$actualResult = $fieldProvider->_call('getCommandControllerActionField', array());
-		$this->assertContains('<option title="test" value="extbase:mocka:mocka">Tests : MockA</option>', $actualResult['code']);
+		$this->assertContains('<option title="test" value="extbase:mocka:mockb">Extbase MockA: mockB</option>', $actualResult['code']);
+		$this->assertContains('<option title="test" value="mypkg:mockc:mockb">Mypkg MockC: mockB</option>', $actualResult['code']);
+		$this->assertContains('<option title="test" value="extbase:mockd:mockb">Extbase MockD: mockB</option>', $actualResult['code']);
 	}
+
 
 	/**
 	 * @test

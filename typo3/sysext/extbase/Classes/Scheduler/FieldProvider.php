@@ -135,7 +135,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 		foreach ($commands as $command) {
 			if ($command->isInternal() === FALSE) {
 				$className = $command->getControllerClassName();
-				if (strpos($command->getControllerClassName(), '\\')) {
+				if (strpos($className, '\\')) {
 					$classNameParts = explode('\\', $className);
 					// Skip vendor and product name for core classes
 					if (strpos($className, 'TYPO3\\CMS\\') === 0) {
@@ -144,11 +144,15 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 						$classPartsToSkip = 1;
 					}
 					$classNameParts = array_slice($classNameParts, $classPartsToSkip);
+					$extensionName = $classNameParts[0];
+					$controllerName = $classNameParts[2];
 				} else {
 					$classNameParts = explode('_', $className);
+					$extensionName = $classNameParts[1];
+					$controllerName = $classNameParts[3];
 				}
 				$identifier = $command->getCommandIdentifier();
-				$options[$identifier] = $classNameParts[1] . ' ' . str_replace('CommandController', '', $classNameParts[3]) . ': ' . $command->getControllerCommandName();
+				$options[$identifier] = $extensionName . ' ' . str_replace('CommandController', '', $controllerName) . ': ' . $command->getControllerCommandName();
 			}
 		}
 		$name = 'action';
@@ -287,7 +291,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 	 */
 	protected function renderSelectField($name, array $options, $selectedOptionValue) {
 		$html = array(
-			'<select name="TYPO3\\CMS\\Scheduler\\Scheduler[task_extbase][' . htmlspecialchars($name) . ']">'
+			'<select name="tx_scheduler[task_extbase][' . htmlspecialchars($name) . ']">'
 		);
 		foreach ($options as $optionValue => $optionLabel) {
 			$selected = $optionValue === $selectedOptionValue ? ' selected="selected"' : '';
@@ -307,7 +311,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 	protected function renderField(\TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition $argument, $currentValue) {
 		$type = $this->getArgumentType($argument);
 		$name = $argument->getName();
-		$fieldName = 'TYPO3\\CMS\\Scheduler\\Scheduler[task_extbase][arguments][' . htmlspecialchars($name) . ']';
+		$fieldName = 'tx_scheduler[task_extbase][arguments][' . htmlspecialchars($name) . ']';
 		if ($type === 'boolean') {
 			// checkbox field for boolean values.
 			$html = '<input type="hidden" name="' . $fieldName . '" value="0" />';
