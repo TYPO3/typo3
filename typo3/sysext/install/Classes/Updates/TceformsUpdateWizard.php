@@ -43,6 +43,17 @@ class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	protected $storage;
 
 	/**
+	 * @var \TYPO3\CMS\Core\Log\Logger
+	 */
+	protected $logger;
+
+	public function __construct() {
+		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
+		$logManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\Log\LogManager');
+		$this->logger = $logManager->getLogger(__CLASS__);
+	}
+
+	/**
 	 * Initialize the storage repository.
 	 */
 	public function init() {
@@ -189,9 +200,17 @@ class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 			if (!PATH_site) {
 				throw new \Exception('PATH_site was undefined.');
 			}
-			// copy file
+
 			$sourcePath = PATH_site . $fieldConfiguration['sourcePath'] . $item;
 			$targetPath = PATH_site . $fileadminDirectory . $fieldConfiguration['targetPath'] . $item;
+
+			// if the source file does not exist, we should just continue, but leave a message in the docs;
+			// ideally, the user would be informed after the update as well.
+			if (!file_exists($sourcePath)) {
+				$this->logger->notice('File ' . $fieldConfiguration['sourcePath'] . $item . ' does not exist. Reference was not migrated.', array('table' => $table, 'record' => $row, 'field' => $fieldname));
+				continue;
+			}
+
 			if (!is_dir(dirname($targetPath))) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(dirname($targetPath));
 			}
