@@ -45,7 +45,8 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		'user' => 'renderUserFunction',
 		'small' => 'renderSmallTextField',
 		'string' => 'renderTextField',
-		'input' => 'renderTextField'	// only for backwards compatibility
+		'input' => 'renderTextField',	// only for backwards compatibility
+		'default' => 'renderTextField'	// only for backwards compatibility
 	);
 
 	public $tagName = 'input';
@@ -72,7 +73,10 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		$input = '';
 		if (isset($this->viewHelperMapping[$configuration->getType()]) && method_exists($this, $this->viewHelperMapping[$configuration->getType()])) {
 			$input = $this->{$this->viewHelperMapping[$configuration->getType()]}($configuration);
+		} else {
+			$input = $this->{$this->viewHelperMapping['default']}($configuration);
 		}
+
 		return $input;
 	}
 
