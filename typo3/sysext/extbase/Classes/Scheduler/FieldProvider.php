@@ -109,7 +109,7 @@ class Tx_Extbase_Scheduler_FieldProvider implements Tx_Scheduler_AdditionalField
 	 */
 	public function saveAdditionalFields(array $submittedData, Tx_Scheduler_Task $task) {
 		$task->setCommandIdentifier($submittedData['task_extbase']['action']);
-		$task->setArguments($submittedData['task_extbase']['arguments']);
+		$task->setArguments((array)$submittedData['task_extbase']['arguments']);
 		return TRUE;
 	}
 
