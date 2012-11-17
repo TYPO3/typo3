@@ -383,22 +383,6 @@ class FrontendUserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame($date, $this->fixture->getLastlogin());
 	}
 
-	/**
-	 * @test
-	 */
-	public function getIsOnlineInitiallyReturnsNull() {
-		$this->assertNull($this->fixture->getIsOnline());
-	}
-
-	/**
-	 * @test
-	 */
-	public function setIsOnlineSetsIsOnline() {
-		$isOnline = new \DateTime();
-		$this->fixture->setIsOnline($isOnline);
-		$this->assertSame($isOnline, $this->fixture->getIsOnline());
-	}
-
 }
 
 
