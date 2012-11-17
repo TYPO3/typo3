@@ -275,7 +275,7 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 			tooltip: TYPO3.lang["tooltip.editElementAction"],
 			handler: function(grid, rowIndex, colIndex) {
 				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
-				var newUrl = 'alt_doc.php?returnUrl=' + Ext.urlEncode({}, document.location.href).replace("?","%3F").replace("=", "%3D").replace(":","%3A").replace("/", "%2f") + '&id=' + TYPO3.settings.Workspaces.id + '&edit[' + record.json.table + '][' + record.json.uid + ']=edit';
+				var newUrl = 'alt_doc.php?returnUrl=' + encodeURIComponent(document.location.href) + '&id=' + TYPO3.settings.Workspaces.id + '&edit[' + record.json.table + '][' + record.json.uid + ']=edit';
 				window.location.href = newUrl;
 			},
 			getClass: function(v, meta, rec) {
