@@ -410,15 +410,6 @@ abstract class AbstractViewHelper {
 	 * @api
 	 */
 	//abstract public function render();
-	/**
-	 * Get the rendering context interface.
-	 *
-	 * @return \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 1.6.0. use $this->renderingContext instead
-	 */
-	public function getRenderingContext() {
-		return $this->renderingContext;
-	}
 
 	/**
 	 * Tests if the given $argumentName is set, and not NULL.

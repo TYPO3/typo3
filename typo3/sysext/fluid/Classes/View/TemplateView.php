@@ -208,19 +208,9 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		$actionName = ucfirst($actionName);
 		$paths = $this->expandGenericPathPattern($this->templatePathAndFilenamePattern, FALSE, FALSE);
 		foreach ($paths as &$templatePathAndFilename) {
-			// These tokens are replaced by the Backporter for the graceful fallback in version 4.
-			$fallbackPath = str_replace('@action', lcfirst($actionName), $templatePathAndFilename);
 			$templatePathAndFilename = str_replace('@action', $actionName, $templatePathAndFilename);
 			if (file_exists($templatePathAndFilename)) {
-				// additional check for deprecated template filename for case insensitive file systems (Windows)
-				$realFileName = basename(realpath($templatePathAndFilename));
-				if ($realFileName !== ucfirst($realFileName)) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('the template filename "' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(realpath($templatePathAndFilename)) . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "' . basename($templatePathAndFilename) . '"');
-				}
 				return $templatePathAndFilename;
-			} elseif (file_exists($fallbackPath)) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('the template filename "' . $fallbackPath . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "' . basename($templatePathAndFilename) . '"');
-				return $fallbackPath;
 			}
 		}
 		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('Template could not be loaded. I tried "' . implode('", "', $paths) . '"', 1225709595);
@@ -279,14 +269,9 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		$paths = $this->expandGenericPathPattern($this->layoutPathAndFilenamePattern, TRUE, TRUE);
 		$layoutName = ucfirst($layoutName);
 		foreach ($paths as &$layoutPathAndFilename) {
-			// These tokens are replaced by the Backporter for the graceful fallback in version 4.
-			$fallbackPath = str_replace('@layout', lcfirst($layoutName), $layoutPathAndFilename);
 			$layoutPathAndFilename = str_replace('@layout', $layoutName, $layoutPathAndFilename);
 			if (file_exists($layoutPathAndFilename)) {
 				return $layoutPathAndFilename;
-			} elseif (file_exists($fallbackPath)) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('the layout filename "' . $fallbackPath . '" is lowercase. This is deprecated since TYPO3 4.6. Please rename the layout to "' . basename($layoutPathAndFilename) . '"');
-				return $fallbackPath;
 			}
 		}
 		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
