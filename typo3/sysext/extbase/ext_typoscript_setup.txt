@@ -92,6 +92,11 @@ config.tx_extbase {
 					}
 				}
 			}
+			TYPO3\CMS\Extbase\Domain\Model\Category {
+				mapping {
+					tableName = sys_category
+				}
+			}
 		}
 	}
 	features {
