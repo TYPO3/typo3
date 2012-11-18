@@ -70,6 +70,9 @@ class FrontendContentAdapterService {
 	 * @return void
 	 */
 	static public function modifyDBRow(&$row, $table) {
+		if(!is_array($row)) {
+			return;
+		}
 		if (isset($row['_MIGRATED']) && $row['_MIGRATED'] === TRUE) {
 			return;
 		}
