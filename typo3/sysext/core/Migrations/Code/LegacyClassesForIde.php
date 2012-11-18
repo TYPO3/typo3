@@ -3294,11 +3294,6 @@ interface Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface extends \TYPO3\CMS\
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Fluid_Core_ViewHelper_TagBasedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\TagBasedViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class Tx_Fluid_Core_ViewHelper_TagBuilder extends \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder {}
 
 /**
@@ -3529,11 +3524,6 @@ class Tx_Fluid_ViewHelpers_ElseViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\E
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Fluid_ViewHelpers_EscapeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\EscapeViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class Tx_Fluid_ViewHelpers_FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FlashMessagesViewHelper {}
 
 /**
@@ -3585,11 +3575,6 @@ class Tx_Fluid_ViewHelpers_Form_SubmitViewHelper extends \TYPO3\CMS\Fluid\ViewHe
  * @deprecated since 6.0 will be removed in 7.0
  */
 class Tx_Fluid_ViewHelpers_Form_TextareaViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\TextareaViewHelper {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Fluid_ViewHelpers_Form_TextboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\TextboxViewHelper {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
