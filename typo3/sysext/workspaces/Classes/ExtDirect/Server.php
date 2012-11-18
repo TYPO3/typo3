@@ -109,8 +109,24 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 					// call diff class only if there is a difference
 				if (strcmp($liveRecord[$fieldName],$versionRecord[$fieldName]) !== 0) {
 						// Select the human readable values before diff
-					$liveRecord[$fieldName] = t3lib_BEfunc::getProcessedValue($parameter->table,$fieldName,$liveRecord[$fieldName],0,1);
-					$versionRecord[$fieldName] = t3lib_BEfunc::getProcessedValue($parameter->table,$fieldName,$versionRecord[$fieldName],0,1);
+					$liveRecord[$fieldName] = t3lib_BEfunc::getProcessedValue(
+						$parameter->table,
+						$fieldName,
+						$liveRecord[$fieldName],
+						0,
+						1,
+						FALSE,
+						$liveRecord['uid']
+					);
+					$versionRecord[$fieldName] = t3lib_BEfunc::getProcessedValue(
+						$parameter->table,
+						$fieldName,
+						$versionRecord[$fieldName],
+						0,
+						1,
+						FALSE,
+						$versionRecord['uid']
+					);
 
 						// Get the field's label. If not available, use the field name
 					$fieldTitle = $GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel($parameter->table, $fieldName));
