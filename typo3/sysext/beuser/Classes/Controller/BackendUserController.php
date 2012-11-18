@@ -75,7 +75,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 		try {
 			parent::processRequest($request, $response);
 			$this->moduleDataStorageService->persistModuleData($this->moduleData);
-		} catch (\CMS\Extbase\Mvc\Exception\StopActionException $e) {
+		} catch (\TYPO3\CMS\Extbase\Mvc\Exception\StopActionException $e) {
 			$this->moduleDataStorageService->persistModuleData($this->moduleData);
 			throw $e;
 		}
