@@ -143,8 +143,24 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 				// call diff class only if there is a difference
 				if (strcmp($liveRecord[$fieldName], $versionRecord[$fieldName]) !== 0) {
 					// Select the human readable values before diff
-					$liveRecord[$fieldName] = \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($parameter->table, $fieldName, $liveRecord[$fieldName], 0, 1);
-					$versionRecord[$fieldName] = \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($parameter->table, $fieldName, $versionRecord[$fieldName], 0, 1);
+					$liveRecord[$fieldName] = \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue(
+						$parameter->table,
+						$fieldName,
+						$liveRecord[$fieldName],
+						0,
+						1,
+						FALSE,
+						$liveRecord['uid']
+					);
+					$versionRecord[$fieldName] = \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue(
+						$parameter->table,
+						$fieldName,
+						$versionRecord[$fieldName],
+						0,
+						1,
+						FALSE,
+						$versionRecord['uid']
+					);
 					// Get the field's label. If not available, use the field name
 					$fieldTitle = $GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel($parameter->table, $fieldName));
 					if (empty($fieldTitle)) {
