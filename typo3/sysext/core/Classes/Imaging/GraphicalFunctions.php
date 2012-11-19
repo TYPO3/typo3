@@ -41,7 +41,7 @@ namespace TYPO3\CMS\Core\Imaging;
  * $TYPO3_CONF_VARS['GFX']['gdlib_2'] = 0,	// String/Boolean. Set this if you are using the new GDlib 2.0.1+. If you don't set this flag and still use GDlib2, you might encounter strange behaviours like black images etc. This feature might take effect only if ImageMagick is installed and working as well! You can also use the value "no_imagecopyresized_fix" - in that case it will NOT try to fix a known issue where "imagecopyresized" does not work correctly.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @see tslib_gifBuilder
+ * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder
  */
 class GraphicalFunctions {
 
@@ -376,7 +376,7 @@ class GraphicalFunctions {
 	 * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
 	 * @param array $workArea The current working area coordinates.
 	 * @return void
-	 * @see tslib_gifBuilder::make()
+	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
 	 * @todo Define visibility
 	 */
 	public function maskImageOntoImage(&$im, $conf, $workArea) {
@@ -463,7 +463,7 @@ class GraphicalFunctions {
 	 * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
 	 * @param array $workArea The current working area coordinates.
 	 * @return void
-	 * @see tslib_gifBuilder::make(), maskImageOntoImage()
+	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), maskImageOntoImage()
 	 * @todo Define visibility
 	 */
 	public function copyImageOntoImage(&$im, $conf, $workArea) {
@@ -597,7 +597,7 @@ class GraphicalFunctions {
 	 * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
 	 * @param array $workArea The current working area coordinates.
 	 * @return void
-	 * @see tslib_gifBuilder::make()
+	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
 	 * @todo Define visibility
 	 */
 	public function makeText(&$im, $conf, $workArea) {
@@ -708,7 +708,7 @@ class GraphicalFunctions {
 	 *
 	 * @param array $conf TypoScript array for the TEXT GIFBUILDER object
 	 * @param array $workArea Workarea definition
-	 * @param array $BB Bounding box information, was set in tslib_gifBuilder::start()
+	 * @param array $BB Bounding box information, was set in \TYPO3\CMS\Frontend\Imaging\GifBuilder::start()
 	 * @return array [0]=x, [1]=y, [2]=w, [3]=h
 	 * @access private
 	 * @see makeText()
@@ -765,7 +765,7 @@ class GraphicalFunctions {
 	 * @param array $conf TypoScript array for the TEXT GIFBUILDER object
 	 * @return array Array with three keys [0]/[1] being x/y and [2] being the bounding box array
 	 * @access private
-	 * @see txtPosition(), tslib_gifBuilder::start()
+	 * @see txtPosition(), \TYPO3\CMS\Frontend\Imaging\GifBuilder::start()
 	 * @todo Define visibility
 	 */
 	public function calcBBox($conf) {
@@ -927,7 +927,7 @@ class GraphicalFunctions {
 	 * @param array $conf The TypoScript properties of the TEXT GIFBUILDER object
 	 * @return integer The new fontSize
 	 * @access private
-	 * @see tslib_gifBuilder::start()
+	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::start()
 	 * @todo Define visibility
 	 */
 	public function fontResize($conf) {
@@ -1350,7 +1350,7 @@ class GraphicalFunctions {
 	 * @param array $workArea The current working area coordinates.
 	 * @param array $txtConf TypoScript array with configuration for the associated TEXT GIFBUILDER object.
 	 * @return void
-	 * @see tslib_gifBuilder::make(), makeText()
+	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), makeText()
 	 * @todo Define visibility
 	 */
 	public function makeOutline(&$im, $conf, $workArea, $txtConf) {
@@ -1409,7 +1409,7 @@ class GraphicalFunctions {
 	 * @param array $workArea The current working area coordinates.
 	 * @param array $txtConf TypoScript array with configuration for the associated TEXT GIFBUILDER object.
 	 * @return void
-	 * @see tslib_gifBuilder::make(), makeShadow()
+	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), makeShadow()
 	 * @todo Define visibility
 	 */
 	public function makeEmboss(&$im, $conf, $workArea, $txtConf) {
@@ -1432,7 +1432,7 @@ class GraphicalFunctions {
 	 * @param array $workArea The current working area coordinates.
 	 * @param array $txtConf TypoScript array with configuration for the associated TEXT GIFBUILDER object.
 	 * @retur void
-	 * @see tslib_gifBuilder::make(), makeText(), makeEmboss()
+	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), makeText(), makeEmboss()
 	 * @todo Define visibility
 	 */
 	public function makeShadow(&$im, $conf, $workArea, $txtConf) {
@@ -1548,7 +1548,7 @@ class GraphicalFunctions {
 	 * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
 	 * @param array $workArea The current working area coordinates.
 	 * @return void
-	 * @see tslib_gifBuilder::make()
+	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
 	 * @todo Define visibility
 	 */
 	public function makeBox(&$im, $conf, $workArea) {
@@ -1588,7 +1588,7 @@ class GraphicalFunctions {
 	 * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
 	 * @param array $workArea The current working area coordinates.
 	 * @return void
-	 * @see tslib_gifBuilder::make()
+	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
 	 */
 	public function makeEllipse(&$im, array $conf, array $workArea) {
 		$ellipseConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $conf['dimensions'] . ',,,');
@@ -1608,7 +1608,7 @@ class GraphicalFunctions {
 	 * @param pointer $im GDlib image pointer
 	 * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
 	 * @return void
-	 * @see tslib_gifBuilder::make(), applyImageMagickToPHPGif()
+	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), applyImageMagickToPHPGif()
 	 * @todo Define visibility
 	 */
 	public function makeEffect(&$im, $conf) {
@@ -1710,7 +1710,7 @@ class GraphicalFunctions {
 	 * @param pointer $im GDlib image pointer
 	 * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
 	 * @return void
-	 * @see tslib_gifBuilder::make(), autoLevels(), outputLevels(), inputLevels()
+	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make(), autoLevels(), outputLevels(), inputLevels()
 	 * @todo Define visibility
 	 */
 	public function adjust(&$im, $conf) {
@@ -1746,7 +1746,7 @@ class GraphicalFunctions {
 	 * @param pointer $im GDlib image pointer
 	 * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
 	 * @return void
-	 * @see tslib_gifBuilder::make()
+	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
 	 * @todo Define visibility
 	 */
 	public function crop(&$im, $conf) {
@@ -1785,7 +1785,7 @@ class GraphicalFunctions {
 	 * @param pointer $im GDlib image pointer
 	 * @param array $conf TypoScript array with configuration for the GIFBUILDER object.
 	 * @return void
-	 * @see tslib_gifBuilder::make()
+	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
 	 * @todo Define visibility
 	 */
 	public function scale(&$im, $conf) {
@@ -1819,7 +1819,7 @@ class GraphicalFunctions {
 	 * @param string $workArea Working area dimensions, comma separated
 	 * @return void
 	 * @access private
-	 * @see tslib_gifBuilder::make()
+	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::make()
 	 * @todo Define visibility
 	 */
 	public function setWorkArea($workArea) {
@@ -2773,7 +2773,7 @@ class GraphicalFunctions {
 	 *
 	 * @param string $file The filename to write to.
 	 * @return string Returns input filename
-	 * @see tslib_gifBuilder::gifBuild()
+	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::gifBuild()
 	 * @todo Define visibility
 	 */
 	public function output($file) {
@@ -2821,7 +2821,7 @@ class GraphicalFunctions {
 	 * Destroy internal image pointer, $this->im
 	 *
 	 * @return void
-	 * @see tslib_gifBuilder::gifBuild()
+	 * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::gifBuild()
 	 * @todo Define visibility
 	 */
 	public function destroy() {
