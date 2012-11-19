@@ -273,8 +273,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
 		// Set new extlist / extlistArray for extension load changes at runtime
 		$localConfiguration = $this->configurationManager->getLocalConfiguration();
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $localConfiguration['EXT']['extList'];
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'] = $localConfiguration['EXT']['extListArray'];
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = implode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray']);
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->populateTypo3LoadedExtGlobal(FALSE)->loadAdditionalConfigurationFromExtensions(FALSE);
 	}
 
