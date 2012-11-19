@@ -512,7 +512,9 @@ class ContentObjectRenderer {
 	 */
 	public function start($data, $table = '') {
 		global $TYPO3_CONF_VARS;
-		\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($data, $table);
+		if (is_array($data) && !empty($data) && !empty($table)) {
+			\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($data, $table);
+		}
 		$this->data = $data;
 		$this->table = $table;
 		$this->currentRecord = $table ? $table . ':' . $this->data['uid'] : '';
