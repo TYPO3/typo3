@@ -298,7 +298,7 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function columnMapIsInitializedWithManyToManyRelationOfTypeInlineAndForeignSelectorWithForeignTableField() {
-	    $leftColumnsDefinition = array(
+		$leftColumnsDefinition = array(
 			'rights' => array(
 				'type' => 'inline',
 				'foreign_table' => 'tx_myextension_mm',
@@ -306,16 +306,16 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 				'foreign_selector' => 'uid_foreign',
 				'foreign_table_field' => 'tx_myextension_localtable',
 				'foreign_sortby' => 'sorting'
-				)
-			);
-	    $relationTableColumnsDefinition = array(
+			)
+		);
+		$relationTableColumnsDefinition = array(
 			'uid_local' => array(
 				'config' => array('foreign_table' => 'tx_myextension_localtable')
-				),
+			),
 			'uid_foreign' => array(
 				'config' => array('foreign_table' => 'tx_myextension_righttable')
-				)
-			);
+			)
+		);
 		$mockColumnMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\ColumnMap', array(), array(), '', FALSE);
 		$mockColumnMap->expects($this->once())->method('setTypeOfRelation')->with($this->equalTo(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
 		$mockColumnMap->expects($this->once())->method('setRelationTableName')->with($this->equalTo('tx_myextension_mm'));
