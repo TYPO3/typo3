@@ -25,7 +25,7 @@ require_once PATH_t3lib . 'class.t3lib_svbase.php';
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid', 'sv1/class.tx_openid_store.php');
 /*
  * @deprecated since 6.0, the classname tx_openid_sv1 and this file is obsolete
- * and will be removed by 7.0. The class was renamed and is now located at:
+ * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/openid/Classes/OpenidService.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid') . 'Classes/OpenidService.php';

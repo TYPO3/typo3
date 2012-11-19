@@ -33,26 +33,26 @@
  * Class to setup values in localconf.php and verify the TYPO3 DB tables/fields
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @deprecated since 6.0, will be removed by 7.0
+ * @deprecated since 6.0, will be removed with 6.2
  */
 class t3lib_install {
 
 	// External, Static
 	// Set to string which identifies the script using this class.
 	/**
-	 * @deprecated since 6.0, will be removed by 7.0
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public $updateIdentity = '';
 
 	// Prefix for checkbox fields when updating database.
 	/**
-	 * @deprecated since 6.0, will be removed by 7.0
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public $dbUpdateCheckboxPrefix = 'TYPO3_INSTALL[database_update]';
 
 	// If this is set, modifications to localconf.php is done by adding new lines to the array only. If unset, existing values are recognized and changed.
 	/**
-	 * @deprecated since 6.0, will be removed by 7.0
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public $localconf_addLinesOnly = 0;
 
@@ -63,32 +63,32 @@ class t3lib_install {
 
 	// If TRUE, this class will allow the user to update the localconf.php file. Is set TRUE in the init.php file.
 	/**
-	 * @deprecated since 6.0, will be removed by 7.0
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public $allowUpdateLocalConf = 0;
 
 	// Backpath (used for icons etc.)
 	/**
-	 * @deprecated since 6.0, will be removed by 7.0
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public $backPath = '../';
 
 	// Internal, dynamic:
 	// Used to indicate that a value is change in the line-array of localconf and that it should be written.
 	/**
-	 * @deprecated since 6.0, will be removed by 7.0
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public $setLocalconf = 0;
 
 	// Used to set (error)messages from the executing functions like mail-sending, writing Localconf and such
 	/**
-	 * @deprecated since 6.0, will be removed by 7.0
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public $messages = array();
 
 	// Updated with line in localconf.php file that was changed.
 	/**
-	 * @deprecated since 6.0, will be removed by 7.0
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public $touchedLine = 0;
 
@@ -99,7 +99,7 @@ class t3lib_install {
 
 	/**
 	 * Constructor function
-	 * @deprecated since 6.0, will be removed by 7.0
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public function __construct() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
@@ -120,7 +120,7 @@ class t3lib_install {
 	 * @param boolean $quoteValue Whether the given value should be quoted before being written
 	 * @return void
 	 * @see writeToLocalconf_control()
-	 * @deprecated since 6.0, will be removed by 7.0
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public function setValueInLocalconfFile(&$line_array, $variable, $value, $quoteValue = TRUE) {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
@@ -135,7 +135,7 @@ class t3lib_install {
 	 * @param array $value value to be assigned to the variable
 	 * @return void
 	 * @see writeToLocalconf_control()
-	 * @deprecated since 6.0, will be removed by 7.0
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public function setArrayValueInLocalconfFile(array &$lines, $variable, array $value) {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
@@ -148,7 +148,7 @@ class t3lib_install {
 	 *
 	 * @param array $variable
 	 * @return string
-	 * @deprecated since 6.0, will be removed by 7.0
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	protected function array_export(array $variable) {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
@@ -183,7 +183,7 @@ class t3lib_install {
 	 * @param string $absFullPath Absolute path of alternative file to use (Notice: this path is not validated in terms of being inside 'TYPO3 space')
 	 * @return mixed If $inlines is not an array it will return an array with the lines from localconf.php. Otherwise it will return a status string, either "continue" (updated) or "nochange" (not updated)
 	 * @see setValueInLocalconfFile()
-	 * @deprecated since 6.0, will be removed by 7.0
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public function writeToLocalconf_control($inlines = '', $absFullPath = '') {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
@@ -196,7 +196,7 @@ class t3lib_install {
 	 * @param array $lines Array of lines to write back to localconf.php
 	 * @param string $absFullPath Absolute path of alternative file to use (Notice: this path is not validated in terms of being inside 'TYPO3 space')
 	 * @return boolean TRUE if method succeeded, otherwise FALSE
-	 * @deprecated since 6.0, will be removed by 7.0
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public function writeToLocalconf(array $lines, $absFullPath = '') {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
@@ -209,7 +209,7 @@ class t3lib_install {
 	 * @param string $string String to test
 	 * @return boolean Returns TRUE if string is OK
 	 * @see setValueInLocalconfFile()
-	 * @deprecated since 6.0, will be removed by 7.0
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public function checkForBadString($string) {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
@@ -223,7 +223,7 @@ class t3lib_install {
 	 * @param string $value Input value
 	 * @return string Output value
 	 * @see setValueInLocalconfFile()
-	 * @deprecated since 6.0, will be removed by 7.0
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public function slashValueForSingleDashes($value) {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
@@ -244,7 +244,7 @@ class t3lib_install {
 	 * @param array $currentValue Array of "current values" for each key/value pair in $arr. Shown if given.
 	 * @param boolean $cVfullMsg If set, will show the prefix "Current value" if $currentValue is given.
 	 * @return string HTML table with checkboxes for update. Must be wrapped in a form.
-	 * @deprecated since 6.0, will be removed by 7.0
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public function generateUpdateDatabaseForm_checkboxes($arr, $label, $checked = TRUE, $iconDis = FALSE, $currentValue = array(), $cVfullMsg = FALSE) {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();

@@ -29,7 +29,7 @@ define('TYPO3_MOD_PATH', 'sysext/openid/');
 require_once '../../init.php';
 /*
  * @deprecated since 6.0, the classname tx_openid_return and this file is obsolete
- * and will be removed by 7.0. The class was renamed and is now located at:
+ * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/openid/Classes/OpenidReturn.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid') . 'Classes/OpenidReturn.php';

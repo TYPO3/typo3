@@ -37,7 +37,7 @@ require 'init.php';
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xml');
 /*
  * @deprecated since 6.0, the classname SC_wizard_forms and this file is obsolete
- * and will be removed by 7.0. The class was renamed and is now located at:
+ * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/backend/Classes/Controller/Wizard/FormsController.php
  */
 require_once t3lib_extMgm::extPath('backend') . 'Classes/Controller/Wizard/FormsController.php';

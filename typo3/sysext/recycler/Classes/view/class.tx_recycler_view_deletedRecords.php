@@ -24,7 +24,7 @@
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('recycler', 'Classes/helper/class.tx_recycler_helper.php');
 /*
  * @deprecated since 6.0, the classname tx_recycler_view_deletedRecords and this file is obsolete
- * and will be removed by 7.0. The class was renamed and is now located at:
+ * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/recycler/Classes/Controller/DeletedRecordsController.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('recycler') . 'Classes/Controller/DeletedRecordsController.php';

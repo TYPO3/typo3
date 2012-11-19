@@ -50,7 +50,7 @@ class local_t3lib_parsehtml extends \TYPO3\CMS\Core\Html\HtmlParser {
 
 /*
  * @deprecated since 6.0, the classname SC_view_help and this file is obsolete
- * and will be removed by 7.0. The class was renamed and is now located at:
+ * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/cshmanual/Classes/Controller/HelpModuleController.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('cshmanual') . 'Classes/Controller/HelpModuleController.php';
