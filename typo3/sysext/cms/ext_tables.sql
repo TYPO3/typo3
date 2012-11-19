@@ -278,7 +278,7 @@ CREATE TABLE tt_content (
   cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
   hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
   sorting int(11) unsigned DEFAULT '0' NOT NULL,
-  CType varchar(30) DEFAULT '' NOT NULL,
+  CType varchar(255) DEFAULT '0' NOT NULL,
   header varchar(255) DEFAULT '' NOT NULL,
   header_position varchar(6) DEFAULT '' NOT NULL,
   bodytext mediumtext,
