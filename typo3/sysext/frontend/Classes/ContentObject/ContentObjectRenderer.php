@@ -5034,8 +5034,10 @@ class ContentObjectRenderer {
 	 * @todo Define visibility
 	 */
 	public function getImgResource($file, $fileArray) {
-		if (is_array($fileArray)) {
-			switch ($file) {
+		if (!is_array($fileArray)) {
+			$fileArray = (array) $fileArray;
+		}
+		switch ($file) {
 			case 'GIFBUILDER':
 				$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
 				$gifCreator->init();
@@ -5048,18 +5050,24 @@ class ContentObjectRenderer {
 				break;
 			default:
 				try {
+					if ($fileArray['import.']) {
+						$importedFile = trim($this->stdWrap('', $fileArray['import.']));
+						if (!empty($importedFile)) {
+							$file = $importedFile;
+						}
+					}
+
 					if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($file)) {
+						if (!empty($fileArray['treatIdAsReference'])) {
+							$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($file)->getOriginalFile();
+						} else {
+							$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($file);
+						}
+					} elseif (preg_match('/^(0|[1-9][0-9]*):/', $file)) { // combined identifier
 						$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($file);
 					} else {
-						if ($fileArray['import.']) {
-							$ifile = $this->stdWrap('', $fileArray['import.']);
-							if ($ifile) {
-								if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($ifile)) {
-									$file = $ifile;
-								} else {
-									$file = $fileArray['import'] . $ifile;
-								}
-							}
+						if (isset($importedFile) && !empty($importedFile) && !empty($fileArray['import'])) {
+							$file = $fileArray['import'] . $file;
 						}
 						// clean ../ sections of the path and resolve to proper string. This is necessary for the Tx_File_BackwardsCompatibility_TslibContentAdapter to work.
 						$file = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($file);
@@ -5120,7 +5128,6 @@ class ContentObjectRenderer {
 					}
 				}
 				break;
-			}
 		}
 		$theImage = $GLOBALS['TSFE']->tmpl->getFileName($file);
 		// If image was processed by GIFBUILDER:
