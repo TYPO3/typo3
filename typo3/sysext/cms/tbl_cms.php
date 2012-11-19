@@ -822,7 +822,7 @@ $TCA['pages_language_overlay'] = array(
 	)
 );
 // Keep old code (pre-FAL) for installations that haven't upgraded yet.
-// @deprecated since TYPO3 6.0, please remove in TYPO3 7.0
+// @deprecated since TYPO3 6.0, please remove at earliest in TYPO3 6.2
 // existing installation - and files are merged, nothing to do
 if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard']) || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard'], 'pages_language_overlay:media')) && !\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('6.0')) {
 	\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('This installation hasn\'t been migrated to FAL for the field $TCA[pages_language_overlay][columns][media] yet. Please do so before TYPO3 v7.');
