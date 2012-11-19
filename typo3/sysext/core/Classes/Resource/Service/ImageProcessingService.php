@@ -83,8 +83,8 @@ class ImageProcessingService {
 		if (isset($GLOBALS['TSFE']->tmpl->fileCache[$hash])) {
 			return $GLOBALS['TSFE']->tmpl->fileCache[$hash];
 		}
-		/** @var $gifCreator tslib_gifbuilder */
-		$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_gifbuilder');
+		/** @var $gifCreator \TYPO3\CMS\Frontend\Imaging\GifBuilder */
+		$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
 		$gifCreator->init();
 		if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']) {
 			$filename = basename($theImage);
@@ -161,7 +161,7 @@ class ImageProcessingService {
 			$GLOBALS['TSFE']->tmpl->fileCache[$hash] = $gifCreator->getImageDimensions($fileDestination);
 		}
 		$GLOBALS['TSFE']->tmpl->fileCache[$hash]['origFile'] = $theImage;
-		// This is needed by tslib_gifbuilder, in order for the setup-array to create a unique filename hash.
+		// This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder, in order for the setup-array to create a unique filename hash.
 		$GLOBALS['TSFE']->tmpl->fileCache[$hash]['origFile_mtime'] = @filemtime($theImage);
 		$GLOBALS['TSFE']->tmpl->fileCache[$hash]['fileCacheHash'] = $hash;
 		if ($file instanceof \TYPO3\CMS\Core\Resource\FileInterface && \TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath($GLOBALS['TSFE']->tmpl->fileCache[$hash][3])) {

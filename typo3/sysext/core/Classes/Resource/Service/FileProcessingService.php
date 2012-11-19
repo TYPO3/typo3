@@ -241,8 +241,8 @@ class FileProcessingService {
 		// checks to see if m (the mask array) is defined
 		$doMasking = is_array($configuration['maskImages']) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'];
 		// @todo: is it ok that we use tslib (=FE) here?
-		/** @var $gifBuilder tslib_gifbuilder */
-		$gifBuilder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_gifbuilder');
+		/** @var $gifBuilder \TYPO3\CMS\Frontend\Imaging\GifBuilder */
+		$gifBuilder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
 		$gifBuilder->init();
 		// @todo: this is not clean yet
 		if (!trim($configuration['fileExtension'])) {

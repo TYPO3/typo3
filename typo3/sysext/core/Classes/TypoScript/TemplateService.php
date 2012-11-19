@@ -1295,7 +1295,7 @@ class TemplateService {
 	 * @param array $setupArr TypoScript array with numerical array in
 	 * @param boolean $acceptOnlyProperties If set, then a value is not required - the properties alone will be enough.
 	 * @return array An array with all integer properties listed in numeric order.
-	 * @see tslib_cObj::cObjGet(), tslib_gifBuilder, tslib_imgmenu::makeImageMap()
+	 * @see tslib_cObj::cObjGet(), \TYPO3\CMS\Frontend\Imaging\GifBuilder, tslib_imgmenu::makeImageMap()
 	 */
 	static public function sortedKeyList($setupArr, $acceptOnlyProperties = FALSE) {
 		$keyArr = array();
