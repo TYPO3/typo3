@@ -1045,7 +1045,7 @@ if (!\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('4.2')) {
 	);
 }
 // keep old code (pre-FAL) for installations that haven't upgraded yet. please remove this code in TYPO3 7.0
-// @deprecated since TYPO3 6.0, please remove in TYPO3 7.0
+// @deprecated since TYPO3 6.0, please remove at earliest in TYPO3 6.2
 // existing installation - and files are merged, nothing to do
 if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['TYPO3\\CMS\\Install\\Updates\\TceformsUpdateWizard']) || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['TYPO3\\CMS\\Install\\Updates\\TceformsUpdateWizard'], 'pages:media')) && !\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('6.0')) {
 	\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('This installation hasn\'t been migrated to FAL for the field $TCA[pages][columns][media] yet. Please do so before TYPO3 v7.');

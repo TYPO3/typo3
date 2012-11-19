@@ -37,37 +37,37 @@ if (!defined('TYPO3_MODE')) {
 }
 /*
  * @deprecated since 6.0, the classname template and this file is obsolete
- * and will be removed by 7.0. The class was renamed and is now located at:
+ * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/backend/Classes/Template/DocumentTemplate.php
  */
 require_once t3lib_extMgm::extPath('backend') . 'Classes/Template/DocumentTemplate.php';
 /*
  * @deprecated since 6.0, the classname bigDoc and this file is obsolete
- * and will be removed by 7.0. The class was renamed and is now located at:
+ * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/backend/Classes/Template/BigDocumentTemplate.php
  */
 require_once t3lib_extMgm::extPath('backend') . 'Classes/Template/BigDocumentTemplate.php';
 /*
  * @deprecated since 6.0, the classname noDoc and this file is obsolete
- * and will be removed by 7.0. The class was renamed and is now located at:
+ * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/backend/Classes/Template/StandardDocumentTemplate.php
  */
 require_once t3lib_extMgm::extPath('backend') . 'Classes/Template/StandardDocumentTemplate.php';
 /*
  * @deprecated since 6.0, the classname smallDoc and this file is obsolete
- * and will be removed by 7.0. The class was renamed and is now located at:
+ * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/backend/Classes/Template/SmallDocumentTemplate.php
  */
 require_once t3lib_extMgm::extPath('backend') . 'Classes/Template/SmallDocumentTemplate.php';
 /*
  * @deprecated since 6.0, the classname mediumDoc and this file is obsolete
- * and will be removed by 7.0. The class was renamed and is now located at:
+ * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/backend/Classes/Template/MediumDocumentTemplate.php
  */
 require_once t3lib_extMgm::extPath('backend') . 'Classes/Template/MediumDocumentTemplate.php';
 /*
  * @deprecated since 6.0, the classname frontendDoc and this file is obsolete
- * and will be removed by 7.0. The class was renamed and is now located at:
+ * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/backend/Classes/Template/FrontendDocumentTemplate.php
  */
 require_once t3lib_extMgm::extPath('backend') . 'Classes/Template/FrontendDocumentTemplate.php';

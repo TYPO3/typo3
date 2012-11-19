@@ -28,7 +28,7 @@ require_once PATH_t3lib . 'class.t3lib_page.php';
 $GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xml');
 /*
  * @deprecated since 6.0, the classname tx_t3editor_codecompletion and this file is obsolete
- * and will be removed by 7.0. The class was renamed and is now located at:
+ * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/t3editor/Classes/CodeCompletion.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3editor') . 'Classes/CodeCompletion.php';
