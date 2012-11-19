@@ -5009,8 +5009,10 @@ class ContentObjectRenderer {
 	 * @todo Define visibility
 	 */
 	public function getImgResource($file, $fileArray) {
-		if (is_array($fileArray)) {
-			switch ($file) {
+		if (!is_array($fileArray)) {
+			$fileArray = (array) $fileArray;
+		}
+		switch ($file) {
 			case 'GIFBUILDER':
 				$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
 				$gifCreator->init();
@@ -5036,9 +5038,15 @@ class ContentObjectRenderer {
 								}
 							}
 						}
-						// clean ../ sections of the path and resolve to proper string. This is necessary for the Tx_File_BackwardsCompatibility_TslibContentAdapter to work.
-						$file = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($file);
-						$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($file);
+						// Check if the returned value is an integer, if so this is ment to be an relation to a file
+						if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($file)) {
+							$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($file)->getOriginalFile();
+						} else {
+							// Try to retrieve an file or folder object for the returned value
+							// clean ../ sections of the path and resolve to proper string. This is necessary for the Tx_File_BackwardsCompatibility_TslibContentAdapter to work.
+							$file = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($file);
+							$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($file);
+						}
 					}
 				} catch(\TYPO3\CMS\Core\Resource\Exception $exception) {
 					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
@@ -5095,7 +5103,6 @@ class ContentObjectRenderer {
 					}
 				}
 				break;
-			}
 		}
 		$theImage = $GLOBALS['TSFE']->tmpl->getFileName($file);
 		// If image was processed by GIFBUILDER:
