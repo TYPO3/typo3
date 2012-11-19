@@ -268,7 +268,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	private function createDummyTable() {
-		$sql = 'CREATE TABLE {' . $this->tableName . '} (' . LF . TAB .
+		$sql = 'CREATE TABLE ' . $this->tableName . ' (' . LF . TAB .
 			'uid int(11) auto_increment,' . LF . TAB .
 			'pid int(11) unsigned DEFAULT \'0\' NOT NULL,' . LF . TAB .
 			'title tinytext,' . LF . TAB .
