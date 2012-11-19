@@ -62,7 +62,6 @@ ob_start();
 	->loadAdditionalConfigurationFromExtensions(TRUE)
 	->deprecationLogForOldExtCacheSetting()
 	->initializeExceptionHandling()
-	->requireAdditionalExtensionFiles()
 	->setFinalCachingFrameworkCacheConfiguration()
 	->defineLoggingAndExceptionConstants()
 	->unsetReservedGlobalVariables();

@@ -81,7 +81,6 @@ require 'sysext/core/Classes/Core/Bootstrap.php';
 	->loadAdditionalConfigurationFromExtensions(TRUE)
 	->deprecationLogForOldExtCacheSetting()
 	->initializeExceptionHandling()
-	->requireAdditionalExtensionFiles()
 	->setFinalCachingFrameworkCacheConfiguration()
 	->defineLoggingAndExceptionConstants()
 	->unsetReservedGlobalVariables()
