@@ -42,9 +42,10 @@ class FolderTest extends BaseTestCase {
 	 * Helper method for testing restore of filters in the storage
 	 *
 	 * @param $filterMode
-	 * @param callable $listCallback
+	 * @param $listCallback
 	 */
-	protected function _testFileAndFoldernameFilterRestoreAfterList($filterMode, callable $listCallback) {
+	protected function _testFileAndFoldernameFilterRestoreAfterList($filterMode, $listCallback) {
+		$this->isType('callable')->evaluate($listCallback);
 		$storageFilter = new \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter();
 		$storageFilter->setAllowedFileExtensions('jpg,png');
 		$folderFilter = new \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter();
