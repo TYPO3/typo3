@@ -1426,7 +1426,7 @@ class ContentObjectRenderer {
 							$url = $altUrl . ($conf['JSwindow.']['altUrl_noDefaultParams'] ? '' : '?file=' . rawurlencode($imageFile) . $params);
 						}
 					}
-					$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_gifbuilder');
+					$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
 					$gifCreator->init();
 					$gifCreator->mayScaleUp = 0;
 					$dims = $gifCreator->getImageScale($gifCreator->getImageDimensions($imageFile), $conf['width'], $conf['height'], array());
@@ -5005,14 +5005,14 @@ class ContentObjectRenderer {
 	 * @param string $file A "imgResource" TypoScript data type. Either a TypoScript file resource or the string GIFBUILDER. See description above.
 	 * @param array $fileArray TypoScript properties for the imgResource type
 	 * @return array Returns info-array. info[origFile] = original file. [0]/[1] is w/h, [2] is file extension and [3] is the filename.
-	 * @see IMG_RESOURCE(), cImage(), tslib_gifBuilder
+	 * @see IMG_RESOURCE(), cImage(), \TYPO3\CMS\Frontend\Imaging\GifBuilder
 	 * @todo Define visibility
 	 */
 	public function getImgResource($file, $fileArray) {
 		if (is_array($fileArray)) {
 			switch ($file) {
 			case 'GIFBUILDER':
-				$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_gifbuilder');
+				$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
 				$gifCreator->init();
 				$theImage = '';
 				if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
@@ -5082,7 +5082,8 @@ class ContentObjectRenderer {
 								3 => $processedFileObject->getPublicUrl(),
 								'origFile' => $fileObject->getPublicUrl(),
 								'origFile_mtime' => $fileObject->getModificationTime(),
-								// This is needed by tslib_gifbuilder, ln 100ff in order for the setup-array to create a unique filename hash.
+								// This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder, line 100ff
+								// in order for the setup-array to create a unique filename hash.
 								'originalFile' => $fileObject,
 								'processedFile' => $processedFileObject,
 								'fileCacheHash' => $hash
@@ -5100,12 +5101,12 @@ class ContentObjectRenderer {
 		// If image was processed by GIFBUILDER:
 		// ($imageResource indicates that it was processed the regular way)
 		if (!isset($imageResource) && $theImage) {
-			$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_gifbuilder');
-			/** @var $gifCreator tslib_gifbuilder */
+			$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
+			/** @var $gifCreator \TYPO3\CMS\Frontend\Imaging\GifBuilder */
 			$gifCreator->init();
 			$info = $gifCreator->imageMagickConvert($theImage, 'WEB');
 			$info['origFile'] = $theImage;
-			// This is needed by tslib_gifbuilder, ln 100ff in order for the setup-array to create a unique filename hash.
+			// This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder, ln 100ff in order for the setup-array to create a unique filename hash.
 			$info['origFile_mtime'] = @filemtime($theImage);
 			$imageResource = $info;
 		}
