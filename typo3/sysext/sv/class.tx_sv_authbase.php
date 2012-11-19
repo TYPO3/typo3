@@ -32,7 +32,7 @@
 require_once PATH_t3lib . 'class.t3lib_svbase.php';
 /*
  * @deprecated since 6.0, the classname tx_sv_authbase and this file is obsolete
- * and will be removed by 7.0. The class was renamed and is now located at:
+ * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/sv/Classes/AbstractAuthenticationService.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sv') . 'Classes/AbstractAuthenticationService.php';
