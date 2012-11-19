@@ -230,6 +230,38 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 		throw new \BadMethodCallException('Repository does not support the createQuery() method.', 1313185908);
 	}
 
+	/**
+	 * Finds an object matching the given identifier.
+	 *
+	 * @param mixed $identifier The identifier of the object to find
+	 * @return object The matching object if found, otherwise NULL
+	 * @api
+	 */
+	public function findByIdentifier($identifier) {
+		return $this->findByUid($identifier);
+	}
+
+	/**
+	 * Magic call method for repository methods.
+	 *
+	 * @param string $method Name of the method
+	 * @param array $arguments The arguments
+	 * @return void
+	 */
+	public function __call($method, $arguments) {
+		// deliberately empty
+	}
+
+	/**
+	 * Returns the object type this repository is managing.
+	 *
+	 * @return string
+	 * @api
+	 */
+	public function getEntityClassName() {
+		return $this->objectType;
+	}
+
 }
 
 
