@@ -42,18 +42,22 @@ class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Path to default TYPO3_CONF_VARS file, relative to PATH_site
 	 */
 	const DEFAULT_CONFIGURATION_FILE = 't3lib/stddb/DefaultConfiguration.php';
+
 	/**
 	 * Path to local overload TYPO3_CONF_VARS file, relative to PATH_site
 	 */
 	const LOCAL_CONFIGURATION_FILE = 'typo3conf/LocalConfiguration.php';
+
 	/**
 	 * Path to additional local file, relative to PATH_site
 	 */
 	const ADDITIONAL_CONFIGURATION_FILE = 'typo3conf/AdditionalConfiguration.php';
+
 	/**
 	 * Path to legacy localconf.php file, relative to PATH_site
 	 */
 	const LOCALCONF_FILE = 'typo3conf/localconf.php';
+
 	/**
 	 * Writing to these configuration pathes is always allowed,
 	 * even if the requested sub path does not exist yet.
@@ -227,6 +231,8 @@ class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 			if (@is_file((PATH_site . self::ADDITIONAL_CONFIGURATION_FILE))) {
 				require PATH_site . self::ADDITIONAL_CONFIGURATION_FILE;
 			}
+			// @deprecated since 6.0: Simulate old 'extList' as comma separated list of 'extListArray'
+			$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = implode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray']);
 		} elseif (@is_file((PATH_site . self::LOCALCONF_FILE))) {
 			$GLOBALS['TYPO3_CONF_VARS'] = $this->getDefaultConfiguration();
 			// Legacy localconf.php handling

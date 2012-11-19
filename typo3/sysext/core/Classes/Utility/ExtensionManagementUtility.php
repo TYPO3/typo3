@@ -1891,6 +1891,7 @@ tt_content.' . $key . $prefix . ' {
 			$loadedExtensions = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'];
 		} else {
 			// Fallback handling if extlist is still a string and not an array
+			// @deprecated since 6.0, will be removed in 6.2
 			$loadedExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']);
 		}
 		// Add required extensions
@@ -1970,9 +1971,6 @@ tt_content.' . $key . $prefix . ' {
 	static public function writeNewExtensionList(array $newExtensionList) {
 		$extensionList = array_unique($newExtensionList);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('EXT/extListArray', $extensionList);
-		// @deprecated: extList as string is deprecated, the handling will be removed with 6.2
-		// For now, this value is still set for better backwards compatibility
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('EXT/extList', implode(',', $extensionList));
 		static::removeCacheFiles();
 	}
 
