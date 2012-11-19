@@ -487,16 +487,6 @@ class Bootstrap {
 	}
 
 	/**
-	 * Load some additional classes that are encapsulated in extensions
-	 *
-	 * @return \TYPO3\CMS\Core\Core\Bootstrap
-	 */
-	public function requireAdditionalExtensionFiles() {
-		require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang') . 'lang.php';
-		return $this;
-	}
-
-	/**
 	 * Extensions may register new caches, so we set the
 	 * global cache array to the manager again at this point
 	 *
