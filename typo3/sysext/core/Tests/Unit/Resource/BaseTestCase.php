@@ -167,6 +167,13 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		return $folder;
 	}
 
+	/**
+	 * @test
+	 */
+	public function pseudoTestToPreventWarning() {
+		$this->markTestSkipped('This test is only a placeholder to prevent PHPUnit warning of missing tests');
+	}
+
 }
 
 ?>
