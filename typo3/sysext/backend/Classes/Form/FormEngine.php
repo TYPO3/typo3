@@ -235,6 +235,13 @@ class FormEngine {
 	 */
 	public $form_rowsToStylewidth = 9.58;
 
+	/**
+	 * Value that gets added for style="width: ...px" for textareas compared to input fields.
+	 *
+	 * @var integer
+	 */
+	protected $form_additionalTextareaStyleWidth = 23;
+
 	// Form field width compensation: Compensation for large documents, doc-tab (editing)
 	/**
 	 * @todo Define visibility
@@ -4329,6 +4336,11 @@ function ' . $evalData . '(value) {
 		} else {
 			// Setting width by style-attribute. 'cols' MUST be avoided with NN6+
 			$widthInPixels = ceil($size * $this->form_rowsToStylewidth);
+
+			if ($textarea) {
+				$widthInPixels += $this->form_additionalTextareaStyleWidth;
+			}
+
 			$fieldWidthAndStyle['style'] = 'width: ' . $widthInPixels . 'px; ' . $this->defStyle . $this->formElStyle(($textarea ? 'text' : 'input'));
 			$fieldWidthAndStyle['class'] = $this->formElClass($textarea ? 'text' : 'input');
 		}
