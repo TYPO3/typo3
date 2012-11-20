@@ -62,10 +62,6 @@ class FluidTemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstr
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function render($conf = array()) {
-		// check if the needed extensions are installed
-		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('fluid')) {
-			return 'You need to install "Fluid" in order to use the FLUIDTEMPLATE content element';
-		}
 		/** 1. initializing Fluid StandaloneView and setting configuration parameters */
 		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 		// Fetch the Fluid template
