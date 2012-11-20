@@ -81,7 +81,9 @@ class tx_dbal_installtool {
 			if ($module === 'mysql') {
 				$dbModules = array();
 				foreach ($this->supportedDrivers as $abstractionLayer => $drivers) {
-					$dbModules = array_merge($dbModules, array_keys($drivers));
+					foreach ($drivers as $driver) {
+						$dbModules = array_merge($dbModules, $driver['extensions']);
+					}
 				}
 				$module = $dbModules;
 			}
