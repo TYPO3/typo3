@@ -41,6 +41,11 @@ abstract class AbstractContentObject {
 	protected $cObj;
 
 	/**
+	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
+	 */
+	protected $fileFactory = NULL;
+
+	/**
 	 * Default constructor.
 	 *
 	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj
@@ -66,12 +71,6 @@ abstract class AbstractContentObject {
 	public function getContentObject() {
 		return $this->cObj;
 	}
-
-	/**
-	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
-	 */
-	protected $fileFactory = NULL;
-
 }
 
 
