@@ -70,16 +70,18 @@ class InstallToolHooks {
 	 * Hooks into Installer to set required PHP modules.
 	 *
 	 * @param array $modules
-	 * @param tx_install|tx_reports_reports_status_SystemStatus $instObj
+	 * @param \TYPO3\CMS\Install\Installer|\TYPO3\CMS\Reports\Report\Status\SystemStatus $instObj
 	 * @return array modules
 	 */
-	public function setRequiredPhpModules(array &$modules, $instObj) {
+	public function setRequiredPhpModules(array $modules, $instObj) {
 		$modifiedModules = array();
 		foreach ($modules as $key => $module) {
 			if ($module === 'mysql') {
 				$dbModules = array();
 				foreach ($this->supportedDrivers as $abstractionLayer => $drivers) {
-					$dbModules = array_merge($dbModules, array_keys($drivers));
+					foreach ($drivers as $driver) {
+						$dbModules = array_merge($dbModules, $driver['extensions']);
+					}
 				}
 				$module = $dbModules;
 			}
