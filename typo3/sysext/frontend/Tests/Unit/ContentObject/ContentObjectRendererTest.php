@@ -1063,6 +1063,39 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals('01-09-2012', $result);
 	}
 
+	/**
+	 * @param string|NULL $content
+	 * @param array $configuration
+	 * @param string $expected
+	 * @dataProvider stdWrap_ifNullDeterminesNullValuesDataProvider
+	 * @test
+	 */
+	public function stdWrap_ifNullDeterminesNullValues($content, array $configuration, $expected) {
+		$result = $this->cObj->stdWrap_ifNull($content, $configuration);
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function stdWrap_ifNullDeterminesNullValuesDataProvider() {
+		return array(
+			'null value' => array(
+				NULL,
+				array(
+					'ifNull' => '1',
+				),
+				'1',
+			),
+			'zero value' => array(
+				'0',
+				array(
+					'ifNull' => '1',
+				),
+				'0',
+			),
+		);
+	}
 }
 
 ?>
