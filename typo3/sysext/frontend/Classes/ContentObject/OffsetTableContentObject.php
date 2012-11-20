@@ -46,6 +46,19 @@ class OffsetTableContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstrac
 	public $tdParams = ' width="99%" valign="top"';
 
 	/**
+	 * Override default constructor to make it possible to instantiate this
+	 * class for rendering an offset table not in content object context
+	 *
+	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj
+	 */
+	public function __construct(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj = NULL) {
+		if (!is_null($cObj)) {
+			$this->cObj = $cObj;
+			$this->fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+		}
+	}
+
+	/**
 	 * Rendering the cObject, OTABLE
 	 *
 	 * @param array $conf Array of TypoScript properties

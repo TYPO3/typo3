@@ -124,6 +124,19 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	public $listOfSearchFields = '';
 
 	/**
+	 * Override default constructor to make it possible to instantiate this
+	 * class for indexed_search
+	 *
+	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj
+	 */
+	public function __construct(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj = NULL) {
+		if (!is_null($cObj)) {
+			$this->cObj = $cObj;
+			$this->fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+		}
+	}
+
+	/**
 	 * Rendering the cObject, SEARCHRESULT
 	 *
 	 * @param array $conf Array of TypoScript properties
