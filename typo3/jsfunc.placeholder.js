@@ -25,6 +25,11 @@
 ***************************************************************/
 
 Ext.onReady(function() {
+	// Only use placeholder JavaScript fallback in Internet Explorer
+	if (!Ext.IE) {
+		return;
+	}
+
 	// TODO rewrite in ExtJS
 	$$('[placeholder]').each(function(el) {
 		if (el.getAttribute('placeholder') != "") {
