@@ -135,7 +135,7 @@ $TCA['sys_file_reference'] = array(
 				'type' => 'input',
 				'eval' => 'null',
 				'size' => '22',
-				'placeholder' => '__row|uid_local|title'
+				'placeholder' => '__row|uid_local|title',
 			)
 		),
 		'link' => array(
@@ -166,7 +166,8 @@ $TCA['sys_file_reference'] = array(
 				'type' => 'text',
 				'eval' => 'null',
 				'cols' => '24',
-				'rows' => '5'
+				'rows' => '5',
+				'placeholder' => '__row|uid_local|description',
 			)
 		),
 		'alternative' => array(
@@ -177,7 +178,7 @@ $TCA['sys_file_reference'] = array(
 				'type' => 'input',
 				'eval' => 'null',
 				'size' => '22',
-				'placeholder' => '__row|uid_local|alternative'
+				'placeholder' => '__row|uid_local|alternative',
 			),
 		),
 	),
