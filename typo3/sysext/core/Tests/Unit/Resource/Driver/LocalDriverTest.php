@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -972,7 +973,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			'basePath' => $this->getMountRootUrl()
 		));
 		$mockedFile = $this->getSimpleFileMock('/someDir/someFile');
-		$filePath = $fixture->copyFileToTemporaryPath($mockedFile);
+		$filePath = GeneralUtility::fixWindowsFilePath($fixture->copyFileToTemporaryPath($mockedFile));
 		$this->assertContains('/typo3temp/', $filePath);
 		$this->assertEquals($fileContents, file_get_contents($filePath));
 	}
@@ -995,6 +996,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	public function permissionsAreCorrectlyRetrievedForForbiddenFile() {
 		if (function_exists('posix_getegid') && posix_getegid() === 0) {
 			$this->markTestSkipped('Test skipped if run on linux as root');
+		} elseif (TYPO3_OS === 'WIN') {
+			$this->markTestSkipped('Test skipped if run on Windows system');
 		}
 		/** @var $fixture \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
 		list($basedir, $fixture) = $this->prepareRealTestEnvironment();
@@ -1022,6 +1025,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	public function permissionsAreCorrectlyRetrievedForForbiddenFolder() {
 		if (function_exists('posix_getegid') && posix_getegid() === 0) {
 			$this->markTestSkipped('Test skipped if run on linux as root');
+		} elseif (TYPO3_OS === 'WIN') {
+			$this->markTestSkipped('Test skipped if run on Windows system');
 		}
 		/** @var $fixture \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
 		list($basedir, $fixture) = $this->prepareRealTestEnvironment();
@@ -1086,6 +1091,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @dataProvider getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser_dataProvider
 	 */
 	public function getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser($group, $permissions, $expectedResult) {
+		if (TYPO3_OS === 'WIN') {
+			$this->markTestSkipped('Test skipped if run on Windows system');
+		}
 		$this->addToMount(array(
 			'testfile' => 'asdfg'
 		));
