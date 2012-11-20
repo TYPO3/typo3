@@ -61,7 +61,7 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 			'view' => array(
 				'widget' => array(
 					'TYPO3\\CMS\\Fluid\\ViewHelpers\\Widget\\PaginateViewHelper' => array(
-						'template' => 'EXT:fluid/Resources/Private/DummyTestTemplates'
+						'templateRootPath' => 'EXT:fluid/Resources/Private/DummyTestTemplates'
 					)
 				)
 			)
