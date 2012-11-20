@@ -316,6 +316,171 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertStringEndsWith($expected, $this->fixture->errorLog[0]);
 	}
 
+	/**
+	 * @param boolean $expected
+	 * @param string $submittedValue
+	 * @param string $storedValue
+	 * @param string $storedType
+	 * @param boolean $allowNull
+	 * @dataProvider equalSubmittedAndStoredValuesAreDeterminedDataProvider
+	 * @test
+	 */
+	public function equalSubmittedAndStoredValuesAreDetermined($expected, $submittedValue, $storedValue, $storedType, $allowNull) {
+		$result = $this->callInaccessibleMethod(
+			$this->fixture,
+			'isSubmittedValueEqualToStoredValue',
+			$submittedValue, $storedValue, $storedType, $allowNull
+		);
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function equalSubmittedAndStoredValuesAreDeterminedDataProvider() {
+		return array(
+			// String
+			'string value "" vs. ""' => array(
+				TRUE,
+				'', '', 'string', FALSE
+			),
+			'string value 0 vs. "0"' => array(
+				TRUE,
+				0, '0', 'string', FALSE
+			),
+			'string value 1 vs. "1"' => array(
+				TRUE,
+				1, '1', 'string', FALSE
+			),
+			'string value "0" vs. ""' => array(
+				FALSE,
+				'0', '', 'string', FALSE
+			),
+			'string value 0 vs. ""' => array(
+				FALSE,
+				0, '', 'string', FALSE
+			),
+			'string value null vs. ""' => array(
+				TRUE,
+				NULL, '', 'string', FALSE
+			),
+			// Integer
+			'integer value 0 vs. 0' => array(
+				TRUE,
+				0, 0, 'int', FALSE
+			),
+			'integer value "0" vs. "0"' => array(
+				TRUE,
+				'0', '0', 'int', FALSE
+			),
+			'integer value 0 vs. "0"' => array(
+				TRUE,
+				0, '0', 'int', FALSE
+			),
+			'integer value "" vs. "0"' => array(
+				TRUE,
+				'', '0', 'int', FALSE
+			),
+			'integer value 1 vs. 1' => array(
+				TRUE,
+				1, 1, 'int', FALSE
+			),
+			'integer value 1 vs. "1"' => array(
+				TRUE,
+				1, '1', 'int', FALSE
+			),
+			'integer value "0" vs. "1"' => array(
+				FALSE,
+				'0', '1', 'int', FALSE
+			),
+			// String with allowed NULL values
+			'string with allowed null value "" vs. ""' => array(
+				TRUE,
+				'', '', 'string', TRUE
+			),
+			'string with allowed null value 0 vs. "0"' => array(
+				TRUE,
+				0, '0', 'string', TRUE
+			),
+			'string with allowed null value 1 vs. "1"' => array(
+				TRUE,
+				1, '1', 'string', TRUE
+			),
+			'string with allowed null value "0" vs. ""' => array(
+				FALSE,
+				'0', '', 'string', TRUE
+			),
+			'string with allowed null value 0 vs. ""' => array(
+				FALSE,
+				0, '', 'string', TRUE
+			),
+			'string with allowed null value null vs. ""' => array(
+				FALSE,
+				NULL, '', 'string', TRUE
+			),
+			'string with allowed null value "" vs. null' => array(
+				FALSE,
+				'', NULL, 'string', TRUE
+			),
+			'string with allowed null value null vs. null' => array(
+				TRUE,
+				NULL, NULL, 'string', TRUE
+			),
+			// Integer with allowed NULL values
+			'integer with allowed null value 0 vs. 0' => array(
+				TRUE,
+				0, 0, 'int', TRUE
+			),
+			'integer with allowed null value "0" vs. "0"' => array(
+				TRUE,
+				'0', '0', 'int', TRUE
+			),
+			'integer with allowed null value 0 vs. "0"' => array(
+				TRUE,
+				0, '0', 'int', TRUE
+			),
+			'integer with allowed null value "" vs. "0"' => array(
+				TRUE,
+				'', '0', 'int', TRUE
+			),
+			'integer with allowed null value 1 vs. 1' => array(
+				TRUE,
+				1, 1, 'int', TRUE
+			),
+			'integer with allowed null value 1 vs. "1"' => array(
+				TRUE,
+				1, '1', 'int', TRUE
+			),
+			'integer with allowed null value "0" vs. "1"' => array(
+				FALSE,
+				'0', '1', 'int', TRUE
+			),
+			'integer with allowed null value null vs. ""' => array(
+				FALSE,
+				NULL, '', 'int', TRUE
+			),
+			'integer with allowed null value "" vs. null' => array(
+				FALSE,
+				'', NULL, 'int', TRUE
+			),
+			'integer with allowed null value null vs. null' => array(
+				TRUE,
+				NULL, NULL, 'int', TRUE
+			),
+			'integer with allowed null value null vs. "0"' => array(
+				FALSE,
+				NULL, '0', 'int', TRUE
+			),
+			'integer with allowed null value "0" vs. null' => array(
+				FALSE,
+				'0', NULL, 'int', TRUE
+			),
+			'integer with allowed null value null vs. null' => array(
+				TRUE,
+				NULL, NULL, 'int', TRUE
+			),
+		);
+	}
 }
 
 ?>

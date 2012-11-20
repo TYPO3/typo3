@@ -6022,12 +6022,12 @@ class DataHandler {
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			// Unset the fields which are similar:
 			foreach ($fieldArray as $col => $val) {
-				$isAlreadyNull = ($val === NULL && $currentRecord[$col] === NULL);
-				$isNotNull = ($val !== NULL);
-				// Unset field values if they are empty, which is "0" for integer types and "" for string - except the current field holds MM relations.
-				// If NULL values shall be stored, then the value will only be unset if the current stored value is already NULL.
+				$fieldConfiguration = $GLOBALS['TCA'][$table]['columns'][$col]['config'];
+				$isNullField = (!empty($fieldConfiguration['eval']) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($fieldConfiguration['eval'], 'null'));
+
+				// Unset fields if stored and submitted values are equal - except the current field holds MM relations.
 				// In general this avoids to store superfluous data which also will be visualized in the editing history.
-				if (!$GLOBALS['TCA'][$table]['columns'][$col]['config']['MM'] && ($isAlreadyNull || $isNotNull && (!strcmp($val, $currentRecord[$col]) || $cRecTypes[$col] == 'int' && $currentRecord[$col] == 0 && !strcmp($val, '')))) {
+				if (!$fieldConfiguration['MM'] && $this->isSubmittedValueEqualToStoredValue($val, $currentRecord[$col], $cRecTypes[$col], $isNullField)) {
 					unset($fieldArray[$col]);
 				} else {
 					if (!isset($this->mmHistoryRecords[($table . ':' . $id)]['oldRecord'][$col])) {
@@ -6047,6 +6047,42 @@ class DataHandler {
 			$fieldArray = array();
 		}
 		return $fieldArray;
+	}
+
+	/**
+	 * Determines whether submitted values and stored values are equal.
+	 * This prevents from adding superfluous field changes which would be shown in the record history as well.
+	 * For NULL fields (see accordant TCA definition 'eval' = 'null'), a special handling is required since
+	 * (!strcmp(NULL, '')) would be a false-positive.
+	 *
+	 * @param mixed $submittedValue Value that has submitted (e.g. from a backend form)
+	 * @param mixed $storedValue Value that is currently stored in the database
+	 * @param string $storedType SQL type of the stored value column (see mysql_field_type(), e.g 'int', 'string',  ...)
+	 * @param boolean $allowNull Whether NULL values are allowed by accordant TCA definition ('eval' = 'null')
+	 * @return boolean Whether both values are considered to be equal
+	 */
+	protected function isSubmittedValueEqualToStoredValue($submittedValue, $storedValue, $storedType, $allowNull = FALSE) {
+		// No NULL values are allowed, this is the regular behaviour.
+		// Thus, check whether strings are the same or whether integer values are empty ("0" or "").
+		if (!$allowNull) {
+			$result = (
+				!strcmp($submittedValue, $storedValue)
+				|| $storedType == 'int' && $storedValue == 0 && !strcmp($submittedValue, '')
+			);
+		// Null values are allowed, but currently there's a real (not NULL) value.
+		// Thus, ensure no NULL value was submitted and fallback to the regular behaviour.
+		} elseif ($storedValue !== NULL) {
+			$result = (
+				$submittedValue !== NULL
+				&& $this->isSubmittedValueEqualToStoredValue($submittedValue, $storedValue, $storedType, FALSE)
+			);
+		// Null values are allowed, and currently there's a NULL value.
+		// Thus, check whether a NULL value was submitted.
+		} else {
+			$result = ($submittedValue === NULL);
+		}
+
+		return $result;
 	}
 
 	/**
