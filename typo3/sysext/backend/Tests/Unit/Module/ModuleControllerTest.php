@@ -34,31 +34,23 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Module;
 class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var TYPO3\CMS\Backend\Module\ModuleController
+	 * @var \TYPO3\CMS\Backend\Module\ModuleController
 	 */
 	protected $moduleController;
 
-	/**
-	 * Helper function to call protected or private methods
-	 *
-	 * @param string $className The className
-	 * @param string $name the name of the method to call
-	 * @param mixed $argument The argument for the method call (only one in this test class needed)
-	 * @return mixed
-	 */
-	public function callInaccessibleMethod($className, $name, $argument) {
-		$class = new \ReflectionClass($className);
-		$object = new $className();
-		$method = $class->getMethod($name);
-		$method->setAccessible(TRUE);
-		return $method->invoke($object, $argument);
+	protected function setUp() {
+		$this->moduleController = new \TYPO3\CMS\Backend\Module\ModuleController();
+	}
+
+	protected function tearDown() {
+		unset($this->moduleController);
 	}
 
 	/**
 	 * @test
 	 */
 	public function createEntryFromRawDataGeneratesMenuEntry() {
-		$entry = $this->callInaccessibleMethod('TYPO3\\CMS\\Backend\\Module\\ModuleController', 'createEntryFromRawData', array());
+		$entry = $this->callInaccessibleMethod($this->moduleController, 'createEntryFromRawData', array());
 		$this->assertInstanceOf('TYPO3\\CMS\\Backend\\Domain\\Model\\Module\\BackendModule', $entry);
 	}
 
@@ -77,7 +69,8 @@ class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'description' => 'descriptionTest',
 			'navigationComponentId' => 'navigationComponentIdTest'
 		);
-		$entry = $this->callInaccessibleMethod('TYPO3\\CMS\\Backend\\Module\\ModuleController', 'createEntryFromRawData', $rawModule);
+		/** @var $entry \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule */
+		$entry = $this->callInaccessibleMethod($this->moduleController, 'createEntryFromRawData', $rawModule);
 		$this->assertEquals('nameTest', $entry->getName());
 		$this->assertEquals('titleTest', $entry->getTitle());
 		$this->assertEquals('linkTest', $entry->getLink());
@@ -94,7 +87,8 @@ class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$rawModule = array(
 			'path' => 'pathTest'
 		);
-		$entry = $this->callInaccessibleMethod('TYPO3\\CMS\\Backend\\Module\\ModuleController', 'createEntryFromRawData', $rawModule);
+		/** @var $entry \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule */
+		$entry = $this->callInaccessibleMethod($this->moduleController, 'createEntryFromRawData', $rawModule);
 		$this->assertEquals('pathTest', $entry->getLink());
 	}
 

@@ -199,5 +199,23 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 
 		return $accessibleClassName;
 	}
+
+	/**
+	 * Helper function to call protected or private methods
+	 *
+	 * @param object $object The object to be invoked
+	 * @param string $name the name of the method to call
+	 * @return mixed
+	 */
+	protected function callInaccessibleMethod($object, $name) {
+		// Remove first two arguments ($object and $name)
+		$arguments = func_get_args();
+		array_splice($arguments, 0, 2);
+
+		$reflectionObject = new \ReflectionObject($object);
+		$reflectionMethod = $reflectionObject->getMethod($name);
+		$reflectionMethod->setAccessible(TRUE);
+		return $reflectionMethod->invokeArgs($object, $arguments);
+	}
 }
 ?>
