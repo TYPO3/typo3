@@ -97,11 +97,11 @@ class CrawlerHook {
 				// Prepare the GET variables array that must be added to the page URL in order to view result:
 				parse_str('&itemID=' . rawurlencode($item['ID']), $GETparams);
 				// Prepare indexer (make instance, initialize it, set special features for indexing parameterized content - probably none of this should be changed by you) [DON'T CHANGE]:
-				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_indexedsearch_indexer');
+				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 				$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl, $GETparams, FALSE);
 				$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
 				$indexerObj->forceIndexing = TRUE;
-				// Indexing the content of the item (see tx_indexedsearch_indexer::backend_indexAsTYPO3Page() for options)
+				// Indexing the content of the item (see \TYPO3\CMS\IndexedSearch\Indexer::backend_indexAsTYPO3Page() for options)
 				$indexerObj->backend_indexAsTYPO3Page($item['title'], '', '', $item['content'], $GLOBALS['LANG']->charSet, $item['tstamp'], $item['create_date'], $item['ID']);
 			}
 			break;
@@ -114,7 +114,7 @@ class CrawlerHook {
 			// Set up language uid, if any:
 			$sys_language_uid = 0;
 			// Prepare indexer (make instance, initialize it, set special features for indexing parameterized content - probably none of this should be changed by you) [DON'T CHANGE]:
-			$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_indexedsearch_indexer');
+			$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 			$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl);
 			$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
 			$indexerObj->hash['phash'] = -1;
@@ -127,7 +127,7 @@ class CrawlerHook {
 			// Load indexer if not yet.
 			$pObj->loadIndexerClass();
 			// Index external URL:
-			$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_indexedsearch_indexer');
+			$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 			$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl);
 			$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
 			$indexerObj->hash['phash'] = -1;

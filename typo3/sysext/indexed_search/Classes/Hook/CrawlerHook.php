@@ -267,7 +267,7 @@ class CrawlerHook {
 				// Load indexer if not yet.
 				$this->loadIndexerClass();
 				// (Re)-Indexing file on page.
-				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_indexedsearch_indexer');
+				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 				$indexerObj->backend_initIndexer($cfgRec['pid'], 0, 0, '', $rl);
 				$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
 				$indexerObj->hash['phash'] = -1;
@@ -471,7 +471,7 @@ class CrawlerHook {
 		// Load indexer if not yet.
 		$this->loadIndexerClass();
 		// Index external URL:
-		$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_indexedsearch_indexer');
+		$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 		$indexerObj->backend_initIndexer($pageId, 0, 0, '', $rl);
 		$indexerObj->backend_setFreeIndexUid($cfgUid, $setId);
 		$indexerObj->hash['phash'] = -1;
@@ -525,7 +525,7 @@ class CrawlerHook {
 		$languageField = $GLOBALS['TCA'][$cfgRec['table2index']]['ctrl']['languageField'];
 		$sys_language_uid = $languageField ? $r[$languageField] : 0;
 		// (Re)-Indexing a row from a table:
-		$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_indexedsearch_indexer');
+		$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 		parse_str(str_replace('###UID###', $r['uid'], $cfgRec['get_params']), $GETparams);
 		$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl, $GETparams, $cfgRec['chashcalc'] ? TRUE : FALSE);
 		$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
