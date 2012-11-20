@@ -244,17 +244,17 @@ class RootlineUtility {
 				} elseif ($configuration['foreign_field']) {
 					$table = $configuration['foreign_table'];
 					$field = $configuration['foreign_field'];
-					$whereClauseParts = array('`' . $field . '` = ' . intval($uid));
+					$whereClauseParts = array($field . ' = ' . intval($uid));
 					if (isset($configuration['foreign_match_fields']) && is_array($configuration['foreign_match_fields'])) {
 						foreach ($configuration['foreign_match_fields'] as $field => $value) {
-							$whereClauseParts[] = '`' . $field . '` = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table);
+							$whereClauseParts[] = $field . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table);
 						}
 					}
 					if (isset($configuration['foreign_table_field'])) {
 						if (intval($pageRecord['sys_language_uid']) > 0) {
-							$whereClauseParts[] = '`' . trim($configuration['foreign_table_field']) . '` = \'pages_language_overlay\'';
+							$whereClauseParts[] = trim($configuration['foreign_table_field']) . ' = \'pages_language_overlay\'';
 						} else {
-							$whereClauseParts[] = '`' . trim($configuration['foreign_table_field']) . '` = \'pages\'';
+							$whereClauseParts[] = trim($configuration['foreign_table_field']) . ' = \'pages\'';
 						}
 					}
 					$whereClause = implode(' AND ', $whereClauseParts);
