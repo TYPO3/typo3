@@ -82,6 +82,19 @@ class FileReference implements \TYPO3\CMS\Core\Resource\FileInterface {
 	protected $originalFile;
 
 	/**
+	 * Defines properties that are merged with the parent object (File) if
+	 * the value is not defined (NULL). Thus, FileReference properties act
+	 * as overlays for the defined File properties.
+	 *
+	 * @var array
+	 */
+	protected $parentFallbackProperties = array(
+		'title' => 'title',
+		'description' => 'description',
+		'alternative' => 'alternative',
+	);
+
+	/**
 	 * Constructor for a file in use object. Should normally not be used
 	 * directly, use the corresponding factory methods instead.
 	 *
@@ -119,13 +132,29 @@ class FileReference implements \TYPO3\CMS\Core\Resource\FileInterface {
 	}
 
 	/**
+	 * Gets a property, falling back to values of the parent.
+	 *
+	 * @param string $key The property to be looked up
+	 * @return mixed
+	 */
+	public function getProperty($key) {
+		$value = $this->getReferenceProperty($key);
+
+		if ($value === NULL && !empty($this->parentFallbackProperties[$key])) {
+			$value = $this->originalFile->getProperty($key);
+		}
+
+		return $value;
+	}
+
+	/**
 	 * Gets a property.
 	 *
 	 * @param string $key The property to be looked up
 	 * @return mixed
 	 * @throws \InvalidArgumentException
 	 */
-	public function getProperty($key) {
+	public function getReferenceProperty($key) {
 		if (!$this->hasProperty($key)) {
 			throw new \InvalidArgumentException('Property "' . $key . '" was not found.', 1314226805);
 		}
@@ -133,12 +162,31 @@ class FileReference implements \TYPO3\CMS\Core\Resource\FileInterface {
 	}
 
 	/**
-	 * Gets all properties.
+	 * Gets all properties, falling back to values of the parent.
 	 *
 	 * @return array
 	 */
 	public function getProperties() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->originalFile->getProperties(), $this->propertiesOfFileReference);
+		$properties = $this->getReferenceProperties();
+		$keys = array_keys($properties);
+
+		foreach ($this->parentFallbackProperties as $localKey => $parentKey) {
+			if (array_key_exists($localKey, $keys) && $properties[$localKey] === NULL) {
+				$properties[$localKey] = $this->originalFile->getProperty($parentKey);
+			}
+		}
+	}
+
+	/**
+	 * Gets all properties.
+	 *
+	 * @return array
+	 */
+	public function getReferenceProperties() {
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule(
+			$this->originalFile->getProperties(),
+			$this->propertiesOfFileReference
+		);
 	}
 
 	/**
@@ -158,7 +206,7 @@ class FileReference implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * @return string
 	 */
 	public function getTitle() {
-		return $this->propertiesOfFileReference['title'] ? $this->propertiesOfFileReference['title'] : $this->originalFile->getName();
+		return $this->getProperty('title');
 	}
 
 	/**
@@ -169,7 +217,7 @@ class FileReference implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * @return string
 	 */
 	public function getAlternative() {
-		return $this->propertiesOfFileReference['alternative'] ? $this->propertiesOfFileReference['alternative'] : $this->originalFile->getName();
+		return $this->getProperty('alternative');
 	}
 
 	/**
@@ -180,7 +228,7 @@ class FileReference implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * @return string
 	 */
 	public function getDescription() {
-		return $this->propertiesOfFileReference['description'];
+		return $this->getProperty('description');
 	}
 
 	/**
