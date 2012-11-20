@@ -50,8 +50,6 @@ class HtmlentitiesViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\Abstrac
 		$flags = $keepQuotes ? ENT_NOQUOTES : ENT_COMPAT;
 		return htmlentities($value, $flags, $encoding, $doubleEncode);
 	}
-
 }
-
 
 ?>

@@ -41,8 +41,6 @@ class BaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	public function render() {
 		return '<base href="' . $this->controllerContext->getRequest()->getBaseUri() . '" />';
 	}
-
 }
-
 
 ?>

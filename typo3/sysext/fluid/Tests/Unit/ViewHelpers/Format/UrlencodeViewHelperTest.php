@@ -10,13 +10,10 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-/**
-
- */
 class UrlencodeViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var Tx_Fluid_ViewHelpers_Format_UrlEncodeViewHelper
+	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\UrlencodeViewHelper
 	 */
 	protected $viewHelper;
 
@@ -76,8 +73,6 @@ class UrlencodeViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$actualResult = $this->viewHelper->render($source);
 		$this->assertSame($source, $actualResult);
 	}
-
 }
-
 
 ?>

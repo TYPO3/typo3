@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Fluid\Core\Widget;
  */
 class Exception extends \TYPO3\CMS\Fluid\Core\Exception {
 
-
 }
-
 
 ?>

@@ -71,8 +71,6 @@ class TextfieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fo
 		$this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
 		$this->viewHelper->render();
 	}
-
 }
-
 
 ?>

@@ -85,7 +85,7 @@ class ParsingState implements \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterfa
 	 * Render the parsed template with rendering context
 	 *
 	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext The rendering context to use
-	 * @return Rendered string
+	 * @return string Rendered string
 	 */
 	public function render(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		return $this->rootNode->evaluate($renderingContext);
@@ -131,9 +131,9 @@ class ParsingState implements \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterfa
 
 	/**
 	 * Returns a variable container which will be then passed to the postParseFacet.
+	 * TODO: Rename to getPostParseVariableContainer
 	 *
 	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer The variable container or NULL if none has been set yet
-	 * @todo Rename to getPostParseVariableContainer
 	 */
 	public function getVariableContainer() {
 		return $this->variableContainer;
@@ -170,6 +170,7 @@ class ParsingState implements \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterfa
 	 * This requires the current rendering context in order to be able to evaluate the layout name
 	 *
 	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+	 * @throws \TYPO3\CMS\Fluid\View\Exception
 	 * @return string
 	 */
 	public function getLayoutName(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
@@ -203,8 +204,6 @@ class ParsingState implements \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterfa
 	public function isCompiled() {
 		return FALSE;
 	}
-
 }
-
 
 ?>

@@ -10,9 +10,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-/**
-
- */
 class PaddingViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
@@ -54,8 +51,6 @@ class PaddingViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$actualResult = $viewHelper->render(5, '0');
 		$this->assertEquals('12300', $actualResult);
 	}
-
 }
-
 
 ?>

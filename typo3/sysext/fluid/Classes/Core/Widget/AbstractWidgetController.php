@@ -69,8 +69,6 @@ abstract class AbstractWidgetController extends \TYPO3\CMS\Extbase\Mvc\Controlle
 			$view->setTemplateRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName]['templateRootPath']));
 		}
 	}
-
 }
-
 
 ?>

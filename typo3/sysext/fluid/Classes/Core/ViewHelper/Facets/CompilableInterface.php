@@ -44,8 +44,8 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper\Facets;
  * A ViewHelper which wants to directly influence the resulting PHP code must implement
  * the CompilableInterface, and only implement the compile() method.
  */
-interface CompilableInterface
-{
+interface CompilableInterface {
+
 	/**
 	 * Here follows a more detailed description of the arguments of this function:
 	 *
@@ -61,7 +61,7 @@ interface CompilableInterface
 	 * ViewHelperVariableContainer and the ControllerContext.
 	 *
 	 * @var array $arguments
-	 * @var Closure $renderChildrenClosure
+	 * @var \Closure $renderChildrenClosure
 	 * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return string the resulting string which is directly shown
 	 */
@@ -98,7 +98,6 @@ interface CompilableInterface
 	 * @return string
 	 */
 	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode, \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler);
-
 }
 
 ?>

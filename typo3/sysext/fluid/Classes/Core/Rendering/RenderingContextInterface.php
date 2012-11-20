@@ -10,11 +10,8 @@ namespace TYPO3\CMS\Fluid\Core\Rendering;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-/**
+interface RenderingContextInterface {
 
- */
-interface RenderingContextInterface
-{
 	/**
 	 * Get the template variable container
 	 *
@@ -35,7 +32,6 @@ interface RenderingContextInterface
 	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
 	 */
 	public function getViewHelperVariableContainer();
-
 }
 
 ?>

@@ -138,8 +138,6 @@ class ViewHelperVariableContainer {
 	public function __sleep() {
 		return array('objects');
 	}
-
 }
-
 
 ?>

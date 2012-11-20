@@ -22,8 +22,8 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper\Facets;
  *
  * Normally, this facet is not needed, except in really really rare cases.
  */
-interface PostParseInterface
-{
+interface PostParseInterface {
+
 	/**
 	 * Callback which is called directly after the corresponding syntax tree
 	 * node to this view helper has been built.
@@ -39,7 +39,6 @@ interface PostParseInterface
 	 * @return void
 	 */
 	static public function postParseEvent(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $syntaxTreeNode, array $viewHelperArguments, \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer);
-
 }
 
 ?>

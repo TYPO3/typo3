@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -333,8 +334,6 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
-
 }
-
 
 ?>

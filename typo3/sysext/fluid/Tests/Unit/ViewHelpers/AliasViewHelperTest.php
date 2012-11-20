@@ -60,8 +60,6 @@ class AliasViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 		$viewHelper->setViewHelperNode($mockViewHelperNode);
 		$this->assertEquals('foo', $viewHelper->render(array()));
 	}
-
 }
-
 
 ?>

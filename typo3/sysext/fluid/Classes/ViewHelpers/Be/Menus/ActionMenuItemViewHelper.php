@@ -78,8 +78,6 @@ class ActionMenuItemViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 		$this->tag->setContent($label);
 		return $this->tag->render();
 	}
-
 }
-
 
 ?>

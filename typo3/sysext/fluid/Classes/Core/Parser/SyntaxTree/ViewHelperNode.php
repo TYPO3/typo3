@@ -136,8 +136,6 @@ class ViewHelperNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNod
 	public function __sleep() {
 		return array('viewHelperClassName', 'arguments', 'childNodes');
 	}
-
 }
-
 
 ?>

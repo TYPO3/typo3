@@ -10,9 +10,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-/**
-
- */
 abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
@@ -97,8 +94,6 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 			$viewHelper->injectTagBuilder($this->tagBuilder);
 		}
 	}
-
 }
-
 
 ?>

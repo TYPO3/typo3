@@ -52,7 +52,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * </output>
  *
  * @api
- * @scope prototype
  */
 class ValidationResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
@@ -74,8 +73,6 @@ class ValidationResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
 		$this->templateVariableContainer->remove($as);
 		return $output;
 	}
-
 }
-
 
 ?>

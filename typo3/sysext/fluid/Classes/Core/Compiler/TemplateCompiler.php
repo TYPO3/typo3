@@ -10,12 +10,10 @@ namespace TYPO3\CMS\Fluid\Core\Compiler;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-/**
-
- */
 class TemplateCompiler implements \TYPO3\CMS\Core\SingletonInterface {
 
 	const SHOULD_GENERATE_VIEWHELPER_INVOCATION = '##should_gen_viewhelper##';
+
 	/**
 	 * @var \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend
 	 */
@@ -263,26 +261,26 @@ return %s;
 	 */
 	public function convertListOfSubNodes(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $node) {
 		switch (count($node->getChildNodes())) {
-		case 0:
-			return array(
-				'initialization' => '',
-				'execution' => 'NULL'
-			);
-		case 1:
-			$converted = $this->convert(current($node->getChildNodes()));
-			return $converted;
-		default:
-			$outputVariableName = $this->variableName('output');
-			$initializationPhpCode = sprintf('%s = \'\';', $outputVariableName) . chr(10);
-			foreach ($node->getChildNodes() as $childNode) {
-				$converted = $this->convert($childNode);
-				$initializationPhpCode .= $converted['initialization'] . chr(10);
-				$initializationPhpCode .= sprintf('%s .= %s;', $outputVariableName, $converted['execution']) . chr(10);
-			}
-			return array(
-				'initialization' => $initializationPhpCode,
-				'execution' => $outputVariableName
-			);
+			case 0:
+				return array(
+					'initialization' => '',
+					'execution' => 'NULL'
+				);
+			case 1:
+				$converted = $this->convert(current($node->getChildNodes()));
+				return $converted;
+			default:
+				$outputVariableName = $this->variableName('output');
+				$initializationPhpCode = sprintf('%s = \'\';', $outputVariableName) . chr(10);
+				foreach ($node->getChildNodes() as $childNode) {
+					$converted = $this->convert($childNode);
+					$initializationPhpCode .= $converted['initialization'] . chr(10);
+					$initializationPhpCode .= sprintf('%s .= %s;', $outputVariableName, $converted['execution']) . chr(10);
+				}
+				return array(
+					'initialization' => $initializationPhpCode,
+					'execution' => $outputVariableName
+				);
 		}
 	}
 
@@ -341,8 +339,6 @@ return %s;
 	public function variableName($prefix) {
 		return '$' . $prefix . $this->variableCounter++;
 	}
-
 }
-
 
 ?>

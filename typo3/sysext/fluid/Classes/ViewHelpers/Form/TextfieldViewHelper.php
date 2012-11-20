@@ -74,8 +74,6 @@ class TextfieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractForm
 		$this->setErrorClassAttribute();
 		return $this->tag->render();
 	}
-
 }
-
 
 ?>

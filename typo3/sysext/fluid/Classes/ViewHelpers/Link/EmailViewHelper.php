@@ -14,9 +14,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
  * Public License for more details.                                       *
  *                                                                        */
 /**
-
- */
-/**
  * Email link view helper.
  * Generates an email link incorporating TYPO3s spamProtectEmailAddresses-settings.
  *
@@ -78,7 +75,6 @@ class EmailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 		$this->tag->forceClosingTag(TRUE);
 		return $this->tag->render();
 	}
-
 }
 
 ?>

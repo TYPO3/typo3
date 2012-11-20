@@ -246,8 +246,6 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$viewHelper->_callRef('postProcessUriArgumentsForRequestHash', $arguments, $results);
 		$this->assertEquals($expectedResults, $results);
 	}
-
 }
-
 
 ?>

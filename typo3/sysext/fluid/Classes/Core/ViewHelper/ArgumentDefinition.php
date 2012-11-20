@@ -129,8 +129,6 @@ class ArgumentDefinition {
 	public function isMethodParameter() {
 		return $this->isMethodParameter;
 	}
-
 }
-
 
 ?>

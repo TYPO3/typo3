@@ -10,9 +10,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-/**
-
- */
 class HtmlspecialcharsViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
@@ -116,8 +113,6 @@ class HtmlspecialcharsViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$actualResult = $this->viewHelper->render($source);
 		$this->assertSame($source, $actualResult);
 	}
-
 }
-
 
 ?>

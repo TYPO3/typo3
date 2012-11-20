@@ -137,8 +137,6 @@ class AbstractConditionViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 		$actualResult = $this->viewHelper->_call('renderElseChild');
 		$this->assertEquals('ElseArgument', $actualResult);
 	}
-
 }
-
 
 ?>

@@ -24,8 +24,6 @@ class RootNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		return $this->evaluateChildNodes($renderingContext);
 	}
-
 }
-
 
 ?>

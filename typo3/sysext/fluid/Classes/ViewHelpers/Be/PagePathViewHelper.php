@@ -64,8 +64,6 @@ class PagePathViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 		$pagePath .= '</span>';
 		return $pagePath;
 	}
-
 }
-
 
 ?>

@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Fluid\View\Exception;
  */
 class InvalidTemplateResourceException extends \TYPO3\CMS\Fluid\View\Exception {
 
-
 }
-
 
 ?>

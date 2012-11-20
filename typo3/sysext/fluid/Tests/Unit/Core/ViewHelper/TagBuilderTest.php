@@ -184,8 +184,6 @@ class TagBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$tagBuilder->setTagName('');
 		$this->assertEquals('', $tagBuilder->render());
 	}
-
 }
-
 
 ?>

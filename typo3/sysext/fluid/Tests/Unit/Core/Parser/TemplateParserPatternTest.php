@@ -317,8 +317,6 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 	protected function insertNamespaceIntoRegularExpression($regularExpression, $namespace) {
 		return str_replace('NAMESPACE', implode('|', $namespace), $regularExpression);
 	}
-
 }
-
 
 ?>

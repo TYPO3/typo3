@@ -79,8 +79,6 @@ class IfHasRoleViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vi
 		$actualResult = $this->viewHelper->render(123);
 		$this->assertEquals('else child', $actualResult);
 	}
-
 }
-
 
 ?>

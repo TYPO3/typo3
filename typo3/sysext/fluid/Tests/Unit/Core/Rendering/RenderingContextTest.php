@@ -52,8 +52,6 @@ class RenderingContextTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->renderingContext->injectViewHelperVariableContainer($viewHelperVariableContainer);
 		$this->assertSame($viewHelperVariableContainer, $this->renderingContext->getViewHelperVariableContainer());
 	}
-
 }
-
 
 ?>

@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
+
 use \TYPO3\CMS\Backend\Utility\BackendUtility;
 use \TYPO3\CMS\Backend\Utility\IconUtility;
 
@@ -68,8 +69,6 @@ class PageInfoViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 		$pageInfo = $theIcon . '<em>[pid: ' . $pageRecord['uid'] . ']</em>';
 		return $pageInfo;
 	}
-
 }
-
 
 ?>

@@ -43,14 +43,12 @@ class AbstractCompilerTemplateTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 		$fullClassName = 'TYPO3\\CMS\\Fluid\\Core\\Compiler\\' . $className;
 		eval(
 			'namespace TYPO3\\CMS\\Fluid\\Core\\Compiler;' .
-			'abstract class ' . $className . ' extends AbstractCompiledTemplate {' .
-			'  static protected $defaultEncoding = \'ISO-8859-1\';' .
-			'}'
+				'abstract class ' . $className . ' extends AbstractCompiledTemplate {' .
+				'  static protected $defaultEncoding = \'ISO-8859-1\';' .
+				'}'
 		);
 		$this->assertSame('ISO-8859-1', $fullClassName::resolveDefaultEncoding());
 	}
-
 }
-
 
 ?>

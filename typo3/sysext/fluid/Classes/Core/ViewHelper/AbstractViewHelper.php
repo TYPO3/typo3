@@ -254,7 +254,6 @@ abstract class AbstractViewHelper {
 	 * @api
 	 */
 	public function initialize() {
-
 	}
 
 	/**
@@ -283,7 +282,7 @@ abstract class AbstractViewHelper {
 	 */
 	protected function buildRenderChildrenClosure() {
 		$self = $this;
-		return function () use($self) {
+		return function () use ($self) {
 			return $self->renderChildren();
 		};
 	}
@@ -397,7 +396,6 @@ abstract class AbstractViewHelper {
 	 * @api
 	 */
 	public function initializeArguments() {
-
 	}
 
 	/**
@@ -466,10 +464,7 @@ abstract class AbstractViewHelper {
 	 * @return void
 	 */
 	public function resetState() {
-
 	}
-
 }
-
 
 ?>

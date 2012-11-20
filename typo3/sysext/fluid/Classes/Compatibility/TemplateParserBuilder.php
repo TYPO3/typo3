@@ -14,9 +14,6 @@ namespace TYPO3\CMS\Fluid\Compatibility;
  * Public License for more details.                                       *
  *                                                                        */
 /**
-
- */
-/**
  * Build a template parser.
  * Use this class to get a fresh instance of a correctly initialized Fluid template parser.
  */
@@ -26,15 +23,13 @@ class TemplateParserBuilder {
 	 * Creates a new TemplateParser which is correctly initialized. This is the correct
 	 * way to get a Fluid parser instance.
 	 *
-	 * @return Tx_Fluid_Core_TemplateParser A correctly initialized Template Parser
+	 * @return \TYPO3\CMS\Fluid\Core\Parser\TemplateParser A correctly initialized Template Parser
 	 */
 	static public function build() {
 		$templateParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser');
 		$templateParser->injectObjectManager(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager'));
 		return $templateParser;
 	}
-
 }
-
 
 ?>

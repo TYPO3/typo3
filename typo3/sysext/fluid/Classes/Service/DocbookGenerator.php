@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Fluid\Service;
  * XML Schema (XSD) Generator. Will generate an XML schema which can be used for autocompletion
  * in schema-aware editors like Eclipse XML editor.
  */
-class DocbookGenerator extends Tx_Fluid_Service_AbstractGenerator {
+class DocbookGenerator extends \TYPO3\CMS\Fluid\Compatibility\DocbookGeneratorService {
 
 	/**
 	 * Generate the XML Schema definition for a given namespace.
@@ -51,7 +51,7 @@ class DocbookGenerator extends Tx_Fluid_Service_AbstractGenerator {
 	 *
 	 * @param string $className Class name to generate the schema for.
 	 * @param string $namespace Namespace prefix. Used to split off the first parts of the class name.
-	 * @param SimpleXMLElement $xmlRootNode XML root node where the xsd:element is appended.
+	 * @param \SimpleXMLElement $xmlRootNode XML root node where the xsd:element is appended.
 	 * @return void
 	 */
 	protected function generateXmlForClassName($className, $namespace, \SimpleXMLElement $xmlRootNode) {
@@ -75,7 +75,7 @@ class DocbookGenerator extends Tx_Fluid_Service_AbstractGenerator {
 	 * Initializes the view helper and its arguments, and then reads out the list of arguments.
 	 *
 	 * @param string $className Class name where to add the attribute descriptions
-	 * @param SimpleXMLElement $docbookSection DocBook section to add the attributes to.
+	 * @param \SimpleXMLElement $docbookSection DocBook section to add the attributes to.
 	 * @return void
 	 */
 	protected function addArguments($className, \SimpleXMLElement $docbookSection) {
@@ -107,7 +107,7 @@ class DocbookGenerator extends Tx_Fluid_Service_AbstractGenerator {
 	}
 
 	/**
-	 * @param SimpleXMLElement $parent
+	 * @param \SimpleXMLElement $parent
 	 * @param string $name
 	 * @param string $type
 	 * @param boolean $required
@@ -133,7 +133,7 @@ class DocbookGenerator extends Tx_Fluid_Service_AbstractGenerator {
 	 * CDATA block AND to replace the < and > with their XML entities. (This is IMHO not XML conformant).
 	 *
 	 * @param string $documentation Documentation string to add.
-	 * @param SimpleXMLElement $docbookSection Node to add the documentation to
+	 * @param \SimpleXMLElement $docbookSection Node to add the documentation to
 	 * @return void
 	 */
 	protected function addDocumentation($documentation, \SimpleXMLElement $docbookSection) {
@@ -153,7 +153,7 @@ class DocbookGenerator extends Tx_Fluid_Service_AbstractGenerator {
 
 	/**
 	 * @param string $text
-	 * @param SimpleXMLElement $parentElement
+	 * @param \SimpleXMLElement $parentElement
 	 */
 	protected function addText($text, \SimpleXMLElement $parentElement) {
 		$splitRegex = '/
@@ -187,8 +187,6 @@ class DocbookGenerator extends Tx_Fluid_Service_AbstractGenerator {
 			}
 		}
 	}
-
 }
-
 
 ?>

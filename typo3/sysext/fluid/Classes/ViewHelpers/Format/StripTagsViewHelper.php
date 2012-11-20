@@ -42,8 +42,6 @@ class StripTagsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
 		}
 		return strip_tags($value);
 	}
-
 }
-
 
 ?>

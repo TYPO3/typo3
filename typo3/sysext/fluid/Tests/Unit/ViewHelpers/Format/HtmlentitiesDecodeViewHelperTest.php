@@ -10,9 +10,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-/**
-
- */
 class HtmlentitiesDecodeViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
@@ -96,8 +93,6 @@ class HtmlentitiesDecodeViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 		$actualResult = $this->viewHelper->render($source);
 		$this->assertSame($source, $actualResult);
 	}
-
 }
-
 
 ?>

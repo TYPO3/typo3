@@ -18,9 +18,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Widget\Controller;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-/**
-
- */
 class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController {
 
 	/**
@@ -65,7 +62,7 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 		$this->objects = $this->widgetConfiguration['objects'];
 		$this->configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->configuration, $this->widgetConfiguration['configuration'], TRUE);
 		$this->numberOfObjects = count($this->objects);
-		$this->numberOfPages = ceil($this->numberOfObjects / (int) $this->configuration['itemsPerPage']);
+		$this->numberOfPages = ceil($this->numberOfObjects / (integer) $this->configuration['itemsPerPage']);
 	}
 
 	/**
@@ -74,7 +71,7 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 	 */
 	public function indexAction($currentPage = 1) {
 		// set current page
-		$this->currentPage = (int) $currentPage;
+		$this->currentPage = (integer) $currentPage;
 		if ($this->currentPage < 1) {
 			$this->currentPage = 1;
 		}
@@ -83,7 +80,7 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 			$modifiedObjects = NULL;
 		} else {
 			// modify query
-			$this->itemsPerPage = (int) $this->configuration['itemsPerPage'];
+			$this->itemsPerPage = (integer) $this->configuration['itemsPerPage'];
 			$query = $this->objects->getQuery();
 			$query->setLimit($this->itemsPerPage);
 			$this->offset = $this->itemsPerPage * ($this->currentPage - 1);
@@ -125,8 +122,6 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 		}
 		return $pagination;
 	}
-
 }
-
 
 ?>

@@ -10,9 +10,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-/**
-
- */
 class CurrencyViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
@@ -134,8 +131,6 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$actualResult = $viewHelper->render();
 		$this->assertEquals('12,00', $actualResult);
 	}
-
 }
-
 
 ?>

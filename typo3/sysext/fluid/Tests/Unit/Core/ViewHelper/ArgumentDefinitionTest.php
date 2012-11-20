@@ -24,15 +24,13 @@ class ArgumentDefinitionTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$type = 'string';
 		$isRequired = TRUE;
 		$isMethodParameter = TRUE;
-		$argumentDefinition = new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition($name, $type, $description, $isRequired, null, $isMethodParameter);
+		$argumentDefinition = new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition($name, $type, $description, $isRequired, NULL, $isMethodParameter);
 		$this->assertEquals($argumentDefinition->getName(), $name, 'Name could not be retrieved correctly.');
 		$this->assertEquals($argumentDefinition->getDescription(), $description, 'Description could not be retrieved correctly.');
 		$this->assertEquals($argumentDefinition->getType(), $type, 'Type could not be retrieved correctly');
 		$this->assertEquals($argumentDefinition->isRequired(), $isRequired, 'Required flag could not be retrieved correctly.');
 		$this->assertEquals($argumentDefinition->isMethodParameter(), $isMethodParameter, 'isMethodParameter flag could not be retrieved correctly.');
 	}
-
 }
-
 
 ?>

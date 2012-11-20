@@ -45,8 +45,6 @@ class WidgetRequestTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$widgetRequest->setWidgetContext($widgetContext);
 		$this->assertSame($widgetContext, $widgetRequest->getWidgetContext());
 	}
-
 }
-
 
 ?>

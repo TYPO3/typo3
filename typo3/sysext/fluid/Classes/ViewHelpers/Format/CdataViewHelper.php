@@ -61,8 +61,6 @@ class CdataViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 		}
 		return sprintf('<![CDATA[%s]]>', $value);
 	}
-
 }
-
 
 ?>

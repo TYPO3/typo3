@@ -22,8 +22,8 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper\Facets;
  *
  * See Tx_Fluid_ViewHelpers_IfViewHelper for an example how it is used.
  */
-interface ChildNodeAccessInterface
-{
+interface ChildNodeAccessInterface {
+
 	/**
 	 * Sets the direct child nodes of the current syntax tree node.
 	 *
@@ -31,7 +31,6 @@ interface ChildNodeAccessInterface
 	 * @return void
 	 */
 	public function setChildNodes(array $childNodes);
-
 }
 
 ?>

@@ -50,6 +50,7 @@ class TemplateVariableContainer implements \ArrayAccess {
 	 *
 	 * @param string $identifier Identifier of the variable to add
 	 * @param mixed $value The variable's value
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
 	 * @return void
 	 * @api
 	 */
@@ -67,7 +68,8 @@ class TemplateVariableContainer implements \ArrayAccess {
 	 * Get a variable from the context. Throws exception if variable is not found in context.
 	 *
 	 * @param string $identifier
-	 * @return variable The variable identified by $identifier
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
+	 * @return mixed The variable identified by $identifier
 	 * @api
 	 */
 	public function get($identifier) {
@@ -84,6 +86,7 @@ class TemplateVariableContainer implements \ArrayAccess {
 	 * Remove a variable from context. Throws exception if variable is not found in context.
 	 *
 	 * @param string $identifier The identifier to remove
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
 	 * @return void
 	 * @api
 	 */
@@ -170,13 +173,11 @@ class TemplateVariableContainer implements \ArrayAccess {
 	 * Get a variable from the context. Throws exception if variable is not found in context.
 	 *
 	 * @param string $identifier
-	 * @return variable The variable identified by $identifier
+	 * @return mixed The variable identified by $identifier
 	 */
 	public function offsetGet($identifier) {
 		return $this->get($identifier);
 	}
-
 }
-
 
 ?>

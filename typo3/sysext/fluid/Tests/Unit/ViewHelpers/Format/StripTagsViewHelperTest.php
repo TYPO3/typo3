@@ -10,9 +10,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-/**
-
- */
 class StripTagsViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
@@ -79,8 +76,6 @@ class StripTagsViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$actualResult = $this->viewHelper->render($source);
 		$this->assertSame($source, $actualResult);
 	}
-
 }
-
 
 ?>

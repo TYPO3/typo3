@@ -65,9 +65,6 @@ class WidgetRequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 	 */
 	protected $postBackup;
 
-	/**
-
-	 */
 	public function setUp() {
 		$this->serverBackup = $_SERVER;
 		$this->getBackup = $_GET;
@@ -168,8 +165,6 @@ class WidgetRequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		$actual = $this->widgetRequestBuilder->build();
 		$this->assertSame($expected, $actual);
 	}
-
 }
-
 
 ?>

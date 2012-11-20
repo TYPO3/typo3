@@ -76,7 +76,7 @@ class ForViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper 
 
 	/**
 	 * @param array $arguments
-	 * @param Closure $renderChildrenClosure
+	 * @param \Closure $renderChildrenClosure
 	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return string
 	 */
@@ -126,8 +126,6 @@ class ForViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper 
 		}
 		return $output;
 	}
-
 }
-
 
 ?>

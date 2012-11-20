@@ -162,8 +162,8 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 	}
 
 	/**
- 	 * @test
- 	 */
+	 * @test
+	 */
 	public function getValueConvertsObjectsToIdentifiersByDefault() {
 		$mockObject = $this->getMock('stdClass');
 
@@ -481,8 +481,6 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 		$actual = $formViewHelper->_call('renderHiddenFieldForEmptyValue');
 		$this->assertEquals($expected, $actual);
 	}
-
 }
-
 
 ?>

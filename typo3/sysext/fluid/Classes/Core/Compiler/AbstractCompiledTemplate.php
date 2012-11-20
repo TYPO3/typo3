@@ -94,8 +94,6 @@ abstract class AbstractCompiledTemplate implements \TYPO3\CMS\Fluid\Core\Parser\
 		}
 		return static::$defaultEncoding;
 	}
-
 }
-
 
 ?>

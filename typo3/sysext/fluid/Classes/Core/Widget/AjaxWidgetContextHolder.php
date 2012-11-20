@@ -104,8 +104,6 @@ class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface {
 			$GLOBALS['BE_USER']->writeUc();
 		}
 	}
-
 }
-
 
 ?>

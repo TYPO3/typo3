@@ -13,8 +13,8 @@ namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree;
 /**
  * Node in the syntax tree.
  */
-interface NodeInterface
-{
+interface NodeInterface {
+
 	/**
 	 * Evaluate all child nodes and return the evaluated results.
 	 *
@@ -45,7 +45,6 @@ interface NodeInterface
 	 * @return mixed Evaluated node
 	 */
 	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext);
-
 }
 
 ?>

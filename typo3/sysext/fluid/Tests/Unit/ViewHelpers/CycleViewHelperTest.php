@@ -113,8 +113,6 @@ class CycleViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 		$this->viewHelper->render($traversableObject, 'innerVariable');
 		$this->viewHelper->render($traversableObject, 'innerVariable');
 	}
-
 }
-
 
 ?>

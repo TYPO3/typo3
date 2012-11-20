@@ -77,6 +77,7 @@ class GroupedForViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 	 * @param string $as The name of the iteration variable
 	 * @param string $groupBy Group by this property
 	 * @param string $groupKey The name of the variable to store the current group
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return string Rendered string
 	 * @api
 	 */
@@ -107,6 +108,7 @@ class GroupedForViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 	 *
 	 * @param array $elements The array / traversable object to be grouped
 	 * @param string $groupBy Group by this property
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return array The grouped array in the form array('keys' => array('key1' => [key1value], 'key2' => [key2value], ...), 'values' => array('key1' => array([key1value] => [element1]), ...), ...)
 	 */
 	protected function groupElements(array $elements, $groupBy) {
@@ -128,8 +130,6 @@ class GroupedForViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 		}
 		return $groups;
 	}
-
 }
-
 
 ?>

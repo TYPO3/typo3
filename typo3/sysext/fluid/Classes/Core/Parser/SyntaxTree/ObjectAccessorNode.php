@@ -91,8 +91,6 @@ class ObjectAccessorNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\Abstrac
 		}
 		return $subject;
 	}
-
 }
-
 
 ?>

@@ -54,8 +54,6 @@ class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendView
 	public function render($uri, $icon = 'actions-document-close', $title = '') {
 		return '<a href="' . $uri . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($icon, array('title' => $title)) . '</a>';
 	}
-
 }
-
 
 ?>

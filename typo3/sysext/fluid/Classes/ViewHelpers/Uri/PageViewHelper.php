@@ -45,7 +45,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * @param integer $page target PID
+	 * @param integer|NULL $pageUid target PID
 	 * @param array $additionalParams query parameters to be attached to the resulting URI
 	 * @param integer $pageType type of the target page. See typolink.parameter
 	 * @param boolean $noCache set this to disable caching for the target page. You should not need this.
@@ -62,8 +62,6 @@ class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 		$uri = $uriBuilder->setTargetPageUid($pageUid)->setTargetPageType($pageType)->setNoCache($noCache)->setUseCacheHash(!$noCacheHash)->setSection($section)->setLinkAccessRestrictedPages($linkAccessRestrictedPages)->setArguments($additionalParams)->setCreateAbsoluteUri($absolute)->setAddQueryString($addQueryString)->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)->build();
 		return $uri;
 	}
-
 }
-
 
 ?>

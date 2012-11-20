@@ -55,10 +55,7 @@ class CommentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 	 * @api
 	 */
 	public function render() {
-
 	}
-
 }
-
 
 ?>

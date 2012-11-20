@@ -56,8 +56,6 @@ class HtmlspecialcharsViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\Abs
 		$initializationPhpCode .= sprintf('%s = (%s[\'value\'] !== NULL ? %s[\'value\'] : %s());', $valueVariableName, $argumentsVariableName, $argumentsVariableName, $renderChildrenClosureVariableName) . chr(10);
 		return sprintf('(!is_string(%s) ? %s : htmlspecialchars(%s, (%s[\'keepQuotes\'] ? ENT_NOQUOTES : ENT_COMPAT), (%s[\'encoding\'] !== NULL ? %s[\'encoding\'] : TYPO3\\CMS\\Fluid\\Core\\Compiler\\AbstractCompiledTemplate::resolveDefaultEncoding()), %s[\'doubleEncode\']))', $valueVariableName, $valueVariableName, $valueVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName, $argumentsVariableName);
 	}
-
 }
-
 
 ?>

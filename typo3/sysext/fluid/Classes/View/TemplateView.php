@@ -101,7 +101,6 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 	}
 
 	public function initializeView() {
-
 	}
 
 	// Here, the backporter can insert a constructor method, which is needed for Fluid v4.
@@ -470,8 +469,6 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		$templateIdentifier = sprintf('%s_%s_%s_%s', $extensionName, $controllerName, $prefix, sha1($pathAndFilename . '|' . $templateModifiedTimestamp));
 		return $templateIdentifier;
 	}
-
 }
-
 
 ?>

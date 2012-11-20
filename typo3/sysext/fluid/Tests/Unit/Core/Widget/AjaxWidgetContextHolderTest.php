@@ -31,8 +31,6 @@ class AjaxWidgetContextHolderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 	public function foo() {
 		$this->markTestIncomplete();
 	}
-
 }
-
 
 ?>

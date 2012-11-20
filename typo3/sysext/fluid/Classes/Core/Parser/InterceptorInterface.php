@@ -14,12 +14,13 @@ namespace TYPO3\CMS\Fluid\Core\Parser;
  * An interceptor interface. Interceptors are used in the parsing stage to change
  * the syntax tree of a template, e.g. by adding viewhelper nodes.
  */
-interface InterceptorInterface
-{
+interface InterceptorInterface {
+
 	const INTERCEPT_OPENING_VIEWHELPER = 1;
 	const INTERCEPT_CLOSING_VIEWHELPER = 2;
 	const INTERCEPT_TEXT = 3;
 	const INTERCEPT_OBJECTACCESSOR = 4;
+
 	/**
 	 * The interceptor can process the given node at will and must return a node
 	 * that will be used in place of the given node.
@@ -37,7 +38,6 @@ interface InterceptorInterface
 	 * @return array Array of INTERCEPT_* constants
 	 */
 	public function getInterceptionPoints();
-
 }
 
 ?>

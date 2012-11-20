@@ -55,7 +55,7 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 	protected $tagName = 'img';
 
 	/**
-	 * @var t3lib_fe contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
+	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
 	 */
 	protected $tsfeBackup;
 
@@ -103,6 +103,7 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 	 * @param integer $minHeight minimum height of the image
 	 * @param integer $maxWidth maximum width of the image
 	 * @param integer $maxHeight maximum height of the image
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return string rendered tag.
 	 */
 	public function render($src, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL) {
@@ -177,7 +178,6 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 		$GLOBALS['TSFE'] = $this->tsfeBackup;
 		chdir($this->workingDirectoryBackup);
 	}
-
 }
 
 ?>

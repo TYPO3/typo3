@@ -14,22 +14,22 @@ namespace TYPO3\CMS\Fluid\Core\Parser;
  * This interface is returned by Tx_Fluid_Core_Parser_TemplateParser->parse()
  * method and is a parsed template
  */
-interface ParsedTemplateInterface
-{
+interface ParsedTemplateInterface {
+
 	/**
 	 * Render the parsed template with rendering context
 	 *
 	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext The rendering context to use
-	 * @return Rendered string
+	 * @return string Rendered string
 	 */
 	public function render(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext);
 
 	/**
 	 * Returns a variable container used in the PostParse Facet.
+	 * TODO: remove
 	 *
 	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
 	 */
-	// TODO remove
 	public function getVariableContainer();
 
 	/**
@@ -62,7 +62,6 @@ interface ParsedTemplateInterface
 	 * @return boolean TRUE if the template is already compiled, FALSE otherwise
 	 */
 	public function isCompiled();
-
 }
 
 ?>

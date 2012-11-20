@@ -21,9 +21,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 /**
-
- */
-/**
  * Form view helper. Generates a <form> Tag.
  *
  * = Basic usage =
@@ -423,8 +420,6 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 			$this->viewHelperVariableContainer->remove('TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\CheckboxViewHelper', 'checkboxFieldNames');
 		}
 	}
-
 }
-
 
 ?>

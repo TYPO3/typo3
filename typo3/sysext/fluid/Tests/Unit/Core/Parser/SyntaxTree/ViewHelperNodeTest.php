@@ -102,9 +102,9 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function initializeArgumentsAndRenderIsCalledWithCorrectArguments() {
 		$arguments = array(
-			'param0' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param1', 'string', 'Hallo', TRUE, null, FALSE),
-			'param1' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param1', 'string', 'Hallo', TRUE, null, TRUE),
-			'param2' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param2', 'string', 'Hallo', TRUE, null, TRUE)
+			'param0' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param1', 'string', 'Hallo', TRUE, NULL, FALSE),
+			'param1' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param1', 'string', 'Hallo', TRUE, NULL, TRUE),
+			'param2' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param2', 'string', 'Hallo', TRUE, NULL, TRUE)
 		);
 		$mockViewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\AbstractViewHelper', array('initializeArgumentsAndRender', 'prepareArguments'));
 		$mockViewHelper->expects($this->any())->method('prepareArguments')->will($this->returnValue($arguments));
@@ -136,8 +136,6 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$viewHelperNode->evaluate($this->renderingContext);
 		$viewHelperNode->evaluate($this->renderingContext);
 	}
-
 }
-
 
 ?>

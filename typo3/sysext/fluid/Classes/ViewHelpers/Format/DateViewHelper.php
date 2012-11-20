@@ -77,6 +77,7 @@ class DateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 *
 	 * @param mixed $date either a DateTime object or a string that is accepted by DateTime constructor
 	 * @param string $format Format String which is taken to format the Date/Time
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return string Formatted date
 	 * @api
 	 */
@@ -96,8 +97,6 @@ class DateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 		}
 		return $date->format($format);
 	}
-
 }
-
 
 ?>

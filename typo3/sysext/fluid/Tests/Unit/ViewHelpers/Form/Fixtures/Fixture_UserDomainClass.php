@@ -24,7 +24,7 @@ class Fixture_UserDomainClass {
 	/**
 	 * Constructor.
 	 *
-	 * @param int $id
+	 * @param integer $id
 	 * @param string $firstName
 	 * @param string $lastName
 	 */
@@ -60,8 +60,6 @@ class Fixture_UserDomainClass {
 	public function getLastName() {
 		return $this->lastName;
 	}
-
 }
-
 
 ?>

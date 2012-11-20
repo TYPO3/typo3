@@ -49,8 +49,6 @@ class HtmlentitiesDecodeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\A
 		$flags = $keepQuotes ? ENT_NOQUOTES : ENT_COMPAT;
 		return html_entity_decode($value, $flags, $encoding);
 	}
-
 }
-
 
 ?>

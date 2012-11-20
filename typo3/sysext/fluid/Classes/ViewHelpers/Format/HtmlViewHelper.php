@@ -14,9 +14,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * Public License for more details.                                       *
  *                                                                        */
 /**
-
- */
-/**
  * Renders a string by passing it to a TYPO3 parseFunc.
  * You can either specify a path to the TypoScript setting or set the parseFunc options directly.
  * By default lib.parseFunc_RTE is used to parse the string.
@@ -50,12 +47,12 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 class HtmlViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * @var 	tslib_cObj
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	protected $contentObject;
 
 	/**
-	 * @var 	t3lib_fe contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
+	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
 	 */
 	protected $tsfeBackup;
 
@@ -84,7 +81,7 @@ class HtmlViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 
 	/**
 	 * @param string $parseFuncTSPath path to TypoScript parseFunc setup.
-	 * @return the parsed string.
+	 * @return string the parsed string.
 	 */
 	public function render($parseFuncTSPath = 'lib.parseFunc_RTE') {
 		if (TYPO3_MODE === 'BE') {
@@ -119,8 +116,6 @@ class HtmlViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	protected function resetFrontendEnvironment() {
 		$GLOBALS['TSFE'] = $this->tsfeBackup;
 	}
-
 }
-
 
 ?>

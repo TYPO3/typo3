@@ -54,8 +54,6 @@ class CountViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 		}
 		return count($subject);
 	}
-
 }
-
 
 ?>

@@ -142,22 +142,22 @@ class StandaloneViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function objectManagerCallback($className) {
 		switch ($className) {
-		case 'TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface':
-			return $this->mockConfigurationManager;
-		case 'TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser':
-			return $this->mockTemplateParser;
-		case 'TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext':
-			return $this->mockRenderingContext;
-		case 'TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request':
-			return $this->mockRequest;
-		case 'TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder':
-			return $this->mockUriBuilder;
-		case 'TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext':
-			return $this->mockControllerContext;
-		case 'TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FlashMessageContainer':
-			return $this->mockFlashMessageContainer;
-		case 'TYPO3\\CMS\\Fluid\\Core\\Compiler\\TemplateCompiler':
-			return $this->mockTemplateCompiler;
+			case 'TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface':
+				return $this->mockConfigurationManager;
+			case 'TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser':
+				return $this->mockTemplateParser;
+			case 'TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContext':
+				return $this->mockRenderingContext;
+			case 'TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request':
+				return $this->mockRequest;
+			case 'TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder':
+				return $this->mockUriBuilder;
+			case 'TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext':
+				return $this->mockControllerContext;
+			case 'TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FlashMessageContainer':
+				return $this->mockFlashMessageContainer;
+			case 'TYPO3\\CMS\\Fluid\\Core\\Compiler\\TemplateCompiler':
+				return $this->mockTemplateCompiler;
 		}
 	}
 
@@ -446,8 +446,6 @@ class StandaloneViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$actualResult = $this->view->_call('getPartialSource', 'LayoutFixture');
 		$this->assertEquals($expectedResult, $actualResult);
 	}
-
 }
-
 
 ?>

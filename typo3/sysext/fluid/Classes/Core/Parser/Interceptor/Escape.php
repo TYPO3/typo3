@@ -86,8 +86,6 @@ class Escape implements \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface {
 			\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_OBJECTACCESSOR
 		);
 	}
-
 }
-
 
 ?>

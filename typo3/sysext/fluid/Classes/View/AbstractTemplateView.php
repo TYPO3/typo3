@@ -23,6 +23,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 	const RENDERING_TEMPLATE = 1;
 	const RENDERING_PARTIAL = 2;
 	const RENDERING_LAYOUT = 3;
+
 	/**
 	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
 	 */
@@ -122,7 +123,6 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 	}
 
 	public function initializeView() {
-
 	}
 
 	// Here, the backporter can insert the initializeView method, which is needed for Fluid v4.
@@ -363,7 +363,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 	/**
 	 * Start a new nested rendering. Pushes the given information onto the $renderingStack.
 	 *
-	 * @param int $type one of the RENDERING_* constants
+	 * @param integer $type one of the RENDERING_* constants
 	 * @param \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterface $parsedTemplate
 	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return void
@@ -425,8 +425,6 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 	public function canRender(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext) {
 		return TRUE;
 	}
-
 }
-
 
 ?>

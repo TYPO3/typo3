@@ -14,9 +14,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * Public License for more details.                                       *
  *                                                                        */
 /**
-
- */
-/**
  * Use this view helper to crop the text between its opening and closing tags.
  *
  * = Examples =
@@ -60,12 +57,12 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 class CropViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * @var 	tslib_cObj
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	protected $contentObject;
 
 	/**
-	 * @var 	t3lib_fe contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
+	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
 	 */
 	protected $tsfeBackup;
 
@@ -88,7 +85,7 @@ class CropViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 *
 	 * @param integer $maxCharacters Place where to truncate the string
 	 * @param string $append What to append, if truncation happened
-	 * @param boolean $respectBoundaries If TRUE and division is in the middle of a word, the remains of that word is removed.
+	 * @param boolean $respectWordBoundaries If TRUE and division is in the middle of a word, the remains of that word is removed.
 	 * @param boolean $respectHtml If TRUE the cropped string will respect HTML tags and entities. Technically that means, that cropHTML() is called rather than crop()
 	 * @return string cropped text
 	 */
@@ -144,8 +141,6 @@ class CropViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	protected function resetFrontendEnvironment() {
 		$GLOBALS['TSFE'] = $this->tsfeBackup;
 	}
-
 }
-
 
 ?>

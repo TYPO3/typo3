@@ -60,8 +60,6 @@ class ParsingStateTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$renderedValue = $this->parsingState->render($renderingContext);
 		$this->assertEquals($renderedValue, 'T3DD09 Rock!', 'The rendered value of the Root Node is not returned by the ParsingState.');
 	}
-
 }
-
 
 ?>

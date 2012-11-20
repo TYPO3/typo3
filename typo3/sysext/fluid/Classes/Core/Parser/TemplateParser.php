@@ -284,6 +284,7 @@ class TemplateParser {
 	 * TemplateParser directly.
 	 *
 	 * @param string $templateString The template to parse as a string
+	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 * @return \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterface Parsed template
 	 */
 	public function parse($templateString) {
@@ -326,6 +327,7 @@ class TemplateParser {
 	 * $this->namespaces.
 	 *
 	 * @param string $templateString Template string to extract the namespaces from
+	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 * @return string The updated template string without namespace declarations inside
 	 */
 	protected function extractNamespaceDefinitions($templateString) {
@@ -359,6 +361,7 @@ class TemplateParser {
 	 * Build object tree from the split template
 	 *
 	 * @param array $splitTemplate The split template, so that every tag with a namespace declaration is already a separate array element.
+	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 * @return \TYPO3\CMS\Fluid\Core\Parser\ParsingState
 	 */
 	protected function buildObjectTree($splitTemplate) {
@@ -413,6 +416,7 @@ class TemplateParser {
 	 * @param string $namespaceIdentifier Namespace identifier - being looked up in $this->namespaces
 	 * @param string $methodIdentifier Method identifier
 	 * @param array $argumentsObjectTree Arguments object tree
+	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 * @return void
 	 */
 	protected function initializeViewHelperAndAddItToStack(\TYPO3\CMS\Fluid\Core\Parser\ParsingState $state, $namespaceIdentifier, $methodIdentifier, $argumentsObjectTree) {
@@ -609,10 +613,10 @@ class TemplateParser {
 	/**
 	 * Post process the arguments for the ViewHelpers in the object accessor
 	 * syntax. We need to convert an array into an array of (only) nodes
+	 * TODO: This method should become superflous once the rest has been refactored, so that this code is not needed.
 	 *
 	 * @param array $arguments The arguments to be processed
 	 * @return array the processed array
-	 * @todo This method should become superflous once the rest has been refactored, so that this code is not needed.
 	 */
 	protected function postProcessArgumentsForObjectAccessor(array $arguments) {
 		foreach ($arguments as $argumentName => $argumentValue) {
@@ -656,7 +660,7 @@ class TemplateParser {
 	 * no { or < is found, then we just return a TextNode.
 	 *
 	 * @param string $argumentString
-	 * @return ArgumentObject the corresponding argument object tree.
+	 * @return mixed ArgumentObject the corresponding argument object tree.
 	 */
 	protected function buildArgumentObjectTree($argumentString) {
 		if (strpos($argumentString, '{') === FALSE && strpos($argumentString, '<') === FALSE) {
@@ -678,12 +682,12 @@ class TemplateParser {
 	 */
 	protected function unquoteString($quotedValue) {
 		switch ($quotedValue[0]) {
-		case '"':
-			$value = str_replace('\\"', '"', trim($quotedValue, '"'));
-			break;
-		case '\'':
-			$value = str_replace('\\\'', '\'', trim($quotedValue, '\''));
-			break;
+			case '"':
+				$value = str_replace('\\"', '"', trim($quotedValue, '"'));
+				break;
+			case '\'':
+				$value = str_replace('\\\'', '\'', trim($quotedValue, '\''));
+				break;
 		}
 		return str_replace('\\\\', '\\', $value);
 	}
@@ -746,7 +750,8 @@ class TemplateParser {
 	 * - sub-arrays
 	 *
 	 * @param string $arrayText Array text
-	 * @return Tx_Fluid_ArrayNode the array node built up
+	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
+	 * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface the array node built up
 	 */
 	protected function recursiveArrayHandler($arrayText) {
 		$matches = array();
@@ -785,8 +790,6 @@ class TemplateParser {
 		$this->callInterceptor($node, \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_TEXT, $state);
 		$state->getNodeFromStack()->addChildNode($node);
 	}
-
 }
-
 
 ?>

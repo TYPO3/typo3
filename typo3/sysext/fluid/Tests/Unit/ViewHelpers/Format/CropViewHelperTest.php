@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-/**
-
- */
 class CropViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
@@ -85,8 +82,6 @@ class CropViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$actualResult = $this->viewHelper->render(123, '...', TRUE, FALSE);
 		$this->assertEquals('Cropped Content', $actualResult);
 	}
-
 }
-
 
 ?>

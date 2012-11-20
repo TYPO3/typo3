@@ -62,8 +62,6 @@ class PasswordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
 		$this->setErrorClassAttribute();
 		return $this->tag->render();
 	}
-
 }
-
 
 ?>

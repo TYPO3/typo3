@@ -29,8 +29,6 @@ class BaseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$actualResult = $viewHelper->render();
 		$this->assertSame($expectedResult, $actualResult);
 	}
-
 }
-
 
 ?>

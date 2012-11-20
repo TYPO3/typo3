@@ -47,6 +47,7 @@ class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 	/**
 	 * Get the widget rendering context, or throw an exception if it cannot be found.
 	 *
+	 * @throws \TYPO3\CMS\Fluid\Core\Widget\Exception\RenderingContextNotFoundException
 	 * @return \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface
 	 */
 	protected function getWidgetRenderingContext() {
@@ -65,6 +66,7 @@ class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 	}
 
 	/**
+	 * @throws \TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetRequestNotFoundException
 	 * @return \TYPO3\CMS\Fluid\Core\Widget\WidgetContext
 	 */
 	protected function getWidgetContext() {
@@ -100,8 +102,6 @@ class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 			$templateVariableContainer->remove($identifier);
 		}
 	}
-
 }
-
 
 ?>

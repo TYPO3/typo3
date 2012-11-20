@@ -90,8 +90,6 @@ class RenderChildrenViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpe
 		$widgetContext->expects($this->any())->method('getViewHelperChildNodes')->will($this->returnValue(NULL));
 		$this->viewHelper->render();
 	}
-
 }
-
 
 ?>

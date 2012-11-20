@@ -64,8 +64,6 @@ class SubmitViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 		$this->tag->addAttribute('value', $this->getValue());
 		return $this->tag->render();
 	}
-
 }
-
 
 ?>

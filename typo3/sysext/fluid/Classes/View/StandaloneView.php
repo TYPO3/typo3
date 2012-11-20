@@ -395,8 +395,6 @@ class StandaloneView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		$templateIdentifier = str_replace('/', '_', str_replace('.', '_', $templateIdentifier));
 		return $templateIdentifier;
 	}
-
 }
-
 
 ?>

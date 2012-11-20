@@ -82,6 +82,7 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 	 * $this->comparator and $this->syntaxTreeNode.
 	 *
 	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode
+	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 */
 	public function __construct(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode) {
 		$childNodes = $syntaxTreeNode->getChildNodes();
@@ -184,53 +185,55 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 	 *
 	 * This function must be static public, as it is also directly called from cached templates.
 	 *
-	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-	 * @return boolean TRUE if comparison of left and right side using the comparator emit TRUE, false otherwise
+	 * @param string $comparator
+	 * @param mixed $evaluatedLeftSide
+	 * @param mixed $evaluatedRightSide
 	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
+	 * @return boolean TRUE if comparison of left and right side using the comparator emit TRUE, false otherwise
 	 */
 	static public function evaluateComparator($comparator, $evaluatedLeftSide, $evaluatedRightSide) {
 		switch ($comparator) {
-		case '==':
-			if (is_object($evaluatedLeftSide) || is_object($evaluatedRightSide)) {
-				return $evaluatedLeftSide === $evaluatedRightSide;
-			} else {
-				return $evaluatedLeftSide == $evaluatedRightSide;
-			}
-			break;
-		case '!=':
-			if (is_object($evaluatedLeftSide) || is_object($evaluatedRightSide)) {
-				return $evaluatedLeftSide !== $evaluatedRightSide;
-			} else {
-				return $evaluatedLeftSide != $evaluatedRightSide;
-			}
-			break;
-		case '%':
-			if (!self::isComparable($evaluatedLeftSide, $evaluatedRightSide)) {
-				return FALSE;
-			}
-			return (bool) ((int) $evaluatedLeftSide % (int) $evaluatedRightSide);
-		case '>':
-			if (!self::isComparable($evaluatedLeftSide, $evaluatedRightSide)) {
-				return FALSE;
-			}
-			return $evaluatedLeftSide > $evaluatedRightSide;
-		case '>=':
-			if (!self::isComparable($evaluatedLeftSide, $evaluatedRightSide)) {
-				return FALSE;
-			}
-			return $evaluatedLeftSide >= $evaluatedRightSide;
-		case '<':
-			if (!self::isComparable($evaluatedLeftSide, $evaluatedRightSide)) {
-				return FALSE;
-			}
-			return $evaluatedLeftSide < $evaluatedRightSide;
-		case '<=':
-			if (!self::isComparable($evaluatedLeftSide, $evaluatedRightSide)) {
-				return FALSE;
-			}
-			return $evaluatedLeftSide <= $evaluatedRightSide;
-		default:
-			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Comparator "' . $comparator . '" is not implemented.', 1244234398);
+			case '==':
+				if (is_object($evaluatedLeftSide) || is_object($evaluatedRightSide)) {
+					return $evaluatedLeftSide === $evaluatedRightSide;
+				} else {
+					return $evaluatedLeftSide == $evaluatedRightSide;
+				}
+				break;
+			case '!=':
+				if (is_object($evaluatedLeftSide) || is_object($evaluatedRightSide)) {
+					return $evaluatedLeftSide !== $evaluatedRightSide;
+				} else {
+					return $evaluatedLeftSide != $evaluatedRightSide;
+				}
+				break;
+			case '%':
+				if (!self::isComparable($evaluatedLeftSide, $evaluatedRightSide)) {
+					return FALSE;
+				}
+				return (boolean) ((integer) $evaluatedLeftSide % (integer) $evaluatedRightSide);
+			case '>':
+				if (!self::isComparable($evaluatedLeftSide, $evaluatedRightSide)) {
+					return FALSE;
+				}
+				return $evaluatedLeftSide > $evaluatedRightSide;
+			case '>=':
+				if (!self::isComparable($evaluatedLeftSide, $evaluatedRightSide)) {
+					return FALSE;
+				}
+				return $evaluatedLeftSide >= $evaluatedRightSide;
+			case '<':
+				if (!self::isComparable($evaluatedLeftSide, $evaluatedRightSide)) {
+					return FALSE;
+				}
+				return $evaluatedLeftSide < $evaluatedRightSide;
+			case '<=':
+				if (!self::isComparable($evaluatedLeftSide, $evaluatedRightSide)) {
+					return FALSE;
+				}
+				return $evaluatedLeftSide <= $evaluatedRightSide;
+			default:
+				throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Comparator "' . $comparator . '" is not implemented.', 1244234398);
 		}
 	}
 
@@ -240,6 +243,8 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 	 * only leaving out "array" with "anything" and "object" with anything; as we specify
 	 * that arrays and objects are incomparable with anything else than their type.
 	 *
+	 * @param mixed $evaluatedLeftSide
+	 * @param mixed $evaluatedRightSide
 	 * @return boolean TRUE if the operands can be compared using arithmetic operators, FALSE otherwise.
 	 */
 	static protected function isComparable($evaluatedLeftSide, $evaluatedRightSide) {
@@ -302,8 +307,6 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 		}
 		return FALSE;
 	}
-
 }
-
 
 ?>

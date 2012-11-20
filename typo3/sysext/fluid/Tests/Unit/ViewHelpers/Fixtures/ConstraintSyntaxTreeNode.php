@@ -31,10 +31,7 @@ class ConstraintSyntaxTreeNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\V
 	}
 
 	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
-
 	}
-
 }
-
 
 ?>

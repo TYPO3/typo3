@@ -90,7 +90,7 @@ class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractCondi
 		}
 		if (is_numeric($role)) {
 			foreach ($GLOBALS['BE_USER']->userGroups as $userGroup) {
-				if ((int) $userGroup['uid'] === (int) $role) {
+				if ((integer) $userGroup['uid'] === (integer) $role) {
 					return TRUE;
 				}
 			}
@@ -103,8 +103,6 @@ class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractCondi
 		}
 		return FALSE;
 	}
-
 }
-
 
 ?>

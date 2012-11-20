@@ -68,8 +68,6 @@ class ExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
 		$this->tag->forceClosingTag(TRUE);
 		return $this->tag->render();
 	}
-
 }
-
 
 ?>

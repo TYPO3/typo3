@@ -48,8 +48,6 @@ abstract class FormFieldViewHelperBaseTestcase extends \TYPO3\CMS\Fluid\Tests\Un
 		$viewHelper->injectConfigurationManager($this->mockConfigurationManager);
 		parent::injectDependenciesIntoViewHelper($viewHelper);
 	}
-
 }
-
 
 ?>

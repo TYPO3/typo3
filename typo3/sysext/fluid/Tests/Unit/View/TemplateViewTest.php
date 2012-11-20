@@ -113,10 +113,11 @@ class TemplateViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * Helper to build mock controller context needed to test expandGenericPathPattern.
 	 *
-	 * @param $packageKey
-	 * @param $subPackageKey
-	 * @param $controllerClassName
-	 * @param $format
+	 * @param string $packageKey
+	 * @param string $subPackageKey
+	 * @param string $controllerName
+	 * @param string $format
+	 * @return \PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected function setupMockControllerContextForPathResolving($packageKey, $subPackageKey, $controllerName, $format) {
 		$controllerObjectName = "TYPO3\\{$packageKey}\\" . ($subPackageKey != $subPackageKey . '\\' ?: '') . 'Controller\\' . $controllerName . 'Controller';
@@ -208,8 +209,6 @@ class TemplateViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$templateView->_set('templatePathAndFilename', 'vfs://MyTemplates/MyCoolAction.html');
 		$this->assertSame('contentsOfMyCoolAction', $templateView->_call('getTemplateSource'));
 	}
-
 }
-
 
 ?>

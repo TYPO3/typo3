@@ -13,13 +13,8 @@ namespace TYPO3\CMS\Fluid;
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
-/**
-
- */
 class Exception extends \Exception {
 
-
 }
-
 
 ?>

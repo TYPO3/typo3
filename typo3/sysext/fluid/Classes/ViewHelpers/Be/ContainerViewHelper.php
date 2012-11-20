@@ -87,7 +87,7 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 			$pageRenderer->loadScriptaculous($scriptaculousModule);
 		}
 		if ($loadExtJs) {
-			$pageRenderer->loadExtJS(true, $loadExtJsTheme, $extJsAdapter);
+			$pageRenderer->loadExtJS(TRUE, $loadExtJsTheme, $extJsAdapter);
 			if ($enableExtJsDebug) {
 				$pageRenderer->enableExtJsDebug();
 			}
@@ -103,8 +103,6 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 		$output .= $doc->endPage();
 		return $output;
 	}
-
 }
-
 
 ?>

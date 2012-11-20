@@ -88,8 +88,6 @@ class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFiel
 		$this->setErrorClassAttribute();
 		return $this->tag->render();
 	}
-
 }
-
 
 ?>

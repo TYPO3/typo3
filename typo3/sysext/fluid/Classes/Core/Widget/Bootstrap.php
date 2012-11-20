@@ -60,6 +60,7 @@ class Bootstrap {
 	/**
 	 * Initializes the Object framework.
 	 *
+	 * @param array $configuration
 	 * @return void
 	 * @see initialize()
 	 */
@@ -91,8 +92,6 @@ class Bootstrap {
 			}
 		}
 	}
-
 }
-
 
 ?>

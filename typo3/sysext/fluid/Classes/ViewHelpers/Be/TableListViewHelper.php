@@ -44,9 +44,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  * Clicking on a username will open the TYPO3 info popup for the respective record
  * </output>
  */
-require_once PATH_typo3 . 'class.db_list.inc';
-require_once PATH_typo3 . 'class.db_list_extra.inc';
-
 class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 
 	/**
@@ -58,7 +55,7 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(\Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
@@ -98,7 +95,7 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 			$frameworkConfiguration = $this->configurationManager->getConfiguration(\Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 			$storagePid = $frameworkConfiguration['persistence']['storagePid'];
 		}
-		$dblist->start($storagePid, $tableName, (int) \t3lib_div::_GP('pointer'), $filter, $levels, $recordsPerPage);
+		$dblist->start($storagePid, $tableName, (integer) \t3lib_div::_GP('pointer'), $filter, $levels, $recordsPerPage);
 		$dblist->allFields = TRUE;
 		$dblist->dontShowClipControlPanels = TRUE;
 		$dblist->displayFields = FALSE;
@@ -110,8 +107,6 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 		$dblist->generateList();
 		return $dblist->HTMLcode;
 	}
-
 }
-
 
 ?>

@@ -31,8 +31,6 @@ class TextNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function constructorThrowsExceptionIfNoStringGiven() {
 		new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode(123);
 	}
-
 }
-
 
 ?>

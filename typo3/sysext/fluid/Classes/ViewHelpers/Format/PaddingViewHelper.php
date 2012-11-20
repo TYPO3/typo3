@@ -39,8 +39,6 @@ class PaddingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 		}
 		return str_pad($string, $padLength, $padString, $padTypes[$padType]);
 	}
-
 }
-
 
 ?>

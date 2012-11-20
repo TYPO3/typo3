@@ -67,8 +67,6 @@ class ShortcutViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 		$setList = implode(',', $setVars);
 		return $doc->makeShortcutIcon($getList, $setList, $moduleName);
 	}
-
 }
-
 
 ?>

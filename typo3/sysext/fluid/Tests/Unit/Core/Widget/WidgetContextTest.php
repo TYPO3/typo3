@@ -79,8 +79,6 @@ class WidgetContextTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame($viewHelperChildNodes, $this->widgetContext->getViewHelperChildNodes());
 		$this->assertSame($renderingContext, $this->widgetContext->getViewHelperChildNodeRenderingContext());
 	}
-
 }
-
 
 ?>

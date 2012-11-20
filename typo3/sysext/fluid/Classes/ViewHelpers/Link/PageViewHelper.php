@@ -61,7 +61,7 @@ class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
 	}
 
 	/**
-	 * @param integer $page target page. See TypoLink destination
+	 * @param integer|NULL $pageUid target page. See TypoLink destination
 	 * @param array $additionalParams query parameters to be attached to the resulting URI
 	 * @param integer $pageType type of the target page. See typolink.parameter
 	 * @param boolean $noCache set this to disable caching for the target page. You should not need this.
@@ -80,8 +80,6 @@ class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
 		$this->tag->setContent($this->renderChildren());
 		return $this->tag->render();
 	}
-
 }
-
 
 ?>

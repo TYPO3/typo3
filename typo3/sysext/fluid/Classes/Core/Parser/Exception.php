@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Fluid\Core\Parser;
  */
 class Exception extends \TYPO3\CMS\Fluid\Core\Exception {
 
-
 }
-
 
 ?>

@@ -11,10 +11,7 @@ class TestViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 * @param string $param3 P3 Stuff
 	 */
 	public function render($param1, array $param2, $param3 = 'default') {
-
 	}
-
 }
-
 
 ?>

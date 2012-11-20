@@ -10,9 +10,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-/**
-
- */
 class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
@@ -21,7 +18,7 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestC
 	protected $viewHelper;
 
 	public function setUp() {
-		$this->viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\HtmlentitiesViewHelper', array('renderChildren','resolveDefaultEncoding'));
+		$this->viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\HtmlentitiesViewHelper', array('renderChildren', 'resolveDefaultEncoding'));
 		$this->viewHelper->expects($this->any())->method('resolveDefaultEncoding')->will($this->returnValue('UTF-8'));
 	}
 
@@ -117,8 +114,6 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestC
 		$actualResult = $this->viewHelper->render($source);
 		$this->assertSame($source, $actualResult);
 	}
-
 }
-
 
 ?>

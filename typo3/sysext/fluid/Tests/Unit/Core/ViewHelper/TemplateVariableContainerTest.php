@@ -16,15 +16,14 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
 class TemplateVariableContainerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
 	 */
+	protected $variableContainer;
+
 	public function setUp() {
 		$this->variableContainer = new \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer();
 	}
 
-	/**
-
-	 */
 	public function tearDown() {
 		unset($this->variableContainer);
 	}
@@ -132,8 +131,6 @@ class TemplateVariableContainerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 	public function addingVariableNamedAllShouldThrowException() {
 		$this->variableContainer->add('_all', 'foo');
 	}
-
 }
-
 
 ?>

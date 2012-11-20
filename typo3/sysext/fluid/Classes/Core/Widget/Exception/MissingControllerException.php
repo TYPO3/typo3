@@ -25,8 +25,6 @@ namespace TYPO3\CMS\Fluid\Core\Widget\Exception;
  */
 class MissingControllerException extends \TYPO3\CMS\Fluid\Core\Widget\Exception {
 
-
 }
-
 
 ?>

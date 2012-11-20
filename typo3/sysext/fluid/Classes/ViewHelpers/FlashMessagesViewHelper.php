@@ -65,6 +65,7 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
 
 	const RENDER_MODE_UL = 'ul';
 	const RENDER_MODE_DIV = 'div';
+
 	/**
 	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
@@ -113,12 +114,12 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
 			$GLOBALS['TSFE']->no_cache = 1;
 		}
 		switch ($renderMode) {
-		case self::RENDER_MODE_UL:
-			return $this->renderUl($flashMessages);
-		case self::RENDER_MODE_DIV:
-			return $this->renderDiv($flashMessages);
-		default:
-			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Invalid render mode "' . $renderMode . '" passed to FlashMessageViewhelper', 1290697924);
+			case self::RENDER_MODE_UL:
+				return $this->renderUl($flashMessages);
+			case self::RENDER_MODE_DIV:
+				return $this->renderDiv($flashMessages);
+			default:
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Invalid render mode "' . $renderMode . '" passed to FlashMessageViewhelper', 1290697924);
 		}
 	}
 
@@ -161,8 +162,6 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
 		$this->tag->setContent($tagContent);
 		return $this->tag->render();
 	}
-
 }
-
 
 ?>

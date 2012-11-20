@@ -74,6 +74,7 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	 * @param integer $minHeight minimum height of the image
 	 * @param integer $maxWidth maximum width of the image
 	 * @param integer $maxHeight maximum height of the image
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return string path to the image
 	 */
 	public function render($src, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL) {
@@ -138,8 +139,6 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 		$GLOBALS['TSFE'] = $this->tsfeBackup;
 		chdir($this->workingDirectoryBackup);
 	}
-
 }
-
 
 ?>

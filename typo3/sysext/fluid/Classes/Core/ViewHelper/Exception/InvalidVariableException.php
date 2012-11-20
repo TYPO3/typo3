@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
  */
 class InvalidVariableException extends \TYPO3\CMS\Fluid\Core\ViewHelper\Exception {
 
-
 }
-
 
 ?>

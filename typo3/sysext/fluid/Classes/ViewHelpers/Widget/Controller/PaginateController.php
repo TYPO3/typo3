@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-/**
-
- */
 class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController {
 
 	/**
@@ -56,8 +53,8 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 	public function initializeAction() {
 		$this->objects = $this->widgetConfiguration['objects'];
 		$this->configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->configuration, $this->widgetConfiguration['configuration'], TRUE);
-		$this->numberOfPages = ceil(count($this->objects) / (int) $this->configuration['itemsPerPage']);
-		$this->maximumNumberOfLinks = (int) $this->configuration['maximumNumberOfLinks'];
+		$this->numberOfPages = ceil(count($this->objects) / (integer) $this->configuration['itemsPerPage']);
+		$this->maximumNumberOfLinks = (integer) $this->configuration['maximumNumberOfLinks'];
 	}
 
 	/**
@@ -66,7 +63,7 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 	 */
 	public function indexAction($currentPage = 1) {
 		// set current page
-		$this->currentPage = (int) $currentPage;
+		$this->currentPage = (integer) $currentPage;
 		if ($this->currentPage < 1) {
 			$this->currentPage = 1;
 		}
@@ -75,11 +72,11 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 			$modifiedObjects = NULL;
 		} else {
 			// modify query
-			$itemsPerPage = (int) $this->configuration['itemsPerPage'];
+			$itemsPerPage = (integer) $this->configuration['itemsPerPage'];
 			$query = $this->objects->getQuery();
 			$query->setLimit($itemsPerPage);
 			if ($this->currentPage > 1) {
-				$query->setOffset((int) ($itemsPerPage * ($this->currentPage - 1)));
+				$query->setOffset((integer) ($itemsPerPage * ($this->currentPage - 1)));
 			}
 			$modifiedObjects = $query->execute();
 		}
@@ -110,8 +107,8 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 		if ($this->displayRangeEnd > $this->numberOfPages) {
 			$this->displayRangeStart -= $this->displayRangeEnd - $this->numberOfPages;
 		}
-		$this->displayRangeStart = (int) max($this->displayRangeStart, 1);
-		$this->displayRangeEnd = (int) min($this->displayRangeEnd, $this->numberOfPages);
+		$this->displayRangeStart = (integer) max($this->displayRangeStart, 1);
+		$this->displayRangeEnd = (integer) min($this->displayRangeEnd, $this->numberOfPages);
 	}
 
 	/**
@@ -142,8 +139,6 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 		}
 		return $pagination;
 	}
-
 }
-
 
 ?>

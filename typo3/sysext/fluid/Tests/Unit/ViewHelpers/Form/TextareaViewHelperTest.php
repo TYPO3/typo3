@@ -90,8 +90,6 @@ class TextareaViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
-
 }
-
 
 ?>

@@ -13,16 +13,12 @@ namespace TYPO3\CMS\Fluid;
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
-/**
-
- */
 class Fluid {
 
 	const LEGACY_NAMESPACE_SEPARATOR = '_';
 	const NAMESPACE_SEPARATOR = '\\';
+
 	static public $debugMode = FALSE;
-
 }
-
 
 ?>

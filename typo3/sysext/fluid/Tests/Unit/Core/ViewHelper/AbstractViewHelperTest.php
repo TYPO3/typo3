@@ -105,8 +105,8 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$viewHelper = new \TYPO3\CMS\Fluid\Tests\Unit\Core\Fixtures\TestViewHelper();
 		$viewHelper->injectReflectionService($reflectionService);
 		$expected = array(
-			'param1' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param1', 'integer', 'P1 Stuff', TRUE, null, TRUE),
-			'param2' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param2', 'array', 'P2 Stuff', TRUE, null, TRUE),
+			'param1' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param1', 'integer', 'P1 Stuff', TRUE, NULL, TRUE),
+			'param2' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param2', 'array', 'P2 Stuff', TRUE, NULL, TRUE),
 			'param3' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param3', 'string', 'P3 Stuff', FALSE, 'default', TRUE)
 		);
 		$this->assertEquals($expected, $viewHelper->prepareArguments(), 'Annotation based arguments were not registered.');
@@ -129,8 +129,8 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$viewHelper = new \TYPO3\CMS\Fluid\Tests\Unit\Core\Fixtures\TestViewHelper2();
 		$viewHelper->injectReflectionService($reflectionService);
 		$expected = array(
-			'param1' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param1', 'integer', '', TRUE, null, TRUE),
-			'param2' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param2', 'array', '', TRUE, null, TRUE),
+			'param1' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param1', 'integer', '', TRUE, NULL, TRUE),
+			'param2' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param2', 'array', '', TRUE, NULL, TRUE),
 			'param3' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param3', 'string', '', FALSE, 'default', TRUE)
 		);
 		$this->assertEquals($expected, $viewHelper->prepareArguments(), 'Annotation based arguments were not registered.');
@@ -216,8 +216,6 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$this->assertSame($viewHelper->_get('viewHelperVariableContainer'), $viewHelperVariableContainer);
 		$this->assertSame($viewHelper->_get('controllerContext'), $controllerContext);
 	}
-
 }
-
 
 ?>

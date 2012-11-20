@@ -53,8 +53,6 @@ class TextNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 	public function getText() {
 		return $this->text;
 	}
-
 }
-
 
 ?>

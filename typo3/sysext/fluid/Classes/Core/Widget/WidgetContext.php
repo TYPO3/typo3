@@ -71,10 +71,10 @@ class WidgetContext {
 	 */
 	protected $viewHelperChildNodes;
 
-	// TODO: rename to something more meaningful.
 	/**
 	 * The rendering context of the ViewHelperChildNodes.
 	 * Only available inside non-AJAX requests.
+	 * TODO: rename to something more meaningful.
 	 *
 	 * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface
 	 * @transient
@@ -267,8 +267,6 @@ class WidgetContext {
 	public function __sleep() {
 		return array('widgetIdentifier', 'ajaxWidgetIdentifier', 'widgetConfiguration', 'controllerObjectName', 'parentPluginNamespace', 'parentExtensionName', 'parentPluginName', 'widgetViewHelperClassName');
 	}
-
 }
-
 
 ?>

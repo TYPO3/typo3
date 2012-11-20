@@ -70,8 +70,6 @@ class WidgetRequestHandlerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		$defaultWebRequestHandler = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\AbstractRequestHandler', array('handleRequest'), array(), '', FALSE);
 		$this->assertTrue($this->widgetRequestHandler->getPriority() > $defaultWebRequestHandler->getPriority());
 	}
-
 }
-
 
 ?>

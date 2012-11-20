@@ -10,9 +10,6 @@ namespace TYPO3\CMS\Fluid\Core\Rendering;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-/**
-
- */
 class RenderingContext implements \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface {
 
 	/**
@@ -55,8 +52,6 @@ class RenderingContext implements \TYPO3\CMS\Fluid\Core\Rendering\RenderingConte
 
 	/**
 	 * Returns the object manager. Only the ViewHelperNode should do this.
-	 *
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 */
 	public function getObjectManager() {
 		return $this->objectManager;
@@ -117,8 +112,6 @@ class RenderingContext implements \TYPO3\CMS\Fluid\Core\Rendering\RenderingConte
 	public function getViewHelperVariableContainer() {
 		return $this->viewHelperVariableContainer;
 	}
-
 }
-
 
 ?>

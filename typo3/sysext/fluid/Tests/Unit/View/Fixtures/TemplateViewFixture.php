@@ -18,14 +18,10 @@ class TemplateViewFixture extends \TYPO3\CMS\Fluid\View\TemplateView {
 	public $syntaxTree;
 
 	protected function resolveTemplateFile() {
-
 	}
 
 	protected function loadTemplateFile($templateFilePath) {
-
 	}
-
 }
-
 
 ?>

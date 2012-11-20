@@ -91,8 +91,6 @@ class EscapeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$actualResult = $this->escapeInterceptor->process($mockNode, $interceptorPosition, $this->mockParsingState);
 		$this->assertSame($this->mockNode, $actualResult);
 	}
-
 }
-
 
 ?>

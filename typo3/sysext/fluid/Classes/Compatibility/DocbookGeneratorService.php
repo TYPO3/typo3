@@ -14,9 +14,6 @@ namespace TYPO3\CMS\Fluid\Compatibility;
  * Public License for more details.                                       *
  *                                                                        */
 /**
-
- */
-/**
  * Class extending the docbook generator service for use in typo3 v4.
  *
  * Usage in TypoScript:
@@ -44,7 +41,6 @@ class DocbookGeneratorService extends \TYPO3\CMS\Fluid\Service\DocbookGenerator 
 	protected function getClassNamesInNamespace($namespace) {
 		$namespaceParts = explode('_', $namespace);
 		if ($namespaceParts[count($namespaceParts) - 1] == '') {
-
 		}
 		$classFilePathAndName = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(\TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($namespaceParts[1])) . 'Classes/';
 		$classFilePathAndName .= implode(array_slice($namespaceParts, 2, -1), '/') . '/';
@@ -76,8 +72,6 @@ class DocbookGeneratorService extends \TYPO3\CMS\Fluid\Service\DocbookGenerator 
 		$objectFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		return $objectFactory->create($className);
 	}
-
 }
-
 
 ?>

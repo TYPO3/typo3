@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree;
  * marked with this interface will get the current rendering context injected
  * by the ObjectAccessorNode on trying to evaluate them.
  */
-interface RenderingContextAwareInterface
-{
+interface RenderingContextAwareInterface {
+
 	/**
 	 * Sets the current rendering context
 	 *
@@ -24,7 +24,6 @@ interface RenderingContextAwareInterface
 	 * @return void
 	 */
 	public function setRenderingContext(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext);
-
 }
 
 ?>

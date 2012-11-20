@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
+
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /*                                                                        *
@@ -37,7 +38,8 @@ abstract class AbstractBackendViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelpe
 		if ($this->viewHelperVariableContainer->exists(
 			'TYPO3\\CMS\\Fluid\\ViewHelpers\\Be\\AbstractBackendViewHelper',
 			'DocumentTemplate'
-		)) {
+		)
+		) {
 			$doc = $this->viewHelperVariableContainer->get(
 				'TYPO3\\CMS\\Fluid\\ViewHelpers\\Be\\AbstractBackendViewHelper',
 				'DocumentTemplate'
@@ -91,6 +93,5 @@ abstract class AbstractBackendViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelpe
 		return $doc;
 	}
 }
-
 
 ?>

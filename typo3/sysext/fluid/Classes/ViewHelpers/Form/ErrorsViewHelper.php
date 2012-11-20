@@ -98,8 +98,6 @@ class ErrorsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 		}
 		return array();
 	}
-
 }
-
 
 ?>

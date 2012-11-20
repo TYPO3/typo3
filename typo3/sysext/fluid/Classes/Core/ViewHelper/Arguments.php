@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper;
  *
  * @api
  */
-class Arguments implements ArrayAccess {
+class Arguments implements \ArrayAccess {
 
 	/**
 	 * Array storing the arguments themselves
@@ -96,8 +96,6 @@ class Arguments implements ArrayAccess {
 	public function hasArgument($argumentName) {
 		return $this->offsetExists($argumentName) && $this->arguments[$argumentName] !== NULL;
 	}
-
 }
-
 
 ?>

@@ -65,6 +65,7 @@ class CheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
 	 * Renders the checkbox.
 	 *
 	 * @param boolean $checked Specifies that the input element should be preselected
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return string
 	 * @api
 	 */
@@ -75,7 +76,7 @@ class CheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
 		if ($checked === NULL && $this->isObjectAccessorMode()) {
 			$propertyValue = $this->getPropertyValue();
 			if (is_bool($propertyValue)) {
-				$checked = $propertyValue === (bool) $valueAttribute;
+				$checked = $propertyValue === (boolean) $valueAttribute;
 			} elseif (is_array($propertyValue)) {
 				$checked = in_array($valueAttribute, $propertyValue);
 				$nameAttribute .= '[]';
@@ -93,8 +94,6 @@ class CheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
 		$hiddenField = $this->renderHiddenFieldForEmptyValue();
 		return $hiddenField . $this->tag->render();
 	}
-
 }
-
 
 ?>

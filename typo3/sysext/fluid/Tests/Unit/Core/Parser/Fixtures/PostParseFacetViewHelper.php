@@ -18,7 +18,6 @@ class PostParseFacetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 	static public $wasCalled = FALSE;
 
 	public function __construct() {
-
 	}
 
 	static public function postParseEvent(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $viewHelperNode, array $arguments, \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer) {
@@ -26,14 +25,10 @@ class PostParseFacetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 	}
 
 	public function initializeArguments() {
-
 	}
 
 	public function render() {
-
 	}
-
 }
-
 
 ?>

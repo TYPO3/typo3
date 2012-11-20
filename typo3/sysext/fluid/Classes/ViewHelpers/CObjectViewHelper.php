@@ -55,7 +55,7 @@ class CObjectViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 	protected $typoScriptSetup;
 
 	/**
-	 * @var 	t3lib_fe contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
+	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
 	 */
 	protected $tsfeBackup;
 
@@ -79,6 +79,7 @@ class CObjectViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 	 * @param string $typoscriptObjectPath the TypoScript setup path of the TypoScript object to render
 	 * @param mixed $data the data to be used for rendering the cObject. Can be an object, array or string. If this argument is not set, child nodes will be used
 	 * @param string $currentValueKey
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return string the content of the rendered TypoScript object
 	 */
 	public function render($typoscriptObjectPath, $data = NULL, $currentValueKey = NULL) {
@@ -139,8 +140,6 @@ class CObjectViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 	protected function resetFrontendEnvironment() {
 		$GLOBALS['TSFE'] = $this->tsfeBackup;
 	}
-
 }
-
 
 ?>

@@ -236,8 +236,6 @@ class GroupedForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\V
 		$values = array('some', 'simple', 'array');
 		$this->viewHelper->render($values, 'innerVariable', 'someKey');
 	}
-
 }
-
 
 ?>

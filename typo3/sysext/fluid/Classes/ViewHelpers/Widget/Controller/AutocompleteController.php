@@ -20,9 +20,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-/**
-
- */
 class AutocompleteController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController {
 
 	/**
@@ -57,8 +54,6 @@ class AutocompleteController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 		}
 		return json_encode($output);
 	}
-
 }
-
 
 ?>

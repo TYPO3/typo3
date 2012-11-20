@@ -11,7 +11,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\SyntaxTree;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 /**
-
+ * An AbstractNode Test
  */
 class AbstractNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
@@ -42,8 +42,6 @@ class AbstractNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function childNodeCanBeReadOutAgain() {
 		$this->assertSame($this->abstractNode->getChildNodes(), array($this->childNode));
 	}
-
 }
-
 
 ?>

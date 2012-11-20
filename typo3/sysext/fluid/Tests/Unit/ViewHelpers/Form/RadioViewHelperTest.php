@@ -144,8 +144,6 @@ class RadioViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\F
 		$this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
 		$this->viewHelper->render();
 	}
-
 }
-
 
 ?>
