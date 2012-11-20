@@ -1119,6 +1119,7 @@ class FormEngine {
 							'FIELD' => $field,
 							'TABLE' => $table,
 							'ITEM' => $item,
+							'ITEM_DISABLED' => ($this->isNullValue($table, $field, $row, $PA) ? ' disabled' : ''),
 							'ITEM_NULLVALUE' => $this->renderNullValueWidget($table, $field, $row, $PA),
 						);
 						$out = $this->addUserTemplateMarkers($out, $table, $field, $row, $PA);
@@ -1131,6 +1132,7 @@ class FormEngine {
 							'ID' => $row['uid'],
 							'PAL_LINK_ICON' => $thePalIcon,
 							'FIELD' => $field,
+							'ITEM_DISABLED' => ($this->isNullValue($table, $field, $row, $PA) ? ' disabled' : ''),
 							'ITEM_NULLVALUE' => $this->renderNullValueWidget($table, $field, $row, $PA),
 						);
 						$out = $this->addUserTemplateMarkers($out, $table, $field, $row, $PA);
@@ -5079,6 +5081,7 @@ function ' . $evalData . '(value) {
 					'###CONTENT_NAME###' => $content['NAME'],
 					'###CONTENT_ITEM###' => $content['ITEM'],
 					'###CONTENT_ITEM_NULLVALUE###' => $content['ITEM_NULLVALUE'],
+					'###CONTENT_ITEM_DISABLED###' => $content['ITEM_DISABLED'],
 					'###ATTRIBUTES_LABEL###' => $labelAttributes,
 					'###ATTRIBUTES_FIELD###' => $fieldAttributes,
 				);
