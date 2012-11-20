@@ -618,17 +618,6 @@ var typo3form = {
 				document[TBE_EDITOR.formname][theField+"_hr"].value = evalFunc.outputObjValue(theFObj, theValue);
 				if (document[TBE_EDITOR.formname][theField+"_cb"])	document[TBE_EDITOR.formname][theField+"_cb"].checked = "on";
 			}
-
-			var controlName = theField.replace(new RegExp('^' + TBE_EDITOR.prependFormFieldNames), 'control[active]');
-			var controlFields = document[TBE_EDITOR.formname][controlName];
-
-			if (controlFields) {
-				for (i = 0; i < controlFields.length; i++) {
-					if (controlFields[i].type === 'checkbox' && !controlFields[i].checked) {
-						typo3form.fieldSetNull(theField, true);
-					}
-				}
-			}
 		}
 	},
 	fieldGet: function(theField, evallist, is_in, checkbox, checkboxValue, checkbox_off, checkSetValue) {
