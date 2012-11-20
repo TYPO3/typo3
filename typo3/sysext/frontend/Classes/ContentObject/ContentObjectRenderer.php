@@ -82,6 +82,8 @@ class ContentObjectRenderer {
 		'override.' => 'array',
 		'preIfEmptyListNum' => 'listNum',
 		'preIfEmptyListNum.' => 'array',
+		'ifNull' => 'string',
+		'ifNull.' => 'array',
 		'ifEmpty' => 'string',
 		'ifEmpty.' => 'array',
 		'ifBlank' => 'string',
@@ -2234,6 +2236,21 @@ class ContentObjectRenderer {
 	}
 
 	/**
+	 * ifNull
+	 * Will set content to a replacement value in case the value of content is NULL
+	 *
+	 * @param string|NULL $content Input value undergoing processing in this function.
+	 * @param array $conf stdWrap properties for ifNull.
+	 * @return string|NULL The processed input value
+	 */
+	public function stdWrap_ifNull($content = '', $conf = array()) {
+		if ($content === NULL) {
+			$content = $conf['ifNull'];
+		}
+		return $content;
+	}
+
+	/**
 	 * ifEmpty
 	 * Will set content to a replacement value in case the trimmed value of content returns FALSE
 	 * 0 (zero) will be replaced as well
@@ -3419,6 +3436,12 @@ class ContentObjectRenderer {
 			return $conf['directReturn'] ? 1 : 0;
 		}
 		$flag = TRUE;
+		if (isset($conf['isNull.'])) {
+			$isNull = $this->stdWrap('', $conf['isNull.']);
+			if ($isNull !== NULL) {
+				$flag = 0;
+			}
+		}
 		if (isset($conf['isTrue']) || isset($conf['isTrue.'])) {
 			$isTrue = isset($conf['isTrue.']) ? trim($this->stdWrap($conf['isTrue'], $conf['isTrue.'])) : trim($conf['isTrue']);
 			if (!$isTrue) {
