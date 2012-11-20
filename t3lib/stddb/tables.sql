@@ -660,6 +660,6 @@ CREATE TABLE sys_category_record_mm (
 	sorting int(11) DEFAULT '0' NOT NULL,
 	sorting_foreign int(11) DEFAULT '0' NOT NULL,
 
-	KEY uid_local_foreign (uid_local,uid_foreign)
+	KEY uid_local_foreign (uid_local,uid_foreign),
 	KEY uid_foreign_tablenames (uid_foreign,tablenames)
 );
