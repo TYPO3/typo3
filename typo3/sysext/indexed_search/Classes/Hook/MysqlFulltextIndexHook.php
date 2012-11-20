@@ -101,7 +101,7 @@ class MysqlFulltextIndexHook {
 				$searchBoolean = TRUE;
 				break;
 			case self::SOUNDS_LIKE:
-				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_indexedsearch_indexer');
+				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 				// Initialize the indexer-class
 				/** @var \TYPO3\CMS\IndexedSearch\Indexer $indexerObj */
 				$searchWord = $indexerObj->metaphone($searchWord, $indexerObj->storeMetaphoneInfoAsWords);
