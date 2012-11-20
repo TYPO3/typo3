@@ -133,6 +133,7 @@ $TCA['sys_file_reference'] = array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.title',
 			'config' => array(
 				'type' => 'input',
+				'eval' => 'null',
 				'size' => '22',
 				'placeholder' => '__row|uid_local|title'
 			)
@@ -163,6 +164,7 @@ $TCA['sys_file_reference'] = array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.description',
 			'config' => array(
 				'type' => 'text',
+				'eval' => 'null',
 				'cols' => '24',
 				'rows' => '5'
 			)
@@ -173,6 +175,7 @@ $TCA['sys_file_reference'] = array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.alternative',
 			'config' => array(
 				'type' => 'input',
+				'eval' => 'null',
 				'size' => '22',
 				'placeholder' => '__row|uid_local|alternative'
 			),
