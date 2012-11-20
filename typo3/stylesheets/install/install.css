@@ -16,7 +16,7 @@ h1 {
 }
 
 .standalone h1 {
-	background: url('../../gfx/installlogo.gif') no-repeat scroll 0 0 transparent;
+	background: url('../../sysext/t3skin/images/login/typo3logo-white-greyback.gif') no-repeat scroll 0 0 transparent;
 	text-indent: -999em;
 	display: block;
 	height: 34px;
