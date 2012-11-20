@@ -108,7 +108,7 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * @return boolean
 	 */
 	public function hasProperty($key) {
-		return isset($this->properties[$key]);
+		return array_key_exists($key, $this->properties);
 	}
 
 	/**
