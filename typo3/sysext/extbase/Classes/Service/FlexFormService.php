@@ -49,7 +49,7 @@ class FlexFormService implements \TYPO3\CMS\Core\SingletonInterface {
 				continue;
 			}
 			foreach ($languages[$languagePointer] as $valueKey => $valueDefinition) {
-				if (strpos($valueKey, '.') === false) {
+				if (strpos($valueKey, '.') === FALSE) {
 					$settings[$valueKey] = $this->walkFlexFormNode($valueDefinition, $valuePointer);
 				} else {
 					$valueKeyParts = explode('.', $valueKey);
@@ -114,8 +114,6 @@ class FlexFormService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $nodeArray;
 	}
-
 }
-
 
 ?>

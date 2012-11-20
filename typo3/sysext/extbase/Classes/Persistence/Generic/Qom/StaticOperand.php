@@ -30,13 +30,9 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 /**
  * An operand whose value can be determined from static analysis of the query,
  * prior to its evaluation.
- *
- * @scope prototype
  */
 class StaticOperand extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Operand implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\StaticOperandInterface {
 
-
 }
-
 
 ?>

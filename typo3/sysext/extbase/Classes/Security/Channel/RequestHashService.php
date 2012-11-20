@@ -176,9 +176,7 @@ class RequestHashService implements \TYPO3\CMS\Core\SingletonInterface {
 					return FALSE;
 				}
 			} elseif (!is_array($requestArguments[$argumentName]) && !is_array($allowedFields[$argumentName])) {
-
 			} elseif (!is_array($requestArguments[$argumentName]) && $requestArguments[$argumentName] === '' && is_array($allowedFields[$argumentName])) {
-
 			} else {
 				// different types - error
 				return FALSE;
@@ -186,8 +184,6 @@ class RequestHashService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return TRUE;
 	}
-
 }
-
 
 ?>

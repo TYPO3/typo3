@@ -48,8 +48,6 @@ class NumberValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Valid
 		$numberValidator = new \TYPO3\CMS\Extbase\Validation\Validator\NumberValidator();
 		$this->assertEquals($expectedResult, $numberValidator->validate('not a number'));
 	}
-
 }
-
 
 ?>

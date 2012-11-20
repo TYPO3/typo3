@@ -310,4 +310,5 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
 	}
 }
+
 ?>

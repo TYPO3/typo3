@@ -35,6 +35,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
 	 * Default backend storage PID
 	 */
 	const DEFAULT_BACKEND_STORAGE_PID = 0;
+
 	/**
 	 * Storage of the raw TypoScript configuration
 	 *
@@ -259,7 +260,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
 	 * @param string $pluginName in FE mode this is the specified plugin name, in BE mode this is the full module signature
 	 * @return array
 	 */
-	abstract protected function getPluginConfiguration($extensionName, $pluginName);
+	abstract protected function getPluginConfiguration($extensionName, $pluginName = NULL);
 
 	/**
 	 * Returns the configured controller/action pairs of the specified plugin/module in the format
@@ -273,8 +274,6 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
 	 * @return array
 	 */
 	abstract protected function getSwitchableControllerActions($extensionName, $pluginName);
-
 }
-
 
 ?>

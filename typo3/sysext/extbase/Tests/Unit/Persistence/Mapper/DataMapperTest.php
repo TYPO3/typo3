@@ -136,8 +136,6 @@ class DataMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$result = $dataMapper->_call('fetchRelatedEager', $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity'), 'SomeName', '');
 		$this->assertEquals(array(), $result);
 	}
-
 }
-
 
 ?>

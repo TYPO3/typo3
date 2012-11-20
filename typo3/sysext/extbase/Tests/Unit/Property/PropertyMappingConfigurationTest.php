@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the Property Mapper
  *
@@ -135,8 +134,6 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 		$this->assertEquals('k1a', $this->propertyMappingConfiguration->getTargetPropertyName('k1'));
 		$this->assertEquals('k2', $this->propertyMappingConfiguration->getTargetPropertyName('k2'));
 	}
-
 }
-
 
 ?>

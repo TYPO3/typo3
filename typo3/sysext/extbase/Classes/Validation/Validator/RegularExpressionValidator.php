@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  * Validator based on regular expressions
  *
  * The regular expression is specified in the options by using the array key "regularExpression"
- *
- * @scope prototype
  */
 class RegularExpressionValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
@@ -61,8 +59,6 @@ class RegularExpressionValidator extends \TYPO3\CMS\Extbase\Validation\Validator
 		}
 		return TRUE;
 	}
-
 }
-
 
 ?>

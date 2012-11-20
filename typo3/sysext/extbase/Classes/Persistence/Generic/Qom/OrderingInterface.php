@@ -31,8 +31,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * Determines the relative order of two rows in the result set by evaluating operand for
  * each.
  */
-interface OrderingInterface
-{
+interface OrderingInterface {
+
 	/**
 	 * The operand by which to order.
 	 *
@@ -46,7 +46,6 @@ interface OrderingInterface
 	 * @return string either \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING or \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING
 	 */
 	public function getOrder();
-
 }
 
 ?>

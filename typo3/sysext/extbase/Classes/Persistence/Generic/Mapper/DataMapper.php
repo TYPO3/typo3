@@ -258,33 +258,33 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 			$propertyValue = NULL;
 			if ($row[$columnName] !== NULL) {
 				switch ($propertyData['type']) {
-				case 'integer':
-					$propertyValue = (int) $row[$columnName];
-					break;
-				case 'float':
-					$propertyValue = (double) $row[$columnName];
-					break;
-				case 'boolean':
-					$propertyValue = (bool) $row[$columnName];
-					break;
-				case 'string':
-					$propertyValue = (string) $row[$columnName];
-					break;
-				case 'array':
-					// $propertyValue = $this->mapArray($row[$columnName]); // Not supported, yet!
-					break;
-				case 'SplObjectStorage':
-				case 'Tx_Extbase_Persistence_ObjectStorage':
-				case 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage':
-					$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $this->fetchRelated($object, $propertyName, $row[$columnName]));
-					break;
-				default:
-					if ($propertyData['type'] === 'DateTime' || in_array('DateTime', class_parents($propertyData['type']))) {
-						$propertyValue = $this->mapDateTime($row[$columnName]);
-					} else {
+					case 'integer':
+						$propertyValue = (integer) $row[$columnName];
+						break;
+					case 'float':
+						$propertyValue = (double) $row[$columnName];
+						break;
+					case 'boolean':
+						$propertyValue = (boolean) $row[$columnName];
+						break;
+					case 'string':
+						$propertyValue = (string) $row[$columnName];
+						break;
+					case 'array':
+						// $propertyValue = $this->mapArray($row[$columnName]); // Not supported, yet!
+						break;
+					case 'SplObjectStorage':
+					case 'Tx_Extbase_Persistence_ObjectStorage':
+					case 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage':
 						$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $this->fetchRelated($object, $propertyName, $row[$columnName]));
-					}
-					break;
+						break;
+					default:
+						if ($propertyData['type'] === 'DateTime' || in_array('DateTime', class_parents($propertyData['type']))) {
+							$propertyValue = $this->mapDateTime($row[$columnName]);
+						} else {
+							$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $this->fetchRelated($object, $propertyName, $row[$columnName]));
+						}
+						break;
 				}
 			}
 			if ($propertyValue !== NULL) {
@@ -580,8 +580,6 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $type;
 	}
-
 }
-
 
 ?>

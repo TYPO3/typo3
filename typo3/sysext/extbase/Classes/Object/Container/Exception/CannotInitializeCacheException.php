@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Extbase\Object\Container\Exception;
  */
 class CannotInitializeCacheException extends \TYPO3\CMS\Extbase\Object\Exception {
 
-
 }
-
 
 ?>

@@ -229,8 +229,6 @@ class RequestBuilder {
 		$value = isset($splitArgument[1]) ? $splitArgument[1] : '';
 		return $value;
 	}
-
 }
-
 
 ?>

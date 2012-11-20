@@ -203,31 +203,31 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 	public function translateDataProvider() {
 		return array(
 			'get translated key' =>
-				array('key1', $this->LOCAL_LANG, 'dk', 'Dansk label for key1'),
+			array('key1', $this->LOCAL_LANG, 'dk', 'Dansk label for key1'),
 
 			'fallback to English when translation is missing for key' =>
-				array('key2', $this->LOCAL_LANG, 'dk', 'English label for key2'),
+			array('key2', $this->LOCAL_LANG, 'dk', 'English label for key2'),
 
 			'fallback to English for non existing language' =>
-				array('key2', $this->LOCAL_LANG, 'xx', 'English label for key2'),
+			array('key2', $this->LOCAL_LANG, 'xx', 'English label for key2'),
 
 			'replace placeholder with argument' =>
-				array('keyWithPlaceholder', $this->LOCAL_LANG, 'en', 'English label with number 100', array(), array(100)),
+			array('keyWithPlaceholder', $this->LOCAL_LANG, 'en', 'English label with number 100', array(), array(100)),
 
 			'get translated key from primary language' =>
-				array('key1', $this->LOCAL_LANG, 'dk', 'Dansk label for key1', array('dk_alt')),
+			array('key1', $this->LOCAL_LANG, 'dk', 'Dansk label for key1', array('dk_alt')),
 
 			'fallback to alternative language if translation is missing(llxml)' =>
-				array('key2', $this->LOCAL_LANG, 'dk', 'Dansk alternative label for key2', array('dk_alt')),
+			array('key2', $this->LOCAL_LANG, 'dk', 'Dansk alternative label for key2', array('dk_alt')),
 
 			'fallback to alternative language if translation is missing(xlif)' =>
-				array('key5', $this->LOCAL_LANG, 'dk', 'Dansk alternative label for key5', array('dk_alt')),
+			array('key5', $this->LOCAL_LANG, 'dk', 'Dansk alternative label for key5', array('dk_alt')),
 
 			'fallback to English for label not translated in dk and dk_alt(llxml)' =>
-				array('key3', $this->LOCAL_LANG, 'dk', 'English label for key3', array('dk_alt')),
+			array('key3', $this->LOCAL_LANG, 'dk', 'English label for key3', array('dk_alt')),
 
 			'fallback to English for label not translated in dk and dk_alt(xlif)' =>
-				array('key4', $this->LOCAL_LANG, 'dk', 'English label for key4', array('dk_alt')),
+			array('key4', $this->LOCAL_LANG, 'dk', 'English label for key4', array('dk_alt')),
 		);
 	}
 
@@ -280,8 +280,8 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 				),
 				'typoscript LOCAL_LANG' => array(
 					'dk' => array(
-					'key1' => 'key1 value from TS',
-					'key3' => array(
+						'key1' => 'key1 value from TS',
+						'key3' => array(
 							'subkey1' => 'key3.subkey1 value from TS',
 							// this key doesn't exist in xml files
 							'subkey2' => array(
@@ -335,7 +335,7 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
 		$frameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		$frameworkConfiguration['_LOCAL_LANG']  = $typoscriptLocalLang;
+		$frameworkConfiguration['_LOCAL_LANG'] = $typoscriptLocalLang;
 		$configurationManager->setConfiguration($frameworkConfiguration);
 
 		$this->localization->_call('loadTypoScriptLabels', 'extensionKey');

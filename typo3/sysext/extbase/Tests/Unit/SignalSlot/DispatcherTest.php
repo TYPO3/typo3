@@ -73,7 +73,6 @@ class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function connectAlsoAcceptsClosuresActingAsASlot() {
 		$mockSignal = $this->getMock('ClassA', array('emitSomeSignal'));
 		$mockSlot = function () {
-
 		};
 		$this->signalSlotDispatcher->connect(get_class($mockSignal), 'emitSomeSignal', $mockSlot, 'foo', TRUE);
 		$expectedSlots = array(
@@ -87,7 +86,7 @@ class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function dispatchPassesTheSignalArgumentsToTheSlotMethod() {
 		$arguments = array();
-		$mockSlot = function () use(&$arguments) {
+		$mockSlot = function () use (&$arguments) {
 			($arguments = func_get_args());
 		};
 		$this->signalSlotDispatcher->connect('Foo', 'bar', $mockSlot, NULL, FALSE);
@@ -148,7 +147,7 @@ class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function dispatchPassesFirstArgumentContainingSlotInformationIfTheConnectionStatesSo() {
 		$arguments = array();
-		$mockSlot = function () use(&$arguments) {
+		$mockSlot = function () use (&$arguments) {
 			($arguments = func_get_args());
 		};
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
@@ -158,8 +157,6 @@ class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->signalSlotDispatcher->dispatch('SignalClassName', 'methodName', array('foo' => 'bar', 'baz' => 'quux'));
 		$this->assertSame(array('bar', 'quux', 'SignalClassName::methodName'), $arguments);
 	}
-
 }
-
 
 ?>

@@ -33,8 +33,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * A node-tuple satisfies the constraint only if: the selector1Name node has a property named property1Name, and
  * the selector2Name node has a property named property2Name, and
  * the value of property property1Name is equal to the value of property property2Name.
- *
- * @scope prototype
  */
 class EquiJoinCondition implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinConditionInterface {
 
@@ -109,8 +107,6 @@ class EquiJoinCondition implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Jo
 	public function getProperty2Name() {
 		return $this->property2Name;
 	}
-
 }
-
 
 ?>

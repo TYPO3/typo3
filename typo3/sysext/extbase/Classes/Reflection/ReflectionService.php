@@ -551,8 +551,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$this->dataCache->set($this->cacheIdentifier, $data);
 	}
-
 }
-
 
 ?>

@@ -147,8 +147,6 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		}
 		return $label;
 	}
-
 }
-
 
 ?>

@@ -26,17 +26,13 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli\Fixture\Command;
 class MockACommandController extends \TYPO3\CMS\Extbase\Mvc\Cli\Command {
 
 	public function fooCommand() {
-
 	}
 
 	/**
 	 * @param mixed $someArgument
 	 */
 	public function barCommand($someArgument) {
-
 	}
-
 }
-
 
 ?>

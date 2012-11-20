@@ -60,8 +60,6 @@ class NotEmptyValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
 		}
 		return TRUE;
 	}
-
 }
-
 
 ?>

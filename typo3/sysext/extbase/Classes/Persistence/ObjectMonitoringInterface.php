@@ -32,8 +32,8 @@ namespace TYPO3\CMS\Extbase\Persistence;
  * @see \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
  * @see \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
  */
-interface ObjectMonitoringInterface
-{
+interface ObjectMonitoringInterface {
+
 	/**
 	 * Register an object's clean state, e.g. after it has been reconstituted
 	 * from the database
@@ -48,7 +48,6 @@ interface ObjectMonitoringInterface
 	 * @return boolean
 	 */
 	public function _isDirty();
-
 }
 
 ?>

@@ -114,7 +114,7 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 	 * @return integer current page id. If no page is selected current root page id is returned
 	 */
 	protected function getCurrentPageId() {
-		$pageId = (int) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+		$pageId = (integer) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 		if ($pageId > 0) {
 			return $pageId;
 		}
@@ -158,8 +158,6 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 		}
 		return $frameworkConfiguration;
 	}
-
 }
-
 
 ?>

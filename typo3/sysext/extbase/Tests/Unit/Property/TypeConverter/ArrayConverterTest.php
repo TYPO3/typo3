@@ -54,8 +54,6 @@ class ArrayConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$sourceArray = array('Foo' => 'Bar', 'Baz');
 		$this->assertEquals($sourceArray, $this->converter->convertFrom($sourceArray, 'array'));
 	}
-
 }
-
 
 ?>

@@ -274,8 +274,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	public function getRequest() {
 		return $this->request;
 	}
-
 }
-
 
 ?>

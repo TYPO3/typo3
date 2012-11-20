@@ -514,7 +514,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
 	 * @param string $parentPropertyName
-	 * @param int $sortingPosition
+	 * @param integer $sortingPosition
 	 * @return void
 	 */
 	protected function attachObjectToParentObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $parentPropertyName, $sortingPosition = 0) {
@@ -585,7 +585,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject) {
 			$result = $this->getUidOfAlreadyPersistedValueObject($object);
 			if ($result !== FALSE) {
-				$object->_setProperty('uid', (int) $result);
+				$object->_setProperty('uid', (integer) $result);
 				return;
 			}
 		}
@@ -596,8 +596,8 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			$row[$dataMap->getLanguageIdColumnName()] = -1;
 		}
 		$uid = $this->storageBackend->addRow($dataMap->getTableName(), $row);
-		$object->_setProperty('uid', (int) $uid);
-		if ((int) $uid >= 1) {
+		$object->_setProperty('uid', (integer) $uid);
+		if ((integer) $uid >= 1) {
 			$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterInsertObject', array('object' => $object));
 		}
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
@@ -623,16 +623,16 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The related object
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object
 	 * @param string $propertyName The name of the parent object's property where the related objects are stored in
-	 * @param int $sortingPosition Defaults to NULL
+	 * @param integer $sortingPosition Defaults to NULL
 	 * @return int The uid of the inserted row
 	 */
 	protected function insertRelationInRelationtable(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $sortingPosition = NULL) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 		$columnMap = $dataMap->getColumnMap($propertyName);
 		$row = array(
-			$columnMap->getParentKeyFieldName() => (int) $parentObject->getUid(),
-			$columnMap->getChildKeyFieldName() => (int) $object->getUid(),
-			$columnMap->getChildSortByFieldName() => !is_null($sortingPosition) ? (int) $sortingPosition : 0
+			$columnMap->getParentKeyFieldName() => (integer) $parentObject->getUid(),
+			$columnMap->getChildKeyFieldName() => (integer) $object->getUid(),
+			$columnMap->getChildSortByFieldName() => !is_null($sortingPosition) ? (integer) $sortingPosition : 0
 		);
 		$relationTableName = $columnMap->getRelationTableName();
 		// FIXME Reenable support for tablenames
@@ -665,7 +665,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		$columnMap = $dataMap->getColumnMap($parentPropertyName);
 		$relationTableName = $columnMap->getRelationTableName();
 		$relationMatchFields = array(
-			$columnMap->getParentKeyFieldName() => (int) $parentObject->getUid()
+			$columnMap->getParentKeyFieldName() => (integer) $parentObject->getUid()
 		);
 		$relationTableMatchFields = $columnMap->getRelationTableMatchFields();
 		if (is_array($relationTableMatchFields) && count($relationTableMatchFields) > 0) {
@@ -688,8 +688,8 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		$columnMap = $dataMap->getColumnMap($parentPropertyName);
 		$relationTableName = $columnMap->getRelationTableName();
 		$res = $this->storageBackend->removeRow($relationTableName, array(
-			$columnMap->getParentKeyFieldName() => (int) $parentObject->getUid(),
-			$columnMap->getChildKeyFieldName() => (int) $relatedObject->getUid()
+			$columnMap->getParentKeyFieldName() => (integer) $parentObject->getUid(),
+			$columnMap->getChildKeyFieldName() => (integer) $relatedObject->getUid()
 		), FALSE);
 		return $res;
 	}
@@ -844,16 +844,16 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			if (\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($object, 'pid')) {
 				$pid = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($object, 'pid');
 				if (isset($pid)) {
-					return (int) $pid;
+					return (integer) $pid;
 				}
 			}
 			$className = get_class($object);
 			if (isset($frameworkConfiguration['persistence']['classes'][$className]) && !empty($frameworkConfiguration['persistence']['classes'][$className]['newRecordStoragePid'])) {
-				return (int) $frameworkConfiguration['persistence']['classes'][$className]['newRecordStoragePid'];
+				return (integer) $frameworkConfiguration['persistence']['classes'][$className]['newRecordStoragePid'];
 			}
 		}
 		$storagePidList = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $frameworkConfiguration['persistence']['storagePid']);
-		return (int) $storagePidList[0];
+		return (integer) $storagePidList[0];
 	}
 
 	/**
@@ -873,8 +873,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			return $input;
 		}
 	}
-
 }
-
 
 ?>

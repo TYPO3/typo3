@@ -55,8 +55,6 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestC
 		$validator->expects($this->at(1))->method('isPropertyValid')->with($mockObject, 'bar')->will($this->returnValue(TRUE));
 		$validator->isValid($mockObject);
 	}
-
 }
-
 
 ?>

@@ -37,8 +37,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * selector is not the name of a selector in the query, or
  * property is not a syntactically valid JCR name.
- *
- * @scope prototype
  */
 class PropertyValue extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperand implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\PropertyValueInterface {
 
@@ -80,8 +78,6 @@ class PropertyValue extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOp
 	public function getPropertyName() {
 		return $this->propertyName;
 	}
-
 }
-
 
 ?>

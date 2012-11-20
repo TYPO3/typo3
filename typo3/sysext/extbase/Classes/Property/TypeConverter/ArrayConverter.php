@@ -56,8 +56,6 @@ class ArrayConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
 		return $source;
 	}
-
 }
-
 
 ?>

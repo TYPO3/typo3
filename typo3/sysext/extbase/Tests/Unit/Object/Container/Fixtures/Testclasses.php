@@ -4,10 +4,7 @@
  */
 class t3lib_object_tests_singleton implements \TYPO3\CMS\Core\SingletonInterface {
 
-
 }
-
-
 
 /**
  * test class A that depends on B and C
@@ -26,10 +23,7 @@ class t3lib_object_tests_a {
 		$this->b = $b;
 		$this->c = $c;
 	}
-
 }
-
-
 
 /**
  * test class A that depends on B and C and has a third default parameter in constructor
@@ -52,10 +46,7 @@ class t3lib_object_tests_amixed_array {
 		$this->c = $c;
 		$this->myvalue = $myvalue;
 	}
-
 }
-
-
 
 /**
  * test class A that depends on B and C and has a third default parameter in constructor that defaults to NULL
@@ -78,10 +69,7 @@ class t3lib_object_tests_amixed_null {
 		$this->c = $c;
 		$this->myvalue = $myvalue;
 	}
-
 }
-
-
 
 /**
  * test class A that depends on B and C and has a third default parameter in constructor
@@ -104,10 +92,7 @@ class t3lib_object_tests_amixed_array_singleton implements \TYPO3\CMS\Core\Singl
 		$this->c = $c;
 		$this->myvalue = $someDefaultParameter;
 	}
-
 }
-
-
 
 /**
  * test class B that depends on C
@@ -122,59 +107,42 @@ class t3lib_object_tests_b implements \TYPO3\CMS\Core\SingletonInterface {
 	public function __construct(\t3lib_object_tests_c $c) {
 		$this->c = $c;
 	}
-
 }
-
-
 
 /**
  * test class C without dependencys
  */
 class t3lib_object_tests_c implements \TYPO3\CMS\Core\SingletonInterface {
 
-
 }
-
-
 
 /**
  * test class B-Child that extends Class B (therfore depends also on Class C)
  */
 class t3lib_object_tests_b_child extends \t3lib_object_tests_b {
 
-
 }
-
-
 
 /**
 
  */
-interface t3lib_object_tests_someinterface extends \TYPO3\CMS\Core\SingletonInterface
-{
+interface t3lib_object_tests_someinterface extends \TYPO3\CMS\Core\SingletonInterface {
 
 }
-
 
 /**
  * class which implements a Interface
  */
 class t3lib_object_tests_someimplementation implements \t3lib_object_tests_someinterface {
 
-
 }
-
-
 
 /**
  * test class B-Child that extends Class B (therfore depends also on Class C)
  */
 class t3lib_object_tests_b_child_someimplementation extends \t3lib_object_tests_b implements \t3lib_object_tests_someinterface {
 
-
 }
-
-
 
 /**
  * class which depends on a Interface
@@ -187,10 +155,7 @@ class t3lib_object_tests_needsinterface {
 	public function __construct(\t3lib_object_tests_someinterface $i) {
 		$this->dependency = $i;
 	}
-
 }
-
-
 
 /**
  * Prototype classes that depend on each other
@@ -201,12 +166,8 @@ class t3lib_object_tests_cyclic1 {
 	 * @param \t3lib_object_tests_cyclic2 $c
 	 */
 	public function __construct(\t3lib_object_tests_cyclic2 $c) {
-
 	}
-
 }
-
-
 
 /**
 
@@ -217,12 +178,8 @@ class t3lib_object_tests_cyclic2 {
 	 * @param \t3lib_object_tests_cyclic1 $c
 	 */
 	public function __construct(\t3lib_object_tests_cyclic1 $c) {
-
 	}
-
 }
-
-
 
 /**
 
@@ -233,12 +190,8 @@ class t3lib_object_tests_cyclic1WithSetterDependency {
 	 * @param \t3lib_object_tests_cyclic2WithSetterDependency $c
 	 */
 	public function injectFoo(\t3lib_object_tests_cyclic2WithSetterDependency $c) {
-
 	}
-
 }
-
-
 
 /**
 
@@ -249,12 +202,8 @@ class t3lib_object_tests_cyclic2WithSetterDependency {
 	 * @param \t3lib_object_tests_cyclic1WithSetterDependency $c
 	 */
 	public function injectFoo(\t3lib_object_tests_cyclic1WithSetterDependency $c) {
-
 	}
-
 }
-
-
 
 /**
  * class which has setter injections defined
@@ -279,10 +228,7 @@ class t3lib_object_tests_injectmethods {
 	public function setClassBChild(\t3lib_object_tests_b_child $o) {
 		$this->bchild = $o;
 	}
-
 }
-
-
 
 /**
  * class which needs extenson settings injected
@@ -297,10 +243,7 @@ class t3lib_object_tests_injectsettings {
 	public function injectExtensionSettings(array $settings) {
 		$this->settings = $settings;
 	}
-
 }
-
-
 
 /**
 
@@ -315,10 +258,7 @@ class t3lib_object_tests_resolveablecyclic1 implements \TYPO3\CMS\Core\Singleton
 	public function __construct(\t3lib_object_tests_resolveablecyclic2 $cyclic2) {
 		$this->o2 = $cyclic2;
 	}
-
 }
-
-
 
 /**
 
@@ -342,10 +282,7 @@ class t3lib_object_tests_resolveablecyclic2 implements \TYPO3\CMS\Core\Singleton
 	public function injectCyclic3(\t3lib_object_tests_resolveablecyclic3 $cyclic3) {
 		$this->o3 = $cyclic3;
 	}
-
 }
-
-
 
 /**
 
@@ -360,10 +297,7 @@ class t3lib_object_tests_resolveablecyclic3 implements \TYPO3\CMS\Core\Singleton
 	public function injectCyclic1(\t3lib_object_tests_resolveablecyclic1 $cyclic1) {
 		$this->o1 = $cyclic1;
 	}
-
 }
-
-
 
 /**
 
@@ -374,19 +308,14 @@ class t3lib_object_tests_class_with_injectsettings {
 	 * @param \t3lib_object_tests_resolveablecyclic1 $c1
 	 */
 	public function injectFoo(\t3lib_object_tests_resolveablecyclic1 $c1) {
-
 	}
 
 	/**
 	 * @param array $settings
 	 */
 	public function injectSettings(array $settings) {
-
 	}
-
 }
-
-
 
 /*
  *  a Singleton requires a Prototype for Injection -> allowed, autowiring active, but in development context we write a log message, as it is bad practice and most likely points to some logic error.
@@ -399,20 +328,14 @@ If a Prototype requires a Singleton for Injection -> allowed, autowiring active
  */
 class t3lib_object_singleton implements \TYPO3\CMS\Core\SingletonInterface {
 
-
 }
-
-
 
 /**
 
  */
 class t3lib_object_prototype {
 
-
 }
-
-
 
 /**
 
@@ -430,10 +353,7 @@ class t3lib_object_singletonNeedsPrototype implements \TYPO3\CMS\Core\SingletonI
 	public function injectDependency(\t3lib_object_prototype $dependency) {
 		$this->dependency = $dependency;
 	}
-
 }
-
-
 
 /**
 
@@ -451,10 +371,7 @@ class t3lib_object_singletonNeedsSingleton implements \TYPO3\CMS\Core\SingletonI
 	public function injectDependency(\t3lib_object_singleton $dependency) {
 		$this->dependency = $dependency;
 	}
-
 }
-
-
 
 /**
 
@@ -472,10 +389,7 @@ class t3lib_object_prototypeNeedsPrototype {
 	public function injectDependency(\t3lib_object_prototype $dependency) {
 		$this->dependency = $dependency;
 	}
-
 }
-
-
 
 /**
 
@@ -493,10 +407,7 @@ class t3lib_object_prototypeNeedsSingleton {
 	public function injectDependency(\t3lib_object_singleton $dependency) {
 		$this->dependency = $dependency;
 	}
-
 }
-
-
 
 /**
 
@@ -509,10 +420,7 @@ class t3lib_object_singletonNeedsPrototypeInConstructor implements \TYPO3\CMS\Co
 	public function __construct(\t3lib_object_prototype $dependency) {
 		$this->dependency = $dependency;
 	}
-
 }
-
-
 
 /**
 
@@ -525,10 +433,7 @@ class t3lib_object_singletonNeedsSingletonInConstructor implements \TYPO3\CMS\Co
 	public function __construct(\t3lib_object_singleton $dependency) {
 		$this->dependency = $dependency;
 	}
-
 }
-
-
 
 /**
 
@@ -541,10 +446,7 @@ class t3lib_object_prototypeNeedsPrototypeInConstructor {
 	public function __construct(\t3lib_object_prototype $dependency) {
 		$this->dependency = $dependency;
 	}
-
 }
-
-
 
 /**
 
@@ -557,8 +459,6 @@ class t3lib_object_prototypeNeedsSingletonInConstructor {
 	public function __construct(\t3lib_object_singleton $dependency) {
 		$this->dependency = $dependency;
 	}
-
 }
-
 
 ?>

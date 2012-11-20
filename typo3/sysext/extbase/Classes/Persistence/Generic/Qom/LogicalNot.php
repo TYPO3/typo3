@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * Performs a logical negation of another constraint.
  *
  * To satisfy the Not constraint, the node-tuple must not satisfy constraint.
- *
- * @scope prototype
  */
 class LogicalNot implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\NotInterface {
 
@@ -66,8 +64,6 @@ class LogicalNot implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\NotInterf
 	public function getConstraint() {
 		return $this->constraint;
 	}
-
 }
-
 
 ?>

@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  * This model represents a category (for anything).
  *
  * @author Fabien Udriot <fabien.udriot@typo3.org>
- * @scope prototype
- * @entity
  * @api
  */
 class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
@@ -181,8 +179,6 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function removeItem(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity $item) {
 		$this->items->detach($item);
 	}
-
 }
-
 
 ?>

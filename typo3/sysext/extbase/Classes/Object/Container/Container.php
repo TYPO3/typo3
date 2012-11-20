@@ -78,7 +78,6 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @see getContainer()
 	 */
 	public function __construct() {
-
 	}
 
 	/**
@@ -327,8 +326,6 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $classInfo;
 	}
-
 }
-
 
 ?>

@@ -30,8 +30,8 @@ namespace TYPO3\CMS\Extbase\Persistence;
 /**
  * A lazy result list that is returned by Query::execute()
  */
-interface QueryResultInterface extends \Countable, \Iterator, \ArrayAccess
-{
+interface QueryResultInterface extends \Countable, \Iterator, \ArrayAccess {
+
 	/**
 	 * Returns a clone of the query object
 	 *
@@ -55,7 +55,6 @@ interface QueryResultInterface extends \Countable, \Iterator, \ArrayAccess
 	 * @api
 	 */
 	public function toArray();
-
 }
 
 ?>

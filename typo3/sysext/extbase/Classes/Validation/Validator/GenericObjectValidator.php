@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  ***************************************************************/
 /**
  * A generic object validator which allows for specifying property validators
- *
- * @scope prototype
  */
 class GenericObjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractObjectValidator {
 
@@ -203,8 +201,6 @@ class GenericObjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abs
 		}
 		$this->propertyValidators[$propertyName]->attach($validator);
 	}
-
 }
-
 
 ?>

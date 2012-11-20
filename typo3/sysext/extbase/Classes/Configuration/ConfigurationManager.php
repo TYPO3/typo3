@@ -109,15 +109,15 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 	 */
 	public function getConfiguration($configurationType, $extensionName = NULL, $pluginName = NULL) {
 		switch ($configurationType) {
-		case self::CONFIGURATION_TYPE_SETTINGS:
-			$configuration = $this->concreteConfigurationManager->getConfiguration($extensionName, $pluginName);
-			return $configuration['settings'];
-		case self::CONFIGURATION_TYPE_FRAMEWORK:
-			return $this->concreteConfigurationManager->getConfiguration($extensionName, $pluginName);
-		case self::CONFIGURATION_TYPE_FULL_TYPOSCRIPT:
-			return $this->concreteConfigurationManager->getTypoScriptSetup();
-		default:
-			throw new \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException('Invalid configuration type "' . $configurationType . '"', 1206031879);
+			case self::CONFIGURATION_TYPE_SETTINGS:
+				$configuration = $this->concreteConfigurationManager->getConfiguration($extensionName, $pluginName);
+				return $configuration['settings'];
+			case self::CONFIGURATION_TYPE_FRAMEWORK:
+				return $this->concreteConfigurationManager->getConfiguration($extensionName, $pluginName);
+			case self::CONFIGURATION_TYPE_FULL_TYPOSCRIPT:
+				return $this->concreteConfigurationManager->getTypoScriptSetup();
+			default:
+				throw new \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException('Invalid configuration type "' . $configurationType . '"', 1206031879);
 		}
 	}
 
@@ -133,10 +133,8 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 	 */
 	public function isFeatureEnabled($featureName) {
 		$configuration = $this->getConfiguration(self::CONFIGURATION_TYPE_FRAMEWORK);
-		return (bool) (isset($configuration['features'][$featureName]) && $configuration['features'][$featureName]);
+		return (boolean) (isset($configuration['features'][$featureName]) && $configuration['features'][$featureName]);
 	}
-
 }
-
 
 ?>

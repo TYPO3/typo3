@@ -32,7 +32,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  * validator has to be valid, to make the whole conjunction valid.
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope prototype
  */
 class ConjunctionValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator {
 
@@ -70,8 +69,6 @@ class ConjunctionValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstr
 		}
 		return $result;
 	}
-
 }
-
 
 ?>

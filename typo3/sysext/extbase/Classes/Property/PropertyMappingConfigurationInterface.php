@@ -26,8 +26,8 @@ namespace TYPO3\CMS\Extbase\Property;
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-interface PropertyMappingConfigurationInterface
-{
+interface PropertyMappingConfigurationInterface {
+
 	/**
 	 * returns TRUE if the given propertyName should be mapped, FALSE otherwise.
 	 *
@@ -71,7 +71,6 @@ interface PropertyMappingConfigurationInterface
 	 * @api
 	 */
 	public function getTypeConverter();
-
 }
 
 ?>

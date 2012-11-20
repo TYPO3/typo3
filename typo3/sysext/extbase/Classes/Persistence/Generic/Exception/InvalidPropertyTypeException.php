@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  */
 class InvalidPropertyTypeException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
 
-
 }
-
 
 ?>

@@ -158,8 +158,6 @@ class QueryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->query->injectQomFactory($qomFactory);
 		$this->query->equals($propertyName, $operand, FALSE);
 	}
-
 }
-
 
 ?>

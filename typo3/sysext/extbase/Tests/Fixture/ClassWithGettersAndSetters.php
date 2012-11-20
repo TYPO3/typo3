@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * A dummy class with getters and setters for testing data mapping
  *
@@ -75,7 +74,6 @@ class ClassWithGettersAndSetters {
 	public function getProperty2() {
 		return $this->property2;
 	}
-
 }
 
 ?>

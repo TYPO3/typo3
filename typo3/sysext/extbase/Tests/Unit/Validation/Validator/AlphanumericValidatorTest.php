@@ -54,8 +54,6 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation
 	public function alphanumericValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
 		$this->assertEquals(1, count($this->validator->validate('adsf%&/$jklsfdö')->getErrors()));
 	}
-
 }
-
 
 ?>

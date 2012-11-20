@@ -33,7 +33,6 @@ class ReflectionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @return void
 	 */
 	public function fixtureMethodForMethodTagsValues(array $foo) {
-
 	}
 
 	/**
@@ -104,8 +103,6 @@ class ReflectionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$classSchema = $service->getClassSchema('Foo_Bar_Domain_Model_' . $className);
 		$this->assertTrue($classSchema->isAggregateRoot());
 	}
-
 }
-
 
 ?>

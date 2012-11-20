@@ -34,8 +34,8 @@ namespace TYPO3\CMS\Extbase\DomainObject;
  * @see \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
  * @see \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
  */
-interface DomainObjectInterface
-{
+interface DomainObjectInterface {
+
 	/**
 	 * Getter for uid.
 	 *
@@ -88,7 +88,6 @@ interface DomainObjectInterface
 	 * @return array The properties
 	 */
 	public function _getProperties();
-
 }
 
 ?>

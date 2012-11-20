@@ -34,6 +34,7 @@ class DebuggerUtility {
 
 	const PLAINTEXT_INDENT = '   ';
 	const HTML_INDENT = '&nbsp;&nbsp;&nbsp;';
+
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
@@ -440,8 +441,6 @@ class DebuggerUtility {
 		}
 		return '';
 	}
-
 }
-
 
 ?>

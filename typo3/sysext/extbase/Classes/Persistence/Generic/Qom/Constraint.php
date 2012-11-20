@@ -31,12 +31,9 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * Base class for constraints in the QOM.
  *
  * @api
- * @scope prototype
  */
 class Constraint implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface {
 
-
 }
-
 
 ?>

@@ -89,8 +89,6 @@ class ClassInfoCache {
 	private function initializeLevel2Cache() {
 		$this->level2Cache = $GLOBALS['typo3CacheManager']->getCache('extbase_object');
 	}
-
 }
-
 
 ?>

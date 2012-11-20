@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
  */
 class InvalidCommandIdentifierException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 
-
 }
-
 
 ?>

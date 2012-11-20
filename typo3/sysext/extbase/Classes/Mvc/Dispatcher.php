@@ -99,7 +99,6 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 			try {
 				$controller->processRequest($request, $response);
 			} catch (\TYPO3\CMS\Extbase\Mvc\Exception\StopActionException $ignoredException) {
-
 			}
 		}
 		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterRequestDispatch', array('request' => $request, 'response' => $response));
@@ -123,8 +122,6 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $controller;
 	}
-
 }
-
 
 ?>

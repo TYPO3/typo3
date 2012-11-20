@@ -161,8 +161,6 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 		$bValidator->addPropertyValidator('uuid', $mockUuidValidator);
 		$this->assertSame(array('b.uuid' => array($error1), 'uuid' => array($error1)), $aValidator->validate($A)->getFlattenedErrors());
 	}
-
 }
-
 
 ?>

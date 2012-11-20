@@ -345,8 +345,6 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 		$actualResult = $this->backendConfigurationManager->_call('getContextSpecificFrameworkConfiguration', $frameworkConfiguration);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
-
 }
-
 
 ?>

@@ -48,8 +48,6 @@ class TextValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 		}
 		return TRUE;
 	}
-
 }
-
 
 ?>

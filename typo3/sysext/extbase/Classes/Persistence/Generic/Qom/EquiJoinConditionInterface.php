@@ -34,8 +34,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * would return true, where childSelectorNode is the node for childSelector and
  * parentSelectorNode is the node for parentSelector.
  */
-interface EquiJoinConditionInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinConditionInterface
-{
+interface EquiJoinConditionInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinConditionInterface {
+
 	/**
 	 * Gets the name of the child selector.
 	 *
@@ -49,7 +49,6 @@ interface EquiJoinConditionInterface extends \TYPO3\CMS\Extbase\Persistence\Gene
 	 * @return string the selector name; non-null
 	 */
 	public function getParentSelectorName();
-
 }
 
 ?>

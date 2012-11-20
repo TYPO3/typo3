@@ -32,8 +32,8 @@ namespace TYPO3\CMS\Extbase\Mvc\View;
  *
  * @api
  */
-interface ViewInterface
-{
+interface ViewInterface {
+
 	/**
 	 * Sets the current controller context
 	 *
@@ -86,7 +86,6 @@ interface ViewInterface
 	 * @api
 	 */
 	public function initializeView();
-
 }
 
 ?>

@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  ***************************************************************/
 /**
  * The Query Object Model Factory
- *
- * @scope prototype
  */
 class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 
@@ -219,8 +217,6 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	public function bindVariable($bindVariableName) {
 		return $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\BindVariableValue', $bindVariableName);
 	}
-
 }
-
 
 ?>

@@ -331,8 +331,6 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException('The source is not of type string, array, float, integer or boolean, but of type "' . gettype($source) . '"', 1297773150);
 		}
 	}
-
 }
-
 
 ?>

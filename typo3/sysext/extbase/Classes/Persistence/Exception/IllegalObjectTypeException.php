@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Exception;
  */
 class IllegalObjectTypeException extends \TYPO3\CMS\Extbase\Persistence\Exception {
 
-
 }
-
 
 ?>

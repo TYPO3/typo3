@@ -290,8 +290,6 @@ plugin.tx_myextension {
 		);
 		$this->assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
 	}
-
 }
-
 
 ?>

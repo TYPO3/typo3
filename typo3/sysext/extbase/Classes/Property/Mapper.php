@@ -336,20 +336,18 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Finds an object from the repository by searching for its technical UID.
+	 * TODO This is duplicated code; see Argument class
 	 *
 	 * @param string $dataType the data type to fetch
-	 * @param int $uid The object's uid
+	 * @param integer $uid The object's uid
 	 * @return object Either the object matching the uid or, if none or more than one object was found, NULL
 	 */
-	// TODO This is duplicated code; see Argument class
 	protected function findObjectByUid($dataType, $uid) {
 		$query = $this->queryFactory->create($dataType);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		return $query->matching($query->equals('uid', intval($uid)))->execute()->getFirst();
 	}
-
 }
-
 
 ?>

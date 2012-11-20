@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Extbase\Property\Exception;
  */
 class InvalidSourceException extends \TYPO3\CMS\Extbase\Property\Exception {
 
-
 }
-
 
 ?>

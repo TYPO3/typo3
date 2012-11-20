@@ -44,8 +44,6 @@ class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Reposito
 		$querySettings->setRespectStoragePage(FALSE);
 		$this->setDefaultQuerySettings($querySettings);
 	}
-
 }
-
 
 ?>

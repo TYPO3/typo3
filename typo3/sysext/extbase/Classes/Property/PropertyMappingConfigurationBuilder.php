@@ -41,8 +41,6 @@ class PropertyMappingConfigurationBuilder implements \TYPO3\CMS\Core\SingletonIn
 		));
 		return $configuration;
 	}
-
 }
-
 
 ?>

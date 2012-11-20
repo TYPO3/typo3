@@ -31,7 +31,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  * This object holds validation errors for one argument.
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope prototype
  * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
  */
 class ArgumentError extends \TYPO3\CMS\Extbase\Validation\PropertyError {
@@ -45,8 +44,6 @@ class ArgumentError extends \TYPO3\CMS\Extbase\Validation\PropertyError {
 	 * @var string The error code
 	 */
 	protected $code = 1245107351;
-
 }
-
 
 ?>

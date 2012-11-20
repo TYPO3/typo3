@@ -37,7 +37,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * If operand evaluates to null, the UpperCase operand also evaluates to null.
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope prototype
  */
 class UpperCase implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\UpperCaseInterface {
 
@@ -63,8 +62,6 @@ class UpperCase implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\UpperCaseI
 	public function getOperand() {
 		return $this->operand;
 	}
-
 }
-
 
 ?>

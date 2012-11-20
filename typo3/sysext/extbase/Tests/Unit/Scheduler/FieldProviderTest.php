@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Scheduler;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * FieldProvider Test Class
  */
@@ -43,7 +42,6 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @var \TYPO3\CMS\Extbase\Scheduler\FieldProvider
 	 */
 	protected $fieldProvider;
-
 
 	/**
 	 *
@@ -69,7 +67,6 @@ class FieldProviderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertContains('<option title="test" value="mypkg:mockc:mockb">Mypkg MockC: mockB</option>', $actualResult['code']);
 		$this->assertContains('<option title="test" value="extbase:mockd:mockb">Extbase MockD: mockB</option>', $actualResult['code']);
 	}
-
 
 	/**
 	 * @test

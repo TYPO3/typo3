@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Extbase\Validation;
  */
 class Exception extends \TYPO3\CMS\Extbase\Exception {
 
-
 }
-
 
 ?>

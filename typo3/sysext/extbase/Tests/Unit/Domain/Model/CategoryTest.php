@@ -126,8 +126,6 @@ class CategoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->fixture->removeItem($item);
 		$this->assertFalse($this->fixture->getItems()->contains($item));
 	}
-
 }
-
 
 ?>

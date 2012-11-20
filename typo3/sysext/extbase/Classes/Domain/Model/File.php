@@ -26,14 +26,10 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 /**
  * A file object (File Abstraction Layer)
  *
- * @scope prototype
- * @entity
  * @api experimental! This class is experimental and subject to change!
  */
 class File extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder {
 
-
 }
-
 
 ?>

@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  * This model represents a backend usergroup.
  *
  * @author Markus Günther <mail@markus-guenther.de>
- * @scope prototype
- * @entity
  * @api
  */
 class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
@@ -40,6 +38,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	const DIRECTORY_OPPERATIONS = 4;
 	const DIRECTORY_COPY = 8;
 	const DIRECTORY_REMOVE_RECURSIVELY = 16;
+
 	/**
 	 * @var string
 	 * @validate notEmpty
@@ -581,8 +580,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			$this->fileOperationPermissions &= ~$permission;
 		}
 	}
-
 }
-
 
 ?>

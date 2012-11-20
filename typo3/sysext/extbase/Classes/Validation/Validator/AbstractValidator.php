@@ -119,8 +119,6 @@ abstract class AbstractValidator implements \TYPO3\CMS\Extbase\Validation\Valida
 		// the following is @deprecated since Extbase 1.4.0:
 		$this->errors[] = new \TYPO3\CMS\Extbase\Validation\Error($message, $code, $arguments, $title);
 	}
-
 }
-
 
 ?>

@@ -56,8 +56,6 @@ class BackendRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHa
 	public function canHandleRequest() {
 		return TYPO3_MODE === 'BE';
 	}
-
 }
-
 
 ?>

@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\Fixture;
 /**
  * A file context object (File Abstraction Layer)
  *
- * @scope prototype
- * @entity
  * @api
  */
 class FileContext extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
@@ -311,8 +309,6 @@ class FileContext extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function removeFolder(\TYPO3\CMS\Extbase\Domain\Model\Folder $folder) {
 		$this->folders->detach($folder);
 	}
-
 }
-
 
 ?>

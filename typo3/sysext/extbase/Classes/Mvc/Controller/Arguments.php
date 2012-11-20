@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  ***************************************************************/
 /**
  * A composite of controller arguments
- *
- * @scope prototype
  */
 class Arguments extends \ArrayObject {
 
@@ -294,8 +292,6 @@ class Arguments extends \ArrayObject {
 		}
 		return $results;
 	}
-
 }
-
 
 ?>

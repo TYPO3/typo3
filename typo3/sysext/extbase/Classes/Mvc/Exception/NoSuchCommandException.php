@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
  */
 class NoSuchCommandException extends \TYPO3\CMS\Extbase\Mvc\Exception\CommandException {
 
-
 }
-
 
 ?>

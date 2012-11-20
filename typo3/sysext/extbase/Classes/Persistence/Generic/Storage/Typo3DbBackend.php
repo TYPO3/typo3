@@ -34,6 +34,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 
 	const OPERATOR_EQUAL_TO_NULL = 'operatorEqualToNull';
 	const OPERATOR_NOT_EQUAL_TO_NULL = 'operatorNotEqualToNull';
+
 	/**
 	 * The TYPO3 database object
 	 *
@@ -158,7 +159,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		if (!$isRelation) {
 			$this->clearPageCache($tableName, $uid);
 		}
-		return (int) $uid;
+		return (integer) $uid;
 	}
 
 	/**
@@ -174,7 +175,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		if (!isset($row['uid'])) {
 			throw new \InvalidArgumentException('The given row must contain a value for "uid".');
 		}
-		$uid = (int) $row['uid'];
+		$uid = (integer) $row['uid'];
 		unset($row['uid']);
 		$fields = array();
 		$parameters = array();
@@ -317,7 +318,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			$count = current(current($rows));
 		}
 		$this->databaseHandle->sql_free_result($result);
-		return (int) $count;
+		return (integer) $count;
 	}
 
 	/**
@@ -413,7 +414,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		$this->checkSqlErrors($statement);
 		$row = $this->databaseHandle->sql_fetch_assoc($res);
 		if ($row !== FALSE) {
-			return (int) $row['uid'];
+			return (integer) $row['uid'];
 		} else {
 			return FALSE;
 		}
@@ -737,38 +738,38 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 */
 	protected function resolveOperator($operator) {
 		switch ($operator) {
-		case self::OPERATOR_EQUAL_TO_NULL:
-			$operator = 'IS';
-			break;
-		case self::OPERATOR_NOT_EQUAL_TO_NULL:
-			$operator = 'IS NOT';
-			break;
-		case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_IN:
-			$operator = 'IN';
-			break;
-		case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_EQUAL_TO:
-			$operator = '=';
-			break;
-		case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_NOT_EQUAL_TO:
-			$operator = '!=';
-			break;
-		case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_LESS_THAN:
-			$operator = '<';
-			break;
-		case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_LESS_THAN_OR_EQUAL_TO:
-			$operator = '<=';
-			break;
-		case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_GREATER_THAN:
-			$operator = '>';
-			break;
-		case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_GREATER_THAN_OR_EQUAL_TO:
-			$operator = '>=';
-			break;
-		case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_LIKE:
-			$operator = 'LIKE';
-			break;
-		default:
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('Unsupported operator encountered.', 1242816073);
+			case self::OPERATOR_EQUAL_TO_NULL:
+				$operator = 'IS';
+				break;
+			case self::OPERATOR_NOT_EQUAL_TO_NULL:
+				$operator = 'IS NOT';
+				break;
+			case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_IN:
+				$operator = 'IN';
+				break;
+			case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_EQUAL_TO:
+				$operator = '=';
+				break;
+			case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_NOT_EQUAL_TO:
+				$operator = '!=';
+				break;
+			case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_LESS_THAN:
+				$operator = '<';
+				break;
+			case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_LESS_THAN_OR_EQUAL_TO:
+				$operator = '<=';
+				break;
+			case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_GREATER_THAN:
+				$operator = '>';
+				break;
+			case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_GREATER_THAN_OR_EQUAL_TO:
+				$operator = '>=';
+				break;
+			case \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_LIKE:
+				$operator = 'LIKE';
+				break;
+			default:
+				throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('Unsupported operator encountered.', 1242816073);
 		}
 		return $operator;
 	}
@@ -942,7 +943,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				// If any language is set -> get those entries which are not translated yet
 				// They will be removed by t3lib_page::getRecordOverlay if not matching overlay mode
 				if (isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-						&& $querySettings->getSysLanguageUid() > 0
+					&& $querySettings->getSysLanguageUid() > 0
 				) {
 					$additionalWhereClause .= ' OR (' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0' .
 						' AND ' . $tableName . '.uid NOT IN (' . 'SELECT ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] .
@@ -992,18 +993,18 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	protected function parseOrderings(array $orderings, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source, array &$sql) {
 		foreach ($orderings as $propertyName => $order) {
 			switch ($order) {
-			case \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING:
+				case \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING:
 
-			case \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING:
-				$order = 'ASC';
-				break;
-			case \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING:
+				case \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING:
+					$order = 'ASC';
+					break;
+				case \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING:
 
-			case \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING:
-				$order = 'DESC';
-				break;
-			default:
-				throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException('Unsupported order encountered.', 1242816074);
+				case \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING:
+					$order = 'DESC';
+					break;
+				default:
+					throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException('Unsupported order encountered.', 1242816074);
 			}
 			$className = '';
 			$tableName = '';
@@ -1028,8 +1029,8 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	/**
 	 * Transforms limit and offset into SQL
 	 *
-	 * @param int $limit
-	 * @param int $offset
+	 * @param integer $limit
+	 * @param integer $offset
 	 * @param array &$sql
 	 * @return void
 	 */
@@ -1097,17 +1098,17 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			foreach ($rows as $row) {
 				// If current row is a translation select its parent
 				if (isset($tableName) && isset($GLOBALS['TCA'][$tableName])
-						&& isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
-						&& isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
+					&& isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
+					&& isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
 				) {
 					if (isset($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']])
-							&& $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
+						&& $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0
 					) {
 						$row = $this->databaseHandle->exec_SELECTgetSingleRow(
 							$tableName . '.*',
 							$tableName,
-							$tableName . '.uid=' . (int)$row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] .
-									' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0'
+							$tableName . '.uid=' . (integer) $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] .
+								' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0'
 						);
 					}
 				}
@@ -1118,7 +1119,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				if ($tableName == 'pages') {
 					$row = $pageRepository->getPageOverlay($row, $querySettings->getSysLanguageUid());
 				} elseif (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
-						&& $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== ''
+					&& $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== ''
 				) {
 					if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], array(-1, 0))) {
 						$overlayMode = $languageMode === 'strict' ? 'hideNonTranslated' : '';
@@ -1179,7 +1180,6 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	protected function clearPageCache($tableName, $uid) {
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if (isset($frameworkConfiguration['persistence']['enableAutomaticCacheClearing']) && $frameworkConfiguration['persistence']['enableAutomaticCacheClearing'] === '1') {
-
 		} else {
 			// if disabled, return
 			return;
@@ -1226,8 +1226,6 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	protected function getTypo3Mode() {
 		return TYPO3_MODE;
 	}
-
 }
-
 
 ?>

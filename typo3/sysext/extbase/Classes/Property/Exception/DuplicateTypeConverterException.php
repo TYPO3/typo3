@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Extbase\Property\Exception;
  */
 class DuplicateTypeConverterException extends \TYPO3\CMS\Extbase\Property\Exception {
 
-
 }
-
 
 ?>

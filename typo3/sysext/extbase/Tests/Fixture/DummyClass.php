@@ -26,10 +26,7 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
 class DummyClass {
 
 	public function someMethod() {
-
 	}
-
 }
-
 
 ?>

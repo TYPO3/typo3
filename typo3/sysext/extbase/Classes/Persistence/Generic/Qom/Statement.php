@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  ***************************************************************/
 /**
  * A statement acting as a constraint.
- *
- * @scope prototype
  */
 class Statement {
 
@@ -38,6 +36,7 @@ class Statement {
 	 * constants determining the language of the query
 	 */
 	const TYPO3_SQL_MYSQL = 'TYPO3-SQL-MYSQL';
+
 	/**
 	 * @var string
 	 */
@@ -92,8 +91,6 @@ class Statement {
 	public function getLanguage() {
 		return $this->language;
 	}
-
 }
-
 
 ?>

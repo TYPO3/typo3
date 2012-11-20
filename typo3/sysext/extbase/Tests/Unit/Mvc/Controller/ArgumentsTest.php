@@ -107,7 +107,6 @@ class ArgumentsTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			$arguments->getArgument('someArgument');
 			$this->fail('getArgument() did not throw an exception although the specified argument does not exist.');
 		} catch (\TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException $exception) {
-
 		}
 	}
 
@@ -246,8 +245,6 @@ class ArgumentsTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$arguments->removeAll();
 		$this->assertFalse($arguments->hasArgument('argumentName2'));
 	}
-
 }
-
 
 ?>

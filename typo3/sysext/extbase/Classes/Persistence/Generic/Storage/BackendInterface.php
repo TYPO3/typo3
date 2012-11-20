@@ -30,8 +30,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 /**
  * Storage backend interface
  */
-interface BackendInterface
-{
+interface BackendInterface {
+
 	/**
 	 * Adds a row to the storage
 	 *
@@ -79,7 +79,6 @@ interface BackendInterface
 	 * @api
 	 */
 	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query);
-
 }
 
 ?>

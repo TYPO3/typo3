@@ -37,8 +37,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * the node's primary node type is a subtype of nodeType, or
  * the node has a mixin node type that is nodeType, or
  * the node has a mixin node type that is a subtype of nodeType.
- *
- * @scope prototype
  */
 class Selector implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface {
 
@@ -81,8 +79,6 @@ class Selector implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInt
 	public function getSelectorName() {
 		return $this->selectorName;
 	}
-
 }
-
 
 ?>

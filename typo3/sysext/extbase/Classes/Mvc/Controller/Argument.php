@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 /**
  * A controller argument
  *
- * @scope prototype
  * @api
  */
 class Argument {
@@ -158,6 +157,7 @@ class Argument {
 	const ORIGIN_PERSISTENCE = 1;
 	const ORIGIN_PERSISTENCE_AND_MODIFIED = 2;
 	const ORIGIN_NEWLY_CREATED = 3;
+
 	/**
 	 * The origin of the argument value. This is only meaningful after argument mapping.
 	 *
@@ -348,7 +348,7 @@ class Argument {
 	 * @api
 	 */
 	public function setRequired($required) {
-		$this->isRequired = (bool) $required;
+		$this->isRequired = (boolean) $required;
 		return $this;
 	}
 
@@ -515,7 +515,7 @@ class Argument {
 	/**
 	 * Finds an object from the repository by searching for its technical UID.
 	 *
-	 * @param int $uid The object's uid
+	 * @param integer $uid The object's uid
 	 * @return object Either the object matching the uid or, if none or more than one object was found, NULL
 	 */
 	protected function findObjectByUid($uid) {
@@ -587,8 +587,6 @@ class Argument {
 	public function __toString() {
 		return (string) $this->value;
 	}
-
 }
-
 
 ?>

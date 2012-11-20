@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the CLI CommandManager class
  */
@@ -127,8 +126,6 @@ class CommandManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->commandManager->expects($this->once())->method('getAvailableCommands')->will($this->returnValue($mockCommands));
 		$this->commandManager->getCommandByIdentifier('controller:command');
 	}
-
 }
-
 
 ?>

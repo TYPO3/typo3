@@ -31,7 +31,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  * The controller context contains information from the controller
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope prototype
  * @api
  */
 class ControllerContext {
@@ -184,8 +183,6 @@ class ControllerContext {
 	public function getFlashMessageContainer() {
 		return $this->flashMessageContainer;
 	}
-
 }
-
 
 ?>

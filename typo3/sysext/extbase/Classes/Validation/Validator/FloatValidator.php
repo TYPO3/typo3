@@ -48,8 +48,6 @@ class FloatValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVal
 		$this->addError('The given subject was not a valid float.', 1221560288);
 		return FALSE;
 	}
-
 }
-
 
 ?>

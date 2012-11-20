@@ -67,8 +67,6 @@ class ClassWithSetters {
 	public function getProperty2() {
 		return $this->property2;
 	}
-
 }
-
 
 ?>

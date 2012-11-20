@@ -192,8 +192,6 @@ class ObjectStorageTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$objectStorage->attach($object2, 'bar');
 		$this->assertEquals($objectStorage->toArray(), array($object1, $object2));
 	}
-
 }
-
 
 ?>

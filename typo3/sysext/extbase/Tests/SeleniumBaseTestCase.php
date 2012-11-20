@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Extbase\Tests;
  */
 abstract class SeleniumBaseTestCase extends \tx_phpunit_selenium_testcase {
 
-
 }
-
 
 ?>

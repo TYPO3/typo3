@@ -147,7 +147,7 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 * @return void
 	 */
 	public function injectSession(\TYPO3\CMS\Extbase\Persistence\Generic\Session $session) {
-			$this->session = $session;
+		$this->session = $session;
 	}
 
 	/**
@@ -325,7 +325,7 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	/**
 	 * Finds an object matching the given identifier.
 	 *
-	 * @param int $uid The identifier of the object to find
+	 * @param integer $uid The identifier of the object to find
 	 * @return object The matching object if found, otherwise NULL
 	 * @api
 	 */
@@ -422,8 +422,6 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	protected function getRepositoryClassName() {
 		return get_class($this);
 	}
-
 }
-
 
 ?>

@@ -320,8 +320,6 @@ class ExtensionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$actualResult = $this->extensionService->getDefaultActionNameByPluginAndController('SomeOtherExtensionName', 'SecondPlugin', 'SecondControllerName');
 		$this->assertEquals($expectedResult, $actualResult);
 	}
-
 }
-
 
 ?>

@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Extbase\Configuration\Exception;
  */
 class NoSuchFileException extends \TYPO3\CMS\Extbase\Configuration\Exception {
 
-
 }
-
 
 ?>

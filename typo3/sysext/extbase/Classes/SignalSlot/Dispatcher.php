@@ -155,8 +155,6 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getSlots($signalClassName, $signalName) {
 		return isset($this->slots[$signalClassName][$signalName]) ? $this->slots[$signalClassName][$signalName] : array();
 	}
-
 }
-
 
 ?>

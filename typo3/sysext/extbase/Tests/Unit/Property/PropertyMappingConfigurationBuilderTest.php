@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the Property Mapper
  *
@@ -49,8 +48,6 @@ class PropertyMappingConfigurationBuilderTest extends \TYPO3\CMS\Extbase\Tests\U
 		$this->assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
 		$this->assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
 	}
-
 }
-
 
 ?>

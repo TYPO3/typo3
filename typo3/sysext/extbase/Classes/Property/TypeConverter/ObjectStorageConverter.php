@@ -101,8 +101,6 @@ class ObjectStorageConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\A
 		$parsedTargetType = $this->typeHandlingService->parseType($targetType);
 		return $parsedTargetType['elementType'];
 	}
-
 }
-
 
 ?>

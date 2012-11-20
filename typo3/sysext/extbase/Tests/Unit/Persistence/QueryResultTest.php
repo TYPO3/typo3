@@ -177,8 +177,6 @@ class QueryResultTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$actualResult = current($queryResult);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
-
 }
-
 
 ?>

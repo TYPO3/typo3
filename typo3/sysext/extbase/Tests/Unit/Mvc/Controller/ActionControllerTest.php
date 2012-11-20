@@ -567,8 +567,6 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockConfigurationManager->expects($this->any())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(FALSE));
 		$actionController->injectConfigurationManager($mockConfigurationManager);
 	}
-
 }
-
 
 ?>

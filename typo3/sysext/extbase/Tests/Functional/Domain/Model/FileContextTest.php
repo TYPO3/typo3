@@ -242,8 +242,6 @@ class FileContextTest extends \Tx_Extbase_Tests_Functional_BaseTestCase {
 		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Domain\\Model\\FolderBasedFileCollection', $fixture->getFolderBasedFileCollections()->current());
 		$this->assertEquals(1, $fixture->getFolderBasedFileCollections()->current()->getObject()->getUid());
 	}
-
 }
-
 
 ?>

@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Extbase\Property\Exception;
  */
 class DuplicateObjectException extends \TYPO3\CMS\Extbase\Property\Exception {
 
-
 }
-
 
 ?>

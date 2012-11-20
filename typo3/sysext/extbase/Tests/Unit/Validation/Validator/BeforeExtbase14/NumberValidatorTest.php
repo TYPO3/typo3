@@ -59,8 +59,6 @@ class NumberValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$numberValidator->expects($this->once())->method('addError')->with('The given subject was not a valid number.', 1221563685);
 		$numberValidator->isValid('this is not a number');
 	}
-
 }
-
 
 ?>

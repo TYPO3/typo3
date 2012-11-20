@@ -49,6 +49,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 				)(?:\\s|,)*)*)
 			\\))?
 		/ixS';
+
 	/**
 	 * Match validator options (to parse actual options)
 	 *
@@ -64,6 +65,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 				|(?:\\s|[^,"\']*)
 			)
 		/ixS';
+
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
@@ -230,7 +232,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 		// Custom validator for the class
-		$possibleValidatorClassName = str_replace(array('_Model_', '\\Model\\'), array('_Validator_','\\Validator\\'), $dataType) . 'Validator';
+		$possibleValidatorClassName = str_replace(array('_Model_', '\\Model\\'), array('_Validator_', '\\Validator\\'), $dataType) . 'Validator';
 		$customValidator = $this->createValidator($possibleValidatorClassName);
 		if ($customValidator !== NULL) {
 			$validatorConjunction->addValidator($customValidator);
@@ -295,10 +297,10 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 		switch ($quotedValue[0]) {
 			case '"':
 				$quotedValue = str_replace('\\"', '"', trim($quotedValue, '"'));
-			break;
+				break;
 			case '\'':
 				$quotedValue = str_replace('\\\'', '\'', trim($quotedValue, '\''));
-			break;
+				break;
 		}
 		$quotedValue = str_replace('\\\\', '\\', $quotedValue);
 	}
@@ -359,6 +361,6 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return ucfirst($type);
 	}
-
 }
+
 ?>

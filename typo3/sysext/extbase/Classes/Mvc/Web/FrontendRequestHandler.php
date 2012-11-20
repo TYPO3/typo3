@@ -93,8 +93,6 @@ class FrontendRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestH
 	public function canHandleRequest() {
 		return TYPO3_MODE === 'FE';
 	}
-
 }
-
 
 ?>

@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  ***************************************************************/
 /**
  * Validator for general numbers
- *
- * @scope prototype
  */
 class NumberRangeValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
@@ -67,8 +65,6 @@ class NumberRangeValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstr
 		$this->addError('The given subject was not in the valid range (%1$d - %2$d).', 1221561046, array($startRange, $endRange));
 		return FALSE;
 	}
-
 }
-
 
 ?>

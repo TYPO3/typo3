@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Extbase\Mvc;
 /**
  * A generic and very basic response implementation
  *
- * @scope prototype
  * @api
  */
 class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface {
@@ -81,8 +80,6 @@ class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface {
 	public function __toString() {
 		return $this->getContent();
 	}
-
 }
-
 
 ?>

@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  */
 class TooDirtyException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
 
-
 }
-
 
 ?>

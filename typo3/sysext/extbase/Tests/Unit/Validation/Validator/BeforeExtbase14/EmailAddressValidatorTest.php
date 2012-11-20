@@ -95,8 +95,6 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 		$emailAddressValidator->expects($this->once())->method('addError')->with('The given subject was not a valid email address.', 1221559976);
 		$emailAddressValidator->isValid('notAValidMail@Address');
 	}
-
 }
-
 
 ?>

@@ -28,8 +28,8 @@ namespace TYPO3\CMS\Extbase\Property;
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-interface TypeConverterInterface
-{
+interface TypeConverterInterface {
+
 	/**
 	 * Returns the list of source types the TypeConverter can handle.
 	 * Must be PHP simple types, classes or object is not allowed.
@@ -107,7 +107,6 @@ interface TypeConverterInterface
 	 * @api
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL);
-
 }
 
 ?>

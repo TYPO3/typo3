@@ -7,10 +7,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Cli\Fixture\Command;
 class MockBCommandController extends \TYPO3\CMS\Extbase\Mvc\Cli\Command {
 
 	public function bazCommand() {
-
 	}
-
 }
-
 
 ?>

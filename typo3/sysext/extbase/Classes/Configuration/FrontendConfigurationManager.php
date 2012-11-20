@@ -221,8 +221,6 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 		}
 		return $frameworkConfiguration;
 	}
-
 }
-
 
 ?>

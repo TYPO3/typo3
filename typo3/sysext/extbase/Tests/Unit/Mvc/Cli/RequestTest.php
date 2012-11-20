@@ -68,8 +68,6 @@ class RequestTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Command', 'Tx_SomeExtension_Command_BeerCommandController', 'drink');
 		$this->request->getCommand();
 	}
-
 }
-
 
 ?>

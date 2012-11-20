@@ -27,7 +27,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * An "NotImplementedException" exception
  */

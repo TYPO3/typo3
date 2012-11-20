@@ -34,8 +34,6 @@ namespace TYPO3\CMS\Extbase\Reflection\Exception;
  */
 class UnknownClassException extends \TYPO3\CMS\Extbase\Reflection\Exception {
 
-
 }
-
 
 ?>

@@ -232,8 +232,6 @@ class TypoScriptServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$converted = $typoScriptService->convertPlainArrayToTypoScriptArray($extbaseTS);
 		$this->assertEquals($converted, $classic);
 	}
-
 }
-
 
 ?>

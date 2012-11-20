@@ -296,8 +296,6 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\E
 	public function _isDirty() {
 		return $this->isModified;
 	}
-
 }
-
 
 ?>

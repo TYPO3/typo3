@@ -134,8 +134,6 @@ class IdentityMap implements \TYPO3\CMS\Core\SingletonInterface {
 		unset($this->uuidMap[get_class($object)][$this->objectMap[$object]]);
 		$this->objectMap->detach($object);
 	}
-
 }
-
 
 ?>

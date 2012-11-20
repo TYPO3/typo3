@@ -227,8 +227,6 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	public function setTypeConverter(\TYPO3\CMS\Extbase\Property\TypeConverterInterface $typeConverter) {
 		$this->typeConverter = $typeConverter;
 	}
-
 }
-
 
 ?>

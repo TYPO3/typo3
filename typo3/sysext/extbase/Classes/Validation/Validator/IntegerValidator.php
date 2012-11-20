@@ -48,8 +48,6 @@ class IntegerValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractV
 		$this->addError('The given subject was not a valid integer.', 1221560494);
 		return FALSE;
 	}
-
 }
-
 
 ?>

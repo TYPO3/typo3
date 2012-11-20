@@ -91,8 +91,6 @@ class QueryFactory implements \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactor
 		$query->setQuerySettings($querySettings);
 		return $query;
 	}
-
 }
-
 
 ?>

@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
  */
 class InvalidUriPatternException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 
-
 }
-
 
 ?>

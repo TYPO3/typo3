@@ -114,8 +114,6 @@ class FlexFormServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$convertedFlexFormArray = $this->flexFormService->convertFlexFormContentToArray($flexFormXML);
 		$this->assertSame($expectedFlexFormArray, $convertedFlexFormArray);
 	}
-
 }
-
 
 ?>

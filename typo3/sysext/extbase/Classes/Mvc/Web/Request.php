@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
 /**
  * Represents a web request.
  *
- * @scope prototype
  * @api
  */
 class Request extends \TYPO3\CMS\Extbase\Mvc\Request {
@@ -168,7 +167,7 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request {
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
 	 */
 	public function setHmacVerified($hmacVerified) {
-		$this->hmacVerified = (bool) $hmacVerified;
+		$this->hmacVerified = (boolean) $hmacVerified;
 	}
 
 	/**
@@ -188,7 +187,7 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request {
 	 * @param boolean $isCached
 	 */
 	public function setIsCached($isCached) {
-		$this->isCached = (bool) $isCached;
+		$this->isCached = (boolean) $isCached;
 	}
 
 	/**
@@ -222,8 +221,6 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request {
 		}
 		return NULL;
 	}
-
 }
-
 
 ?>

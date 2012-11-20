@@ -32,6 +32,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandControllerInterface {
 
 	const MAXIMUM_LINE_LENGTH = 79;
+
 	/**
 	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\Request
 	 */
@@ -275,8 +276,6 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 		$this->response->send();
 		die($exitCode);
 	}
-
 }
-
 
 ?>

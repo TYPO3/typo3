@@ -50,8 +50,6 @@ class DateTimeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$dateTimeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\DateTimeValidator', array('addError'), array(), '', FALSE);
 		$this->assertFalse($dateTimeValidator->isValid('blah'));
 	}
-
 }
-
 
 ?>

@@ -29,7 +29,6 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
  ***************************************************************/
 /**
  * An entity
- * @entity
  */
 class Entity extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
@@ -67,8 +66,6 @@ class Entity extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getName() {
 		return $this->name;
 	}
-
 }
-
 
 ?>

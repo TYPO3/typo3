@@ -26,11 +26,12 @@ namespace TYPO3\CMS\Extbase\Configuration;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-interface ConfigurationManagerInterface extends \TYPO3\CMS\Core\SingletonInterface
-{
+interface ConfigurationManagerInterface extends \TYPO3\CMS\Core\SingletonInterface {
+
 	const CONFIGURATION_TYPE_FRAMEWORK = 'Framework';
 	const CONFIGURATION_TYPE_SETTINGS = 'Settings';
 	const CONFIGURATION_TYPE_FULL_TYPOSCRIPT = 'FullTypoScript';
+
 	/**
 	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject
 	 * @return void
@@ -78,7 +79,6 @@ interface ConfigurationManagerInterface extends \TYPO3\CMS\Core\SingletonInterfa
 	 * @return boolean
 	 */
 	public function isFeatureEnabled($featureName);
-
 }
 
 ?>

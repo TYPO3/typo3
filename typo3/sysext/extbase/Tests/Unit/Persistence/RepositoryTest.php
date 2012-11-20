@@ -413,8 +413,6 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->repository->_set('objectType', 'ExpectedObjectType');
 		$this->repository->remove(new \stdClass());
 	}
-
 }
-
 
 ?>

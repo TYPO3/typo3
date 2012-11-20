@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
  * Testcase for \TYPO3\CMS\Extbase\Domain\Model\FileMount.
  *
  * @author Markus Günther <mail@markus-guenther.de>
- * @scope prototype
- * @entity
  * @api
  */
 class FileMountTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
@@ -94,8 +92,6 @@ class FileMountTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->fixture->setIsAbsolutePath(TRUE);
 		$this->assertTrue($this->fixture->getIsAbsolutePath());
 	}
-
 }
-
 
 ?>

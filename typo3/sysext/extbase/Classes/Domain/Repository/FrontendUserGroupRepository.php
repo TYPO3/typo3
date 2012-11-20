@@ -33,8 +33,6 @@ namespace TYPO3\CMS\Extbase\Domain\Repository;
  */
 class FrontendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
-
 }
-
 
 ?>

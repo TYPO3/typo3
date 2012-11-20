@@ -62,8 +62,6 @@ class FrontendSimulatorUtility {
 			$GLOBALS['TSFE'] = self::$tsfeBackup;
 		}
 	}
-
 }
-
 
 ?>

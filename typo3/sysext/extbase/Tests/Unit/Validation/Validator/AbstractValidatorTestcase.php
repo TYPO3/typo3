@@ -53,8 +53,6 @@ abstract class AbstractValidatorTestcase extends \TYPO3\CMS\Extbase\Tests\Unit\B
 	protected function validatorOptions($options) {
 		$this->validator = $this->getValidator($options);
 	}
-
 }
-
 
 ?>

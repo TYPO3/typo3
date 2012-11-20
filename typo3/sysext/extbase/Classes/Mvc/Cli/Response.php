@@ -28,7 +28,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Cli;
  * A CLI specific response implementation
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope prototype
  */
 class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 
@@ -73,8 +72,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 			echo $this->getContent();
 		}
 	}
-
 }
-
 
 ?>

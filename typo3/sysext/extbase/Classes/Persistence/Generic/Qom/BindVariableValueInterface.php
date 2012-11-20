@@ -29,17 +29,17 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  ***************************************************************/
 /**
  * Evaluates to the value of a bind variable.
+ *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-interface BindVariableValueInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\StaticOperandInterface
-{
+interface BindVariableValueInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\StaticOperandInterface {
+
 	/**
 	 * Gets the name of the bind variable.
 	 *
 	 * @return string the bind variable name; non-null
 	 */
 	public function getBindVariableName();
-
 }
 
 ?>

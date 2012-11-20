@@ -179,8 +179,6 @@ class StringLengthValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 		$object = new $className();
 		$stringLengthValidator->isValid($object);
 	}
-
 }
-
 
 ?>

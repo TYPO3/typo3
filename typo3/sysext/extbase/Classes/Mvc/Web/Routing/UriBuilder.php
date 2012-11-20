@@ -266,7 +266,7 @@ class UriBuilder {
 	 * @see TSref/typolink.addQueryString
 	 */
 	public function setAddQueryString($addQueryString) {
-		$this->addQueryString = (bool) $addQueryString;
+		$this->addQueryString = (boolean) $addQueryString;
 		return $this;
 	}
 
@@ -327,7 +327,7 @@ class UriBuilder {
 	 * @api
 	 */
 	public function setLinkAccessRestrictedPages($linkAccessRestrictedPages) {
-		$this->linkAccessRestrictedPages = (bool) $linkAccessRestrictedPages;
+		$this->linkAccessRestrictedPages = (boolean) $linkAccessRestrictedPages;
 		return $this;
 	}
 
@@ -369,7 +369,7 @@ class UriBuilder {
 	 * @api
 	 */
 	public function setTargetPageType($targetPageType) {
-		$this->targetPageType = (int) $targetPageType;
+		$this->targetPageType = (integer) $targetPageType;
 		return $this;
 	}
 
@@ -390,7 +390,7 @@ class UriBuilder {
 	 * @api
 	 */
 	public function setNoCache($noCache) {
-		$this->noCache = (bool) $noCache;
+		$this->noCache = (boolean) $noCache;
 		return $this;
 	}
 
@@ -411,7 +411,7 @@ class UriBuilder {
 	 * @api
 	 */
 	public function setUseCacheHash($useCacheHash) {
-		$this->useCacheHash = (bool) $useCacheHash;
+		$this->useCacheHash = (boolean) $useCacheHash;
 		return $this;
 	}
 
@@ -695,8 +695,6 @@ class UriBuilder {
 		}
 		return $result;
 	}
-
 }
-
 
 ?>

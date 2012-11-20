@@ -48,8 +48,6 @@ class NumberValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVa
 		$this->addError('The given subject was not a valid number.', 1221563685);
 		return FALSE;
 	}
-
 }
-
 
 ?>

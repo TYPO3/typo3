@@ -47,8 +47,6 @@ class EmailAddressValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abst
 		$this->addError('The given subject was not a valid email address.', 1221559976);
 		return FALSE;
 	}
-
 }
-
 
 ?>

@@ -113,8 +113,6 @@ class RequestHandlerResolver {
 		$settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		return is_array($settings['mvc']['requestHandlers']) ? $settings['mvc']['requestHandlers'] : array();
 	}
-
 }
-
 
 ?>

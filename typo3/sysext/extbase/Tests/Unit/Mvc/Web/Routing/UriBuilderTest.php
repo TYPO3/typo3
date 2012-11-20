@@ -27,7 +27,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Uri Builder Test Class
  */
@@ -205,7 +204,6 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'Arguments in nested array to be excluded' => array(array('tx_foo' => array('bar' => 'baz'), 'id' => 'pageId', 'M' => 'moduleKey'), array('id', 'tx_foo[bar]'), 'mod.php?M=moduleKey'),
 		);
 	}
-
 
 	/**
 	 * @test
@@ -618,8 +616,6 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$actualResult = $this->uriBuilder->_callRef('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
-
 }
-
 
 ?>

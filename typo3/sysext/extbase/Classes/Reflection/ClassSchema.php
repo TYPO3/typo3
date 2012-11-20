@@ -39,6 +39,7 @@ class ClassSchema {
 	 */
 	const MODELTYPE_ENTITY = 1;
 	const MODELTYPE_VALUEOBJECT = 2;
+
 	/**
 	 * Name of the class this schema is referring to
 	 *
@@ -269,8 +270,6 @@ class ClassSchema {
 	public function getIdentityProperties() {
 		return $this->identityProperties;
 	}
-
 }
-
 
 ?>

@@ -63,8 +63,6 @@ class StringValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Valid
 		$object = new $className();
 		$this->assertTrue($this->validator->validate($object)->hasErrors());
 	}
-
 }
-
 
 ?>

@@ -33,7 +33,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  * only returned if all validators failed.
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope prototype
  */
 class DisjunctionValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator {
 
@@ -88,8 +87,6 @@ class DisjunctionValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstr
 		}
 		return $result;
 	}
-
 }
-
 
 ?>

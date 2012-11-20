@@ -30,8 +30,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 /**
  * A persistence backend interface
  */
-interface BackendInterface
-{
+interface BackendInterface {
+
 	/**
 	 * Sets the aggregate root objects
 	 *
@@ -98,7 +98,6 @@ interface BackendInterface
 	 * @return void
 	 */
 	public function replaceObject($existingObject, $newObject);
-
 }
 
 ?>

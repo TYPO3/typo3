@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
  * Testcase for \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup.
  *
  * @author Markus Günther <mail@markus-guenther.de>
- * @scope prototype
- * @entity
  * @api
  */
 class FrontendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
@@ -141,8 +139,6 @@ class FrontendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->fixture->setSubgroup($subgroup);
 		$this->assertSame($subgroup, $this->fixture->getSubgroup());
 	}
-
 }
-
 
 ?>

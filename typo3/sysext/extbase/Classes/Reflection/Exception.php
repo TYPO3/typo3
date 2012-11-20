@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Extbase\Reflection;
  */
 class Exception extends \TYPO3\CMS\Extbase\Exception {
 
-
 }
-
 
 ?>

@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller\Exception;
  */
 class RequiredArgumentMissingException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 
-
 }
-
 
 ?>

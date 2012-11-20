@@ -333,8 +333,6 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 		$actualResult = $frontendConfigurationManager->_call('getContextSpecificFrameworkConfiguration', $frameworkConfiguration);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
-
 }
-
 
 ?>

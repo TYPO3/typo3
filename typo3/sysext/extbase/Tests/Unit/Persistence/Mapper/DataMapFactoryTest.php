@@ -424,7 +424,7 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$dataMapFactory->injectReflectionService(new \TYPO3\CMS\Extbase\Reflection\ReflectionService());
 		$dataMapFactory->injectObjectManager(new \TYPO3\CMS\Extbase\Object\ObjectManager());
 		$dataMapFactory->injectConfigurationManager($configurationManager);
-		$cacheMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend', array(), array(), '', false);
+		$cacheMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend', array(), array(), '', FALSE);
 		$cacheMock->expects($this->any())->method('get')->will($this->returnValue(FALSE));
 		$dataMapFactory->_set('dataMapCache', $cacheMock);
 		$dataMap = $dataMapFactory->buildDataMap('TYPO3\\CMS\\Extbase\\Domain\\Model\\FrontendUser');
@@ -451,6 +451,5 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame($expected, $dataMapFactory->_call('resolveTableName', $className));
 	}
 }
-
 
 ?>

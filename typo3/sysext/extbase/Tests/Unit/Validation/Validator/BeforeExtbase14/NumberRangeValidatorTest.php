@@ -90,8 +90,6 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		$numberRangeValidator->setOptions(array('startRange' => 0, 'endRange' => 42));
 		$numberRangeValidator->isValid('this is not between 0 an 42');
 	}
-
 }
-
 
 ?>

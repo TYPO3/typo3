@@ -77,7 +77,6 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 	}
 
 	public function initializeObject() {
-
 	}
 
 	/**
@@ -87,7 +86,7 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 	 */
 	public function getUid() {
 		if ($this->uid !== NULL) {
-			return (int) $this->uid;
+			return (integer) $this->uid;
 		} else {
 			return NULL;
 		}
@@ -103,7 +102,7 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 		if ($pid === NULL) {
 			$this->pid = NULL;
 		} else {
-			$this->pid = (int) $pid;
+			$this->pid = (integer) $pid;
 		}
 	}
 
@@ -116,7 +115,7 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 		if ($this->pid === NULL) {
 			return NULL;
 		} else {
-			return (int) $this->pid;
+			return (integer) $this->pid;
 		}
 	}
 
@@ -322,7 +321,7 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 	 * @param boolean $clone
 	 */
 	public function _setClone($clone) {
-		$this->_isClone = (bool) $clone;
+		$this->_isClone = (boolean) $clone;
 	}
 
 	/**
@@ -342,8 +341,6 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 	public function __toString() {
 		return get_class($this) . ':' . (string) $this->uid;
 	}
-
 }
-
 
 ?>

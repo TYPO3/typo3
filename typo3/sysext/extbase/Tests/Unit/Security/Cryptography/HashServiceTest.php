@@ -151,8 +151,6 @@ class HashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$actualResult = $this->hashService->validateAndStripHmac($hashedString);
 		$this->assertSame($string, $actualResult);
 	}
-
 }
-
 
 ?>

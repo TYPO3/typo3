@@ -18,13 +18,13 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * A dummy class with getters and setters for testing data mapping
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Extbase_Tests_Fixture_TxClassWithGettersAndSetters extends \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithGettersAndSetters {
+
 }
 
 ?>

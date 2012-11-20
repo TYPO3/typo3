@@ -30,8 +30,8 @@ namespace TYPO3\CMS\Extbase\Core;
 /**
  * Bootstrap Interface
  */
-interface BootstrapInterface
-{
+interface BootstrapInterface {
+
 	/**
 	 * Runs the the Extbase Framework by resolving an appropriate Request Handler and passing control to it.
 	 * If the Framework is not initialized yet, it will be initialized.
@@ -52,7 +52,6 @@ interface BootstrapInterface
 	 * @see run()
 	 */
 	public function callModule($moduleSignature);
-
 }
 
 ?>

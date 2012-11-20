@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
  *
  * @author Felix Kopp <felix-source@phorax.com>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
- * @scope prototype
- * @entity
  * @api
  */
 class BackendUserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
@@ -271,8 +269,6 @@ class BackendUserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->fixture->setLastLoginDateAndTime($date);
 		$this->assertSame($date, $this->fixture->getLastLoginDateAndTime());
 	}
-
 }
-
 
 ?>

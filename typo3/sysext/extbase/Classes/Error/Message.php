@@ -21,9 +21,6 @@ namespace TYPO3\CMS\Extbase\Error;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 /**
-
- */
-/**
  * An object representation of a generic message. Usually, you will use Error, Warning or Notice instead of this one.
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -138,8 +135,6 @@ class Message {
 	public function __toString() {
 		return $this->render();
 	}
-
 }
-
 
 ?>

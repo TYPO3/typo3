@@ -32,8 +32,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * Refer to QueryObjectModelInterface for a description of the query object model.
  */
-interface QueryObjectModelFactoryInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface
-{
+interface QueryObjectModelFactoryInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface {
 
 }
 

@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the String to String converter
  *
@@ -373,8 +372,6 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$result = $this->converter->convertFrom($source, 'TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSettersAndConstructor', $convertedChildProperties, $configuration);
 		$this->assertSame($object, $result);
 	}
-
 }
-
 
 ?>

@@ -399,7 +399,6 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 * @api
 	 */
 	protected function initializeView(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view) {
-
 	}
 
 	/**
@@ -412,7 +411,6 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 * @api
 	 */
 	protected function initializeAction() {
-
 	}
 
 	/**
@@ -535,8 +533,6 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 			}
 		}
 	}
-
 }
-
 
 ?>

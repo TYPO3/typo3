@@ -26,7 +26,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+/**
+ * A PersistenceManager Test
+ */
 class PersistenceManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
@@ -51,12 +53,12 @@ class PersistenceManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$entity1 = new $fullClassName();
 		$aggregateRootObjects->attach($entity1);
 		$persistenceSession->registerReconstitutedObject($entity1);
-		$mockTypo3DbBackend = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend'), array('commit','setAggregateRootObjects','setDeletedObjects'), array(), '', FALSE);
-		$persistenceManager = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager'), array('dummy'),array(), '', FALSE);
+		$mockTypo3DbBackend = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend'), array('commit', 'setAggregateRootObjects', 'setDeletedObjects'), array(), '', FALSE);
+		$persistenceManager = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager'), array('dummy'), array(), '', FALSE);
 		$mockTypo3DbBackend->expects($this->once())
-						 ->method('setAggregateRootObjects')
-						 ->with($this->equalTo($aggregateRootObjects));
-		$persistenceManager->_set('backend',$mockTypo3DbBackend);
+			->method('setAggregateRootObjects')
+			->with($this->equalTo($aggregateRootObjects));
+		$persistenceManager->_set('backend', $mockTypo3DbBackend);
 		$persistenceManager->injectSession($persistenceSession);
 		$persistenceManager->persistAll();
 	}
@@ -81,12 +83,12 @@ class PersistenceManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$entity1 = new $classNameWithNamespace();
 		$aggregateRootObjects->attach($entity1);
 		$persistenceSession->registerReconstitutedObject($entity1);
-		$mockTypo3DbBackend = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend'), array('commit','setAggregateRootObjects','setDeletedObjects'), array(), '', FALSE);
-		$persistenceManager = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager'), array('dummy'),array(), '', FALSE);
+		$mockTypo3DbBackend = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend'), array('commit', 'setAggregateRootObjects', 'setDeletedObjects'), array(), '', FALSE);
+		$persistenceManager = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager'), array('dummy'), array(), '', FALSE);
 		$mockTypo3DbBackend->expects($this->once())
-						 ->method('setAggregateRootObjects')
-						 ->with($this->equalTo($aggregateRootObjects));
-		$persistenceManager->_set('backend',$mockTypo3DbBackend);
+			->method('setAggregateRootObjects')
+			->with($this->equalTo($aggregateRootObjects));
+		$persistenceManager->_set('backend', $mockTypo3DbBackend);
 		$persistenceManager->injectSession($persistenceSession);
 		$persistenceManager->persistAll();
 	}
@@ -104,6 +106,6 @@ class PersistenceManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	public function persistAllAddsAddedObjectsFromRepositoriesToBackendsAggregateRootObjects() {
 		$this->markTestIncomplete();
 	}
-
 }
+
 ?>

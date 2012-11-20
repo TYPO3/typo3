@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Extbase\Property\Exception;
  */
 class InvalidDataTypeException extends \TYPO3\CMS\Extbase\Property\Exception {
 
-
 }
-
 
 ?>

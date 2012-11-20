@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  * This model represents a file mount.
  *
  * @author Markus Günther <mail@markus-guenther.de>
- * @scope prototype
- * @entity
  * @api
  */
 class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
@@ -118,8 +116,6 @@ class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function setIsAbsolutePath($value) {
 		$this->isAbsolutePath = $value;
 	}
-
 }
-
 
 ?>

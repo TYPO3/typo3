@@ -66,8 +66,6 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\
 		$this->validatorOptions(array('minimum' => 0, 'maximum' => 1000));
 		$this->assertTrue($this->validator->validate('not a number')->hasErrors());
 	}
-
 }
-
 
 ?>

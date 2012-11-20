@@ -35,8 +35,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * to a string.
  *
  * If operand evaluates to null, the LowerCase operand also evaluates to null.
- *
- * @scope prototype
  */
 class LowerCase implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\LowerCaseInterface {
 
@@ -62,8 +60,6 @@ class LowerCase implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\LowerCaseI
 	public function getOperand() {
 		return $this->operand;
 	}
-
 }
-
 
 ?>

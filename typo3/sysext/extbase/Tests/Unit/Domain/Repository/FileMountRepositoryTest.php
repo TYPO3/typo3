@@ -55,8 +55,6 @@ class FileMountRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$objectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings')->will($this->returnValue($querySettings));
 		$fixture->initializeObject();
 	}
-
 }
-
 
 ?>

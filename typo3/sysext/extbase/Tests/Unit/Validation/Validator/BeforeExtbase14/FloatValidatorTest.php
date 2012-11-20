@@ -96,8 +96,6 @@ class FloatValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$floatValidator->expects($this->once())->method('addError')->with('The given subject was not a valid float.', 1221560288);
 		$floatValidator->isValid(123456);
 	}
-
 }
-
 
 ?>

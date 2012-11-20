@@ -93,8 +93,6 @@ class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$integerValidator->expects($this->once())->method('addError')->with('The given subject was not a valid integer.', 1221560494);
 		$integerValidator->isValid('not a number');
 	}
-
 }
-
 
 ?>

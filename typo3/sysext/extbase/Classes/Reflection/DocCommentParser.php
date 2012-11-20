@@ -120,8 +120,6 @@ class DocCommentParser {
 			$this->tags[$tag] = array();
 		}
 	}
-
 }
-
 
 ?>

@@ -29,7 +29,6 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  ***************************************************************/
 /**
  * Validator for alphanumeric strings
- * @scope prototype
  */
 class AlphanumericValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
@@ -50,8 +49,6 @@ class AlphanumericValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abst
 		$this->addError('The given subject was not a valid alphanumeric string.', 1221551320);
 		return FALSE;
 	}
-
 }
-
 
 ?>

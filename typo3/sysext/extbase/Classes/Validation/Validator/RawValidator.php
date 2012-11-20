@@ -51,7 +51,6 @@ class RawValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorI
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
 	 */
 	public function setOptions(array $options) {
-
 	}
 
 	/**
@@ -75,8 +74,6 @@ class RawValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorI
 	public function validate($value) {
 		return new \TYPO3\CMS\Extbase\Error\Result();
 	}
-
 }
-
 
 ?>

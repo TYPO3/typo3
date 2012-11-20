@@ -419,8 +419,6 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $columnMap;
 	}
-
 }
-
 
 ?>

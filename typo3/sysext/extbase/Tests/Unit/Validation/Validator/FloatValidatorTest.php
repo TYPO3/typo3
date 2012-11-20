@@ -90,8 +90,6 @@ class FloatValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Valida
 	public function floatValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
 		$this->assertEquals(1, count($this->validator->validate(123456)->getErrors()));
 	}
-
 }
-
 
 ?>

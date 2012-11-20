@@ -79,15 +79,15 @@ class TypeHandlingService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function normalizeType($type) {
 		switch ($type) {
-		case 'int':
-			$type = 'integer';
-			break;
-		case 'bool':
-			$type = 'boolean';
-			break;
-		case 'double':
-			$type = 'float';
-			break;
+			case 'int':
+				$type = 'integer';
+				break;
+			case 'bool':
+				$type = 'boolean';
+				break;
+			case 'double':
+				$type = 'float';
+				break;
 		}
 		$type = ltrim($type, '\\');
 		return $type;
@@ -112,8 +112,6 @@ class TypeHandlingService implements \TYPO3\CMS\Core\SingletonInterface {
 	public function isSimpleType($type) {
 		return in_array(self::normalizeType($type), array('array', 'string', 'float', 'integer', 'boolean'), TRUE);
 	}
-
 }
-
 
 ?>

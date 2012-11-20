@@ -74,8 +74,6 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getReconstitutedObjects() {
 		return $this->reconstitutedObjects;
 	}
-
 }
-
 
 ?>

@@ -54,30 +54,37 @@ class PropertyType {
 	 * assigned as the type when creating a new property.
 	 */
 	const UNDEFINED = 0;
+
 	/**
 	 * The STRING property type is used to store strings.
 	 */
 	const STRING = 1;
+
 	/**
 	 * BINARY properties are used to store binary data.
 	 */
 	const BINARY = 2;
+
 	/**
 	 * The LONG property type is used to store integers.
 	 */
 	const LONG = 3;
+
 	/**
 	 * The DOUBLE property type is used to store floating point numbers.
 	 */
 	const DOUBLE = 4;
+
 	/**
 	 * The DATE property type is used to store time and date information.
 	 */
 	const DATE = 5;
+
 	/**
 	 * The BOOLEAN property type is used to store boolean values.
 	 */
 	const BOOLEAN = 6;
+
 	/**
 	 * A NAME is a pairing of a namespace and a local name. When read, the
 	 * namespace is mapped to the current prefix.
@@ -85,6 +92,7 @@ class PropertyType {
 	 * WE DO NOT USE THIS IN EXTBASE!
 	 */
 	const NAME = 7;
+
 	/**
 	 * A PATH property is an ordered list of path elements. A path element is a
 	 * NAME with an optional index. When read, the NAMEs within the path are
@@ -93,6 +101,7 @@ class PropertyType {
 	 * WE DO NOT USE THIS IN EXTBASE!
 	 */
 	const PATH = 8;
+
 	/**
 	 * A REFERENCE property stores the identifier of a referenceable node (one
 	 * having type mix:referenceable), which must exist within the same
@@ -101,6 +110,7 @@ class PropertyType {
 	 * target node.
 	 */
 	const REFERENCE = 9;
+
 	/**
 	 * A WEAKREFERENCE property stores the identifier of a referenceable node
 	 * (one having type mix:referenceable). A WEAKREFERENCE property does not
@@ -109,6 +119,7 @@ class PropertyType {
 	 * WE DO NOT USE THIS IN EXTBASE!
 	 */
 	const WEAKREFERENCE = 10;
+
 	/**
 	 * A URI property is identical to STRING property except that it only
 	 * accepts values that conform to the syntax of a URI-reference as defined
@@ -117,70 +128,86 @@ class PropertyType {
 	 * WE DO NOT USE THIS IN EXTBASE!
 	 */
 	const URI = 11;
+
 	/**
 	 * The DECIMAL property type is used to store precise decimal numbers.
 	 *
 	 * WE DO NOT USE THIS IN EXTBASE!
 	 */
 	const DECIMAL = 12;
+
 	/**
 	 * The INTEGER property type is used to store precise decimal numbers.
 	 *
 	 * WE DO NOT USE THIS IN EXTBASE!
 	 */
 	const INTEGER = 13;
+
 	/**
 	 * String constant for type name as used in serialization.
 	 */
 	const TYPENAME_UNDEFINED = 'undefined';
+
 	/**
 	 * String constant for type name as used in serialization.
 	 */
 	const TYPENAME_STRING = 'String';
+
 	/**
 	 * String constant for type name as used in serialization.
 	 */
 	const TYPENAME_BINARY = 'Binary';
+
 	/**
 	 * String constant for type name as used in serialization.
 	 */
 	const TYPENAME_LONG = 'Long';
+
 	/**
 	 * String constant for type name as used in serialization.
 	 */
 	const TYPENAME_DOUBLE = 'Double';
+
 	/**
 	 * String constant for type name as used in serialization.
 	 */
 	const TYPENAME_DATE = 'Date';
+
 	/**
 	 * String constant for type name as used in serialization.
 	 */
 	const TYPENAME_BOOLEAN = 'Boolean';
+
 	/**
 	 * String constant for type name as used in serialization.
 	 */
 	const TYPENAME_NAME = 'Name';
+
 	/**
 	 * String constant for type name as used in serialization.
 	 */
 	const TYPENAME_PATH = 'Path';
+
 	/**
 	 * String constant for type name as used in serialization.
 	 */
 	const TYPENAME_REFERENCE = 'Reference';
+
 	/**
 	 * String constant for type name as used in serialization.
 	 */
 	const TYPENAME_WEAKREFERENCE = 'WeakReference';
+
 	/**
 	 * String constant for type name as used in serialization.
 	 */
 	const TYPENAME_URI = 'URI';
+
 	/**
 	 * String constant for type name as used in serialization.
 	 */
 	const TYPENAME_DECIMAL = 'Decimal';
+
 	/**
 	 * String constant for type name as used in serialization.
 	 */
@@ -192,7 +219,6 @@ class PropertyType {
 	 * @return void
 	 */
 	private function __construct() {
-
 	}
 
 	/**
@@ -203,49 +229,49 @@ class PropertyType {
 	 */
 	static public function nameFromValue($type) {
 		switch (intval($type)) {
-		default:
-		case self::UNDEFINED:
-			return self::TYPENAME_UNDEFINED;
-			break;
-		case self::STRING:
-			return self::TYPENAME_STRING;
-			break;
-		case self::BINARY:
-			return self::TYPENAME_BINARY;
-			break;
-		case self::BOOLEAN:
-			return self::TYPENAME_BOOLEAN;
-			break;
-		case self::LONG:
-			return self::TYPENAME_LONG;
-			break;
-		case self::DOUBLE:
-			return self::TYPENAME_DOUBLE;
-			break;
-		case self::DECIMAL:
-			return self::TYPENAME_DECIMAL;
-			break;
-		case self::INTEGER:
-			return self::TYPENAME_INTEGER;
-			break;
-		case self::DATE:
-			return self::TYPENAME_DATE;
-			break;
-		case self::NAME:
-			return self::TYPENAME_NAME;
-			break;
-		case self::PATH:
-			return self::TYPENAME_PATH;
-			break;
-		case self::REFERENCE:
-			return self::TYPENAME_REFERENCE;
-			break;
-		case self::WEAKREFERENCE:
-			return self::TYPENAME_WEAKREFERENCE;
-			break;
-		case self::URI:
-			return self::TYPENAME_URI;
-			break;
+			default:
+			case self::UNDEFINED:
+				return self::TYPENAME_UNDEFINED;
+				break;
+			case self::STRING:
+				return self::TYPENAME_STRING;
+				break;
+			case self::BINARY:
+				return self::TYPENAME_BINARY;
+				break;
+			case self::BOOLEAN:
+				return self::TYPENAME_BOOLEAN;
+				break;
+			case self::LONG:
+				return self::TYPENAME_LONG;
+				break;
+			case self::DOUBLE:
+				return self::TYPENAME_DOUBLE;
+				break;
+			case self::DECIMAL:
+				return self::TYPENAME_DECIMAL;
+				break;
+			case self::INTEGER:
+				return self::TYPENAME_INTEGER;
+				break;
+			case self::DATE:
+				return self::TYPENAME_DATE;
+				break;
+			case self::NAME:
+				return self::TYPENAME_NAME;
+				break;
+			case self::PATH:
+				return self::TYPENAME_PATH;
+				break;
+			case self::REFERENCE:
+				return self::TYPENAME_REFERENCE;
+				break;
+			case self::WEAKREFERENCE:
+				return self::TYPENAME_WEAKREFERENCE;
+				break;
+			case self::URI:
+				return self::TYPENAME_URI;
+				break;
 		}
 	}
 
@@ -257,49 +283,49 @@ class PropertyType {
 	 */
 	static public function valueFromName($name) {
 		switch ($name) {
-		default:
-		case self::TYPENAME_UNDEFINED:
-			return self::UNDEFINED;
-			break;
-		case self::TYPENAME_STRING:
-			return self::STRING;
-			break;
-		case self::TYPENAME_BINARY:
-			return self::BINARY;
-			break;
-		case self::TYPENAME_LONG:
-			return self::LONG;
-			break;
-		case self::TYPENAME_DOUBLE:
-			return self::DOUBLE;
-			break;
-		case self::TYPENAME_DECIMAL:
-			return self::DECIMAL;
-			break;
-		case self::TYPENAME_INTEGER:
-			return self::INTEGER;
-			break;
-		case self::TYPENAME_DATE:
-			return self::DATE;
-			break;
-		case self::TYPENAME_BOOLEAN:
-			return self::BOOLEAN;
-			break;
-		case self::TYPENAME_NAME:
-			return self::NAME;
-			break;
-		case self::TYPENAME_PATH:
-			return self::PATH;
-			break;
-		case self::TYPENAME_REFERENCE:
-			return self::REFERENCE;
-			break;
-		case self::TYPENAME_WEAKREFERENCE:
-			return self::WEAKREFERENCE;
-			break;
-		case self::TYPENAME_URI:
-			return self::URI;
-			break;
+			default:
+			case self::TYPENAME_UNDEFINED:
+				return self::UNDEFINED;
+				break;
+			case self::TYPENAME_STRING:
+				return self::STRING;
+				break;
+			case self::TYPENAME_BINARY:
+				return self::BINARY;
+				break;
+			case self::TYPENAME_LONG:
+				return self::LONG;
+				break;
+			case self::TYPENAME_DOUBLE:
+				return self::DOUBLE;
+				break;
+			case self::TYPENAME_DECIMAL:
+				return self::DECIMAL;
+				break;
+			case self::TYPENAME_INTEGER:
+				return self::INTEGER;
+				break;
+			case self::TYPENAME_DATE:
+				return self::DATE;
+				break;
+			case self::TYPENAME_BOOLEAN:
+				return self::BOOLEAN;
+				break;
+			case self::TYPENAME_NAME:
+				return self::NAME;
+				break;
+			case self::TYPENAME_PATH:
+				return self::PATH;
+				break;
+			case self::TYPENAME_REFERENCE:
+				return self::REFERENCE;
+				break;
+			case self::TYPENAME_WEAKREFERENCE:
+				return self::WEAKREFERENCE;
+				break;
+			case self::TYPENAME_URI:
+				return self::URI;
+				break;
 		}
 	}
 
@@ -312,34 +338,32 @@ class PropertyType {
 	 */
 	static public function valueFromType($type) {
 		switch (strtolower($type)) {
-		case 'string':
-			return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::STRING;
-			break;
-		case 'boolean':
-			return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::BOOLEAN;
-			break;
-		case 'integer':
-			return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::LONG;
-			break;
-		case 'float':
+			case 'string':
+				return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::STRING;
+				break;
+			case 'boolean':
+				return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::BOOLEAN;
+				break;
+			case 'integer':
+				return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::LONG;
+				break;
+			case 'float':
 
-		case 'double':
-			return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::DOUBLE;
-			break;
-		case 'integer':
+			case 'double':
+				return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::DOUBLE;
+				break;
+			case 'integer':
 
-		case 'int':
-			return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::INTEGER;
-			break;
-		case 'datetime':
-			return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::DATE;
-			break;
-		default:
-			return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::UNDEFINED;
+			case 'int':
+				return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::INTEGER;
+				break;
+			case 'datetime':
+				return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::DATE;
+				break;
+			default:
+				return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::UNDEFINED;
 		}
 	}
-
 }
-
 
 ?>

@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 /**
  * Testcase for the Property Mapper
  *
@@ -340,8 +339,6 @@ class PropertyMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$propertyMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Property\\PropertyMapper', array('dummy'));
 		$this->assertNull($propertyMapper->_call('findFirstEligibleTypeConverterInObjectHierarchy', 'source', 'unknownSourceType', 'TYPO3\\CMS\\Extbase\\Core\\Bootstrap'));
 	}
-
 }
-
 
 ?>

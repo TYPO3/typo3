@@ -117,8 +117,6 @@ class RequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface {
 	public function getPriority() {
 		return 90;
 	}
-
 }
-
 
 ?>

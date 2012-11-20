@@ -304,6 +304,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * dataProvider for buildBaseValidatorConjunctionAddsValidatorFromConventionToTheReturnedConjunction
+	 *
 	 * @return array
 	 */
 	public function modelNamesProvider() {
@@ -523,8 +524,6 @@ class ValidatorResolverTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$result = $mockValidatorResolver->_call('parseValidatorAnnotation', $annotation);
 		$this->assertEquals($result, $expectedResult);
 	}
-
 }
-
 
 ?>

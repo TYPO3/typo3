@@ -32,8 +32,8 @@ namespace TYPO3\CMS\Extbase\Mvc;
  *
  * @api
  */
-interface ResponseInterface
-{
+interface ResponseInterface {
+
 	/**
 	 * Overrides and sets the content of the response
 	 *
@@ -59,7 +59,6 @@ interface ResponseInterface
 	 * @api
 	 */
 	public function getContent();
-
 }
 
 ?>

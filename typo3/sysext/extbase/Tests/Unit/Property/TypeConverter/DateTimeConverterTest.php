@@ -311,8 +311,6 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$dateAsString = isset($source['date']) ? $source['date'] : '';
 		$this->assertSame($dateAsString, $date->format($dateFormat));
 	}
-
 }
-
 
 ?>

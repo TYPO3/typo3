@@ -32,8 +32,8 @@ namespace TYPO3\CMS\Extbase\Persistence;
  *
  * @api
  */
-interface RepositoryInterface
-{
+interface RepositoryInterface {
+
 	/**
 	 * Adds an object to this repository.
 	 *
@@ -114,7 +114,7 @@ interface RepositoryInterface
 	/**
 	 * Finds an object matching the given identifier.
 	 *
-	 * @param int $uid The identifier of the object to find
+	 * @param integer $uid The identifier of the object to find
 	 * @return object The matching object if found, otherwise NULL
 	 * @api
 	 */
@@ -150,7 +150,6 @@ interface RepositoryInterface
 	 * @api
 	 */
 	public function createQuery();
-
 }
 
 ?>

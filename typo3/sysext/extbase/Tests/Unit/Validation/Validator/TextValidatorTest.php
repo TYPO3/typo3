@@ -73,8 +73,6 @@ class TextValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validat
 		$expected = array(new \TYPO3\CMS\Extbase\Validation\Error('The given subject was not a valid text (e.g. contained XML tags).', 1221565786));
 		$this->assertEquals($expected, $this->validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->getErrors());
 	}
-
 }
-
 
 ?>

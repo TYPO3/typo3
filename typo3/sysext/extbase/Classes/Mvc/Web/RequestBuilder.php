@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
  ***************************************************************/
 /**
  * Builds a web request.
- *
- * @scope prototype
  */
 class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 
@@ -204,9 +202,9 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		$allowedControllerNames = array_keys($this->allowedControllerActions);
 		if (!in_array($parameters['controller'], $allowedControllerNames)) {
 			$configuration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-			if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (bool) $configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
+			if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (boolean) $configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
 				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException('The requested resource was not found', 1313857897);
-			} elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (bool) $configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
+			} elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (boolean) $configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
 				return $this->defaultControllerName;
 			}
 			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException('The controller "' . $parameters['controller'] . '" is not allowed by this plugin. Please check for TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1313855173);
@@ -238,9 +236,9 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		$allowedActionNames = $this->allowedControllerActions[$controllerName];
 		if (!in_array($actionName, $allowedActionNames)) {
 			$configuration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-			if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (bool) $configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
+			if (isset($configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) && (boolean) $configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved']) {
 				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException('The requested resource was not found', 1313857897);
-			} elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (bool) $configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
+			} elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (boolean) $configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
 				return $defaultActionName;
 			}
 			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException('The action "' . $actionName . '" (controller "' . $controllerName . '") is not allowed by this plugin. Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1313855175);
@@ -306,8 +304,6 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $fieldPaths;
 	}
-
 }
-
 
 ?>

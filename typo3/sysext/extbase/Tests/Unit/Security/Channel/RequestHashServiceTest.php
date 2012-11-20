@@ -424,8 +424,6 @@ class RequestHashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$requestHashService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService', array('dummy'));
 		$this->assertEquals($expectedResult, $requestHashService->_call('checkFieldNameInclusion', $requestArguments, $allowedFields));
 	}
-
 }
-
 
 ?>

@@ -228,8 +228,6 @@ class HelpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCon
 			$this->commandsByExtensionsAndControllers[$extensionKey][$commandControllerClassName][$commandName] = $command;
 		}
 	}
-
 }
-
 
 ?>

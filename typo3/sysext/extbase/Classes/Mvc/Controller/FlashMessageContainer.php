@@ -31,7 +31,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  * has no session scope, we need to save it manually.
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope session
  * @api
  */
 class FlashMessageContainer implements \TYPO3\CMS\Core\SingletonInterface {
@@ -92,8 +91,6 @@ class FlashMessageContainer implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getAllMessagesAndFlush() {
 		return \TYPO3\CMS\Core\Messaging\FlashMessageQueue::getAllMessagesAndFlush();
 	}
-
 }
-
 
 ?>

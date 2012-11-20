@@ -62,7 +62,7 @@ class ExtensionUtility {
 		if (empty($extensionName)) {
 			throw new \InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
 		}
-			// Check if vendor name is prepended to extensionName in the format {vendorName}.{extensionName}
+		// Check if vendor name is prepended to extensionName in the format {vendorName}.{extensionName}
 		$vendorName = NULL;
 		$delimiterPosition = strrpos($extensionName, '.');
 		if ($delimiterPosition !== FALSE) {
@@ -100,17 +100,17 @@ class ExtensionUtility {
 # Setting ' . $extensionName . ' plugin TypoScript
 ' . $pluginTemplate);
 		switch ($pluginType) {
-		case self::PLUGIN_TYPE_PLUGIN:
-			$pluginContent = trim('
+			case self::PLUGIN_TYPE_PLUGIN:
+				$pluginContent = trim('
 tt_content.list.20.' . $pluginSignature . ' = USER
 tt_content.list.20.' . $pluginSignature . ' {
 	userFunc = TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run
 	extensionName = ' . $extensionName . '
 	pluginName = ' . $pluginName . (NULL !== $vendorName ? ("\n\t" . 'vendorName = ' . $vendorName) : '') . '
 }');
-			break;
-		case self::PLUGIN_TYPE_CONTENT_ELEMENT:
-			$pluginContent = trim('
+				break;
+			case self::PLUGIN_TYPE_CONTENT_ELEMENT:
+				$pluginContent = trim('
 tt_content.' . $pluginSignature . ' = COA
 tt_content.' . $pluginSignature . ' {
 	10 = < lib.stdheader
@@ -121,9 +121,9 @@ tt_content.' . $pluginSignature . ' {
 		pluginName = ' . $pluginName . (NULL !== $vendorName ? ("\n\t\t" . 'vendorName = ' . $vendorName) : '') . '
 	}
 }');
-			break;
-		default:
-			throw new \InvalidArgumentException('The pluginType "' . $pluginType . '" is not suported', 1289858856);
+				break;
+			default:
+				throw new \InvalidArgumentException('The pluginType "' . $pluginType . '" is not suported', 1289858856);
 		}
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType'] = $pluginType;
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($extensionName, 'setup', '
@@ -206,7 +206,7 @@ tt_content.' . $pluginSignature . ' {
 		if (empty($extensionName)) {
 			throw new \InvalidArgumentException('The extension name must not be empty', 1239891989);
 		}
-			// Check if vendor name is prepended to extensionName in the format {vendorName}.{extensionName}
+		// Check if vendor name is prepended to extensionName in the format {vendorName}.{extensionName}
 		$vendorName = NULL;
 		if (FALSE !== $delimiterPosition = strrpos($extensionName, '.')) {
 			$vendorName = str_replace('.', '\\', substr($extensionName, 0, $delimiterPosition));
@@ -268,6 +268,5 @@ tt_content.' . $pluginSignature . ' {
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'][] = $typeConverterClassName;
 	}
 }
-
 
 ?>

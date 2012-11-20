@@ -30,8 +30,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 /**
  * A persistence query factory interface
  */
-interface QueryFactoryInterface
-{
+interface QueryFactoryInterface {
+
 	/**
 	 * Creates a query object working on the given class name
 	 *
@@ -39,7 +39,6 @@ interface QueryFactoryInterface
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 */
 	public function create($className);
-
 }
 
 ?>

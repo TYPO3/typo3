@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 /**
  * A file object (File Abstraction Layer)
  *
- * @scope prototype
- * @entity
  * @api experimental! This class is experimental and subject to change!
  */
 abstract class AbstractFileCollection extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
@@ -50,8 +48,6 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Extbase\DomainObject\Ab
 	public function getObject() {
 		return $this->object;
 	}
-
 }
-
 
 ?>

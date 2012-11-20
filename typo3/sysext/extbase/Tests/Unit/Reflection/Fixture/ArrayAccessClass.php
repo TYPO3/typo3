@@ -71,8 +71,6 @@ class ArrayAccessClass implements \ArrayAccess {
 	public function offsetUnset($offset) {
 		unset($this->array[$offset]);
 	}
-
 }
-
 
 ?>

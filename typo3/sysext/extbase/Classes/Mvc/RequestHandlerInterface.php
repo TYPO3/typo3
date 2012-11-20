@@ -32,8 +32,8 @@ namespace TYPO3\CMS\Extbase\Mvc;
  *
  * @api
  */
-interface RequestHandlerInterface
-{
+interface RequestHandlerInterface {
+
 	/**
 	 * Handles a raw request and returns the respsonse.
 	 *
@@ -59,7 +59,6 @@ interface RequestHandlerInterface
 	 * @api
 	 */
 	public function getPriority();
-
 }
 
 ?>

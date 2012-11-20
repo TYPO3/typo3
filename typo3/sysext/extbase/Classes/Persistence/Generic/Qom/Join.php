@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  ***************************************************************/
 /**
  * Performs a join between two node-tuple sources.
- *
- * @scope prototype
  */
 class Join implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface {
 
@@ -104,8 +102,6 @@ class Join implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface {
 	public function getJoinCondition() {
 		return $this->joinCondition;
 	}
-
 }
-
 
 ?>

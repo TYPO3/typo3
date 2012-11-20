@@ -129,8 +129,6 @@ class CacheServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$GLOBALS['typo3CacheManager']->expects($this->once())->method('getCache')->with('cache_pagesection')->will($this->returnValue($mockCacheFrontend));
 		$this->cacheService->_call('flushPageSectionCache');
 	}
-
 }
-
 
 ?>

@@ -69,8 +69,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * the character "_" (underscore) matches exactly one character, and
  * the string "\x" matches the character "x", and
  * all other characters match themselves.
- *
- * @scope prototype
  */
 class Comparison implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface {
 
@@ -93,7 +91,7 @@ class Comparison implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Compariso
 	 * Constructs this Comparison instance
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand1
-	 * @param int $operator one of \TYPO3\CMS\Extbase\Persistence\QueryInterface.OPERATOR_*
+	 * @param integer $operator one of \TYPO3\CMS\Extbase\Persistence\QueryInterface.OPERATOR_*
 	 * @param mixed $operand2
 	 */
 	public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand1, $operator, $operand2) {
@@ -128,8 +126,6 @@ class Comparison implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Compariso
 	public function getOperand2() {
 		return $this->operand2;
 	}
-
 }
-
 
 ?>

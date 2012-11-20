@@ -102,8 +102,6 @@ class MapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 		$this->assertEquals($expectedObject, $this->fixture->map(array('property1', 'property2'), $source, 'Tx_Extbase_Tests_Fixture_TxClassWithGettersAndSetters'));
 	}
-
 }
-
 
 ?>

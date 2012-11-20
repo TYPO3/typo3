@@ -72,8 +72,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-interface ComparisonInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface
-{
+interface ComparisonInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface {
+
 	/**
 	 * Gets the first operand.
 	 *
@@ -94,7 +94,6 @@ interface ComparisonInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\StaticOperandInterface the operand; non-null
 	 */
 	public function getOperand2();
-
 }
 
 ?>

@@ -28,8 +28,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  */
 class InconsistentQuerySettingsException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
 
-
 }
-
 
 ?>

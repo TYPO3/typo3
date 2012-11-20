@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 /**
  * A Frontend User Group
  *
- * @scope prototype
- * @entity
  * @api
  */
 class FrontendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
@@ -172,8 +170,6 @@ class FrontendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getSubgroup() {
 		return $this->subgroup;
 	}
-
 }
-
 
 ?>

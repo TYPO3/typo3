@@ -21,9 +21,6 @@ namespace TYPO3\CMS\Extbase\Error;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 /**
-
- */
-/**
  * An object representation of a generic warning. Subclass this to create
  * more specific warnings if necessary.
  *
@@ -36,8 +33,6 @@ class Warning extends \TYPO3\CMS\Extbase\Error\Message {
 	 * @var string
 	 */
 	protected $message = 'Unknown warning';
-
 }
-
 
 ?>

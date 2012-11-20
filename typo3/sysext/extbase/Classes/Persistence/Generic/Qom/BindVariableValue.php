@@ -29,7 +29,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  ***************************************************************/
 /**
  * Evaluates to the value of a bind variable.
- * @scope prototype
  */
 class BindVariableValue extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\StaticOperand implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\BindVariableValueInterface {
 
@@ -65,8 +64,6 @@ class BindVariableValue extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Stati
 	public function getBindVariableName() {
 		return $this->variableName;
 	}
-
 }
-
 
 ?>

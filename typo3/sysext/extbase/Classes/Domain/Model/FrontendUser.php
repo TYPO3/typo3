@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 /**
  * A Frontend User
  *
- * @scope prototype
- * @entity
  * @api
  */
 class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
@@ -591,8 +589,6 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getLastlogin() {
 		return $this->lastlogin;
 	}
-
 }
-
 
 ?>

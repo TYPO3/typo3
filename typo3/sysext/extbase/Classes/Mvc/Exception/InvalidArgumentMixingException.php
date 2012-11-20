@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
  */
 class InvalidArgumentMixingException extends \TYPO3\CMS\Extbase\Mvc\Exception {
 
-
 }
-
 
 ?>

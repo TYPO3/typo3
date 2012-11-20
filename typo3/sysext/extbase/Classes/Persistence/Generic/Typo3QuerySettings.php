@@ -317,8 +317,6 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	public function getReturnRawQueryResult() {
 		return $this->returnRawQueryResult;
 	}
-
 }
-
 
 ?>

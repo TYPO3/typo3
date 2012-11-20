@@ -128,8 +128,6 @@ class HashService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $stringWithoutHmac;
 	}
-
 }
-
 
 ?>

@@ -373,8 +373,6 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$object->foo = 'Hello World';
 		$this->assertNull(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($object, 'foo.bar'));
 	}
-
 }
-
 
 ?>

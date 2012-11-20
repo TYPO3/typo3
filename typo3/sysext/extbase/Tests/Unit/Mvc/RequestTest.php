@@ -246,8 +246,6 @@ class RequestTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$request->setDispatched(TRUE);
 		$this->assertTrue($request->isDispatched());
 	}
-
 }
-
 
 ?>

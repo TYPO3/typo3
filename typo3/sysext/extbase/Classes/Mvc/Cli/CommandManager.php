@@ -187,8 +187,6 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $searchedCommandIdentifierParts === $commandIdentifierParts;
 	}
-
 }
-
 
 ?>

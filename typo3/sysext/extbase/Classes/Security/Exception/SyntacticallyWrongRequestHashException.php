@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Extbase\Security\Exception;
  */
 class SyntacticallyWrongRequestHashException extends \TYPO3\CMS\Extbase\Security\Exception {
 
-
 }
-
 
 ?>

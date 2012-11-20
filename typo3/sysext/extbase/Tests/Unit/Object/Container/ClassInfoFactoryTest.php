@@ -75,8 +75,6 @@ class ClassInfoFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function moreTestsNeedToBeWritten() {
 		$this->markTestIncomplete('More tests need to be written!');
 	}
-
 }
-
 
 ?>

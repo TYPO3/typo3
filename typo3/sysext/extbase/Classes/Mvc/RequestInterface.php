@@ -30,11 +30,10 @@ namespace TYPO3\CMS\Extbase\Mvc;
 /**
  * Contract for a request.
  *
- * @scope prototype
  * @api
  */
-interface RequestInterface
-{
+interface RequestInterface {
+
 	/**
 	 * Sets the dispatched flag
 	 *
@@ -112,7 +111,6 @@ interface RequestInterface
 	 * @api
 	 */
 	public function getArguments();
-
 }
 
 ?>

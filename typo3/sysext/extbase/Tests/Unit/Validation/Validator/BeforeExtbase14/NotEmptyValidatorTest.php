@@ -76,8 +76,6 @@ class NotEmptyValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$notEmptyValidator->expects($this->once())->method('addError')->with('The given subject was NULL.', 1221560910);
 		$notEmptyValidator->isValid(NULL);
 	}
-
 }
-
 
 ?>

@@ -169,8 +169,6 @@ class TypeHandlingServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 	public function isLiteralReturnsTrueForLiteralType($type) {
 		$this->assertTrue($this->typeHandlingService->isLiteral($type));
 	}
-
 }
-
 
 ?>

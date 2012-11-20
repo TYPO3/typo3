@@ -350,8 +350,6 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$request = $this->requestBuilder->build('some_extension_name:default:list --b2 y --b1 1 --b3 true --b4 false --b5 n --b6 0');
 		$this->assertEquals($expectedArguments, $request->getArguments());
 	}
-
 }
-
 
 ?>

@@ -30,8 +30,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 /**
  * An interface for the lazy loading strategies.
  */
-interface LoadingStrategyInterface
-{
+interface LoadingStrategyInterface {
 
 }
 

@@ -54,8 +54,6 @@ class RegularExpressionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$regularExpressionValidator->setOptions(array('regularExpression' => '/^simple[0-9]expression$/'));
 		$regularExpressionValidator->isValid('some subject that will not match');
 	}
-
 }
-
 
 ?>

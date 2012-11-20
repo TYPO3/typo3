@@ -30,8 +30,8 @@ namespace TYPO3\CMS\Extbase\Object;
 /**
  * Interface for the TYPO3 Object Manager
  */
-interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface
-{
+interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface {
+
 	/**
 	 * Returns TRUE if an object with the given name is registered
 	 *
@@ -78,7 +78,6 @@ interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface
 	 * @api
 	 */
 	public function getEmptyObject($className);
-
 }
 
 ?>

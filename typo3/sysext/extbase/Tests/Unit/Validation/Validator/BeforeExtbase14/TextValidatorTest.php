@@ -88,8 +88,6 @@ Ke kille Minutt d\'Kirmes net. Hir Wand Lann Gaas da, wÃ¤r hu Heck Gart zÃ«n
 		$textValidator->expects($this->once())->method('addError')->with('The given subject was not a valid text (e.g. contained XML tags).', 1221565786);
 		$textValidator->isValid('<span style="color: #BBBBBB;">a nice text</span>');
 	}
-
 }
-
 
 ?>

@@ -187,8 +187,6 @@ class ArgumentBehaviorBeforeExtbase14Test extends \TYPO3\CMS\Extbase\Tests\Unit\
 		$mockConfigurationManager->expects($this->any())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(FALSE));
 		$argument->injectConfigurationManager($mockConfigurationManager);
 	}
-
 }
-
 
 ?>

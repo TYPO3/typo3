@@ -32,8 +32,8 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  *
  * @api
  */
-interface ControllerInterface
-{
+interface ControllerInterface {
+
 	/**
 	 * Checks if the current request type is supported by the controller.
 	 *
@@ -53,7 +53,6 @@ interface ControllerInterface
 	 * @api
 	 */
 	public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response);
-
 }
 
 ?>

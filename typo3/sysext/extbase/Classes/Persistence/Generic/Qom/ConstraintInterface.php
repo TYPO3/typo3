@@ -33,8 +33,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * To be included in the query results, a tuple must satisfy the constraint.
  */
-interface ConstraintInterface
-{
+interface ConstraintInterface {
 
 }
 

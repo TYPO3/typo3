@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Extbase\Validation;
 /**
  * Objects of this kind contain a list of validation errors which occurred during
  * validation.
- *
- * @scope prototype
  */
 class Error extends \TYPO3\CMS\Extbase\Error\Error {
 
@@ -44,8 +42,6 @@ class Error extends \TYPO3\CMS\Extbase\Error\Error {
 	 * @var string The error code
 	 */
 	protected $code = 1201447005;
-
 }
-
 
 ?>

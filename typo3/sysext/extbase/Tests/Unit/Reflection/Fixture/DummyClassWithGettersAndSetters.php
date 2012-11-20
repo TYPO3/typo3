@@ -122,10 +122,7 @@ class DummyClassWithGettersAndSetters {
 	 * @param mixed $value
 	 */
 	public function setWriteOnlyMagicProperty($value) {
-
 	}
-
 }
-
 
 ?>

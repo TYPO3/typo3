@@ -55,8 +55,6 @@ class BackendUserGroupRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$fixture->expects($this->once())->method('setDefaultQuerySettings')->with($querySettings);
 		$fixture->initializeObject();
 	}
-
 }
-
 
 ?>

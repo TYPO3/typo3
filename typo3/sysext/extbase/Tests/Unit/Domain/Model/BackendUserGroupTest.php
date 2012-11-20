@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
  * Testcase for \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup.
  *
  * @author Markus Günther <mail@markus-guenther>
- * @scope prototype
- * @entity
  * @api
  */
 class BackendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
@@ -480,8 +478,6 @@ class BackendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->fixture->setTsConfig($tsConfig);
 		$this->assertSame($tsConfig, $this->fixture->getTsConfig());
 	}
-
 }
-
 
 ?>

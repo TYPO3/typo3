@@ -311,8 +311,6 @@ class ArrayUtility {
 		}
 		return $result;
 	}
-
 }
-
 
 ?>

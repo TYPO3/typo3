@@ -29,13 +29,9 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  ***************************************************************/
 /**
  * An operand to a binary operation specified by a Comparison.
- *
- * @scope prototype
  */
 class Operand implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OperandInterface {
 
-
 }
-
 
 ?>

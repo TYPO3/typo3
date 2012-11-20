@@ -32,8 +32,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * To satisfy the And constraint, a node-tuple must satisfy both constraint1 and
  * constraint2.
- *
- * @scope prototype
  */
 class LogicalAnd implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface {
 
@@ -84,8 +82,6 @@ class LogicalAnd implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterf
 	public function getConstraint2() {
 		return $this->constraint2;
 	}
-
 }
-
 
 ?>

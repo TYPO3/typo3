@@ -48,8 +48,6 @@ class DateTimeValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
 		$this->addError('The given subject was not a valid DateTime. Got: "%1$d"', 1238087674, array(gettype($value)));
 		return FALSE;
 	}
-
 }
-
 
 ?>

@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 /**
  * A validator for controller arguments
  *
- * @scope prototype
  * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1 Is only needed for old property mapper.
  */
 class ArgumentsValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractObjectValidator {
@@ -115,8 +114,6 @@ class ArgumentsValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstrac
 		}
 		$this->errors[$argumentName]->addErrors($errors);
 	}
-
 }
-
 
 ?>

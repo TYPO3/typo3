@@ -30,6 +30,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	const PLUGIN_TYPE_PLUGIN = 'list_type';
 	const PLUGIN_TYPE_CONTENT_ELEMENT = 'CType';
+
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
@@ -161,7 +162,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 			return count($pages) > 0 ? $pages[0]['pid'] : NULL;
 		}
-		return (int) $frameworkConfiguration['view']['defaultPid'];
+		return (integer) $frameworkConfiguration['view']['defaultPid'];
 	}
 
 	/**
@@ -194,8 +195,6 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 		$actions = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'][$controllerName]['actions'];
 		return current($actions);
 	}
-
 }
-
 
 ?>

@@ -29,6 +29,7 @@ namespace TYPO3\CMS\Extbase\Mvc\View;
  ***************************************************************/
 /**
  * An abstract View
+ *
  * @api
  */
 abstract class AbstractView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface {
@@ -108,10 +109,7 @@ abstract class AbstractView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
 	 * @api
 	 */
 	public function initializeView() {
-
 	}
-
 }
-
 
 ?>

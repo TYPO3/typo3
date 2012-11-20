@@ -40,6 +40,7 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	const CONFIGURATION_MODIFICATION_ALLOWED = 1;
 	const CONFIGURATION_CREATION_ALLOWED = 2;
 	const CONFIGURATION_TARGET_TYPE = 3;
+
 	/**
 	 * @var array
 	 */
@@ -260,8 +261,6 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 		}
 		return call_user_func_array(array($this->objectManager, 'create'), array_merge(array($objectType), $constructorArguments));
 	}
-
 }
-
 
 ?>

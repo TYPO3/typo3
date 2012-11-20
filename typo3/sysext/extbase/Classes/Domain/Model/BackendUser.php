@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  *
  * @author Felix Kopp <felix-source@phorax.com>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
- * @scope prototype
- * @entity
  * @api
  */
 class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
@@ -288,8 +286,6 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function setLastLoginDateAndTime(\DateTime $dateAndTime = NULL) {
 		$this->lastLoginDateAndTime = $dateAndTime;
 	}
-
 }
-
 
 ?>

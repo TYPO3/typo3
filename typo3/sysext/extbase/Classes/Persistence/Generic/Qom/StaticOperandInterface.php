@@ -31,8 +31,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  * An operand whose value can be determined from static analysis of the query,
  * prior to its evaluation.
  */
-interface StaticOperandInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OperandInterface
-{
+interface StaticOperandInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OperandInterface {
 
 }
 

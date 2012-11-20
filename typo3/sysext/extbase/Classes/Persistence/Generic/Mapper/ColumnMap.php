@@ -29,7 +29,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 /**
  * A column map to map a column configured in $TCA on a property of a domain object.
  */
-// SK: PHPDoc ;-)
 class ColumnMap {
 
 	/**
@@ -40,6 +39,7 @@ class ColumnMap {
 	const RELATION_HAS_MANY = 'RELATION_HAS_MANY';
 	const RELATION_BELONGS_TO_MANY = 'RELATION_BELONGS_TO_MANY';
 	const RELATION_HAS_AND_BELONGS_TO_MANY = 'RELATION_HAS_AND_BELONGS_TO_MANY';
+
 	/**
 	 * Constants reflecting how the relation information is stored
 	 */
@@ -47,12 +47,14 @@ class ColumnMap {
 	const RELATION_CHILD_FOREIGN_KEY = 'RELATION_CHILD_FOREIGN_KEY';
 	const RELATION_PARENT_CSV = 'RELATION_PARENT_CSV';
 	const RELATION_INTERMEDIATE_TABLE = 'RELATION_INTERMEDIATE_TABLE';
+
 	/**
 	 * Constants reflecting the loading strategy
 	 */
 	const STRATEGY_EAGER = 'eager';
 	const STRATEGY_LAZY_PROXY = 'proxy';
 	const STRATEGY_LAZY_STORAGE = 'storage';
+
 	/**
 	 * The property name corresponding to the table name
 	 *
@@ -366,8 +368,6 @@ class ColumnMap {
 	public function getChildKeyFieldName() {
 		return $this->childKeyFieldName;
 	}
-
 }
-
 
 ?>

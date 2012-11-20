@@ -70,8 +70,6 @@ class FloatConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray() {
 		$this->assertEquals(array(), $this->converter->getSourceChildPropertiesToBeConverted('myString'));
 	}
-
 }
-
 
 ?>

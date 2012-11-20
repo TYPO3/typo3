@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 /**
  * The Query class used to run queries against the database
  *
- * @scope prototype
  * @api
  */
 class Query implements \TYPO3\CMS\Extbase\Persistence\QueryInterface {
@@ -603,6 +602,5 @@ class Query implements \TYPO3\CMS\Extbase\Persistence\QueryInterface {
 		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
 	}
 }
-
 
 ?>

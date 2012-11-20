@@ -59,8 +59,6 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 		$alphanumericValidator->expects($this->once())->method('addError')->with('The given subject was not a valid alphanumeric string.', 1221551320);
 		$alphanumericValidator->isValid('adsf%&/$jklsfdö');
 	}
-
 }
-
 
 ?>

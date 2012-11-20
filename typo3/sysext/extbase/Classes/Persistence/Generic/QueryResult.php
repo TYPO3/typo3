@@ -29,7 +29,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 /**
  * A lazy result list that is returned by Query::execute()
  *
- * @scope prototype
  * @api
  */
 class QueryResult implements \TYPO3\CMS\Extbase\Persistence\QueryResultInterface {
@@ -271,8 +270,6 @@ class QueryResult implements \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
 	public function __sleep() {
 		return array('query');
 	}
-
 }
-
 
 ?>

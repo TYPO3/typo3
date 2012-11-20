@@ -30,8 +30,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 /**
  * An operand whose value can only be determined in evaluating the query.
  */
-interface DynamicOperandInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OperandInterface
-{
+interface DynamicOperandInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OperandInterface {
 
 }
 

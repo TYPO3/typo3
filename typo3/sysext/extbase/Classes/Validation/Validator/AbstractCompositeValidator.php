@@ -29,8 +29,8 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  ***************************************************************/
 /**
  * An abstract composite validator with consisting of other validators
+ *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope prototype
  */
 abstract class AbstractCompositeValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface, \Countable {
 
@@ -64,7 +64,6 @@ abstract class AbstractCompositeValidator implements \TYPO3\CMS\Extbase\Validati
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
 	 */
 	public function setOptions(array $options) {
-
 	}
 
 	/**
@@ -109,8 +108,6 @@ abstract class AbstractCompositeValidator implements \TYPO3\CMS\Extbase\Validati
 	public function count() {
 		return count($this->validators);
 	}
-
 }
-
 
 ?>

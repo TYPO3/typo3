@@ -32,8 +32,8 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
  */
-interface ObjectValidatorInterface extends \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface
-{
+interface ObjectValidatorInterface extends \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {
+
 	/**
 	 * Checks the given object can be validated by the validator implementation
 	 *
@@ -52,7 +52,6 @@ interface ObjectValidatorInterface extends \TYPO3\CMS\Extbase\Validation\Validat
 	 * @return boolean TRUE if the property value is valid, FALSE if an error occured
 	 */
 	public function isPropertyValid($object, $propertyName);
-
 }
 
 ?>

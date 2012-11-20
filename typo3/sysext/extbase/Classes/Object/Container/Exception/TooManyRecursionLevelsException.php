@@ -31,8 +31,6 @@ namespace TYPO3\CMS\Extbase\Object\Container\Exception;
  */
 class TooManyRecursionLevelsException extends \TYPO3\CMS\Extbase\Object\Exception {
 
-
 }
-
 
 ?>

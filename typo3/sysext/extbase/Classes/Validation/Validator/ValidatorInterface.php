@@ -43,8 +43,7 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  * @api
  */
-interface ValidatorInterface
-{
+interface ValidatorInterface {
 
 }
 
