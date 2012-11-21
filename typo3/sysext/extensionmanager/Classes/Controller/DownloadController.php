@@ -109,12 +109,12 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 	public function checkDependenciesAction(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
 		$message = '';
 		$title = '';
-		$hasDependiencies = FALSE;
+		$hasDependencies = FALSE;
 		$hasErrors = FALSE;
 		try {
 			$dependencyTypes = $this->managementService->getAndResolveDependencies($extension);
 			if (count($dependencyTypes) > 0) {
-				$hasDependiencies = TRUE;
+				$hasDependencies = TRUE;
 				$message = $this->translate('downloadExtension.dependencies.headline');
 				foreach ($dependencyTypes as $dependencyType => $dependencies) {
 					$extensions = '';
@@ -128,7 +128,7 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 						)
 					);
 				}
-				$title = $this->translate('downloadExtension.dependencies.reloveAutomatically');
+				$title = $this->translate('downloadExtension.dependencies.resolveAutomatically');
 			}
 			$this->view->assign('dependencies', $dependencyTypes);
 		} catch (\Exception $e) {
@@ -137,7 +137,7 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 			$message = $e->getMessage();
 		}
 		$this->view->assign('extension', $extension)
-				->assign('hasDependencies', $hasDependiencies)
+				->assign('hasDependencies', $hasDependencies)
 				->assign('hasErrors', $hasErrors)
 				->assign('message', $message)
 				->assign('title', $title);
