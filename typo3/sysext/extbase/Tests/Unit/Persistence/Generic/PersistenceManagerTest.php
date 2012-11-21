@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
+namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
 /***************************************************************
  *  Copyright notice
