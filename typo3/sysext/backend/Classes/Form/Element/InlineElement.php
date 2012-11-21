@@ -539,29 +539,30 @@ class InlineElement {
 		}
 		// Renders a thumbnail for the header
 		if (!empty($config['appearance']['headerThumbnail']['field'])) {
-			$originalRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($foreign_table, $rec['uid']);
-			if (is_array($originalRecord)) {
-				$fileUid = $originalRecord[$config['appearance']['headerThumbnail']['field']];
-				list($fileUid) = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $fileUid);
-				if ($fileUid) {
-					$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($fileUid);
-					if ($fileObject) {
-						$imageSetup = $config['appearance']['headerThumbnail'];
-						unset($imageSetup['field']);
-						$imageSetup = array_merge(array('width' => 64, 'height' => 64), $imageSetup);
-						$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup)->getPublicUrl(TRUE);
-						$thumbnail = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($recTitle) . '">';
-					} else {
-						$thumbnail = FALSE;
-					}
+			$fieldValue = $rec[$config['appearance']['headerThumbnail']['field']];
+			$firstElement = array_shift(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldValue));
+			$fileUid = array_pop(\TYPO3\CMS\Backend\Utility\BackendUtility::splitTable_Uid($firstElement));
+			if (!empty($fileUid)) {
+				$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($fileUid);
+				if ($fileObject) {
+					$imageSetup = $config['appearance']['headerThumbnail'];
+					unset($imageSetup['field']);
+					$imageSetup = array_merge(array('width' => 64, 'height' => 64), $imageSetup);
+					$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup)->getPublicUrl(TRUE);
+					$thumbnail = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($recTitle) . '">';
+				} else {
+					$thumbnail = FALSE;
 				}
 			}
+
 		}
 		$altText = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordIconAltText($rec, $foreign_table);
 		$iconImg = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($foreign_table, $rec, array('title' => htmlspecialchars($altText), 'id' => $objectId . '_icon'));
 		$label = '<span id="' . $objectId . '_label">' . $recTitle . '</span>';
 		$ctrl = $this->renderForeignRecordHeaderControl($parentUid, $foreign_table, $rec, $config, $isVirtualRecord);
-		$header = '<table>' . '<tr>' . (!empty($config['appearance']['headerThumbnail']['field']) && $thumbnail ? '<td class="t3-form-field-header-inline-thumbnail" id="' . $objectId . '_thumbnailcontainer">' . $thumbnail . '</td>' : '<td class="t3-form-field-header-inline-icon" id="' . $objectId . '_iconcontainer">' . $iconImg . '</td>') . '<td class="t3-form-field-header-inline-summary">' . $label . '</td>' . '<td clasS="t3-form-field-header-inline-ctrl">' . $ctrl . '</td>' . '</tr>' . '</table>';
+		$header = '<table>' . '<tr>' . (!empty($config['appearance']['headerThumbnail']['field']) && $thumbnail ?
+				'<td class="t3-form-field-header-inline-thumbnail" id="' . $objectId . '_thumbnailcontainer">' . $thumbnail . '</td>' :
+				'<td class="t3-form-field-header-inline-icon" id="' . $objectId . '_iconcontainer">' . $iconImg . '</td>') . '<td class="t3-form-field-header-inline-summary">' . $label . '</td>' . '<td clasS="t3-form-field-header-inline-ctrl">' . $ctrl . '</td>' . '</tr>' . '</table>';
 		return $header;
 	}
 
