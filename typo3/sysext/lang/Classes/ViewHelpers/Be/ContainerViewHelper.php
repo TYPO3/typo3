@@ -97,7 +97,7 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 			}
 		}
 		if ($loadJQuery) {
-			$pageRenderer->loadJquery();
+			$pageRenderer->loadJquery(NULL, NULL, $pageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT);
 		}
 		if (is_array($addCssFiles)) {
 			foreach ($addCssFiles as $addCssFile) {
