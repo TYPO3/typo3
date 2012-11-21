@@ -181,7 +181,7 @@
 
 				</source>
 			</trans-unit>
-			<trans-unit id="downloadExtension.dependencies.reloveAutomatically" xml:space="preserve">
+			<trans-unit id="downloadExtension.dependencies.resolveAutomatically" xml:space="preserve">
 				<source>Shall these dependencies be resolved automatically?</source>
 			</trans-unit>
 			<trans-unit id="downloadExtension.dependencies.errorTitle" xml:space="preserve">
