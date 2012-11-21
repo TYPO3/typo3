@@ -88,44 +88,6 @@ class CategoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->fixture->setParent($parent);
 		$this->assertSame($parent, $this->fixture->getParent());
 	}
-
-	/**
-	 * @test
-	 */
-	public function getItemsInitiallyReturnsEmptyStorage() {
-		$this->assertEquals(new \TYPO3\CMS\Extbase\Persistence\ObjectStorage(), $this->fixture->getItems());
-	}
-
-	/**
-	 * @test
-	 */
-	public function setItemsSetsItems() {
-		$items = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$items->attach($this->getMockForAbstractClass('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity'));
-		$this->fixture->setItems($items);
-		$this->assertEquals($items, $this->fixture->getItems());
-	}
-
-	/**
-	 * @test
-	 */
-	public function addItemAttachesItem() {
-		/** @var \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $item */
-		$item = $this->getMockForAbstractClass('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity');
-		$this->fixture->addItem($item);
-		$this->assertTrue($this->fixture->getItems()->contains($item));
-	}
-
-	/**
-	 * @test
-	 */
-	public function removeItemDetachesItem() {
-		/** @var \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $item */
-		$item = $this->getMockForAbstractClass('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity');
-		$this->fixture->addItem($item);
-		$this->fixture->removeItem($item);
-		$this->assertFalse($this->fixture->getItems()->contains($item));
-	}
 }
 
 ?>

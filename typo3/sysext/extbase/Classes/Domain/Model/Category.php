@@ -49,29 +49,6 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $parent = NULL;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\DomainObject\AbstractEntity>
-	 * @lazy
-	 */
-	protected $items = NULL;
-
-	/**
-	 * The constructor.
-	 */
-	public function __construct() {
-		$this->initStorageObjects();
-	}
-
-	/**
-	 * Initializes all \TYPO3\CMS\Extbase\Persistence\ObjectStorage properties.
-	 *
-	 * @return void
-	 * @api
-	 */
-	protected function initStorageObjects() {
-		$this->items = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-	}
-
-	/**
 	 * Gets the title.
 	 *
 	 * @return string the title, might be empty
@@ -135,49 +112,6 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function setParent(\TYPO3\CMS\Extbase\Domain\Model\Category $parent) {
 		$this->parent = $parent;
-	}
-
-	/**
-	 * Returns the items within this category.
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage the items, might be empty
-	 * @api
-	 */
-	public function getItems() {
-		return $this->items;
-	}
-
-	/**
-	 * Sets the items within this category.
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $items
-	 * @return void
-	 * @api
-	 */
-	public function setItems(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $items) {
-		$this->items = $items;
-	}
-
-	/**
-	 * Adds a item to the items property
-	 *
-	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $item
-	 * @return void
-	 * @api
-	 */
-	public function addItem(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity $item) {
-		$this->items->attach($item);
-	}
-
-	/**
-	 * Removes a item of the items property
-	 *
-	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $item
-	 * @return void
-	 * @api
-	 */
-	public function removeItem(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity $item) {
-		$this->items->detach($item);
 	}
 }
 
