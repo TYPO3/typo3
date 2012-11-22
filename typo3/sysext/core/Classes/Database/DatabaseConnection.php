@@ -55,6 +55,20 @@ namespace TYPO3\CMS\Core\Database;
  */
 class DatabaseConnection {
 
+	/**
+	 * The AND constraint in where clause
+	 *
+	 * @var string
+	 */
+	const AND_Constraint = 'AND';
+
+	/**
+	 * The OR constraint in where clause
+	 *
+	 * @var string
+	 */
+	const OR_Constraint = 'OR';
+
 	// Set "TRUE" or "1" if you want database errors outputted. Set to "2" if you also want successful database actions outputted.
 	/**
 	 * @todo Define visibility
@@ -587,21 +601,32 @@ class DatabaseConnection {
 	}
 
 	/**
-	 * Returns a WHERE clause which will make an AND search for the words in the $searchWords array in any of the fields in array $fields.
+	 * Returns a WHERE clause which will make an AND or OR search for the words in the $searchWords array in any of the fields in array $fields.
 	 *
 	 * @param array $searchWords Array of search words
 	 * @param array $fields Array of fields
 	 * @param string $table Table in which we are searching (for DBAL detection of quoteStr() method)
+	 * @param string $constraint How multiple search words have to match ('AND' or 'OR')
+	 *
 	 * @return string WHERE clause for search
-	 * @todo Define visibility
 	 */
-	public function searchQuery($searchWords, $fields, $table) {
+	public function searchQuery($searchWords, $fields, $table, $constraint = self::AND_Constraint) {
+		switch ($constraint) {
+			case self::OR_Constraint:
+				$constraint = 'OR';
+				break;
+			default:
+				$constraint = 'AND';
+				break;
+		}
+
 		$queryParts = array();
 		foreach ($searchWords as $sw) {
 			$like = ' LIKE \'%' . $this->quoteStr($sw, $table) . '%\'';
 			$queryParts[] = $table . '.' . implode(($like . ' OR ' . $table . '.'), $fields) . $like;
 		}
-		$query = '(' . implode(') AND (', $queryParts) . ')';
+		$query = '(' . implode(') ' . $constraint . ' (', $queryParts) . ')';
+
 		return $query;
 	}
 
