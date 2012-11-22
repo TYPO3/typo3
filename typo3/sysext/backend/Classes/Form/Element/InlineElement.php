@@ -1075,7 +1075,7 @@ class InlineElement {
 		// Put the current level also to the dynNestedStack of TCEforms:
 		$this->fObj->pushToDynNestedStack('inline', $this->inlineNames['object']);
 		// Dynamically create a new record using t3lib_transferData
-		if (!$foreignUid || !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($foreignUid) || $config['foreign_selector']) {
+		if (!$foreignUid || !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($foreignUid)) {
 			$record = $this->getNewRecord($this->inlineFirstPid, $current['table']);
 			// Set language of new child record to the language of the parent record:
 			if ($config['localizationMode'] == 'select') {
