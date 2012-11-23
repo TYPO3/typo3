@@ -615,6 +615,33 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$this->fixture->replaceFile($mockedFile, PATH_site . uniqid());
 	}
 
+	/**
+	 * @test
+	 */
+	public function getFileListHandsOverRecursiveFALSEifNotExplicitlySet() {
+		$this->prepareFixture(array());
+		$driver = $this->createDriverMock(array('basePath' => $this->getMountRootUrl()), $this->fixture, array('getFileList'));
+		$driver->expects($this->once())
+			->method('getFileList')
+			->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), $this->anything(), FALSE)
+			->will($this->returnValue(array()));
+		$this->fixture->getFileList('/');
+	}
+
+	/**
+	 * @test
+	 */
+	public function getFileListHandsOverRecursiveTRUEifSet() {
+
+		$this->prepareFixture(array());
+		$driver = $this->createDriverMock(array('basePath' => $this->getMountRootUrl()), $this->fixture, array('getFileList'));
+		$driver->expects($this->once())
+			->method('getFileList')
+			->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), $this->anything(), TRUE)
+			->will($this->returnValue(array()));
+		$this->fixture->getFileList('/', 0, 0, TRUE, TRUE, TRUE);
+	}
+
 }
 
 ?>
