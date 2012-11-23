@@ -85,8 +85,16 @@ TYPO3.Components.PageModule = {
 					this.el = Ext.get(this.getEl());
 				}
 
+				// add css class for the drag shadow
+				this.el.child('.t3-page-ce-dragitem').addClass('dragitem-shadow');
+
 				//Cache the original XY Coordinates of the element, we'll use this later.
 				this.originalXY = this.el.getXY();
+
+				var dropZones = Ext.select('.t3-page-ce-dropzone');
+				Ext.each(dropZones.elements, function(el) {
+					Ext.get(el).addClass('t3-page-ce-dropzone-available');
+				});
 			},
 			// Called when element is dropped not anything other than a dropzone with the same ddgroup
 			onInvalidDrop:function () {
@@ -115,6 +123,14 @@ TYPO3.Components.PageModule = {
 					this.el.moveTo(this.originalXY[0], this.originalXY[1], animCfgObj);
 					delete this.invalidDrop;
 				}
+
+				var dropZones = Ext.select('.t3-page-ce-dropzone');
+				Ext.each(dropZones.elements, function(el) {
+					Ext.get(el).removeClass('t3-page-ce-dropzone-available');
+				});
+
+				// remove dragitem-shadow after dragging
+				this.el.child('.t3-page-ce-dragitem').removeClass('dragitem-shadow');
 
 			},
 			// Called upon successful drop of an element on a DDTarget with the same

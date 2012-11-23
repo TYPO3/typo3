@@ -529,7 +529,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					// Initialize TS parser to parse config to array
 					$parser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 					$parser->parse($backendLayoutRecord['config']);
-					$grid .= '<div class="t3-gridContainer"><table border="0" cellspacing="6" cellpadding="7" width="100%" height="100%" class="t3-page-columns t3-gridTable">';
+					$grid .= '<div class="t3-gridContainer"><table border="0" cellspacing="0" cellpadding="0" width="100%" height="100%" class="t3-page-columns t3-gridTable">';
 					// Add colgroups
 					$colCount = intval($parser->setup['backend_layout.']['colCount']);
 					$rowCount = intval($parser->setup['backend_layout.']['rowCount']);
