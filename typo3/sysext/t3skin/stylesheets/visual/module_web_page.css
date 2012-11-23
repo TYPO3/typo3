@@ -27,7 +27,8 @@ Web > Page
 	visibility: hidden;
 }
 
-.t3-page-colHeader:hover .t3-page-colHeader-icons {
+.t3-page-colHeader:hover .t3-page-colHeader-icons,
+.t3-page-column.active .t3-page-colHeader .t3-page-colHeader-icons {
 	visibility: visible;
 }
 
@@ -67,6 +68,9 @@ Web > Page
 .t3-page-ce.active .t3-page-ce-body {
 	border-color: #5b5b5b;
 }
+.t3-page-column.active .t3-icon-document-new {
+	visibility: visible;
+}
 
 .t3-page-ce .t3-icon-document-new {
 	visibility: hidden;
@@ -82,7 +86,7 @@ Web > Page
 
 .t3-page-ce-hidden .t3-page-ce-body,
 .t3-page-ce-hidden .t3-page-ce-body a {
-	color: #bbbbbb;
+	color: #828282;
 }
 
 .t3-page-ce-hidden.active .t3-page-ce-body,
@@ -91,18 +95,18 @@ Web > Page
 }
 
 .t3-page-ce-hidden .t3-page-ce-body {
-	background-color: transparent;
-	border-style: none;
+	background-color: #e5e5e5;
+	border-color: #e5e5e5;
 }
 
-.t3-page-ce-hidden .t3-page-ce-body .t3-icon ,
+.t3-page-ce-hidden .t3-page-ce-body .t3-icon,
 .t3-page-ce-hidden .t3-page-ce-body img {
 	opacity: 0.4;
 }
 
 .t3-page-ce.active .t3-page-ce-body .t3-icon ,
 .t3-page-ce.active .t3-page-ce-body img {
-	opacity: inherit;
+	opacity: 1.0;
 }
 
 .t3-page-ce-hidden .t3-page-ce-header {
@@ -124,6 +128,14 @@ table.typo3-page-columnsMode tr td a b {
 table.t3-page-columns tr td span.exampleContent a {
 	color: #000000;
 	text-decoration: none;
+}
+
+table.t3-page-columns tr td .t3-page-ce-hidden span.exampleContent a {
+	color: #828282;
+}
+
+table.t3-page-columns tr td .t3-page-ce-hidden.active span.exampleContent a {
+	color: #000000;
 }
 
 table.typo3-page-buttons td {

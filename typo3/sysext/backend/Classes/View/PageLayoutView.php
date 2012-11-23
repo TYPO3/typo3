@@ -409,13 +409,13 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				}
 				$languageColumn = array();
 			}
-			$langListArr = explode(',', $langList);
+			$langListArr = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $langList);
 			$defLanguageCount = array();
 			$defLangBinding = array();
 			// For each languages... :
 			// If not languageMode, then we'll only be through this once.
 			foreach ($langListArr as $lP) {
-				$showLanguage = ' AND sys_language_uid IN (' . $lP . ',-1)';
+				$showLanguage = ' AND sys_language_uid IN (' . intval($lP) . ',-1)';
 				$cList = explode(',', $this->tt_contentConfig['cols']);
 				$content = array();
 				$head = array();

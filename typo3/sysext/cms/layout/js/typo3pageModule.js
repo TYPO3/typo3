@@ -36,30 +36,36 @@ TYPO3.Components.PageModule = {
 	},
 
 	/**
-	 * This method is used to bind the higlighting function "setActive"
-	 * to the mouseenter event and the "setInactive" to the mouseleave event.
+	 * This method is used to bind the higlighting function "setElementActive"
+	 * to the mouseover event and the "setElementInactive" to the mouseout event.
 	 */
 	enableHighlighting: function() {
 		Ext.select('div.t3-page-ce')
-			.on('mouseenter',this.setActive, this)
-			.on('mouseleave',this.setInactive, this);
+			.on('mouseover',this.setElementActive, this)
+			.on('mouseout',this.setElementInactive, this);
+		Ext.select('td.t3-page-column')
+			.on('mouseover',this.setColumnActive, this)
+			.on('mouseout',this.setColumnInactive, this);
 	},
 
 	/**
-	 * This method is used to unbind the higlighting function "setActive"
-	 * from the mouseenter event and the "setInactive" from the mouseleave event.
+	 * This method is used to unbind the higlighting function "setElementActive"
+	 * from the mouseover event and the "setElementInactive" from the mouseout event.
 	 */
 	disableHighlighting: function() {
 		Ext.select('div.t3-page-ce')
-			.un('mouseenter', this.setActive, this)
-			.un('mouseleave', this.setInactive, this);
+			.un('mouseover', this.setElementActive, this)
+			.un('mouseout', this.setElementInactive, this);
+		Ext.select('td.t3-page-column')
+			.un('mouseover',this.setColumnActive, this)
+			.un('mouseout',this.setColumnInactive, this);
 	},
 
 	/**
 	 * This method is used as an event handler when the
 	 * user hovers the a content element.
 	 */
-	setActive: function(event, target) {
+	setElementActive: function(event, target) {
 		Ext.get(target).findParent('div.t3-page-ce', null, true).addClass('active');
 	},
 
@@ -68,9 +74,26 @@ TYPO3.Components.PageModule = {
 	 * a content element when the mouse of the user leaves the
 	 * content element.
 	 */
-	setInactive: function(event, target) {
+	setElementInactive: function(event, target) {
 		Ext.get(target).findParent('div.t3-page-ce', null, true).removeClass('active');
 
+	},
+
+	/**
+	 * This method is used as an event handler when the
+	 * user hovers the a content element.
+	 */
+	setColumnActive: function(event, target) {
+		Ext.get(target).findParent('td.t3-page-column', null, true).addClass('active');
+	},
+
+	/**
+	 * This method is used as event handler to unset active state of
+	 * a content element when the mouse of the user leaves the
+	 * content element.
+	 */
+	setColumnInactive: function(event, target) {
+		Ext.get(target).findParent('td.t3-page-column', null, true).removeClass('active');
 	},
 
 	/**
@@ -79,7 +102,7 @@ TYPO3.Components.PageModule = {
 	enableDragDrop: function() {
 		var overrides = {
 			// Called the instance the element is dragged.
-			b4StartDrag:function () {
+			b4StartDrag: function () {
 				// Cache the drag element
 				if (!this.el) {
 					this.el = Ext.get(this.getEl());
@@ -92,6 +115,10 @@ TYPO3.Components.PageModule = {
 
 				// Cache the original XY Coordinates of the element, we'll use this later.
 				this.originalXY = this.el.getXY();
+
+				// Hide create new element button
+				this.el.findParent('td.t3-page-column', null, true).removeClass('active');
+				TYPO3.Components.PageModule.disableHighlighting();
 
 				var dropZones = Ext.select('.t3-page-ce-dropzone');
 				var self = this;
@@ -141,8 +168,12 @@ TYPO3.Components.PageModule = {
 				this.el.child('.t3-page-ce-dragitem').removeClass('dragitem-shadow');
 				// Show create new element button again
 				this.el.child('.t3-icon-document-new').removeClass('drag-start');
+				TYPO3.Components.PageModule.enableHighlighting();
 
+				// Remove dragitem-shadow after dragging
+				this.el.child('.t3-page-ce-dragitem').removeClass('dragitem-shadow');
 			},
+
 			// Called upon successful drop of an element on a DDTarget with the same
 			onDragDrop: function (evtObj, targetElId) {
 				// Wrap the drop target element with Ext.Element
@@ -163,10 +194,10 @@ TYPO3.Components.PageModule = {
 
 					// Create the animation configuration object
 					var animCfgObj = {
-						easing:'easeOut',
-						duration:0.3,
-						scope:this,
-						callback:function () {
+						easing: 'easeOut',
+						duration: 0.3,
+						scope: this,
+						callback: function () {
 
 							// restore dropzone height
 							// animation is necessary to let it work.
@@ -185,6 +216,9 @@ TYPO3.Components.PageModule = {
 					// Animate to new position
 					this.el.moveTo(dropEl.getX(), elementNewY, animCfgObj);
 
+					// Show create new element button again
+					dropEl.findParent('td.t3-page-column', null, true).addClass('active');
+
 					// Try to save changes to the backend
 					// There is no feedback from the server side functions, just hope for the best
 					TYPO3.Components.DragAndDrop.CommandController.moveContentElement(
@@ -200,7 +234,7 @@ TYPO3.Components.PageModule = {
 				}
 			},
 			// Only called when the drag element is dragged over the a drop target with the same ddgroup
-			onDragEnter:function (evtObj, targetElId) {
+			onDragEnter: function (evtObj, targetElId) {
 				// Perform the node move only if not dropped on the dropzone directly above
 				// this element
 				if (targetElId != this.el.prev().child('.t3-page-ce-dropzone').id &&
@@ -213,9 +247,9 @@ TYPO3.Components.PageModule = {
 				}
 			},
 			// Only called when element is dragged out of a dropzone with the same ddgroup
-			onDragOut:function (evtObj, targetElId) {
+			onDragOut: function (evtObj, targetElId) {
 				this.el.removeClass('dropOK');
-				if(targetElId) {
+				if (targetElId) {
 					Ext.get(targetElId).removeClass('dropReceiveOK');
 				}
 			},
@@ -227,7 +261,7 @@ TYPO3.Components.PageModule = {
 			 * @param {Object} response
 			 * @return {Boolean}
 			 */
-			evaluateResponse:function (response) {
+			evaluateResponse: function (response) {
 				if (response.success === false) {
 					TYPO3.Flashmessage.display(4, 'Exception', response.message);
 					return false;
@@ -248,7 +282,7 @@ TYPO3.Components.PageModule = {
 			}
 		});
 
-		// find dropzones and add them to the group
+		// Find dropzones and add them to the group
 		var dropZones = Ext.select('.t3-page-ce-dropzone');
 		Ext.each(dropZones.elements, function(el) {
 			var dropTarget = new Ext.dd.DDTarget(el, 'ceDDgroup');
