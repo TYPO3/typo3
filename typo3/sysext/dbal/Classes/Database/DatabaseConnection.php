@@ -2434,6 +2434,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			$sqlResult->TYPO3_DBAL_handlerType = 'userdefined';
 			break;
 		}
+		$this->lastHandlerKey = '_DEFAULT';
 		if ($this->printErrors && $this->sql_error()) {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
