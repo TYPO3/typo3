@@ -14,11 +14,14 @@ Web > Page
 .t3-page-colHeader {
 	font-weight: bold;
 	text-align: left;
-	font-size: 11px;
+	font-family: Verdana;
+	color: #999;
+	font-size: 13px;
+	background: none;
 }
 
 .t3-page-colHeader-label {
-	text-align: center;
+	text-align: left;
 }
 
 .t3-page-border {
@@ -27,7 +30,9 @@ Web > Page
 }
 
 .t3-page-ce-wrapper {
-	border-left: 2px solid #c8c8c8;
+	border-top: 1px solid #cdcdcd;
+	border-bottom: 1px solid #cdcdcd;
+	background-color: #ededed;
 }
 
 .t3-page-ce-droptarget {
@@ -37,6 +42,10 @@ Web > Page
 
 .t3-page-ce-header {
 	background-color: #cacaca;
+}
+
+.t3-page-ce .t2-icon-document-new {
+	height: 12px;
 }
 
 .t3-page-ce .t3-page-ce-body,
@@ -51,6 +60,13 @@ Web > Page
 	border-color: #5b5b5b;
 }
 
+.t3-page-ce .t3-icon-document-new {
+	visibility: hidden;
+}
+.t3-page-ce.active .t3-icon-document-new {
+	visibility: visible;
+}
+
 .t3-page-ce-hidden .t3-page-ce-body,
 .t3-page-ce-hidden .t3-page-ce-body a {
 	color: #bbbbbb;
@@ -63,7 +79,7 @@ Web > Page
 
 .t3-page-ce-hidden .t3-page-ce-body {
 	background-color: transparent;
-	border-style: none dotted dotted;
+	border-style: none;
 }
 
 .t3-page-ce-hidden .t3-page-ce-body .t3-icon ,
@@ -126,11 +142,29 @@ td.t3-gridCell-unassigned div.t3-row-header div {
 	filter: alpha(opacity = 60);
 }
 
-.t3-page-ce-dropzone.dropReceiveOK {
-    border: 2px dashed #bb0010;
-    background-color: #e5e5e5;
+.t3-page-ce-dropzone.t3-page-ce-dropzone-available.dropReceiveOK {
+    background-color: #73ab61;
+}
+
+.t3-page-ce-dropzone.t3-page-ce-dropzone-available {
+	background-color: #c8d9c3;
 }
 
 .t3-page-ce-dragitem {
     margin-bottom: 10px;
+}
+
+.t3-page-ce-dragitem.dragitem-shadow {
+	-webkit-box-shadow: 0px 1px 12px rgba(0, 0, 0, 0.50);
+	-moz-box-shadow: 0px 1px 12px rgba(0, 0, 0, 0.50);
+	box-shadow: 0px 1px 12px rgba(0, 0, 0, 0.50);
+}
+
+.t3-page-ce.active .t3-row-header {
+	background-color: #5b5b5b;
+	background-image: url('../../images/backgrounds/row-header.png');
+	background-image: linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
+	background-image: -moz-linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #7f7f7f), color-stop(1, #5b5b5b));
+	background-repeat: repeat-x;
 }
