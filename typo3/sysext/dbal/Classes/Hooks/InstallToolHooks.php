@@ -99,12 +99,38 @@ class InstallToolHooks {
 	 * @return void
 	 */
 	public function executeStepOutput(array &$markers, $step, \TYPO3\CMS\Install\Installer $instObj) {
+		// Initialise default driver
+		if (!$this->driver) {
+			$this->driver = $this->getDefaultDriver();
+		}
 		switch ($step) {
 		case 2:
 			$this->createConnectionForm($markers, $instObj);
 			break;
 		case 3:
-			$this->createDatabaseForm($markers, $instObj);
+			if ($this->driver === 'mysql') {
+				$this->createDatabaseForm($markers, $instObj);
+			} elseif ($this->driver === 'postgres') {
+				$this->createUpdateForm($markers, $instObj);
+			}
+			break;
+		case 4:
+			// Set default error message
+			$markers['error_DatabaseWork'] = '
+				<p class="typo3-message message-error">
+					<strong>
+						An error occured!
+					</strong>
+					<br />
+					The database returned the error message:<br />###ERROR###
+					<br />
+					Go to Step 2 and try again!
+				</p>
+			';
+
+			if ($this->driver === 'postgres') {
+				$this->updatePostgres($markers, $instObj);
+			}
 			break;
 		}
 	}
@@ -169,10 +195,6 @@ class InstallToolHooks {
 	 * @return void
 	 */
 	protected function createConnectionForm(array &$markers, \TYPO3\CMS\Install\Installer $instObj) {
-		// Normalize current driver
-		if (!$this->driver) {
-			$this->driver = $this->getDefaultDriver();
-		}
 		// Get the template file
 		$templateFile = @file_get_contents((\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('dbal') . $this->templateFilePath . 'install.html'));
 		// Get the template part from the file
@@ -253,7 +275,7 @@ class InstallToolHooks {
 				'labelDatabase' => 'Database',
 				'database' => TYPO3_db
 			);
-			$nextStep = $instObj->step + 2;
+			$nextStep = $instObj->step + 1;
 			break;
 		default:
 			$driverMarkers = array(
@@ -493,6 +515,94 @@ class InstallToolHooks {
 		} else {
 			// Add step marker for main template when no connection
 			$markers['step'] = $error_missingConnect;
+		}
+	}
+
+	/**
+	 * Creates a form to choose some necessary database updates
+	 *
+	 * @param array $markers
+	 * @param \TYPO3\CMS\Install\Installer $instObj
+	 * @return void
+	 */
+	protected function createUpdateForm(&$markers, $instObj) {
+		$error_missingConnect = '
+			<p class="typo3-message message-error">
+				<strong>
+					There is no connection to the database!
+				</strong>
+				<br />
+				(Username: <em>' . TYPO3_db_username . '</em>,
+				Host: <em>' . TYPO3_db_host . '</em>,
+				Using Password: YES)
+				<br />
+				Go to Step 1 and enter a valid username and password!
+			</p>
+		';
+
+		// Add header marker for main template
+		$markers['header'] = 'Update database';
+
+		// There should be a database host connection at this point
+		if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
+			// Get the template file
+			$templateFile = @file_get_contents((\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('dbal') . $this->templateFilePath . 'install.html'));
+			// Get the template part from the file
+			$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
+			// Get the subpart for the connection form
+			$formSubPart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###UPDATE_FORM###');
+
+			$driverMarkers = array();
+			if ($this->driver === 'postgres') {
+				$driverMarkers['llOption1'] = 'Create language \'plpgsql\' and (re)-import necessary Compatibility operators';
+			}
+
+			// Define the markers content for the subpart
+			$subPartMarkers = array(
+				'step' => $instObj->step + 1,
+				'action' => htmlspecialchars($instObj->action),
+				'encryptionKey' => $instObj->createEncryptionKey(),
+				'branch' => TYPO3_branch,
+				'continue' => 'Continue',
+			);
+			$subPartMarkers = array_merge($subPartMarkers, $driverMarkers);
+			// Add step marker for main template
+			$markers['step'] = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($formSubPart, $subPartMarkers, '###|###', 1, 1);
+		} else {
+			// Add step marker for main template when no connection
+			$markers['step'] = $error_missingConnect;
+		}
+	}
+
+	/**
+	 * Creates a specialized form to configure the DBMS connection.
+	 *
+	 * @param array $markers
+	 * @param \TYPO3\CMS\Install\Installer $instObj
+	 * @return void
+	 */
+	protected function updatePostgres(&$markers, $instObj) {
+		$content = '';
+		if (intval($instObj->INSTALL['Database']['update'])) {
+			// Language lookup to drop it if necessary
+			$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('oid', 'pg_language', 'lanname=\'plpgsql\'');
+			if ($GLOBALS['TYPO3_DB']->sql_num_rows($result)) {
+				$GLOBALS['TYPO3_DB']->sql_query('DROP LANGUAGE plpgsql CASCADE');
+			}
+			$GLOBALS['TYPO3_DB']->sql_query('CREATE LANGUAGE plpgsql');
+			if ($GLOBALS['TYPO3_DB']->sql_error()) {
+				$content .= str_replace('###ERROR###', $GLOBALS['TYPO3_DB']->sql_error(), $markers['error_DatabaseWork']);
+			}
+			// Re-import the compatibility operators
+			$sql = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('dbal') . 'res/postgresql/postgresql-compatibility.sql');
+			$GLOBALS['TYPO3_DB']->sql_query($sql);
+			if ($GLOBALS['TYPO3_DB']->sql_error()) {
+				$content .= str_replace('###ERROR###', $GLOBALS['TYPO3_DB']->sql_error(), $markers['error_DatabaseWork']);
+			}
+		}
+
+		if ($content !== '') {
+			$markers['step'] = $content;
 		}
 	}
 
