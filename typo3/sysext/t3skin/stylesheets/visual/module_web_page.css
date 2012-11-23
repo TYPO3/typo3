@@ -27,7 +27,8 @@ Web > Page
 	visibility: hidden;
 }
 
-.t3-page-colHeader:hover .t3-page-colHeader-icons {
+.t3-page-colHeader:hover .t3-page-colHeader-icons,
+.t3-page-column.active .t3-page-colHeader .t3-page-colHeader-icons {
 	visibility: visible;
 }
 
@@ -66,6 +67,9 @@ Web > Page
 
 .t3-page-ce.active .t3-page-ce-body {
 	border-color: #5b5b5b;
+}
+.t3-page-column.active .t3-icon-document-new {
+	visibility: visible;
 }
 
 .t3-page-ce .t3-icon-document-new {
