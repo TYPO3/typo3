@@ -89,24 +89,39 @@ Web > Page
 	color: #bbbbbb;
 }
 
+.t3-page-ce.t3-page-ce-hidden {
+	-moz-opacity: 0.6;
+	opacity: .60;
+	filter: alpha(opacity = 60);
+}
+
+.t3-page-ce.t3-page-ce-hidden.active {
+	-moz-opacity: 1.0;
+	opacity: 1.0;
+	filter: alpha(opacity = 100);
+}
+
 .t3-page-ce-hidden.active .t3-page-ce-body,
 .t3-page-ce-hidden.active .t3-page-ce-body a {
 	color: #000000;
 }
 
 .t3-page-ce-hidden .t3-page-ce-body {
-	background-color: transparent;
-	border-style: none;
+	background-color: #e5e5e5;
+	border-color: #e5e5e5;
 }
 
-.t3-page-ce-hidden .t3-page-ce-body .t3-icon ,
 .t3-page-ce-hidden .t3-page-ce-body img {
-	opacity: 0.4;
+	-moz-opacity: 0.6;
+	opacity: .60;
+	filter: alpha(opacity = 60);
 }
 
 .t3-page-ce.active .t3-page-ce-body .t3-icon ,
 .t3-page-ce.active .t3-page-ce-body img {
-	opacity: inherit;
+	-moz-opacity: 1.0;
+	opacity: 1.0;
+	filter: alpha(opacity = 100);
 }
 
 .t3-page-ce-hidden .t3-page-ce-header {

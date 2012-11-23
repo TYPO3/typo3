@@ -41,14 +41,6 @@ td.t3-page-column {
 	min-width: 150px;
 }
 
-.t3-page-ce.t3-page-ce-hidden {
-	opacity: .40;
-}
-
-.t3-page-ce:hover {
-	opacity: 1;
-}
-
 .t3-page-ce-dropzone {
 	margin: 12px 0;
 }
