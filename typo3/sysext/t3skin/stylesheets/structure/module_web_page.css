@@ -6,11 +6,12 @@ Web > Page
 td.t3-page-column {
 	min-width: 150px;
 	max-width: 300px;
+	padding: 0px 12px;
 }
 
 .t3-page-colHeader {
-	margin-bottom: 10px;
-	padding-left: 20px;
+	margin-bottom: 0px;
+	padding-left: 10px;
 	padding-right: 20px;
 	position: relative;
 }
@@ -21,16 +22,20 @@ td.t3-page-column {
 
 .t3-page-colHeader-icons {
 	position: absolute;
-	left: 4px;
+	right: 0px;
+	visibility: hidden;
+}
+
+.t3-page-colHeader:hover .t3-page-colHeader-icons {
+	visibility: visible;
 }
 
 .t3-page-ce-wrapper {
-	padding: 12px 0 5px 0;
+	padding: 0px 0 5px 0;
 }
 
 .t3-page-ce-wrapper-new-ce {
-	margin-bottom: 7px;
-	margin-left: 5px;
+	margin: 0px 0px 0px 5px;
 }
 
 .t3-page-ce-droptarget {
@@ -38,13 +43,19 @@ td.t3-page-column {
 }
 
 .t3-page-ce {
-	margin-bottom: 5px;
 	min-width: 150px;
-	opacity: .70;
+}
+
+.t3-page-ce.t3-page-ce-hidden {
+	opacity: .40;
 }
 
 .t3-page-ce:hover {
 	opacity: 1;
+}
+
+.t3-page-ce-dropzone {
+	margin: 12px 0px;
 }
 
 .t3-page-ce-dragitem:hover {
@@ -60,11 +71,13 @@ td.t3-page-column {
 	margin: 0;
 }
 
-.t3-page-ce .t3-row-header .ce-icons{
+.t3-page-ce .t3-row-header .ce-icons,
+.t3-page-ce .t3-row-header .ce-icons-left{
 	visibility: hidden;
 }
 
-.t3-page-ce.active .t3-row-header .ce-icons {
+.t3-page-ce.active .t3-row-header .ce-icons,
+.t3-page-ce.active .t3-row-header .ce-icons-left{
 	visibility: visible;
 }
 
@@ -107,5 +120,5 @@ table.typo3-page-columnsMode img.c-divider {
 }
 
 td.t3-gridCell div.t3-page-ce {
-	padding: 1px 5px 5px 5px;
+	padding: 1px 12px 0px 12px;
 }
