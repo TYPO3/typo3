@@ -850,11 +850,12 @@ class ResourceStorage {
 	 * @param integer $numberOfItems The number of items to list; if not set, return all items
 	 * @param bool $useFilters If FALSE, the list is returned without any filtering; otherwise, the filters defined for this storage are used.
 	 * @param bool $loadIndexRecords If set to TRUE, the index records for all files are loaded from the database. This can greatly improve performance of this method, especially with a lot of files.
+	 * @param boolean $recursive
 	 * @return array Information about the files found.
 	 */
 	// TODO check if we should use a folder object instead of $path
 	// TODO add unit test for $loadIndexRecords
-	public function getFileList($path, $start = 0, $numberOfItems = 0, $useFilters = TRUE, $loadIndexRecords = TRUE) {
+	public function getFileList($path, $start = 0, $numberOfItems = 0, $useFilters = TRUE, $loadIndexRecords = TRUE, $recursive = FALSE) {
 		$rows = array();
 		if ($loadIndexRecords) {
 			/** @var $repository \TYPO3\CMS\Core\Resource\FileRepository */
@@ -862,7 +863,7 @@ class ResourceStorage {
 			$rows = $repository->getFileIndexRecordsForFolder($this->getFolder($path));
 		}
 		$filters = $useFilters == TRUE ? $this->fileAndFolderNameFilters : array();
-		$items = $this->driver->getFileList($path, $start, $numberOfItems, $filters, $rows);
+		$items = $this->driver->getFileList($path, $start, $numberOfItems, $filters, $rows, $recursive);
 		uksort($items, 'strnatcasecmp');
 		return $items;
 	}
@@ -1471,10 +1472,11 @@ class ResourceStorage {
 	 * @param int $start
 	 * @param int $numberOfItems
 	 * @param array $folderFilterCallbacks
+	 * @param boolean $recursive
 	 * @return array
 	 */
-	public function fetchFolderListFromDriver($path, $start = 0, $numberOfItems = 0, array $folderFilterCallbacks = array()) {
-		$items = $this->driver->getFolderList($path, $start, $numberOfItems, $folderFilterCallbacks);
+	public function fetchFolderListFromDriver($path, $start = 0, $numberOfItems = 0, array $folderFilterCallbacks = array(), $recursive = FALSE) {
+		$items = $this->driver->getFolderList($path, $start, $numberOfItems, $folderFilterCallbacks, $recursive);
 		// Exclude the _processed_ folder, so it won't get indexed etc
 		$processingFolder = $this->getProcessingFolder();
 		if ($processingFolder && $path == '/') {

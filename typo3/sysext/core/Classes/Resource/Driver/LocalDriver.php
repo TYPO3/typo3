@@ -288,10 +288,11 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 * @param array $filterMethods The filter methods used to filter the directory items
 	 * @param string $itemHandlerMethod The method (in this class) that handles the single iterator elements.
 	 * @param array $itemRows
+	 * @param boolean $recursive
 	 * @return array
 	 */
 	// TODO add unit tests
-	protected function getDirectoryItemList($path, $start, $numberOfItems, array $filterMethods, $itemHandlerMethod, $itemRows = array()) {
+	protected function getDirectoryItemList($path, $start, $numberOfItems, array $filterMethods, $itemHandlerMethod, $itemRows = array(), $recursive = FALSE) {
 		$realPath = rtrim(($this->absoluteBasePath . trim($path, '/')), '/') . '/';
 		if (!is_dir($realPath)) {
 			throw new \InvalidArgumentException('Cannot list items in directory ' . $path . ' - does not exist or is no directory', 1314349666);
@@ -302,7 +303,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		// Fetch the files and folders and sort them by name; we have to do
 		// this here because the directory iterator does return them in
 		// an arbitrary order
-		$items = $this->getFileAndFoldernamesInPath($realPath);
+		$items = $this->getFileAndFoldernamesInPath($realPath, $recursive);
 		natcasesort($items);
 		$iterator = new \ArrayIterator($items);
 		if ($iterator->count() == 0) {
