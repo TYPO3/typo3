@@ -167,9 +167,10 @@ abstract class AbstractDriver {
 	 * @param array $filterMethods The filter methods used to filter the directory items
 	 * @param string $itemHandlerMethod
 	 * @param array $itemRows
+	 * @param boolean $recursive
 	 * @return array
 	 */
-	protected function getDirectoryItemList($path, $start, $numberOfItems, array $filterMethods, $itemHandlerMethod, $itemRows = array()) {
+	protected function getDirectoryItemList($path, $start, $numberOfItems, array $filterMethods, $itemHandlerMethod, $itemRows = array(), $recursive = FALSE) {
 
 	}
 
@@ -469,11 +470,12 @@ abstract class AbstractDriver {
 	 * @param integer $numberOfItems The number of items to list; if not set, return all items
 	 * @param array $filenameFilterCallbacks The method callbacks to use for filtering the items
 	 * @param array $fileData Two-dimensional, identifier-indexed array of file index records from the database
+	 * @param boolean $recursive
 	 * @return array
 	 */
 	// TODO add unit tests
-	public function getFileList($path, $start = 0, $numberOfItems = 0, array $filenameFilterCallbacks = array(), $fileData = array()) {
-		return $this->getDirectoryItemList($path, $start, $numberOfItems, $filenameFilterCallbacks, $this->fileListCallbackMethod, $fileData);
+	public function getFileList($path, $start = 0, $numberOfItems = 0, array $filenameFilterCallbacks = array(), $fileData = array(), $recursive = FALSE) {
+		return $this->getDirectoryItemList($path, $start, $numberOfItems, $filenameFilterCallbacks, $this->fileListCallbackMethod, $fileData, $recursive);
 	}
 
 	/**
@@ -610,10 +612,11 @@ abstract class AbstractDriver {
 	 * @param integer $start The position to start the listing; if not set, start from the beginning
 	 * @param integer $numberOfItems The number of items to list; if not set, return all items
 	 * @param array $foldernameFilterCallbacks The method callbacks to use for filtering the items
+	 * @param boolean $recursive
 	 * @return array
 	 */
-	public function getFolderList($path, $start = 0, $numberOfItems = 0, array $foldernameFilterCallbacks = array()) {
-		return $this->getDirectoryItemList($path, $start, $numberOfItems, $foldernameFilterCallbacks, $this->folderListCallbackMethod);
+	public function getFolderList($path, $start = 0, $numberOfItems = 0, array $foldernameFilterCallbacks = array(), $recursive = FALSE) {
+		return $this->getDirectoryItemList($path, $start, $numberOfItems, $foldernameFilterCallbacks, $this->folderListCallbackMethod, $recursive);
 	}
 
 	/**

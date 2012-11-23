@@ -175,9 +175,10 @@ class Folder implements \TYPO3\CMS\Core\Resource\FolderInterface {
 	 * @param integer $start The item to start at
 	 * @param integer $numberOfItems The number of items to return
 	 * @param integer $filterMode The filter mode to use for the file list.
+	 * @param boolean $recursive
 	 * @return \TYPO3\CMS\Core\Resource\File[]
 	 */
-	public function getFiles($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS) {
+	public function getFiles($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = FALSE) {
 		$useFilters = TRUE;
 
 		// Fallback for compatibility with the old method signature variable $useFilters that was used instead of $filterMode
@@ -191,7 +192,7 @@ class Folder implements \TYPO3\CMS\Core\Resource\FolderInterface {
 
 		/** @var $factory \TYPO3\CMS\Core\Resource\ResourceFactory */
 		$factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
-		$fileArray = $this->storage->getFileList($this->identifier, $start, $numberOfItems, $useFilters);
+		$fileArray = $this->storage->getFileList($this->identifier, $start, $numberOfItems, $useFilters, TRUE, $recursive);
 		$fileObjects = array();
 		foreach ($fileArray as $fileInfo) {
 			$fileObjects[$fileInfo['name']] = $factory->createFileObject($fileInfo);
@@ -209,9 +210,9 @@ class Folder implements \TYPO3\CMS\Core\Resource\FolderInterface {
 	 * @param array $filterMethods
 	 * @return integer
 	 */
-	public function getFileCount(array $filterMethods = array()) {
+	public function getFileCount(array $filterMethods = array(), $recursive = FALSE) {
 		// TODO replace by call to count()
-		return count($this->storage->getFileList($this->identifier, 0, 0, $filterMethods));
+		return count($this->storage->getFileList($this->identifier, 0, 0, $filterMethods, FALSE, $recursive));
 	}
 
 	/**

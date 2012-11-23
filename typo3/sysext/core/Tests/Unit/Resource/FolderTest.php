@@ -115,6 +115,36 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function getFilesHandsOverRecursiveFALSEifNotExplicitlySet() {
+		$mockedStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
+		$mockedStorage
+			->expects($this->once())
+			->method('getFileList')
+			->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), $this->anything(), FALSE)
+			->will($this->returnValue(array()));
+
+		$fixture = $this->createFolderFixture('/somePath', 'someName', $mockedStorage);
+		$fixture->getFiles();
+	}
+
+	/**
+	 * @test
+	 */
+	public function getFilesHandsOverRecursiveTRUEifSet() {
+		$mockedStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
+		$mockedStorage
+			->expects($this->once())
+			->method('getFileList')
+			->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), $this->anything(), TRUE)
+			->will($this->returnValue(array()));
+
+		$fixture = $this->createFolderFixture('/somePath', 'someName', $mockedStorage);
+		$fixture->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, TRUE);
+	}
+
+	/**
+	 * @test
+	 */
 	public function getSubfolderCallsFactoryWithCorrectArguments() {
 		$mockedStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
 		$mockedStorage->expects($this->once())->method('hasFolderInFolder')->with($this->equalTo('someSubfolder'))->will($this->returnValue(TRUE));
