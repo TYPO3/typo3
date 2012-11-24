@@ -316,6 +316,41 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
+	 * @param string $select_fields
+	 * @param string $from_table
+	 * @param string $where_clause
+	 * @param string $groupBy
+	 * @param string $orderBy
+	 * @param string $limit
+	 *
+	 * @return void
+	 */
+	protected function parseAndAdjustQueryParts(&$select_fields, &$from_table, &$where_clause, &$groupBy = '', &$orderBy = '', &$limit = '') {
+		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
+		switch ($hType) {
+			case 'adodb':
+				if ($this->runningADOdbDriver('postgres')) {
+					// Strip orderBy part if select statement is a count
+					if (preg_match('/count\(([^)]*)\)/i', $select_fields, $matches)) {
+						$isIncluded = TRUE;
+						foreach ($matches as $match) {
+							// Lookup if the field in COUNT() statement is used in groupBy statement
+							if (strpos($groupBy, $matches[0]) === FALSE) {
+								$isIncluded = FALSE;
+							}
+						}
+						unset($match);
+						// If minimum one field isn't used in groupBy statement, drop the ordering for compatibility reason
+						if (!$isIncluded) {
+							$orderBy = '';
+						}
+					}
+				}
+				break;
+		}
+	}
+
+	/**
 	 * Analyzes fields and adds the extracted information to the field type, auto increment and primary key info caches.
 	 *
 	 * @param array $parsedExtSQL The output produced by \TYPO3\CMS\Install\Sql\SchemaMigrator->getFieldDefinitions_fileContent()
@@ -1178,6 +1213,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		$where_clause = $this->quoteWhereClause($where_clause);
 		$groupBy = $this->quoteGroupBy($groupBy);
 		$orderBy = $this->quoteOrderBy($orderBy);
+		$this->parseAndAdjustQueryParts($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
 		// Call parent method to build actual query
 		$query = parent::SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
 		if ($this->debugOutput || $this->store_lastBuiltQuery) {
@@ -1211,6 +1247,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		}
 		// Compile the SELECT parameters
 		list($select_fields, $from_table, $where_clause, $groupBy, $orderBy) = $this->compileSelectParameters($params);
+		$this->parseAndAdjustQueryParts($select_fields, $from_table, $where_clause, $groupBy, $orderBy);
 		// Call parent method to build actual query
 		$query = parent::SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy);
 		if ($this->debugOutput || $this->store_lastBuiltQuery) {
@@ -1438,6 +1475,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			$precompiledParts['queryParts'] = explode($parameterWrap, $query);
 			break;
 		case 'adodb':
+			$this->parseAndAdjustQueryParts($select_fields, $from_table, $where_clause, $groupBy, $orderBy);
 			$query = parent::SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy);
 			$precompiledParts['queryParts'] = explode($parameterWrap, $query);
 			$precompiledParts['LIMIT'] = $limit;
