@@ -34,7 +34,6 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
  * - The core of TYPO3
  * - All extensions with an ext_autoload.php file
  * - All extensions that stick to the 'extbase' like naming convention
- * - Resolves registered XCLASSes
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
  * @author Martin Kutschker <masi@typo3.org>
@@ -292,17 +291,14 @@ class ClassLoader {
 		$classPath = NULL;
 		$classNameLower = GeneralUtility::strtolower($className);
 		// Try to resolve extbase naming scheme if class is not already in cache file
-		if (substr($classNameLower, 0, 3) !== 'ux_' && !array_key_exists($classNameLower, static::$classNameToFileMapping)) {
+		if (!array_key_exists($classNameLower, static::$classNameToFileMapping)) {
 			static::attemptToLoadRegistryWithNamingConventionForGivenClassName($className);
 		}
 		// Look up class name in cache file
 		if (array_key_exists($classNameLower, static::$classNameToFileMapping)) {
 			$classPath = static::$classNameToFileMapping[$classNameLower];
 		}
-		if ($classPath === NULL && substr($classNameLower, 0, 3) === 'ux_' && !array_key_exists($classNameLower, static::$classNameToFileMapping)) {
-			static::$cacheUpdateRequired = TRUE;
-			static::$classNameToFileMapping[$classNameLower] = NULL;
-		}
+
 		return $classPath;
 	}
 
