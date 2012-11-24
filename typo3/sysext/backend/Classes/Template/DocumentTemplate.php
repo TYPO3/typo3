@@ -1770,7 +1770,10 @@ class DocumentTemplate {
 	 * @return string
 	 */
 	public function getVersionSelector($id, $noAction = FALSE) {
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version')) {
+		if (
+				\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') &&
+				!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')
+		) {
 			$versionGuiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\View\\VersionView');
 			return $versionGuiObj->getVersionSelector($id, $noAction);
 		}
