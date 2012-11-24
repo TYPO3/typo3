@@ -32,7 +32,7 @@ class DatabaseGeneralTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// Backup database connection
 		$this->db = $GLOBALS['TYPO3_DB'];
 		$this->temporaryFiles = array();
-		$className = self::buildAccessibleProxy('ux_TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
+		$className = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
 		$GLOBALS['TYPO3_DB'] = new $className();
 		$GLOBALS['TYPO3_DB']->lastHandlerKey = '_DEFAULT';
 	}

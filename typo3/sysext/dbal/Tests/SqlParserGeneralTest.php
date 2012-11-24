@@ -25,14 +25,14 @@ namespace TYPO3\CMS\Dbal\Tests;
  ***************************************************************/
 
 /**
- * Testcase for class ux_t3lib_sqlparser
+ * Test case
  *
  * @author Xavier Perseguers <xavier@typo3.org>
  */
 class SqlParserGeneralTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \ux_TYPO3\CMS\Core\Database\SqlParser (extended to make protected methods public)
+	 * @var \TYPO3\CMS\Dbal\Database\SqlParser
 	 */
 	protected $fixture;
 
@@ -40,7 +40,7 @@ class SqlParserGeneralTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Prepares the environment before running a test.
 	 */
 	public function setUp() {
-		$className = self::buildAccessibleProxy('ux_TYPO3\\CMS\\Core\\Database\\SqlParser');
+		$className = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\SqlParser');
 		$this->fixture = new $className();
 	}
 

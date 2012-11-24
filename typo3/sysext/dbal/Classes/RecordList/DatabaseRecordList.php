@@ -1,5 +1,5 @@
 <?php
-namespace ux_TYPO3\CMS\Recordlist\RecordList;
+namespace TYPO3\CMS\Dbal\RecordList;
 
 /***************************************************************
  *  Copyright notice

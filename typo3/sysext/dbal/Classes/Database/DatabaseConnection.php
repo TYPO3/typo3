@@ -1,5 +1,5 @@
 <?php
-namespace ux_TYPO3\CMS\Core\Database;
+namespace TYPO3\CMS\Dbal\Database;
 
 /***************************************************************
  *  Copyright notice
@@ -884,7 +884,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 *
 	 * @param array $queryParts SQL parsed by method parseSQL() of t3lib_sqlparser
 	 * @return pointer Result pointer / DBAL object
-	 * @see ux_t3lib_db::sql_query()
+	 * @see self::sql_query()
 	 */
 	protected function exec_query(array $queryParts) {
 		switch ($queryParts['type']) {
@@ -1340,7 +1340,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			}
 		}
 		$preparedStatement = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\PreparedStatement', '', $from_table, $precompiledParts);
-		/* @var $preparedStatement TYPO3\CMS\Core\Database\PreparedStatement */
+		/* @var $preparedStatement \TYPO3\CMS\Core\Database\PreparedStatement */
 		// Bind values to parameters
 		foreach ($input_parameters as $key => $value) {
 			$preparedStatement->bindValue($key, $value, \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_AUTOTYPE);

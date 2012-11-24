@@ -1,5 +1,5 @@
 <?php
-namespace ux_TYPO3\CMS\Core\Database;
+namespace TYPO3\CMS\Dbal\Database;
 
 /***************************************************************
  *  Copyright notice

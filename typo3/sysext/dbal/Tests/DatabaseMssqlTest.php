@@ -2,7 +2,7 @@
 namespace TYPO3\CMS\Dbal\Tests;
 
 /**
- * Testcase for class ux_TYPO3\CMS\Core\Database\DatabaseConnection. Testing MS SQL database handling.
+ * Test MS SQL database handling.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
  */
@@ -28,9 +28,9 @@ class DatabaseMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->db = $GLOBALS['TYPO3_DB'];
 		// Reconfigure DBAL to use MS SQL
 		require 'fixtures/mssql.config.php';
-		$className = self::buildAccessibleProxy('ux_TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
+		$className = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
 		$GLOBALS['TYPO3_DB'] = new $className();
-		$parserClassName = self::buildAccessibleProxy('ux_TYPO3\\CMS\\Core\\Database\\SqlParser');
+		$parserClassName = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\SqlParser');
 		$GLOBALS['TYPO3_DB']->SQLparser = new $parserClassName();
 		$this->assertFalse($GLOBALS['TYPO3_DB']->isConnected());
 		// Initialize a fake MS SQL connection
