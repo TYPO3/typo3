@@ -4156,7 +4156,7 @@ Connection: close
 		}
 		// Create alias if not present
 		$alias = \TYPO3\CMS\Core\Core\ClassLoader::getAliasForClassName($finalClassName);
-		if (substr($finalClassName, 0, 3) !== 'ux_' && $finalClassName !== $alias && !class_exists($alias, FALSE)) {
+		if ($finalClassName !== $alias && !class_exists($alias, FALSE)) {
 			class_alias($finalClassName, $alias);
 		}
 		// Register new singleton instance
@@ -4167,19 +4167,41 @@ Connection: close
 	}
 
 	/**
-	 * Returns the class name for a new instance, taking into account the
-	 * class-extension API.
+	 * Returns the class name for a new instance, taking into account
+	 * registered implemetations for this class
 	 *
 	 * @param string $className Base class name to evaluate
 	 * @return string Final class name to instantiate with "new [classname]
 	 */
 	static protected function getClassName($className) {
 		if (class_exists($className)) {
-			while (\TYPO3\CMS\Core\Core\ClassLoader::getClassPathByRegistryLookup('ux_' . $className) !== NULL) {
-				$className = 'ux_' . $className;
+			while (static::classHasImplementation($className)) {
+				$className = static::geImplementationForClass($className);
 			}
 		}
 		return \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($className);
+	}
+
+	/**
+	 * Returns the confiured implementation of the class
+	 *
+	 * @param string $className
+	 * @return string
+	 */
+	static protected function geImplementationForClass($className) {
+		return $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className]['className'];
+	}
+
+	/**
+	 * Checks if a class has a configured implementation
+	 *
+	 * @param string $className
+	 * @return boolean
+	 */
+	static protected function classHasImplementation($className) {
+		return array_key_exists($className, $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'])
+				&& is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className])
+				&& !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className]['className']);
 	}
 
 	/**

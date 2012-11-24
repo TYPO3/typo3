@@ -89,7 +89,6 @@ class CompatbilityClassLoaderPhpBelow50307Test extends \TYPO3\CMS\Core\Tests\Uni
 			'user_' => array('user_fooBar'),
 			'User_' => array('User_Barfoo'),
 			'ux_' => array('ux_Foo'),
-			'Ux_' => array('Ux_bar'),
 		);
 	}
 
