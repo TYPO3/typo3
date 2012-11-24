@@ -1464,12 +1464,12 @@ class tx_cssstyledcontent_pi1 extends \TYPO3\CMS\CssStyledContent\Controller\Css
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class ux_t3lib_DB extends \ux_TYPO3\CMS\Core\Database\DatabaseConnection {}
+class ux_t3lib_DB extends \TYPO3\CMS\Dbal\Database\DatabaseConnection {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class ux_t3lib_sqlparser extends \ux_TYPO3\CMS\Core\Database\SqlParser {}
+class ux_t3lib_sqlparser extends \TYPO3\CMS\Dbal\Database\SqlParser {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
@@ -1504,7 +1504,7 @@ class tx_dbal_querycache extends \TYPO3\CMS\Dbal\QueryCache {}
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class ux_localRecordList extends \ux_TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {}
+class ux_localRecordList extends \TYPO3\CMS\Dbal\RecordList\DatabaseRecordList {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0

@@ -78,7 +78,6 @@ class CompatbilityClassLoaderPhpBelow50307 extends \TYPO3\CMS\Core\Core\ClassLoa
 			GeneralUtility::isFirstPartOfStr($className, 'tx_')
 			|| GeneralUtility::isFirstPartOfStr($className, 'Tx_')
 			|| GeneralUtility::isFirstPartOfStr($className, 'ux_')
-			|| GeneralUtility::isFirstPartOfStr($className, 'Ux_')
 			|| GeneralUtility::isFirstPartOfStr($className, 'user_')
 			|| GeneralUtility::isFirstPartOfStr($className, 'User_')
 		) {
