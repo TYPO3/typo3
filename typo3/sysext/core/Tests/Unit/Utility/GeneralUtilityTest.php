@@ -3531,6 +3531,28 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function makeInstanceInstanciatesXclassIfPresent() {
+		$classNameOriginal = get_class($this->getMock(uniqid('foo')));
+		$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'][$classNameOriginal] = $classNameOriginal . 'Xclass';
+		eval('class ' . $classNameOriginal . 'Xclass extends ' . $classNameOriginal . ' {}');
+		$this->assertInstanceOf($classNameOriginal . 'Xclass', Utility\GeneralUtility::makeInstance($classNameOriginal));
+	}
+
+	/**
+	 * @test
+	 */
+	public function makeInstanceInstanciatesXclassRecursivelyIfPresent() {
+		$classNameOriginal = get_class($this->getMock(uniqid('foo')));
+		$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'][$classNameOriginal] = $classNameOriginal . 'Xclass';
+		$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'][$classNameOriginal . 'Xclass'] = $classNameOriginal . 'XclassXclass';
+		eval('class ' . $classNameOriginal . 'Xclass extends ' . $classNameOriginal . ' {}');
+		eval('class ' . $classNameOriginal . 'XclassXclass extends ' . $classNameOriginal . 'Xclass {}');
+		$this->assertInstanceOf($classNameOriginal . 'XclassXclass', Utility\GeneralUtility::makeInstance($classNameOriginal));
+	}
+
+	/**
+	 * @test
+	 */
 	public function makeInstanceCalledTwoTimesForNonSingletonClassReturnsDifferentInstances() {
 		$className = get_class($this->getMock('foo'));
 		$this->assertNotSame(Utility\GeneralUtility::makeInstance($className), Utility\GeneralUtility::makeInstance($className));

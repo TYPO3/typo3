@@ -4156,7 +4156,7 @@ Connection: close
 		}
 		// Create alias if not present
 		$alias = \TYPO3\CMS\Core\Core\ClassLoader::getAliasForClassName($finalClassName);
-		if (substr($finalClassName, 0, 3) !== 'ux_' && $finalClassName !== $alias && !class_exists($alias, FALSE)) {
+		if ($finalClassName !== $alias && !class_exists($alias, FALSE)) {
 			class_alias($finalClassName, $alias);
 		}
 		// Register new singleton instance
@@ -4175,11 +4175,35 @@ Connection: close
 	 */
 	static protected function getClassName($className) {
 		if (class_exists($className)) {
-			while (\TYPO3\CMS\Core\Core\ClassLoader::getClassPathByRegistryLookup('ux_' . $className) !== NULL) {
-				$className = 'ux_' . $className;
+			while (static::classNameHasXclass($className)) {
+				$className = static::getXclassClassNameForClass($className);
 			}
 		}
 		return \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($className);
+	}
+
+	/**
+	 * Compiles the Xclass class name for a given class.
+	 * This may be enhanced in the future to
+	 *
+	 * @param string $className
+	 * @return string
+	 */
+	static protected function getXclassClassNameForClass($className) {
+		return $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'][$className];
+	}
+
+	/**
+	 * Checks if a class is an Xclass
+	 *
+	 * @param string $className
+	 * @return boolean
+	 * @access private
+	 */
+	static protected function classNameHasXclass($className) {
+		return isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'])
+				&& is_array($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'])
+				&& array_key_exists($className, $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']);
 	}
 
 	/**
