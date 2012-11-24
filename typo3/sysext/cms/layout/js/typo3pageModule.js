@@ -85,16 +85,32 @@ TYPO3.Components.PageModule = {
 					this.el = Ext.get(this.getEl());
 				}
 
-				//Cache the original XY Coordinates of the element, we'll use this later.
+				// Add css class for the drag shadow
+				this.el.child('.t3-page-ce-dragitem').addClass('dragitem-shadow');
+				// Hide create new element button
+				this.el.child('.t3-icon-document-new').addClass('drag-start');
+
+				// Cache the original XY Coordinates of the element, we'll use this later.
 				this.originalXY = this.el.getXY();
+
+				var dropZones = Ext.select('.t3-page-ce-dropzone');
+				var self = this;
+				Ext.each(dropZones.elements, function(el) {
+					var dropZoneElement = Ext.get(el);
+					// Only highlight valid drop targets
+					if (dropZoneElement.id != self.el.prev().child('.t3-page-ce-dropzone').id &&
+					dropZoneElement.id != self.el.child('.t3-page-ce-dropzone').id) {
+						dropZoneElement.addClass('t3-page-ce-dropzone-available');
+					}
+				});
 			},
 			// Called when element is dropped not anything other than a dropzone with the same ddgroup
-			onInvalidDrop:function () {
+			onInvalidDrop: function () {
 				// Set a flag to invoke the animated repair
 				this.invalidDrop = true;
 			},
 			// Called when the drag operation completes
-			endDrag:function () {
+			endDrag: function () {
 				// Invoke the animation if the invalidDrop flag is set to true
 				if (this.invalidDrop === true) {
 					// Remove the drop invitation
@@ -105,7 +121,7 @@ TYPO3.Components.PageModule = {
 						easing:'easeOut',
 						duration:0.3,
 						scope:this,
-						callback:function () {
+						callback: function () {
 							// Remove the position attribute
 							this.el.dom.style.position = '';
 						}
@@ -116,9 +132,19 @@ TYPO3.Components.PageModule = {
 					delete this.invalidDrop;
 				}
 
+				var dropZones = Ext.select('.t3-page-ce-dropzone');
+				Ext.each(dropZones.elements, function(el) {
+					Ext.get(el).removeClass('t3-page-ce-dropzone-available');
+				});
+
+				// Remove dragitem-shadow after dragging
+				this.el.child('.t3-page-ce-dragitem').removeClass('dragitem-shadow');
+				// Show create new element button again
+				this.el.child('.t3-icon-document-new').removeClass('drag-start');
+
 			},
 			// Called upon successful drop of an element on a DDTarget with the same
-			onDragDrop:function (evtObj, targetElId) {
+			onDragDrop: function (evtObj, targetElId) {
 				// Wrap the drop target element with Ext.Element
 				var dropEl = Ext.get(targetElId);
 
