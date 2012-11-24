@@ -4156,7 +4156,7 @@ Connection: close
 		}
 		// Create alias if not present
 		$alias = \TYPO3\CMS\Core\Core\ClassLoader::getAliasForClassName($finalClassName);
-		if (substr($finalClassName, 0, 3) !== 'ux_' && $finalClassName !== $alias && !class_exists($alias, FALSE)) {
+		if (substr($finalClassName, -6) !== 'Xclass' && $finalClassName !== $alias && !class_exists($alias, FALSE)) {
 			class_alias($finalClassName, $alias);
 		}
 		// Register new singleton instance
@@ -4175,8 +4175,8 @@ Connection: close
 	 */
 	static protected function getClassName($className) {
 		if (class_exists($className)) {
-			while (\TYPO3\CMS\Core\Core\ClassLoader::getClassPathByRegistryLookup('ux_' . $className) !== NULL) {
-				$className = 'ux_' . $className;
+			while (\TYPO3\CMS\Core\Core\ClassLoader::getClassPathByRegistryLookup($className . 'Xclass') !== NULL) {
+				$className = $className . 'Xclass';
 			}
 		}
 		return \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($className);
