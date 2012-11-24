@@ -1913,7 +1913,7 @@ $str.=$this->docBodyTagBegin().
 	 * @return	void
 	 */
 	public function getVersionSelector($id, $noAction = FALSE) {
-		if (t3lib_extMgm::isLoaded('version')) {
+		if (t3lib_extMgm::isLoaded('version') && !t3lib_extMgm::isLoaded('workspaces')) {
 			$versionGuiObj = t3lib_div::makeInstance('tx_version_gui');
 			return $versionGuiObj->getVersionSelector($id, $noAction);
 		}
