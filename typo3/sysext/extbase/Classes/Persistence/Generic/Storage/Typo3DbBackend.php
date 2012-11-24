@@ -297,10 +297,12 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		}
 		$parameters = array();
 		$statementParts = $this->parseQuery($query, $parameters);
+		// Reset $statementParts for valid table return
+		reset($statementParts);
 		// if limit is set, we need to count the rows "manually" as COUNT(*) ignores LIMIT constraints
 		if (!empty($statementParts['limit'])) {
 			$statement = $this->buildQuery($statementParts, $parameters);
-			$this->replacePlaceholders($statement, $parameters, $statementParts['tables'][0]);
+			$this->replacePlaceholders($statement, $parameters, current($statementParts['tables']));
 			$result = $this->databaseHandle->sql_query($statement);
 			$this->checkSqlErrors($statement);
 			$count = $this->databaseHandle->sql_num_rows($result);
@@ -311,7 +313,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				$statementParts['fields'] = array('COUNT(DISTINCT ' . reset($statementParts['tables']) . '.uid)');
 			}
 			$statement = $this->buildQuery($statementParts, $parameters);
-			$this->replacePlaceholders($statement, $parameters, $statementParts['tables'][0]);
+			$this->replacePlaceholders($statement, $parameters, current($statementParts['tables']));
 			$result = $this->databaseHandle->sql_query($statement);
 			$this->checkSqlErrors($statement);
 			$rows = $this->getRowsFromResult($query->getSource(), $result);
