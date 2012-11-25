@@ -4,6 +4,6 @@ $extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('im
 return array(
 	'tx_impexp' => $extensionPath . 'class.tx_impexp.php',
 	'tx_impexp_task' => $extensionPath . 'task/class.tx_impexp_task.php',
-	'tx_impexp_localpagetree' => $extensionPath . 'classes/class.tx_impexp_localpagetree.php'
+	'tx_impexp_localpagetree' => $extensionPath . 'Classes/class.tx_impexp_localpagetree.php'
 );
 ?>
