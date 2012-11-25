@@ -26,7 +26,7 @@
 
 Ext.onReady(function() {
 	// Only use placeholder JavaScript fallback in Internet Explorer
-	if (!Ext.IE) {
+	if (!Ext.isIE) {
 		return;
 	}
 

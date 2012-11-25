@@ -1,40 +1,38 @@
 <!-- ###PAGE### begin -->
-<div id="t3-login-form-outer" ###CSS_CLASSES###>
-	<div id="t3-login-form">
-		<div id="t3-login-image">
-			###LOGO###
+<div id="t3-login-form" ###CSS_CLASSES###>
+	###LOGO###
+
+	<div class="shadow">
+		<div class="t3-headline">
+			<h2>###HEADLINE###</h2>
 		</div>
-		<div id="t3-login-form-inner" class="t3-login-box">
-			<div class="shadow-box-top-428"></div>
-			<div class="t3-headline">
-				<h2>###HEADLINE###</h2>
-			</div>
-			<div class="t3-login-box-body">
-				<noscript>
-					<div id="t3-noscript-error" class="t3-login-alert t3-login-alert-error">
-						<h2>###ERROR_JAVASCRIPT###</h2>
-					</div>
-				</noscript>
-				<div id="t3-nocookies-error" class="t3-login-alert t3-login-alert-warning" style="display:none">
-					<h2>###ERROR_COOKIES###</h2>
-					<div id="t3-nocookies-ignore"><a href="#"  onclick="TYPO3BackendLogin.hideCookieWarning()">###ERROR_COOKIES_IGNORE###</a></div>
+
+		<div class="t3-login-box-body">
+			<noscript>
+				<div id="t3-noscript-error" class="t3-login-alert t3-login-alert-error">
+					<h2>###ERROR_JAVASCRIPT###</h2>
 				</div>
-				<!--[if lte IE 6]>
-					###WARNING_BROWSER_INCOMPATIBLE###
-				<![endif]-->
-				<div id="t3-login-process" style="display: none">
-					<h2>###LOGIN_PROCESS###</h2>
-				</div>
-				###FORM###
-				<div class="t3-login-bottomBorder"></div>
-				<script type="text/javascript" src="sysext/t3skin/resources/login.js"></script>
+			</noscript>
+			<div id="t3-nocookies-error" class="t3-login-alert t3-login-alert-warning" style="display:none">
+				<h2>###ERROR_COOKIES###</h2>
+				<div id="t3-nocookies-ignore"><a href="#"  onclick="TYPO3BackendLogin.hideCookieWarning()">###ERROR_COOKIES_IGNORE###</a></div>
 			</div>
-			<div class="shadow-box-bottom-424"></div>
+			<!--[if lte IE 6]>
+			###WARNING_BROWSER_INCOMPATIBLE###
+			<![endif]-->
+			<div id="t3-login-process" style="display: none">
+				<h2>###LOGIN_PROCESS###</h2>
+			</div>
+
+			###FORM###
+
 		</div>
-		###NEWS###
 	</div>
-</div>
-<div id="t3-footer">
+	<script type="text/javascript" src="sysext/t3skin/resources/login.js"></script>
+	<script type="text/javascript" src="jsfunc.placeholder.js""></script>
+
+	###NEWS###
+
 	<div id="t3-copyright-notice">
 		###COPYRIGHT###
 	</div>
@@ -47,7 +45,7 @@
 <!-- ###PAGE### end -->
 
 <!-- ###LOGIN_NEWS### begin -->
-<div id="t3-login-news-outer" class="t3-login-box">
+<div id="t3-login-news-outer" class="shadow">
 	<div class="t3-headline">
 		<h2 class="t3-login-news-headline">###NEWS_HEADLINE###</h2>
 	</div>
@@ -80,31 +78,20 @@
 <!-- ###LOGIN_ERROR### end -->
 
 <div id="t3-login-form-fields" class="###CSS_OPENIDCLASS###">
-	<div class="t3-login-username t3-login-field">
-		<label for="t3-username" class="t3-username" id="t3-login-label-username">
-			###LABEL_USERNAME###
-		</label>
-		<label for="t3-username" class="t3-username" id="t3-login-label-openId" style="display: none">
-			###LABEL_OPENID###
-		</label>
-		<input type="text" id="t3-username" name="username" value="###VALUE_USERNAME###" class="t3-username" tabindex="1" />
+	<div class="t3-login-field">
+		<input type="text" id="t3-username" name="username" value="###VALUE_USERNAME###" placeholder="###LABEL_USERNAME###" class="t3-username" />
+
 		<div class="t3-login-clearInputField">
 			<a id="t3-username-clearIcon" style="display: none;">
 				<img src="sysext/t3skin/icons/common-input-clear.png" alt="###CLEAR###" title="###CLEAR###" />
 			</a>
-		</div>
-		<div id="t3-login-openIdLogo" style="display: none">
-			<img src="sysext/t3skin/icons/logo-openid.png" alt="OpenID" title="OpenID" />
 		</div>
 		<div class="t3-login-alert-capslock" id="t3-username-alert-capslock" style="display: none">
 			<img src="sysext/t3skin/icons/login_capslock.gif" alt="###ERROR_CAPSLOCK###" title="###ERROR_CAPSLOCK###" />
 		</div>
 	</div>
 	<div class="t3-login-password t3-login-field" id="t3-login-password-section">
-		<label for="t3-password" class="t3-password">
-			###LABEL_PASSWORD###
-		</label>
-		<input type="password" id="t3-password" name="p_field" value="###VALUE_PASSWORD###" class="t3-password" tabindex="2" />
+		<input type="password" id="t3-password" name="p_field" value="###VALUE_PASSWORD###" placeholder="###LABEL_PASSWORD###" class="t3-password" />
 		<div class="t3-login-clearInputField">
 			<a id="t3-password-clearIcon" style="display: none;">
 				<img src="sysext/t3skin/icons/common-input-clear.png" alt="###CLEAR###" title="###CLEAR###" />
@@ -114,15 +101,20 @@
 			<img src="sysext/t3skin/icons/login_capslock.gif" alt="###ERROR_CAPSLOCK###" title="###ERROR_CAPSLOCK###" />
 		</div>
 	</div>
-	<!-- ###INTERFACE_SELECTOR### begin -->
-	<div class="t3-login-interface t3-login-field" id="t3-login-interface-section">
-		<label for="t3-interfaceselector" class="t3-interface-selector">
-			###LABEL_INTERFACE###
-		</label>
-		###VALUE_INTERFACE###
+	<div class="t3-login-field clearfix">
+		<!-- ###INTERFACE_SELECTOR### begin -->
+		<div class="t3-login-interface" id="t3-login-interface-section">
+			###VALUE_INTERFACE###
+			</div>
+		<!-- ###INTERFACE_SELECTOR### end -->
+
+		<div id="t3-login-openIdLogo" style="display: none">
+			<img src="sysext/t3skin/icons/logo-openid.png" alt="OpenID" title="OpenID" />
+		</div>
+
+		<input type="submit" name="commandLI" id="t3-login-submit" value="###VALUE_SUBMIT###" class="t3-login-submit" />
 	</div>
-	<!-- ###INTERFACE_SELECTOR### end -->
-	<input type="submit" name="commandLI" id="t3-login-submit" value="###VALUE_SUBMIT###" class="t3-login-submit" tabindex="4" />
+
 	<div class="t3-login-form-footer">
 		<div id="t3-login-form-footer-default">
 			<a id="t3-login-switchToOpenId" class="switchToOpenId">###LABEL_SWITCHOPENID###</a>
