@@ -376,7 +376,7 @@ class PagePositionMap {
 		foreach ($colPosArray as $kk => $vv) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_content', 'pid=' . intval($pid) . ($showHidden ? '' : \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('tt_content')) . ' AND colPos=' . intval($vv) . (strcmp($this->cur_sys_language, '') ? ' AND sys_language_uid=' . intval($this->cur_sys_language) : '') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content') . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tt_content'), '', 'sorting');
 			$lines[$vv] = array();
-			$lines[$vv][] = $this->insertPositionIcon(array('uid' => ''), $vv, $kk, $moveUid, $pid);
+			$lines[$vv][] = $this->insertPositionIcon('', $vv, $kk, $moveUid, $pid);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('tt_content', $row);
 				if (is_array($row)) {
