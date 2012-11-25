@@ -251,7 +251,7 @@ class RootlineUtility {
 						}
 					}
 					if (isset($configuration['foreign_table_field'])) {
-						if (intval($pageRecord['sys_language_uid']) > 0) {
+						if (intval($this->languageUid) > 0) {
 							$whereClauseParts[] = trim($configuration['foreign_table_field']) . ' = \'pages_language_overlay\'';
 						} else {
 							$whereClauseParts[] = trim($configuration['foreign_table_field']) . ' = \'pages\'';
