@@ -287,7 +287,7 @@ class LoginController {
 			'LOGINBOX_IMAGE' => $this->makeLoginBoxImage(),
 			'FORM' => $content,
 			'NEWS' => $this->makeLoginNews(),
-			'COPYRIGHT' => \TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice(),
+			'COPYRIGHT' => \TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']),
 			'CSS_CLASSES' => !empty($additionalCssClasses) ? 'class="' . implode(' ', $additionalCssClasses) . '"' : '',
 			'CSS_OPENIDCLASS' => 't3-login-openid-' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('openid') ? 'enabled' : 'disabled'),
 			// The labels will be replaced later on, thus the other parts above
