@@ -29,6 +29,10 @@ namespace TYPO3\CMS\Install;
 /**
  * Encapsulate install tool specific bootstrap methods.
  *
+ * This script is internal code and subject to change.
+ * DO NOT use it in own code, or be prepared your code might
+ * break in future core versions.
+ *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class InstallBootstrap {
@@ -38,6 +42,7 @@ class InstallBootstrap {
 	 * or exit the script if conditions to access the install tool are not met.
 	 *
 	 * @return void
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	static public function checkEnabledInstallToolOrDie() {
 		$quickstartFile = PATH_site . 'typo3conf/FIRST_INSTALL';

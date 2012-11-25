@@ -26,11 +26,11 @@ namespace TYPO3\CMS\Core\Core;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Class to encapsulate base setup of bootstrap.
  *
- * This class contains all code that must be executed by every
- * entry script without exceptions.
+ * This class contains all code that must be executed by every entry script.
  *
  * It sets up all basic paths, constants, global variables and checks
  * the basic environment TYPO3 runs in.
@@ -41,12 +41,18 @@ namespace TYPO3\CMS\Core\Core;
  *
  * The script aborts execution with an error message if
  * some part fails or conditions are not met.
+ *
+ * This script is internal code and subject to change.
+ * DO NOT use it in own code, or be prepared your code might
+ * break in future versions of the core.
  */
 class SystemEnvironmentBuilder {
 
 	/**
 	 * Run base setup.
+	 * This entry method is used in all scopes (FE, BE, eid, ajax, ...)
 	 *
+	 * @internal This method should not be used by 3rd party code. It will change without further notice.
 	 * @param string $relativePathPart Relative path of the entry script back to document root
 	 * @return void
 	 */
