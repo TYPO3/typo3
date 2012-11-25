@@ -4199,6 +4199,11 @@ Connection: close
 	 * @return boolean
 	 */
 	static protected function classHasImplementation($className) {
+		// If we are early in the bootstrap, the configuration might not yet be present
+		if (!isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'])) {
+			return FALSE;
+		}
+
 		return array_key_exists($className, $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'])
 				&& is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className])
 				&& !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className]['className']);

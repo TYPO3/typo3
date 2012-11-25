@@ -133,7 +133,12 @@ class Bootstrap {
 	 */
 	public function populateLocalConfiguration() {
 		try {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->exportConfiguration();
+			// We need an early instance of the configuration manager.
+			// Since makeInstance relies on the object configuration, we create it here with new instead
+			// and register it as singleton instance for later use.
+			$configuarationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager();
+			\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', $configuarationManager);
+			$configuarationManager->exportConfiguration();
 		} catch (\Exception $e) {
 			die($e->getMessage());
 		}
