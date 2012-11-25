@@ -80,7 +80,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	/**
 	 * @todo Define visibility
 	 */
-	public $procOptions = '';
+	public $procOptions = array();
 
 	// Internal, dynamic
 	// Run-away brake for recursive calls.
@@ -209,7 +209,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	public function RTE_transform($value, $specConf, $direction = 'rte', $thisConfig = array()) {
 		// Init:
 		$this->tsConfig = $thisConfig;
-		$this->procOptions = $thisConfig['proc.'];
+		$this->procOptions = (array) $thisConfig['proc.'];
 		$this->preserveTags = strtoupper(implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->procOptions['preserveTags'])));
 		// dynamic configuration of blockElementList
 		if ($this->procOptions['blockElementList']) {
