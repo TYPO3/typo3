@@ -123,7 +123,7 @@ class RootlineUtility {
 		$this->pageUid = intval($uid);
 		$this->mountPointParameter = trim($mountPointParameter);
 		if ($context === NULL) {
-			if ($GLOBALS['TSFE']->sys_page !== NULL) {
+			if (isset($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']->sys_page)) {
 				$this->pageContext = $GLOBALS['TSFE']->sys_page;
 			} else {
 				$this->pageContext = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
@@ -251,7 +251,7 @@ class RootlineUtility {
 						}
 					}
 					if (isset($configuration['foreign_table_field'])) {
-						if (intval($pageRecord['sys_language_uid']) > 0) {
+						if (intval($this->languageUid) > 0) {
 							$whereClauseParts[] = trim($configuration['foreign_table_field']) . ' = \'pages_language_overlay\'';
 						} else {
 							$whereClauseParts[] = trim($configuration['foreign_table_field']) . ' = \'pages\'';
