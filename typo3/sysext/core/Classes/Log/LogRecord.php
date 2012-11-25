@@ -108,7 +108,12 @@ class LogRecord implements \ArrayAccess {
 	 * @param array $data Additional data
 	 */
 	public function __construct($component = '', $level, $message, array $data = array()) {
-		$this->setRequestId(\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getRequestId())->setCreated(microtime(TRUE))->setComponent($component)->setLevel($level)->setMessage($message)->setData($data);
+		$this->setRequestId(\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getRequestId())
+			->setCreated(microtime(TRUE))
+			->setComponent($component)
+			->setLevel($level)
+			->setMessage($message)
+			->setData($data);
 	}
 
 	/**

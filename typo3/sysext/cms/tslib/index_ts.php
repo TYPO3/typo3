@@ -34,37 +34,14 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-// Constants defined
+
 define('TYPO3_MODE', 'FE');
-// Prevent any output until AJAX/compression is initialized to stop
-// AJAX/compression data corruption
-ob_start();
 
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-	->populateLocalConfiguration()
-	->registerExtDirectComponents()
-	->initializeCachingFramework()
-	->registerAutoloader()
-	->checkUtf8DatabaseSettingsOrDie()
-	->transferDeprecatedCurlSettings()
-	->setCacheHashOptions()
-	->enforceCorrectProxyAuthScheme()
-	->setDefaultTimezone()
-	->initializeL10nLocales()
-	->configureImageProcessingOptions()
-	->convertPageNotFoundHandlingToBoolean()
-	->registerGlobalDebugFunctions()
-	->registerSwiftMailer()
-	->configureExceptionHandling()
-	->setMemoryLimit()
-	->defineTypo3RequestTypes()
-	->populateTypo3LoadedExtGlobal(TRUE)
-	->loadAdditionalConfigurationFromExtensions(TRUE)
-	->deprecationLogForOldExtCacheSetting()
-	->initializeExceptionHandling()
-	->setFinalCachingFrameworkCacheConfiguration()
-	->defineLoggingAndExceptionConstants()
-	->unsetReservedGlobalVariables();
+	->startOutputBuffering()
+	->loadConfigurationAndInitialize()
+	->loadTypo3LoadedExtAndExtLocalconf(TRUE)
+	->applyAdditionalConfigurationSettings();
 
 if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 	die('<strong>Error:</strong> The main frontend extension "cms" was not loaded. Enable it in the extension manager in the backend.');

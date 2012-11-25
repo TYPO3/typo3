@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
+*  (c) 1999-2012 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,14 +26,13 @@
 ***************************************************************/
 
 /**
- * This is the MAIN DOCUMENT of the TypoScript driven standard front-end (from the "cms" extension)
- * Basically this is the "index.php" script which all requests for TYPO3 delivered pages goes to in the frontend (the website)
+ * This is the MAIN DOCUMENT of the TypoScript driven standard frontend.
+ * Basically this is the "index.php" script which all requests for TYPO3
+ * delivered pages goes to in the frontend (the website)
  *
  * @author René Fritz <r.fritz@colorcube.de>
  */
 
-	// We use require instead of require_once here so we get a fatal error if classes/Bootstrap.php is accidentally included twice
-	// (which would indicate a clear bug).
 require 'typo3/sysext/core/Classes/Core/Bootstrap.php';
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->baseSetup('');
 
