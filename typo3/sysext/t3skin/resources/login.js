@@ -121,8 +121,6 @@ TYPO3BackendLogin = {
 	 * Change to Interface for OpenId login and save the selection to a cookie
 	 */
 	switchToOpenId: function() {
-		$('t3-login-label-username').hide();
-		$('t3-login-label-openId').show();
 		$('t3-login-openIdLogo').show();
 
 		$('t3-login-form-footer-default').hide();
@@ -142,8 +140,6 @@ TYPO3BackendLogin = {
 	 * Change to Interface for default login and save the selection to a cookie
 	 */
 	switchToDefault: function() {
-		$('t3-login-label-username').show();
-		$('t3-login-label-openId').hide();
 		$('t3-login-openIdLogo').hide();
 
 		$('t3-login-form-footer-default').show();

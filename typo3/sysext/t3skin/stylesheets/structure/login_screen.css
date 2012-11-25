@@ -17,23 +17,18 @@ body#typo3-index-php #t3-login-form-outer {
 
 body#typo3-index-php #t3-login-form {
 	margin: 30px 16% 10px;
-	width: 456px;
+	width: 430px;
 }
 
 body#typo3-index-php .t3-headline {
-	height: auto !important;
-	height: 24px;
 	margin: 0;
-	min-height: 24px;
-	padding-bottom: 2px;
 	width: auto;
 }
 
 body#typo3-index-php .t3-headline h2 {
-	float: left;
 	margin: 0;
 	padding: 0 0 0 40px;
-	vertical-align: middle;
+	line-height: 32px;
 }
 
 body#typo3-index-php #t3-login-process h2 {
@@ -45,18 +40,8 @@ body#typo3-index-php #t3-login-process h2 {
 }
 
 body#typo3-index-php .t3-headline .t3-login-news-headline {
-	float: left;
-	margin: 0;
 	padding: 0 0 0 40px;
 	vertical-align: middle;
-}
-
-body#typo3-index-php .t3-headline:after {
-	clear: both;
-	content: ".";
-	display: block;
-	height: 0;
-	visibility: hidden;
 }
 
 body#typo3-index-php .t3-icons {
@@ -64,21 +49,17 @@ body#typo3-index-php .t3-icons {
 	padding: 3px 5px 0 0;
 }
 
-body#typo3-index-php .t3-login-username {
-	margin-top: 15px;
-}
-
 body#typo3-index-php .t3-login-field {
-	height: 21px;
-	margin: 5px 0 0;
+	margin: 0 0 6px;
 	padding: 0;
 	position: relative;
+	width: 100%;
 }
 
 body#typo3-index-php .t3-login-field .t3-login-clearInputField {
-	left: 280px;
 	position: absolute;
-	top: 4px;
+	top: 13px;
+	right: 11px;
 }
 
 body#typo3-index-php .t3-login-field .t3-login-alert-capslock {
@@ -87,26 +68,10 @@ body#typo3-index-php .t3-login-field .t3-login-alert-capslock {
 	top: 2px;
 }
 
-body#typo3-index-php .t3-login-field label {
-	float: left;
-	padding-right: 10px;
-	width: 90px;
-}
-
 body#typo3-index-php .t3-login-field input {
-	height: 18px;
 	margin: 0;
-	padding: 2px 23px 0 5px;
-	width: 168px;
-}
-
-body#typo3-index-php #t3-login-form-fields {
-	margin: 0;
-	padding: 14px 0 5px 30px;
-}
-
-body#typo3-index-php #t3-login-password-section {
-	clear: left;
+	padding: 12px 25px 12px 10px;
+	width: 315px;
 }
 
 body#typo3-index-php #t3-interfaceselector {
@@ -117,15 +82,8 @@ body#typo3-index-php #t3-interfaceselector option {
 	height: 19px;
 }
 
-body#typo3-index-php .t3-login-form-footer {
-	margin: 10px 0 0;
-	vertical-align: middle;
-}
-
 body#typo3-index-php #t3-login-openIdLogo {
 	position: absolute;
-	right: 0;
-	top: -4px;
 }
 
 body#typo3-index-php .t3-login-openid-disabled .t3-login-form-footer,
@@ -133,9 +91,14 @@ body#typo3-index-php .t3-login-openid-disabled #t3-login-openIdLogo {
 	display: none;
 }
 
-body#typo3-index-php .t3-login-submit {
-	margin: 15px 0 0 100px;
-	padding: 3px 16px;
+body#typo3-index-php .t3-login-field input.t3-login-submit {
+	display: block;
+	float: right;
+	clear: both;
+	width: auto;
+
+	height: 28px;
+	padding: 0 50px;
 }
 
 body#typo3-index-php .t3-login-error {
@@ -166,8 +129,8 @@ body#typo3-index-php div#t3-login-image {
 }
 
 body#typo3-index-php #t3-footer {
-	margin: 40px 16% 10px;
-	width: 456px;
+	margin: 30px 16% 10px;
+	width: 430px;
 }
 
 body#typo3-index-php #t3-meta-links {
@@ -188,7 +151,6 @@ body#typo3-index-php #t3-login-news-outer .t3-login-box-body {
 
 body#typo3-index-php #t3-login-news-outer #t3-login-news {
 	clear: both;
-	margin: 0 30px;
 }
 
 body#typo3-index-php #t3-login-news-outer #t3-login-news .t3-login-news-item {
@@ -220,7 +182,8 @@ body#typo3-index-php .t3-login-logout-form div.t3-login-label {
  * @section erros/warnings
  */
 .t3-login-alert {
-	padding: 15px;
+	padding: 12px;
+	margin-bottom: 6px;
 }
 
 .t3-login-alert h2 {
@@ -238,7 +201,7 @@ body#typo3-index-php .t3-login-logout-form div.t3-login-label {
  */
 
 .t3-login-box-body {
-	padding: 10px;
+	padding: 25px 40px 20px 40px;
 }
 
 .t3-login-box-shadow {

@@ -6,28 +6,22 @@
 
  */
 body#typo3-index-php {
-	background: #4f4f4f;
-	background-attachment: fixed;
+	background-color: #494949;
 	background-image: url('../../images/login/background.png');
+	background-image: linear-gradient(center top, #2a2a2a 0%, #494949 100%);
+	background-image: -moz-linear-gradient(center top, #2a2a2a 0%, #494949 100%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #2a2a2a), color-stop(1, #494949));
 	background-repeat: repeat-x;
 }
 
-body#typo3-index-php #t3-login-form {
-	color: #606060;
-	font-size: 11px;
-	text-align: left;
-}
-
 body#typo3-index-php .t3-headline {
-	background: #585858;
+	background-color: #4f4f4f;
 }
 
 body#typo3-index-php .t3-headline h2 {
-	background: transparent no-repeat 10px 5px;
-	background-image: url('../../icons/login-icon-key.gif');
+	background: transparent url('../../icons/login-icon-key.png') no-repeat 12px 8px;
 	color: #fff;
-	font-size: 11px !important;
-	line-height: 24px;
+	font-size: 12px;
 }
 
 body#typo3-index-php #t3-login-process {
@@ -46,23 +40,11 @@ body#typo3-index-php .t3-headline .t3-login-news-headline {
 	line-height: 24px;
 }
 
-body#typo3-index-php .t3-login-field {
-	line-height: 18px;
-}
-
 body#typo3-index-php .t3-login-field input {
 	background: #fff;
-	border: 1px solid #7c7c7c;
-	border-radius: 1px;
-	-moz-border-radius: 1px;
-	box-shadow: 0 1px 1px #cbcbcb inset;
-	-moz-box-shadow: 0 1px 1px #cbcbcb inset;
-	-webkit-box-shadow: 0 1px 1px #cbcbcb inset;
-	color: #000;
-	font-size: 11px;
-	line-height: 19px;
-	-webkit-appearance: textfield;
-	
+	border: none;
+	color: #606060;
+	font-size: 12px;
 }
 
 body#typo3-index-php #t3-login-form-fields {
@@ -98,8 +80,17 @@ body#typo3-index-php dl#t3-login-news a:hover {
 	color: #333;
 }
 
-body#typo3-index-php .t3-login-submit {
-	text-align: left;
+body#typo3-index-php input.t3-login-submit {
+	background-color: #ff8600;
+	background-image: url('../../images/login/login-submit-background.gif');
+	background-image: linear-gradient(center top, #fe9500 0%, #cf6610 100%);
+	background-image: -moz-linear-gradient(center top, #fe9500 0%, #cf6610 100%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #fe9500), color-stop(1, #cf6610));
+	background-repeat: repeat-x;
+	border-top: 1px solid #ffb955;
+	border-left: 1px solid #ffb955;
+	border-right: 1px solid #ffb955;
+	color: #fff;
 }
 
 body#typo3-index-php div#t3-copyright-notice {
@@ -168,7 +159,6 @@ body#typo3-index-php .t3-login-logout-form div.t3-login-label {
 .t3-login-alert h2 {
 	background: none;
 	font-size: 14px;
-	line-height: 18px;
 }
 
 .t3-login-alert p {
