@@ -2582,14 +2582,10 @@ class TypoScriptFrontendController {
 		}
 		// Updating content of the two rootLines IF the language key is set!
 		if ($this->sys_language_uid && is_array($this->tmpl->rootLine)) {
-			foreach ($this->tmpl->rootLine as $rLk => $value) {
-				$this->tmpl->rootLine[$rLk] = $this->sys_page->getPageOverlay($this->tmpl->rootLine[$rLk]);
-			}
+			$this->tmpl->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
 		}
 		if ($this->sys_language_uid && is_array($this->rootLine)) {
-			foreach ($this->rootLine as $rLk => $value) {
-				$this->rootLine[$rLk] = $this->sys_page->getPageOverlay($this->rootLine[$rLk]);
-			}
+			$this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
 		}
 		// Finding the ISO code:
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables') && $this->sys_language_content) {
