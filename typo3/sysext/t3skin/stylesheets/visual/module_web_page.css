@@ -138,6 +138,11 @@ td.t3-gridCell-unassigned {
 	background-color: #e5e5e5;
 }
 
+.t3-gridContainer .t3-page-ce-wrapper .t3-row-header {
+	background-image: none;
+	background-color: #cacaca;
+}
+
 td.t3-gridCell-restricted div.t3-row-header,
 td.t3-gridCell-unassigned div.t3-row-header {
 	-moz-opacity: 0.4;
