@@ -29,6 +29,10 @@ namespace TYPO3\CMS\Core\Core;
 /**
  * This class encapsulates cli specific bootstrap methods.
  *
+ * This script is internal code and subject to change.
+ * DO NOT use it in own code, or be prepared your code might
+ * break in future core versions.
+ *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class CliBootstrap {
@@ -37,6 +41,7 @@ class CliBootstrap {
 	 * Check the script is called from a cli environment.
 	 *
 	 * @return void
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	static public function checkEnvironmentOrDie() {
 		if (substr(php_sapi_name(), 0, 3) === 'cgi') {
@@ -52,6 +57,7 @@ class CliBootstrap {
 	 * If it is not set or not valid, the script exits with an error message.
 	 *
 	 * @return void
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	static public function initializeCliKeyOrDie() {
 		if (!isset($_SERVER['argv'][1]) || !is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$_SERVER['argv'][1]])) {

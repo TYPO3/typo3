@@ -24,47 +24,27 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Starter-script for install screen
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-ob_start();
 define('TYPO3_MODE', 'BE');
 define('TYPO3_enterInstallScript', '1');
 
-	// We use require instead of require_once here so we get a fatal error if classes/Bootstrap.php is accidentally included twice
-	// (which would indicate a clear bug).
 require '../sysext/core/Classes/Core/Bootstrap.php';
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->baseSetup('typo3/install/');
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
+	->baseSetup('typo3/install/');
 
 require '../sysext/install/Classes/InstallBootstrap.php';
 \TYPO3\CMS\Install\InstallBootstrap::checkEnabledInstallToolOrDie();
+
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-	->populateLocalConfiguration()
-	->registerExtDirectComponents()
-	->initializeCachingFramework()
-	->registerAutoloader()
-	->checkUtf8DatabaseSettingsOrDie()
-	->transferDeprecatedCurlSettings()
-	->setCacheHashOptions()
-	->enforceCorrectProxyAuthScheme()
-	->setDefaultTimezone()
-	->initializeL10nLocales()
-	->configureImageProcessingOptions()
-	->convertPageNotFoundHandlingToBoolean()
-	->registerGlobalDebugFunctions()
-	->registerSwiftMailer()
-	->configureExceptionHandling()
-	->setMemoryLimit()
-	->defineTypo3RequestTypes()
-	->populateTypo3LoadedExtGlobal(FALSE)
-	->loadAdditionalConfigurationFromExtensions(FALSE)
-	->deprecationLogForOldExtCacheSetting()
-	->initializeExceptionHandling()
-	->setFinalCachingFrameworkCacheConfiguration()
-	->defineLoggingAndExceptionConstants()
-	->unsetReservedGlobalVariables()
+	->startOutputBuffering()
+	->loadConfigurationAndInitialize()
+	->loadTypo3LoadedExtAndExtLocalconf(FALSE)
+	->applyAdditionalConfigurationSettings()
 	->initializeTypo3DbGlobal(FALSE)
 	->checkLockedBackendAndRedirectOrDie()
 	->checkBackendIpOrDie()
