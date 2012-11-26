@@ -422,6 +422,12 @@ TCEforms Inline-Relational-Record-Editing
     	color-stop(1, rgb(192,192,192))
     );
 }
+
+.t3-form-field-container-inline-hidden,
+.t3-form-field-container-inline-placeHolder {
+	opacity:0.3;
+}
+
 .t3-form-field-header-inline table {
     vertical-align:top;
 }

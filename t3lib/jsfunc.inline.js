@@ -52,6 +52,11 @@ var inline = {
 		this.noTitleString = value;
 	},
 	toggleEvent: function(event) {
+		var triggerElement = TYPO3.jQuery(event.target);
+		if (triggerElement.parents('.t3-form-field-header-inline-ctrl').length == 1) {
+			return;
+		}
+
 		var recordHeader = TYPO3.jQuery(this);
 		inline.expandCollapseRecord(
 			recordHeader.attr('id').replace('_header', ''),
@@ -815,6 +820,8 @@ var inline = {
 		var valueObj = document.getElementsByName(elName);
 		var icon = $(objectId + '_disabled');
 
+		var $container = TYPO3.jQuery('#' + objectId + '_div');
+
 			// It might be the case that there's no hidden field
 		if (formObj.length && valueObj.length) {
 			formObj[0].click();
@@ -826,9 +833,11 @@ var inline = {
 			if (icon.hasClassName('t3-icon-edit-hide')) {
 				icon.removeClassName ('t3-icon-edit-hide');
 				icon.addClassName('t3-icon-edit-unhide');
+				$container.addClass('t3-form-field-container-inline-hidden');
 			} else {
 				icon.removeClassName ('t3-icon-edit-unhide');
 				icon.addClassName('t3-icon-edit-hide');
+				$container.removeClass('t3-form-field-container-inline-hidden');
 			}
 		}
 

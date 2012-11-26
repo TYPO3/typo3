@@ -404,13 +404,18 @@ TCEforms Inline-Relational-Record-Editing
 	width:100%;
 }
 
-.t3-form-field-container-inline-collapsed  div.t3-form-field-record-inline {
+.t3-form-field-container-inline-placeHolder div.t3-form-field-record-inline,
+.t3-form-field-container-inline-collapsed div.t3-form-field-record-inline {
 	display:none !important;
 }
 
 .t3-form-field-header-inline {
 	padding: 6px 16px;
 	position:relative;
+}
+
+.t3-form-field-container-inline-placeHolder .t3-form-field-header-inline > span {
+	display:none;
 }
 
 .t3-form-field-header-inline > span {
@@ -439,18 +444,29 @@ div.t3-form-field-header-inline td {
 }
 
 .t3-form-field-header-inline td.t3-form-field-header-inline-ctrl > * {
-	display:none;
+	opacity:0;
 }
 
 .t3-form-field-header-inline:hover td.t3-form-field-header-inline-ctrl > * {
-	display:inline-block;
+	opacity:1;
 }
 
 .t3-form-field-header-inline td.t3-form-field-header-inline-ctrl > span.sortableHandle {
 	margin-left:16px;
+	opacity:1;
 	display:inline-block;
 }
 
+.t3-form-field-container-inline-placeHolder td.t3-form-field-header-inline-ctrl > a {
+	margin-right:32px;
+	display:inline-block;
+	opacity:1;
+}
+
+.t3-form-field-container-inline-hidden td.t3-form-field-header-inline-ctrl > a.hiddenHandle {
+	display:inline-block;
+	opacity:1;
+}
 .t3-form-field-header-inline td.t3-form-field-header-inline-summary {
 	text-align:left;
 }
