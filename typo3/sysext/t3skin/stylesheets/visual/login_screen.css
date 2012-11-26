@@ -93,6 +93,7 @@
 #typo3-index-php div#t3-copyright-notice {
 	border-top: 1px solid #565655;
 	font-weight: normal;
+	font-size: 10px;
 	color: #797878;
 }
 
@@ -111,6 +112,7 @@
 
 #typo3-index-php #t3-meta-links {
 	color: #797878;
+	font-size: 10px;
 }
 
 #typo3-index-php #t3-meta-links a {
