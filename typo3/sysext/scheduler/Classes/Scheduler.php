@@ -190,7 +190,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		/** @var $registry \TYPO3\CMS\Core\Registry */
 		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
 		$runInformation = array('start' => $GLOBALS['EXEC_TIME'], 'end' => time(), 'type' => $type);
-		$registry->set('tx_scheduler', 'lastRun', $runInformation);
+		$registry->set('TYPO3\\CMS\\Scheduler\\Scheduler', 'lastRun', $runInformation);
 	}
 
 	/**
