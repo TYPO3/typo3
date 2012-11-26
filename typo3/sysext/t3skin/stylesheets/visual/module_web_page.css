@@ -134,13 +134,27 @@ td.t3-gridCell-restricted {
 	background-color: #e8e0e0;
 }
 
-td.t3-gridCell-content.t3-gridCell-unassigned {
-	background: url('../../images/backgrounds/layout-not-assigned.png') repeat;
+td.t3-gridCell-unassigned {
+	background-color: #e5e5e5;
 }
 
 .t3-gridContainer .t3-page-ce-wrapper .t3-row-header {
 	background-image: none;
 	background-color: #cacaca;
+}
+
+td.t3-gridCell-restricted div.t3-row-header,
+td.t3-gridCell-unassigned div.t3-row-header {
+	-moz-opacity: 0.4;
+	opacity: .40;
+	filter: alpha(opacity = 40);
+}
+
+td.t3-gridCell-restricted div.t3-row-header div,
+td.t3-gridCell-unassigned div.t3-row-header div {
+	-moz-opacity: 0.6;
+	opacity: .60;
+	filter: alpha(opacity = 60);
 }
 
 .t3-page-ce .t3-row-header .ce-icons,
