@@ -582,18 +582,16 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				$languageSelector = $this->languageSelector($id);
 				// Reset out - we will make new content here:
 				$out = '';
-				// Separator between language columns (black thin line)
-				$midSep = '
-						<td><img src="clear.gif" width="4" height="1" alt="" /></td>
-						<td class="t3-page-border"><img src="clear.gif" width="1" height="1" alt="" /></td>
-						<td><img src="clear.gif" width="4" height="1" alt="" /></td>';
 				// Traverse languages found on the page and build up the table displaying them side by side:
 				$cCont = array();
 				$sCont = array();
 				foreach ($langListArr as $lP) {
 					// Header:
 					$cCont[$lP] = '
-						<td valign="top" align="center" class="bgColor6"><strong>' . htmlspecialchars($this->tt_contentConfig['languageCols'][$lP]) . '</strong></td>';
+						<td valign="top" class="t3-page-lang-column">
+							<h3>' . htmlspecialchars($this->tt_contentConfig['languageCols'][$lP]) . '</h3>
+						</td>';
+
 					// "View page" icon is added:
 					$viewLink = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($this->id, $this->backPath, \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($this->id), '', '', ('&L=' . $lP))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 					// Language overlay page header:
@@ -606,17 +604,17 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						$lPLabel = $viewLink;
 					}
 					$sCont[$lP] = '
-						<td nowrap="nowrap">' . $lPLabel . '</td>';
+						<td nowrap="nowrap" class="t3-page-lang-column t3-page-lang-label">' . $lPLabel . '</td>';
 				}
 				// Add headers:
-				$out .= '<tr>' . implode($midSep, $cCont) . '</tr>';
-				$out .= '<tr class="bgColor5">' . implode($midSep, $sCont) . '</tr>';
+				$out .= '<tr>' . implode($cCont) . '</tr>';
+				$out .= '<tr>' . implode($sCont) . '</tr>';
 				// Traverse previously built content for the columns:
 				foreach ($languageColumn as $cKey => $cCont) {
 					$out .= '
 					<tr>
-						<td valign="top" class="t3-gridCell">' . implode(('</td>' . $midSep . '
-						<td valign="top">'), $cCont) . '</td>
+						<td valign="top" class="t3-gridCell t3-page-lang-column"">' . implode(('</td>' . '
+						<td valign="top" class="t3-gridCell t3-page-lang-column">'), $cCont) . '</td>
 					</tr>';
 					if ($this->defLangBinding) {
 						// "defLangBinding" mode
@@ -627,8 +625,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							}
 							$out .= '
 							<tr>
-								<td valign="top">' . implode(('</td>' . $midSep . '
-								<td valign="top">'), $cCont) . '</td>
+								<td valign="top" class="t3-page-lang-column">' . implode(('</td>' . '
+								<td valign="top" class="t3-page-lang-column">'), $cCont) . '</td>
 							</tr>';
 						}
 						// Create spacer:
@@ -638,16 +636,18 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						}
 						$out .= '
 						<tr>
-							<td valign="top">' . implode(('</td>' . $midSep . '
-							<td valign="top">'), $cCont) . '</td>
+							<td valign="top" class="t3-page-lang-column">' . implode(('</td>' . '
+							<td valign="top" class="t3-page-lang-column">'), $cCont) . '</td>
 						</tr>';
 					}
 				}
 				// Finally, wrap it all in a table and add the language selector on top of it:
 				$out = $languageSelector . '
-					<table cellpadding="0" cellspacing="0" class="t3-page-langMode">
-						' . $out . '
-					</table>';
+					<div class="t3-lang-gridContainer">
+						<table cellpadding="0" cellspacing="0" class="t3-page-langMode">
+							' . $out . '
+						</table>
+					</div>';
 				// CSH:
 				$out .= \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem($this->descrTable, 'language_list', $GLOBALS['BACK_PATH']);
 			}
@@ -1942,6 +1942,5 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	}
 
 }
-
 
 ?>
