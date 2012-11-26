@@ -263,7 +263,7 @@ class AbstractMenuContentObject {
 				$this->doktypeExcludeList = $GLOBALS['TYPO3_DB']->cleanIntList($this->conf['excludeDoktypes']);
 			}
 			// EntryLevel
-			$this->entryLevel = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getKey(isset($conf['entryLevel.']) ? $this->parent_cObj->stdWrap($conf['entryLevel'], $conf['entryLevel.']) : $conf['entryLevel'], $this->tmpl->rootLine);
+			$this->entryLevel = $this->parent_cObj->getKey(isset($conf['entryLevel.']) ? $this->parent_cObj->stdWrap($conf['entryLevel'], $conf['entryLevel.']) : $conf['entryLevel'], $this->tmpl->rootLine);
 			// Set parent page: If $id not stated with start() then the base-id will be found from rootLine[$this->entryLevel]
 			// Called as the next level in a menu. It is assumed that $this->MP_array is set from parent menu.
 			if ($id) {
@@ -638,7 +638,7 @@ class AbstractMenuContentObject {
 						$extraWhere .= ' AND pages.no_search=0';
 					}
 					// Start point
-					$eLevel = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getKey(isset($this->conf['special.']['entryLevel.']) ? $this->parent_cObj->stdWrap($this->conf['special.']['entryLevel'], $this->conf['special.']['entryLevel.']) : $this->conf['special.']['entryLevel'], $this->tmpl->rootLine);
+					$eLevel = $this->parent_cObj->getKey(isset($this->conf['special.']['entryLevel.']) ? $this->parent_cObj->stdWrap($this->conf['special.']['entryLevel'], $this->conf['special.']['entryLevel.']) : $this->conf['special.']['entryLevel'], $this->tmpl->rootLine);
 					$startUid = intval($this->tmpl->rootLine[$eLevel]['uid']);
 					// Which field is for keywords
 					$kfield = 'keywords';
@@ -672,8 +672,8 @@ class AbstractMenuContentObject {
 					if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($begin_end[1])) {
 						$begin_end[1] = -1;
 					}
-					$beginKey = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getKey($begin_end[0], $this->tmpl->rootLine);
-					$endKey = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getKey($begin_end[1], $this->tmpl->rootLine);
+					$beginKey = $this->parent_cObj->getKey($begin_end[0], $this->tmpl->rootLine);
+					$endKey = $this->parent_cObj->getKey($begin_end[1], $this->tmpl->rootLine);
 					if ($endKey < $beginKey) {
 						$endKey = $beginKey;
 					}
