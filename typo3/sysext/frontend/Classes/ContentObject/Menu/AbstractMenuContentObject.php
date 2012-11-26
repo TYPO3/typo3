@@ -535,7 +535,7 @@ class AbstractMenuContentObject {
 					}
 					// Max number of items
 					$limit = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['special.']['limit'], 0, 100);
-					$maxAge = intval(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::calc($this->conf['special.']['maxAge']));
+					$maxAge = intval($this->parent_cObj->calc($this->conf['special.']['maxAge']));
 					if (!$limit) {
 						$limit = 10;
 					}
@@ -834,7 +834,7 @@ class AbstractMenuContentObject {
 			$c_b = 0;
 			$minItems = intval($this->mconf['minItems'] ? $this->mconf['minItems'] : $this->conf['minItems']);
 			$maxItems = intval($this->mconf['maxItems'] ? $this->mconf['maxItems'] : $this->conf['maxItems']);
-			$begin = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::calc($this->mconf['begin'] ? $this->mconf['begin'] : $this->conf['begin']);
+			$begin = $this->parent_cObj->calc($this->mconf['begin'] ? $this->mconf['begin'] : $this->conf['begin']);
 			$minItemsConf = isset($this->mconf['minItems.']) ? $this->mconf['minItems.'] : (isset($this->conf['minItems.']) ? $this->conf['minItems.'] : NULL);
 			$minItems = is_array($minItemsConf) ? $this->parent_cObj->stdWrap($minItems, $minItemsConf) : $minItems;
 			$maxItemsConf = isset($this->mconf['maxItems.']) ? $this->mconf['maxItems.'] : (isset($this->conf['maxItems.']) ? $this->conf['maxItems.'] : NULL);

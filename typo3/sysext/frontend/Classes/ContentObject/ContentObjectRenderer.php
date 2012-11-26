@@ -4312,7 +4312,7 @@ class ContentObjectRenderer {
 	public function calcIntExplode($delim, $string) {
 		$temp = explode($delim, $string);
 		foreach ($temp as $key => $val) {
-			$temp[$key] = intval(self::calc($val));
+			$temp[$key] = intval($this->calc($val));
 		}
 		return $temp;
 	}
