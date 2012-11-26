@@ -196,7 +196,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if (isset($inData['pagetree']['id'])) {
 			// Based on click-expandable tree
 			if ($inData['pagetree']['levels'] == -1) {
-				$pagetree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_impexp_localPageTree');
+				$pagetree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\LocalPageTree');
 				$tree = $pagetree->ext_tree($inData['pagetree']['id'], $this->filterPageIds($this->export->excludeMap));
 				$this->treeHTML = $pagetree->printTree($tree);
 				$idH = $pagetree->buffer_idH;
@@ -229,7 +229,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					if (count($tree->buffer_idH)) {
 						$idH[$pid]['subrow'] = $tree->buffer_idH;
 					}
-					$pagetree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\ImportExport_localPageTree');
+					$pagetree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\LocalPageTree');
 					$this->treeHTML = $pagetree->printTree($tree->tree);
 				}
 			}
