@@ -3,7 +3,13 @@ Web > Page
 
 - - - - - - - - - - - - - - - - - - - - - */
 
-td.t3-page-column {
+.t3-gridContainer,
+.t3-lang-gridContainer {
+	margin: 0 -12px;
+}
+
+td.t3-page-column,
+td.t3-page-lang-column {
 	min-width: 150px;
 	max-width: 300px;
 	padding: 0 12px;
@@ -14,6 +20,10 @@ td.t3-page-column {
 	padding-left: 10px;
 	padding-right: 20px;
 	position: relative;
+}
+
+td.t3-page-lang-column.t3-page-lang-label {
+	padding-bottom: 12px;
 }
 
 .t3-page-colHeader a {
