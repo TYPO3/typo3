@@ -81,11 +81,11 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 			}
 			$minDim = $this->mconf['min'];
 			if ($minDim) {
-				$minDim = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::calcIntExplode(',', $minDim . ',');
+				$minDim = $this->parent_cObj->calcIntExplode(',', $minDim . ',');
 			}
 			$maxDim = $this->mconf['max'];
 			if ($maxDim) {
-				$maxDim = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::calcIntExplode(',', $maxDim . ',');
+				$maxDim = $this->parent_cObj->calcIntExplode(',', $maxDim . ',');
 			}
 			if ($minDim) {
 				$conf[$items] = $conf[$items - 1];
