@@ -483,7 +483,7 @@ class AbstractMenuContentObject {
 					$loadDB = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 					$loadDB->setFetchAllFields(TRUE);
 					$loadDB->start($value, 'pages');
-					$loadDB->additionalWhere['pages'] = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::enableFields('pages');
+					$loadDB->additionalWhere['pages'] = $this->parent_cObj->enableFields('pages');
 					$loadDB->getFromDB();
 					foreach ($loadDB->itemArray as $val) {
 						$MP = $this->tmpl->getFromMPmap($val['id']);
