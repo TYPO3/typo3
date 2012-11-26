@@ -6,7 +6,8 @@ Web > Page
 td.t3-page-column {
 	min-width: 150px;
 	max-width: 300px;
-	padding: 0 12px;
+	border-left: 12px solid #F8F8F8;
+	border-right: 12px solid #F8F8F8;
 }
 
 .t3-page-colHeader {
@@ -97,4 +98,12 @@ td.t3-gridCell div.t3-page-ce {
 
 .t3-page-ce.active .t3-page-ce-body {
 	margin: 0;
+}
+
+#ext-cms-layout-db-layout-php h2 {
+	margin-bottom: 0px;
+}
+td.t3-page-column.t3-gridCell .t3-page-colHeader {
+	padding-top: 36px;
+	background: #F8F8F8;
 }
