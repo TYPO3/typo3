@@ -162,6 +162,7 @@ class LoginController {
 		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadExtJS();
 		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadPrototype();
 		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadScriptaculous();
+		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->addJsFile('jsfunc.placeholder.js');
 		// Set JavaScript for creating a MD5 hash of the password:
 		$GLOBALS['TBE_TEMPLATE']->JScode .= $this->getJScode();
 		// Checking, if we should make a redirect.
