@@ -1204,6 +1204,7 @@ class tx_impexp {
 
 				// Now write to database:
 			$tce = $this->getNewTCE();
+			$tce->isImporting = TRUE;
 			$this->callHook('before_writeRecordsPages', array(
 				'tce' => &$tce,
 				'data' => &$this->import_data,
@@ -1301,6 +1302,7 @@ class tx_impexp {
 
 			// Now write to database:
 		$tce = $this->getNewTCE();
+		$tce->isImporting = TRUE;
 		$this->callHook('before_writeRecordsRecords', array(
 			'tce' => &$tce,
 			'data' => &$this->import_data,
@@ -1569,6 +1571,7 @@ class tx_impexp {
 		}
 		if (count($updateData))	{
 			$tce = $this->getNewTCE();
+			$tce->isImporting = TRUE;
 			$this->callHook('before_setRelation', array(
 				'tce' => &$tce,
 				'data' => &$updateData,
@@ -1693,6 +1696,7 @@ class tx_impexp {
 		}
 		if (count($updateData))	{
 			$tce = $this->getNewTCE();
+			$tce->isImporting = TRUE;
 			$this->callHook('before_setFlexFormRelations', array(
 				'tce' => &$tce,
 				'data' => &$updateData,
@@ -1836,6 +1840,7 @@ class tx_impexp {
 
 			// Now write to database:
 		$tce = $this->getNewTCE();
+		$tce->isImporting = TRUE;
 		$this->callHook('before_processSoftReferences', array(
 				'tce' => &$tce,
 				'data' => &$inData,
