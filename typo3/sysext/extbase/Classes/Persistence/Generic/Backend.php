@@ -643,12 +643,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		if ($columnMap->getRelationTablePageIdColumnName() !== NULL) {
 			$row[$columnMap->getRelationTablePageIdColumnName()] = $this->determineStoragePageIdForNewRecord();
 		}
-		$relationTableMatchFields = $columnMap->getRelationTableMatchFields();
-		if (count($relationTableMatchFields)) {
-			foreach ($relationTableMatchFields as $matchField => $matchValue) {
-				$row[$matchField] = $matchValue;
-			}
-		}
 		$relationTableInsertFields = $columnMap->getRelationTableInsertFields();
 		if (count($relationTableInsertFields)) {
 			foreach ($relationTableInsertFields as $insertField => $insertValue) {
