@@ -1474,7 +1474,7 @@ abstract class AbstractUserAuthentication {
 	 */
 	public function fetchUserRecord($dbUser, $username, $extraWhere = '') {
 		$user = FALSE;
-		$usernameClause = $username ? $dbUser['username_column'] . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($username, $dbUser['table']) : '';
+		$usernameClause = $username ? $dbUser['username_column'] . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($username, $dbUser['table']) : '1=1';
 		if ($username || $extraWhere) {
 			// Look up the user by the username and/or extraWhere:
 			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $dbUser['table'], $usernameClause . $dbUser['check_pid_clause'] . $dbUser['enable_clause'] . $extraWhere);
