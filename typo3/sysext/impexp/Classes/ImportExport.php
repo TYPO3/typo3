@@ -1160,6 +1160,7 @@ class ImportExport {
 			}
 			// Now write to database:
 			$tce = $this->getNewTCE();
+			$tce->isImporting = TRUE;
 			$this->callHook('before_writeRecordsPages', array(
 				'tce' => &$tce,
 				'data' => &$this->import_data
@@ -1258,6 +1259,7 @@ class ImportExport {
 		$tce->suggestedInsertUids = $this->suggestedInsertUids;
 		// Because all records are being submitted in their correct order with positive pid numbers - and so we should reverse submission order internally.
 		$tce->reverseOrder = 1;
+		$tce->isImporting = TRUE;
 		$tce->start($this->import_data, array());
 		$tce->process_datamap();
 		$this->callHook('after_writeRecordsRecords', array(
@@ -1508,6 +1510,7 @@ class ImportExport {
 		}
 		if (count($updateData)) {
 			$tce = $this->getNewTCE();
+			$tce->isImporting = TRUE;
 			$this->callHook('before_setRelation', array(
 				'tce' => &$tce,
 				'data' => &$updateData
@@ -1628,6 +1631,7 @@ class ImportExport {
 		}
 		if (count($updateData)) {
 			$tce = $this->getNewTCE();
+			$tce->isImporting = TRUE;
 			$this->callHook('before_setFlexFormRelations', array(
 				'tce' => &$tce,
 				'data' => &$updateData
@@ -1740,6 +1744,7 @@ class ImportExport {
 		}
 		// Now write to database:
 		$tce = $this->getNewTCE();
+		$tce->isImporting = TRUE;
 		$this->callHook('before_processSoftReferences', array(
 			'tce' => &$tce,
 			'data' => &$inData
