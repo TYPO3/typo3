@@ -58,6 +58,14 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 		't3editor',
 		'reports',
 		'scheduler',
+		'simulatestatic',
+	);
+
+	/**
+	 * @var array
+	 */
+	protected $extensionDetails = array(
+		'simulatestatic' => array('versionString' => '2.0.0'),
 	);
 
 	/**
@@ -123,7 +131,7 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 		$item = '
 			<li class="labelAfter">
 				<input type="checkbox" id="%1$s" name="%2$s[sysext][%1$s]" value="1" checked="checked" />
-				<label for="%1$s"><strong>%3$s [%1$s]</strong><br />%4$s</label>
+				<label for="%1$s"><strong>%2$s [%1$s]</strong></label>
 			</li>';
 		$items = array();
 
@@ -131,13 +139,10 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {
 				continue;
 			}
-			$extension = $this->getExtensionDetails($extensionKey);
 			$items[] = sprintf(
 				$item,
 				$extensionKey,
-				$inputPrefix,
-				htmlspecialchars($extension['title']),
-				htmlspecialchars($extension['description'])
+				$inputPrefix
 			);
 		}
 
@@ -199,7 +204,12 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 		$availableAndInstalledExtensions = $extensionListUtility->getAvailableAndInstalledExtensions($availableExtensions);
 		foreach ($extensionKeys as $extensionKey) {
 			if (!is_array($availableAndInstalledExtensions[$extensionKey])) {
-				$extensionDetails = $this->getExtensionDetails($extensionKey);
+				if (!array_key_exists($extensionKey, $this->extensionDetails)) {
+					$this->updateSuccessful = FALSE;
+					$customMessages .= 'No version information for extension ' . $extensionKey . '. Cannot install it.';
+					continue;
+				}
+				$extensionDetails = $this->extensionDetails[$extensionKey];
 				$t3xContent = $this->fetchExtension($extensionKey, $extensionDetails['versionString']);
 				if (empty($t3xContent)) {
 					$this->updateSuccessful = FALSE;
@@ -216,31 +226,6 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 			}
 			$extensionInstallUtility->install($extensionKey);
 		}
-	}
-
-	/**
-	 * Returns the details of a local or external extension
-	 *
-	 * @param string $extensionKey Key of the extension to check
-	 * @return array Extension details
-	 */
-	protected function getExtensionDetails($extensionKey) {
-			// Local extension
-		$extEmConf = PATH_site . str_replace('@extensionKey', $extensionKey, $this->extEmConfPath);
-		if (file_exists($extEmConf)) {
-			$EM_CONF = FALSE;
-			require_once($extEmConf);
-			return reset($EM_CONF);
-		}
-
-			// Repository extension
-		$url = str_replace('@extensionKey', $extensionKey, $this->informationUrl);
-		$jsonResponse = $this->fetchUrl($url);
-		if (!empty($jsonResponse) && is_string($jsonResponse)) {
-			return json_decode($jsonResponse, TRUE);
-		}
-
-		return array();
 	}
 
 	/**
