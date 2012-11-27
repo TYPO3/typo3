@@ -653,6 +653,24 @@ class localRecordList extends recordList {
 
 			$theIcon = $this->clickMenuEnabled ? $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg,$table,$row['uid']) : $iconImg;
 
+			// Have labels respect possible itemsProcFunc results
+			/** @var $formEngine t3lib_TCEforms */
+			$formEngine = t3lib_div::makeInstance('t3lib_TCEForms');
+			if(isset($GLOBALS['TCA'][$table]['columns'])) {
+				foreach($GLOBALS['TCA'][$table]['columns'] as $field => $fieldSetup) {
+					if(isset($fieldSetup['config']['itemsProcFunc'])) {
+						$GLOBALS['TCA'][$table]['columns'][$field]['config']['items'] = $formEngine->procItems(
+							$fieldSetup['config']['items'],
+							$fieldSetup['config']['itemsProcFunc'],
+							$fieldSetup['config'],
+							$table,
+							$row,
+							$field
+						);
+					}
+				}
+			}
+
 				// Preparing and getting the data-array
 			$theData = Array();
 			foreach($this->fieldArray as $fCol)	{
