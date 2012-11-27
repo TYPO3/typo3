@@ -3,8 +3,6 @@
 
 	$(document).ready(function() {
 		manageExtensionListing();
-		$('th[title]').tooltip({offset: [-10, -30], position: 'bottom right', tipClass: 'headerTooltip'});
-		$('td[title]').tooltip({offset: [-10, -60], position: 'bottom right'});
 		$("#typo3-extension-configuration-forms ul").tabs("div.category");
 
 		$('#resetSearch').live('click', function (e) {
@@ -27,7 +25,7 @@
 
 	function manageExtensionListing() {
 		datatable = $('#typo3-extension-list').dataTable({
-			"sPaginationType":"full_numbers",
+			"bPaginate": false,
 			"bJQueryUI":true,
 			"bLengthChange":false,
 			'iDisplayLength':15,
@@ -44,7 +42,6 @@
 	}
 
 	function bindActions() {
-		$('td[title], tr[title]').tooltip({offset: [-10, -60], position: 'bottom right'});
 		$('.removeExtension').not('.transformed').each(function() {
 			$(this).data('href', $(this).attr('href'));
 			$(this).attr('href', '#');

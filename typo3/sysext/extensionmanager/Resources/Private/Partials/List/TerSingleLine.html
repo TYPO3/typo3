@@ -13,8 +13,8 @@
 	{extension.version}
 	<em:showExtensionVersions extension="{extension}" />
 </td>
-<td>
-	{extension.description}
+<td title="{extension.description}">
+	<f:format.crop maxCharacters="50" respectWordBoundaries="true" respectHtml="false">{extension.description}</f:format.crop>
 
 	<div class="author">
 		<div class="author-name">{extension.authorName}</div>
