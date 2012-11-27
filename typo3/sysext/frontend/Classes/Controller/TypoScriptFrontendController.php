@@ -2544,9 +2544,11 @@ class TypoScriptFrontendController {
 		// Finding the ISO code:
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables') && $this->sys_language_content) {
 			// using sys_language_content because the ISO code only (currently) affect content selection from FlexForms - which should follow "sys_language_content"
-			$sys_language_row = $this->sys_page->getRawRecord('sys_language', $this->sys_language_content, 'static_lang_isocode');
+			// Set the fourth parameter to TRUE in the next two getRawRecord() calls to
+			// avoid versioning overlay to be applied as it generates an SQL error
+			$sys_language_row = $this->sys_page->getRawRecord('sys_language', $this->sys_language_content, 'static_lang_isocode', TRUE);
 			if (is_array($sys_language_row) && $sys_language_row['static_lang_isocode']) {
-				$stLrow = $this->sys_page->getRawRecord('static_languages', $sys_language_row['static_lang_isocode'], 'lg_iso_2');
+				$stLrow = $this->sys_page->getRawRecord('static_languages', $sys_language_row['static_lang_isocode'], 'lg_iso_2', TRUE);
 				$this->sys_language_isocode = $stLrow['lg_iso_2'];
 			}
 		}
