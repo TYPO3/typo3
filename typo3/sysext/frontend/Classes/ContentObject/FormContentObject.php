@@ -121,12 +121,9 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 		$xhtmlStrict = \TYPO3\CMS\Core\Utility\GeneralUtility::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->xhtmlDoctype);
 		// Formname
 		$formName = isset($conf['formName.']) ? $this->cObj->stdWrap($conf['formName'], $conf['formName.']) : $conf['formName'];
-		if ($formName) {
-			$formName = $this->cObj->cleanFormName($formName);
-		} else {
-			// form name has to start with a letter to reach XHTML compliance
-			$formName = 'a' . $GLOBALS['TSFE']->uniqueHash();
-		}
+		$formName = $this->cObj->cleanFormName($formName);
+		$formName = $GLOBALS['TSFE']->getUniqueId($formName);
+
 		$fieldPrefix = isset($conf['fieldPrefix.']) ? $this->cObj->stdWrap($conf['fieldPrefix'], $conf['fieldPrefix.']) : $conf['fieldPrefix'];
 		if (isset($conf['fieldPrefix']) || isset($conf['fieldPrefix.'])) {
 			if ($fieldPrefix) {

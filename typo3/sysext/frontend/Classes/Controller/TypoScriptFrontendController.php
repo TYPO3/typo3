@@ -622,6 +622,11 @@ class TypoScriptFrontendController {
 	public $anchorPrefix = '';
 
 	/**
+	 * IDs we already rendered for this page (to make sure they are unique)
+	 */
+	private $usedUniqueIds = array();
+
+	/**
 	 * Page content render object
 	 *
 	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
@@ -4521,6 +4526,26 @@ if (version == "n3") {
 			$headers = $this->csConvObj->conv($headers, $this->renderCharset, $charset);
 		}
 		\TYPO3\CMS\Core\Utility\GeneralUtility::plainMailEncoded($email, $subject, $message, $headers, $encoding, $charset);
+	}
+
+	/**
+	 * Returns a unique id to be used as a XML ID (in HTML / XHTML mode)
+	 *
+	 * @param string $desired The desired id. If already used it is suffixed with a number
+	 * @return string The unique id
+	 */
+	public function getUniqueId($desired = '') {
+		if ($desired === '') {
+			// id has to start with a letter to reach XHTML compliance
+			$uniqueId = 'a' . $this->uniqueHash();
+		} else {
+			$uniqueId = $desired;
+			for ($i = 1; isset($this->usedUniqueIds[$uniqueId]); $i++) {
+				$uniqueId = $desired . '_' . $i;
+			}
+		}
+		$this->usedUniqueIds[$uniqueId] = TRUE;
+		return $uniqueId;
 	}
 
 	/*********************************************
