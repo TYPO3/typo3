@@ -3656,7 +3656,10 @@ function ' . $evalData . '(value) {
 		// Create selector box of the options
 		$sSize = $params['autoSizeMax'] ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($itemArrayC + 1, \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($params['size'], 1), $params['autoSizeMax']) : $params['size'];
 		if (!$selector) {
-			$isMultiple = $params['size'] != 1;
+			$isMultiple = ($params['size'] != 1) && $params['multiple'] && ($params['maxItems'] != 1);
+			if (!$isMultiple) {
+				$sSize = 1;
+			}
 			$selector = '<select id="' . uniqid('tceforms-multiselect-') . '" ' . ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '"' . $this->insertDefStyle('group', 'tceforms-multiselect')) . ($isMultiple ? ' multiple="multiple"' : '') . ' name="' . $fName . '_list" ' . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt) . '</select>';
 		}
 		$icons = array(
