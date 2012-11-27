@@ -366,6 +366,7 @@ class LinkAnalyzer {
 		if (empty($this->pidList)) {
 			$this->pidList = $curPage;
 		}
+		$this->pidList = rtrim($this->pidList, ',');
 		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'count(uid) as nbBrokenLinks,link_type',
 			'tx_linkvalidator_link',
