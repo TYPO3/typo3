@@ -1165,6 +1165,7 @@ class ImportExport {
 				'data' => &$this->import_data
 			));
 			$tce->suggestedInsertUids = $this->suggestedInsertUids;
+			$tce->isImporting = TRUE;
 			$tce->start($this->import_data, array());
 			$tce->process_datamap();
 			$this->callHook('after_writeRecordsPages', array(
