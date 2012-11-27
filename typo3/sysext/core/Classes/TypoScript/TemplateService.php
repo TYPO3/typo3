@@ -1201,7 +1201,7 @@ class TemplateService {
 					}
 				} else {
 					// Splitting of all values on this level of the TypoScript object tree:
-					if (!strstr($val, '|*|') && !strstr($val, '||')) {
+					if ($cKey === 'noTrimWrap' || (!strstr($val, '|*|') && !strstr($val, '||'))) {
 						for ($aKey = 0; $aKey < $splitCount; $aKey++) {
 							$conf2[$aKey][$cKey] = $val;
 						}
