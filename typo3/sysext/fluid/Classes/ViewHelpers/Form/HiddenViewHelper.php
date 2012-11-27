@@ -62,4 +62,3 @@ class HiddenViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 }
 
 ?>
-?>
