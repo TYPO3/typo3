@@ -1609,7 +1609,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	public function renderText($input) {
 		$input = strip_tags($input);
 		$input = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($input, 1500);
-		return nl2br(htmlspecialchars(trim($this->wordWrapper($input))));
+		return nl2br(htmlspecialchars(trim(
+			html_entity_decode($this->wordWrapper($input), ENT_QUOTES, 'UTF-8')
+		)));
 	}
 
 	/**
