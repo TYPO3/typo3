@@ -4737,8 +4737,6 @@ Connection: close
 		if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog']) {
 			return;
 		}
-		$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
-		$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
 		// Use all configured logging options
 		foreach (explode(';', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'], 2) as $log) {
 			list($type, $destination, $level) = explode(',', $log, 4);
@@ -4755,7 +4753,7 @@ Connection: close
 				$lockObject->acquire();
 				$file = fopen($destination, 'a');
 				if ($file) {
-					fwrite($file, date(($dateFormat . ' ' . $timeFormat)) . $msgLine . LF);
+					fwrite($file, date('Y-m-d\TH:i:s.uP') . $msgLine . LF);
 					fclose($file);
 					self::fixPermissions($destination);
 				}
