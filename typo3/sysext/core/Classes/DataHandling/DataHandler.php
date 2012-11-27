@@ -99,6 +99,13 @@ class DataHandler {
 	 */
 	public $neverHideAtCopy = FALSE;
 
+	/**
+	 * If set, then the TCE class has been instantiated during an import action of a T3D
+	 *
+	 * @var boolean
+	 */
+	public $isImporting = FALSE;
+
 	// Boolean: If set, then transformations are NOT performed on the input.
 	/**
 	 * @todo Define visibility
