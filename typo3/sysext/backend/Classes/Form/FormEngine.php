@@ -6213,7 +6213,7 @@ function ' . $evalData . '(value) {
 			}
 			return $thumbsnail;
 		} else {
-			return nl2br(htmlspecialchars($value));
+			return nl2br(htmlspecialchars(html_entity_decode($value, ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'UTF-8'));
 		}
 	}
 
