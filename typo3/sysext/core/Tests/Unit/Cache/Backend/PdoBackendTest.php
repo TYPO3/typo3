@@ -137,6 +137,20 @@ class PdoBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function setOverwritesExistingEntryThatExceededItsLifetimeWithNewData() {
+		$backend = $this->setUpBackend();
+		$data1 = 'data1';
+		$entryIdentifier = uniqid('test');
+		$backend->set($entryIdentifier, $data1, array(), 1);
+		$data2 = 'data2';
+		$GLOBALS['EXEC_TIME'] += 2;
+		$backend->set($entryIdentifier, $data2, array(), 10);
+		$this->assertEquals($data2, $backend->get($entryIdentifier));
+	}
+
+	/**
+	 * @test
+	 */
 	public function hasReturnsFalseIfTheEntryDoesntExist() {
 		$backend = $this->setUpBackend();
 		$identifier = 'NonExistingIdentifier';
