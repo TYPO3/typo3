@@ -2,8 +2,8 @@ This document is a part of the TYPO3 project. TYPO3 is an open source web
 content management system released under the GNU GPL. TYPO3 is copyright
 (c) 1999-2012 by Kasper Skaarhoj.
 
-This document contains information about TYPO3 version 6.0 shall be released
-on October, 2012.
+This document contains information about TYPO3 version 6.0 has been released
+on November 27th 2012.
 
 An up-to-date version of this document also containing links to further in
 depth information can be found here:
@@ -14,13 +14,66 @@ http://wiki.typo3.org/TYPO3_6.0
 Compatibility
 ===============================================================================
 
+-------------------------------------------------------------------------------
+System environment
+-------------------------------------------------------------------------------
+
+* PHP setting register_globals must be off
+
+The bootstrap now verifies the PHP setting register_globals is disabled for
+security reasons. The script dies otherwise.
+
+-------------------------------------------------------------------------------
+PHP namespaces & TYPO3 autoloader
+-------------------------------------------------------------------------------
+
+* Introducing PHP namespaces
+
+Almost every PHP class file has been modified to support PHP namespaces and
+was moved to a more meaningful location. Besides that old class names, e.g.
+t3lib_div still can be used - however it is deprecated - this works by using a
+class alias map pointing to the new namespaces class name.
+
+	see the files in typo3/sysext/core/Migrations/Code/ for the mentioned maps
+
+Basically the classes are now arranged in three basic components, which are
+core, backend and frontend - each of them are located in typo3/sysext/. The
+old class files (e.g. t3lib/class.t3lib_div.php) are still shipped with the
+Core and point to the new class files - this prevents PHP fatal errors if
+extension use hardcoded require_once() calls to old class names. This layer
+is deprecated as well.
+
+	see http://wiki.typo3.org/Namespaces for further details
+
+* New XCLASS handling
+
+The old way of registering XCLASSes in $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS'] is
+removed. XCLASSES must now be registered by adding a class implementation
+configuration to the $TYPO3_CONF_VARS['SYS']['Objects'] array. The key of the
+array is the class name for which you want to define an implementation class.
+
+Example:
+$TYPO3_CONF_VARS['SYS']['Objects']['TYPO3\\CMS\\Core\\Database\\DatabaseConnection'] =
+	array('className' => 'TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
+
+As with Xclasses, the implementation resolving works recursively and you are free
+to put the implementation class name into the namespace of your own extension.
+
+This means that every XCLASS registration both for core and extension classes
+will not work any more with TYPO3 6.0.
+To keep compatibility for 6.0 and 4.x, extension authors should add their class
+to both the XCLASS array and the object implementation array.
+
+-------------------------------------------------------------------------------
+PHP bootstrap and configuration
+-------------------------------------------------------------------------------
+
 * Refactored bootstrap
 
-With a bootstrap refactoring the index.php file located in the document root of
-the installation was changed. If you are running a typo3 core source with a
-symlink, make sure that this file is also a symlink to the cores index.php,
-otherwise the frontend will be broken. If index.php is a copy of the source
-file, make sure to install a fresh version from 6.0 sources.
+The bootstrap changes all basic initializations for frontend, backend, CLI and
+install tool rendering. If a copied and customized version of the frontend's
+index.php was used, it has to be updated to the current index.php file of the
+TYPO3 Core sources (this applies to custom symbolic links as well).
 
 * New handling of typo3conf/localconf.php
 
@@ -34,7 +87,8 @@ To overload the local configuration with special instance specific code that
 might still be needed, it is possible to add the php code to the optional
 additional file typo3conf/AdditionalConfiguration.php that is executed during
 bootstrap of TYPO3 after LocalConfiguration.php.
-An ugrade wizard takes care of moving the old localconf.php file to the new scheme.
+An ugrade wizard takes care of migrating contents of the previous localconf.php
+file to the new scheme.
 
 * List of loaded extensions stored as array
 
@@ -63,6 +117,10 @@ so variables like $TCA should be accessed through $GLOBALS['TCA']. There is a
 compatibility layer, but the core can not guarantee that extensions with
 strange setup does not break.
 
+-------------------------------------------------------------------------------
+Deprecated and removed components
+-------------------------------------------------------------------------------
+
 * Deprecated methods
 
 Deprecated methods that were initially targeted to be removed in TYPO3 4.8/6.0
@@ -75,25 +133,6 @@ t3lib_BEDisplayLog: This class was used only by the old belog module, its
 functionality is now encapsulated in EXT:belog itself. Since it is very
 unlikely that the class was used by other external extensions, the file was
 removed instead of deprecating it.
-
-* New XCLASS handling
-
-The old way of registering XCLASSes in $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS'] is
-removed. XCLASSES must now be registered by adding a 'ux_' prefixed entry of
-the base class to the ext_autoload.php file providing the XCLASS path. To keep
-compatibility for 6.0 and 4.x, extension authors should add the ext_autoload
-entry and additionally keep the TYPO3_CONF_VARS registration.
-Extension authors should remove the three line XCLASS statement at the bottom
-of class files now for any extension with a compatibility for 6.0 and above.
-More information can be found at http://wiki.typo3.org/Autoload
-
-* PHP setting register_globals must be off
-
-The bootstrap now verifies the PHP setting register_globals is disabled for
-security reasons. The script dies otherwise.
-
-Removed Functionality
--------------------------------------------------------------------------------
 
 * Removed doNotLoadInFE flag
 
@@ -111,9 +150,9 @@ removal will be reverted.
 
 * Removed TypoScript option noBlur
 
-The ancient noBlur TypoScript setting for old Browsers (Internet Explorer <= 5.5)
-was removed without alternative. The setting has no effect anymore and can be
-removed from custom TypoScript objects, especially MENU.
+The ancient noBlur TypoScript setting for old Browsers (Internet Explorer up to
+version 5.5) was removed without any alternatives. The setting has no effect
+anymore and can be removed from custom TypoScript objects, especially MENU.
 
 * Removed internal history cleanup feature
 
@@ -147,6 +186,7 @@ code segment was substituted with a hook, so extensions can now deliver
 compression solutions if needed. In general, it is a good idea to configure
 a webserver to compress javascript and css files on the webserver with gzip.
 
+
 ===============================================================================
 Changes and Improvements
 ===============================================================================
@@ -164,10 +204,11 @@ The core extensions 'extbase' and 'fluid' are used in core classes like t3lib
 and in several important core extensions. Extbase and fluid are now required
 extensions and always loaded.
 
-Other General Improvements
+-------------------------------------------------------------------------------
+PHP namespaces & TYPO3 autoloader
 -------------------------------------------------------------------------------
 
-* Autoloader namespace aware
+* PHP namespaces in the TYPO3 autoloader
 
 The autoloader can now handle fully qualified namespaced class names.
 If you use the fully qualified namespaced class name like
@@ -176,12 +217,6 @@ the extbase naming scheme. The mentioned class will be found if it is located
 in file 'exttensionkey'/Classes/Foo/Bar.php.
 It is also possible to use class names not following the extbase naming scheme
 by providing the "name spaced class name -> file" mapping in ext_autoloader.php.
-
--------------------------------------------------------------------------------
-Security
--------------------------------------------------------------------------------
-
-...
 
 -------------------------------------------------------------------------------
 Backend
@@ -195,31 +230,57 @@ with certain criteria and to compare specific user information. The code was
 made more flexible to easily cope with different use cases and to be more
 open for future enhancements.
 
-htmlArea RTE
--------------------------------------------------------------------------------
+* New extension manager
 
-...
+The extension manager was rewritten to be based on Extbase and thus to have a
+discrete controller and action API. The view utilized jQuery in the client's
+user interface and has been reduced to only contain required functionality
+for (un-)installing or configuring extensions. Uploading extensions to TER
+and directly modifying files of extensions is not supported in the Core
+anymore, but will be available as separate extension tools package in the TER.
 
--------------------------------------------------------------------------------
-Other Improvements to the Backend
--------------------------------------------------------------------------------
+* Introducing global categorization
 
-...
+A new global categorization has been introduced, thus any core component and
+extension can utilize this in the backend. An API call can be used to set
+accordant TCA and to create required SQL definition changes during runtime.
+
+See the following example to create a new field categories in a table:
+
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable(
+		'myextension',
+		'tx_myextension_table',
+		'categories'
+	);
+
+* Support for NULL values in backend forms
+
+In some situations it might become handy to have an "undefined" value, e.g.
+for timestamp fields where "0" has the meaning of the unix timestamp origin
+back in 1970. Therefore a new TCA "eval" subtype has been introduced to support
+that - which will be visualized in the backend with a new "enable field"
+checkbox. Besides that the SQL definition must not have the "NOT NULL"
+statement for that field.
+
+Example to add the "undefined" (NULL value) to the field "myfield":
+
+	$TCA['tx_myextension_table']['columns']['myfield']['config'] = array(
+		'type' => 'input',
+		'eval' => 'null',
+	);
 
 -------------------------------------------------------------------------------
 Administration / Customization
 -------------------------------------------------------------------------------
 
-...
+* Introducing the File Abstraction Layer
 
--------------------------------------------------------------------------------
-Development
--------------------------------------------------------------------------------
+The File Abstraction Layer ("FAL") is used to create accordant database records
+for each file. This was the same file can be used (referenced) in multiple
+elements without having to clone and clutter the file-system anymore. The TYPO3
+Core already makes use of the new File Abstraction Layer, but elderly extensions
+still can use the old way. Besides that, the Install Tool provides several
+upgrade wizards to migrate files to the new structure.
 
-...
+	see http://docs.typo3.org/typo3cms/FileAbstractionLayerReference/
 
--------------------------------------------------------------------------------
-Performance
--------------------------------------------------------------------------------
-
-...
