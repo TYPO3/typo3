@@ -36,13 +36,17 @@
 											<span style="background:red; padding:1px 2px; color:#fff; font-weight:bold;">{item.highlight}</span>
 										</f:if>
 										<em:form.typoScriptConstants configuration="{item}" />
-										<f:alias map="{label: '{f:translate(key: \'extConfTemplate.type.{item.type}\')}'}">
-											<f:if condition="{label}">
-												<f:then>
-													<span class="info">({label})</span>
-												</f:then>
-											</f:if>
-										</f:alias>
+										<f:if condition="{0: item.type} != {0: 'user'}">
+											<f:then>
+												<f:alias map="{label: '{f:translate(key: \'extConfTemplate.type.{item.type}\')}'}">
+													<f:if condition="{label}">
+														<f:then>
+															<span class="info">({label})</span>
+														</f:then>
+													</f:if>
+												</f:alias>
+											</f:then>
+										</f:if>
 									</div>
 								</f:for>
 								<f:form.submit value="{f:translate(key:'extConfTemplate.submitButton')}" />
