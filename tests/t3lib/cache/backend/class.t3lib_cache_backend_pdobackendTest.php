@@ -158,6 +158,20 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
+	 */
+	public function setOverwritesExistingEntryThatExceededItsLifetimeWithNewData() {
+		$backend = $this->setUpBackend();
+		$data1 = 'data1';
+		$entryIdentifier = uniqid('test');
+		$backend->set($entryIdentifier, $data1, array(), 1);
+		$data2 = 'data2';
+		$GLOBALS['EXEC_TIME'] += 2;
+		$backend->set($entryIdentifier, $data2, array(), 10);
+		$this->assertEquals($data2, $backend->get($entryIdentifier));
+	}
+
+	/**
+	 * @test
 	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function hasReturnsFalseIfTheEntryDoesntExist() {
