@@ -57,7 +57,7 @@ class TreelistCacheUpdateHooks {
 		// example: $TYPO3_CONF_VARS['BE']['additionalTreelistUpdateFields'] .= ',my_field';
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['additionalTreelistUpdateFields'])) {
 			$additionalTreelistUpdateFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['BE']['additionalTreelistUpdateFields'], TRUE);
-			$this->updateRequiringFields += $additionalTreelistUpdateFields;
+			$this->updateRequiringFields = array_merge($this->updateRequiringFields, $additionalTreelistUpdateFields);
 		}
 	}
 
