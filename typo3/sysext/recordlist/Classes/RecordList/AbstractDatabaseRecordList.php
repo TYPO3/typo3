@@ -739,9 +739,9 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		if (!strcmp($code, '')) {
 			$code = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title', 1) . ']</i> - ' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $row), $GLOBALS['BE_USER']->uc['titleLen']));
 		} else {
-			$code = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($code, $this->fixedL));
+			$code = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($code, $this->fixedL), ENT_QUOTES, 'UTF-8', FALSE);
 			if ($code != htmlspecialchars($origCode)) {
-				$code = '<span title="' . htmlspecialchars($origCode) . '">' . $code . '</span>';
+				$code = '<span title="' . htmlspecialchars($origCode, ENT_QUOTES, 'UTF-8', FALSE) . '">' . $code . '</span>';
 			}
 		}
 		switch ((string) $this->clickTitleMode) {
