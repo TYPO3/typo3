@@ -125,11 +125,10 @@ abstract class AbstractElementView {
 							}
 							break;
 						case 'inputvalue':
-							if (array_key_exists('checked', $this->model->getAllowedAttributes())) {
-								if (!$this->model->hasAttribute('checked')) {
-									$emptyElement = TRUE;
-								}
-							} elseif (array_key_exists('selected', $this->model->getAllowedAttributes()) && !$this->model->hasAttribute('selected')) {
+							if (
+								(array_key_exists('checked', $this->model->getAllowedAttributes()) && !$this->model->hasAttribute('checked'))
+								|| (array_key_exists('selected', $this->model->getAllowedAttributes()) && !$this->model->hasAttribute('selected'))
+							) {
 								$emptyElement = TRUE;
 							} else {
 								$inputValue = $this->getInputValue();
