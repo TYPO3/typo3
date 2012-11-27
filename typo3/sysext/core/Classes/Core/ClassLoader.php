@@ -177,8 +177,9 @@ class ClassLoader {
 	 *
 	 * @static
 	 * @param string $classPath
+	 * @param string $className
 	 */
-	static protected function requireClassFileOnce($classPath) {
+	static protected function requireClassFileOnce($classPath, $className) {
 		GeneralUtility::requireOnce($classPath);
 	}
 
