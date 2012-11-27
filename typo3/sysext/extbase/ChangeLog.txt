@@ -1,6 +1,165 @@
 ChangeLog for Extbase
 =====================
 
+Changes for 6.0.0
+=================
+
+Full Changes for 6.0.0
+======================
+[TASK] Timestamp support for DateTimeConverter
+[BUGFIX] MM_match_fields is ignored when persisting MM relations
+[BUGFIX] Missing table definitions crash Dbal
+[BUGFIX] Remove property item of category model
+[TASK] Adjust namespaces of persistence unit tests
+[TASK] Move persistence unit tests
+[CLEANUP] Adjust code to coding guidelines
+[TASK] Comment legacy files to be removed with 6.2
+[BUGFIX] Use tablename for fullQuoteStr call
+[BUGFIX] Remove newlines after closing php tag
+[BUGFIX] Force command controller task arguments saved as array
+[BUGFIX] Prevent sql errors with unsupported relation
+[BUGFIX] Make saving scheduler commandController tasks working again
+[BUGFIX] Add missing TypoScript Mapping for Category Model
+[BUGFIX] Tx_Extbase_DomainObject_AbstractDomainObject#getUid is final
+[BUGFIX] Fix small DebuggerUtility issues
+[BUGFIX] Fix and deprecate legacy creation of objects in repository
+[!!!][BUGFIX] Remove property isOnline from frontenduser model
+[BUGFIX] Make ValidatorResolver respect namespaces
+[BUGFIX] Reset 'vendorName' in RequestBuilder to NULL for new requests
+[BUGFIX] Correctly apply _LOCAL_LANG from typoscript
+[TASK] Rename Reflection/Service to Reflection/ReflectionService
+[BUGFIX] Cache in BackendConfigurationManager is not taking pageId into account
+[BUGFIX] DataMapperFactory respects foreign_table_field
+[BUGFIX] Fix Annotation for Category model
+[TASK] Add "Abstract" prefix to abstract task class
+[TASK] Adjust phpdoc for classes (files) of backports
+[BUBFIX] Fix fatal error in Test
+[BUGFIX] Fix several namespace related bugs
+[BUGFIX] Mapping of DomainObject with namespaces
+[BUGFIX] Dont respect pid for static & rootlevel tables
+[BUGFIX] Namespaced domain models are not updated
+[TASK] Adjust phpdoc to namespaces
+[TASK] Resync TYPO3Flow- and Extbase-Persistence
+[BUGFIX] Misspelling in Typo3DbBackend.php
+[TASK] Cleanup Typo3DbBackend
+[BUGFIX] resolveValidatorObjectName support for namespaces
+[BUGFIX] Support plugins in namespaced extensions
+[BUGFIX] Rename File after renaming class
+[BUGFIX] Typo3DbBackend language handling crashes in BE
+[TASK] Rename FlashMessages to FlashMessageContainer
+[TASK] Remove deprecated methods and classes
+[TASK] Rename ExtensionManager class
+[TASK] Update doc block example code to to namespaces
+[BUGFIX] PHP 5.4 unit test warnings
+[TASK] Change objectStorage patch in migration script
+[TASK] Change namespace and classname of ObjectStorage
+[TASK] Move ObjectStorage from Generic to Persistence
+[TASK] Remove ext_autoload.php
+[TASK] Cleanup files in persistence
+[TASK] Remove duplicate files in persistence
+Revert "[BUGFIX] Support plugins in namespaced extensions"
+[BUGFIX] Support plugins in namespaced extensions
+[TASK] Use core interface for accessible objects
+[TASK] Remove forceCharset references from LocalizationUtility
+[BUGFIX] NotEmpty Validator does not work with arrays and objects
+[TASK] Add phpdoc-comments for variables
+[BUGFIX] Removed trash files and their references
+[CLEANUP] Remove old SVN comments
+[BUGFIX] Fix mismatches between count of param in phpdoc and function-signature
+[TASK] Add explanation for $configurationType
+[BUGFIX] Fix namespace related bugs in DebuggerUtility
+[TASK] Clean up testcases to use getAccessibleMock() function
+[TASK] Fix typo: seperator -> separator
+Revert "[BUGFIX] Property mapper: Exception not thrown but skipped"
+[BUGFIX] Replace deprecated calls in Repository
+[BUGFIX] Change class name hash generation to md5
+[BUGFIX] Fix broken table name mapping for namespaced extension models
+[BUGFIX] Fix generation of class schema for namespaced arguments
+[BUGFIX] Query Generation creates invalid query in BE scope
+[BUGFIX] Fix generation of class name hash
+[BUGFIX] Correct link to first page in BE paginator widget
+[BUGFIX] Respect namespaced models in the reflection service
+[BUGFIX] Property Validation with Namespaces
+[TASK] Provide class alias file for extbase
+[TASK] Introduce base class for PHPUnit tests
+[TASK] Update version number of all sysexts to 6.0.0
+[BUGFIX] Remove PHP warnings in request
+[TASK] Make all classes non final
+[BUGFIX] Fix Exception Class Name
+[TASK] Fix class naming and alias map after namespace change
+[BUGFIX] Fix translation fallback
+[TASK] Remove superfluous parenthesis in sysexts
+[TASK] Adopt Extbase to the Autoloader -> ClassLoader name change
+[BUGFIX] Broken backups in BackendConfigurationManagerTest
+[BUGFIX] Incomplete mocking and backups it tests
+[BUGFIX] Declare LocalizationUtility::translateFileReference static
+[BUGFIX] TypeHandlingService throws Exception for StorageObjects
+[BUGFIX] fix Mvc/Request builds old classnames
+[BUGFIX] Fix old propertymapper checking target with namespace
+[BUGFIX] Fixed missing class mapping without TS
+[BUGFIX] Fix classes without or broken namespace
+[CLEANUP] General code cleanup
+[BUGFIX] Subrequests can't be resolved
+[BUGFIX] Make Cli\Command Namespace aware
+[BUGFIX] Unit tests after namespace switch
+[BUGFIX] Naming clash: Fix several unit test failures
+[BUGFIX] Interface Tx_Scheduler_AdditionalFieldProvider' not found
+[BUGFIX] Reanimate unit tests
+[TASK] Make extbase tests run again
+[TASK] Move and Namespace classes
+[BUGFIX] Failing test translateForEmptyStringKeyReturnsNull()
+[FEATURE] Integrate basic file abstraction layer models
+[BUGFIX] Property mapper: Exception not thrown but skipped
+[TASK] Unit test for FrontendUserGroup model
+[TASK] Unit test for FrontendUser model
+[BUGFIX] ObjectManager dependencies in SignalSlot registration
+[BUGFIX] Possible failure in dependency injection
+[BUGFIX] Web Request should map $_FILES into arguments
+[FEATURE] Backend usergroup model and repository
+[FEATURE] File mount model and repository
+[FEATURE] Handle enable fields and deleted records settings granulary
+[FEATURE] Improved translation handling for statement generation
+[BUGFIX] email validator
+[BUGFIX] DataMapper returns array on RELATION_HAS_ONE
+[Task] Make Exception for Controllerdetermination more expressive
+[TASK] Add Domain Model and Repository to Category
+[BUG] Fix lastlogin property to correct lowerCamelCase
+[FEATURE] Add a BackendUser model
+[TASK] Small bugfix in Tx_Extbase_MVC_View_ViewInterface
+[BUGFIX] Remove additional slashes from typolink urls if prefixing
+[BUGFIX] public function configureModule should be static
+[FEATURE][Performance] Add caches for persistence layer
+[TASK] use the objectManager to create empty domain objects
+[BUGFIX] Container calls Cache too often
+[TASK] Update Readme to point to the current documentation location
+[BUGFIX] Only set request for Web_Response
+[TASK] Harmonize coding style of if constructs
+[BUGFIX] CLI argument handling chokes on = use
+Merge "[BUGFIX] Priority of CLI request handler should be lower"
+[BUGFIX] Priority of CLI request handler should be lower
+[BUGFIX] Return NULL instead of empty string in Localization::translate()
+[BUGFIX] Fix unit test for NumberRangeValidator
+[BUGFIX] FLUIDTEMPLATE - Serialization of 'Closure' is not allowed
+[BUGFIX] Extbase core bootstrap not found in frontend
+[BUGFIX] Fatal error in reports module
+Merge "[Task] Update changelog and version to 6.0.0-dev"
+[CLEANUP] Cleaned up Extbase
+Merge "[TASK] Backport changes to Extbase_Error_Message"
+Merge "[TASK] Improve performance of Utility/Arrays::integerExplode"
+Merge "[BUGFIX] Fix undefined variables in Typo3DBBackend::parseOrderings"
+[BUGFIX] Fix undefined variables in Typo3DBBackend::parseOrderings
+Merge "[TASK] Remove trailing whitespace"
+[FEATURE] Allow overwriting of Bootstrap with DI
+[TASK] Sync persistence folder scheme with FLOW3
+[CLEANUP] clean up ext_autoload.php
+[Task] Update changelog and version to 6.0.0-dev
+[TASK] Remove trailing whitespace
+[TASK] Remove deprecated methods & properties
+[TASK] Remove access to constant TYPO3_UseCachingFramework
+Merge "[BUGFIX] Respect all subclasses (single table inheritance)"
+[TASK] Backport changes to Extbase_Error_Message
+[TASK] Improve performance of Utility/Arrays::integerExplode
+
 Changes for 4.7.0
 =================
 
