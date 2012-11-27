@@ -3992,7 +3992,8 @@ class t3lib_TCEmain {
 	function deleteRecord($table, $uid, $noRecordCheck = FALSE, $forceHardDelete = FALSE, $undeleteRecord = FALSE) {
 
 			// Checking if there is anything else disallowing deleting the record by checking if editing is allowed
-		$mayEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, FALSE, $undeleteRecord, TRUE);
+		$deletedRecord = ($forceHardDelete || $undeleteRecord);
+		$mayEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, FALSE, $deletedRecord, TRUE);
 
 		$uid = intval($uid);
 		if ($GLOBALS['TCA'][$table] && $uid) {
