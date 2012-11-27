@@ -39,7 +39,11 @@
 										<f:alias map="{label: '{f:translate(key: \'extConfTemplate.type.{item.type}\')}'}">
 											<f:if condition="{label}">
 												<f:then>
-													<span class="info">({label})</span>
+													<f:if condition="{0: label} != {0: 'user'}">
+														<f:then>
+															<span class="info">({label})</span>
+														</f:then>
+													</f:if>
 												</f:then>
 											</f:if>
 										</f:alias>
