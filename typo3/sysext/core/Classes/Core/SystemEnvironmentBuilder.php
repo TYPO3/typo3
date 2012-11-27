@@ -142,7 +142,7 @@ class SystemEnvironmentBuilder {
 		// Security related constant: List of file extensions that should be registered as php script file extensions
 		define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6,phpsh,inc,phtml');
 		// List of extensions required to run the core
-		define('REQUIRED_EXTENSIONS', 'core,backend,frontend,cms,lang,sv,extensionmanager,recordlist,extbase,fluid,cshmanual');
+		define('REQUIRED_EXTENSIONS', 'core,backend,frontend,cms,lang,sv,extensionmanager,recordlist,extbase,fluid,cshmanual,install');
 		// Operating system identifier
 		// Either "WIN" or empty string
 		define('TYPO3_OS', self::getTypo3Os());
