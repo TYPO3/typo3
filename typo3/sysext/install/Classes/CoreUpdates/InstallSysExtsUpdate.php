@@ -58,6 +58,18 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 		't3editor',
 		'reports',
 		'scheduler',
+		'simulatestatic',
+	);
+
+	/**
+	 * @var array
+	 */
+	protected $extensionDetails = array(
+		'simulatestatic' => array(
+			'title' => 'Simulate Static URLs',
+			'description' => 'Adds the possibility to have Speaking URLs in the TYPO3 Frontend pages.',
+			'versionString' => '2.0.0',
+		),
 	);
 
 	/**
@@ -200,6 +212,11 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 		foreach ($extensionKeys as $extensionKey) {
 			if (!is_array($availableAndInstalledExtensions[$extensionKey])) {
 				$extensionDetails = $this->getExtensionDetails($extensionKey);
+				if (empty($extensionDetails)) {
+					$this->updateSuccessful = FALSE;
+					$customMessages .= 'No version information for extension ' . $extensionKey . '. Cannot install it.';
+					continue;
+				}
 				$t3xContent = $this->fetchExtension($extensionKey, $extensionDetails['versionString']);
 				if (empty($t3xContent)) {
 					$this->updateSuccessful = FALSE;
@@ -233,11 +250,8 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 			return reset($EM_CONF);
 		}
 
-			// Repository extension
-		$url = str_replace('@extensionKey', $extensionKey, $this->informationUrl);
-		$jsonResponse = $this->fetchUrl($url);
-		if (!empty($jsonResponse) && is_string($jsonResponse)) {
-			return json_decode($jsonResponse, TRUE);
+		if (array_key_exists($extensionKey, $this->extensionDetails)) {
+			return $this->extensionDetails[$extensionKey];
 		}
 
 		return array();
