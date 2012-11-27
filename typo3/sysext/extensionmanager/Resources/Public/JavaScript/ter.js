@@ -10,6 +10,7 @@
 			"bInfo": false,
 			"bPaginate": false,
 			"bFilter": false,
+			"bSort": false,
 			"fnDrawCallback": bindDownload
 		});
 
@@ -21,20 +22,21 @@
 			"bInfo":false,
 			"bPaginate":false,
 			"bFilter":false,
-			"aaSorting":[[0, 'desc']],
+			"bSort": false,
 			"fnDrawCallback":bindDownload
 		});
 
 		$('#terSearchTable').dataTable({
-			"sPaginationType":"full_numbers",
+			"bPaginate": false,
 			"bJQueryUI":true,
 			"bLengthChange": false,
 			'iDisplayLength': 15,
 			"bStateSave": false,
+			"bFilter": false,
 			"oLanguage": {
 				"sSearch": "Filter results:"
 			},
-			"aaSorting": [],
+			"bSort": false,
 			"fnDrawCallback": bindDownload
 		});
 		bindDownload();
