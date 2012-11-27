@@ -51,6 +51,12 @@
 			<trans-unit id="extConfTemplate.type.string" xml:space="preserve">
 				<source>string</source>
 			</trans-unit>
+			<trans-unit id="extConfTemplate.updateTab" xml:space="preserve">
+				<source>Update</source>
+			</trans-unit>
+			<trans-unit id="extConfTemplate.noUpdateNecessary" xml:space="preserve">
+				<source>Currently there is no update necessary!</source>
+			</trans-unit>
 			<trans-unit id="extConfTemplate.backToList" xml:space="preserve">
 				<source>Back to list</source>
 			</trans-unit>

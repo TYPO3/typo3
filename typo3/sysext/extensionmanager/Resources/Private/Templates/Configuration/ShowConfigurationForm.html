@@ -18,6 +18,9 @@
 						<li><a href="javascript:void(0);">{category.name}</a></li>
 					</f:if>
 				</f:for>
+				<f:for each="{extensionUpdate}" as="update">
+					<li><a href="javascript:void(0);">{update.name}</a></li>
+				</f:for>
 			</ul>
 			<f:for each="{configuration}" as="category">
 				<f:if condition="{category.name}">
@@ -54,6 +57,15 @@
 					</f:if>
 				</div>
 				</f:if>
+			</f:for>
+			<f:for each="{extensionUpdate}" as="update">
+				<div class="category">
+					<div class="subcategory">
+						<div>
+							<f:format.html>{update.content}</f:format.html>
+						</div>
+					</div>
+				</div>
 			</f:for>
 		</div>
 	</div>

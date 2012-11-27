@@ -39,11 +39,24 @@ class ConfigurationController extends \TYPO3\CMS\Extensionmanager\Controller\Abs
 	protected $configurationItemRepository;
 
 	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\UpdateItemRepository
+	 */
+	protected $updateItemRepository;
+
+	/**
 	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository $configurationItemRepository
 	 * @return void
 	 */
 	public function injectConfigurationItemRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository $configurationItemRepository) {
 		$this->configurationItemRepository = $configurationItemRepository;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\UpdateItemRepository $updateItemRepository
+	 * @return void
+	 */
+	public function injectUpdateItemRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\UpdateItemRepository $updateItemRepository) {
+		$this->updateItemRepository = $updateItemRepository;
 	}
 
 	/**
@@ -56,6 +69,8 @@ class ConfigurationController extends \TYPO3\CMS\Extensionmanager\Controller\Abs
 		$extension = array_merge($extension, $GLOBALS['TYPO3_LOADED_EXT'][$extension['key']]);
 		$configuration = $this->configurationItemRepository->findByExtension($extension);
 		$this->view->assign('configuration', $configuration)->assign('extension', $extension);
+		$extensionUpdate = $this->updateItemRepository->findByExtension($extension);
+		$this->view->assign('extensionUpdate', $extensionUpdate);
 	}
 
 	/**

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
+namespace TYPO3\CMS\Extensionmanager\Domain\Model;
 
 /***************************************************************
  *  Copyright notice
@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  *  A copy is found in the textfile GPL.txt and important notices to the license
  *  from the author is found in LICENSE.txt distributed with these scripts.
  *
- *
  *  This script is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -27,43 +26,51 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * View helper for configure extension link
+ * Main model for extension configuration categories
  *
  * @author Susanne Moog <typo3@susannemoog.de>
  */
-class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {
+class UpdateItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * @var string
 	 */
-	protected $tagName = 'a';
+	protected $name = '';
 
 	/**
-	 * Renders a configure extension link if the extension has configuration options
-	 *
-	 * @param array $extension
-	 * @return string the rendered a tag
+	 * @var string
 	 */
-	public function render($extension) {
-		$tag = '';
-		if ($extension['installed'] &&
-			(file_exists(PATH_site . $extension['siteRelPath'] . '/ext_conf_template.txt') || file_exists(PATH_site . $extension['siteRelPath'] . '/class.ext_update.php'))) {
-			$uriBuilder = $this->controllerContext->getUriBuilder();
-			$action = 'showConfigurationForm';
-			$uri = $uriBuilder->reset()->uriFor($action, array(
-				'extension' => array(
-					'key' => $extension['key']
-				)
-			), 'Configuration');
-			$this->tag->addAttribute('href', $uri);
-			$this->tag->addAttribute('title', \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.configure', 'extensionmanager'));
-			$this->tag->setContent(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-extension-configure'));
-			$tag = $this->tag->render();
-		}
-		return $tag;
+	protected $content = '';
+
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->name;
 	}
 
-}
+	/**
+	 * @param string $name
+	 * @return void
+	 */
+	public function setName($name) {
+		$this->name = $name;
+	}
 
+	/**
+	 * @return string
+	 */
+	public function getContent() {
+		return $this->content;
+	}
+
+	/**
+	 * @param string $content
+	 * @return void
+	 */
+	public function setContent($content) {
+		$this->content = $content;
+	}
+}
 
 ?>
