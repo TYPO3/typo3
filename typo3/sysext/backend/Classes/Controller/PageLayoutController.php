@@ -1112,6 +1112,7 @@ class PageLayoutController {
 		if ($id) {
 			$exQ = BackendUtility::deleteClause('pages_language_overlay') .
 				($GLOBALS['BE_USER']->isAdmin() ? '' : ' AND sys_language.hidden=0');
+			$exQ .= t3lib_BEfunc::versioningPlaceholderClause('pages_language_overlay');
 			return $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'sys_language.*',
 				'pages_language_overlay,sys_language',
