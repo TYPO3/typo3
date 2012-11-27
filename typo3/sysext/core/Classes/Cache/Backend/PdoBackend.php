@@ -48,7 +48,7 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
 	protected $password;
 
 	/**
-	 * @var PDO
+	 * @var \PDO
 	 */
 	protected $databaseHandle;
 
@@ -119,9 +119,7 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
 		if (!is_string($data)) {
 			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1259515601);
 		}
-		if ($this->has($entryIdentifier)) {
-			$this->remove($entryIdentifier);
-		}
+		$this->remove($entryIdentifier);
 		$lifetime = $lifetime === NULL ? $this->defaultLifetime : $lifetime;
 		$statementHandle = $this->databaseHandle->prepare('INSERT INTO "cache" ("identifier", "context", "cache", "created", "lifetime", "content") VALUES (?, ?, ?, ?, ?, ?)');
 		$result = $statementHandle->execute(array($entryIdentifier, $this->context, $this->cacheIdentifier, $GLOBALS['EXEC_TIME'], $lifetime, $data));
