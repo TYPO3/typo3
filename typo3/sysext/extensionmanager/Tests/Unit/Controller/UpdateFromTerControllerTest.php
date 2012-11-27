@@ -41,22 +41,18 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 	 * @test
 	 * @return void
 	 */
-	public function updateExtensionListFromTerCallsUpdateExtListIfLastUpdateIsMoreThan24HoursAgo() {
+	public function updateExtensionListFromTerCallsUpdateExtListIfExtensionListIsEmpty() {
 		$controllerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Controller\\UpdateFromTerController', array('dummy'));
 		$repositoryRepositoryMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository', array('findOneByUid'));
-		$repositoryModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Repository', array('getLastUpdate'));
+		$repositoryModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Repository', array('getLastUpdate','getExtensionCount'));
 		$repositoryHelperMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper', array('updateExtList'));
 		$viewMock = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\TemplateView', array('assign'));
 		$requestMock = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('hasArgument', 'getArgument'));
 		$viewMock->expects($this->any())->method('assign')->will($this->returnValue($viewMock));
-		$lastUpdateDate = new \DateTime();
-		// Wed Jul 25 18:40:02 CEST 2012
-		$lastUpdateDate->setTimestamp(1343234402);
-		$repositoryModelMock->expects($this->once())->method('getLastUpdate')->will($this->returnValue($lastUpdateDate));
+		$repositoryModelMock->expects($this->once())->method('getExtensionCount')->will($this->returnValue(0));
 		$repositoryRepositoryMock->expects($this->once())->method('findOneByUid')->with(1)->will($this->returnValue($repositoryModelMock));
 		$repositoryHelperMock->expects($this->once())->method('updateExtList');
-		// Sat Jul 28 18:40:02 CEST 2012
-		$GLOBALS['EXEC_TIME'] = 1343493602;
+
 		$controllerMock->_set('repositoryRepository', $repositoryRepositoryMock);
 		$controllerMock->_set('repositoryHelper', $repositoryHelperMock);
 		$controllerMock->_set('settings', array('repositoryUid' => 1));
@@ -69,22 +65,18 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 	 * @test
 	 * @return void
 	 */
-	public function updateExtensionListFromTerDoesNotCallUpdateExtListIfLastUpdateIsLessThan24HoursAgo() {
+	public function updateExtensionListFromTerCallsUpdateExtListIfExtensionListIsNotEmpty() {
 		$controllerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Controller\\UpdateFromTerController', array('dummy'));
 		$repositoryRepositoryMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository', array('findOneByUid'));
-		$repositoryModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Repository', array('getLastUpdate'));
+		$repositoryModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Repository', array('getLastUpdate','getExtensionCount'));
 		$repositoryHelperMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper', array('updateExtList'));
 		$viewMock = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\TemplateView', array('assign'));
 		$requestMock = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('hasArgument', 'getArgument'));
 		$viewMock->expects($this->any())->method('assign')->will($this->returnValue($viewMock));
-		$lastUpdateDate = new \DateTime();
-		// Wed Jul 25 18:40:02 CEST 2012
-		$lastUpdateDate->setTimestamp(1343493602);
-		$repositoryModelMock->expects($this->once())->method('getLastUpdate')->will($this->returnValue($lastUpdateDate));
+		$repositoryModelMock->expects($this->once())->method('getExtensionCount')->will($this->returnValue(1));
 		$repositoryRepositoryMock->expects($this->once())->method('findOneByUid')->with(1)->will($this->returnValue($repositoryModelMock));
 		$repositoryHelperMock->expects($this->never())->method('updateExtList');
-		// Sat Jul 28 18:40:02 CEST 2012
-		$GLOBALS['EXEC_TIME'] = 1343493602;
+
 		$controllerMock->_set('repositoryRepository', $repositoryRepositoryMock);
 		$controllerMock->_set('repositoryHelper', $repositoryHelperMock);
 		$controllerMock->_set('settings', array('repositoryUid' => 1));
@@ -100,18 +92,15 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 	public function updateExtensionListFromTerCallsUpdateExtListIfForceUpdateCheckIsSet() {
 		$controllerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Controller\\UpdateFromTerController', array('dummy'));
 		$repositoryRepositoryMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository', array('findOneByUid'));
-		$repositoryModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Repository', array('getLastUpdate'));
+		$repositoryModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Repository', array('getLastUpdate','getExtensionCount'));
 		$repositoryHelperMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper', array('updateExtList'));
 		$viewMock = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\TemplateView', array('assign'));
+		$requestMock = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('hasArgument', 'getArgument'));
 		$viewMock->expects($this->any())->method('assign')->will($this->returnValue($viewMock));
-		$lastUpdateDate = new \DateTime();
-		// Wed Jul 25 18:40:02 CEST 2012
-		$lastUpdateDate->setTimestamp(1343234402);
-		$repositoryModelMock->expects($this->once())->method('getLastUpdate')->will($this->returnValue($lastUpdateDate));
+		$repositoryModelMock->expects($this->once())->method('getExtensionCount')->will($this->returnValue(1));
 		$repositoryRepositoryMock->expects($this->once())->method('findOneByUid')->with(1)->will($this->returnValue($repositoryModelMock));
 		$repositoryHelperMock->expects($this->once())->method('updateExtList');
-		// Sat Jul 28 18:40:02 CEST 2012
-		$GLOBALS['EXEC_TIME'] = 1343493602;
+
 		$controllerMock->_set('repositoryRepository', $repositoryRepositoryMock);
 		$controllerMock->_set('repositoryHelper', $repositoryHelperMock);
 		$controllerMock->_set('settings', array('repositoryUid' => 1));
