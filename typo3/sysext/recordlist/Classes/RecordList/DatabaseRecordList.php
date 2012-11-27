@@ -839,7 +839,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 						$theData[$fCol] .= '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . htmlspecialchars($iTitle) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 					}
 				}
-				$theData[$fCol] .= $this->addSortLink($GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel($table, $fCol, '<i>[|]</i>')), $fCol, $table);
+				$theData[$fCol] .= $this->addSortLink($GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel($table, $fCol, '<i>[|]</i>'), TRUE), $fCol, $table);
 				break;
 			}
 		}
