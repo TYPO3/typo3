@@ -1633,6 +1633,15 @@ button.ui-button::-moz-focus-inner {
 
 .typo3-extensionmanager-headerRowLeft {
   display: inline-block; }
+  .typo3-extensionmanager-headerRowLeft .typo3-extensionmanager-searchTerFieldWrapper {
+    display: inline-block;
+    position: relative; }
+    .typo3-extensionmanager-headerRowLeft .typo3-extensionmanager-searchTerFieldWrapper input {
+      height: 15px; }
+    .typo3-extensionmanager-headerRowLeft .typo3-extensionmanager-searchTerFieldWrapper .t3-icon-input-clear {
+      position: absolute;
+      right: 3px;
+      top: 4px; }
 
 .typo3-extensionmanager-headerRowRight {
   float: right; }

@@ -142,13 +142,16 @@
 				<source>Author</source>
 			</trans-unit>
 			<trans-unit id="searchTemplate.submitButton" xml:space="preserve">
-				<source>Submit</source>
+				<source>Search</source>
 			</trans-unit>
 			<trans-unit id="searchTemplate.resetSearchButton" xml:space="preserve">
 				<source>Reset Search</source>
 			</trans-unit>
 			<trans-unit id="searchTemplate.yourSearch" xml:space="preserve">
 				<source>Your search</source>
+			</trans-unit>
+			<trans-unit id="searchTemplate.searchAgain" xml:space="preserve">
+				<source>Search again</source>
 			</trans-unit>
 			<trans-unit id="uploadTemplate.uploadButton" xml:space="preserve">
 				<source>Upload!</source>
