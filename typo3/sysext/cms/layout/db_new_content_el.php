@@ -340,8 +340,11 @@ class SC_db_new_content_el {
 
 					// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
 				$modTSconfig_SHARED = t3lib_BEfunc::getModTSconfig($this->id,'mod.SHARED');
-				$colPosList = strcmp(trim($modTSconfig_SHARED['properties']['colPos_list']),'') ? trim($modTSconfig_SHARED['properties']['colPos_list']) : '1,0,2,3';
-				$colPosList = implode(',',array_unique(t3lib_div::intExplode(',',$colPosList)));		// Removing duplicates, if any
+				$colPosArray = t3lib_div::callUserFunction('EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getColPosListItemsParsed', $this->id, $this);
+				foreach ($colPosArray as $colPos) {
+					$colPosList .= $colPosList != '' ? ',' . $colPos[1] : $colPos[1];
+				}
+				$colPosList = implode(',', array_unique(t3lib_div::intExplode(',', $colPosList)));		// Removing duplicates, if any
 
 					// Finally, add the content of the column selector to the content:
 				$code.= $posMap->printContentElementColumns($this->id,0,$colPosList,1,$this->R_URI);
