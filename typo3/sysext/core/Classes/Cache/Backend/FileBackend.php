@@ -288,8 +288,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
 	 * @api
 	 */
 	public function flush() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($this->cacheDirectory, TRUE);
-		$this->createFinalCacheDirectory($this->cacheDirectory);
+		parent::flush();
 		if ($this->frozen === TRUE) {
 			$this->frozen = FALSE;
 		}
