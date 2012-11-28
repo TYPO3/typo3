@@ -275,7 +275,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$localConfiguration = $this->configurationManager->getLocalConfiguration();
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'] = $localConfiguration['EXT']['extListArray'];
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = implode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray']);
-		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadTypo3LoadedExtAndExtLocalconf(FALSE);
+		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->reloadTypo3LoadedExtAndClassLoaderAndExtLocalconf();
 	}
 
 	/**
