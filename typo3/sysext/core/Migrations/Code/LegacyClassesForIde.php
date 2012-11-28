@@ -9,11 +9,6 @@ class Tx_About_Controller_AboutController extends \TYPO3\CMS\About\Controller\Ab
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-interface tx_about_customSections extends \TYPO3\CMS\About\CustomSectionsInterface {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class Tx_About_Domain_Model_Extension extends \TYPO3\CMS\About\Domain\Model\Extension {}
 
 /**
@@ -30,11 +25,6 @@ class Tx_About_ViewHelpers_SkinImageViewHelper extends \TYPO3\CMS\About\ViewHelp
  * @deprecated since 6.0 will be removed in 7.0
  */
 class Tx_Aboutmodules_Controller_ModulesController extends \TYPO3\CMS\Aboutmodules\Controller\ModulesController {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_aboutmodules_Functions extends \TYPO3\CMS\Aboutmodules\Utility\FunctionsUtility {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
