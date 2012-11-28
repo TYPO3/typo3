@@ -472,19 +472,6 @@ class DocumentTemplate {
 	}
 
 	/**
-	 * Returns TRUE if click-menu layers can be displayed for the current user/browser
-	 * Use this to test if click-menus (context sensitive menus) can and should be displayed in the backend.
-	 *
-	 * @return boolean
-	 * @deprecated since TYPO3 4.7, will be removed in TYPO3 6.1 - This function makes no sense anymore
-	 * @todo Define visibility
-	 */
-	public function isCMlayers() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return !$GLOBALS['BE_USER']->uc['disableCMlayers'] && $GLOBALS['CLIENT']['FORMSTYLE'] && !($GLOBALS['CLIENT']['SYSTEM'] == 'mac' && $GLOBALS['CLIENT']['BROWSER'] == 'Opera');
-	}
-
-	/**
 	 * Makes the header (icon+title) for a page (or other record). Used in most modules under Web>*
 	 * $table and $row must be a tablename/record from that table
 	 * $path will be shown as alt-text for the icon.

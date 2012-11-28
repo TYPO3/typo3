@@ -339,16 +339,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	public function start() {
 		$securityLevel = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']);
 		$standardSecurityLevels = array('normal', 'challenged', 'superchallenged');
-		// The TYPO3 standard login service relies on $this->security_level being set
-		// to 'superchallenged' because of the password in the database is stored as md5 hash.
-		// @deprecated since 4.7
-		// These lines are here for compatibility purpose only, can be removed in 6.1.
-		// @see tx_sv_auth::processLoginData()
-		if (!empty($securityLevel) && !in_array($securityLevel, $standardSecurityLevels)) {
-			$this->security_level = $securityLevel;
-		} else {
-			$this->security_level = 'superchallenged';
-		}
 		parent::start();
 	}
 
@@ -1220,20 +1210,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	}
 
 	/**
-	 * Returns TRUE if $item is in $in_list
-	 *
-	 * @param string $in_list Comma list with items, no spaces between items!
-	 * @param string $item The string to find in the list of items
-	 * @return string Boolean
-	 * @deprecated since TYPO3 4.7, should be removed in TYPO3 6.1, use equivalent function t3lib_div::inList()
-	 * @todo Define visibility
-	 */
-	public function inList($in_list, $item) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::inList($in_list, $item);
-	}
-
-	/**
 	 * Returns an array with the webmounts.
 	 * If no webmounts, and empty array is returned.
 	 * NOTICE: Deleted pages WILL NOT be filtered out! So if a mounted page has been deleted it is STILL coming out as a webmount. This is not checked due to performance.
@@ -1774,66 +1750,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			return 31;
 		} else {
 			return $this->groupData['fileoper_perms'];
-		}
-	}
-
-	/**
-	 * Adds a filemount to the users array of filemounts, $this->groupData['filemounts'][hash_key] = Array ('name'=>$name, 'path'=>$path, 'type'=>$type);
-	 * Is a part of the authentication proces of the user.
-	 * A final requirement for a path being mounted is that a) it MUST return TRUE on is_dir(), b) must contain either PATH_site+'fileadminDir' OR 'lockRootPath' - if lockRootPath is set - as first part of string!
-	 * Paths in the mounted information will always be absolute and have a trailing slash.
-	 *
-	 * @param string $title Will be the (root)name of the filemount in the folder tree
-	 * @param string $altTitle Will be the (root)name of the filemount IF $title is not TRUE (blank or zero)
-	 * @param string $path Is the path which should be mounted. Will accept backslash in paths on windows servers (will substituted with forward slash). The path should be 1) relative to TYPO3_CONF_VARS[BE][fileadminDir] if $webspace is set, otherwise absolute.
-	 * @param boolean $webspace If $webspace is set, the $path is relative to 'fileadminDir' in TYPO3_CONF_VARS, otherwise $path is absolute. 'fileadminDir' must be set to allow mounting of relative paths.
-	 * @param string $type Type of filemount; Can be blank (regular) or "user" / "group" (for user and group filemounts presumably). Probably sets the icon first and foremost.
-	 * @return boolean Returns "1" if the requested filemount was mounted, otherwise no return value.
-	 * @deprecated since TYPO3 6.0, will be removed in TYPO3 6.1, all data is stored in $this->fileStorages now, see initializeFileStorages()
-	 * @access private
-	 * @todo Define visibility
-	 */
-	public function addFileMount($title, $altTitle, $path, $webspace, $type) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		// Return FALSE if fileadminDir is not set and we try to mount a relative path
-		if ($webspace && !$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']) {
-			return FALSE;
-		}
-		// Trimming and pre-processing
-		$path = trim($path);
-		// with WINDOWS convert backslash to slash!!
-		if ($this->OS == 'WIN') {
-			$path = str_replace('\\', '/', $path);
-		}
-		// If the path is TRUE and validates as a valid path string:
-		if ($path && \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($path)) {
-			// normalize path: remove leading '/' and './', and trailing '/' and '/.'
-			$path = trim($path);
-			$path = preg_replace('#^\\.?/|/\\.?$#', '', $path);
-			// There must be some chars in the path
-			if ($path) {
-				// Fileadmin dir, absolute
-				$fdir = PATH_site . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];
-				if ($webspace) {
-					$path = $fdir . $path;
-				} else {
-					// With WINDOWS no prepending!!
-					if ($this->OS != 'WIN') {
-						// With WINDOWS no prepending!!
-						$path = '/' . $path;
-					}
-				}
-				$path .= '/';
-				// We now have a path with slash after and slash before (if unix)
-				if (@is_dir($path) && ($GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath']) || \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($path, $fdir))) {
-					// Alternative title?
-					$name = $title ? $title : $altTitle;
-					// Adds the filemount. The same filemount with same name, type and path cannot be set up twice because of the hash string used as key.
-					$this->groupData['filemounts'][md5($name . '|' . $path . '|' . $type)] = array('name' => $name, 'path' => $path, 'type' => $type);
-					// Return TRUE - went well, success!
-					return 1;
-				}
-			}
 		}
 	}
 
