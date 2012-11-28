@@ -39,7 +39,9 @@
 			"bSort": false,
 			"fnDrawCallback": bindDownload
 		});
+
 		bindDownload();
+		bindSearchFieldResetter();
 	});
 
 	function bindDownload() {
@@ -106,5 +108,27 @@
 		} else {
 			$('.typo3-extension-manager').unmask();
 		}
+	}
+
+	function bindSearchFieldResetter() {
+		var $searchFieldWrapper = $('.typo3-extensionmanager-searchTerFieldWrapper');
+		var $searchField = $searchFieldWrapper.find('input[type="text"]');
+		var $resetter = $searchFieldWrapper.find('.t3-tceforms-input-clearer');
+
+		$searchFieldWrapper.mouseover(function() {
+			if ('' !== $searchField.val()) {
+				$resetter.show();
+			}
+		});
+
+		$searchFieldWrapper.mouseout(function() {
+			$resetter.hide();
+		});
+
+		$resetter.click(function() {
+			$searchField.val('');
+			$searchField.focus()
+		});
+		$resetter.hide();
 	}
 }(jQuery));

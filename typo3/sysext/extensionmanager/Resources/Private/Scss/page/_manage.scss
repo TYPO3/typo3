@@ -1,6 +1,21 @@
 
 .typo3-extensionmanager-headerRowLeft {
 	display: inline-block;
+
+	.typo3-extensionmanager-searchTerFieldWrapper {
+		display: inline-block;
+		position: relative;
+
+		input {
+			height: 15px;
+		}
+
+		.t3-icon-input-clear {
+			position: absolute;
+			right: 3px;
+			top: 4px;
+		}
+	}
 }
 
 // Upload extension
