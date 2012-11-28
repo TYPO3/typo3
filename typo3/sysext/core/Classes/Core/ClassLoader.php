@@ -124,10 +124,22 @@ class ClassLoader {
 			static::updateClassLoaderCacheEntry(array(static::$classNameToFileMapping, static::$aliasToClassNameMapping));
 			static::$cacheUpdateRequired = FALSE;
 		}
-		static::$classNameToFileMapping = array();
-		static::$aliasToClassNameMapping = array();
-		static::$classNameToAliasMapping = array();
+		self::reset();
 		return spl_autoload_unregister(static::$className . '::autoload');
+	}
+
+	/**
+	 * Refreshes the class load cache.
+	 * The results will be written to cache during the shutdown process.
+	 *
+	 * @return void
+	 */
+	static public function refreshClassLoaderCache() {
+		/** @var $phpCodeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
+		$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
+		$phpCodeCache->flush();
+		self::reset();
+		self::loadClassLoaderCache();
 	}
 
 	/**
@@ -429,6 +441,17 @@ class ClassLoader {
 			$lowerCasedClassRegistry[GeneralUtility::strtolower($className)] = $classFile;
 		}
 		return $lowerCasedClassRegistry;
+	}
+
+	/**
+	 * Resets the runtime data created in this component.
+	 *
+	 * @return void
+	 */
+	static protected function reset() {
+		static::$classNameToFileMapping = array();
+		static::$aliasToClassNameMapping = array();
+		static::$classNameToAliasMapping = array();
 	}
 
 }

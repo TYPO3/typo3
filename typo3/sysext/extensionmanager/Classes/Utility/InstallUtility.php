@@ -170,6 +170,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Cannot deactivate extension ' . $extensionKey . ' - The extension(s) ' . implode(',', $dependentExtensions) . ' depend on it', 1342554622);
 		} else {
 			$this->unloadExtension($extensionKey);
+			$this->reloadCaches();
 		}
 	}
 
@@ -276,6 +277,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'] = $localConfiguration['EXT']['extListArray'];
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = implode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray']);
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadTypo3LoadedExtAndExtLocalconf(FALSE);
+		\TYPO3\CMS\Core\Core\ClassLoader::refreshClassLoaderCache();
 	}
 
 	/**
