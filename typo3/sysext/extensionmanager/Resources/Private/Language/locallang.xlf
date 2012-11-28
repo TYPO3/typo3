@@ -150,6 +150,9 @@
 			<trans-unit id="searchTemplate.yourSearch" xml:space="preserve">
 				<source>Your search</source>
 			</trans-unit>
+			<trans-unit id="searchTemplate.searchAgain" xml:space="preserve">
+				<source>Search again</source>
+			</trans-unit>
 			<trans-unit id="uploadTemplate.uploadButton" xml:space="preserve">
 				<source>Upload!</source>
 			</trans-unit>

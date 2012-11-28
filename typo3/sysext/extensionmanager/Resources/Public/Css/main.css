@@ -1779,3 +1779,6 @@ button.ui-button::-moz-focus-inner {
   width: 20px;
   text-indent: -200px;
   overflow: hidden; }
+
+.typo3-extensionmanager-headerRowLeft .pill {
+	font-weight: bold; }
