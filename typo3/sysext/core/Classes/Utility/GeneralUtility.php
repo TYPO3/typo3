@@ -2708,6 +2708,28 @@ Connection: close
 	}
 
 	/**
+	 * Flushes a directory by first moving to a temporary resource, and then
+	 * triggering the remove process. This way directories can be flushed faster
+	 * to prevent race conditions on concurrent processes accessing the same directory.
+	 *
+	 * @param string $directory The directory to be renamed and flushed
+	 * @return boolean Whether the action was successful
+	 */
+	static public function flushDirectory($directory) {
+		$result = FALSE;
+
+		if (is_dir($directory)) {
+			$temporaryDirectory = rtrim($directory, '/') . '.' . uniqid('remove') . '/';
+			if (rename($directory, $temporaryDirectory)) {
+				clearstatcache();
+				$result = self::rmdir($temporaryDirectory, TRUE);
+			}
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Returns an array with the names of folders in a specific path
 	 * Will return 'error' (string) if there were an error with reading directory content.
 	 *
