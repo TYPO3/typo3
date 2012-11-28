@@ -164,6 +164,21 @@ class Bootstrap {
 	}
 
 	/**
+	 * Load TYPO3_LOADED_EXT, recreate class loader registry and load ext_localconf
+	 *
+	 * @param boolean $allowCaching
+	 * @return \TYPO3\CMS\Core\Core\Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
+	 */
+	public function reloadTypo3LoadedExtAndClassLoaderAndExtLocalconf() {
+		$bootstrap = $this->getInstance();
+		$bootstrap->populateTypo3LoadedExtGlobal(FALSE);
+		\TYPO3\CMS\Core\Core\ClassLoader::loadClassLoaderCache();
+		$bootstrap->loadAdditionalConfigurationFromExtensions(FALSE);
+		return $this;
+	}
+
+	/**
 	 * Sets up additional configuration applied in all scopes
 	 *
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
