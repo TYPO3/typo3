@@ -189,7 +189,7 @@ class ClassLoader {
 	 *
 	 * @return void
 	 */
-	static protected function loadClassLoaderCache() {
+	static public function loadClassLoaderCache() {
 		$classRegistry = NULL;
 		$aliasToClassNameMapping = NULL;
 		/** @var $phpCodeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
