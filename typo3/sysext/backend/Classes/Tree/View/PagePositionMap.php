@@ -430,11 +430,9 @@ class PagePositionMap {
 					// Which tt_content colPos should be displayed inside this cell
 					$columnKey = (int)$columnConfig['colPos'];
 					$head = '';
-					$params = array();
-					$params['pid'] = $pid;
 					foreach ($tcaItems as $item) {
 						if ($item[1] == $columnKey) {
-							$head = $GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $columnKey, $params), TRUE);
+							$head = $GLOBALS['LANG']->sL($item[0], TRUE);
 						}
 					}
 					// Render the grid cell
