@@ -1,12 +1,12 @@
 <?php
-namespace TYPO3\CMS\Dbal\Tests;
+namespace TYPO3\CMS\Dbal\Tests\Unit\Database;
 
 /**
  * Test Oracle database handling.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
  */
-class DatabaseOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class DatabaseConnectionOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
@@ -27,14 +27,14 @@ class DatabaseOracleTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// Backup database connection
 		$this->db = $GLOBALS['TYPO3_DB'];
 		// Reconfigure DBAL to use Oracle
-		require 'fixtures/oci8.config.php';
+		require 'Fixtures/oci8.config.php';
 		$className = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
 		$GLOBALS['TYPO3_DB'] = new $className();
 		$parserClassName = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\SqlParser');
 		$GLOBALS['TYPO3_DB']->SQLparser = new $parserClassName();
 		$this->assertFalse($GLOBALS['TYPO3_DB']->isConnected());
 		// Initialize a fake Oracle connection
-		\TYPO3\CMS\Dbal\Tests\FakeDatabaseConnection::connect($GLOBALS['TYPO3_DB'], 'oci8');
+		\TYPO3\CMS\Dbal\Tests\Unit\Database\FakeDatabaseConnection::connect($GLOBALS['TYPO3_DB'], 'oci8');
 		$this->assertTrue($GLOBALS['TYPO3_DB']->isConnected());
 	}
 

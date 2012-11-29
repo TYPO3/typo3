@@ -1,12 +1,12 @@
 <?php
-namespace TYPO3\CMS\Dbal\Tests;
+namespace TYPO3\CMS\Dbal\Tests\Unit\Database;
 
 /**
  * Test MS SQL database handling.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
  */
-class DatabaseMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class DatabaseConnectionMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
@@ -27,14 +27,14 @@ class DatabaseMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// Backup database connection
 		$this->db = $GLOBALS['TYPO3_DB'];
 		// Reconfigure DBAL to use MS SQL
-		require 'fixtures/mssql.config.php';
+		require 'Fixtures/mssql.config.php';
 		$className = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
 		$GLOBALS['TYPO3_DB'] = new $className();
 		$parserClassName = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\SqlParser');
 		$GLOBALS['TYPO3_DB']->SQLparser = new $parserClassName();
 		$this->assertFalse($GLOBALS['TYPO3_DB']->isConnected());
 		// Initialize a fake MS SQL connection
-		\TYPO3\CMS\Dbal\Tests\FakeDatabaseConnection::connect($GLOBALS['TYPO3_DB'], 'mssql');
+		\TYPO3\CMS\Dbal\Tests\Unit\Database\FakeDatabaseConnection::connect($GLOBALS['TYPO3_DB'], 'mssql');
 		$this->assertTrue($GLOBALS['TYPO3_DB']->isConnected());
 	}
 
