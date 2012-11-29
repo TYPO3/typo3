@@ -803,12 +803,15 @@ class ContentObjectRenderer {
 			'FLOWPLAYER' => 'FlowPlayer',
 			'QTOBJECT' => 'QuicktimeObject',
 			'SVG' => 'ScalableVectorGraphics',
-			'EDITPANEL' => 'EditPanel'
+			'EDITPANEL' => 'EditPanel',
 		);
 		$name = $classMapping[$name];
 		if (!array_key_exists($name, $this->contentObjects)) {
 			try {
-				$this->contentObjects[$name] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_content_' . $name, $this);
+				$this->contentObjects[$name] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+					'TYPO3\\CMS\\Frontend\\ContentObject\\' . $name . 'ContentObject',
+					$this
+				);
 			} catch (\ReflectionException $e) {
 				$this->contentObjects[$name] = NULL;
 			}
