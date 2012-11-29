@@ -5139,7 +5139,7 @@ class tslib_content_SearchResult extends \TYPO3\CMS\Frontend\ContentObject\Searc
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tslib_content_ShockwaveFlashObject extends \TYPO3\CMS\Frontend\ContentObject\ShockwaveFlashContentObject {}
+class tslib_content_ShockwaveFlashObject extends \TYPO3\CMS\Frontend\ContentObject\ShockwaveFlashObjectContentObject {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
