@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Andreas Lappe <a.lappe@kuehlhaus.com>, kuehlhaus AG
+ *  (c) 2012 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  *
  *  All rights reserved
  *
@@ -28,12 +28,12 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 /**
  * Test case
  *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * @author Andreas Lappe <nd@kaeufli.ch>
  */
-class AlphanumericFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class StripNewLinesFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Form\Filter\AlphanumericFilter
+	 * @var \TYPO3\CMS\Form\Filter\StripNewLinesFilter
 	 */
 	protected $fixture = NULL;
 
@@ -41,7 +41,7 @@ class AlphanumericFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Set up
 	 */
 	public function setUp() {
-		$this->fixture = new \TYPO3\CMS\Form\Filter\AlphanumericFilter();
+		$this->fixture = new \TYPO3\CMS\Form\Filter\StripNewLinesFilter();
 	}
 
 	/**
@@ -51,34 +51,26 @@ class AlphanumericFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture = NULL;
 	}
 
-	/**
-	 * @test
-	 */
-	public function filterForStringWithUnicodeCharactersAndSpacesReturnsInputString() {
-		$input = 'My name contains äøüößØœ';
-		// This is default, but let's be explicit:
-		$this->fixture->setAllowWhiteSpace(TRUE);
-		$this->assertSame($input, $this->fixture->filter($input));
+	public function dataProviderWithNewlines() {
+		return array(
+			'some\ntext' => array("some\ntext", 'some text'),
+			'somechr(10)text' => array('some' . chr(10) . 'text', 'some text'),
+			'some^Mtext' => array('some
+text', 'some text'),
+			'trailing newline^M' => array('trailing newline
+', 'trailing newline '),
+		);
 	}
 
 	/**
 	 * @test
+	 * @dataProvider dataProviderWithNewlines
 	 */
-	public function filterForStringWithUnicodeCharactersAndSpacesWithAllowWhitespaceSetToFalseReturnsInputStringWithoutSpaces() {
-		$input = 'My name contains äøüößØœ';
-		$expected = 'MynamecontainsäøüößØœ';
-		$this->fixture->setAllowWhiteSpace(FALSE);
-		$this->assertSame($expected, $this->fixture->filter($input));
+	public function filterForStringWithNewlineReturnsStringWithoutNewline($input, $expected) {
+		$this->assertSame(
+			$expected,
+			$this->fixture->filter($input)
+		);
 	}
-
-	/**
-	 * @test
-	 */
-	public function filterAllowsNumericCharacters() {
-		$this->assertSame('foo23bar', $this->fixture->filter('foo23bar'));
-	}
-
 }
-
-
 ?>
