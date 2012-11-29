@@ -71,7 +71,7 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
 			}
 		}
 		// Configuration for canDeactivateSelf
-		$fieldName = 'TYPO3\\CMS\\Scheduler\\Scheduler[scheduler_saltedpasswordsBulkUpdateCanDeactivateSelf]';
+		$fieldName = 'tx_scheduler[scheduler_saltedpasswordsBulkUpdateCanDeactivateSelf]';
 		$fieldId = 'task_saltedpasswordsBulkUpdateCanDeactivateSelf';
 		$fieldValue = 'IsChecked';
 		$fieldChecked = (bool) $taskInfo['scheduler_saltedpasswordsBulkUpdateCanDeactivateSelf'];
@@ -83,7 +83,7 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
 			'cshLabel' => $fieldId
 		);
 		// Configuration for numberOfRecords
-		$fieldName = 'TYPO3\\CMS\\Scheduler\\Scheduler[scheduler_saltedpasswordsBulkUpdateNumberOfRecords]';
+		$fieldName = 'tx_scheduler[scheduler_saltedpasswordsBulkUpdateNumberOfRecords]';
 		$fieldId = 'task_saltedpasswordsBulkUpdateNumberOfRecords';
 		$fieldValue = intval($taskInfo['scheduler_saltedpasswordsBulkUpdateNumberOfRecords']);
 		$fieldHtml = '<input type="text" name="' . $fieldName . '" id="' . $fieldId . '" value="' . htmlspecialchars($fieldValue) . '" />';
@@ -118,7 +118,7 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
 	 * Saves given values in task object
 	 *
 	 * @param array $submittedData Contains data submitted by the user
-	 * @param tx_scheduler_Task|tx_saltedpasswords_Tasks_BulkUpdate $task Reference to the current task object
+	 * @param \TYPO3\CMS\Scheduler\Task\AbstractTask|\TYPO3\CMS\Saltedpasswords\Task\BulkUpdateTask $task Reference to the current task object
 	 * @return void
 	 */
 	public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
