@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class ShockwaveFlashContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
+class ShockwaveFlashObjectContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 
 	/**
 	 * Rendering the cObject, SWFOBJECT

@@ -49,7 +49,7 @@ return array(
 	'tslib_content_ScalableVectorGraphics' => 'TYPO3\\CMS\\Frontend\\ContentObject\\ScalableVectorGraphicsContentObject',
 	'tslib_search' => 'TYPO3\\CMS\\Frontend\\ContentObject\\SearchResultContentObject',
 	'tslib_content_SearchResult' => 'TYPO3\\CMS\\Frontend\\ContentObject\\SearchResultContentObject',
-	'tslib_content_ShockwaveFlashObject' => 'TYPO3\\CMS\\Frontend\\ContentObject\\ShockwaveFlashContentObject',
+	'tslib_content_ShockwaveFlashObject' => 'TYPO3\\CMS\\Frontend\\ContentObject\\ShockwaveFlashObjectContentObject',
 	'tslib_controlTable' => 'TYPO3\\CMS\\Frontend\\ContentObject\\TableRenderer',
 	'tslib_content_Template' => 'TYPO3\\CMS\\Frontend\\ContentObject\\TemplateContentObject',
 	'tslib_content_Text' => 'TYPO3\\CMS\\Frontend\\ContentObject\\TextContentObject',
