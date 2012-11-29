@@ -207,7 +207,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Method returns extension count
 	 *
 	 * @access public
-	 * @return int count of read extensions
+	 * @return integer count of read extensions
 	 */
 	public function getExtensionCount() {
 		return $this->extensionCount;
