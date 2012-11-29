@@ -102,7 +102,7 @@ class UpdateFromTerController extends \TYPO3\CMS\Extensionmanager\Controller\Abs
 		$errorMessage = '';
 		/** @var $repository \TYPO3\CMS\Extensionmanager\Domain\Model\Repository */
 		$repository = $this->repositoryRepository->findOneByUid((int)$this->settings['repositoryUid']);
-		if ($repository->getExtensionCount() === 0 || $forceUpdateCheck) {
+		if ($this->extensionRepository->countAll() === 0 || $forceUpdateCheck) {
 			try {
 				$updated = $this->repositoryHelper->updateExtList();
 			} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
