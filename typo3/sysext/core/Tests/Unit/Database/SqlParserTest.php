@@ -31,12 +31,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
 class SqlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Core\Database\SqlParser
+	 * @var \TYPO3\CMS\Core\Database\SqlParser|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	private $fixture;
 
 	public function setUp() {
-		$this->fixture = new \TYPO3\CMS\Core\Database\SqlParser();
+		$this->fixture = $this->getAccessibleMock('\\TYPO3\\CMS\\Core\\Database\\SqlParser', array('dummy'));
 	}
 
 	public function tearDown() {
@@ -47,7 +47,6 @@ class SqlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Regression test
 	 *
 	 * @test
-	 * @todo Define visibility
 	 */
 	public function compileWhereClauseDoesNotDropClauses() {
 		$clauses = array(
@@ -120,6 +119,37 @@ class SqlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$parts = explode(' OR ', $output);
 		$this->assertSame(count($clauses), count($parts));
 		$this->assertContains('IFNULL', $output);
+	}
+
+	/**
+	 * Data provider for trimSqlReallyTrimsAllWhitespace
+	 *
+	 * @see trimSqlReallyTrimsAllWhitespace
+	 */
+	public function trimSqlReallyTrimsAllWhitespaceDataProvider() {
+		return array(
+			'Nothing to trim' => array('SELECT * FROM test WHERE 1=1;', 'SELECT * FROM test WHERE 1=1 '),
+			'Space after ;' => array('SELECT * FROM test WHERE 1=1; ', 'SELECT * FROM test WHERE 1=1 '),
+			'Space before ;' => array('SELECT * FROM test WHERE 1=1 ;', 'SELECT * FROM test WHERE 1=1 '),
+			'Space before and after ;' => array('SELECT * FROM test WHERE 1=1 ; ', 'SELECT * FROM test WHERE 1=1 '),
+			'Linefeed after ;' => array('SELECT * FROM test WHERE 1=1' . LF . ';', 'SELECT * FROM test WHERE 1=1 '),
+			'Linefeed before ;' => array('SELECT * FROM test WHERE 1=1;' . LF, 'SELECT * FROM test WHERE 1=1 '),
+			'Linefeed before and after ;' => array('SELECT * FROM test WHERE 1=1' . LF . ';' . LF, 'SELECT * FROM test WHERE 1=1 '),
+			'Tab after ;' => array('SELECT * FROM test WHERE 1=1' . TAB . ';', 'SELECT * FROM test WHERE 1=1 '),
+			'Tab before ;' => array('SELECT * FROM test WHERE 1=1;' . TAB, 'SELECT * FROM test WHERE 1=1 '),
+			'Tab before and after ;' => array('SELECT * FROM test WHERE 1=1' . TAB . ';' . TAB, 'SELECT * FROM test WHERE 1=1 '),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider trimSqlReallyTrimsAllWhitespaceDataProvider
+	 * @param string $sql The SQL to trim
+	 * @param string $expected The expected trimmed SQL with single space at the end
+	 */
+	public function trimSqlReallyTrimsAllWhitespace($sql, $expected) {
+		$result = $this->fixture->_call('trimSQL', $sql);
+		$this->assertSame($expected, $result);
 	}
 
 }
