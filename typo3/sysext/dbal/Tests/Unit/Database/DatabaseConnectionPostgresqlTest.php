@@ -1,12 +1,12 @@
 <?php
-namespace TYPO3\CMS\Dbal\Tests;
+namespace TYPO3\CMS\Dbal\Tests\Unit\Database;
 
 /**
  * Test PostgreSQL database handling.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
  */
-class DatabasePostgresqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class DatabaseConnectionPostgresqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
@@ -27,14 +27,14 @@ class DatabasePostgresqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// Backup database connection
 		$this->db = $GLOBALS['TYPO3_DB'];
 		// Reconfigure DBAL to use PostgreSQL
-		require 'fixtures/postgresql.config.php';
+		require 'Fixtures/postgresql.config.php';
 		$className = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
 		$GLOBALS['TYPO3_DB'] = new $className();
 		$parserClassName = self::buildAccessibleProxy('TYPO3\\CMS\\Dbal\\Database\\SqlParser');
 		$GLOBALS['TYPO3_DB']->SQLparser = new $parserClassName();
 		$this->assertFalse($GLOBALS['TYPO3_DB']->isConnected());
 		// Initialize a fake PostgreSQL connection (using 'postgres7' as 'postgres' is remapped to it in AdoDB)
-		\TYPO3\CMS\Dbal\Tests\FakeDatabaseConnection::connect($GLOBALS['TYPO3_DB'], 'postgres7');
+		\TYPO3\CMS\Dbal\Tests\Unit\Database\FakeDatabaseConnection::connect($GLOBALS['TYPO3_DB'], 'postgres7');
 		$this->assertTrue($GLOBALS['TYPO3_DB']->isConnected());
 	}
 

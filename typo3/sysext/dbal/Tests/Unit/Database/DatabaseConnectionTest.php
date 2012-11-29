@@ -1,12 +1,12 @@
 <?php
-namespace TYPO3\CMS\Dbal\Tests;
+namespace TYPO3\CMS\Dbal\Tests\Unit\Database;
 
 /**
  * Testcase for class DatabaseConnection.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
  */
-class DatabaseGeneralTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection

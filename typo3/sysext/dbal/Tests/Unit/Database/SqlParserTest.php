@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dbal\Tests;
+namespace TYPO3\CMS\Dbal\Tests\Unit\Database;
 
 /***************************************************************
  *  Copyright notice
@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Dbal\Tests;
  *
  * @author Xavier Perseguers <xavier@typo3.org>
  */
-class SqlParserGeneralTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class SqlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Dbal\Database\SqlParser
