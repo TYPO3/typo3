@@ -1622,7 +1622,7 @@ class t3lib_sqlparser {
 	 * @return	string		Output string
 	 */
 	protected function trimSQL($str) {
-		return trim(rtrim($str, "; \r\n\t")) . ' ';
+		return rtrim(rtrim(trim($str), ';')) . ' ';
 	}
 
 
