@@ -1468,8 +1468,7 @@ class SqlParser {
 	 * @return string Output string
 	 */
 	protected function trimSQL($str) {
-		return trim(rtrim($str, ';
-	')) . ' ';
+		return rtrim(rtrim(trim($str), ';')) . ' ';
 	}
 
 	/*************************
