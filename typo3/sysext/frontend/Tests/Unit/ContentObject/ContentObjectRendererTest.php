@@ -34,23 +34,21 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
-	private $cObj;
+	protected $cObj = NULL;
 
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
 	 */
-	private $tsfe;
+	protected $tsfe = NULL;
 
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\TypoScript\TemplateService
 	 */
-	private $template;
+	protected $template = NULL;
 
 	/**
-	 * @var array
+	 * Set up
 	 */
-	private $typoScriptImage = array('file' => 'typo3/clear.gif');
-
 	public function setUp() {
 		$this->template = $this->getMock('TYPO3\\CMS\\Core\\TypoScript\\TemplateService', array('getFileName', 'linkData'));
 		$this->tsfe = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
@@ -96,7 +94,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$getImgResourceHookMock->expects($this->once())->method('getImgResourcePostProcess')->will($this->returnCallback(array($this, 'isGetImgResourceHookCalledCallback')));
 		$getImgResourceHookObjects = array($getImgResourceHookMock);
 		$this->cObj->_setRef('getImgResourceHookObjects', $getImgResourceHookObjects);
-		$this->cObj->IMAGE($this->typoScriptImage);
+		$this->cObj->IMAGE(array('file' => 'typo3/clear.gif'));
 	}
 
 	/**
@@ -112,6 +110,75 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertTrue(is_array($fileArray));
 		$this->assertTrue($parent instanceof \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer);
 		return $imageResource;
+	}
+
+
+	/*************************
+	 * Tests concerning getContentObject
+	 ************************/
+	public function getContentObjectValidContentObjectsDataProvider() {
+		return array(
+			array('TEXT', 'Text'),
+			array('CASE', 'Case'),
+			array('CLEARGIF', 'ClearGif'),
+			array('COBJ_ARRAY', 'ContentObjectArray'),
+			array('COA', 'ContentObjectArray'),
+			array('COA_INT', 'ContentObjectArrayInternal'),
+			array('USER', 'User'),
+			array('USER_INT', 'UserInternal'),
+			array('FILE', 'File'),
+			array('FILES', 'Files'),
+			array('IMAGE', 'Image'),
+			array('IMG_RESOURCE', 'ImageResource'),
+			array('IMGTEXT', 'ImageText'),
+			array('CONTENT', 'Content'),
+			array('RECORDS', 'Records'),
+			array('HMENU', 'HierarchicalMenu'),
+			array('CTABLE', 'ContentTable'),
+			array('OTABLE', 'OffsetTable'),
+			array('COLUMNS', 'Columns'),
+			array('HRULER', 'HorizontalRuler'),
+			array('CASEFUNC', 'Case'),
+			array('LOAD_REGISTER', 'LoadRegister'),
+			array('RESTORE_REGISTER', 'RestoreRegister'),
+			array('FORM', 'Form'),
+			array('SEARCHRESULT', 'SearchResult'),
+			array('TEMPLATE', 'Template'),
+			array('FLUIDTEMPLATE', 'FluidTemplate'),
+			array('MULTIMEDIA', 'Multimedia'),
+			array('MEDIA', 'Media'),
+			array('SWFOBJECT', 'ShockwaveFlashObject'),
+			array('FLOWPLAYER', 'FlowPlayer'),
+			array('QTOBJECT', 'QuicktimeObject'),
+			array('SVG', 'ScalableVectorGraphics'),
+			array('EDITPANEL', 'EditPanel'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getContentObjectValidContentObjectsDataProvider
+	 * @param string $name TypoScript name of content object
+	 * @param string $className Expected class name
+	 */
+	public function getContentObjectUsesExistingInstanceOfRequestedObjectType($name, $className) {
+		$fullClassName = 'TYPO3\\CMS\\Frontend\\ContentObject\\' . $className . 'ContentObject';
+		$contentObjectInstance = $this->getMock($fullClassName, array(), array(), '', FALSE);
+		$this->cObj->_set('contentObjects', array($className => $contentObjectInstance));
+		$this->assertSame($contentObjectInstance, $this->cObj->getContentObject($name));
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getContentObjectValidContentObjectsDataProvider
+	 * @param string $name TypoScript name of content object
+	 * @param string $className Expected class name
+	 */
+	public function getContentObjectCallsMakeInstanceForNewContentObjectInstance($name, $className) {
+		$fullClassName = 'TYPO3\\CMS\\Frontend\\ContentObject\\' . $className . 'ContentObject';
+		$contentObjectInstance = $this->getMock($fullClassName, array(), array(), '', FALSE);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance($fullClassName, $contentObjectInstance);
+		$this->assertSame($contentObjectInstance, $this->cObj->getContentObject($name));
 	}
 
 	//////////////////////////
