@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Andreas Lappe <a.lappe@kuehlhaus.com>, kuehlhaus AG
+ *  (c) 2012 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  *
  *  All rights reserved
  *
@@ -28,57 +28,60 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 /**
  * Test case
  *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * @author Andreas Lappe <nd@kaeufli.ch>
  */
-class AlphanumericFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class CurrencyFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Form\Filter\AlphanumericFilter
+	 * @var \TYPO3\CMS\Form\Filter\CurrencyFilter
 	 */
-	protected $fixture = NULL;
+	protected $fixture;
 
-	/**
-	 * Set up
-	 */
 	public function setUp() {
-		$this->fixture = new \TYPO3\CMS\Form\Filter\AlphanumericFilter();
+		$this->fixture = new \TYPO3\CMS\Form\Filter\CurrencyFilter();
 	}
 
-	/**
-	 * Tear down
-	 */
 	public function tearDown() {
-		$this->fixture = NULL;
+		unset($this->fixture);
+	}
+
+	public function validDataProvider() {
+		return array(
+			'1200 => 1.200,00' => array(
+				1200, // input
+				'.', // thousand separator
+				',', // decimal point
+				'1.200,00' // expected
+			),
+			'0 => 0,00' => array(
+				0,
+				NULL,
+				',',
+				'0,00'
+			),
+			'3333.33 => 3,333.33' => array(
+				3333.33,
+				',',
+				'.',
+				'3,333.33'
+			),
+			'1099.33 => 1 099,33' => array(
+				1099.33,
+				' ',
+				',',
+				'1 099,33'
+			),
+		);
 	}
 
 	/**
 	 * @test
+	 * @dataProvider validDataProvider
 	 */
-	public function filterForStringWithUnicodeCharactersAndSpacesReturnsInputString() {
-		$input = 'My name contains äøüößØœ';
-		// This is default, but let's be explicit:
-		$this->fixture->setAllowWhiteSpace(TRUE);
-		$this->assertSame($input, $this->fixture->filter($input));
-	}
-
-	/**
-	 * @test
-	 */
-	public function filterForStringWithUnicodeCharactersAndSpacesWithAllowWhitespaceSetToFalseReturnsInputStringWithoutSpaces() {
-		$input = 'My name contains äøüößØœ';
-		$expected = 'MynamecontainsäøüößØœ';
-		$this->fixture->setAllowWhiteSpace(FALSE);
+	public function filterForVariousIntegerInputsReturnsFormattedCurrencyNotation($input, $thousandSeparator, $decimalPoint, $expected) {
+		$this->fixture->setThousandSeparator($thousandSeparator);
+		$this->fixture->setDecimalsPoint($decimalPoint);
 		$this->assertSame($expected, $this->fixture->filter($input));
 	}
-
-	/**
-	 * @test
-	 */
-	public function filterAllowsNumericCharacters() {
-		$this->assertSame('foo23bar', $this->fixture->filter('foo23bar'));
-	}
-
 }
-
-
 ?>

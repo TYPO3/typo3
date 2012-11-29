@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Andreas Lappe <a.lappe@kuehlhaus.com>, kuehlhaus AG
+ *  (c) 2012 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  *
  *  All rights reserved
  *
@@ -28,50 +28,53 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 /**
  * Test case
  *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * @author Andreas Lappe <nd@kaeufli.ch>
  */
-class AlphabeticFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class RegExpFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Form\Filter\AlphabeticFilter
+	 * @var \TYPO3\CMS\Form\Filter\RegExpFilter
 	 */
-	protected $fixture = NULL;
+	protected $fixture;
 
-	/**
-	 * Set up
-	 */
 	public function setUp() {
-		$this->fixture = new \TYPO3\CMS\Form\Filter\AlphabeticFilter();
+		$this->fixture = new \TYPO3\CMS\Form\Filter\RegExpFilter();
 	}
 
-	/**
-	 * Tear down
-	 */
 	public function tearDown() {
-		$this->fixture = NULL;
+		unset($this->fixture);
+	}
+
+	public function dataProvider() {
+		return array(
+			'a-a -> aa for /-/' => array(
+				'a-a',
+				'/-/',
+				'aa'
+			),
+			'aaa -> "" for /.+/' => array(
+				'aaa',
+				'/.+/',
+				''
+			),
+			'aAa -> aa for /[^a]+/' => array(
+				'aAa',
+				'/[^a]+/',
+				'aa'
+			),
+		);
 	}
 
 	/**
 	 * @test
+	 * @dataProvider dataProvider
 	 */
-	public function filterForStringWithUnicodeCharactersAndSpacesReturnsInputString() {
-		$input = 'My name contains äøüößØœ';
-		// This is default, but let's be explicit:
-		$this->fixture->setAllowWhiteSpace(TRUE);
-		$this->assertSame($input, $this->fixture->filter($input));
+	public function filterForStringReturnsInputWithoutCharactersMatchedByRegularExpression($input, $regularExpression, $expected) {
+		$this->fixture->setRegularExpression($regularExpression);
+		$this->assertSame(
+			$expected,
+			$this->fixture->filter($input)
+		);
 	}
-
-	/**
-	 * @test
-	 */
-	public function filterForStringWithUnicodeCharactersAndSpacesWithAllowWhitespaceSetToFalseReturnsInputStringWithoutSpaces() {
-		$input = 'My name contains äøüößØœ';
-		$expected = 'MynamecontainsäøüößØœ';
-		$this->fixture->setAllowWhiteSpace(FALSE);
-		$this->assertSame($expected, $this->fixture->filter($input));
-	}
-
 }
-
-
 ?>
