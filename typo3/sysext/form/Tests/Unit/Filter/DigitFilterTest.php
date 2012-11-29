@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Andreas Lappe <a.lappe@kuehlhaus.com>, kuehlhaus AG
+ *  (c) 2012 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  *
  *  All rights reserved
  *
@@ -28,50 +28,42 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 /**
  * Test case
  *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * @author Andreas Lappe <nd@kaeufli.ch>
  */
-class AlphabeticFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class DigitFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Form\Filter\AlphabeticFilter
+	 * @var \TYPO3\CMS\Form\Filter\DigitFilter
 	 */
-	protected $fixture = NULL;
+	protected $fixture;
 
-	/**
-	 * Set up
-	 */
 	public function setUp() {
-		$this->fixture = new \TYPO3\CMS\Form\Filter\AlphabeticFilter();
+		$this->fixture = new \TYPO3\CMS\Form\Filter\DigitFilter();
 	}
 
-	/**
-	 * Tear down
-	 */
 	public function tearDown() {
-		$this->fixture = NULL;
+		unset($this->fixture);
+	}
+
+	public function validDataProvider() {
+		return array(
+			'1,00 -> 100' => array('1,00', '100'),
+			'1E+49 -> 149' => array('1E+49', '149'),
+			'100 -> 100' => array('100', '100'),
+			'00000 -> 00000' => array('00000', '00000'),
+			'ABCD -> ""' => array('ABCD', ''),
+		);
 	}
 
 	/**
 	 * @test
+	 * @dataProvider validDataProvider
 	 */
-	public function filterForStringWithUnicodeCharactersAndSpacesReturnsInputString() {
-		$input = 'My name contains äøüößØœ';
-		// This is default, but let's be explicit:
-		$this->fixture->setAllowWhiteSpace(TRUE);
-		$this->assertSame($input, $this->fixture->filter($input));
+	public function filterForStringsReturnsStringsFilteredToOnlyContainDigits($input, $expected) {
+		$this->assertSame(
+			$expected,
+			$this->fixture->filter($input)
+		);
 	}
-
-	/**
-	 * @test
-	 */
-	public function filterForStringWithUnicodeCharactersAndSpacesWithAllowWhitespaceSetToFalseReturnsInputStringWithoutSpaces() {
-		$input = 'My name contains äøüößØœ';
-		$expected = 'MynamecontainsäøüößØœ';
-		$this->fixture->setAllowWhiteSpace(FALSE);
-		$this->assertSame($expected, $this->fixture->filter($input));
-	}
-
 }
-
-
 ?>

@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Andreas Lappe <a.lappe@kuehlhaus.com>, kuehlhaus AG
+ *  (c) 2012 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  *
  *  All rights reserved
  *
@@ -28,12 +28,12 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 /**
  * Test case
  *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
+ * @author Andreas Lappe <nd@kaeufli.ch>
  */
-class AlphanumericFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class UpperCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Form\Filter\AlphanumericFilter
+	 * @var \TYPO3\CMS\Form\Filter\UpperCaseFilter
 	 */
 	protected $fixture = NULL;
 
@@ -41,7 +41,10 @@ class AlphanumericFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Set up
 	 */
 	public function setUp() {
-		$this->fixture = new \TYPO3\CMS\Form\Filter\AlphanumericFilter();
+		$this->fixture = new \TYPO3\CMS\Form\Filter\UpperCaseFilter();
+		$GLOBALS['TSFE'] = new \stdClass();
+		$GLOBALS['TSFE']->csConvObj = new \TYPO3\CMS\Core\Charset\CharsetConverter();
+		$GLOBALS['TSFE']->renderCharset = 'utf-8';
 	}
 
 	/**
@@ -49,36 +52,25 @@ class AlphanumericFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function tearDown() {
 		$this->fixture = NULL;
+		unset($GLOBALS['TSFE']);
+	}
+
+	public function stringProvider() {
+		return array(
+			'asdf' => array('asdf', 'ASDF'),
+			'as?df' => array('as?df', 'AS?DF'),
+		);
 	}
 
 	/**
 	 * @test
+	 * @dataProvider stringProvider
 	 */
-	public function filterForStringWithUnicodeCharactersAndSpacesReturnsInputString() {
-		$input = 'My name contains äøüößØœ';
-		// This is default, but let's be explicit:
-		$this->fixture->setAllowWhiteSpace(TRUE);
-		$this->assertSame($input, $this->fixture->filter($input));
+	public function filterForStringReturnsUppercasedString($input, $expected) {
+		$this->assertSame(
+			$expected,
+			$this->fixture->filter($input)
+		);
 	}
-
-	/**
-	 * @test
-	 */
-	public function filterForStringWithUnicodeCharactersAndSpacesWithAllowWhitespaceSetToFalseReturnsInputStringWithoutSpaces() {
-		$input = 'My name contains äøüößØœ';
-		$expected = 'MynamecontainsäøüößØœ';
-		$this->fixture->setAllowWhiteSpace(FALSE);
-		$this->assertSame($expected, $this->fixture->filter($input));
-	}
-
-	/**
-	 * @test
-	 */
-	public function filterAllowsNumericCharacters() {
-		$this->assertSame('foo23bar', $this->fixture->filter('foo23bar'));
-	}
-
 }
-
-
 ?>
