@@ -130,18 +130,18 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 
 	/**
 	 * Configures the object manager object configuration from
-	 * config.tx_extbase.objects
+	 * config.tx_extbase.objects and plugin.tx_foo.objects
 	 *
 	 * @return void
 	 * @see initialize()
 	 */
 	public function configureObjectManager() {
-		$typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-		if (!is_array($typoScriptSetup['config.']['tx_extbase.']['objects.'])) {
+		$frameworkSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		if (!is_array($frameworkSetup['objects'])) {
 			return;
 		}
 		$objectContainer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\Container\\Container');
-		foreach ($typoScriptSetup['config.']['tx_extbase.']['objects.'] as $classNameWithDot => $classConfiguration) {
+		foreach ($frameworkSetup['objects'] as $classNameWithDot => $classConfiguration) {
 			if (isset($classConfiguration['className'])) {
 				$originalClassName = rtrim($classNameWithDot, '.');
 				$objectContainer->registerImplementation($originalClassName, $classConfiguration['className']);
