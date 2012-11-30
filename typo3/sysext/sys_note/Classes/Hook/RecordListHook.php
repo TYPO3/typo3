@@ -5,6 +5,7 @@ namespace TYPO3\CMS\SysNote\Hook;
  *  Copyright notice
  *
  *  (c) 2012 Georg Ringer <typo3@ringerge.org>
+ *      2012 Kai Vogel <kai.vogel@speedprogs.de>, Speedprogs.de
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,10 +24,12 @@ namespace TYPO3\CMS\SysNote\Hook;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Hook for the list module
  *
  * @author Georg Ringer <typo3@ringerge.org>
+ * @author Kai Vogel <kai.vogel@speedprogs.de>
  */
 class RecordListHook {
 
@@ -38,9 +41,8 @@ class RecordListHook {
 	 * @return string
 	 */
 	public function render(array $params = array(), \TYPO3\CMS\Recordlist\RecordList $parentObject) {
-		$renderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\SysNote\\SysNoteRenderer');
-		$sysNotes = $renderer->renderByPid($parentObject->id);
-		return $sysNotes;
+		$noteController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\SysNote\\Controller\\NoteController');
+		return $noteController->renderNotes($parentObject->id);
 	}
 
 }
