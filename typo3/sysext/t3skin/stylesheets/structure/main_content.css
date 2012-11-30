@@ -3,6 +3,10 @@ TYPO3 styles for basic elements
 
 - - - - - - - - - - - - - - - - - - - - - */
 
+html {
+       height: 100%;
+}
+
 select,
 textarea,
 input,
