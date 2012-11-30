@@ -10,13 +10,13 @@
 				<source>Instructions</source>
 			</trans-unit>
 			<trans-unit id="sys_note.category.I.2" xml:space="preserve">
-				<source>Notes</source>
+				<source>Template</source>
 			</trans-unit>
 			<trans-unit id="sys_note.category.I.3" xml:space="preserve">
-				<source>To-do</source>
+				<source>Notes</source>
 			</trans-unit>
 			<trans-unit id="sys_note.category.I.4" xml:space="preserve">
-				<source>Template</source>
+				<source>To-do</source>
 			</trans-unit>
 			<trans-unit id="sys_note.subject" xml:space="preserve">
 				<source>Subject:</source>
