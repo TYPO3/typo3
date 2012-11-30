@@ -15,9 +15,9 @@ $TCA['sys_note'] = array(
 				'items' => array(
 					array('', '0'),
 					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.1', '1', 'sysext/t3skin/icons/ext/sys_note/icon-instruction.png'),
-					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.2', '3', 'sysext/t3skin/icons/ext/sys_note/icon-note.png'),
-					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.3', '4', 'sysext/t3skin/icons/ext/sys_note/icon-todo.png'),
-					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.4', '2', 'sysext/t3skin/icons/ext/sys_note/icon-template.png')
+					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.3', '3', 'sysext/t3skin/icons/ext/sys_note/icon-note.png'),
+					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.4', '4', 'sysext/t3skin/icons/ext/sys_note/icon-todo.png'),
+					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.2', '2', 'sysext/t3skin/icons/ext/sys_note/icon-template.png')
 				),
 				'default' => '0'
 			)
