@@ -3,8 +3,29 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="sys_note">
 		<header/>
 		<body>
+			<trans-unit id="author" xml:space="preserve">
+				<source>Author:</source>
+			</trans-unit>
 			<trans-unit id="date" xml:space="preserve">
-				<source>Date</source>
+				<source>Date:</source>
+			</trans-unit>
+			<trans-unit id="personal" xml:space="preserve">
+				<source>Personal:</source>
+			</trans-unit>
+			<trans-unit id="category.1" xml:space="preserve">
+				<source>Instructions</source>
+			</trans-unit>
+			<trans-unit id="category.2" xml:space="preserve">
+				<source>Template</source>
+			</trans-unit>
+			<trans-unit id="category.3" xml:space="preserve">
+				<source>Notes</source>
+			</trans-unit>
+			<trans-unit id="category.4" xml:space="preserve">
+				<source>To-do</source>
+			</trans-unit>
+			<trans-unit id="yes" xml:space="preserve">
+				<source>Yes</source>
 			</trans-unit>
 		</body>
 	</file>

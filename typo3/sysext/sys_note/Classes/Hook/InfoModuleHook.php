@@ -23,24 +23,26 @@ namespace TYPO3\CMS\SysNote\Hook;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Hook for the info module
  *
  * @author Georg Ringer <typo3@ringerge.org>
+ * @author Kai Vogel <kai.vogel@speedprogs.de>
  */
 class InfoModuleHook {
 
 	/**
-	 * Add sys_notes as additional content to the footer of the page module
+	 * Add sys_notes as additional content to the footer of the info module
 	 *
 	 * @param array $params
-	 * @param \TYPO3\CMS\Backend\Controller\PageLayoutController $parentObject
+	 * @param \TYPO3\CMS\Frontend\Controller\PageInformationController $parentObject
 	 * @return string
 	 */
 	public function render(array $params = array(), \TYPO3\CMS\Frontend\Controller\PageInformationController $parentObject) {
-		$sysNote = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\SysNote\\SysNoteRenderer');
-		$content = $sysNote->renderByPid($parentObject->pObj->id);
-		return $content;
+		/** @var $noteBootstrap \TYPO3\CMS\SysNote\Core\Bootstrap */
+		$noteBootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\SysNote\\Core\\Bootstrap');
+		return $noteBootstrap->run('Note', 'list', array('pids' => $parentObject->pObj->id));
 	}
 
 }
