@@ -1,0 +1,1 @@
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:sys_note/Configuration/TypoScript/constants.txt">
