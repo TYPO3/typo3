@@ -23,6 +23,7 @@ namespace TYPO3\CMS\SysNote\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * ViewHelper to create a link to edit a note
  *
