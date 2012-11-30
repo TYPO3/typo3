@@ -23,35 +23,51 @@ namespace TYPO3\CMS\SysNote\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Sys_note repository
  *
  * @author Georg Ringer <typo3@ringerge.org>
+ * @author Kai Vogel <kai.vogel@speedprogs.de>
  */
-class SysNoteRepository {
+class SysNoteRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
 	/**
-	 * Find all sys_notes by a given pidlist
+	 * Initialize the repository
 	 *
-	 * @param string $pidlist comma separated list of pids
-	 * @return array records
+	 * @return void
 	 */
-	public function findAllByPidList($pidlist) {
-		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_note', 'pid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($pidlist) . ')
-					AND (personal=0 OR cruser=' . intval($GLOBALS['BE_USER']->user['uid']) . ')' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_note'), '', 'sorting');
-		// exec_SELECTgetRows can return NULL if the query failed. This is
-		// transformed here to an empty array instead.
-		if ($records === NULL) {
-			$records = array();
-		}
-		foreach ($records as $key => $record) {
-			$records[$key]['tstamp'] = new \DateTime('@' . $record['tstamp']);
-			$records[$key]['author'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('be_users', $record['cruser']);
-		}
-		return $records;
+	public function initializeObject() {
+		$querySettings = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+		$querySettings->setRespectStoragePage(FALSE);
+		$this->setDefaultQuerySettings($querySettings);
+	}
+
+	/**
+	 * Find notes by given pids and author
+	 *
+	 * @param mixed $pids Single PID or comma separated list of PIDs
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUser $author The author
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+	 */
+	public function findByPidsAndAuthor($pids, \TYPO3\CMS\Extbase\Domain\Model\BackendUser $author) {
+		$pids = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', (string) $pids);
+		$query = $this->createQuery();
+		$query->setOrderings(array(
+			'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
+			'creationDate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+		));
+		$query->matching(
+			$query->logicalAnd(
+				$query->in('pid', $pids),
+				$query->logicalOr(
+					$query->equals('personal', 0),
+					$query->equals('author', $author)
+				)
+			)
+		);
+		return $query->execute();
 	}
 
 }
-
-
 ?>
