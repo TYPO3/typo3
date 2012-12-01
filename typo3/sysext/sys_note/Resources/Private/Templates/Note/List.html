@@ -9,6 +9,7 @@
 			<f:for each="{notes}" as="note">
 				<div class="single-note category-{note.category}">
 					<div class="header">
+						<span class="typeicon" oncontextmenu="showClickmenu('sys_note', '{note.uid}', '1', '', '', ''); return false;" onclick="showClickmenu('sys_note', '{note.uid}', '1', '','', ''); return false;"></span>
 						<span><f:translate key="author" /></span>
 						<f:if condition="{note.author.realName}">
 							<f:then>{note.author.realName}</f:then>
@@ -24,7 +25,7 @@
 							<span><f:translate key="personal" /></span>&nbsp;<f:translate key="yes" />
 						</f:if>
 
-						<div class="right">
+						<div class="right icons">
 							<f:be.buttons.icon uri="{notes:editLink(id:note.uid)}" icon="actions-document-open" />
 						</div>
 					</div>
