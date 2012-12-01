@@ -312,7 +312,7 @@ class TypoScriptFrontendController {
 	/**
 	 * @todo Define visibility
 	 */
-	public $no_CacheBeforePageGen = '';
+	public $no_cacheBeforePageGen = '';
 
 	// This flag indicates if temporary content went into the cache during page-generation.
 	/**
@@ -1375,7 +1375,7 @@ class TypoScriptFrontendController {
 		}
 		// Set no_cache if set
 		if ($this->page['no_cache']) {
-			$this->set_no_cache();
+			$this->set_no_cache('no_cache is set in page properties');
 		}
 		// Init SYS_LASTCHANGED
 		$this->register['SYS_LASTCHANGED'] = intval($this->page['tstamp']);
@@ -2056,7 +2056,7 @@ class TypoScriptFrontendController {
 				$this->MP = $this->TYPO3_CONF_VARS['FE']['enable_mount_pids'] ? $GET_VARS['MP'] : '';
 			}
 			if (isset($GET_VARS['no_cache']) && $GET_VARS['no_cache']) {
-				$this->set_no_cache();
+				$this->set_no_cache('no_cache is requested via GET parameter');
 			}
 		}
 	}
@@ -2426,7 +2426,7 @@ class TypoScriptFrontendController {
 		// No cache
 		// Set $this->no_cache TRUE if the config.no_cache value is set!
 		if ($this->config['config']['no_cache']) {
-			$this->set_no_cache();
+			$this->set_no_cache('config.no_cache is set');
 		}
 		// Merge GET with defaultGetVars
 		if (!empty($this->config['config']['defaultGetVars.'])) {
@@ -3058,9 +3058,9 @@ class TypoScriptFrontendController {
 			if (!$this->headerNoCache() && ($cachedRow = $this->getFromCache_queryRow())) {
 				// We are here because between checking for cached content earlier and now some other HTTP-process managed to store something in cache AND it was not due to a shift-reload by-pass.
 				// This is either the "Page is being generated" screen or it can be the final result.
-				// In any case we should not begin another rendering process also, so we silently disable caching and render the page ourselves and thats it.
+				// In any case we should not begin another rendering process also, so we silently disable caching and render the page ourselves and that's it.
 				// Actually $cachedRow contains content that we could show instead of rendering. Maybe we should do that to gain more performance but then we should set all the stuff done in $this->getFromCache()... For now we stick to this...
-				$this->set_no_cache();
+				$this->set_no_cache('Another process wrote into the cache since the beginning of the render process');
 			} else {
 				$this->tempContent = TRUE;
 				// This flag shows that temporary content is put in the cache
@@ -3293,7 +3293,7 @@ class TypoScriptFrontendController {
 	public function generatePage_postProcessing() {
 		// This is to ensure, that the page is NOT cached if the no_cache parameter was set before the page was generated. This is a safety precaution, as it could have been unset by some script.
 		if ($this->no_cacheBeforePageGen) {
-			$this->set_no_cache();
+			$this->set_no_cache('no_cache has been set before the page was generated - safety check');
 		}
 		// Tidy up the code, if flag...
 		if ($this->TYPO3_CONF_VARS['FE']['tidy_option'] == 'all') {
