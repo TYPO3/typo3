@@ -46,6 +46,9 @@ TYPO3.Components.PageModule = {
 		Ext.select('td.t3-page-column')
 			.on('mouseover',this.setColumnActive, this)
 			.on('mouseout',this.setColumnInactive, this);
+		Ext.select('#typo3-dblist-sysnotes div.single-note')
+			.on('mouseover',this.setSysnoteActive, this)
+			.on('mouseout',this.setSysnoteInactive, this);
 	},
 
 	/**
@@ -94,6 +97,23 @@ TYPO3.Components.PageModule = {
 	 */
 	setColumnInactive: function(event, target) {
 		Ext.get(target).findParent('td.t3-page-column', null, true).removeClass('active');
+	},
+
+	/**
+	 * This method is used as an event handler when the
+	 * user hovers the a sysnote.
+	 */
+	setSysnoteActive: function(event, target) {
+		Ext.get(target).findParent('div.single-note', null, true).addClass('active');
+	},
+
+	/**
+	 * This method is used as event handler to unset active state of
+	 * a sysnote when the mouse of the user leaves the sysnote.
+	 */
+	setSysnoteInactive: function(event, target) {
+		Ext.get(target).findParent('div.single-note', null, true).removeClass('active');
+
 	},
 
 	/**
