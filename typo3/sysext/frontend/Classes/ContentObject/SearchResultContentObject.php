@@ -283,8 +283,8 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 			if (isset($conf['stdWrap.'])) {
 				$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
 			}
-			// returning
-			$GLOBALS['TSFE']->set_no_cache();
+			// Returning, do not cache the result of the search
+			$GLOBALS['TSFE']->set_no_cache('Search result page');
 			return $content;
 		}
 		return '';
