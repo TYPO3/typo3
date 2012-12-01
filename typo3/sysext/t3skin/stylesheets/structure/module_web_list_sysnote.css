@@ -7,22 +7,51 @@
 }
 
 #typo3-dblist-sysnotes .single-note .header {
-	background: #d7d7d7  url(../../icons/ext/sys_note/icon-default.png) no-repeat top left;
-	padding-left: 30px;
-	height:23px;
-	line-height: 25px;
+	background: #d7d7d7;
+	height:24px;
+	line-height: 24px;
 }
 
-#typo3-dblist-sysnotes  .category-1 .header {
+#typo3-dblist-sysnotes .single-note .header span.typeicon {
+	background:  url(../../icons/ext/sys_note/icon-default.png) no-repeat top left;
+	width: 23px;
+	height: 24px;
+	padding-right: 7px;
+	display: block;
+	float:left;
+}
+
+#typo3-dblist-sysnotes .single-note .header .right.icons {
+	visibility: hidden;
+}
+
+#typo3-dblist-sysnotes .single-note.active .header {
+	background-color: #5b5b5b;
+	background-image: url('../../images/backgrounds/row-header.png');
+	background-image: linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
+	background-image: -moz-linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #7f7f7f), color-stop(1, #5b5b5b));
+	background-repeat: repeat-x;
+}
+
+#typo3-dblist-sysnotes .single-note.active .header .right.icons {
+	visibility: visible;
+}
+
+#typo3-dblist-sysnotes .single-note.active .header span {
+	color: #d7d7d7;
+}
+
+#typo3-dblist-sysnotes  .category-1 .header span.typeicon {
 	background-image: url(../../icons/ext/sys_note/icon-instruction.png);
 }
-#typo3-dblist-sysnotes  .category-2 .header {
+#typo3-dblist-sysnotes  .category-2 .header span.typeicon {
 	background-image: url(../../icons/ext/sys_note/icon-template.png);
 }
-#typo3-dblist-sysnotes  .category-3 .header {
+#typo3-dblist-sysnotes  .category-3 .header span.typeicon {
 	background-image: url(../../icons/ext/sys_note/icon-note.png);
 }
-#typo3-dblist-sysnotes  .category-4 .header {
+#typo3-dblist-sysnotes  .category-4 .header span.typeicon {
 	background-image: url(../../icons/ext/sys_note/icon-todo.png);
 }
 
