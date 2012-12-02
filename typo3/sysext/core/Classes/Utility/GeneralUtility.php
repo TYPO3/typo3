@@ -4176,19 +4176,19 @@ Connection: close
 	static protected function getClassName($className) {
 		if (class_exists($className)) {
 			while (static::classHasImplementation($className)) {
-				$className = static::geImplementationForClass($className);
+				$className = static::getImplementationForClass($className);
 			}
 		}
 		return \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($className);
 	}
 
 	/**
-	 * Returns the confiured implementation of the class
+	 * Returns the configured implementation of the class
 	 *
 	 * @param string $className
 	 * @return string
 	 */
-	static protected function geImplementationForClass($className) {
+	static protected function getImplementationForClass($className) {
 		return $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className]['className'];
 	}
 
