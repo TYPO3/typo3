@@ -868,11 +868,19 @@ class PageRepository {
 			if ($ctrl['delete']) {
 				$query .= ' AND ' . $table . '.' . $ctrl['delete'] . '=0';
 			}
-			// Filter out new place-holder records in case we are NOT in a versioning preview (that means we are online!)
-			if ($ctrl['versioningWS'] && !$this->versioningPreview) {
-				// Shadow state for new items MUST be ignored!
-				$query .= ' AND ' . $table . '.t3ver_state<=0 AND ' . $table . '.pid<>-1';
+			if ($ctrl['versioningWS']) {
+				if (!$this->versioningPreview) {
+					// Filter out placeholder records (new/moved/deleted items)
+					// in case we are NOT in a versioning preview (that means we are online!)
+					$query .= ' AND ' . $table . '.t3ver_state<=0';
+				}
+ 
+				// Filter out versioned records
+				if (!$noVersionPreview) {
+					$query .= ' AND ' . $table . '.pid<>-1';
+				}
 			}
+
 			// Enable fields:
 			if (is_array($ctrl['enablecolumns'])) {
 				// In case of versioning-preview, enableFields are ignored (checked in versionOL())
