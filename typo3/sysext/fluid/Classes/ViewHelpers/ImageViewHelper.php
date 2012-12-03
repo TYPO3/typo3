@@ -127,6 +127,9 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 		$imageInfo = $this->contentObject->getImgResource($src, $setup);
 		$GLOBALS['TSFE']->lastImageInfo = $imageInfo;
 		if (!is_array($imageInfo)) {
+			if (TYPO3_MODE === 'BE') {
+				$this->resetFrontendEnvironment();
+			}
 			throw new Tx_Fluid_Core_ViewHelper_Exception('Could not get image resource for "' . htmlspecialchars($src) . '".' , 1253191060);
 		}
 		$imageInfo[3] = t3lib_div::png_to_gif_by_imagemagick($imageInfo[3]);
