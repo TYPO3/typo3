@@ -119,6 +119,64 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		)));
 	}
 
+
+	////////////////////////////////
+	// Tests concerning versioning
+	////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function enableFieldsHidesVersionedRecordsAndPlaceholders() {
+		$this->pageSelectObject->versioningPreview = FALSE;
+		$this->pageSelectObject->init(FALSE);
+
+		$conditions = $this->pageSelectObject->enableFields('tt_content');
+
+		$this->assertThat($conditions, $this->stringContains(' AND tt_content.t3ver_state<=0'), 'Versioning placeholders');
+		$this->assertThat($conditions, $this->stringContains(' AND tt_content.pid<>-1'), 'Records from page -1');
+	}
+
+	/**
+	 * @test
+	 */
+	public function enableFieldsDoesNotHidePlaceholdersInPreview() {
+		$this->pageSelectObject->versioningPreview = TRUE;
+		$this->pageSelectObject->init(FALSE);
+
+		$conditions = $this->pageSelectObject->enableFields('tt_content');
+
+		$this->assertThat($conditions, $this->logicalNot($this->stringContains(' AND tt_content.t3ver_state<=0')), 'No versioning placeholders');
+		$this->assertThat($conditions, $this->stringContains(' AND tt_content.pid<>-1'), 'Records from page -1');
+	}
+
+	/**
+	 * @test
+	 */
+	public function enableFieldsDoesFilterToCurrentAndLiveWorkspaceForRecordsInPreview() {
+		$this->pageSelectObject->versioningPreview = TRUE;
+		$this->pageSelectObject->versioningWorkspaceId = 2;
+		$this->pageSelectObject->init(FALSE);
+
+		$conditions = $this->pageSelectObject->enableFields('tt_content');
+
+		$this->assertThat($conditions, $this->stringContains(' AND (tt_content.t3ver_wsid=0 OR tt_content.t3ver_wsid=2)'), 'No versioning placeholders');
+	}
+
+	/**
+	 * @test
+	 */
+	public function enableFieldsDoesNotHideVersionedRecordsWhenCheckingVersionOverlays() {
+		$this->pageSelectObject->versioningPreview = TRUE;
+		$this->pageSelectObject->init(FALSE);
+
+		$conditions = $this->pageSelectObject->enableFields('tt_content', -1, array(), TRUE	);
+
+		$this->assertThat($conditions, $this->logicalNot($this->stringContains(' AND tt_content.t3ver_state<=0')), 'No versioning placeholders');
+		$this->assertThat($conditions, $this->logicalNot($this->stringContains(' AND tt_content.pid<>-1')), 'No ecords from page -1');
+	}
+
+
 }
 
 ?>
