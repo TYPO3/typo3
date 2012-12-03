@@ -47,7 +47,8 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setUp() {
 		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_SELECTquery', 'sql_fetch_assoc', 'sql_free_result'));
-		$this->pageSelectObject = new \TYPO3\CMS\Frontend\Page\PageRepository();
+		$this->pageSelectObject = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('getMultipleGroupsWhereClause'));
+		$this->pageSelectObject->expects($this->any())->method('getMultipleGroupsWhereClause')->will($this->returnValue(' AND 1=1'));
 	}
 
 	/**
@@ -118,6 +119,64 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'url' => 'hello/world/'
 		)));
 	}
+
+
+	////////////////////////////////
+	// Tests concerning versioning
+	////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function enableFieldsHidesVersionedRecordsAndPlaceholders() {
+		$this->pageSelectObject->versioningPreview = FALSE;
+		$this->pageSelectObject->init(FALSE);
+
+		$conditions = $this->pageSelectObject->enableFields('tt_content');
+
+		$this->assertThat($conditions, $this->stringContains(' AND tt_content.t3ver_state<=0'), 'Versioning placeholders');
+		$this->assertThat($conditions, $this->stringContains(' AND tt_content.pid<>-1'), 'Records from page -1');
+	}
+
+	/**
+	 * @test
+	 */
+	public function enableFieldsDoesNotHidePlaceholdersInPreview() {
+		$this->pageSelectObject->versioningPreview = TRUE;
+		$this->pageSelectObject->init(FALSE);
+
+		$conditions = $this->pageSelectObject->enableFields('tt_content');
+
+		$this->assertThat($conditions, $this->logicalNot($this->stringContains(' AND tt_content.t3ver_state<=0')), 'No versioning placeholders');
+		$this->assertThat($conditions, $this->stringContains(' AND tt_content.pid<>-1'), 'Records from page -1');
+	}
+
+	/**
+	 * @test
+	 */
+	public function enableFieldsDoesFilterToCurrentAndLiveWorkspaceForRecordsInPreview() {
+		$this->pageSelectObject->versioningPreview = TRUE;
+		$this->pageSelectObject->versioningWorkspaceId = 2;
+		$this->pageSelectObject->init(FALSE);
+
+		$conditions = $this->pageSelectObject->enableFields('tt_content');
+
+		$this->assertThat($conditions, $this->stringContains(' AND (tt_content.t3ver_wsid=0 OR tt_content.t3ver_wsid=2)'), 'No versioning placeholders');
+	}
+
+	/**
+	 * @test
+	 */
+	public function enableFieldsDoesNotHideVersionedRecordsWhenCheckingVersionOverlays() {
+		$this->pageSelectObject->versioningPreview = TRUE;
+		$this->pageSelectObject->init(FALSE);
+
+		$conditions = $this->pageSelectObject->enableFields('tt_content', -1, array(), TRUE	);
+
+		$this->assertThat($conditions, $this->logicalNot($this->stringContains(' AND tt_content.t3ver_state<=0')), 'No versioning placeholders');
+		$this->assertThat($conditions, $this->logicalNot($this->stringContains(' AND tt_content.pid<>-1')), 'No ecords from page -1');
+	}
+
 
 }
 
