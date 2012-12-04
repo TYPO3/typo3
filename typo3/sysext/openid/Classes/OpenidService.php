@@ -517,7 +517,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * @return 	void
 	 * @see 	sprintf()
 	 * @see 	t3lib::divLog()
-	 * @see 	t3lib_div::sysLog()
+	 * @see 	\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog()
 	 * @see 	t3lib_timeTrack::setTSlogMessage()
 	 */
 	protected function writeLog($message) {

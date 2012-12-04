@@ -241,7 +241,7 @@ class LiveSearch {
 	 * @param string $tableName Record table name
 	 * @param array $row Current record row from database.
 	 * @return string Link to open an edit window for record.
-	 * @see t3lib_BEfunc::readPageAccess()
+	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess()
 	 */
 	protected function getEditLink($tableName, $row) {
 		$pageInfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($row['pid'], $this->userPermissions);
@@ -446,7 +446,7 @@ class LiveSearch {
 	 *
 	 * @param string $queryString
 	 * @return void
-	 * @see t3lib_div::removeXSS()
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::removeXSS()
 	 */
 	public function setQueryString($queryString) {
 		$this->queryString = \TYPO3\CMS\Core\Utility\GeneralUtility::removeXSS($queryString);

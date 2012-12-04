@@ -67,7 +67,7 @@ namespace TYPO3\CMS\Core\FormProtection;
  * <pre>
  * if ($dataHasBeenSubmitted && t3lib_formprotection_Factory::get()
  * ->validateToken(
- * t3lib_div::_POST('formToken'),
+ * \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('formToken'),
  * 'BE user setup', 'edit
  * )
  * ) {

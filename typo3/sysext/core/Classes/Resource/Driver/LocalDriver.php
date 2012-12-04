@@ -227,11 +227,11 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	}
 
 	/**
-	 * Wrapper for t3lib_div::validPathStr()
+	 * Wrapper for \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr()
 	 *
 	 * @param string $theFile Filepath to evaluate
 	 * @return boolean TRUE if no '/', '..' or '\' is in the $theFile
-	 * @see t3lib_div::validPathStr()
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr()
 	 */
 	protected function isPathValid($theFile) {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($theFile);

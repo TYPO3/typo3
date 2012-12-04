@@ -40,9 +40,9 @@ $LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
  * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/backend/Classes/Controller/Wizard/ListController.php
  */
-require_once t3lib_extMgm::extPath('backend') . 'Classes/Controller/Wizard/ListController.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/Controller/Wizard/ListController.php';
 // Make instance:
-$SOBE = t3lib_div::makeInstance('SC_wizard_list');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('SC_wizard_list');
 $SOBE->init();
 $SOBE->main();
 ?>

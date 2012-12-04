@@ -36,7 +36,7 @@ class BackendWarnings {
 	 *
 	 * @param array $warnings Warnings
 	 * @return void
-	 * @see 	t3lib_BEfunc::displayWarningMessages()
+	 * @see 	\TYPO3\CMS\Backend\Utility\BackendUtility::displayWarningMessages()
 	 */
 	public function displayWarningMessages_postProcess(array &$warnings) {
 		$backend = \TYPO3\CMS\Rsaauth\Backend\BackendFactory::getBackend();

@@ -297,11 +297,11 @@ class BasicFileUtility {
 	}
 
 	/**
-	 * Wrapper for t3lib_div::validPathStr()
+	 * Wrapper for \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr()
 	 *
 	 * @param 	string		Filepath to evaluate
 	 * @return 	boolean		TRUE, if no '//', '..' or '\' is in the $theFile
-	 * @see 	t3lib_div::validPathStr()
+	 * @see 	\TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr()
 	 * @todo Define visibility
 	 */
 	public function isPathValid($theFile) {

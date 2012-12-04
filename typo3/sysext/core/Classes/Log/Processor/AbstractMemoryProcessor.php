@@ -47,7 +47,7 @@ abstract class AbstractMemoryProcessor extends \TYPO3\CMS\Core\Log\Processor\Abs
 	 * Whether the size is formatted, e.g. in megabytes
 	 *
 	 * @var boolean
-	 * @see t3lib_div::formatSize()
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize()
 	 */
 	protected $formatSize = TRUE;
 

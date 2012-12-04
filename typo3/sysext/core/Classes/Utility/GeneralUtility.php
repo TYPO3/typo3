@@ -35,14 +35,14 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * USE:
  * The class is intended to be used without creating an instance of it.
- * So: Don't instantiate - call functions with "t3lib_div::" prefixed the function name.
- * So use t3lib_div::[method-name] to refer to the functions, eg. 't3lib_div::milliseconds()'
+ * So: Don't instantiate - call functions with "\TYPO3\CMS\Core\Utility\GeneralUtility::" prefixed the function name.
+ * So use \TYPO3\CMS\Core\Utility\GeneralUtility::[method-name] to refer to the functions, eg. '\TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds()'
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class GeneralUtility {
 
-	// Severity constants used by t3lib_div::sysLog()
+	// Severity constants used by \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog()
 	const SYSLOG_SEVERITY_INFO = 0;
 	const SYSLOG_SEVERITY_NOTICE = 1;
 	const SYSLOG_SEVERITY_WARNING = 2;
@@ -78,7 +78,7 @@ class GeneralUtility {
 	/**
 	 * Returns the 'GLOBAL' value of incoming data from POST or GET, with priority to POST (that is equalent to 'GP' order)
 	 * Strips slashes from all output, both strings and arrays.
-	 * To enhancement security in your scripts, please consider using t3lib_div::_GET or t3lib_div::_POST if you already
+	 * To enhancement security in your scripts, please consider using \TYPO3\CMS\Core\Utility\GeneralUtility::_GET or \TYPO3\CMS\Core\Utility\GeneralUtility::_POST if you already
 	 * know by which method your data is arriving to the scripts!
 	 *
 	 * @param string $var GET/POST var to return
@@ -1314,7 +1314,7 @@ class GeneralUtility {
 	 *
 	 * Comparison to PHP in_array():
 	 * -> $array = array(0, 1, 2, 3);
-	 * -> variant_a := t3lib_div::inArray($array, $needle)
+	 * -> variant_a := \TYPO3\CMS\Core\Utility\GeneralUtility::inArray($array, $needle)
 	 * -> variant_b := in_array($needle, $array)
 	 * -> variant_c := in_array($needle, $array, TRUE)
 	 * +---------+-----------+-----------+-----------+
@@ -1341,7 +1341,7 @@ class GeneralUtility {
 
 	/**
 	 * Explodes a $string delimited by $delim and passes each item in the array through intval().
-	 * Corresponds to t3lib_div::trimExplode(), but with conversion to integers for all values.
+	 * Corresponds to \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(), but with conversion to integers for all values.
 	 *
 	 * @param string $delimiter Delimiter string to explode with
 	 * @param string $string The string to explode
@@ -1356,7 +1356,7 @@ class GeneralUtility {
 
 	/**
 	 * Reverse explode which explodes the string counting from behind.
-	 * Thus t3lib_div::revExplode(':','my:words:here',2) will return array('my:words','here')
+	 * Thus \TYPO3\CMS\Core\Utility\GeneralUtility::revExplode(':','my:words:here',2) will return array('my:words','here')
 	 *
 	 * @param string $delimiter Delimiter string to explode with
 	 * @param string $string The string to explode
@@ -1523,7 +1523,7 @@ class GeneralUtility {
 	 *
 	 * @param string $varList List of variable/key names
 	 * @param array $getArray Array from where to get values based on the keys in $varList
-	 * @param boolean $GPvarAlt If set, then t3lib_div::_GP() is used to fetch the value if not found (isset) in the $getArray
+	 * @param boolean $GPvarAlt If set, then \TYPO3\CMS\Core\Utility\GeneralUtility::_GP() is used to fetch the value if not found (isset) in the $getArray
 	 * @return array Output array with selected variables.
 	 */
 	static public function compileSelectedGetVarsFromArray($varList, array $getArray, $GPvarAlt = TRUE) {
@@ -2646,7 +2646,7 @@ Connection: close
 	 * @static
 	 * @param string $fullDirectoryPath
 	 * @return string Path to the the first created directory in the hierarchy
-	 * @see t3lib_div::mkdir_deep
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep
 	 * @throws \RuntimeException If directory could not be created
 	 */
 	static protected function createDirectoryPath($fullDirectoryPath) {
@@ -3126,7 +3126,7 @@ Connection: close
 			$retVal = PATH_thisScript;
 			break;
 		case 'REQUEST_URI':
-			// Typical application of REQUEST_URI is return urls, forms submitting to itself etc. Example: returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))
+			// Typical application of REQUEST_URI is return urls, forms submitting to itself etc. Example: returnUrl='.rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar']) {
 				// This is for URL rewriters that store the original URI in a server variable (eg ISAPI_Rewriter for IIS: HTTP_X_REWRITE_URL)
 				list($v, $n) = explode('|', $GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar']);
@@ -3149,7 +3149,7 @@ Connection: close
 		case 'PATH_INFO':
 			// $_SERVER['PATH_INFO']!=$_SERVER['SCRIPT_NAME'] is necessary because some servers (Windows/CGI) are seen to set PATH_INFO equal to script_name
 			// Further, there must be at least one '/' in the path - else the PATH_INFO value does not make sense.
-			// IF 'PATH_INFO' never works for our purpose in TYPO3 with CGI-servers, then 'PHP_SAPI=='cgi'' might be a better check. Right now strcmp($_SERVER['PATH_INFO'],t3lib_div::getIndpEnv('SCRIPT_NAME')) will always return FALSE for CGI-versions, but that is only as long as SCRIPT_NAME is set equal to PATH_INFO because of PHP_SAPI=='cgi' (see above)
+			// IF 'PATH_INFO' never works for our purpose in TYPO3 with CGI-servers, then 'PHP_SAPI=='cgi'' might be a better check. Right now strcmp($_SERVER['PATH_INFO'],\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME')) will always return FALSE for CGI-versions, but that is only as long as SCRIPT_NAME is set equal to PATH_INFO because of PHP_SAPI=='cgi' (see above)
 			if (PHP_SAPI != 'cgi' && PHP_SAPI != 'cgi-fcgi' && PHP_SAPI != 'fpm-fcgi') {
 				$retVal = $_SERVER['PATH_INFO'];
 			}
@@ -3344,7 +3344,7 @@ Connection: close
 	/**
 	 * Client Browser Information
 	 *
-	 * @param string $useragent Alternative User Agent string (if empty, t3lib_div::getIndpEnv('HTTP_USER_AGENT') is used)
+	 * @param string $useragent Alternative User Agent string (if empty, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT') is used)
 	 * @return array Parsed information about the HTTP_USER_AGENT in categories BROWSER, VERSION, SYSTEM and FORMSTYLE
 	 */
 	static public function clientInfo($useragent = '') {
@@ -3452,7 +3452,7 @@ Connection: close
 	 *
 	 *************************/
 	/**
-	 * Returns the absolute filename of a relative reference, resolves the "EXT:" prefix (way of referring to files inside extensions) and checks that the file is inside the PATH_site of the TYPO3 installation and implies a check with t3lib_div::validPathStr(). Returns FALSE if checks failed. Does not check if the file exists.
+	 * Returns the absolute filename of a relative reference, resolves the "EXT:" prefix (way of referring to files inside extensions) and checks that the file is inside the PATH_site of the TYPO3 installation and implies a check with \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr(). Returns FALSE if checks failed. Does not check if the file exists.
 	 *
 	 * @param string $filename The input filename/filepath to evaluate
 	 * @param boolean $onlyRelative If $onlyRelative is set (which it is by default), then only return values relative to the current PATH_site is accepted.
@@ -3616,7 +3616,7 @@ Connection: close
 	/**
 	 * Will move an uploaded file (normally in "/tmp/xxxxx") to a temporary filename in PATH_site."typo3temp/" from where TYPO3 can use it.
 	 * Use this function to move uploaded files to where you can work on them.
-	 * REMEMBER to use t3lib_div::unlink_tempfile() afterwards - otherwise temp-files will build up! They are NOT automatically deleted in PATH_site."typo3temp/"!
+	 * REMEMBER to use \TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile() afterwards - otherwise temp-files will build up! They are NOT automatically deleted in PATH_site."typo3temp/"!
 	 *
 	 * @param string $uploadedFileName The temporary uploaded filename, eg. $_FILES['[upload field name here]']['tmp_name']
 	 * @return string If a new file was successfully created, return its filename, otherwise blank string.
@@ -3653,7 +3653,7 @@ Connection: close
 	/**
 	 * Create temporary filename (Create file with unique file name)
 	 * This function should be used for getting temporary file names - will make your applications safe for open_basedir = on
-	 * REMEMBER to delete the temporary files after use! This is done by t3lib_div::unlink_tempfile()
+	 * REMEMBER to delete the temporary files after use! This is done by \TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile()
 	 *
 	 * @param string $filePrefix Prefix to temp file (which will have no extension btw)
 	 * @return string result from PHP function tempnam() with PATH_site . 'typo3temp/' set for temp path.
@@ -3697,7 +3697,7 @@ Connection: close
 	 *
 	 * @param string $addQueryParams Query-parameters: "&xxx=yyy&zzz=uuu
 	 * @return array Array with key/value pairs of query-parameters WITHOUT a certain list of variable names (like id, type, no_cache etc.) and WITH a variable, encryptionKey, specific for this server/installation
-	 * @see tslib_fe::makeCacheHash(), tslib_cObj::typoLink(), t3lib_div::calculateCHash()
+	 * @see tslib_fe::makeCacheHash(), tslib_cObj::typoLink(), \TYPO3\CMS\Core\Utility\GeneralUtility::calculateCHash()
 	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 6.1 - use t3lib_cacheHash instead
 	 */
 	static public function cHashParams($addQueryParams) {
@@ -3730,7 +3730,7 @@ Connection: close
 	 *
 	 * @param string $addQueryParams Query-parameters: "&xxx=yyy&zzz=uuu
 	 * @return string Hash of all the values
-	 * @see t3lib_div::cHashParams(), t3lib_div::calculateCHash()
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::cHashParams(), \TYPO3\CMS\Core\Utility\GeneralUtility::calculateCHash()
 	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 6.1 - use t3lib_cacheHash instead
 	 */
 	static public function generateCHash($addQueryParams) {
@@ -3782,7 +3782,7 @@ Connection: close
 	/**
 	 * Includes a locallang file and returns the $LOCAL_LANG array found inside.
 	 *
-	 * @param string $fileRef Input is a file-reference (see t3lib_div::getFileAbsFileName). That file is expected to be a 'locallang.php' file containing a $LOCAL_LANG array (will be included!) or a 'locallang.xml' file conataining a valid XML TYPO3 language structure.
+	 * @param string $fileRef Input is a file-reference (see \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName). That file is expected to be a 'locallang.php' file containing a $LOCAL_LANG array (will be included!) or a 'locallang.xml' file conataining a valid XML TYPO3 language structure.
 	 * @param string $langKey Language key
 	 * @param string $charset Character set (option); if not set, determined by the language key
 	 * @param integer $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
@@ -3950,7 +3950,7 @@ Connection: close
 	 * Calls a user-defined function/method in class
 	 * Such a function/method should look like this: "function proc(&$params, &$ref) {...}"
 	 *
-	 * @param string $funcName Function/Method reference or Closure, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call ("singleton").
+	 * @param string $funcName Function/Method reference or Closure, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call ("singleton").
 	 * @param mixed $params Parameters to be pass along (typically an array) (REFERENCE!)
 	 * @param mixed $ref Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
 	 * @param string $checkPrefix Not used anymore since 6.0
@@ -4050,14 +4050,14 @@ Connection: close
 	/**
 	 * Creates and returns reference to a user defined object.
 	 * This function can return an object reference if you like.
-	 * Just prefix the function call with "&": "$objRef = &t3lib_div::getUserObj('EXT:myext/class.tx_myext_myclass.php:&tx_myext_myclass');".
+	 * Just prefix the function call with "&": "$objRef = &\TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj('EXT:myext/class.tx_myext_myclass.php:&tx_myext_myclass');".
 	 * This will work ONLY if you prefix the class name with "&" as well. See description of function arguments.
 	 *
 	 * @TODO : Deprecate the whole method in several steps: 1. Deprecated singleton pattern, 2. Deprecate file prefix/ require file, 3. Deprecate usage without valid class name. The last step should be to deprecate the method itslef.
-	 * @param string $classRef Class reference, '[file-reference":"]["&"]class-name'. You can prefix the class name with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl". Finally; for the class name you can prefix it with "&" and you will reuse the previous instance of the object identified by the full reference string (meaning; if you ask for the same $classRef later in another place in the code you will get a reference to the first created one!).
+	 * @param string $classRef Class reference, '[file-reference":"]["&"]class-name'. You can prefix the class name with "[file-reference]:" and \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl". Finally; for the class name you can prefix it with "&" and you will reuse the previous instance of the object identified by the full reference string (meaning; if you ask for the same $classRef later in another place in the code you will get a reference to the first created one!).
 	 * @param string $checkPrefix Not used anymore since 6.0
 	 * @param boolean $silent Not used anymore since 6.0
-	 * @return object The instance of the class asked for. Instance is created with t3lib_div::makeInstance
+	 * @return object The instance of the class asked for. Instance is created with \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance
 	 * @see callUserFunction()
 	 */
 	static public function getUserObj($classRef, $checkPrefix = '', $silent = FALSE) {
@@ -4122,10 +4122,10 @@ Connection: close
 	/**
 	 * Creates an instance of a class taking into account the class-extensions
 	 * API of TYPO3. USE THIS method instead of the PHP "new" keyword.
-	 * Eg. "$obj = new myclass;" should be "$obj = t3lib_div::makeInstance("myclass")" instead!
+	 * Eg. "$obj = new myclass;" should be "$obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("myclass")" instead!
 	 *
 	 * You can also pass arguments for a constructor:
-	 * t3lib_div::makeInstance('myClass', $arg1, $arg2, ..., $argN)
+	 * \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('myClass', $arg1, $arg2, ..., $argN)
 	 *
 	 * @throws \InvalidArgumentException if classname is an empty string
 	 * @param string $className name of the class to instantiate, must not be empty
@@ -4204,7 +4204,7 @@ Connection: close
 			return FALSE;
 		}
 
-		return array_key_exists($className, $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'])
+		return array_key_exists($className, (array)$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'])
 				&& is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className])
 				&& !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$className]['className']);
 	}
@@ -4631,7 +4631,7 @@ Connection: close
 	 *
 	 * @param string $inUrl Input URL
 	 * @param integer $l URL string length limit
-	 * @param string $index_script_url URL of "index script" - the prefix of the "?RDCT=..." parameter. If not supplied it will default to t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR').'index.php'
+	 * @param string $index_script_url URL of "index script" - the prefix of the "?RDCT=..." parameter. If not supplied it will default to \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR').'index.php'
 	 * @return string Processed URL
 	 */
 	static public function makeRedirectUrl($inUrl, $l = 0, $index_script_url = '') {
@@ -4708,11 +4708,11 @@ Connection: close
 	 * Logs message to the system log.
 	 * This should be implemented around the source code, including the Core and both frontend and backend, logging serious errors.
 	 * If you want to implement the sysLog in your applications, simply add lines like:
-	 * t3lib_div::sysLog('[write message in English here]', 'extension_key', 'severity');
+	 * \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('[write message in English here]', 'extension_key', 'severity');
 	 *
 	 * @param string $msg Message (in English).
 	 * @param string $extKey Extension key (from which extension you are calling the log) or "Core
-	 * @param integer $severity t3lib_div::SYSLOG_SEVERITY_* constant
+	 * @param integer $severity \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_* constant
 	 * @return void
 	 */
 	static public function sysLog($msg, $extKey, $severity = 0) {
@@ -4784,7 +4784,7 @@ Connection: close
 	 * The result is meant to make sense to developers during development or debugging of a site.
 	 * The idea is that this function is only a wrapper for external extensions which can set a hook which will be allowed to handle the logging of the information to any format they might wish and with any kind of filter they would like.
 	 * If you want to implement the devLog in your applications, simply add lines like:
-	 * if (TYPO3_DLOG)	t3lib_div::devLog('[write message in english here]', 'extension key');
+	 * if (TYPO3_DLOG)	\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('[write message in english here]', 'extension key');
 	 *
 	 * @param string $msg Message (in english).
 	 * @param string $extKey Extension key (from which extension you are calling the log)

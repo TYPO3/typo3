@@ -145,7 +145,7 @@ class XliffParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * This test will make sure method t3lib_div::llXmlAutoFileName() will not prefix twice the
+	 * This test will make sure method \TYPO3\CMS\Core\Utility\GeneralUtility::llXmlAutoFileName() will not prefix twice the
 	 * language key to the localization file.
 	 *
 	 * @test

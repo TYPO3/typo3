@@ -310,7 +310,7 @@ class Locker {
 	}
 
 	/**
-	 * Adds a common log entry for this locking API using t3lib_div::sysLog().
+	 * Adds a common log entry for this locking API using \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog().
 	 * Example: 25-02-08 17:58 - cms: Locking [simple::0aeafd2a67a6bb8b9543fb9ea25ecbe2]: Acquired
 	 *
 	 * @param string $message The message to be logged

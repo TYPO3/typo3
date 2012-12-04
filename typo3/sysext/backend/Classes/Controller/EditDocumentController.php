@@ -11,7 +11,7 @@ class EditDocumentController {
 
 	// Internal, static: GPvars:
 	// GPvar "edit": Is an array looking approx like [tablename][list-of-ids]=command, eg.
-	// "&edit[pages][123]=edit". See t3lib_BEfunc::editOnClick(). Value can be seen modified
+	// "&edit[pages][123]=edit". See \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(). Value can be seen modified
 	// internally (converting NEW keyword to id, workspace/versioning etc).
 	/**
 	 * @todo Define visibility
