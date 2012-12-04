@@ -60,6 +60,9 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		),
 		'webkit' => array(
 			array(
+				'version' => 534
+			),
+			array(
 				'version' => 523,
 				'system' => array(
 					'disallowed' => array(
