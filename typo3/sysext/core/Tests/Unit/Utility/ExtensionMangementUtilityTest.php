@@ -207,7 +207,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	/////////////////////////////////////////////
 	/**
 	 * @test
-	 * @see t3lib_extMgm::getExtensionKeyByPrefix
+	 * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionKeyByPrefix
 	 */
 	public function getExtensionKeyByPrefixForLoadedExtensionWithUnderscoresReturnsExtensionKey() {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::clearExtensionKeyMap();
@@ -220,7 +220,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 
 	/**
 	 * @test
-	 * @see t3lib_extMgm::getExtensionKeyByPrefix
+	 * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionKeyByPrefix
 	 */
 	public function getExtensionKeyByPrefixForLoadedExtensionWithoutUnderscoresReturnsExtensionKey() {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::clearExtensionKeyMap();
@@ -233,7 +233,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 
 	/**
 	 * @test
-	 * @see t3lib_extMgm::getExtensionKeyByPrefix
+	 * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionKeyByPrefix
 	 */
 	public function getExtensionKeyByPrefixForNotLoadedExtensionReturnsFalse() {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::clearExtensionKeyMap();
@@ -250,7 +250,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * Tests whether fields can be add to all TCA types and duplicate fields are considered.
 	 *
 	 * @test
-	 * @see t3lib_extMgm::addToAllTCAtypes()
+	 * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes()
 	 */
 	public function canAddFieldsToAllTCATypesBeforeExistingOnes() {
 		$table = uniqid('tx_coretest_table');
@@ -266,7 +266,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * Tests whether fields can be add to all TCA types and duplicate fields are considered.
 	 *
 	 * @test
-	 * @see t3lib_extMgm::addToAllTCAtypes()
+	 * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes()
 	 */
 	public function canAddFieldsToAllTCATypesAfterExistingOnes() {
 		$table = uniqid('tx_coretest_table');
@@ -282,7 +282,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * Tests whether fields can be add to a TCA type before existing ones
 	 *
 	 * @test
-	 * @see t3lib_extMgm::addToAllTCAtypes()
+	 * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes()
 	 */
 	public function canAddFieldsToTCATypeBeforeExistingOnes() {
 		$table = uniqid('tx_coretest_table');
@@ -298,7 +298,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * Tests whether fields can be add to a TCA type after existing ones
 	 *
 	 * @test
-	 * @see t3lib_extMgm::addToAllTCAtypes()
+	 * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes()
 	 */
 	public function canAddFieldsToTCATypeAfterExistingOnes() {
 		$table = uniqid('tx_coretest_table');
@@ -314,7 +314,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * Test wheter replacing other TCA fields works as promissed
 	 *
 	 * @test
-	 * @see t3lib_extMgm::addFieldsToAllPalettesOfField()
+	 * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToAllPalettesOfField()
 	 */
 	public function canAddFieldsToTCATypeAndReplaceExistingOnes() {
 		$table = uniqid('tx_coretest_table');
@@ -337,7 +337,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * Tests whether fields can be added to a palette before existing elements.
 	 *
 	 * @test
-	 * @see t3lib_extMgm::addFieldsToPalette()
+	 * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette()
 	 */
 	public function canAddFieldsToPaletteBeforeExistingOnes() {
 		$table = uniqid('tx_coretest_table');
@@ -350,7 +350,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * Tests whether fields can be added to a palette after existing elements.
 	 *
 	 * @test
-	 * @see t3lib_extMgm::addFieldsToPalette()
+	 * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette()
 	 */
 	public function canAddFieldsToPaletteAfterExistingOnes() {
 		$table = uniqid('tx_coretest_table');
@@ -363,7 +363,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * Tests whether fields can be added to a palette after a not existing elements.
 	 *
 	 * @test
-	 * @see t3lib_extMgm::addFieldsToPalette()
+	 * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette()
 	 */
 	public function canAddFieldsToPaletteAfterNotExistingOnes() {
 		$table = uniqid('tx_coretest_table');
@@ -376,7 +376,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * Tests whether fields can be added to all palettes of a regular field before existing ones.
 	 *
 	 * @test
-	 * @see t3lib_extMgm::addFieldsToAllPalettesOfField()
+	 * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToAllPalettesOfField()
 	 */
 	public function canAddFieldsToAllPalettesOfFieldBeforeExistingOnes() {
 		$table = uniqid('tx_coretest_table');
@@ -392,7 +392,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * Tests whether fields can be added to all palettes of a regular field after existing ones.
 	 *
 	 * @test
-	 * @see t3lib_extMgm::addFieldsToAllPalettesOfField()
+	 * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToAllPalettesOfField()
 	 */
 	public function canAddFieldsToAllPalettesOfFieldAfterExistingOnes() {
 		$table = uniqid('tx_coretest_table');
@@ -408,7 +408,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * Tests whether fields can be added to all palettes of a regular field after a not existing field.
 	 *
 	 * @test
-	 * @see t3lib_extMgm::addFieldsToAllPalettesOfField()
+	 * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToAllPalettesOfField()
 	 */
 	public function canAddFieldsToAllPalettesOfFieldAfterNotExistingOnes() {
 		$table = uniqid('tx_coretest_table');
@@ -424,7 +424,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * Tests whether fields are added to a new palette that did not exist before.
 	 *
 	 * @test
-	 * @see t3lib_extMgm::addFieldsToAllPalettesOfField()
+	 * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToAllPalettesOfField()
 	 */
 	public function canAddFieldsToAllPalettesOfFieldWithoutPaletteExistingBefore() {
 		$table = uniqid('tx_coretest_table');

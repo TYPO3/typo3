@@ -428,7 +428,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 						$theData[$field] = $GLOBALS['LANG']->getLL('folder', TRUE);
 						break;
 					case 'tstamp':
-						// @todo: FAL: how to get the mtime info -- $theData[$field] = t3lib_BEfunc::date($theFile['tstamp']);
+						// @todo: FAL: how to get the mtime info -- $theData[$field] = \TYPO3\CMS\Backend\Utility\BackendUtility::date($theFile['tstamp']);
 						$theData[$field] = '-';
 						break;
 					case 'file':
@@ -496,7 +496,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 
 	/**
 	 * Returns list URL; This is the URL of the current script with id and imagemode parameters, thats all.
-	 * The URL however is not relative (with the backpath), otherwise t3lib_div::sanitizeLocalUrl() would say that
+	 * The URL however is not relative (with the backpath), otherwise \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl() would say that
 	 * the URL would be invalid
 	 *
 	 * @return string URL

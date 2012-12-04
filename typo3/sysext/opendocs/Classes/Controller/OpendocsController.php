@@ -192,7 +192,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	 ***    HOOKS    ***
 	 *******************/
 	/**
-	 * Called as a hook in t3lib_BEfunc::setUpdateSignal, calls a JS function to change
+	 * Called as a hook in \TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal, calls a JS function to change
 	 * the number of opened documents
 	 *
 	 * @param array $params

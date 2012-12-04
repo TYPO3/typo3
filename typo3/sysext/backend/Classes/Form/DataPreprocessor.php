@@ -133,13 +133,13 @@ class DataPreprocessor {
 							}
 						}
 						if ($id < 0) {
-							$record = \t3lib_beFunc::getRecord($table, abs($id), 'pid');
+							$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, abs($id), 'pid');
 							$pid = $record['pid'];
 							unset($record);
 						} else {
 							$pid = intval($id);
 						}
-						$pageTS = \t3lib_beFunc::getPagesTSconfig($pid);
+						$pageTS = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pid);
 						if (isset($pageTS['TCAdefaults.'])) {
 							$TCAPageTSOverride = $pageTS['TCAdefaults.'];
 							if (is_array($TCAPageTSOverride[$table . '.'])) {

@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Core\Utility;
  * Extension Management functions
  *
  * This class is never instantiated, rather the methods inside is called as functions like
- * t3lib_extMgm::isLoaded('my_extension');
+ * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('my_extension');
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -223,7 +223,7 @@ class ExtensionManagementUtility {
 	static public function addTCAcolumns($table, $columnArray, $addTofeInterface = 0) {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if (is_array($columnArray) && is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'])) {
-			// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
+			// Candidate for \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge() if integer-keys will some day make trouble...
 			$GLOBALS['TCA'][$table]['columns'] = array_merge($GLOBALS['TCA'][$table]['columns'], $columnArray);
 			if ($addTofeInterface) {
 				$GLOBALS['TCA'][$table]['feInterface']['fe_admin_fieldList'] .= ',' . implode(',', array_keys($columnArray));
@@ -723,7 +723,7 @@ class ExtensionManagementUtility {
 	 * @param string $extensionName
 	 * @param string $mainModuleName Is the main module key
 	 * @param string $subModuleName Is the submodule key, if blank a plain main module is generated
-	 * @param string $position Passed to t3lib_extMgm::addModule, see reference there
+	 * @param string $position Passed to \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule, see reference there
 	 * @param array $moduleConfiguration Icon with array keys: access, icon, labels to configure the module
 	 * @throws \InvalidArgumentException
 	 */
@@ -871,7 +871,7 @@ class ExtensionManagementUtility {
 	 * Used only for modules that are not placed in the main/sub menu hierarchy by the traditional mechanism of addModule()
 	 * Examples for this is context menu functionality (like import/export) which runs as an independent module through mod.php
 	 * FOR USE IN ext_tables.php FILES
-	 * Example:  t3lib_extMgm::addModulePath('xMOD_tximpexp', t3lib_extMgm::extPath($_EXTKEY).'app/');
+	 * Example:  \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath('xMOD_tximpexp', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'app/');
 	 *
 	 * @param string $name The name of the module, refer to conf.php of the module.
 	 * @param string $path The absolute path to the module directory inside of which "index.php" and "conf.php" is found.
@@ -953,7 +953,7 @@ class ExtensionManagementUtility {
 	/**
 	 * Adds a reference to a locallang file with $GLOBALS['TCA_DESCR'] labels
 	 * FOR USE IN ext_tables.php FILES
-	 * eg. t3lib_extMgm::addLLrefForTCAdescr('pages', 'EXT:lang/locallang_csh_pages.xml'); for the pages table or t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_layout', 'EXT:cms/locallang_csh_weblayout.php'); for the Web > Page module.
+	 * eg. \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('pages', 'EXT:lang/locallang_csh_pages.xml'); for the pages table or \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_layout', 'EXT:cms/locallang_csh_weblayout.php'); for the Web > Page module.
 	 *
 	 * @param string $tca_descr_key Description key. Typically a database table (like "pages") but for applications can be other strings, but prefixed with "_MOD_")
 	 * @param string $file_ref File reference to locallang file, eg. "EXT:lang/locallang_csh_pages.php" (or ".xml")

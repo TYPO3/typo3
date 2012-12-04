@@ -58,7 +58,7 @@ class FileEditHook {
 				return;
 			}
 			$pObj->JScode .= $t3editor->getJavascriptCode($pObj);
-			$pObj->loadJavascriptLib(\t3lib_extmgm::extRelPath('t3editor') . 'res/jslib/fileedit.js');
+			$pObj->loadJavascriptLib(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3editor') . 'res/jslib/fileedit.js');
 		}
 	}
 

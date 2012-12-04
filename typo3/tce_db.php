@@ -39,16 +39,16 @@ require 'init.php';
  * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/backend/Classes/Controller/SimpleDataHandlerController.php
  */
-require_once t3lib_extMgm::extPath('backend') . 'Classes/Controller/SimpleDataHandlerController.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/Controller/SimpleDataHandlerController.php';
 // Make instance:
-$SOBE = t3lib_div::makeInstance('SC_tce_db');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('SC_tce_db');
 $SOBE->init();
 // Include files?
 foreach ($SOBE->include_once as $INC_FILE) {
 	include_once $INC_FILE;
 }
 $formprotection = t3lib_formprotection_Factory::get();
-if ($formprotection->validateToken(t3lib_div::_GP('formToken'), 'tceAction')) {
+if ($formprotection->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formToken'), 'tceAction')) {
 	$SOBE->initClipboard();
 	$SOBE->main();
 }

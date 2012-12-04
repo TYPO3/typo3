@@ -151,7 +151,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getJavascriptCode($doc) {
 		$content = '';
 		if ($this->isEnabled()) {
-			$path_t3e = \t3lib_extmgm::extRelPath('t3editor');
+			$path_t3e = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3editor');
 			$path_codemirror = 'contrib/codemirror/js/';
 			// Include needed javascript-frameworks
 			$pageRenderer = $doc->getPageRenderer();
@@ -159,7 +159,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 			$pageRenderer->loadPrototype();
 			$pageRenderer->loadScriptaculous();
 			// Include editor-css
-			$content .= '<link href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($GLOBALS['BACK_PATH'] . \t3lib_extmgm::extRelPath('t3editor') . 'res/css/t3editor.css')) . '" type="text/css" rel="stylesheet" />';
+			$content .= '<link href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3editor') . 'res/css/t3editor.css')) . '" type="text/css" rel="stylesheet" />';
 			// Include editor-js-lib
 			$doc->loadJavascriptLib($path_codemirror . 'codemirror.js');
 			$doc->loadJavascriptLib($path_t3e . 'res/jslib/t3editor.js');
@@ -187,7 +187,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 		if (empty($this->mode)) {
 			return '';
 		}
-		$path_t3e = $GLOBALS['BACK_PATH'] . \t3lib_extmgm::extRelPath('t3editor');
+		$path_t3e = $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3editor');
 		$content = '';
 		if ($this->mode === self::MODE_TYPOSCRIPT) {
 			$content .= '<script type="text/javascript" src="' . $path_t3e . 'res/jslib/ts_codecompletion/tsref.js' . '"></script>';
@@ -220,7 +220,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function getParserfileByMode($mode) {
 		switch ($mode) {
 		case self::MODE_TYPOSCRIPT:
-			$relPath = ($GLOBALS['BACK_PATH'] ? $GLOBALS['BACK_PATH'] : '../../../') . \t3lib_extmgm::extRelPath('t3editor') . 'res/jslib/parse_typoscript/';
+			$relPath = ($GLOBALS['BACK_PATH'] ? $GLOBALS['BACK_PATH'] : '../../../') . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3editor') . 'res/jslib/parse_typoscript/';
 			$parserfile = '["' . $relPath . 'tokenizetyposcript.js", "' . $relPath . 'parsetyposcript.js"]';
 			break;
 		case self::MODE_JAVASCRIPT:

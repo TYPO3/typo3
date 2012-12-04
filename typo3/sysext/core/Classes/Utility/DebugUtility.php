@@ -288,7 +288,7 @@ class DebugUtility {
 
 	/**
 	 * Returns HTML-code, which is a visual representation of a multidimensional array
-	 * use t3lib_div::print_array() in order to print an array
+	 * use \TYPO3\CMS\Core\Utility\GeneralUtility::print_array() in order to print an array
 	 * Returns FALSE if $array_in is not an array
 	 *
 	 * @param mixed $array_in Array to view

@@ -113,7 +113,7 @@ class EidUtility {
 	/**
 	 * Makes TCA for the extension available inside eID. Use this function if
 	 * you need not to include the whole $GLOBALS['TCA']. However, you still need to call
-	 * t3lib_div::loadTCA() if you want to access column array!
+	 * \TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA() if you want to access column array!
 	 *
 	 * @param string $extensionKey Extension key
 	 * @return void

@@ -37,7 +37,7 @@ namespace TYPO3\CMS\Core\TypoScript\Parser;
  * The TypoScript parser
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @see t3lib_tstemplate, t3lib_BEfunc::getPagesTSconfig(), t3lib_beUserAuth::fetchGroupData(), t3lib_TStemplate::generateConfig()
+ * @see t3lib_tstemplate, \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig(), t3lib_beUserAuth::fetchGroupData(), t3lib_TStemplate::generateConfig()
  */
 class TypoScriptParser {
 

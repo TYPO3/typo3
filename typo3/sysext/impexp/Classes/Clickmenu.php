@@ -55,9 +55,9 @@ class Clickmenu {
 	public function main(&$backRef, $menuItems, $table, $uid) {
 		$localItems = array();
 		// Show import/export on second level menu OR root level.
-		if ($backRef->cmLevel && \t3lib_div::_GP('subname') == 'moreoptions' || $table === 'pages' && $uid == 0) {
+		if ($backRef->cmLevel && \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('subname') == 'moreoptions' || $table === 'pages' && $uid == 0) {
 			$LL = $this->includeLL();
-			$modUrl = $backRef->backPath . t3lib_extMgm::extRelPath('impexp') . 'app/index.php';
+			$modUrl = $backRef->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('impexp') . 'app/index.php';
 			$url = $modUrl . '?tx_impexp[action]=export&id=' . ($table == 'pages' ? $uid : $backRef->rec['pid']);
 			if ($table == 'pages') {
 				$url .= '&tx_impexp[pagetree][id]=' . $uid;
