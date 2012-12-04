@@ -39,7 +39,7 @@ class WebProcessor extends \TYPO3\CMS\Core\Log\Processor\AbstractProcessor {
 	 *
 	 * @param \TYPO3\CMS\Core\Log\LogRecord $logRecord The log record to process
 	 * @return \TYPO3\CMS\Core\Log\LogRecord The processed log record with additional data
-	 * @see t3lib_div::getIndpEnv()
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()
 	 */
 	public function processLogRecord(\TYPO3\CMS\Core\Log\LogRecord $logRecord) {
 		$logRecord->addData(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('_ARRAY'));

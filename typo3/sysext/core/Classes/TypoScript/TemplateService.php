@@ -1240,11 +1240,11 @@ class TemplateService {
 
 	/**
 	 * Reads the fileContent of $fName and returns it.
-	 * Similar to t3lib_div::getUrl()
+	 * Similar to \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()
 	 *
 	 * @param string $fName Absolute filepath to record
 	 * @return string The content returned
-	 * @see tslib_cObj::fileResource(), tslib_cObj::MULTIMEDIA(), t3lib_div::getUrl()
+	 * @see tslib_cObj::fileResource(), tslib_cObj::MULTIMEDIA(), \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()
 	 * @todo Define visibility
 	 */
 	public function fileContent($fName) {

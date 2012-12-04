@@ -38,9 +38,9 @@ namespace TYPO3\CMS\Core\Database;
  * Example of usage
  * Soft References:
  * if ($conf['softref'] && strlen($value))	{	// Check if a TCA configured field has softreferences defined (see TYPO3 Core API document)
- * $softRefs = t3lib_BEfunc::explodeSoftRefParserList($conf['softref']);		// Explode the list of softreferences/parameters
+ * $softRefs = \TYPO3\CMS\Backend\Utility\BackendUtility::explodeSoftRefParserList($conf['softref']);		// Explode the list of softreferences/parameters
  * foreach($softRefs as $spKey => $spParams)	{	// Traverse soft references
- * $softRefObj = &t3lib_BEfunc::softRefParserObj($spKey);	// create / get object
+ * $softRefObj = &\TYPO3\CMS\Backend\Utility\BackendUtility::softRefParserObj($spKey);	// create / get object
  * if (is_object($softRefObj))	{	// If there was an object returned...:
  * $resultArray = $softRefObj->findRef($table, $field, $uid, $softRefValue, $spKey, $spParams);	// Do processing
  *

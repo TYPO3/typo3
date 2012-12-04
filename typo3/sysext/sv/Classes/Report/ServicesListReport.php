@@ -136,7 +136,7 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 		$serviceAvailabilityClass = 'typo3-message message-error';
 		$serviceAvailable = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no');
 		try {
-			$serviceDetails = \t3lib_extmgm::findServiceByKey($serviceKey);
+			$serviceDetails = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::findServiceByKey($serviceKey);
 			if ($serviceDetails['available']) {
 				$serviceAvailabilityClass = 'typo3-message message-ok';
 				$serviceAvailable = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes');

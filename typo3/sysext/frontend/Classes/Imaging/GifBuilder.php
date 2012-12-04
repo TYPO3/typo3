@@ -43,7 +43,7 @@ namespace TYPO3\CMS\Frontend\Imaging;
  *
  * Here is an example of how to use this class (from tslib_content.php, function getImgResource):
  *
- * $gifCreator = t3lib_div::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
+ * $gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
  * $gifCreator->init();
  * $theImage='';
  * if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {

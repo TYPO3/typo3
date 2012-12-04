@@ -155,7 +155,7 @@ class FormEngine {
 	 */
 	public $backPath = '';
 
-	// Alternative return URL path (default is t3lib_div::linkThisScript())
+	// Alternative return URL path (default is \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript())
 	/**
 	 * @todo Define visibility
 	 */
@@ -3204,7 +3204,7 @@ function ' . $evalData . '(value) {
 			}
 		}
 		ksort($newFields);
-		// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
+		// Candidate for \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge() if integer-keys will some day make trouble...
 		$fields = array_merge($newFields, $fields);
 		return $fields;
 	}
@@ -3306,7 +3306,7 @@ function ' . $evalData . '(value) {
 	 * @param array $row The table row (Should at least contain the "uid" value, even if "NEW..." string. The "pid" field is important as well, and negative values will be intepreted as pointing to a record from the same table.)
 	 * @param string $field Optionally you can specify the field name as well. In that case the TSconfig for the field is returned.
 	 * @return mixed The TSconfig values (probably in an array)
-	 * @see t3lib_BEfunc::getTCEFORM_TSconfig()
+	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getTCEFORM_TSconfig()
 	 * @todo Define visibility
 	 */
 	public function setTSconfig($table, $row, $field = '') {
@@ -3360,7 +3360,7 @@ function ' . $evalData . '(value) {
 	 * @param array $row The table row (Should at least contain the "uid" value, even if "NEW..." string. The "pid" field is important as well, and negative values will be intepreted as pointing to a record from the same table.)
 	 * @param string $field Specify the field name.
 	 * @return array
-	 * @see getSpecConfFromString(), t3lib_BEfunc::getTCAtypes()
+	 * @see getSpecConfFromString(), \TYPO3\CMS\Backend\Utility\BackendUtility::getTCAtypes()
 	 * @todo Define visibility
 	 */
 	public function getSpecConfForField($table, $row, $field) {
@@ -3383,7 +3383,7 @@ function ' . $evalData . '(value) {
 	 * @param string $extraString The "Part 4" of the fields configuration in "types" "showitem" lists.
 	 * @param string $defaultExtras The ['defaultExtras'] value from field configuration
 	 * @return array An array with the special options in.
-	 * @see getSpecConfForField(), t3lib_BEfunc::getSpecConfParts()
+	 * @see getSpecConfForField(), \TYPO3\CMS\Backend\Utility\BackendUtility::getSpecConfParts()
 	 * @todo Define visibility
 	 */
 	public function getSpecConfFromString($extraString, $defaultExtras) {
@@ -4264,7 +4264,7 @@ function ' . $evalData . '(value) {
 	}
 
 	/**
-	 * Returns the "returnUrl" of the form. Can be set externally or will be taken from "t3lib_div::linkThisScript()"
+	 * Returns the "returnUrl" of the form. Can be set externally or will be taken from "\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript()"
 	 *
 	 * @return string Return URL of current script
 	 * @todo Define visibility
@@ -4766,7 +4766,7 @@ function ' . $evalData . '(value) {
 	 * @param string $field The fieldname
 	 * @param boolean $pFFlag If set, then we are fetching the 'neg_' foreign tables.
 	 * @return array The $items array modified.
-	 * @see addSelectOptionsToItemArray(), t3lib_BEfunc::exec_foreign_table_where_query()
+	 * @see addSelectOptionsToItemArray(), \TYPO3\CMS\Backend\Utility\BackendUtility::exec_foreign_table_where_query()
 	 * @todo Define visibility
 	 */
 	public function foreignTable($items, $fieldValue, $TSconfig, $field, $pFFlag = 0) {
@@ -4929,7 +4929,7 @@ function ' . $evalData . '(value) {
 		// Make "new"-label
 		if (strstr($rec['uid'], 'NEW')) {
 			$newLabel = ' <span class="typo3-TCEforms-newToken">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.new', 1) . '</span>';
-			// t3lib_BEfunc::fixVersioningPid Should not be used here because NEW records are not offline workspace versions...
+			// \TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid Should not be used here because NEW records are not offline workspace versions...
 			$truePid = \TYPO3\CMS\Backend\Utility\BackendUtility::getTSconfig_pidValue($table, $rec['uid'], $rec['pid']);
 			$prec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $truePid, 'title');
 			$pageTitle = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $prec, TRUE, FALSE);
@@ -5834,12 +5834,12 @@ function ' . $evalData . '(value) {
 	}
 
 	/**
-	 * Return record path (visually formatted, using t3lib_BEfunc::getRecordPath() )
+	 * Return record path (visually formatted, using \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath() )
 	 *
 	 * @param string $table Table name
 	 * @param array $rec Record array
 	 * @return string The record path.
-	 * @see t3lib_BEfunc::getRecordPath()
+	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath()
 	 * @todo Define visibility
 	 */
 	public function getRecordPath($table, $rec) {
@@ -6056,13 +6056,13 @@ function ' . $evalData . '(value) {
 
 	/**
 	 * Return TSCpid (cached)
-	 * Using t3lib_BEfunc::getTSCpid()
+	 * Using \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid()
 	 *
 	 * @param string $table Tablename
 	 * @param string $uid UID value
 	 * @param string $pid PID value
 	 * @return integer Returns the REAL pid of the record, if possible. If both $uid and $pid is strings, then pid=-1 is returned as an error indication.
-	 * @see t3lib_BEfunc::getTSCpid()
+	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid()
 	 * @todo Define visibility
 	 */
 	public function getTSCpid($table, $uid, $pid) {
@@ -6369,7 +6369,7 @@ function ' . $evalData . '(value) {
 					if (!empty($keySegments[1])) {
 						// Use any field in the foreign record
 						list($foreignTable, $foreignUid) = \TYPO3\CMS\Backend\Utility\BackendUtility::splitTable_Uid($foreignIdentifier);
-						$foreignRecord = \t3lib_befunc::getRecord($foreignTable, $foreignUid);
+						$foreignRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($foreignTable, $foreignUid);
 						if (isset($foreignRecord[$keySegments[1]])) {
 							$value = $foreignRecord[$keySegments[1]];
 						}

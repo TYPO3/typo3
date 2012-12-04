@@ -241,7 +241,7 @@ class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 			require PATH_site . self::LOCALCONF_FILE;
 			// If the localconf.php was not upgraded to LocalConfiguration.php, the default extListArray
 			// from t3lib/stddb/DefaultConfiguration.php is still set. In this case we just unset
-			// this key here, so t3lib_extMgm::getLoadedExtensionListArray() falls back to use extList string
+			// this key here, so \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray() falls back to use extList string
 			// @deprecated: This case can be removed later if localconf.php is not supported anymore
 			unset($TYPO3_CONF_VARS['EXT']['extListArray']);
 			// Write the old globals into the new place in the configuration array

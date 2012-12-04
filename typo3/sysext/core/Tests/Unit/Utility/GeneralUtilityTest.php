@@ -2588,7 +2588,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Check if the error message that is returned by the hook callback
-	 * is logged to t3lib_div::devLog.
+	 * is logged to \TYPO3\CMS\Core\Utility\GeneralUtility::devLog.
 	 *
 	 * @test
 	 */
@@ -2807,8 +2807,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		Utility\GeneralUtility::mkdir($baseDirectory . '/.bar');
 		chmod($baseDirectory . '/.bar', 1751);
 		// Use this if writeFileToTypo3tempDir is fixed to create hidden files in subdirectories
-		// t3lib_div::writeFileToTypo3tempDir($baseDirectory . '/.bar/.file', '42');
-		// t3lib_div::writeFileToTypo3tempDir($baseDirectory . '/.bar/..file2', '42');
+		// \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($baseDirectory . '/.bar/.file', '42');
+		// \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($baseDirectory . '/.bar/..file2', '42');
 		touch($baseDirectory . '/.bar/.file', '42');
 		chmod($baseDirectory . '/.bar/.file', 482);
 		touch($baseDirectory . '/.bar/..file2', '42');

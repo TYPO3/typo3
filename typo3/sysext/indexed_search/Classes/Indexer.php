@@ -1094,7 +1094,7 @@ class Indexer {
 	/**
 	 * Indexing a regular document given as $file (relative to PATH_site, local file)
 	 *
-	 * @param 	string		Relative Filename, relative to PATH_site. It can also be an absolute path as long as it is inside the lockRootPath (validated with t3lib_div::isAbsPath()). Finally, if $contentTmpFile is set, this value can be anything, most likely a URL
+	 * @param 	string		Relative Filename, relative to PATH_site. It can also be an absolute path as long as it is inside the lockRootPath (validated with \TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath()). Finally, if $contentTmpFile is set, this value can be anything, most likely a URL
 	 * @param 	boolean		If set, indexing is forced (despite content hashes, mtime etc).
 	 * @param 	string		Temporary file with the content to read it from (instead of $file). Used when the $file is a URL.
 	 * @param 	string		File extension for temporary file.

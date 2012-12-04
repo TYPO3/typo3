@@ -21,7 +21,7 @@ abstract class AbstractService {
 	public $error = array();
 
 	/**
-	 * @var bool Defines if debug messages should be written with t3lib_div::devLog
+	 * @var bool Defines if debug messages should be written with \TYPO3\CMS\Core\Utility\GeneralUtility::devLog
 	 * @todo Define visibility
 	 */
 	public $writeDevLog = FALSE;
@@ -133,7 +133,7 @@ abstract class AbstractService {
 	 *
 	 ***************************************/
 	/**
-	 * Logs debug messages to t3lib_div::devLog()
+	 * Logs debug messages to \TYPO3\CMS\Core\Utility\GeneralUtility::devLog()
 	 *
 	 * @param string $msg Debug message
 	 * @param integer $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message

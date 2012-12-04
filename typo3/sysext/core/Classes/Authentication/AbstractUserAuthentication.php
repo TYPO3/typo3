@@ -874,7 +874,7 @@ abstract class AbstractUserAuthentication {
 		}
 		if ($statement && $user) {
 			// A user was found
-			if (\t3lib_Utility_Math::canBeInterpretedAsInteger($this->auth_timeout_field)) {
+			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->auth_timeout_field)) {
 				// Get timeout from object
 				$timeout = intval($this->auth_timeout_field);
 			} else {

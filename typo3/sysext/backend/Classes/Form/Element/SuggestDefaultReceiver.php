@@ -363,7 +363,7 @@ class SuggestDefaultReceiver {
 	}
 
 	/**
-	 * Returns a label for a given record; usually only a wrapper for t3lib_BEfunc::getRecordTitle
+	 * Returns a label for a given record; usually only a wrapper for \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle
 	 *
 	 * @param array $row The record to get the label for
 	 * @return string The label

@@ -51,10 +51,10 @@ namespace TYPO3\CMS\Backend\Module;
  * This can be seen in the extension 'cms' where the info module have a
  * function added. In 'ext_tables.php' this is done by this function call:
  *
- * t3lib_extMgm::insertModuleFunction(
+ * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
  * 'web_info',
  * 'tx_cms_webinfo_page',
- * t3lib_extMgm::extPath($_EXTKEY).'web_info/class.tx_cms_webinfo.php',
+ * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'web_info/class.tx_cms_webinfo.php',
  * 'LLL:EXT:cms/locallang_tca.php:mod_tx_cms_webinfo_page'
  * );
  *
@@ -66,10 +66,10 @@ namespace TYPO3\CMS\Backend\Module;
  * In the 'ext_tables.php' file of an extension ('wizard_crpages') which uses the
  * framework provided by 'func_wizards' this looks like this:
  *
- * t3lib_extMgm::insertModuleFunction(
+ * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
  * 'web_func',
  * 'tx_wizardcrpages_webfunc_2',
- * t3lib_extMgm::extPath($_EXTKEY).'class.tx_wizardcrpages_webfunc_2.php',
+ * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'class.tx_wizardcrpages_webfunc_2.php',
  * 'LLL:EXT:wizard_crpages/locallang.php:wiz_crMany',
  * 'wiz'
  * );
@@ -80,7 +80,7 @@ namespace TYPO3\CMS\Backend\Module;
  * times inclusion sections in their index.php scripts. For example (from web_func):
  *
  * Make instance:
- * $SOBE = t3lib_div::makeInstance("SC_mod_web_func_index");
+ * $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("SC_mod_web_func_index");
  * $SOBE->init();
  *
  * Include files?

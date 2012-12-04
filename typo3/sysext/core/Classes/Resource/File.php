@@ -263,7 +263,7 @@ class File extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	 * the files' mimetype and the systems' encryption key.
 	 * used to generate a thumbnail, and this hash is checked if valid
 	 *
-	 * @todo maybe t3lib_div::hmac() could be used?
+	 * @todo maybe \TYPO3\CMS\Core\Utility\GeneralUtility::hmac() could be used?
 	 * @param \TYPO3\CMS\Core\Resource\File $file the file to create the checksum from
 	 * @return string the MD5 hash
 	 */

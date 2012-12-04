@@ -121,7 +121,7 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		$icon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . ($isOpen ? 'minus' : 'plus') . 'only.gif'), 'width="18" height="16"') . ' align="top" alt="" />';
 		$firstHtml = $this->PM_ATagWrap($icon, $cmd);
 		if ($pid > 0) {
-			$rootRec = \t3lib_befunc::getRecordWSOL('pages', $pid);
+			$rootRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pid);
 			$firstHtml .= $this->wrapIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rootRec), $rootRec);
 		} else {
 			$rootRec = array(
