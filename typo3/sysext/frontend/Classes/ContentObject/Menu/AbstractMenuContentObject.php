@@ -45,7 +45,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  *
  * Example of usage (from tslib_cObj):
  *
- * $menu = t3lib_div::makeInstance('tslib_'.$cls);
+ * $menu = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_'.$cls);
  * $menu->parent_cObj = $this;
  * $menu->start($GLOBALS['TSFE']->tmpl, $GLOBALS['TSFE']->sys_page, '', $conf,1);
  * $menu->makeMenu();

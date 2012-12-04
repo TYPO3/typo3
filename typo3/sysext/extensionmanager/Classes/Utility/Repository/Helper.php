@@ -135,7 +135,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $remoteResource remote resource to read contents from
 	 * @param string $localResource local resource (absolute file path) to store retrieved contents to
 	 * @return void
-	 * @see t3lib_div::getUrl(), t3lib_div::writeFile()
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(), \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile()
 	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
 	 */
 	protected function fetchFile($remoteResource, $localResource) {

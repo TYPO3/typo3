@@ -970,7 +970,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	/**
 	 * Render list of files.
 	 *
-	 * @param 	array		List of files. See t3lib_div::getFilesInDir
+	 * @param 	array		List of files. See \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir
 	 * @param 	string		If set a header with a folder icon and folder name are shown
 	 * @param 	boolean		Whether to show thumbnails or not. If set, no thumbnails are shown.
 	 * @return 	string		HTML output

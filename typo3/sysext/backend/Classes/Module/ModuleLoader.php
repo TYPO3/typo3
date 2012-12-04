@@ -39,7 +39,7 @@ namespace TYPO3\CMS\Backend\Module;
  * Load Backend Interface modules
  *
  * Typically instantiated like this:
- * $this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
+ * $this->loadModules = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_loadModules');
  * $this->loadModules->load($TBE_MODULES);
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>

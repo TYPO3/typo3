@@ -1530,7 +1530,7 @@ class ElementBrowser {
 	/**
 	 * Render list of files.
 	 *
-	 * @param array $files List of files. See t3lib_div::getFilesInDir
+	 * @param array $files List of files. See \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir
 	 * @param string \TYPO3\CMS\Core\Resource\Folder $folder If set a header with a folder icon and folder name are shown
 	 * @param boolean $noThumbs Whether to show thumbnails or not. If set, no thumbnails are shown.
 	 * @return string HTML output
@@ -1645,7 +1645,7 @@ class ElementBrowser {
 	/**
 	 * Render list of folders.
 	 *
-	 * @param array $baseFolder List of folders. See t3lib_div::get_dirs
+	 * @param array $baseFolder List of folders. See \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs
 	 * @param string $folders If set a header with a folder icon and folder name are shown
 	 * @return string HTML output
 	 * @todo Define visibility

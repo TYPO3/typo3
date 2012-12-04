@@ -97,8 +97,8 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 					$pRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $rec['uid'], 'uid', ' AND ' . $m_perms_clause);
 					$lines[] = '<tr><td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rec) . (!is_array($pRec) ? $GLOBALS['TBE_TEMPLATE']->rfw('<strong>' . $LANG->getLL('wiz_W', 1) . '</strong> ') : '') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '&nbsp;</td>
 					' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms') ? '<td nowrap="nowrap">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['subtitle'], $GLOBALS['BE_USER']->uc['titleLen'])) . '&nbsp;</td>' : '') . '
-					<td nowrap="nowrap">' . \t3lib_Befunc::datetime($rec['tstamp']) . '&nbsp;&nbsp;</td>
-					<td nowrap="nowrap">' . \t3lib_Befunc::datetime($rec['crdate']) . '&nbsp;&nbsp;</td>
+					<td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($rec['tstamp']) . '&nbsp;&nbsp;</td>
+					<td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($rec['crdate']) . '&nbsp;&nbsp;</td>
 					</tr>';
 				}
 				$theCode .= '<h4>' . $LANG->getLL('wiz_currentPageOrder', TRUE) . '</h4>

@@ -4291,11 +4291,11 @@ class ContentObjectRenderer {
 	}
 
 	/**
-	 * Performs basic mathematical evaluation of the input string. Does NOT take parathesis and operator precedence into account! (for that, see t3lib_utility_Math::calculateWithPriorityToAdditionAndSubtraction())
+	 * Performs basic mathematical evaluation of the input string. Does NOT take parathesis and operator precedence into account! (for that, see \TYPO3\CMS\Core\Utility\MathUtility::calculateWithPriorityToAdditionAndSubtraction())
 	 *
 	 * @param string $val The string to evaluate. Example: "3+4*10/5" will generate "35". Only integer numbers can be used.
 	 * @return integer The result (might be a float if you did a division of the numbers).
-	 * @see t3lib_utility_Math::calculateWithPriorityToAdditionAndSubtraction()
+	 * @see \TYPO3\CMS\Core\Utility\MathUtility::calculateWithPriorityToAdditionAndSubtraction()
 	 * @todo Define visibility
 	 */
 	public function calc($val) {

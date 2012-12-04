@@ -755,13 +755,13 @@ class TypoScriptFrontendController {
 	 * Also sets internal clientInfo array (browser information) and a unique string (->uniqueString) for this script instance; A md5 hash of the microtime()
 	 *
 	 * @param array $TYPO3_CONF_VARS The global $TYPO3_CONF_VARS array. Will be set internally in ->TYPO3_CONF_VARS
-	 * @param mixed $id The value of t3lib_div::_GP('id')
-	 * @param integer $type The value of t3lib_div::_GP('type')
-	 * @param boolean $no_cache The value of t3lib_div::_GP('no_cache'), evaluated to 1/0
-	 * @param string $cHash The value of t3lib_div::_GP('cHash')
-	 * @param string $jumpurl The value of t3lib_div::_GP('jumpurl')
-	 * @param string $MP The value of t3lib_div::_GP('MP')
-	 * @param string $RDCT The value of t3lib_div::_GP('RDCT')
+	 * @param mixed $id The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id')
+	 * @param integer $type The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('type')
+	 * @param boolean $no_cache The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('no_cache'), evaluated to 1/0
+	 * @param string $cHash The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cHash')
+	 * @param string $jumpurl The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('jumpurl')
+	 * @param string $MP The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('MP')
+	 * @param string $RDCT The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('RDCT')
 	 * @see index_ts.php
 	 * @todo Define visibility
 	 */
@@ -2494,7 +2494,7 @@ class TypoScriptFrontendController {
 	 * Includes TCA definitions from loaded extensions (ext_table.php files).
 	 * Normally in the frontend only a part of the global $TCA array is loaded,
 	 * namely the "ctrl" part. Thus it doesn't take up too much memory. To load
-	 * full TCA for the table, use t3lib_div::loadTCA($tableName) after calling
+	 * full TCA for the table, use \TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName) after calling
 	 * this function.
 	 *
 	 * @param integer $TCAloaded Probably, keep hands of this value. Just don't set it. (This may affect the first-ever time this function is called since if you set it to zero/FALSE any subsequent call will still trigger the inclusion; In other words, this value will be set in $this->TCAloaded after inclusion and therefore if its FALSE, another inclusion will be possible on the next call. See ->getCompressedTCarray())
@@ -4119,7 +4119,7 @@ if (version == "n3") {
 	 * @param string $typoScriptProperty Deprecated object or property
 	 * @param string $explanation Message or additional information
 	 * @return void
-	 * @see t3lib_div::deprecationLog(), t3lib_timeTrack::setTSlogMessage()
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(), t3lib_timeTrack::setTSlogMessage()
 	 * @todo Define visibility
 	 */
 	public function logDeprecatedTyposcript($typoScriptProperty, $explanation = '') {
@@ -4515,7 +4515,7 @@ if (version == "n3") {
 	 * @param string $message The message
 	 * @param string $headers The headers (string with lines)
 	 * @return void
-	 * @see t3lib_div::plainMailEncoded()
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::plainMailEncoded()
 	 * @todo Define visibility
 	 */
 	public function plainMailEncoded($email, $subject, $message, $headers = '') {

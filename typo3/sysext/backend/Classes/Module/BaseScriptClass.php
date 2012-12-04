@@ -53,7 +53,7 @@ namespace TYPO3\CMS\Backend\Module;
  * MAIN FUNCTION - HERE YOU CREATE THE MODULE CONTENT IN $this->content
  * function main() {
  * TYPICALLY THE INTERNAL VAR, $this->doc is instantiated like this:
- * $this->doc = t3lib_div::makeInstance('mediumDoc');
+ * $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('mediumDoc');
  * TYPICALLY THE INTERNAL VAR, $this->backPath is set like this:
  * $this->backPath = $this->doc->backPath = $GLOBALS['BACK_PATH'];
  * ... AND OF COURSE A LOT OF OTHER THINGS GOES ON - LIKE PUTTING CONTENT INTO $this->content
@@ -66,7 +66,7 @@ namespace TYPO3\CMS\Backend\Module;
  * }
  *
  * MAKE INSTANCE OF THE SCRIPT CLASS AND CALL init()
- * $SOBE = t3lib_div::makeInstance('SC_mod_prototype');
+ * $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('SC_mod_prototype');
  * $SOBE->init();
  *
  * AFTER INIT THE INTERNAL ARRAY ->include_once MAY HOLD FILENAMES TO INCLUDE
@@ -151,7 +151,7 @@ class BaseScriptClass {
 	 * If type is 'ses' then the data is stored as session-lasting data. This means that it'll be wiped out the next time the user logs in.
 	 * Can be set from extension classes of this class before the init() function is called.
 	 *
-	 * @see menuConfig(), t3lib_BEfunc::getModuleData()
+	 * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
 	 * @todo Define visibility
 	 */
 	public $modMenu_type = '';
@@ -160,7 +160,7 @@ class BaseScriptClass {
 	 * dontValidateList can be used to list variables that should not be checked if their value is found in the MOD_MENU array. Used for dynamically generated menus.
 	 * Can be set from extension classes of this class before the init() function is called.
 	 *
-	 * @see menuConfig(), t3lib_BEfunc::getModuleData()
+	 * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
 	 * @todo Define visibility
 	 */
 	public $modMenu_dontValidateList = '';
@@ -169,7 +169,7 @@ class BaseScriptClass {
 	 * List of default values from $MOD_MENU to set in the output array (only if the values from MOD_MENU are not arrays)
 	 * Can be set from extension classes of this class before the init() function is called.
 	 *
-	 * @see menuConfig(), t3lib_BEfunc::getModuleData()
+	 * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
 	 * @todo Define visibility
 	 */
 	public $modMenu_setDefaultList = '';
@@ -234,11 +234,11 @@ class BaseScriptClass {
 
 	/**
 	 * Initializes the internal MOD_MENU array setting and unsetting items based on various conditions. It also merges in external menu items from the global array TBE_MODULES_EXT (see mergeExternalItems())
-	 * Then MOD_SETTINGS array is cleaned up (see t3lib_BEfunc::getModuleData()) so it contains only valid values. It's also updated with any SET[] values submitted.
+	 * Then MOD_SETTINGS array is cleaned up (see \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()) so it contains only valid values. It's also updated with any SET[] values submitted.
 	 * Also loads the modTSconfig internal variable.
 	 *
 	 * @return void
-	 * @see init(), $MOD_MENU, $MOD_SETTINGS, t3lib_BEfunc::getModuleData(), mergeExternalItems()
+	 * @see init(), $MOD_MENU, $MOD_SETTINGS, \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(), mergeExternalItems()
 	 * @todo Define visibility
 	 */
 	public function menuConfig() {
@@ -257,7 +257,7 @@ class BaseScriptClass {
 	 * @param array $menuArr The part of a MOD_MENU array to work on.
 	 * @return array Modified array part.
 	 * @access private
-	 * @see t3lib_extMgm::insertModuleFunction(), menuConfig()
+	 * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), menuConfig()
 	 * @todo Define visibility
 	 */
 	public function mergeExternalItems($modName, $menuKey, $menuArr) {
@@ -313,7 +313,7 @@ class BaseScriptClass {
 	 * If an instance is created it is initiated with $this passed as value and $this->extClassConf as second argument. Further the $this->MOD_SETTING is cleaned up again after calling the init function.
 	 *
 	 * @return void
-	 * @see handleExternalFunctionValue(), t3lib_extMgm::insertModuleFunction(), $extObj
+	 * @see handleExternalFunctionValue(), \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), $extObj
 	 * @todo Define visibility
 	 */
 	public function checkExtObj() {

@@ -506,12 +506,12 @@ class IconUtility {
 	}
 
 	/**
-	 * Create new image pointer from input file (either gif/png, in case the wrong format it is converted by t3lib_div::read_png_gif())
+	 * Create new image pointer from input file (either gif/png, in case the wrong format it is converted by \TYPO3\CMS\Core\Utility\GeneralUtility::read_png_gif())
 	 *
 	 * @param string $file Absolute filename of the image file from which to start the icon creation.
 	 * @return mixed If success, image pointer, otherwise "-1
 	 * @access private
-	 * @see t3lib_div::read_png_gif
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::read_png_gif
 	 */
 	static public function imagecreatefrom($file) {
 		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::read_png_gif($file, $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']);

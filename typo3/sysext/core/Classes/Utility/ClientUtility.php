@@ -36,7 +36,7 @@ class ClientUtility {
 	/**
 	 * Generates an array with abstracted browser information
 	 *
-	 * @param string $userAgent The useragent string, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
+	 * @param string $userAgent The useragent string, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
 	 * @return array Contains keys "browser", "version", "system
 	 */
 	static public function getBrowserInfo($userAgent) {
@@ -49,7 +49,7 @@ class ClientUtility {
 					'userAgent' => &$userAgent,
 					'returnResult' => &$returnResult
 				);
-				// need reference for third parameter in t3lib_div::callUserFunction,
+				// need reference for third parameter in \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction,
 				// so create a reference to NULL
 				$null = NULL;
 				$hookResult = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hookFunction, $hookParameters, $null);
@@ -179,7 +179,7 @@ class ClientUtility {
 	/**
 	 * Gets a code for a browsing device based on the input useragent string.
 	 *
-	 * @param string $userAgent The useragent string, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
+	 * @param string $userAgent The useragent string, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
 	 * @return string Code for the specific device type
 	 */
 	static public function getDeviceType($userAgent) {
@@ -192,7 +192,7 @@ class ClientUtility {
 					'userAgent' => &$userAgent,
 					'returnResult' => &$returnResult
 				);
-				// need reference for third parameter in t3lib_div::callUserFunction,
+				// need reference for third parameter in \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction,
 				// so create a reference to NULL
 				$null = NULL;
 				$hookResult = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hookFunction, $hookParameters, $null);

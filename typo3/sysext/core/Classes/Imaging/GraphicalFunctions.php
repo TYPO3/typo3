@@ -161,7 +161,7 @@ class GraphicalFunctions {
 	 */
 	public $dontCheckForExistingTempFile = 0;
 
-	// Prevents imageMagickConvert() from compressing the gif-files with t3lib_div::gif_compress()
+	// Prevents imageMagickConvert() from compressing the gif-files with \TYPO3\CMS\Core\Utility\GeneralUtility::gif_compress()
 	/**
 	 * @todo Define visibility
 	 */
@@ -2707,7 +2707,7 @@ class GraphicalFunctions {
 	 * Creates subdirectory in typo3temp/ if not already found.
 	 *
 	 * @param string $dirName Name of sub directory
-	 * @return boolean Result of t3lib_div::mkdir(), TRUE if it went well.
+	 * @return boolean Result of \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir(), TRUE if it went well.
 	 * @todo Define visibility
 	 */
 	public function createTempSubDir($dirName) {

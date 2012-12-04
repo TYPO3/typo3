@@ -41,7 +41,7 @@ class ContextHelpDataProvider {
 	 * @return array complete Help information
 	 */
 	public function getContextHelp($table, $field) {
-		$helpTextArray = \t3lib_befunc::helpTextArray($table, $field);
+		$helpTextArray = \TYPO3\CMS\Backend\Utility\BackendUtility::helpTextArray($table, $field);
 		$moreIcon = $helpTextArray['moreInfo'] ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-forward') : '';
 		return array(
 			'title' => $helpTextArray['title'],

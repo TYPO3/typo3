@@ -60,9 +60,9 @@ class ext_TSparser extends t3lib_tsparser_ext {
  * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/backend/Classes/Wizard/TsconfigWizard.php
  */
-require_once t3lib_extMgm::extPath('backend') . 'Classes/Wizard/TsconfigWizard.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/Wizard/TsconfigWizard.php';
 // Make instance:
-$SOBE = t3lib_div::makeInstance('SC_wizard_tsconfig');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('SC_wizard_tsconfig');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

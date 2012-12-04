@@ -49,7 +49,7 @@ namespace TYPO3\CMS\Backend;
  *
  * function main() {
  * reStore settings
- * $store = t3lib_div::makeInstance('t3lib_modSettings');
+ * $store = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_modSettings');
  * $store->init('tx_dam_select');
  * $store->setStoreList('tx_dam_select');
  * $store->processStoreControl();

@@ -570,7 +570,7 @@ class HtmlParser {
 	 * @param string $tag The tag or attributes
 	 * @return array
 	 * @access private
-	 * @see t3lib_div::split_tag_attributes()
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::split_tag_attributes()
 	 * @todo Define visibility
 	 */
 	public function split_tag_attributes($tag) {
@@ -1354,7 +1354,7 @@ class HtmlParser {
 									$keepTags[$key]['fixAttrib'][$atName] = array();
 								}
 								$keepTags[$key]['fixAttrib'][$atName] = array_merge($keepTags[$key]['fixAttrib'][$atName], $atConfig);
-								// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
+								// Candidate for \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge() if integer-keys will some day make trouble...
 								if (strcmp($keepTags[$key]['fixAttrib'][$atName]['range'], '')) {
 									$keepTags[$key]['fixAttrib'][$atName]['range'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $keepTags[$key]['fixAttrib'][$atName]['range']);
 								}
@@ -1366,7 +1366,7 @@ class HtmlParser {
 					}
 					unset($tagC['fixAttrib.']);
 					unset($tagC['fixAttrib']);
-					// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
+					// Candidate for \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge() if integer-keys will some day make trouble...
 					$keepTags[$key] = array_merge($keepTags[$key], $tagC);
 				}
 			}
