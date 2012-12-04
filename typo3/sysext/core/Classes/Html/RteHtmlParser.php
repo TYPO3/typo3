@@ -1164,7 +1164,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 *
 	 * @param string $url Filepath/URL to read
 	 * @return string The content from the resource given as input.
-	 * @see t3lib_div::getUrl()
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()
 	 * @todo Define visibility
 	 */
 	public function getUrl($url) {
@@ -1542,8 +1542,8 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	/**
 	 * Returns SiteURL based on thisScript.
 	 *
-	 * @return string Value of t3lib_div::getIndpEnv('TYPO3_SITE_URL');
-	 * @see t3lib_div::getIndpEnv()
+	 * @return string Value of \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv()
 	 * @todo Define visibility
 	 */
 	public function siteUrl() {

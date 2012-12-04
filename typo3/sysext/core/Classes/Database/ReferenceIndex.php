@@ -369,7 +369,7 @@ class ReferenceIndex {
 				// For "flex" fieldtypes we need to traverse the structure looking for file and db references of course!
 				if ($conf['type'] == 'flex') {
 					// Get current value array:
-					// NOTICE: failure to resolve Data Structures can lead to integrity problems with the reference index. Please look up the note in the JavaDoc documentation for the function t3lib_BEfunc::getFlexFormDS()
+					// NOTICE: failure to resolve Data Structures can lead to integrity problems with the reference index. Please look up the note in the JavaDoc documentation for the function \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS()
 					$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $row, $table, '', $this->WSOL);
 					$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($value);
 					// Traversing the XML structure, processing files:

@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Belog\Module;
  ***************************************************************/
 /**
  * This class is a wrapper for WebInfo controller of belog.
- * It is registered in ext_tables.php with t3lib_extMgm::insertModuleFunction() and called by the
+ * It is registered in ext_tables.php with \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction() and called by the
  * info extension via SCbase functionality.
  *
  * Extbase currently provides no way to register a "TBE_MODULES_EXT" module directly,

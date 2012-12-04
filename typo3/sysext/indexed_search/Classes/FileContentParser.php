@@ -716,7 +716,7 @@ class FileContentParser {
 	 * Return icon for file extension
 	 *
 	 * @param 	string		File extension, lowercase.
-	 * @return 	string		Relative file reference, resolvable by t3lib_div::getFileAbsFileName()
+	 * @return 	string		Relative file reference, resolvable by \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName()
 	 * @todo Define visibility
 	 */
 	public function getIcon($extension) {

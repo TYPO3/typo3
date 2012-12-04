@@ -178,14 +178,14 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	}
 
 	/**
-	 * Wrapper method for t3lib_befunc::getRecordWSOL
+	 * Wrapper method for \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL
 	 *
 	 * @param integer $uid The page id
 	 * @param boolean $unsetMovePointers Whether to unset move pointers
 	 * @return array
 	 */
 	protected function getRecordWithWorkspaceOverlay($uid, $unsetMovePointers = FALSE) {
-		return \t3lib_befunc::getRecordWSOL('pages', $uid, '*', '', TRUE, $unsetMovePointers);
+		return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $uid, '*', '', TRUE, $unsetMovePointers);
 	}
 
 	/**

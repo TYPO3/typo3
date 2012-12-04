@@ -94,7 +94,7 @@ class MathUtility {
 	 *
 	 * @param string $string Input string, eg "123 + 456 / 789 - 4
 	 * @return integer Calculated value. Or error string.
-	 * @see t3lib_utility_Math::calculateWithParentheses()
+	 * @see \TYPO3\CMS\Core\Utility\MathUtility::calculateWithParentheses()
 	 */
 	static public function calculateWithPriorityToAdditionAndSubtraction($string) {
 		// Removing all whitespace

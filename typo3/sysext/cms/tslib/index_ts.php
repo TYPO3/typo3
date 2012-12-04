@@ -119,7 +119,7 @@ $TSFE->clear_preview();
 $TSFE->determineId();
 // Now, if there is a backend user logged in and he has NO access to this page, then re-evaluate the id shown!
 if ($TSFE->isBackendUserLoggedIn() && (!$BE_USER->extPageReadAccess($TSFE->page) || \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ADMCMD_noBeUser'))) {
-	// t3lib_div::_GP('ADMCMD_noBeUser') is placed here because workspacePreviewInit() might need to know if a backend user is logged in!
+	// \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ADMCMD_noBeUser') is placed here because workspacePreviewInit() might need to know if a backend user is logged in!
 	// Remove user
 	unset($BE_USER);
 	$TSFE->beUserLogin = 0;

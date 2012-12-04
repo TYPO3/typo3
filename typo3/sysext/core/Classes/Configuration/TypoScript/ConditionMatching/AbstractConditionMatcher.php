@@ -540,7 +540,7 @@ abstract class AbstractConditionMatcher {
 	/**
 	 * Generates an array with abstracted browser information
 	 *
-	 * @param string $userAgent The useragent string, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
+	 * @param string $userAgent The useragent string, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
 	 * @return array Contains keys "browser", "version", "system
 	 */
 	protected function getBrowserInfo($userAgent) {
@@ -550,7 +550,7 @@ abstract class AbstractConditionMatcher {
 	/**
 	 * Gets a code for a browsing device based on the input useragent string.
 	 *
-	 * @param string $userAgent The useragent string, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
+	 * @param string $userAgent The useragent string, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
 	 * @return string Code for the specific device type
 	 */
 	protected function getDeviceType($userAgent) {

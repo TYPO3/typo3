@@ -492,7 +492,7 @@ $TCA['sys_file_collection'] = array(
 		'dynamicConfigFile' => 'T3LIB:tca_sys_file_collection.php'
 	)
 );
-t3lib_extMgm::allowTableOnStandardPages('sys_file_collection');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('sys_file_collection');
 /**
  * Table "sys_history":
  * Holds history records, the config part is defined in t3lib/stddb/tbl_be.php

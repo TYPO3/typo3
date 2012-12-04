@@ -56,7 +56,7 @@ abstract class AbstractExceptionHandler implements \TYPO3\CMS\Core\Error\Excepti
 	 * @param Exception $exception The exception
 	 * @param string $context The context where the exception was thrown, WEB or CLI
 	 * @return void
-	 * @see t3lib_div::sysLog(), t3lib_div::devLog()
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(), \TYPO3\CMS\Core\Utility\GeneralUtility::devLog()
 	 */
 	protected function writeLogEntries(\Exception $exception, $context) {
 		$filePathAndName = $exception->getFile();

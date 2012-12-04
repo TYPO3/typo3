@@ -52,7 +52,7 @@ class AbstractAuthenticationService extends \TYPO3\CMS\Core\Service\AbstractServ
 	 */
 	public $writeAttemptLog = FALSE;
 
-	// If the t3lib_div::devLog() function should be used
+	// If the \TYPO3\CMS\Core\Utility\GeneralUtility::devLog() function should be used
 	/**
 	 * @todo Define visibility
 	 */
