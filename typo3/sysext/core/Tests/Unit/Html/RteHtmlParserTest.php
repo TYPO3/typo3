@@ -122,6 +122,36 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($expectedResult, $this->fixture->TS_transform_db($content, TRUE));
 	}
 
+	/**
+	 * @test
+	 * @dataProvider emptyTagsDataProvider
+	 */
+	public function stripEmptyTags($stripOn, $tagList, $content, $expectedResult) {
+		$proc['proc.'] = array(
+			'dontConvBRtoParagraph' => '1',
+			'preserveDIVSections' => '1',
+			'allowTagsOutside' => 'hr, address',
+			'stripEmptyTags' => $stripOn,
+			'stripEmptyTags.' => array(
+				'tags' => $tagList
+			)
+		);	// Assume the transformation is ts_css
+		$this->assertEquals($expectedResult, $this->fixture->RTE_transform($content, NULL, 'rte', $proc));
+	}
+
+	public function emptyTagsDataProvider() {
+		return array(
+			array(0 , NULL, '<h1></h1>', '<h1></h1>'),
+			array(1 , NULL, '<h1></h1>', ''),
+			array(1 , NULL, '<h1>hallo</h1>', '<h1>hallo</h1>'),
+			array(1 , NULL, '<h1 class="something"></h1>', ''),
+			array(1 , NULL, '<h1 class="something"></h1><h2></h2>', ''),
+			array(1 , 'h2', '<h1 class="something"></h1><h2></h2>', '<h1 class="something"></h1>'),
+			array(1 , 'h2, h1', '<h1 class="something"></h1><h2></h2>', ''),
+			array(1 , NULL, '<div><p></p></div>', '')
+		);
+	}
+
 }
 
 ?>
