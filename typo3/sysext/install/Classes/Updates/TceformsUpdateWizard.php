@@ -1,6 +1,4 @@
 <?php
-namespace TYPO3\CMS\Install\Updates;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +21,8 @@ namespace TYPO3\CMS\Install\Updates;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+namespace TYPO3\CMS\Install\Updates;
+
 /**
  * Upgrade wizard which goes through all files referenced in the tt_content.image filed
  * and creates sys_file records as well as sys_file_reference records for the individual usages.
@@ -42,6 +42,34 @@ class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 */
 	protected $storage;
 
+	protected $tables = array(
+		'tt_content' => array(
+			'image' => array(
+				'sourcePath' => 'uploads/pics/',
+				// Relative to fileadmin
+				'targetPath' => '_migrated/pics/',
+				'titleTexts' => 'titleText',
+				'captions' => 'imagecaption',
+				'links' => 'image_link',
+				'alternativeTexts' => 'altText'
+			)
+		),
+		'pages' => array(
+			'media' => array(
+				'sourcePath' => 'uploads/media/',
+				// Relative to fileadmin
+				'targetPath' => '_migrated/media/'
+			)
+		),
+		'pages_language_overlay' => array(
+			'media' => array(
+				'sourcePath' => 'uploads/media/',
+				// Relative to fileadmin
+				'targetPath' => '_migrated/media/'
+			)
+		)
+	);
+
 	/**
 	 * Initialize the storage repository.
 	 */
@@ -60,8 +88,27 @@ class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 */
 	public function checkForUpdate(&$description) {
 		$description = 'This update wizard goes through all files that are referenced in the tt_content.image and pages.media / pages_language_overlay.media filed and adds the files to the new File Index.<br />It also moves the files from uploads/ to the fileadmin/_migrated/ path.<br /><br />This update wizard can be called multiple times in case it didn\'t finish after running once.';
-		// make this wizard always available
-		return TRUE;
+
+		// The call to checkForUpdate happens several times. We do not want to repeat these queries again and again.
+		static $result = NULL;
+
+		if ($result === NULL) {
+			$result = FALSE;
+			foreach ($this->tables as $table => $fields) {
+				$conditionParts = array();
+				foreach (array_keys($fields) as $field) {
+					$conditionParts[] = '(' . $field . ' NOT RLIKE \'^[[:digit:]]*$\')';
+				}
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $table, implode(' OR ', $conditionParts));
+				if (intval($count) > 0 || $GLOBALS['TYPO3_DB']->sql_error() != 0) {
+					// SQL error may happen if it is not MySQL or syntax is not supported. In such case we should show the wizard.
+					$result = TRUE;
+					break;
+				}
+			}
+		}
+
+		return $result;
 	}
 
 	/**
@@ -74,33 +121,7 @@ class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$this->init();
 		// Function below copied from sysext/install/updates/class.tx_coreupdates_imagelink.php
-		$tables = array(
-			'tt_content' => array(
-				'image' => array(
-					'sourcePath' => 'uploads/pics/',
-					// Relative to fileadmin
-					'targetPath' => '_migrated/pics/',
-					'titleTexts' => 'titleText',
-					'captions' => 'imagecaption',
-					'links' => 'image_link',
-					'alternativeTexts' => 'altText'
-				)
-			),
-			'pages' => array(
-				'media' => array(
-					'sourcePath' => 'uploads/media/',
-					// Relative to fileadmin
-					'targetPath' => '_migrated/media/'
-				)
-			),
-			'pages_language_overlay' => array(
-				'media' => array(
-					'sourcePath' => 'uploads/media/',
-					// Relative to fileadmin
-					'targetPath' => '_migrated/media/'
-				)
-			)
-		);
+
 		// We write down the fields that were migrated. Like this: tt_content:media
 		// so you can check whether a field was already migrated
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard'])) {
@@ -116,7 +137,7 @@ class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 			// - for each record:
 			// - for each field:
 			// - migrate field
-			foreach ($tables as $table => $tableConfiguration) {
+			foreach ($this->tables as $table => $tableConfiguration) {
 				$fieldsToMigrate = array_keys($tableConfiguration);
 				$fieldsToGet = array();
 				// find all additional fields we should get from the database
