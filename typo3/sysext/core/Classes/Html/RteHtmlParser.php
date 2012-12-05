@@ -337,7 +337,33 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 			$value = str_replace(LF, CRLF, $value);
 		}
 		// Return value:
+		if ($this->procOptions['stripEmptyTags']) {
+			$tags = NULL;
+			if ($this->procOptions['stripEmptyTags.']['tags']) {
+				$tags = $this->procOptions['stripEmptyTags.']['tags'];
+			}
+			$value = $this->stripEmptyTags($value, $tags);
+		}
 		return $value;
+	}
+
+
+	/**
+	 * strips empty tags from html
+	 *
+	 * @param string $content The content to be stripped of empty tags
+	 * @param string $tagList The comma separated list of tags to be stripped.
+	 *                        If empty, all empty tags will be stripped
+	 * @return sting the stripped content
+	 */
+	public function stripEmptyTags($content, $tagList = NULL) {
+		$tagRegEx = '[^ >]+'; // all characters until you reach a > or space;
+
+		if ($tagList) {
+			$tags = preg_split('/,/', $tagList);
+			$tagRegEx = preg_replace('/ */', '', join('|', $tags));
+		}
+		return preg_replace(sprintf('/<(%s)[^>]*> *<\/\\1[^>]*>/i', $tagRegEx), '', $content);
 	}
 
 	/************************************
