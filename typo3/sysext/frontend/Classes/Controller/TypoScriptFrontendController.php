@@ -2580,13 +2580,7 @@ class TypoScriptFrontendController {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($message, 'cms', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 			$this->pageNotFoundAndExit($message);
 		}
-		// Updating content of the two rootLines IF the language key is set!
-		if ($this->sys_language_uid && is_array($this->tmpl->rootLine)) {
-			$this->tmpl->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
-		}
-		if ($this->sys_language_uid && is_array($this->rootLine)) {
-			$this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
-		}
+		$this->updateRootLinesWithTranslations();
 		// Finding the ISO code:
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables') && $this->sys_language_content) {
 			// using sys_language_content because the ISO code only (currently) affect content selection from FlexForms - which should follow "sys_language_content"
@@ -2613,6 +2607,18 @@ class TypoScriptFrontendController {
 			foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_postProcess'] as $_funcRef) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 			}
+		}
+	}
+
+	/**
+	 * Updating content of the two rootLines IF the language key is set!
+	 */
+	protected function updateRootLinesWithTranslations() {
+		if ($this->sys_language_uid && is_array($this->tmpl->rootLine)) {
+			$this->tmpl->rootLine = array_reverse($this->sys_page->getRootLine($this->id, $this->MP));
+		}
+		if ($this->sys_language_uid && is_array($this->rootLine)) {
+			$this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
 		}
 	}
 
@@ -4759,6 +4765,5 @@ if (version == "n3") {
 	}
 
 }
-
 
 ?>

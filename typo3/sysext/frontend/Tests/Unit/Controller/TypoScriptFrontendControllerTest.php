@@ -180,6 +180,32 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		$this->assertSame($expectedId, $this->fixture->id);
 	}
 
+	/**
+	 * @test
+	 */
+	public function translationOfRootLinesSetsTheTemplateRootLineToReversedVersionOfMainRootLine() {
+		$rootLine = array(
+					array('uid' => 1),
+					array('uid' => 2)
+				);
+		$pageContextMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$templateServiceMock = $this->getMock('TYPO3\\CMS\\Core\\TypoScript\\TemplateService');
+		$pageContextMock
+			->expects($this->any())
+			->method('getRootline')
+			->will($this->returnValue($rootLine));
+		$this->fixture->_set('sys_page', $pageContextMock);
+		$this->fixture->_set('tmpl', $templateServiceMock);
+		$this->fixture->sys_language_uid = 1;
+		$this->fixture->rootLine = array();
+		$this->fixture->tmpl->rootLine = array();
+
+		$this->fixture->_call('updateRootLinesWithTranslations');
+		$this->assertSame($rootLine, $this->fixture->rootLine);
+		$this->assertSame(array_reverse($rootLine), $this->fixture->tmpl->rootLine);
+
+	}
+
 }
 
 ?>
