@@ -114,6 +114,11 @@ class RootlineUtility {
 	static protected $pageRecordCache = array();
 
 	/**
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected $databaseConnection;
+
+	/**
 	 * @param int $uid
 	 * @param string $mountPointParameter
 	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $context
@@ -156,6 +161,7 @@ class RootlineUtility {
 		}
 		self::$rootlineFields = array_merge(self::$rootlineFields, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'], TRUE));
 		array_unique(self::$rootlineFields);
+		$this->databaseConnection = $GLOBALS['TYPO3_DB'];
 	}
 
 	/**
@@ -206,15 +212,17 @@ class RootlineUtility {
 				}
 				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('pages');
 			}
-			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(implode(',', self::$rootlineFields), 'pages', 'uid = ' . intval($uid) . ' AND pages.deleted = 0 AND pages.doktype <> ' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER);
+			$row = $this->databaseConnection->exec_SELECTgetSingleRow(implode(',', self::$rootlineFields), 'pages', 'uid = ' . intval($uid) . ' AND pages.deleted = 0 AND pages.doktype <> ' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER);
 			if (empty($row)) {
 				throw new \RuntimeException('Could not fetch page data for uid ' . $uid . '.', 1343589451);
 			}
 			$this->pageContext->versionOL('pages', $row, FALSE, TRUE);
 			$this->pageContext->fixVersioningPid('pages', $row);
 			if (is_array($row)) {
-				$this->pageContext->getPageOverlay($row, $this->languageUid);
-				$row = $this->enrichWithRelationFields($uid, $row);
+				if ($this->languageUid > 0) {
+					$row = $this->pageContext->getPageOverlay($row, $this->languageUid);
+				}
+				$row = $this->enrichWithRelationFields(isset($row['_PAGES_OVERLAY_UID']) ? $row['_PAGES_OVERLAY_UID'] : $uid, $row);
 				self::$pageRecordCache[$this->getCacheIdentifier($uid)] = $row;
 			}
 		}
@@ -241,13 +249,13 @@ class RootlineUtility {
 					$loadDBGroup = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 					$loadDBGroup->start($pageRecord[$column], $configuration['foreign_table'], $configuration['MM'], $uid, 'pages', $configuration);
 					$relatedUids = $loadDBGroup->tableArray[$configuration['foreign_table']];
-				} elseif ($configuration['foreign_field']) {
+				} else {
 					$table = $configuration['foreign_table'];
 					$field = $configuration['foreign_field'];
 					$whereClauseParts = array($field . ' = ' . intval($uid));
 					if (isset($configuration['foreign_match_fields']) && is_array($configuration['foreign_match_fields'])) {
 						foreach ($configuration['foreign_match_fields'] as $field => $value) {
-							$whereClauseParts[] = $field . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table);
+							$whereClauseParts[] = $field . ' = ' . $this->databaseConnection->fullQuoteStr($value, $table);
 						}
 					}
 					if (isset($configuration['foreign_table_field'])) {
@@ -259,7 +267,7 @@ class RootlineUtility {
 					}
 					$whereClause = implode(' AND ', $whereClauseParts);
 					$whereClause .= $this->pageContext->deleteClause($table);
-					$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $table, $whereClause);
+					$rows = $this->databaseConnection->exec_SELECTgetRows('uid', $table, $whereClause);
 					if (!is_array($rows)) {
 						throw new \RuntimeException('Could to resolve related records for page ' . $uid . ' and foreign_table ' . htmlspecialchars($configuration['foreign_table']), 1343589452);
 					}
@@ -283,10 +291,10 @@ class RootlineUtility {
 	 */
 	protected function columnHasRelationToResolve(array $configuration) {
 		$configuration = $configuration['config'];
-		if (isset($configuration['MM']) && isset($configuration['type']) && in_array($configuration['type'], array('select', 'inline', 'group'))) {
+		if (!empty($configuration['MM']) && !empty($configuration['type']) && in_array($configuration['type'], array('select', 'inline', 'group'))) {
 			return TRUE;
 		}
-		if (isset($configuration['foreign_field']) && isset($configuration['type']) && in_array($configuration['type'], array('select', 'inline'))) {
+		if (!empty($configuration['foreign_field']) && !empty($configuration['type']) && in_array($configuration['type'], array('select', 'inline'))) {
 			return TRUE;
 		}
 		return FALSE;
