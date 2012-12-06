@@ -2582,7 +2582,7 @@ class TypoScriptFrontendController {
 		}
 		// Updating content of the two rootLines IF the language key is set!
 		if ($this->sys_language_uid && is_array($this->tmpl->rootLine)) {
-			$this->tmpl->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
+			$this->tmpl->rootLine = array_reverse($this->sys_page->getRootLine($this->id, $this->MP), TRUE);
 		}
 		if ($this->sys_language_uid && is_array($this->rootLine)) {
 			$this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);

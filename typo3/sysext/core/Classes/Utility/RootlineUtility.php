@@ -213,7 +213,9 @@ class RootlineUtility {
 			$this->pageContext->versionOL('pages', $row, FALSE, TRUE);
 			$this->pageContext->fixVersioningPid('pages', $row);
 			if (is_array($row)) {
-				$this->pageContext->getPageOverlay($row, $this->languageUid);
+				if ($this->languageUid > 0) {
+					$row = $this->pageContext->getPageOverlay($row, $this->languageUid);
+				}
 				$row = $this->enrichWithRelationFields($uid, $row);
 				self::$pageRecordCache[$this->getCacheIdentifier($uid)] = $row;
 			}
