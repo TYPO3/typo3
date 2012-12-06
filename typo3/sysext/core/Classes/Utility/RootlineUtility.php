@@ -114,6 +114,11 @@ class RootlineUtility {
 	static protected $pageRecordCache = array();
 
 	/**
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected $databaseConnection;
+
+	/**
 	 * @param int $uid
 	 * @param string $mountPointParameter
 	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $context
@@ -156,6 +161,7 @@ class RootlineUtility {
 		}
 		self::$rootlineFields = array_merge(self::$rootlineFields, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'], TRUE));
 		array_unique(self::$rootlineFields);
+		$this->databaseConnection = $GLOBALS['TYPO3_DB'];
 	}
 
 	/**
@@ -206,14 +212,16 @@ class RootlineUtility {
 				}
 				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('pages');
 			}
-			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(implode(',', self::$rootlineFields), 'pages', 'uid = ' . intval($uid) . ' AND pages.deleted = 0 AND pages.doktype <> ' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER);
+			$row = $this->databaseConnection->exec_SELECTgetSingleRow(implode(',', self::$rootlineFields), 'pages', 'uid = ' . intval($uid) . ' AND pages.deleted = 0 AND pages.doktype <> ' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER);
 			if (empty($row)) {
 				throw new \RuntimeException('Could not fetch page data for uid ' . $uid . '.', 1343589451);
 			}
 			$this->pageContext->versionOL('pages', $row, FALSE, TRUE);
 			$this->pageContext->fixVersioningPid('pages', $row);
 			if (is_array($row)) {
-				$this->pageContext->getPageOverlay($row, $this->languageUid);
+				if ($this->languageUid > 0) {
+					$row = $this->pageContext->getPageOverlay($row, $this->languageUid);
+				}
 				$row = $this->enrichWithRelationFields($uid, $row);
 				self::$pageRecordCache[$this->getCacheIdentifier($uid)] = $row;
 			}
@@ -247,7 +255,7 @@ class RootlineUtility {
 					$whereClauseParts = array($field . ' = ' . intval($uid));
 					if (isset($configuration['foreign_match_fields']) && is_array($configuration['foreign_match_fields'])) {
 						foreach ($configuration['foreign_match_fields'] as $field => $value) {
-							$whereClauseParts[] = $field . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table);
+							$whereClauseParts[] = $field . ' = ' . $this->databaseConnection->fullQuoteStr($value, $table);
 						}
 					}
 					if (isset($configuration['foreign_table_field'])) {
@@ -259,7 +267,7 @@ class RootlineUtility {
 					}
 					$whereClause = implode(' AND ', $whereClauseParts);
 					$whereClause .= $this->pageContext->deleteClause($table);
-					$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $table, $whereClause);
+					$rows = $this->databaseConnection->exec_SELECTgetRows('uid', $table, $whereClause);
 					if (!is_array($rows)) {
 						throw new \RuntimeException('Could to resolve related records for page ' . $uid . ' and foreign_table ' . htmlspecialchars($configuration['foreign_table']), 1343589452);
 					}
