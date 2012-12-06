@@ -75,7 +75,7 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper {
 		$image = '';
 		try {
 			$image = parent::render($src, $width, $height, $minWidth, $minHeight, $maxWidth, $maxHeight);
-		} catch (\TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException $e) {
+		} catch (\Exception $e) {
 
 		}
 		return $image;
