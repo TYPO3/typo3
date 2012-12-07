@@ -1507,7 +1507,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($source === 'local' && !in_array($version, $this->availableLocalJqueryVersions)) {
 			throw new \UnexpectedValueException('The requested jQuery version is not available in the local filesystem.', 1341505305);
 		}
-		if (!ctype_alnum($namespace)) {
+		if (!preg_match('/^[a-zA-Z0-9]+$/', $namespace)) {
 			throw new \UnexpectedValueException('The requested namespace contains non alphanumeric characters.', 1341571604);
 		}
 		$this->jQueryVersions[$namespace] = array(
