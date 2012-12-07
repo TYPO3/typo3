@@ -407,7 +407,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * @expectedException UnexpectedValueException
+	 * @expectedException \UnexpectedValueException
 	 * @test
 	 */
 	public function includingNotAvailableLocalJqueryVersionThrowsException() {
@@ -416,7 +416,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * @expectedException UnexpectedValueException
+	 * @expectedException \UnexpectedValueException
 	 * @test
 	 */
 	public function includingJqueryWithNonAlphnumericNamespaceThrowsException() {
