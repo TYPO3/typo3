@@ -2520,8 +2520,6 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		}
 			// Cleanup
 		Ext.TaskMgr.stopAll();
-			// ExtJS is not releasing any resources when the iframe is unloaded
-		this.htmlArea.destroy();
 		Ext.iterate(this.plugins, function (pluginId) {
 			this.unRegisterPlugin(pluginId);
 		}, this);
@@ -2534,6 +2532,8 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		}
 		this.textArea.dom = null;
 		RTEarea[this.editorId].editor = null;
+		// ExtJS is not releasing any resources when the iframe is unloaded
+		this.htmlArea.destroy();
 	}
 });
 HTMLArea.Ajax = function (config) {
