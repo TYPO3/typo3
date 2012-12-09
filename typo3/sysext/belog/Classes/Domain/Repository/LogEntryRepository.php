@@ -88,7 +88,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		if ($constraint->getAction() > 0) {
 			$queryConstraints[] = $query->equals('type', $constraint->getAction());
 		} elseif ($constraint->getAction() == -1) {
-			$queryConstraints[] = $query->equals('error', 0);
+			$queryConstraints[] = $query->in('error', array(-1,1,2,3));
 		}
 		// Start / endtime handling: The timestamp calculation was already done
 		// in the controller, since we need those calculated values in the view as well.
