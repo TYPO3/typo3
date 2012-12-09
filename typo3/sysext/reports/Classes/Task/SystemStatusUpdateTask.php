@@ -86,6 +86,7 @@ class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 */
 	protected function sendNotificationEmail(array $systemStatus) {
 		$systemIssues = array();
+		$toEmail = array();
 		foreach ($systemStatus as $statusProvider) {
 			foreach ($statusProvider as $status) {
 				if ($status->getSeverity() > \TYPO3\CMS\Reports\Status::OK) {
@@ -104,7 +105,9 @@ class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$from = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
 		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 		$mail->setFrom($from);
-		$mail->setTo($this->notificationEmail);
+		// Check for comma separated values
+		$toEmail = explode(',', $this->notificationEmail);
+		$mail->setTo($toEmail);
 		$mail->setSubject($subject);
 		$mail->setBody($message);
 		$mail->send();
