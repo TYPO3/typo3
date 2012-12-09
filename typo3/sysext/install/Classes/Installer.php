@@ -3716,7 +3716,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 			The options in the TYPO3_CONF_VARS array and how to use it for your
 			own purposes is discussed in the base configuration file,
 			t3lib/stddb/DefaultConfiguration.php. This file sets up the default values and
-			subsequently includes the localconf.php file in which you can then
+			subsequently includes the LocalConfiguration.php file in which you can then
 			override values.
 			<br />
 			See this page for <a href="' . TYPO3_URL_SYSTEMREQUIREMENTS . '">more
