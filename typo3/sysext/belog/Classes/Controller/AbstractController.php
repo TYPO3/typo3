@@ -201,7 +201,7 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 				$targetStructure[$pid] = array();
 			}
 			// Get day timestamp of log entry and create sub array if needed
-			$timestampDay = strtotime(strftime('%d.%m.%Y', $entry->getTstamp()));
+			$timestampDay = strtotime(strftime('%d.%m.%Y UTC', $entry->getTstamp()));
 			if (!is_array($targetStructure[$pid][$timestampDay])) {
 				$targetStructure[$pid][$timestampDay] = array();
 			}
