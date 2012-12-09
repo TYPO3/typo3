@@ -66,6 +66,9 @@
 			<trans-unit id="submit_publish_workspace_confirmation_2" xml:space="preserve">
 				<source>Are you sure you want to publish all content from the workspace?</source>
 			</trans-unit>
+			<trans-unit id="generate_workspace_preview_link" xml:space="preserve">
+				<source>Generate Workspace Preview Link</source>
+			</trans-unit>
 			<trans-unit id="submit_swap_workspace" xml:space="preserve">
 				<source>Swap workspace</source>
 			</trans-unit>
