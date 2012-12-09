@@ -50,7 +50,7 @@ var CodeMirror = (function(){
     disableSpellcheck: true,
     textWrapping: true,
     readOnly: false,
-    width: "",
+    width: "700px",
     height: "300px",
     minHeight: 100,
     autoMatchParens: false,
