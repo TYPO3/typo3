@@ -740,7 +740,9 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				$link_param = $tagCode[1];
 				$href = '';
 				// Parsing the typolink data. This parsing is roughly done like in tslib_content->typolink()
-				if (strstr($link_param, '@')) {
+				// Parse URL:
+				$pU = parse_url($link_param);
+				if (strstr($link_param, '@') && (!$pU['scheme'] || $pU['scheme'] == 'mailto')) {
 					// mailadr
 					$href = 'mailto:' . preg_replace('/^mailto:/i', '', $link_param);
 				} elseif (substr($link_param, 0, 1) == '#') {
@@ -754,8 +756,6 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 					} else {
 						$fileChar = intval(strpos($link_param, '/'));
 						$urlChar = intval(strpos($link_param, '.'));
-						// Parse URL:
-						$pU = parse_url($link_param);
 						// Detects if a file is found in site-root.
 						list($rootFileDat) = explode('?', $link_param);
 						$rFD_fI = pathinfo($rootFileDat);
