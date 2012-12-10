@@ -155,6 +155,45 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 	}
 
+	/**
+	 * Data provider for inputValueCheckRecognizesStringValuesAsIntegerValuesCorrectly
+	 *
+	 * @return array
+	 */
+	public function inputValuesStringsDataProvider() {
+		return array(
+			'"0" returns zero as integer' => array(
+				'0',
+				0
+			),
+			'"-1999999" is interpreted correctly as -1999999 and is lot lower then -200000' => array(
+				'-1999999',
+				-1999999
+			),
+			'"3000000" is interpreted correctly as 3000000 but is higher then 200000 and set to 200000' => array(
+				'3000000',
+				2000000
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider inputValuesStringsDataProvider
+	 */
+	public function inputValueCheckRecognizesStringValuesAsIntegerValuesCorrectly($value, $expectedReturnValue) {
+		$tcaFieldConf = array(
+			'input' => array(),
+			'eval' => 'int',
+			'range' => array(
+				'lower' => '-2000000',
+				'upper' => '2000000'
+			)
+		);
+		$returnValue = $this->fixture->checkValue_input(array(), $value, $tcaFieldConf, array());
+		$this->assertSame($returnValue['value'], $expectedReturnValue);
+	}
+
 	///////////////////////////////////////////
 	// Tests concerning checkModifyAccessList
 	///////////////////////////////////////////
