@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Extbase\Mvc;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\ClassNamingUtility;
+
 /**
  * Represents a generic request.
  *
@@ -191,25 +194,11 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * @return void
 	 */
 	public function setControllerObjectName($controllerObjectName) {
-		$matches = array();
-		if (strpos($controllerObjectName, '\\') !== FALSE) {
-			if (substr($controllerObjectName, 0, 9) === 'TYPO3\CMS') {
-				$extensionName = '^(?P<vendorName>[^\\\]+\\\[^\\\]+)\\\(?P<extensionName>[^\\\]+)';
-			} else {
-				$extensionName = '^(?P<vendorName>[^\\\]+)\\\(?P<extensionName>[^\\\]+)';
-			}
-			preg_match('/' .
-				$extensionName . '\\\(Controller|(?P<subpackageKey>.+)\\\Controller)\\\(?P<controllerName>[a-z\\\]+)Controller
-				$/ix', $controllerObjectName, $matches);
-		} else {
-			preg_match('/
-				^Tx_(?P<extensionName>[^_]+)_(Controller|(?P<subpackageKey>.+)_Controller)_(?P<controllerName>[a-z_]+)Controller
-				$/ix', $controllerObjectName, $matches);
-		}
-		$this->controllerVendorName = isset($matches['vendorName']) ? $matches['vendorName'] : NULL;
-		$this->controllerExtensionName = $matches['extensionName'];
-		$this->controllerSubpackageKey = isset($matches['subpackageKey']) ? $matches['subpackageKey'] : NULL;
-		$this->controllerName = $matches['controllerName'];
+		$nameParts = ClassNamingUtility::explodeObjectControllerName($controllerObjectName);
+		$this->controllerVendorName = isset($nameParts['vendorName']) ? $nameParts['vendorName'] : NULL;
+		$this->controllerExtensionName = $nameParts['extensionName'];
+		$this->controllerSubpackageKey = isset($nameParts['subpackageKey']) ? $nameParts['subpackageKey'] : NULL;
+		$this->controllerName = $nameParts['controllerName'];
 	}
 
 	/**

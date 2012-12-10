@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Extbase\Reflection;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\ClassNamingUtility;
+
 /**
  * A backport of the FLOW3 reflection service for aquiring reflection based information.
  * Most of the code is based on the FLOW3 reflection service.
@@ -427,11 +430,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 		$classSchema = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ClassSchema', $className);
 		if (is_subclass_of($className, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity')) {
 			$classSchema->setModelType(\TYPO3\CMS\Extbase\Reflection\ClassSchema::MODELTYPE_ENTITY);
-			if (strpos($className, '\\') !== FALSE) {
-				$possibleRepositoryClassName = str_replace('\\Model\\', '\\Repository\\', $className) . 'Repository';
-			} else {
-				$possibleRepositoryClassName = str_replace('_Model_', '_Repository_', $className) . 'Repository';
-			}
+			$possibleRepositoryClassName = ClassNamingUtility::translateModelNameToRepositoryName($className);
 			if (class_exists($possibleRepositoryClassName)) {
 				$classSchema->setAggregateRoot(TRUE);
 			}

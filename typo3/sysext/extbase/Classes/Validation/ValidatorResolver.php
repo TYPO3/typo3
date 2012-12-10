@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Extbase\Validation;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\ClassNamingUtility;
+
 /**
  * Validator resolver to automatically find a appropriate validator for a given subject
  */
@@ -232,7 +235,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 		// Custom validator for the class
-		$possibleValidatorClassName = str_replace(array('_Model_', '\\Model\\'), array('_Validator_', '\\Validator\\'), $dataType) . 'Validator';
+		$possibleValidatorClassName = ClassNamingUtility::translateModelNameToValidatorName($dataType);
 		$customValidator = $this->createValidator($possibleValidatorClassName);
 		if ($customValidator !== NULL) {
 			$validatorConjunction->addValidator($customValidator);
