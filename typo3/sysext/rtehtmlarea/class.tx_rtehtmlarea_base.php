@@ -54,7 +54,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				),
 			),
 			'webkit' => array (
-				array (
+				array(
+					'version' => 534
+				),
+				array(
 					'version' => 523,
 					'system' => array(
 						'disallowed' => array(
