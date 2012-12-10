@@ -41,7 +41,8 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture->procOptions = array(
 			'dontConvBRtoParagraph' => '1',
 			'preserveDIVSections' => '1',
-			'allowTagsOutside' => 'hr, address'
+			'allowTagsOutside' => 'hr, address',
+			'overruleMode' => 'ts_css'
 		);
 	}
 
@@ -122,6 +123,29 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($expectedResult, $this->fixture->TS_transform_db($content, TRUE));
 	}
 
-}
+	/**
+	 * Data provider for linkWithAtSignCorrectlyTransformedOnWayToRTE
+	 */
+	public static function linkWithAtSignCorrectlyTransformedOnWayToRTEProvider() {
+		return array(
+			'external url with @ sign' => array(
+				'<link http://www.example.org/at@sign>link text</link>',
+				'<p><a href="http://www.example.org/at@sign" data-htmlarea-external="1">link text</a></p>'
+			),
+			'email address with @ sign' => array(
+				'<link name@example.org - mail "Opens window for sending email">link text</link>',
+				'<p><a href="mailto:name@example.org" class="mail" title="Opens window for sending email">link text</a></p>'
+			)
+		);
+	}
 
+	/**
+	 * @test
+	 * @dataProvider linkWithAtSignCorrectlyTransformedOnWayToRTEProvider
+	 */
+	public function linkWithAtSignCorrectlyTransformedOnWayToRTE($content, $expectedResult) {
+		$thisConfig = array('proc.' => $this->fixture->procOptions);
+		$this->assertEquals($expectedResult, $this->fixture->RTE_transform($content, array(), 'rte', $thisConfig));
+	}
+}
 ?>
