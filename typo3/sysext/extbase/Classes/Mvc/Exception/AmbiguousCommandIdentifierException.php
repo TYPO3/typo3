@@ -47,7 +47,6 @@ class AmbiguousCommandIdentifierException extends \TYPO3\CMS\Extbase\Mvc\Excepti
 	 * @param \Exception|NULL $previousException
 	 * @param array $matchingCommands <\TYPO3\CMS\Extbase\Mvc\Cli\Command> $matchingCommands Commands that matched the command identifier
 	 * @see Exception
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function __construct($message = '', $code = 0, \Exception $previousException = NULL, array $matchingCommands) {
 		$this->matchingCommands = $matchingCommands;

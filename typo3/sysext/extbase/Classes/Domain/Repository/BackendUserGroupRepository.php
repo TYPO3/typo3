@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Extbase\Domain\Repository;
 /**
  * Repository for \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup.
  *
- * @author Markus Günther <mail@markus-guenther.de>
  * @api
  */
 class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {

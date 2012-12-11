@@ -428,7 +428,6 @@ class UriBuilder {
 	 * This is only set after build() / uriFor() has been called.
 	 *
 	 * @return array The last arguments
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getLastArguments() {
 		return $this->lastArguments;

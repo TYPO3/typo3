@@ -68,7 +68,6 @@ class RawValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorI
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @return \TYPO3\CMS\Extbase\Error\Result
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function validate($value) {

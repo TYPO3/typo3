@@ -69,7 +69,6 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 *
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $parentConfiguration
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function setParent(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $parentConfiguration) {
 		$this->parentConfiguration = $parentConfiguration;
@@ -81,7 +80,6 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 * @param string $propertyName
 	 * @return boolean
 	 * @todo : extend to enable whitelisting / blacklisting of properties.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function shouldMap($propertyName) {
@@ -93,7 +91,6 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 *
 	 * @param string $propertyName
 	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface the property mapping configuration for the given $propertyName.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function getConfigurationFor($propertyName) {
@@ -108,7 +105,6 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 *
 	 * @param string $sourcePropertyName
 	 * @return string property name of target
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function getTargetPropertyName($sourcePropertyName) {
@@ -122,7 +118,6 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 * @param string $typeConverterClassName
 	 * @param string $key
 	 * @return mixed configuration value for the specific $typeConverterClassName. Can be used by Type Converters to fetch converter-specific configuration.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function getConfigurationValue($typeConverterClassName, $key) {
@@ -138,7 +133,6 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 * @param string $sourcePropertyName
 	 * @param string $targetPropertyName
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function setMapping($sourcePropertyName, $targetPropertyName) {
@@ -151,7 +145,6 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 * @param string $typeConverter class name of type converter
 	 * @param array $options
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function setTypeConverterOptions($typeConverter, array $options) {
@@ -165,7 +158,6 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 * @param string $optionKey
 	 * @param mixed $optionValue
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function setTypeConverterOption($typeConverter, $optionKey, $optionValue) {
@@ -179,7 +171,6 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 *
 	 * @param string $propertyPath
 	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration (or a subclass thereof)
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function forProperty($propertyPath) {
@@ -192,7 +183,6 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 *
 	 * @param array $splittedPropertyPath
 	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration (or a subclass thereof)
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function traverseProperties(array $splittedPropertyPath) {
 		if (count($splittedPropertyPath) === 0) {

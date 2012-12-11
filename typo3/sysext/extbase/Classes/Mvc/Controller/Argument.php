@@ -431,7 +431,6 @@ class Argument {
 	 * Get the origin of the argument value. This is only meaningful after argument mapping.
 	 *
 	 * @return integer one of the ORIGIN_* constants
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
 	 */
 	public function getOrigin() {
@@ -553,7 +552,6 @@ class Argument {
 	 * Return the Property Mapping Configuration used for this argument; can be used by the initialize*action to modify the Property Mapping.
 	 *
 	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function getPropertyMappingConfiguration() {
@@ -562,7 +560,6 @@ class Argument {
 
 	/**
 	 * @return boolean TRUE if the argument is valid, FALSE otherwise
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function isValid() {
@@ -571,7 +568,6 @@ class Argument {
 
 	/**
 	 * @return array<\TYPO3\CMS\Extbase\Error\Result> Validation errors which have occured.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function getValidationResults() {

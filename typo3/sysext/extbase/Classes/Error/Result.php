@@ -154,7 +154,6 @@ class Result {
 	 *
 	 * @param string $propertyPath
 	 * @return \TYPO3\CMS\Extbase\Error\Result
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function forProperty($propertyPath) {
@@ -170,7 +169,6 @@ class Result {
 	 *
 	 * @param array $pathSegments
 	 * @return \TYPO3\CMS\Extbase\Error\Result
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function recurseThroughResult(array $pathSegments) {
 		if (count($pathSegments) === 0) {
@@ -189,7 +187,6 @@ class Result {
 	 * @param string $propertyName
 	 * @param string $checkerMethodName
 	 * @return boolean
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function hasProperty($propertyName, $checkerMethodName) {
 		if (count($this->{$propertyName}) > 0) {
@@ -301,7 +298,6 @@ class Result {
 	 *
 	 * @param \TYPO3\CMS\Extbase\Error\Result $otherResult
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function merge(\TYPO3\CMS\Extbase\Error\Result $otherResult) {
@@ -320,7 +316,6 @@ class Result {
 	 * @param string $getterName
 	 * @param string $adderName
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function mergeProperty(\TYPO3\CMS\Extbase\Error\Result $otherResult, $getterName, $adderName) {
 		foreach ($otherResult->{$getterName}() as $messageInOtherResult) {

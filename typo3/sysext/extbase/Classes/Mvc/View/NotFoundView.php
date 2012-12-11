@@ -65,7 +65,6 @@ class NotFoundView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView {
 	 * Retrieves path and filename of the not-found-template
 	 *
 	 * @return string path and filename of the not-found-template
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getTemplatePathAndFilename() {
 		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extbase') . 'Resources/Private/MVC/NotFoundView_Template.html';

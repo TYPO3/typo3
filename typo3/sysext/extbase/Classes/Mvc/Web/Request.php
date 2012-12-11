@@ -163,7 +163,6 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request {
 	 *
 	 * @param boolean $hmacVerified TRUE if request could be verified, FALSE otherwise
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
 	 */
 	public function setHmacVerified($hmacVerified) {
@@ -174,7 +173,6 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request {
 	 * Could the request be verified via a HMAC?
 	 *
 	 * @return boolean TRUE if request could be verified, FALSE otherwise
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
 	 */
 	public function isHmacVerified() {

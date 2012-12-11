@@ -49,7 +49,6 @@ class IdentityMap implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Constructs a new Identity Map
 	 *
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function __construct() {
 		$this->objectMap = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
@@ -60,7 +59,6 @@ class IdentityMap implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param object $object
 	 * @return boolean
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function hasObject($object) {
 		return $this->objectMap->contains($object);
@@ -99,7 +97,6 @@ class IdentityMap implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \InvalidArgumentException
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
 	 * @return string
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function getIdentifierByObject($object) {
 		if (!is_object($object)) {
@@ -116,7 +113,6 @@ class IdentityMap implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param object $object
 	 * @param string $uuid
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function registerObject($object, $uuid) {
 		$this->objectMap[$object] = $uuid;
@@ -128,7 +124,6 @@ class IdentityMap implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param object $object
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function unregisterObject($object) {
 		unset($this->uuidMap[get_class($object)][$this->objectMap[$object]]);

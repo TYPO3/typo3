@@ -111,8 +111,6 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request to dispatch
 	 * @throws Exception\InvalidControllerException
 	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function resolveController(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request) {
 		$controllerObjectName = $request->getControllerObjectName();

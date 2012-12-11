@@ -39,7 +39,6 @@ class StringValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVa
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
-	 * @author Sebastian Kurfürst <sbastian@typo3.org>
 	 * @api
 	 */
 	public function isValid($value) {

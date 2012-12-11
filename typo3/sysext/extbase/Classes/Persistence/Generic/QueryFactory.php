@@ -50,7 +50,6 @@ class QueryFactory implements \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactor
 	/**
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;

@@ -180,7 +180,6 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * Returns the command object for this request
 	 *
 	 * @return \TYPO3\CMS\Extbase\Mvc\Cli\Command
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getCommand() {
 		if ($this->command === NULL) {

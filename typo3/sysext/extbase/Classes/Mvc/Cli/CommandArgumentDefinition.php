@@ -52,7 +52,6 @@ class CommandArgumentDefinition {
 	 * @param string $name name of the command argument (= parameter name)
 	 * @param boolean $required defines whether this argument is required or optional
 	 * @param string $description description of the argument
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function __construct($name, $required, $description) {
 		$this->name = $name;

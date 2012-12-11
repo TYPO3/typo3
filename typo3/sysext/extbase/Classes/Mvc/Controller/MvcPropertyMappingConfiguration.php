@@ -34,7 +34,6 @@ class MvcPropertyMappingConfiguration extends \TYPO3\CMS\Extbase\Property\Proper
 	 *
 	 * @param string $propertyPath
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function allowCreationForSubProperty($propertyPath) {
@@ -46,7 +45,6 @@ class MvcPropertyMappingConfiguration extends \TYPO3\CMS\Extbase\Property\Proper
 	 *
 	 * @param string $propertyPath
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function allowModificationForSubProperty($propertyPath) {

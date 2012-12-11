@@ -102,7 +102,6 @@ class GenericObjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abs
 	 * @param array $validators The validators to be called on the value
 	 * @param \TYPO3\CMS\Extbase\Error\Result $messages the result object to which the validation errors should be added
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function checkProperty($value, $validators, \TYPO3\CMS\Extbase\Error\Result $messages) {
 		foreach ($validators as $validator) {

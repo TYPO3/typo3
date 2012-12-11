@@ -234,7 +234,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param mixed $classNameOrObject The class name or an object
 	 * @return \TYPO3\CMS\Extbase\Reflection\ClassSchema
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function getClassSchema($classNameOrObject) {
 		$className = is_object($classNameOrObject) ? get_class($classNameOrObject) : $classNameOrObject;
@@ -308,7 +307,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $propertyName Name of the tagged property
 	 * @param string $tag Tag to return the values of
 	 * @return array An array of values or an empty array if the tag was not found
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function getPropertyTagValues($className, $propertyName, $tag) {
@@ -327,7 +325,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $className Name of the class
 	 * @return boolean If the class is reflected by this service
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function isClassReflected($className) {
@@ -340,7 +337,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $className Name of the class
 	 * @param string $tag Tag to check for
 	 * @return boolean TRUE if the class is tagged with $tag, otherwise FALSE
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function isClassTaggedWith($className, $tag) {
@@ -363,7 +359,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $propertyName Name of the property
 	 * @param string $tag Tag to check for
 	 * @return boolean TRUE if the class property is tagged with $tag, otherwise FALSE
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function isPropertyTaggedWith($className, $propertyName, $tag) {

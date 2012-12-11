@@ -101,7 +101,6 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	 * @param mixed $source
 	 * @param string $targetType
 	 * @return boolean
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function canConvertFrom($source, $targetType) {
 		$isValueObject = is_subclass_of($targetType, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractValueObject');
@@ -114,7 +113,6 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	 *
 	 * @param mixed $source
 	 * @return array
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getSourceChildPropertiesToBeConverted($source) {
 		if (is_string($source)) {
@@ -134,7 +132,6 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
 	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
 	 * @return string
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getTypeOfChildProperty($targetType, $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration) {
 		$configuredTargetType = $configuration->getConfigurationFor($propertyName)->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', self::CONFIGURATION_TARGET_TYPE);
@@ -159,7 +156,6 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	 * @throws \InvalidArgumentException
 	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
 	 * @return object the target type
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
 		if (is_array($source)) {
@@ -187,7 +183,6 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
 	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
 	 * @return object
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function handleArrayData(array $source, $targetType, array &$convertedChildProperties, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
 		if (isset($source['__identity'])) {
@@ -215,8 +210,6 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	 * @throws \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException
 	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
 	 * @return object
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function fetchObjectFromPersistence($identity, $targetType) {
 		if (is_numeric($identity)) {
@@ -239,8 +232,6 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	 * @param string $objectType
 	 * @return object The created instance
 	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException if a required constructor argument is missing
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	protected function buildObject(array &$possibleConstructorArgumentValues, $objectType) {
 		try {

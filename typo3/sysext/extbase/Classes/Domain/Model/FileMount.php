@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 /**
  * This model represents a file mount.
  *
- * @author Markus Günther <mail@markus-guenther.de>
  * @api
  */
 class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {

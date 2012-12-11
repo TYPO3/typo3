@@ -45,7 +45,6 @@ class FrontendSimulatorUtility {
 	 *
 	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|NULL $cObj
 	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	static public function simulateFrontendEnvironment(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj = NULL) {
 		self::$tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
@@ -58,7 +57,6 @@ class FrontendSimulatorUtility {
 	 * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
 	 *
 	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>(
 	 * @see simulateFrontendEnvironment()
 	 */
 	static public function resetFrontendEnvironment() {

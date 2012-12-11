@@ -74,9 +74,6 @@ class LocalizationUtility {
 	 * @param string $extensionName The name of the extension
 	 * @param array $arguments the arguments of the extension, being passed over to vsprintf
 	 * @return string|NULL The value from LOCAL_LANG or NULL if no translation was found.
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @author Sebastian Kurfuerst <sebastian@typo3.org>
 	 * @api
 	 * @todo : If vsprintf gets a malformed string, it returns FALSE! Should we throw an exception there?
 	 */
@@ -126,7 +123,6 @@ class LocalizationUtility {
 	 * @return string The value from LOCAL_LANG or NULL if no translation was found.
 	 * @see language::sL()
 	 * @see tslib_fe::sL()
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	static protected function translateFileReference($key) {
 		if (TYPO3_MODE === 'FE') {
@@ -146,8 +142,6 @@ class LocalizationUtility {
 	 *
 	 * @param string $extensionName
 	 * @return void
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	static protected function initializeLocalization($extensionName) {
 		if (isset(self::$LOCAL_LANG[$extensionName])) {
@@ -171,8 +165,6 @@ class LocalizationUtility {
 	 * Default values are "default" for language key and "" for language_alt key.
 	 *
 	 * @return void
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function setLanguageKeys() {
 		self::$languageKey = 'default';
@@ -204,8 +196,6 @@ class LocalizationUtility {
 	 *
 	 * @param string $extensionName
 	 * @return void
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function loadTypoScriptLabels($extensionName) {
 		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');

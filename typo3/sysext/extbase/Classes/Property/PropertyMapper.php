@@ -93,7 +93,6 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @throws Exception\DuplicateTypeConverterException
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function initializeObject() {
 		foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'] as $typeConverterClassName) {
@@ -115,7 +114,6 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration Configuration for the property mapping. If NULL, the PropertyMappingConfigurationBuilder will create a default configuration.
 	 * @throws Exception
 	 * @return mixed an instance of $targetType
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function convert($source, $targetType, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
@@ -135,7 +133,6 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Get the messages of the last Property Mapping
 	 *
 	 * @return \TYPO3\CMS\Extbase\Error\Result
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function getMessages() {
@@ -151,7 +148,6 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param array $currentPropertyPath The property path currently being mapped; used for knowing the context in case an exception is thrown.
 	 * @throws Exception\TypeConverterException
 	 * @return mixed an instance of $targetType
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function doMapping($source, $targetType, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration, &$currentPropertyPath) {
 		if ($source === NULL) {
@@ -196,7 +192,6 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws Exception\TypeConverterException
 	 * @throws Exception\InvalidTargetException
 	 * @return \TYPO3\CMS\Extbase\Property\TypeConverterInterface Type Converter which should be used to convert between $source and $targetType.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function findTypeConverter($source, $targetType, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration) {
 		if ($configuration->getTypeConverter() !== NULL) {
@@ -314,7 +309,6 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param mixed $source
 	 * @throws Exception\InvalidSourceException
 	 * @return string the type of $source
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function determineSourceType($source) {
 		if (is_string($source)) {

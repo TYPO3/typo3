@@ -87,7 +87,6 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 *
 	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The current request
 	 * @return boolean TRUE if this request type is supported, otherwise FALSE
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function canProcessRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request) {
 		return $request instanceof \TYPO3\CMS\Extbase\Mvc\Cli\Request;
@@ -100,7 +99,6 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this controller
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
@@ -124,7 +122,6 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 *
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException
 	 * @return string Method name of the current command
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function resolveCommandMethodName() {
 		$commandMethodName = $this->request->getControllerCommandName() . 'Command';
@@ -140,7 +137,6 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 *
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function initializeCommandMethodArguments() {
 		$methodParameters = $this->reflectionService->getMethodParameters(get_class($this), $this->commandMethodName);
@@ -163,8 +159,6 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 * Maps arguments delivered by the request object to the local controller arguments.
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function mapRequestArgumentsToControllerArguments() {
 		foreach ($this->arguments as $argument) {
@@ -209,7 +203,6 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 * view exists, the view is rendered automatically.
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function callCommandMethod() {
 		$preparedArguments = array();

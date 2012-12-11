@@ -487,7 +487,6 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * @param string $format The desired format, something like "html", "xml", "png", "json" or the like. Can even be something like "rss.xml".
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setFormat($format) {
 		$this->format = $format;
@@ -497,7 +496,6 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * Returns the requested representation format
 	 *
 	 * @return string The desired format, something like "html", "xml", "png", "json" or the like.
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function getFormat() {

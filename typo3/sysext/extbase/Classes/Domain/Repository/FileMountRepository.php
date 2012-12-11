@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Extbase\Domain\Repository;
 /**
  * Repository for \TYPO3\CMS\Extbase\Domain\Model\FileMount.
  *
- * @author Markus Günther <mail@markus-guenther.de>
  * @api
  */
 class FileMountRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {

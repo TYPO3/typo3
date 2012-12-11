@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 /**
  * This model represents a backend usergroup.
  *
- * @author Markus Günther <mail@markus-guenther.de>
  * @api
  */
 class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {

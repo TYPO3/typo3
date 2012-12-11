@@ -488,7 +488,6 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 *
 	 * @return void
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidOrNoRequestHashException In case request hash checking failed
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
 	 */
 	protected function checkRequestHash() {

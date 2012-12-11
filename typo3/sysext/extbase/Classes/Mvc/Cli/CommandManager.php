@@ -58,8 +58,6 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Returns an array of all commands
 	 *
 	 * @return array<\TYPO3\CMS\Extbase\Mvc\Cli\Command>
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function getAvailableCommands() {
@@ -117,8 +115,6 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param \TYPO3\CMS\Extbase\Mvc\Cli\Command $command The command
 	 * @return string The shortest possible command identifier
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function getShortestIdentifierForCommand(\TYPO3\CMS\Extbase\Mvc\Cli\Command $command) {
@@ -136,7 +132,6 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Returns an array that contains all available command identifiers and their shortest non-ambiguous alias
 	 *
 	 * @return array in the format array('full.command:identifier1' => 'alias1', 'full.command:identifier2' => 'alias2')
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getShortCommandIdentifiers() {
 		if ($this->shortCommandIdentifiers === NULL) {
@@ -170,7 +165,6 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param \TYPO3\CMS\Extbase\Mvc\Cli\Command $command
 	 * @param string $commandIdentifier command identifier in the format foo:bar:baz (all lower case)
 	 * @return boolean TRUE if the specified command identifier matches this commands identifier
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function commandMatchesIdentifier(\TYPO3\CMS\Extbase\Mvc\Cli\Command $command, $commandIdentifier) {
 		$commandIdentifierParts = explode(':', $command->getCommandIdentifier());

@@ -67,14 +67,13 @@ class RequestHashService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $fieldNamePrefix
 	 * @throws \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForRequestHashGenerationException
 	 * @return string request hash
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @todo might need to become public API lateron, as we need to call it from Fluid
 	 */
 	public function generateRequestHash($formFieldNames, $fieldNamePrefix = '') {
 		$formFieldArray = array();
 		foreach ($formFieldNames as $formField) {
 			$formFieldParts = explode('[', $formField);
-			$currentPosition =& $formFieldArray;
+			$currentPosition = &$formFieldArray;
 			for ($i = 0; $i < count($formFieldParts); $i++) {
 				$formFieldPart = $formFieldParts[$i];
 				if (substr($formFieldPart, -1) == ']') {
@@ -101,7 +100,7 @@ class RequestHashService implements \TYPO3\CMS\Core\SingletonInterface {
 					if (!isset($currentPosition[$formFieldPart])) {
 						$currentPosition[$formFieldPart] = array();
 					}
-					$currentPosition =& $currentPosition[$formFieldPart];
+					$currentPosition = &$currentPosition[$formFieldPart];
 				}
 			}
 		}
@@ -116,7 +115,6 @@ class RequestHashService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param array $formFieldArray form field array to be serialized and hashed
 	 * @return string Hash
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function serializeAndHashFormFieldArray($formFieldArray) {
 		$serializedFormFieldArray = serialize($formFieldArray);
@@ -131,7 +129,6 @@ class RequestHashService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param \TYPO3\CMS\Extbase\Mvc\Web\Request $request The request to verify
 	 * @throws \TYPO3\CMS\Extbase\Security\Exception\SyntacticallyWrongRequestHashException
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function verifyRequest(\TYPO3\CMS\Extbase\Mvc\Web\Request $request) {
 		if (!$request->getInternalArgument('__hmac')) {

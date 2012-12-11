@@ -254,7 +254,6 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
 	 * @return array
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
 		$statement = $query->getStatement();

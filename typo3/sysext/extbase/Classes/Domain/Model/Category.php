@@ -30,7 +30,6 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 /**
  * This model represents a category (for anything).
  *
- * @author Fabien Udriot <fabien.udriot@typo3.org>
  * @api
  */
 class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {

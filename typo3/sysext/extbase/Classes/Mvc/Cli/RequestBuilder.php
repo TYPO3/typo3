@@ -79,7 +79,6 @@ class RequestBuilder {
 	 *
 	 * @param mixed $commandLine The command line, either as a string or as an array
 	 * @return \TYPO3\CMS\Extbase\Mvc\Cli\Request The CLI request as an object
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function build($commandLine = '') {
 		$request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Request');
@@ -116,7 +115,6 @@ class RequestBuilder {
 	 * @param string $controllerCommandName Command name of the recognized command (ie. method name without "Command" suffix)
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentMixingException
 	 * @return array All and exceeding command line arguments
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function parseRawCommandLineArguments(array $rawCommandLineArguments, $controllerObjectName, $controllerCommandName) {
 		$commandLineArguments = array();
@@ -197,8 +195,6 @@ class RequestBuilder {
 	 * @param array &$rawCommandLineArguments Array of the remaining command line arguments
 	 * @param string $expectedArgumentType The expected type of the current argument, because booleans get special attention
 	 * @return string The value of the first argument
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function getValueOfCurrentCommandLineOption($currentArgument, array &$rawCommandLineArguments, $expectedArgumentType) {
 		if (!isset($rawCommandLineArguments[0]) && strpos($currentArgument, '=') === FALSE || isset($rawCommandLineArguments[0]) && $rawCommandLineArguments[0][0] === '-' && strpos($currentArgument, '=') === FALSE) {

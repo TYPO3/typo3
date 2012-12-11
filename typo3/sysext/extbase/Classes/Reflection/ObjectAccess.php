@@ -213,8 +213,6 @@ class ObjectAccess {
 	 * @param object $object Object to receive property names for
 	 * @throws \InvalidArgumentException
 	 * @return array Array of all gettable property names
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	static public function getGettablePropertyNames($object) {
 		if (!is_object($object)) {
@@ -250,7 +248,6 @@ class ObjectAccess {
 	 * @param object $object Object to receive property names for
 	 * @throws \InvalidArgumentException
 	 * @return array Array of all settable property names
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	static public function getSettablePropertyNames($object) {
 		if (!is_object($object)) {
@@ -278,7 +275,6 @@ class ObjectAccess {
 	 * @param string $propertyName Name of the property to check
 	 * @throws \InvalidArgumentException
 	 * @return boolean
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	static public function isPropertySettable($object, $propertyName) {
 		if (!is_object($object)) {
