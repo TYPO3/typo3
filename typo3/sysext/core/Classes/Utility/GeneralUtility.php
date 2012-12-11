@@ -1630,16 +1630,19 @@ class GeneralUtility {
 	 */
 	static public function array_merge_recursive_overrule(array $arr0, array $arr1, $notAddKeys = FALSE, $includeEmptyValues = TRUE, $enableUnsetFeature = TRUE) {
 		foreach ($arr1 as $key => $val) {
+			if ($enableUnsetFeature && $val === '__UNSET') {
+				unset($arr0[$key]);
+				continue;
+			}
 			if (is_array($arr0[$key])) {
 				if (is_array($arr1[$key])) {
 					$arr0[$key] = self::array_merge_recursive_overrule($arr0[$key], $arr1[$key], $notAddKeys, $includeEmptyValues, $enableUnsetFeature);
 				}
-			} elseif (!$notAddKeys || isset($arr0[$key])) {
-				if ($enableUnsetFeature && $val === '__UNSET') {
-					unset($arr0[$key]);
-				} elseif ($includeEmptyValues || $val) {
-					$arr0[$key] = $val;
-				}
+			} elseif (
+				(!$notAddKeys || isset($arr0[$key])) &&
+				($includeEmptyValues || $val)
+			) {
+				$arr0[$key] = $val;
 			}
 		}
 		reset($arr0);

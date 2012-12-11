@@ -4020,14 +4020,16 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'first' => array(
 				'second' => 'second',
 				'third' => 'third'
-			)
+			),
+			'fifth' => array()
 		);
 		$array2 = array(
 			'first' => array(
 				'second' => 'overrule',
 				'third' => '__UNSET',
 				'fourth' => 'overrile'
-			)
+			),
+			'fifth' => '__UNSET'
 		);
 		$expected = array(
 			'first' => array(
