@@ -218,20 +218,20 @@ class ElementBrowser {
 	 */
 	public function init() {
 		// Main GPvars:
-		$this->pointer = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pointer');
-		$this->bparams = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('bparams');
-		$this->P = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('P');
-		$this->RTEtsConfigParams = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('RTEtsConfigParams');
-		$this->expandPage = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('expandPage');
-		$this->expandFolder = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('expandFolder');
-		$this->PM = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('PM');
+		$this->pointer = GeneralUtility::_GP('pointer');
+		$this->bparams = GeneralUtility::_GP('bparams');
+		$this->P = GeneralUtility::_GP('P');
+		$this->RTEtsConfigParams = GeneralUtility::_GP('RTEtsConfigParams');
+		$this->expandPage = GeneralUtility::_GP('expandPage');
+		$this->expandFolder = GeneralUtility::_GP('expandFolder');
+		$this->PM = GeneralUtility::_GP('PM');
 		// Find "mode"
-		$this->mode = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('mode');
+		$this->mode = GeneralUtility::_GP('mode');
 		if (!$this->mode) {
 			$this->mode = 'rte';
 		}
 		// Creating backend template object:
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		// Load the Prototype library and browse_links.js
 		$this->doc->getPageRenderer()->loadPrototype();
@@ -241,7 +241,7 @@ class ElementBrowser {
 		$this->hookObjects = array();
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'] as $classData) {
-				$processObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classData);
+				$processObject = GeneralUtility::getUserObj($classData);
 				if (!$processObject instanceof \TYPO3\CMS\Core\ElementBrowser\ElementBrowserHookInterface) {
 					throw new \UnexpectedValueException('$processObject must implement interface TYPO3\\CMS\\Core\\ElementBrowser\\ElementBrowserHookInterface', 1195039394);
 				}
@@ -252,21 +252,21 @@ class ElementBrowser {
 		}
 		// Site URL
 		// Current site url
-		$this->siteURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+		$this->siteURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 		// The script to link to
-		$this->thisScript = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME');
+		$this->thisScript = GeneralUtility::getIndpEnv('SCRIPT_NAME');
 		// Init fileProcessor
-		$this->fileProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
+		$this->fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
 		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 		// CurrentUrl - the current link url must be passed around if it exists
 		if ($this->mode == 'wizard') {
-			$currentValues = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, trim($this->P['currentValue']));
+			$currentValues = GeneralUtility::trimExplode(LF, trim($this->P['currentValue']));
 			if (count($currentValues) > 0) {
 				$currentValue = array_pop($currentValues);
 			} else {
 				$currentValue = '';
 			}
-			$currentLinkParts = \TYPO3\CMS\Core\Utility\GeneralUtility::unQuoteFilenames($currentValue, TRUE);
+			$currentLinkParts = GeneralUtility::unQuoteFilenames($currentValue, TRUE);
 			$initialCurUrlArray = array(
 				'href' => $currentLinkParts[0],
 				'target' => $currentLinkParts[1],
@@ -274,7 +274,7 @@ class ElementBrowser {
 				'title' => $currentLinkParts[3],
 				'params' => $currentLinkParts[4]
 			);
-			$this->curUrlArray = is_array(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('curUrl')) ? array_merge($initialCurUrlArray, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('curUrl')) : $initialCurUrlArray;
+			$this->curUrlArray = is_array(GeneralUtility::_GP('curUrl')) ? array_merge($initialCurUrlArray, GeneralUtility::_GP('curUrl')) : $initialCurUrlArray;
 			// Additional fields for page links
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['extendUrlArray']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['extendUrlArray'])) {
 				$_params = array(
@@ -282,7 +282,7 @@ class ElementBrowser {
 					'linkParts' => $currentLinkParts
 				);
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['extendUrlArray'] as $objRef) {
-					$processor =& \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($objRef);
+					$processor =& GeneralUtility::getUserObj($objRef);
 					$processor->extendUrlArray($_params, $this);
 				}
 			}
@@ -290,18 +290,18 @@ class ElementBrowser {
 			// pageid == 0 means that this is not an internal (page) link
 			if ($this->curUrlInfo['pageid'] == 0 && $this->curUrlArray['href']) {
 				// Check if there is the FAL API
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($this->curUrlArray['href'], 'file:')) {
+				if (GeneralUtility::isFirstPartOfStr($this->curUrlArray['href'], 'file:')) {
 					$this->curUrlInfo = $this->parseCurUrl($this->curUrlArray['href'], $this->siteURL);
 					// Remove the "file:" prefix
 					$currentLinkParts[0] = rawurldecode(substr($this->curUrlArray['href'], 5));
 				} elseif (file_exists(PATH_site . rawurldecode($this->curUrlArray['href']))) {
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($this->curUrlArray['href'], PATH_site)) {
+					if (GeneralUtility::isFirstPartOfStr($this->curUrlArray['href'], PATH_site)) {
 						$currentLinkParts[0] = substr($this->curUrlArray['href'], strlen(PATH_site));
 					}
 					$this->curUrlInfo = $this->parseCurUrl($this->siteURL . $this->curUrlArray['href'], $this->siteURL);
 				} elseif (strstr($this->curUrlArray['href'], '@')) {
 					// check for email link
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($this->curUrlArray['href'], 'mailto:')) {
+					if (GeneralUtility::isFirstPartOfStr($this->curUrlArray['href'], 'mailto:')) {
 						$currentLinkParts[0] = substr($this->curUrlArray['href'], 7);
 					}
 					$this->curUrlInfo = $this->parseCurUrl('mailto:' . $this->curUrlArray['href'], $this->siteURL);
@@ -319,14 +319,14 @@ class ElementBrowser {
 				$this->curUrlInfo = $this->parseCurUrl($this->siteURL . '?id=' . $this->curUrlArray['href'], $this->siteURL);
 			}
 		} else {
-			$this->curUrlArray = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('curUrl');
+			$this->curUrlArray = GeneralUtility::_GP('curUrl');
 			if ($this->curUrlArray['all']) {
-				$this->curUrlArray = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes($this->curUrlArray['all']);
+				$this->curUrlArray = GeneralUtility::get_tag_attributes($this->curUrlArray['all']);
 			}
 			$this->curUrlInfo = $this->parseCurUrl($this->curUrlArray['href'], $this->siteURL);
 		}
 		// Determine nature of current url:
-		$this->act = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('act');
+		$this->act = GeneralUtility::_GP('act');
 		if (!$this->act) {
 			$this->act = $this->curUrlInfo['act'];
 		}
@@ -638,7 +638,7 @@ class ElementBrowser {
 				'addPassOnParams' => $addPassOnParams
 			);
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['extendJScode'] as $objRef) {
-				$processor =& \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($objRef);
+				$processor =& GeneralUtility::getUserObj($objRef);
 				$JScode .= $processor->extendJScode($_params, $this);
 			}
 		}
@@ -799,7 +799,7 @@ class ElementBrowser {
 		case 'file':
 
 		case 'folder':
-			$foldertree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('rteFolderTree');
+			$foldertree = GeneralUtility::makeInstance('rteFolderTree');
 			$foldertree->thisScript = $this->thisScript;
 			$tree = $foldertree->getBrowsableTree();
 			if (!$this->curUrlInfo['value'] || $this->curUrlInfo['act'] != $this->act) {
@@ -921,19 +921,14 @@ class ElementBrowser {
 			}
 			break;
 		case 'page':
-			$pagetree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('rtePageTree');
+			$pagetree = GeneralUtility::makeInstance('rtePageTree');
 			$pagetree->thisScript = $this->thisScript;
 			$pagetree->ext_showPageId = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
 			$pagetree->ext_showNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
 			$pagetree->addField('nav_title');
 			$tree = $pagetree->getBrowsableTree();
 			$cElements = $this->expandPage();
-			// Outputting Temporary DB mount notice:
-			if (intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint'))) {
-				$link = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '">' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xml:labels.temporaryDBmount', 1) . '</a>';
-				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $link, '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
-				$dbmount = $flashMessage->render();
-			}
+			$dbmount = $this->getTemporaryTreeMountCancelNotice();
 			$content .= '
 
 			<!--
@@ -1005,7 +1000,7 @@ class ElementBrowser {
 				'conf' => &$conf
 			);
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['addFields_PageLink'] as $objRef) {
-				$processor =& \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($objRef);
+				$processor =& GeneralUtility::getUserObj($objRef);
 				$content .= $processor->addFields($_params, $this);
 			}
 		}
@@ -1094,7 +1089,7 @@ class ElementBrowser {
 		// Init variable:
 		$pArr = explode('|', $this->bparams);
 		// Making the browsable pagetree:
-		$pagetree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TBE_PageTree');
+		$pagetree = GeneralUtility::makeInstance('TBE_PageTree');
 		$pagetree->thisScript = $this->thisScript;
 		$pagetree->ext_pArrPages = !strcmp($pArr[3], 'pages') ? 1 : 0;
 		$pagetree->ext_showNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
@@ -1103,6 +1098,7 @@ class ElementBrowser {
 		$tree = $pagetree->getBrowsableTree();
 		// Making the list of elements, if applicable:
 		$cElements = $this->TBE_expandPage($pArr[3]);
+		$dbmount = $this->getTemporaryTreeMountCancelNotice();
 		// Putting the things together, side by side:
 		$content .= '
 
@@ -1111,7 +1107,7 @@ class ElementBrowser {
 			-->
 			<table border="0" cellpadding="0" cellspacing="0" id="typo3-EBrecords">
 				<tr>
-					<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('pageTree') . ':')) . $tree . '</td>
+					<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('pageTree') . ':')) . $dbmount . $tree . '</td>
 					<td class="c-wCell" valign="top">' . $cElements . '</td>
 				</tr>
 			</table>
@@ -1148,7 +1144,7 @@ class ElementBrowser {
 		$this->storages = $GLOBALS['BE_USER']->getFileStorages();
 		if (isset($allowedFileExtensions)) {
 			// Create new filter object
-			$filterObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter');
+			$filterObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter');
 			$filterObject->setAllowedFileExtensions($allowedFileExtensions);
 			// Set file extension filters on all storages
 			/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
@@ -1200,11 +1196,11 @@ class ElementBrowser {
 			// MENU-ITEMS, fetching the setting for thumbnails from File>List module:
 			$_MOD_MENU = array('displayThumbs' => '');
 			$_MCONF['name'] = 'file_list';
-			$_MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($_MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $_MCONF['name']);
+			$_MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), $_MCONF['name']);
 		}
 		$noThumbs = $noThumbs ? $noThumbs : !$_MOD_SETTINGS['displayThumbs'];
 		// Create folder tree:
-		$foldertree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TBE_FolderTree');
+		$foldertree = GeneralUtility::makeInstance('TBE_FolderTree');
 		$foldertree->thisScript = $this->thisScript;
 		$foldertree->ext_noTempRecyclerDirs = $this->mode == 'filedrag';
 		$tree = $foldertree->getBrowsableTree();
@@ -1268,7 +1264,7 @@ class ElementBrowser {
 			$createFolder = '';
 		}
 		// Create folder tree:
-		$foldertree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TBE_FolderTree');
+		$foldertree = GeneralUtility::makeInstance('TBE_FolderTree');
 		$foldertree->thisScript = $this->thisScript;
 		$foldertree->ext_noTempRecyclerDirs = $this->mode == 'filedrag';
 		$tree = $foldertree->getBrowsableTree(FALSE);
@@ -1347,7 +1343,7 @@ class ElementBrowser {
 				// Putting list element HTML together:
 				$out .= '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/join' . ($c == $cc ? 'bottom' : '') . '.gif'), 'width="18" height="16"') . ' alt="" />' . $arrCol . '<a href="#" onclick="return link_typo3Page(\'' . $expPageId . '\',\'#' . $row['uid'] . '\');">' . $icon . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tt_content', $row, TRUE) . '</a><br />';
 				// Finding internal anchor points:
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('text,textpic', $row['CType'])) {
+				if (GeneralUtility::inList('text,textpic', $row['CType'])) {
 					$split = preg_split('/(<a[^>]+name=[\'"]?([^"\'>[:space:]]+)[\'"]?[^>]*>)/i', $row['bodytext'], -1, PREG_SPLIT_DELIM_CAPTURE);
 					foreach ($split as $skey => $sval) {
 						if ($skey % 3 == 2) {
@@ -1382,7 +1378,7 @@ class ElementBrowser {
 			if (!strcmp(trim($tables), '*')) {
 				$tablesArr = array_keys($GLOBALS['TCA']);
 			} else {
-				$tablesArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tables, 1);
+				$tablesArr = GeneralUtility::trimExplode(',', $tables, 1);
 			}
 			reset($tablesArr);
 			// Headline for selecting records:
@@ -1397,14 +1393,14 @@ class ElementBrowser {
 			if (is_array($mainPageRec)) {
 				$picon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $mainPageRec);
 				if (in_array('pages', $tablesArr)) {
-					$ATag = '<a href="#" onclick="return insertElement(\'pages\', \'' . $mainPageRec['uid'] . '\', \'db\', ' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($mainPageRec['title']) . ', \'\', \'\', \'\',\'\',1);">';
-					$ATag2 = '<a href="#" onclick="return insertElement(\'pages\', \'' . $mainPageRec['uid'] . '\', \'db\', ' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($mainPageRec['title']) . ', \'\', \'\', \'\',\'\',0);">';
+					$ATag = '<a href="#" onclick="return insertElement(\'pages\', \'' . $mainPageRec['uid'] . '\', \'db\', ' . GeneralUtility::quoteJSvalue($mainPageRec['title']) . ', \'\', \'\', \'\',\'\',1);">';
+					$ATag2 = '<a href="#" onclick="return insertElement(\'pages\', \'' . $mainPageRec['uid'] . '\', \'db\', ' . GeneralUtility::quoteJSvalue($mainPageRec['title']) . ', \'\', \'\', \'\',\'\',0);">';
 					$ATag_alt = substr($ATag, 0, -4) . ',\'\',1);">';
 					$ATag_e = '</a>';
 				}
 			}
 			$pBicon = $ATag2 ? '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif', 'width="18" height="16"') . ' alt="" />' : '';
-			$pText = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($mainPageRec['title'], $titleLen));
+			$pText = htmlspecialchars(GeneralUtility::fixed_lgd_cs($mainPageRec['title'], $titleLen));
 			$out .= $picon . $ATag2 . $pBicon . $ATag_e . $ATag . $pText . $ATag_e . '<br />';
 			// Initialize the record listing:
 			$id = $this->expandPage;
@@ -1414,7 +1410,7 @@ class ElementBrowser {
 			$table = '';
 			// Generate the record list:
 			/** @var $dblist \TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList */
-			$dblist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\RecordList\\ElementBrowserRecordList');
+			$dblist = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\RecordList\\ElementBrowserRecordList');
 			$dblist->thisScript = $this->thisScript;
 			$dblist->backPath = $GLOBALS['BACK_PATH'];
 			$dblist->thumbs = 0;
@@ -1432,7 +1428,7 @@ class ElementBrowser {
 			if ($relatingTableName && $relatingFieldName) {
 				$dblist->setRelatingTableAndField($relatingTableName, $relatingFieldName);
 			}
-			$dblist->start($id, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('table'), $pointer, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('search_field'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('search_levels'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('showLimit'));
+			$dblist->start($id, GeneralUtility::_GP('table'), $pointer, GeneralUtility::_GP('search_field'), GeneralUtility::_GP('search_levels'), GeneralUtility::_GP('showLimit'));
 			$dblist->setDispFields();
 			$dblist->generateList();
 			$dblist->writeBottom();
@@ -1491,7 +1487,7 @@ class ElementBrowser {
 			// Create header element; The folder from which files are listed.
 			$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
 			$folderIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('folder');
-			$folderIcon .= htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen));
+			$folderIcon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen));
 			$picon = '<a href="#" onclick="return link_folder(\'file:' . $folder->getCombinedIdentifier() . '\');">' . $folderIcon . '</a>';
 			if ($this->curUrlInfo['act'] == 'folder' && $currentIdentifier == $folder->getCombinedIdentifier()) {
 				$out .= '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"') . ' class="c-blinkArrowL" alt="" />';
@@ -1516,7 +1512,7 @@ class ElementBrowser {
 					// File icon:
 					$fileExtension = $fileOrFolderObject->getExtension();
 					// Get size and icon:
-					$size = ' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileOrFolderObject->getSize()) . 'bytes)';
+					$size = ' (' . GeneralUtility::formatSize($fileOrFolderObject->getSize()) . 'bytes)';
 					$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($fileExtension, array('title' => $fileOrFolderObject->getName() . $size));
 					$itemUid = 'file:' . $fileIdentifier;
 				}
@@ -1527,7 +1523,7 @@ class ElementBrowser {
 					$arrCol = '';
 				}
 				// Put it all together for the file element:
-				$out .= '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/join' . ($c == $totalItems ? 'bottom' : '') . '.gif'), 'width="18" height="16"') . ' alt="" />' . $arrCol . '<a href="#" onclick="return link_folder(\'' . $itemUid . '\');">' . $icon . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen)) . '</a><br />';
+				$out .= '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/join' . ($c == $totalItems ? 'bottom' : '') . '.gif'), 'width="18" height="16"') . ' alt="" />' . $arrCol . '<a href="#" onclick="return link_folder(\'' . $itemUid . '\');">' . $icon . htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen)) . '</a><br />';
 			}
 		}
 		return $out;
@@ -1575,7 +1571,7 @@ class ElementBrowser {
 			if ($folder) {
 				$folderIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('folder');
 				$lines[] = '<tr class="t3-row-header">
-					<td colspan="4">' . $folderIcon . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen)) . '</td>
+					<td colspan="4">' . $folderIcon . htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen)) . '</td>
 				</tr>';
 			}
 			if ($filesCount == 0) {
@@ -1586,7 +1582,7 @@ class ElementBrowser {
 			}
 			// Init graphic object for reading file dimensions:
 			/** @var $imgObj \TYPO3\CMS\Core\Imaging\GraphicalFunctions */
-			$imgObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions');
+			$imgObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions');
 			$imgObj->init();
 			$imgObj->mayScaleUp = 0;
 			$imgObj->tempPath = PATH_site . $imgObj->tempPath;
@@ -1594,7 +1590,7 @@ class ElementBrowser {
 			foreach ($files as $fileObject) {
 				$fileExtension = $fileObject->getExtension();
 				// Thumbnail/size generation:
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']), strtolower($fileExtension)) && !$noThumbs) {
+				if (GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']), strtolower($fileExtension)) && !$noThumbs) {
 					$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => 64, 'height' => 64))->getPublicUrl(TRUE);
 					$imgInfo = $imgObj->getImageDimensions($fileObject->getForLocalProcessing(FALSE));
 					$pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
@@ -1604,7 +1600,7 @@ class ElementBrowser {
 					$pDim = '';
 				}
 				// Create file icon:
-				$size = ' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileObject->getSize()) . 'bytes' . ($pDim ? ', ' . $pDim : '') . ')';
+				$size = ' (' . GeneralUtility::formatSize($fileObject->getSize()) . 'bytes' . ($pDim ? ', ' . $pDim : '') . ')';
 				$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($fileExtension, array('title' => $fileObject->getName() . $size));
 				// Create links for adding the file:
 				$filesIndex = count($this->elements);
@@ -1622,11 +1618,11 @@ class ElementBrowser {
 				$bulkCheckBox = '<input type="checkbox" class="typo3-bulk-item" name="file_' . $filesIndex . '" value="0" /> ';
 				$ATag_e = '</a>';
 				// Create link to showing details about the file in a window:
-				$Ahref = $GLOBALS['BACK_PATH'] . 'show_item.php?type=file&table=_FILE&uid=' . rawurlencode($fileObject->getCombinedIdentifier()) . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
+				$Ahref = $GLOBALS['BACK_PATH'] . 'show_item.php?type=file&table=_FILE&uid=' . rawurlencode($fileObject->getCombinedIdentifier()) . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
 				$ATag2 = '<a href="' . htmlspecialchars($Ahref) . '">';
 				$ATag2_e = '</a>';
 				// Combine the stuff:
-				$filenameAndIcon = $bulkCheckBox . $ATag_alt . $icon . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($fileObject->getName(), $titleLen)) . $ATag_e;
+				$filenameAndIcon = $bulkCheckBox . $ATag_alt . $icon . htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileObject->getName(), $titleLen)) . $ATag_e;
 				// Show element:
 				// Image...
 				if ($pDim) {
@@ -1694,7 +1690,7 @@ class ElementBrowser {
 			// Add the foder icon
 			$folderIcon = $aTag_alt;
 			$folderIcon .= '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif', 'width="18" height="16"') . ' alt="" />';
-			$folderIcon .= htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(basename($baseFolder), $titleLength));
+			$folderIcon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs(basename($baseFolder), $titleLength));
 			$folderIcon .= $aTag_e;
 			$content .= $folderIcon . '<br />';
 		}
@@ -1723,7 +1719,7 @@ class ElementBrowser {
 					}
 					$aTag_e = '</a>';
 					// Combine icon and folderpath:
-					$foldernameAndIcon = $aTag_alt . $icon . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(basename($folderPath), $titleLength)) . $aTag_e;
+					$foldernameAndIcon = $aTag_alt . $icon . htmlspecialchars(GeneralUtility::fixed_lgd_cs(basename($folderPath), $titleLength)) . $aTag_e;
 					if ($this->P['itemName'] != '') {
 						$lines[] = '
 							<tr class="bgColor4">
@@ -1779,7 +1775,7 @@ class ElementBrowser {
 			$out .= $this->barheader(sprintf($GLOBALS['LANG']->getLL('files') . ' (%s):', count($files)));
 			$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
 			$picon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif', 'width="18" height="16"') . ' alt="" />';
-			$picon .= htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(basename($folder->getName()), $titleLen));
+			$picon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs(basename($folder->getName()), $titleLen));
 			$out .= $picon . '<br />';
 			// Init row-array:
 			$lines = array();
@@ -1792,15 +1788,15 @@ class ElementBrowser {
 			foreach ($files as $fileObject) {
 				$fileInfo = $fileObject->getStorage()->getFileInfo($fileObject);
 				// URL of image:
-				$iUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::rawurlencodeFP($fileObject->getPublicUrl(TRUE));
+				$iUrl = GeneralUtility::rawurlencodeFP($fileObject->getPublicUrl(TRUE));
 				// Show only web-images
 				$fileExtension = strtolower($fileObject->getExtension());
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('gif,jpeg,jpg,png', $fileExtension)) {
+				if (GeneralUtility::inList('gif,jpeg,jpg,png', $fileExtension)) {
 					$imgInfo = @getimagesize($fileObject->getForLocalProcessing(FALSE));
 					$pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
-					$size = ' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileObject->getSize()) . 'bytes' . ($pDim ? ', ' . $pDim : '') . ')';
+					$size = ' (' . GeneralUtility::formatSize($fileObject->getSize()) . 'bytes' . ($pDim ? ', ' . $pDim : '') . ')';
 					$filenameAndIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($fileExtension, array('title' => $fileObject->getName() . $size));
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('noLimit')) {
+					if (GeneralUtility::_GP('noLimit')) {
 						$maxW = 10000;
 						$maxH = 10000;
 					} else {
@@ -1821,7 +1817,7 @@ class ElementBrowser {
 					$lines[] = '
 						<tr class="bgColor4">
 							<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
-							<td nowrap="nowrap">' . ($imgInfo[0] != $IW ? '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('noLimit' => '1'))) . '">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning2.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('clickToRedrawFullSize', TRUE) . '" alt="" />' . '</a>' : '') . $pDim . '&nbsp;</td>
+							<td nowrap="nowrap">' . ($imgInfo[0] != $IW ? '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('noLimit' => '1'))) . '">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning2.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('clickToRedrawFullSize', TRUE) . '" alt="" />' . '</a>' : '') . $pDim . '&nbsp;</td>
 						</tr>';
 					$lines[] = '
 						<tr>
@@ -1865,7 +1861,7 @@ class ElementBrowser {
 	 */
 	public function isWebFolder($folder) {
 		$folder = rtrim($folder, '/') . '/';
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($folder, PATH_site) ? TRUE : FALSE;
+		return GeneralUtility::isFirstPartOfStr($folder, PATH_site) ? TRUE : FALSE;
 	}
 
 	/**
@@ -1983,7 +1979,7 @@ class ElementBrowser {
 				} else {
 					$info['value'] = $rel;
 				}
-			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($href, $siteUrl)) {
+			} elseif (GeneralUtility::isFirstPartOfStr($href, $siteUrl)) {
 				// If URL is on the current frontend website:
 				// URL is a file, which exists:
 				if (file_exists(PATH_site . rawurldecode($href))) {
@@ -2009,7 +2005,7 @@ class ElementBrowser {
 						}
 						$pageRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $id);
 						$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
-						$info['value'] = ((((($GLOBALS['LANG']->getLL('page', 1) . ' \'') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($pageRow['title'], $titleLen))) . '\' (ID:') . $id) . ($uP['fragment'] ? ', #' . $uP['fragment'] : '')) . ')';
+						$info['value'] = ((((($GLOBALS['LANG']->getLL('page', 1) . ' \'') . htmlspecialchars(GeneralUtility::fixed_lgd_cs($pageRow['title'], $titleLen))) . '\' (ID:') . $id) . ($uP['fragment'] ? ', #' . $uP['fragment'] : '')) . ')';
 						$info['pageid'] = $id;
 						$info['cElement'] = $uP['fragment'];
 						$info['act'] = 'page';
@@ -2164,7 +2160,7 @@ class ElementBrowser {
 				// MENU-ITEMS, fetching the setting for thumbnails from File>List module:
 				$_MOD_MENU = array('displayThumbs' => '');
 				$_MCONF['name'] = 'file_list';
-				$_MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($_MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $_MCONF['name']);
+				$_MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), $_MCONF['name']);
 				$addParams = '&act=' . $this->act . '&mode=' . $this->mode . '&expandFolder=' . rawurlencode($this->selectedFolder->getCombinedIdentifier()) . '&bparams=' . rawurlencode($this->bparams);
 				$thumbNailCheck = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck('', 'SET[displayThumbs]', $_MOD_SETTINGS['displayThumbs'], $this->thisScript, $addParams, 'id="checkDisplayThumbs"') . ' <label for="checkDisplayThumbs">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.php:displayThumbs', 1) . '</label>';
 				$out .= $this->doc->spacer(5) . $thumbNailCheck . $this->doc->spacer(15);
@@ -2198,9 +2194,30 @@ class ElementBrowser {
 				}
 				unset($value);
 			}
-			$result = $this->P['fieldChangeFuncHash'] === \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(serialize($fieldChangeFunctions));
+			$result = $this->P['fieldChangeFuncHash'] === GeneralUtility::hmac(serialize($fieldChangeFunctions));
 		}
 		return $result;
+	}
+
+	/**
+	 * Check if a temporary tree mount is set and return a cancel button
+	 *
+	 * @return string
+	 */
+	protected function getTemporaryTreeMountCancelNotice() {
+		if ((int)$GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint') === 0) {
+			return '';
+		}
+		$link = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '">'
+			. $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount', TRUE) . '</a>';
+		/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+		$flashMessage = GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+			$link,
+			'',
+			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
+		);
+		return $flashMessage->render();
 	}
 
 	/**
@@ -2213,13 +2230,12 @@ class ElementBrowser {
 	protected function getFilesInFolder(\TYPO3\CMS\Core\Resource\Folder $folder, $extensionList) {
 		if ($extensionList !== '') {
 			/** @var \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter $filter */
-			$filter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter');
+			$filter = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter');
 			$filter->setAllowedFileExtensions($extensionList);
 			$folder->setFileAndFolderNameFilters(array(array($filter, 'filterFileList')));
 		}
 		return $folder->getFiles();
 	}
-
 }
 
 
