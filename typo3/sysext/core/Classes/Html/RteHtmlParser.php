@@ -277,9 +277,13 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 					case 'ts_transform':
 
 					case 'css_transform':
-						// Has a very disturbing effect, so just remove all '13' - depend on '10'
-						$value = str_replace(CR, '', $value);
 						$this->allowedClasses = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->procOptions['allowedClasses'], 1);
+						// CR has a very disturbing effect, so just remove all CR and rely on LF
+						$value = str_replace(CR, '', $value);
+						// Transform empty paragraphs into spacing paragraphs
+						$value = str_replace('<p></p>', '<p>&nbsp;</p>', $value);
+						// Double any trailing spacing paragraph so that it does not get removed by divideIntoLines()
+						$value = preg_replace('/<p>&nbsp;<\/p>$/', '<p>&nbsp;</p>' . '<p>&nbsp;</p>', $value);
 						$value = $this->TS_transform_db($value, $cmd == 'css_transform');
 						break;
 					case 'ts_strip':
@@ -1065,8 +1069,9 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @todo Define visibility
 	 */
 	public function TS_transform_rte($value, $css = 0) {
-		// Split the content from Database by the occurence of these blocks:
-		$blockSplit = $this->splitIntoBlock('TABLE,BLOCKQUOTE,TYPOLIST,TYPOHEAD,' . ($this->procOptions['preserveDIVSections'] ? 'DIV,' : '') . $this->blockElementList, $value);
+		// Split the content from database by the occurence of the block elements
+		$blockElementList = 'TABLE,BLOCKQUOTE,TYPOLIST,TYPOHEAD,' . ($this->procOptions['preserveDIVSections'] ? 'DIV,' : '') . $this->blockElementList;
+		$blockSplit = $this->splitIntoBlock($blockElementList, $value);
 		// Traverse the blocks
 		foreach ($blockSplit as $k => $v) {
 			if ($k % 2) {
@@ -1125,13 +1130,19 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 			} else {
 				// NON-block:
 				$nextFTN = $this->getFirstTagName($blockSplit[$k + 1]);
-				$singleLineBreak = $blockSplit[$k] == LF;
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('TABLE,BLOCKQUOTE,TYPOLIST,TYPOHEAD,' . ($this->procOptions['preserveDIVSections'] ? 'DIV,' : '') . $this->blockElementList, $nextFTN)) {
-					// Removing linebreak if typolist/typohead
-					$blockSplit[$k] = preg_replace('/' . LF . '[ ]*$/', '', $blockSplit[$k]);
+				$onlyLineBreaks = (preg_match('/^[ ]*' . LF . '+[ ]*$/', $blockSplit[$k]) == 1);
+				// If the line is followed by a block or is the last line:
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($blockElementList, $nextFTN) || !isset($blockSplit[$k + 1])) {
+					// If the line contains more than just linebreaks, reduce the number of trailing linebreaks by 1
+					if (!$onlyLineBreaks) {
+						$blockSplit[$k] = preg_replace('/(' . LF . '*)' . LF . '[ ]*$/', '$1', $blockSplit[$k]);
+					} else {
+						// If the line contains only linebreaks, remove the leading linebreak
+						$blockSplit[$k] = preg_replace('/^[ ]*' . LF . '/', '', $blockSplit[$k]);
+					}
 				}
-				// If $blockSplit[$k] is blank then unset the line. UNLESS the line happend to be a single line break.
-				if (!strcmp($blockSplit[$k], '') && !$singleLineBreak) {
+				// If $blockSplit[$k] is blank then unset the line, unless the line only contained linebreaks
+				if (!strcmp($blockSplit[$k], '') && !$onlyLineBreaks) {
 					unset($blockSplit[$k]);
 				} else {
 					$blockSplit[$k] = $this->setDivTags($blockSplit[$k], $this->procOptions['useDIVasParagraphTagForRTE'] ? 'div' : 'p');
