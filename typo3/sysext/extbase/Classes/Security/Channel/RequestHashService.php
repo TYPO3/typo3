@@ -118,7 +118,7 @@ class RequestHashService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function serializeAndHashFormFieldArray($formFieldArray) {
 		$serializedFormFieldArray = serialize($formFieldArray);
-		return $serializedFormFieldArray . $this->hashService->generateHash($serializedFormFieldArray);
+		return $serializedFormFieldArray . $this->hashService->generateHmac($serializedFormFieldArray);
 	}
 
 	/**
@@ -142,7 +142,7 @@ class RequestHashService implements \TYPO3\CMS\Core\SingletonInterface {
 		$serializedFieldNames = substr($hmac, 0, -40);
 		// TODO: Constant for hash length needs to be introduced
 		$hash = substr($hmac, -40);
-		if ($this->hashService->validateHash($serializedFieldNames, $hash)) {
+		if ($this->hashService->validateHmac($serializedFieldNames, $hash)) {
 			$requestArguments = $request->getArguments();
 			// Unset framework arguments
 			unset($requestArguments['__referrer']);

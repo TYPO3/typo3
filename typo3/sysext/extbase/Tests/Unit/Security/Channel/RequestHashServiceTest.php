@@ -158,8 +158,8 @@ class RequestHashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 			)
 		);
 		$mockHash = '12345';
-		$hashService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Security\\Cryptography\\HashService', array('generateHash'));
-		$hashService->expects($this->once())->method('generateHash')->with(serialize($formFieldArray))->will($this->returnValue($mockHash));
+		$hashService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Security\\Cryptography\\HashService', array('generateHmac'));
+		$hashService->expects($this->once())->method('generateHmac')->with(serialize($formFieldArray))->will($this->returnValue($mockHash));
 		$requestHashService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService', array('dummy'));
 		$requestHashService->_set('hashService', $hashService);
 		$expected = serialize($formFieldArray) . $mockHash;
@@ -199,8 +199,8 @@ class RequestHashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$request = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request', array('getInternalArgument', 'setHmacVerified'));
 		$request->expects($this->any())->method('getInternalArgument')->with('__hmac')->will($this->returnValue('11111' . '0000000000000000000000000000000000000000'));
 		$request->expects($this->once())->method('setHmacVerified')->with(FALSE);
-		$hashService = $this->getMock('TYPO3\\CMS\\Extbase\\Security\\Cryptography\\HashService', array('validateHash'));
-		$hashService->expects($this->once())->method('validateHash')->with('11111', '0000000000000000000000000000000000000000')->will($this->returnValue(FALSE));
+		$hashService = $this->getMock('TYPO3\\CMS\\Extbase\\Security\\Cryptography\\HashService', array('validateHmac'));
+		$hashService->expects($this->once())->method('validateHmac')->with('11111', '0000000000000000000000000000000000000000')->will($this->returnValue(FALSE));
 		$requestHashService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService', array('dummy'));
 		$requestHashService->_set('hashService', $hashService);
 		$requestHashService->verifyRequest($request);
@@ -220,8 +220,8 @@ class RequestHashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 			'a' => 'bla'
 		)));
 		$request->expects($this->once())->method('setHmacVerified')->with(TRUE);
-		$hashService = $this->getMock('TYPO3\\CMS\\Extbase\\Security\\Cryptography\\HashService', array('validateHash'));
-		$hashService->expects($this->once())->method('validateHash')->with($data, '0000000000000000000000000000000000000000')->will($this->returnValue(TRUE));
+		$hashService = $this->getMock('TYPO3\\CMS\\Extbase\\Security\\Cryptography\\HashService', array('validateHmac'));
+		$hashService->expects($this->once())->method('validateHmac')->with($data, '0000000000000000000000000000000000000000')->will($this->returnValue(TRUE));
 		$requestHashService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService', array('checkFieldNameInclusion'));
 		$requestHashService->expects($this->once())->method('checkFieldNameInclusion')->with(array('a' => 'bla'), array('a' => 1))->will($this->returnValue(TRUE));
 		$requestHashService->_set('hashService', $hashService);
@@ -243,8 +243,8 @@ class RequestHashServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 			'b' => 'blubb'
 		)));
 		$request->expects($this->once())->method('setHmacVerified')->with(FALSE);
-		$hashService = $this->getMock('TYPO3\\CMS\\Extbase\\Security\\Cryptography\\HashService', array('validateHash'));
-		$hashService->expects($this->once())->method('validateHash')->with($data, '0000000000000000000000000000000000000000')->will($this->returnValue(TRUE));
+		$hashService = $this->getMock('TYPO3\\CMS\\Extbase\\Security\\Cryptography\\HashService', array('validateHmac'));
+		$hashService->expects($this->once())->method('validateHmac')->with($data, '0000000000000000000000000000000000000000')->will($this->returnValue(TRUE));
 		$requestHashService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService', array('checkFieldNameInclusion'));
 		$requestHashService->expects($this->once())->method('checkFieldNameInclusion')->with(array('a' => 'bla', 'b' => 'blubb'), array('a' => 1))->will($this->returnValue(FALSE));
 		$requestHashService->_set('hashService', $hashService);
