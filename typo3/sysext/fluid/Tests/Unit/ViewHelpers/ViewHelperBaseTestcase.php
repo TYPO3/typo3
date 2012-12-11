@@ -53,6 +53,11 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	protected $renderingContext;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService
+	 */
+	protected $mvcPropertyMapperConfigurationService;
+
+	/**
 	 * @return void
 	 */
 	public function setUp() {
@@ -81,6 +86,7 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 		$this->renderingContext->injectTemplateVariableContainer($this->templateVariableContainer);
 		$this->renderingContext->injectViewHelperVariableContainer($this->viewHelperVariableContainer);
 		$this->renderingContext->setControllerContext($this->controllerContext);
+		$this->mvcPropertyMapperConfigurationService = new \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
 	}
 
 	/**

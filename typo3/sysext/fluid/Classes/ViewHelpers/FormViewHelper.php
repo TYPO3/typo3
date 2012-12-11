@@ -65,6 +65,11 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 	protected $hashService;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService
+	 */
+	protected $mvcPropertyMappingConfigurationService;
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService
 	 */
 	protected $extensionService;
@@ -113,6 +118,14 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 	 */
 	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService $mvcPropertyMapperConfigurationService
+	 * @return void
+	 */
+	public function injectMvcPropertyMapperConfigurationService(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService $mvcPropertyMapperConfigurationService) {
+		$this->mvcPropertyMappingConfigurationService = $mvcPropertyMapperConfigurationService;
 	}
 
 	/**
@@ -169,8 +182,13 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 		$content .= $this->renderHiddenIdentityField($this->arguments['object'], $this->getFormObjectName());
 		$content .= $this->renderAdditionalIdentityFields();
 		$content .= $this->renderHiddenReferrerFields();
-		$content .= $this->renderRequestHashField();
-		// Render hmac after everything else has been rendered
+		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper') === FALSE) {
+			// Render hmac after everything else has been rendered
+			$content .= $this->renderRequestHashField();
+		} else {
+			// Render the trusted list of all properties after everything else has been rendered
+			$content .= $this->renderTrustedPropertiesField();
+		}
 		$content .= chr(10) . '</div>' . chr(10);
 		$content .= $formContent;
 		$this->tag->setContent($content);
@@ -419,6 +437,17 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 		if ($this->viewHelperVariableContainer->exists('TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\CheckboxViewHelper', 'checkboxFieldNames')) {
 			$this->viewHelperVariableContainer->remove('TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\CheckboxViewHelper', 'checkboxFieldNames');
 		}
+	}
+
+	/**
+	 * Render the request hash field
+	 *
+	 * @return string The hmac field
+	 */
+	protected function renderTrustedPropertiesField() {
+		$formFieldNames = $this->viewHelperVariableContainer->get('TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper', 'formFieldNames');
+		$requestHash = $this->mvcPropertyMappingConfigurationService->generateTrustedPropertiesToken($formFieldNames, $this->getFieldNamePrefix());
+		return '<input type="hidden" name="' . $this->prefixFieldName('__trustedProperties') . '" value="' . htmlspecialchars($requestHash) . '" />';
 	}
 }
 
