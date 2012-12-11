@@ -1092,6 +1092,12 @@ class ElementBrowser {
 		$content = $this->doc->startPage('TBE record selector');
 		// Init variable:
 		$pArr = explode('|', $this->bparams);
+		// Making the  temporary DB mount notice:
+		if (intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint'))) {
+			$link = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '">' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xml:labels.temporaryDBmount', 1) . '</a>';
+			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $link, '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+			$temporaryTreeMountNotice = $flashMessage->render();
+		}
 		// Making the browsable pagetree:
 		$pagetree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TBE_PageTree');
 		$pagetree->thisScript = $this->thisScript;
@@ -1102,6 +1108,8 @@ class ElementBrowser {
 		$tree = $pagetree->getBrowsableTree();
 		// Making the list of elements, if applicable:
 		$cElements = $this->TBE_expandPage($pArr[3]);
+
+
 		// Putting the things together, side by side:
 		$content .= '
 
@@ -1110,7 +1118,7 @@ class ElementBrowser {
 			-->
 			<table border="0" cellpadding="0" cellspacing="0" id="typo3-EBrecords">
 				<tr>
-					<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('pageTree') . ':')) . $tree . '</td>
+					<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('pageTree') . ':')) . $temporaryTreeMountNotice . $tree . '</td>
 					<td class="c-wCell" valign="top">' . $cElements . '</td>
 				</tr>
 			</table>
