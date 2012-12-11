@@ -1122,20 +1122,7 @@ class ElementBrowser {
 				$pageTree->addField('nav_title');
 				$tree = $pageTree->getBrowsableTree();
 				$cElements = $this->expandPage();
-				// Outputting Temporary DB mount notice:
-				$dbmount = '';
-				if ((int)$GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint')) {
-					$link = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => 0)))
-						. '">' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount', TRUE)
-						. '</a>';
-					$flashMessage = GeneralUtility::makeInstance(
-						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-						$link,
-						'',
-						\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
-					);
-					$dbmount = $flashMessage->render();
-				}
+
 				$content .= '
 
 				<!--
@@ -1144,8 +1131,9 @@ class ElementBrowser {
 						<table border="0" cellpadding="0" cellspacing="0" id="typo3-linkPages">
 							<tr>
 								<td class="c-wCell" valign="top">'
-									. $this->barheader(($GLOBALS['LANG']->getLL('pageTree') . ':')) . $dbmount . $tree
-									. '</td>
+									. $this->barheader(($GLOBALS['LANG']->getLL('pageTree') . ':'))
+									. $this->getTemporaryTreeMountCancelNotice()
+									. $tree . '</td>
 								<td class="c-wCell" valign="top">' . $cElements . '</td>
 							</tr>
 						</table>
@@ -1316,12 +1304,15 @@ class ElementBrowser {
 		// Init variable:
 		$pArr = explode('|', $this->bparams);
 		$tables = $pArr[3];
+
 		// Making the browsable pagetree:
+		/** @var \TBE_PageTree $pagetree */
 		$pagetree = GeneralUtility::makeInstance('TBE_PageTree');
 		$pagetree->thisScript = $this->thisScript;
 		$pagetree->ext_pArrPages = $tables === 'pages' ? 1 : 0;
 		$pagetree->ext_showNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
 		$pagetree->ext_showPageId = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
+		$pagetree->addField('nav_title');
 
 		$withTree = TRUE;
 		if (($tables !== '') && ($tables !== '*')) {
@@ -1342,7 +1333,6 @@ class ElementBrowser {
 			}
 		}
 
-		$pagetree->addField('nav_title');
 		$tree = $pagetree->getBrowsableTree();
 		// Making the list of elements, if applicable:
 		$cElements = $this->TBE_expandPage($tables);
@@ -1356,7 +1346,9 @@ class ElementBrowser {
 				<tr>';
 		if ($withTree) {
 			$content .= '<td class="c-wCell" valign="top">'
-				. $this->barheader(($GLOBALS['LANG']->getLL('pageTree') . ':')) . $tree . '</td>';
+				. $this->barheader(($GLOBALS['LANG']->getLL('pageTree') . ':'))
+				. $this->getTemporaryTreeMountCancelNotice()
+				. $tree . '</td>';
 		}
 		$content .= '<td class="c-wCell" valign="top">' . $cElements . '</td>
 				</tr>
@@ -2606,6 +2598,27 @@ class ElementBrowser {
 	}
 
 	/**
+	 * Check if a temporary tree mount is set and return a cancel button
+	 *
+	 * @return string
+	 */
+	protected function getTemporaryTreeMountCancelNotice() {
+		if ((int)$GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint') === 0) {
+			return '';
+		}
+		$link = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '">'
+			. $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount', TRUE) . '</a>';
+		/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+		$flashMessage = GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+			$link,
+			'',
+			\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
+		);
+		return $flashMessage->render();
+	}
+
+	/**
 	 * Get a list of Files in a folder filtered by extension
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
@@ -2621,5 +2634,4 @@ class ElementBrowser {
 		}
 		return $folder->getFiles();
 	}
-
 }
