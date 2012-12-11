@@ -9,6 +9,10 @@
 			datatable.fnFilter('');
 		});
 
+		$('.onClickMaskExtensionManager').click(function() {
+			$('.typo3-extension-manager').mask();
+		});
+
 		resetSearchField();
 	});
 
@@ -110,7 +114,6 @@
 			}
 		});
 	}
-
 
 	function confirmDeletionAndDelete(url) {
 		TYPO3.Dialog.QuestionDialog({
