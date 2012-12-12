@@ -182,7 +182,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 			$options[$key] = $value;
 		}
 		if ($this->arguments['sortByOptionLabel']) {
-			asort($options);
+			asort($options, SORT_LOCALE_STRING);
 		}
 		return $options;
 	}
