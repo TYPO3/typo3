@@ -1255,13 +1255,12 @@ class BackendUtility {
 	 * @return array
 	 */
 	static public function getUserNames($fields = 'username,usergroup,usergroup_cached_list,uid', $where = '') {
-		$be_user_Array = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'be_users', 'pid=0 ' . $where . self::deleteClause('be_users'), '', 'username');
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$be_user_Array[$row['uid']] = $row;
-		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		return $be_user_Array;
+		return self::getRecordsSortedByTitle(
+			\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fields, TRUE),
+			'be_users',
+			'username',
+			'AND pid=0 ' . $where
+		);
 	}
 
 	/**
@@ -1269,16 +1268,48 @@ class BackendUtility {
 	 *
 	 * @param string $fields Field list
 	 * @param string $where WHERE clause
-	 * @return 	array
+	 * @return array
 	 */
 	static public function getGroupNames($fields = 'title,uid', $where = '') {
-		$be_group_Array = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'be_groups', 'pid=0 ' . $where . self::deleteClause('be_groups'), '', 'title');
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$be_group_Array[$row['uid']] = $row;
+		return self::getRecordsSortedByTitle(
+			\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fields, TRUE),
+			'be_groups',
+			'title',
+			'AND pid=0 ' . $where
+		);
+	}
+
+	/**
+	 * Returns an array of all non-deleted records of a table sorted by a given title field.
+	 * The value of the title field will be replaced by the return value
+	 * of self::getRecordTitle() before the sorting is performed.
+	 *
+	 * @param array $fields Fields to select
+	 * @param string $table Table name
+	 * @param string $titleField Field that will contain the record title
+	 * @param string $where Additional where clause
+	 * @return array Array of sorted records
+	 */
+	static protected function getRecordsSortedByTitle(array $fields, $table, $titleField, $where = '') {
+		$fieldsIndex = array_flip($fields);
+		// Make sure the titleField is amongst the fields when getting sorted
+		$fieldsIndex[$titleField] = 1;
+
+		$result = array();
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, '1=1 ' . $where . self::deleteClause($table));
+		while ($record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			// store the uid, because it might be unset if it's not among the requested $fields
+			$recordId = $record['uid'];
+			$record[$titleField] = self::getRecordTitle($table, $record);
+
+			// include only the requested fields in the result
+			$result[$recordId] = array_intersect_key($record, $fieldsIndex);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		return $be_group_Array;
+
+		// sort records by $sortField. This is not done in the query because the title might have been overwritten by
+		// self::getRecordTitle();
+		return \TYPO3\CMS\Core\Utility\ArrayUtility::sortArraysByKey($result, $titleField);
 	}
 
 	/**
