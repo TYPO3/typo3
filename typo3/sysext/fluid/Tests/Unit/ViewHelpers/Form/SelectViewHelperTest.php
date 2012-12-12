@@ -43,6 +43,10 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid
 		$this->viewHelper->initializeArguments();
 	}
 
+	public function tearDown() {
+		setlocale(LC_ALL, '');
+	}
+
 	/**
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
@@ -88,7 +92,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid
 		$this->viewHelper->render();
 	}
 
-		/**
+	/**
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
@@ -169,6 +173,44 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid
 	/**
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function optionsAreSortedByLabelIfSortByOptionLabelIsSetAndLocaleEqualsUtf8() {
+		$locale = 'de_DE.UTF-8';
+		if (!setlocale(LC_COLLATE, $locale)) {
+			$this->markTestSkipped('Locale ' . $locale . ' is not available.');
+		}
+
+		setlocale(LC_CTYPE, $locale);
+		setlocale(LC_MONETARY, $locale);
+		setlocale(LC_TIME, $locale);
+		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
+		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
+		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
+		$mockTagBuilder->expects($this->once())->method('setContent')->with('<option value="value1">Bamberg</option>' . chr(10) . '<option value="value2" selected="selected">Bämm</option>' . chr(10) . '<option value="value3">Bar</option>' . chr(10) . '<option value="value4">Bär</option>' . chr(10) . '<option value="value5">Burg</option>' . chr(10));
+		$mockTagBuilder->expects($this->once())->method('render');
+		$this->viewHelper->_set('tag', $mockTagBuilder);
+
+		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array(
+
+			'options' => array(
+				'value4' => 'Bär',
+				'value2' => 'Bämm',
+				'value5' => 'Burg',
+				'value1' => 'Bamberg',
+				'value3' => 'Bar'
+			),
+			'value' => 'value2',
+			'name' => 'myName',
+			'sortByOptionLabel' => TRUE
+		));
+		$this->viewHelper->setArguments($arguments);
+
+		$this->viewHelper->initialize();
+		$this->viewHelper->render();
+	}
+
+	/**
+	 * @test
 	 */
 	public function multipleSelectCreatesExpectedOptions() {
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
@@ -276,7 +318,8 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid
 	 * @test
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function selectWithoutFurtherConfigurationOnDomainObjectsUsesUuidForValueAndLabel() { $this->markTestIncomplete("This does not work right now due to a renaming in FLOW3.");
+	public function selectWithoutFurtherConfigurationOnDomainObjectsUsesUuidForValueAndLabel() {
+		$this->markTestIncomplete("This does not work right now due to a renaming in FLOW3.");
 		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('fakeUID'));
 		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
@@ -306,7 +349,8 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid
 	 * @test
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function selectWithoutFurtherConfigurationOnDomainObjectsUsesToStringForLabelIfAvailable() { $this->markTestIncomplete("This does not work right now due to a renaming in FLOW3.");
+	public function selectWithoutFurtherConfigurationOnDomainObjectsUsesToStringForLabelIfAvailable() {
+		$this->markTestIncomplete("This does not work right now due to a renaming in FLOW3.");
 		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('fakeUID'));
 		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
