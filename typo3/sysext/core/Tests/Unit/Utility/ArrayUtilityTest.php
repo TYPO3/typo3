@@ -664,6 +664,148 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	///////////////////////
+	// Tests concerning sortArraysByKey
+	///////////////////////
+	/**
+	 * Data provider for sortArraysByKeyCheckIfSortingIsCorrect
+	 */
+	public function sortArraysByKeyCheckIfSortingIsCorrectDataProvider() {
+		return array(
+			'assoc array index' => array(
+				array(
+					'22' => array(
+						'uid' => '22',
+						'title' => 'b',
+						'dummy' => 2
+					),
+					'24' => array(
+						'uid' => '24',
+						'title' => 'a',
+						'dummy' => 3
+					),
+					'23' => array(
+						'uid' => '23',
+						'title' => 'a',
+						'dummy' => 4
+					),
+				),
+				'title',
+				TRUE,
+				array(
+					'23' => array(
+						'uid' => '23',
+						'title' => 'a',
+						'dummy' => 4
+					),
+					'24' => array(
+						'uid' => '24',
+						'title' => 'a',
+						'dummy' => 3
+					),
+					'22' => array(
+						'uid' => '22',
+						'title' => 'b',
+						'dummy' => 2
+					),
+				),
+			),
+			'numeric array index' => array(
+				array(
+					22 => array(
+						'uid' => '22',
+						'title' => 'b',
+						'dummy' => 2
+					),
+					24 => array(
+						'uid' => '24',
+						'title' => 'a',
+						'dummy' => 3
+					),
+					23 => array(
+						'uid' => '23',
+						'title' => 'a',
+						'dummy' => 4
+					),
+				),
+				'title',
+				TRUE,
+				array(
+					23 => array(
+						'uid' => '23',
+						'title' => 'a',
+						'dummy' => 4
+					),
+					24 => array(
+						'uid' => '24',
+						'title' => 'a',
+						'dummy' => 3
+					),
+					22 => array(
+						'uid' => '22',
+						'title' => 'b',
+						'dummy' => 2
+					),
+				),
+			),
+			'numeric array index DESC' => array(
+				array(
+					23 => array(
+						'uid' => '23',
+						'title' => 'a',
+						'dummy' => 4
+					),
+					22 => array(
+						'uid' => '22',
+						'title' => 'b',
+						'dummy' => 2
+					),
+					24 => array(
+						'uid' => '24',
+						'title' => 'a',
+						'dummy' => 3
+					),
+				),
+				'title',
+				FALSE,
+				array(
+					22 => array(
+						'uid' => '22',
+						'title' => 'b',
+						'dummy' => 2
+					),
+					24 => array(
+						'uid' => '24',
+						'title' => 'a',
+						'dummy' => 3
+					),
+					23 => array(
+						'uid' => '23',
+						'title' => 'a',
+						'dummy' => 4
+					),
+				),
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider sortArraysByKeyCheckIfSortingIsCorrectDataProvider
+	 */
+	public function sortArraysByKeyCheckIfSortingIsCorrect(array $array, $key, $ascending, $expectedResult) {
+		$sortedArray = \TYPO3\CMS\Core\Utility\ArrayUtility::sortArraysByKey($array, $key, $ascending);
+		$this->assertSame($sortedArray, $expectedResult);
+	}
+
+	/**
+	 * @test
+	 * @expectedException \RuntimeException
+	 */
+	public function sortArraysByKeyThrowsExceptionForNonExistingKey() {
+		\TYPO3\CMS\Core\Utility\ArrayUtility::sortArraysByKey(array(array('a'), array('a')), 'dummy');
+	}
+
+	///////////////////////
 	// Tests concerning arrayExport
 	///////////////////////
 	/**
