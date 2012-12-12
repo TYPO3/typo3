@@ -4,6 +4,9 @@ ChangeLog for Extbase
 Changes for 6.0.0
 =================
 
+For a detailed overview of the changes please have a look into the wiki
+on http://forge.typo3.org/projects/typo3v4-mvc/wiki/Extbase_Version_60.
+
 Full Changes for 6.0.0
 ======================
 [TASK] Timestamp support for DateTimeConverter
