@@ -232,6 +232,42 @@ class ArrayUtility {
 	}
 
 	/**
+	 * Sort an array of arrays by a given key using uasort
+	 *
+	 * @param array $arrays Array of arrays to sort
+	 * @param string $key Key to sort after
+	 * @param integer $ascending Set to TRUE for ascending order, FALSE for descending order
+	 * @return array Array of sorted arrays
+	 * @throws \RuntimeException
+	 */
+	static public function sortArraysByKey(array $arrays, $key, $ascending = TRUE) {
+		if (!count($arrays))
+			return $arrays;
+
+		$sortResult = uasort($arrays, function($a, $b) use ($key, $ascending) {
+			if (!isset($a[$key]) || !isset($b[$key])) {
+				throw new \RuntimeException('The specified sorting key "' . $key . '" is not available in the given array.', 1373727309);
+			}
+			$valueA = strtolower($a[$key]);
+			$valueB = strtolower($b[$key]);
+			if ($valueA === $valueB) {
+				return 0;
+			} else {
+				if ($ascending) {
+					return $valueA > $valueB ? 1 : -1;
+				} else {
+					return $valueA < $valueB ? 1 : -1;
+				}
+			}
+		});
+		if (!$sortResult) {
+			throw new \RuntimeException('The function uasort() failed for unknown reasons.', 1373727329);
+		}
+
+		return $arrays;
+	}
+
+	/**
 	 * Exports an array as string.
 	 * Similar to var_export(), but representation follows the TYPO3 core CGL.
 	 *
