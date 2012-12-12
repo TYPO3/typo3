@@ -40,11 +40,14 @@ class ErrorIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * @return string the rendered error icon link
 	 */
 	public function render($errorNumber = 0) {
-		return $this->getDocInstance()->icons(
-			$errorNumber >= 2
-					? \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_ERROR
-					: \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_WARNING
-		);
+		$errorSymbols = array(
+					'-1' => \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_WARNING,
+					'0' => '',
+					'1' => \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_WARNING,
+					'2' => \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_ERROR,
+					'3' => \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_ERROR
+			);
+		return $this->getDocInstance()->icons($errorSymbols[$errorNumber]);
 	}
 
 }
