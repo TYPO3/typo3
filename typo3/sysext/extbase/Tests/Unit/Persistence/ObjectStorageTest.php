@@ -192,6 +192,71 @@ class ObjectStorageTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$objectStorage->attach($object2, 'bar');
 		$this->assertEquals($objectStorage->toArray(), array($object1, $object2));
 	}
-}
 
+	/**
+	 * @test
+	 */
+	public function allRelationsAreNotDirtyOnAttaching() {
+		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$object1 = new \StdClass();
+		$object2 = new \StdClass();
+		$object3 = new \StdClass();
+		$objectStorage->attach($object1);
+		$objectStorage->attach($object2);
+		$objectStorage->attach($object3);
+		$this->assertFalse($objectStorage->isRelationDirty($object1));
+		$this->assertFalse($objectStorage->isRelationDirty($object2));
+		$this->assertFalse($objectStorage->isRelationDirty($object3));
+	}
+
+	/**
+	 * @test
+	 */
+	public function allRelationsAreNotDirtyOnAttachingAndRemoving() {
+		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$object1 = new \StdClass;
+		$object2 = new \StdClass;
+		$object3 = new \StdClass;
+		$objectStorage->attach($object1);
+		$objectStorage->attach($object2);
+		$objectStorage->detach($object2);
+		$objectStorage->attach($object3);
+		$this->assertFalse($objectStorage->isRelationDirty($object1));
+		$this->assertFalse($objectStorage->isRelationDirty($object3));
+	}
+
+	/**
+	 * @test
+	 */
+	public function theRelationsAreNotDirtyOnReAddingAtSamePosition() {
+		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$object1 = new \StdClass;
+		$object2 = new \StdClass;
+		$objectStorage->attach($object1);
+		$objectStorage->attach($object2);
+		$clonedStorage = clone $objectStorage;
+		$objectStorage->removeAll($clonedStorage);
+		$objectStorage->attach($object1);
+		$objectStorage->attach($object2);
+		$this->assertFalse($objectStorage->isRelationDirty($object1));
+		$this->assertFalse($objectStorage->isRelationDirty($object2));
+	}
+
+	/**
+	 * @test
+	 */
+	public function theRelationsAreDirtyOnReAddingAtOtherPosition() {
+		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$object1 = new \StdClass;
+		$object2 = new \StdClass;
+		$objectStorage->attach($object1);
+		$objectStorage->attach($object2);
+		$clonedStorage = clone $objectStorage;
+		$objectStorage->removeAll($clonedStorage);
+		$objectStorage->attach($object2);
+		$objectStorage->attach($object1);
+		$this->assertTrue($objectStorage->isRelationDirty($object1));
+		$this->assertTrue($objectStorage->isRelationDirty($object2));
+	}
+}
 ?>

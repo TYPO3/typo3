@@ -73,7 +73,7 @@ class ColumnMap {
 	/**
 	 * The type of relation
 	 *
-	 * @var int
+	 * @var string
 	 */
 	protected $typeOfRelation;
 

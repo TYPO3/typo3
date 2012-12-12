@@ -209,6 +209,42 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	}
 
 	/**
+	 * Updates a relation row in the storage.
+	 *
+	 * @param string $tableName The database relation table name
+	 * @param array $row The row to be updated
+	 * @throws \InvalidArgumentException
+	 * @return boolean
+	 */
+	public function updateRelationTableRow($tableName, array $row) {
+		if (!isset($row['uid_local']) && !isset($row['uid_foreign'])) {
+			throw new \InvalidArgumentException(
+				'The given row must contain a value for "uid_local" and "uid_foreign".', 1360500126
+			);
+		}
+		$uidLocal = (int) $row['uid_local'];
+		$uidForeign = (int) $row['uid_foreign'];
+		unset($row['uid_local']);
+		unset($row['uid_foreign']);
+		$fields = array();
+		$parameters = array();
+		foreach ($row as $columnName => $value) {
+			$fields[] = $columnName . '=?';
+			$parameters[] = $value;
+		}
+		$parameters[] = $uidLocal;
+		$parameters[] = $uidForeign;
+
+		$sqlString = 'UPDATE ' . $tableName . ' SET ' . implode(', ', $fields) . ' WHERE uid_local=? AND uid_foreign=?';
+		$this->replacePlaceholders($sqlString, $parameters);
+
+		$returnValue = $this->databaseHandle->sql_query($sqlString);
+		$this->checkSqlErrors($sqlString);
+
+		return $returnValue;
+	}
+
+	/**
 	 * Deletes a row in the storage
 	 *
 	 * @param string $tableName The database table name
@@ -226,6 +262,24 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		$returnValue = $this->databaseHandle->sql_query($statement);
 		$this->checkSqlErrors($statement);
 		return $returnValue;
+	}
+
+	/**
+	 * Fetches maximal value for given table column from database.
+	 *
+	 * @param string $tableName The database table name
+	 * @param array $identifier An array of identifier array('fieldname' => value). This array will be transformed to a WHERE clause
+	 * @param string $columnName column name to get the max value from
+	 * @return mixed the max value
+	 */
+	public function getMaxValueFromTable($tableName, $identifier, $columnName) {
+		$sqlString = 'SELECT ' . $columnName . ' FROM ' . $tableName . ' WHERE ' . $this->parseIdentifier($identifier) . ' ORDER BY  ' . $columnName . ' DESC LIMIT 1';
+		$this->replacePlaceholders($sqlString, $identifier);
+
+		$result = $this->databaseHandle->sql_query($sqlString);
+		$row = $this->databaseHandle->sql_fetch_assoc($result);
+		$this->checkSqlErrors($sqlString);
+		return $row[$columnName];
 	}
 
 	/**

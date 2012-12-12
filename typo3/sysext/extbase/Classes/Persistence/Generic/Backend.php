@@ -457,25 +457,42 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		$columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
 		$propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
 		foreach ($this->getRemovedChildObjects($parentObject, $propertyName) as $removedObject) {
+			$this->detachObjectFromParentObject($removedObject, $parentObject, $propertyName);
 			if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY && $propertyMetaData['cascade'] === 'remove') {
 				$this->removeObject($removedObject);
-			} else {
-				$this->detachObjectFromParentObject($removedObject, $parentObject, $propertyName);
 			}
 		}
-		if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-			$this->deleteAllRelationsFromRelationtable($parentObject, $propertyName);
-		}
+
 		$currentUids = array();
 		$sortingPosition = 1;
+		$updateSortingOfFollowing = FALSE;
+
 		foreach ($objectStorage as $object) {
+			if (empty($currentUids)) {
+				$sortingPosition = 1;
+			} else {
+				$sortingPosition++;
+			}
+			$cleanProperty = $parentObject->_getCleanProperty($propertyName);
 			if ($object->_isNew()) {
 				$this->insertObject($object);
+				$this->attachObjectToParentObject($object, $parentObject, $propertyName, $sortingPosition);
+				// if a new object is inserted, all objects after this need to have their sorting updated
+				$updateSortingOfFollowing = TRUE;
+			} elseif ($objectStorage->isRelationDirty($object) || $cleanProperty->getPosition($object) !== $objectStorage->getPosition($object)) {
+				$this->updateRelationOfObjectToParentObject($object, $parentObject, $propertyName, $sortingPosition);
+				// if a relation is dirty (speaking the same object is removed an added again at a different position), all objects after this needs to be updated the sorting
+				$updateSortingOfFollowing = TRUE;
+			} elseif ($updateSortingOfFollowing) {
+				if ($sortingPosition > $objectStorage->getPosition($object)) {
+					$this->updateRelationOfObjectToParentObject($object, $parentObject, $propertyName, $sortingPosition);
+				} else {
+					$sortingPosition = $objectStorage->getPosition($object);
+				}
 			}
 			$currentUids[] = $object->getUid();
-			$this->attachObjectToParentObject($object, $parentObject, $propertyName, $sortingPosition);
-			$sortingPosition++;
 		}
+
 		if ($columnMap->getParentKeyFieldName() === NULL) {
 			$row[$columnMap->getColumnName()] = implode(',', $currentUids);
 		} else {
@@ -518,24 +535,66 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		$parentDataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 		$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
 		if ($parentColumnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
-			$row = array();
-			$parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
-			if ($parentKeyFieldName !== NULL) {
-				$row[$parentKeyFieldName] = $parentObject->getUid();
-				$parentTableFieldName = $parentColumnMap->getParentTableFieldName();
-				if ($parentTableFieldName !== NULL) {
-					$row[$parentTableFieldName] = $parentDataMap->getTableName();
-				}
-			}
-			$childSortByFieldName = $parentColumnMap->getChildSortByFieldName();
-			if (!empty($childSortByFieldName)) {
-				$row[$childSortByFieldName] = $sortingPosition;
-			}
-			if (count($row) > 0) {
-				$this->updateObject($object, $row);
-			}
+			$this->attachObjectToParentObjectRelationHasMany($object, $parentObject, $parentPropertyName, $sortingPosition);
 		} elseif ($parentColumnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$this->insertRelationInRelationtable($object, $parentObject, $parentPropertyName, $sortingPosition);
+		}
+	}
+
+	/**
+	 * Updates the fields defining the relation between the object and the parent object.
+	 *
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
+	 * @param string $parentPropertyName
+	 * @param integer $sortingPosition
+	 * @return void
+	 */
+	protected function updateRelationOfObjectToParentObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject, $parentPropertyName, $sortingPosition = 0) {
+		$parentDataMap = $this->dataMapper->getDataMap(get_class($parentObject));
+		$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
+		if ($parentColumnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
+			$this->attachObjectToParentObjectRelationHasMany($object, $parentObject, $parentPropertyName, $sortingPosition);
+		} elseif ($parentColumnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+			$this->updateRelationInRelationTable($object, $parentObject, $parentPropertyName, $sortingPosition);
+		}
+	}
+
+	/**
+	 * Updates fields defining the relation between the object and the parent object in relation has-many.
+	 *
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject
+	 * @param string $parentPropertyName
+	 * @param integer $sortingPosition
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException
+	 * @return void
+	 */
+	protected function attachObjectToParentObjectRelationHasMany(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject, $parentPropertyName, $sortingPosition = 0) {
+		$parentDataMap = $this->dataMapper->getDataMap(get_class($parentObject));
+		$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
+		if ($parentColumnMap->getTypeOfRelation() !== \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException(
+				'Parent column relation type is ' . $parentColumnMap->getTypeOfRelation()
+				. ' but should be ' . \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY,
+				1345368105
+			);
+		}
+		$row = array();
+		$parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
+		if ($parentKeyFieldName !== NULL) {
+			$row[$parentKeyFieldName] = $parentObject->getUid();
+			$parentTableFieldName = $parentColumnMap->getParentTableFieldName();
+			if ($parentTableFieldName !== NULL) {
+				$row[$parentTableFieldName] = $parentDataMap->getTableName();
+			}
+		}
+		$childSortByFieldName = $parentColumnMap->getChildSortByFieldName();
+		if (!empty($childSortByFieldName)) {
+			$row[$childSortByFieldName] = $sortingPosition;
+		}
+		if (!empty($row)) {
+			$this->updateObject($object, $row);
 		}
 	}
 
@@ -657,6 +716,40 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	}
 
 	/**
+	 * Inserts mm-relation into a relation table
+	 *
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The related object
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object
+	 * @param string $propertyName The name of the parent object's property where the related objects are stored in
+	 * @param integer $sortingPosition Defaults to NULL
+	 * @return integer The uid of the inserted row
+	 */
+	protected function updateRelationInRelationTable(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $sortingPosition = 0) {
+		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
+		$columnMap = $dataMap->getColumnMap($propertyName);
+		$row = array(
+			$columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
+			$columnMap->getChildKeyFieldName() => (int)$object->getUid(),
+			$columnMap->getChildSortByFieldName() => (int)$sortingPosition
+		);
+		$relationTableName = $columnMap->getRelationTableName();
+		// FIXME Reenable support for tablenames
+		// $childTableName = $columnMap->getChildTableName();
+		// if (isset($childTableName)) {
+		// 	$row['tablenames'] = $childTableName;
+		// }
+
+		$relationTableMatchFields = $columnMap->getRelationTableMatchFields();
+		if (is_array($relationTableMatchFields) && count($relationTableMatchFields) > 0) {
+			$row = array_merge($relationTableMatchFields, $row);
+		}
+		$res = $this->storageBackend->updateRelationTableRow(
+			$relationTableName,
+			$row);
+		return $res;
+	}
+
+	/**
 	 * Delete all mm-relations of a parent from a relation table
 	 *
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object
@@ -695,6 +788,60 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			$columnMap->getChildKeyFieldName() => (integer) $relatedObject->getUid()
 		), FALSE);
 		return $res;
+	}
+
+	/**
+	 * Fetches maximal value currently used for sorting field in parent table
+	 *
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object
+	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException
+	 * @return mixed the max value
+	 */
+	protected function fetchMaxSortingFromParentTable(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $parentPropertyName) {
+		$parentDataMap = $this->dataMapper->getDataMap(get_class($parentObject));
+		$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
+		if ($parentColumnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
+			$tableName = $parentColumnMap->getChildTableName();
+			$sortByFieldName = $parentColumnMap->getChildSortByFieldName();
+
+			if (empty($sortByFieldName)) {
+				return FALSE;
+			}
+			$matchFields = array();
+			$parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
+			if ($parentKeyFieldName !== NULL) {
+				$matchFields[$parentKeyFieldName] = $parentObject->getUid();
+				$parentTableFieldName = $parentColumnMap->getParentTableFieldName();
+				if ($parentTableFieldName !== NULL) {
+					$matchFields[$parentTableFieldName] = $parentDataMap->getTableName();
+				}
+			}
+
+			if (empty($matchFields)) {
+				return FALSE;
+			}
+		} elseif ($parentColumnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+			$tableName = $parentColumnMap->getRelationTableName();
+			$sortByFieldName = $parentColumnMap->getChildSortByFieldName();
+
+			$matchFields = array(
+				$parentColumnMap->getParentKeyFieldName() => (int)$parentObject->getUid()
+			);
+
+			$relationTableMatchFields = $parentColumnMap->getRelationTableMatchFields();
+			if (is_array($relationTableMatchFields) && count($relationTableMatchFields) > 0) {
+				$matchFields = array_merge($relationTableMatchFields, $matchFields);
+			}
+		} else {
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException('Unexpected parent column relation type:' . $parentColumnMap->getTypeOfRelation(), 1345368106);
+		}
+
+		$result = $this->storageBackend->getMaxValueFromTable(
+			$tableName,
+			$matchFields,
+			$sortByFieldName);
+		return $result;
 	}
 
 	/**

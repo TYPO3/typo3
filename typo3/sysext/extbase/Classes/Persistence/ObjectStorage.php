@@ -69,6 +69,30 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\E
 	protected $isModified = FALSE;
 
 	/**
+	 * An array holding the internal position the object was added.
+	 * The object entry is unsetted when the object gets removed from the objectstorage
+	 *
+	 * @var array
+	 */
+	protected $addedObjectsPositions = array();
+
+	/**
+	 * An array holding the internal position the object was added before, when it would
+	 * be removed from the objectstorage
+	 *
+	 * @var array
+	 */
+	protected $removedObjectsPositions = array();
+
+	/**
+	 * An internal var holding the count of added objects to be stored as position.
+	 * It would be resetted, when all objects will be removed from the objectstorage
+	 *
+	 * @var integer
+	 */
+	protected $positionCounter = 0;
+
+	/**
 	 * Rewinds the iterator to the first storage element.
 	 *
 	 * @return void
@@ -135,6 +159,9 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\E
 	public function offsetSet($object, $information) {
 		$this->isModified = TRUE;
 		$this->storage[spl_object_hash($object)] = array('obj' => $object, 'inf' => $information);
+
+		$this->positionCounter++;
+		$this->addedObjectsPositions[spl_object_hash($object)] = $this->positionCounter;
 	}
 
 	/**
@@ -156,6 +183,13 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\E
 	public function offsetUnset($object) {
 		$this->isModified = TRUE;
 		unset($this->storage[spl_object_hash($object)]);
+
+		if (empty($this->storage)) {
+			$this->positionCounter = 0;
+		}
+
+		$this->removedObjectsPositions[spl_object_hash($object)] = $this->addedObjectsPositions[spl_object_hash($object)];
+		unset($this->addedObjectsPositions[spl_object_hash($object)]);
 	}
 
 	/**
@@ -297,6 +331,29 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\E
 	public function _isDirty() {
 		return $this->isModified;
 	}
-}
 
+	/**
+	 * Returns TRUE if an object is added, then removed and added at a different position
+	 *
+	 * @param mixed $object
+	 * @return boolean
+	 */
+	public function isRelationDirty($object) {
+		return (isset($this->addedObjectsPositions[spl_object_hash($object)])
+				&& isset($this->removedObjectsPositions[spl_object_hash($object)])
+				&& ($this->addedObjectsPositions[spl_object_hash($object)] !== $this->removedObjectsPositions[spl_object_hash($object)]));
+	}
+
+	/**
+	 * @param mixed $object
+	 * @return integer|NULL
+	 */
+	public function getPosition($object) {
+		if (!isset($this->addedObjectsPositions[spl_object_hash($object)])) {
+			return NULL;
+		}
+
+		return $this->addedObjectsPositions[spl_object_hash($object)];
+	}
+}
 ?>
