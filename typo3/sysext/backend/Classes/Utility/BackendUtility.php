@@ -1278,10 +1278,30 @@ class BackendUtility {
 	 */
 	static public function getGroupNames($fields = 'title,uid', $where = '') {
 		$be_group_Array = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'be_groups', 'pid=0 ' . $where . self::deleteClause('be_groups'), '', 'title');
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$be_group_Array[$row['uid']] = $row;
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'be_groups', 'pid=0 ' . $where . self::deleteClause('be_groups'));
+		while ($groupRecord = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			// store the uid, because it might be unset if it's not among the requested $fields
+			$groupId = $groupRecord['uid'];
+			$groupRecord['title'] = self::getRecordTitle('be_groups', $groupRecord);
+			// filter unwanted fields
+			foreach (array_keys($groupRecord) as $fieldName) {
+				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($fields, $fieldName)){
+					unset($groupRecord[$fieldName]);
+				}
+			}
+			$be_group_Array[$groupId] = $groupRecord;
 		}
+		// sort records by 'title'. This is not done in the query because the title might have been overwritten by
+		// self::getRecordTitle();
+		usort($be_group_Array, function($groupA, $groupB) {
+			$titleA = strtolower($groupA['title']);
+			$titleB = strtolower($groupB['title']);
+			if ($titleA === $titleB) {
+				return 0;
+			} else {
+				return ($titleA > $titleB) ? 1 : -1;
+			}
+		});
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $be_group_Array;
 	}
