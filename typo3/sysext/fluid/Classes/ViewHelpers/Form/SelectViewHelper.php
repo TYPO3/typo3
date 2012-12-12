@@ -190,7 +190,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 			$options[$key] = $value;
 		}
 		if ($this->arguments['sortByOptionLabel']) {
-			asort($options);
+			asort($options, SORT_LOCALE_STRING);
 		}
 		return $options;
 	}
