@@ -15,61 +15,71 @@ namespace TYPO3\CMS\Core\Authentication;
  */
 abstract class AbstractUserAuthentication {
 
-	// Which global database to connect to
 	/**
-	 * @todo Define visibility
+	 * Which global database to connect to
+	 *
+	 * @var string
 	 */
 	public $global_database = '';
 
-	// Table to use for session data.
 	/**
-	 * @todo Define visibility
+	 * Table to use for session data.
+	 *
+	 * @var string
 	 */
 	public $session_table = '';
 
-	// Session/Cookie name
 	/**
-	 * @todo Define visibility
+	 * Session/Cookie name
+	 *
+	 * @var string
 	 */
 	public $name = '';
 
-	// Session/GET-var name
 	/**
-	 * @todo Define visibility
+	 * Session/GET-var name
+	 *
+	 * @var string
 	 */
 	public $get_name = '';
 
-	// Table in database with userdata
 	/**
-	 * @todo Define visibility
+	 * Table in database with userdata
+	 *
+	 * @var string
 	 */
 	public $user_table = '';
 
-	// Column for login-name
 	/**
-	 * @todo Define visibility
+	 * Column for login-name
+	 *
+	 * @var string
 	 */
 	public $username_column = '';
 
-	// Column for password
 	/**
-	 * @todo Define visibility
+	 * Column for password
+	 *
+	 * @var string
 	 */
 	public $userident_column = '';
 
-	// Column for user-id
 	/**
-	 * @todo Define visibility
+	 * Column for user-id
+	 *
+	 * @var string
 	 */
 	public $userid_column = '';
 
 	/**
-	 * @todo Define visibility
+	 * Column for the last login timestamp
+	 *
+	 * @var string
 	 */
 	public $lastLogin_column = '';
 
 	/**
-	 * @todo Define visibility
+	 * @var array
 	 */
 	public $enablecolumns = array(
 		'rootLevel' => '',
@@ -80,27 +90,31 @@ abstract class AbstractUserAuthentication {
 		'deleted' => ''
 	);
 
-	// Formfield with login-name
 	/**
-	 * @todo Define visibility
+	 * Formfield with login-name
+	 *
+	 * @var string
 	 */
 	public $formfield_uname = '';
 
-	// Formfield with password
 	/**
-	 * @todo Define visibility
+	 * Formfield with password
+	 *
+	 * @var string
 	 */
 	public $formfield_uident = '';
 
-	// Formfield with a unique value which is used to encrypt the password and username
 	/**
-	 * @todo Define visibility
+	 * Formfield with a unique value which is used to encrypt the password and username
+	 *
+	 * @var string
 	 */
 	public $formfield_chalvalue = '';
 
-	// Formfield with status: *'login', 'logout'. If empty login is not verified.
 	/**
-	 * @todo Define visibility
+	 * Formfield with status: *'login', 'logout'. If empty login is not verified.
+	 *
+	 * @var string
 	 */
 	public $formfield_status = '';
 
@@ -113,206 +127,230 @@ abstract class AbstractUserAuthentication {
 	 */
 	public $security_level = 'normal';
 
-	// Server session lifetime. If > 0: session-timeout in seconds. If FALSE or
-	// <0: no timeout. If string: The string is a fieldname from the usertable
-	// where the timeout can be found.
 	/**
-	 * @todo Define visibility
+	 * Server session lifetime. If > 0: session-timeout in seconds. If FALSE or
+	 * <0: no timeout. If string: The string is a fieldname from the usertable
+	 * where the timeout can be found.
+	 *
+	 * @var int
 	 */
 	public $auth_timeout_field = 0;
 
-	// Client session lifetime. 0 = Session-cookies. If session-cookies, the
-	// browser will stop the session when the browser is closed. Otherwise this
-	// specifies the lifetime of a cookie that keeps the session.
 	/**
-	 * @todo Define visibility
+	 * Client session lifetime. 0 = Session-cookies. If session-cookies, the
+	 * browser will stop the session when the browser is closed. Otherwise this
+	 * specifies the lifetime of a cookie that keeps the session.
+	 *
+	 * @var int
 	 */
 	public $lifetime = 0;
 
-	// GarbageCollection. Purge all server session data older than $gc_time seconds.
-	// 0 = default to $this->timeout or use 86400 seconds (1 day) if $this->lifetime
-	// is 0
 	/**
-	 * @todo Define visibility
+	 * GarbageCollection. Purge all server session data older than $gc_time seconds.
+	 * 0 = default to $this->timeout or use 86400 seconds (1 day) if $this->lifetime is 0
+	 *
+	 * @var int
 	 */
 	public $gc_time = 0;
 
-	// Possibility (in percent) for GarbageCollection to be run.
 	/**
-	 * @todo Define visibility
+	 * Possibility (in percent) for GarbageCollection to be run.
+	 *
+	 * @var int
 	 */
 	public $gc_probability = 1;
 
-	// Decides if the writelog() function is called at login and logout
 	/**
-	 * @todo Define visibility
+	 * Decides if the writelog() function is called at login and logout
+	 *
+	 * @var bool
 	 */
 	public $writeStdLog = FALSE;
 
-	// If the writelog() functions is called if a login-attempt has be tried
-	// without success
 	/**
-	 * @todo Define visibility
+	 * If the writelog() functions is called if a login-attempt has be tried without success
+	 *
+	 * @var bool
 	 */
 	public $writeAttemptLog = FALSE;
 
-	// If this is set, headers is sent to assure, caching is NOT done
 	/**
-	 * @todo Define visibility
+	 * If this is set, headers is sent to assure, caching is NOT done
+	 *
+	 * @var bool
 	 */
 	public $sendNoCacheHeaders = TRUE;
 
-	// If this is set, authentication is also accepted by the $_GET.
-	// Notice that the identification is NOT 128bit MD5 hash but reduced.
-	// This is done in order to minimize the size for mobile-devices, such as WAP-phones
 	/**
-	 * @todo Define visibility
+	 * If this is set, authentication is also accepted by the $_GET.
+	 * Notice that the identification is NOT 128bit MD5 hash but reduced.
+	 * This is done in order to minimize the size for mobile-devices, such as WAP-phones
+	 *
+	 * @var bool
 	 */
 	public $getFallBack = FALSE;
 
-	// The ident-hash is normally 32 characters and should be! But if you are making
-	// sites for WAP-devices og other lowbandwidth stuff, you may shorten the length.
-	// Never let this value drop below 6. A length of 6 would give you more than
-	// 16 mio possibilities.
 	/**
-	 * @todo Define visibility
+	 * The ident-hash is normally 32 characters and should be! But if you are making
+	 * sites for WAP-devices og other lowbandwidth stuff, you may shorten the length.
+	 * Never let this value drop below 6. A length of 6 would give you more than 16 mio possibilities.
+	 *
+	 * @var int
 	 */
 	public $hash_length = 32;
 
-	// Setting this flag TRUE lets user-authetication happen from GET_VARS if
-	// POST_VARS are not set. Thus you may supply username/password from the URL.
 	/**
-	 * @todo Define visibility
+	 * Setting this flag TRUE lets user-authetication happen from GET_VARS if
+	 * POST_VARS are not set. Thus you may supply username/password from the URL.
+	 *
+	 * @var bool
 	 */
 	public $getMethodEnabled = FALSE;
 
-	// If set, will lock the session to the users IP address (all four numbers.
-	// Reducing to 1-3 means that only first,
-	// second or third part of the IP address is used).
 	/**
-	 * @todo Define visibility
+	 * If set, will lock the session to the users IP address (all four numbers.
+	 * Reducing to 1-3 means that only first, second or third part of the IP address is used).
+	 *
+	 * @var int
 	 */
 	public $lockIP = 4;
 
-	// Keyword list (commalist with no spaces!): "useragent".
-	// Each keyword indicates some information that can be included in
-	// a integer hash made to lock down usersessions. Configurable through
-	// $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['lockHashKeyWords']
 	/**
-	 * @todo Define visibility
+	 * Keyword list (commalist with no spaces!): "useragent".
+	 * Each keyword indicates some information that can be included in
+	 * a integer hash made to lock down usersessions. Configurable through
+	 * $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['lockHashKeyWords']
+	 *
+	 * @var string
 	 */
 	public $lockHashKeyWords = 'useragent';
 
-	// warning -emailaddress:
 	/**
-	 * @todo Define visibility
+	 * Warning Mail Address
+	 *
+	 * @var string
 	 */
 	public $warningEmail = '';
 
-	// Period back in time (in seconds) in which number of failed logins are collected
 	/**
-	 * @todo Define visibility
+	 * Period back in time (in seconds) in which number of failed logins are collected
+	 *
+	 * @var int
 	 */
 	public $warningPeriod = 3600;
 
-	// The maximum accepted number of warnings before an email is sent
 	/**
-	 * @todo Define visibility
+	 * The maximum accepted number of warnings before an email is sent
+	 *
+	 * @var int
 	 */
 	public $warningMax = 3;
 
-	// If set, the user-record must $checkPid_value as pid
 	/**
-	 * @todo Define visibility
+	 * If set, the user-record must $checkPid_value as pid
+	 *
+	 * @var bool
 	 */
 	public $checkPid = TRUE;
 
-	// The pid, the user-record must have as page-id
 	/**
-	 * @todo Define visibility
+	 * The pid, the user-record must have as page-id
+	 *
+	 * @var int
 	 */
 	public $checkPid_value = 0;
 
-	// Internals
-	// Internal: Will contain session_id (MD5-hash)
 	/**
-	 * @todo Define visibility
+	 * Internal: Will contain session_id (MD5-hash)
+	 *
+	 * @var string
 	 */
 	public $id;
 
-	// Internal: Will contain the session_id gotten from cookie or GET method.
-	// This is used in statistics as a reliable cookie (one which is known
-	// to come from $_COOKIE).
 	/**
-	 * @todo Define visibility
+	 * Internal: Will contain the session_id gotten from cookie or GET method.
+	 * This is used in statistics as a reliable cookie (one which is known to come from $_COOKIE).
+	 *
+	 * @var string
 	 */
 	public $cookieId;
 
-	// Indicates if an authentication was started but failed
 	/**
-	 * @todo Define visibility
+	 * Indicates if an authentication was started but failed
+	 *
+	 * @var bool
 	 */
 	public $loginFailure = FALSE;
 
-	// Will be set to TRUE if the login session is actually written during auth-check.
 	/**
-	 * @todo Define visibility
+	 * Will be set to TRUE if the login session is actually written during auth-check.
+	 *
+	 * @var bool
 	 */
 	public $loginSessionStarted = FALSE;
 
-	// Internal: Will contain user- AND session-data from database (joined tables)
 	/**
-	 * @todo Define visibility
+	 * Internal: Will contain user- AND session-data from database (joined tables)
+	 *
+	 * @var array
 	 */
 	public $user;
 
-	// Internal: Will will be set to the url--ready (eg. '&login=ab7ef8d...')
-	//GET-auth-var if getFallBack is TRUE. Should be inserted in links!
 	/**
-	 * @todo Define visibility
+	 * Internal: Will will be set to the url--ready (eg. '&login=ab7ef8d...')
+	 * GET-auth-var if getFallBack is TRUE. Should be inserted in links!
+	 *
+	 * @var string
 	 */
 	public $get_URL_ID = '';
 
-	// Will be set to TRUE if a new session ID was created
 	/**
-	 * @todo Define visibility
+	 * Will be set to TRUE if a new session ID was created
+	 *
+	 * @var bool
 	 */
 	public $newSessionID = FALSE;
 
-	// Will force the session cookie to be set every time (lifetime must be 0)
 	/**
-	 * @todo Define visibility
+	 * Will force the session cookie to be set every time (lifetime must be 0)
+	 *
+	 * @var bool
 	 */
 	public $forceSetCookie = FALSE;
 
-	// Will prevent the setting of the session cookie (takes precedence over forceSetCookie)
 	/**
-	 * @todo Define visibility
+	 * Will prevent the setting of the session cookie (takes precedence over forceSetCookie)
+	 *
+	 * @var bool
 	 */
 	public $dontSetCookie = FALSE;
 
-	// If set, the challenge value will be stored in a session as well so the
-	// server can check that is was not forged.
 	/**
-	 * @todo Define visibility
+	 * If set, the challenge value will be stored in a session as well so the
+	 * server can check that is was not forged.
+	 *
+	 * @var bool
 	 */
 	public $challengeStoredInCookie = FALSE;
 
-	// Login type, used for services.
 	/**
-	 * @todo Define visibility
+	 * Login type, used for services.
+	 *
+	 * @var string
 	 */
 	public $loginType = '';
 
-	// "auth" services configuration array from $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']
 	/**
-	 * @todo Define visibility
+	 * "auth" services configuration array from $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']
+	 *
+	 * @var array
 	 */
 	public $svConfig = array();
 
-	// Write messages into the devlog?
 	/**
-	 * @todo Define visibility
+	 * Write messages into the devlog?
+	 *
+	 * @var bool
 	 */
 	public $writeDevLog = FALSE;
 
@@ -325,8 +363,8 @@ abstract class AbstractUserAuthentication {
 	 * d) Garbage collection, setting of no-cache headers.
 	 * If a user is authenticated the database record of the user (array) will be set in the ->user internal variable.
 	 *
+	 * @throws \TYPO3\CMS\Core\Exception
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function start() {
 		// Backend or frontend login - used for auth services
@@ -458,6 +496,7 @@ abstract class AbstractUserAuthentication {
 	/**
 	 * Sets the session cookie for the current disposal.
 	 *
+	 * @throws \TYPO3\CMS\Core\Exception
 	 * @return void
 	 */
 	protected function setSessionCookie() {
@@ -532,6 +571,7 @@ abstract class AbstractUserAuthentication {
 	 * @return string The value stored in the cookie
 	 */
 	protected function getCookie($cookieName) {
+		$cookieValue = NULL;
 		if (isset($_SERVER['HTTP_COOKIE'])) {
 			$cookies = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(';', $_SERVER['HTTP_COOKIE']);
 			foreach ($cookies as $cookie) {
@@ -553,7 +593,6 @@ abstract class AbstractUserAuthentication {
 	 *
 	 * @return boolean
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function isSetSessionCookie() {
 		return ($this->newSessionID || $this->forceSetCookie) && $this->lifetime == 0;
@@ -564,7 +603,6 @@ abstract class AbstractUserAuthentication {
 	 *
 	 * @return boolean
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function isRefreshTimeBasedCookie() {
 		return $this->lifetime > 0;
@@ -573,9 +611,9 @@ abstract class AbstractUserAuthentication {
 	/**
 	 * Checks if a submission of username and password is present or use other authentication by auth services
 	 *
+	 * @throws \RuntimeException
 	 * @return void
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function checkAuthentication() {
 		// No user for now - will be searched by service below
@@ -815,7 +853,6 @@ abstract class AbstractUserAuthentication {
 	 *
 	 * @param array $tempuser User data array
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function createUserSession($tempuser) {
 		if ($this->writeDevLog) {
@@ -839,7 +876,6 @@ abstract class AbstractUserAuthentication {
 	 *
 	 * @param array $tempuser
 	 * @return array User session record
-	 * @todo Define visibility
 	 */
 	public function getNewSessionRecord($tempuser) {
 		return array(
@@ -857,10 +893,8 @@ abstract class AbstractUserAuthentication {
 	 *
 	 * @param boolean $skipSessionUpdate
 	 * @return array User session data
-	 * @todo Define visibility
 	 */
 	public function fetchUserSession($skipSessionUpdate = FALSE) {
-		$user = '';
 		if ($this->writeDevLog) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Fetch session ses_id = ' . $this->id, 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
 		}
@@ -885,8 +919,12 @@ abstract class AbstractUserAuthentication {
 			// Option later on: We could check that last update was at least x seconds ago in order not to update twice in a row if one script redirects to another...
 			if ($timeout > 0 && $GLOBALS['EXEC_TIME'] < $user['ses_tstamp'] + $timeout) {
 				if (!$skipSessionUpdate) {
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->session_table, 'ses_id=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table) . '
-												AND ses_name=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table), array('ses_tstamp' => $GLOBALS['EXEC_TIME']));
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+						$this->session_table,
+						'ses_id=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table) .
+							' AND ses_name=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table),
+						array('ses_tstamp' => $GLOBALS['EXEC_TIME'])
+					);
 					// Make sure that the timestamp is also updated in the array
 					$user['ses_tstamp'] = $GLOBALS['EXEC_TIME'];
 				}
@@ -903,10 +941,10 @@ abstract class AbstractUserAuthentication {
 
 	/**
 	 * Log out current user!
-	 * Removes the current session record, sets the internal ->user array to a blank string; Thereby the current user (if any) is effectively logged out!
+	 * Removes the current session record, sets the internal ->user array to a blank string;
+	 * Thereby the current user (if any) is effectively logged out!
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function logoff() {
 		if ($this->writeDevLog) {
@@ -943,9 +981,9 @@ abstract class AbstractUserAuthentication {
 	 *
 	 * @param integer $id Claimed Session ID
 	 * @return boolean Returns TRUE if a corresponding session was found in the database
-	 * @todo Define visibility
 	 */
 	public function isExistingSessionRecord($id) {
+		/** @var $statement \TYPO3\CMS\Core\Database\PreparedStatement */
 		$statement = $GLOBALS['TYPO3_DB']->prepare_SELECTquery('COUNT(*)', $this->session_table, 'ses_id = :ses_id');
 		$statement->execute(array(':ses_id' => $id));
 		$row = $statement->fetch(\TYPO3\CMS\Core\Database\PreparedStatement::FETCH_NUM);
@@ -975,6 +1013,7 @@ abstract class AbstractUserAuthentication {
 			// If on the flash client, the veri code is valid, then the user session is fetched
 			// from the DB without the hashLock clause
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('vC') == $this->veriCode()) {
+				/** @var $statement \TYPO3\CMS\Core\Database\PreparedStatement */
 				$statement = $GLOBALS['TYPO3_DB']->prepare_SELECTquery('*', $this->session_table . ',' . $this->user_table, $this->session_table . '.ses_id = :ses_id
 						AND ' . $this->session_table . '.ses_name = :ses_name
 						AND ' . $this->session_table . '.ses_userid = ' . $this->user_table . '.' . $this->userid_column . '
@@ -987,6 +1026,7 @@ abstract class AbstractUserAuthentication {
 				$statement->bindValues($ipLockClause['parameters']);
 			}
 		} else {
+			/** @var $statement \TYPO3\CMS\Core\Database\PreparedStatement */
 			$statement = $GLOBALS['TYPO3_DB']->prepare_SELECTquery('*', $this->session_table . ',' . $this->user_table, $this->session_table . '.ses_id = :ses_id
 					AND ' . $this->session_table . '.ses_name = :ses_name
 					AND ' . $this->session_table . '.ses_userid = ' . $this->user_table . '.' . $this->userid_column . '
@@ -1009,7 +1049,13 @@ abstract class AbstractUserAuthentication {
 	 * @access private
 	 */
 	protected function user_where_clause() {
-		return ($this->enablecolumns['rootLevel'] ? 'AND ' . $this->user_table . '.pid=0 ' : '') . ($this->enablecolumns['disabled'] ? ' AND ' . $this->user_table . '.' . $this->enablecolumns['disabled'] . '=0' : '') . ($this->enablecolumns['deleted'] ? ' AND ' . $this->user_table . '.' . $this->enablecolumns['deleted'] . '=0' : '') . ($this->enablecolumns['starttime'] ? ' AND (' . $this->user_table . '.' . $this->enablecolumns['starttime'] . '<=' . $GLOBALS['EXEC_TIME'] . ')' : '') . ($this->enablecolumns['endtime'] ? ' AND (' . $this->user_table . '.' . $this->enablecolumns['endtime'] . '=0 OR ' . $this->user_table . '.' . $this->enablecolumns['endtime'] . '>' . $GLOBALS['EXEC_TIME'] . ')' : '');
+		$rootLevel = $this->enablecolumns['rootLevel'] ? 'AND ' . $this->user_table . '.pid=0 ' : '';
+		$disabled = $this->enablecolumns['disabled'] ? ' AND ' . $this->user_table . '.' . $this->enablecolumns['disabled'] . '=0' : '';
+		$deleted = $this->enablecolumns['deleted'] ? ' AND ' . $this->user_table . '.' . $this->enablecolumns['deleted'] . '=0' : '';
+		$starttime = $this->enablecolumns['starttime'] ? ' AND (' . $this->user_table . '.' . $this->enablecolumns['starttime'] . '<=' . $GLOBALS['EXEC_TIME'] . ')' : '';
+		$endtime = $this->enablecolumns['endtime'] ? ' AND (' . $this->user_table . '.' . $this->enablecolumns['endtime'] . '=0 OR ' . $this->user_table . '.' . $this->enablecolumns['endtime'] . '>' . $GLOBALS['EXEC_TIME'] . ')' : '';
+		$whereClause = $rootLevel . $disabled . $deleted . $starttime . $endtime;
+		return $whereClause;
 	}
 
 	/**
@@ -1104,7 +1150,6 @@ abstract class AbstractUserAuthentication {
 	 *
 	 * @param array $variable An array you want to store for the user as session data. If $variable is not supplied (is blank string), the internal variable, ->uc, is stored by default
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function writeUC($variable = '') {
 		if (is_array($this->user) && $this->user[$this->userid_column]) {
@@ -1123,7 +1168,6 @@ abstract class AbstractUserAuthentication {
 	 *
 	 * @param mixed $theUC If an array, then set as ->uc, otherwise load from user record
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function unpack_uc($theUC = '') {
 		if (!$theUC) {
@@ -1142,7 +1186,6 @@ abstract class AbstractUserAuthentication {
 	 * @param mixed $data Is the data you want to store for that module (array, string, ...)
 	 * @param boolean $noSave If $noSave is set, then the ->uc array (which carries all kinds of user data) is NOT written immediately, but must be written by some subsequent call.
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function pushModuleData($module, $data, $noSave = 0) {
 		$this->uc['moduleData'][$module] = $data;
@@ -1157,13 +1200,14 @@ abstract class AbstractUserAuthentication {
 	 *
 	 * @param string $module Is the name of the module ($MCONF['name'])
 	 * @param string $type If $type = 'ses' then module data is returned only if it was stored in the current session, otherwise data from a previous session will be returned (if available).
-	 * @return mixed The module data if available: $this->uc['moduleData'][$module];
-	 * @todo Define visibility
+	 * @return array|NULL The module data if available: $this->uc['moduleData'][$module];
 	 */
 	public function getModuleData($module, $type = '') {
+		$data = NULL;
 		if ($type != 'ses' || $this->uc['moduleSessionID'][$module] == $this->id) {
-			return $this->uc['moduleData'][$module];
+			$data = $this->uc['moduleData'][$module];
 		}
+		return $data;
 	}
 
 	/**
@@ -1172,7 +1216,6 @@ abstract class AbstractUserAuthentication {
 	 *
 	 * @param string $key Pointer to an associative key in the session data array which is stored serialized in the field "ses_data" of the session table.
 	 * @return mixed
-	 * @todo Define visibility
 	 */
 	public function getSessionData($key) {
 		$sesDat = unserialize($this->user['ses_data']);
@@ -1186,7 +1229,6 @@ abstract class AbstractUserAuthentication {
 	 * @param string $key Pointer to an associative key in the session data array which is stored serialized in the field "ses_data" of the session table.
 	 * @param mixed $data The variable to store in index $key
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function setAndSaveSessionData($key, $data) {
 		$sesDat = unserialize($this->user['ses_data']);
@@ -1208,7 +1250,6 @@ abstract class AbstractUserAuthentication {
 	 *
 	 * @return array
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function getLoginFormData() {
 		$loginData = array();
@@ -1238,7 +1279,6 @@ abstract class AbstractUserAuthentication {
 	 * @param string $passwordTransmissionStrategy Alternative passwordTransmissionStrategy. Used when authentication services wants to override the default.
 	 * @return array
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function processLoginData($loginData, $passwordTransmissionStrategy = '') {
 		$passwordTransmissionStrategy = $passwordTransmissionStrategy ? $passwordTransmissionStrategy : ($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel'] ? trim($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel']) : $this->security_level);
@@ -1278,7 +1318,6 @@ abstract class AbstractUserAuthentication {
 	 *
 	 * @return array
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function getAuthInfoArray() {
 		$authInfo = array();
@@ -1310,36 +1349,34 @@ abstract class AbstractUserAuthentication {
 	 * @param array $loginData Login data array
 	 * @param string $passwordCompareStrategy Alternative passwordCompareStrategy. Used when authentication services wants to override the default.
 	 * @return boolean TRUE if login data matched
-	 * @todo Define visibility
 	 */
 	public function compareUident($user, $loginData, $passwordCompareStrategy = '') {
 		$OK = FALSE;
 		$passwordCompareStrategy = $passwordCompareStrategy ? $passwordCompareStrategy : $this->security_level;
 		switch ($passwordCompareStrategy) {
-		case 'superchallenged':
-
-		case 'challenged':
-			// Check challenge stored in cookie:
-			if ($this->challengeStoredInCookie) {
-				session_start();
-				if ($_SESSION['login_challenge'] !== $loginData['chalvalue']) {
-					if ($this->writeDevLog) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('PHP Session stored challenge "' . $_SESSION['login_challenge'] . '" and submitted challenge "' . $loginData['chalvalue'] . '" did not match, so authentication failed!', 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', 2);
+			case 'superchallenged':
+			case 'challenged':
+				// Check challenge stored in cookie:
+				if ($this->challengeStoredInCookie) {
+					session_start();
+					if ($_SESSION['login_challenge'] !== $loginData['chalvalue']) {
+						if ($this->writeDevLog) {
+							\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('PHP Session stored challenge "' . $_SESSION['login_challenge'] . '" and submitted challenge "' . $loginData['chalvalue'] . '" did not match, so authentication failed!', 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', 2);
+						}
+						$this->logoff();
+						return FALSE;
 					}
-					$this->logoff();
-					return FALSE;
 				}
-			}
-			if ((string) $loginData[('uident_' . $passwordCompareStrategy)] === (string) md5(($user[$this->username_column] . ':' . $user[$this->userident_column] . ':' . $loginData['chalvalue']))) {
-				$OK = TRUE;
-			}
-			break;
-		default:
-			// normal
-			if ((string) $loginData['uident_text'] === (string) $user[$this->userident_column]) {
-				$OK = TRUE;
-			}
-			break;
+				if ((string)$loginData[('uident_' . $passwordCompareStrategy)] === (string)md5(($user[$this->username_column] . ':' . $user[$this->userident_column] . ':' . $loginData['chalvalue']))) {
+					$OK = TRUE;
+				}
+				break;
+			default:
+				// normal
+				if ((string)$loginData['uident_text'] === (string)$user[$this->userident_column]) {
+					$OK = TRUE;
+				}
+				break;
 		}
 		return $OK;
 	}
@@ -1349,7 +1386,6 @@ abstract class AbstractUserAuthentication {
 	 *
 	 * @return void
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function gc() {
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->session_table, 'ses_tstamp < ' . intval(($GLOBALS['EXEC_TIME'] - $this->gc_time)) . ' AND ses_name = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table));
@@ -1368,8 +1404,7 @@ abstract class AbstractUserAuthentication {
 	 * @param integer $recuid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
 	 * @param integer $recpid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
 	 * @return void
-	 * @see t3lib_beUserAuth::writelog()
-	 * @todo Define visibility
+	 * @see \TYPO3\CMS\Backend\FrontendBackendUserAuthentication::writelog()
 	 */
 	public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename, $recuid, $recpid) {
 
@@ -1383,7 +1418,6 @@ abstract class AbstractUserAuthentication {
 	 * @param integer $maxFailures Max allowed failures before a warning mail is sent
 	 * @return void
 	 * @ignore
-	 * @todo Define visibility
 	 */
 	public function checkLogFailures($email, $secondsBack, $maxFailures) {
 
@@ -1400,8 +1434,7 @@ abstract class AbstractUserAuthentication {
 	 * @param integer $uid The UID of the backend user to set in ->user
 	 * @return void
 	 * @internal
-	 * @see SC_mod_tools_be_user_index::compareUsers(), SC_mod_user_setup_index::simulateUser(), freesite_admin::startCreate()
-	 * @todo Define visibility
+	 * @see \TYPO3\CMS\Setup\Controller\SetupModuleController::simulateUser()
 	 */
 	public function setBeUserByUid($uid) {
 		$this->user = $this->getRawUserByUid($uid);
@@ -1412,9 +1445,8 @@ abstract class AbstractUserAuthentication {
 	 *
 	 * @param string $name The username to look up.
 	 * @return void
-	 * @see 	t3lib_userAuth::setBeUserByUid()
+	 * @see \TYPO3\CMS\Backend\FrontendBackendUserAuthentication::setBeUserByUid()
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function setBeUserByName($name) {
 		$this->user = $this->getRawUserByName($name);
@@ -1426,7 +1458,6 @@ abstract class AbstractUserAuthentication {
 	 * @param integer $uid The UID of the backend user to set in ->user
 	 * @return array user record or FALSE
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function getRawUserByUid($uid) {
 		$user = FALSE;
@@ -1443,9 +1474,8 @@ abstract class AbstractUserAuthentication {
 	 *
 	 * @param string $name The username to look up.
 	 * @return array user record or FALSE
-	 * @see 	t3lib_userAuth::getUserByUid()
+	 * @see \TYPO3\CMS\Backend\FrontendBackendUserAuthentication::getUserByUid()
 	 * @internal
-	 * @todo Define visibility
 	 */
 	public function getRawUserByName($name) {
 		$user = FALSE;
@@ -1470,7 +1500,6 @@ abstract class AbstractUserAuthentication {
 	 * @param string $username user name
 	 * @param string $extraWhere Additional WHERE clause: " AND ...
 	 * @return mixed User array or FALSE
-	 * @todo Define visibility
 	 */
 	public function fetchUserRecord($dbUser, $username, $extraWhere = '') {
 		$user = FALSE;
@@ -1487,6 +1516,5 @@ abstract class AbstractUserAuthentication {
 	}
 
 }
-
 
 ?>
