@@ -1257,8 +1257,16 @@ class BackendUtility {
 	 */
 	static public function getGroupNames($fields = 'title,uid', $where = '') {
 		$be_group_Array = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'be_groups', 'pid=0 ' . $where . self::deleteClause('be_groups'), '', 'title');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'be_groups', 'pid=0 ' . $where . self::deleteClause('be_groups'), '', 'title');
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			$row['title'] = self::getRecordTitle('be_groups', $row);
+			// filter unwanted fields
+			foreach($row as $fieldName => $value) {
+				if(!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($fields, $fieldName)){
+					unset($row[$fieldName]);
+				}
+			}
+			reset($row);
 			$be_group_Array[$row['uid']] = $row;
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
