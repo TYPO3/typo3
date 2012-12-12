@@ -45,21 +45,21 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	/**
 	 * Form field with login name.
 	 *
-	 * @var 	string
+	 * @var string
 	 */
 	public $formfield_uname = '';
 
 	/**
 	 * Form field with password.
 	 *
-	 * @var 	string
+	 * @var string
 	 */
 	public $formfield_uident = '';
 
 	/**
 	 * Form field with a unique value which is used to encrypt the password and username.
 	 *
-	 * @var 	string
+	 * @var string
 	 */
 	public $formfield_chalvalue = '';
 
@@ -67,7 +67,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	 * Sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username.
 	 * from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 	 *
-	 * @var 	string
+	 * @var string
 	 * @deprecated since 4.7 will be removed in 6.1
 	 */
 	public $security_level = '';
@@ -75,54 +75,59 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	/**
 	 * Decides if the writelog() function is called at login and logout.
 	 *
-	 * @var 	boolean
+	 * @var boolean
 	 */
 	public $writeStdLog = FALSE;
 
 	/**
 	 * If the writelog() functions is called if a login-attempt has be tried without success.
 	 *
-	 * @var 	boolean
+	 * @var boolean
 	 */
 	public $writeAttemptLog = FALSE;
 
 	/**
 	 * Array of page related information (uid, title, depth).
 	 *
-	 * @var 	array
+	 * @var array
 	 */
 	public $extPageInTreeInfo = array();
 
 	/**
 	 * General flag which is set if the adminpanel should be displayed at all.
 	 *
-	 * @var 	boolean
+	 * @var boolean
 	 */
 	public $extAdmEnabled = FALSE;
 
 	/**
 	 * Instance of the admin panel
 	 *
-	 * @var 	tslib_AdminPanel
+	 * @var \TYPO3\CMS\Frontend\View\AdminPanelView
 	 */
 	public $adminPanel = NULL;
 
 	/**
 	 * Class for frontend editing.
 	 *
-	 * @var 	t3lib_frontendedit
+	 * @var \TYPO3\CMS\Core\FrontendEditing\FrontendEditingController
 	 */
 	public $frontendEdit = NULL;
 
 	/**
+	 * @var array
+	 */
+	public $extAdminConfig;
+
+	/**
 	 * Initializes the admin panel.
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function initializeAdminPanel() {
 		$this->extAdminConfig = $this->getTSConfigProp('admPanel');
 		if (isset($this->extAdminConfig['enable.'])) {
-			foreach ($this->extAdminConfig['enable.'] as $key => $value) {
+			foreach ($this->extAdminConfig['enable.'] as $value) {
 				if ($value) {
 					$this->adminPanel = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\View\\AdminPanelView');
 					$this->extAdmEnabled = TRUE;
@@ -139,7 +144,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	 */
 	public function initializeFrontendEdit() {
 		if (isset($this->extAdminConfig['enable.']) && $this->isFrontendEditingActive()) {
-			foreach ($this->extAdminConfig['enable.'] as $key => $value) {
+			foreach ($this->extAdminConfig['enable.'] as $value) {
 				if ($value) {
 					if ($GLOBALS['TSFE'] instanceof \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController) {
 						// Grab the Page TSConfig property that determines which controller to use.
