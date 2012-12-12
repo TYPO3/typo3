@@ -31,6 +31,10 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 		$this->viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\SelectViewHelper', array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
 	}
 
+	public function tearDown() {
+		setlocale(LC_ALL, '');
+	}
+
 	/**
 	 * @test
 	 */
@@ -109,6 +113,37 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 			'value3' => 'label3',
 			'value1' => 'label1',
 			'value2' => 'label2'
+		);
+		$this->arguments['value'] = 'value2';
+		$this->arguments['name'] = 'myName';
+		$this->arguments['sortByOptionLabel'] = TRUE;
+		$this->injectDependenciesIntoViewHelper($this->viewHelper);
+		$this->viewHelper->initialize();
+		$this->viewHelper->render();
+	}
+
+	/**
+	 * @test
+	 */
+	public function optionsAreSortedByLabelIfSortByOptionLabelIsSetAndLocaleEqualsUtf8() {
+		$locale = 'de_DE.UTF-8';
+		if (!setlocale(LC_COLLATE, $locale)) {
+			$this->markTestSkipped('Locale ' . $locale . ' is not available.');
+		}
+
+		setlocale(LC_CTYPE, $locale);
+		setlocale(LC_MONETARY, $locale);
+		setlocale(LC_TIME, $locale);
+		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
+		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
+		$this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1">Bamberg</option>' . chr(10) . '<option value="value2" selected="selected">Bämm</option>' . chr(10) . '<option value="value3">Bar</option>' . chr(10) . '<option value="value4">Bär</option>' . chr(10) . '<option value="value5">Burg</option>' . chr(10));
+		$this->tagBuilder->expects($this->once())->method('render');
+		$this->arguments['options'] = array(
+			'value4' => 'Bär',
+			'value2' => 'Bämm',
+			'value5' => 'Burg',
+			'value1' => 'Bamberg',
+			'value3' => 'Bar'
 		);
 		$this->arguments['value'] = 'value2';
 		$this->arguments['name'] = 'myName';
