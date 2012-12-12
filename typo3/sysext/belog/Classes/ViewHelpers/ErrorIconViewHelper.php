@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Display error icon from error integer value
  *
@@ -34,20 +35,21 @@ class ErrorIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 
 	/**
 	 * Renders an error icon link as known from the TYPO3 backend.
-	 * Error codes 2 and three are mapped to "error", -1 and 1 are mapped to "warning".
+	 * Error codes 2 and three are mapped to "error" and 1 is mapped to "warning".
 	 *
-	 * @param integer $errorNumber The error number (-1 ... 3)
+	 * @param integer $errorNumber The error number (0 ... 3)
 	 * @return string the rendered error icon link
 	 */
 	public function render($errorNumber = 0) {
-		return $this->getDocInstance()->icons(
-			$errorNumber >= 2
-					? \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_ERROR
-					: \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_WARNING
+		$errorSymbols = array(
+			'0' => '',
+			'1' => \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_WARNING,
+			'2' => \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_ERROR,
+			'3' => \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_ERROR
 		);
+		return $this->getDocInstance()->icons($errorSymbols[$errorNumber]);
 	}
 
 }
-
 
 ?>
