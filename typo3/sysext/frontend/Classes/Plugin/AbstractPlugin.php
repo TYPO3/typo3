@@ -865,7 +865,7 @@ class AbstractPlugin {
 	 */
 	public function pi_getLL($key, $alternativeLabel = '', $hsc = FALSE) {
 		$word = NULL;
-		if (!empty($this->LOCAL_LANG[$this->LLkey][$key][0]['target'])) {
+		if (isset($this->LOCAL_LANG[$this->LLkey][$key][0]['target'])) {
 			// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
 			if (isset($this->LOCAL_LANG_charset[$this->LLkey][$key])) {
 				$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->LLkey][$key][0]['target'], $this->LOCAL_LANG_charset[$this->LLkey][$key]);
@@ -876,7 +876,7 @@ class AbstractPlugin {
 			$alternativeLanguageKeys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->altLLkey, TRUE);
 			$alternativeLanguageKeys = array_reverse($alternativeLanguageKeys);
 			foreach ($alternativeLanguageKeys as $languageKey) {
-				if (!empty($this->LOCAL_LANG[$languageKey][$key][0]['target'])) {
+				if (isset($this->LOCAL_LANG[$languageKey][$key][0]['target'])) {
 					// Alternative language translation for key exists
 					$word = $this->LOCAL_LANG[$languageKey][$key][0]['target'];
 					// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
@@ -891,7 +891,7 @@ class AbstractPlugin {
 			}
 		}
 		if ($word === NULL) {
-			if (!empty($this->LOCAL_LANG['default'][$key][0]['target'])) {
+			if (isset($this->LOCAL_LANG['default'][$key][0]['target'])) {
 				// Get default translation (without charset conversion, english)
 				$word = $this->LOCAL_LANG['default'][$key][0]['target'];
 			} else {
