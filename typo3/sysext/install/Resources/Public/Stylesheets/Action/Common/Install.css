@@ -781,10 +781,6 @@ body.standalone #t3-install-menu {
 	background: #ebebeb url('../../../Images/Background/Menu.gif') repeat-x left bottom;
 }
 
-body.standalone #t3-install-menu a:link {
-	background: none;
-}
-
 body.standalone #t3-install-menu-bottom {
 	width: 17.6em;
 	height: 3px;
