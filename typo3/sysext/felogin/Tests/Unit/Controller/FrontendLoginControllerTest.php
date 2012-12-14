@@ -372,4 +372,80 @@ class FrontendLoginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->accessibleFixture->conf['preserveGETvars'] = $preserveVars;
 		$this->assertSame($expected, $this->accessibleFixture->_call('getPreserveGetVars'));
 	}
+
+
+	/**************************************************
+	 * Tests concerning isInLocalDomain
+	 **************************************************/
+
+	/**
+	 * Dataprovider for isInCurrentDomainIgnoresScheme
+	 *
+	 * @return array
+	 */
+	public function isInCurrentDomainIgnoresSchemeDataProvider() {
+		return array(
+			'url https, current host http' => array(
+				'example.com', // HTTP_HOST
+				'0', // HTTPS
+				'https://example.com/foo.html' // URL
+			),
+			'url http, current host https' => array(
+				'example.com',
+				'1',
+				'http://example.com/foo.html'
+			),
+			'url https, current host https' => array(
+				'example.com',
+				'1',
+				'https://example.com/foo.html'
+			),
+			'url http, current host http' => array(
+				'example.com',
+				'0',
+				'http://example.com/foo.html'
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider isInCurrentDomainIgnoresSchemeDataProvider
+	 * @param string $host $_SERVER['HTTP_HOST']
+	 * @param string $https $_SERVER['HTTPS']
+	 * @param string $url The url to test
+	 */
+	public function isInCurrentDomainIgnoresScheme($host, $https, $url) {
+		$_SERVER['HTTP_HOST'] = $host;
+		$_SERVER['HTTPS'] = $https;
+		$this->assertTrue($this->accessibleFixture->_call('isInCurrentDomain', $url));
+	}
+
+	/**
+	 * @return array
+	 */
+	public function isInCurrentDomainReturnsFalseIfDomainsAreDifferentDataProvider() {
+		return array(
+			'simple difference' => array(
+				'example.com', // HTTP_HOST
+				'http://typo3.org/foo.html' // URL
+			),
+			'subdomain different' => array(
+				'example.com',
+				'http://foo.example.com/bar.html'
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider isInCurrentDomainReturnsFalseIfDomainsAreDifferentDataProvider
+	 * @param string $host $_SERVER['HTTP_HOST']
+	 * @param string $url The url to test
+	 */
+	public function isInCurrentDomainReturnsFalseIfDomainsAreDifferent($host, $url) {
+		$_SERVER['HTTP_HOST'] = $host;
+		$this->assertFalse($this->accessibleFixture->_call('isInCurrentDomain', $url));
+	}
+
 }
