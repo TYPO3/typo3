@@ -500,12 +500,18 @@ class ResourceStorage {
 				$subject = $this->getRootLevelFolder();
 			}
 			$identifier = $subject->getIdentifier();
-			// Check if the identifier of the subject is within at
-			// least one of the file mounts
-			foreach ($this->fileMounts as $fileMount) {
-				if ($this->driver->isWithin($fileMount['folder'], $identifier)) {
-					$isWithinFilemount = TRUE;
-					break;
+
+			// Allow access to processing folder
+			if ($this->driver->isWithin($this->getProcessingFolder(), $identifier)) {
+				$isWithinFilemount = TRUE;
+			} else {
+				// Check if the identifier of the subject is within at
+				// least one of the file mounts
+				foreach ($this->fileMounts as $fileMount) {
+					if ($this->driver->isWithin($fileMount['folder'], $identifier)) {
+						$isWithinFilemount = TRUE;
+						break;
+					}
 				}
 			}
 		}
