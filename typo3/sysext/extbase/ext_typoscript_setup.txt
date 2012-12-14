@@ -38,6 +38,11 @@ config.tx_extbase {
 					}
 				}
 			}
+			TYPO3\CMS\Extbase\Domain\Model\FileReference {
+				mapping {
+					tableName = sys_file_reference
+				}
+			}
 			TYPO3\CMS\Extbase\Domain\Model\BackendUser {
 				mapping {
 					tableName = be_users
