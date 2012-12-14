@@ -865,14 +865,21 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	}
 
 	/**
-	 * Determines whether the URL is on the current host
-	 * and belongs to the current TYPO3 installation.
+	 * Determines whether the URL is on the current host and belongs to the
+	 * current TYPO3 installation. The scheme part is ignored in the comparison.
 	 *
 	 * @param string $url URL to be checked
 	 * @return boolean Whether the URL belongs to the current TYPO3 installation
 	 */
 	protected function isInCurrentDomain($url) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::isOnCurrentHost($url) && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($url, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr(
+					preg_replace('#^https?://#', '', $url) . '/',
+					\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST') . '/'
+				) &&
+				\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr(
+					preg_replace('#^https?://#', '', $url),
+					preg_replace('#^https?://#', '', \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))
+				);
 	}
 
 	/**
