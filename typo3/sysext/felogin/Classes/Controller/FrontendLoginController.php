@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Felogin\Controller;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Plugin 'Website User Login' for the 'felogin' extension.
@@ -946,14 +947,17 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	}
 
 	/**
-	 * Determines whether the URL is on the current host
-	 * and belongs to the current TYPO3 installation.
+	 * Determines whether the URL is on the current host and belongs to the
+	 * current TYPO3 installation. The scheme part is ignored in the comparison.
 	 *
 	 * @param string $url URL to be checked
 	 * @return bool Whether the URL belongs to the current TYPO3 installation
 	 */
 	protected function isInCurrentDomain($url) {
-		return GeneralUtility::isOnCurrentHost($url) && GeneralUtility::isFirstPartOfStr($url, GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
+		$urlWithoutSchema = preg_replace('#^https?://#', '', $url);
+		$siteUrlWithoutSchema = preg_replace('#^https?://#', '', GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
+		return StringUtility::beginsWith($urlWithoutSchema . '/', GeneralUtility::getIndpEnv('HTTP_HOST') . '/')
+			&& StringUtility::beginsWith($urlWithoutSchema, $siteUrlWithoutSchema);
 	}
 
 	/**
