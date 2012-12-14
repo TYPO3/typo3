@@ -165,6 +165,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		$tcaColumnsDefinition = $this->getColumnsDefinition($tableName);
 		$tcaColumnsDefinition = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($tcaColumnsDefinition, $columnMapping);
 		// TODO Is this is too powerful?
+
 		foreach ($tcaColumnsDefinition as $columnName => $columnDefinition) {
 			if (isset($columnDefinition['mapOnProperty'])) {
 				$propertyName = $columnDefinition['mapOnProperty'];
@@ -304,7 +305,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function setRelations(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap, $columnConfiguration, $propertyMetaData) {
 		if (isset($columnConfiguration)) {
-			if (isset($columnConfiguration['MM']) || isset($columnConfiguration['foreign_selector'])) {
+			if (isset($columnConfiguration['MM'])) {
 				$columnMap = $this->setManyToManyRelation($columnMap, $columnConfiguration);
 			} elseif (isset($propertyMetaData['elementType'])) {
 				$columnMap = $this->setOneToManyRelation($columnMap, $columnConfiguration);
@@ -313,6 +314,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			} else {
 				$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_NONE);
 			}
+
 		} else {
 			$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_NONE);
 		}
@@ -371,8 +373,8 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap
 	 */
 	protected function setManyToManyRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap, $columnConfiguration) {
-		$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
 		if (isset($columnConfiguration['MM'])) {
+			$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
 			$columnMap->setChildTableName($columnConfiguration['foreign_table']);
 			$columnMap->setChildTableWhereStatement($columnConfiguration['foreign_table_where']);
 			$columnMap->setRelationTableName($columnConfiguration['MM']);
@@ -392,17 +394,6 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				$columnMap->setChildKeyFieldName('uid_foreign');
 				$columnMap->setChildSortByFieldName('sorting');
 			}
-		} elseif (isset($columnConfiguration['foreign_selector'])) {
-			$columns = $this->getColumnsDefinition($columnConfiguration['foreign_table']);
-			$childKeyFieldName = $columnConfiguration['foreign_selector'];
-			$columnMap->setChildTableName($columns[$childKeyFieldName]['config']['foreign_table']);
-			$columnMap->setRelationTableName($columnConfiguration['foreign_table']);
-			$columnMap->setParentKeyFieldName($columnConfiguration['foreign_field']);
-			$columnMap->setChildKeyFieldName($childKeyFieldName);
-			$columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby']);
-			if (!empty($columnConfiguration['foreign_table_field'])) {
-				$columnMap->setParentTableFieldName($columnConfiguration['foreign_table_field']);
-			}
 		} else {
 			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedRelationException('The given information to build a many-to-many-relation was not sufficient. Check your TCA definitions. mm-relations with IRRE must have at least a defined "MM" or "foreign_selector".', 1268817963);
 		}
@@ -411,6 +402,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $columnMap;
 	}
+
 }
 
 ?>
