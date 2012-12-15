@@ -2,8 +2,13 @@
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
+
 // Add Default TS to Include static (from extensions)
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/', 'Default TS');
+
+// Load TCA before manipulating the column configuration
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
+
 $TCA['tt_content']['columns']['bodytext']['config']['wizards']['forms'] = array(
 	'notNewRecords' => 1,
 	'enableByTypeConfig' => 1,
