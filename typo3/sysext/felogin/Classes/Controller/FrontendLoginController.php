@@ -357,6 +357,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 			// No prefix is set, return the error
 			return $this->pi_getLL('ll_change_password_nolinkprefix_message');
 		}
+		$link = \TYPO3\CMS\Core\Utility\MailUtility::encodeDelimetersInUrl($link);
 		$msg = sprintf($this->pi_getLL('ll_forgot_validate_reset_password', '', 0), $user['username'], $link, $validEndString);
 		// Add hook for extra processing of mail message
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['forgotPasswordMail']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['forgotPasswordMail'])) {

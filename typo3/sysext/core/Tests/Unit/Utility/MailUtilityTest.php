@@ -148,6 +148,17 @@ class MailUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($returnString, 'abcdefghijklmnopqrst' . LF . 'uvwxyz' . LF . '123456');
 	}
 
+	/**
+	 *@test
+	 */
+	public function encodeDelimitersWhichAreNotEncodedByRawurlencode() {
+		$url = 'http://www.example.com/index.php?tx_test_pi[test]=1';
+		$returnString = \TYPO3\CMS\Core\Utility\MailUtility::encodeDelimetersInUrl($url);
+		$encodedString = 'http://www.example.com/index.php?tx_test_pi%5Btest%5D=1';
+
+		$this->assertEquals($returnString, $encodedString);
+	}
+
 }
 
 ?>
