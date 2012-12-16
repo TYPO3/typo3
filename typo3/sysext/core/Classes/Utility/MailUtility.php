@@ -216,6 +216,19 @@ class MailUtility {
 		return implode($newlineChar, $lines);
 	}
 
+	/**
+	 * Encode delimiters which are not encoded by rawurlencode (RFC 3986) but which can cause problems
+	 * with mail clients not recognizing an entire URL inside text.
+	 *
+	 * @param string $url rawurlencode'd link
+	 * @return string Url with extra encoded characters
+	 */
+	static public function encodeDelimetersInUrl($url) {
+		$rawCharacters = array('[', ']');
+		$encodedCharacters = array('%5B', '%5D');
+		return str_replace($rawCharacters, $encodedCharacters, $url);
+	}
+
 }
 
 
