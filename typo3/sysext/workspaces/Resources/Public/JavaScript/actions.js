@@ -75,6 +75,9 @@ TYPO3.Workspaces.Actions = {
 				break;
 		}
 
+		// Publishing large amount of changes may require a longer timeout
+		Ext.Ajax.timeout = 3600000;
+
 		this.runMassAction({
 			init: true,
 			total:0,
