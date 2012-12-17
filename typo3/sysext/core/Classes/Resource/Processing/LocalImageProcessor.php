@@ -83,7 +83,7 @@ class LocalImageProcessor implements ProcessorInterface {
 
 				$task->getTargetFile()->setName($task->getTargetFileName());
 				$task->getTargetFile()->updateProperties(
-					array('width' => $imageDimensions[0], 'height' => $imageDimensions[1], 'size' => filesize($result['filePath']))
+					array('width' => $imageDimensions[0], 'height' => $imageDimensions[1], 'size' => filesize($result['filePath']), 'checksum' => $task->getConfigurationChecksum())
 				);
 				$task->getTargetFile()->updateWithLocalFile($result['filePath']);
 			} else {
