@@ -3829,7 +3829,7 @@ class BackendUtility {
 	 * Display some warning messages if this installation is obviously insecure!!
 	 * These warnings are only displayed to admin users
 	 *
-	 * @return void
+	 * @return string Rendered messages as HTML
 	 */
 	static public function displayWarningMessages() {
 		if ($GLOBALS['BE_USER']->isAdmin()) {
