@@ -127,17 +127,21 @@ class GridDataService {
 			$stagesObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\StagesService');
 			foreach ($versions as $table => $records) {
 				$versionArray = array('table' => $table);
+				$hiddenField = $this->getTcaEnableColumnsFieldName($table, 'disabled');
 				$isRecordTypeAllowedToModify = $GLOBALS['BE_USER']->check('tables_modify', $table);
+
 				foreach ($records as $record) {
 					$origRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $record['t3ver_oid']);
 					$versionRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $record['uid']);
 					$combinedRecord = \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord::createFromArrays($table, $origRecord, $versionRecord);
 					$this->getIntegrityService()->checkElement($combinedRecord);
-					if (isset($GLOBALS['TCA'][$table]['columns']['hidden'])) {
-						$recordState = $this->workspaceState($versionRecord['t3ver_state'], $origRecord['hidden'], $versionRecord['hidden']);
+
+					if ($hiddenField !== NULL) {
+						$recordState = $this->workspaceState($versionRecord['t3ver_state'], $origRecord[$hiddenField], $versionRecord[$hiddenField]);
 					} else {
 						$recordState = $this->workspaceState($versionRecord['t3ver_state']);
 					}
+
 					$isDeletedPage = $table == 'pages' && $recordState == 'deleted';
 					$viewUrl = \TYPO3\CMS\Workspaces\Service\WorkspaceService::viewSingleRecord($table, $record['uid'], $origRecord, $versionRecord);
 					$versionArray['id'] = $table . ':' . $record['uid'];
@@ -447,6 +451,23 @@ class GridDataService {
 			$state = 'unhidden';
 		}
 		return $state;
+	}
+
+	/**
+	 * Gets the field name of the enable-columns as defined in $TCA.
+	 *
+	 * @param string $table Name of the table
+	 * @param string $type Type to be fetches (e.g. 'disabled', 'starttime', 'endtime', 'fe_group)
+	 * @return string|NULL The accordant field name or NULL if not defined
+	 */
+	protected function getTcaEnableColumnsFieldName($table, $type) {
+		$fieldName = NULL;
+
+		if (!(empty($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'][$type]))) {
+			$fieldName = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'][$type];
+		}
+
+		return $fieldName;
 	}
 
 	/**
