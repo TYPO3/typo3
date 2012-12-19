@@ -150,6 +150,7 @@ class TypoScriptTemplateInfoHook {
 						$tstemplateinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateInformationModuleFunctionController');
 						/* @var $tstemplateinfo \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController */
 						// load the MOD_SETTINGS in order to check if the includeTypoScriptFileContent is set
+						$tstemplateinfo->pObj = $pObj;
 						$tstemplateinfo->pObj->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(array('includeTypoScriptFileContent' => TRUE), array(), 'web_ts');
 						$recData['sys_template'][$saveId] = $tstemplateinfo->processTemplateRowBeforeSaving($recData['sys_template'][$saveId]);
 						// Create new tce-object
