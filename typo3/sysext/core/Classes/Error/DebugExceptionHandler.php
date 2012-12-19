@@ -134,6 +134,7 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
 		echo 'in line ' . $exception->getLine() . '
 
 ';
+		die(1);
 	}
 
 	/**
