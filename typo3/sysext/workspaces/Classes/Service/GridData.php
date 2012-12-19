@@ -99,6 +99,7 @@ class tx_Workspaces_Service_GridData {
 
 			foreach ($versions as $table => $records) {
 				$versionArray = array('table' => $table);
+				$hiddenField = $this->getTcaEnableColumnsFieldName($table, 'disabled');
 				$isRecordTypeAllowedToModify = $GLOBALS['BE_USER']->check('tables_modify', $table);
 
 				foreach ($records as $record) {
@@ -106,8 +107,8 @@ class tx_Workspaces_Service_GridData {
 					$origRecord = t3lib_BEFunc::getRecord($table, $record['t3ver_oid']);
 					$versionRecord = t3lib_BEFunc::getRecord($table, $record['uid']);
 
-					if (isset($GLOBALS['TCA'][$table]['columns']['hidden'])) {
-						$recordState = $this->workspaceState($versionRecord['t3ver_state'], $origRecord['hidden'], $versionRecord['hidden']);
+					if ($hiddenField !== NULL) {
+						$recordState = $this->workspaceState($versionRecord['t3ver_state'], $origRecord[$hiddenField], $versionRecord[$hiddenField]);
 					} else {
 						$recordState = $this->workspaceState($versionRecord['t3ver_state']);
 					}
@@ -491,6 +492,23 @@ class tx_Workspaces_Service_GridData {
 		}
 
 		return $state;
+	}
+
+	/**
+	 * Gets the field name of the enable-columns as defined in $TCA.
+	 *
+	 * @param string $table Name of the table
+	 * @param string $type Type to be fetches (e.g. 'disabled', 'starttime', 'endtime', 'fe_group)
+	 * @return string|NULL The accordant field name or NULL if not defined
+	 */
+	protected function getTcaEnableColumnsFieldName($table, $type) {
+		$fieldName = NULL;
+
+		if (!(empty($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'][$type]))) {
+			$fieldName = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'][$type];
+		}
+
+		return $fieldName;
 	}
 }
 
