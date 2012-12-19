@@ -214,9 +214,7 @@ class tx_Workspaces_Service_GridData {
 	protected function setDataArrayIntoCache (array $versions, $filterTxt) {
 		if (TYPO3_UseCachingFramework === TRUE) {
 			$hash = $this->calculateHash($versions, $filterTxt);
-			$content = serialize($this->dataArray);
-
-			$this->workspacesCache->set($hash, $content, array($this->currentWorkspace));
+			$this->workspacesCache->set($hash, $this->dataArray, array($this->currentWorkspace));
 		}
 	}
 
@@ -235,8 +233,8 @@ class tx_Workspaces_Service_GridData {
 
 			$content = $this->workspacesCache->get($hash);
 
-			if ($content != FALSE) {
-				$this->dataArray = unserialize($content);
+			if ($content !== FALSE) {
+				$this->dataArray = $content;
 				$cacheEntry = TRUE;
 			}
 		}
