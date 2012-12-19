@@ -26,7 +26,6 @@ namespace TYPO3\CMS\Core\TypoScript\Parser;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -713,94 +712,66 @@ class TypoScriptParser {
 ###
 ';
 		}
-		$splitStr = '<INCLUDE_TYPOSCRIPT:';
-		if (strstr($string, $splitStr)) {
-			$newString = '';
-			// Adds line break char before/after
-			$allParts = explode($splitStr, LF . $string . LF);
-			foreach ($allParts as $c => $v) {
-				// First goes through
-				if (!$c) {
-					$newString .= $v;
-				} elseif (preg_match('/\\r?\\n\\s*$/', $allParts[$c - 1])) {
-					$subparts = explode('>', $v, 2);
-					// There must be a line-break char after
-					if (preg_match('/^\\s*\\r?\\n/', $subparts[1])) {
-						// SO, the include was positively recognized:
-						$newString .= '### ' . $splitStr . $subparts[0] . '> BEGIN:' . LF;
-						$params = GeneralUtility::get_tag_attributes($subparts[0]);
-						if ($params['source']) {
-							$sourceParts = explode(':', $params['source'], 2);
-							switch (strtolower(trim($sourceParts[0]))) {
-								case 'file':
-									$filename = GeneralUtility::getFileAbsFileName(trim($sourceParts[1]));
-									// Must exist and must not contain '..' and must be relative
-									if (strcmp($filename, '')) {
-										// Check for allowed files
-										if (GeneralUtility::verifyFilenameAgainstDenyPattern($filename)) {
-											if (@is_file($filename)) {
-												// Check for includes in included text
-												$includedFiles[] = $filename;
-												$included_text = self::checkIncludeLines(GeneralUtility::getUrl($filename), $cycle_counter + 1, $returnFiles);
-												// If the method also has to return all included files, merge currently included
-												// files with files included by recursively calling itself
-												if ($returnFiles && is_array($included_text)) {
-													$includedFiles = array_merge($includedFiles, $included_text['files']);
-													$included_text = $included_text['typoscript'];
-												}
-												$newString .= $included_text . LF;
 
-												// load default TypoScript for content rendering templates like
-												// css_styled_content if those have been included through f.e.
-												// <INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/static/setup.txt">
-												$filePointer = strtolower(trim($sourceParts[1]));
-												if (GeneralUtility::isFirstPartOfStr($filePointer, 'ext:')) {
-													$filePointerPathParts = explode('/', substr($filePointer, 4));
-
-													// remove file part, determine whether to load setup or constants
-													list($includeType, ) = explode('.', array_pop($filePointerPathParts));
-
-													if (in_array($includeType, array('setup', 'constants'))) {
-														// adapt extension key to required format (no underscores)
-														$filePointerPathParts[0] = str_replace('_', '', $filePointerPathParts[0]);
-
-														// load default TypoScript
-														$defaultTypoScriptKey = implode('/', $filePointerPathParts) . '/';
-														if (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $includeType . '.'][$defaultTypoScriptKey])) {
-															$newString .= $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $includeType . '.'][$defaultTypoScriptKey];
-														}
-													}
-												}
-											} else {
-												$newString .= '
-###
-### ERROR: File "' . $filename . '" was not was not found.
-###
-
-';
-												GeneralUtility::sysLog('File "' . $filename . '" was not found.', 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
-											}
-										} else {
-											$newString .= '
-###
-### ERROR: File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern
-###
-
-';
-											GeneralUtility::sysLog('File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern', 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
-										}
-									}
-									break;
-							}
-						}
-						$newString .= '### ' . $splitStr . $subparts[0] . '> END:' . LF;
-						$newString .= $subparts[1];
-					} else {
-						$newString .= $splitStr . $v;
-					}
+		// If no tags found, no need to do slower preg_split
+		if (strpos($string, '<INCLUDE_TYPOSCRIPT:') !== FALSE) {
+			$splitRegEx = '/\r?\n\s*<INCLUDE_TYPOSCRIPT:\s*(?i)source\s*=\s*"((?i)file|dir):\s*([^"]*)"(.*)>[\ \t]*/';
+			$parts = preg_split($splitRegEx, LF . $string . LF, -1, PREG_SPLIT_DELIM_CAPTURE);
+			// First text part goes through
+			$newString = $parts[0] . LF;
+			$partCount = count($parts);
+			for ($i = 1; $i + 3 < $partCount; $i += 4) {
+				// $parts[$i] contains 'FILE' or 'DIR'
+				// $parts[$i+1] contains relative file or directory path to be included
+				// $parts[$i+2] optional properties of the INCLUDE statement
+				// $parts[$i+3] next part of the typoscript string (part in between include-tags)
+				$includeType = $parts[$i];
+				$filename = $parts[$i + 1];
+				$optionalProperties = $parts[$i + 2];
+				$tsContentsTillNextInclude = $parts[$i + 3];
+				// There must be a line-break char after - not sure why this check is necessary, kept it for being 100% backwards compatible
+				// An empty string is also ok (means that the next line is also a valid include_typoscript tag)
+				if (preg_match('/(^\s*\r?\n|^$)/', $tsContentsTillNextInclude) == FALSE) {
+					$newString .= self::typoscriptIncludeError('Invalid characters after <INCLUDE_TYPOSCRIPT: source="' . $includeType . ':' . $filename . '">-tag (rest of line must be empty).');
+				} elseif (strpos('..', $filename) !== FALSE) {
+					$newString .= self::typoscriptIncludeError('Invalid filepath "' . $filename . '" (containing "..").');
 				} else {
-					$newString .= $splitStr . $v;
+					switch (strtolower($includeType)) {
+						case 'file':
+							self::includeFile($filename, $cycle_counter, $returnFiles, $newString, $includedFiles);
+							break;
+						case 'dir':
+							self::includeDirectory($filename, $cycle_counter, $returnFiles, $newString, $includedFiles, $optionalProperties);
+							break;
+						default:
+							$newString .= self::typoscriptIncludeError('No valid option for INCLUDE_TYPOSCRIPT source property (valid options are FILE or DIR)');
+					}
 				}
+				// Prepend next normal (not file) part to output string
+				$newString .= $tsContentsTillNextInclude . LF;
+
+				// load default TypoScript for content rendering templates like
+				// css_styled_content if those have been included through f.e.
+				// <INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/static/setup.txt">
+				$filePointer = strtolower($filename);
+				if (GeneralUtility::isFirstPartOfStr($filePointer, 'ext:')) {
+					$filePointerPathParts = explode('/', substr($filePointer, 4));
+
+					// remove file part, determine whether to load setup or constants
+					list($includeType, ) = explode('.', array_pop($filePointerPathParts));
+
+					if (in_array($includeType, array('setup', 'constants'))) {
+						// adapt extension key to required format (no underscores)
+						$filePointerPathParts[0] = str_replace('_', '', $filePointerPathParts[0]);
+
+						// load default TypoScript
+						$defaultTypoScriptKey = implode('/', $filePointerPathParts) . '/';
+						if (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $includeType . '.'][$defaultTypoScriptKey])) {
+							$newString .= $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $includeType . '.'][$defaultTypoScriptKey];
+						}
+					}
+				}
+
 			}
 			// Not the first/last linebreak char.
 			$string = substr($newString, 1, -1);
@@ -814,6 +785,90 @@ class TypoScriptParser {
 			);
 		}
 		return $string;
+	}
+
+	/**
+	 * Include file $filename. Contents of the file will be prepended to &$newstring, filename to &$includedFiles
+	 * Further include_typoscript tags in the contents are processed recursively
+	 *
+	 * @param string $filename Relative path to the typoscript file to be included
+	 * @param integer $cycle_counter Counter for detecting endless loops
+	 * @param boolean $returnFiles When set, filenames of included files will be prepended to the array &$includedFiles
+	 * @param string &$newString The output string to which the content of the file will be prepended (referenced
+	 * @param array &$includedFiles Array to which the filenames of included files will be prepended (referenced)
+	 * @static
+	 */
+	public static function includeFile($filename, $cycle_counter = 1, $returnFiles = FALSE, &$newString = '', &$includedFiles = array()) {
+		$absfilename = GeneralUtility::getFileAbsFileName($filename);
+		$newString .= LF . '### <INCLUDE_TYPOSCRIPT: source="FILE:' . $filename . '"> BEGIN:' . LF;
+		if (strcmp($filename, '')) {
+			// Must exist and must not contain '..' and must be relative
+			// Check for allowed files
+			if (!GeneralUtility::verifyFilenameAgainstDenyPattern($absfilename)) {
+				$newString .= self::typoscriptIncludeError('File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern.');
+			} elseif (!@is_file($absfilename)) {
+				$newString .= self::typoscriptIncludeError('File "' . $filename . '" was not was not found.');
+			} else {
+				$includedFiles[] = $absfilename;
+				// check for includes in included text
+				$included_text = self::checkIncludeLines(GeneralUtility::getUrl($absfilename), $cycle_counter + 1, $returnFiles);
+				// If the method also has to return all included files, merge currently included
+				// files with files included by recursively calling itself
+				if ($returnFiles && is_array($included_text)) {
+					$includedFiles = array_merge($includedFiles, $included_text['files']);
+					$included_text = $included_text['typoscript'];
+				}
+				$newString .= $included_text . LF;
+			}
+		}
+		$newString .= '### <INCLUDE_TYPOSCRIPT: source="FILE:' . $filename . '"> END:' . LF . LF;
+	}
+
+	/**
+	 * Include all files with matching Typoscript extensions in directory $dirPath. Contents of the files are
+	 * prepended to &$newstring, filename to &$includedFiles.
+	 * Order of the directory items to be processed: files first, then directories, both in alphabetical order.
+	 * Further include_typoscript tags in the contents of the files are processed recursively.
+	 *
+	 * @param string $dirPath Relative path to the directory to be included
+	 * @param integer $cycle_counter Counter for detecting endless loops
+	 * @param boolean $returnFiles When set, filenames of included files will be prepended to the array &$includedFiles
+	 * @param string &$newString The output string to which the content of the file will be prepended (referenced)
+	 * @param array &$includedFiles Array to which the filenames of included files will be prepended (referenced)
+	 * @static
+	 */
+	private static function includeDirectory($dirPath, $cycle_counter = 1, $returnFiles = FALSE, &$newString = '', &$includedFiles = array(), $optionalProperties = '') {
+		// Extract the value of the property extensions="..."
+		$matches = preg_split('#(?i)extensions\s*=\s*"([^"]*)"(\s*|>)#', $optionalProperties, 2, PREG_SPLIT_DELIM_CAPTURE);
+		if (count($matches) > 1) {
+			$includedFileExtensions = $matches[1];
+		} else {
+			$includedFileExtensions = '';
+		}
+		$absDirPath = rtrim(GeneralUtility::getFileAbsFileName($dirPath), '/') . '/';
+		$newString .= LF . '### <INCLUDE_TYPOSCRIPT: source="DIR:' . $dirPath . '"' . $optionalProperties . '> BEGIN:' . LF;
+		// Get alphabetically sorted file index in array
+		$fileIndex = GeneralUtility::getAllFilesAndFoldersInPath(array(), $absDirPath, $includedFileExtensions);
+		// Prepend file contents to $newString
+		$prefixLenght = strlen(PATH_site);
+		foreach ($fileIndex as $absFileRef) {
+			$relFileRef = substr($absFileRef, $prefixLenght);
+			self::includeFile($relFileRef, $cycle_counter, $returnFiles, $newString, $includedFiles);
+		}
+		$newString .= '### <INCLUDE_TYPOSCRIPT: source="DIR:' . $dirPath . '"' . $optionalProperties . '> END:' . LF . LF;
+	}
+
+	/**
+	 * Process errors in INCLUDE_TYPOSCRIPT tags
+	 * Errors are logged in sysLog and printed in the concatenated Typoscript result (as can be seen in Template Analyzer)
+	 *
+	 * @param string $error Text of the error message
+	 * @return string The error message encapsulated in comments
+	 * @static
+	 */
+	private static function typoscriptIncludeError($error) {
+		GeneralUtility::sysLog($error, 'Core', 2);
+		return "\n###\n### ERROR: " . $error . "\n###\n\n";
 	}
 
 	/**
@@ -851,8 +906,7 @@ class TypoScriptParser {
 		$restContent = array();
 		$fileName = NULL;
 		$inIncludePart = FALSE;
-		$lines = explode('
-', $string);
+		$lines = preg_split("/\r\n|\n|\r/", $string);
 		$skipNextLineIfEmpty = FALSE;
 		$openingCommentedIncludeStatement = NULL;
 		foreach ($lines as $line) {
@@ -864,52 +918,85 @@ class TypoScriptParser {
 				}
 				$skipNextLineIfEmpty = FALSE;
 			}
+
 			// Outside commented include statements
 			if (!$inIncludePart) {
 				// Search for beginning commented include statements
-				$matches = array();
-				if (preg_match('/###\\s*<INCLUDE_TYPOSCRIPT:\\s*source\\s*=\\s*"\\s*FILE\\s*:\\s*(.*)\\s*">\\s*BEGIN/i', $line, $matches)) {
+				if (preg_match('/###\s*<INCLUDE_TYPOSCRIPT:\s*source\s*=\s*"\s*((?i)file|dir)\s*:\s*([^"]*)"(.*)>\s*BEGIN/i', $line, $matches)) {
+					// Found a commented include statement
+
 					// Save this line in case there is no ending tag
 					$openingCommentedIncludeStatement = trim($line);
 					$openingCommentedIncludeStatement = trim(preg_replace('/### Warning: .*###/', '', $openingCommentedIncludeStatement));
-					// Found a commented include statement
-					$fileName = trim($matches[1]);
-					$inIncludePart = TRUE;
-					$expectedEndTag = '### <INCLUDE_TYPOSCRIPT: source="FILE:' . $fileName . '"> END';
+
+					// type of match: FILE or DIR
+					$inIncludePart = strtoupper($matches[1]);
+					$fileName = trim($matches[2]);
+					$optionalProperties = $matches[3];
+
+					$expectedEndTag = '### <INCLUDE_TYPOSCRIPT: source="' . $inIncludePart . ':' . $fileName . '"' . $optionalProperties . '> END';
 					// Strip all whitespace characters to make comparision safer
-					$expectedEndTag = strtolower(preg_replace('/\\s/', '', $expectedEndTag));
+					$expectedEndTag = strtolower(preg_replace('/\s/', '', $expectedEndTag));
 				} else {
 					// If this is not a beginning commented include statement this line goes into the rest content
 					$restContent[] = $line;
 				}
+				//if (is_array($matches)) GeneralUtility::devLog('matches', 'TypoScriptParser', 0, $matches);
 			} else {
 				// Inside commented include statements
 				// Search for the matching ending commented include statement
-				$strippedLine = strtolower(preg_replace('/\\s/', '', $line));
+				$strippedLine = strtolower(preg_replace('/\s/', '', $line));
 				if (strpos($strippedLine, $expectedEndTag) !== FALSE) {
 					// Found the matching ending include statement
-					$fileContentString = implode('
-', $fileContent);
+					$fileContentString = implode(PHP_EOL, $fileContent);
 					// Write the content to the file
 					$realFileName = GeneralUtility::getFileAbsFileName($fileName);
-					// Some file checks
-					if (empty($realFileName)) {
-						throw new \UnexpectedValueException(sprintf('"%s" is not a valid file location.', $fileName), 1294586441);
+					if ($inIncludePart === 'FILE') {
+						// Some file checks
+						if (empty($realFileName)) {
+							throw new \UnexpectedValueException(sprintf('"%s" is not a valid file location.', $fileName), 1294586441);
+						}
+						if (!is_writable($realFileName)) {
+							throw new \RuntimeException(sprintf('"%s" is not writable.', $fileName), 1294586442);
+						}
+						if (in_array($realFileName, $extractedFileNames)) {
+							throw new \RuntimeException(sprintf('Recursive/multiple inclusion of file "%s"', $realFileName), 1294586443);
+						}
+						$extractedFileNames[] = $realFileName;
+
+						// Recursive call to detected nested commented include statements
+						$fileContentString = self::extractIncludes($fileContentString, $cycle_counter + 1, $extractedFileNames);
+
+						// Write the content to the file
+						if (!GeneralUtility::writeFile($realFileName, $fileContentString)) {
+							throw new \RuntimeException(sprintf('Could not write file "%s"', $realFileName), 1294586444);
+						}
+						// Insert reference to the file in the rest content
+						$restContent[] = '<INCLUDE_TYPOSCRIPT: source="FILE:' . $fileName . '">';
+					} else {
+						// must be DIR
+
+						// Some file checks
+						if (empty($realFileName)) {
+							throw new \UnexpectedValueException(sprintf('"%s" is not a valid location.', $fileName), 1366493602);
+						}
+						if (!is_dir($realFileName)) {
+							throw new \RuntimeException(sprintf('"%s" is not a directory.', $fileName), 1366493603);
+						}
+						if (in_array($realFileName, $extractedFileNames)) {
+							throw new \RuntimeException(sprintf('Recursive/multiple inclusion of directory "%s"', $realFileName), 1366493604);
+						}
+						$extractedFileNames[] = $realFileName;
+
+						// Recursive call to detected nested commented include statements
+						$fileContentString = self::extractIncludes($fileContentString, $cycle_counter + 1, $extractedFileNames);
+
+						// just drop content between tags since it should usually just contain individual files from that dir
+
+						// Insert reference to the dir in the rest content
+						$restContent[] = '<INCLUDE_TYPOSCRIPT: source="DIR:' . $fileName . '"' . $optionalProperties . '>';
 					}
-					if (!is_writable($realFileName)) {
-						throw new \RuntimeException(sprintf('"%s" is not writable.', $fileName), 1294586442);
-					}
-					if (in_array($realFileName, $extractedFileNames)) {
-						throw new \RuntimeException(sprintf('Recursive/multiple inclusion of file "%s"', $realFileName), 1294586443);
-					}
-					$extractedFileNames[] = $realFileName;
-					// Recursive call to detected nested commented include statements
-					$fileContentString = self::extractIncludes($fileContentString, $cycle_counter + 1, $extractedFileNames);
-					if (!GeneralUtility::writeFile($realFileName, $fileContentString)) {
-						throw new \RuntimeException(sprintf('Could not write file "%s"', $realFileName), 1294586444);
-					}
-					// Insert reference to the file in the rest content
-					$restContent[] = '<INCLUDE_TYPOSCRIPT: source="FILE: ' . $fileName . '">';
+
 					// Reset variables (preparing for the next commented include statement)
 					$fileContent = array();
 					$fileName = NULL;
@@ -929,8 +1016,7 @@ class TypoScriptParser {
 			$restContent[] = $openingCommentedIncludeStatement . ' ### Warning: Corresponding end line missing! ###';
 			$restContent = array_merge($restContent, $fileContent);
 		}
-		$restContentString = implode('
-', $restContent);
+		$restContentString = implode(PHP_EOL, $restContent);
 		return $restContentString;
 	}
 
