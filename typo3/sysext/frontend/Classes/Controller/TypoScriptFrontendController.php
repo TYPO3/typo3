@@ -701,6 +701,14 @@ class TypoScriptFrontendController {
 	public $LL_files_cache = array();
 
 	/**
+	 * List of language dependencies for actual language. This is used for local variants of a language
+	 * that depend on their "main" language, like Brazilian Portuguese or Canadian French.
+	 *
+	 * @var array
+	 */
+	protected $languageDependencies = array();
+
+	/**
 	 * Locking object for accessing "cache_pagesection"
 	 *
 	 * @var \TYPO3\CMS\Core\Locking\Locker
@@ -4557,7 +4565,31 @@ if (version == "n3") {
 	 * @todo Define visibility
 	 */
 	public function readLLfile($fileRef) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($fileRef, $this->lang, $this->renderCharset);
+		if ($this->lang !== 'default') {
+			$languages = array_reverse($this->languageDependencies);
+			// At least we need to have English
+			if (empty($languages)) {
+				$languages[] = 'default';
+			}
+		} else {
+			$languages = array('default');
+		}
+
+		$localLanguage = array();
+		foreach ($languages as $language) {
+			$tempLL = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($fileRef, $language, $this->renderCharset);
+			$localLanguage['default'] = $tempLL['default'];
+			if (!isset($localLanguage[$this->lang])) {
+				$localLanguage[$this->lang] = $localLanguage['default'];
+			}
+			if ($this->lang !== 'default' && isset($tempLL[$language])) {
+				// Merge current language labels onto labels from previous language
+				// This way we have a label with fall back applied
+				$localLanguage[$this->lang] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($localLanguage[$this->lang], $tempLL[$language], FALSE, FALSE);
+			}
+		}
+
+		return $localLanguage;
 	}
 
 	/**
@@ -4587,6 +4619,20 @@ if (version == "n3") {
 		// Setting language key and split index:
 		$this->lang = $this->config['config']['language'] ? $this->config['config']['language'] : 'default';
 		$this->getPageRenderer()->setLanguage($this->lang);
+
+		// Finding the requested language in this list based
+		// on the $lang key being inputted to this function.
+		/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
+		$locales = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+
+		// Language is found. Configure it:
+		if (in_array($this->lang, $locales->getLocales())) {
+			$this->languageDependencies[] = $this->lang;
+			foreach ($locales->getLocaleDependencies($this->lang) as $language) {
+				$this->languageDependencies[] = $language;
+			}
+		}
+
 		// Setting charsets:
 		$this->renderCharset = $this->csConvObj->parse_charset($this->config['config']['renderCharset'] ? $this->config['config']['renderCharset'] : 'utf-8');
 		// Rendering charset of HTML page.
