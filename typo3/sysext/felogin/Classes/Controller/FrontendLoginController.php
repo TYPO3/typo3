@@ -266,6 +266,23 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 			} else {
 				// All is fine, continue with new password
 				$postData = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST($this->prefixId);
+
+				if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth')) {
+					$storage = \TYPO3\CMS\Rsaauth\Storage\StorageFactory::getStorage();
+					$backend = \TYPO3\CMS\Rsaauth\Backend\BackendFactory::getBackend();
+					$password = $postData['password1'];
+					$key = $storage->get();
+					if ($key !== NULL && substr($password, 0, 4) === 'rsa:') {
+						$decryptedPassword = $backend->decrypt($key, substr($password, 4));
+					}
+					$postData['password1'] = $decryptedPassword;
+					$password = $postData['password2'];
+					$key = $storage->get();
+					if ($key !== NULL && substr($password, 0, 4) === 'rsa:') {
+						$decryptedPassword = $backend->decrypt($key, substr($password, 4));
+					}
+					$postData['password2'] = $decryptedPassword;
+				}
 				if (isset($postData['changepasswordsubmit'])) {
 					if (strlen($postData['password1']) < $minLength) {
 						$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_tooshort_message', $this->conf['changePasswordTooShortMessage_stdWrap.']), $minLength);
@@ -299,6 +316,26 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 						$this->prefixId . '[user]' => $user['uid'],
 						$this->prefixId . '[forgothash]' => $piHash
 					));
+
+					$extraHidden = '';
+					$onSubmit = '';
+					if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'])) {
+						$_params = array();
+						foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'] as $funcRef) {
+							list($onSub, $hid) = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($funcRef, $_params, $this);
+							$extraHiddenAr[] = $hid;
+						}
+					}
+					if(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth')) {
+						$onSubmit = 'tx_rsaauth_feChangePasswordEncrypt(this); return true;';
+					}
+					if (count($extraHiddenAr)) {
+						$extraHidden = implode(LF, $extraHiddenAr);
+					}
+
+					$markerArray['###EXTRA_HIDDEN###'] = $extraHidden;
+					$markerArray['###ON_SUBMIT###'] = $onSubmit;
+
 					$markerArray['###LEGEND###'] = $this->pi_getLL('change_password', '', 1);
 					$markerArray['###NEWPASSWORD1_LABEL###'] = $this->pi_getLL('newpassword_label1', '', 1);
 					$markerArray['###NEWPASSWORD2_LABEL###'] = $this->pi_getLL('newpassword_label2', '', 1);
