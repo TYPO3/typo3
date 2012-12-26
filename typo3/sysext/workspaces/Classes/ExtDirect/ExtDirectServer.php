@@ -84,7 +84,7 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	public function getHistory($parameters) {
 		/** @var $historyService \TYPO3\CMS\Workspaces\Service\HistoryService */
 		$historyService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\HistoryService');
-		$history = $historyService->getHistory($parameters->table, $parameters->versionId);
+		$history = $historyService->getHistory($parameters->table, $parameters->liveId);
 		return array(
 			'data' => $history,
 			'total' => count($history)
