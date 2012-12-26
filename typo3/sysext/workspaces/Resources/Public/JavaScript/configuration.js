@@ -338,6 +338,7 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
 				TYPO3.Workspaces.Helpers.getHistoryWindow({
 					table: record.json.table,
+					liveId: record.json.t3ver_oid,
 					versionId: record.json.uid
 				});
 			}
