@@ -9,7 +9,7 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKE
 // Add acronyms table
 $GLOBALS['TCA']['tx_rtehtmlarea_acronym'] = array(
 	'ctrl' => array(
-		'title' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:TYPO3\\CMS\\Rtehtmlarea\\Extension\\Acronym',
+		'title' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym',
 		'label' => 'term',
 		'default_sortby' => 'ORDER BY term',
 		'sortby' => 'sorting',
