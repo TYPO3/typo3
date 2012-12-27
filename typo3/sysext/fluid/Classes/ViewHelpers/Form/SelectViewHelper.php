@@ -41,6 +41,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * If the optionValueField variable is set, the getter named after that value is used to retrieve the option key.
  * If the optionLabelField variable is set, the getter named after that value is used to retrieve the option value.
  *
+ * If the prependOptionLabel variable is set, an option item is added in first position, bearing an empty string or -
+ * If provided, the value of the prependOptionValue variable as value.
+ *
  * <code title="Domain objects">
  * <f:form.select name="users" options="{userArray}" optionValueField="id" optionLabelField="firstName" />
  * </code>
@@ -82,6 +85,8 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 		$this->registerArgument('sortByOptionLabel', 'boolean', 'If true, List will be sorted by label.', FALSE, FALSE);
 		$this->registerArgument('selectAllByDefault', 'boolean', 'If specified options are selected if none was set before.', FALSE, FALSE);
 		$this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error');
+		$this->registerArgument('prependOptionLabel', 'string', 'If specified, will provide an option at first position with the specified label.');
+		$this->registerArgument('prependOptionValue', 'string', 'If specified, will provide an option at first position with the specified value.');
 	}
 
 	/**
@@ -126,6 +131,11 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 	 */
 	protected function renderOptionTags($options) {
 		$output = '';
+		if ($this->hasArgument('prependOptionLabel')) {
+			$value = $this->hasArgument('prependOptionValue') ? $this->arguments['prependOptionValue'] : '';
+			$label = $this->arguments['prependOptionLabel'];
+			$output .= $this->renderOptionTag($value, $label, FALSE) . chr(10);
+		}
 		foreach ($options as $value => $label) {
 			$isSelected = $this->isSelected($value);
 			$output .= $this->renderOptionTag($value, $label, $isSelected) . chr(10);
