@@ -112,7 +112,7 @@ class tx_Workspaces_Service_GridData {
 						$recordState = $this->workspaceState($versionRecord['t3ver_state']);
 					}
 					$isDeletedPage = ($table == 'pages' && $recordState == 'deleted');
-					$viewUrl =  tx_Workspaces_Service_Workspaces::viewSingleRecord($table, $record['t3ver_oid'], $origRecord);
+					$viewUrl =  tx_Workspaces_Service_Workspaces::viewSingleRecord($table, $record['uid'], $origRecord, $versionRecord);
 
 					$pctChange = $this->calculateChangePercentage($table, $origRecord, $versionRecord);
 					$versionArray['id'] = $table . ':' . $record['uid'];

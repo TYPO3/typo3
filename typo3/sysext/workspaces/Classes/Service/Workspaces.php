@@ -525,26 +525,47 @@ class tx_Workspaces_Service_Workspaces {
 	 * Generates a view link for a page.
 	 *
 	 * @static
-	 * @param  $table
-	 * @param  $uid
-	 * @param  $record
+	 * @param string $table Table to be used
+	 * @param integer $uid Uid of the version(!) record
+	 * @param array $liveRecord Optional live record data
+	 * @param array $versionRecord Optional version record data
 	 * @return string
 	 */
-	public static function viewSingleRecord($table, $uid, $record=null) {
+	public static function viewSingleRecord($table, $uid, array $liveRecord = NULL, array $versionRecord = NULL) {
 		$viewUrl = '';
+
 		if ($table == 'pages') {
 			$viewUrl = t3lib_BEfunc::viewOnClick(t3lib_BEfunc::getLiveVersionIdOfRecord('pages', $uid));
 		} elseif ($table == 'pages_language_overlay' || $table == 'tt_content') {
-			$elementRecord = is_array($record) ? $record : t3lib_BEfunc::getLiveVersionOfRecord($table, $uid);
-			$viewUrl = t3lib_BEfunc::viewOnClick($elementRecord['pid']);
+			if ($liveRecord === NULL) {
+				$liveRecord = t3lib_BEfunc::getLiveVersionOfRecord($table, $uid);
+			}
+			if ($versionRecord === NULL) {
+				$versionRecord = t3lib_BEfunc::getRecord($table, $uid);
+			}
+
+			$additionalParameters = '';
+			$languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+			if ($versionRecord[$languageField] > 0) {
+				$additionalParameters .= '&L=' . $versionRecord[$languageField];
+			}
+
+			$viewUrl = t3lib_BEfunc::viewOnClick($liveRecord['pid'], '', '', '', '', $additionalParameters);
 		} else {
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'])) {
-				$_params = array('table' => $table, 'uid' => $uid, 'record' => $record);
+				$_params = array(
+					'table' => $table,
+					'uid' => $uid,
+					'record' => $liveRecord,
+					'liveRecord' => $liveRecord,
+					'versionRecord' => $versionRecord,
+				);
 				$_funcRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'];
 				$null = NULL;
 				$viewUrl = t3lib_div::callUserFunction($_funcRef, $_params, $null);
 			}
 		}
+
 		return $viewUrl;
 	}
 
