@@ -103,7 +103,10 @@ class UploadExtensionFileController extends \TYPO3\CMS\Extensionmanager\Controll
 			if (!empty($file['tmp_name']['extensionFile'])) {
 				$tempFile = \TYPO3\CMS\Core\Utility\GeneralUtility::upload_to_tempfile($file['tmp_name']['extensionFile']);
 			} else {
-				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Creating temporary file failed.', 1342864339);
+				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(
+					'Creating temporary file failed. Check your upload_max_filesize and post_max_size limits.',
+					1342864339
+				);
 			}
 			if ($fileExtension === 't3x') {
 				$extensionData = $this->getExtensionFromT3xFile($tempFile, $overwrite);
