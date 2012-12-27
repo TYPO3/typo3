@@ -139,7 +139,7 @@ class GridDataService {
 						$recordState = $this->workspaceState($versionRecord['t3ver_state']);
 					}
 					$isDeletedPage = $table == 'pages' && $recordState == 'deleted';
-					$viewUrl = \TYPO3\CMS\Workspaces\Service\WorkspaceService::viewSingleRecord($table, $record['t3ver_oid'], $origRecord);
+					$viewUrl = \TYPO3\CMS\Workspaces\Service\WorkspaceService::viewSingleRecord($table, $record['uid'], $origRecord, $versionRecord);
 					$versionArray['id'] = $table . ':' . $record['uid'];
 					$versionArray['uid'] = $record['uid'];
 					$versionArray['workspace'] = $versionRecord['t3ver_id'];

@@ -493,26 +493,47 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Generates a view link for a page.
 	 *
 	 * @static
-	 * @param string $table
-	 * @param integer $uid
-	 * @param array $record
+	 * @param string $table Table to be used
+	 * @param integer $uid Uid of the version(!) record
+	 * @param array $liveRecord Optional live record data
+	 * @param array $versionRecord Optional version record data
 	 * @return string
 	 */
-	static public function viewSingleRecord($table, $uid, $record = NULL) {
+	static public function viewSingleRecord($table, $uid, array $liveRecord = NULL, array $versionRecord = NULL) {
 		$viewUrl = '';
+
 		if ($table == 'pages') {
 			$viewUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick(\TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionIdOfRecord('pages', $uid));
 		} elseif ($table === 'pages_language_overlay' || $table === 'tt_content') {
-			$elementRecord = is_array($record) ? $record : \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionOfRecord($table, $uid);
-			$viewUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($elementRecord['pid']);
+			if ($liveRecord === NULL) {
+				$liveRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionOfRecord($table, $uid);
+			}
+			if ($versionRecord === NULL) {
+				$versionRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid);
+			}
+
+			$additionalParameters = '';
+			$languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+			if ($versionRecord[$languageField] > 0) {
+				$additionalParameters .= '&L=' . $versionRecord[$languageField];
+			}
+
+			$viewUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($liveRecord['pid'], '', '', '', '', $additionalParameters);
 		} else {
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'])) {
-				$_params = array('table' => $table, 'uid' => $uid, 'record' => $record);
+				$_params = array(
+					'table' => $table,
+					'uid' => $uid,
+					'record' => $liveRecord,
+					'liveRecord' => $liveRecord,
+					'versionRecord' => $versionRecord,
+				);
 				$_funcRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['viewSingleRecord'];
 				$null = NULL;
 				$viewUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $null);
 			}
 		}
+
 		return $viewUrl;
 	}
 
