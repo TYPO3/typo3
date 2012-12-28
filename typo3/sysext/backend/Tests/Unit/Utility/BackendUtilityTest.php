@@ -341,6 +341,112 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertStringMatchesFormat('<input %Svalue="1"%S/>', Utility\BackendUtility::getFuncCheck('params', 'test', TRUE));
 	}
 
+	/**
+	 * Tests concerning getExcludeFields
+	 */
+
+	/**
+	 * @return array
+	 */
+	public function getExcludeFieldsDataProvider() {
+		return array(
+			'getExcludeFields does not return fields not configured as exclude field' => array(
+				array(
+					'tx_foo' => array(
+						'ctrl' => array(
+							'title' => 'foo',
+						),
+						'columns' => array(
+							'bar' => array(
+								'label' => 'bar',
+								'exclude' => 1
+							),
+							'baz' => array(
+								'label' => 'bar',
+							),
+						)
+					)
+				),
+				array(
+					array(
+						'foo: bar',
+						'tx_foo:bar',
+					),
+				)
+			),
+			'getExcludeFields returns fields from root level tables if root level restriction should be ignored' => array(
+				array(
+					'tx_foo' => array(
+						'ctrl' => array(
+							'title' => 'foo',
+							'rootLevel' => TRUE,
+							'security' => array(
+								'ignoreRootLevelRestriction' => TRUE,
+							),
+						),
+						'columns' => array(
+							'bar' => array(
+								'label' => 'bar',
+								'exclude' => 1
+							),
+						)
+					)
+				),
+				array(
+					array(
+						'foo: bar',
+						'tx_foo:bar',
+					),
+				)
+			),
+			'getExcludeFields does not return fields from root level tables' => array(
+				array(
+					'tx_foo' => array(
+						'ctrl' => array(
+							'title' => 'foo',
+							'rootLevel' => TRUE,
+						),
+						'columns' => array(
+							'bar' => array(
+								'label' => 'bar',
+								'exclude' => 1
+							),
+						)
+					)
+				),
+				array()
+			),
+			'getExcludeFields does not return fields from admin only level tables' => array(
+				array(
+					'tx_foo' => array(
+						'ctrl' => array(
+							'title' => 'foo',
+							'adminOnly' => TRUE,
+						),
+						'columns' => array(
+							'bar' => array(
+								'label' => 'bar',
+								'exclude' => 1
+							),
+						)
+					)
+				),
+				array()
+			),
+		);
+	}
+
+	/**
+	 * @param $tca
+	 * @param $expected
+	 *
+	 * @test
+	 * @dataProvider getExcludeFieldsDataProvider
+	 */
+	public function getExcludeFieldsReturnsCorrectFieldList($tca, $expected) {
+		$GLOBALS['TCA'] = $tca;
+		$this->assertSame($expected, \TYPO3\CMS\Backend\Utility\BackendUtility::getExcludeFields());
+	}
 }
 
 ?>
