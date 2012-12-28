@@ -2349,10 +2349,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		$jsFiles = '';
 		$jsFooterFiles = '';
 		if (count($this->jsFiles)) {
-			foreach ($this->jsFiles as $file => $properties) {
-				$file = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($file);
-				$file = \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename($file);
-				$tag = '<script src="' . htmlspecialchars($file) . '" type="' . htmlspecialchars($properties['type']) . '"></script>';
+			foreach ($this->jsFiles as $properties) {
+                $properties['file'] = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($properties['file']);
+                $properties['file'] = \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename($properties['file']);
+				$tag = '<script src="' . htmlspecialchars($properties['file']) . '" type="' . htmlspecialchars($properties['type']) . '"></script>';
 				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
 					$tag = str_replace('|', $tag, $properties['allWrap']);
 				}
