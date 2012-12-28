@@ -450,7 +450,10 @@ class BackendUtility {
 			// Load table
 			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			// All field names configured and not restricted to admins
-			if (is_array($GLOBALS['TCA'][$table]['columns']) && $GLOBALS['TCA'][$table]['ctrl']['adminOnly'] != 1 && $GLOBALS['TCA'][$table]['ctrl']['rootLevel'] != 1) {
+			if (is_array($GLOBALS['TCA'][$table]['columns'])
+					&& empty($GLOBALS['TCA'][$table]['ctrl']['adminOnly'])
+					&& (empty($GLOBALS['TCA'][$table]['ctrl']['rootLevel']) || !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction']))
+			) {
 				$f_keys = array_keys($GLOBALS['TCA'][$table]['columns']);
 				foreach ($f_keys as $field) {
 					if ($GLOBALS['TCA'][$table]['columns'][$field]['exclude']) {
@@ -491,7 +494,7 @@ class BackendUtility {
 			}
 		}
 		// Sort fields by label
-		usort($theExcludeArray, array(t3lib_TCEforms_Flexforms, 'compareArraysByFirstValue'));
+		usort($theExcludeArray, array('TYPO3\\CMS\\Backend\\Form\\FlexFormsHelper', 'compareArraysByFirstValue'));
 		return $theExcludeArray;
 	}
 
