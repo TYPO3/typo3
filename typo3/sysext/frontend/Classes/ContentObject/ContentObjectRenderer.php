@@ -6126,7 +6126,7 @@ class ContentObjectRenderer {
 	 *
 	 * @param string $label Text string being wrapped by the link.
 	 * @param string $params Link parameter; eg. "123" for page id, "kasperYYYY@typo3.com" for email address, "http://...." for URL, "fileadmin/blabla.txt" for file.
-	 * @param array $urlParameters An array with key/value pairs representing URL parameters to set. Values NOT URL-encoded yet.
+	 * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
 	 * @param string $target Specific target set, if any. (Default is using the current)
 	 * @return string The wrapped $label-text string
 	 * @see getTypoLink_URL()
@@ -6155,7 +6155,7 @@ class ContentObjectRenderer {
 	 * Returns the URL of a "typolink" create from the input parameter string, url-parameters and target
 	 *
 	 * @param string $params Link parameter; eg. "123" for page id, "kasperYYYY@typo3.com" for email address, "http://...." for URL, "fileadmin/blabla.txt" for file.
-	 * @param array $urlParameters An array with key/value pairs representing URL parameters to set. Values NOT URL-encoded yet.
+	 * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
 	 * @param string $target Specific target set, if any. (Default is using the current)
 	 * @return string The URL
 	 * @see getTypoLink()
@@ -6182,7 +6182,7 @@ class ContentObjectRenderer {
 	/**
 	 * Returns the current page URL
 	 *
-	 * @param array $urlParameters Optionally you can specify additional URL parameters. An array with key/value pairs representing URL parameters to set. Values NOT URL-encoded yet.
+	 * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
 	 * @param integer $id An alternative ID to the current id ($GLOBALS['TSFE']->id)
 	 * @return string The URL
 	 * @see getTypoLink_URL()
@@ -6203,7 +6203,7 @@ class ContentObjectRenderer {
 	 * @todo Define visibility
 	 */
 	public function getClosestMPvalueForPage($pageId, $raw = FALSE) {
-		// MointPoints:
+		// MountPoints:
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] && $GLOBALS['TSFE']->MP) {
 			// Same page as current.
 			if (!strcmp($GLOBALS['TSFE']->id, $pageId)) {
