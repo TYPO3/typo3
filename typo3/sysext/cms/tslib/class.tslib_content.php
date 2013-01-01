@@ -6090,13 +6090,13 @@ class tslib_cObj {
 	 * Returns a linked string made from typoLink parameters.
 	 *
 	 * This function takes $label as a string, wraps it in a link-tag based on the $params string, which should contain data like that you would normally pass to the popular <LINK>-tag in the TSFE.
-	 * Optionally you can supply $urlParameters which is an array with key/value pairs that are rawurlencoded and appended to the resulting url.
+	 * Optionally you can supply $urlParameters which is an array/string and appended to the resulting url.
 	 *
-	 * @param	string		Text string being wrapped by the link.
-	 * @param	string		Link parameter; eg. "123" for page id, "kasperYYYY@typo3.com" for email address, "http://...." for URL, "fileadmin/blabla.txt" for file.
-	 * @param	array		An array with key/value pairs representing URL parameters to set. Values NOT URL-encoded yet.
-	 * @param	string		Specific target set, if any. (Default is using the current)
-	 * @return	string		The wrapped $label-text string
+	 * @param string $label Text string being wrapped by the link.
+	 * @param string $params Link parameter; eg. "123" for page id, "kasperYYYY@typo3.com" for email address, "http://...." for URL, "fileadmin/blabla.txt" for file.
+	 * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
+	 * @param string $target Specific target set, if any. (Default is using the current)
+	 * @return string The wrapped $label-text string
 	 * @see getTypoLink_URL()
 	 */
 	function getTypoLink($label, $params, $urlParameters = array(), $target = '') {
@@ -6121,10 +6121,10 @@ class tslib_cObj {
 	/**
 	 * Returns the URL of a "typolink" create from the input parameter string, url-parameters and target
 	 *
-	 * @param	string		Link parameter; eg. "123" for page id, "kasperYYYY@typo3.com" for email address, "http://...." for URL, "fileadmin/blabla.txt" for file.
-	 * @param	array		An array with key/value pairs representing URL parameters to set. Values NOT URL-encoded yet.
-	 * @param	string		Specific target set, if any. (Default is using the current)
-	 * @return	string		The URL
+	 * @param string $params Link parameter; eg. "123" for page id, "kasperYYYY@typo3.com" for email address, "http://...." for URL, "fileadmin/blabla.txt" for file.
+	 * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
+	 * @param string $target Specific target set, if any. (Default is using the current)
+	 * @return string The URL
 	 * @see getTypoLink()
 	 */
 	function getTypoLink_URL($params, $urlParameters = array(), $target = '') {
@@ -6147,9 +6147,9 @@ class tslib_cObj {
 	/**
 	 * Returns the current page URL
 	 *
-	 * @param	array		Optionally you can specify additional URL parameters. An array with key/value pairs representing URL parameters to set. Values NOT URL-encoded yet.
-	 * @param	integer		An alternative ID to the current id ($GLOBALS['TSFE']->id)
-	 * @return	string		The URL
+	 * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
+	 * @param integer $id An alternative ID to the current id ($GLOBALS['TSFE']->id)
+	 * @return string The URL
 	 * @see getTypoLink_URL()
 	 */
 	function currentPageUrl($urlParameters = array(), $id = 0) {
@@ -6166,7 +6166,7 @@ class tslib_cObj {
 	 * @see typolink()
 	 */
 	function getClosestMPvalueForPage($pageId, $raw = FALSE) {
-			// MointPoints:
+			// MountPoints:
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] && $GLOBALS['TSFE']->MP) {
 
 			if (!strcmp($GLOBALS['TSFE']->id, $pageId)) { // same page as current.
