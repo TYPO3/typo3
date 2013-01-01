@@ -411,8 +411,8 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		$isBaseURL = !empty($GLOBALS['TSFE']->baseUrl);
 		$isFeloginBaseURL = !empty($this->conf['feloginBaseURL']);
 		$link = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', array(
-			$this->prefixId . '[user]' => $user['uid'],
-			$this->prefixId . '[forgothash]' => $randHash
+			rawurlencode($this->prefixId . '[user]') => $user['uid'],
+			rawurlencode($this->prefixId . '[forgothash]') => $randHash
 		));
 		// Prefix link if necessary
 		if ($isFeloginBaseURL) {
