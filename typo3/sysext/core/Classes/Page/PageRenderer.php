@@ -104,6 +104,14 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $lang;
 
 	/**
+	 * List of language dependencies for actual language. This is used for local variants of a language
+	 * that depend on their "main" language, like Brazilian Portuguese or Canadian French.
+	 *
+	 * @var array
+	 */
+	protected $languageDependencies = array();
+
+	/**
 	 * @var \TYPO3\CMS\Core\Resource\ResourceCompressor
 	 */
 	protected $compressor;
@@ -550,6 +558,15 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function setLanguage($lang) {
 		$this->lang = $lang;
+		$this->languageDependencies = array();
+
+		// Language is found. Configure it:
+		if (in_array($this->lang, $this->locales->getLocales())) {
+			$this->languageDependencies[] = $this->lang;
+			foreach ($this->locales->getLocaleDependencies($this->lang) as $language) {
+				$this->languageDependencies[] = $language;
+			}
+		}
 	}
 
 	/**
@@ -2313,7 +2330,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			throw new \RuntimeException('Language and character encoding are not set.', 1284906026);
 		}
 		$labelsFromFile = array();
-		$allLabels = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($fileRef, $this->lang, $this->charSet, $errorMode);
+		$allLabels = $this->readLLfile($fileRef, $errorMode);
 		// Regular expression to strip the selection prefix and possibly something from the label name:
 		$labelPattern = '#^' . preg_quote($selectionPrefix, '#') . '(' . preg_quote($stripFromSelectionName, '#') . ')?#';
 		if ($allLabels !== FALSE) {
@@ -2335,6 +2352,42 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->inlineLanguageLabels = array_merge($this->inlineLanguageLabels, $labelsFromFile);
 		}
 	}
+
+	/**
+	 * Reads a locallang file.
+	 *
+	 * @param string $fileRef Reference to a relative filename to include.
+	 * @param integer $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
+	 * @return array Returns the $LOCAL_LANG array found in the file. If no array found, returns empty array.
+	 */
+	protected function readLLfile($fileRef, $errorMode = 0) {
+		if ($this->lang !== 'default') {
+			$languages = array_reverse($this->languageDependencies);
+			// At least we need to have English
+			if (empty($languages)) {
+				$languages[] = 'default';
+			}
+		} else {
+			$languages = array('default');
+		}
+
+		$localLanguage = array();
+		foreach ($languages as $language) {
+			$tempLL = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($fileRef, $language, $this->charSet, $errorMode);
+			$localLanguage['default'] = $tempLL['default'];
+			if (!isset($localLanguage[$this->lang])) {
+				$localLanguage[$this->lang] = $localLanguage['default'];
+			}
+			if ($this->lang !== 'default' && isset($tempLL[$language])) {
+				// Merge current language labels onto labels from previous language
+				// This way we have a labels with fall back applied
+				$localLanguage[$this->lang] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($localLanguage[$this->lang], $tempLL[$language], FALSE, FALSE);
+			}
+		}
+
+		return $localLanguage;
+	}
+
 
 	/*****************************************************/
 	/*                                                   */
