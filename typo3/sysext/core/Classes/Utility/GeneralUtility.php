@@ -1055,7 +1055,8 @@ class GeneralUtility {
 		}
 		require_once PATH_typo3 . 'contrib/idna/idna_convert.class.php';
 		$IDN = new \idna_convert(array('idn_version' => 2008));
-		return filter_var($IDN->encode($email), FILTER_VALIDATE_EMAIL) !== FALSE;
+		$emailToValidate = substr($email, 0, stripos($email, '@')) . '@' . $IDN->encode(strstr($email, '@'));
+ 		return (filter_var($emailToValidate, FILTER_VALIDATE_EMAIL) !== FALSE);
 	}
 
 	/**
