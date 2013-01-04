@@ -1232,8 +1232,10 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				}
 			}
 		}
-		// TODO check if we can hand this over to the Dispatcher to clear the page only once, this will save around 10% time while inserting and updating
-		$this->cacheService->clearPageCache($pageIdsToClear);
+
+		foreach ($pageIdsToClear as $pageIdToClear) {
+			$this->cacheService->getPageIdStack()->push($pageIdToClear);
+		}
 	}
 
 	/**
