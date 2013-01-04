@@ -43,11 +43,12 @@ class AlphanumericValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abst
 	 */
 	public function isValid($value) {
 		$this->errors = array();
-		if (is_string($value) && preg_match('/^[a-z0-9]*$/i', $value)) {
-			return TRUE;
+		if (!is_string($value) || preg_match('/^[[:alnum:]]*$/u', $value) !== 1) {
+			$this->addError('The given subject was not a valid alphanumeric string.', 1221551320);
+			return FALSE;
 		}
-		$this->addError('The given subject was not a valid alphanumeric string.', 1221551320);
-		return FALSE;
+
+		return TRUE;
 	}
 }
 
