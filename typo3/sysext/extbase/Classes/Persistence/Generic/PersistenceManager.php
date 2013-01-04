@@ -132,10 +132,10 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory $queryFactory
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory
 	 * @return void
 	 */
-	public function injectQueryFactory(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory $queryFactory) {
+	public function injectQueryFactory(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory) {
 		$this->queryFactory = $queryFactory;
 	}
 
