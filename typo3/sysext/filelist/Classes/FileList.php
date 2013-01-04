@@ -271,6 +271,12 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 				$filesToSort = array();
 				foreach ($files as $file) {
 					$fileObject = $storage->getFile($file['identifier']);
+					if ($fileObject->isIndexed()
+						&& $fileObject->getProperty('deleted') == 1
+					) {
+						//do not show deleted files
+						continue;
+					}
 					switch ($this->sort) {
 					case 'size':
 						$sortingKey = $fileObject->getSize();
