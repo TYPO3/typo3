@@ -35,6 +35,12 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface {
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 * @inject
+	 */
+	protected $signalSlotDispatcher;
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;

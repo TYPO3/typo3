@@ -280,6 +280,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 					$shouldCallActionMethod = FALSE;
 				}
 				if ($shouldCallActionMethod) {
+					$this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeCallActionMethod', array('controllerName' => get_class($this), 'actionMethodName' => $this->actionMethodName, 'preparedArguments' => $preparedArguments));
 					$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
 				} else {
 					$actionResult = call_user_func(array($this, $this->errorMethodName));
@@ -294,6 +295,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 			if ($this->argumentsMappingResults->hasErrors()) {
 				$actionResult = call_user_func(array($this, $this->errorMethodName));
 			} else {
+				$this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeCallActionMethod', array('controllerName' => get_class($this), 'actionMethodName' => $this->actionMethodName, 'preparedArguments' => $preparedArguments));
 				$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
 			}
 		}
