@@ -3070,8 +3070,6 @@ class t3lib_TCEmain {
 
 			// Finally, insert record:
 		$this->insertDB($table, $id, $fieldArray, TRUE);
-			// Process the remap stack in case we dealed with relations:
-		$this->processRemapStack();
 
 			// Resets dontProcessTransformations to the previous state.
 		$this->dontProcessTransformations = $backupDontProcessTransformations;
