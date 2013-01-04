@@ -129,6 +129,39 @@ class CacheServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$GLOBALS['typo3CacheManager']->expects($this->once())->method('getCache')->with('cache_pagesection')->will($this->returnValue($mockCacheFrontend));
 		$this->cacheService->_call('flushPageSectionCache');
 	}
+
+	/**
+	 * @test
+	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
+	 */
+	public function clearsCachesOfRegisteredPageIds() {
+
+		$cacheService = $this->getMock('TYPO3\\CMS\\Extbase\\Service\\CacheService', array('flushPageCache', 'flushPageSectionCache'));
+		$cacheService->getPageIdStack()->push(8);
+		$cacheService->getPageIdStack()->push(15);
+		$cacheService->getPageIdStack()->push(2);
+
+		$cacheService->expects($this->once())->method('flushPageCache')->with(array(2,15,8));
+		$cacheService->expects($this->once())->method('flushPageSectionCache')->with(array(2,15,8));
+		$cacheService->clearCachesOfRegisteredPageIds();
+	}
+
+	/**
+	 * @test
+	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
+	 */
+	public function clearsCachesOfDuplicateRegisteredPageIdsOnlyOnce() {
+
+		$cacheService = $this->getMock('TYPO3\\CMS\\Extbase\\Service\\CacheService', array('flushPageCache', 'flushPageSectionCache'));
+		$cacheService->getPageIdStack()->push(8);
+		$cacheService->getPageIdStack()->push(15);
+		$cacheService->getPageIdStack()->push(15);
+		$cacheService->getPageIdStack()->push(2);
+
+		$cacheService->expects($this->once())->method('flushPageCache')->with(array(2, 15, 8));
+		$cacheService->expects($this->once())->method('flushPageSectionCache')->with(array(2, 15, 8));
+		$cacheService->clearCachesOfRegisteredPageIds();
+	}
 }
 
 ?>

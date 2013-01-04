@@ -338,6 +338,9 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 		if (!$this->request instanceof \TYPO3\CMS\Extbase\Mvc\Web\Request) {
 			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException('redirect() only supports web requests.', 1220539734);
 		}
+
+		$this->objectManager->get('TYPO3\CMS\Extbase\Service\CacheService')->clearCachesOfRegisteredPageIds();
+
 		$uri = $this->addBaseUriIfNecessary($uri);
 		$escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
 		$this->response->setContent('<html><head><meta http-equiv="refresh" content="' . intval($delay) . ';url=' . $escapedUri . '"/></head></html>');

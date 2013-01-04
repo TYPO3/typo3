@@ -29,12 +29,32 @@ namespace TYPO3\CMS\Extbase\Service;
 class CacheService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
+	 * @var \SplStack
+	 */
+	protected $pageIdStack;
+
+	/**
+	 * Initializes the pageIdStack
+	 */
+	public function __construct() {
+		$this->pageIdStack = new \SplStack;
+	}
+
+	/**
+	 * @return \SplStack
+	 */
+	public function getPageIdStack() {
+		return $this->pageIdStack;
+	}
+
+	/**
 	 * Clears the page cache
 	 *
 	 * @param mixed $pageIdsToClear (integer) single or (array) multiple pageIds to clear the cache for
 	 * @return void
 	 */
 	public function clearPageCache($pageIdsToClear = NULL) {
+
 		if ($pageIdsToClear !== NULL && !is_array($pageIdsToClear)) {
 			$pageIdsToClear = array(intval($pageIdsToClear));
 		}
@@ -73,6 +93,23 @@ class CacheService implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		} else {
 			$pageSectionCache->flush();
+		}
+	}
+
+	/**
+	 * Walks through the pageIdStack, collects all pageIds
+	 * as array and passes them on to clearPageCache.
+	 *
+	 * @return void
+	 */
+	public function clearCachesOfRegisteredPageIds() {
+		if (!$this->pageIdStack->isEmpty()) {
+			$pageIds = array();
+			while (!$this->pageIdStack->isEmpty()) {
+				$pageIds[] = intval($this->pageIdStack->pop());
+			}
+			$pageIds = array_values(array_unique($pageIds));
+			$this->clearPageCache($pageIds);
 		}
 	}
 }

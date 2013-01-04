@@ -200,6 +200,8 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 		} else {
 			$content = $this->handleWebRequest();
 		}
+
+		$this->objectManager->get('TYPO3\CMS\Extbase\Service\CacheService')->clearCachesOfRegisteredPageIds();
 		return $content;
 	}
 
