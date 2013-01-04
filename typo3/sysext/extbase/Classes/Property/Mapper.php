@@ -80,7 +80,7 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $objectManager;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface
 	 */
 	protected $queryFactory;
 
@@ -93,10 +93,10 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory $queryFactory
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory
 	 * @return void
 	 */
-	public function injectQueryFactory(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory $queryFactory) {
+	public function injectQueryFactory(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory) {
 		$this->queryFactory = $queryFactory;
 	}
 
