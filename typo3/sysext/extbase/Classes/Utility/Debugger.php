@@ -333,11 +333,22 @@ class Tx_Extbase_Utility_Debugger {
 		return $dump;
 	}
 
+	/**
+	 * @param $collection
+	 * @param $level
+	 * @param $plainText
+	 * @param $ansiColors
+	 *
+	 * @return string
+	 */
 	protected static function renderCollection($collection, $level, $plainText, $ansiColors) {
 		$dump = '';
 		foreach ($collection as $key => $value) {
 			$dump .= PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level) . ($plainText ? '' : '<span class="debug-property">') . self::ansiEscapeWrap($key, '37', $ansiColors) . ($plainText ? '' : '</span>') . ' => ';
 			$dump .= self::renderDump($value, $level + 1, $plainText, $ansiColors);
+		}
+		if ($collection instanceof Iterator) {
+			$collection->rewind();
 		}
 		return $dump;
 	}
