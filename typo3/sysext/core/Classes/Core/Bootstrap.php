@@ -231,7 +231,10 @@ class Bootstrap {
 		define('TYPO3_db_username', $GLOBALS['TYPO3_CONF_VARS']['DB']['username']);
 		define('TYPO3_db_password', $GLOBALS['TYPO3_CONF_VARS']['DB']['password']);
 		define('TYPO3_db_host', $GLOBALS['TYPO3_CONF_VARS']['DB']['host']);
-		define('TYPO3_extTableDef_script', $GLOBALS['TYPO3_CONF_VARS']['DB']['extTablesDefinitionScript']);
+		define('TYPO3_extTableDef_script',
+			isset($GLOBALS['TYPO3_CONF_VARS']['DB']['extTablesDefinitionScript'])
+			? $GLOBALS['TYPO3_CONF_VARS']['DB']['extTablesDefinitionScript']
+			: 'extTables.php');
 		unset($GLOBALS['TYPO3_CONF_VARS']['DB']);
 		define('TYPO3_user_agent', 'User-Agent: ' . $GLOBALS['TYPO3_CONF_VARS']['HTTP']['userAgent']);
 		return $this;
