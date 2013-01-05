@@ -210,7 +210,9 @@ class ConfigurationView {
 				$var = substr($line, 0, $length);
 				$changedLine = '$GLOBALS[\'' . substr($line, 1, ($length - 1)) . '\']' . substr($line, $length);
 				// load current extTables.php
-				$extTables = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_typo3conf . TYPO3_extTableDef_script);
+				$extTables = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(
+					\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getAdditionalConfigurationFileResource()
+				);
 				if ($var === '$TCA') {
 					// check if we are editing the TCA
 					preg_match_all('/\\[\'([^\']+)\'\\]/', $line, $parts);
@@ -226,13 +228,32 @@ class ConfigurationView {
 				// insert line in extTables.php
 				$extTables = preg_replace('/<\\?php|\\?>/is', '', $extTables);
 				$extTables = '<?php' . (empty($extTables) ? LF : '') . $extTables . $changedLine . LF . '?>';
-				$success = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_typo3conf . TYPO3_extTableDef_script, $extTables);
+				$success = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(
+					\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getAdditionalConfigurationFileResource(),
+					$extTables
+				);
 				if ($success) {
 					// show flash message
-					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', '', sprintf($GLOBALS['LANG']->getLL('writeMessage', TRUE), TYPO3_extTableDef_script, '<br />', '<strong>' . nl2br($changedLine) . '</strong>'), \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						'',
+						sprintf(
+							$GLOBALS['LANG']->getLL('writeMessage', TRUE),
+							\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getAdditionalConfigurationFileResource(),
+							'<br />',
+							'<strong>' . nl2br($changedLine) . '</strong>'
+						),
+						\TYPO3\CMS\Core\Messaging\FlashMessage::OK);
 				} else {
 					// Error: show flash message
-					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', '', sprintf($GLOBALS['LANG']->getLL('writeMessageFailed', TRUE), TYPO3_extTableDef_script), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						'',
+						sprintf(
+							$GLOBALS['LANG']->getLL('writeMessageFailed', TRUE),
+							\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getAdditionalConfigurationFileResource()
+						),
+						\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+					);
 				}
 				$this->content .= $flashMessage->render();
 			}
