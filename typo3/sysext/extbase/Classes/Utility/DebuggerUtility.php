@@ -345,6 +345,9 @@ class DebuggerUtility {
 			$dump .= PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level) . ($plainText ? '' : '<span class="debug-property">') . self::ansiEscapeWrap($key, '37', $ansiColors) . ($plainText ? '' : '</span>') . ' => ';
 			$dump .= self::renderDump($value, $level, $plainText, $ansiColors);
 		}
+		if ($collection instanceof \Iterator) {
+			$collection->rewind();
+		}
 		return $dump;
 	}
 
