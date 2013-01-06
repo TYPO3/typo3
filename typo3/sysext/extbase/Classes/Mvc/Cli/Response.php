@@ -69,7 +69,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	 */
 	public function send() {
 		if ($this->content !== NULL) {
-			echo $this->getContent();
+			echo $this->shutdown();
 		}
 	}
 }

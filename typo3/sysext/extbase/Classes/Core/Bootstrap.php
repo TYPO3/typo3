@@ -88,7 +88,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 	 * @api
 	 */
 	public function initialize($configuration) {
-		if (!defined('TYPO3_cliMode') || TYPO3_cliMode !== TRUE) {
+		if (!$this->isInCliMode()) {
 			if (!isset($configuration['extensionName']) || strlen($configuration['extensionName']) === 0) {
 				throw new \RuntimeException('Invalid configuration: "extensionName" is not set', 1290623020);
 			}
@@ -194,52 +194,30 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 	 */
 	public function run($content, $configuration) {
 		$this->initialize($configuration);
-		// CLI
-		if (defined('TYPO3_cliMode') && TYPO3_cliMode === TRUE) {
-			$content = $this->handleCommandLineRequest();
-		} else {
-			$content = $this->handleWebRequest();
-		}
-
-		$this->objectManager->get('TYPO3\CMS\Extbase\Service\CacheService')->clearCachesOfRegisteredPageIds();
-		return $content;
+		return $this->handleRequest();
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function handleCommandLineRequest() {
-		$commandLine = isset($_SERVER['argv']) ? $_SERVER['argv'] : array();
-		$request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\RequestBuilder')->build(array_slice($commandLine, 1));
-		$response = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
-		$extensionName = $request->getControllerExtensionName();
-		$this->configurationManager->setConfiguration(array('extensionName' => $extensionName));
-		$this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Dispatcher')->dispatch($request, $response);
-		$content = $response->getContent();
-		$this->resetSingletons();
-		return $content;
-	}
-
-	/**
-	 * @return string
-	 */
-	protected function handleWebRequest() {
+	protected function handleRequest() {
+		/** @var $requestHandlerResolver \TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver */
 		$requestHandlerResolver = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\RequestHandlerResolver');
 		$requestHandler = $requestHandlerResolver->resolveRequestHandler();
+
 		$response = $requestHandler->handleRequest();
 		// If response is NULL after handling the request we need to stop
 		// This happens for instance, when a USER object was converted to a USER_INT
 		// @see TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler::handleRequest()
 		if ($response === NULL) {
 			$this->reflectionService->shutdown();
-			return '';
+			$content = '';
+		} else {
+			$content = $response->shutdown();
+			$this->resetSingletons();
+			$this->objectManager->get('TYPO3\CMS\Extbase\Service\CacheService')->clearCachesOfRegisteredPageIds();
 		}
-		if (count($response->getAdditionalHeaderData()) > 0) {
-			$GLOBALS['TSFE']->additionalHeaderData[] = implode(chr(10), $response->getAdditionalHeaderData());
-		}
-		$response->sendHeaders();
-		$content = $response->getContent();
-		$this->resetSingletons();
+
 		return $content;
 	}
 
@@ -251,6 +229,13 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 	protected function resetSingletons() {
 		$this->persistenceManager->persistAll();
 		$this->reflectionService->shutdown();
+	}
+
+	/**
+	 * @return boolean
+	 */
+	protected function isInCliMode() {
+		return (defined('TYPO3_cliMode') && TYPO3_cliMode);
 	}
 }
 

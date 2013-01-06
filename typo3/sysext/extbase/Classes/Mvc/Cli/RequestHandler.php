@@ -52,6 +52,11 @@ class RequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface {
 	protected $flashMessageContainer;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
+	 */
+	protected $environmentService;
+
+	/**
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
@@ -84,12 +89,21 @@ class RequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface {
 	}
 
 	/**
+	 * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+	 * @return void
+	 */
+	public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService) {
+		$this->environmentService = $environmentService;
+	}
+
+	/**
 	 * Handles the request
 	 *
 	 * @return void
 	 */
 	public function handleRequest() {
-		$request = $this->requestBuilder->build();
+		$commandLine = isset($_SERVER['argv']) ? $_SERVER['argv'] : array();
+		$request = $this->requestBuilder->build(array_slice($commandLine, 1));
 		/** @var $response \TYPO3\CMS\Extbase\Mvc\Cli\Response */
 		$response = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
 		$this->dispatcher->dispatch($request, $response);
@@ -102,7 +116,7 @@ class RequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface {
 	 * @return boolean If the request is a command line request, TRUE otherwise FALSE
 	 */
 	public function canHandleRequest() {
-		return PHP_SAPI === 'cli';
+		return $this->environmentService->isEnvironmentInCliMode();
 	}
 
 	/**
@@ -112,7 +126,7 @@ class RequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface {
 	 * @return integer The priority of the request handler.
 	 */
 	public function getPriority() {
-		return 90;
+		return 100;
 	}
 }
 

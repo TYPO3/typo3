@@ -72,6 +72,18 @@ class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface {
 	}
 
 	/**
+	 * Fetches the content, returns and clears it.
+	 *
+	 * @return string
+	 * @api
+	 */
+	public function shutdown() {
+		$content = $this->getContent();
+		$this->setContent('');
+		return $content;
+	}
+
+	/**
 	 * Returns the content of the response.
 	 *
 	 * @return string

@@ -51,6 +51,15 @@ class EnvironmentService {
 	}
 
 	/**
+	 * Detects if we are running a script from the command line.
+	 *
+	 * @return boolean
+	 */
+	public function isEnvironmentInCliMode() {
+		return $this->isEnvironmentInBackendMode() && defined('TYPO3_cliMode') && TYPO3_cliMode === TRUE;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getServerRequestMethod() {

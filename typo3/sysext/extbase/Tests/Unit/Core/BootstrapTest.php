@@ -47,12 +47,12 @@ class BootstrapTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	}
 
 	public function tearDown() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 	}
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function configureObjectManagerRespectsOverridingOfAlternativeObjectRegistrationViaPluginConfiguration() {
 		/** @var $objectContainer \TYPO3\CMS\Extbase\Object\Container\Container|\PHPUnit_Framework_MockObject_MockObject */
@@ -75,6 +75,37 @@ class BootstrapTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$bootstrapMock->_set('objectManager', $this->objectManager);
 		$bootstrapMock->_set('configurationManager', $configurationManagerMock);
 		$bootstrapMock->configureObjectManager();
+	}
+
+	/**
+	 * @test
+	 */
+	public function cliRequestHandlerIsFetchedByRequestHandlerResolver() {
+		/** @var $requestHandlerResolver \TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver|\PHPUnit_Framework_MockObject_MockObject */
+		$requestHandlerResolver = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\RequestHandlerResolver', array('resolveRequestHandler'));
+
+		/** @var $cliRequestHandler \TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler|\PHPUnit_Framework_MockObject_MockObject */
+		$cliRequestHandler = $this->getMock('TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler', array('canHandleRequest'));
+		$cliRequestHandler->expects($this->any())->method('canHandleRequest')->will($this->returnValue(TRUE));
+		$cliRequestHandler->injectObjectManager($this->objectManager);
+		$cliRequestHandler->injectRequestBuilder($this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder'));
+		$cliRequestHandler->injectDispatcher($this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Dispatcher'));
+		$cliRequestHandler->injectFlashMessageContainer($this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer'));
+
+		/** @var $cliResponse \TYPO3\CMS\Extbase\Mvc\Cli\Response */
+		$cliResponse = $this->getMock('TYPO3\CMS\Extbase\Mvc\Cli\Response', array('send'));
+
+		/** @var $bootstrap \TYPO3\CMS\Extbase\Core\Bootstrap |\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$bootstrap = $this->getAccessibleMock('TYPO3\CMS\Extbase\Core\Bootstrap', array('isInCliMode'));
+		$bootstrap->expects($this->once())->method('isInCliMode')->will($this->returnValue(TRUE));
+
+		$requestHandlerResolver->expects($this->once())->method('resolveRequestHandler')->will($this->returnValue($cliRequestHandler));
+
+		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance('TYPO3\\CMS\\Extbase\\Mvc\\RequestHandlerResolver', $requestHandlerResolver);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance('TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler', $cliRequestHandler);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance('TYPO3\CMS\Extbase\Mvc\Cli\Response', $cliResponse);
+
+		$bootstrap->run('', array());
 	}
 }
 

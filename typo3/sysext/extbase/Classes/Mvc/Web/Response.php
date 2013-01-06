@@ -288,6 +288,19 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	public function getRequest() {
 		return $this->request;
 	}
+
+	/**
+	 * Sends additional headers and returns the content
+	 *
+	 * @return null|string
+	 */
+	public function shutdown() {
+		if (count($this->getAdditionalHeaderData()) > 0) {
+			$GLOBALS['TSFE']->additionalHeaderData[] = implode(chr(10), $this->getAdditionalHeaderData());
+		}
+		$this->sendHeaders();
+		return parent::shutdown();
+	}
 }
 
 ?>

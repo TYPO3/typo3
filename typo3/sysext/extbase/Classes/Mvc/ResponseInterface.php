@@ -59,6 +59,14 @@ interface ResponseInterface {
 	 * @api
 	 */
 	public function getContent();
+
+	/**
+	 * Returns the response content without sending it.
+	 *
+	 * @return string The response content
+	 * @api
+	 */
+	public function shutdown();
 }
 
 ?>
