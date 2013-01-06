@@ -100,6 +100,8 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockArgumentMappingResults = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\MappingResults', array(), array(), '', FALSE);
 		$mockArgumentMappingResults->expects($this->once())->method('hasErrors')->will($this->returnValue(FALSE));
 		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('fooAction', 'initializeAction'), array(), '', FALSE);
+		$mockSignalSlotDispatcher = $this->getMock('TYPO3\\CMS\Extbase\\SignalSlot\\Dispatcher', array(), array(), '', FALSE);
+		$mockController->injectSignalSlotDispatcher($mockSignalSlotDispatcher);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$mockController->expects($this->once())->method('fooAction')->will($this->returnValue('the returned string'));
 		$mockController->_set('request', $mockRequest);
@@ -124,6 +126,8 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockArgumentMappingResults = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\MappingResults', array(), array(), '', FALSE);
 		$mockArgumentMappingResults->expects($this->once())->method('hasErrors')->will($this->returnValue(FALSE));
 		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('fooAction', 'initializeAction'), array(), '', FALSE);
+		$mockSignalSlotDispatcher = $this->getMock('TYPO3\\CMS\Extbase\\SignalSlot\\Dispatcher', array(), array(), '', FALSE);
+		$mockController->injectSignalSlotDispatcher($mockSignalSlotDispatcher);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$mockController->expects($this->once())->method('fooAction');
 		$mockController->_set('request', $mockRequest);
@@ -172,6 +176,8 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockArgumentMappingResults = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\MappingResults', array(), array(), '', FALSE);
 		$mockArgumentMappingResults->expects($this->once())->method('hasErrors')->will($this->returnValue(FALSE));
 		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('fooAction', 'initializeAction'), array(), '', FALSE);
+		$mockSignalSlotDispatcher = $this->getMock('TYPO3\\CMS\Extbase\\SignalSlot\\Dispatcher', array(), array(), '', FALSE);
+		$mockController->injectSignalSlotDispatcher($mockSignalSlotDispatcher);
 		$this->enableDeprecatedPropertyMapperInController($mockController);
 		$mockController->expects($this->once())->method('fooAction')->with('Default value');
 		$mockController->_set('request', $mockRequest);
