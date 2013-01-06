@@ -55,7 +55,7 @@ class DebuggerUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			$obj->property = $i;
 			$objectStorage->attach($obj);
 		}
-		$this->debugger->var_dump($objectStorage, NULL, 8, FALSE, TRUE);
+		$this->debugger->var_dump($objectStorage, NULL, 8, TRUE, FALSE, TRUE);
 		$this->assertTrue($objectStorage->valid());
 	}
 
@@ -75,7 +75,7 @@ class DebuggerUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$arguments = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\Arguments', array('dummy'), array('arguments' => $parameters));
 
 		$arguments->expects($this->never())->method('rewind');
-		$this->debugger->var_dump($arguments, NULL, 8, FALSE, TRUE);
+		$this->debugger->var_dump($arguments, NULL, 8, TRUE, FALSE, TRUE);
 	}
 }
 
