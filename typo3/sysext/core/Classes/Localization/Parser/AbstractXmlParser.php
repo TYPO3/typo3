@@ -61,7 +61,7 @@ abstract class AbstractXmlParser implements \TYPO3\CMS\Core\Localization\Parser\
 		$this->sourcePath = $sourcePath;
 		$this->languageKey = $languageKey;
 		$this->charset = $this->getCharset($languageKey, $charset);
-		if ($this->languageKey !== 'default' && $this->languageKey !== 'en') {
+		if ($this->languageKey !== 'default') {
 			$this->sourcePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(\TYPO3\CMS\Core\Utility\GeneralUtility::llXmlAutoFileName($this->sourcePath, $this->languageKey));
 			if (!@is_file($this->sourcePath)) {
 				// Global localization is not available, try split localization file
