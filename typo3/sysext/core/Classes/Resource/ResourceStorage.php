@@ -579,7 +579,7 @@ class ResourceStorage {
 			$isReadCheck = TRUE;
 		}
 		$isWriteCheck = FALSE;
-		if (in_array($action, array('write', 'delete'))) {
+		if (in_array($action, array('add', 'edit', 'write', 'upload', 'move', 'rename', 'unzip', 'remove'))) {
 			$isWriteCheck = TRUE;
 		}
 		// Check 3: Check the capabilities of the storage (and the driver)
@@ -625,7 +625,7 @@ class ResourceStorage {
 			$isReadCheck = TRUE;
 		}
 		$isWriteCheck = FALSE;
-		if (in_array($action, array('write', 'delete', 'deleteRecursive'))) {
+		if (in_array($action, array('add', 'move', 'write', 'remove', 'rename'))) {
 			$isWriteCheck = TRUE;
 		}
 		// Check 3: Check the capabilities of the storage (and the driver)
