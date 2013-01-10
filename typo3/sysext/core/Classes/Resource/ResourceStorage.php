@@ -1415,7 +1415,11 @@ class ResourceStorage {
 	 */
 	public function renameFolder($folderObject, $newName) {
 		// TODO unit tests
-		// TODO access checks
+
+		if (!$this->checkFolderActionPermission('rename', $folderObject)) {
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException('You are not allowed to rename the folder "' . $folderObject->getIdentifier() . '\'', 1357811441);
+		}
+
 		$returnObject = NULL;
 		if ($this->driver->folderExistsInFolder($newName, $folderObject)) {
 			throw new \InvalidArgumentException('The folder ' . $newName . ' already exists in folder ' . $folderObject->getIdentifier(), 1325418870);
