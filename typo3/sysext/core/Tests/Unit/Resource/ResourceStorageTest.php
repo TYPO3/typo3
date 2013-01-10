@@ -67,7 +67,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 * @return void
 	 */
 	protected function prepareFixture($configuration, $mockPermissionChecks = FALSE, $driverObject = NULL, array $storageRecord = array()) {
-		$permissionMethods = array('isFileActionAllowed', 'isFolderActionAllowed', 'checkFileActionPermission', 'checkUserActionPermission');
+		$permissionMethods = array('checkFolderActionPermission', 'checkFileActionPermission', 'checkUserActionPermission');
 		$mockedMethods = NULL;
 		$configuration = $this->convertConfigurationArrayToFlexformXml($configuration);
 		$storageRecord = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($storageRecord, array(
