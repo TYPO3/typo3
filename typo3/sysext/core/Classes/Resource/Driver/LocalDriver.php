@@ -520,14 +520,19 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	}
 
 	/**
-	 * Get mime type of file.
+	 * Get MIME type of file.
 	 *
 	 * @param string $absoluteFilePath Absolute path to file
-	 * @return string Mime type. eg, text/html
+	 * @return string|boolean MIME type. eg, text/html, FALSE on error
 	 */
 	protected function getMimeTypeOfFile($absoluteFilePath) {
-		$fileInfo = new \finfo();
-		return $fileInfo->file($absoluteFilePath, FILEINFO_MIME_TYPE);
+		if (function_exists('finfo_file')) {
+			$fileInfo = new \finfo();
+			return $fileInfo->file($absoluteFilePath, FILEINFO_MIME_TYPE);
+		} elseif (function_exists('mime_content_type')) {
+			return mime_content_type($absoluteFilePath);
+		}
+		return FALSE;
 	}
 
 	/**
