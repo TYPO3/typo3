@@ -573,7 +573,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 			throw new \InvalidArgumentException('Cannot add a file that is already part of this storage.', 1314778269);
 		}
 		$relativeTargetPath = ltrim($targetFolder->getIdentifier(), '/');
-		$relativeTargetPath .= $fileName ? $fileName : basename($localFilePath);
+		$relativeTargetPath .= $this->sanitizeFileName($fileName ? $fileName : basename($localFilePath));
 		$targetPath = $this->absoluteBasePath . $relativeTargetPath;
 		if (is_uploaded_file($localFilePath)) {
 			$moveResult = move_uploaded_file($localFilePath, $targetPath);
