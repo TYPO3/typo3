@@ -419,6 +419,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				$cList = explode(',', $this->tt_contentConfig['cols']);
 				$content = array();
 				$head = array();
+
+				// Select content records per column
+				$contentRecordsPerColumn = $this->getContentRecordsPerColumn('table', $id, array_values($cList), $showHidden . $showLanguage);
 				// For each column, render the content into a variable:
 				foreach ($cList as $key) {
 					if (!$lP) {
@@ -436,12 +439,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						</div>
 					</div>
 					';
-					// Select content elements from this column/language:
-					$queryParts = $this->makeQueryArray('tt_content', $id, 'AND colPos=' . intval($key) . $showHidden . $showLanguage);
-					$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
-					// Traverse any selected elements and render their display code:
-					$rowArr = $this->getResult($result);
 					$editUidList = '';
+					$rowArr = $contentRecordsPerColumn[$key];
 					foreach ($rowArr as $rKey => $row) {
 						if ($this->tt_contentConfig['languageMode']) {
 							$languageColumn[$key][$lP] = $head[$key] . $content[$key];
@@ -673,13 +672,13 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						<td><img src="clear.gif" width="10" height="1" alt="" /></td>
 						<td valign="top"><img src="clear.gif" width="300" height="1" alt="" /></td>
 					</tr>';
+
+				// Select content records per column
+				$contentRecordsPerColumn = $this->getContentRecordsPerColumn('tt_content', $id, array_values($cList), $showHidden . $showLanguage);
 				// Traverse columns to display top-on-top
 				foreach ($cList as $counter => $key) {
-					// Select content elements:
-					$queryParts = $this->makeQueryArray('tt_content', $id, 'AND colPos=' . intval($key) . $showHidden . $showLanguage);
-					$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
 					$c = 0;
-					$rowArr = $this->getResult($result);
+					$rowArr = $contentRecordsPerColumn[$key];
 					$rowOut = '';
 					// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
 					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && !$GLOBALS['TYPO3_DB']->sql_num_rows($result)) {
@@ -946,6 +945,31 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			$out[$fieldName] = $ll ? $ll : '&nbsp;';
 		}
 		return $out;
+	}
+
+	/**
+	 * Gets content records per column. This is required for correct workspace overlays.
+	 *
+	 * @param string $table Table to be queried
+	 * @param integer $id Page Id to be used (not used at all, but part of the API, see $this->pidSelect)
+	 * @param array $columns colPos values to be considered to be shown
+	 * @return array Associative array for each column (colPos)
+	 */
+	protected function getContentRecordsPerColumn($table, $id, array $columns, $additionalWhereClause = '') {
+		$contentRecordsPerColumn = array();
+
+		$columns = array_map('intval', $columns);
+		$queryParts = $this->makeQueryArray('tt_content', $id, 'AND colPos IN (' . implode(',', $columns) . ')' . $additionalWhereClause);
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
+		// Traverse any selected elements and render their display code:
+		$rowArr = $this->getResult($result);
+
+		foreach ($rowArr as $record) {
+			$columnValue = $record['colPos'];
+			$contentRecordsPerColumn[$columnValue][] = $record;
+		}
+
+		return $contentRecordsPerColumn;
 	}
 
 	/**********************************
