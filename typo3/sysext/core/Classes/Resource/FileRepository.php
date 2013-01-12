@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Core\Resource;
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  * @author Ingmar Schlecht <ingmar@typo3.org>
  */
-class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
+class FileRepository extends AbstractRepository {
 
 	/**
 	 * The main object type of this class. In some cases (fileReference) this
@@ -53,7 +53,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	protected $table = 'sys_file';
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\Service\IndexerService
+	 * @var Service\IndexerService
 	 */
 	protected $indexerService = NULL;
 
@@ -61,7 +61,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 * Internal function to retrieve the indexer service,
 	 * if it does not exist, an instance will be created
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\Service\IndexerService
+	 * @return Service\IndexerService
 	 */
 	protected function getIndexerService() {
 		if ($this->indexerService === NULL) {
@@ -74,7 +74,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 * Creates an object managed by this repository.
 	 *
 	 * @param array $databaseRow
-	 * @return \TYPO3\CMS\Core\Resource\File
+	 * @return File
 	 */
 	protected function createDomainObject(array $databaseRow) {
 		return $this->factory->getFileObject($databaseRow['uid'], $databaseRow);
@@ -85,10 +85,10 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 *
 	 * @TODO : Check if the indexing functions really belong into the repository and shouldn't be part of an
 	 * @TODO : indexing service, right now it's fine that way as this function will serve as the public API
-	 * @param \TYPO3\CMS\Core\Resource\File $fileObject
+	 * @param File $fileObject
 	 * @return array The indexed file data
 	 */
-	public function addToIndex(\TYPO3\CMS\Core\Resource\File $fileObject) {
+	public function addToIndex(File $fileObject) {
 		return $this->getIndexerService()->indexFile($fileObject, FALSE);
 	}
 
@@ -99,10 +99,10 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 * @TODO : Check if the indexing functions really belong into the repository and shouldn't be part of an
 	 * @TODO : indexing service, right now it's fine that way as this function will serve as the public API
 	 * @TODO : throw an exception if nothing found, for consistent handling as in AbstractRepository?
-	 * @param \TYPO3\CMS\Core\Resource\File $fileObject
+	 * @param File $fileObject
 	 * @return bool|int
 	 */
-	public function getFileIndexStatus(\TYPO3\CMS\Core\Resource\File $fileObject) {
+	public function getFileIndexStatus(File $fileObject) {
 		$storageUid = $fileObject->getStorage()->getUid();
 		$identifier = $fileObject->getIdentifier();
 		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
@@ -121,10 +121,10 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 * Returns an index record of a file, or FALSE if the file is not indexed.
 	 *
 	 * @TODO : throw an exception if nothing found, for consistent handling as in AbstractRepository?
-	 * @param \TYPO3\CMS\Core\Resource\File $fileObject
+	 * @param File $fileObject
 	 * @return bool|array
 	 */
-	public function getFileIndexRecord(\TYPO3\CMS\Core\Resource\File $fileObject) {
+	public function getFileIndexRecord(File $fileObject) {
 		$storageUid = $fileObject->getStorage()->getUid();
 		$identifier = $fileObject->getIdentifier();
 		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
@@ -142,10 +142,10 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	/**
 	 * Returns the index-data of all files within that folder
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
+	 * @param Folder $folder
 	 * @return array
 	 */
-	public function getFileIndexRecordsForFolder(\TYPO3\CMS\Core\Resource\Folder $folder) {
+	public function getFileIndexRecordsForFolder(Folder $folder) {
 		$identifier = $folder->getIdentifier();
 		$storage = $folder->getStorage()->getUid();
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -223,7 +223,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 * Find FileReference objects by uid
 	 *
 	 * @param integer $uid The UID of the sys_file_reference record
-	 * @return \TYPO3\CMS\Core\Resource\FileReference|boolean
+	 * @return FileReference|boolean
 	 * @throws \InvalidArgumentException
 	 * @api
 	 */
@@ -248,11 +248,11 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	/**
 	 * Updates an existing file object in the database
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\AbstractFile $modifiedObject
+	 * @param AbstractFile $modifiedObject
 	 * @return void
 	 */
 	public function update($modifiedObject) {
-		// TODO check if $modifiedObject is an instance of \TYPO3\CMS\Core\Resource\File
+		// TODO check if $modifiedObject is an instance of AbstractFile
 		// TODO check if $modifiedObject is indexed
 		$changedProperties = $modifiedObject->getUpdatedProperties();
 		$properties = $modifiedObject->getProperties();
@@ -267,7 +267,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 * Creates a FileReference object
 	 *
 	 * @param array $databaseRow
-	 * @return \TYPO3\CMS\Core\Resource\FileReference
+	 * @return FileReference
 	 */
 	protected function createFileReferenceObject(array $databaseRow) {
 		return $this->factory->getFileReferenceObject($databaseRow['uid'], $databaseRow);

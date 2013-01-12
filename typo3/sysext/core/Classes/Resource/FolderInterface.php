@@ -31,12 +31,12 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * @author Andreas Wolf <andreas.wolf@typo3.org>
  */
-interface FolderInterface extends \TYPO3\CMS\Core\Resource\ResourceInterface
+interface FolderInterface extends ResourceInterface
 {
 	/**
 	 * Returns a list of all subfolders
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\Folder[]
+	 * @return Folder[]
 	 */
 	public function getSubfolders();
 
@@ -44,7 +44,7 @@ interface FolderInterface extends \TYPO3\CMS\Core\Resource\ResourceInterface
 	 * Returns the object for a subfolder of the current folder, if it exists.
 	 *
 	 * @param string $name Name of the subfolder
-	 * @return \TYPO3\CMS\Core\Resource\Folder
+	 * @return Folder
 	 */
 	public function getSubfolder($name);
 
@@ -68,7 +68,7 @@ interface FolderInterface extends \TYPO3\CMS\Core\Resource\ResourceInterface
 	 * Renames this folder.
 	 *
 	 * @param string $newName
-	 * @return \TYPO3\CMS\Core\Resource\Folder
+	 * @return Folder
 	 */
 	public function rename($newName);
 

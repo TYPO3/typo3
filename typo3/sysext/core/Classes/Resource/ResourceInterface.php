@@ -50,7 +50,7 @@ interface ResourceInterface
 	/**
 	 * Get the storage this file is located in
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\ResourceStorage
+	 * @return ResourceStorage
 	 */
 	public function getStorage();
 
