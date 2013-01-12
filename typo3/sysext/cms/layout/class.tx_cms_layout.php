@@ -383,26 +383,24 @@ class tx_cms_layout extends recordList {
 				$content = array();
 				$head = array();
 
+				// Select content records per column
+				$contentRecordsPerColumn = $this->getContentRecordsPerColumn('table', $id, array_values($cList), $showHidden . $showLanguage);
 				// For EACH column, render the content into a variable:
 				foreach ($cList as $key) {
 					if (!$lP) {
 						$defLanguageCount[$key] = array();
 					}
 
-					// Select content elements from this column/language:
-					$queryParts = $this->makeQueryArray('tt_content', $id, 'AND colPos=' . intval($key) . $showHidden . $showLanguage);
-					$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
+					$rowArr = $contentRecordsPerColumn[$key];
 
 					// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
-					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && !$GLOBALS['TYPO3_DB']->sql_num_rows($result)) {
+					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && count($rowArr) == 0) {
 						$onClick = "window.location.href='db_new_content_el.php?id=" . $id . '&colPos=' . intval($key) . '&sys_language_uid=' . $lP . '&uid_pid=' . $id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . "';";
 						$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick, $GLOBALS['LANG']->getLL('newPageContent'));
 						$content[$key] .= '<img src="clear.gif" width="1" height="5" alt="" /><br />' . $theNewButton;
 					}
 
 					// Traverse any selected elements and render their display code:
-					$rowArr = $this->getResult($result);
-
 					foreach ($rowArr as $rKey => $row) {
 
 						if (is_array($row) && (int) $row['t3ver_state'] != 2) {
@@ -682,18 +680,17 @@ class tx_cms_layout extends recordList {
 						<td valign="top"><img src="clear.gif" width="300" height="1" alt="" /></td>
 					</tr>';
 
+				// Select content records per column
+				$contentRecordsPerColumn = $this->getContentRecordsPerColumn('tt_content', $id, array_values($cList), $showHidden . $showLanguage);
 				// Traverse columns to display top-on-top
 				foreach ($cList as $counter => $key) {
 
-					// Select content elements:
-					$queryParts = $this->makeQueryArray('tt_content', $id, 'AND colPos=' . intval($key) . $showHidden . $showLanguage);
-					$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
 					$c = 0;
-					$rowArr = $this->getResult($result);
+					$rowArr = $contentRecordsPerColumn[$key];
 					$rowOut = '';
 
 					// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
-					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && !$GLOBALS['TYPO3_DB']->sql_num_rows($result)) {
+					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && count($rowArr) == 0) {
 						$onClick = "window.location.href='db_new_content_el.php?id=" . $id . '&colPos=' . intval($key) . '&sys_language_uid=' . $lP . '&uid_pid=' . $id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . "';";
 						$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick, $GLOBALS['LANG']->getLL('newPageContent'));
 						$theNewButton = '<img src="clear.gif" width="1" height="5" alt="" /><br />' . $theNewButton;
@@ -1369,6 +1366,31 @@ class tx_cms_layout extends recordList {
 		return $out;
 	}
 
+	/**
+	 * Gets content records per column. This is required for correct workspace overlays.
+	 *
+	 * @param string $table Table to be queried
+	 * @param integer $id Page Id to be used (not used at all, but part of the API, see $this->pidSelect)
+	 * @param array $columns colPos values to be considered to be shown
+	 * @param string $additionalWhereClause Extra expressions for the where clause
+	 * @return array Associative array for each column (colPos)
+	 */
+	protected function getContentRecordsPerColumn($table, $id, array $columns, $additionalWhereClause = '') {
+		$contentRecordsPerColumn = array();
+
+		$columns = array_map('intval', $columns);
+		$queryParts = $this->makeQueryArray('tt_content', $id, 'AND colPos IN (' . implode(',', $columns) . ')' . $additionalWhereClause);
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
+		// Traverse any selected elements and render their display code:
+		$rowArr = $this->getResult($result);
+
+		foreach ($rowArr as $record) {
+			$columnValue = $record['colPos'];
+			$contentRecordsPerColumn[$columnValue][] = $record;
+		}
+
+		return $contentRecordsPerColumn;
+	}
 
 	/**********************************
 	 *
