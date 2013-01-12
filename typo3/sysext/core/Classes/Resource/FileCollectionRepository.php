@@ -49,7 +49,7 @@ class FileCollectionRepository extends \TYPO3\CMS\Core\Collection\RecordCollecti
 	 *
 	 * @todo the parent function throws already an exception if not found
 	 * @param integer $uid The uid to be looked up
-	 * @return NULL|\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection
+	 * @return NULL|Collection\AbstractFileCollection
 	 * @throws \RuntimeException
 	 */
 	public function findByUid($uid) {
@@ -63,8 +63,9 @@ class FileCollectionRepository extends \TYPO3\CMS\Core\Collection\RecordCollecti
 	/**
 	 * Creates a record collection domain object.
 	 *
-	 * @param $record Database record to be reconsituted
-	 * @return \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection
+	 * @param array $record Database record to be reconsituted
+	 *
+	 * @return Collection\AbstractFileCollection
 	 */
 	protected function createDomainObject(array $record) {
 		return $this->getFileFactory()->createCollectionObject($record);
@@ -73,7 +74,7 @@ class FileCollectionRepository extends \TYPO3\CMS\Core\Collection\RecordCollecti
 	/**
 	 * Gets the file factory.
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\ResourceFactory
+	 * @return ResourceFactory
 	 */
 	protected function getFileFactory() {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');

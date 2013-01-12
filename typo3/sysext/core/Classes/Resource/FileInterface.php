@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * @author Ingmar Schlecht <ingmar@typo3.org>
  */
-interface FileInterface extends \TYPO3\CMS\Core\Resource\ResourceInterface {
+interface FileInterface extends ResourceInterface {
 	/*******************************
 	 * VARIOUS FILE PROPERTY GETTERS
 	 *******************************/
@@ -116,7 +116,7 @@ interface FileInterface extends \TYPO3\CMS\Core\Resource\ResourceInterface {
 	 * @TODO : Consider to remove this function from the interface, as its
 	 * @TODO : At the same time, it could be considered whether to make the whole
 	 * @param string $contents The contents to write to the file.
-	 * @return \TYPO3\CMS\Core\Resource\File The file object (allows chaining).
+	 * @return File The file object (allows chaining).
 	 */
 	public function setContents($contents);
 
@@ -134,7 +134,7 @@ interface FileInterface extends \TYPO3\CMS\Core\Resource\ResourceInterface {
 	 * Renames this file.
 	 *
 	 * @param string $newName The new file name
-	 * @return \TYPO3\CMS\Core\Resource\File
+	 * @return File
 	 */
 	public function rename($newName);
 

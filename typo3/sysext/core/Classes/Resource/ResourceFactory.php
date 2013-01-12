@@ -39,29 +39,29 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Gets a singleton instance of this class.
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\ResourceFactory
+	 * @return ResourceFactory
 	 */
 	static public function getInstance() {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 	}
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\ResourceStorage[]
+	 * @var ResourceStorage[]
 	 */
 	protected $storageInstances = array();
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection[]
+	 * @var Collection\AbstractFileCollection[]
 	 */
 	protected $collectionInstances = array();
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\File[]
+	 * @var File[]
 	 */
 	protected $fileInstances = array();
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\FileReference[]
+	 * @var FileReference[]
 	 */
 	protected $fileReferenceInstances = array();
 
@@ -70,11 +70,11 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $driverIdentificationString The driver class (or identifier) to use.
 	 * @param array $driverConfiguration The configuration of the storage
-	 * @return \TYPO3\CMS\Core\Resource\Driver\AbstractDriver
+	 * @return Driver\AbstractDriver
 	 * @throws \InvalidArgumentException
 	 */
 	public function getDriverObject($driverIdentificationString, array $driverConfiguration) {
-		/** @var $driverRegistry \TYPO3\CMS\Core\Resource\Driver\DriverRegistry */
+		/** @var $driverRegistry Driver\DriverRegistry */
 		$driverRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Driver\\DriverRegistry');
 		$driverClass = $driverRegistry->getDriverClass($driverIdentificationString);
 		$driverObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($driverClass, $driverConfiguration);
@@ -87,7 +87,9 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param integer $uid The uid of the storage to instantiate.
 	 * @param array $recordData The record row from database.
-	 * @return \TYPO3\CMS\Core\Resource\ResourceStorage
+	 *
+	 * @throws \InvalidArgumentException
+	 * @return ResourceStorage
 	 */
 	public function getStorageObject($uid, array $recordData = array()) {
 		if (!is_numeric($uid)) {
@@ -117,12 +119,12 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 					'pathType' => 'relative'
 				);
 			} elseif (count($recordData) === 0 || $recordData['uid'] !== $uid) {
-				/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
+				/** @var $storageRepository StorageRepository */
 				$storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
-				/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
+				/** @var $storage ResourceStorage */
 				$storageObject = $storageRepository->findByUid($uid);
 			}
-			if (!$storageObject instanceof \TYPO3\CMS\Core\Resource\ResourceStorage) {
+			if (!$storageObject instanceof ResourceStorage) {
 				$storageObject = $this->createStorageObject($recordData, $storageConfiguration);
 			}
 			$this->storageInstances[$uid] = $storageObject;
@@ -156,7 +158,9 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param integer $uid The uid of the collection to instantiate.
 	 * @param array $recordData The record row from database.
-	 * @return \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection
+	 *
+	 * @throws \InvalidArgumentException
+	 * @return Collection\AbstractFileCollection
 	 */
 	public function getCollectionObject($uid, array $recordData = array()) {
 		if (!is_numeric($uid)) {
@@ -181,15 +185,15 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Creates a collection object.
 	 *
 	 * @param array $collectionData The database row of the sys_file_collection record.
-	 * @return \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection
+	 * @return Collection\AbstractFileCollection
 	 */
 	public function createCollectionObject(array $collectionData) {
 		switch ($collectionData['type']) {
 		case 'static':
-			$collection = \TYPO3\CMS\Core\Resource\Collection\StaticFileCollection::create($collectionData);
+			$collection = Collection\StaticFileCollection::create($collectionData);
 			break;
 		case 'folder':
-			$collection = \TYPO3\CMS\Core\Resource\Collection\FolderBasedFileCollection::create($collectionData);
+			$collection = Collection\FolderBasedFileCollection::create($collectionData);
 			break;
 		default:
 			$collection = NULL;
@@ -202,7 +206,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param array $storageRecord
 	 * @param array $storageConfiguration Storage configuration (if given, this won't be extracted from the FlexForm value but the supplied array used instead)
-	 * @return \TYPO3\CMS\Core\Resource\ResourceStorage
+	 * @return ResourceStorage
 	 */
 	public function createStorageObject(array $storageRecord, array $storageConfiguration = NULL) {
 		$className = 'TYPO3\\CMS\\Core\\Resource\\ResourceStorage';
@@ -211,7 +215,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$driverType = $storageRecord['driver'];
 		$driverObject = $this->getDriverObject($driverType, $storageConfiguration);
-		/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
+		/** @var $storage ResourceStorage */
 		$storage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $driverObject, $storageRecord);
 		// TODO handle publisher
 		return $storage;
@@ -220,12 +224,12 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Creates a folder to directly access (a part of) a storage.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage The storage the folder belongs to
+	 * @param ResourceStorage $storage The storage the folder belongs to
 	 * @param string $identifier The path to the folder. Might also be a simple unique string, depending on the storage driver.
 	 * @param string $name The name of the folder (e.g. the folder name)
-	 * @return \TYPO3\CMS\Core\Resource\Folder
+	 * @return Folder
 	 */
-	public function createFolderObject(\TYPO3\CMS\Core\Resource\ResourceStorage $storage, $identifier, $name) {
+	public function createFolderObject(ResourceStorage $storage, $identifier, $name) {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Folder', $storage, $identifier, $name);
 	}
 
@@ -241,7 +245,9 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param integer $uid The uid of the file to instantiate.
 	 * @param array $fileData The record row from database.
-	 * @return \TYPO3\CMS\Core\Resource\File
+	 *
+	 * @throws \InvalidArgumentException
+	 * @return File
 	 */
 	public function getFileObject($uid, array $fileData = array()) {
 		if (!is_numeric($uid)) {
@@ -265,7 +271,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Gets an file object from an identifier [storage]:[fileId]
 	 *
 	 * @param string $identifier
-	 * @return \TYPO3\CMS\Core\Resource\File
+	 * @return File
 	 */
 	public function getFileObjectFromCombinedIdentifier($identifier) {
 		$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $identifier);
@@ -299,7 +305,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * - "file:23"
 	 *
 	 * @param string $input
-	 * @return \TYPO3\CMS\Core\Resource\FileInterface|\TYPO3\CMS\Core\Resource\Folder
+	 * @return FileInterface|Folder
 	 */
 	public function retrieveFileOrFolderObject($input) {
 		// Easy function to deal with that, could be dropped in the future
@@ -330,7 +336,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @TODO check naming, inserted by SteffenR while working on filelist
 	 * @param string $identifier
-	 * @return \TYPO3\CMS\Core\Resource\Folder
+	 * @return Folder
 	 */
 	public function getFolderObjectFromCombinedIdentifier($identifier) {
 		$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $identifier);
@@ -350,7 +356,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Gets a storage object from a combined identifier
 	 *
 	 * @param string $identifier An identifier of the form [storage uid]:[object identifier]
-	 * @return \TYPO3\CMS\Core\Resource\ResourceStorage
+	 * @return ResourceStorage
 	 */
 	public function getStorageObjectFromCombinedIdentifier($identifier) {
 		$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $identifier);
@@ -365,7 +371,9 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Gets a file or folder object.
 	 *
 	 * @param string $identifier
-	 * @return \TYPO3\CMS\Core\Resource\FileInterface|\TYPO3\CMS\Core\Resource\Folder
+	 *
+	 * @throws \RuntimeException
+	 * @return FileInterface|Folder
 	 */
 	public function getObjectFromCombinedIdentifier($identifier) {
 		list($storageId, $objectIdentifier) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $identifier);
@@ -384,10 +392,10 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * row to be fetched.
 	 *
 	 * @param array $fileData
-	 * @return \TYPO3\CMS\Core\Resource\File
+	 * @return File
 	 */
 	public function createFileObject(array $fileData) {
-		/** @var \TYPO3\CMS\Core\Resource\File $fileObject */
+		/** @var File $fileObject */
 		$fileObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\File', $fileData);
 		if (is_numeric($fileData['storage'])) {
 			$storageObject = $this->getStorageObject($fileData['storage']);
@@ -402,7 +410,9 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param integer $uid The uid of the file usage (sys_file_reference) to instantiate.
 	 * @param array $fileReferenceData The record row from database.
-	 * @return \TYPO3\CMS\Core\Resource\FileReference
+	 *
+	 * @throws \InvalidArgumentException
+	 * @return FileReference
 	 */
 	public function getFileReferenceObject($uid, array $fileReferenceData = array()) {
 		if (!is_numeric($uid)) {
@@ -435,10 +445,10 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Requires a database row to be already fetched and present.
 	 *
 	 * @param array $fileReferenceData
-	 * @return \TYPO3\CMS\Core\Resource\FileReference
+	 * @return FileReference
 	 */
 	public function createFileReferenceObject(array $fileReferenceData) {
-		/** @var \TYPO3\CMS\Core\Resource\FileReference $fileReferenceObject */
+		/** @var FileReference $fileReferenceObject */
 		$fileReferenceObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileReference', $fileReferenceData);
 		return $fileReferenceObject;
 	}
