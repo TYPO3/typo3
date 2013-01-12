@@ -166,7 +166,7 @@ class ResourceStorage {
 	 */
 	const DEFAULT_ProcessingFolder = '_processed_';
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\Folder
+	 * @var Folder
 	 */
 	protected $processingFolder;
 
@@ -935,6 +935,7 @@ class ResourceStorage {
 			$fileInfo = $this->driver->getFileInfo($file);
 			$fileInfo['sha1'] = $this->driver->hash($file, 'sha1');
 			$file->updateProperties($fileInfo);
+			$this->getFileRepository()->update($file);
 		} catch (\RuntimeException $e) {
 			throw $e;
 		}
@@ -1158,9 +1159,7 @@ class ResourceStorage {
 			$newProperties['storage'] = $storage->getUid();
 		}
 		$file->updateProperties($newProperties);
-		/** @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
-		$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-		$fileRepository->update($file);
+		$this->getFileRepository()->update($file);
 	}
 
 	/**
@@ -1336,6 +1335,7 @@ class ResourceStorage {
 			foreach ($fileObjects as $oldIdentifier => $fileObject) {
 				$newIdentifier = $fileMappings[$oldIdentifier];
 				$fileObject->updateProperties(array('storage' => $this, 'identifier' => $newIdentifier));
+				$this->getFileRepository()->update($fileObject);
 			}
 			$returnObject = $this->getFolder($fileMappings[$folderToMove->getIdentifier()]);
 		} catch (\TYPO3\CMS\Core\Exception $e) {
@@ -1432,6 +1432,7 @@ class ResourceStorage {
 			foreach ($fileObjects as $oldIdentifier => $fileObject) {
 				$newIdentifier = $fileMappings[$oldIdentifier];
 				$fileObject->updateProperties(array('identifier' => $newIdentifier));
+				$this->getFileRepository()->update($fileObject);
 			}
 			$returnObject = $this->getFolder($fileMappings[$folderObject->getIdentifier()]);
 		} catch (\Exception $e) {
@@ -1898,6 +1899,13 @@ class ResourceStorage {
 	 */
 	protected function getFileFactory() {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Resource\FileRepository
+	 */
+	protected function getFileRepository() {
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 	}
 
 	/**

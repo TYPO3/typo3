@@ -248,7 +248,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	/**
 	 * Updates an existing file object in the database
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\File $modifiedObject
+	 * @param \TYPO3\CMS\Core\Resource\AbstractFile $modifiedObject
 	 * @return void
 	 */
 	public function update($modifiedObject) {
