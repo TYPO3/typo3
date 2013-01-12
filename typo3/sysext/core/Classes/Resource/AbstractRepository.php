@@ -40,7 +40,7 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 	protected $table = '';
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
+	 * @var ResourceFactory
 	 */
 	protected $factory;
 
@@ -179,6 +179,9 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 	 * Finds an object matching the given identifier.
 	 *
 	 * @param int $uid The identifier of the object to find
+	 *
+	 * @throws \RuntimeException
+	 * @throws \InvalidArgumentException
 	 * @return object The matching object
 	 * @api
 	 */
@@ -202,6 +205,8 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 	 * )
 	 *
 	 * @param array $defaultOrderings The property names to order by
+	 *
+	 * @throws \BadMethodCallException
 	 * @return void
 	 * @api
 	 */
@@ -213,6 +218,8 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 	 * Sets the default query settings to be used in this repository
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings The query settings to be used by default
+	 *
+	 * @throws \BadMethodCallException
 	 * @return void
 	 * @api
 	 */
@@ -223,6 +230,7 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 	/**
 	 * Returns a query for objects of this repository
 	 *
+	 * @throws \BadMethodCallException
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 * @api
 	 */

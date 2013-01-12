@@ -39,7 +39,7 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * @author Ingmar Schlecht <ingmar@typo3.org>
  */
-class FileReference implements \TYPO3\CMS\Core\Resource\FileInterface {
+class FileReference implements FileInterface {
 
 	/**
 	 * Various properties of the FileReference. Note that these information can be different
@@ -70,14 +70,14 @@ class FileReference implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * The FileRepository object. Is needed e.g. for the delete() method to delete the usage record
 	 * (sys_file_reference record) of this file usage.
 	 *
-	 * @var \TYPO3\CMS\Core\Resource\FileRepository
+	 * @var FileRepository
 	 */
 	protected $fileRepository;
 
 	/**
 	 * Reference to the original File object underlying this FileReference.
 	 *
-	 * @var \TYPO3\CMS\Core\Resource\File
+	 * @var File
 	 */
 	protected $originalFile;
 
@@ -99,7 +99,10 @@ class FileReference implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * directly, use the corresponding factory methods instead.
 	 *
 	 * @param array $fileReferenceData
-	 * @param \TYPO3\CMS\Core\Resource\ResourceFactory $factory
+	 * @param ResourceFactory $factory
+	 *
+	 * @throws \RuntimeException
+	 * @throws \InvalidArgumentException
 	 */
 	public function __construct(array $fileReferenceData, $factory = NULL) {
 		$this->propertiesOfFileReference = $fileReferenceData;
@@ -107,7 +110,7 @@ class FileReference implements \TYPO3\CMS\Core\Resource\FileInterface {
 			throw new \InvalidArgumentException('Incorrect reference to original file given for FileReference.', 1300098528);
 		}
 		if (!$factory) {
-			/** @var $factory \TYPO3\CMS\Core\Resource\ResourceFactory */
+			/** @var $factory ResourceFactory */
 			$factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 		}
 		$this->originalFile = $factory->getFileObject($fileReferenceData['uid_local']);
@@ -330,7 +333,7 @@ class FileReference implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * Replace the current file contents with the given string
 	 *
 	 * @param string $contents The contents to write to the file.
-	 * @return \TYPO3\CMS\Core\Resource\File The file object (allows chaining).
+	 * @return File The file object (allows chaining).
 	 */
 	public function setContents($contents) {
 		return $this->originalFile->setContents($contents);
@@ -342,7 +345,7 @@ class FileReference implements \TYPO3\CMS\Core\Resource\FileInterface {
 	/**
 	 * Get the storage the original file is located in
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\ResourceStorage
+	 * @return ResourceStorage
 	 */
 	public function getStorage() {
 		return $this->originalFile->getStorage();
@@ -370,6 +373,7 @@ class FileReference implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * Deletes only this particular FileReference from the persistence layer
 	 * (database table sys_file_reference) but leaves the original file untouched.
 	 *
+	 * @throws \BadMethodCallException
 	 * @return boolean TRUE if deletion succeeded
 	 */
 	public function delete() {
@@ -383,7 +387,9 @@ class FileReference implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * Renames the fileName in this particular usage.
 	 *
 	 * @param string $newName The new name
-	 * @return \TYPO3\CMS\Core\Resource\FileReference
+	 *
+	 * @throws \BadMethodCallException
+	 * @return FileReference
 	 */
 	public function rename($newName) {
 		// TODO: Implement this function. This should only rename the
@@ -446,7 +452,7 @@ class FileReference implements \TYPO3\CMS\Core\Resource\FileInterface {
 	/**
 	 * Gets the original file being referenced.
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\File
+	 * @return File
 	 */
 	public function getOriginalFile() {
 		return $this->originalFile;

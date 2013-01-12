@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * @author Ingmar Schlecht <ingmar@typo3.org>
  */
-abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
+abstract class AbstractFile implements FileInterface {
 
 	/**
 	 * Various file properties
@@ -47,7 +47,7 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	/**
 	 * The storage this file is located in
 	 *
-	 * @var \TYPO3\CMS\Core\Resource\ResourceStorage
+	 * @var ResourceStorage
 	 */
 	protected $storage = NULL;
 
@@ -162,6 +162,7 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	/**
 	 * Returns the size of this file
 	 *
+	 * @throws \RuntimeException
 	 * @return integer
 	 */
 	public function getSize() {
@@ -183,6 +184,7 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	/**
 	 * Returns the Sha1 of this file
 	 *
+	 * @throws \RuntimeException
 	 * @return string
 	 */
 	public function getSha1() {
@@ -195,6 +197,7 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	/**
 	 * Returns the creation time of the file as Unix timestamp
 	 *
+	 * @throws \RuntimeException
 	 * @return integer
 	 */
 	public function getCreationTime() {
@@ -207,6 +210,7 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	/**
 	 * Returns the date (as UNIX timestamp) the file was last modified.
 	 *
+	 * @throws \RuntimeException
 	 * @return integer
 	 */
 	public function getModificationTime() {
@@ -291,6 +295,7 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	/**
 	 * Get the contents of this file
 	 *
+	 * @throws \RuntimeException
 	 * @return string File contents
 	 */
 	public function getContents() {
@@ -304,7 +309,9 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * Replace the current file contents with the given string
 	 *
 	 * @param string $contents The contents to write to the file.
-	 * @return \TYPO3\CMS\Core\Resource\File The file object (allows chaining).
+	 *
+	 * @throws \RuntimeException
+	 * @return File The file object (allows chaining).
 	 */
 	public function setContents($contents) {
 		if ($this->deleted) {
@@ -320,7 +327,7 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	/**
 	 * Get the storage this file is located in
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\ResourceStorage
+	 * @return ResourceStorage
 	 */
 	public function getStorage() {
 		if ($this->storage === NULL) {
@@ -337,7 +344,7 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	protected function loadStorage() {
 		$storageUid = $this->getProperty('storage');
 		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($storageUid)) {
-			/** @var $fileFactory \TYPO3\CMS\Core\Resource\ResourceFactory */
+			/** @var $fileFactory ResourceFactory */
 			$fileFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 			$this->storage = $fileFactory->getStorageObject($storageUid);
 		}
@@ -362,12 +369,12 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * t3lib/file/-internal usage; don't use it to move files.
 	 *
 	 * @internal Should only be used by other parts of the File API (e.g. drivers after moving a file)
-	 * @param integer|\TYPO3\CMS\Core\Resource\ResourceStorage $storage
-	 * @return \TYPO3\CMS\Core\Resource\File
+	 * @param integer|ResourceStorage $storage
+	 * @return File
 	 */
 	public function setStorage($storage) {
 		// Do not check for deleted file here as we might need this method for the recycler later on
-		if (is_object($storage) && $storage instanceof \TYPO3\CMS\Core\Resource\ResourceStorage) {
+		if (is_object($storage) && $storage instanceof ResourceStorage) {
 			$this->storage = $storage;
 			$this->properties['storage'] = $storage->getUid();
 		} else {
@@ -436,7 +443,9 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * Renames this file.
 	 *
 	 * @param string $newName The new file name
-	 * @return \TYPO3\CMS\Core\Resource\File
+	 *
+	 * @throws \RuntimeException
+	 * @return File
 	 */
 	public function rename($newName) {
 		if ($this->deleted) {
@@ -448,12 +457,14 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	/**
 	 * Copies this file into a target folder
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder Folder to copy file into.
+	 * @param Folder $targetFolder Folder to copy file into.
 	 * @param string $targetFileName an optional destination fileName
 	 * @param string $conflictMode overrideExistingFile", "renameNewFile", "cancel
-	 * @return \TYPO3\CMS\Core\Resource\File The new (copied) file.
+	 *
+	 * @throws \RuntimeException
+	 * @return File The new (copied) file.
 	 */
-	public function copyTo(\TYPO3\CMS\Core\Resource\Folder $targetFolder, $targetFileName = NULL, $conflictMode = 'renameNewFile') {
+	public function copyTo(Folder $targetFolder, $targetFileName = NULL, $conflictMode = 'renameNewFile') {
 		if ($this->deleted) {
 			throw new \RuntimeException('File has been deleted.', 1329821483);
 		}
@@ -463,12 +474,14 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	/**
 	 * Moves the file into the target folder
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder Folder to move file into.
+	 * @param Folder $targetFolder Folder to move file into.
 	 * @param string $targetFileName an optional destination fileName
 	 * @param string $conflictMode overrideExistingFile", "renameNewFile", "cancel
-	 * @return \TYPO3\CMS\Core\Resource\File This file object, with updated properties.
+	 *
+	 * @throws \RuntimeException
+	 * @return File This file object, with updated properties.
 	 */
-	public function moveTo(\TYPO3\CMS\Core\Resource\Folder $targetFolder, $targetFileName = NULL, $conflictMode = 'renameNewFile') {
+	public function moveTo(Folder $targetFolder, $targetFileName = NULL, $conflictMode = 'renameNewFile') {
 		if ($this->deleted) {
 			throw new \RuntimeException('File has been deleted.', 1329821484);
 		}
@@ -485,6 +498,8 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * web-based authentication. You have to take care of this yourself.
 	 *
 	 * @param bool  $relativeToCurrentScript   Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
+	 *
+	 * @throws \RuntimeException
 	 * @return string
 	 */
 	public function getPublicUrl($relativeToCurrentScript = FALSE) {
@@ -500,6 +515,8 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * If the file is already on the local system, this only makes a new copy if $writable is set to TRUE.
 	 *
 	 * @param boolean $writable Set this to FALSE if you only want to do read operations on the file.
+	 *
+	 * @throws \RuntimeException
 	 * @return string
 	 */
 	public function getForLocalProcessing($writable = TRUE) {
