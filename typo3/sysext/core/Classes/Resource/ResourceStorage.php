@@ -90,7 +90,7 @@ class ResourceStorage {
 	/**
 	 * The storage driver instance belonging to this storage.
 	 *
-	 * @var \TYPO3\CMS\Core\Resource\Driver\AbstractDriver
+	 * @var Driver\AbstractDriver
 	 */
 	protected $driver;
 
@@ -116,7 +116,7 @@ class ResourceStorage {
 	protected $baseUri;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\Service\FileProcessingService
+	 * @var Service\FileProcessingService
 	 */
 	protected $fileProcessingService;
 
@@ -187,17 +187,17 @@ class ResourceStorage {
 	/**
 	 * Constructor for a storage object.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Driver\AbstractDriver $driver
+	 * @param Driver\AbstractDriver $driver
 	 * @param array $storageRecord The storage record row from the database
 	 */
-	public function __construct(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver $driver, array $storageRecord) {
+	public function __construct(Driver\AbstractDriver $driver, array $storageRecord) {
 		$this->storageRecord = $storageRecord;
-		$this->configuration = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
+		$this->configuration = ResourceFactory::getInstance()->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
 		$this->driver = $driver;
 		$this->driver->setStorage($this);
 		try {
 			$this->driver->processConfiguration();
-		} catch (\TYPO3\CMS\Core\Resource\Exception\InvalidConfigurationException $e) {
+		} catch (Exception\InvalidConfigurationException $e) {
 			// configuration error
 			// mark this storage as permanently unusable
 			$this->markAsPermanentlyOffline();
@@ -263,10 +263,10 @@ class ResourceStorage {
 	/**
 	 * Sets the storage that belongs to this storage.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Driver\AbstractDriver $driver
-	 * @return \TYPO3\CMS\Core\Resource\ResourceStorage
+	 * @param Driver\AbstractDriver $driver
+	 * @return ResourceStorage
 	 */
-	public function setDriver(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver $driver) {
+	public function setDriver(Driver\AbstractDriver $driver) {
 		$this->driver = $driver;
 		return $this;
 	}
@@ -274,7 +274,7 @@ class ResourceStorage {
 	/**
 	 * Returns the driver object belonging to this storage.
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\Driver\AbstractDriver
+	 * @return Driver\AbstractDriver
 	 */
 	protected function getDriver() {
 		return $this->driver;
@@ -284,6 +284,8 @@ class ResourceStorage {
 	 * Deprecated function, don't use it. Will be removed in some later revision.
 	 *
 	 * @param string $identifier
+	 *
+	 * @throws \BadMethodCallException
 	 */
 	public function getFolderByIdentifier($identifier) {
 		throw new \BadMethodCallException('Function TYPO3\\CMS\\Core\\Resource\\ResourceStorage::getFolderByIdentifier() has been renamed to just getFolder(). Please fix the method call.', 1333754514);
@@ -293,6 +295,8 @@ class ResourceStorage {
 	 * Deprecated function, don't use it. Will be removed in some later revision.
 	 *
 	 * @param string $identifier
+	 *
+	 * @throws \BadMethodCallException
 	 */
 	public function getFileByIdentifier($identifier) {
 		throw new \BadMethodCallException('Function TYPO3\\CMS\\Core\\Resource\\ResourceStorage::getFileByIdentifier() has been renamed to just getFileInfoByIdentifier(). ' . 'Please fix the method call.', 1333754533);
@@ -451,6 +455,8 @@ class ResourceStorage {
 	 *
 	 * @param string $folderIdentifier
 	 * @param array $additionalData
+	 *
+	 * @throws Exception\FolderDoesNotExistException
 	 * @return void
 	 */
 	public function injectFileMount($folderIdentifier, $additionalData = array()) {
@@ -458,7 +464,7 @@ class ResourceStorage {
 		if ($this->driver->folderExists($folderIdentifier) === FALSE) {
 			// if there is an error, this is important and should be handled
 			// as otherwise the user would see the whole storage without any restrictions for the filemounts
-			throw new \TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException('Folder for file mount ' . $folderIdentifier . ' does not exist.', 1334427099);
+			throw new Exception\FolderDoesNotExistException('Folder for file mount ' . $folderIdentifier . ' does not exist.', 1334427099);
 		}
 		$folderObject = $this->driver->getFolder($folderIdentifier);
 		if (empty($additionalData)) {
@@ -561,10 +567,10 @@ class ResourceStorage {
 	 * related UI elements should thus be shown (move icon, edit icon, etc.)
 	 *
 	 * @param string $action, can be read, write, delete
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @return boolean
 	 */
-	public function checkFileActionPermission($action, \TYPO3\CMS\Core\Resource\FileInterface $file) {
+	public function checkFileActionPermission($action, FileInterface $file) {
 		// Check 1: Does the user have permission to perform the action? e.g. "readFile"
 		if ($this->checkUserActionPermission($action, 'File') === FALSE) {
 			return FALSE;
@@ -607,10 +613,10 @@ class ResourceStorage {
 	 * See the checkFileActionPermission() method above for the reasons.
 	 *
 	 * @param string $action
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
+	 * @param Folder $folder
 	 * @return boolean
 	 */
-	public function checkFolderActionPermission($action, \TYPO3\CMS\Core\Resource\Folder $folder = NULL) {
+	public function checkFolderActionPermission($action, Folder $folder = NULL) {
 		// Check 1: Does the user have permission to perform the action? e.g. "writeFolder"
 		if ($this->checkUserActionPermission($action, 'Folder') === FALSE) {
 			return FALSE;
@@ -693,12 +699,15 @@ class ResourceStorage {
 	 * Moves a file from the local filesystem to this storage.
 	 *
 	 * @param string $localFilePath The file on the server's hard disk to add.
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder The target path, without the fileName
+	 * @param Folder $targetFolder The target path, without the fileName
 	 * @param string $fileName The fileName. If not set, the local file name is used.
 	 * @param string $conflictMode possible value are 'cancel', 'replace', 'changeName'
-	 * @return \TYPO3\CMS\Core\Resource\FileInterface
+	 *
+	 * @throws \InvalidArgumentException
+	 * @throws Exception\ExistingTargetFileNameException
+	 * @return FileInterface
 	 */
-	public function addFile($localFilePath, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $fileName = '', $conflictMode = 'changeName') {
+	public function addFile($localFilePath, Folder $targetFolder, $fileName = '', $conflictMode = 'changeName') {
 		// TODO check permissions (write on target, upload, ...)
 		if (!file_exists($localFilePath)) {
 			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
@@ -706,7 +715,7 @@ class ResourceStorage {
 		$targetFolder = $targetFolder ? $targetFolder : $this->getDefaultFolder();
 		$fileName = $fileName ? $fileName : basename($localFilePath);
 		if ($conflictMode === 'cancel' && $this->driver->fileExistsInFolder($fileName, $targetFolder)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException('File "' . $fileName . '" already exists in folder ' . $targetFolder->getIdentifier(), 1322121068);
+			throw new Exception\ExistingTargetFileNameException('File "' . $fileName . '" already exists in folder ' . $targetFolder->getIdentifier(), 1322121068);
 		} elseif ($conflictMode === 'changeName') {
 			$fileName = $this->getUniqueName($targetFolder, $fileName);
 		}
@@ -718,11 +727,11 @@ class ResourceStorage {
 	/**
 	 * Creates a (cryptographic) hash for a file.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $fileObject
+	 * @param FileInterface $fileObject
 	 * @param $hash
 	 * @return string
 	 */
-	public function hashFile(\TYPO3\CMS\Core\Resource\FileInterface $fileObject, $hash) {
+	public function hashFile(FileInterface $fileObject, $hash) {
 		return $this->driver->hash($fileObject, $hash);
 	}
 
@@ -732,11 +741,11 @@ class ResourceStorage {
 	 * WARNING: Access to the file may be restricted by further means, e.g.
 	 * some web-based authentication. You have to take care of this yourself.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\ResourceInterface $resourceObject The file or folder object
+	 * @param ResourceInterface $resourceObject The file or folder object
 	 * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
 	 * @return string
 	 */
-	public function getPublicUrl(\TYPO3\CMS\Core\Resource\ResourceInterface $resourceObject, $relativeToCurrentScript = FALSE) {
+	public function getPublicUrl(ResourceInterface $resourceObject, $relativeToCurrentScript = FALSE) {
 		$publicUrl = NULL;
 		// Pre-process the public URL by an accordant slot
 		$this->emitPreGeneratePublicUrl($resourceObject, $relativeToCurrentScript, array('publicUrl' => &$publicUrl));
@@ -750,14 +759,14 @@ class ResourceStorage {
 	/**
 	 * Passes a file to the File Processing Services and returns the resulting ProcessedFile object.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $fileObject The file object
+	 * @param FileInterface $fileObject The file object
 	 * @param string $context
 	 * @param array $configuration
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\ProcessedFile
+	 * @return ProcessedFile
 	 * @throws \InvalidArgumentException
 	 */
-	public function processFile(\TYPO3\CMS\Core\Resource\FileInterface $fileObject, $context, array $configuration) {
+	public function processFile(FileInterface $fileObject, $context, array $configuration) {
 		if ($fileObject->getStorage() !== $this) {
 			throw new \InvalidArgumentException('Cannot process files of foreign storage', 1353401835);
 		}
@@ -769,11 +778,11 @@ class ResourceStorage {
 	/**
 	 * Copies a file from the storage for local processing.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $fileObject
+	 * @param FileInterface $fileObject
 	 * @param bool $writable
 	 * @return string Path to local file (either original or copied to some temporary local location)
 	 */
-	public function getFileForLocalProcessing(\TYPO3\CMS\Core\Resource\FileInterface $fileObject, $writable = TRUE) {
+	public function getFileForLocalProcessing(FileInterface $fileObject, $writable = TRUE) {
 		$filePath = $this->driver->getFileForLocalProcessing($fileObject, $writable);
 		// @todo: shouldn't this go in the driver? this function is called from the indexing service
 		// @todo: and recursively calls itself over and over again, this is left out for now with getModificationTime()
@@ -785,7 +794,7 @@ class ResourceStorage {
 	 * Get file by identifier
 	 *
 	 * @param string $identifier
-	 * @return \TYPO3\CMS\Core\Resource\FileInterface
+	 * @return FileInterface
 	 */
 	public function getFile($identifier) {
 		return $this->driver->getFile($identifier);
@@ -794,7 +803,7 @@ class ResourceStorage {
 	/**
 	 * Get information about a file
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $fileObject
+	 * @param FileInterface $fileObject
 	 * @return array
 	 */
 	public function getFileInfo(FileInterface $fileObject) {
@@ -805,6 +814,8 @@ class ResourceStorage {
 	 * Get information about a file by its identifier
 	 *
 	 * @param string $identifier
+	 *
+	 * @throws \BadMethodCallException
 	 * @return array
 	 */
 	public function getFileInfoByIdentifier($identifier) {
@@ -887,23 +898,25 @@ class ResourceStorage {
 	 * Checks if the queried file in the given folder exists.
 	 *
 	 * @param string $fileName
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
+	 * @param Folder $folder
 	 * @return boolean
 	 */
-	public function hasFileInFolder($fileName, \TYPO3\CMS\Core\Resource\Folder $folder) {
+	public function hasFileInFolder($fileName, Folder $folder) {
 		return $this->driver->fileExistsInFolder($fileName, $folder);
 	}
 
 	/**
 	 * Get contents of a file object
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
+	 *
+	 * @throws Exception\InsufficientFileReadPermissionsException
 	 * @return string
 	 */
 	public function getFileContents($file) {
 		// Check if $file is readable
 		if (!$this->checkFileActionPermission('read', $file)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileReadPermissionsException('Reading file "' . $file->getIdentifier() . '" is not allowed.', 1330121089);
+			throw new Exception\InsufficientFileReadPermissionsException('Reading file "' . $file->getIdentifier() . '" is not allowed.', 1330121089);
 		}
 		return $this->driver->getFileContents($file);
 	}
@@ -911,14 +924,15 @@ class ResourceStorage {
 	/**
 	 * Set contents of a file object.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\AbstractFile $file
+	 * @param AbstractFile $file
 	 * @param string $contents
-	 * @return integer The number of bytes written to the file
-	 * @throws \RuntimeException
+	 *
+	 * @throws \Exception|\RuntimeException
 	 * @throws Exception\InsufficientFileWritePermissionsException
 	 * @throws Exception\InsufficientUserPermissionsException
+	 * @return integer The number of bytes written to the file
 	 */
-	public function setFileContents(\TYPO3\CMS\Core\Resource\AbstractFile $file, $contents) {
+	public function setFileContents(AbstractFile $file, $contents) {
 			// Check if user is allowed to edit
 		if (!$this->checkUserActionPermission('edit', 'File')) {
 			throw new Exception\InsufficientUserPermissionsException(('Updating file "' . $file->getIdentifier()) . '" not allowed for user.', 1330121117);
@@ -946,12 +960,14 @@ class ResourceStorage {
 	 * previously in t3lib_extFileFunc::func_newfile()
 	 *
 	 * @param string $fileName
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolderObject
-	 * @return \TYPO3\CMS\Core\Resource\FileInterface The file object
+	 * @param Folder $targetFolderObject
+	 *
+	 * @throws Exception\InsufficientFolderWritePermissionsException
+	 * @return FileInterface The file object
 	 */
-	public function createFile($fileName, \TYPO3\CMS\Core\Resource\Folder $targetFolderObject) {
+	public function createFile($fileName, Folder $targetFolderObject) {
 		if (!$this->checkFolderActionPermission('add', $targetFolderObject)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException('You are not allowed to create directories on this storage "' . $targetFolderObject->getIdentifier() . '"', 1323059807);
+			throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to create directories on this storage "' . $targetFolderObject->getIdentifier() . '"', 1323059807);
 		}
 		return $this->driver->createFile($fileName, $targetFolderObject);
 	}
@@ -959,16 +975,19 @@ class ResourceStorage {
 	/**
 	 * Previously in t3lib_extFileFunc::deleteFile()
 	 *
-	 * @param $fileObject \TYPO3\CMS\Core\Resource\FileInterface
+	 * @param $fileObject FileInterface
+	 *
+	 * @throws Exception\InsufficientFileAccessPermissionsException
+	 * @throws Exception\FileOperationErrorException
 	 * @return bool TRUE if deletion succeeded
 	 */
 	public function deleteFile($fileObject) {
 		if (!$this->checkFileActionPermission('remove', $fileObject)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException('You are not allowed to delete the file "' . $fileObject->getIdentifier() . '\'', 1319550425);
+			throw new Exception\InsufficientFileAccessPermissionsException('You are not allowed to delete the file "' . $fileObject->getIdentifier() . '\'', 1319550425);
 		}
 		$result = $this->driver->deleteFile($fileObject);
 		if ($result === FALSE) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException('Deleting the file "' . $fileObject->getIdentifier() . '\' failed.', 1329831691);
+			throw new Exception\FileOperationErrorException('Deleting the file "' . $fileObject->getIdentifier() . '\' failed.', 1329831691);
 		}
 		// Mark the file object as deleted
 		$fileObject->setDeleted();
@@ -980,13 +999,16 @@ class ResourceStorage {
 	 * copies a source file (from any location) in to the target
 	 * folder, the latter has to be part of this storage
 	 *
-	 * @param 	\TYPO3\CMS\Core\Resource\FileInterface	$file
-	 * @param 	\TYPO3\CMS\Core\Resource\Folder $targetFolder
-	 * @param 	string	$conflictMode	"overrideExistingFile", "renameNewFile", "cancel
-	 * @param 	string	$targetFileName	an optional destination fileName
-	 * @return \TYPO3\CMS\Core\Resource\FileInterface
+	 * @param FileInterface $file
+	 * @param Folder $targetFolder
+	 * @param string $targetFileName an optional destination fileName
+	 * @param string $conflictMode "overrideExistingFile", "renameNewFile", "cancel
+	 *
+	 * @throws \Exception|Exception\AbstractFileOperationException
+	 * @throws Exception\ExistingTargetFileNameException
+	 * @return FileInterface
 	 */
-	public function copyFile(\TYPO3\CMS\Core\Resource\FileInterface $file, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $targetFileName = NULL, $conflictMode = 'renameNewFile') {
+	public function copyFile(FileInterface $file, Folder $targetFolder, $targetFileName = NULL, $conflictMode = 'renameNewFile') {
 		$this->emitPreFileCopySignal($file, $targetFolder);
 		$this->checkFileCopyPermissions($file, $targetFolder, $targetFileName);
 		if ($targetFileName === NULL) {
@@ -994,7 +1016,7 @@ class ResourceStorage {
 		}
 		// File exists and we should abort, let's abort
 		if ($conflictMode === 'cancel' && $targetFolder->hasFile($targetFileName)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException('The target file already exists.', 1320291063);
+			throw new Exception\ExistingTargetFileNameException('The target file already exists.', 1320291063);
 		}
 		// File exists and we should find another name, let's find another one
 		if ($conflictMode === 'renameNewFile' && $targetFolder->hasFile($targetFileName)) {
@@ -1010,7 +1032,7 @@ class ResourceStorage {
 				$tempPath = $file->getForLocalProcessing();
 				$newFileObject = $this->driver->addFile($tempPath, $targetFolder, $targetFileName);
 			}
-		} catch (\TYPO3\CMS\Core\Resource\Exception\AbstractFileOperationException $e) {
+		} catch (Exception\AbstractFileOperationException $e) {
 			throw $e;
 		}
 		$this->emitPostFileCopySignal($file, $targetFolder);
@@ -1022,32 +1044,38 @@ class ResourceStorage {
 	 * if not throw an exception
 	 *
 	 * @param string $localFilePath the temporary file name from $_FILES['file1']['tmp_name']
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param Folder $targetFolder
 	 * @param string $targetFileName the destination file name $_FILES['file1']['name']
 	 * @param int $uploadedFileSize
+	 *
+	 * @throws Exception\InsufficientFolderWritePermissionsException
+	 * @throws Exception\UploadException
+	 * @throws Exception\IllegalFileExtensionException
+	 * @throws Exception\UploadSizeException
+	 * @throws Exception\InsufficientUserPermissionsException
 	 * @return void
 	 */
 	protected function checkFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $uploadedFileSize) {
 		// Makes sure the user is allowed to upload
 		if (!$this->checkUserActionPermission('upload', 'File')) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException('You are not allowed to upload files to this storage "' . $this->getUid() . '"', 1322112430);
+			throw new Exception\InsufficientUserPermissionsException('You are not allowed to upload files to this storage "' . $this->getUid() . '"', 1322112430);
 		}
 		// Makes sure this is an uploaded file
 		if (!is_uploaded_file($localFilePath)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\UploadException('The upload has failed, no uploaded file found!', 1322110455);
+			throw new Exception\UploadException('The upload has failed, no uploaded file found!', 1322110455);
 		}
 		// Max upload size (kb) for files.
 		$maxUploadFileSize = \TYPO3\CMS\Core\Utility\GeneralUtility::getMaxUploadFileSize() * 1024;
 		if ($uploadedFileSize >= $maxUploadFileSize) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\UploadSizeException('The uploaded file exceeds the size-limit of ' . $maxUploadFileSize . ' bytes', 1322110041);
+			throw new Exception\UploadSizeException('The uploaded file exceeds the size-limit of ' . $maxUploadFileSize . ' bytes', 1322110041);
 		}
 		// Check if targetFolder is writable
 		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1322120356);
+			throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1322120356);
 		}
 		// Check for a valid file extension
 		if (!$this->checkFileExtensionPermission($targetFileName)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException('Extension of file name is not allowed in "' . $targetFileName . '"!', 1322120271);
+			throw new Exception\IllegalFileExtensionException('Extension of file name is not allowed in "' . $targetFileName . '"!', 1322120271);
 		}
 	}
 
@@ -1055,31 +1083,37 @@ class ResourceStorage {
 	 * Check if a file has the permission to be copied on a File/Folder/Storage,
 	 * if not throw an exception
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param FileInterface $file
+	 * @param Folder $targetFolder
 	 * @param string $targetFileName
+	 *
+	 * @throws Exception
+	 * @throws Exception\InsufficientFolderWritePermissionsException
+	 * @throws Exception\IllegalFileExtensionException
+	 * @throws Exception\InsufficientFileReadPermissionsException
+	 * @throws Exception\InsufficientUserPermissionsException
 	 * @return void
 	 */
-	protected function checkFileCopyPermissions(\TYPO3\CMS\Core\Resource\FileInterface $file, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $targetFileName) {
+	protected function checkFileCopyPermissions(FileInterface $file, Folder $targetFolder, $targetFileName) {
 		// Check if targetFolder is within this storage, this should never happen
 		if ($this->getUid() != $targetFolder->getStorage()->getUid()) {
-			throw new \TYPO3\CMS\Core\Resource\Exception('The operation of the folder cannot be called by this storage "' . $this->getUid() . '"', 1319550405);
+			throw new Exception('The operation of the folder cannot be called by this storage "' . $this->getUid() . '"', 1319550405);
 		}
 		// Check if user is allowed to copy
 		if (!$this->checkUserActionPermission('copy', 'File')) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException('You are not allowed to copy files to this storage "' . $this->getUid() . '"', 1319550415);
+			throw new Exception\InsufficientUserPermissionsException('You are not allowed to copy files to this storage "' . $this->getUid() . '"', 1319550415);
 		}
 		// Check if $file is readable
 		if (!$this->checkFileActionPermission('read', $file)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileReadPermissionsException('You are not allowed to read the file "' . $file->getIdentifier() . '\'', 1319550425);
+			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to read the file "' . $file->getIdentifier() . '\'', 1319550425);
 		}
 		// Check if targetFolder is writable
 		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1319550435);
+			throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1319550435);
 		}
 		// Check for a valid file extension
 		if (!$this->checkFileExtensionPermission($targetFileName)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException('You are not allowed to copy a file of that type.', 1319553317);
+			throw new Exception\IllegalFileExtensionException('You are not allowed to copy a file of that type.', 1319553317);
 		}
 	}
 
@@ -1089,11 +1123,13 @@ class ResourceStorage {
 	 *
 	 * previously in t3lib_extFileFunc::func_move()
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
-	 * @param string $conflictMode "overrideExistingFile", "renameNewFile", "cancel
+	 * @param FileInterface $file
+	 * @param Folder $targetFolder
 	 * @param string $targetFileName an optional destination fileName
-	 * @return \TYPO3\CMS\Core\Resource\FileInterface
+	 * @param string $conflictMode "overrideExistingFile", "renameNewFile", "cancel
+	 *
+	 * @throws Exception\ExistingTargetFileNameException
+	 * @return FileInterface
 	 */
 	public function moveFile($file, $targetFolder, $targetFileName = NULL, $conflictMode = 'renameNewFile') {
 		$this->checkFileMovePermissions($file, $targetFolder);
@@ -1105,7 +1141,7 @@ class ResourceStorage {
 			if ($conflictMode === 'renameNewFile') {
 				$targetFileName = $this->getUniqueName($targetFolder, $targetFileName);
 			} elseif ($conflictMode === 'cancel') {
-				throw new \TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException('The target file already exists', 1329850997);
+				throw new Exception\ExistingTargetFileNameException('The target file already exists', 1329850997);
 			}
 		}
 		$this->emitPreFileMoveSignal($file, $targetFolder);
@@ -1133,12 +1169,12 @@ class ResourceStorage {
 	 * Updates the properties of a file object with some that are freshly
 	 * fetched from the driver.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\AbstractFile $file
+	 * @param AbstractFile $file
 	 * @param string $identifier The identifier of the file. If set, this will overwrite the file object's identifier (use e.g. after moving a file)
-	 * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage
+	 * @param ResourceStorage $storage
 	 * @return void
 	 */
-	protected function updateFile(\TYPO3\CMS\Core\Resource\AbstractFile $file, $identifier = '', $storage = NULL) {
+	protected function updateFile(AbstractFile $file, $identifier = '', $storage = NULL) {
 		if ($identifier === '') {
 			$identifier = $file->getIdentifier();
 		}
@@ -1164,43 +1200,47 @@ class ResourceStorage {
 	 * Checks for permissions to move a file.
 	 *
 	 * @throws \RuntimeException
-	 * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientFileReadPermissionsException
-	 * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientFileWritePermissionsException
-	 * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException
-	 * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @throws Exception\InsufficientFileReadPermissionsException
+	 * @throws Exception\InsufficientFileWritePermissionsException
+	 * @throws Exception\InsufficientFolderAccessPermissionsException
+	 * @throws Exception\InsufficientUserPermissionsException
+	 * @param FileInterface $file
+	 * @param Folder $targetFolder
 	 * @return void
 	 */
-	protected function checkFileMovePermissions(\TYPO3\CMS\Core\Resource\FileInterface $file, \TYPO3\CMS\Core\Resource\Folder $targetFolder) {
+	protected function checkFileMovePermissions(FileInterface $file, Folder $targetFolder) {
 		// Check if targetFolder is within this storage
 		if ($this->getUid() != $targetFolder->getStorage()->getUid()) {
 			throw new \RuntimeException();
 		}
 		// Check if user is allowed to move
 		if (!$this->checkUserActionPermission('move', 'File')) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException('You are not allowed to move files to storage "' . $this->getUid() . '"', 1319219349);
+			throw new Exception\InsufficientUserPermissionsException('You are not allowed to move files to storage "' . $this->getUid() . '"', 1319219349);
 		}
 		// Check if $file is readable
 		if (!$this->checkFileActionPermission('read', $file)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileReadPermissionsException('You are not allowed to read the file "' . $file->getIdentifier() . '\'', 1319219349);
+			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to read the file "' . $file->getIdentifier() . '\'', 1319219349);
 		}
 		// Check if $file is writable
 		if (!$this->checkFileActionPermission('write', $file)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileWritePermissionsException('You are not allowed to move the file "' . $file->getIdentifier() . '\'', 1319219349);
+			throw new Exception\InsufficientFileWritePermissionsException('You are not allowed to move the file "' . $file->getIdentifier() . '\'', 1319219349);
 		}
 		// Check if targetFolder is writable
 		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1319219349);
+			throw new Exception\InsufficientFolderAccessPermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1319219349);
 		}
 	}
 
 	/**
 	 * Previously in t3lib_extFileFunc::func_rename()
 	 *
-	 * @param 	\TYPO3\CMS\Core\Resource\FileInterface	$file
-	 * @param 	string	$targetFileName
-	 * @return \TYPO3\CMS\Core\Resource\FileInterface
+	 * @param FileInterface $file
+	 * @param string $targetFileName
+	 *
+	 * @throws Exception\InsufficientFileWritePermissionsException
+	 * @throws Exception\InsufficientFileReadPermissionsException
+	 * @throws Exception\InsufficientUserPermissionsException
+	 * @return FileInterface
 	 */
 	// TODO add $conflictMode setting
 	public function renameFile($file, $targetFileName) {
@@ -1210,15 +1250,15 @@ class ResourceStorage {
 		}
 		// Check if user is allowed to rename
 		if (!$this->checkUserActionPermission('rename', 'File')) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException('You are not allowed to rename files."', 1319219349);
+			throw new Exception\InsufficientUserPermissionsException('You are not allowed to rename files."', 1319219349);
 		}
 		// Check if $file is readable
 		if (!$this->checkFileActionPermission('read', $file)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileReadPermissionsException('You are not allowed to read the file "' . $file->getIdentifier() . '\'', 1319219349);
+			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to read the file "' . $file->getIdentifier() . '\'', 1319219349);
 		}
 		// Check if $file is writable
 		if (!$this->checkFileActionPermission('write', $file)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileWritePermissionsException('You are not allowed to rename the file "' . $file->getIdentifier() . '\'', 1319219349);
+			throw new Exception\InsufficientFileWritePermissionsException('You are not allowed to rename the file "' . $file->getIdentifier() . '\'', 1319219349);
 		}
 		// Call driver method to rename the file that also updates the file
 		// object properties
@@ -1235,11 +1275,13 @@ class ResourceStorage {
 	/**
 	 * Replaces a file with a local file (e.g. a freshly uploaded file)
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @param string $localFilePath
-	 * @return \TYPO3\CMS\Core\Resource\FileInterface
+	 *
+	 * @throws \InvalidArgumentException
+	 * @return FileInterface
 	 */
-	public function replaceFile(\TYPO3\CMS\Core\Resource\FileInterface $file, $localFilePath) {
+	public function replaceFile(FileInterface $file, $localFilePath) {
 		if (!file_exists($localFilePath)) {
 			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1325842622);
 		}
@@ -1254,12 +1296,12 @@ class ResourceStorage {
 	 * Adds an uploaded file into the Storage. Previously in t3lib_extFileFunc::file_upload()
 	 *
 	 * @param array $uploadedFileData contains information about the uploaded file given by $_FILES['file1']
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder the target folder
+	 * @param Folder $targetFolder the target folder
 	 * @param string $targetFileName the file name to be written
 	 * @param string $conflictMode possible value are 'cancel', 'replace'
-	 * @return \TYPO3\CMS\Core\Resource\FileInterface The file object
+	 * @return FileInterface The file object
 	 */
-	public function addUploadedFile(array $uploadedFileData, \TYPO3\CMS\Core\Resource\Folder $targetFolder = NULL, $targetFileName = NULL, $conflictMode = 'cancel') {
+	public function addUploadedFile(array $uploadedFileData, Folder $targetFolder = NULL, $targetFileName = NULL, $conflictMode = 'cancel') {
 		$localFilePath = $uploadedFileData['tmp_name'];
 		if ($targetFolder === NULL) {
 			$targetFolder = $this->getDefaultFolder();
@@ -1279,10 +1321,10 @@ class ResourceStorage {
 	/**
 	 * Returns an array with all file objects in a folder and its subfolders, with the file identifiers as keys.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
-	 * @return \TYPO3\CMS\Core\Resource\File[]
+	 * @param Folder $folder
+	 * @return File[]
 	 */
-	protected function getAllFileObjectsInFolder(\TYPO3\CMS\Core\Resource\Folder $folder) {
+	protected function getAllFileObjectsInFolder(Folder $folder) {
 		$files = array();
 		$folderQueue = array($folder);
 		while (!empty($folderQueue)) {
@@ -1301,16 +1343,17 @@ class ResourceStorage {
 	 * Moves a folder. If you want to move a folder from this storage to another
 	 * one, call this method on the target storage, otherwise you will get an exception.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderToMove The folder to move.
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetParentFolder The target parent folder
+	 * @param Folder $folderToMove The folder to move.
+	 * @param Folder $targetParentFolder The target parent folder
 	 * @param string $newFolderName
 	 * @param string $conflictMode  How to handle conflicts; one of "overrideExistingFile", "renameNewFolder", "cancel
-	 * @throws \TYPO3\CMS\Core\Exception
+	 *
+	 * @throws \Exception|\TYPO3\CMS\Core\Exception
 	 * @throws \InvalidArgumentException
-	 * @return \TYPO3\CMS\Core\Resource\Folder
+	 * @return Folder
 	 */
 	// TODO add tests
-	public function moveFolder(\TYPO3\CMS\Core\Resource\Folder $folderToMove, \TYPO3\CMS\Core\Resource\Folder $targetParentFolder, $newFolderName = NULL, $conflictMode = 'renameNewFolder') {
+	public function moveFolder(Folder $folderToMove, Folder $targetParentFolder, $newFolderName = NULL, $conflictMode = 'renameNewFolder') {
 		$sourceStorage = $folderToMove->getStorage();
 		$returnObject = NULL;
 		if (!$targetParentFolder->getStorage() == $this) {
@@ -1344,12 +1387,14 @@ class ResourceStorage {
 	/**
 	 * Moves the given folder from a different storage to the target folder in this storage.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderToMove
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetParentFolder
+	 * @param Folder $folderToMove
+	 * @param Folder $targetParentFolder
 	 * @param string $newFolderName
+	 *
+	 * @throws \BadMethodCallException
 	 * @return array Mapping of old file identifiers to new ones
 	 */
-	protected function moveFolderBetweenStorages(\TYPO3\CMS\Core\Resource\Folder $folderToMove, \TYPO3\CMS\Core\Resource\Folder $targetParentFolder, $newFolderName = NULL) {
+	protected function moveFolderBetweenStorages(Folder $folderToMove, Folder $targetParentFolder, $newFolderName = NULL) {
 		// This is not implemented for now as moving files between storages might cause quite some headaches when
 		// something goes wrong. It is also not that common of a use case, so it does not hurt that much to leave it out
 		// for now.
@@ -1359,13 +1404,13 @@ class ResourceStorage {
 	/**
 	 * Copy folder
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderToCopy The folder to copy
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetParentFolder The target folder
+	 * @param Folder $folderToCopy The folder to copy
+	 * @param Folder $targetParentFolder The target folder
 	 * @param string $newFolderName
 	 * @param string $conflictMode  "overrideExistingFolder", "renameNewFolder", "cancel
-	 * @return \TYPO3\CMS\Core\Resource\Folder The new (copied) folder object
+	 * @return Folder The new (copied) folder object
 	 */
-	public function copyFolder(\TYPO3\CMS\Core\Resource\Folder $folderToCopy, \TYPO3\CMS\Core\Resource\Folder $targetParentFolder, $newFolderName = NULL, $conflictMode = 'renameNewFolder') {
+	public function copyFolder(Folder $folderToCopy, Folder $targetParentFolder, $newFolderName = NULL, $conflictMode = 'renameNewFolder') {
 		// TODO implement the $conflictMode handling
 		// TODO permission checks
 		$returnObject = NULL;
@@ -1391,23 +1436,25 @@ class ResourceStorage {
 	/**
 	 * Moves files between storages
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderToMove
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetParentFolder
+	 * @param Folder $folderToMove
+	 * @param Folder $targetParentFolder
 	 * @param null $newFolderName
+	 *
+	 * @throws \RuntimeException
 	 * @return void
 	 */
-	protected function copyFolderBetweenStorages(\TYPO3\CMS\Core\Resource\Folder $folderToMove, \TYPO3\CMS\Core\Resource\Folder $targetParentFolder, $newFolderName = NULL) {
+	protected function copyFolderBetweenStorages(Folder $folderToMove, Folder $targetParentFolder, $newFolderName = NULL) {
 		throw new \RuntimeException('Not yet implemented!', 1330262731);
 	}
 
 	/**
 	 * Previously in t3lib_extFileFunc::folder_move()
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject
+	 * @param Folder $folderObject
 	 * @param string $newName
 	 * @throws \Exception
 	 * @throws \InvalidArgumentException
-	 * @return \TYPO3\CMS\Core\Resource\Folder
+	 * @return Folder
 	 */
 	public function renameFolder($folderObject, $newName) {
 		// TODO unit tests
@@ -1441,15 +1488,15 @@ class ResourceStorage {
 	/**
 	 * Previously in t3lib_extFileFunc::folder_delete()
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder    $folderObject
+	 * @param Folder    $folderObject
 	 * @param bool $deleteRecursively
 	 * @throws \RuntimeException
-	 * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException
+	 * @throws Exception\InsufficientFileAccessPermissionsException
 	 * @return boolean
 	 */
 	public function deleteFolder($folderObject, $deleteRecursively = FALSE) {
 		if (!$this->checkFolderActionPermission('remove', $folderObject)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException('You are not allowed to access the folder "' . $folderObject->getIdentifier() . '\'', 1323423953);
+			throw new Exception\InsufficientFileAccessPermissionsException('You are not allowed to access the folder "' . $folderObject->getIdentifier() . '\'', 1323423953);
 		}
 		if ($this->driver->isFolderEmpty($folderObject) && !$deleteRecursively) {
 			throw new \RuntimeException('Could not delete folder "' . $folderObject->getIdentifier() . '" because it is not empty.', 1325952534);
@@ -1511,10 +1558,10 @@ class ResourceStorage {
 	 * Checks if the given file exists in the given folder
 	 *
 	 * @param string $folderName
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
+	 * @param Folder $folder
 	 * @return boolean
 	 */
-	public function hasFolderInFolder($folderName, \TYPO3\CMS\Core\Resource\Folder $folder) {
+	public function hasFolderInFolder($folderName, Folder $folder) {
 		return $this->driver->folderExistsInFolder($folderName, $folder);
 	}
 
@@ -1524,10 +1571,13 @@ class ResourceStorage {
 	 * previously in t3lib_extFileFunc::func_newfolder()
 	 *
 	 * @param string $folderName The new folder name
-	 * @param \TYPO3\CMS\Core\Resource\Folder $parentFolder (optional) the parent folder to create the new folder inside of. If not given, the root folder is used
-	 * @return \TYPO3\CMS\Core\Resource\Folder The new folder object
+	 * @param Folder $parentFolder (optional) the parent folder to create the new folder inside of. If not given, the root folder is used
+	 *
+	 * @throws Exception\InsufficientFolderWritePermissionsException
+	 * @throws \InvalidArgumentException
+	 * @return Folder The new folder object
 	 */
-	public function createFolder($folderName, \TYPO3\CMS\Core\Resource\Folder $parentFolder = NULL) {
+	public function createFolder($folderName, Folder $parentFolder = NULL) {
 		if ($parentFolder === NULL) {
 			$parentFolder = $this->getRootLevelFolder();
 		}
@@ -1535,7 +1585,7 @@ class ResourceStorage {
 			throw new \InvalidArgumentException('Parent folder "' . $parentFolder->getIdentifier() . '" does not exist.', 1325689164);
 		}
 		if (!$this->checkFolderActionPermission('add', $parentFolder)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException('You are not allowed to create directories in the folder "' . $parentFolder->getIdentifier() . '"', 1323059807);
+			throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to create directories in the folder "' . $parentFolder->getIdentifier() . '"', 1323059807);
 		}
 		$folderParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', $folderName, TRUE);
 		foreach ($folderParts as $folder) {
@@ -1552,7 +1602,7 @@ class ResourceStorage {
 	/**
 	 * Returns the default folder where new files are stored if no other folder is given.
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\Folder
+	 * @return Folder
 	 */
 	public function getDefaultFolder() {
 		return $this->driver->getDefaultFolder();
@@ -1560,15 +1610,18 @@ class ResourceStorage {
 
 	/**
 	 * @param string $identifier
-	 * @return \TYPO3\CMS\Core\Resource\Folder
+	 *
+	 * @throws Exception\NotInMountPointException
+	 * @throws Exception\FolderDoesNotExistException
+	 * @return Folder
 	 */
 	public function getFolder($identifier) {
 		if (!$this->driver->folderExists($identifier)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException('Folder ' . $identifier . ' does not exist.', 1320575630);
+			throw new Exception\FolderDoesNotExistException('Folder ' . $identifier . ' does not exist.', 1320575630);
 		}
 		$folderObject = $this->driver->getFolder($identifier);
 		if ($this->fileMounts && !$this->isWithinFileMountBoundaries($folderObject)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\NotInMountPointException('Folder "' . $identifier . '" is not within your mount points.', 1330120649);
+			throw new Exception\NotInMountPointException('Folder "' . $identifier . '" is not within your mount points.', 1330120649);
 		} else {
 			return $folderObject;
 		}
@@ -1578,7 +1631,7 @@ class ResourceStorage {
 	 * Returns the folders on the root level of the storage
 	 * or the first mount point of this storage for this user
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\Folder
+	 * @return Folder
 	 */
 	public function getRootLevelFolder() {
 		if (count($this->fileMounts)) {
@@ -1610,209 +1663,209 @@ class ResourceStorage {
 	/**
 	 * Emits file pre-copy signal
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param FileInterface $file
+	 * @param Folder $targetFolder
 	 * @return void
 	 */
-	protected function emitPreFileCopySignal(\TYPO3\CMS\Core\Resource\FileInterface $file, \TYPO3\CMS\Core\Resource\Folder $targetFolder) {
+	protected function emitPreFileCopySignal(FileInterface $file, Folder $targetFolder) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFileCopy, array($file, $targetFolder));
 	}
 
 	/**
 	 * Emits the file post-copy signal
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param FileInterface $file
+	 * @param Folder $targetFolder
 	 * @return void
 	 */
-	protected function emitPostFileCopySignal(\TYPO3\CMS\Core\Resource\FileInterface $file, \TYPO3\CMS\Core\Resource\Folder $targetFolder) {
+	protected function emitPostFileCopySignal(FileInterface $file, Folder $targetFolder) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFileCopy, array($file, $targetFolder));
 	}
 
 	/**
 	 * Emits the file pre-move signal
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param FileInterface $file
+	 * @param Folder $targetFolder
 	 * @return void
 	 */
-	protected function emitPreFileMoveSignal(\TYPO3\CMS\Core\Resource\FileInterface $file, \TYPO3\CMS\Core\Resource\Folder $targetFolder) {
+	protected function emitPreFileMoveSignal(FileInterface $file, Folder $targetFolder) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFileMove, array($file, $targetFolder));
 	}
 
 	/**
 	 * Emits the file post-move signal
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param FileInterface $file
+	 * @param Folder $targetFolder
 	 * @return void
 	 */
-	protected function emitPostFileMoveSignal(\TYPO3\CMS\Core\Resource\FileInterface $file, \TYPO3\CMS\Core\Resource\Folder $targetFolder) {
+	protected function emitPostFileMoveSignal(FileInterface $file, Folder $targetFolder) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFileMove, array($file, $targetFolder));
 	}
 
 	/**
 	 * Emits the file pre-rename signal
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @param $targetFolder
 	 * @return void
 	 */
-	protected function emitPreFileRenameSignal(\TYPO3\CMS\Core\Resource\FileInterface $file, $targetFolder) {
+	protected function emitPreFileRenameSignal(FileInterface $file, $targetFolder) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFileRename, array($file, $targetFolder));
 	}
 
 	/**
 	 * Emits the file post-rename signal
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @param $targetFolder
 	 * @return void
 	 */
-	protected function emitPostFileRenameSignal(\TYPO3\CMS\Core\Resource\FileInterface $file, $targetFolder) {
+	protected function emitPostFileRenameSignal(FileInterface $file, $targetFolder) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFileRename, array($file, $targetFolder));
 	}
 
 	/**
 	 * Emits the file pre-replace signal
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @param $localFilePath
 	 * @return void
 	 */
-	protected function emitPreFileReplaceSignal(\TYPO3\CMS\Core\Resource\FileInterface $file, $localFilePath) {
+	protected function emitPreFileReplaceSignal(FileInterface $file, $localFilePath) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFileReplace, array($file, $localFilePath));
 	}
 
 	/**
 	 * Emits the file post-replace signal
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @param $localFilePath
 	 * @return void
 	 */
-	protected function emitPostFileReplaceSignal(\TYPO3\CMS\Core\Resource\FileInterface $file, $localFilePath) {
+	protected function emitPostFileReplaceSignal(FileInterface $file, $localFilePath) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFileReplace, array($file, $localFilePath));
 	}
 
 	/**
 	 * Emits the file pre-deletion signal
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @return void
 	 */
-	protected function emitPreFileDeleteSignal(\TYPO3\CMS\Core\Resource\FileInterface $file) {
+	protected function emitPreFileDeleteSignal(FileInterface $file) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreFileDelete, array($file));
 	}
 
 	/**
 	 * Emits the file post-deletion signal
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param FileInterface $file
 	 * @return void
 	 */
-	protected function emitPostFileDeleteSignal(\TYPO3\CMS\Core\Resource\FileInterface $file) {
+	protected function emitPostFileDeleteSignal(FileInterface $file) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PostFileDelete, array($file));
 	}
 
 	/**
 	 * Emits the folder pre-copy signal
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param Folder $folder
+	 * @param Folder $targetFolder
 	 * @param $newName
 	 * @return void
 	 */
-	protected function emitPreFolderCopySignal(\TYPO3\CMS\Core\Resource\Folder $folder, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('\TYPO3\CMS\Core\Resource\ResourceStorage', self::SIGNAL_PreFolderCopy, array($folder, $targetFolder));
+	protected function emitPreFolderCopySignal(Folder $folder, Folder $targetFolder, $newName) {
+		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PreFolderCopy, array($folder, $targetFolder));
 	}
 
 	/**
 	 * Emits the folder post-copy signal
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param Folder $folder
+	 * @param Folder $targetFolder
 	 * @param $newName
 	 * @return void
 	 */
-	protected function emitPostFolderCopySignal(\TYPO3\CMS\Core\Resource\Folder $folder, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('\TYPO3\CMS\Core\Resource\ResourceStorage', self::SIGNAL_PostFolderCopy, array($folder, $targetFolder));
+	protected function emitPostFolderCopySignal(Folder $folder, Folder $targetFolder, $newName) {
+		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PostFolderCopy, array($folder, $targetFolder));
 	}
 
 	/**
 	 * Emits the folder pre-move signal
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param Folder $folder
+	 * @param Folder $targetFolder
 	 * @param $newName
 	 * @return void
 	 */
-	protected function emitPreFolderMoveSignal(\TYPO3\CMS\Core\Resource\Folder $folder, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('\TYPO3\CMS\Core\Resource\ResourceStorage', self::SIGNAL_PreFolderMove, array($folder, $targetFolder));
+	protected function emitPreFolderMoveSignal(Folder $folder, Folder $targetFolder, $newName) {
+		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PreFolderMove, array($folder, $targetFolder));
 	}
 
 	/**
 	 * Emits the folder post-move signal
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
-	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param Folder $folder
+	 * @param Folder $targetFolder
 	 * @param $newName
 	 * @return void
 	 */
-	protected function emitPostFolderMoveSignal(\TYPO3\CMS\Core\Resource\Folder $folder, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('\TYPO3\CMS\Core\Resource\ResourceStorage', self::SIGNAL_PostFolderMove, array($folder, $targetFolder));
+	protected function emitPostFolderMoveSignal(Folder $folder, Folder $targetFolder, $newName) {
+		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PostFolderMove, array($folder, $targetFolder));
 	}
 
 	/**
 	 * Emits the folder pre-rename signal
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
+	 * @param Folder $folder
 	 * @param $newName
 	 * @return void
 	 */
-	protected function emitPreFolderRenameSignal(\TYPO3\CMS\Core\Resource\Folder $folder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('\TYPO3\CMS\Core\Resource\ResourceStorage', self::SIGNAL_PreFolderRename, array($folder, $newName));
+	protected function emitPreFolderRenameSignal(Folder $folder, $newName) {
+		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PreFolderRename, array($folder, $newName));
 	}
 
 	/**
 	 * Emits the folder post-rename signal
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
+	 * @param Folder $folder
 	 * @param $newName
 	 * @return void
 	 */
-	protected function emitPostFolderRenameSignal(\TYPO3\CMS\Core\Resource\Folder $folder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('\TYPO3\CMS\Core\Resource\ResourceStorage', self::SIGNAL_PostFolderRename, array($folder, $newName));
+	protected function emitPostFolderRenameSignal(Folder $folder, $newName) {
+		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PostFolderRename, array($folder, $newName));
 	}
 
 	/**
 	 * Emits the folder pre-deletion signal
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
+	 * @param Folder $folder
 	 * @return void
 	 */
-	protected function emitPreFolderDeleteSignal(\TYPO3\CMS\Core\Resource\Folder $folder) {
-		$this->getSignalSlotDispatcher()->dispatch('\TYPO3\CMS\Core\Resource\ResourceStorage', self::SIGNAL_PreFolderDelete, array($folder));
+	protected function emitPreFolderDeleteSignal(Folder $folder) {
+		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PreFolderDelete, array($folder));
 	}
 
 	/**
 	 * Emits folder postdeletion signal.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
+	 * @param Folder $folder
 	 * @return void
 	 */
-	protected function emitPostFolderDeleteSignal(\TYPO3\CMS\Core\Resource\Folder $folder) {
-		$this->getSignalSlotDispatcher()->dispatch('\TYPO3\CMS\Core\Resource\ResourceStorage', self::SIGNAL_PostFolderDelete, array($folder));
+	protected function emitPostFolderDeleteSignal(Folder $folder) {
+		$this->getSignalSlotDispatcher()->dispatch('ResourceStorage', self::SIGNAL_PostFolderDelete, array($folder));
 	}
 
 	/**
 	 * Emits file pre-processing signal when generating a public url for a file or folder.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\ResourceInterface $resourceObject
+	 * @param ResourceInterface $resourceObject
 	 * @param boolean $relativeToCurrentScript
 	 * @param array $urlData
 	 */
-	protected function emitPreGeneratePublicUrl(\TYPO3\CMS\Core\Resource\ResourceInterface $resourceObject, $relativeToCurrentScript, array $urlData) {
+	protected function emitPreGeneratePublicUrl(ResourceInterface $resourceObject, $relativeToCurrentScript, array $urlData) {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', self::SIGNAL_PreGeneratePublicUrl, array($this, $this->driver, $resourceObject, $relativeToCurrentScript, $urlData));
 	}
 
@@ -1821,14 +1874,16 @@ class ResourceStorage {
 	 * If $theFile exists in $theDest (directory) the file have numbers appended up to $this->maxNumber. Hereafter a unique string will be appended.
 	 * This function is used by fx. TCEmain when files are attached to records and needs to be uniquely named in the uploads/* folders
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
-	 * @param 	string	$theFile	The input fileName to check
-	 * @param 	boolean	$dontCheckForUnique	If set the fileName is returned with the path prepended without checking whether it already existed!
-	 * @return 	string		A unique fileName inside $folder, based on $theFile.
+	 * @param Folder $folder
+	 * @param string $theFile The input fileName to check
+	 * @param boolean $dontCheckForUnique If set the fileName is returned with the path prepended without checking whether it already existed!
+	 *
+	 * @throws \RuntimeException
+	 * @return string A unique fileName inside $folder, based on $theFile.
 	 * @see t3lib_basicFileFunc::getUniqueName()
 	 */
-	// TODO check if this should be moved back to \TYPO3\CMS\Core\Resource\Folder
-	protected function getUniqueName(\TYPO3\CMS\Core\Resource\Folder $folder, $theFile, $dontCheckForUnique = FALSE) {
+	// TODO check if this should be moved back to Folder
+	protected function getUniqueName(Folder $folder, $theFile, $dontCheckForUnique = FALSE) {
 		static $maxNumber = 99, $uniqueNamePrefix = '';
 		// Fetches info about path, name, extention of $theFile
 		$origFileInfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($theFile);
@@ -1891,7 +1946,7 @@ class ResourceStorage {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Core\Resource\ResourceFactory
+	 * @return ResourceFactory
 	 */
 	protected function getFileFactory() {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
@@ -1905,7 +1960,7 @@ class ResourceStorage {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Core\Resource\Service\FileProcessingService
+	 * @return Service\FileProcessingService
 	 */
 	protected function getFileProcessingService() {
 		if (!$this->fileProcessingService) {
@@ -1919,7 +1974,7 @@ class ResourceStorage {
 	 * be processed. does not check for access rights here
 	 *
 	 * @todo check if we need to implement "is writable" capability
-	 * @return \TYPO3\CMS\Core\Resource\Folder the processing folder, can be empty as well, if the storage doesn't have a processing folder
+	 * @return Folder the processing folder, can be empty as well, if the storage doesn't have a processing folder
 	 */
 	public function getProcessingFolder() {
 		if (!isset($this->processingFolder)) {
