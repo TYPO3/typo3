@@ -55,7 +55,8 @@ return array(
 		'jpg_quality' => 70,							// Integer: Default JPEG generation quality
 		'enable_typo3temp_db_tracking' => FALSE,		// Boolean: If set, then all files in typo3temp will be logged in a database table. In addition to being a log of the files with original filenames, it also serves to secure that the same image is not rendered simultaneously by two different processes.
 		'TTFdpi' => 96,									// Integer: Enter how many dpi the FreeType module uses. Freetype1 should be set to 72. Freetype2 should be set to 96 (otherwise fonts are rendered way bigger than FreeType1). This works as a global scaling factor for Freetype.
-		'png_truecolor' => TRUE
+		'png_truecolor' => TRUE,
+		'RGB_colorSpace' => 'RGB',						// String: Specifiy the colorspace to use. Some ImageMagick versions (like 6.7.0 and above) use the sRGB colorspace, so all images are darker then the original. Possible Values: RGB, sRGB
 	),
 	'SYS' => array(
 		// System related concerning both frontend and backend.
