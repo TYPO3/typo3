@@ -266,6 +266,8 @@ class ResourceCompressor {
 	 *
 	 * @param array $filesToInclude Files which should be merged, paths relative to root path
 	 * @param string $type File type
+	 *
+	 * @throws \InvalidArgumentException
 	 * @return mixed Filename of the merged file
 	 */
 	protected function createMergedFile(array $filesToInclude, $type = 'css') {

@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Resource;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
-
 /**
  * Representation of a specific processed version of a file. These are created by the FileProcessingService,
  * which in turn uses helper classes for doing the actual file processing. See there for a detailed description.
@@ -77,12 +75,12 @@ class ProcessedFile extends AbstractFile {
 	protected $taskType;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\Processing\TaskInterface
+	 * @var Processing\TaskInterface
 	 */
 	protected $task;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\Processing\TaskTypeRegistry
+	 * @var Processing\TaskTypeRegistry
 	 */
 	protected $taskTypeRegistry;
 
