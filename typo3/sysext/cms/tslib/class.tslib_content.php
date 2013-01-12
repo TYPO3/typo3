@@ -2616,8 +2616,8 @@ class tslib_cObj {
 	}
 
 	/**
-	 * cropHTML
-	 * Crops content to a given size without caring abhout HTML tags
+	 * crop
+	 * Crops content to a given size without caring about HTML tags
 	 *
 	 * @param	string		Input value undergoing processing in this function.
 	 * @param	array		stdWrap properties for crop.
