@@ -927,6 +927,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
 	 * @return boolean TRUE if deleting the file succeeded
+	 * @throws \RuntimeException
 	 */
 	public function deleteFile(\TYPO3\CMS\Core\Resource\FileInterface $file) {
 		$filePath = $this->getAbsolutePath($file);
