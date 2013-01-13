@@ -47,6 +47,11 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		parent::setUp();
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(
+			'TYPO3\\CMS\\Core\\Resource\\FileRepository',
+			$this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository')
+		);
+
 	}
 
 	public function tearDown() {
