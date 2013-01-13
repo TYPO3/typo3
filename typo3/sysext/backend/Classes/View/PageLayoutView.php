@@ -679,9 +679,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				foreach ($cList as $counter => $key) {
 					$c = 0;
 					$rowArr = $contentRecordsPerColumn[$key];
+					$numberOfContentElementsInColumn = count($rowArr);
 					$rowOut = '';
 					// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
-					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && !$GLOBALS['TYPO3_DB']->sql_num_rows($result)) {
+					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && $numberOfContentElementsInColumn == 0) {
 						$onClick = 'window.location.href=\'db_new_content_el.php?id=' . $id . '&colPos=' . intval($key) . '&sys_language_uid=' . $lP . '&uid_pid=' . $id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '\';';
 						$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick, $GLOBALS['LANG']->getLL('newPageContent'));
 						$theNewButton = '<img src="clear.gif" width="1" height="5" alt="" /><br />' . $theNewButton;
@@ -703,7 +704,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 									<td' . ($row['_ORIG_uid'] ? ' class="ver-element"' : '') . ' valign="top">' . $this->tt_content_drawItem($row, $isRTE) . '</td>
 								</tr>';
 							// If the element was not the last element, add a divider line:
-							if ($c != $GLOBALS['TYPO3_DB']->sql_num_rows($result)) {
+							if ($c != $numberOfContentElementsInColumn) {
 								$rowOut .= '
 								<tr>
 									<td></td>
