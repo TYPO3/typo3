@@ -145,6 +145,28 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	}
 
 	/**
+	 * Filter input-string for valid email-addresses
+	 *
+	 * @param string $emails If this is a string, it will be checked for one or more valid email addresses.
+	 * @return array List of valid email-addresses
+	 */
+	protected function filterValidEmails($emails) {
+		if (!is_string($emails)) {
+			// no valid addresses - empty list
+			return array();
+		}
+
+		$validEmails = array();
+		$emailsList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $emails);
+		foreach ($emailsList as $checkEmail) {
+			if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($checkEmail)) {
+				$validEmails[] = $checkEmail;
+			}
+		}
+		return $validEmails;
+	}
+
+	/**
 	 * Adds the receiver of the mail message when configured
 	 *
 	 * Checks the address if it is a valid email address
@@ -152,8 +174,9 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	 * @return void
 	 */
 	protected function setTo() {
-		if ($this->typoScript['recipientEmail'] && \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($this->typoScript['recipientEmail'])) {
-			$this->mailMessage->setTo($this->typoScript['recipientEmail']);
+		$validEmails = $this->filterValidEmails($this->typoScript['recipientEmail']);
+		if(count($validEmails) > 0) {
+			$this->mailMessage->setTo($validEmails);
 		}
 	}
 
@@ -165,8 +188,9 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	 * @return void
 	 */
 	protected function setCc() {
-		if ($this->typoScript['ccEmail'] && \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($this->typoScript['ccEmail'])) {
-			$this->mailMessage->AddCc(trim($this->typoScript['ccEmail']));
+		$validEmails = $this->filterValidEmails($this->typoScript['ccEmail']);
+		if(count($validEmails) > 0) {
+			$this->mailMessage->setCc($validEmails);
 		}
 	}
 
