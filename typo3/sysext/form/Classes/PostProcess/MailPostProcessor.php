@@ -141,7 +141,11 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 		if (preg_match('/\\s|,/', $fromName) >= 1) {
 			$fromName = '"' . $fromName . '"';
 		}
-		$from = array($fromEmail => $fromName);
+		if (!empty($fromName)) {
+			$from = array($fromEmail => $fromName);
+		} else {
+			$from = $fromEmail;
+		}
 		$this->mailMessage->setFrom($from);
 	}
 
