@@ -864,9 +864,7 @@ class ResourceStorage {
 	public function getFileList($path, $start = 0, $numberOfItems = 0, $useFilters = TRUE, $loadIndexRecords = TRUE, $recursive = FALSE) {
 		$rows = array();
 		if ($loadIndexRecords) {
-			/** @var $repository \TYPO3\CMS\Core\Resource\FileRepository */
-			$repository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-			$rows = $repository->getFileIndexRecordsForFolder($this->getFolder($path));
+			$rows = $this->getFileRepository()->getFileIndexRecordsForFolder($this->getFolder($path));
 		}
 		$filters = $useFilters == TRUE ? $this->fileAndFolderNameFilters : array();
 		$items = $this->driver->getFileList($path, $start, $numberOfItems, $filters, $rows, $recursive);
@@ -1227,9 +1225,7 @@ class ResourceStorage {
 		try {
 			$newIdentifier = $this->driver->renameFile($file, $targetFileName);
 			$this->updateFile($file, $newIdentifier);
-			/** @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
-			$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-			$fileRepository->update($file);
+			$this->getFileRepository()->update($file);
 		} catch (\RuntimeException $e) {
 
 		}
