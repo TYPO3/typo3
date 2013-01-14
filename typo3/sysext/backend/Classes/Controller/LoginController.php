@@ -492,7 +492,7 @@ class LoginController {
 
 	/**
 	 * Make login news - renders the HTML content for a list of news shown under
-	 * the login form. News data is added through $GLOBALS['TYPO3_CONF_VARS']
+	 * the login form. News data is added through sys_news records
 	 *
 	 * @return string HTML content
 	 * @credits Idea by Jan-Hendrik Heuing
