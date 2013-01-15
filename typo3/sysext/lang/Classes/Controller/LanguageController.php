@@ -45,21 +45,25 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 
 	/**
 	 * @var \TYPO3\CMS\Lang\Domain\Repository\LanguageRepository
+	 * @inject
 	 */
 	protected $languageRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Lang\Domain\Repository\ExtensionRepository
+	 * @inject
 	 */
 	protected $extensionRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper
+	 * @inject
 	 */
 	protected $repositoryHelper;
 
 	/**
 	 * @var \TYPO3\CMS\Lang\Utility\Connection\Ter
+	 * @inject
 	 */
 	protected $terConnection;
 
@@ -73,46 +77,6 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @var array
 	 */
 	protected $jsonActions = array('updateTranslation');
-
-	/**
-	 * Inject the language repository
-	 *
-	 * @param \TYPO3\CMS\Lang\Domain\Repository\LanguageRepository $repository
-	 * @return void
-	 */
-	public function injectLanguageRepository(\TYPO3\CMS\Lang\Domain\Repository\LanguageRepository $repository) {
-		$this->languageRepository = $repository;
-	}
-
-	/**
-	 * Inject the extension repository
-	 *
-	 * @param \TYPO3\CMS\Lang\Domain\Repository\ExtensionRepository $repository
-	 * @return void
-	 */
-	public function injectExtensionRepository(\TYPO3\CMS\Lang\Domain\Repository\ExtensionRepository $repository) {
-		$this->extensionRepository = $repository;
-	}
-
-	/**
-	 * Inject the repository helper
-	 *
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper $repositoryHelper
-	 * @return void
-	 */
-	public function injectRepositoryHelper(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper $repositoryHelper) {
-		$this->repositoryHelper = $repositoryHelper;
-	}
-
-	/**
-	 * Inject the repository helper
-	 *
-	 * @param \TYPO3\CMS\Lang\Utility\Connection\Ter $terConnection
-	 * @return void
-	 */
-	public function injectTerConnection(\TYPO3\CMS\Lang\Utility\Connection\Ter $terConnection) {
-		$this->terConnection = $terConnection;
-	}
 
 	/**
 	 * Force JSON output for defined actions
