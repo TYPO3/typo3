@@ -46,9 +46,16 @@ class ContentRepository {
 		$recordId = (int) $getPostVariables['uid'];
 		$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $recordId);
 		if (is_array($row)) {
+				// strip off the leading "[Translate to XY]" text after localizing the original record
+			if ($row['sys_language_uid'] > 0 && $row['l18n_parent'] > 0) {
+				$bodytext = preg_replace('/(\[).*(\])\s/', '', $row['bodytext'], 1);
+			} else {
+				$bodytext = $row['bodytext'];
+			}
+
 			/** @var $typoScriptParser t3lib_tsparser */
 			$typoScriptParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_tsparser');
-			$typoScriptParser->parse($row['bodytext']);
+			$typoScriptParser->parse($bodytext);
 			/** @var $record \TYPO3\CMS\Form\Domain\Model\Content */
 			$record = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Domain\\Model\\Content');
 			$record->setUid($row['uid']);
