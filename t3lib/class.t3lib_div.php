@@ -1860,6 +1860,10 @@ final class t3lib_div {
 	 */
 	public static function array_merge_recursive_overrule(array $arr0, array $arr1, $notAddKeys = FALSE, $includeEmptyValues = TRUE, $enableUnsetFeature = TRUE) {
 		foreach ($arr1 as $key => $val) {
+			if ($enableUnsetFeature && $val === '__UNSET') {
+				unset($arr0[$key]);
+				continue;
+			}
 			if (is_array($arr0[$key])) {
 				if (is_array($arr1[$key])) {
 					$arr0[$key] = self::array_merge_recursive_overrule(
@@ -1870,12 +1874,11 @@ final class t3lib_div {
 						$enableUnsetFeature
 					);
 				}
-			} elseif (!$notAddKeys || isset($arr0[$key])) {
-				if ($enableUnsetFeature && $val === '__UNSET') {
-					unset($arr0[$key]);
-				} elseif ($includeEmptyValues || $val) {
-					$arr0[$key] = $val;
-				}
+			} elseif (
+				(!$notAddKeys || isset($arr0[$key])) &&
+				($includeEmptyValues || $val)
+			) {
+				$arr0[$key] = $val;
 			}
 		}
 
