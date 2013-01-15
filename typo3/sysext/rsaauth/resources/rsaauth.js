@@ -18,6 +18,10 @@ function tx_rsaauth_encrypt() {
 }
 
 function tx_rsaauth_feencrypt(form) {
+	// check if the form was already sent (see #40085)
+	if (form.pass.value.match(/^rsa:/) || form.n.value == '' || form.e.value == '') {
+		return;
+	}
 	var rsa = new RSAKey();
 	rsa.setPublic(form.n.value, form.e.value);
 
