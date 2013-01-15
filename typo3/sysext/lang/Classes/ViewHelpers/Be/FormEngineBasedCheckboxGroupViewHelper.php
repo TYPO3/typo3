@@ -45,14 +45,14 @@ class FormEngineBasedCheckboxGroupViewHelper extends \TYPO3\CMS\Fluid\ViewHelper
 	protected $tagName = 'div';
 
 	/**
-	 * @var TYPO3\CMS\Extbase\Object\ObjectManager
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected $objectManager;
 
 	/**
 	 * Injects the object manager
 	 *
-	 * @param TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
 	 * @return void
 	 */
 	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
@@ -76,10 +76,6 @@ class FormEngineBasedCheckboxGroupViewHelper extends \TYPO3\CMS\Fluid\ViewHelper
 	 * @return string Rendered field
 	 */
 	public function render() {
-		if ($items === NULL) {
-			$items = $this->renderChildren();
-		}
-
 		$formName = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName');
 		$fieldName = $this->getName();
 		$content = $this->renderCheckboxGroupField($formName, $fieldName);
