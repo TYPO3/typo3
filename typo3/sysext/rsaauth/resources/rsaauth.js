@@ -18,20 +18,23 @@ function tx_rsaauth_encrypt() {
 }
 
 function tx_rsaauth_feencrypt(form) {
-	var rsa = new RSAKey();
-	rsa.setPublic(form.n.value, form.e.value);
+	// check if the form was already sent (see #40085)
+	if (!form.pass.value.match(/^rsa:/) && form.n.value !== '' && form.e.value !== '') {
+		var rsa = new RSAKey();
+		rsa.setPublic(form.n.value, form.e.value);
 
-	var username = form.user.value;
-	var password = form.pass.value;
+		var username = form.user.value;
+		var password = form.pass.value;
 
-	var res = rsa.encrypt(password);
+		var res = rsa.encrypt(password);
 
-	// Remove all plaintext-data. This will also prevent plain text authentication.
-	form.pass.value = "";
-	form.e.value = "";
-	form.n.value = "";
+		// Remove all plaintext-data. This will also prevent plain text authentication.
+		form.pass.value = "";
+		form.e.value = "";
+		form.n.value = "";
 
-	if (res) {
-		form.pass.value = 'rsa:' + hex2b64(res);
+		if (res) {
+			form.pass.value = 'rsa:' + hex2b64(res);
+		}
 	}
 }
