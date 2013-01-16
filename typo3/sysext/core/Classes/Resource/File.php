@@ -183,7 +183,7 @@ class File extends \TYPO3\CMS\Core\Resource\AbstractFile {
 		if ($this->properties['uid'] != 0) {
 			throw new \InvalidArgumentException('uid property is already set. Cannot merge index record.', 1321023156);
 		}
-		$this->properties = array_merge($this->properties, $recordData);
+		$this->properties = array_merge($recordData, $this->properties);
 	}
 
 	/**
