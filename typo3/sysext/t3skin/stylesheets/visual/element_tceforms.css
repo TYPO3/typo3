@@ -514,8 +514,11 @@ TCEforms Sections
 
 .t3-form-field-item {
 	position: relative;
-	display: inline-block;
 	border: 1px solid transparent;
+}
+
+.t3-tceforms-widget-null-wrapper + .t3-form-field-item {
+	display: inline-block;
 }
 
 .t3-form-field-item.disabled {
