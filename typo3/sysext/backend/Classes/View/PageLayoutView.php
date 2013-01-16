@@ -441,7 +441,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					';
 					$editUidList = '';
 					$rowArr = $contentRecordsPerColumn[$key];
-					foreach ($rowArr as $rKey => $row) {
+					foreach ((array) $rowArr as $rKey => $row) {
 						if ($this->tt_contentConfig['languageMode']) {
 							$languageColumn[$key][$lP] = $head[$key] . $content[$key];
 							if (!$this->defLangBinding) {
