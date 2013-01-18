@@ -63,19 +63,25 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	protected $taskExecutor;
 
 	/**
+	 * Intanciates the Object Manager
+	 */
+	public function __construct() {
+		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->commandManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager');
+		$this->taskExecutor = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Scheduler\\TaskExecutor');
+	}
+
+	/**
 	 * Function execute from the Scheduler
 	 *
 	 * @return boolean TRUE on successful execution, FALSE on error
 	 */
 	public function execute() {
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$this->commandManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\CommandManager');
-		$this->taskExecutor = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Scheduler\\TaskExecutor');
 		try {
 			$this->taskExecutor->execute($this);
 			return TRUE;
 		} catch (\Exception $e) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($e->getMessage(), $this->commandIdentifier, 3);
+			$this->logException($e);
 			return FALSE;
 		}
 	}
@@ -150,6 +156,13 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 			$label .= ' ' . implode(', ', $arguments);
 		}
 		return $label;
+	}
+
+	/**
+	 * @param \Exception $e
+	 */
+	protected function logException(\Exception $e) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($e->getMessage(), $this->commandIdentifier, 3);
 	}
 }
 
