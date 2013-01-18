@@ -655,13 +655,16 @@ class t3lib_loadDBGroup {
 						// Always add the pointer to the parent uid
 					if ($isOnSymmetricSide) {
 						$updateValues[$symmetric_field] = $parentUid;
+						$workspaceValues[$symmetric_field] = $parentUid;
 					} else {
 						$updateValues[$foreign_field] = $parentUid;
+						$workspaceValues[$foreign_field] = $parentUid;
 					}
 
 						// if it is configured in TCA also to store the parent table in the child record, just do it
 					if ($foreign_table_field && $this->currentTable) {
 						$updateValues[$foreign_table_field] = $this->currentTable;
+						$workspaceValues[$foreign_table_field] = $this->currentTable;
 					}
 
 						// update sorting columns if not to be skipped
@@ -690,8 +693,10 @@ class t3lib_loadDBGroup {
 				} else {
 					if ($isOnSymmetricSide) {
 						$updateValues[$symmetric_field] = $updateToUid;
+						$workspaceValues[$symmetric_field] = $updateToUid;
 					} else {
 						$updateValues[$foreign_field] = $updateToUid;
+						$workspaceValues[$foreign_field] = $updateToUid;
 					}
 				}
 
@@ -700,10 +705,16 @@ class t3lib_loadDBGroup {
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($uid), $updateValues);
 					$this->updateRefIndex($table, $uid);
 				}
-					// Update accordant fields in the database for workspaces overlays/placeholders:
+
+				// Update accordant fields in the database for workspaces
 				if (count($workspaceValues) && $considerWorkspaces) {
+					// if current record is the specific version, then update the placeholders
 					if (isset($row['t3ver_oid']) && $row['t3ver_oid'] && $row['t3ver_state'] == -1) {
 						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($row['t3ver_oid']), $workspaceValues);
+
+					// if current record is the placeholder, then update the specific version
+					} elseif (empty($row['t3ver_oid']) && $row['t3ver_state'] == 1) {
+						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 't3ver_oid=' . intval($row['uid']), $workspaceValues);
 					}
 				}
 			}
