@@ -206,7 +206,7 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 			$whereClause = $GLOBALS['TSFE']->sys_page->enableFields($this->table);
 		} else {
 			// backend context
-			$whereClause = \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($this->table);
+			$whereClause = \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($this->table) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($this->table);
 		}
 		return $whereClause;
 	}
