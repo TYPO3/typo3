@@ -158,15 +158,23 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$this->submittedData = \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged('tx_scheduler');
 		$this->submittedData['uid'] = intval($this->submittedData['uid']);
 		// If a save command was submitted, handle saving now
-		if ($this->CMD == 'save') {
+		if ($this->CMD == 'save' || $this->CMD == 'saveclose') {
 			$previousCMD = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('previousCMD');
 			// First check the submitted data
 			$result = $this->preprocessData();
 			// If result is ok, proceed with saving
 			if ($result) {
 				$this->saveTask();
-				// Unset command, so that default screen gets displayed
-				unset($this->CMD);
+				if ($this->CMD == 'saveclose') {
+					// Unset command, so that default screen gets displayed
+					unset($this->CMD);
+				} elseif ($this->CMD == 'save') {
+					// After saving a "add form", return to edit
+					$this->CMD = 'edit';
+				} else {
+					// Return to edit form
+					$this->CMD = $previousCMD;
+				}
 			} else {
 				$this->CMD = $previousCMD;
 			}
@@ -651,14 +659,13 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		// Start rendering the add/edit form
 		$content .= '<input type="hidden" name="tx_scheduler[uid]" value="' . $this->submittedData['uid'] . '" />';
 		$content .= '<input type="hidden" name="previousCMD" value="' . $this->CMD . '" />';
-		$content .= '<input type="hidden" name="CMD" value="save" />';
 		$table = array();
 		$tr = 0;
 		$defaultCell = array('<td class="td-input">', '</td>');
 		// Disable checkbox
 		$label = '<label for="task_disable">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:disable') . '</label>';
 		$table[$tr][] = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp($this->cshKey, 'task_disable', $label);
-		$table[$tr][] = '<input type="hidden"   name="tx_scheduler[disable]" value="0" />
+		$table[$tr][] = '<input type="hidden" name="tx_scheduler[disable]" value="0" />
 			 <input type="checkbox" name="tx_scheduler[disable]" value="1" id="task_disable"' . ($taskInfo['disable'] == 1 ? ' checked="checked"' : '') . ' />';
 		$tableLayout[$tr] = array(
 			'tr' => array('<tr id="task_disable_row">', '</tr>'),
@@ -1160,6 +1167,10 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			if ($result) {
 				$GLOBALS['BE_USER']->writeLog(4, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was added', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.addSuccess'));
+
+				// set the uid of the just created task so that we
+				// can continue editing after initial saving
+				$this->submittedData['uid'] = $task->getTaskUid();
 			} else {
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.addError'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			}
@@ -1381,6 +1392,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			'addtask' => '',
 			'close' => '',
 			'save' => '',
+			'saveclose' => '',
 			'reload' => '',
 			'shortcut' => $this->getShortcutButton()
 		);
@@ -1394,7 +1406,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		}
 		if ($this->CMD === 'add' || $this->CMD === 'edit') {
 			$buttons['close'] = '<a href="#" onclick="document.location=\'' . $GLOBALS['MCONF']['_'] . '\'" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:cancel', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close') . '</a>';
-			$buttons['save'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save-close', array('html' => '<input type="image" name="data[save]" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:saveAndClose', TRUE) . '" />'));
+			$buttons['save'] = '<button style="padding: 0; margin: 0; cursor: pointer;" type="submit" name="CMD" value="save" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:save', TRUE) . '" />' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save') . '</button>';
+			$buttons['saveclose'] = '<button style="padding: 0; margin: 0; cursor: pointer;" type="submit" name="CMD" value="saveclose" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:saveAndClose', TRUE) . '" />' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save-close') . '</button>';
 		}
 		return $buttons;
 	}
