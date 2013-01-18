@@ -2797,8 +2797,9 @@ class t3lib_TCEmain {
 	 * @param	integer		$uid Element UID
 	 * @param	integer		$pid Element PID (real PID, not checked)
 	 * @param	array		$overrideArray Override array - must NOT contain any fields not in the table!
-	 * @return	array		$workspaceOptions Options to be forwarded if actions happen on a workspace currently
+	 * @return	array		$workspaceOptions Options to be forwarded if actions happen on a workspace currently (only set in versionizeRecord())
 	 * @return	integer		Returns the new ID of the record (if applicable)
+	 * @see versionizeRecord()
 	 */
 	function copyRecord_raw($table, $uid, $pid, $overrideArray = array(), array $workspaceOptions = array()) {
 		$uid = intval($uid);
@@ -2928,9 +2929,9 @@ class t3lib_TCEmain {
 	 * @param	array		$conf TCA field configuration
 	 * @param	integer		$realDestPid Real page id (pid) the record is copied to
 	 * @param	integer		$language Language ID (from sys_language table) used in the duplicated record
-	 * @return	array		$workspaceOptions Options to be forwarded if actions happen on a workspace currently
+	 * @return	array		$workspaceOptions Options to be forwarded if actions happen on a workspace currently (only set in versionizeRecord())
 	 * @access private
-	 * @see copyRecord()
+	 * @see copyRecord(), versionizeRecord()
 	 */
 	function copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $realDestPid, $language = 0, array $workspaceOptions = array()) {
 
@@ -3017,17 +3018,24 @@ class t3lib_TCEmain {
 					} else {
 						if (!t3lib_utility_Math::canBeInterpretedAsInteger($realDestPid)) {
 							$newId = $this->copyRecord($v['table'], $v['id'], -$v['id']);
-						} elseif ($realDestPid == -1 && t3lib_BEfunc::isTableWorkspaceEnabled($v['table'])) {
+						} elseif ($this->BE_USER->workspace > 0 && t3lib_BEfunc::isTableWorkspaceEnabled($v['table'])) {
 							$workspaceVersion = t3lib_BEfunc::getWorkspaceVersionOfRecord(
 								$this->BE_USER->workspace, $v['table'], $v['id'], 'uid'
 							);
 								// If workspace version does not exist, create a new one:
 							if ($workspaceVersion === FALSE) {
-								$newId = $this->versionizeRecord(
-									$v['table'], $v['id'],
-									(isset($workspaceOptions['label']) ? $workspaceOptions['label'] : 'Auto-created for WS #' . $this->BE_USER->workspace),
-									(isset($workspaceOptions['delete']) ? $workspaceOptions['delete'] : FALSE)
-								);
+								// A filled $workspaceOptions indicated that this call
+								// has it's origin in previous versionizeRecord() processing
+								if (count($workspaceOptions)) {
+									$newId = $this->versionizeRecord(
+										$v['table'], $v['id'],
+										(isset($workspaceOptions['label']) ? $workspaceOptions['label'] : 'Auto-created for WS #' . $this->BE_USER->workspace),
+										(isset($workspaceOptions['delete']) ? $workspaceOptions['delete'] : FALSE)
+									);
+								// Otherwise just use plain copyRecord() to create placeholders etc.
+								} else {
+									$newId = $this->copyRecord($v['table'], $v['id'], -$v['id']);
+								}
 								// If workspace version already exists, use it:
 							} else {
 								$newId = $workspaceVersion['uid'];
@@ -4458,11 +4466,10 @@ class t3lib_TCEmain {
 										// as well as the information whether the record shall be removed
 										// must be forwarded (creating remove placeholders on a workspace are
 										// done by copying the record and override several fields).
-									$workspaceOptions = array();
-									if ($delete) {
-										$workspaceOptions['delete'] = $delete;
-										$workspaceOptions['label'] = $label;
-									}
+									$workspaceOptions = array(
+										'delete' => $delete,
+										'label' => $label,
+									);
 									return $this->copyRecord_raw($table, $id, -1, $overrideArray, $workspaceOptions);
 								} else {
 									$this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize was already a version in the workspace (wsid=' . $this->BE_USER->workspace . ')!', 1);
@@ -4788,6 +4795,15 @@ class t3lib_TCEmain {
 	 */
 	function remapListedDBRecords_procInline($conf, $value, $uid, $table) {
 		$theUidToUpdate = $this->copyMappingArray_merged[$table][$uid];
+
+		// In case of an IRRE parent record has been copied in a workspace
+		// * input $uid is the uid of the live record
+		// * resolved $theUidToUpdate is the placeholder record
+		// * thus, it's required to fetch the concrete version uid
+		$versionUid = $this->getAutoVersionId($table, $theUidToUpdate);
+		if ($versionUid !== NULL && t3lib_utility_Math::canBeInterpretedAsInteger($versionUid)) {
+			$theUidToUpdate = $versionUid;
+		}
 
 		if ($conf['foreign_table']) {
 			$inlineType = $this->getInlineFieldType($conf);
