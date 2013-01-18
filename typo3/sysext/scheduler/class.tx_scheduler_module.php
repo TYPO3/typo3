@@ -179,7 +179,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		$this->submittedData['uid'] = intval($this->submittedData['uid']);
 
 			// If a save command was submitted, handle saving now
-		if ($this->CMD == 'save') {
+		if ($this->CMD == 'save' || $this->CMD == 'saveclose') {
 			$previousCMD = t3lib_div::_GP('previousCMD');
 				// First check the submitted data
 			$result = $this->preprocessData();
@@ -187,9 +187,16 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				// If result is ok, proceed with saving
 			if ($result) {
 				$this->saveTask();
+				if ($this->CMD == 'saveclose') {
 					// Unset command, so that default screen gets displayed
-				unset($this->CMD);
-
+					unset($this->CMD);
+				} elseif ($this->CMD == 'save') {
+					// After saving a "add form", return to edit
+					$this->CMD = 'edit';
+				} else {
+					// Return to edit form
+					$this->CMD = $previousCMD;
+				}
 				// Errors occurred
 				// Go back to previous step
 			} else {
@@ -730,7 +737,6 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			// Start rendering the add/edit form
 		$content .= '<input type="hidden" name="tx_scheduler[uid]" value="' . $this->submittedData['uid'] . '" />';
 		$content .= '<input type="hidden" name="previousCMD" value="' . $this->CMD . '" />';
-		$content .= '<input type="hidden" name="CMD" value="save" />';
 
 		$table = array();
 		$tr = 0;
@@ -740,7 +746,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		$label = '<label for="task_disable">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:disable') . '</label>';
 		$table[$tr][] = t3lib_BEfunc::wrapInHelp($this->cshKey, 'task_disable', $label);
 		$table[$tr][] =
-			'<input type="hidden"   name="tx_scheduler[disable]" value="0" />
+			'<input type="hidden" name="tx_scheduler[disable]" value="0" />
 			 <input type="checkbox" name="tx_scheduler[disable]" value="1" id="task_disable"' . ($taskInfo['disable'] == 1 ? ' checked="checked"' : '') . ' />';
 		$tableLayout[$tr] = array (
 			'tr'     => array('<tr id="task_disable_row">', '</tr>'),
@@ -1276,6 +1282,10 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			if ($result) {
 				$GLOBALS['BE_USER']->writeLog(4, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was updated', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.updateSuccess'));
+
+				// set the uid of the just created task so that we
+				// can continue editing after initial saving
+				$this->submittedData['uid'] = $task->getTaskUid();
 			} else {
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.updateError'), t3lib_FlashMessage::ERROR);
 			}
@@ -1565,6 +1575,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			'addtask'  => '',
 			'close' => '',
 			'save' => '',
+			'saveclose' => '',
 			'reload'   => '',
 			'shortcut' => $this->getShortcutButton(),
 		);
@@ -1586,11 +1597,8 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			$buttons['close'] = '<a href="#" onclick="document.location=\'' . $GLOBALS['MCONF']['_'] . '\'" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:cancel', TRUE) . '">' .
 				t3lib_iconWorks::getSpriteIcon('actions-document-close') . '</a>';
 
-			$buttons['save'] = t3lib_iconWorks::getSpriteIcon(
-				'actions-document-save-close',
-				array('html' => '<input type="image" name="data[save]" class="c-inputButton" src="clear.gif" title="'
-					. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:saveAndClose', TRUE) . '" />')
-			);
+			$buttons['save'] = '<button style="padding: 0; margin: 0; cursor: pointer;" type="submit" name="CMD" value="save" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:save', TRUE) . '" />' . t3lib_iconWorks::getSpriteIcon('actions-document-save') . '</button>';
+			$buttons['saveclose'] = '<button style="padding: 0; margin: 0; cursor: pointer;" type="submit" name="CMD" value="saveclose" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:saveAndClose', TRUE) . '" />' . t3lib_iconWorks::getSpriteIcon('actions-document-save-close') . '</button>';
 		}
 
 		return $buttons;
