@@ -204,9 +204,11 @@ class StorageRepository extends AbstractRepository {
 		if (is_object($GLOBALS['TSFE'])) {
 			// frontend context
 			$whereClause = $GLOBALS['TSFE']->sys_page->enableFields($this->table);
+			$whereClause .= $GLOBALS['TSFE']->sys_page->deleteClause($this->table);
 		} else {
 			// backend context
 			$whereClause = \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($this->table);
+			$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($this->table);
 		}
 		return $whereClause;
 	}
