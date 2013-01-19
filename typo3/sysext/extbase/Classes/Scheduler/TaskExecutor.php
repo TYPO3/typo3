@@ -36,6 +36,21 @@ namespace TYPO3\CMS\Extbase\Scheduler;
 class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\Request
+	 */
+	protected $request;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\Response
+	 */
+	protected $response;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Mvc\Dispatcher
+	 */
+	protected $dispatcher;
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
@@ -69,6 +84,15 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
+	}
+
+	/**
+	 * Initializes Request, Response and Dispatcher
+	 */
+	public function initializeObject() {
+		$this->request = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Request');
+		$this->response = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
+		$this->dispatcher = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Dispatcher');
 	}
 
 	/**
@@ -114,15 +138,12 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface {
 		list($extensionKey, $controllerName, $commandName) = explode(':', $commandIdentifier);
 		$extensionName = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($extensionKey);
 		$this->initialize(array('extensionName' => $extensionName));
-		$request = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Request');
-		$dispatcher = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Dispatcher');
-		$response = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
 		// execute command
 		$command = $this->commandManager->getCommandByIdentifier($commandIdentifier);
-		$request->setControllerObjectName($command->getControllerClassName());
-		$request->setControllerCommandName($command->getControllerCommandName());
-		$request->setArguments($task->getArguments());
-		$dispatcher->dispatch($request, $response);
+		$this->request->setControllerObjectName($command->getControllerClassName());
+		$this->request->setControllerCommandName($command->getControllerCommandName());
+		$this->request->setArguments($task->getArguments());
+		$this->dispatcher->dispatch($this->request, $this->response);
 		$this->shutdown();
 	}
 
