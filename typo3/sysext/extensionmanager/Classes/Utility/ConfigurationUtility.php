@@ -92,10 +92,21 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getCurrentConfiguration($extensionKey) {
 		$extension = $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey];
+		// Get the default configuration
 		$defaultConfig = $this->configurationItemRepository->createArrayFromConstants(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_site . $extension['siteRelPath'] . '/ext_conf_template.txt'), $extension);
-		$currentExtensionConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
-		$currentExtensionConfig = is_array($currentExtensionConfig) ? $currentExtensionConfig : array();
-		$currentFullConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($defaultConfig, $currentExtensionConfig);
+		// Get the currently stored configuration
+		$storedExtensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey]);
+		// Adapt the structure of the existing configuration to match the default's
+		$currentExtensionConfiguration = array();
+		if (is_array($storedExtensionConfiguration)) {
+			foreach ($storedExtensionConfiguration as $key => $value) {
+				$currentExtensionConfiguration[$key] = array(
+					'value' => $value
+				);
+			}
+		}
+		// Merge the two configurations
+		$currentFullConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($defaultConfig, $currentExtensionConfiguration);
 		return $currentFullConfiguration;
 	}
 
