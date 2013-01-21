@@ -46,10 +46,10 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $l10nPriority;
 
-	/**
-	 * @var array
-	 */
-	protected $llxmlFileNames;
+	protected static function getFixtureFilePath($filename) {
+			// We have to take the whole relative path as otherwise this test fails on Windows systems
+		return PATH_site . 'typo3/sysext/core/Tests/Unit/Localization/Parser/Fixtures/' . $filename;
+	}
 
 	/**
 	 * Prepares the environment before running a test.
@@ -60,13 +60,6 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->l10nPriority = $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'];
 		$this->parser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Parser\\LocallangXmlParser');
 
-			// We have to take the whole relative path as otherwise this test fails on Windows systems
-		$fixturePath = PATH_site . 'typo3/sysext/core/Tests/Unit/Localization/Parser/Fixtures/';
-		$this->llxmlFileNames = array(
-			'locallang' => $fixturePath . 'locallang.xml',
-			'locallang_override' => $fixturePath . 'locallang_override.xml',
-			'locallangOnlyDefaultLanguage' => $fixturePath . 'locallangOnlyDefaultLanguage.xml'
-		);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xml';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\LanguageStore')->initialize();
 			// Clear localization cache
@@ -88,7 +81,7 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canParseLlxmlInEnglish() {
-		$LOCAL_LANG = $this->parser->getParsedData($this->llxmlFileNames['locallang'], 'default');
+		$LOCAL_LANG = $this->parser->getParsedData(self::getFixtureFilePath('locallang.xml'), 'default');
 		$this->assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
 		$expectedLabels = array(
 			'label1' => 'This is label #1',
@@ -104,7 +97,7 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canParseLlxmlInFrench() {
-		$LOCAL_LANG = $this->parser->getParsedData($this->llxmlFileNames['locallang'], 'fr');
+		$LOCAL_LANG = $this->parser->getParsedData(self::getFixtureFilePath('locallang.xml'), 'fr');
 		$this->assertArrayHasKey('fr', $LOCAL_LANG, 'fr key not found in $LOCAL_LANG');
 		$expectedLabels = array(
 			'label1' => 'Ceci est le libellé no. 1',
@@ -120,7 +113,7 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canParseLlxmlInFrenchAndReturnsNullLabelsIfNoTranslationIsFound() {
-		$LOCAL_LANG = $this->parser->getParsedData($this->llxmlFileNames['locallangOnlyDefaultLanguage'], 'fr');
+		$LOCAL_LANG = $this->parser->getParsedData(self::getFixtureFilePath('locallangOnlyDefaultLanguage.xml'), 'fr');
 		$expectedLabels = array(
 			'label1' => NULL,
 			'label2' => NULL,
@@ -135,8 +128,8 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canOverrideLlxml() {
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$this->llxmlFileNames['locallang']][] = $this->llxmlFileNames['locallang_override'];
-		$LOCAL_LANG = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($this->llxmlFileNames['locallang'], 'default'), \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($this->llxmlFileNames['locallang'], 'fr'));
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][self::getFixtureFilePath('locallang.xml')][] = self::getFixtureFilePath('locallang_override.xml');
+		$LOCAL_LANG = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(self::getFixtureFilePath('locallang.xml'), 'default'), \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(self::getFixtureFilePath('locallang.xml'), 'fr'));
 		$this->assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
 		$this->assertArrayHasKey('fr', $LOCAL_LANG, 'fr key not found in $LOCAL_LANG');
 		$expectedLabels = array(
@@ -156,6 +149,27 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				$this->assertEquals($expectedLabel, $LOCAL_LANG[$languageKey][$key][0]['target']);
 			}
 		}
+	}
+
+	public function numericKeysDataProvider() {
+		$LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(self::getFixtureFilePath('locallangNumericKeys.xml'), 'default');
+		$translations = array();
+
+		foreach ($LOCAL_LANG['default'] as $key => $labelData) {
+			$translations['Numerical key ' . $key] = array($key, $labelData[0]['source'] . ' [FR]');
+		}
+
+		return $translations;
+	}
+
+	/**
+	 * @test
+	 * @dataProvider numericKeysDataProvider
+	 */
+	public function canTranslateNumericKeys($key, $expectedResult) {
+		$LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(self::getFixtureFilePath('locallangNumericKeys.xml'), 'fr');
+
+		$this->assertEquals($expectedResult, $LOCAL_LANG['fr'][$key][0]['target']);
 	}
 
 }
