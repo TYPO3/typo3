@@ -85,7 +85,7 @@ class LocallangXmlParser extends \TYPO3\CMS\Core\Localization\Parser\AbstractXml
 		}
 		if ($element === 'target' && isset($localizedBodyOfFileTag[0]) && $localizedBodyOfFileTag[0] instanceof \SimpleXMLElement) {
 			$parsedDataTarget = $this->getParsedDataForElement($localizedBodyOfFileTag[0], $element);
-			$mergedData = array_merge($parsedData, $parsedDataTarget);
+			$mergedData = $parsedDataTarget + $parsedData;
 			if ($this->languageKey === 'default') {
 				$parsedData = array_intersect_key($mergedData, $parsedData, $parsedDataTarget);
 			} else {

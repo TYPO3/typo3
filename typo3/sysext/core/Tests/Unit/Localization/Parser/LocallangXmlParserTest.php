@@ -65,7 +65,8 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->llxmlFileNames = array(
 			'locallang' => $fixturePath . 'locallang.xml',
 			'locallang_override' => $fixturePath . 'locallang_override.xml',
-			'locallangOnlyDefaultLanguage' => $fixturePath . 'locallangOnlyDefaultLanguage.xml'
+			'locallangOnlyDefaultLanguage' => $fixturePath . 'locallangOnlyDefaultLanguage.xml',
+			'locallangNumericKeys' => $fixturePath . 'locallangNumericKeys.xml'
 		);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xml';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\LanguageStore')->initialize();
@@ -155,6 +156,21 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			foreach ($expectedLanguageLabels as $key => $expectedLabel) {
 				$this->assertEquals($expectedLabel, $LOCAL_LANG[$languageKey][$key][0]['target']);
 			}
+		}
+	}
+
+	/**
+	 * @test
+	 */
+	public function canTranslateNumericKeys() {
+		$LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($this->llxmlFileNames['locallangNumericKeys'], 'default');
+		$expectedLabels = array(
+			'1' => 'This is label #1',
+			'2' => 'This is label #2',
+			'3' => 'This is label #3'
+		);
+		foreach ($expectedLabels as $key => $expectedLabel) {
+			$this->assertEquals($expectedLabel, $LOCAL_LANG['default'][$key][0]['target']);
 		}
 	}
 
