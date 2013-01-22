@@ -39,6 +39,11 @@ class ConfigurationSubcategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractE
 	protected $name = '';
 
 	/**
+	 * @var string
+	 */
+	protected $label = '';
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem>
 	 */
 	protected $items;
@@ -88,6 +93,21 @@ class ConfigurationSubcategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractE
 	 */
 	public function getName() {
 		return $this->name;
+	}
+
+	/**
+	 * @param string $label
+	 * @return void
+	 */
+	public function setLabel($label) {
+		$this->label = $label;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLabel() {
+		return $this->label;
 	}
 
 }
