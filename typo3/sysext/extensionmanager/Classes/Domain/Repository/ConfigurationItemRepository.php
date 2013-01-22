@@ -41,6 +41,11 @@ class ConfigurationItemRepository {
 	protected $configurationManager;
 
 	/**
+	 * @var array
+	 */
+	protected $subCategories = array();
+
+	/**
 	 * Injects the object manager
 	 *
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
@@ -193,6 +198,13 @@ class ConfigurationItemRepository {
 		$tsStyleConfig = $this->getT3libTsStyleConfig();
 		$tsStyleConfig->doNotSortCategoriesBeforeMakingForm = TRUE;
 		$theConstants = $tsStyleConfig->ext_initTSstyleConfig($configRaw, $extension['siteRelPath'], PATH_site . $extension['siteRelPath'], $GLOBALS['BACK_PATH']);
+
+		// Save information about the subcategories
+		foreach ($tsStyleConfig->subCategories as $subCategoryName => $subCategoryInformation) {
+			$this->subCategories[$subCategoryName] = $subCategoryInformation[0];
+		}
+
+		// Set up the additional descriptions
 		if (isset($tsStyleConfig->setup['constants']['TSConstantEditor.'])) {
 			foreach ($tsStyleConfig->setup['constants']['TSConstantEditor.'] as $category => $highlights) {
 				$theConstants['__meta__'][rtrim($category, '.')]['highlightText'] = $highlights['description'];
@@ -263,6 +275,9 @@ class ConfigurationItemRepository {
 				/** @var $configurationSubcategoryObject \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationSubcategory */
 				$configurationSubcategoryObject = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\ConfigurationSubcategory');
 				$configurationSubcategoryObject->setName($subcatName);
+				if (isset($this->subCategories[$subcatName])) {
+					$configurationSubcategoryObject->setLabel($this->subCategories[$subcatName]);
+				}
 				foreach ($configurationItems as $configurationItem) {
 					/** @var $configurationObject \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem */
 					$configurationObject = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\ConfigurationItem');
