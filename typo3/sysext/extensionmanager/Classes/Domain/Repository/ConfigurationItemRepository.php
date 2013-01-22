@@ -67,7 +67,9 @@ class ConfigurationItemRepository {
 	 * @return null|\SplObjectStorage
 	 */
 	public function findByExtension(array $extension) {
-		$configRaw = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_site . $extension['siteRelPath'] . '/ext_conf_template.txt');
+		$configRaw = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(
+			PATH_site . $extension['siteRelPath'] . '/ext_conf_template.txt'
+		);
 		$configurationObjectStorage = NULL;
 		if ($configRaw) {
 			$configurationArray = $this->convertRawConfigurationToArray($configRaw, $extension);
@@ -89,7 +91,10 @@ class ConfigurationItemRepository {
 		$configuration = $this->mergeWithExistingConfiguration($defaultConfiguration, $extension);
 		$hierarchicConfiguration = array();
 		foreach ($configuration as $configurationOption) {
-			$hierarchicConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->buildConfigurationArray($configurationOption, $extension), $hierarchicConfiguration);
+			$hierarchicConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule(
+				$this->buildConfigurationArray($configurationOption, $extension),
+				$hierarchicConfiguration
+			);
 		}
 
 		// Flip category array as it was merged the other way around
@@ -182,17 +187,55 @@ class ConfigurationItemRepository {
 	}
 
 	/**
-	 * Generate an array from the typoscript style constants
-	 * Add meta data like TSConstantEditor comments
+	 * Create a flat array of configuration options from
+	 * incoming raw configuration file using core's typoscript parser.
 	 *
-	 * @param string $configRaw
-	 * @param array $extension
+	 * Generates an array from the typoscript style constants and
+	 * adds meta data like TSConstantEditor comments
+	 *
+	 * Result is an array, with configuration item as array keys,
+	 * and item properties as key-value sub-array:
+	 *
+	 * array(
+	 *   'fooOption' => array(
+	 *     'type' => 'string',
+	 *     'value' => 'foo',
+	 *     ...
+	 *   ),
+	 *   'barOption' => array(
+	 *     'type' => boolean,
+	 *     'default_value' => 0,
+	 *     ...
+	 *   ),
+	 *   ...
+	 * )
+	 *
+	 * @param string $configRaw Raw configuration string
+	 * @param array $extension Extension name
 	 * @return array
+	 *
+	 * @TODO: Code smell, this method is used in ConfigurationUtility as well.
+	 * 		This code should be moved elsewhere, it is not cool to have this
+	 * 		public method here in the repository class.
 	 */
 	public function createArrayFromConstants($configRaw, array $extension) {
 		$tsStyleConfig = $this->getT3libTsStyleConfig();
 		$tsStyleConfig->doNotSortCategoriesBeforeMakingForm = TRUE;
 		$theConstants = $tsStyleConfig->ext_initTSstyleConfig($configRaw, $extension['siteRelPath'], PATH_site . $extension['siteRelPath'], $GLOBALS['BACK_PATH']);
+
+		// Loop through configuration items, see if it is assigned to a sub category
+		// and add the sub category label to the item property if so.
+		foreach ($theConstants as $configurationOptionName => $configurationOption) {
+			if (
+				array_key_exists('subcat_name', $configurationOption)
+				&& isset($tsStyleConfig->subCategories[$configurationOption['subcat_name']])
+				&& isset($tsStyleConfig->subCategories[$configurationOption['subcat_name']][0])
+			) {
+				$theConstants[$configurationOptionName]['subcat_label'] = $tsStyleConfig->subCategories[$configurationOption['subcat_name']][0];
+			}
+		}
+
+		// Set up the additional descriptions
 		if (isset($tsStyleConfig->setup['constants']['TSConstantEditor.'])) {
 			foreach ($tsStyleConfig->setup['constants']['TSConstantEditor.'] as $category => $highlights) {
 				$theConstants['__meta__'][rtrim($category, '.')]['highlightText'] = $highlights['description'];
@@ -264,6 +307,14 @@ class ConfigurationItemRepository {
 				$configurationSubcategoryObject = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\ConfigurationSubcategory');
 				$configurationSubcategoryObject->setName($subcatName);
 				foreach ($configurationItems as $configurationItem) {
+					// Set sub category label if configuration item contains a subcat label.
+					// The sub category label is set multiple times if there is more than one item
+					// in a sub category, but that is ok since all items of one sub category
+					// share the same label. @see createArrayFromConstants()
+					if (array_key_exists('subcat_label', $configurationItem)) {
+						$configurationSubcategoryObject->setLabel($configurationItem['subcat_label']);
+					}
+
 					/** @var $configurationObject \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem */
 					$configurationObject = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\ConfigurationItem');
 					if (isset($configurationItem['generic'])) {
