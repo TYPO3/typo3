@@ -327,7 +327,8 @@ BE.forceSalted = 0
 TSConstantEditor.advancedbackend {
   description = <span style="background:red; padding:1px 2px; color:#fff; font-weight:bold;">1</span> Install tool has hardcoded md5 hashing, enabling this setting will prevent use of a install-tool-created BE user.<br />Currently same is for changin password with user setup module unless you use pending patch!
 			1=BE.forceSalted
-}',
+}
+				',
 				array(
 					'checkConfigurationFE' => array(
 						'cat' => 'basic',
@@ -364,7 +365,8 @@ TSConstantEditor.advancedbackend {
 						'label' => 'Frontend configuration check',
 						'name' => 'checkConfigurationFE',
 						'value' => '0',
-						'default_value' => '0'
+						'default_value' => '0',
+						'subcat_label' => 'Enable features',
 					),
 					'BE.forceSalted' => array(
 						'cat' => 'advancedbackend',
@@ -374,7 +376,7 @@ TSConstantEditor.advancedbackend {
 						'name' => 'BE.forceSalted',
 						'value' => '0',
 						'default_value' => '0',
-						'highlight' => 1
+						'highlight' => 1,
 					),
 					'__meta__' => array(
 						'advancedbackend' => array(
@@ -395,19 +397,38 @@ TSConstantEditor.advancedbackend {
 	 * @param $setupTsConstantEditor
 	 * @param $expected
 	 * @return void
+	 *
+	 * @TODO: Split this test to multiple tests:
+	 * 		test getT3libTsStyleConfig is called with $raw
+	 * 		test TSConstantEditor. is considered in result
+	 * 		test subcat_label is correctly extracted (see method)
 	 */
 	public function createArrayFromConstantsCreatesAnArrayWithMetaInformation($raw, $constants, $setupTsConstantEditor, $expected) {
 		$tsStyleConfig = $this->getMock('TYPO3\\CMS\\Core\\TypoScript\\ConfigurationForm');
-		$configurationItemRepositoryMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ConfigurationItemRepository', array('getT3libTsStyleConfig'));
-		$configurationItemRepositoryMock->expects($this->once())->method('getT3libTsStyleConfig')->will($this->returnValue($tsStyleConfig));
-		$tsStyleConfig->expects($this->once())->method('ext_initTSstyleConfig')->with($raw, $this->anything(), $this->anything(), $this->anything())->will($this->returnValue($constants));
+		$configurationItemRepositoryMock = $this->getMock(
+			'TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ConfigurationItemRepository',
+			array('getT3libTsStyleConfig')
+		);
+		$configurationItemRepositoryMock
+			->expects($this->once())
+			->method('getT3libTsStyleConfig')
+			->will($this->returnValue($tsStyleConfig));
+		$tsStyleConfig
+			->expects($this->once())
+			->method('ext_initTSstyleConfig')
+			->with($raw, $this->anything(), $this->anything(), $this->anything())
+			->will($this->returnValue($constants));
 		$tsStyleConfig->setup['constants']['TSConstantEditor.'] = $setupTsConstantEditor;
+
 		$constantsResult = $configurationItemRepositoryMock->createArrayFromConstants($raw, array());
 		$this->assertEquals($expected, $constantsResult);
 	}
 
 	/**
 	 * @test
+	 *
+	 * @TODO: This test still uses internal knowledge of createArrayFromConstants() which it shouldn't
+	 * 		Instead, it should mock createArrayFromConstants(), use a given result array and not the raw config string.
 	 */
 	public function convertRawConfigurationToArrayReturnsSortedHierarchicArray() {
 		$configRaw = '# cat=basic/enable/10; type=string; label=Item 1: This is the first configuration item
@@ -432,6 +453,7 @@ enableJquery = 1';
 						'name' =>'item1',
 						'value' => 'one',
 						'default_value' => 'one',
+						'subcat_label' => 'Enable features',
 						'labels' => array(
 							0 => 'Item 1',
 							1 => 'This is the first configuration item'
@@ -446,6 +468,7 @@ enableJquery = 1';
 						'name' =>'integerValue',
 						'value' => '1',
 						'default_value' => '1',
+						'subcat_label' => 'Enable features',
 						'labels' => array(
 							0 => 'Integer Value',
 							1 => 'Please insert a positive integer value'
@@ -464,6 +487,7 @@ enableJquery = 1';
 						'name' =>'enableJquery',
 						'value' => '1',
 						'default_value' => '1',
+						'subcat_label' => 'Files',
 						'labels' => array(
 							0 => 'enableJquery',
 							1 => 'Insert jQuery plugin'
@@ -473,7 +497,10 @@ enableJquery = 1';
 			)
 		);
 
-		$this->assertSame($expectedArray, $this->configurationItemRepository->_callRef('convertRawConfigurationToArray', $configRaw, $extension));
+		$this->assertSame(
+			$expectedArray,
+			$this->configurationItemRepository->_callRef('convertRawConfigurationToArray', $configRaw, $extension)
+		);
 	}
 
 }
