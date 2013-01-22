@@ -18,6 +18,9 @@
 			<trans-unit id="extConfTemplate.headline" xml:space="preserve">
 				<source>Configure Extension</source>
 			</trans-unit>
+			<trans-unit id="extConfTemplate.other" xml:space="preserve">
+				<source>Other</source>
+			</trans-unit>
 			<trans-unit id="extConfTemplate.type.int+" xml:space="preserve">
 				<source>positive integer</source>
 			</trans-unit>
