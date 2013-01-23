@@ -76,23 +76,15 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 
 	/**
 	 * @var \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository
+	 * @inject
 	 */
 	protected $logEntryRepository = NULL;
-
-	/**
-	 * Injects the log entry repository.
-	 *
-	 * @param \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository $logEntryRepository
-	 * @return void
-	 */
-	public function injectLogEntryRepository(\TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository $logEntryRepository) {
-		$this->logEntryRepository = $logEntryRepository;
-	}
 
 	/**
 	 * Initialize index action
 	 *
 	 * @return void
+	 * @throws \RuntimeException
 	 */
 	public function initializeIndexAction() {
 		// @TODO: Extbase backend modules rely on frontend TypoScript for view, persistence
@@ -152,7 +144,7 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	/**
 	 * Get module states (the constraint object) from user data
 	 *
-	 * @return Tx_Belog_Domain_Model_Constraint|NULL
+	 * @return \TYPO3\CMS\Belog\Domain\Model\Constraint|NULL
 	 */
 	protected function getConstraintFromBeUserData() {
 		$serializedConstraint = $GLOBALS['BE_USER']->getModuleData(get_class($this));
@@ -182,7 +174,7 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	 *
 	 * [pid][dayTimestamp][items]
 	 *
-	 * @param Tx_Extbase_Persistence_QueryResult<Tx_Belog_Domain_Model_LogEntry> $logEntries
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryResultInterface<TYPO3\CMS\Belog\Domain\Model\LogEntry> $logEntries
 	 * @param boolean $groupByPage Whether or not log entries should be grouped by page
 	 * @return array
 	 */
