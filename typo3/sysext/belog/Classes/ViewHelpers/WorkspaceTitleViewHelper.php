@@ -34,18 +34,9 @@ class WorkspaceTitleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 
 	/**
 	 * @var \TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository
+	 * @inject
 	 */
 	protected $workspaceRepository = NULL;
-
-	/**
-	 * Inject the workspace repository
-	 *
-	 * @param \TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository $workspaceRepository
-	 * @return void
-	 */
-	public function injectWorkspaceRepository(\TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository $workspaceRepository) {
-		$this->workspaceRepository = $workspaceRepository;
-	}
 
 	/**
 	 * Resolve workspace title from UID.
