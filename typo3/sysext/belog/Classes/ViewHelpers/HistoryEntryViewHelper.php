@@ -34,18 +34,9 @@ class HistoryEntryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 
 	/**
 	 * @var \TYPO3\CMS\Belog\Domain\Repository\HistoryEntryRepository
+	 * @inject
 	 */
 	protected $historyEntryRepository;
-
-	/**
-	 * Inject the system history entry repository.
-	 *
-	 * @param \TYPO3\CMS\Belog\Domain\Repository\HistoryEntryRepository $historyEntryRepository
-	 * @return void
-	 */
-	public function injectHistoryEntryRepository(\TYPO3\CMS\Belog\Domain\Repository\HistoryEntryRepository $historyEntryRepository) {
-		$this->historyEntryRepository = $historyEntryRepository;
-	}
 
 	/**
 	 * Get system history record

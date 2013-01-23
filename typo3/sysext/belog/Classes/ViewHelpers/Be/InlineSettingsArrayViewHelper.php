@@ -37,8 +37,8 @@ class InlineSettingsArrayViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abst
 	 *
 	 * @param array $settings Custom JavaScript settings to be added
 	 * @return void
-	 * @see template
-	 * @see t3lib_PageRenderer
+	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 * @see \TYPO3\CMS\Core\Page\PageRenderer
 	 */
 	public function render(array $settings) {
 		$doc = $this->getDocInstance();
