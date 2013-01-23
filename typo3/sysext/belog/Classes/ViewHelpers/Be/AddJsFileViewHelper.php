@@ -37,8 +37,8 @@ class AddJsFileViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 *
 	 * @param string $file Custom JavaScript file to be loaded. Can be a file path inside the TYPO3 installation
 	 * @return void
-	 * @see template
-	 * @see t3lib_PageRenderer
+	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 * @see \TYPO3\CMS\Core\Page\PageRenderer
 	 */
 	public function render($file) {
 		$doc = $this->getDocInstance();
