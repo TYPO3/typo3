@@ -854,19 +854,6 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 		return str_replace('###TITLE_ATTRIBUTE###', htmlspecialchars($it . ': ' . $alt), $this->iconFileNameCache[$it]);
 	}
 
-	/**
-	 * Converts the input string from utf-8 to the backend charset.
-	 *
-	 * @param 	string		String to convert (utf-8)
-	 * @return 	string		Converted string (backend charset if different from utf-8)
-	 * @deprecated since 4.7, will be removed in 6.1
-	 * @todo Define visibility
-	 */
-	public function utf8_to_currentCharset($string) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return $string;
-	}
-
 	/********************************
 	 *
 	 * Reindexing
