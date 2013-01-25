@@ -175,12 +175,12 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
 					* and apply the stdWrap to the storagePid
 					*/
 				if (TYPO3_MODE !== 'FE') {
-					Tx_Extbase_Utility_FrontendSimulator::simulateFrontendEnvironment($this->getContentObject());
+					\TYPO3\CMS\Extbase\Utility\FrontendSimulatorUtility::simulateFrontendEnvironment($this->getContentObject());
 				}
 				$conf = $this->typoScriptService->convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
 				$frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrap($conf['storagePid'], $conf['storagePid.']);
 				if (TYPO3_MODE !== 'FE') {
-					Tx_Extbase_Utility_FrontendSimulator::resetFrontendEnvironment();
+					\TYPO3\CMS\Extbase\Utility\FrontendSimulatorUtility::resetFrontendEnvironment();
 				}
 			}
 
