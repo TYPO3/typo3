@@ -278,7 +278,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 					// Get the list of files from the field
 				$field = (trim($conf['field']) ? trim($conf['field']) : 'media');
 				$fileList = $this->cObj->data[$field];
-				t3lib_div::loadTCA('tt_content');
+				$GLOBALS['TSFE']->includeTCA();
 				$path = 'uploads/media/';
 				if (is_array($GLOBALS['TCA']['tt_content']['columns'][$field]) && !empty($GLOBALS['TCA']['tt_content']['columns'][$field]['config']['uploadfolder'])) {
 					// in TCA-Array folders are saved without trailing slash, so $path.$fileName won't work
