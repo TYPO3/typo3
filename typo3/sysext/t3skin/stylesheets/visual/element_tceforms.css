@@ -449,6 +449,11 @@ table.typo3-TCEforms .t3-form-field-container-inline .wrapperTable5 {
 	border: 0;
 }
 
+.t3-form-field-header-inline td.t3-form-field-header-inline-summary,
+.t3-form-field-header-inline td.t3-form-field-header-inline-icon {
+	cursor: pointer;
+}
+
 /* - - - - - - - - - - - - - - - - - - - - -
 TCEforms Sections
 - - - - - - - - - - - - - - - - - - - - - */
