@@ -24,15 +24,29 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	 */
 	protected $viewHelper;
 
+	/**
+	 * @var array Backup of current locale, it is manipulated in tests
+	 */
+	protected $backupLocales = array();
+
 	public function setUp() {
 		parent::setUp();
+		// Store all locale categories manipulated in tests for reconstruction in tearDown
+		$this->backupLocales = array(
+			'LC_COLLATE' => setlocale(LC_COLLATE, 0),
+			'LC_CTYPE' => setlocale(LC_CTYPE, 0),
+			'LC_MONETARY' => setlocale(LC_MONETARY, 0),
+			'LC_TIME' => setlocale(LC_MONETARY, 0),
+		);
 		$this->arguments['name'] = '';
 		$this->arguments['sortByOptionLabel'] = FALSE;
 		$this->viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\SelectViewHelper', array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
 	}
 
 	public function tearDown() {
-		setlocale(LC_ALL, '');
+		foreach ($this->backupLocales as $category => $locale) {
+			setlocale($category, $locale);
+		}
 	}
 
 	/**
