@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
+namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
 
 /***************************************************************
  *  Copyright notice
@@ -73,7 +73,7 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function setUp() {
 		$this->mockSession = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Session');
 		$this->mockIdentityMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\IdentityMap');
-		$this->mockQuery = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Query', array('equals', 'matching', 'execute', 'comparison', 'setLimit'));
+		$this->mockQuery = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Query', array('equals', 'matching', 'execute', 'comparison', 'setLimit'), array(), '', FALSE);
 		$this->mockQuerySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
 		$this->mockQuery->expects($this->any())->method('getQuerySettings')->will($this->returnValue($this->mockQuerySettings));
 		$this->mockQueryFactory = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryFactory');
