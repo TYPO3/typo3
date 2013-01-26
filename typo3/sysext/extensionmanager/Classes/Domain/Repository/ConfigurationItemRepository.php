@@ -32,104 +32,80 @@ class ConfigurationItemRepository {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 * @inject
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Configuration\ConfigurationManager
-	 */
-	protected $configurationManager;
-
-	/**
-	 * Injects the object manager
-	 *
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
-
-	/**
-	 * Inject configuration manager
-	 *
-	 * @param \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager) {
-		$this->configurationManager = $configurationManager;
-	}
-
-	/**
 	 * Find configuration options by extension
 	 *
-	 * @param array $extension array with extension information
-	 * @return null|\SplObjectStorage
+	 * @param string $extensionKey Extension key
+	 * @return \SplObjectStorage
 	 */
-	public function findByExtension(array $extension) {
-		$configRaw = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(
-			PATH_site . $extension['siteRelPath'] . '/ext_conf_template.txt'
-		);
-		$configurationObjectStorage = NULL;
-		if ($configRaw) {
-			$configurationArray = $this->convertRawConfigurationToArray($configRaw, $extension);
-			$configurationObjectStorage = $this->convertHierarchicArrayToObject($configurationArray);
-		}
-		return $configurationObjectStorage;
+	public function findByExtensionKey($extensionKey) {
+		$configurationArray = $this->getConfigurationArrayFromExtensionKey($extensionKey);
+		return $this->convertHierarchicArrayToObject($configurationArray);
 	}
 
 	/**
 	 * Converts the raw configuration file content to an configuration object storage
 	 *
-	 * @param string $configRaw
-	 * @param array $extension array with extension information
+	 * @param string $extensionKey Extension key
 	 * @return array
 	 */
-	protected function convertRawConfigurationToArray($configRaw, array $extension) {
-		$defaultConfiguration = $this->createArrayFromConstants($configRaw, $extension);
-		$metaInformation = $this->addMetaInformation($defaultConfiguration);
-		$configuration = $this->mergeWithExistingConfiguration($defaultConfiguration, $extension);
-		$hierarchicConfiguration = array();
-		foreach ($configuration as $configurationOption) {
-			$hierarchicConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule(
-				$this->buildConfigurationArray($configurationOption, $extension),
-				$hierarchicConfiguration
-			);
-		}
+	protected function getConfigurationArrayFromExtensionKey($extensionKey) {
+		/** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
+		$configurationUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility');
+		$defaultConfiguration = $configurationUtility->getDefaultConfigurationFromExtConfTemplateAsValuedArray($extensionKey);
 
-		// Flip category array as it was merged the other way around
-		$hierarchicConfiguration = array_reverse($hierarchicConfiguration);
-
-		// Sort configurations of each subcategory
-		foreach ($hierarchicConfiguration as &$catConfigurationArray) {
-			foreach ($catConfigurationArray as &$subcatConfigurationArray) {
-				uasort($subcatConfigurationArray, function ($a, $b) {
-					return strnatcmp($a['subcat'], $b['subcat']);
-				});
+		$resultArray = array();
+		if (count($defaultConfiguration) > 0) {
+			$metaInformation = $this->addMetaInformation($defaultConfiguration);
+			$configuration = $this->mergeWithExistingConfiguration($defaultConfiguration, $extensionKey);
+			$hierarchicConfiguration = array();
+			foreach ($configuration as $configurationOption) {
+				$hierarchicConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule(
+					$this->buildConfigurationArray($configurationOption, $extensionKey),
+					$hierarchicConfiguration
+				);
 			}
-			unset($subcatConfigurationArray);
-		}
-		unset($tempConfiguration);
 
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($hierarchicConfiguration, $metaInformation);
+			// Flip category array as it was merged the other way around
+			$hierarchicConfiguration = array_reverse($hierarchicConfiguration);
+
+			// Sort configurations of each subcategory
+			foreach ($hierarchicConfiguration as &$catConfigurationArray) {
+				foreach ($catConfigurationArray as &$subcatConfigurationArray) {
+					uasort($subcatConfigurationArray, function ($a, $b) {
+						return strnatcmp($a['subcat'], $b['subcat']);
+					});
+				}
+				unset($subcatConfigurationArray);
+			}
+			unset($tempConfiguration);
+
+			$resultArray = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($hierarchicConfiguration, $metaInformation);
+		}
+
+		return $resultArray;
 	}
 
 	/**
 	 * Builds a configuration array from each line (option) of the config file
 	 *
 	 * @param string $configurationOption config file line representing one setting
-	 * @param array $extension
+	 * @param string $extensionKey Extension key
 	 * @return array
 	 */
-	protected function buildConfigurationArray($configurationOption, $extension) {
+	protected function buildConfigurationArray($configurationOption, $extensionKey) {
 		$hierarchicConfiguration = array();
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($configurationOption['type'], 'user')) {
 			$configurationOption = $this->extractInformationForConfigFieldsOfTypeUser($configurationOption);
 		} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($configurationOption['type'], 'options')) {
 			$configurationOption = $this->extractInformationForConfigFieldsOfTypeOptions($configurationOption);
 		}
-		if (\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($configurationOption['label'], $extension['key'])) {
-			$configurationOption['label'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($configurationOption['label'], $extension['key']);
+		if (\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($configurationOption['label'], $extensionKey)) {
+			$configurationOption['label'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($configurationOption['label'], $extensionKey);
 		}
 		$configurationOption['labels'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $configurationOption['label'], FALSE, 2);
 		$configurationOption['subcat_name'] = $configurationOption['subcat_name'] ? $configurationOption['subcat_name'] : '__default';
@@ -187,91 +163,17 @@ class ConfigurationItemRepository {
 	}
 
 	/**
-	 * Create a flat array of configuration options from
-	 * incoming raw configuration file using core's typoscript parser.
+	 * Merge current local configuration over default configuration
 	 *
-	 * Generates an array from the typoscript style constants and
-	 * adds meta data like TSConstantEditor comments
-	 *
-	 * Result is an array, with configuration item as array keys,
-	 * and item properties as key-value sub-array:
-	 *
-	 * array(
-	 *   'fooOption' => array(
-	 *     'type' => 'string',
-	 *     'value' => 'foo',
-	 *     ...
-	 *   ),
-	 *   'barOption' => array(
-	 *     'type' => boolean,
-	 *     'default_value' => 0,
-	 *     ...
-	 *   ),
-	 *   ...
-	 * )
-	 *
-	 * @param string $configRaw Raw configuration string
-	 * @param array $extension Extension name
-	 * @return array
-	 *
-	 * @TODO: Code smell, this method is used in ConfigurationUtility as well.
-	 * 		This code should be moved elsewhere, it is not cool to have this
-	 * 		public method here in the repository class.
-	 */
-	public function createArrayFromConstants($configRaw, array $extension) {
-		$tsStyleConfig = $this->getT3libTsStyleConfig();
-		$tsStyleConfig->doNotSortCategoriesBeforeMakingForm = TRUE;
-		$theConstants = $tsStyleConfig->ext_initTSstyleConfig($configRaw, $extension['siteRelPath'], PATH_site . $extension['siteRelPath'], $GLOBALS['BACK_PATH']);
-
-		// Loop through configuration items, see if it is assigned to a sub category
-		// and add the sub category label to the item property if so.
-		foreach ($theConstants as $configurationOptionName => $configurationOption) {
-			if (
-				array_key_exists('subcat_name', $configurationOption)
-				&& isset($tsStyleConfig->subCategories[$configurationOption['subcat_name']])
-				&& isset($tsStyleConfig->subCategories[$configurationOption['subcat_name']][0])
-			) {
-				$theConstants[$configurationOptionName]['subcat_label'] = $tsStyleConfig->subCategories[$configurationOption['subcat_name']][0];
-			}
-		}
-
-		// Set up the additional descriptions
-		if (isset($tsStyleConfig->setup['constants']['TSConstantEditor.'])) {
-			foreach ($tsStyleConfig->setup['constants']['TSConstantEditor.'] as $category => $highlights) {
-				$theConstants['__meta__'][rtrim($category, '.')]['highlightText'] = $highlights['description'];
-				foreach ($highlights as $highlightNumber => $value) {
-					if (rtrim($category, '.') == $theConstants[$value]['cat']) {
-						$theConstants[$value]['highlight'] = $highlightNumber;
-					}
-				}
-			}
-		}
-		return $theConstants;
-	}
-
-	/**
-	 * Wrapper for makeInstance to make it possible to mock
-	 * the class
-	 *
-	 * @return \TYPO3\CMS\Core\TypoScript\ConfigurationForm
-	 */
-	protected function getT3libTsStyleConfig() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ConfigurationForm');
-	}
-
-	/**
-	 * Merge new configuration with existing configuration
-	 *
-	 * @param array $configuration the new configuration array
-	 * @param array $extension the extension information
+	 * @param array $defaultConfiguration Default configuration from ext_conf_template.txt
+	 * @param string $extensionKey the extension information
 	 * @return array
 	 */
-	protected function mergeWithExistingConfiguration(array $configuration, array $extension) {
+	protected function mergeWithExistingConfiguration(array $defaultConfiguration, $extensionKey) {
 		try {
 			$currentExtensionConfig = unserialize(
-				$this->configurationManager->getConfigurationValueByPath(
-					'EXT/extConf/' . $extension['key']
-				)
+				$this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')
+					->getConfigurationValueByPath('EXT/extConf/' . $extensionKey)
 			);
 		} catch (\RuntimeException $e) {
 			$currentExtensionConfig = array();
@@ -281,7 +183,7 @@ class ConfigurationItemRepository {
 		foreach ($flatExtensionConfig as $key => $value) {
 			$valuedCurrentExtensionConfig[$key]['value'] = $value;
 		}
-		$configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($configuration, $valuedCurrentExtensionConfig);
+		$configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($defaultConfiguration, $valuedCurrentExtensionConfig);
 		return $configuration;
 	}
 
@@ -310,7 +212,7 @@ class ConfigurationItemRepository {
 					// Set sub category label if configuration item contains a subcat label.
 					// The sub category label is set multiple times if there is more than one item
 					// in a sub category, but that is ok since all items of one sub category
-					// share the same label. @see createArrayFromConstants()
+					// share the same label.
 					if (array_key_exists('subcat_label', $configurationItem)) {
 						$configurationSubcategoryObject->setLabel($configurationItem['subcat_label']);
 					}
