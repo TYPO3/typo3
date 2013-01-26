@@ -64,11 +64,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $databaseUtility;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Configuration\ConfigurationManager
-	 */
-	protected $configurationManager;
-
-	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
 	 */
 	public $extensionRepository;
@@ -103,16 +98,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function injectDatabaseUtility(\TYPO3\CMS\Extensionmanager\Utility\DatabaseUtility $databaseUtility) {
 		$this->databaseUtility = $databaseUtility;
-	}
-
-	/**
-	 * Inject configuration manager
-	 *
-	 * @param \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager) {
-		$this->configurationManager = $configurationManager;
 	}
 
 	/**
@@ -272,7 +257,9 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	public function reloadCaches() {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
 		// Set new extlist / extlistArray for extension load changes at runtime
-		$localConfiguration = $this->configurationManager->getLocalConfiguration();
+		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
+		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$localConfiguration = $configurationManager->getLocalConfiguration();
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'] = $localConfiguration['EXT']['extListArray'];
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = implode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray']);
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->reloadTypo3LoadedExtAndClassLoaderAndExtLocalconf();
@@ -334,19 +321,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Writes the TSstyleconf values to "localconf.php"
-	 * Removes the temp_CACHED* files before return.
-	 *
-	 * @param string $extensionKey Extension key
-	 * @param array $newConfiguration Configuration array to write back
-	 * @return void
-	 */
-	public function writeExtensionTypoScriptStyleConfigurationToLocalconf($extensionKey, $newConfiguration) {
-		$this->configurationManager->setLocalConfigurationValueByPath('EXT/extConf/' . $extensionKey, serialize($newConfiguration));
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
 	}
 
 	/**
