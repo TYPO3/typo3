@@ -31,18 +31,136 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 class ConfigurationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @param array $configuration
-	 * @param array $expected
-	 * @dataProvider convertValuedToNestedConfigurationDataProvider
 	 * @test
 	 */
-	public function convertValuedToNestedConfiguration(array $configuration, array $expected) {
-		/** @var $fixture \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
-		$fixture = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility');
-		$this->assertEquals($expected, $fixture->convertValuedToNestedConfiguration($configuration));
+	public function getCurrentConfigurationReturnsExtensionConfigurationAsValuedConfiguration() {
+		/** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+		$configurationUtility = $this->getMock(
+			'TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility',
+			array('getDefaultConfigurationFromExtConfTemplateAsValuedArray')
+		);
+		$configurationUtility
+			->expects($this->once())
+			->method('getDefaultConfigurationFromExtConfTemplateAsValuedArray')
+			->will($this->returnValue(array()));
+		$extensionKey = uniqid('some-extension');
+
+		$currentConfiguration = array(
+			'key1' => 'value1',
+			'key2.' => array(
+				'subkey1' => 'value2'
+			)
+		);
+
+		$expected = array(
+			'key1' => array(
+				'value' => 'value1',
+			),
+			'key2.subkey1' => array(
+				'value' => 'value2',
+			),
+		);
+
+		$GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]= array();
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey] = serialize($currentConfiguration);
+		$actual = $configurationUtility->getCurrentConfiguration($extensionKey);
+		$this->assertEquals($expected, $actual);
 	}
 
 	/**
+	 * @test
+	 */
+	public function getDefaultConfigurationFromExtConfTemplateAsValuedArrayReturnsExpectedExampleArray() {
+		/** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+		$configurationUtility = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility',
+			array('getDefaultConfigurationRawString')
+		);
+		$configurationUtility
+			->expects($this->once())
+			->method('getDefaultConfigurationRawString')
+			->will($this->returnValue('foo'));
+
+		$tsStyleConfig = $this->getMock('TYPO3\\CMS\\Core\\TypoScript\\ConfigurationForm');
+
+		$objectManagerMock = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$configurationUtility->_set('objectManager', $objectManagerMock);
+		$objectManagerMock
+			->expects($this->once())
+			->method('create')
+			->with('TYPO3\\CMS\\Core\\TypoScript\\ConfigurationForm')
+			->will($this->returnValue($tsStyleConfig));
+
+		$constants = array(
+			'checkConfigurationFE' => array(
+				'cat' => 'basic',
+				'subcat_name' => 'enable',
+				'subcat' => 'a/enable/z',
+				'type' => 'user[EXT:saltedpasswords/classes/class.tx_saltedpasswords_emconfhelper.php:TYPO3\\CMS\\Saltedpasswords\\Utility\\ExtensionManagerConfigurationUtility->checkConfigurationFrontend]',
+				'label' => 'Frontend configuration check',
+				'name' => 'checkConfigurationFE',
+				'value' => '0',
+				'default_value' => '0'
+			),
+			'BE.forceSalted' => array(
+				'cat' => 'advancedbackend',
+				'subcat' => 'x/z',
+				'type' => 'boolean',
+				'label' => 'Force salted passwords: Enforce usage of SaltedPasswords. Old MD5 hashed passwords will stop working.',
+				'name' => 'BE.forceSalted',
+				'value' => '0',
+				'default_value' => '0'
+			)
+		);
+		$tsStyleConfig
+			->expects($this->once())
+			->method('ext_initTSstyleConfig')
+			->will($this->returnValue($constants));
+
+		$setupTsConstantEditor = array(
+			'advancedbackend.' => array(
+				'description' => '<span style="background:red; padding:1px 2px; color:#fff; font-weight:bold;">1</span> Install tool has hardcoded md5 hashing, enabling this setting will prevent use of a install-tool-created BE user.<br />Currently same is for changin password with user setup module unless you use pending patch!',
+				1 => 'BE.forceSalted'
+			)
+		);
+		$tsStyleConfig->setup['constants']['TSConstantEditor.'] = $setupTsConstantEditor;
+
+		$expected = array(
+			'checkConfigurationFE' => array(
+				'cat' => 'basic',
+				'subcat_name' => 'enable',
+				'subcat' => 'a/enable/z',
+				'type' => 'user[EXT:saltedpasswords/classes/class.tx_saltedpasswords_emconfhelper.php:TYPO3\\CMS\\Saltedpasswords\\Utility\\ExtensionManagerConfigurationUtility->checkConfigurationFrontend]',
+				'label' => 'Frontend configuration check',
+				'name' => 'checkConfigurationFE',
+				'value' => '0',
+				'default_value' => '0',
+				'subcat_label' => 'Enable features',
+			),
+			'BE.forceSalted' => array(
+				'cat' => 'advancedbackend',
+				'subcat' => 'x/z',
+				'type' => 'boolean',
+				'label' => 'Force salted passwords: Enforce usage of SaltedPasswords. Old MD5 hashed passwords will stop working.',
+				'name' => 'BE.forceSalted',
+				'value' => '0',
+				'default_value' => '0',
+				'highlight' => 1,
+			),
+			'__meta__' => array(
+				'advancedbackend' => array(
+					'highlightText' => '<span style="background:red; padding:1px 2px; color:#fff; font-weight:bold;">1</span> Install tool has hardcoded md5 hashing, enabling this setting will prevent use of a install-tool-created BE user.<br />Currently same is for changin password with user setup module unless you use pending patch!'
+				)
+			)
+		);
+
+		$result = $configurationUtility->getDefaultConfigurationFromExtConfTemplateAsValuedArray(uniqid('some_extension'));
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * Data provider for convertValuedToNestedConfiguration
+	 *
 	 * @return array
 	 */
 	public function convertValuedToNestedConfigurationDataProvider() {
@@ -127,18 +245,22 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 	}
 
 	/**
+	 * @test
+	 * @dataProvider convertValuedToNestedConfigurationDataProvider
+	 *
 	 * @param array $configuration
 	 * @param array $expected
-	 * @test
-	 * @dataProvider convertNestedToValuedConfigurationDataProvider
+	 * @return void
 	 */
-	public function convertNestedToValuedConfiguration(array $configuration, array $expected) {
+	public function convertValuedToNestedConfiguration(array $configuration, array $expected) {
 		/** @var $fixture \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
 		$fixture = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility');
-		$this->assertEquals($expected, $fixture->convertNestedToValuedConfiguration($configuration));
+		$this->assertEquals($expected, $fixture->convertValuedToNestedConfiguration($configuration));
 	}
 
 	/**
+	 * Data provider for convertNestedToValuedConfiguration
+	 *
 	 * @return array
 	 */
 	public function convertNestedToValuedConfigurationDataProvider() {
@@ -190,23 +312,16 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 
 	/**
 	 * @test
+	 * @dataProvider convertNestedToValuedConfigurationDataProvider
+	 *
+	 * @param array $configuration
+	 * @param array $expected
+	 * @return void
 	 */
-	public function thatGetCurrentConfigurationReturnsCorrectExtensionConfigurationAsValuedConfiguration() {
-		$mockedConfigurationItemRepository = $this->getAccessibleMock('\TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository', array(
-			'createArrayFromConstants'
-		));
-		$mockedConfigurationItemRepository->expects($this->any())
-			->method('createArrayFromConstants')
-			->will($this->returnValue(array()));
-		$GLOBALS['TYPO3_LOADED_EXT']['MY_DUMMY_EXT']= array();
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['MY_DUMMY_EXT'] = serialize(array('key1' => 'value1', 'key2.' => array('subkey1' => 'value2')));
-		$configurationUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility');
-		$configurationUtility->injectConfigurationItemRepository($mockedConfigurationItemRepository);
-
-		$configuration = $configurationUtility->getCurrentConfiguration('MY_DUMMY_EXT');
-		$this->assertEquals('value1', $configuration['key1']['value']);
-		$this->assertEquals('value2', $configuration['key2.subkey1']['value']);
+	public function convertNestedToValuedConfiguration(array $configuration, array $expected) {
+		/** @var $fixture \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
+		$fixture = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility');
+		$this->assertEquals($expected, $fixture->convertNestedToValuedConfiguration($configuration));
 	}
-
 }
 ?>
