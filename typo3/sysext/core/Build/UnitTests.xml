@@ -55,6 +55,9 @@
 		<testsuite name="EXT:lowlevel tests">
 			<directory>../../../../typo3/sysext/lowlevel/Tests/Unit/</directory>
 		</testsuite>
+		<testsuite name="EXT:reports tests">
+			<directory>../../../../typo3/sysext/reports/Tests/Unit/</directory>
+		</testsuite>
 		<testsuite name="EXT:saltedpasswords tests">
 			<directory>../../../../typo3/sysext/saltedpasswords/Tests/Unit/</directory>
 		</testsuite>
