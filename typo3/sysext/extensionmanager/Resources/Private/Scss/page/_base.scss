@@ -67,6 +67,10 @@
 	padding: 15px;
 }
 
+#typo3-extension-configuration-forms input.submit {
+	margin-top: 10px;
+}
+
 #typo3-extension-configuration-forms .error,
 #typo3-extension-configuration-forms .invalid {
 	@include border-radius(0 4px 4px 0);
