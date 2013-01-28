@@ -19,56 +19,55 @@
 					</f:if>
 				</f:for>
 			</ul>
-			<f:for each="{configuration}" as="category">
-				<f:if condition="{category.name}">
-				<div class="category">
-					<f:for each="{category.subcategories}" as="subcategory">
-						<div class="subcategory">
-						<f:if condition="{subcategory.label}">
-							<f:then>
-								<h3>{subcategory.label}</h3>
-							</f:then>
-							<f:else>
-								<f:if condition="{category.subcategories->f:count()} > 1">
-									<h3><f:translate key="extConfTemplate.other" /></h3>
-								</f:if>
-							</f:else>
-						</f:if>
-							<f:form action="save" name="{subcategory.name}" class="validate">
-								<f:form.hidden name="extensionKey" value="{extension.key}" />
-								<f:for each="{subcategory.items}" as="item">
-									<div>
-
-										<label for="{item.name}">
-											<h4>{item.labelHeadline} <span class="info">[{category.name}.{item.name}]</span></h4>
-											{item.labelText} </label><br />
-										<f:if condition="{item.highlight}">
-											<span style="background:red; padding:1px 2px; color:#fff; font-weight:bold;">{item.highlight}</span>
-										</f:if>
-										<em:form.typoScriptConstants configuration="{item}" />
-										<f:if condition="{0: item.type} != {0: 'user'}">
-											<f:then>
-												<f:alias map="{label: '{f:translate(key: \'extConfTemplate.type.{item.type}\')}'}">
-													<f:if condition="{label}">
-														<f:then>
-															<span class="info">({label})</span>
-														</f:then>
-													</f:if>
-												</f:alias>
-											</f:then>
-										</f:if>
-									</div>
-								</f:for>
-								<f:form.submit value="{f:translate(key:'extConfTemplate.submitButton')}" />
-							</f:form>
+			<f:form action="save" name="configurationform" class="validate">
+				<f:form.hidden name="extensionKey" value="{extension.key}" />
+				<f:for each="{configuration}" as="category">
+					<f:if condition="{category.name}">
+						<div class="category">
+							<f:for each="{category.subcategories}" as="subcategory">
+								<div class="subcategory">
+									<f:if condition="{subcategory.label}">
+										<f:then>
+											<h3>{subcategory.label}</h3>
+										</f:then>
+										<f:else>
+											<f:if condition="{category.subcategories->f:count()} > 1">
+												<h3><f:translate key="extConfTemplate.other" /></h3>
+											</f:if>
+										</f:else>
+									</f:if>
+									<f:for each="{subcategory.items}" as="item">
+										<div>
+											<label for="{item.name}">
+												<h4>{item.labelHeadline} <span class="info">[{category.name}.{item.name}]</span></h4>
+												{item.labelText} </label><br />
+											<f:if condition="{item.highlight}">
+												<span style="background:red; padding:1px 2px; color:#fff; font-weight:bold;">{item.highlight}</span>
+											</f:if>
+											<em:form.typoScriptConstants configuration="{item}" />
+											<f:if condition="{0: item.type} != {0: 'user'}">
+												<f:then>
+													<f:alias map="{label: '{f:translate(key: \'extConfTemplate.type.{item.type}\')}'}">
+														<f:if condition="{label}">
+															<f:then>
+																<span class="info">({label})</span>
+															</f:then>
+														</f:if>
+													</f:alias>
+												</f:then>
+											</f:if>
+										</div>
+									</f:for>
+								</div>
+							</f:for>
+							<f:if condition="{category.highlightText}">
+								{category.highlightText->f:format.raw()}
+							</f:if>
 						</div>
-					</f:for>
-					<f:if condition="{category.highlightText}">
-						{category.highlightText->f:format.raw()}
 					</f:if>
-				</div>
-				</f:if>
-			</f:for>
+				</f:for>
+				<f:form.submit value="{f:translate(key:'extConfTemplate.submitButton')}" class="submit"/>
+			</f:form>
 		</div>
 	</div>
 </f:section>
