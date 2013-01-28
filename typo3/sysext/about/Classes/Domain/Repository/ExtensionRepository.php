@@ -56,15 +56,15 @@ class Tx_About_Domain_Repository_ExtensionRepository extends Tx_Extbase_Persiste
 		foreach ($loadedExtensionsArray as $extensionKey => $extension) {
 			if (is_array($extension) && $extension['type'] != 'S') {
 				$emconfPath = PATH_site . $extension['siteRelPath'] . 'ext_emconf.php';
-				include($emconfPath);
-
-				$extension = $this->objectManager->create('Tx_About_Domain_Model_Extension');
-				$extension->setKey($extensionKey);
-				$extension->setTitle($EM_CONF['']['title']);
-				$extension->setAuthor($EM_CONF['']['author']);
-				$extension->setAuthorEmail($EM_CONF['']['author_email']);
-
-				$loadedExtensions->attach($extension);
+				if (file_exists($emconfPath)) {
+					include($emconfPath);
+					$extension = $this->objectManager->create('Tx_About_Domain_Model_Extension');
+					$extension->setKey($extensionKey);
+					$extension->setTitle($EM_CONF['']['title']);
+					$extension->setAuthor($EM_CONF['']['author']);
+					$extension->setAuthorEmail($EM_CONF['']['author_email']);
+					$loadedExtensions->attach($extension);
+				}
 			}
 		}
 
