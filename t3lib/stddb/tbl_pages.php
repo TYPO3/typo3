@@ -322,6 +322,7 @@ $TCA['pages'] = array(
 			)
 		),
 		'alias' => array(
+			'exclude' => 1,
 			'displayCond' => 'VERSION:IS:false',
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.alias',
 			'config' => array(
@@ -525,6 +526,7 @@ $TCA['pages'] = array(
 			)
 		),
 		'content_from_pid' => array(
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.content_from_pid',
 			'config' => array(
 				'type' => 'group',
