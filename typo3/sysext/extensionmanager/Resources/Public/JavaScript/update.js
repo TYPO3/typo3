@@ -2,21 +2,34 @@
 (function ($) {
 
 	$(document).ready(function() {
-		$('.splash-receivedata a').each(function() {
-			$(this).data('href', $(this).attr('href'));
-			$(this).attr('href', '#');
-			$(this).click(function() {
-					// force update on click
-				updateFromTer($(this).data('href'), 1);
-			});
-			updateFromTer($(this).data('href'), 0);
+		var i, receiveLinkCurrent,
+		    receiveLink = $('.splash-receivedata a'),
+		    receiveLinkLength = receiveLink.length;
+
+
+		// Events
+		$(document).on('click', '.splash-receivedata a', function () {
+
+			// force update on click
+			updateFromTer($(this).data('href'), 1);
 		});
+
+		for(i = 0; i <receiveLinkLength; i++) {
+
+			// Faster access
+			receiveLinkCurrent = $(receiveLink[i]);
+			receiveLinkCurrent.data('href', receiveLinkCurrent.attr('href'));
+			receiveLinkCurrent.attr('href', '#');
+			updateFromTer(receiveLinkCurrent.data('href'), 0);
+		}
 	});
 
+
 	function updateFromTer(url, forceUpdate) {
-		if (forceUpdate == 1) {
+		if (forceUpdate === 1) {
 			url = url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager%5BforceUpdateCheck%5D=1';
 		}
+
 		$('.splash-receivedata').addClass('is-shown');
 		$('.typo3-extensionmanager-headerRowRight .splash-receivedata').addClass('is-hidden');
 
@@ -63,24 +76,31 @@
 	}
 
 	function transformPaginatorToAjax() {
-		$('.f3-widget-paginator a').each(function() {
-			$(this).data('href', $(this).attr('href'));
-			$(this).attr('href', '#');
-			$(this).click(function() {
-				$('#terTableWrapper').mask();
-				$.ajax({
-					url: $(this).data('href'),
-					dataType: 'json',
-					success: function(data) {
-						$('#terTableWrapper').html(
-							data
-						);
-						$('#terTableWrapper').unmask();
-						transformPaginatorToAjax();
-					}
-				});
+		var i, paginatorLinkCurrent,
+		    paginatorLinks = $('.f3-widget-paginator a');
+		    paginatorLinksLength = paginatorLinks.length;
+
+		$(document).on('click', '.f3-widget-paginator a', function() {
+			$('#terTableWrapper').mask();
+			$.ajax({
+				url: $(this).data('href'),
+				dataType: 'json',
+				success: function(data) {
+					$('#terTableWrapper').html(
+						data
+					);
+					$('#terTableWrapper').unmask();
+					transformPaginatorToAjax();
+				}
 			});
 		});
+
+		for (i = 0; i < paginatorLinksLength; i++) {
+			paginatorLinkCurrent = $(paginatorLinks[i]);
+
+			paginatorLinkCurrent.data('href', paginatorLinkCurrent.attr('href'));
+			paginatorLinkCurrent.attr('href', '#');
+		}
 	}
 
 }(jQuery));

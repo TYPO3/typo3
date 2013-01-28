@@ -6,6 +6,11 @@
  *  Questions can be submitted to info@drublic.de
  *
  */
+.headerRow:before, .headerRow:after {
+  content: "";
+  display: table;
+  clear: both; }
+
 /*
  * jQuery UI CSS Framework 1.8.17
  *
@@ -1655,7 +1660,7 @@ button.ui-button::-moz-focus-inner {
   background: none;
   border: 0;
   padding: 8px 10px;
-  min-width: 53px;
+  min-width: 68px;
   vertical-align: middle;
   font-weight: bold;
   color: #fff;
@@ -1742,10 +1747,16 @@ button.ui-button::-moz-focus-inner {
 #terTableWrapper .splash-receivedata.is-shown {
   display: block; }
 #terTableWrapper .spinner {
-  display: inline-block; }
+  display: inline-block;
+  background-position: 0 center;
+  padding: 10px 0 10px 40px;
+  width: 200px; }
 
 .is-loading {
   opacity: 0; }
+
+.typo3-extensionmanager-headerRowLeft {
+  float: left; }
 
 .typo3-extensionmanager-headerRowRight .splash-receivedata {
   position: relative; }
