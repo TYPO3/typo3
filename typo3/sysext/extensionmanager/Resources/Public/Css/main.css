@@ -111,7 +111,7 @@
   color: #222222; }
 
 .ui-widget-header {
-  border: 1px solid #aaa;
+  border: 1px solid #aaaaaa;
   background: #cccccc url(../Images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x;
   color: #222222;
   font-weight: bold; }
@@ -122,7 +122,7 @@
 /* Interaction states
 ----------------------------------*/
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-  border: 1px solid #d3d3d3;
+  border: 1px solid lightgrey;
   background: #e6e6e6 url(../Images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;
   font-weight: normal;
   color: #555555; }
@@ -904,7 +904,7 @@
 .ui-accordion .ui-accordion-header a {
   display: block;
   font-size: 1em;
-  padding: .5em .5em .5em .7em; }
+  padding: 0.5em 0.5em 0.5em 0.7em; }
 
 .ui-accordion-icons .ui-accordion-header a {
   padding-left: 2.2em; }
@@ -977,11 +977,12 @@
 .ui-menu .ui-menu-item a {
   text-decoration: none;
   display: block;
-  padding: .2em .4em;
+  padding: 0.2em 0.4em;
   line-height: 1.5;
   zoom: 1; }
 
-.ui-menu .ui-menu-item a.ui-state-hover, .ui-menu .ui-menu-item a.ui-state-active {
+.ui-menu .ui-menu-item a.ui-state-hover,
+.ui-menu .ui-menu-item a.ui-state-active {
   font-weight: normal;
   margin: -1px; }
 
@@ -1026,17 +1027,17 @@ button.ui-button-icons-only {
   line-height: 1.4; }
 
 .ui-button-text-only .ui-button-text {
-  padding: .4em 1em; }
+  padding: 0.4em 1em; }
 
 .ui-button-icon-only .ui-button-text, .ui-button-icons-only .ui-button-text {
   padding: .4em;
   text-indent: -9999999px; }
 
 .ui-button-text-icon-primary .ui-button-text, .ui-button-text-icons .ui-button-text {
-  padding: .4em 1em .4em 2.1em; }
+  padding: 0.4em 1em 0.4em 2.1em; }
 
 .ui-button-text-icon-secondary .ui-button-text, .ui-button-text-icons .ui-button-text {
-  padding: .4em 2.1em .4em 1em; }
+  padding: 0.4em 2.1em 0.4em 1em; }
 
 .ui-button-text-icons .ui-button-text {
   padding-left: 2.1em;
@@ -1044,7 +1045,7 @@ button.ui-button-icons-only {
 
 /* no icon support for input elements, provide padding by default */
 input.ui-button {
-  padding: .4em 1em; }
+  padding: 0.4em 1em; }
 
 /*button icon element(s) */
 .ui-button-icon-only .ui-icon, .ui-button-text-icon-primary .ui-icon, .ui-button-text-icon-secondary .ui-icon, .ui-button-text-icons .ui-icon, .ui-button-icons-only .ui-icon {
@@ -1071,7 +1072,7 @@ input.ui-button {
 
 .ui-buttonset .ui-button {
   margin-left: 0;
-  margin-right: -0.3em; }
+  margin-right: -.3em; }
 
 /* workarounds */
 button.ui-button::-moz-focus-inner {
@@ -1095,12 +1096,12 @@ button.ui-button::-moz-focus-inner {
   overflow: hidden; }
 
 .ui-dialog .ui-dialog-titlebar {
-  padding: .4em 1em;
+  padding: 0.4em 1em;
   position: relative; }
 
 .ui-dialog .ui-dialog-title {
   float: left;
-  margin: .1em 16px .1em 0; }
+  margin: 0.1em 16px 0.1em 0; }
 
 .ui-dialog .ui-dialog-titlebar-close {
   position: absolute;
@@ -1121,7 +1122,7 @@ button.ui-button::-moz-focus-inner {
 .ui-dialog .ui-dialog-content {
   position: relative;
   border: 0;
-  padding: .5em 1em;
+  padding: 0.5em 1em;
   background: none;
   overflow: auto;
   zoom: 1; }
@@ -1130,14 +1131,14 @@ button.ui-button::-moz-focus-inner {
   text-align: left;
   border-width: 1px 0 0 0;
   background-image: none;
-  margin: .5em 0 0 0;
-  padding: .3em 1em .5em .4em; }
+  margin: 0.5em 0 0 0;
+  padding: 0.3em 1em 0.5em 0.4em; }
 
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
   float: right; }
 
 .ui-dialog .ui-dialog-buttonpane button {
-  margin: .5em .4em .5em 0;
+  margin: 0.5em 0.4em 0.5em 0;
   cursor: pointer; }
 
 .ui-dialog .ui-resizable-se {
@@ -1181,8 +1182,8 @@ button.ui-button::-moz-focus-inner {
   height: .8em; }
 
 .ui-slider-horizontal .ui-slider-handle {
-  top: -0.3em;
-  margin-left: -0.6em; }
+  top: -.3em;
+  margin-left: -.6em; }
 
 .ui-slider-horizontal .ui-slider-range {
   top: 0;
@@ -1199,9 +1200,9 @@ button.ui-button::-moz-focus-inner {
   height: 100px; }
 
 .ui-slider-vertical .ui-slider-handle {
-  left: -0.3em;
+  left: -.3em;
   margin-left: 0;
-  margin-bottom: -0.6em; }
+  margin-bottom: -.6em; }
 
 .ui-slider-vertical .ui-slider-range {
   left: 0;
@@ -1230,21 +1231,21 @@ button.ui-button::-moz-focus-inner {
 /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
 .ui-tabs .ui-tabs-nav {
   margin: 0;
-  padding: .2em .2em 0; }
+  padding: 0.2em 0.2em 0; }
 
 .ui-tabs .ui-tabs-nav li {
   list-style: none;
   float: left;
   position: relative;
   top: 1px;
-  margin: 0 .2em 1px 0;
+  margin: 0 0.2em 1px 0;
   border-bottom: 0 !important;
   padding: 0;
   white-space: nowrap; }
 
 .ui-tabs .ui-tabs-nav li a {
   float: left;
-  padding: .5em 1em;
+  padding: 0.5em 1em;
   text-decoration: none; }
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected {
@@ -1278,12 +1279,12 @@ button.ui-button::-moz-focus-inner {
  */
 .ui-datepicker {
   width: 17em;
-  padding: .2em .2em 0;
+  padding: 0.2em 0.2em 0;
   display: none; }
 
 .ui-datepicker .ui-datepicker-header {
   position: relative;
-  padding: .2em 0; }
+  padding: 0.2em 0; }
 
 .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
   position: absolute;
@@ -1326,17 +1327,18 @@ button.ui-button::-moz-focus-inner {
 .ui-datepicker select.ui-datepicker-month-year {
   width: 100%; }
 
-.ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
+.ui-datepicker select.ui-datepicker-month,
+.ui-datepicker select.ui-datepicker-year {
   width: 49%; }
 
 .ui-datepicker table {
   width: 100%;
   font-size: .9em;
   border-collapse: collapse;
-  margin: 0 0 .4em; }
+  margin: 0 0 0.4em; }
 
 .ui-datepicker th {
-  padding: .7em .3em;
+  padding: 0.7em 0.3em;
   text-align: center;
   font-weight: bold;
   border: 0; }
@@ -1353,17 +1355,17 @@ button.ui-button::-moz-focus-inner {
 
 .ui-datepicker .ui-datepicker-buttonpane {
   background-image: none;
-  margin: .7em 0 0 0;
-  padding: 0 .2em;
+  margin: 0.7em 0 0 0;
+  padding: 0 0.2em;
   border-left: 0;
   border-right: 0;
   border-bottom: 0; }
 
 .ui-datepicker .ui-datepicker-buttonpane button {
   float: right;
-  margin: .5em .2em .4em;
+  margin: 0.5em 0.2em 0.4em;
   cursor: pointer;
-  padding: .2em .6em .3em .6em;
+  padding: 0.2em 0.6em 0.3em 0.6em;
   width: auto;
   overflow: visible; }
 
@@ -1379,7 +1381,7 @@ button.ui-button::-moz-focus-inner {
 
 .ui-datepicker-multi .ui-datepicker-group table {
   width: 95%;
-  margin: 0 auto .4em; }
+  margin: 0 auto 0.4em; }
 
 .ui-datepicker-multi-2 .ui-datepicker-group {
   width: 50%; }
@@ -1483,35 +1485,40 @@ button.ui-button::-moz-focus-inner {
   margin: -1px;
   height: 100%; }
 
-#typo3-extension-main-menu .tabs ul, #typo3-extension-configuration-forms .tabs ul {
+#typo3-extension-main-menu .tabs ul,
+#typo3-extension-configuration-forms .tabs ul {
   list-style: none;
   padding: 0;
   margin-bottom: -1px; }
-#typo3-extension-main-menu .tabs ul:after, #typo3-extension-configuration-forms .tabs ul:after {
-  display: table;
-  content: "";
-  clear: both; }
-#typo3-extension-main-menu .tabs ul a, #typo3-extension-configuration-forms .tabs ul a {
-  -webkit-border-radius: 4px 4px 0 0;
-  -moz-border-radius: 4px 4px 0 0;
-  border-radius: 4px 4px 0 0;
-  float: left;
-  height: 15px;
-  background: #dadada;
-  padding: 7px 15px;
-  margin-top: -1px;
-  margin-right: 2px;
-  border: 1px solid #adadad;
-  color: #606060; }
-#typo3-extension-main-menu .tabs ul a:hover, #typo3-extension-configuration-forms .tabs ul a:hover {
-  background-color: #eee;
-  border-color: #adadad;
-  color: #606060; }
-#typo3-extension-main-menu .tabs ul a.current, #typo3-extension-configuration-forms .tabs ul a.current {
-  background: #fff;
-  color: #000;
-  border-bottom: 0;
-  padding-top: 8px; }
+  #typo3-extension-main-menu .tabs ul:after,
+  #typo3-extension-configuration-forms .tabs ul:after {
+    display: table;
+    content: "";
+    clear: both; }
+  #typo3-extension-main-menu .tabs ul a,
+  #typo3-extension-configuration-forms .tabs ul a {
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+    float: left;
+    height: 15px;
+    background: #dadada;
+    padding: 7px 15px;
+    margin-top: -1px;
+    margin-right: 2px;
+    border: 1px solid #adadad;
+    color: #606060; }
+    #typo3-extension-main-menu .tabs ul a:hover,
+    #typo3-extension-configuration-forms .tabs ul a:hover {
+      background-color: #eee;
+      border-color: #adadad;
+      color: #606060; }
+    #typo3-extension-main-menu .tabs ul a.current,
+    #typo3-extension-configuration-forms .tabs ul a.current {
+      background: #fff;
+      color: #000;
+      border-bottom: 0;
+      padding-top: 8px; }
 
 .contentWrapper .ui-widget-header {
   background: none;
@@ -1531,7 +1538,7 @@ button.ui-button::-moz-focus-inner {
   padding: 2px 6px;
   margin: 0;
   cursor: pointer;
-  color: #333 !important; }
+  color: #333333 !important; }
 
 .dataTables_paginate .ui-button {
   margin-right: -0.1em !important; }
@@ -1564,7 +1571,11 @@ button.ui-button::-moz-focus-inner {
   border: 1px solid #adadad;
   padding: 15px; }
 
-#typo3-extension-configuration-forms .error, #typo3-extension-configuration-forms .invalid {
+#typo3-extension-configuration-forms input.submit {
+  margin-top: 10px; }
+
+#typo3-extension-configuration-forms .error,
+#typo3-extension-configuration-forms .invalid {
   -webkit-border-radius: 0 4px 4px 0;
   -moz-border-radius: 0 4px 4px 0;
   border-radius: 0 4px 4px 0;
@@ -1605,13 +1616,14 @@ button.ui-button::-moz-focus-inner {
 .typo3-extension-manager .insecure {
   color: #ff2262; }
 
-.headerTooltip, .tooltip {
+.headerTooltip,
+.tooltip {
   -webkit-box-shadow: 2px 2px 11px #666666;
   box-shadow: 2px 2px 11px #666666;
   display: none;
   width: 400px;
   background-color: #ffa;
-  border: 1px solid #cc9;
+  border: 1px solid #cccc99;
   padding: 3px;
   font-size: 13px;
   z-index: 1000; }
@@ -1632,92 +1644,92 @@ button.ui-button::-moz-focus-inner {
   background-image: linear-gradient(to bottom, white 0, #ececec 36%);
   padding: 15px;
   border: 1px solid #adadad; }
-.contentWrapper .ui-toolbar {
-  margin-bottom: 5px; }
-.contentWrapper .ui-toolbar .dataTables_filter {
-  float: left; }
+  .contentWrapper .ui-toolbar {
+    margin-bottom: 5px; }
+    .contentWrapper .ui-toolbar .dataTables_filter {
+      float: left; }
 
 .typo3-extension-list {
   border-spacing: 0; }
-.typo3-extension-list thead {
-  background-color: #5b5b5b;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#7f7f7f 10%), to(#5b5b5b 100%));
-  background-image: -webkit-linear-gradient(top, #7f7f7f 10%, #5b5b5b 100%);
-  background-image: -moz-linear-gradient(top, #7f7f7f 10%, #5b5b5b 100%);
-  background-image: -ms-linear-gradient(top, #7f7f7f 10%, #5b5b5b 100%);
-  background-image: -o-linear-gradient(top, #7f7f7f 10%, #5b5b5b 100%);
-  background-image: linear-gradient(to bottom, #7f7f7f 10%, #5b5b5b 100%); }
-.typo3-extension-list thead tr {
-  background: none !important; }
-.typo3-extension-list thead tr:hover {
-  background: none; }
-.typo3-extension-list th {
-  background: none;
-  border: 0;
-  padding: 8px 10px;
-  min-width: 53px;
-  vertical-align: middle;
-  font-weight: bold;
-  color: #fff;
-  cursor: pointer; }
-.typo3-extension-list th:hover {
-  background: rgba(200, 200, 200, 0.3); }
-.typo3-extension-list th .DataTables_sort_icon {
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 5px; }
-.typo3-extension-list th .DataTables_sort_icon.ui-icon-carat-2-n-s {
-  background: none; }
-.typo3-extension-list tr.odd td, .typo3-extension-list tr.even td {
-  background: none; }
-.typo3-extension-list tr.odd:hover td, .typo3-extension-list tr.even:hover td {
-  background: none; }
-.typo3-extension-list tr.odd:hover td.stable, .typo3-extension-list tr.even:hover td.stable {
-  background-color: #87b374;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#87b374 0%), to(#5f8d4b 100%));
-  background-image: -webkit-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
-  background-image: -moz-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
-  background-image: -ms-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
-  background-image: -o-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
-  background-image: linear-gradient(to bottom, #87b374 0%, #5f8d4b 100%); }
-.typo3-extension-list tr.odd:hover td.beta, .typo3-extension-list tr.even:hover td.beta {
-  background-color: #f39300;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#f39300 0%), to(#d15e00 100%));
-  background-image: -webkit-linear-gradient(top, #f39300 0%, #d15e00 100%);
-  background-image: -moz-linear-gradient(top, #f39300 0%, #d15e00 100%);
-  background-image: -ms-linear-gradient(top, #f39300 0%, #d15e00 100%);
-  background-image: -o-linear-gradient(top, #f39300 0%, #d15e00 100%);
-  background-image: linear-gradient(to bottom, #f39300 0%, #d15e00 100%); }
-.typo3-extension-list tr td {
-  background: none;
-  padding: 8px 10px;
-  vertical-align: middle;
-  border-bottom: 1px solid #fff; }
-.typo3-extension-list tr td.stable {
-  background-color: #87b374;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#87b374 0%), to(#5f8d4b 100%));
-  background-image: -webkit-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
-  background-image: -moz-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
-  background-image: -ms-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
-  background-image: -o-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
-  background-image: linear-gradient(to bottom, #87b374 0%, #5f8d4b 100%); }
-.typo3-extension-list tr td.beta {
-  background-color: #f39300;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#f39300 0%), to(#d15e00 100%));
-  background-image: -webkit-linear-gradient(top, #f39300 0%, #d15e00 100%);
-  background-image: -moz-linear-gradient(top, #f39300 0%, #d15e00 100%);
-  background-image: -ms-linear-gradient(top, #f39300 0%, #d15e00 100%);
-  background-image: -o-linear-gradient(top, #f39300 0%, #d15e00 100%);
-  background-image: linear-gradient(to bottom, #f39300 0%, #d15e00 100%); }
-.typo3-extension-list tr td img {
-  vertical-align: middle;
-  margin-right: 5px; }
-.typo3-extension-list tr:nth-child(2n) {
-  background: #fff; }
-.typo3-extension-list tr:nth-child(2n + 1) {
-  background: #f7f7f7; }
-.typo3-extension-list tr:hover {
-  background: #ececec; }
+  .typo3-extension-list thead {
+    background-color: #5b5b5b;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#7f7f7f 10%), to(#5b5b5b 100%));
+    background-image: -webkit-linear-gradient(top, #7f7f7f 10%, #5b5b5b 100%);
+    background-image: -moz-linear-gradient(top, #7f7f7f 10%, #5b5b5b 100%);
+    background-image: -ms-linear-gradient(top, #7f7f7f 10%, #5b5b5b 100%);
+    background-image: -o-linear-gradient(top, #7f7f7f 10%, #5b5b5b 100%);
+    background-image: linear-gradient(to bottom, #7f7f7f 10%, #5b5b5b 100%); }
+    .typo3-extension-list thead tr {
+      background: none !important; }
+      .typo3-extension-list thead tr:hover {
+        background: none; }
+  .typo3-extension-list th {
+    background: none;
+    border: 0;
+    padding: 8px 10px;
+    min-width: 53px;
+    vertical-align: middle;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer; }
+    .typo3-extension-list th:hover {
+      background: rgba(200, 200, 200, 0.3); }
+    .typo3-extension-list th .DataTables_sort_icon {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 5px; }
+      .typo3-extension-list th .DataTables_sort_icon.ui-icon-carat-2-n-s {
+        background: none; }
+  .typo3-extension-list tr.odd td, .typo3-extension-list tr.even td {
+    background: none; }
+  .typo3-extension-list tr.odd:hover td, .typo3-extension-list tr.even:hover td {
+    background: none; }
+    .typo3-extension-list tr.odd:hover td.stable, .typo3-extension-list tr.even:hover td.stable {
+      background-color: #87b374;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(#87b374 0%), to(#5f8d4b 100%));
+      background-image: -webkit-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
+      background-image: -moz-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
+      background-image: -ms-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
+      background-image: -o-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
+      background-image: linear-gradient(to bottom, #87b374 0%, #5f8d4b 100%); }
+    .typo3-extension-list tr.odd:hover td.beta, .typo3-extension-list tr.even:hover td.beta {
+      background-color: #f39300;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(#f39300 0%), to(#d15e00 100%));
+      background-image: -webkit-linear-gradient(top, #f39300 0%, #d15e00 100%);
+      background-image: -moz-linear-gradient(top, #f39300 0%, #d15e00 100%);
+      background-image: -ms-linear-gradient(top, #f39300 0%, #d15e00 100%);
+      background-image: -o-linear-gradient(top, #f39300 0%, #d15e00 100%);
+      background-image: linear-gradient(to bottom, #f39300 0%, #d15e00 100%); }
+  .typo3-extension-list tr td {
+    background: none;
+    padding: 8px 10px;
+    vertical-align: middle;
+    border-bottom: 1px solid white; }
+    .typo3-extension-list tr td.stable {
+      background-color: #87b374;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(#87b374 0%), to(#5f8d4b 100%));
+      background-image: -webkit-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
+      background-image: -moz-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
+      background-image: -ms-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
+      background-image: -o-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
+      background-image: linear-gradient(to bottom, #87b374 0%, #5f8d4b 100%); }
+    .typo3-extension-list tr td.beta {
+      background-color: #f39300;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(#f39300 0%), to(#d15e00 100%));
+      background-image: -webkit-linear-gradient(top, #f39300 0%, #d15e00 100%);
+      background-image: -moz-linear-gradient(top, #f39300 0%, #d15e00 100%);
+      background-image: -ms-linear-gradient(top, #f39300 0%, #d15e00 100%);
+      background-image: -o-linear-gradient(top, #f39300 0%, #d15e00 100%);
+      background-image: linear-gradient(to bottom, #f39300 0%, #d15e00 100%); }
+    .typo3-extension-list tr td img {
+      vertical-align: middle;
+      margin-right: 5px; }
+  .typo3-extension-list tr:nth-child(2n) {
+    background: #fff; }
+  .typo3-extension-list tr:nth-child(2n + 1) {
+    background: #f7f7f7; }
+  .typo3-extension-list tr:hover {
+    background: #ececec; }
 
 .dataTables_info {
   display: none; }
@@ -1728,34 +1740,35 @@ button.ui-button::-moz-focus-inner {
 
 #terTableWrapper {
   position: relative; }
-#terTableWrapper .splash-receivedata {
-  display: none;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -20px 0 0 -150px; }
-#terTableWrapper .splash-receivedata a {
-  display: inline-block;
-  width: 200px;
-  vertical-align: top;
-  padding: 3px 20px; }
-#terTableWrapper .splash-receivedata.is-shown {
-  display: block; }
-#terTableWrapper .spinner {
-  display: inline-block; }
+  #terTableWrapper .splash-receivedata {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -20px 0 0 -150px; }
+    #terTableWrapper .splash-receivedata a {
+      display: inline-block;
+      width: 200px;
+      vertical-align: top;
+      padding: 3px 20px; }
+    #terTableWrapper .splash-receivedata.is-shown {
+      display: block; }
+  #terTableWrapper .spinner {
+    display: inline-block; }
 
 .is-loading {
   opacity: 0; }
 
 .typo3-extensionmanager-headerRowRight .splash-receivedata {
   position: relative; }
-.typo3-extensionmanager-headerRowRight .splash-receivedata .spinner {
-  display: none; }
+  .typo3-extensionmanager-headerRowRight .splash-receivedata .spinner {
+    display: none; }
 
 .is-hidden {
   display: none; }
 
-.typo3-extension-list .t3-icon, .typo3-extension-list .t3-icon:hover {
+.typo3-extension-list .t3-icon,
+.typo3-extension-list .t3-icon:hover {
   border: none;
   background-color: transparent; }
 .typo3-extension-list .author {
