@@ -737,6 +737,7 @@ $TCA['tt_content'] = array(
 			)
 		),
 		'imageorient' => array(
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_ttc.xml:imageorient',
 			'config' => array(
 				'type' => 'select',
@@ -1041,6 +1042,7 @@ $TCA['tt_content'] = array(
 			)
 		),
 		'imagecols' => array(
+			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_ttc.xml:imagecols',
 			'config' => array(
 				'type' => 'select',
