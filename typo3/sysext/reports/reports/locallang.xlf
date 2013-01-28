@@ -252,6 +252,21 @@ You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
 			<trans-unit id="status_oldXclassUsageFound" xml:space="preserve">
 				<source>Old XCLASS method is used in %d cases:</source>
 			</trans-unit>
+			<trans-unit id="status_oldXclassUsageFound_message" xml:space="preserve">
+				<source>The old XCLASS registration does not work since TYPO3 CMS version 6.0. This is not necessarily a bad thing, the registration might be done by an extension author to keep compatibility with older TYPO3 CMS versions. Please check the affected extension for TYPO3 CMS 6.0 compatibility to verify whether this is a problem for you.</source>
+			</trans-unit>
+			<trans-unit id="status_xclassUsage" xml:space="preserve">
+				<source>XCLASS used</source>
+			</trans-unit>
+			<trans-unit id="status_xclassUsageFound" xml:space="preserve">
+				<source>Your system registers XCLASS</source>
+			</trans-unit>
+			<trans-unit id="status_xclassUsageFound_message" xml:space="preserve">
+				<source>XCLASS can overwrite methods or classes of the core or other extensions. This is not necessarily a bad thing, but those XCLASS might break during extension or core upgrades. You should keep an eye on extension compatibility and make sure the intended functionality is still given after updates.</source>
+			</trans-unit>
+			<trans-unit id="status_xclassUsageFound_message_detail" xml:space="preserve">
+				<source>%2s registers an XCLASS of %1s</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
