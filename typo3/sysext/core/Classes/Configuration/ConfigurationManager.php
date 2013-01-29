@@ -277,7 +277,7 @@ class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 		$configuration = Utility\ArrayUtility::sortByKeyRecursive($configuration);
 		$result = Utility\GeneralUtility::writeFile(
 			$localConfigurationFile,
-			'<?php' . LF . 'return ' . Utility\ArrayUtility::arrayExport($configuration) . ';' . LF . '?>'
+			'<?php' . LF . 'return ' . Utility\ArrayUtility::arrayExport(Utility\ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($configuration)) . ';' . LF . '?>'
 		);
 		return $result === FALSE ? FALSE : TRUE;
 	}

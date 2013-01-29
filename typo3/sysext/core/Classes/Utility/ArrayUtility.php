@@ -390,6 +390,60 @@ class ArrayUtility {
 		}
 		return $intersection;
 	}
+
+	/**
+	 * Renumber the keys of an array to avoid leaps is keys are all numeric. Support nested arrays as well.
+	 *
+	 * Example:
+	 * array(
+	 *   0 => 'Zero'
+	 *   1 => 'One',
+	 *   2 => 'To',
+	 *   4 => 'Three'
+	 * )
+	 * will return
+	 * array(
+	 *   'Zero'
+	 *   'One',
+	 *   'To',
+	 *   'Three'
+	 * )
+	 *
+	 * Will treat keys string representations of number (ie. '1') equal to the numeric value (here 1).
+	 * Example
+	 * array(
+	 *   '0' => 'Zero'
+	 *   '1' => 'One',
+	 * )
+	 * will return
+	 * array(
+	 *   'Zero'
+	 *   'One',
+	 * )
+	 *
+	 * @param array $array
+	 * @param int $level
+	 */
+	static public function renumberKeysToAvoidLeapsIfKeysAreAllNumeric(array $array = array(), $level = 0) {
+		$level++;
+		$allKeysAreNumeric = TRUE;
+		foreach (array_keys($array) as $key) {
+			if (is_numeric($key) === FALSE) {
+				$allKeysAreNumeric = FALSE;
+				break;
+			}
+		}
+		$renumberedArray = $array;
+		if ($allKeysAreNumeric === TRUE) {
+			$renumberedArray = array_values($array);
+		}
+		foreach ($renumberedArray as $key => $value) {
+			if (is_array($value)) {
+				$renumberedArray[$key] = self::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($value, $level);
+			}
+		}
+		return $renumberedArray;
+	}
 }
 
 
