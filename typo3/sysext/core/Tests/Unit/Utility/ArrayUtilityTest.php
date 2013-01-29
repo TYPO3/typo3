@@ -1087,6 +1087,139 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function intersectRecursiveCalculatesExpectedResult(array $source, array $mask, array $expected) {
 		$this->assertSame($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::intersectRecursive($source, $mask));
 	}
+
+
+	///////////////////////
+	// Tests concerning renumberKeysToAvoidLeapsIfKeysAreAllNumeric
+	///////////////////////
+	/**
+	 * @return array
+	 */
+	public function renumberKeysToAvoidLeapsIfKeysAreAllNumericDataProvider() {
+		return array(
+			'empty array is returned if source is empty array' => array(
+				array(),
+				array()
+			),
+			'returns self if array is already numerically keyed' => array(
+				array(1,2,3),
+				array(1,2,3)
+			),
+			'returns correctly if keys are numeric, but contains a leap' => array(
+				array(0 => 'One', 1 => 'Two', 3 => 'Three'),
+				array(0 => 'One', 1 => 'Two', 2 => 'Three'),
+			),
+			'returns correctly even though keys are strings but still numeric' => array(
+				array('0' => 'One', '1' => 'Two', '3' => 'Three'),
+				array(0 => 'One', 1 => 'Two', 2 => 'Three'),
+			),
+			'returns correctly if just a single keys is not numeric' => array(
+				array(0 => 'Zero', '1' => 'One', 'Two' => 'Two'),
+				array(0 => 'Zero', '1' => 'One', 'Two' => 'Two'),
+			),
+			'return self with nested numerically keyed array' => array(
+				array(
+					'One',
+					'Two',
+					'Three',
+					array(
+						'sub.One',
+						'sub.Two',
+					)
+				),
+				array(
+					'One',
+					'Two',
+					'Three',
+					array(
+						'sub.One',
+						'sub.Two',
+					)
+				)
+			),
+			'returns correctly with nested numerically keyed array with leaps' => array(
+				array(
+					'One',
+					'Two',
+					'Three',
+					array(
+						0 => 'sub.One',
+						2 => 'sub.Two',
+					)
+				),
+				array(
+					'One',
+					'Two',
+					'Three',
+					array(
+						'sub.One',
+						'sub.Two',
+					)
+				)
+			),
+			'returns correctly with nested string-keyed array' => array(
+				array(
+					'One',
+					'Two',
+					'Three',
+					array(
+						'one' => 'sub.One',
+						'two' => 'sub.Two',
+					)
+				),
+				array(
+					'One',
+					'Two',
+					'Three',
+					array(
+						'one' => 'sub.One',
+						'two' => 'sub.Two',
+					)
+				)
+			),
+			'returns correctly with deeply nested arrays' => array(
+				array(
+					'One',
+					'Two',
+					array(
+						'one' => 1,
+						'two' => 2,
+						'three' => array(
+							2 => 'SubSubOne',
+							5 => 'SubSubTwo',
+							9 => array(0,1,2),
+							array()
+						)
+					)
+				),
+				array(
+					'One',
+					'Two',
+					array(
+						'one' => 1,
+						'two' => 2,
+						'three' => array(
+							'SubSubOne',
+							'SubSubTwo',
+							array(0,1,2),
+							array()
+						)
+					)
+				)
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 * @param array $inputArray
+	 * @param array $expected
+	 * @dataProvider renumberKeysToAvoidLeapsIfKeysAreAllNumericDataProvider
+	 */
+	public function renumberKeysToAvoidLeapsIfKeysAreAllNumeric(array $inputArray, array $expected) {
+		$this->assertEquals($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($inputArray));
+	}
+
 }
 
 ?>
