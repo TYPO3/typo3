@@ -46,7 +46,6 @@ class FluidTemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstr
 
 	public function __construct(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer) {
 		parent::__construct($contentObjectRenderer);
-		$this->view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 	}
 
 	/**
@@ -75,6 +74,8 @@ class FluidTemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstr
 	 * @return string The HTML output
 	 */
 	public function render($conf = array()) {
+		$this->initializeStandaloneViewInstance();
+
 		if (!is_array($conf)) {
 			$conf = array();
 		}
@@ -90,6 +91,19 @@ class FluidTemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstr
 		$content = $this->renderFluidView();
 
 		return $this->applyStandardWrapToRenderedContent($content, $conf);
+	}
+
+	/**
+	 * Creating standalone view instance must not be done in construct() as
+	 * it can lead to a nasty cache issue since content object instances
+	 * are not always re-created by the content object rendered for every
+	 * usage, but can be re-used. Thus, we need a fresh instance of
+	 * StandaloneView every time render() is called.
+	 *
+	 * @return void
+	 */
+	protected function initializeStandaloneViewInstance() {
+		$this->view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 	}
 
 	/**
