@@ -59,7 +59,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		);
 		$this->fixture = $this->getAccessibleMock(
 			'TYPO3\\CMS\\Frontend\\ContentObject\\FluidTemplateContentObject',
-			array('dummy'),
+			array('dummy', 'initializeStandaloneViewInstance'),
 			array($this->contentObjectRenderer)
 		);
 		/** @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
@@ -91,8 +91,12 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	/**
 	 * @test
 	 */
-	public function constructCreatesInstanceOfFluidStandaloneView() {
-		$this->assertInstanceOf('TYPO3\\CMS\\Fluid\\View\\StandaloneView', $this->fixture->_get('view'));
+	public function renderCallsinitializeStandaloneViewInstance() {
+		$this->addMockViewToFixture();
+		$this->fixture
+			->expects($this->once())
+			->method('initializeStandaloneViewInstance');
+		$this->fixture->render(array());
 	}
 
 	/**
