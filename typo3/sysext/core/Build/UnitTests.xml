@@ -64,6 +64,9 @@
 		<testsuite name="EXT:scheduler tests">
 			<directory>../../../../typo3/sysext/scheduler/Tests/Unit/</directory>
 		</testsuite>
+		<testsuite name="Suite integrity tests">
+			<directory>../../../../typo3/sysext/core/Tests/Integrity/</directory>
+		</testsuite>
 	</testsuites>
 
 </phpunit>
