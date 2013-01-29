@@ -116,7 +116,7 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 				);
 				$message .= '<li>' . $messageDetail . '</li>';
 			}
-			$message .= '</ol';
+			$message .= '</ol>';
 			$severity = \TYPO3\CMS\Reports\Status::NOTICE;
 		}
 
