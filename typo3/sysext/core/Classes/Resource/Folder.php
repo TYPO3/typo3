@@ -198,7 +198,14 @@ class Folder implements FolderInterface {
 		$fileArray = $this->storage->getFileList($this->identifier, $start, $numberOfItems, $useFilters, TRUE, $recursive);
 		$fileObjects = array();
 		foreach ($fileArray as $fileInfo) {
-			$fileObjects[$fileInfo['name']] = $factory->createFileObject($fileInfo);
+			$fileObject = $factory->createFileObject($fileInfo);
+
+			// we might have duplicate filenames when fetching a recursive list, so don't use the filename as array key
+			if ($recursive == TRUE) {
+				$fileObjects[] = $fileObject;
+			} else {
+				$fileObjects[$fileInfo['name']] = $fileObject;
+			}
 		}
 
 		$this->restoreBackedUpFiltersInStorage($backedUpFilters);

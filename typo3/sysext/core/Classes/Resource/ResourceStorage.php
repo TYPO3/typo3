@@ -882,7 +882,12 @@ class ResourceStorage {
 		}
 		$filters = $useFilters == TRUE ? $this->fileAndFolderNameFilters : array();
 		$items = $this->driver->getFileList($path, $start, $numberOfItems, $filters, $rows, $recursive);
-		uksort($items, 'strnatcasecmp');
+
+		// We should not sort when fetching a recursive list, as these are indexed numerically
+		if ($recursive === FALSE) {
+			uksort($items, 'strnatcasecmp');
+		}
+
 		return $items;
 	}
 
