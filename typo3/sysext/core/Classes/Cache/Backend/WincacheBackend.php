@@ -189,18 +189,6 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
 	}
 
 	/**
-	 * Removes all cache entries of this cache which are tagged by the specified tag.
-	 *
-	 * @param array $tags The tags the entries must have
-	 * @return void
-	 */
-	public function flushByTags(array $tags) {
-		foreach ($tags as $tag) {
-			$this->flushByTag($tag);
-		}
-	}
-
-	/**
 	 * Associates the identifier with the given tags
 	 *
 	 * @param string $entryIdentifier
