@@ -717,6 +717,31 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	/**
 	 * @test
 	 */
+	public function getFileListReturnsAllFilesInSubdirectoryIfRecursiveParameterIsSet() {
+		$dirStructure = array(
+			'aDir' => array(
+				'file3' => 'asdfgh',
+				'subdir' => array(
+					'file4' => 'asklfjklasjkl'
+				)
+			),
+			'file1' => 'asdfg',
+			'file2' => 'fdsa'
+		);
+		$this->addToMount($dirStructure);
+		$fixture = $this->createDriverFixture(
+			array('basePath' => $this->getMountRootUrl()),
+			NULL,
+				// Mocked because finfo() can not deal with vfs streams and throws warnings
+			array('getMimeTypeOfFile')
+		);
+		$fileList = $fixture->getFileList('/', 0, 0, array(), array(), TRUE);
+		$this->assertEquals(array('aDir/subdir/file4', 'aDir/file3', 'file1', 'file2'), array_keys($fileList));
+	}
+
+	/**
+	 * @test
+	 */
 	public function getFileListFailsIfDirectoryDoesNotExist() {
 		$this->setExpectedException('InvalidArgumentException', '', 1314349666);
 		$this->addToMount(array('somefile' => ''));
@@ -819,7 +844,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		$fixture = $this->createDriverFixture(array(
 			'basePath' => $this->getMountRootUrl()
 		));
+
 		$fileList = $fixture->getFolderList('/');
+
 		$this->assertEquals(array('.someHiddenDir', 'aDir'), array_keys($fileList));
 	}
 
@@ -835,10 +862,10 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		$fixture = $this->createDriverFixture(array(
 			'basePath' => $this->getMountRootUrl()
 		));
-		$FolderList = $fixture->getFolderList('/');
-		$this->assertEquals('/dir1/', $FolderList['dir1']['identifier']);
-		$FolderList = $fixture->getFolderList('/dir1/');
-		$this->assertEquals('/dir1/subdir1/', $FolderList['subdir1']['identifier']);
+		$folderList = $fixture->getFolderList('/');
+		$this->assertEquals('/dir1/', $folderList['dir1']['identifier']);
+		$folderList = $fixture->getFolderList('/dir1/');
+		$this->assertEquals('/dir1/subdir1/', $folderList['subdir1']['identifier']);
 	}
 
 	/**
