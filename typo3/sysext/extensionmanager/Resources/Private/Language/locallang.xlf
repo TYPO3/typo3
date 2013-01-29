@@ -60,8 +60,17 @@
 			<trans-unit id="extConfTemplate.submitButton" xml:space="preserve">
 				<source>Submit</source>
 			</trans-unit>
+			<trans-unit id="updateScript.headline" xml:space="preserve">
+				<source>Update script for %s</source>
+			</trans-unit>
+			<trans-unit id="updateScript.none" xml:space="preserve">
+				<source>No update necessary.</source>
+			</trans-unit>
 			<trans-unit id="extensionList.configure" xml:space="preserve">
 				<source>Configure</source>
+			</trans-unit>
+			<trans-unit id="extensionList.update.script" xml:space="preserve">
+				<source>Execute the update script</source>
 			</trans-unit>
 			<trans-unit id="extensionList.downloadsql" xml:space="preserve">
 				<source>Download SQL Dump</source>
