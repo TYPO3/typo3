@@ -282,7 +282,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 * Generic wrapper for extracting a list of items from a path. The
 	 * extraction itself is done by the given handler method
 	 *
-	 * @param string $path
+	 * @param string $basePath
 	 * @param integer $start The position to start the listing; if not set, start from the beginning
 	 * @param integer $numberOfItems The number of items to list; if set to zero, all items are returned
 	 * @param array $filterMethods The filter methods used to filter the directory items
@@ -292,48 +292,65 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 * @return array
 	 */
 	// TODO add unit tests
-	protected function getDirectoryItemList($path, $start, $numberOfItems, array $filterMethods, $itemHandlerMethod, $itemRows = array(), $recursive = FALSE) {
-		$realPath = rtrim(($this->absoluteBasePath . trim($path, '/')), '/') . '/';
+	protected function getDirectoryItemList($basePath, $start, $numberOfItems, array $filterMethods, $itemHandlerMethod, $itemRows = array(), $recursive = FALSE) {
+		$realPath = rtrim(($this->absoluteBasePath . trim($basePath, '/')), '/') . '/';
 		if (!is_dir($realPath)) {
-			throw new \InvalidArgumentException('Cannot list items in directory ' . $path . ' - does not exist or is no directory', 1314349666);
+			throw new \InvalidArgumentException('Cannot list items in directory ' . $basePath . ' - does not exist or is no directory', 1314349666);
 		}
+
 		if ($start > 0) {
 			$start--;
 		}
+
 		// Fetch the files and folders and sort them by name; we have to do
 		// this here because the directory iterator does return them in
 		// an arbitrary order
 		$items = $this->getFileAndFoldernamesInPath($realPath, $recursive);
 		natcasesort($items);
+
 		$iterator = new \ArrayIterator($items);
 		if ($iterator->count() == 0) {
 			return array();
 		}
 		$iterator->seek($start);
-		if ($path !== '' && $path !== '/') {
-			$path = '/' . trim($path, '/') . '/';
+
+		if ($basePath !== '' && $basePath !== '/') {
+			$basePath = '/' . trim($basePath, '/') . '/';
 		}
+
 		// $c is the counter for how many items we still have to fetch (-1 is unlimited)
 		$c = $numberOfItems > 0 ? $numberOfItems : -1;
 		$items = array();
 		while ($iterator->valid() && ($numberOfItems == 0 || $c > 0)) {
 			// $iteratorItem is the file or folder name
 			$iteratorItem = $iterator->current();
+
 			// go on to the next iterator item now as we might skip this one early
 			$iterator->next();
-			$identifier = $path . $iteratorItem;
-			if ($this->applyFilterMethodsToDirectoryItem($filterMethods, $iteratorItem, $identifier, $path) === FALSE) {
+			$identifier = $basePath . $iteratorItem['path'];
+
+			if ($this->applyFilterMethodsToDirectoryItem($filterMethods, $iteratorItem['name'], $identifier, dirname($identifier) . '/', isset($itemRows[$identifier]) ? array('indexData' => $itemRows[$identifier]) : array()) === FALSE) {
 				continue;
 			}
+
 			if (isset($itemRows[$identifier])) {
-				list($key, $item) = $this->{$itemHandlerMethod}($iteratorItem, $path, $itemRows[$identifier]);
+				list($key, $item) = $this->{$itemHandlerMethod}($iteratorItem['name'], dirname($identifier) . '/', $itemRows[$identifier]);
 			} else {
-				list($key, $item) = $this->{$itemHandlerMethod}($iteratorItem, $path);
+				list($key, $item) = $this->{$itemHandlerMethod}($iteratorItem['name'], dirname($identifier) . '/');
 			}
+
 			if (empty($item)) {
 				continue;
 			}
-			$items[$key] = $item;
+			if ($recursive) {
+				$key = NULL;
+			}
+
+			if ($key !== NULL) {
+				$items[$key] = $item;
+			} else {
+				$items[] = $item;
+			}
 			// Decrement item counter to make sure we only return $numberOfItems
 			// we cannot do this earlier in the method (unlike moving the iterator forward) because we only add the
 			// item here
@@ -355,6 +372,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		if (!is_file($filePath)) {
 			return array('', array());
 		}
+
 		// TODO add unit test for existing file row case
 		if (!empty($fileRow) && filemtime($filePath) <= $fileRow['modification_date']) {
 			return array($fileName, $fileRow);
@@ -413,11 +431,18 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 				$iterator->next();
 				continue;
 			}
-			$entryPath = GeneralUtility::fixWindowsFilePath(substr($entry->getPathname(), strlen($path)));
+			$entryPath = substr($entry->getPathname(), strlen($path));
+			$entryPath = GeneralUtility::fixWindowsFilePath($entryPath);
+			$entryName = basename($entryPath);
 			if ($entry->isDir()) {
 				$entryPath .= '/';
 			}
-			$directoryEntries[] = $entryPath;
+			$entry = array(
+				'path' => $entryPath,
+				'name' => $entryName,
+				'type' => $entry->isDir() ? 'dir' : 'file'
+			);
+			$directoryEntries[] = $entry;
 			$iterator->next();
 		}
 		return $directoryEntries;
