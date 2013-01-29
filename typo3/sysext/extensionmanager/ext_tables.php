@@ -32,6 +32,7 @@ if (TYPO3_MODE === 'BE') {
 			'Action' => 'toggleExtensionInstallationState,removeExtension,downloadExtensionZip,downloadExtensionData',
 			'Configuration' => 'showConfigurationForm,save',
 			'Download' => 'checkDependencies,installFromTer,updateExtension,updateCommentForUpdatableVersions',
+			'UpdateScript' => 'show',
 			'UpdateFromTer' => 'updateExtensionListFromTer',
 			'UploadExtensionFile' => 'form,extract'
 		),
@@ -45,5 +46,13 @@ if (TYPO3_MODE === 'BE') {
 	// Register extension status report system
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['Extension Manager'][] =
 		'TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus';
+
+	// Register specific icon for update script button
+	t3lib_SpriteManager::addSingleIcons(
+		array(
+			'update-script' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Images/Icons/ExtensionUpdateScript.png'
+		),
+		$_EXTKEY
+	);
 }
 ?>

@@ -67,6 +67,7 @@
 				</td>
 				<td>
 					<em:configureExtension extension="{extension}" />
+					<em:updateScript extensionKey="{extension.key}" />
 					<em:removeExtension extension="{extension}" />
 					<f:be.buttons.icon uri="{f:uri.action(action:'downloadExtensionZip',controller:'Action',arguments:'{extension:extension.key}')}" icon="actions-system-extension-download" title="{f:translate(key:'extensionList.downloadzip')}"/>
 					<em:downloadExtensionData extension="{extension}" />
