@@ -2,5 +2,4 @@
 - uploadFolder is currently not supported
 - conflicts dependency is not resolved
 - circular dependencies are not resolved
-- update script is missing
 - custom mirror / repository selection
