@@ -164,7 +164,7 @@ abstract class AbstractDriver {
 	 * Generic handler method for directory listings - gluing together the
 	 * listing items is done
 	 *
-	 * @param string $path
+	 * @param string $basePath
 	 * @param integer $start
 	 * @param integer $numberOfItems
 	 * @param array $filterMethods The filter methods used to filter the directory items
@@ -173,7 +173,7 @@ abstract class AbstractDriver {
 	 * @param boolean $recursive
 	 * @return array
 	 */
-	protected function getDirectoryItemList($path, $start, $numberOfItems, array $filterMethods, $itemHandlerMethod, $itemRows = array(), $recursive = FALSE) {
+	protected function getDirectoryItemList($basePath, $start, $numberOfItems, array $filterMethods, $itemHandlerMethod, $itemRows = array(), $recursive = FALSE) {
 
 	}
 
