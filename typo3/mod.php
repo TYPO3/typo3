@@ -31,22 +31,51 @@
  */
 unset($MCONF);
 require 'init.php';
-// Find module path:
-$temp_M = (string) \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('M');
-$isDispatched = FALSE;
-if ($temp_path = $TBE_MODULES['_PATHS'][$temp_M]) {
-	$MCONF['_'] = 'mod.php?M=' . rawurlencode($temp_M);
-	require $temp_path . 'conf.php';
-	$BACK_PATH = '';
-	require $temp_path . 'index.php';
-	$isDispatched = TRUE;
+
+if (GeneralUtility::_GP('action') != '') {
+	$bootstrap = new \TYPO3\CMS\Extbase\Core\Bootstrap();
+	$bootstrap->initialize(array('extensionName' => 'recordlist', 'pluginName' => 'elementbrowser', 'features' => array('rewrittenPropertyMapper' => TRUE)));
+
+	$action = GeneralUtility::_GP('action');
+	$controller = GeneralUtility::_GP('controller');
+	$extension = GeneralUtility::_GP('extension');
+	$subpackage = GeneralUtility::_GP('subpackage');
+
+	$request = new \TYPO3\CMS\Extbase\Mvc\Web\Request();
+	$request->setControllerActionName($action);
+	$request->setControllerName($controller);
+	$request->setControllerExtensionName($extension);
+	$request->setControllerSubpackageKey($subpackage);
+	$request->setControllerVendorName('TYPO3\\CMS');
+	$request->setArguments(GeneralUtility::_GP('tx_recordlist_elementbrowser'));
+	$response = new \TYPO3\CMS\Extbase\Mvc\Web\Response();
+
+	$objectManager = $bootstrap->getObjectManager();
+	/** @var $dispatcher \TYPO3\CMS\Extbase\Mvc\Dispatcher */
+	$dispatcher = $objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Dispatcher');
+	$dispatcher->dispatch($request, $response);
+
+	$response->sendHeaders();
+	$content = $response->getContent();
+	echo $content;
 } else {
-	if (is_array($TBE_MODULES['_dispatcher'])) {
-		foreach ($TBE_MODULES['_dispatcher'] as $dispatcherClassName) {
-			$dispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get($dispatcherClassName);
-			if ($dispatcher->callModule($temp_M) === TRUE) {
-				$isDispatched = TRUE;
-				break;
+	// Find module path:
+	$temp_M = (string) GeneralUtility::_GET('M');
+	$isDispatched = FALSE;
+	if ($temp_path = $TBE_MODULES['_PATHS'][$temp_M]) {
+		$MCONF['_'] = 'mod.php?M=' . rawurlencode($temp_M);
+		require $temp_path . 'conf.php';
+		$BACK_PATH = '';
+		require $temp_path . 'index.php';
+		$isDispatched = TRUE;
+	} else {
+		if (is_array($TBE_MODULES['_dispatcher'])) {
+			foreach ($TBE_MODULES['_dispatcher'] as $dispatcherClassName) {
+				$dispatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get($dispatcherClassName);
+				if ($dispatcher->callModule($temp_M) === TRUE) {
+					$isDispatched = TRUE;
+					break;
+				}
 			}
 		}
 	}

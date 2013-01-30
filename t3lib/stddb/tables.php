@@ -419,7 +419,8 @@ $TCA['sys_file'] = array(
 			'ignoreWebMountRestriction' => TRUE,
 			'ignoreRootLevelRestriction' => TRUE,
 		),
-		'dynamicConfigFile' => 'T3LIB:tca_sys_file.php'
+		'dynamicConfigFile' => 'T3LIB:tca_sys_file.php',
+		'searchFields' => 'title,description,alternative'
 	)
 );
 /**
