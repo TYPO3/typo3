@@ -74,8 +74,6 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	 * @param string $content Content input. Not used, ignore.
 	 * @param array $conf TypoScript configuration
 	 * @return string HTML output.
-	 * @access private
-	 * @todo Define visibility
 	 */
 	public function render_bullets($content, $conf) {
 		// Look for hook before running default code for function
@@ -115,8 +113,6 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	 * @param string $content Content input. Not used, ignore.
 	 * @param array $conf TypoScript configuration
 	 * @return string HTML output.
-	 * @access private
-	 * @todo Define visibility
 	 */
 	public function render_table($content, $conf) {
 		// Look for hook before running default code for function
@@ -245,8 +241,6 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	 * @param string $content Content input. Not used, ignore.
 	 * @param array $conf TypoScript configuration
 	 * @return string HTML output.
-	 * @access private
-	 * @todo Define visibility
 	 */
 	public function render_uploads($content, $conf) {
 		// Look for hook before running default code for function
@@ -457,10 +451,8 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	 * @param string $content Content input. Not used, ignore.
 	 * @param array $conf TypoScript configuration. See TSRef "IMGTEXT". This function aims to be compatible.
 	 * @return string HTML output.
-	 * @access private
 	 * @coauthor Ernesto Baschny <ernst@cron-it.de>
 	 * @coauthor Patrick Broens <patrick@patrickbroens.nl>
-	 * @todo Define visibility
 	 */
 	public function render_textpic($content, $conf) {
 		// Look for hook before running default code for function
@@ -525,17 +517,13 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		$imagePosition = $position & 7;
 		// 0,8,16,24 (above,below,intext,intext-wrap)
 		$contentPosition = $position & 24;
-		$align = $this->cObj->align[$imagePosition];
 		$textMargin = intval($this->cObj->stdWrap($conf['textMargin'], $conf['textMargin.']));
 		if (!$conf['textMargin_outOfText'] && $contentPosition < 16) {
 			$textMargin = 0;
 		}
 		$colspacing = intval($this->cObj->stdWrap($conf['colSpace'], $conf['colSpace.']));
-		$rowspacing = intval($this->cObj->stdWrap($conf['rowSpace'], $conf['rowSpace.']));
 		$border = intval($this->cObj->stdWrap($conf['border'], $conf['border.'])) ? 1 : 0;
-		$borderColor = $this->cObj->stdWrap($conf['borderCol'], $conf['borderCol.']);
 		$borderThickness = intval($this->cObj->stdWrap($conf['borderThick'], $conf['borderThick.']));
-		$borderColor = $borderColor ? $borderColor : 'black';
 		$borderThickness = $borderThickness ? $borderThickness : 1;
 		$borderSpace = $conf['borderSpace'] && $border ? intval($conf['borderSpace']) : 0;
 		// Generate cols
@@ -733,16 +721,10 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		// noRows overrides noCols. They cannot exist at the same time.
 		if ($noRows) {
 			$noCols = 0;
-		}
-		$rowCount_temp = 1;
-		$colCount_temp = $colCount;
-		if ($noRows) {
-			$rowCount_temp = $rowCount;
 			$rowCount = 1;
 		}
 		if ($noCols) {
 			$colCount = 1;
-			$columnWidths = array();
 		}
 		// Edit icons:
 		if (!is_array($conf['editIcons.'])) {
