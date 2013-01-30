@@ -1,0 +1,165 @@
+{namespace recordlist=TYPO3\CMS\Recordlist\ViewHelpers}
+
+<f:be.container addJsFile="js/browse_links.js">
+	<script language="javascript">
+		<![CDATA[
+		var addslashes = function(str) {
+			// TODO implement
+			return str;
+		};
+
+		var parameters = Ext.urlDecode(top.location.search).bparams.split("|");
+
+		var formFieldName = "";
+		if (parameters[1] == '' && parameters[2] == '') {
+			formFieldName = parameters[0];
+		}
+
+		var elRef = "";
+		var targetDoc = "";
+
+		function launchView(url) {
+			var thePreviewWindow="";
+			thePreviewWindow = window.open("' . $GLOBALS['BACK_PATH'] . 'show_item.php?table="+url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
+			if (thePreviewWindow && thePreviewWindow.focus) {
+				thePreviewWindow.focus();
+			}
+		}
+
+		function getMethodAndContextObjectFromParentWindow(objectIdentifier) {
+			var object = parent.window.opener, lastObject = undefined;
+
+			var identifierParts = objectIdentifier.split('.');
+
+			for (var i = 0; i < identifierParts.length; i++) {
+				lastObject = object;
+				object = object[identifierParts[i]];
+				if (object === undefined) {
+					console.log("Could not find object");
+					return null;
+				}
+			}
+			console.log({method:object, context:lastObject});
+			return {
+				method: object,
+				context: lastObject
+			};
+		}
+
+		var insertCheckFunction = function(parentWindowMethod, checkMethod, table, uid, type) {
+			var performAction = true;
+
+			// Call a check function in the opener window (e.g. for uniqueness handling):
+			if (parent.window.opener) {
+				var res = parentWindowMethod.method.call(parentWindowMethod.context, '"' + checkMethod + '"', table, uid, type);
+				if (!res.passed) {
+					if (res.message) alert(res.message);
+					performAction = false;
+				}
+			} else {
+				alert("Error - reference to main window is not set properly!");
+				parent.close();
+			}
+			return performAction;
+		};
+
+		var callInsertElementHelper = function(parentWindowMethod, insertHelper, table, uid, type) {
+				// Call helper function to manage data in the opener window:
+			if (parent.window.opener) {
+				parentWindowMethod.method.call(parentWindowMethod.context, '"' + insertHelper + '"', table, uid, type, '"' + parameters[0] + '"');
+			} else {
+				alert("Error - reference to main window is not set properly!");
+				parent.close();
+			}
+		};
+
+		var executeActionMethod = function(parentWindowMethod, insertHelper, table, uid, type) {
+
+		};
+
+		function setReferences() {
+			if (parent.window.opener && parent.window.opener.content && parent.window.opener.content.document.editform && parent.window.opener.content.document.editform[formFieldName]) {
+				targetDoc = parent.window.opener.content.document;
+				elRef = targetDoc.editform[formFieldName];
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		function insertElement(table, uid, type, filename, fp, filetype, imagefile, action, close) {
+			var performAction = true;
+
+			if (parameters[4] && parameters[5]) {
+				performAction = insertCheckFunction(getMethodAndContextObjectFromParentWindow(parameters[5]), parameters[4], table, uid, type);
+			}
+
+				// Call performing function and finish this action:
+			if (performAction) {
+				if (parameters[4] && parameters[6]) {
+					callInsertElementHelper(getMethodAndContextObjectFromParentWindow(parameters[6]), parameters[4]);
+				}
+
+				if (parameters[4] && parameters[7]) {
+					if (parent.window.opener) {
+						var method = getMethodAndContextObjectFromParentWindow(parameters[7]);
+
+						console.log("Calling " + parameters[7] + " with " + '"' + parameters[4]+ '" ' + table + " " + uid + " " + type)
+						method.method.call(method.context, parameters[4], table, uid, type);
+						if (close) { focusOpenerAndClose(close); }
+					} else {
+						alert("Error - reference to main window is not set properly!");
+						if (close) { parent.close(); }
+					}
+				} else if (parameters[0] && !parameters[1] && !parameters[2]) {
+					addElement(filename,table+"_"+uid,fp,close);
+				}
+			}
+			return false;
+		}
+
+		function insertMultiple(table, uid) {
+			var type = "";
+					' . $JScodeActionMultiple . '
+			return false;
+		}
+
+		function addElement(elName, elValue, altElValue, close) {
+			if (parent.window.opener && parent.window.opener.setFormValueFromBrowseWin) {
+				parent.window.opener.setFormValueFromBrowseWin(parameters[0],altElValue?altElValue:elValue,elName);
+				focusOpenerAndClose(close);
+			} else {
+				alert("Error - reference to main window is not set properly!");
+				parent.close();
+			}
+		}
+
+		function focusOpenerAndClose(close) {	//
+			BrowseLinks.focusOpenerAndClose(close);
+		}
+		]]>
+	</script>
+	<h2>File search</h2>
+
+	<f:if condition="{files}">
+		<f:then>
+			<table border="0" cellpadding="0" cellspacing="0" id="typo3-filelist">
+				<tr>
+				</tr>
+				<f:for each="{files}" as="file" iteration="count">
+					<tr class="file_list_normal">
+						<script language="javascript">
+							BrowseLinks.addElements({recordlist:fileInformation(number: "{count.index}", file: "{file}")});
+						</script>
+						<td nowrap="nowrap"><recordlist:fileIcon file="{file}" /><b>{file.name}</b>&nbsp;<br/><em>{file.identifier}</em></td>
+						<td><a href="#" onclick="return BrowseLinks.File.insertElement('file_{count.index}');">asdf</a></td>
+						<td></td>
+					</tr>
+				</f:for>
+			</table>
+		</f:then>
+		<f:else>
+			No files found.
+		</f:else>
+	</f:if>
+</f:be.container>

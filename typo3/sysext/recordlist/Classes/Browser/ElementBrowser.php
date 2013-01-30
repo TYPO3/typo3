@@ -1516,11 +1516,31 @@ class ElementBrowser {
 	 * @todo Define visibility
 	 */
 	public function TBE_expandFolder(\TYPO3\CMS\Core\Resource\Folder $folder, $extensionList = '', $noThumbs = 0) {
-		$extensionList = $extensionList == '*' ? '' : $extensionList;
 		$content = '';
 		if ($folder->checkActionPermission('browse')) {
 			// Listing the files:
-			$files = $folder->getFiles($extensionList);
+			$searchActive = FALSE;
+			$searchRecursive = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('search_recursive')) === 1;
+			$searchTerm = trim(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('search'));
+			if ($searchTerm !== '') {
+				$searchActive = TRUE;
+				$folder->setFileAndFolderNameFilters(array(
+					function($itemName, $itemIdentifier, $parentIdentifier, $additionalInformation) {
+						$searchTerm = trim(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('search'));
+						$fileNameMatch = stripos($itemName, $searchTerm) !== FALSE;
+						$metaDataMatch = FALSE;
+						\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('sys_file');
+						if (isset($additionalInformation['indexData']) && !empty($GLOBALS['TCA']['sys_file']['ctrl']['searchFields'])) {
+							foreach(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TCA']['sys_file']['ctrl']['searchFields']) as $field) {
+								$metaDataMatch = $metaDataMatch || stripos($additionalInformation['indexData'][$field], $searchTerm) !== FALSE;
+							}
+						}
+
+						return $fileNameMatch || $metaDataMatch ? TRUE : -1;
+					}
+				));
+			}
+			$files = $folder->getFiles(0, 0, \TYPO3\CMS\Core\Resource\Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $searchActive && $searchRecursive);
 			$content = $this->fileList($files, $folder, $noThumbs);
 		}
 		// Return accumulated content for filelisting:
@@ -1543,6 +1563,7 @@ class ElementBrowser {
 			$lines = array();
 			// Create headline (showing number of files):
 			$filesCount = count($files);
+			$out .= $this->file_generateSearchForm();
 			$out .= $this->barheader(sprintf($GLOBALS['LANG']->getLL('files') . ' (%s):', $filesCount));
 			$out .= '<div id="filelist">';
 			$out .= $this->getBulkSelector($filesCount);
@@ -1641,6 +1662,27 @@ class ElementBrowser {
 		$out .= '</div>';
 		return $out;
 	}
+
+	/**
+	 * @return string
+	 */
+	protected function file_generateSearchForm() {
+		$searchValue = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('search');
+		$recursive = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('search_recursive')) === 1;
+		$content = '<div>' . $this->barheader($GLOBALS['LANG']->getLL('file_filter'));
+		$target = 'mod.php';
+		$content .= '<form action="' . htmlspecialchars($target) . '" name="fileSearchForm" method="GET">
+			<input type="hidden" name="tx_recordlist_list[baseFolder]" value="' . $this->selectedFolder->getCombinedIdentifier() . '" />
+			<input type="hidden" name="M" value="Recordlist" />
+			<label for="search">' . $GLOBALS['LANG']->getLL('file_filter_searchfor') . '</label><input type="search" id="search" name="tx_recordlist_list[filePattern]" value="' . htmlspecialchars($searchValue) . '">
+			<div style="margin-top:5px;margin-bottom:5px">
+				<input type="checkbox" class="checkbox" id="search_recursive" name="tx_recordlist_list[recursive]" value="1" '. ($recursive ? 'checked="checked"' : '')
+				. '/> <label for="search_recursive">' . $GLOBALS['LANG']->getLL('file_filter_recursive') . '</label></div>
+				<input type="submit" value="' . $GLOBALS['LANG']->getLL('file_filter_search') . '" />
+		</form></div>';
+		return $content;
+	}
+
 
 	/**
 	 * Render list of folders.
