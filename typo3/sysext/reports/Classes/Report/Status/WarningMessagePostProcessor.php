@@ -49,7 +49,17 @@ class WarningMessagePostProcessor {
 				// Display a message that there's something wrong and that
 				// the admin should take a look at the detailed status report
 				$GLOBALS['LANG']->includeLLFile('EXT:reports/reports/locallang.xml');
-				$warningMessages['tx_reports_status_notification'] = sprintf($GLOBALS['LANG']->getLL('status_problemNotification'), '<a href="javascript:top.goToModule(\'tools_txreportsM1\', 1, \'&SET[function]=tx_reports.status\');">', '</a>');
+				$reportModuleIdentifier = 'tools_ReportsTxreportsm1';
+				$reportModuleParameters = array(
+					'tx_reports_tools_reportstxreportsm1[extension]=tx_reports',
+					'tx_reports_tools_reportstxreportsm1[report]=status',
+					'tx_reports_tools_reportstxreportsm1[action]=detail',
+					'tx_reports_tools_reportstxreportsm1[controller]=Report',
+				);
+				$warningMessages['tx_reports_status_notification'] = sprintf(
+					$GLOBALS['LANG']->getLL('status_problemNotification'),
+					'<a href="javascript:top.goToModule(\'' . $reportModuleIdentifier . '\', 1, \'&' . implode('&', $reportModuleParameters) .  '\');">', '</a>'
+				);
 			}
 		}
 	}
