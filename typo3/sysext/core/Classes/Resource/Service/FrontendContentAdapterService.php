@@ -109,9 +109,7 @@ class FrontendContentAdapterService {
 							// For all other fields, separate by newline
 							$fieldContents = implode(chr(10), $fileFieldContents[$oldFieldType]);
 						}
-						if ($fieldContents) {
-							$row[$oldFieldName] = $fieldContents;
-						}
+						$row[$oldFieldName] = $fieldContents;
 					}
 				}
 			}
