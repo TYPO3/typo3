@@ -180,7 +180,7 @@ class Folder implements \TYPO3\CMS\Core\Resource\FolderInterface {
 	 */
 	public function getFiles($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = FALSE) {
 		$useFilters = TRUE;
-
+		$backedUpFilters = array();
 		// Fallback for compatibility with the old method signature variable $useFilters that was used instead of $filterMode
 		if ($filterMode === TRUE) {
 			$filterMode = self::FILTER_MODE_USE_STORAGE_FILTERS;
