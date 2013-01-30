@@ -27,6 +27,7 @@ return array(
 			'ignoreWebMountRestriction' => TRUE,
 			'ignoreRootLevelRestriction' => TRUE,
 		),
+		'searchFields' => 'title,description,alternative',
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'storage, name, description, alternative, type, mime_type, size, sha1'
