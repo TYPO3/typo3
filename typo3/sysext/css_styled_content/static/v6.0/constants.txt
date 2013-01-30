@@ -1,0 +1,156 @@
+  # Clear out any constants in this reserved room!
+styles.content >
+
+content {
+    # cat=content/cHeader/h0; type=int[1-5]; label=Default Header type: Enter the number of the header layout to be used by default.
+  defaultHeaderType = 1
+    # cat=advanced/links; type=small; label=Pageframe object: The name of the "contentframe". Normally set to "page" if the site has a frameset. Otherwise it should be an empty value. This is important, as it determines the target of internal links!
+  pageFrameObj =
+
+  shortcut.tables = tt_content,tt_address,tt_links,tt_guest,tt_board,tt_calender,tt_products,tt_news,tt_rating,tt_poll
+
+    # cat=content/other/a; type=small; label= Content Element margins (before): Space before each content element.
+  spaceBefore = 0
+    # cat=content/other/b; type=small; label= Content Element margins (after): Space after each content element.
+  spaceAfter = 0
+}
+
+
+    # cat=advanced; type=int+; label= News Content PID: If your template has a column with "news"-content fetched from another page-id, this is where you enter the id-number of that page!
+styles.content.getNews.newsPid = 0
+
+styles.content.links {
+  keep = path
+    # cat=content/links; type=small; label= Target for external links
+  extTarget = _blank
+  target = {$PAGE_TARGET}
+  allowTags = a, abbr, acronym, address, article, aside, b, bdo, big, blockquote, br, caption, center, cite, code, col, colgroup, dd, del, dfn, dl, div, dt, em, font, footer, header, h1, h2, h3, h4, h5, h6, hr, i, img, ins, kbd, label, li, link, meta, nav, ol, p, pre, q, samp, sdfield, section, small, span, strike, strong, style, sub, sup, table, thead, tbody, tfoot, td, th, tr, title, tt, u, ul, var
+}
+
+styles.content.imgtext {
+    # TIP! if register[maxImageWidth] is set, this will override maxW
+    # cat=content/cImage/b1; type=int+; label= Max Image Width: This indicates that maximum number of pixels (width) a block of images inserted as content is allowed to consume.
+  maxW = 600
+    # cat=content/cImage/b2; type=int+; label= Max Image Width (Text): Same as above, but this is the maximum width when text is wrapped around an imageblock. Default is 50% of the normal Max Image Width.
+  maxWInText =
+    # cat=content/cImage/c1; type=int+; label= Click-enlarge Image Width: This specifies the width of the enlarged image when click-enlarge is enabled.
+  linkWrap.width = 800m
+  linkWrap.height = 600m
+  linkWrap.effects =
+    # cat=content/cImage/c2; type=boolean; label= Advanced, New window: If set, every click-enlarged image will open in it's own popup window and not the current popup window (which may have a wrong size for the image to fit in)
+  linkWrap.newWindow = 0
+    # cat=content/cImage/c3; type=boolean; label= Lightbox click-enlarge rendering: Whether images with click-enlarge checked should be rendered lightbox-compliant
+  linkWrap.lightboxEnabled = 0
+    # cat=content/cImage/c4; type=string; label= Lightbox CSS class: Which CSS class to use for lightbox links (only applicable if lightbox rendering is enabled)
+  linkWrap.lightboxCssClass = lightbox
+    # cat=content/cImage/c5; type=string; label= Lightbox rel="" attribute: Which rel="" attribute to use for lightbox links (only applicable if lightbox rendering is enabled)
+  linkWrap.lightboxRelAttribute = lightbox[{field:uid}]
+
+  captionSplit = 0
+    # cat=content/cImage/e1; type=boolean; label= Images, text split: If this is checked, then the image text (caption, alt, title, longdesc) will be split by each line and they will appear on the corresponding images in the imagelist.
+  imageTextSplit = 1
+    # cat=content/cImage/e2; type=string; label= Images, empty title handling: How will the 'title' attribute be handled if no title is given for an image. Possible choices: "keepEmpty", "useAlt" or "removeAttr". Recommended for accessibility is "removeAttr". For correct tooltips on IE, use "keepEmpty". For previous TYPO3 behaviour, use "useAlt".
+  emptyTitleHandling = removeAttr
+    # cat=content/cImage/e3; type=boolean; label= Images, title in link: Do you want the 'title' attribute to be added to the surrounding <a> tag, if present? Recommended for accessibility is "true".
+  titleInLink = 1
+    # cat=content/cImage/e4; type=boolean; label= Images, title in link and IMG: If you have the title in the <a>-tag (titleInLink=true), you don't get the 'title' in the <img>-tag. IE will not show the tooltip anymore. So to get the 'title' in <img> too (to keep IE happy), set this too. Recommended for accessibility is "false". For correct tooltips on IE, set this to "true".
+  titleInLinkAndImg = 0
+
+    # cat=content/cImage/g1; type=int[0-100]; label= Advanced, Column space: Horizontal distance between images in a block in content elements of type "Image" or "Text w/Image". If you change this manually in your CSS, you need to adjust this setting accordingly.
+  colSpace = 10
+    # cat=content/cImage/g2; type=int[0-100]; label= Advanced, Row space: Vertical distance after each image row in content elements of type "Image" or "Text w/Image". If you change this manually in your CSS, you need to adjust this setting accordingly.
+  rowSpace = 10
+    # cat=content/cImage/g3; type=int[0-100]; label= Advanced, Margin to text: Horizontal distance between an imageblock and text in content elements of type "Text w/Image".
+  textMargin = 10
+
+    # cat=content/cImage/i1; type=color; label= Image border, color: Bordercolor of images in content elements when "Border"-option for element is set.
+  borderColor = black
+    # cat=content/cImage/i2; type=int[0-100]; label= Image border, thickness: Thickness of border around images in content elements when "Border"-option for element is set.
+  borderThick = 2
+    # cat=content/cImage/i3; type=int+; label= Image border, padding: Padding left and right to the image, around the border.
+  borderSpace = 0
+    # cat=content/cImage/i4; type=string; label= Image border CSS-selector: If you want your border to apply elsewhere, change this setting. E.g. to apply to the whole image+caption, use 'DIV.csc-textpic-border DIV.csc-textpic-imagewrap .csc-textpic-image'.
+  borderSelector = DIV.{$styles.content.imgtext.borderClass} DIV.csc-textpic-imagewrap IMG
+    # cat=content/cImage/i5; type=string; label= Image border class: The name of the CSS class for creating image borders
+  borderClass = csc-textpic-border
+    # cat=content/cImage/i5; type=boolean; label= Image row separation: Whether images should be rendered/wrapped in separated rows, e.g. inside a DIV.csc-textpic-imagerow element
+  separateRows = 1
+    # cat=content/cImage/i6; type=boolean; label= Add clearer after intext images: Whether a clearer should be added after textpic elements of type intext-left or intext-right
+  addIntextClearer = 1
+}
+
+styles.content.uploads {
+  target = _blank
+  jumpurl_secure =
+  jumpurl_secure_mimeTypes = pdf=application/pdf, doc=application/msword
+  jumpurl =
+    # cat=content/cUploads; type=string; label=Labels of file sizes: The labels for bytes, kilobytes, megabytes and gigabytes
+  filesizeBytesLabels = " | K| M| G"
+}
+
+styles.content.mailform {
+  target = {$PAGE_TARGET}
+    # cat=content/cMailform; type=; label= Message, Formmail OK: This is the message (if any) that is popped-up (JavaScript) when a user clicks "send" with an email-form
+  goodMess =
+    # cat=content/cMailform; type=; label= Message, Formmail Missing: This is the message that is popped-up when a user has NOT filled required fields in an email-form
+  badMess =
+}
+
+styles.content.loginform {
+  target = _top
+    # cat=content/cLogin; type=int+; label= PID of user archive: Enter the page-uid number (PID) of the folder where you keep your fe_users that are supposed to login on this site. This setting is necessary, if login is going to work!
+  pid =
+    # cat=content/cLogin; type=; label= Message, Login: This is the message (if any) that is popped-up when a user logs in as a front-end user
+  goodMess =
+    # cat=content/cLogin; type=; label= Login template: Enter the path for the HTML template to be used
+  templateFile = EXT:felogin/template.html
+}
+
+styles.content.searchform {
+    # cat=content/cSearch; type=; label= Message, Searchform: This is the message (if any) that is popped-up when a user performs a search
+  goodMess =
+}
+
+styles.content.searchresult {
+  resultTarget = {$PAGE_TARGET}
+  target = {$PAGE_TARGET}
+}
+
+styles.content.media {
+    # cat=content/cMedia/j1; type=; label= Video Player: configure the path to the video player
+  videoPlayer = typo3/contrib/flashmedia/flvplayer.swf
+    # cat=content/cMedia/j2; type=int+; label= Media Video Width: define the default width for the media video
+  defaultVideoWidth = 600
+  	# cat=content/cMedia/j3; type=int+; label= Media Video Height: define the default height for the media video
+  defaultVideoHeight = 400
+    # cat=content/cMedia/j4; type=; label= Audio Player: configure the path to the video player
+  audioPlayer = typo3/contrib/flashmedia/player.swf
+   	# cat=content/cMedia/j5; type=int+; label= Media Audio Width: define the default width for the media audio
+  defaultAudioWidth = 300
+    # cat=content/cMedia/j6; type=int+; label= Media Audio Height: define the default height for the media audio
+  defaultAudioHeight = 30
+   	# cat=content/cMedia/j7; type=; label= Flow Player: configure the path to the flow-player
+  flowPlayer = typo3/contrib/flowplayer/flowplayer-3.2.7.swf
+}
+
+styles.content.table {
+    # cat=content/cTable/k2; type=color; label= Table background color, Color 1: Background color for table when "Backgr. Color" has been set to "Color 1"
+  backgroundColor.1 = #EDEBF1
+    # cat=content/cTable/k3; type=color; label= Table background color, Color 2: Background color for table when "Backgr. Color" has been set to "Color 2"
+  backgroundColor.2 = #F5FFAA
+    # cat=content/cTable/k5; type=color; label= Table background color, Black: Background color for table when "Backgr. Color" has been set to "Black"
+  backgroundColor.240 = black
+    # cat=content/cTable/k6; type=color; label= Table background color, White: Background color for table when "Backgr. Color" has been set to "White"
+  backgroundColor.241 = white
+    # cat=content/cTable/k7; type=color; label= Table background color, Dark Gray: Background color for table when "Backgr. Color" has been set to "Dark Gray"
+  backgroundColor.242 = #333333
+    # cat=content/cTable/k8; type=color; label= Table background color, Gray: Background color for table when "Backgr. Color" has been set to "Gray"
+  backgroundColor.243 = gray
+    # cat=content/cTable/k9; type=color; label= Table background color, Silver: Background color for table when "Backgr. Color" has been set to "Silver"
+  backgroundColor.244 = silver
+}
+
+ # cat=advanced/links; type=small; label= Target for internal links: Should match the name of the content PAGE-object in TypoScript when used with frames. Most cases: set to "" (empty). If you have frames in the template set to "page"
+PAGE_TARGET =
+
+
