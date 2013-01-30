@@ -89,6 +89,7 @@ class FluidTemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstr
 		$this->setPartialRootPath($conf);
 		$this->setFormat($conf);
 		$this->setExtbaseVariables($conf);
+		$this->assignSettings($conf);
 		$this->assignContentObjectVariables($conf);
 		$this->assignContentObjectDataAndCurrent($conf);
 
@@ -225,6 +226,22 @@ class FluidTemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstr
 					1288095720
 				);
 			}
+		}
+	}
+
+	/**
+	 * Set any TypoScript settings to the view. This is similar to a
+	 * default MVC action controller in extbase.
+	 *
+	 * @param array $conf Configuration
+	 * @return void
+	 */
+	protected function assignSettings(array $conf) {
+		if (array_key_exists('settings.', $conf)) {
+			/** @var $typoScriptService \TYPO3\CMS\Extbase\Service\TypoScriptService */
+			$typoScriptService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
+			$settings = $typoScriptService->convertTypoScriptArrayToPlainArray($conf['settings.']);
+			$this->view->assign('settings', $settings);
 		}
 	}
 
