@@ -6975,7 +6975,7 @@ class t3lib_TCEmain {
 	 * @param integer $id Uid of the record
 	 * @return integer
 	 */
-	protected function getAutoVersionId($table, $id) {
+	public function getAutoVersionId($table, $id) {
 		$result = NULL;
 
 		if (isset($this->autoVersionIdMap[$table][$id])) {
