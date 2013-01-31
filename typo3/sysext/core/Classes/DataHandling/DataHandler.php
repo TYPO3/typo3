@@ -496,6 +496,13 @@ class DataHandler {
 	protected $outerMostInstance = NULL;
 
 	/**
+	 * Uids per table of specific workspace records being processed.
+	 *
+	 * @var array
+	 */
+	protected $specificUids = array();
+
+	/**
 	 * @param array $control
 	 */
 	public function setControl(array $control) {
@@ -2976,8 +2983,9 @@ class DataHandler {
 	 * @param integer $uid Element UID
 	 * @param integer $pid Element PID (real PID, not checked)
 	 * @param array $overrideArray Override array - must NOT contain any fields not in the table!
-	 * @return array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
+	 * @return array $workspaceOptions Options to be forwarded if actions happen on a workspace currently (only set in versionizeRecord())
 	 * @return integer Returns the new ID of the record (if applicable)
+	 * @see versionizeRecord()
 	 * @todo Define visibility
 	 */
 	public function copyRecord_raw($table, $uid, $pid, $overrideArray = array(), array $workspaceOptions = array()) {
@@ -3091,14 +3099,16 @@ class DataHandler {
 	 * @param array $conf TCA field configuration
 	 * @param integer $realDestPid Real page id (pid) the record is copied to
 	 * @param integer $language Language ID (from sys_language table) used in the duplicated record
-	 * @return array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
+	 * @return array $workspaceOptions Options to be forwarded if actions happen on a workspace currently (only set in versionizeRecord())
 	 * @access private
-	 * @see copyRecord()
+	 * @see copyRecord(), versionizeRecord()
 	 * @todo Define visibility
 	 */
 	public function copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $realDestPid, $language = 0, array $workspaceOptions = array()) {
+		$specificUid = $this->getSpecificUid($table, $uid, $row);
+
 		// Process references and files, currently that means only the files, prepending absolute paths (so the TCEmain engine will detect the file as new and one that should be made into a copy)
-		$value = $this->copyRecord_procFilesRefs($conf, $uid, $value);
+		$value = $this->copyRecord_procFilesRefs($conf, $specificUid, $value);
 		$inlineSubType = $this->getInlineFieldType($conf);
 		// Get the localization mode for the current (parent) record (keep|select):
 		$localizationMode = \TYPO3\CMS\Backend\Utility\BackendUtility::getInlineLocalizationMode($table, $field);
@@ -3112,7 +3122,7 @@ class DataHandler {
 			$localizeChildren = $localizeForeignTable && isset($conf['behaviour']['localizeChildrenAtParentLocalization']) && $conf['behaviour']['localizeChildrenAtParentLocalization'];
 			/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
 			$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
-			$dbAnalysis->start($value, $allowedTables, $mmTable, $uid, $table, $conf);
+			$dbAnalysis->start($value, $allowedTables, $mmTable, $specificUid, $table, $conf);
 			// Localize referenced records of select fields:
 			if ($language > 0 && ($localizeReferences && empty($mmTable) || $localizeChildren && $localizationMode === 'select' && $inlineSubType === 'mm')) {
 				foreach ($dbAnalysis->itemArray as $index => $item) {
@@ -3151,7 +3161,7 @@ class DataHandler {
 				// Fetch the related child records by using t3lib_loadDBGroup:
 				/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
 				$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
-				$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
+				$dbAnalysis->start($value, $conf['foreign_table'], '', $specificUid, $table, $conf);
 				// Walk through the items, copy them and remember the new id:
 				foreach ($dbAnalysis->itemArray as $k => $v) {
 					// If language is set and differs from original record, this isn't a copy action but a localization of our parent/ancestor:
@@ -3163,11 +3173,22 @@ class DataHandler {
 					} else {
 						if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($realDestPid)) {
 							$newId = $this->copyRecord($v['table'], $v['id'], -$v['id']);
-						} elseif ($realDestPid == -1 && \TYPO3\CMS\Backend\Utility\BackendUtility::isTableWorkspaceEnabled($v['table'])) {
+						} elseif ($this->BE_USER->workspace > 0 && \TYPO3\CMS\Backend\Utility\BackendUtility::isTableWorkspaceEnabled($v['table'])) {
 							$workspaceVersion = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $v['table'], $v['id'], 'uid');
 							// If workspace version does not exist, create a new one:
 							if ($workspaceVersion === FALSE) {
-								$newId = $this->versionizeRecord($v['table'], $v['id'], isset($workspaceOptions['label']) ? $workspaceOptions['label'] : 'Auto-created for WS #' . $this->BE_USER->workspace, isset($workspaceOptions['delete']) ? $workspaceOptions['delete'] : FALSE);
+								// A filled $workspaceOptions indicated that this call
+								// has it's origin in previous versionizeRecord() processing
+								if (count($workspaceOptions)) {
+									$newId = $this->versionizeRecord(
+										$v['table'], $v['id'],
+										(isset($workspaceOptions['label']) ? $workspaceOptions['label'] : 'Auto-created for WS #' . $this->BE_USER->workspace),
+										(isset($workspaceOptions['delete']) ? $workspaceOptions['delete'] : FALSE)
+									);
+								// Otherwise just use plain copyRecord() to create placeholders etc.
+								} else {
+									$newId = $this->copyRecord($v['table'], $v['id'], -$v['id']);
+								}
 							} else {
 								$newId = $workspaceVersion['uid'];
 							}
@@ -3235,7 +3256,7 @@ class DataHandler {
 	 * For DB references: Nothing done.
 	 *
 	 * @param array $conf TCE field config
-	 * @param integer $uid Record UID
+	 * @param integer $uid Specific record UID
 	 * @param string $value Field value (eg. list of files)
 	 * @return string The (possibly modified) value
 	 * @see copyRecord(), copyRecord_flexFormCallBack()
@@ -4484,11 +4505,10 @@ class DataHandler {
 									// as well as the information whether the record shall be removed
 									// must be forwarded (creating remove placeholders on a workspace are
 									// done by copying the record and override several fields).
-									$workspaceOptions = array();
-									if ($delete) {
-										$workspaceOptions['delete'] = $delete;
-										$workspaceOptions['label'] = $label;
-									}
+									$workspaceOptions = array(
+										'delete' => $delete,
+										'label' => $label,
+									);
 									return $this->copyRecord_raw($table, $id, -1, $overrideArray, $workspaceOptions);
 								} else {
 									$this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize was already a version in the workspace (wsid=' . $this->BE_USER->workspace . ')!', 1);
@@ -4766,13 +4786,23 @@ class DataHandler {
 	 *
 	 * @param array $conf TCA field config
 	 * @param string $value Field value
-	 * @param integer $uid The uid of the ORIGINAL record
+	 * @param integer $uid The specific uid of the ORIGINAL record
 	 * @param string $table Table name
 	 * @return void
 	 * @todo Define visibility
 	 */
 	public function remapListedDBRecords_procInline($conf, $value, $uid, $table) {
 		$theUidToUpdate = $this->copyMappingArray_merged[$table][$uid];
+
+		// In case of an IRRE parent record has been copied in a workspace
+		// * input $uid is the uid of the live record
+		// * resolved $theUidToUpdate is the placeholder record
+		// * thus, it's required to fetch the concrete version uid
+		$versionUid = $this->getAutoVersionId($table, $theUidToUpdate);
+		if ($versionUid !== NULL && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($versionUid)) {
+			$theUidToUpdate = $versionUid;
+		}
+
 		if ($conf['foreign_table']) {
 			$inlineType = $this->getInlineFieldType($conf);
 			if ($inlineType == 'mm') {
@@ -5482,6 +5512,31 @@ class DataHandler {
 				return $result;
 			}
 		}
+	}
+
+	/**
+	 * Gets the uid of a record depending on the current context.
+	 * If in workspace mode, the overlay uid is used (if available),
+	 * otherwise the regular uid is used.
+	 *
+	 * @param string $table Name of the table
+	 * @param integer $uid Uid of the record
+	 * @param NULL|array $record Overlayed record data
+	 * @return integer
+	 */
+	public function getSpecificUid($table, $uid, array $record = NULL) {
+		$specificUid = $uid = (int) $uid;
+
+		if (isset($this->specificUids[$table][$uid])) {
+			$specificUid = $this->specificUids[$table][$uid];
+		} elseif ($this->BE_USER->workspace > 0 && !empty($record['_ORIG_uid'])) {
+			$specificUid = (int) $record['_ORIG_uid'];
+			if ($uid !== $specificUid) {
+				$this->specificUids[$table][$uid] = $specificUid;
+			}
+		}
+
+		return $specificUid;
 	}
 
 	/**
