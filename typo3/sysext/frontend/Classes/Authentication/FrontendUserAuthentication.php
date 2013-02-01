@@ -41,7 +41,7 @@ namespace TYPO3\CMS\Frontend\Authentication;
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author René Fritz <r.fritz@colorcube.de>
  */
-class FrontendUserAuthtenication extends \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication {
+class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication {
 
 	// formfield with 0 or 1 // 1 = permanent login enabled // 0 = session is valid for a browser session only
 	/**
@@ -269,9 +269,9 @@ class FrontendUserAuthtenication extends \TYPO3\CMS\Core\Authentication\Abstract
 		$authInfo = $this->getAuthInfoArray();
 		if ($this->writeDevLog) {
 			if (is_array($this->user)) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Get usergroups for user: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString($this->user, array($this->userid_column, $this->username_column)), 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthtenication');
+				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Get usergroups for user: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString($this->user, array($this->userid_column, $this->username_column)), 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication');
 			} else {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Get usergroups for "anonymous" user', 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthtenication');
+				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Get usergroups for "anonymous" user', 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication');
 			}
 		}
 		$groupDataArr = array();
@@ -289,13 +289,13 @@ class FrontendUserAuthtenication extends \TYPO3\CMS\Core\Authentication\Abstract
 			unset($serviceObj);
 		}
 		if ($this->writeDevLog && $serviceChain) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthtenication');
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication');
 		}
 		if ($this->writeDevLog && !count($groupDataArr)) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('No usergroups found by services', 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthtenication');
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('No usergroups found by services', 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication');
 		}
 		if ($this->writeDevLog && count($groupDataArr)) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog(count($groupDataArr) . ' usergroup records found by services', 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthtenication');
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog(count($groupDataArr) . ' usergroup records found by services', 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication');
 		}
 		// Use 'auth' service to check the usergroups if they are really valid
 		foreach ($groupDataArr as $groupData) {
@@ -309,7 +309,7 @@ class FrontendUserAuthtenication extends \TYPO3\CMS\Core\Authentication\Abstract
 				if (!$serviceObj->authGroup($this->user, $groupData)) {
 					$validGroup = FALSE;
 					if ($this->writeDevLog) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($subType . ' auth service did not auth group: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString($groupData, 'uid,title'), 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthtenication', 2);
+						\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($subType . ' auth service did not auth group: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString($groupData, 'uid,title'), 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication', 2);
 					}
 					break;
 				}
