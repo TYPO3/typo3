@@ -153,7 +153,7 @@ class TypoScriptFrontendController {
 	/**
 	 * The FE user
 	 *
-	 * @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthtenication
+	 * @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
 	 * @todo Define visibility
 	 */
 	public $fe_user = '';
@@ -909,7 +909,7 @@ class TypoScriptFrontendController {
 	 * @todo Define visibility
 	 */
 	public function initFEuser() {
-		$this->fe_user = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthtenication');
+		$this->fe_user = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication');
 		$this->fe_user->lockIP = $this->TYPO3_CONF_VARS['FE']['lockIP'];
 		$this->fe_user->checkPid = $this->TYPO3_CONF_VARS['FE']['checkFeUserPid'];
 		$this->fe_user->lifetime = intval($this->TYPO3_CONF_VARS['FE']['lifetime']);
@@ -920,7 +920,7 @@ class TypoScriptFrontendController {
 			$fe_sParts = explode('-', \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('FE_SESSION_KEY'));
 			// If the session key hash check is OK:
 			if (!strcmp(md5(($fe_sParts[0] . '/' . $this->TYPO3_CONF_VARS['SYS']['encryptionKey'])), $fe_sParts[1])) {
-				$cookieName = \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthtenication::getCookieName();
+				$cookieName = \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::getCookieName();
 				$_COOKIE[$cookieName] = $fe_sParts[0];
 				if (isset($_SERVER['HTTP_COOKIE'])) {
 					// See http://forge.typo3.org/issues/27740
