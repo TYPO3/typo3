@@ -1324,7 +1324,7 @@ class FormEngine {
 		foreach ($evalList as $func) {
 			switch ($func) {
 			case 'required':
-				$this->registerRequiredProperty('field', $table . '_' . $row['uid'] . '_' . $field, $PA['itemFormElName']);
+				$this->registerRequiredProperty('field', $PA['itemFormElName'], $table . '_' . $row['uid'] . '_' . $field);
 				// Mark this field for date/time disposal:
 				if (array_intersect($evalList, array('date', 'datetime', 'time'))) {
 					$this->requiredAdditional[$PA['itemFormElName']]['isPositiveNumber'] = TRUE;
@@ -1556,7 +1556,7 @@ function ' . $evalData . '(value) {
 				foreach ($evalList as $func) {
 					switch ($func) {
 					case 'required':
-						$this->registerRequiredProperty('field', $table . '_' . $row['uid'] . '_' . $field, $PA['itemFormElName']);
+						$this->registerRequiredProperty('field', $PA['itemFormElName'], $table . '_' . $row['uid'] . '_' . $field);
 						break;
 					default:
 						// Pair hook to the one in \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_input_Eval() and \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_text_Eval()
@@ -5266,7 +5266,7 @@ function ' . $evalData . '(value) {
 		$elements = array();
 		$out = '';
 		// Required:
-		foreach ($this->requiredFields as $itemImgName => $itemName) {
+		foreach ($this->requiredFields as $itemName => $itemImgName) {
 			$match = array();
 			if (preg_match('/^(.+)\\[((\\w|\\d|_)+)\\]$/', $itemName, $match)) {
 				$record = $match[1];
@@ -6223,14 +6223,11 @@ function ' . $evalData . '(value) {
 	protected function registerRequiredProperty($type, $name, $value) {
 		if ($type == 'field' && is_string($value)) {
 			$this->requiredFields[$name] = $value;
-			// requiredFields have name/value swapped! For backward compatibility we keep this:
-			$itemName = $value;
 		} elseif ($type == 'range' && is_array($value)) {
 			$this->requiredElements[$name] = $value;
-			$itemName = $name;
 		}
 		// Set the situation of nesting for the current field:
-		$this->registerNestedElement($itemName);
+		$this->registerNestedElement($name);
 	}
 
 	/**
