@@ -4894,7 +4894,7 @@ class tx_form_View_Wizard_Wizard extends \TYPO3\CMS\Form\View\Wizard\WizardView 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tslib_feUserAuth extends \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthtenication {}
+class tslib_feUserAuth extends \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
