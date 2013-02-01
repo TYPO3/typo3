@@ -91,9 +91,13 @@ class ConfirmationView extends \TYPO3\CMS\Form\View\Confirmation\Element\Contain
 	public function get() {
 		$message = $this->getMessage();
 		$node = $this->render('element', FALSE);
-		$formInput = chr(10) . html_entity_decode($node->saveXML($node->firstChild), ENT_QUOTES, 'UTF-8') . chr(10);
+		if ($node !== NULL) {
+			$formInput = LF . html_entity_decode($node->saveXML($node->firstChild), ENT_QUOTES, 'UTF-8') . LF;
+		} else {
+			$formInput = '';
+		}
 		$confirmationButtons = $this->getConfirmationButtons();
-		$content = $message . chr(10) . $formInput . chr(10) . $confirmationButtons;
+		$content = $message . LF . $formInput . LF . $confirmationButtons;
 		return $content;
 	}
 
