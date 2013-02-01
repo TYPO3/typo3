@@ -1,6 +1,6 @@
 <?php
 return array(
-	'tslib_feUserAuth' => 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthtenication',
+	'tslib_feUserAuth' => 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication',
 	't3lib_matchCondition_frontend' => 'TYPO3\\CMS\\Frontend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher',
 	'tslib_content_Abstract' => 'TYPO3\\CMS\\Frontend\\ContentObject\\AbstractContentObject',
 	'tslib_content_Case' => 'TYPO3\\CMS\\Frontend\\ContentObject\\CaseContentObject',
