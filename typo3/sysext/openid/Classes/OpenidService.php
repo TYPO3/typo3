@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Openid;
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid') . 'lib/php-openid/Auth/OpenID/Interface.php';
 
 /**
  * Service "OpenID Authentication" for the "openid" extension.
