@@ -79,7 +79,7 @@
 				<source>Bulleted List</source>
 			</trans-unit>
 			<trans-unit id="InsertUnorderedList-helpText" xml:space="preserve">
-				<source>Makes an bulleted list from the curent selection</source>
+				<source>Makes a bulleted list from the current selection</source>
 			</trans-unit>
 			<trans-unit id="InsertHorizontalRule-Tooltip" xml:space="preserve">
 				<source>Horizontal Rule</source>
