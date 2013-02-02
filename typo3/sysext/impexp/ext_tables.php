@@ -5,7 +5,6 @@ if (!defined('TYPO3_MODE')) {
 if (TYPO3_MODE == 'BE') {
 	$GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][] = array(
 		'name' => 'TYPO3\\CMS\\Impexp\\Clickmenu',
-		'path' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'class.tx_impexp_clickmenu.php'
 	);
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']['impexp']['tx_impexp_task'] = array(
 		'title' => 'LLL:EXT:impexp/locallang_csh.xml:.alttitle',
