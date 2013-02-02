@@ -41,9 +41,10 @@ class ClickMenuController {
 	 */
 	public $doc;
 
-	// Files to include_once() - set in init() function
 	/**
-	 * @todo Define visibility
+	 * Files to include_once() - set in init() function
+	 *
+	 * @deprecated since 6.1, will be removed 2 versions later
 	 */
 	public $include_once = array();
 
@@ -76,9 +77,13 @@ class ClickMenuController {
 		// Setting internal array of classes for extending the clickmenu:
 		$this->extClassArray = $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'];
 		// Traversing that array and setting files for inclusion:
+		// @deprecated since 6.1, will be removed 2 versions later
 		if (is_array($this->extClassArray)) {
 			foreach ($this->extClassArray as $extClassConf) {
-				if ($extClassConf['path']) {
+				if (isset($extClassConf['path'])) {
+					\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+						'$GLOBALS[\'TBE_MODULES_EXT\'][\'xMOD_alt_clickmenu\'][\'extendCMclasses\'][\'path\'] option is not needed anymore. The autoloader takes care of loading the class.'
+					);
 					$this->include_once[] = $extClassConf['path'];
 				}
 			}
