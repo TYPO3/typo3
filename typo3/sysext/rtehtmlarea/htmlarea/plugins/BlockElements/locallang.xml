@@ -32,7 +32,7 @@
 			<label index="InsertOrderedList-Tooltip">Ordered List</label>
 			<label index="InsertOrderedList-helpText">Makes an ordered list from the curent selection</label>
 			<label index="InsertUnorderedList-Tooltip">Bulleted List</label>
-			<label index="InsertUnorderedList-helpText">Makes an bulleted list from the curent selection</label>
+			<label index="InsertUnorderedList-helpText">Makes a bulleted list from the current selection</label>
 			<label index="InsertHorizontalRule-Tooltip">Horizontal Rule</label>
 			<label index="InsertHorizontalRule-helpText">Inserts an horizontal rule</label>
 			<label index="No block">No block format</label>
