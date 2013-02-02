@@ -26,6 +26,7 @@ namespace TYPO3\CMS\SysAction;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Class for the list rendering of Web>Task Center module
  *
@@ -36,18 +37,17 @@ class ActionList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 	/**
 	 * Creates the URL to this script, including all relevant GPvars
 	 * Fixed GPvars are id, table, imagemode, returnUrl, search_field, search_levels and showLimit
-	 * The GPvars "sortField" and "sortRev" are also included UNLESS they are found in the $exclList variable.
+	 * The GPvars "sortField" and "sortRev" are also included UNLESS they are found in the $excludeList variable.
 	 *
-	 * @param string $altId Alternative id value. Enter blank string for the current id ($this->id)
+	 * @param string $alternativeId Alternative id value. Enter blank string for the current id ($this->id)
 	 * @param string $table Table name to display. Enter "-1" for the current table.
-	 * @param string $exclList Comma separated list of fields NOT to include ("sortField" or "sortRev")
+	 * @param string $excludeList Comma separated list of fields NOT to include ("sortField" or "sortRev")
 	 * @return string
-	 * @todo Define visibility
 	 */
-	public function listURL($altId = '', $table = -1, $exclList = '') {
+	public function listURL($alternativeId = '', $table = -1, $excludeList = '') {
 		$urlParameters = array();
-		if (strcmp($altId, '')) {
-			$urlParameters['id'] = $altId;
+		if (strcmp($alternativeId, '')) {
+			$urlParameters['id'] = $alternativeId;
 		} else {
 			$urlParameters['id'] = $this->id;
 		}
@@ -74,10 +74,10 @@ class ActionList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 		if ($this->firstElementNumber) {
 			$urlParameters['pointer'] = $this->firstElementNumber;
 		}
-		if ((!$exclList || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($exclList, 'sortField')) && $this->sortField) {
+		if ((!$excludeList || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($excludeList, 'sortField')) && $this->sortField) {
 			$urlParameters['sortField'] = $this->sortField;
 		}
-		if ((!$exclList || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($exclList, 'sortRev')) && $this->sortRev) {
+		if ((!$excludeList || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($excludeList, 'sortRev')) && $this->sortRev) {
 			$urlParameters['sortRev'] = $this->sortRev;
 		}
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET')) {
@@ -90,6 +90,5 @@ class ActionList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 	}
 
 }
-
 
 ?>
