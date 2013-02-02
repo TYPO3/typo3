@@ -58,6 +58,7 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('backen
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ClickMenuController');
 $SOBE->init();
 // Include files?
+// @deprecated since 6.1, will be removed 2 versions later
 foreach ($SOBE->include_once as $INC_FILE) {
 	include_once $INC_FILE;
 }
