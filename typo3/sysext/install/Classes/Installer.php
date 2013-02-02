@@ -261,7 +261,7 @@ class Installer {
 
 		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']) {
 			$this->outputErrorAndExit('Install Tool deactivated.<br />
-				You must enable it by setting a password in typo3conf/LocalConfiguration.php. If you insert the value below at array position \'EXT\' \'installToolPassword\', the password will be \'joh316\':<br /><br />
+				You must enable it by setting a password in typo3conf/LocalConfiguration.php. If you insert the value below at array position \'BE\' \'installToolPassword\', the password will be \'joh316\':<br /><br />
 				\'bacb98acf97e0b6112b1d1b650b84971\'', 'Fatal error');
 		}
 		if ($this->sendNoCacheHeaders) {
