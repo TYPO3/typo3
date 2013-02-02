@@ -1,7 +1,10 @@
 <?php
-// sys_action
-$TCA['sys_action'] = array(
-	'ctrl' => $TCA['sys_action']['ctrl'],
+if (!defined('TYPO3_MODE')) {
+	die('Access denied.');
+}
+
+$GLOBALS['TCA']['sys_action'] = array(
+	'ctrl' => $GLOBALS['TCA']['sys_action']['ctrl'],
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,title,type,description,assign_to_groups'
 	),
@@ -24,7 +27,7 @@ $TCA['sys_action'] = array(
 			)
 		),
 		'hidden' => array(
-			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.hidden',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.xlf:sys_action.hidden',
 			'config' => array(
 				'type' => 'check'
 			)
@@ -35,16 +38,16 @@ $TCA['sys_action'] = array(
 				'type' => 'select',
 				'items' => array(
 					array('', '0'),
-					array('LLL:EXT:sys_action/locallang_tca.php:sys_action.type.1', '1'),
-					array('LLL:EXT:sys_action/locallang_tca.php:sys_action.type.2', '2'),
-					array('LLL:EXT:sys_action/locallang_tca.php:sys_action.type.3', '3'),
-					array('LLL:EXT:sys_action/locallang_tca.php:sys_action.type.4', '4'),
-					array('LLL:EXT:sys_action/locallang_tca.php:sys_action.type.5', '5')
+					array('LLL:EXT:sys_action/locallang_tca.xlf:sys_action.type.1', '1'),
+					array('LLL:EXT:sys_action/locallang_tca.xlf:sys_action.type.2', '2'),
+					array('LLL:EXT:sys_action/locallang_tca.xlf:sys_action.type.3', '3'),
+					array('LLL:EXT:sys_action/locallang_tca.xlf:sys_action.type.4', '4'),
+					array('LLL:EXT:sys_action/locallang_tca.xlf:sys_action.type.5', '5')
 				)
 			)
 		),
 		'assign_to_groups' => array(
-			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.assign_to_groups',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.xlf:sys_action.assign_to_groups',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'be_groups',
@@ -57,7 +60,7 @@ $TCA['sys_action'] = array(
 			)
 		),
 		't1_userprefix' => array(
-			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t1_userprefix',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.xlf:sys_action.t1_userprefix',
 			'config' => array(
 				'type' => 'input',
 				'size' => '25',
@@ -66,7 +69,7 @@ $TCA['sys_action'] = array(
 			)
 		),
 		't1_allowed_groups' => array(
-			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t1_allowed_groups',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.xlf:sys_action.t1_allowed_groups',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'be_groups',
@@ -77,13 +80,13 @@ $TCA['sys_action'] = array(
 			)
 		),
 		't1_create_user_dir' => array(
-			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t1_create_user_dir',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.xlf:sys_action.t1_create_user_dir',
 			'config' => array(
 				'type' => 'check'
 			)
 		),
 		't1_copy_of_user' => array(
-			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t1_copy_of_user',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.xlf:sys_action.t1_copy_of_user',
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -100,7 +103,7 @@ $TCA['sys_action'] = array(
 			)
 		),
 		't3_listPid' => array(
-			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t3_listPid',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.xlf:sys_action.t3_listPid',
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -117,7 +120,7 @@ $TCA['sys_action'] = array(
 			)
 		),
 		't3_tables' => array(
-			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t3_tables',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.xlf:sys_action.t3_tables',
 			'config' => array(
 				'type' => 'select',
 				'special' => 'tables',
@@ -127,7 +130,7 @@ $TCA['sys_action'] = array(
 			)
 		),
 		't4_recordsToEdit' => array(
-			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t4_recordsToEdit',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.xlf:sys_action.t4_recordsToEdit',
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
