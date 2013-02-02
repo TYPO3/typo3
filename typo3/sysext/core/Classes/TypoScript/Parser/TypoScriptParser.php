@@ -281,6 +281,77 @@ class TypoScriptParser {
 	}
 
 	/**
+	 * Executes operator-functions, called from TypoScript
+         * example: page.10.value := appendString(!)
+	 *
+	 * @param string $tsFunc Typoscript-function called
+	 * @param string $tsFuncArg Function-arguments; in case of multiple arguments function needs to split them itself
+	 * @param string $currentValue current value in TypoScript that is function is executed upon
+	 * @return string String after execution of the operator-function
+	 * @todo Define visibility
+	 */
+	protected function executeTypoScriptOperatorFunction($tsFunc, $tsFuncArg = NULL, $currentValue = NULL) {
+		$newValue = NULL;
+		switch ($tsFunc) {
+		  case 'prependString':
+			  $newValue = $tsFuncArg . $currentValue;
+			  break;
+		  case 'appendString':
+			  $newValue = $currentValue . $tsFuncArg;
+			  break;
+		  case 'removeString':
+			  $newValue = str_replace($tsFuncArg, '', $currentValue);
+			  break;
+		  case 'replaceString':
+			  list($fromStr, $toStr) = explode('|', $tsFuncArg, 2);
+			  $newValue = str_replace($fromStr, $toStr, $currentValue);
+			  break;
+		  case 'addToList':
+			  $newValue = (strcmp('', $currentValue) ? $currentValue . ',' : '') . trim($tsFuncArg);
+			  break;
+		  case 'removeFromList':
+			  $existingElements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $currentValue);
+			  $removeElements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tsFuncArg);
+			  if (count($removeElements)) {
+				  $newValue = implode(',', array_diff($existingElements, $removeElements));
+			  }
+			  break;
+		  case 'uniqueList':
+			  $elements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $currentValue);
+			  $newValue = implode(',', array_unique($elements));
+			  break;
+		  case 'reverseList':
+			  $elements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $currentValue);
+			  $newValue = implode(',', array_reverse($elements));
+			  break;
+		  case 'sortList':
+			  $elements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $currentValue);
+			  $arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tsFuncArg);
+			  $arguments = array_map('strtolower', $arguments);
+			  $sort_flags = SORT_REGULAR;
+			  if (in_array('num', $arguments) || in_array('numeric', $arguments)) {
+				  $sort_flags = SORT_NUMERIC;
+			  }
+			  sort($elements, $sort_flags);
+			  if (in_array('desc', $arguments) || in_array('descending', $arguments)) {
+				  $elements = array_reverse($elements);
+			  }
+			  $newValue = implode(',', $elements);
+			  break;
+		  default:
+			  if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$tsFunc])) {
+				  $hookMethod = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$tsFunc];
+				  $params = array('currentValue' => $currentValue, 'functionArgument' => $tsFuncArg);
+				  $fakeThis = FALSE;
+				  $newValue = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hookMethod, $params, $fakeThis);
+			  } else {
+				  \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Missing function definition for ' . $tsFunc . ' on TypoScript line ' . $lineP, 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+			  }
+		}
+		return $newValue;
+	}
+
+	/**
 	 * Parsing the $this->raw TypoScript lines from pointer, $this->rawP
 	 *
 	 * @param array $setup Reference to the setup array in which to accumulate the values.
@@ -373,45 +444,12 @@ class TypoScriptParser {
 								}
 								// Checking for special TSparser properties (to change TS values at parsetime)
 								$match = array();
-								if (preg_match('/^:=([^\\(]+)\\((.+)\\).*/', $line, $match)) {
+								if (preg_match('/^:=([^\\(]+)\\((.*)\\).*/', $line, $match)) {
 									$tsFunc = trim($match[1]);
 									$tsFuncArg = $match[2];
 									list($currentValue) = $this->getVal($objStrName, $setup);
 									$tsFuncArg = str_replace(array('\\\\', '\\n', '\\t'), array('\\', LF, TAB), $tsFuncArg);
-									switch ($tsFunc) {
-									case 'prependString':
-										$newValue = $tsFuncArg . $currentValue;
-										break;
-									case 'appendString':
-										$newValue = $currentValue . $tsFuncArg;
-										break;
-									case 'removeString':
-										$newValue = str_replace($tsFuncArg, '', $currentValue);
-										break;
-									case 'replaceString':
-										list($fromStr, $toStr) = explode('|', $tsFuncArg, 2);
-										$newValue = str_replace($fromStr, $toStr, $currentValue);
-										break;
-									case 'addToList':
-										$newValue = (strcmp('', $currentValue) ? $currentValue . ',' : '') . trim($tsFuncArg);
-										break;
-									case 'removeFromList':
-										$existingElements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $currentValue);
-										$removeElements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tsFuncArg);
-										if (count($removeElements)) {
-											$newValue = implode(',', array_diff($existingElements, $removeElements));
-										}
-										break;
-									default:
-										if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$tsFunc])) {
-											$hookMethod = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$tsFunc];
-											$params = array('currentValue' => $currentValue, 'functionArgument' => $tsFuncArg);
-											$fakeThis = FALSE;
-											$newValue = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hookMethod, $params, $fakeThis);
-										} else {
-											\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Missing function definition for ' . $tsFunc . ' on TypoScript line ' . $lineP, 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
-										}
-									}
+									$newValue = $this->executeTypoScriptOperatorFunction($tsFunc, $tsFuncArg, $currentValue);
 									if (isset($newValue)) {
 										$line = '= ' . $newValue;
 									}
