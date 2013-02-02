@@ -26,15 +26,9 @@ namespace TYPO3\CMS\ExtraPageCmOptions;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Class, adding extra context menu options
- *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
- * Class, adding extra context menu options
+ * Class to add extra context menu options
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -49,7 +43,6 @@ class ExtraPageContextMenuOptions {
 	 * @param string $table Table name of clicked item.
 	 * @param integer $uid UID of clicked item.
 	 * @return array Modified $menuItems array
-	 * @todo Define visibility
 	 */
 	public function main(&$backRef, $menuItems, $table, $uid) {
 		// Accumulation of local items.
@@ -60,25 +53,31 @@ class ExtraPageContextMenuOptions {
 		if (!in_array('moreoptions', $backRef->disabledItems) && !$backRef->cmLevel) {
 			// Creating menu items here:
 			if ($backRef->editOK) {
-				$LL = $this->includeLL();
+				$localLanguage = $GLOBALS['LANG']->includeLLFile('EXT:extra_page_cm_options/locallang.xlf', FALSE);
 				$localItems[] = 'spacer';
-				$localItems['moreoptions'] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('label', $LL)), $backRef->excludeIcon(''), 'top.loadTopMenu(\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript() . '&cmLevel=1&subname=moreoptions\');return false;', 0, 1);
+				$localItems['moreoptions'] = $backRef->linkItem(
+					$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('label', $localLanguage)),
+					$backRef->excludeIcon(''),
+					'top.loadTopMenu(\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript() . '&cmLevel=1&subname=moreoptions\');return false;',
+					0,
+					1
+				);
 				if (!in_array('hide', $backRef->disabledItems) && is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) && $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']) {
 					$localItems['hide'] = $backRef->DB_hideUnhide($table, $backRef->rec, $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']);
 				}
 				if (!in_array('edit_access', $backRef->disabledItems) && is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {
 					$localItems['edit_access'] = $backRef->DB_editAccess($table, $uid);
 				}
-				if (!in_array('edit_pageproperties', $backRef->disabledItems) && $table == 'pages' && $backRef->editPageIconSet) {
+				if (!in_array('edit_pageproperties', $backRef->disabledItems) && $table === 'pages' && $backRef->editPageIconSet) {
 					$localItems['edit_pageproperties'] = $backRef->DB_editPageProperties($uid);
 				}
 			}
 			// Find delete element among the input menu items and insert the local items just before that:
 			$c = 0;
 			$deleteFound = FALSE;
-			foreach ($menuItems as $k => $value) {
+			foreach ($menuItems as $key => $value) {
 				$c++;
-				if (!strcmp($k, 'delete')) {
+				if (!strcmp($key, 'delete')) {
 					$deleteFound = TRUE;
 					break;
 				}
@@ -94,13 +93,13 @@ class ExtraPageContextMenuOptions {
 		} elseif ($subname === 'moreoptions') {
 			// If the page can be edited, then show this:
 			if ($backRef->editOK) {
-				if (!in_array('move_wizard', $backRef->disabledItems) && ($table == 'pages' || $table == 'tt_content')) {
+				if (!in_array('move_wizard', $backRef->disabledItems) && ($table === 'pages' || $table === 'tt_content')) {
 					$localItems['move_wizard'] = $backRef->DB_moveWizard($table, $uid, $backRef->rec);
 				}
-				if (!in_array('new_wizard', $backRef->disabledItems) && ($table == 'pages' || $table == 'tt_content')) {
+				if (!in_array('new_wizard', $backRef->disabledItems) && ($table === 'pages' || $table === 'tt_content')) {
 					$localItems['new_wizard'] = $backRef->DB_newWizard($table, $uid, $backRef->rec);
 				}
-				if (!in_array('perms', $backRef->disabledItems) && $table == 'pages' && $GLOBALS['BE_USER']->check('modules', 'web_perm')) {
+				if (!in_array('perms', $backRef->disabledItems) && $table === 'pages' && $GLOBALS['BE_USER']->check('modules', 'web_perm')) {
 					$localItems['perms'] = $backRef->DB_perms($table, $uid, $backRef->rec);
 				}
 				if (!in_array('db_list', $backRef->disabledItems) && $GLOBALS['BE_USER']->check('modules', 'web_list')) {
@@ -108,7 +107,7 @@ class ExtraPageContextMenuOptions {
 				}
 			}
 			// Temporary mount point item:
-			if ($table == 'pages') {
+			if ($table === 'pages') {
 				$localItems['temp_mount_point'] = $backRef->DB_tempMountPoint($uid);
 			}
 			// Merge the locally made items into the current menu items passed to this function.
@@ -117,18 +116,6 @@ class ExtraPageContextMenuOptions {
 		return $menuItems;
 	}
 
-	/**
-	 * Include local lang file.
-	 *
-	 * @return array Local lang array.
-	 * @todo Define visibility
-	 */
-	public function includeLL() {
-		$LOCAL_LANG = $GLOBALS['LANG']->includeLLFile('EXT:extra_page_cm_options/locallang.php', FALSE);
-		return $LOCAL_LANG;
-	}
-
 }
-
 
 ?>
