@@ -373,7 +373,7 @@ class TypoScriptParser {
 								}
 								// Checking for special TSparser properties (to change TS values at parsetime)
 								$match = array();
-								if (preg_match('/^:=([^\\(]+)\\((.+)\\).*/', $line, $match)) {
+								if (preg_match('/^:=([^\\(]+)\\((.*)\\).*/', $line, $match)) {
 									$tsFunc = trim($match[1]);
 									$tsFuncArg = $match[2];
 									list($currentValue) = $this->getVal($objStrName, $setup);
@@ -401,6 +401,28 @@ class TypoScriptParser {
 										if (count($removeElements)) {
 											$newValue = implode(',', array_diff($existingElements, $removeElements));
 										}
+										break;
+									case 'uniqueList':
+										$elements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $currentValue);
+										$newValue = implode(',', array_unique($elements));
+										break;
+									case 'reverseList':
+										$elements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $currentValue);
+										$newValue = implode(',', array_reverse($elements));
+										break;
+									case 'sortList':
+										$elements = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $currentValue);
+										$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tsFuncArg);
+										$arguments = array_map('strtolower', $arguments);
+										$sort_flags = SORT_REGULAR;
+										if (in_array('num', $arguments) || in_array('numeric', $arguments)) {
+											$sort_flags = SORT_NUMERIC;
+										}
+										sort($elements, $sort_flags);
+										if (in_array('desc', $arguments) || in_array('descending', $arguments)) {
+											$elements = array_reverse($elements);
+										}
+										$newValue = implode(',', $elements);
 										break;
 									default:
 										if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsparser.php']['preParseFunc'][$tsFunc])) {
