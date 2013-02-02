@@ -24,6 +24,7 @@ namespace TYPO3\CMS\SysAction;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * This class provides a task for the taskcenter
  *
@@ -32,9 +33,13 @@ namespace TYPO3\CMS\SysAction;
  */
 class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 
+	/**
+	 * @var \TYPO3\CMS\Taskcenter\Controller\TaskModuleController
+	 */
 	protected $taskObject;
 
 	/**
+	 * @var \TYPO3\CMS\Backend\Form\FormEngine
 	 * @todo Define visibility
 	 */
 	public $t3lib_TCEforms;
@@ -87,24 +92,29 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 				$content .= $this->taskObject->description($record['title'], $record['description']);
 				// Output depends on the type
 				switch ($record['type']) {
-				case 1:
-					$content .= $this->viewNewBackendUser($record);
-					break;
-				case 2:
-					$content .= $this->viewSqlQuery($record);
-					break;
-				case 3:
-					$content .= $this->viewRecordList($record);
-					break;
-				case 4:
-					$content .= $this->viewEditRecord($record);
-					break;
-				case 5:
-					$content .= $this->viewNewRecord($record);
-					break;
-				default:
-					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('action_noType', TRUE), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-					$content .= '<br />' . $flashMessage->render();
+					case 1:
+						$content .= $this->viewNewBackendUser($record);
+						break;
+					case 2:
+						$content .= $this->viewSqlQuery($record);
+						break;
+					case 3:
+						$content .= $this->viewRecordList($record);
+						break;
+					case 4:
+						$content .= $this->viewEditRecord($record);
+						break;
+					case 5:
+						$content .= $this->viewNewRecord($record);
+						break;
+					default:
+						$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+							'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+							$GLOBALS['LANG']->getLL('action_noType', TRUE),
+							$GLOBALS['LANG']->getLL('action_error'),
+							\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+						);
+						$content .= '<br />' . $flashMessage->render();
 				}
 			}
 		}

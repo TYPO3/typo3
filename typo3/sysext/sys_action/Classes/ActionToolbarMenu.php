@@ -1,6 +1,29 @@
 <?php
 namespace TYPO3\CMS\SysAction;
 
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2011 Steffen Kamper <info@sk-typo3.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
 /**
  * Adds action links to the backend's toolbar
  *
@@ -18,7 +41,7 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 	/**
 	 * @var string
 	 */
-	protected $EXTKEY = 'sys_action';
+	protected $extensionKey = 'sys_action';
 
 	/**
 	 * Constructor
@@ -28,7 +51,7 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 	}
 
 	/**
-	 * sets the backend reference
+	 * Sets the backend reference
 	 *
 	 * @param \TYPO3\CMS\Backend\Controller\BackendController $backendReference Backend object reference
 	 * @return void
@@ -56,8 +79,7 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 				$actionMenu[] = '<li><a href="' . htmlspecialchars($linkConf[1]) . '" target="content">' . $linkConf[2] . htmlspecialchars($linkConf[0]) . '</a></li>';
 			}
 			$actionMenu[] = '</ul>';
-			return implode('
-', $actionMenu);
+			return implode(LF, $actionMenu);
 		} else {
 			return '';
 		}
@@ -79,14 +101,23 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 			if ($GLOBALS['BE_USER']->groupList) {
 				$groupList = $GLOBALS['BE_USER']->groupList;
 			}
-			$queryResource = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('sys_action.*', 'sys_action', 'sys_action_asgr_mm', 'be_groups', ' AND be_groups.uid IN (' . $groupList . ') AND sys_action.pid = 0 AND sys_action.hidden = 0', 'sys_action.uid', 'sys_action.sorting');
+			$queryResource = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query(
+				'sys_action.*',
+				'sys_action',
+				'sys_action_asgr_mm',
+				'be_groups',
+				' AND be_groups.uid IN (' . $groupList . ') AND sys_action.pid = 0 AND sys_action.hidden = 0',
+				'sys_action.uid',
+				'sys_action.sorting'
+			);
 		}
+
 		if ($queryResource) {
 			while ($actionRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($queryResource)) {
 				$actions[] = array(
 					$actionRow['title'],
 					'mod.php?M=user_task&SET[mode]=tasks&SET[function]=sys_action.TYPO3\\CMS\\SysAction\\ActionTask&show=' . $actionRow['uid'],
-					\t3lib_iconworks::getSpriteIconForRecord('sys_action', $actionRow)
+					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_action', $actionRow)
 				);
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($queryResource);
@@ -109,7 +140,9 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 	 * @return void
 	 */
 	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->EXTKEY) . 'toolbarmenu/tx_sysactions.js');
+		$this->backendReference->addJavascriptFile(
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extensionKey) . 'toolbarmenu/tx_sysactions.js'
+		);
 	}
 
 	/**
@@ -118,7 +151,10 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 	 * @return void
 	 */
 	protected function addCssToBackend() {
-		$this->backendReference->addCssFile('sysaction', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->EXTKEY) . 'toolbarmenu/tx_sysactions.css');
+		$this->backendReference->addCssFile(
+			'sysaction',
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extensionKey) . 'toolbarmenu/tx_sysactions.css'
+		);
 	}
 
 	/**
@@ -132,6 +168,5 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 	}
 
 }
-
 
 ?>
