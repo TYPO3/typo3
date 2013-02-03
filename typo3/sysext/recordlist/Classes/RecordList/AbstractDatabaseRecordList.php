@@ -388,8 +388,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 			// Checking if the table should be rendered:
 			// Checks that we see only permitted/requested tables:
 			if ((!$this->table || $tableName == $this->table) && (!$this->tableList || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->tableList, $tableName)) && $GLOBALS['BE_USER']->check('tables_select', $tableName)) {
-				// Load full table definitions:
-				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName);
 				// Don't show table if hidden by TCA ctrl section
 				$hideTable = $GLOBALS['TCA'][$tableName]['ctrl']['hideTable'] ? TRUE : FALSE;
 				// Don't show table if hidden by pageTSconfig mod.web_list.hideTables
@@ -624,8 +622,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 			$result = ' AND 0=1';
 			$searchableFields = $this->getSearchFields($table);
 			if (count($searchableFields) > 0) {
-				// Loading full table description - we need to traverse fields:
-				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->searchString)) {
 					$whereParts = array(
 						'uid=' . $this->searchString
@@ -881,7 +877,6 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		$fieldListArr = array();
 		// Check table:
 		if (is_array($GLOBALS['TCA'][$table]) && isset($GLOBALS['TCA'][$table]['columns']) && is_array($GLOBALS['TCA'][$table]['columns'])) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			if (isset($GLOBALS['TCA'][$table]['columns']) && is_array($GLOBALS['TCA'][$table]['columns'])) {
 				// Traverse configured columns and add them to field array, if available for user.
 				foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fieldValue) {

@@ -195,7 +195,6 @@ class RelationHandler {
 			$this->MM_oppositeTable = $tmp[0];
 			unset($tmp);
 			// Only add the current table name if there is more than one allowed field
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($this->MM_oppositeTable);
 			// We must be sure this has been done at least once before accessing the "columns" part of TCA for a table.
 			$this->MM_oppositeFieldConf = $GLOBALS['TCA'][$this->MM_oppositeTable]['columns'][$this->MM_oppositeField]['config'];
 			if ($this->MM_oppositeFieldConf['allowed']) {

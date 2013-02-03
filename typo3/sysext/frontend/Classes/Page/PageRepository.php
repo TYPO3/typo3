@@ -384,7 +384,10 @@ class PageRepository {
 								}
 								foreach ($row as $fN => $fV) {
 									if ($fN != 'uid' && $fN != 'pid' && isset($olrow[$fN])) {
-										if ($GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode'][$fN] != 'exclude' && ($GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode'][$fN] != 'mergeIfNotBlank' || strcmp(trim($olrow[$fN]), ''))) {
+										if (
+											$GLOBALS['TCA'][$table]['columns'][$fN]['l10n_mode'] != 'exclude'
+											&& ($GLOBALS['TCA'][$table]['columns'][$fN]['l10n_mode'] != 'mergeIfNotBlank' || strcmp(trim($olrow[$fN]), ''))
+										) {
 											$row[$fN] = $olrow[$fN];
 										}
 									} elseif ($fN == 'uid') {

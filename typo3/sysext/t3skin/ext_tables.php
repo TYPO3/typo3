@@ -89,7 +89,6 @@ if (TYPO3_MODE == 'BE' || TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER'])) {
 	// Changing icon for filemounts, needs to be done here as overwriting the original icon would also change the filelist tree's root icon
 	$TCA['sys_filemounts']['ctrl']['iconfile'] = '_icon_ftp_2.gif';
 	// Adding flags to sys_language
-	\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('sys_language');
 	$TCA['sys_language']['ctrl']['typeicon_column'] = 'flag';
 	$TCA['sys_language']['ctrl']['typeicon_classes'] = array(
 		'default' => 'mimetypes-x-sys_language',

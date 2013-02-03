@@ -660,7 +660,6 @@ class FormEngine {
 	 */
 	public function getSoloField($table, $row, $theFieldToReturn) {
 		if ($GLOBALS['TCA'][$table]) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			$typeNum = $this->getRTypeNum($table, $row);
 			if ($GLOBALS['TCA'][$table]['types'][$typeNum]) {
 				$itemList = $GLOBALS['TCA'][$table]['types'][$typeNum]['showitem'];
@@ -714,8 +713,6 @@ class FormEngine {
 			}
 		}
 		if ($GLOBALS['TCA'][$table]) {
-			// Load the full TCA for the table.
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			// Get dividers2tabs setting from TCA of the current table:
 			$dividers2tabs = &$GLOBALS['TCA'][$table]['ctrl']['dividers2tabs'];
 			// Load the description content for the table.
@@ -910,7 +907,6 @@ class FormEngine {
 	 * @todo Define visibility
 	 */
 	public function getListedFields($table, $row, $list) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if ($this->edit_showFieldHelp || $this->doLoadTableDescr($table)) {
 			$GLOBALS['LANG']->loadSingleTableDescription($table);
 		}
@@ -1007,8 +1003,6 @@ class FormEngine {
 		$PA['palette'] = $palette;
 		$PA['extra'] = $extra;
 		$PA['pal'] = $pal;
-		// Make sure to load full $GLOBALS['TCA'] array for the table:
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		// Get the TCA configuration for the current field:
 		$PA['fieldConf'] = $GLOBALS['TCA'][$table]['columns'][$field];
 		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
@@ -3160,7 +3154,6 @@ function ' . $evalData . '(value) {
 				}
 				if ($foreignUid) {
 					$foreignRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($foreignTable, $foreignUid, $foreignTypeField);
-					\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($foreignTable);
 					$this->registerDefaultLanguageData($foreignTable, $foreignRow);
 					if ($foreignRow[$foreignTypeField]) {
 						$foreignTypeFieldConfig = $GLOBALS['TCA'][$table]['columns'][$field];
@@ -3400,7 +3393,6 @@ function ' . $evalData . '(value) {
 	 * @return array The palette elements
 	 */
 	public function loadPaletteElements($table, $row, $palette, $itemList = '') {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$parts = array();
 		// Getting excludeElements, if any.
 		if (!is_array($this->excludeElements)) {
@@ -4285,7 +4277,6 @@ function ' . $evalData . '(value) {
 	 */
 	public function getSingleHiddenField($table, $field, $row) {
 		$item = '';
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if ($GLOBALS['TCA'][$table]['columns'][$field]) {
 			$uid = $row['uid'];
 			$itemName = $this->prependFormFieldNames . '[' . $table . '][' . $uid . '][' . $field . ']';
@@ -5808,7 +5799,6 @@ function ' . $evalData . '(value) {
 	 */
 	public function getDefaultRecord($table, $pid = 0) {
 		if ($GLOBALS['TCA'][$table]) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			$row = array();
 			if ($pid < 0 && $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues']) {
 				// Fetches the previous record:
