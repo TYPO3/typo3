@@ -1,6 +1,32 @@
 <?php
 namespace TYPO3\CMS\Cshmanual\Controller;
 
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
 /**
  * Script Class for rendering the Context Sensitive Help documents, either the single display in the small pop-up window or the full-table view in the larger window.
  *
@@ -13,21 +39,24 @@ class HelpModuleController {
 	 */
 	public $allowedHTML = '<strong><em><b><i>';
 
-	// For these vars, see init()
-	// If set access to fields and tables is checked. Should be done for TRUE database tables.
 	/**
+	 * For these vars, see init()
+	 * If set access to fields and tables is checked. Should be done for TRUE database tables.
+	 *
 	 * @todo Define visibility
 	 */
 	public $limitAccess;
 
-	// The "table" key
 	/**
+	 * The "table" key
+	 *
 	 * @todo Define visibility
 	 */
 	public $table;
 
-	// The "field" key
 	/**
+	 * The "field" key
+	 *
 	 * @todo Define visibility
 	 */
 	public $field;
@@ -40,34 +69,38 @@ class HelpModuleController {
 	 */
 	protected $mainKey;
 
-	// Internal, static: GPvar:
-	// Table/FIeld id.
 	/**
+	 * Internal, static: GPvar
+	 * Table/Field id
+	 *
 	 * @todo Define visibility
 	 */
 	public $tfID;
 
-	// Back (previous tfID)
 	/**
+	 * Back (previous tfID)
+	 *
 	 * @todo Define visibility
 	 */
 	public $back;
 
-	// If set, then in TOC mode the FULL manual will be printed as well!
 	/**
+	 * If set, then in TOC mode the FULL manual will be printed as well!
+	 *
 	 * @todo Define visibility
 	 */
 	public $renderALL;
 
-	// Internal, dynamic:
-	// Content accumulation.
 	/**
+	 * Content accumulation
+	 *
 	 * @todo Define visibility
 	 */
 	public $content;
 
-	// Glossary words
 	/**
+	 * Glossary words
+	 *
 	 * @todo Define visibility
 	 */
 	public $glossaryWords;
@@ -160,10 +193,9 @@ class HelpModuleController {
 	}
 
 	/************************************
-	 *
 	 * Rendering main modes
-	 *
 	 ************************************/
+
 	/**
 	 * Creates Table Of Contents and possibly "Full Manual" mode if selected.
 	 *
@@ -405,10 +437,9 @@ class HelpModuleController {
 	}
 
 	/************************************
-	 *
 	 * Rendering CSH items
-	 *
 	 ************************************/
+
 	/**
 	 * Make seeAlso links from $value
 	 *
@@ -494,20 +525,20 @@ class HelpModuleController {
 	 * Returns header HTML content
 	 *
 	 * @param string $str Header text
-	 * @param string $type Header type (1, 0)
+	 * @param integer $type Header type (1, 0)
 	 * @return string The HTML for the header.
 	 * @todo Define visibility
 	 */
 	public function headerLine($str, $type = 0) {
 		switch ($type) {
-		case 1:
-			$str = '<h2 class="t3-row-header">' . htmlspecialchars($str) . '</h2>
-				';
-			break;
-		case 0:
-			$str = '<h3 class="divider">' . htmlspecialchars($str) . '</h3>
-				';
-			break;
+			case 1:
+				$str = '<h2 class="t3-row-header">' . htmlspecialchars($str) . '</h2>
+					';
+				break;
+			case 0:
+				$str = '<h3 class="divider">' . htmlspecialchars($str) . '</h3>
+					';
+				break;
 		}
 		return $str;
 	}
@@ -602,10 +633,9 @@ class HelpModuleController {
 	}
 
 	/******************************
-	 *
 	 * Glossary related
-	 *
 	 ******************************/
+
 	/**
 	 * Creates glossary index in $this->glossaryWords
 	 * Glossary is cached in cache_hash cache and so will be updated only when cache is cleared.
@@ -675,7 +705,6 @@ class HelpModuleController {
 	 *
 	 * @param string $code Input HTML string
 	 * @return string HTML with substituted words in.
-	 * @coauthor Alex Widschwendter, media.res kommunikationsloesungen
 	 * @todo Define visibility
 	 */
 	public function substituteGlossaryWords_htmlcleaner_callback($code) {
@@ -697,6 +726,5 @@ class HelpModuleController {
 	}
 
 }
-
 
 ?>
