@@ -447,8 +447,6 @@ class BackendUtility {
 		$theExcludeArray = array();
 		$tc_keys = array_keys($GLOBALS['TCA']);
 		foreach ($tc_keys as $table) {
-			// Load table
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			// All field names configured and not restricted to admins
 			if (is_array($GLOBALS['TCA'][$table]['columns'])
 					&& empty($GLOBALS['TCA'][$table]['ctrl']['adminOnly'])
@@ -514,8 +512,6 @@ class BackendUtility {
 		$allowDenyOptions = array();
 		$tc_keys = array_keys($GLOBALS['TCA']);
 		foreach ($tc_keys as $table) {
-			// Load table
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			// All field names configured:
 			if (is_array($GLOBALS['TCA'][$table]['columns'])) {
 				$f_keys = array_keys($GLOBALS['TCA'][$table]['columns']);
@@ -684,7 +680,6 @@ class BackendUtility {
 	 * @return array
 	 */
 	static public function getTCAtypes($table, $rec, $useFieldNameAsKey = 0) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if ($GLOBALS['TCA'][$table]) {
 			// Get type value:
 			$fieldValue = self::getTCAtypeValue($table, $rec);
@@ -734,7 +729,6 @@ class BackendUtility {
 	 */
 	static public function getTCAtypeValue($table, $row) {
 		$typeNum = 0;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if ($GLOBALS['TCA'][$table]) {
 			$field = $GLOBALS['TCA'][$table]['ctrl']['type'];
 			if (strpos($field, ':') !== FALSE) {
@@ -1470,8 +1464,6 @@ class BackendUtility {
 	 * @return string Thumbnail image tag.
 	 */
 	static public function thumbCode($row, $table, $field, $backPath, $thumbScript = '', $uploaddir = NULL, $abs = 0, $tparams = '', $size = '', $linkInfoPopup = TRUE) {
-		// Load table.
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$tcaConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 		// Check and parse the size parameter
 		$sizeParts = array(64, 64);
@@ -1728,8 +1720,6 @@ class BackendUtility {
 	 * @return string Label for item entry
 	 */
 	static public function getLabelFromItemlist($table, $col, $key) {
-		// Load full TCA for $table
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		// Check, if there is an "items" array:
 		if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$col]) && is_array($GLOBALS['TCA'][$table]['columns'][$col]['config']['items'])) {
 			// Traverse the items-array...
@@ -1783,8 +1773,6 @@ class BackendUtility {
 		$labels = array();
 		$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $key, TRUE);
 		if (count($values) > 0) {
-			// Load full TCA for $table
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			// Check if there is an "items" array
 			if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$column]) && is_array($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'])) {
 				// Loop on all selected values
@@ -1813,8 +1801,6 @@ class BackendUtility {
 	 * @return string
 	 */
 	static public function getItemLabel($table, $col, $printAllWrap = '') {
-		// Load full TCA for $table
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		// Check if column exists
 		if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$col])) {
 			return $GLOBALS['TCA'][$table]['columns'][$col]['label'];
@@ -1940,8 +1926,6 @@ class BackendUtility {
 			// No need to load TCA as uid is not in TCA-array
 			return $value;
 		}
-		// Load full TCA for $table
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		// Check if table and field is configured:
 		if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$col])) {
 			// Depending on the fields configuration, make a meaningful output value.
@@ -3025,7 +3009,6 @@ class BackendUtility {
 	 */
 	static public function exec_foreign_table_where_query($fieldValue, $field = '', $TSconfig = array(), $prefix = '') {
 		$foreign_table = $fieldValue['config'][$prefix . 'foreign_table'];
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($foreign_table);
 		$rootLevel = $GLOBALS['TCA'][$foreign_table]['ctrl']['rootLevel'];
 		$fTWHERE = $fieldValue['config'][$prefix . 'foreign_table_where'];
 		if (strstr($fTWHERE, '###REC_FIELD_')) {
@@ -4063,7 +4046,6 @@ class BackendUtility {
 	 */
 	static public function getTcaFieldConfiguration($table, $field) {
 		$configuration = array();
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if (isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
 			$configuration = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 		}

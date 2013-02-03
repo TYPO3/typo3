@@ -85,6 +85,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * Create a subclass with protected methods made public
 	 *
 	 * @return void
+	 * @TODO: Move this to a fixture file
 	 */
 	protected function createAccessibleProxyClass() {
 		$namespace = 'TYPO3\\CMS\\Core\\Utility';
@@ -113,7 +114,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 
 	/**
 	 * @test
-	 * @expectedException BadFunctionCallException
+	 * @expectedException \BadFunctionCallException
 	 */
 	public function isLoadedThrowsExceptionIfExtensionIsNotLoaded() {
 		$this->assertFalse(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded(uniqid('foobar'), TRUE));
@@ -124,7 +125,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	///////////////////////////////
 	/**
 	 * @test
-	 * @expectedException BadFunctionCallException
+	 * @expectedException \BadFunctionCallException
 	 */
 	public function extPathThrowsExceptionIfExtensionIsNotLoaded() {
 		$GLOBALS['TYPO3_LOADED_EXT']['foo'] = array();
@@ -141,7 +142,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 
 	/**
 	 * @test
-	 * @expectedException BadFunctionCallException
+	 * @expectedException \BadFunctionCallException
 	 */
 	public function extPathThrowsExceptionIfExtensionIsNotLoadedAndTypo3LoadedExtensionsIsEmpty() {
 		unset($GLOBALS['TYPO3_LOADED_EXT']);
@@ -859,6 +860,42 @@ throw new \RuntimeException(\'\', 1340559079);
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		$mockCache->expects($this->once())->method('flush');
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::removeCacheFiles();
+	}
+
+	/////////////////////////////////////////
+	// Tests concerning loadNewTcaColumnsConfigFiles
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 * @expectedException \RuntimeException
+	 */
+	public function loadNewTcaColumnsConfigFilesIncludesDefinedDynamicConfigFileIfNoColumnsExist() {
+		$GLOBALS['TCA'] = array(
+			'test' => array(
+				'ctrl' => array(
+					'dynamicConfigFile' => __DIR__ . '/Fixtures/RuntimeException.php'
+				),
+			),
+		);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
+	}
+
+	/**
+	 * @test
+	 */
+	public function loadNewTcaColumnsConfigFilesDoesNotIncludeFileIfColumnsExist() {
+		$GLOBALS['TCA'] = array(
+			'test' => array(
+				'ctrl' => array(
+					'dynamicConfigFile' => __DIR__ . '/Fixtures/RuntimeException.php'
+				),
+				'columns' => array(
+					'foo' => 'bar',
+				),
+			),
+		);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
 	}
 
 	/////////////////////////////////////////

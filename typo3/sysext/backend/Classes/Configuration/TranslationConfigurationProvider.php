@@ -102,7 +102,6 @@ class TranslationConfigurationProvider {
 	 */
 	public function translationInfo($table, $uid, $sys_language_uid = 0, $row = NULL, $selFieldList = '') {
 		if ($GLOBALS['TCA'][$table] && $uid) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			if ($row === NULL) {
 				$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $uid);
 			}

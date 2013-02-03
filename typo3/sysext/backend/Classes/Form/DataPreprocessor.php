@@ -112,7 +112,6 @@ class DataPreprocessor {
 			$idList = $this->prevPageID;
 		}
 		if ($GLOBALS['TCA'][$table]) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			// For each ID value (integer) we
 			$ids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $idList, 1);
 			foreach ($ids as $id) {
@@ -216,7 +215,6 @@ class DataPreprocessor {
 		}
 		// Init:
 		$uniqueItemRef = $table . '_' . $id;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		// Fetches the true PAGE TSconfig pid to use later, if needed. (Until now, only for the RTE, but later..., who knows?)
 		list($tscPID) = \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid($table, $id, $pid);
 		$TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getTCEFORM_TSconfig($table, array_merge($row, array('uid' => $id, 'pid' => $pid)));
@@ -260,7 +258,6 @@ class DataPreprocessor {
 		$totalRecordContent = array();
 		// Traverse the configured columns for the table (TCA):
 		// For each column configured, we will perform processing if needed based on the type (eg. for "group" and "select" types this is needed)
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$copyOfColumns = $GLOBALS['TCA'][$table]['columns'];
 		foreach ($copyOfColumns as $field => $fieldConfig) {
 			// Set $data variable for the field, either inputted value from $row - or if not found, the default value as defined in the "config" array

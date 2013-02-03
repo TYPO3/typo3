@@ -3,7 +3,6 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array('LLL:EXT:indexed_search/locallang.php:mod_indexed_search', $_EXTKEY));
-\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY] = 'layout,select_key,pages';
 // Registers the Extbase plugin to be listed in the Backend.
 if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('extbase')) {

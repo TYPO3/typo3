@@ -140,9 +140,11 @@ if ($TSFE->isBackendUserLoggedIn()) {
 		$BE_USER->frontendEdit->initConfigOptions();
 	}
 }
-// Get compressed $TCA-Array();
-// After this, we should now have a valid $TCA, though minimized
-$TSFE->getCompressedTCarray();
+
+$GLOBALS['TT']->push('Load extension tables');
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(TRUE);
+$GLOBALS['TT']->pull();
+
 // Starts the template
 $TT->push('Start Template', '');
 $TSFE->initTemplate();
