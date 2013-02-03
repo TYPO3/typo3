@@ -493,7 +493,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			}
 			break;
 		case 'individual':
-			t3lib_div::loadTCA($table);
 			if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
 				$items = $GLOBALS['TCA'][$table]['columns'][$field]['config']['items'];
 				if (is_array($items)) {
@@ -590,7 +589,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 */
 	public function recordEditAccessInternals($table, $idOrRow, $newRecord = FALSE, $deletedRecord = FALSE, $checkFullLanguageAccess = FALSE) {
 		if (isset($GLOBALS['TCA'][$table])) {
-			t3lib_div::loadTCA($table);
 			// Always return TRUE for Admin users.
 			if ($this->isAdmin()) {
 				return TRUE;

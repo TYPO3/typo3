@@ -1590,7 +1590,6 @@ class ImportExport {
 			if (is_array($this->import_mapId[$table]) && isset($this->import_mapId[$table][$uid])) {
 				$thisNewUid = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($table, $this->import_mapId[$table][$uid]);
 				if (is_array($this->dat['records'][$table . ':' . $uid]['rels'])) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 					// Traverse relation fields of each record
 					foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
 						switch ((string) $config['type']) {
@@ -1693,7 +1692,6 @@ class ImportExport {
 				foreach ($recs as $uid => $thisRec) {
 					// If there are soft references defined, traverse those:
 					if (isset($GLOBALS['TCA'][$table]) && is_array($thisRec['softrefs'])) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 						// First traversal is to collect softref configuration and split them up based on fields. This could probably also have been done with the "records" key instead of the header.
 						$fieldsIndex = array();
 						foreach ($thisRec['softrefs'] as $softrefDef) {

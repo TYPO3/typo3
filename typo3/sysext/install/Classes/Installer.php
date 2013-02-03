@@ -6475,9 +6475,6 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	 */
 	public function includeTCA() {
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(FALSE);
-		foreach ($GLOBALS['TCA'] as $table => $conf) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
-		}
 	}
 
 	/**********************

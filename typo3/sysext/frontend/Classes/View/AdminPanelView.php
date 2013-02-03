@@ -111,7 +111,6 @@ class AdminPanelView {
 	public function getAdminPanelHeaderData() {
 		$result = '';
 		// Include BE styles
-		$GLOBALS['TSFE']->includeTCA();
 		if (!empty($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) {
 			$result = '<link rel="stylesheet" type="text/css" href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) . '" />';
 		}

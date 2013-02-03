@@ -113,7 +113,6 @@ class SuggestElement {
 		$field = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('field');
 		$uid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('uid');
 		$pageId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pid');
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		// If the $uid is numeric, we have an already existing element, so get the
 		// TSconfig of the page itself or the element container (for non-page elements)
 		// otherwise it's a new element, so use given id of parent page (i.e., don't modify it here)
@@ -165,7 +164,6 @@ class SuggestElement {
 		// fetch the records for each query table. A query table is a table from which records are allowed to
 		// be added to the TCEForm selector, originally fetched from the "allowed" config option in the TCA
 		foreach ($queryTables as $queryTable) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($queryTable);
 			// if the table does not exist, skip it
 			if (!is_array($GLOBALS['TCA'][$queryTable]) || !count($GLOBALS['TCA'][$queryTable])) {
 				continue;

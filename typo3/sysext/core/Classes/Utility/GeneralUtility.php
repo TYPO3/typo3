@@ -3861,31 +3861,13 @@ Connection: close
 	 * 2) columns must not be an array (which it is always if whole table loaded), and
 	 * 3) there is a value for dynamicConfigFile (filename in typo3conf)
 	 *
-	 * Note: For the frontend this loads only 'ctrl' and 'feInterface' parts.
-	 * For complete TCA use $GLOBALS['TSFE']->includeTCA() instead.
-	 *
 	 * @param string $table Table name for which to load the full TCA array part into $GLOBALS['TCA']
 	 * @return void
+	 * @deprecated since 6.1, will be removed two versions later
 	 */
 	static public function loadTCA($table) {
-		// Needed for inclusion of the dynamic config files.
-		global $TCA;
-		if (isset($TCA[$table])) {
-			$tca = &$TCA[$table];
-			if (is_array($tca['ctrl']) && !$tca['columns']) {
-				$dcf = $tca['ctrl']['dynamicConfigFile'];
-				if ($dcf) {
-					if (!strcmp(substr($dcf, 0, 6), 'T3LIB:')) {
-						include PATH_t3lib . 'stddb/' . substr($dcf, 6);
-					} elseif (self::isAbsPath($dcf) && @is_file($dcf)) {
-						// Absolute path...
-						include $dcf;
-					} else {
-						include PATH_typo3conf . $dcf;
-					}
-				}
-			}
-		}
+		// This method is obsolete, full TCA is always loaded in all context except eID
+		static::logDeprecatedFunction();
 	}
 
 	/**

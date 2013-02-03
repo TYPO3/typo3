@@ -652,7 +652,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			}
 			break;
 		case 'individual':
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
 				$items = $GLOBALS['TCA'][$table]['columns'][$field]['config']['items'];
 				if (is_array($items)) {
@@ -749,7 +748,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 */
 	public function recordEditAccessInternals($table, $idOrRow, $newRecord = FALSE, $deletedRecord = FALSE, $checkFullLanguageAccess = FALSE) {
 		if (isset($GLOBALS['TCA'][$table])) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			// Always return TRUE for Admin users.
 			if ($this->isAdmin()) {
 				return TRUE;
