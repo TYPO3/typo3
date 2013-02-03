@@ -794,9 +794,10 @@ class Bootstrap {
 		// Include standard tables.php file
 		require PATH_t3lib . 'stddb/tables.php';
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtTables($allowCaching);
-		// Load additional ext tables script if registered
-		if (TYPO3_extTableDef_script) {
-			include PATH_typo3conf . TYPO3_extTableDef_script;
+		// Load additional ext tables script if the file exists
+		$extTablesFile = PATH_typo3conf . TYPO3_extTableDef_script;
+		if (file_exists($extTablesFile)) {
+			include $extTablesFile;
 		}
 		// Run post hook for additional manipulation
 		$this->runExtTablesPostProcessingHooks();
