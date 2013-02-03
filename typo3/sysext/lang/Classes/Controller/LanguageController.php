@@ -136,7 +136,7 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * Update translation for one extension
 	 *
 	 * @param string $extension The extension key
-	 * @param mixed $locales List or array of locales to update
+	 * @param string $locales List or array of locales to update
 	 * @return void
 	 */
 	public function updateTranslationAction($extension, $locales) {
