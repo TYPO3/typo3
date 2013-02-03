@@ -13,6 +13,35 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
 class DateViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
+	 * @var array Backup of current locale, it is manipulated in tests
+	 */
+	protected $backupLocales = array();
+
+	/**
+	 * @var string Backup of current timezone, it is manipulated in tests
+	 */
+	protected $timezone;
+
+	public function setUp() {
+		parent::setUp();
+		// Store all locale categories manipulated in tests for reconstruction in tearDown
+		$this->backupLocales = array(
+			'LC_COLLATE' => setlocale(LC_COLLATE, 0),
+			'LC_CTYPE' => setlocale(LC_CTYPE, 0),
+			'LC_MONETARY' => setlocale(LC_MONETARY, 0),
+			'LC_TIME' => setlocale(LC_TIME, 0),
+		);
+		$this->timezone = @date_default_timezone_get();
+	}
+
+	public function tearDown() {
+		foreach ($this->backupLocales as $category => $locale) {
+			setlocale(constant($category), $locale);
+		}
+		date_default_timezone_set($this->timezone);
+	}
+
+	/**
 	 * @test
 	 */
 	public function viewHelperFormatsDateCorrectly() {
@@ -76,6 +105,82 @@ class DateViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$viewHelper->expects($this->never())->method('renderChildren');
 		$actualResult = $viewHelper->render('1980-12-12');
 		$this->assertEquals('1980-12-12', $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function viewHelperRespectsDefaultTimezoneForIntegerTimestamp() {
+		$viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\DateViewHelper', array('renderChildren'));
+
+		$date = 1359891658; // 2013-02-03 11:40 UTC
+		$format = 'Y-m-d H:i';
+
+		date_default_timezone_set('Europa/Berlin');
+		$expected = '2013-02-03 12:40';
+		$this->assertEquals($expected, $viewHelper->render($date, $format));
+
+		date_default_timezone_set('Asia/Riyadh');
+		$expected = '2013-02-03 14:40';
+		$this->assertEquals($expected, $viewHelper->render($date, $format));
+	}
+
+	/**
+	 * @test
+	 */
+	public function viewHelperRespectsDefaultTimezoneForStringTimestamp() {
+		$viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\DateViewHelper', array('renderChildren'));
+
+		$format = 'Y-m-d H:i';
+
+		date_default_timezone_set('Europa/Berlin');
+		$date = '@1359891658'; // 2013-02-03 11:40 UTC
+		$expected = '2013-02-03 12:40';
+		$this->assertEquals($expected, $viewHelper->render($date, $format));
+
+		$date = '03/Oct/2000:14:55:36 +0400'; // Moscow
+		$expected = '2000-10-03 12:55';
+		$this->assertEquals($expected, $viewHelper->render($date, $format));
+
+		date_default_timezone_set('Asia/Riyadh');
+		$date = '@1359891658'; // 2013-02-03 11:40 UTC
+		$expected = '2013-02-03 14:40';
+		$this->assertEquals($expected, $viewHelper->render($date, $format));
+
+		$date = '03/Oct/2000:14:55:36 +0400'; // Moscow
+		$expected = '2000-10-03 13:55';
+		$this->assertEquals($expected, $viewHelper->render($date, $format));
+	}
+
+	/**
+	 * @test
+	 */
+	public function dateViewHelperFormatsDateLocalized() {
+		$viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\DateViewHelper', array('renderChildren'));
+		$format = '%d. %B %Y';
+		$timestamp = '@1359891658'; // 2013-02-03 11:40 UTC
+
+		$locale = 'de_DE.UTF-8';
+		if (!setlocale(LC_COLLATE, $locale)) {
+			$this->markTestSkipped('Locale ' . $locale . ' is not available.');
+		}
+		$this->setLocale($locale);
+		$expected = '03. Februar 2013';
+		$this->assertEquals($expected, $viewHelper->render($timestamp, $format));
+
+		$locale = 'en_ZW.utf8';
+		if (!setlocale(LC_COLLATE, $locale)) {
+			$this->markTestSkipped('Locale ' . $locale . ' is not available.');
+		}
+		$this->setLocale($locale);
+		$expected = '03. February 2013';
+		$this->assertEquals($expected, $viewHelper->render($timestamp, $format));
+	}
+
+	protected function setLocale($locale) {
+		setlocale(LC_CTYPE, $locale);
+		setlocale(LC_MONETARY, $locale);
+		setlocale(LC_TIME, $locale);
 	}
 }
 
