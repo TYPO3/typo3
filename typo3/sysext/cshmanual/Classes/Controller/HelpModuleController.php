@@ -132,8 +132,6 @@ class HelpModuleController {
 			// There's at least one extra part
 			$extraIdentifierInformation = array();
 			$extraIdentifierInformation[] = array_shift($identifierParts);
-			// Load the TCA details of the table
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($this->table);
 			// If the ds_pointerField contains a comma, it means the choice of FlexForm DS
 			// is determined by 2 parameters. In this case we have an extra identifier part
 			if (strpos($GLOBALS['TCA'][$this->table]['columns'][$this->field]['config']['ds_pointerField'], ',') !== FALSE) {
@@ -373,8 +371,6 @@ class HelpModuleController {
 		if ($table === NULL) {
 			$table = $key;
 		}
-		// Load table TCA
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($key);
 		// Load descriptions for table $table
 		$GLOBALS['LANG']->loadSingleTableDescription($key);
 		if (is_array($GLOBALS['TCA_DESCR'][$key]['columns']) && (!$this->limitAccess || $GLOBALS['BE_USER']->check('tables_select', $table))) {
@@ -468,7 +464,6 @@ class HelpModuleController {
 					}
 				} else {
 					// "table" reference
-					\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($iP[0]);
 					if (!isset($GLOBALS['TCA'][$iP[0]]) || (!$iP[1] || is_array($GLOBALS['TCA'][$iP[0]]['columns'][$iP[1]])) && (!$this->limitAccess || $GLOBALS['BE_USER']->check('tables_select', $iP[0]) && (!$iP[1] || !$GLOBALS['TCA'][$iP[0]]['columns'][$iP[1]]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $iP[0] . ':' . $iP[1])))) {
 						// Checking read access:
 						if (isset($GLOBALS['TCA_DESCR'][$iP[0]])) {
@@ -567,8 +562,6 @@ class HelpModuleController {
 	 */
 	public function printItem($key, $field, $anchors = FALSE) {
 		$out = '';
-		// Load full table definition in $GLOBALS['TCA']
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($key);
 		if ($key && (!$field || is_array($GLOBALS['TCA_DESCR'][$key]['columns'][$field]))) {
 			// Make seeAlso references.
 			$seeAlsoRes = $this->make_seeAlso($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['seeAlso'], $anchors ? $key : '');

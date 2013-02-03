@@ -258,7 +258,6 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				// Get the list of files from the field
 				$field = trim($conf['field']) ? trim($conf['field']) : 'media';
 				$fileList = $this->cObj->data[$field];
-				$GLOBALS['TSFE']->includeTCA();
 				$path = 'uploads/media/';
 				if (is_array($GLOBALS['TCA']['tt_content']['columns'][$field]) && !empty($GLOBALS['TCA']['tt_content']['columns'][$field]['config']['uploadfolder'])) {
 					// In TCA-Array folders are saved without trailing slash, so $path.$fileName won't work

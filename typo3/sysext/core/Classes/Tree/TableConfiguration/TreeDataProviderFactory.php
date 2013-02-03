@@ -67,7 +67,6 @@ class TreeDataProviderFactory {
 				if ($tableName == $table) {
 					$unselectableUids[] = $currentValue['uid'];
 				}
-				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName);
 			} else {
 				throw new \InvalidArgumentException('TCA Tree configuration is invalid: "foreign_table" not set', 1288215888);
 			}

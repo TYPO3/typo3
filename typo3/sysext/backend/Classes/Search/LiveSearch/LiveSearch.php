@@ -311,8 +311,6 @@ class LiveSearch {
 	protected function makeQuerySearchByTable($tableName, array $fieldsToSearchWithin) {
 		$queryPart = '';
 		$whereParts = array();
-		// Load the full TCA for the table, as we need to access column configuration
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName);
 		// If the search string is a simple integer, assemble an equality comparison
 		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->queryString)) {
 			foreach ($fieldsToSearchWithin as $fieldName) {

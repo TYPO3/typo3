@@ -417,8 +417,6 @@ class NewContentElementController {
 	 * @todo Define visibility
 	 */
 	public function removeInvalidElements(&$wizardItems) {
-		// Load full table definition:
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
 		// Get TCEFORM from TSconfig of current page
 		$row = array('pid' => $this->id);
 		$TCEFORM_TSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getTCEFORM_TSconfig('tt_content', $row);

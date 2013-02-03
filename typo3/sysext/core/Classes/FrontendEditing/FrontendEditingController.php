@@ -59,7 +59,6 @@ class FrontendEditingController {
 		$this->TSFE_EDIT = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('TSFE_EDIT');
 		// Include classes for editing IF editing module in Admin Panel is open
 		if ($GLOBALS['BE_USER']->isFrontendEditingActive()) {
-			$GLOBALS['TSFE']->includeTCA(0);
 			if ($this->isEditAction()) {
 				$this->editAction();
 			}

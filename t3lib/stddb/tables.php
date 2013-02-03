@@ -53,8 +53,8 @@
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @see tslib_fe::includeTCA(), typo3/init.php, t3lib/stddb/load_ext_tables.php
  */
+
 /**
  * $PAGES_TYPES defines the various types of pages (field: doktype) the system
  * can handle and what restrictions may apply to them.
@@ -184,8 +184,6 @@ $TCA['pages'] = array(
 		'searchFields' => 'title,alias,nav_title,subtitle,url,keywords,description,abstract,author,author_email'
 	)
 );
-// Initialize the additional configuration of the table 'pages':
-\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('pages');
 /**
  * Table "be_users":
  * Backend Users for TYPO3.

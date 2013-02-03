@@ -541,7 +541,6 @@ class RecordHistory {
 			$t3lib_diff_Obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
 			$fieldsToDisplay = array_keys($entry['newRecord']);
 			foreach ($fieldsToDisplay as $fN) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 				if (is_array($GLOBALS['TCA'][$table]['columns'][$fN]) && $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] != 'passthrough') {
 					// Create diff-result:
 					$diffres = $t3lib_diff_Obj->makeDiffDisplay(\TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($table, $fN, $entry['oldRecord'][$fN], 0, 1), \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($table, $fN, $entry['newRecord'][$fN], 0, 1));
@@ -812,7 +811,6 @@ class RecordHistory {
 	 */
 	public function removeFilefields($table, $dataArray) {
 		if ($GLOBALS['TCA'][$table]) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $config) {
 				if ($config['config']['type'] == 'group' && $config['config']['internal_type'] == 'file') {
 					unset($dataArray[$field]);
