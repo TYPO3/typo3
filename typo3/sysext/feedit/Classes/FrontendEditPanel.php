@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Feedit;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * View class for the edit panels in frontend editing.
  *
@@ -82,82 +83,82 @@ class FrontendEditPanel {
 			$theCmd = $TSFE_EDIT['cmd'];
 		}
 		switch ($theCmd) {
-		case 'edit':
+			case 'edit':
 
-		case 'new':
-			$finalOut = $this->editContent($formTag, $formName, $theCmd, $newUID, $dataArr, $table, $currentRecord, $blackLine);
-			break;
-		default:
-			$panel = '';
-			if (isset($allow['toolbar']) && $GLOBALS['BE_USER']->adminPanel instanceof \TYPO3\CMS\Frontend\View\AdminPanelView) {
-				$panel .= $GLOBALS['BE_USER']->adminPanel->ext_makeToolBar() . '<img src="clear.gif" width="2" height="1" alt="" title="" />';
-			}
-			if (isset($allow['edit'])) {
-				$panel .= $this->editPanelLinkWrap('<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/edit2.gif', 'width="11" height="12" hspace="2" border="0"') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_editRecord') . '" align="top" alt="" />', $formName, 'edit', $dataArr['_LOCALIZED_UID'] ? $table . ':' . $dataArr['_LOCALIZED_UID'] : $currentRecord);
-			}
-			// Hiding in workspaces because implementation is incomplete
-			if (isset($allow['move']) && $sortField && $GLOBALS['BE_USER']->workspace === 0) {
-				$panel .= $this->editPanelLinkWrap('<img  ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/button_up.gif', 'width="11" height="10" vspace="1" hspace="2" border="0" ') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_moveUp') . '" align="top" alt="" />', $formName, 'up');
-				$panel .= $this->editPanelLinkWrap('<img  ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/button_down.gif', 'width="11" height="10" vspace="1" hspace="2" border="0" ') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_moveDown') . '" align="top" alt="" />', $formName, 'down');
-			}
-			// Hiding in workspaces because implementation is incomplete, Hiding for localizations because it is unknown what should be the function in that case
-			if (isset($allow['hide']) && $hideField && $GLOBALS['BE_USER']->workspace === 0 && !$dataArr['_LOCALIZED_UID']) {
-				if ($dataArr[$hideField]) {
-					$panel .= $this->editPanelLinkWrap('<img  ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/button_unhide.gif', 'width="11" height="10" vspace="1" hspace="2" border="0" ') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_unhide') . '" align="top" alt="" />', $formName, 'unhide');
-				} else {
-					$panel .= $this->editPanelLinkWrap('<img  ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/button_hide.gif', 'width="11" height="10" vspace="1" hspace="2" border="0" ') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_hide') . '" align="top" alt="" />', $formName, 'hide', '', $GLOBALS['BE_USER']->extGetLL('p_hideConfirm'));
+			case 'new':
+				$finalOut = $this->editContent($formTag, $formName, $theCmd, $newUID, $dataArr, $table, $currentRecord, $blackLine);
+				break;
+			default:
+				$panel = '';
+				if (isset($allow['toolbar']) && $GLOBALS['BE_USER']->adminPanel instanceof \TYPO3\CMS\Frontend\View\AdminPanelView) {
+					$panel .= $GLOBALS['BE_USER']->adminPanel->ext_makeToolBar() . '<img src="clear.gif" width="2" height="1" alt="" title="" />';
 				}
-			}
-			if (isset($allow['new'])) {
-				if ($table == 'pages') {
-					$panel .= $this->editPanelLinkWrap('<img  ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/new_page.gif', 'width="13" height="12" vspace="1" hspace="2" border="0" ') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_newSubpage') . '" align="top" alt="" />', $formName, 'new', $currentRecord, '');
-				} else {
-					$panel .= $this->editPanelLinkWrap('<img  ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/new_record.gif', 'width="16" height="12" vspace="1" hspace="2" border="0" ') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_newRecordAfter') . '" align="top" alt="" />', $formName, 'new', $currentRecord, '', $newUID);
+				if (isset($allow['edit'])) {
+					$panel .= $this->editPanelLinkWrap('<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/edit2.gif', 'width="11" height="12" hspace="2" border="0"') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_editRecord') . '" align="top" alt="" />', $formName, 'edit', $dataArr['_LOCALIZED_UID'] ? $table . ':' . $dataArr['_LOCALIZED_UID'] : $currentRecord);
 				}
-			}
-			// Hiding in workspaces because implementation is incomplete, Hiding for localizations because it is unknown what should be the function in that case
-			if (isset($allow['delete']) && $GLOBALS['BE_USER']->workspace === 0 && !$dataArr['_LOCALIZED_UID']) {
-				$panel .= $this->editPanelLinkWrap('<img  ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/delete_record.gif', 'width="12" height="12" vspace="1" hspace="2" border="0" ') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_delete') . '" align="top" alt="" />', $formName, 'delete', '', $GLOBALS['BE_USER']->extGetLL('p_deleteConfirm'));
-			}
-			//	Final
-			$labelTxt = $this->cObj->stdWrap($conf['label'], $conf['label.']);
-			foreach ((array) $hiddenFields as $name => $value) {
-				$hiddenFieldString .= '<input type="hidden" name="TSFE_EDIT[' . $name . ']" value="' . $value . '"/>' . LF;
-			}
-			$panel = '
+				// Hiding in workspaces because implementation is incomplete
+				if (isset($allow['move']) && $sortField && $GLOBALS['BE_USER']->workspace === 0) {
+					$panel .= $this->editPanelLinkWrap('<img  ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/button_up.gif', 'width="11" height="10" vspace="1" hspace="2" border="0" ') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_moveUp') . '" align="top" alt="" />', $formName, 'up');
+					$panel .= $this->editPanelLinkWrap('<img  ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/button_down.gif', 'width="11" height="10" vspace="1" hspace="2" border="0" ') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_moveDown') . '" align="top" alt="" />', $formName, 'down');
+				}
+				// Hiding in workspaces because implementation is incomplete, Hiding for localizations because it is unknown what should be the function in that case
+				if (isset($allow['hide']) && $hideField && $GLOBALS['BE_USER']->workspace === 0 && !$dataArr['_LOCALIZED_UID']) {
+					if ($dataArr[$hideField]) {
+						$panel .= $this->editPanelLinkWrap('<img  ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/button_unhide.gif', 'width="11" height="10" vspace="1" hspace="2" border="0" ') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_unhide') . '" align="top" alt="" />', $formName, 'unhide');
+					} else {
+						$panel .= $this->editPanelLinkWrap('<img  ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/button_hide.gif', 'width="11" height="10" vspace="1" hspace="2" border="0" ') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_hide') . '" align="top" alt="" />', $formName, 'hide', '', $GLOBALS['BE_USER']->extGetLL('p_hideConfirm'));
+					}
+				}
+				if (isset($allow['new'])) {
+					if ($table == 'pages') {
+						$panel .= $this->editPanelLinkWrap('<img  ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/new_page.gif', 'width="13" height="12" vspace="1" hspace="2" border="0" ') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_newSubpage') . '" align="top" alt="" />', $formName, 'new', $currentRecord, '');
+					} else {
+						$panel .= $this->editPanelLinkWrap('<img  ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/new_record.gif', 'width="16" height="12" vspace="1" hspace="2" border="0" ') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_newRecordAfter') . '" align="top" alt="" />', $formName, 'new', $currentRecord, '', $newUID);
+					}
+				}
+				// Hiding in workspaces because implementation is incomplete, Hiding for localizations because it is unknown what should be the function in that case
+				if (isset($allow['delete']) && $GLOBALS['BE_USER']->workspace === 0 && !$dataArr['_LOCALIZED_UID']) {
+					$panel .= $this->editPanelLinkWrap('<img  ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/delete_record.gif', 'width="12" height="12" vspace="1" hspace="2" border="0" ') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_delete') . '" align="top" alt="" />', $formName, 'delete', '', $GLOBALS['BE_USER']->extGetLL('p_deleteConfirm'));
+				}
+				// Final
+				$labelTxt = $this->cObj->stdWrap($conf['label'], $conf['label.']);
+				foreach ((array) $hiddenFields as $name => $value) {
+					$hiddenFieldString .= '<input type="hidden" name="TSFE_EDIT[' . $name . ']" value="' . $value . '"/>' . LF;
+				}
+				$panel = '
 
-							<!-- BE_USER Edit Panel: -->
-							' . $formTag . $hiddenFieldString . '
-								<input type="hidden" name="TSFE_EDIT[cmd]" value="" />
-								<input type="hidden" name="TSFE_EDIT[record]" value="' . $currentRecord . '" />
-								<table border="0" cellpadding="0" cellspacing="0" class="typo3-editPanel" summary="">
-									<tr>
-										<td nowrap="nowrap" bgcolor="#ABBBB4" class="typo3-editPanel-controls">' . $panel . '</td>' . ($labelTxt ? '<td nowrap="nowrap" bgcolor="#F6F2E6" class="typo3-editPanel-label"><font face="verdana" size="1" color="black">&nbsp;' . sprintf($labelTxt, htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($dataArr[$labelField], 50))) . '&nbsp;</font></td>' : '') . '
-									</tr>
-								</table>
-							</form>';
-			// Wrap the panel
-			if ($conf['innerWrap']) {
-				$panel = $this->cObj->wrap($panel, $conf['innerWrap']);
-			}
-			if ($conf['innerWrap.']) {
-				$panel = $this->cObj->stdWrap($panel, $conf['innerWrap.']);
-			}
-			// Add black line:
-			$panel .= $blackLine;
-			// Wrap the complete panel
-			if ($conf['outerWrap']) {
-				$panel = $this->cObj->wrap($panel, $conf['outerWrap']);
-			}
-			if ($conf['outerWrap.']) {
-				$panel = $this->cObj->stdWrap($panel, $conf['outerWrap.']);
-			}
-			if ($conf['printBeforeContent']) {
-				$finalOut = $panel . $content;
-			} else {
-				$finalOut = $content . $panel;
-			}
-			break;
+								<!-- BE_USER Edit Panel: -->
+								' . $formTag . $hiddenFieldString . '
+									<input type="hidden" name="TSFE_EDIT[cmd]" value="" />
+									<input type="hidden" name="TSFE_EDIT[record]" value="' . $currentRecord . '" />
+									<table border="0" cellpadding="0" cellspacing="0" class="typo3-editPanel" summary="">
+										<tr>
+											<td nowrap="nowrap" bgcolor="#ABBBB4" class="typo3-editPanel-controls">' . $panel . '</td>' . ($labelTxt ? '<td nowrap="nowrap" bgcolor="#F6F2E6" class="typo3-editPanel-label"><font face="verdana" size="1" color="black">&nbsp;' . sprintf($labelTxt, htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($dataArr[$labelField], 50))) . '&nbsp;</font></td>' : '') . '
+										</tr>
+									</table>
+								</form>';
+				// Wrap the panel
+				if ($conf['innerWrap']) {
+					$panel = $this->cObj->wrap($panel, $conf['innerWrap']);
+				}
+				if ($conf['innerWrap.']) {
+					$panel = $this->cObj->stdWrap($panel, $conf['innerWrap.']);
+				}
+				// Add black line:
+				$panel .= $blackLine;
+				// Wrap the complete panel
+				if ($conf['outerWrap']) {
+					$panel = $this->cObj->wrap($panel, $conf['outerWrap']);
+				}
+				if ($conf['outerWrap.']) {
+					$panel = $this->cObj->stdWrap($panel, $conf['outerWrap.']);
+				}
+				if ($conf['printBeforeContent']) {
+					$finalOut = $panel . $content;
+				} else {
+					$finalOut = $content . $panel;
+				}
+				break;
 		}
 		if ($conf['previewBorder']) {
 			if (!is_array($conf['previewBorder.'])) {
@@ -184,7 +185,7 @@ class FrontendEditPanel {
 	 * @return string The input content string, possibly with edit icons added (not necessarily in the end but just after the last string of normal content.
 	 */
 	public function editIcons($content, $params, array $conf = array(), $currentRecord = '', array $dataArr = array(), $addUrlParamStr = '', $table, $editUid, $fieldList) {
-			// Special content is about to be shown, so the cache must be disabled.
+		// Special content is about to be shown, so the cache must be disabled.
 		$GLOBALS['TSFE']->set_no_cache('Display frontend edit icons');
 		$style = $conf['styleAttribute'] ? ' style="' . htmlspecialchars($conf['styleAttribute']) . '"' : '';
 		$iconTitle = $this->cObj->stdWrap($conf['iconTitle'], $conf['iconTitle.']);
@@ -219,7 +220,7 @@ class FrontendEditPanel {
 	 * @param string $confirm Text string with confirmation message; If set a confirm box will be displayed before carrying out the action (if Yes is pressed)
 	 * @param integer $nPid "New pid" - for new records
 	 * @return string A <a> tag wrapped string.
-	 * @see 	editPanel(), editIcons(), t3lib_tsfeBeUserAuth::extEditAction()
+	 * @see editPanel(), editIcons(), t3lib_tsfeBeUserAuth::extEditAction()
 	 */
 	protected function editPanelLinkWrap($string, $formName, $cmd, $currentRecord = '', $confirm = '', $nPid = '') {
 		// Editing forms on page only supported in Live workspace (because of incomplete implementation)
@@ -285,7 +286,7 @@ class FrontendEditPanel {
 	 * @param integer $thick The thickness of the border
 	 * @param array $conf The array with TypoScript properties for the content object
 	 * @return string The input string wrapped in a table with a border color of #cccccc and thickness = $thick
-	 * @see 	editPanel()
+	 * @see editPanel()
 	 */
 	protected function editPanelPreviewBorder($table, array $row, $content, $thick, array $conf = array()) {
 		if ($this->isDisabled($table, $row)) {
@@ -314,10 +315,21 @@ class FrontendEditPanel {
 	 * @param string $table The table name
 	 * @param array $row The data record
 	 * @return boolean
-	 * @see 	editPanelPreviewBorder()
+	 * @see editPanelPreviewBorder()
 	 */
 	protected function isDisabled($table, $row) {
-		if ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']] || $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group'] && $GLOBALS['TSFE']->simUserGroup && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group']] == $GLOBALS['TSFE']->simUserGroup || $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime']] > $GLOBALS['EXEC_TIME'] || $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] < $GLOBALS['EXEC_TIME']) {
+		if (
+			$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] &&
+			$row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']] ||
+			$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group'] &&
+			$GLOBALS['TSFE']->simUserGroup &&
+			$row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group']] == $GLOBALS['TSFE']->simUserGroup ||
+			$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime'] &&
+			$row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime']] > $GLOBALS['EXEC_TIME'] ||
+			$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime'] &&
+			$row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] &&
+			$row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] < $GLOBALS['EXEC_TIME']
+		) {
 			return TRUE;
 		}
 	}
@@ -385,6 +397,5 @@ class FrontendEditPanel {
 	}
 
 }
-
 
 ?>
