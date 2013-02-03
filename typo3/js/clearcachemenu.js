@@ -37,6 +37,7 @@ var ClearCacheMenu = Class.create({
 	initialize: function() {
 
 		Ext.onReady(function() {
+			var self = this;
 			Event.observe(
 				window, 'resize',
 				function() { TYPO3BackendToolbarManager.positionMenu('clear-cache-actions-menu'); }
@@ -44,12 +45,15 @@ var ClearCacheMenu = Class.create({
 			TYPO3BackendToolbarManager.positionMenu('clear-cache-actions-menu');
 			this.toolbarItemIcon = $$('#clear-cache-actions-menu .toolbar-item span.t3-icon')[0];
 
-			Event.observe('clear-cache-actions-menu', 'click', this.toggleMenu)
+			Event.observe('clear-cache-actions-menu', 'click', this.toggleMenu);
 
 				// observe all clicks on clear cache actions in the menu
 			$$('#clear-cache-actions-menu li a').each(function(element) {
-				Event.observe(element, 'click', this.clearCache.bind(this));
-			}.bindAsEventListener(this));
+				$(element).onclick = function(event) {
+					self.clearCache.call(self, event);
+					return false;
+				};
+			});
 		}, this);
 	},
 
