@@ -461,8 +461,6 @@ In effect you can therefore have, say, a "stable" version of an extension instal
 
 &lt;b&gt;Module+:&lt;/b&gt; The extension adds itself to the function menu of an existing backend module.
 
-&lt;b&gt;loadTCA:&lt;/b&gt; The extension includes a function call to t3lib_div::loadTCA for loading a table. This potentially means that the system is slowed down, because the full table description of some table is always included. However there probably is a good reason for this to happen. Probably the extension tries to manipulate the TCA-config for an existing table in order to extend it.
-
 &lt;b&gt;TCA:&lt;/b&gt; The extension contains configuration of a table in $TCA.
 
 &lt;b&gt;Plugin:&lt;/b&gt; The extension adds a frontend plugin to the plugin list in Content Element type "Insert Plugin".

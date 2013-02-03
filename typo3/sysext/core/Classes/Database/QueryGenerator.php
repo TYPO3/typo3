@@ -242,7 +242,6 @@ class QueryGenerator {
 	public function makeFieldList() {
 		$fieldListArr = array();
 		if (is_array($GLOBALS['TCA'][$this->table])) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($this->table);
 			foreach ($GLOBALS['TCA'][$this->table]['columns'] as $fN => $value) {
 				$fieldListArr[] = $fN;
 			}
@@ -277,7 +276,6 @@ class QueryGenerator {
 	public function init($name, $table, $fieldList = '') {
 		// Analysing the fields in the table.
 		if (is_array($GLOBALS['TCA'][$table])) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			$this->name = $name;
 			$this->table = $table;
 			$this->fieldList = $fieldList ? $fieldList : $this->makeFieldList();
@@ -871,7 +869,6 @@ class QueryGenerator {
 				}
 				$counter = 1;
 				if (is_array($GLOBALS['TCA'][$from_table])) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($from_table);
 					$labelField = $GLOBALS['TCA'][$from_table]['ctrl']['label'];
 					$altLabelField = $GLOBALS['TCA'][$from_table]['ctrl']['label_alt'];
 					if ($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items']) {

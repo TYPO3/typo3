@@ -246,8 +246,6 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 	 * @todo Define visibility
 	 */
 	public function getTable($table, $id, $rowlist) {
-		// Loading all TCA details for this table:
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		// Init
 		$addWhere = '';
 		$titleCol = $GLOBALS['TCA'][$table]['ctrl']['label'];
@@ -988,8 +986,6 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') && isset($row['_ORIG_uid'])) {
 			$rowUid = $row['_ORIG_uid'];
 		}
-		// Initialize:
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$cells = array();
 		// If the listed table is 'pages' we have to request the permission settings for each page:
 		if ($table == 'pages') {
@@ -1298,7 +1294,6 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 	 */
 	public function fieldSelectBox($table, $formFields = 1) {
 		// Init:
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$formElements = array('', '');
 		if ($formFields) {
 			$formElements = array('<form action="' . htmlspecialchars($this->listURL()) . '" method="post">', '</form>');

@@ -221,7 +221,6 @@ class ExtensionManagementUtility {
 	 * @return void
 	 */
 	static public function addTCAcolumns($table, $columnArray, $addTofeInterface = 0) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if (is_array($columnArray) && is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'])) {
 			// Candidate for \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge() if integer-keys will some day make trouble...
 			$GLOBALS['TCA'][$table]['columns'] = array_merge($GLOBALS['TCA'][$table]['columns'], $columnArray);
@@ -246,7 +245,6 @@ class ExtensionManagementUtility {
 	 * @return void
 	 */
 	static public function addToAllTCAtypes($table, $str, $specificTypesList = '', $position = '') {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$str = trim($str);
 		$palettesChanged = array();
 		if ($str && is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['types'])) {
@@ -311,7 +309,6 @@ class ExtensionManagementUtility {
 	static public function addFieldsToAllPalettesOfField($table, $field, $addFields, $insertionPosition = '') {
 		$generatedPalette = '';
 		$processedPalettes = array();
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if (isset($GLOBALS['TCA'][$table]['columns'][$field])) {
 			$types = &$GLOBALS['TCA'][$table]['types'];
 			if (is_array($types)) {
@@ -353,7 +350,6 @@ class ExtensionManagementUtility {
 	 * @return void
 	 */
 	static public function addFieldsToPalette($table, $palette, $addFields, $insertionPosition = '') {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if (isset($GLOBALS['TCA'][$table])) {
 			$paletteData = &$GLOBALS['TCA'][$table]['palettes'][$palette];
 			// If palette already exists, merge the data:
@@ -409,7 +405,6 @@ class ExtensionManagementUtility {
 		if ($relativePosition !== '' && $relativePosition !== 'before' && $relativePosition !== 'after' && $relativePosition !== 'replace') {
 			throw new \InvalidArgumentException('Relative position must be either empty or one of "before", "after", "replace".', 1303236967);
 		}
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if (!is_array($GLOBALS['TCA'][$table]['columns'][$field]['config']['items'])) {
 			throw new \RuntimeException('Given select field item list was not found.', 1303237468);
 		}
@@ -1179,7 +1174,6 @@ class ExtensionManagementUtility {
 		if ($_EXTKEY && !$itemArray[2]) {
 			$itemArray[2] = self::extRelPath($_EXTKEY) . $GLOBALS['TYPO3_LOADED_EXT'][$_EXTKEY]['ext_icon'];
 		}
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
 		if (is_array($GLOBALS['TCA']['tt_content']['columns']) && is_array($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'])) {
 			foreach ($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'] as $k => $v) {
 				if (!strcmp($v[1], $itemArray[1])) {
@@ -1202,7 +1196,6 @@ class ExtensionManagementUtility {
 	 * @see addPlugin()
 	 */
 	static public function addPiFlexFormValue($piKeyToMatch, $value, $CTypeToMatch = 'list') {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
 		if (is_array($GLOBALS['TCA']['tt_content']['columns']) && is_array($GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds'])) {
 			$GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds'][$piKeyToMatch . ',' . $CTypeToMatch] = $value;
 		}
@@ -1219,7 +1212,6 @@ class ExtensionManagementUtility {
 	 * @return void
 	 */
 	static public function addToInsertRecords($table, $content_table = 'tt_content', $content_field = 'records') {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($content_table);
 		if (is_array($GLOBALS['TCA'][$content_table]['columns']) && isset($GLOBALS['TCA'][$content_table]['columns'][$content_field]['config']['allowed'])) {
 			$GLOBALS['TCA'][$content_table]['columns'][$content_field]['config']['allowed'] .= ',' . $table;
 		}
@@ -1306,7 +1298,6 @@ tt_content.' . $key . $prefix . ' {
 	 * @see addTypoScript()
 	 */
 	static public function addStaticFile($extKey, $path, $title) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('sys_template');
 		if ($extKey && $path && is_array($GLOBALS['TCA']['sys_template']['columns'])) {
 			$value = str_replace(',', '', 'EXT:' . $extKey . '/' . $path);
 			$itemArray = array(trim($title . ' (' . $extKey . ')'), $value);
@@ -1657,6 +1648,7 @@ tt_content.' . $key . $prefix . ' {
 				// and are explicitly set in cached file as well
 				$_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY];
 				require $extensionInformation['ext_tables.php'];
+				static::loadNewTcaColumnsConfigFiles();
 			}
 		}
 	}
@@ -1694,12 +1686,52 @@ tt_content.' . $key . $prefix . ' {
 			// Add ext_tables.php content of extension
 			$phpCodeToCache[] = trim(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extensionDetails['ext_tables.php']));
 			$phpCodeToCache[] = '';
+			$phpCodeToCache[] = '\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();';
 			$phpCodeToCache[] = '';
 		}
 		$phpCodeToCache = implode(LF, $phpCodeToCache);
 		// Remove all start and ending php tags from content
 		$phpCodeToCache = preg_replace('/<\\?php|\\?>/is', '', $phpCodeToCache);
 		$GLOBALS['typo3CacheManager']->getCache('cache_core')->set(self::getExtTablesCacheIdentifier(), $phpCodeToCache);
+	}
+
+	/**
+	 * Loads "columns" of a $TCA table definition if extracted
+	 * to a "dynamicConfigFile". This method is called after each
+	 * single ext_tables.php files was included to immediately have
+	 * the full $TCA ready for the next extension.
+	 *
+	 * $TCA[$tableName]['ctrl']['dynamicConfigFile'] must be the
+	 * absolute path to a file.
+	 *
+	 * Example:
+	 * dynamicConfigFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/SysNote.php',
+	 *
+	 * @return void
+	 * @throws \RuntimeException
+	 * @internal Internal use ONLY. It is called by cache files and can not be protected. Do not call yourself!
+	 */
+	static public function loadNewTcaColumnsConfigFiles() {
+		global $TCA;
+
+		foreach ($TCA as $tableName => $configuration) {
+			if (!isset($TCA[$tableName]['columns'])) {
+				$columnsConfigFile = $TCA[$tableName]['ctrl']['dynamicConfigFile'];
+				if ($columnsConfigFile) {
+					if (GeneralUtility::isAbsPath($columnsConfigFile)) {
+						include($columnsConfigFile);
+					} elseif (strpos($columnsConfigFile, 'T3LIB:') === 0) {
+						// Resolve T3LIB prefix, internal core use only.
+						include(PATH_t3lib . 'stddb/' . substr($columnsConfigFile, 6));
+					} else {
+						throw new \RuntimeException(
+							'Columns configuration file not found',
+							1341151261
+						);
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -1989,8 +2021,6 @@ tt_content.' . $key . $prefix . ' {
 	 * @see addToAllTCAtypes
 	 */
 	static public function makeCategorizable($extensionKey, $tableName, $fieldName = 'categories', array $options = array()) {
-		// Load TCA first
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName);
 		// Update the category registry
 		$result = \TYPO3\CMS\Core\Category\CategoryRegistry::getInstance()->add($extensionKey, $tableName, $fieldName);
 		if ($result === FALSE) {
