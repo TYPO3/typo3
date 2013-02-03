@@ -26,11 +26,7 @@ namespace TYPO3\CMS\CssStyledContent\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Plugin 'Content rendering' for the 'css_styled_content' extension.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * Plugin class - instantiated from TypoScript.
  * Rendering some content elements from tt_content table.
@@ -39,21 +35,23 @@ namespace TYPO3\CMS\CssStyledContent\Controller;
  */
 class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
-	// Default plugin variables:
-	// Same as class name
 	/**
+	 * Same as class name
+	 *
 	 * @todo Define visibility
 	 */
 	public $prefixId = 'tx_cssstyledcontent_pi1';
 
-	// Path to this script relative to the extension dir.
 	/**
+	 * Path to this script relative to the extension dir.
+	 *
 	 * @todo Define visibility
 	 */
 	public $scriptRelPath = 'pi1/class.tx_cssstyledcontent_pi1.php';
 
-	// The extension key.
 	/**
+	 * The extension key
+	 *
 	 * @todo Define visibility
 	 */
 	public $extKey = 'css_styled_content';
@@ -64,10 +62,9 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	public $conf = array();
 
 	/***********************************
-	 *
 	 * Rendering of Content Elements:
-	 *
 	 ***********************************/
+
 	/**
 	 * Rendering the "Bulletlist" type content element, called from TypoScript (tt_content.bullets.20)
 	 *
@@ -1011,10 +1008,9 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	}
 
 	/***********************************
-	 *
-	 * Rendering of Content Element properties:
-	 *
+	 * Rendering of Content Element properties
 	 ***********************************/
+
 	/**
 	 * Add top or bottom margin to the content element
 	 *
@@ -1053,10 +1049,9 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	}
 
 	/************************************
-	 *
 	 * Helper functions
-	 *
 	 ************************************/
+
 	/**
 	 * Returns a link text string which replaces underscores in filename with
 	 * blanks.
