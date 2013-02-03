@@ -3,5 +3,3 @@ setPageTSconfig = 1
 
   # cat=basic/enable; type=boolean; label=Remove unused positioning types: This will disable the image positions that make no sense on CType=image (it leaves just "above left", "center" and "right").
 removePositionTypes = 1
-
-
