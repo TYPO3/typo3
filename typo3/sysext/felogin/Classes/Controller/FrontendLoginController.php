@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Felogin\Controller;
  *
  *  The code was adapted from newloginbox, see manual for detailed description
  ***************************************************************/
+
 /**
  * Plugin 'Website User Login' for the 'felogin' extension.
  *
@@ -34,44 +35,77 @@ namespace TYPO3\CMS\Felogin\Controller;
  */
 class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
-	// Same as class name
 	/**
+	 * Same as class name
+	 *
 	 * @todo Define visibility
 	 */
 	public $prefixId = 'tx_felogin_pi1';
 
-	// Path to this script relative to the extension dir.
 	/**
+	 * Path to this script relative to the extension dir.
+	 *
 	 * @todo Define visibility
 	 */
 	public $scriptRelPath = 'pi1/class.tx_felogin_pi1.php';
 
-	// The extension key.
 	/**
+	 * The extension key.
+	 *
 	 * @todo Define visibility
 	 */
 	public $extKey = 'felogin';
 
+	/**
+	 * @var boolean
+	 */
 	public $pi_checkCHash = FALSE;
 
+	/**
+	 * @var boolean
+	 */
 	public $pi_USER_INT_obj = TRUE;
 
-	// Is user logged in?
+	/**
+	 * Is user logged in?
+	 *
+	 * @var boolean
+	 */
 	protected $userIsLoggedIn;
 
-	// holds the template for FE rendering
+	/**
+	 * Holds the template for FE rendering
+	 *
+	 * @var string
+	 */
 	protected $template;
 
-	// upload dir, used for flexform template files
+	/**
+	 * Upload directory, used for flexform template files
+	 *
+	 * @var string
+	 */
 	protected $uploadDir;
 
-	// URL for the redirect
+	/**
+	 * URL for the redirect
+	 *
+	 * @var string
+	 */
 	protected $redirectUrl;
 
-	// flag for disable the redirect
+	/**
+	 * Flag for disable the redirect
+	 *
+	 * @var boolean
+	 */
 	protected $noRedirect = FALSE;
 
-	// logintype (given as GPvar), possible: login, logout
+	/**
+	 * Logintype (given as GPvar), possible: login, logout
+	 *
+	 * @var string
+	 */
 	protected $logintype;
 
 	/**
@@ -191,7 +225,11 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 				$row = FALSE;
 				// Look for user record
 				$data = $GLOBALS['TYPO3_DB']->fullQuoteStr($this->piVars['forgot_email'], 'fe_users');
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, username, password, email', 'fe_users', '(email=' . $data . ' OR username=' . $data . ') AND pid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($this->spid) . ') ' . $this->cObj->enableFields('fe_users'));
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'uid, username, password, email',
+					'fe_users',
+					'(email=' . $data . ' OR username=' . $data . ') AND pid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($this->spid) . ') ' . $this->cObj->enableFields('fe_users')
+				);
 				if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				}
@@ -206,7 +244,10 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 				if ($error) {
 					$markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap($error, $this->conf['forgotErrorMessage_stdWrap.']);
 				} else {
-					$markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap($this->pi_getLL('ll_forgot_reset_message_emailSent', '', 1), $this->conf['forgotResetMessageEmailSentMessage_stdWrap.']);
+					$markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap(
+						$this->pi_getLL('ll_forgot_reset_message_emailSent', '', 1),
+						$this->conf['forgotResetMessageEmailSentMessage_stdWrap.']
+					);
 				}
 				$subpartArray['###FORGOT_FORM###'] = '';
 			} else {
@@ -268,9 +309,17 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 				$postData = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST($this->prefixId);
 				if (isset($postData['changepasswordsubmit'])) {
 					if (strlen($postData['password1']) < $minLength) {
-						$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_tooshort_message', $this->conf['changePasswordTooShortMessage_stdWrap.']), $minLength);
+						$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText(
+							'change_password_tooshort_message',
+							$this->conf['changePasswordTooShortMessage_stdWrap.']),
+							$minLength
+						);
 					} elseif ($postData['password1'] != $postData['password2']) {
-						$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_notequal_message', $this->conf['changePasswordNotEqualMessage_stdWrap.']), $minLength);
+						$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText(
+							'change_password_notequal_message',
+							$this->conf['changePasswordNotEqualMessage_stdWrap.']),
+							$minLength
+						);
 					} else {
 						$newPass = $postData['password1'];
 						if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed']) {
@@ -290,7 +339,10 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 						$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('change_password_done_message', $this->conf['changePasswordDoneMessage_stdWrap.']);
 						$done = TRUE;
 						$subpartArray['###CHANGEPASSWORD_FORM###'] = '';
-						$markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink($this->pi_getLL('ll_forgot_header_backToLogin', '', 1), array($this->prefixId . '[redirectReferrer]' => 'off'));
+						$markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink(
+							$this->pi_getLL('ll_forgot_header_backToLogin', '', 1),
+							array($this->prefixId . '[redirectReferrer]' => 'off')
+						);
 					}
 				}
 				if (!$done) {
@@ -466,7 +518,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('welcome_message', $this->conf['welcomeMessage_stdWrap.']);
 			}
 		}
-		// Hook (used by kb_md5fepw extension by Kraft Bernhard <kraftb@gmx.net>)
+
 		// This hook allows to call User JS functions.
 		// The methods should also set the required JS functions to get included
 		$onSubmit = '';
@@ -550,74 +602,74 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 				if ($GLOBALS['TSFE']->loginUser && $this->logintype === 'login') {
 					// Logintype is needed because the login-page wouldn't be accessible anymore after a login (would always redirect)
 					switch ($redirMethod) {
-					case 'groupLogin':
-						// taken from dkd_redirect_at_login written by Ingmar Schlecht; database-field changed
-						$groupData = $GLOBALS['TSFE']->fe_user->groupData;
-						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('felogin_redirectPid', $GLOBALS['TSFE']->fe_user->usergroup_table, 'felogin_redirectPid<>\'\' AND uid IN (' . implode(',', $groupData['uid']) . ')');
-						if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
-							// take the first group with a redirect page
-							$redirect_url[] = $this->pi_getPageLink($row[0]);
-						}
-						break;
-					case 'userLogin':
-						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('felogin_redirectPid', $GLOBALS['TSFE']->fe_user->user_table, $GLOBALS['TSFE']->fe_user->userid_column . '=' . $GLOBALS['TSFE']->fe_user->user['uid'] . ' AND felogin_redirectPid<>\'\'');
-						if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
-							$redirect_url[] = $this->pi_getPageLink($row[0]);
-						}
-						break;
-					case 'login':
-						if ($this->conf['redirectPageLogin']) {
-							$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLogin']));
-						}
-						break;
-					case 'getpost':
-						$redirect_url[] = $this->redirectUrl;
-						break;
-					case 'referer':
-						// Avoid redirect when logging in after changing password
-						if ($this->piVars['redirectReferrer'] !== 'off') {
-							// Avoid forced logout, when trying to login immediately after a logout
-							$redirect_url[] = preg_replace('/[&?]logintype=[a-z]+/', '', $this->referer);
-						}
-						break;
-					case 'refererDomains':
-						// Auto redirect.
-						// Feature to redirect to the page where the user came from (HTTP_REFERER).
-						// Allowed domains to redirect to, can be configured with plugin.tx_felogin_pi1.domains
-						// Thanks to plan2.net / Martin Kutschker for implementing this feature.
-						// also avoid redirect when logging in after changing password
-						if ($this->conf['domains'] && $this->piVars['redirectReferrer'] !== 'off') {
-							$url = $this->referer;
-							// Is referring url allowed to redirect?
-							$match = array();
-							if (preg_match('/^http://([[:alnum:]._-]+)//', $url, $match)) {
-								$redirect_domain = $match[1];
-								$found = FALSE;
-								foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->conf['domains'], TRUE) as $d) {
-									if (preg_match('/(^|\\.)/' . $d . '$', $redirect_domain)) {
-										$found = TRUE;
-										break;
+						case 'groupLogin':
+							// taken from dkd_redirect_at_login written by Ingmar Schlecht; database-field changed
+							$groupData = $GLOBALS['TSFE']->fe_user->groupData;
+							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('felogin_redirectPid', $GLOBALS['TSFE']->fe_user->usergroup_table, 'felogin_redirectPid<>\'\' AND uid IN (' . implode(',', $groupData['uid']) . ')');
+							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
+								// take the first group with a redirect page
+								$redirect_url[] = $this->pi_getPageLink($row[0]);
+							}
+							break;
+						case 'userLogin':
+							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('felogin_redirectPid', $GLOBALS['TSFE']->fe_user->user_table, $GLOBALS['TSFE']->fe_user->userid_column . '=' . $GLOBALS['TSFE']->fe_user->user['uid'] . ' AND felogin_redirectPid<>\'\'');
+							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
+								$redirect_url[] = $this->pi_getPageLink($row[0]);
+							}
+							break;
+						case 'login':
+							if ($this->conf['redirectPageLogin']) {
+								$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLogin']));
+							}
+							break;
+						case 'getpost':
+							$redirect_url[] = $this->redirectUrl;
+							break;
+						case 'referer':
+							// Avoid redirect when logging in after changing password
+							if ($this->piVars['redirectReferrer'] !== 'off') {
+								// Avoid forced logout, when trying to login immediately after a logout
+								$redirect_url[] = preg_replace('/[&?]logintype=[a-z]+/', '', $this->referer);
+							}
+							break;
+						case 'refererDomains':
+							// Auto redirect.
+							// Feature to redirect to the page where the user came from (HTTP_REFERER).
+							// Allowed domains to redirect to, can be configured with plugin.tx_felogin_pi1.domains
+							// Thanks to plan2.net / Martin Kutschker for implementing this feature.
+							// also avoid redirect when logging in after changing password
+							if ($this->conf['domains'] && $this->piVars['redirectReferrer'] !== 'off') {
+								$url = $this->referer;
+								// Is referring url allowed to redirect?
+								$match = array();
+								if (preg_match('/^http://([[:alnum:]._-]+)//', $url, $match)) {
+									$redirect_domain = $match[1];
+									$found = FALSE;
+									foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->conf['domains'], TRUE) as $d) {
+										if (preg_match('/(^|\\.)/' . $d . '$', $redirect_domain)) {
+											$found = TRUE;
+											break;
+										}
+									}
+									if (!$found) {
+										$url = '';
 									}
 								}
-								if (!$found) {
-									$url = '';
+								// Avoid forced logout, when trying to login immediately after a logout
+								if ($url) {
+									$redirect_url[] = preg_replace('/[&?]logintype=[a-z]+/', '', $url);
 								}
 							}
-							// Avoid forced logout, when trying to login immediately after a logout
-							if ($url) {
-								$redirect_url[] = preg_replace('/[&?]logintype=[a-z]+/', '', $url);
-							}
-						}
-						break;
+							break;
 					}
 				} elseif ($this->logintype === 'login') {
 					// after login-error
 					switch ($redirMethod) {
-					case 'loginError':
-						if ($this->conf['redirectPageLoginError']) {
-							$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLoginError']));
-						}
-						break;
+						case 'loginError':
+							if ($this->conf['redirectPageLoginError']) {
+								$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLoginError']));
+							}
+							break;
 					}
 				} elseif ($this->logintype == '' && $redirMethod == 'login' && $this->conf['redirectPageLogin']) {
 					// If login and page not accessible
@@ -641,20 +693,20 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 						}
 					}
 					switch ($redirMethod) {
-					case 'logout':
-						if ($this->conf['redirectPageLogout']) {
-							$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLogout']));
-						}
-						break;
+						case 'logout':
+							if ($this->conf['redirectPageLogout']) {
+								$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLogout']));
+							}
+							break;
 					}
 				} else {
 					// not logged in
 					// Placeholder for maybe future options
 					switch ($redirMethod) {
-					case 'getpost':
-						// Preserve the get/post value
-						$redirect_url[] = $this->redirectUrl;
-						break;
+						case 'getpost':
+							// Preserve the get/post value
+							$redirect_url[] = $this->redirectUrl;
+							break;
 					}
 				}
 			}
@@ -923,6 +975,5 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	}
 
 }
-
 
 ?>

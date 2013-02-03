@@ -27,8 +27,8 @@ mod.wizards.newContentElement.wizardItems.forms {
 	elements {
 		login {
 			icon = gfx/c_wiz/login_form.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms_login_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms_login_description
+			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_login_title
+			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_login_description
 			tt_content_defValues {
 				CType = login
 			}
@@ -37,12 +37,6 @@ mod.wizards.newContentElement.wizardItems.forms {
 	show :=addToList(login)
 }
 ');
-// Activate support for kb_md5fepw
-if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('kb_md5fepw') && TYPO3_MODE == 'FE') {
-	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'][] = 'tx_kbmd5fepw_newloginbox->loginFormOnSubmit';
-	require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('kb_md5fepw') . 'pi1/class.tx_kbmd5fepw_newloginbox.php';
-}
-
 
 // Page module hook
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'][$_EXTKEY] =
