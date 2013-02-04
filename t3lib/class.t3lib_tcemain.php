@@ -3045,6 +3045,13 @@ class t3lib_TCEmain {
 						$this->registerDBPids[$v['table']][$v['id']] = $this->registerDBPids[$table][$uid];
 					}
 
+					$specificNewId = $this->getAutoVersionId($v['table'], $newId);
+
+					// Use specific version uid for comma separated list values
+					if ($inlineSubType === 'list' && $specificNewId !== NULL) {
+						$newId = $specificNewId;
+					}
+
 					$dbAnalysis->itemArray[$k]['id'] = $newId;
 				}
 
