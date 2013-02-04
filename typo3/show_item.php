@@ -160,12 +160,16 @@ class SC_show_item {
 					$this->row = $this->pageinfo;
 				} else {
 					$this->row = t3lib_BEfunc::getRecordWSOL($this->table, $this->uid);
-					if ($this->row)	{
+					if (!empty($this->row['_ORIG_uid'])) {
+						$this->uid = (int) $this->row['_ORIG_uid'];
+					}
+					if ($this->row) {
 						$this->pageinfo = t3lib_BEfunc::readPageAccess($this->row['pid'],$this->perms_clause);
 						$this->access = is_array($this->pageinfo) ? 1 : 0;
 					}
 				}
 
+				/** @var $treatData t3lib_transferData */
 				$treatData = t3lib_div::makeInstance('t3lib_transferData');
 				$treatData->renderRecord($this->table, $this->uid, 0, $this->row);
 				$cRow = $treatData->theRecord;
@@ -266,7 +270,7 @@ class SC_show_item {
 					$tableRows[] = '
 						<tr>
 							<td class="t3-col-header">' . $GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel($this->table, $name), 1) . '</td>
-							<td>' . htmlspecialchars(t3lib_BEfunc::getProcessedValue($this->table, $name, $this->row[$name], 0, 0, FALSE, $this->row['uid'])) . '</td>
+							<td>' . htmlspecialchars(t3lib_BEfunc::getProcessedValue($this->table, $name, $this->row[$name], 0, 0, FALSE, $this->uid)) . '</td>
 						</tr>';
 				}
 			}
@@ -286,10 +290,10 @@ class SC_show_item {
 		$this->content.= $this->doc->section('', $code);
 
 			// References:
-		$this->content.= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesToThisItem'),$this->makeRef($this->table,$this->row['uid']));
+		$this->content.= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesToThisItem'), $this->makeRef($this->table, $this->uid));
 
 			// References:
-		$this->content.= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesFromThisItem'),$this->makeRefFrom($this->table,$this->row['uid']));
+		$this->content.= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesFromThisItem'), $this->makeRefFrom($this->table, $this->uid));
 	}
 
 	/**
