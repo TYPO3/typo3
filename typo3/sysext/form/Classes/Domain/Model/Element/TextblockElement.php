@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Textblock model object
  *
@@ -30,8 +31,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  */
 class TextblockElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractPlainElement {
 
-
 }
-
 
 ?>

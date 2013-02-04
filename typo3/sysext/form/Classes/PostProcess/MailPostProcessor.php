@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\PostProcess;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * The mail post processor
  *
@@ -326,6 +327,5 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	}
 
 }
-
 
 ?>

@@ -42,7 +42,6 @@ class FileMinimumSizeValidator extends \TYPO3\CMS\Form\Validation\AbstractValida
 	 * Constructor
 	 *
 	 * @param array $arguments Typoscript configuration
-	 * @return void
 	 */
 	public function __construct($arguments) {
 		$this->setMinimum($arguments['minimum']);
@@ -53,7 +52,7 @@ class FileMinimumSizeValidator extends \TYPO3\CMS\Form\Validation\AbstractValida
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean
-	 * @see tx_form_System_Validate_Interface::isValid()
+	 * @see \TYPO3\CMS\Form\Validation\ValidatorInterface::isValid()
 	 */
 	public function isValid() {
 		if ($this->requestHandler->has($this->fieldName)) {
@@ -90,6 +89,5 @@ class FileMinimumSizeValidator extends \TYPO3\CMS\Form\Validation\AbstractValida
 	}
 
 }
-
 
 ?>

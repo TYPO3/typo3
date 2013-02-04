@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Mail\Html;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Main view layer for Forms.
  *
@@ -71,8 +72,6 @@ class HtmlView extends \TYPO3\CMS\Form\View\Mail\Html\Element\ContainerElementVi
 
 	/**
 	 * Constructor
-	 *
-	 * @return void
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $model, array $typoscript) {
 		$this->localCobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
@@ -84,7 +83,7 @@ class HtmlView extends \TYPO3\CMS\Form\View\Mail\Html\Element\ContainerElementVi
 	/**
 	 * Set the data for the FORM tag
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Form $formModel The model of the form
+	 * @param \TYPO3\CMS\Form\Domain\Model\Form $model The model of the form
 	 * @return void
 	 */
 	public function setData(\TYPO3\CMS\Form\Domain\Model\Form $model) {
@@ -105,6 +104,5 @@ class HtmlView extends \TYPO3\CMS\Form\View\Mail\Html\Element\ContainerElementVi
 	}
 
 }
-
 
 ?>

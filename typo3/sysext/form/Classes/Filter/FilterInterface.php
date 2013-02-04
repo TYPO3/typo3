@@ -23,13 +23,14 @@ namespace TYPO3\CMS\Form\Filter;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Interface for filters
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
  */
-interface FilterInterface
-{
+interface FilterInterface {
+
 	/**
 	 * Return filtered value
 	 *

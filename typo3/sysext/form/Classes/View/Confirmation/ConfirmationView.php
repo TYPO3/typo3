@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Confirmation;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Main view layer for Forms.
  *
@@ -62,7 +63,8 @@ class ConfirmationView extends \TYPO3\CMS\Form\View\Confirmation\Element\Contain
 	/**
 	 * Constructor
 	 *
-	 * @return void
+	 * @param \TYPO3\CMS\Form\Domain\Model\Form $model
+	 * @param array $typoscript
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $model, array $typoscript) {
 		$this->localCobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
@@ -128,6 +130,11 @@ class ConfirmationView extends \TYPO3\CMS\Form\View\Confirmation\Element\Contain
 		return $this->localCobj->cObjGetSingle($type, $value);
 	}
 
+	/**
+	 * Get confirmation buttons
+	 *
+	 * @return string
+	 */
 	protected function getConfirmationButtons() {
 		$requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Request');
 		$prefix = $requestHandler->getPrefix();
@@ -150,6 +157,5 @@ class ConfirmationView extends \TYPO3\CMS\Form\View\Confirmation\Element\Contain
 	}
 
 }
-
 
 ?>

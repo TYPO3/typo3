@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Form\Additional;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * View object for the error tag
  *
@@ -42,6 +43,5 @@ class ErrorAdditionalElementView extends \TYPO3\CMS\Form\View\Form\Additional\Ad
 	';
 
 }
-
 
 ?>

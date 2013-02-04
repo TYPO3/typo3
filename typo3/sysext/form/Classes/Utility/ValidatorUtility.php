@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Static methods for validation
  *
@@ -53,12 +54,8 @@ class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Constructor
-	 *
-	 * @return void
 	 */
-	public function __construct() {
-
-	}
+	public function __construct() {}
 
 	/**
 	 * Returns the current prefix of the form
@@ -92,7 +89,7 @@ class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param object $rule Rule object
 	 * @param string $fieldName Field name the rule belongs to
 	 * @param boolean $breakOnError Break the rule chain when TRUE
-	 * @return tx_form_Validate
+	 * @return \TYPO3\CMS\Form\Utility\ValidatorUtility
 	 */
 	public function addRule($rule, $fieldName, $breakOnError = FALSE) {
 		$prefix = $this->getPrefix();
@@ -210,6 +207,5 @@ class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
 
 ?>

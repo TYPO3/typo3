@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Validation;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * File Allowed Types rule
  * The file type must fit one of the given mime types
@@ -42,7 +43,6 @@ class FileAllowedTypesValidator extends \TYPO3\CMS\Form\Validation\AbstractValid
 	 * Constructor
 	 *
 	 * @param array $arguments Typoscript configuration
-	 * @return void
 	 */
 	public function __construct($arguments) {
 		$this->setAllowedTypes($arguments['types']);
@@ -53,7 +53,7 @@ class FileAllowedTypesValidator extends \TYPO3\CMS\Form\Validation\AbstractValid
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean
-	 * @see tx_form_System_Validate_Interface::isValid()
+	 * @see \TYPO3\CMS\Form\Validation\ValidatorInterface::isValid()
 	 */
 	public function isValid() {
 		if ($this->requestHandler->has($this->fieldName)) {
@@ -91,6 +91,5 @@ class FileAllowedTypesValidator extends \TYPO3\CMS\Form\Validation\AbstractValid
 	}
 
 }
-
 
 ?>

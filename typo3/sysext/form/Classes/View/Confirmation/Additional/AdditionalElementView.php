@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Confirmation\Additional;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Additional elements for FORM object
  *
@@ -41,7 +42,6 @@ class AdditionalElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\Ab
 	 * Constructor
 	 *
 	 * @param object $model The parent model
-	 * @return void
 	 */
 	public function __construct($model) {
 		$this->model = $model;
@@ -57,6 +57,5 @@ class AdditionalElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\Ab
 	}
 
 }
-
 
 ?>

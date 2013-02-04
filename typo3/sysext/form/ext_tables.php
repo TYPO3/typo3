@@ -9,7 +9,7 @@ if (!defined('TYPO3_MODE')) {
 // Load TCA before manipulating the column configuration
 \TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
 
-$TCA['tt_content']['columns']['bodytext']['config']['wizards']['forms'] = array(
+$GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['wizards']['forms'] = array(
 	'notNewRecords' => 1,
 	'enableByTypeConfig' => 1,
 	'type' => 'script',
@@ -20,7 +20,7 @@ $TCA['tt_content']['columns']['bodytext']['config']['wizards']['forms'] = array(
 		'xmlOutput' => 0
 	)
 );
-$TCA['tt_content']['types']['mailform']['showitem'] = '
+$GLOBALS['TCA']['tt_content']['types']['mailform']['showitem'] = '
 	CType;;4;;1-1-1,
 	hidden,
 	header;;3;;2-2-2,
