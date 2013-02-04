@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Fieldset model object
  *
@@ -44,6 +45,5 @@ class FieldsetElement extends \TYPO3\CMS\Form\Domain\Model\Element\ContainerElem
 	);
 
 }
-
 
 ?>

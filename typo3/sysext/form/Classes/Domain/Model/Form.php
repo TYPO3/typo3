@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * A form
  *
@@ -102,6 +103,5 @@ class Form extends \TYPO3\CMS\Form\Domain\Model\Element\ContainerElement {
 	}
 
 }
-
 
 ?>

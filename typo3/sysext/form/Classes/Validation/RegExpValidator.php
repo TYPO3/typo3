@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Validation;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Regexp rule
  *
@@ -41,7 +42,6 @@ class RegExpValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * Constructor
 	 *
 	 * @param array $arguments Typoscript configuration
-	 * @return void
 	 */
 	public function __construct($arguments) {
 		$this->setRegularExpression($arguments['expression']);
@@ -52,7 +52,7 @@ class RegExpValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean
-	 * @see tx_form_System_Validate_Interface::isValid()
+	 * @see \TYPO3\CMS\Form\Validation\ValidatorInterface::isValid()
 	 */
 	public function isValid() {
 		if ($this->requestHandler->has($this->fieldName)) {
@@ -76,6 +76,5 @@ class RegExpValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	}
 
 }
-
 
 ?>

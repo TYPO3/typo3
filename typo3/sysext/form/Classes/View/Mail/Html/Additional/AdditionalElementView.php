@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Additional;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Additional elements for FORM object
  *
@@ -53,10 +54,12 @@ class AdditionalElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\Abstr
 	 * @return string The value of the additional
 	 */
 	public function getAdditionalValue() {
-		return htmlspecialchars($this->model->getAdditionalValue(\TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getLastPartOfClassName($this, TRUE)), ENT_QUOTES);
+		return htmlspecialchars(
+			$this->model->getAdditionalValue(\TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getLastPartOfClassName($this, TRUE)),
+			ENT_QUOTES
+		);
 	}
 
 }
-
 
 ?>

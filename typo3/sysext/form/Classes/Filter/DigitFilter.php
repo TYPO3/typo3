@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Filter;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Digit filter
  *
@@ -43,6 +44,5 @@ class DigitFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	}
 
 }
-
 
 ?>

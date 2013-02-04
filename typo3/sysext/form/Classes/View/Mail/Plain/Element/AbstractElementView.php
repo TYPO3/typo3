@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Mail\Plain\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * The element abstract
  *
@@ -52,6 +53,5 @@ abstract class AbstractElementView {
 	}
 
 }
-
 
 ?>

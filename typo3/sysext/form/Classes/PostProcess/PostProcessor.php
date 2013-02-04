@@ -23,12 +23,13 @@ namespace TYPO3\CMS\Form\PostProcess;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * The post processor
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
  */
-class PostProcessor {
+class PostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInterface {
 
 	/**
 	 * Constructor
@@ -92,6 +93,5 @@ class PostProcessor {
 	}
 
 }
-
 
 ?>

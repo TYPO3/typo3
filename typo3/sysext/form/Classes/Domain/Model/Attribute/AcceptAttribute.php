@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Attribute 'accept'
  *
@@ -51,6 +52,5 @@ class AcceptAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAtt
 	}
 
 }
-
 
 ?>

@@ -23,10 +23,10 @@ namespace TYPO3\CMS\Form\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Content domain model
  *
- * @category Model
  * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class Content {
@@ -110,6 +110,5 @@ class Content {
 	}
 
 }
-
 
 ?>
