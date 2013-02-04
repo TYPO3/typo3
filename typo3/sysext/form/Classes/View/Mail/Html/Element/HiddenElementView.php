@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * View object for the hidden input element
  *
@@ -57,6 +58,5 @@ class HiddenElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\AbstractE
 	}
 
 }
-
 
 ?>

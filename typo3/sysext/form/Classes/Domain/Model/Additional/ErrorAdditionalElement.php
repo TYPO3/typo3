@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Additional;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Additional 'error'
  *
@@ -45,6 +46,5 @@ class ErrorAdditionalElement extends \TYPO3\CMS\Form\Domain\Model\Additional\Abs
 	}
 
 }
-
 
 ?>

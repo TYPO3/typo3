@@ -77,7 +77,7 @@ class CheckboxElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractEleme
 	 * it will change the checked attribute
 	 *
 	 * @return \TYPO3\CMS\Form\Domain\Model\Element\CheckboxElement
-	 * @see tx_form_Domain_Model_Element::checkFilterAndSetIncomingDataFromRequest()
+	 * @see \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement::checkFilterAndSetIncomingDataFromRequest()
 	 */
 	public function checkFilterAndSetIncomingDataFromRequest() {
 		if ($this->value === '') {
@@ -119,6 +119,5 @@ class CheckboxElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractEleme
 	}
 
 }
-
 
 ?>

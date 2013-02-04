@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Hidden field model object
  *
@@ -87,6 +88,5 @@ class AbstractPlainElement extends \TYPO3\CMS\Form\Domain\Model\Element\Abstract
 	}
 
 }
-
 
 ?>

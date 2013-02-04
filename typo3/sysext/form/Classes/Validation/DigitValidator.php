@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Validation;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Digit rule
  *
@@ -34,7 +35,7 @@ class DigitValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean
-	 * @see tx_form_System_Validate_Interface::isValid()
+	 * @see \TYPO3\CMS\Form\Validation\ValidatorInterface::isValid()
 	 */
 	public function isValid() {
 		if ($this->requestHandler->has($this->fieldName)) {
@@ -51,6 +52,5 @@ class DigitValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	}
 
 }
-
 
 ?>

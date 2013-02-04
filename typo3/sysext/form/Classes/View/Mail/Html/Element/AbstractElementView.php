@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Abstract class for the form elements view
  *
@@ -83,71 +84,71 @@ abstract class AbstractElementView {
 			$nodeType = $node->nodeType;
 			$nodeName = $node->nodeName;
 			switch ($nodeType) {
-			case XML_TEXT_NODE:
-				break;
-			case XML_ELEMENT_NODE:
-				switch ($nodeName) {
-				case 'containerWrap':
-					$containerWrap = $this->render('containerWrap');
-					if ($containerWrap) {
-						$this->replaceNodeWithFragment($dom, $node, $containerWrap);
-					} else {
-						$emptyElement = TRUE;
-					}
-					$deleteNode = TRUE;
+				case XML_TEXT_NODE:
 					break;
-				case 'elements':
-					$replaceNode = $this->getChildElements($dom);
-					if ($replaceNode) {
-						$node->parentNode->replaceChild($replaceNode, $node);
-					} else {
-						$emptyElement = TRUE;
-					}
-					break;
-				case 'label':
-					if (!strrchr(get_class($this), 'AdditionalElement')) {
-						if ($this->model->additionalIsSet($nodeName)) {
-							$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('label'));
-						} else {
-							$replaceNode = $dom->createTextNode($this->model->getName());
-							$node->parentNode->insertBefore($replaceNode, $node);
-						}
-					}
-					$deleteNode = TRUE;
-					break;
-				case 'legend':
-					if (!strrchr(get_class($this), 'AdditionalElement')) {
-						if ($this->model->additionalIsSet($nodeName)) {
-							$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('legend'));
-						}
-						$deleteNode = TRUE;
-					}
-					break;
-				case 'inputvalue':
-					if (array_key_exists('checked', $this->model->getAllowedAttributes())) {
-						if (!$this->model->hasAttribute('checked')) {
-							$emptyElement = TRUE;
-						}
-					} elseif (array_key_exists('selected', $this->model->getAllowedAttributes()) && !$this->model->hasAttribute('selected')) {
-						$emptyElement = TRUE;
-					} else {
-						$inputValue = $this->getInputValue();
-						if ($inputValue != '') {
-							$replaceNode = $dom->createTextNode($this->getInputValue());
-							$node->parentNode->insertBefore($replaceNode, $node);
-						}
-					}
-					$deleteNode = TRUE;
-					break;
-				case 'labelvalue':
+				case XML_ELEMENT_NODE:
+					switch ($nodeName) {
+						case 'containerWrap':
+							$containerWrap = $this->render('containerWrap');
+							if ($containerWrap) {
+								$this->replaceNodeWithFragment($dom, $node, $containerWrap);
+							} else {
+								$emptyElement = TRUE;
+							}
+							$deleteNode = TRUE;
+							break;
+						case 'elements':
+							$replaceNode = $this->getChildElements($dom);
+							if ($replaceNode) {
+								$node->parentNode->replaceChild($replaceNode, $node);
+							} else {
+								$emptyElement = TRUE;
+							}
+							break;
+						case 'label':
+							if (!strrchr(get_class($this), 'AdditionalElement')) {
+								if ($this->model->additionalIsSet($nodeName)) {
+									$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('label'));
+								} else {
+									$replaceNode = $dom->createTextNode($this->model->getName());
+									$node->parentNode->insertBefore($replaceNode, $node);
+								}
+							}
+							$deleteNode = TRUE;
+							break;
+						case 'legend':
+							if (!strrchr(get_class($this), 'AdditionalElement')) {
+								if ($this->model->additionalIsSet($nodeName)) {
+									$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('legend'));
+								}
+								$deleteNode = TRUE;
+							}
+							break;
+						case 'inputvalue':
+							if (array_key_exists('checked', $this->model->getAllowedAttributes())) {
+								if (!$this->model->hasAttribute('checked')) {
+									$emptyElement = TRUE;
+								}
+							} elseif (array_key_exists('selected', $this->model->getAllowedAttributes()) && !$this->model->hasAttribute('selected')) {
+								$emptyElement = TRUE;
+							} else {
+								$inputValue = $this->getInputValue();
+								if ($inputValue != '') {
+									$replaceNode = $dom->createTextNode($this->getInputValue());
+									$node->parentNode->insertBefore($replaceNode, $node);
+								}
+							}
+							$deleteNode = TRUE;
+							break;
+						case 'labelvalue':
 
-				case 'legendvalue':
-					$replaceNode = $dom->createTextNode($this->getAdditionalValue());
-					$node->parentNode->insertBefore($replaceNode, $node);
-					$deleteNode = TRUE;
+						case 'legendvalue':
+							$replaceNode = $dom->createTextNode($this->getAdditionalValue());
+							$node->parentNode->insertBefore($replaceNode, $node);
+							$deleteNode = TRUE;
+							break;
+					}
 					break;
-				}
-				break;
 			}
 			// Parse the child nodes of this node if available
 			if ($node->hasChildNodes()) {
@@ -199,19 +200,19 @@ abstract class AbstractElementView {
 		$layoutHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Layout');
 		$layout = '';
 		switch ($type) {
-		case 'element':
-			$layoutDefault = $this->layout;
-			$layout = $layoutHandler->getLayoutByObject(\TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getLastPartOfClassName($this, TRUE), $layoutDefault);
-			break;
-		case 'elementWrap':
-			$layoutDefault = $this->elementWrap;
-			$elementWrap = $layoutHandler->getLayoutByObject($type, $layoutDefault);
-			$layout = str_replace('<element />', $this->getLayout('element'), $elementWrap);
-			break;
-		case 'containerWrap':
-			$layoutDefault = $this->containerWrap;
-			$layout = $layoutHandler->getLayoutByObject($type, $layoutDefault);
-			break;
+			case 'element':
+				$layoutDefault = $this->layout;
+				$layout = $layoutHandler->getLayoutByObject(\TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getLastPartOfClassName($this, TRUE), $layoutDefault);
+				break;
+			case 'elementWrap':
+				$layoutDefault = $this->elementWrap;
+				$elementWrap = $layoutHandler->getLayoutByObject($type, $layoutDefault);
+				$layout = str_replace('<element />', $this->getLayout('element'), $elementWrap);
+				break;
+			case 'containerWrap':
+				$layoutDefault = $this->containerWrap;
+				$layout = $layoutHandler->getLayoutByObject($type, $layoutDefault);
+				break;
 		}
 		return $layout;
 	}
@@ -367,6 +368,5 @@ abstract class AbstractElementView {
 	}
 
 }
-
 
 ?>

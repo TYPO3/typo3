@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * View object for the radio element
  *
@@ -48,13 +49,11 @@ class RadioElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\AbstractEl
 	 * Constructor
 	 *
 	 * @param \TYPO3\CMS\Form\Domain\Model\Element\RadioElement $model Model for this element
-	 * @return void
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\RadioElement $model) {
 		parent::__construct($model);
 	}
 
 }
-
 
 ?>

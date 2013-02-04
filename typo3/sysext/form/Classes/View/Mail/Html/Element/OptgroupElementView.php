@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * View object for the optgroup element
  *
@@ -51,13 +52,11 @@ class OptgroupElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\Contain
 	 * Constructor
 	 *
 	 * @param \TYPO3\CMS\Form\Domain\Model\Element\OptgroupElement $model Model for this element
-	 * @return void
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\OptgroupElement $model) {
 		parent::__construct($model);
 	}
 
 }
-
 
 ?>
