@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Textarea model object
  *
@@ -77,7 +78,7 @@ class TextareaElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractEleme
 	 * datapart of the element
 	 *
 	 * @return \TYPO3\CMS\Form\Domain\Model\Element\TextareaElement
-	 * @see tx_form_Domain_Model_Element::checkFilterAndSetIncomingDataFromRequest()
+	 * @see \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement::checkFilterAndSetIncomingDataFromRequest()
 	 */
 	public function checkFilterAndSetIncomingDataFromRequest() {
 		if ($this->requestHandler->has($this->getName())) {
@@ -89,6 +90,5 @@ class TextareaElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractEleme
 	}
 
 }
-
 
 ?>

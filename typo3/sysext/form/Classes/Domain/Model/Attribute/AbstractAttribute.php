@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Abstract for attribute objects
  *
@@ -66,7 +67,7 @@ abstract class AbstractAttribute {
 	/**
 	 * Set the value
 	 *
-	 * @param string $valueThe value to set
+	 * @param string $value The value to set
 	 * @return void
 	 */
 	public function setValue($value) {
@@ -84,6 +85,5 @@ abstract class AbstractAttribute {
 	abstract public function getValue();
 
 }
-
 
 ?>

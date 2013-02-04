@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * JSON textline
  *
@@ -79,6 +80,5 @@ class TextlineJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJson
 	);
 
 }
-
 
 ?>

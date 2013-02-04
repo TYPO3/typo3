@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Additional;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * View object for the label tag
  *
@@ -42,6 +43,5 @@ class LabelAdditionalElementView extends \TYPO3\CMS\Form\View\Mail\Html\Addition
 	';
 
 }
-
 
 ?>

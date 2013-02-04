@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Option model object
  *
@@ -76,7 +77,7 @@ class OptionElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement
 	 *
 	 * @param string $parentName Name of the parent
 	 * @return \TYPO3\CMS\Form\Domain\Model\Element\OptionElement The element object
-	 * @see tx_form_Domain_Model_Element::setParent()
+	 * @see \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement::setParent()
 	 */
 	public function setParentName($parentName) {
 		$this->parentName = $parentName;
@@ -91,7 +92,7 @@ class OptionElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement
 	 * it will change the selected attribute
 	 *
 	 * @return \TYPO3\CMS\Form\Domain\Model\Element\OptionElement
-	 * @see tx_form_Domain_Model_Element::checkFilterAndSetIncomingDataFromRequest()
+	 * @see \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement::checkFilterAndSetIncomingDataFromRequest()
 	 */
 	public function checkFilterAndSetIncomingDataFromRequest() {
 		if ($this->value === '') {
@@ -118,6 +119,5 @@ class OptionElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement
 	}
 
 }
-
 
 ?>

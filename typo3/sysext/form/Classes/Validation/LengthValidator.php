@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Validation;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Length rule
  *
@@ -55,7 +56,6 @@ class LengthValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * Constructor
 	 *
 	 * @param array $arguments Typoscript configuration
-	 * @return void
 	 */
 	public function __construct($arguments) {
 		$this->charsetConverter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
@@ -67,7 +67,7 @@ class LengthValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean
-	 * @see tx_form_System_Validate_Interface::isValid()
+	 * @see \TYPO3\CMS\Form\Validation\ValidatorInterface::isValid()
 	 */
 	public function isValid() {
 		if ($this->requestHandler->has($this->fieldName)) {
@@ -115,7 +115,7 @@ class LengthValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 *
 	 * @param string $type The type
 	 * @return string The local language message label
-	 * @see tx_form_System_Validate_Abstract::_getLocalLanguageLabel()
+	 * @see \TYPO3\CMS\Form\Validation\AbstractValidator::_getLocalLanguageLabel()
 	 */
 	protected function getLocalLanguageLabel($type) {
 		$label = strtolower(get_class($this)) . '.' . $type;
@@ -141,6 +141,5 @@ class LengthValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	}
 
 }
-
 
 ?>

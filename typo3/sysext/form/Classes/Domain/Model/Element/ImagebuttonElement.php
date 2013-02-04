@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Image button model object
  *
@@ -63,6 +64,5 @@ class ImagebuttonElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractEl
 	);
 
 }
-
 
 ?>

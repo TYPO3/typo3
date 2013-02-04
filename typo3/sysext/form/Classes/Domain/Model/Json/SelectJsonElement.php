@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * JSON select
  *
@@ -78,7 +79,7 @@ class SelectJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEl
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @see tx_form_Domain_Model_Json_Element::setParameters()
+	 * @see \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement::setParameters()
 	 */
 	public function setParameters(array $parameters) {
 		parent::setParameters($parameters);
@@ -111,6 +112,5 @@ class SelectJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEl
 	}
 
 }
-
 
 ?>

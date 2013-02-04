@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Mail\Plain\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * View object for the option element
  *
@@ -62,6 +63,5 @@ class OptionElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Abstract
 	}
 
 }
-
 
 ?>

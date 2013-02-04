@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Validation;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Between rule
  * Value must be between the min and max. inclusively optional
@@ -56,7 +57,6 @@ class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator impl
 	 * Constructor
 	 *
 	 * @param array $arguments Typoscript configuration
-	 * @return void
 	 */
 	public function __construct($arguments) {
 		$this->setMinimum($arguments['minimum'])->setMaximum($arguments['maximum'])->setInclusive($arguments['inclusive']);
@@ -67,7 +67,7 @@ class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator impl
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean
-	 * @see tx_form_System_Validate_Interface::isValid()
+	 * @see \TYPO3\CMS\Form\Validation\ValidatorInterface::isValid()
 	 */
 	public function isValid() {
 		if ($this->requestHandler->has($this->fieldName)) {
@@ -128,7 +128,7 @@ class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator impl
 	 *
 	 * @param string $type The type
 	 * @return string The local language message label
-	 * @see tx_form_System_Validate_Abstract::_getLocalLanguageLabel()
+	 * @see \TYPO3\CMS\Form\Validation\AbstractValidator::_getLocalLanguageLabel()
 	 */
 	protected function getLocalLanguageLabel($type) {
 		$label = strtolower(get_class($this)) . '.' . $type;
@@ -154,6 +154,5 @@ class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator impl
 	}
 
 }
-
 
 ?>
