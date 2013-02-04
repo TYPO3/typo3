@@ -26,13 +26,14 @@ namespace TYPO3\CMS\Filelist;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Interface for classes which hook into file list module and manipulateds edit icon array
  *
  * @author Steffen Kamper <info@sk-typo3.de>
  */
-interface FileListEditIconHookInterface
-{
+interface FileListEditIconHookInterface {
+
 	/**
 	 * Modifies edit icon array
 	 *
