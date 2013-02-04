@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Filelist;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Class for rendering of File>Filelist
  *
@@ -33,14 +34,16 @@ namespace TYPO3\CMS\Filelist;
  */
 class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 
-	// default Max items shown
 	/**
+	 * Default Max items shown
+	 *
 	 * @todo Define visibility
 	 */
 	public $iLimit = 40;
 
-	// Boolean. Thumbnails on records containing files (pictures)
 	/**
+	 * Boolean. Thumbnails on records containing files (pictures)
+	 *
 	 * @todo Define visibility
 	 */
 	public $thumbs = 0;
@@ -50,8 +53,9 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	 */
 	public $widthGif = '<img src="clear.gif" width="1" height="1" hspace="165" alt="" />';
 
-	// Max length of strings
 	/**
+	 * Max length of strings
+	 *
 	 * @todo Define visibility
 	 */
 	public $fixedL = 30;
@@ -61,20 +65,23 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	 */
 	public $script = '';
 
-	// If TRUE click menus are generated on files and folders
 	/**
+	 * If TRUE click menus are generated on files and folders
+	 *
 	 * @todo Define visibility
 	 */
 	public $clickMenus = 1;
 
-	// The field to sort by...
 	/**
+	 * The field to sort by
+	 *
 	 * @todo Define visibility
 	 */
 	public $sort = '';
 
-	// Reverse sorting flag
 	/**
+	 * Reverse sorting flag
+	 *
 	 * @todo Define visibility
 	 */
 	public $sortRev = 1;
@@ -94,7 +101,6 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	 */
 	public $bigControlPanel = 0;
 
-	// internal
 	/**
 	 * @todo Define visibility
 	 */
@@ -130,8 +136,9 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	 */
 	protected $folderObject;
 
-	// Counting the elements no matter what...
 	/**
+	 * Counting the elements no matter what
+	 *
 	 * @todo Define visibility
 	 */
 	public $eCounter = 0;
@@ -272,24 +279,24 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 				foreach ($files as $file) {
 					$fileObject = $storage->getFile($file['identifier']);
 					switch ($this->sort) {
-					case 'size':
-						$sortingKey = $fileObject->getSize();
-						break;
-					case 'rw':
-						$sortingKey = ($fileObject->checkActionPermission('read') ? 'R' : '' . $fileObject->checkActionPermission('write')) ? 'W' : '';
-						break;
-					case 'fileext':
-						$sortingKey = $fileObject->getExtension();
-						break;
-					case 'tstamp':
-						$sortingKey = $fileObject->getModificationTime();
-						break;
-					default:
-						if ($fileObject->hasProperty($this->sort)) {
-							$sortingKey = $fileObject->getProperty($this->sort);
-						} else {
-							$sortingKey = $fileObject->getName();
-						}
+						case 'size':
+							$sortingKey = $fileObject->getSize();
+							break;
+						case 'rw':
+							$sortingKey = ($fileObject->checkActionPermission('read') ? 'R' : '' . $fileObject->checkActionPermission('write')) ? 'W' : '';
+							break;
+						case 'fileext':
+							$sortingKey = $fileObject->getExtension();
+							break;
+						case 'tstamp':
+							$sortingKey = $fileObject->getModificationTime();
+							break;
+						default:
+							if ($fileObject->hasProperty($this->sort)) {
+								$sortingKey = $fileObject->getProperty($this->sort);
+							} else {
+								$sortingKey = $fileObject->getName();
+							}
 					}
 					$i = 0;
 					while (isset($filesToSort[$sortingKey . $i])) {
@@ -418,37 +425,37 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 				$theData = array();
 				foreach ($this->fieldArray as $field) {
 					switch ($field) {
-					case 'size':
-						$numFiles = $folderObject->getFileCount();
-						$theData[$field] = $numFiles . ' ' . $GLOBALS['LANG']->getLL(($numFiles === 1 ? 'file' : 'files'), TRUE);
-						break;
-					case 'rw':
-						$theData[$field] = (!$folderObject->checkActionPermission('read') ? ' ' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('read', TRUE) . '</strong></span>') . (!$folderObject->checkActionPermission('write') ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('write', TRUE) . '</strong></span>');
-						break;
-					case 'fileext':
-						$theData[$field] = $GLOBALS['LANG']->getLL('folder', TRUE);
-						break;
-					case 'tstamp':
-						// @todo: FAL: how to get the mtime info -- $theData[$field] = \TYPO3\CMS\Backend\Utility\BackendUtility::date($theFile['tstamp']);
-						$theData[$field] = '-';
-						break;
-					case 'file':
-						$theData[$field] = $this->linkWrapDir($title, $folderObject);
-						break;
-					case '_CLIPBOARD_':
-						$temp = '';
-						if ($this->bigControlPanel) {
-							$temp .= $this->makeEdit($folderObject);
-						}
-						$temp .= $this->makeClip($folderObject);
-						$theData[$field] = $temp;
-						break;
-					case '_REF_':
-						$theData[$field] = $this->makeRef($folderObject);
-						break;
-					default:
-						$theData[$field] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($theFile[$field], $this->fixedL);
-						break;
+						case 'size':
+							$numFiles = $folderObject->getFileCount();
+							$theData[$field] = $numFiles . ' ' . $GLOBALS['LANG']->getLL(($numFiles === 1 ? 'file' : 'files'), TRUE);
+							break;
+						case 'rw':
+							$theData[$field] = (!$folderObject->checkActionPermission('read') ? ' ' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('read', TRUE) . '</strong></span>') . (!$folderObject->checkActionPermission('write') ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('write', TRUE) . '</strong></span>');
+							break;
+						case 'fileext':
+							$theData[$field] = $GLOBALS['LANG']->getLL('folder', TRUE);
+							break;
+						case 'tstamp':
+							// @todo: FAL: how to get the mtime info -- $theData[$field] = \TYPO3\CMS\Backend\Utility\BackendUtility::date($theFile['tstamp']);
+							$theData[$field] = '-';
+							break;
+						case 'file':
+							$theData[$field] = $this->linkWrapDir($title, $folderObject);
+							break;
+						case '_CLIPBOARD_':
+							$temp = '';
+							if ($this->bigControlPanel) {
+								$temp .= $this->makeEdit($folderObject);
+							}
+							$temp .= $this->makeClip($folderObject);
+							$theData[$field] = $temp;
+							break;
+						case '_REF_':
+							$theData[$field] = $this->makeRef($folderObject);
+							break;
+						default:
+							$theData[$field] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($theFile[$field], $this->fixedL);
+							break;
 					}
 				}
 				$out .= $this->addelement(1, $theIcon, $theData, ' class="file_list_normal"');
@@ -563,44 +570,44 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 				$theData = array();
 				foreach ($this->fieldArray as $field) {
 					switch ($field) {
-					case 'size':
-						$theData[$field] = \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileObject->getSize(), $GLOBALS['LANG']->getLL('byteSizeUnits', TRUE));
-						break;
-					case 'rw':
-						$theData[$field] = '' . (!$fileObject->checkActionPermission('read') ? ' ' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('read', TRUE) . '</strong></span>') . (!$fileObject->checkActionPermission('write') ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('write', TRUE) . '</strong></span>');
-						break;
-					case 'fileext':
-						$theData[$field] = strtoupper($ext);
-						break;
-					case 'tstamp':
-						$theData[$field] = \TYPO3\CMS\Backend\Utility\BackendUtility::date($fileInfo['mtime']);
-						break;
-					case '_CLIPBOARD_':
-						$temp = '';
-						if ($this->bigControlPanel) {
-							$temp .= $this->makeEdit($fileObject);
-						}
-						$temp .= $this->makeClip($fileObject);
-						$theData[$field] = $temp;
-						break;
-					case '_REF_':
-						$theData[$field] = $this->makeRef($fileObject);
-						break;
-					case 'file':
-						$theData[$field] = $this->linkWrapFile(htmlspecialchars($fileName), $fileObject);
-						// Thumbnails?
-						if ($this->thumbs && $this->isImage($ext)) {
-							$processedFile = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
-							if ($processedFile) {
-								$thumbUrl = $processedFile->getPublicUrl(TRUE);
-								$theData[$field] .= '<br /><img src="' . $thumbUrl . '" hspace="2" title="' . htmlspecialchars($fileName) . '" alt="" />';
+						case 'size':
+							$theData[$field] = \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileObject->getSize(), $GLOBALS['LANG']->getLL('byteSizeUnits', TRUE));
+							break;
+						case 'rw':
+							$theData[$field] = '' . (!$fileObject->checkActionPermission('read') ? ' ' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('read', TRUE) . '</strong></span>') . (!$fileObject->checkActionPermission('write') ? '' : '<span class="typo3-red"><strong>' . $GLOBALS['LANG']->getLL('write', TRUE) . '</strong></span>');
+							break;
+						case 'fileext':
+							$theData[$field] = strtoupper($ext);
+							break;
+						case 'tstamp':
+							$theData[$field] = \TYPO3\CMS\Backend\Utility\BackendUtility::date($fileInfo['mtime']);
+							break;
+						case '_CLIPBOARD_':
+							$temp = '';
+							if ($this->bigControlPanel) {
+								$temp .= $this->makeEdit($fileObject);
 							}
-						}
-						break;
-					default:
-						// @todo: fix the access on the array
-						$theData[$field] = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($theFile[$field], $this->fixedL));
-						break;
+							$temp .= $this->makeClip($fileObject);
+							$theData[$field] = $temp;
+							break;
+						case '_REF_':
+							$theData[$field] = $this->makeRef($fileObject);
+							break;
+						case 'file':
+							$theData[$field] = $this->linkWrapFile(htmlspecialchars($fileName), $fileObject);
+							// Thumbnails?
+							if ($this->thumbs && $this->isImage($ext)) {
+								$processedFile = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
+								if ($processedFile) {
+									$thumbUrl = $processedFile->getPublicUrl(TRUE);
+									$theData[$field] .= '<br /><img src="' . $thumbUrl . '" hspace="2" title="' . htmlspecialchars($fileName) . '" alt="" />';
+								}
+							}
+							break;
+						default:
+							// @todo: fix the access on the array
+							$theData[$field] = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($theFile[$field], $this->fixedL));
+							break;
 					}
 				}
 				$out .= $this->addelement(1, $theIcon, $theData, ' class="file_list_normal"');
@@ -758,6 +765,5 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	}
 
 }
-
 
 ?>
