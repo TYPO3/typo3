@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Mail\Plain;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Main view layer for plain mail content.
  *
@@ -33,7 +34,8 @@ class PlainView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\ContainerElement
 	/**
 	 * Constructor
 	 *
-	 * @return void
+	 * @param \TYPO3\CMS\Form\Domain\Model\Form $model
+	 * @param integer $spaces
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $model, $spaces = 0) {
 		parent::__construct($model, $spaces);
@@ -48,6 +50,5 @@ class PlainView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\ContainerElement
 	}
 
 }
-
 
 ?>

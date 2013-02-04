@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Filter;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Alphanumeric filter
  *
@@ -71,6 +72,5 @@ class AlphanumericFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	}
 
 }
-
 
 ?>

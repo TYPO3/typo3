@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * JSON submit
  *
@@ -76,6 +77,5 @@ class SubmitJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEl
 	);
 
 }
-
 
 ?>

@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * JSON checkboxgroup
  *
@@ -73,7 +74,7 @@ class CheckboxGroupJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\Fieldse
 	 * @param array $parameters Configuration array
 	 * @return void
 	 * @author Patrick Broens <patrick@patrickbroens.nl>
-	 * @see tx_form_Domain_Model_Json_Fieldset::setParameters()
+	 * @see \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElement::setParameters()
 	 */
 	public function setParameters(array $parameters) {
 		parent::setParameters($parameters);
@@ -123,6 +124,5 @@ class CheckboxGroupJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\Fieldse
 	}
 
 }
-
 
 ?>

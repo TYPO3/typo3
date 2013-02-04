@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * JSON element abstract
  *
@@ -69,22 +70,22 @@ class AbstractJsonElement {
 	public function setParameters(array $parameters) {
 		foreach ($this->configuration as $key => $value) {
 			switch ($key) {
-			case 'attributes':
-				$this->setAttributes($parameters);
-				break;
-			case 'filters':
-				$this->setFilters($parameters);
-				break;
-			case 'label':
-				$this->setLabel($parameters);
-				break;
-			case 'layout':
-				$this->setLayout($parameters);
-				break;
-			case 'validation':
-				$this->setValidation($parameters);
-				break;
-			}
+				case 'attributes':
+					$this->setAttributes($parameters);
+					break;
+				case 'filters':
+					$this->setFilters($parameters);
+					break;
+				case 'label':
+					$this->setLabel($parameters);
+					break;
+				case 'layout':
+					$this->setLayout($parameters);
+					break;
+				case 'validation':
+					$this->setValidation($parameters);
+					break;
+				}
 		}
 	}
 
@@ -181,6 +182,5 @@ class AbstractJsonElement {
 	}
 
 }
-
 
 ?>

@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Radio group model object
  *
@@ -47,6 +48,5 @@ class RadioGroupElement extends \TYPO3\CMS\Form\Domain\Model\Element\FieldsetEle
 	}
 
 }
-
 
 ?>

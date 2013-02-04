@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Content model object
  *
@@ -84,6 +85,5 @@ class ContentElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElemen
 	}
 
 }
-
 
 ?>

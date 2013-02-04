@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Header model object
  *
@@ -53,6 +54,5 @@ class HeaderElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractPlainEl
 	}
 
 }
-
 
 ?>

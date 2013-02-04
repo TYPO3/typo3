@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Factory;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Typoscript factory for form
  *
@@ -33,7 +34,11 @@ namespace TYPO3\CMS\Form\Domain\Factory;
  */
 class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 
+	/**
+	 * @var string
+	 */
 	const PROPERTY_DisableContentElement = 'disableContentElement';
+
 	/**
 	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */

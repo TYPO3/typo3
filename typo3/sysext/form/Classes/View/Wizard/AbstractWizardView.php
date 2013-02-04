@@ -23,10 +23,10 @@ namespace TYPO3\CMS\Form\View\Wizard;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * The form wizard load view
  *
- * @category View
  * @author Oliver Hader <oliver.hader@typo3.org>
  */
 abstract class AbstractWizardView {
@@ -70,6 +70,5 @@ abstract class AbstractWizardView {
 	abstract public function render();
 
 }
-
 
 ?>

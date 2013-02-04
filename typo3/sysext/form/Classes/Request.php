@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Request Handler for Form
  *
@@ -127,14 +128,14 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function get($key) {
 		switch (TRUE) {
-		case $this->method === 'get' && isset($_GET[$this->prefix][$key]):
-			return $_GET[$this->prefix][$key];
-		case $this->method === 'post' && isset($_POST[$this->prefix][$key]):
-			return $_POST[$this->prefix][$key];
-		case $this->method === 'session' && isset($this->sessionData[$key]):
-			return $this->sessionData[$key];
-		default:
-			return NULL;
+			case $this->method === 'get' && isset($_GET[$this->prefix][$key]):
+				return $_GET[$this->prefix][$key];
+			case $this->method === 'post' && isset($_POST[$this->prefix][$key]):
+				return $_POST[$this->prefix][$key];
+			case $this->method === 'session' && isset($this->sessionData[$key]):
+				return $this->sessionData[$key];
+			default:
+				return NULL;
 		}
 	}
 
@@ -146,14 +147,14 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function has($key) {
 		switch (TRUE) {
-		case $this->method === 'get' && isset($_GET[$this->prefix][$key]):
-			return TRUE;
-		case $this->method === 'post' && isset($_POST[$this->prefix][$key]):
-			return TRUE;
-		case $this->method === 'session' && isset($this->sessionData[$key]):
-			return TRUE;
-		default:
-			return FALSE;
+			case $this->method === 'get' && isset($_GET[$this->prefix][$key]):
+				return TRUE;
+			case $this->method === 'post' && isset($_POST[$this->prefix][$key]):
+				return TRUE;
+			case $this->method === 'session' && isset($this->sessionData[$key]):
+				return TRUE;
+			default:
+				return FALSE;
 		}
 	}
 
@@ -164,14 +165,14 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function hasRequest() {
 		switch (TRUE) {
-		case $this->method === 'get' && isset($_GET[$this->prefix]):
-			return TRUE;
-		case $this->method === 'post' && isset($_POST[$this->prefix]):
-			return TRUE;
-		case $this->method === 'session' && !empty($this->sessionData):
-			return TRUE;
-		default:
-			return FALSE;
+			case $this->method === 'get' && isset($_GET[$this->prefix]):
+				return TRUE;
+			case $this->method === 'post' && isset($_POST[$this->prefix]):
+				return TRUE;
+			case $this->method === 'session' && !empty($this->sessionData):
+				return TRUE;
+			default:
+				return FALSE;
 		}
 	}
 
@@ -305,15 +306,15 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 		switch ($this->getMethod()) {
-		case 'post':
-			$_POST[$this->prefix] = $formData;
-			break;
-		case 'get':
-			$_GET[$this->prefix] = $formData;
-			break;
-		case 'session':
-			$this->sessionData = $formData;
-			break;
+			case 'post':
+				$_POST[$this->prefix] = $formData;
+				break;
+			case 'get':
+				$_GET[$this->prefix] = $formData;
+				break;
+			case 'session':
+				$this->sessionData = $formData;
+				break;
 		}
 	}
 
@@ -334,6 +335,5 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
 
 ?>

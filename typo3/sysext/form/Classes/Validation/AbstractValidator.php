@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Validation;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Abstract for validation
  *
@@ -262,6 +263,5 @@ abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\Validator
 	}
 
 }
-
 
 ?>

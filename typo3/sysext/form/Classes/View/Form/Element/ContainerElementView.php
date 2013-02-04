@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Form\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Abstract class for the form element containers (FORM and FIELDSET) view
  *
@@ -45,8 +46,8 @@ class ContainerElementView extends \TYPO3\CMS\Form\View\Form\Element\AbstractEle
 	 * Get the child objects
 	 * and render them as document fragment
 	 *
-	 * @param DOMDocument $dom DOMDocument
-	 * @return DOMDocumentFragment
+	 * @param \DOMDocument $dom DOMDocument
+	 * @return \DOMDocumentFragment
 	 */
 	public function getChildElements(\DOMDocument $dom) {
 		$modelChildren = $this->model->getElements();
@@ -82,6 +83,5 @@ class ContainerElementView extends \TYPO3\CMS\Form\View\Form\Element\AbstractEle
 	}
 
 }
-
 
 ?>

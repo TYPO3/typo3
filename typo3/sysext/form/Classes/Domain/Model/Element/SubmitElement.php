@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Submit button model object
  *
@@ -69,12 +70,12 @@ class SubmitElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement
 	 *
 	 * @param string $value Value to display on button
 	 * @return void
-	 * @see tx_form_Domain_Model_Element::setValue()
+	 * @see \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement::setValue()
 	 */
 	public function setValue($value = '') {
 		/** @var $localizationHandler \TYPO3\CMS\Form\Localization */
 		$localizationHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Localization');
-		// value not set from typoscript
+		// Value not set from typoscript
 		$oldValue = $this->getAttributeValue('value');
 		if (empty($oldValue)) {
 			if (!empty($value)) {
@@ -88,6 +89,5 @@ class SubmitElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement
 	}
 
 }
-
 
 ?>
