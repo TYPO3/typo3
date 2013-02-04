@@ -23,10 +23,10 @@ namespace TYPO3\CMS\Form\View\Wizard;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * The form wizard load view
  *
- * @category View
  * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class LoadWizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
@@ -69,6 +69,5 @@ class LoadWizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	}
 
 }
-
 
 ?>

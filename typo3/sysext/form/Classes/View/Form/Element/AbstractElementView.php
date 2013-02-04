@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Form\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Abstract class for the form elements view
  *
@@ -65,7 +66,6 @@ abstract class AbstractElementView {
 	 * Constructor
 	 *
 	 * @param \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $model Current elements model
-	 * @return void
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $model) {
 		if ($this->isValidModel($model) === FALSE) {
@@ -104,8 +104,8 @@ abstract class AbstractElementView {
 	 * and add the proper XML part of child tags
 	 * to the DOMDocument of the current tag
 	 *
-	 * @param DOMDocument $dom
-	 * @param DOMNode $reference Current XML structure
+	 * @param \DOMDocument $dom
+	 * @param \DOMNode $reference Current XML structure
 	 * @return void
 	 */
 	protected function parseXML(\DOMDocument $dom, \DOMNode $reference) {
@@ -115,90 +115,90 @@ abstract class AbstractElementView {
 			$nodeType = $node->nodeType;
 			$nodeName = $node->nodeName;
 			switch ($nodeType) {
-			case XML_TEXT_NODE:
-				break;
-			case XML_ELEMENT_NODE:
-				switch ($nodeName) {
-				case 'containerWrap':
-					$this->replaceNodeWithFragment($dom, $node, $this->render('containerWrap'));
-					$deleteNode = TRUE;
+				case XML_TEXT_NODE:
 					break;
-				case 'elements':
-					$replaceNode = $this->getChildElements($dom);
-					$node->parentNode->replaceChild($replaceNode, $node);
-					break;
-				case 'button':
-
-				case 'fieldset':
-
-				case 'form':
-
-				case 'input':
-
-				case 'optgroup':
-
-				case 'select':
-					$this->setAttributes($node);
-					break;
-				case 'label':
-					if (!strrchr(get_class($this), 'AdditionalElement')) {
-						if ($this->model->additionalIsSet($nodeName)) {
-							$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('label'));
-						}
-						$deleteNode = TRUE;
-					} else {
-						if ($this->model->additionalIsSet($nodeName)) {
-							$this->setAttributeWithValueofOtherAttribute($node, 'for', 'id');
-						} else {
+				case XML_ELEMENT_NODE:
+					switch ($nodeName) {
+						case 'containerWrap':
+							$this->replaceNodeWithFragment($dom, $node, $this->render('containerWrap'));
 							$deleteNode = TRUE;
-						}
+							break;
+						case 'elements':
+							$replaceNode = $this->getChildElements($dom);
+							$node->parentNode->replaceChild($replaceNode, $node);
+							break;
+						case 'button':
+
+						case 'fieldset':
+
+						case 'form':
+
+						case 'input':
+
+						case 'optgroup':
+
+						case 'select':
+							$this->setAttributes($node);
+							break;
+						case 'label':
+							if (!strrchr(get_class($this), 'AdditionalElement')) {
+								if ($this->model->additionalIsSet($nodeName)) {
+									$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('label'));
+								}
+								$deleteNode = TRUE;
+							} else {
+								if ($this->model->additionalIsSet($nodeName)) {
+									$this->setAttributeWithValueofOtherAttribute($node, 'for', 'id');
+								} else {
+									$deleteNode = TRUE;
+								}
+							}
+							break;
+						case 'legend':
+							if (!strrchr(get_class($this), 'AdditionalElement')) {
+								if ($this->model->additionalIsSet($nodeName)) {
+									$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('legend'));
+								}
+								$deleteNode = TRUE;
+							}
+							break;
+						case 'textarea':
+
+						case 'option':
+							$this->setAttributes($node);
+							$appendNode = $dom->createTextNode($this->getElementData());
+							$node->appendChild($appendNode);
+							break;
+						case 'errorvalue':
+
+						case 'labelvalue':
+
+						case 'legendvalue':
+
+						case 'mandatoryvalue':
+							$replaceNode = $dom->createTextNode($this->getAdditionalValue());
+							$node->parentNode->insertBefore($replaceNode, $node);
+							$deleteNode = TRUE;
+							break;
+						case 'mandatory':
+
+						case 'error':
+							if ($this->model->additionalIsSet($nodeName)) {
+								$this->replaceNodeWithFragment($dom, $node, $this->getAdditional($nodeName));
+							}
+							$deleteNode = TRUE;
+							break;
+						case 'content':
+
+						case 'header':
+
+						case 'textblock':
+							$replaceNode = $dom->createTextNode($this->getElementData(FALSE));
+							$node->parentNode->insertBefore($replaceNode, $node);
+							$deleteNode = TRUE;
+							break;
 					}
 					break;
-				case 'legend':
-					if (!strrchr(get_class($this), 'AdditionalElement')) {
-						if ($this->model->additionalIsSet($nodeName)) {
-							$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('legend'));
-						}
-						$deleteNode = TRUE;
-					}
-					break;
-				case 'textarea':
-
-				case 'option':
-					$this->setAttributes($node);
-					$appendNode = $dom->createTextNode($this->getElementData());
-					$node->appendChild($appendNode);
-					break;
-				case 'errorvalue':
-
-				case 'labelvalue':
-
-				case 'legendvalue':
-
-				case 'mandatoryvalue':
-					$replaceNode = $dom->createTextNode($this->getAdditionalValue());
-					$node->parentNode->insertBefore($replaceNode, $node);
-					$deleteNode = TRUE;
-					break;
-				case 'mandatory':
-
-				case 'error':
-					if ($this->model->additionalIsSet($nodeName)) {
-						$this->replaceNodeWithFragment($dom, $node, $this->getAdditional($nodeName));
-					}
-					$deleteNode = TRUE;
-					break;
-				case 'content':
-
-				case 'header':
-
-				case 'textblock':
-					$replaceNode = $dom->createTextNode($this->getElementData(FALSE));
-					$node->parentNode->insertBefore($replaceNode, $node);
-					$deleteNode = TRUE;
-					break;
-				}
-				break;
 			}
 			// Parse the child nodes of this node if available
 			if ($node->hasChildNodes()) {
@@ -220,7 +220,7 @@ abstract class AbstractElementView {
 	 *
 	 * @param string $type Type of element for layout
 	 * @param boolean $returnFirstChild If TRUE, the first child will be returned instead of the DOMDocument
-	 * @return mixed DOMDocument/DOMNode XML part of the view object
+	 * @return mixed \DOMDocument|\DOMNode XML part of the view object
 	 */
 	public function render($type = 'element', $returnFirstChild = TRUE) {
 		$useLayout = $this->getLayout((string) $type);
@@ -274,9 +274,9 @@ abstract class AbstractElementView {
 	/**
 	 * Replace the current node with a document fragment
 	 *
-	 * @param DOMDocument $dom
-	 * @param DOMNode $node Current Node
-	 * @param DOMNode $value Value to import
+	 * @param \DOMDocument $dom
+	 * @param \DOMNode $node Current Node
+	 * @param \DOMNode $value Value to import
 	 * @return void
 	 */
 	public function replaceNodeWithFragment(\DOMDocument $dom, \DOMNode $node, \DOMNode $value) {
@@ -290,7 +290,7 @@ abstract class AbstractElementView {
 	 * Set the attributes on the html tags according to the attributes that are
 	 * assigned in the model for a certain element
 	 *
-	 * @param DOMElement $domElement DOM element of the specific HTML tag
+	 * @param \DOMElement $domElement DOM element of the specific HTML tag
 	 * @return void
 	 */
 	public function setAttributes(\DOMElement $domElement) {
@@ -308,7 +308,7 @@ abstract class AbstractElementView {
 	/**
 	 * Set a single attribute of a HTML tag specified by key
 	 *
-	 * @param DOMElement $domElement DOM element of the specific HTML tag
+	 * @param \DOMElement $domElement DOM element of the specific HTML tag
 	 * @param string $key Attribute key
 	 * @return void
 	 */
@@ -323,7 +323,7 @@ abstract class AbstractElementView {
 	 * Sets the value of an attribute with the value of another attribute,
 	 * for instance equalizing the name and id attributes for the form tag
 	 *
-	 * @param DOMElement $domElement DOM element of the specific HTML tag
+	 * @param \DOMElement $domElement DOM element of the specific HTML tag
 	 * @param string $key Key of the attribute which needs to be changed
 	 * @param string $other Key of the attribute to take the value from
 	 * @return unknown_type
@@ -351,7 +351,7 @@ abstract class AbstractElementView {
 	 * Create additional object by key and render the content
 	 *
 	 * @param string $key Type of additional
-	 * @return DOMNode
+	 * @return \DOMNode
 	 */
 	public function getAdditional($key) {
 		$additional = $this->createAdditional($key);
@@ -423,6 +423,5 @@ abstract class AbstractElementView {
 	}
 
 }
-
 
 ?>

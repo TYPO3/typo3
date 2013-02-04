@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Optgroup model object
  *
@@ -57,7 +58,7 @@ class OptgroupElement extends \TYPO3\CMS\Form\Domain\Model\Element\ContainerElem
 	 *
 	 * @param string $parentName Name of the parent
 	 * @return \TYPO3\CMS\Form\Domain\Model\Element\OptgroupElement The element object
-	 * @see tx_form_Domain_Model_Element::setParent()
+	 * @see \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement::setParent()
 	 */
 	public function setParentName($parentName) {
 		/** @var $element \TYPO3\CMS\Form\Domain\Model\Element\OptionElement */
@@ -79,6 +80,5 @@ class OptgroupElement extends \TYPO3\CMS\Form\Domain\Model\Element\ContainerElem
 	}
 
 }
-
 
 ?>

@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Confirmation\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * View object for the option element
  *
@@ -43,13 +44,11 @@ class OptionElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\Abstra
 	 * Constructor
 	 *
 	 * @param \TYPO3\CMS\Form\Domain\Model\Element\OptionElement $model Model for this element
-	 * @return void
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\OptionElement $model) {
 		parent::__construct($model);
 	}
 
 }
-
 
 ?>

@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Form\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * View object for the file upload element
  *
@@ -41,6 +42,5 @@ class FileuploadElementView extends \TYPO3\CMS\Form\View\Form\Element\AbstractEl
 	';
 
 }
-
 
 ?>

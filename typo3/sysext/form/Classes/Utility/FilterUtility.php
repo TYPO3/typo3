@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Static methods for filtering
  *
@@ -119,6 +120,5 @@ class FilterUtility implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	}
 
 }
-
 
 ?>

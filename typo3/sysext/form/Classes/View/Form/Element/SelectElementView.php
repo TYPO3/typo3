@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Form\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * View object for the select element
  *
@@ -43,6 +44,5 @@ class SelectElementView extends \TYPO3\CMS\Form\View\Form\Element\ContainerEleme
 	';
 
 }
-
 
 ?>

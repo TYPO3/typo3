@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Mail\Plain\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Main view layer for plain mail container content.
  *
@@ -65,6 +66,5 @@ class ContainerElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Abstr
 	}
 
 }
-
 
 ?>

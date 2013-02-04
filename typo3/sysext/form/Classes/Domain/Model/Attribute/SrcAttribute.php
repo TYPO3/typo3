@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Attribute 'src'
  *
@@ -48,6 +49,5 @@ class SrcAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttrib
 	}
 
 }
-
 
 ?>

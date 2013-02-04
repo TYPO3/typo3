@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Additional;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Additional 'label'
  *
@@ -41,6 +42,5 @@ class LabelAdditionalElement extends \TYPO3\CMS\Form\Domain\Model\Additional\Abs
 	}
 
 }
-
 
 ?>

@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Mail;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Main view layer for Forms.
  *
@@ -60,8 +61,6 @@ class MailView {
 
 	/**
 	 * Constructor
-	 *
-	 * @return void
 	 */
 	public function __construct(\TYPO3\CMS\Core\Mail\MailMessage $mailMessage, array $typoScript) {
 		$this->localCobj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
@@ -79,14 +78,29 @@ class MailView {
 		return $output;
 	}
 
+	/**
+	 * Success
+	 *
+	 * @return string
+	 */
 	protected function success() {
 		return $this->makeContentObject('success');
 	}
 
+	/**
+	 * Error
+	 *
+	 * @return string
+	 */
 	protected function error() {
 		return $this->makeContentObject('error');
 	}
 
+	/**
+	 * Make content object
+	 *
+	 * @return string
+	 */
 	protected function makeContentObject($isSent) {
 		$message = NULL;
 		$type = NULL;
@@ -129,6 +143,5 @@ class MailView {
 	}
 
 }
-
 
 ?>

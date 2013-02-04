@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Validation;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Greater than rule
  *
@@ -41,7 +42,6 @@ class GreaterThanValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator 
 	 * Constructor
 	 *
 	 * @param array $arguments Typoscript configuration
-	 * @return void
 	 */
 	public function __construct($arguments) {
 		$this->setMinimum($arguments['minimum']);
@@ -52,7 +52,7 @@ class GreaterThanValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator 
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean
-	 * @see tx_form_System_Validate_Interface::isValid()
+	 * @see \TYPO3\CMS\Form\Validation\ValidatorInterface::isValid()
 	 */
 	public function isValid() {
 		if ($this->requestHandler->has($this->fieldName)) {
@@ -88,6 +88,5 @@ class GreaterThanValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator 
 	}
 
 }
-
 
 ?>

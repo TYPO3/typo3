@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Filter;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Uppercase filter
  *
@@ -41,6 +42,5 @@ class UpperCaseFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	}
 
 }
-
 
 ?>

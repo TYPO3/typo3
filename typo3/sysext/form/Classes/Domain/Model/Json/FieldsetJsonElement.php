@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * JSON fieldset
  *
@@ -67,7 +68,7 @@ class FieldsetJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\ContainerJso
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @see tx_form_Domain_Model_Json_Element::setParameters()
+	 * @see \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement::setParameters()
 	 */
 	public function setParameters(array $parameters) {
 		parent::setParameters($parameters);
@@ -89,6 +90,5 @@ class FieldsetJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\ContainerJso
 	}
 
 }
-
 
 ?>
