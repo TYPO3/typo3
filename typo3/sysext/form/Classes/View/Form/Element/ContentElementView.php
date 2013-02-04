@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Form\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * View object for the content element
  *
@@ -40,6 +41,5 @@ class ContentElementView extends \TYPO3\CMS\Form\View\Form\Element\AbstractEleme
 	';
 
 }
-
 
 ?>

@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Filter;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Integer filter
  *
@@ -41,6 +42,5 @@ class IntegerFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	}
 
 }
-
 
 ?>

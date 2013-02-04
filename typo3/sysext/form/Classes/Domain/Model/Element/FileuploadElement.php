@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * File upload model object
  *
@@ -92,6 +93,5 @@ class FileuploadElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractEle
 	}
 
 }
-
 
 ?>

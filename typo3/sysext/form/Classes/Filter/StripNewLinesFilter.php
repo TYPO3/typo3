@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Filter;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Strip new lines filter
  *
@@ -30,18 +31,16 @@ namespace TYPO3\CMS\Form\Filter;
  */
 class StripNewLinesFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 
-	/**
-	 * Strip newlines
-	 *
-	 * @param string $value
-	 * @return string
-	 */
-	public function filter($value) {
-		return str_replace(array('
-', ''), ' ', (string) $value);
-	}
+        /**
+         * Strip newlines
+         *
+         * @param string $value
+         * @return string
+         */
+        public function filter($value) {
+                return str_replace(array(LF, CR), ' ', (string) $value);
+        }
 
 }
-
 
 ?>

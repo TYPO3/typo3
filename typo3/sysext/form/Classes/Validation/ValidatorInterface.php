@@ -23,13 +23,14 @@ namespace TYPO3\CMS\Form\Validation;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Interface for validate
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
  */
-interface ValidatorInterface
-{
+interface ValidatorInterface {
+
 	/**
 	 * Set the fieldName
 	 *

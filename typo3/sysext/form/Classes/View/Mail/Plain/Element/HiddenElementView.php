@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Mail\Plain\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * View object for the hidden element
  *
@@ -56,12 +57,14 @@ class HiddenElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Abstract
 		return $label;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	protected function getValue() {
 		$value = $this->model->getAttributeValue('value');
 		return $value;
 	}
 
 }
-
 
 ?>

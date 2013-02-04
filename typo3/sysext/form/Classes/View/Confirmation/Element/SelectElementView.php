@@ -46,13 +46,11 @@ class SelectElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\Contai
 	 * Constructor
 	 *
 	 * @param \TYPO3\CMS\Form\Domain\Model\Element\SelectElement $model Model for this element
-	 * @return void
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\SelectElement $model) {
 		parent::__construct($model);
 	}
 
 }
-
 
 ?>

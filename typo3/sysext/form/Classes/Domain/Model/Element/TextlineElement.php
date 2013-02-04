@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Textline model object
  *
@@ -70,7 +71,7 @@ class TextlineElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractEleme
 	 * datapart of the element
 	 *
 	 * @return \TYPO3\CMS\Form\Domain\Model\Element\TextlineElement
-	 * @see tx_form_Domain_Model_Element::checkFilterAndSetIncomingDataFromRequest()
+	 * @see \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement::checkFilterAndSetIncomingDataFromRequest()
 	 */
 	public function checkFilterAndSetIncomingDataFromRequest() {
 		if ($this->requestHandler->has($this->getName())) {
@@ -82,6 +83,5 @@ class TextlineElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractEleme
 	}
 
 }
-
 
 ?>

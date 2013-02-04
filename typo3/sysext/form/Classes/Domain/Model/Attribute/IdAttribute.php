@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Attribute 'id'
  *
@@ -64,6 +65,5 @@ class IdAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribu
 	}
 
 }
-
 
 ?>

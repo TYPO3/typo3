@@ -23,10 +23,10 @@ namespace TYPO3\CMS\Form\View\Wizard;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * The form wizard view
  *
- * @category View
  * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
@@ -50,7 +50,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	 *
 	 * Defines the document template object.
 	 *
-	 * @return void
+	 * @param \TYPO3\CMS\Form\Domain\Repository\ContentRepository $repository
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Repository\ContentRepository $repository) {
 		parent::__construct($repository);
@@ -263,11 +263,11 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	/**
 	 * Reads locallang file into array (for possible include in header)
 	 *
-	 * @param $file
+	 * @return void
 	 */
 	protected function loadLocalization() {
-		$wizardLabels = $GLOBALS['LANG']->includeLLFile('EXT:form/Resources/Private/Language/locallang_wizard.xml', FALSE, TRUE);
-		$controllerLabels = $GLOBALS['LANG']->includeLLFile('EXT:form/Resources/Private/Language/locallang_controller.xml', FALSE, TRUE);
+		$wizardLabels = $GLOBALS['LANG']->includeLLFile('EXT:form/Resources/Private/Language/locallang_wizard.xlf', FALSE, TRUE);
+		$controllerLabels = $GLOBALS['LANG']->includeLLFile('EXT:form/Resources/Private/Language/locallang_controller.xlf', FALSE, TRUE);
 		$labels = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($controllerLabels, $wizardLabels);
 		$this->pageRenderer->addInlineLanguageLabelArray($labels['default']);
 	}
@@ -276,7 +276,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	 * Hook to extend the wizard interface.
 	 *
 	 * The hook is called just before content rendering. Use it by adding your function to the array
-	 * $TYPO3_CONF_VARS['EXTCONF']['form']['hooks']['renderWizard']
+	 * $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['form']['hooks']['renderWizard']
 	 *
 	 * @return void
 	 */
@@ -293,6 +293,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	 * Remove the trailing dots from the values in Typoscript
 	 *
 	 * @param array $array The array with the trailing dots
+	 * @return void
 	 */
 	protected function removeTrailingDotsFromTyposcript(array &$array) {
 		foreach ($array as $key => $value) {
@@ -354,6 +355,5 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	}
 
 }
-
 
 ?>

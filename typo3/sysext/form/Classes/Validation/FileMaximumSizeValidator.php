@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Validation;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * File Maximum size rule
  * The file size must be smaller or equal than the maximum
@@ -42,7 +43,6 @@ class FileMaximumSizeValidator extends \TYPO3\CMS\Form\Validation\AbstractValida
 	 * Constructor
 	 *
 	 * @param array $arguments Typoscript configuration
-	 * @return void
 	 */
 	public function __construct($arguments) {
 		$this->setMaximum($arguments['maximum']);
@@ -53,7 +53,7 @@ class FileMaximumSizeValidator extends \TYPO3\CMS\Form\Validation\AbstractValida
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean
-	 * @see tx_form_System_Validate_Interface::isValid()
+	 * @see \TYPO3\CMS\Form\Validation\ValidatorInterface::isValid()
 	 */
 	public function isValid() {
 		if ($this->requestHandler->has($this->fieldName)) {
@@ -90,6 +90,5 @@ class FileMaximumSizeValidator extends \TYPO3\CMS\Form\Validation\AbstractValida
 	}
 
 }
-
 
 ?>

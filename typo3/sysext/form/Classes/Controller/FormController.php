@@ -23,11 +23,11 @@ namespace TYPO3\CMS\Form\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Main controller for Forms.  All requests come through this class
  * and are routed to the model and view layers for processing.
  *
- * @category Controller
  * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class FormController {
@@ -147,7 +147,12 @@ class FormController {
 	protected function showForm() {
 		$show = FALSE;
 		$submittedByPrefix = $this->requestHandler->getByMethod();
-		if ($submittedByPrefix === NULL || !empty($submittedByPrefix) && !$this->validate->isValid() || !empty($submittedByPrefix) && $this->validate->isValid() && $this->requestHandler->getPost('confirmation-false', NULL) !== NULL) {
+		if (
+			$submittedByPrefix === NULL ||
+			!empty($submittedByPrefix) && !$this->validate->isValid() ||
+			!empty($submittedByPrefix) && $this->validate->isValid() &&
+			$this->requestHandler->getPost('confirmation-false', NULL) !== NULL
+		) {
 			$show = TRUE;
 		}
 		return $show;
@@ -224,6 +229,5 @@ class FormController {
 	}
 
 }
-
 
 ?>

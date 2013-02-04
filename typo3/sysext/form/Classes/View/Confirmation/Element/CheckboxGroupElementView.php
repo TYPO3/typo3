@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Confirmation\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * View object for the checkbox group element
  *
@@ -46,13 +47,11 @@ class CheckboxGroupElementView extends \TYPO3\CMS\Form\View\Confirmation\Element
 	 * Constructor
 	 *
 	 * @param \TYPO3\CMS\Form\Domain\Model\Element\CheckboxGroupElement $model Model for this element
-	 * @return void
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\CheckboxGroupElement $model) {
 		parent::__construct($model);
 	}
 
 }
-
 
 ?>

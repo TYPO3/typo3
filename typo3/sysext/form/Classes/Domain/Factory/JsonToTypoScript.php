@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Factory;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Json to Typoscript converter
  *
@@ -90,53 +91,53 @@ class JsonToTypoScript {
 				if ($element['xtype']) {
 					$this->elementId++;
 					switch ($element['xtype']) {
-					case 'typo3-form-wizard-elements-basic-button':
+						case 'typo3-form-wizard-elements-basic-button':
 
-					case 'typo3-form-wizard-elements-basic-checkbox':
+						case 'typo3-form-wizard-elements-basic-checkbox':
 
-					case 'typo3-form-wizard-elements-basic-fileupload':
+						case 'typo3-form-wizard-elements-basic-fileupload':
 
-					case 'typo3-form-wizard-elements-basic-hidden':
+						case 'typo3-form-wizard-elements-basic-hidden':
 
-					case 'typo3-form-wizard-elements-basic-password':
+						case 'typo3-form-wizard-elements-basic-password':
 
-					case 'typo3-form-wizard-elements-basic-radio':
+						case 'typo3-form-wizard-elements-basic-radio':
 
-					case 'typo3-form-wizard-elements-basic-reset':
+						case 'typo3-form-wizard-elements-basic-reset':
 
-					case 'typo3-form-wizard-elements-basic-select':
+						case 'typo3-form-wizard-elements-basic-select':
 
-					case 'typo3-form-wizard-elements-basic-submit':
+						case 'typo3-form-wizard-elements-basic-submit':
 
-					case 'typo3-form-wizard-elements-basic-textarea':
+						case 'typo3-form-wizard-elements-basic-textarea':
 
-					case 'typo3-form-wizard-elements-basic-textline':
+						case 'typo3-form-wizard-elements-basic-textline':
 
-					case 'typo3-form-wizard-elements-predefined-email':
+						case 'typo3-form-wizard-elements-predefined-email':
 
-					case 'typo3-form-wizard-elements-content-header':
+						case 'typo3-form-wizard-elements-content-header':
 
-					case 'typo3-form-wizard-elements-content-textblock':
-						$this->getDefaultElementSetup($element, $parent, $elementCounter, $childrenWithParentName);
-						break;
-					case 'typo3-form-wizard-elements-basic-fieldset':
+						case 'typo3-form-wizard-elements-content-textblock':
+							$this->getDefaultElementSetup($element, $parent, $elementCounter, $childrenWithParentName);
+							break;
+						case 'typo3-form-wizard-elements-basic-fieldset':
 
-					case 'typo3-form-wizard-elements-predefined-name':
-						$this->getDefaultElementSetup($element, $parent, $elementCounter);
-						$this->getContainer($element, $parent, $elementCounter);
-						break;
-					case 'typo3-form-wizard-elements-predefined-checkboxgroup':
+						case 'typo3-form-wizard-elements-predefined-name':
+							$this->getDefaultElementSetup($element, $parent, $elementCounter);
+							$this->getContainer($element, $parent, $elementCounter);
+							break;
+						case 'typo3-form-wizard-elements-predefined-checkboxgroup':
 
-					case 'typo3-form-wizard-elements-predefined-radiogroup':
-						$this->getDefaultElementSetup($element, $parent, $elementCounter);
-						$this->getContainer($element, $parent, $elementCounter, TRUE);
-						break;
-					case 'typo3-form-wizard-elements-basic-form':
-						$this->getDefaultElementSetup($element, $parent, $elementCounter);
-						$this->getContainer($element, $parent, $elementCounter);
-						$this->getForm($element, $parent, $elementCounter);
-						break;
-					default:
+						case 'typo3-form-wizard-elements-predefined-radiogroup':
+							$this->getDefaultElementSetup($element, $parent, $elementCounter);
+							$this->getContainer($element, $parent, $elementCounter, TRUE);
+							break;
+						case 'typo3-form-wizard-elements-basic-form':
+							$this->getDefaultElementSetup($element, $parent, $elementCounter);
+							$this->getContainer($element, $parent, $elementCounter);
+							$this->getForm($element, $parent, $elementCounter);
+							break;
+						default:
 
 					}
 				}
@@ -213,31 +214,31 @@ class JsonToTypoScript {
 		$shortXType = str_replace('typo3-form-wizard-elements-', '', $element['xtype']);
 		list($category, $type) = explode('-', $shortXType);
 		switch ($category) {
-		case 'basic':
-			$contentObjectType = strtoupper($type);
-			break;
-		case 'predefined':
-			switch ($type) {
-			case 'checkboxgroup':
-
-			case 'radiogroup':
+			case 'basic':
 				$contentObjectType = strtoupper($type);
 				break;
-			case 'email':
-				$contentObjectType = 'TEXTLINE';
-				break;
-			case 'name':
-				$contentObjectType = 'FIELDSET';
-			}
-			break;
-		case 'content':
-			switch ($type) {
-			case 'header':
+			case 'predefined':
+				switch ($type) {
+				case 'checkboxgroup':
 
-			case 'textblock':
-				$contentObjectType = strtoupper($type);
-			}
-		default:
+				case 'radiogroup':
+					$contentObjectType = strtoupper($type);
+					break;
+				case 'email':
+					$contentObjectType = 'TEXTLINE';
+					break;
+				case 'name':
+					$contentObjectType = 'FIELDSET';
+				}
+				break;
+			case 'content':
+				switch ($type) {
+				case 'header':
+
+				case 'textblock':
+					$contentObjectType = strtoupper($type);
+				}
+			default:
 
 		}
 		return $contentObjectType;
@@ -256,40 +257,40 @@ class JsonToTypoScript {
 	protected function setConfiguration(array $element, array &$parent, $elementCounter, $childrenWithParentName = FALSE) {
 		foreach ($element['configuration'] as $key => $value) {
 			switch ($key) {
-			case 'attributes':
-				$this->setAttributes($value, $parent, $elementCounter, $childrenWithParentName);
-				break;
-			case 'confirmation':
-				$this->setConfirmation($value, $parent, $elementCounter);
-				break;
-			case 'filters':
-				$this->setFilters($value, $parent, $elementCounter);
-				break;
-			case 'label':
-				$this->setLabel($value, $parent, $elementCounter);
-				break;
-			case 'layout':
-				$this->setLayout($element, $value, $parent, $elementCounter);
-				break;
-			case 'legend':
-				$this->setLegend($value, $parent, $elementCounter);
-				break;
-			case 'options':
-				$this->setOptions($element, $value, $parent, $elementCounter);
-				break;
-			case 'postProcessor':
-				$this->setPostProcessor($value, $parent, $elementCounter);
-				break;
-			case 'prefix':
-				$this->setPrefix($value, $parent, $elementCounter);
-				break;
-			case 'validation':
-				$this->setValidationRules($element, $value);
-				break;
-			case 'various':
-				$this->setVarious($element, $value, $parent, $elementCounter);
-				break;
-			default:
+				case 'attributes':
+					$this->setAttributes($value, $parent, $elementCounter, $childrenWithParentName);
+					break;
+				case 'confirmation':
+					$this->setConfirmation($value, $parent, $elementCounter);
+					break;
+				case 'filters':
+					$this->setFilters($value, $parent, $elementCounter);
+					break;
+				case 'label':
+					$this->setLabel($value, $parent, $elementCounter);
+					break;
+				case 'layout':
+					$this->setLayout($element, $value, $parent, $elementCounter);
+					break;
+				case 'legend':
+					$this->setLegend($value, $parent, $elementCounter);
+					break;
+				case 'options':
+					$this->setOptions($element, $value, $parent, $elementCounter);
+					break;
+				case 'postProcessor':
+					$this->setPostProcessor($value, $parent, $elementCounter);
+					break;
+				case 'prefix':
+					$this->setPrefix($value, $parent, $elementCounter);
+					break;
+				case 'validation':
+					$this->setValidationRules($element, $value);
+					break;
+				case 'various':
+					$this->setVarious($element, $value, $parent, $elementCounter);
+					break;
+				default:
 
 			}
 		}
@@ -378,39 +379,39 @@ class JsonToTypoScript {
 	 */
 	protected function setLayout(array $element, $value, array &$parent, $elementCounter) {
 		switch ($element['xtype']) {
-		case 'typo3-form-wizard-elements-basic-button':
+			case 'typo3-form-wizard-elements-basic-button':
 
-		case 'typo3-form-wizard-elements-basic-fileupload':
+			case 'typo3-form-wizard-elements-basic-fileupload':
 
-		case 'typo3-form-wizard-elements-basic-password':
+			case 'typo3-form-wizard-elements-basic-password':
 
-		case 'typo3-form-wizard-elements-basic-reset':
+			case 'typo3-form-wizard-elements-basic-reset':
 
-		case 'typo3-form-wizard-elements-basic-submit':
+			case 'typo3-form-wizard-elements-basic-submit':
 
-		case 'typo3-form-wizard-elements-basic-textline':
-			if ($value === 'back') {
-				$parent[$elementCounter . '.']['layout'] = '<input />' . chr(10) . '<label />';
-			}
-			break;
-		case 'typo3-form-wizard-elements-basic-checkbox':
+			case 'typo3-form-wizard-elements-basic-textline':
+				if ($value === 'back') {
+					$parent[$elementCounter . '.']['layout'] = '<input />' . chr(10) . '<label />';
+				}
+				break;
+			case 'typo3-form-wizard-elements-basic-checkbox':
 
-		case 'typo3-form-wizard-elements-basic-radio':
-			if ($value === 'front') {
-				$parent[$elementCounter . '.']['layout'] = '<label />' . chr(10) . '<input />';
-			}
-			break;
-		case 'typo3-form-wizard-elements-basic-select':
-			if ($value === 'back') {
-				$parent[$elementCounter . '.']['layout'] = '<select>' . chr(10) . '<elements />' . chr(10) . '</select>' . chr(10) . '<label />';
-			}
-			break;
-		case 'typo3-form-wizard-elements-basic-textarea':
-			if ($value === 'back') {
-				$parent[$elementCounter . '.']['layout'] = '<textarea />' . chr(10) . '<label />';
-			}
-			break;
-		default:
+			case 'typo3-form-wizard-elements-basic-radio':
+				if ($value === 'front') {
+					$parent[$elementCounter . '.']['layout'] = '<label />' . chr(10) . '<input />';
+				}
+				break;
+			case 'typo3-form-wizard-elements-basic-select':
+				if ($value === 'back') {
+					$parent[$elementCounter . '.']['layout'] = '<select>' . chr(10) . '<elements />' . chr(10) . '</select>' . chr(10) . '<label />';
+				}
+				break;
+			case 'typo3-form-wizard-elements-basic-textarea':
+				if ($value === 'back') {
+					$parent[$elementCounter . '.']['layout'] = '<textarea />' . chr(10) . '<label />';
+				}
+				break;
+			default:
 
 		}
 	}
@@ -527,13 +528,13 @@ class JsonToTypoScript {
 	protected function setVarious(array $element, array $various, array &$parent, $elementCounter) {
 		foreach ($various as $key => $value) {
 			switch ($key) {
-			case 'headingSize':
+				case 'headingSize':
 
-			case 'content':
+				case 'content':
 
-			case 'name':
-				$parent[$elementCounter . '.'][$key] = (string) $value;
-				break;
+				case 'name':
+					$parent[$elementCounter . '.'][$key] = (string) $value;
+					break;
 			}
 		}
 	}
@@ -576,6 +577,5 @@ class JsonToTypoScript {
 	}
 
 }
-
 
 ?>
