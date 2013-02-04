@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Abstract class for the form element containers (FORM and FIELDSET) view
  *
@@ -91,6 +92,5 @@ class ContainerElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\Abstra
 	}
 
 }
-
 
 ?>

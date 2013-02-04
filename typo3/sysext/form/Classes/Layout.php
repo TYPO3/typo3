@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Layout class for the form elements
  *
@@ -95,6 +96,5 @@ class Layout implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
 
 ?>

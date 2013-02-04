@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Form;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Main view layer for Forms.
  *
@@ -69,6 +70,5 @@ class FormView extends \TYPO3\CMS\Form\View\Form\Element\ContainerElementView {
 	}
 
 }
-
 
 ?>

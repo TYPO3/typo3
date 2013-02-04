@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Element counter for model
  *
@@ -49,6 +50,5 @@ class ElementCounter implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
 
 ?>
