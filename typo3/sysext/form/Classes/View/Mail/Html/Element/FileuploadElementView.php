@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * View object for the fileupload element
  *
@@ -48,13 +49,11 @@ class FileuploadElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\Abstr
 	 * Constructor
 	 *
 	 * @param \TYPO3\CMS\Form\Domain\Model\Element\FileuploadElement $model Model for this element
-	 * @return void
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\FileuploadElement $model) {
 		parent::__construct($model);
 	}
 
 }
-
 
 ?>

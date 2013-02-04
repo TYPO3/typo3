@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Attribute 'disabled'
  *
@@ -59,6 +60,5 @@ class DisabledAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractA
 	}
 
 }
-
 
 ?>

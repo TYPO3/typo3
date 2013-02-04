@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Form\View\Confirmation\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Abstract class for the form elements view
  *
@@ -60,7 +61,6 @@ abstract class AbstractElementView {
 	 * Constructor
 	 *
 	 * @param object $model Current elements model
-	 * @return void
 	 */
 	public function __construct($model) {
 		$this->model = $model;
@@ -72,8 +72,8 @@ abstract class AbstractElementView {
 	 * and add the proper XML part of child tags
 	 * to the DOMDocument of the current tag
 	 *
-	 * @param DOMDocument $dom
-	 * @param DOMNode $reference Current XML structure
+	 * @param \DOMDocument $dom
+	 * @param \DOMNode $reference Current XML structure
 	 * @param boolean $emptyElement
 	 * @return boolean
 	 */
@@ -84,74 +84,74 @@ abstract class AbstractElementView {
 			$nodeType = $node->nodeType;
 			$nodeName = $node->nodeName;
 			switch ($nodeType) {
-			case XML_TEXT_NODE:
-				break;
-			case XML_ELEMENT_NODE:
-				switch ($nodeName) {
-				case 'containerWrap':
-					$containerWrap = $this->render('containerWrap');
-					if ($containerWrap) {
-						$this->replaceNodeWithFragment($dom, $node, $containerWrap);
-					} else {
-						$emptyElement = TRUE;
-					}
-					$deleteNode = TRUE;
+				case XML_TEXT_NODE:
 					break;
-				case 'elements':
-					$replaceNode = $this->getChildElements($dom);
-					if ($replaceNode) {
-						$node->parentNode->replaceChild($replaceNode, $node);
-					} else {
-						$emptyElement = TRUE;
-					}
-					break;
-				case 'label':
-					if (!strrchr(get_class($this), 'AdditionalElement')) {
-						if ($this->model->additionalIsSet($nodeName)) {
-							$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('label'));
-						}
-						$deleteNode = TRUE;
-					} else {
-						if (!$this->model->additionalIsSet($nodeName)) {
+				case XML_ELEMENT_NODE:
+					switch ($nodeName) {
+						case 'containerWrap':
+							$containerWrap = $this->render('containerWrap');
+							if ($containerWrap) {
+								$this->replaceNodeWithFragment($dom, $node, $containerWrap);
+							} else {
+								$emptyElement = TRUE;
+							}
 							$deleteNode = TRUE;
-						}
-					}
-					break;
-				case 'legend':
-					if (!strrchr(get_class($this), 'AdditionalElement')) {
-						if ($this->model->additionalIsSet($nodeName)) {
-							$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('legend'));
-						}
-						$deleteNode = TRUE;
-					}
-					break;
-				case 'inputvalue':
-					if (array_key_exists('checked', $this->model->getAllowedAttributes())) {
-						if (!$this->model->hasAttribute('checked')) {
-							$emptyElement = TRUE;
-						}
-					} elseif (array_key_exists('selected', $this->model->getAllowedAttributes()) && !$this->model->hasAttribute('selected')) {
-						$emptyElement = TRUE;
-					} else {
-						$inputValue = $this->getInputValue();
-						if ($inputValue != '') {
-							$replaceNode = $dom->createTextNode($this->getInputValue());
-							$node->parentNode->insertBefore($replaceNode, $node);
-						} else {
-							$emptyElement = TRUE;
-						}
-					}
-					$deleteNode = TRUE;
-					break;
-				case 'labelvalue':
+							break;
+						case 'elements':
+							$replaceNode = $this->getChildElements($dom);
+							if ($replaceNode) {
+								$node->parentNode->replaceChild($replaceNode, $node);
+							} else {
+								$emptyElement = TRUE;
+							}
+							break;
+						case 'label':
+							if (!strrchr(get_class($this), 'AdditionalElement')) {
+								if ($this->model->additionalIsSet($nodeName)) {
+									$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('label'));
+								}
+								$deleteNode = TRUE;
+							} else {
+								if (!$this->model->additionalIsSet($nodeName)) {
+									$deleteNode = TRUE;
+								}
+							}
+							break;
+						case 'legend':
+							if (!strrchr(get_class($this), 'AdditionalElement')) {
+								if ($this->model->additionalIsSet($nodeName)) {
+									$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('legend'));
+								}
+								$deleteNode = TRUE;
+							}
+							break;
+						case 'inputvalue':
+							if (array_key_exists('checked', $this->model->getAllowedAttributes())) {
+								if (!$this->model->hasAttribute('checked')) {
+									$emptyElement = TRUE;
+								}
+							} elseif (array_key_exists('selected', $this->model->getAllowedAttributes()) && !$this->model->hasAttribute('selected')) {
+								$emptyElement = TRUE;
+							} else {
+								$inputValue = $this->getInputValue();
+								if ($inputValue != '') {
+									$replaceNode = $dom->createTextNode($this->getInputValue());
+									$node->parentNode->insertBefore($replaceNode, $node);
+								} else {
+									$emptyElement = TRUE;
+								}
+							}
+							$deleteNode = TRUE;
+							break;
+						case 'labelvalue':
 
-				case 'legendvalue':
-					$replaceNode = $dom->createTextNode($this->getAdditionalValue());
-					$node->parentNode->insertBefore($replaceNode, $node);
-					$deleteNode = TRUE;
+						case 'legendvalue':
+							$replaceNode = $dom->createTextNode($this->getAdditionalValue());
+							$node->parentNode->insertBefore($replaceNode, $node);
+							$deleteNode = TRUE;
+							break;
+					}
 					break;
-				}
-				break;
 			}
 			// Parse the child nodes of this node if available
 			if ($node->hasChildNodes()) {
@@ -174,7 +174,7 @@ abstract class AbstractElementView {
 	 *
 	 * @param string $type Type of element for layout
 	 * @param boolean $returnFirstChild If TRUE, the first child will be returned instead of the DOMDocument
-	 * @return mixed DOMDocument/DOMNode XML part of the view object
+	 * @return mixed \DOMDocument|\DOMNode XML part of the view object
 	 */
 	public function render($type = 'element', $returnFirstChild = TRUE) {
 		$useLayout = $this->getLayout((string) $type);
@@ -202,19 +202,19 @@ abstract class AbstractElementView {
 		/** @var $layoutHandler \TYPO3\CMS\Form\Layout */
 		$layoutHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Layout');
 		switch ($type) {
-		case 'element':
-			$layoutDefault = $this->layout;
-			$layout = $layoutHandler->getLayoutByObject(\TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getLastPartOfClassName($this, TRUE), $layoutDefault);
-			break;
-		case 'elementWrap':
-			$layoutDefault = $this->elementWrap;
-			$elementWrap = $layoutHandler->getLayoutByObject($type, $layoutDefault);
-			$layout = str_replace('<element />', $this->getLayout('element'), $elementWrap);
-			break;
-		case 'containerWrap':
-			$layoutDefault = $this->containerWrap;
-			$layout = $layoutHandler->getLayoutByObject($type, $layoutDefault);
-			break;
+			case 'element':
+				$layoutDefault = $this->layout;
+				$layout = $layoutHandler->getLayoutByObject(\TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getLastPartOfClassName($this, TRUE), $layoutDefault);
+				break;
+			case 'elementWrap':
+				$layoutDefault = $this->elementWrap;
+				$elementWrap = $layoutHandler->getLayoutByObject($type, $layoutDefault);
+				$layout = str_replace('<element />', $this->getLayout('element'), $elementWrap);
+				break;
+			case 'containerWrap':
+				$layoutDefault = $this->containerWrap;
+				$layout = $layoutHandler->getLayoutByObject($type, $layoutDefault);
+				break;
 		}
 		return $layout;
 	}
@@ -222,9 +222,9 @@ abstract class AbstractElementView {
 	/**
 	 * Replace the current node with a document fragment
 	 *
-	 * @param DOMDocument $dom
-	 * @param DOMNode $node Current Node
-	 * @param DOMNode $value Value to import
+	 * @param \DOMDocument $dom
+	 * @param \DOMNode $node Current Node
+	 * @param \DOMNode $value Value to import
 	 * @return void
 	 */
 	public function replaceNodeWithFragment(\DOMDocument $dom, \DOMNode $node, \DOMNode $value) {
@@ -238,7 +238,7 @@ abstract class AbstractElementView {
 	 * Set the attributes on the html tags according to the attributes that are
 	 * assigned in the model for a certain element
 	 *
-	 * @param DOMElement $domElement DOM element of the specific HTML tag
+	 * @param \DOMElement $domElement DOM element of the specific HTML tag
 	 * @return void
 	 */
 	public function setAttributes(\DOMElement $domElement) {
@@ -256,7 +256,7 @@ abstract class AbstractElementView {
 	/**
 	 * Set a single attribute of a HTML tag specified by key
 	 *
-	 * @param DOMElement $domElement DOM element of the specific HTML tag
+	 * @param \DOMElement $domElement DOM element of the specific HTML tag
 	 * @param string $key Attribute key
 	 * @return void
 	 */
@@ -271,7 +271,7 @@ abstract class AbstractElementView {
 	 * Sets the value of an attribute with the value of another attribute,
 	 * for instance equalizing the name and id attributes for the form tag
 	 *
-	 * @param DOMElement $domElement DOM element of the specific HTML tag
+	 * @param \DOMElement $domElement DOM element of the specific HTML tag
 	 * @param string $key Key of the attribute which needs to be changed
 	 * @param string $other Key of the attribute to take the value from
 	 * @return unknown_type
@@ -299,7 +299,7 @@ abstract class AbstractElementView {
 	 * Create additional object by key and render the content
 	 *
 	 * @param string $key Type of additional
-	 * @return DOMNode
+	 * @return \DOMNode
 	 */
 	public function getAdditional($key) {
 		$additional = $this->createAdditional($key);
@@ -367,6 +367,5 @@ abstract class AbstractElementView {
 	}
 
 }
-
 
 ?>

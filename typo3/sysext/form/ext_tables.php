@@ -6,7 +6,7 @@ if (!defined('TYPO3_MODE')) {
 // Add Default TS to Include static (from extensions)
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/', 'Default TS');
 
-$TCA['tt_content']['columns']['bodytext']['config']['wizards']['forms'] = array(
+$GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['wizards']['forms'] = array(
 	'notNewRecords' => 1,
 	'enableByTypeConfig' => 1,
 	'type' => 'script',
@@ -17,7 +17,7 @@ $TCA['tt_content']['columns']['bodytext']['config']['wizards']['forms'] = array(
 		'xmlOutput' => 0
 	)
 );
-$TCA['tt_content']['types']['mailform']['showitem'] = '
+$GLOBALS['TCA']['tt_content']['types']['mailform']['showitem'] = '
 	CType;;4;;1-1-1,
 	hidden,
 	header;;3;;2-2-2,
