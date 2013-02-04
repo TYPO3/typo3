@@ -1096,14 +1096,15 @@ class tx_version_tcemain {
 					't3ver_wsid' => 0,
 					't3ver_tstamp' => $GLOBALS['EXEC_TIME'],
 				);
-				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($id), $updateData);
 
 					// Clear workspace ID for live version AND DELETE IT as well because it is a new record!
 				if ((int) $liveRec['t3ver_state'] == 1 || (int) $liveRec['t3ver_state'] == 2) {
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid=' . intval($liveRec['uid']), $updateData);
 						// THIS assumes that the record was placeholder ONLY for ONE record (namely $id)
 					$tcemainObj->deleteEl($table, $liveRec['uid'], TRUE);
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid=' . intval($liveRec['uid']), $updateData);
 				}
+
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($id), $updateData);
 
 					// If "deleted" flag is set for the version that got released
 					// it doesn't make sense to keep that "placeholder" anymore and we delete it completly.
