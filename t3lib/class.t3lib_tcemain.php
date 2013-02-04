@@ -3670,7 +3670,7 @@ class t3lib_TCEmain {
 	 */
 	function localize($table, $uid, $language) {
 		$newId = FALSE;
-		$uid = intval($uid);
+		$uid = $originalTranslationUid = intval($uid);
 
 		if ($GLOBALS['TCA'][$table] && $uid && $this->isNestedElementCallRegistered($table, $uid, 'localize') === FALSE) {
 			$this->registerNestedElementCall($table, $uid, 'localize');
@@ -3685,13 +3685,19 @@ class t3lib_TCEmain {
 						if (is_array($row)) {
 							if ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] <= 0 || $table === 'pages') {
 								if ($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] == 0 || $table === 'pages') {
+									// Check for placeholder records of reference records (thus, $uid is a workspace version in this case)
+									$placeholderUid = $this->getPlaceholderUid($table, $uid, $row);
+									if ($placeholderUid !== NULL) {
+										$originalTranslationUid = $placeholderUid;
+									}
+
 									if ($table === 'pages') {
 										$pass = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'] === 'pages_language_overlay'
-											&& !t3lib_BEfunc::getRecordsByField('pages_language_overlay', 'pid', $uid, ' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . '=' . intval($langRec['uid']));
+											&& !t3lib_BEfunc::getRecordsByField('pages_language_overlay', 'pid', $originalTranslationUid, ' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . '=' . intval($langRec['uid']));
 										$Ttable = 'pages_language_overlay';
 										t3lib_div::loadTCA($Ttable);
 									} else {
-										$pass = !t3lib_BEfunc::getRecordLocalization($table, $uid, $langRec['uid'], 'AND pid=' . intval($row['pid']));
+										$pass = !t3lib_BEfunc::getRecordLocalization($table, $originalTranslationUid, $langRec['uid'], 'AND pid=' . intval($row['pid']));
 										$Ttable = $table;
 									}
 
@@ -3703,7 +3709,9 @@ class t3lib_TCEmain {
 
 											// Set override values:
 										$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['languageField']] = $langRec['uid'];
-										$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']] = $uid;
+										// For historic reasons, the pointer value is the live/placeholder value, since
+										// IRRE works on the specific version already, it needs to be resolved again
+										$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']] = $originalTranslationUid;
 											// Copy the type (if defined in both tables) from the original record so that translation has same type as original record
 										if (isset($GLOBALS['TCA'][$table]['ctrl']['type']) && isset($GLOBALS['TCA'][$Ttable]['ctrl']['type'])) {
 											$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['type']] = $row[$GLOBALS['TCA'][$table]['ctrl']['type']];
@@ -5517,6 +5525,43 @@ class t3lib_TCEmain {
 		}
 
 		return $specificUid;
+	}
+
+	/**
+	 * Gets a possible(!) live placeholder of a record.
+	 *
+	 * @param string $table Name of the table
+	 * @param integer $uid Uid of the record
+	 * @param NULL|array $record Versionized record data
+	 * @return NULL|integer
+	 */
+	public function getPlaceholderUid($table, $uid, array $record = NULL) {
+		$placeholderUid = NULL;
+
+		if ($this->BE_USER->workspace == 0 || !t3lib_BEfunc::isTableWorkspaceEnabled($table)) {
+			return $placeholderUid;
+		}
+
+		if ($record === NULL) {
+			$record = t3lib_BEfunc::getRecord($table, $uid);
+		}
+
+		if (empty($record['t3ver_oid']) || $record['t3ver_wsid'] == 0) {
+			return $placeholderUid;
+		}
+
+		$liveRecord = t3lib_BEfunc::getRecord(
+			$table,
+			$record['t3ver_oid'],
+			'uid',
+			' AND t3ver_wsid=' . (int) $record['t3ver_wsid'] . ' AND t3ver_state=1'
+		);
+
+		if (!empty($liveRecord)) {
+			$placeholderUid = $liveRecord['uid'];
+		}
+
+		return $placeholderUid;
 	}
 
 	/**
