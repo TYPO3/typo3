@@ -24,6 +24,7 @@ namespace TYPO3\CMS\Impexp\Task;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * This class provides a textarea to save personal notes
  *
@@ -35,7 +36,7 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	/**
 	 * Back-reference to the calling reports module
 	 *
-	 * @var tx_reports_Module $taskObject
+	 * @var \TYPO3\CMS\Taskcenter\Controller\TaskModuleController $taskObject
 	 */
 	protected $taskObject;
 
@@ -140,7 +141,12 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 				$content .= $this->taskObject->renderListMenu($lines);
 			} else {
 				// No presets found
-				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('no-presets'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE);
+				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+					'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+					$GLOBALS['LANG']->getLL('no-presets'),
+					'',
+					\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE
+				);
 				$content .= $flashMessage->render();
 			}
 		}
@@ -153,7 +159,13 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	 * @return array Array of preset records
 	 */
 	protected function getPresets() {
-		$presets = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tx_impexp_presets', '(public > 0 OR user_uid=' . $GLOBALS['BE_USER']->user['uid'] . ')', '', 'item_uid DESC, title');
+		$presets = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			'tx_impexp_presets',
+			'(public > 0 OR user_uid=' . $GLOBALS['BE_USER']->user['uid'] . ')',
+			'',
+			'item_uid DESC, title'
+		);
 		return $presets;
 	}
 
@@ -173,6 +185,5 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	}
 
 }
-
 
 ?>

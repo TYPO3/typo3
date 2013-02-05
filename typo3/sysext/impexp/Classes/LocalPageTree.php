@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Impexp;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Extension of the page tree class. Used to get the tree of pages to export.
  *
@@ -35,8 +36,6 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 
 	/**
 	 * Initialization
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		$this->init();
@@ -151,6 +150,5 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	}
 
 }
-
 
 ?>

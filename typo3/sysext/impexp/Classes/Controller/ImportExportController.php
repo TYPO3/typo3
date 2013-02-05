@@ -1,6 +1,32 @@
 <?php
 namespace TYPO3\CMS\Impexp\Controller;
 
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
 /**
  * Main script class for the Import / Export facility
  *
@@ -8,8 +34,9 @@ namespace TYPO3\CMS\Impexp\Controller;
  */
 class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
-	// Array containing the current page.
 	/**
+	 * Array containing the current page.
+	 *
 	 * @todo Define visibility
 	 */
 	public $pageinfo;
@@ -47,26 +74,26 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$inData = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_impexp');
 		$this->checkUpload();
 		switch ((string) $inData['action']) {
-		case 'export':
-			// Finally: If upload went well, set the new file as the thumbnail in the $inData array:
-			if (is_object($this->fileProcessor) && $this->fileProcessor->internalUploadMap[1]) {
-				$inData['meta']['thumbnail'] = md5($this->fileProcessor->internalUploadMap[1]);
-			}
-			// Call export interface
-			$this->exportData($inData);
-			break;
-		case 'import':
-			// Finally: If upload went well, set the new file as the import file:
-			if (is_object($this->fileProcessor) && $this->fileProcessor->internalUploadMap[1]) {
-				$fI = pathinfo($this->fileProcessor->internalUploadMap[1]);
-				// Only allowed extensions....
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('t3d,xml', strtolower($fI['extension']))) {
-					$inData['file'] = $this->fileProcessor->internalUploadMap[1];
+			case 'export':
+				// Finally: If upload went well, set the new file as the thumbnail in the $inData array:
+				if (is_object($this->fileProcessor) && $this->fileProcessor->internalUploadMap[1]) {
+					$inData['meta']['thumbnail'] = md5($this->fileProcessor->internalUploadMap[1]);
 				}
-			}
-			// Call import interface:
-			$this->importData($inData);
-			break;
+				// Call export interface
+				$this->exportData($inData);
+				break;
+			case 'import':
+				// Finally: If upload went well, set the new file as the import file:
+				if (is_object($this->fileProcessor) && $this->fileProcessor->internalUploadMap[1]) {
+					$fI = pathinfo($this->fileProcessor->internalUploadMap[1]);
+					// Only allowed extensions....
+					if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('t3d,xml', strtolower($fI['extension']))) {
+						$inData['file'] = $this->fileProcessor->internalUploadMap[1];
+					}
+				}
+				// Call import interface:
+				$this->importData($inData);
+				break;
 		}
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
@@ -115,10 +142,9 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	}
 
 	/**************************
-	 *
 	 * EXPORT FUNCTIONS
-	 *
 	 **************************/
+
 	/**
 	 * Export part of module
 	 *
@@ -256,16 +282,16 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// If the download button is clicked, return file
 		if ($inData['download_export'] || $inData['save_export']) {
 			switch ((string) $inData['filetype']) {
-			case 'xml':
-				$out = $this->export->compileMemoryToFileContent('xml');
-				$fExt = '.xml';
-				break;
-			case 't3d':
-				$this->export->dontCompress = 1;
-			default:
-				$out = $this->export->compileMemoryToFileContent();
-				$fExt = ($this->export->doOutputCompress() ? '-z' : '') . '.t3d';
-				break;
+				case 'xml':
+					$out = $this->export->compileMemoryToFileContent('xml');
+					$fExt = '.xml';
+					break;
+				case 't3d':
+					$this->export->dontCompress = 1;
+				default:
+					$out = $this->export->compileMemoryToFileContent();
+					$fExt = ($this->export->doOutputCompress() ? '-z' : '') . '.t3d';
+					break;
 			}
 			// Filename:
 			$dlFile = $inData['filename'] ? $inData['filename'] : 'T3D_' . substr(preg_replace('/[^[:alnum:]_]/', '-', $inData['download_export_name']), 0, 20) . '_' . date('Y-m-d_H-i') . $fExt;
@@ -381,7 +407,14 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	public function exec_listQueryPid($table, $pid, $limit) {
 		$orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ? 'ORDER BY ' . $GLOBALS['TCA'][$table]['ctrl']['sortby'] : $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'pid=' . intval($pid) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table) . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause($table), '', $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy), $limit);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'*',
+			$table,
+			'pid=' . intval($pid) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table) . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause($table),
+			'',
+			$GLOBALS['TYPO3_DB']->stripOrderBy($orderBy),
+			$limit
+		);
 		// Warning about hitting limit:
 		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) == $limit) {
 			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('execlistqu_maxNumberLimit'), sprintf($GLOBALS['LANG']->getLL('makeconfig_anSqlQueryReturned', 1), $limit), 0, 1, 2);
@@ -681,10 +714,9 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	}
 
 	/**************************
-	 *
 	 * IMPORT FUNCTIONS
-	 *
 	 **************************/
+
 	/**
 	 * Import part of module
 	 *
@@ -944,10 +976,9 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	}
 
 	/****************************
-	 *
 	 * Preset functions
-	 *
 	 ****************************/
+
 	/**
 	 * Manipulate presets
 	 *
@@ -1054,10 +1085,9 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	}
 
 	/****************************
-	 *
 	 * Helper functions
-	 *
 	 ****************************/
+
 	/**
 	 * Returns first temporary folder of the user account (from $FILEMOUNTS)
 	 *
@@ -1224,6 +1254,5 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	}
 
 }
-
 
 ?>
