@@ -44,8 +44,8 @@ $TCA['sys_category'] = array(
 				'items' => array(
 					array('', 0)
 				),
-				'foreign_table' => 'tx_taxonomy_domain_model_concept',
-				'foreign_table_where' => 'AND tx_taxonomy_domain_model_concept.uid=###REC_FIELD_l10n_parent### AND tx_taxonomy_domain_model_concept.sys_language_uid IN (-1,0)'
+				'foreign_table' => 'sys_category',
+				'foreign_table_where' => 'AND sys_category.uid=###REC_FIELD_l10n_parent### AND sys_category.sys_language_uid IN (-1,0)'
 			)
 		),
 		'l10n_diffsource' => array(
