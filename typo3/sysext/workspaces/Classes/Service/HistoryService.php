@@ -109,7 +109,6 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 		if (is_array($entry['newRecord'])) {
 			$fields = array_keys($entry['newRecord']);
 			foreach ($fields as $field) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName);
 				if (!empty($GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type']) && $GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type'] !== 'passthrough') {
 					// Create diff-result:
 					$fieldDifferences = $this->getDifferencesObject()->makeDiffDisplay(\TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, TRUE), \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, TRUE));
