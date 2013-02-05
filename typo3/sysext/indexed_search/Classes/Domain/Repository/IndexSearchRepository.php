@@ -751,7 +751,7 @@ class IndexSearchRepository {
 	 * @return integer Integer intepretation of the md5 hash of input string.
 	 */
 	protected function md5inthash($str) {
-		return \TYPO3\CMS\IndexedSearch\Indexer::md5inthash($str);
+		return \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($str);
 	}
 
 	/**
@@ -763,7 +763,7 @@ class IndexSearchRepository {
 	 * @return boolean TRUE if given tables are enabled
 	 */
 	protected function isTableUsed($table_list) {
-		return \TYPO3\CMS\IndexedSearch\Indexer::isTableUsed($table_list);
+		return \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed($table_list);
 	}
 
 	/**
