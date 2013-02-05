@@ -45,6 +45,7 @@ $BE_USER->modAccess($MCONF, 1);
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('func') . 'Classes/Controller/PageFunctionsController.php';
 // Make instance:
+/** @var $SOBE \TYPO3\CMS\Func\Controller\PageFunctionsController */
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Func\\Controller\\PageFunctionsController');
 $SOBE->init();
 // Include files?
