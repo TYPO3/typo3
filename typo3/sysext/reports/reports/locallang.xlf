@@ -232,7 +232,7 @@ You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
 				<source>Runs a system status check and sends notifications if problems have been found.</source>
 			</trans-unit>
 			<trans-unit id="status_updateTaskField_notificationEmail" xml:space="preserve">
-				<source>Notification Email Address</source>
+				<source>Notification Email Addresses (one per line)</source>
 			</trans-unit>
 			<trans-unit id="status_updateTaskField_notificationEmail_invalid" xml:space="preserve">
 				<source>Empty or invalid notification email address.</source>

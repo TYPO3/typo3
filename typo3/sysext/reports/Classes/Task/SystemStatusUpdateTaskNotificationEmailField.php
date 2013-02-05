@@ -54,15 +54,22 @@ class SystemStatusUpdateTaskNotificationEmailField implements \TYPO3\CMS\Schedul
 	 * @return array A two dimensional array, array('Identifier' => array('fieldId' => array('code' => '', 'label' => '', 'cshKey' => '', 'cshLabel' => ''))
 	 */
 	public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule) {
-		$fields = array('notificationEmail');
+		$fields = array('notificationEmail' => 'textarea');
 		if ($schedulerModule->CMD == 'edit') {
 			$taskInfo[$this->fieldPrefix . 'NotificationEmail'] = $task->getNotificationEmail();
 		}
 		$additionalFields = array();
-		foreach ($fields as $field) {
+		foreach ($fields as $field => $fieldType) {
 			$fieldName = $this->getFullFieldName($field);
 			$fieldId = 'task_' . $fieldName;
-			$fieldHtml = '<input type="text" ' . 'name="tx_scheduler[' . $fieldName . ']" ' . 'id="' . $fieldId . '" ' . 'value="' . htmlspecialchars($taskInfo[$fieldName]) . '" />';
+			switch ($fieldType) {
+				case 'textarea':
+					$fieldHtml = '<textarea ' . 'rows="5" cols="50" name="tx_scheduler[' . $fieldName . ']" ' . 'id="' . $fieldId . '" ' . '>' . htmlspecialchars($taskInfo[$fieldName]) . '</textarea>';
+					break;
+				case 'input':
+					$fieldHtml = '<input type="text" ' . 'name="tx_scheduler[' . $fieldName . ']" ' . 'id="' . $fieldId . '" ' . 'value="' . htmlspecialchars($taskInfo[$fieldName]) . '" />';
+					break;
+			}
 			$additionalFields[$fieldId] = array(
 				'code' => $fieldHtml,
 				'label' => 'LLL:EXT:reports/reports/locallang.xml:status_updateTaskField_' . $field,
@@ -82,8 +89,14 @@ class SystemStatusUpdateTaskNotificationEmailField implements \TYPO3\CMS\Schedul
 	 */
 	public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule) {
 		$validInput = TRUE;
-		$submittedData[$this->fieldPrefix . 'NotificationEmail'] = trim($submittedData[$this->fieldPrefix . 'NotificationEmail']);
-		if (empty($submittedData[$this->fieldPrefix . 'NotificationEmail']) || !filter_var($submittedData[($this->fieldPrefix . 'NotificationEmail')], FILTER_VALIDATE_EMAIL)) {
+		$notificationEmails = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $submittedData[$this->fieldPrefix . 'NotificationEmail']);
+		foreach ($notificationEmails as $notificationEmail) {
+			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($notificationEmail)) {
+				$validInput = FALSE;
+				break;
+			}
+		}
+		if (empty($submittedData[$this->fieldPrefix . 'NotificationEmail']) || !$validInput) {
 			$schedulerModule->addMessage($GLOBALS['LANG']->sL('LLL:EXT:reports/reports/locallang.xml:status_updateTaskField_notificationEmail_invalid'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			$validInput = FALSE;
 		}
