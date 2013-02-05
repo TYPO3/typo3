@@ -260,23 +260,11 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			$this->cache_fieldType = $fieldInformation['fieldTypes'];
 			$this->cache_primaryKeys = $fieldInformation['primaryKeys'];
 		} else {
-			$this->analyzeCoreTables();
 			$this->analyzeCachingTables();
 			$this->analyzeExtensionTables();
 			$completeFieldInformation = $this->getCompleteFieldInformation();
 			$phpCodeCache->set($this->cacheIdentifier, $this->getCacheableString($completeFieldInformation), array('t3lib_db'));
 		}
-	}
-
-	/**
-	 * Handle stddb.sql and caching tables
-	 * parse and analyze table definitions
-	 *
-	 * @return void
-	 */
-	protected function analyzeCoreTables() {
-		$coreSql = file_get_contents(PATH_t3lib . 'stddb/tables.sql');
-		$this->parseAndAnalyzeSql($coreSql);
 	}
 
 	/**
