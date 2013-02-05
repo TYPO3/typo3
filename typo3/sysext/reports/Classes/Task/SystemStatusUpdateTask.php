@@ -31,12 +31,12 @@ namespace TYPO3\CMS\Reports\Task;
 class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
-	 * Email address to send email notification to in case we find problems with
+	 * Email addresses to send email notification to in case we find problems with
 	 * the system.
 	 *
 	 * @var string
 	 */
-	protected $notificationEmail = NULL;
+	protected $notificationEmails = NULL;
 
 	/**
 	 * Executes the System Status Update task, determing the highest severity of
@@ -53,19 +53,19 @@ class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$systemStatus = $statusReport->getSystemStatus();
 		$highestSeverity = $statusReport->getHighestSeverity($systemStatus);
 		$registry->set('tx_reports', 'status.highestSeverity', $highestSeverity);
-		if ($highestSeverity > \TYPO3\CMS\Reports\Status::OK) {
+		if ($highestSeverity > \TYPO3\CMS\Reports\Status::OK or TRUE) {
 			$this->sendNotificationEmail($systemStatus);
 		}
 		return TRUE;
 	}
 
 	/**
-	 * Gets the notification email address.
+	 * Gets the notification email addresses.
 	 *
-	 * @return string Notification email address.
+	 * @return string Notification email addresses.
 	 */
-	public function getNotificationEmail() {
-		return $this->notificationEmail;
+	public function getNotificationEmails() {
+		return $this->notificationEmails;
 	}
 
 	/**
@@ -74,8 +74,8 @@ class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * @param string $notificationEmail Notification email address.
 	 * @return void
 	 */
-	public function setNotificationEmail($notificationEmail) {
-		$this->notificationEmail = $notificationEmail;
+	public function setNotificationEmails($notificationEmails) {
+		$this->notificationEmails = $notificationEmails;
 	}
 
 	/**
@@ -93,6 +93,11 @@ class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 				}
 			}
 		}
+		$notificationEmails = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode("\n", $this->notificationEmails);
+		$sendEmailsTo = array();
+		foreach ($notificationEmails as $notificationEmail) {
+			$sendEmailsTo[] = trim($notificationEmail);
+		}
 		$subject = sprintf($GLOBALS['LANG']->getLL('status_updateTask_email_subject'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
 		$message = sprintf($GLOBALS['LANG']->getLL('status_problemNotification'), '', '');
 		$message .= CRLF . CRLF;
@@ -102,9 +107,10 @@ class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$message .= implode(CRLF, $systemIssues);
 		$message .= CRLF . CRLF;
 		$from = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
+		/** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
 		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 		$mail->setFrom($from);
-		$mail->setTo($this->notificationEmail);
+		$mail->setTo($sendEmailsTo);
 		$mail->setSubject($subject);
 		$mail->setBody($message);
 		$mail->send();
