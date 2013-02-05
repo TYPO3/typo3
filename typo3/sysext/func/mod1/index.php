@@ -36,7 +36,8 @@
 unset($MCONF);
 require 'conf.php';
 require $BACK_PATH . 'init.php';
-$LANG->includeLLFile('EXT:lang/locallang_mod_web_func.xml');
+$LANG->includeLLFile('EXT:lang/locallang_mod_web_func.xlf');
+$LANG->includeLLFile('EXT:func_wizards/locallang.xlf');
 $BE_USER->modAccess($MCONF, 1);
 /*
  * @deprecated since 6.0, the classname SC_mod_web_func_index and this file is obsolete
@@ -45,6 +46,7 @@ $BE_USER->modAccess($MCONF, 1);
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('func') . 'Classes/Controller/PageFunctionsController.php';
 // Make instance:
+/** @var $SOBE \TYPO3\CMS\Func\Controller\PageFunctionsController */
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Func\\Controller\\PageFunctionsController');
 $SOBE->init();
 // Include files?
