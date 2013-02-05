@@ -234,8 +234,14 @@ You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
 			<trans-unit id="status_updateTaskField_notificationEmail" xml:space="preserve">
 				<source>Notification Email Address</source>
 			</trans-unit>
+			<trans-unit id="status_updateTaskField_notificationEmails" xml:space="preserve">
+				<source>Notification Email Addresses (one per line)</source>
+			</trans-unit>
 			<trans-unit id="status_updateTaskField_notificationEmail_invalid" xml:space="preserve">
 				<source>Empty or invalid notification email address.</source>
+			</trans-unit>
+			<trans-unit id="status_updateTaskField_notificationEmails_invalid" xml:space="preserve">
+				<source>Empty or invalid notification email addresses.</source>
 			</trans-unit>
 			<trans-unit id="status_updateTask_email_subject" xml:space="preserve">
 				<source>System Status Notification for site %s</source>
