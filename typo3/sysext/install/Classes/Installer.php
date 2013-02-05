@@ -1809,8 +1809,8 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 								}
 								if (preg_match('/^boolean/i', $description)) {
 									// When submitting settings in the Install Tool, values that default to "FALSE" or "TRUE"
-									// in t3lib/stddb/DefaultConfiguration.php will be sent as "0" resp. "1". Therefore, reset the values
-									// to their boolean equivalent.
+									// in EXT:core/Configuration/DefaultConfiguration.php will be sent as "0" resp. "1".
+									// Therefore, reset the values to their boolean equivalent.
 									if ($GLOBALS['TYPO3_CONF_VARS'][$k][$vk] === FALSE && $value === '0') {
 										$value = FALSE;
 									} elseif ($GLOBALS['TYPO3_CONF_VARS'][$k][$vk] === TRUE && $value === '1') {
@@ -1831,9 +1831,9 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	}
 
 	/**
-	 * Make an array of the comments in the t3lib/stddb/DefaultConfiguration.php file
+	 * Make an array of the comments in the EXT:core/Configuration/DefaultConfiguration.php file
 	 *
-	 * @param string $string The contents of the t3lib/stddb/DefaultConfiguration.php file
+	 * @param string $string The contents of the EXT:core/Configuration/DefaultConfiguration.php file
 	 * @param array $mainArray
 	 * @param array $commentArray
 	 * @return array
@@ -3715,7 +3715,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 			<br />
 			The options in the TYPO3_CONF_VARS array and how to use it for your
 			own purposes is discussed in the base configuration file,
-			t3lib/stddb/DefaultConfiguration.php. This file sets up the default values and
+			EXT:core/Configuration/DefaultConfiguration.php. This file sets up the default values and
 			subsequently includes the LocalConfiguration.php file in which you can then
 			override values.
 			<br />
