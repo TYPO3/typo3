@@ -1245,7 +1245,6 @@ class DataHandlerHook {
 	 * @return array
 	 */
 	protected function getPossibleInlineChildTablesOfParentTable($parentTable, array $possibleInlineChildren = array()) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($parentTable);
 		foreach ($GLOBALS['TCA'][$parentTable]['columns'] as $parentField => $parentFieldDefinition) {
 			if (isset($parentFieldDefinition['config']['type'])) {
 				$parentFieldConfiguration = $parentFieldDefinition['config'];
@@ -1278,7 +1277,6 @@ class DataHandlerHook {
 	 */
 	protected function getUniqueFields($table) {
 		$listArr = array();
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if ($GLOBALS['TCA'][$table]['columns']) {
 			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $configArr) {
 				if ($configArr['config']['type'] === 'input') {
