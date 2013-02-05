@@ -26,11 +26,7 @@ namespace TYPO3\CMS\Impexp;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * T3D file Import/Export library (TYPO3 Record Document)
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * EXAMPLE for using the impexp-class for exporting stuff:
  *
@@ -67,218 +63,250 @@ namespace TYPO3\CMS\Impexp;
  */
 class ImportExport {
 
-	// Configuration, general
-	// If set, static relations (not exported) will be shown in overview as well
 	/**
+	 * If set, static relations (not exported) will be shown in overview as well
+	 *
 	 * @todo Define visibility
 	 */
 	public $showStaticRelations = FALSE;
 
-	// Name of the "fileadmin" folder where files for export/import should be located
 	/**
+	 * Name of the "fileadmin" folder where files for export/import should be located
+	 *
 	 * @todo Define visibility
 	 */
 	public $fileadminFolderName = '';
 
-	// Whether "import" or "export" mode of object. Set through init() function
 	/**
+	 * Whether "import" or "export" mode of object. Set through init() function
+	 *
 	 * @todo Define visibility
 	 */
 	public $mode = '';
 
-	// Updates all records that has same UID instead of creating new!
 	/**
+	 * Updates all records that has same UID instead of creating new!
+	 *
 	 * @todo Define visibility
 	 */
 	public $update = FALSE;
 
-	// Is set by importData() when an import has been done.
 	/**
+	 * Is set by importData() when an import has been done.
+	 *
 	 * @todo Define visibility
 	 */
 	public $doesImport = FALSE;
 
-	// Configuration, import
-	// If set to a page-record, then the preview display of the content will expect this page-record to be the target
-	// for the import and accordingly display validation information. This triggers the visual view of the
-	// import/export memory to validate if import is possible
 	/**
+	 * If set to a page-record, then the preview display of the content will expect this page-record to be the target
+	 * for the import and accordingly display validation information. This triggers the visual view of the
+	 * import/export memory to validate if import is possible
+	 *
 	 * @todo Define visibility
 	 */
 	public $display_import_pid_record = '';
 
-	// Used to register the forged UID values for imported records that we want to create with the same UIDs as in the import file. Admin-only feature.
 	/**
+	 * Used to register the forged UID values for imported records that we want to create with the same UIDs as in the import file. Admin-only feature.
+	 *
 	 * @todo Define visibility
 	 */
 	public $suggestedInsertUids = array();
 
-	// Setting import modes during update state: as_new, exclude, force_uid
 	/**
+	 * Setting import modes during update state: as_new, exclude, force_uid
+	 *
 	 * @todo Define visibility
 	 */
 	public $import_mode = array();
 
-	// If set, PID correct is ignored globally
 	/**
+	 * If set, PID correct is ignored globally
+	 *
 	 * @todo Define visibility
 	 */
 	public $global_ignore_pid = FALSE;
 
-	// If set, all UID values are forced! (update or import)
 	/**
+	 * If set, all UID values are forced! (update or import)
+	 *
 	 * @todo Define visibility
 	 */
 	public $force_all_UIDS = FALSE;
 
-	// If set, a diff-view column is added to the overview.
 	/**
+	 * If set, a diff-view column is added to the overview.
+	 *
 	 * @todo Define visibility
 	 */
 	public $showDiff = FALSE;
 
-	// If set, and if the user is admin, allow the writing of PHP scripts to fileadmin/ area.
 	/**
+	 * If set, and if the user is admin, allow the writing of PHP scripts to fileadmin/ area.
+	 *
 	 * @todo Define visibility
 	 */
 	public $allowPHPScripts = FALSE;
 
-	// Disable logging when importing
 	/**
+	 * Disable logging when importing
+	 *
 	 * @todo Define visibility
 	 */
 	public $enableLogging = FALSE;
 
-	// Array of values to substitute in editable softreferences.
 	/**
+	 * Array of values to substitute in editable softreferences.
+	 *
 	 * @todo Define visibility
 	 */
 	public $softrefInputValues = array();
 
-	// Mapping between the fileID from import memory and the final filenames they are written to.
 	/**
+	 * Mapping between the fileID from import memory and the final filenames they are written to.
+	 *
 	 * @todo Define visibility
 	 */
 	public $fileIDMap = array();
 
-	// Configuration, export
-	// 1MB max file size
 	/**
+	 * 1MB max file size
+	 *
 	 * @todo Define visibility
 	 */
 	public $maxFileSize = 1000000;
 
-	// 1MB max record size
 	/**
+	 * 1MB max record size
+	 *
 	 * @todo Define visibility
 	 */
 	public $maxRecordSize = 1000000;
 
-	// 10MB max export size
 	/**
+	 * 10MB max export size
+	 *
 	 * @todo Define visibility
 	 */
 	public $maxExportSize = 10000000;
 
-	// add table names here which are THE ONLY ones which will be included into export if found as relations. '_ALL' will allow all tables.
 	/**
+	 * Add table names here which are THE ONLY ones which will be included into export if found as relations. '_ALL' will allow all tables.
+	 *
 	 * @todo Define visibility
 	 */
 	public $relOnlyTables = array();
 
-	// add tables names here which should not be exported with the file. (Where relations should be mapped to same UIDs in target system).
 	/**
+	 * Add tables names here which should not be exported with the file. (Where relations should be mapped to same UIDs in target system).
+	 *
 	 * @todo Define visibility
 	 */
 	public $relStaticTables = array();
 
-	// Exclude map. Keys are table:uid  pairs and if set, records are not added to the export.
 	/**
+	 * Exclude map. Keys are table:uid  pairs and if set, records are not added to the export.
+	 *
 	 * @todo Define visibility
 	 */
 	public $excludeMap = array();
 
-	// Soft Reference Token ID modes.
 	/**
+	 * Soft Reference Token ID modes.
+	 *
 	 * @todo Define visibility
 	 */
 	public $softrefCfg = array();
 
-	// Listing extension dependencies.
 	/**
+	 * Listing extension dependencies.
+	 *
 	 * @todo Define visibility
 	 */
 	public $extensionDependencies = array();
 
-	// Set  by user: If set, compression in t3d files is disabled
 	/**
+	 * Set  by user: If set, compression in t3d files is disabled
+	 *
 	 * @todo Define visibility
 	 */
 	public $dontCompress = 0;
 
-	// Boolean, if set, HTML file resources are included.
 	/**
+	 * Boolean, if set, HTML file resources are included.
+	 *
 	 * @todo Define visibility
 	 */
 	public $includeExtFileResources = 0;
 
-	// Files with external media (HTML/css style references inside)
 	/**
+	 * Files with external media (HTML/css style references inside)
+	 *
 	 * @todo Define visibility
 	 */
 	public $extFileResourceExtensions = 'html,htm,css';
 
-	// Internal, dynamic:
-	// After records are written this array is filled with [table][original_uid] = [new_uid]
 	/**
+	 * After records are written this array is filled with [table][original_uid] = [new_uid]
+	 *
 	 * @todo Define visibility
 	 */
 	public $import_mapId = array();
 
-	// Keys are [tablename]:[new NEWxxx ids (or when updating it is uids)] while values are arrays with table/uid of the original record it is based on. By the array keys the new ids can be looked up inside tcemain
 	/**
+	 * Keys are [tablename]:[new NEWxxx ids (or when updating it is uids)] while values are arrays with table/uid of the original record it is based on.
+	 * By the array keys the new ids can be looked up inside tcemain
+	 *
 	 * @todo Define visibility
 	 */
 	public $import_newId = array();
 
-	// Page id map for page tree (import)
 	/**
+	 * Page id map for page tree (import)
+	 *
 	 * @todo Define visibility
 	 */
 	public $import_newId_pids = array();
 
-	// Internal data accumulation for writing records during import
 	/**
+	 * Internal data accumulation for writing records during import
+	 *
 	 * @todo Define visibility
 	 */
 	public $import_data = array();
 
-	// Error log.
 	/**
+	 * Error log.
+	 *
 	 * @todo Define visibility
 	 */
 	public $errorLog = array();
 
-	// Cache for record paths
 	/**
+	 * Cache for record paths
+	 *
 	 * @todo Define visibility
 	 */
 	public $cache_getRecordPath = array();
 
-	// Cache of checkPID values.
 	/**
+	 * Cache of checkPID values.
+	 *
 	 * @todo Define visibility
 	 */
 	public $checkPID_cache = array();
 
-	// Set internally if the gzcompress function exists
 	/**
+	 * Set internally if the gzcompress function exists
+	 *
 	 * @todo Define visibility
 	 */
 	public $compress = 0;
 
-	// Internal import/export memory
 	/**
+	 * Internal import/export memory
+	 *
 	 * @todo Define visibility
 	 */
 	public $dat = array();
@@ -292,10 +320,9 @@ class ImportExport {
 	public $fileProcObj = '';
 
 	/**************************
-	 *
 	 * Initialize
-	 *
 	 *************************/
+
 	/**
 	 * Init the object, both import and export
 	 *
@@ -312,10 +339,9 @@ class ImportExport {
 	}
 
 	/**************************
-	 *
 	 * Export / Init + Meta Data
-	 *
 	 *************************/
+
 	/**
 	 * Set header basics
 	 *
@@ -406,10 +432,9 @@ class ImportExport {
 	}
 
 	/**************************
-	 *
 	 * Export / Init Page tree
-	 *
 	 *************************/
+
 	/**
 	 * Sets the page-tree array in the export header and returns the array in a flattened version
 	 *
@@ -490,10 +515,9 @@ class ImportExport {
 	}
 
 	/**************************
-	 *
 	 * Export
-	 *
 	 *************************/
+
 	/**
 	 * Adds the record $row from $table.
 	 * No checking for relations done here. Pure data.
@@ -945,10 +969,9 @@ class ImportExport {
 	}
 
 	/**************************
-	 *
 	 * File Output
-	 *
 	 *************************/
+
 	/**
 	 * This compiles and returns the data content for an exported file
 	 *
@@ -1088,10 +1111,9 @@ class ImportExport {
 	}
 
 	/***********************
-	 *
 	 * Import
-	 *
 	 ***********************/
+
 	/**
 	 * Imports the internal data array to $pid.
 	 *
@@ -1373,18 +1395,18 @@ class ImportExport {
 				// Setting db/file blank:
 				foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
 					switch ((string) $config['type']) {
-					case 'db':
+						case 'db':
 
-					case 'file':
-						// Fixed later in ->setRelations() [because we need to know ALL newly created IDs before we can map relations!]
-						// In the meantime we set NO values for relations:
-						$this->import_data[$table][$ID][$field] = '';
-						break;
-					case 'flex':
-						// Fixed later in setFlexFormRelations()
-						// In the meantime we set NO value for flexforms - this is mainly because file references inside will not be processed properly; In fact references will point to no file or existing files (in which case there will be double-references which is a big problem of course!)
-						$this->import_data[$table][$ID][$field] = '';
-						break;
+						case 'file':
+							// Fixed later in ->setRelations() [because we need to know ALL newly created IDs before we can map relations!]
+							// In the meantime we set NO values for relations:
+							$this->import_data[$table][$ID][$field] = '';
+							break;
+						case 'flex':
+							// Fixed later in setFlexFormRelations()
+							// In the meantime we set NO value for flexforms - this is mainly because file references inside will not be processed properly; In fact references will point to no file or existing files (in which case there will be double-references which is a big problem of course!)
+							$this->import_data[$table][$ID][$field] = '';
+							break;
 					}
 				}
 			} elseif ($table . ':' . $uid != 'pages:0') {
@@ -1456,10 +1478,9 @@ class ImportExport {
 	}
 
 	/***************************
-	 *
 	 * Import / Relations setting
-	 *
 	 ***************************/
+
 	/**
 	 * At the end of the import process all file and DB relations should be set properly (that is relations to imported records are all re-created so imported records are correctly related again)
 	 * Relations in flexform fields are processed in setFlexFormRelations() after this function
@@ -1482,21 +1503,21 @@ class ImportExport {
 					// Traverse relation fields of each record
 					foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
 						switch ((string) $config['type']) {
-						case 'db':
-							if (is_array($config['itemArray']) && count($config['itemArray'])) {
-								$valArray = $this->setRelations_db($config['itemArray']);
-								$updateData[$table][$thisNewUid][$field] = implode(',', $valArray);
-							}
-							break;
-						case 'file':
-							if (is_array($config['newValueFiles']) && count($config['newValueFiles'])) {
-								$valArr = array();
-								foreach ($config['newValueFiles'] as $fI) {
-									$valArr[] = $this->import_addFileNameToBeCopied($fI);
+							case 'db':
+								if (is_array($config['itemArray']) && count($config['itemArray'])) {
+									$valArray = $this->setRelations_db($config['itemArray']);
+									$updateData[$table][$thisNewUid][$field] = implode(',', $valArray);
 								}
-								$updateData[$table][$thisNewUid][$field] = implode(',', $valArr);
-							}
-							break;
+								break;
+							case 'file':
+								if (is_array($config['newValueFiles']) && count($config['newValueFiles'])) {
+									$valArr = array();
+									foreach ($config['newValueFiles'] as $fI) {
+										$valArr[] = $this->import_addFileNameToBeCopied($fI);
+									}
+									$updateData[$table][$thisNewUid][$field] = implode(',', $valArr);
+								}
+								break;
 						}
 					}
 				} else {
@@ -1673,10 +1694,9 @@ class ImportExport {
 	}
 
 	/**************************
-	 *
 	 * Import / Soft References
-	 *
 	 *************************/
+
 	/**
 	 * Processing of soft references
 	 *
@@ -2095,10 +2115,9 @@ class ImportExport {
 	}
 
 	/**************************
-	 *
 	 * File Input
-	 *
 	 *************************/
+
 	/**
 	 * Loads the header section/all of the $filename into memory
 	 *
@@ -2287,10 +2306,9 @@ class ImportExport {
 	}
 
 	/********************************************************
-	 *
 	 * Visual rendering of import/export memory, $this->dat
-	 *
 	 ********************************************************/
+
 	/**
 	 * Displays an overview of the header-content.
 	 *
@@ -2884,10 +2902,9 @@ class ImportExport {
 	}
 
 	/*****************************
-	 *
 	 * Helper functions of kinds
-	 *
 	 *****************************/
+
 	/**
 	 * Returns TRUE if the input table name is to be regarded as a static relation (that is, not exported etc).
 	 *
@@ -3120,10 +3137,9 @@ class ImportExport {
 	}
 
 	/*****************************
-	 *
 	 * Error handling
-	 *
 	 *****************************/
+
 	/**
 	 * Sets error message in the internal error log
 	 *
@@ -3146,6 +3162,5 @@ class ImportExport {
 	}
 
 }
-
 
 ?>

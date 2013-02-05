@@ -63,7 +63,7 @@
 unset($MCONF);
 require 'conf.php';
 require_once $BACK_PATH . 'init.php';
-$LANG->includeLLFile('EXT:impexp/app/locallang.php');
+$LANG->includeLLFile('EXT:impexp/app/locallang.xlf');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('impexp', 1);
 /*
  * @deprecated since 6.0, the classname SC_mod_tools_log_index and this file is obsolete

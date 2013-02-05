@@ -1,4 +1,3 @@
-
 #
 # Table structure for table 'tx_impexp_presets'
 #

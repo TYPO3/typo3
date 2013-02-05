@@ -26,14 +26,7 @@ namespace TYPO3\CMS\Impexp;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Adding Import/Export clickmenu item
- *
- * Revised for TYPO3 3.6 December/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * Adding Import/Export clickmenu item
  *
@@ -67,10 +60,10 @@ class Clickmenu {
 				$url .= '&tx_impexp[record][]=' . rawurlencode(($table . ':' . $uid));
 				$url .= '&tx_impexp[external_ref][tables][]=_ALL';
 			}
-			$localItems[] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('export', $LL)), $backRef->excludeIcon(\t3lib_iconWorks::getSpriteIcon('actions-document-export-t3d')), $backRef->urlRefForCM($url), 1);
+			$localItems[] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('export', $LL)), $backRef->excludeIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-export-t3d')), $backRef->urlRefForCM($url), 1);
 			if ($table == 'pages') {
 				$url = $modUrl . '?id=' . $uid . '&table=' . $table . '&tx_impexp[action]=import';
-				$localItems[] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('import', $LL)), $backRef->excludeIcon(\t3lib_iconWorks::getSpriteIcon('actions-document-import-t3d')), $backRef->urlRefForCM($url), 1);
+				$localItems[] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('import', $LL)), $backRef->excludeIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-import-t3d')), $backRef->urlRefForCM($url), 1);
 			}
 		}
 		return array_merge($menuItems, $localItems);
@@ -84,10 +77,9 @@ class Clickmenu {
 	 */
 	public function includeLL() {
 		global $LANG;
-		return $LANG->includeLLFile('EXT:impexp/app/locallang.php', FALSE);
+		return $LANG->includeLLFile('EXT:impexp/app/locallang.xlf', FALSE);
 	}
 
 }
-
 
 ?>
