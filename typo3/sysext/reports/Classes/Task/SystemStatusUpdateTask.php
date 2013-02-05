@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Reports\Task;
 class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
-	 * Email address to send email notification to in case we find problems with
+	 * Email addresses to send email notification to in case we find problems with
 	 * the system.
 	 *
 	 * @var string
@@ -43,7 +43,7 @@ class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * status reports and saving that to the registry to be displayed at login
 	 * if necessary.
 	 *
-	 * @see typo3/sysext/scheduler/tx_scheduler_Task::execute()
+	 * @see \TYPO3\CMS\Scheduler\Task\AbstractTask::execute()
 	 */
 	public function execute() {
 		/** @var $registry \TYPO3\CMS\Core\Registry */
@@ -60,9 +60,9 @@ class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	}
 
 	/**
-	 * Gets the notification email address.
+	 * Gets the notification email addresses.
 	 *
-	 * @return string Notification email address.
+	 * @return string Notification email addresses.
 	 */
 	public function getNotificationEmail() {
 		return $this->notificationEmail;
@@ -93,6 +93,11 @@ class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 				}
 			}
 		}
+		$notificationEmails = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $this->notificationEmail, TRUE);
+		$sendEmailsTo = array();
+		foreach ($notificationEmails as $notificationEmail) {
+			$sendEmailsTo[] = $notificationEmail;
+		}
 		$subject = sprintf($GLOBALS['LANG']->getLL('status_updateTask_email_subject'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
 		$message = sprintf($GLOBALS['LANG']->getLL('status_problemNotification'), '', '');
 		$message .= CRLF . CRLF;
@@ -102,15 +107,15 @@ class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$message .= implode(CRLF, $systemIssues);
 		$message .= CRLF . CRLF;
 		$from = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
+		/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
 		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 		$mail->setFrom($from);
-		$mail->setTo($this->notificationEmail);
+		$mail->setTo($sendEmailsTo);
 		$mail->setSubject($subject);
 		$mail->setBody($message);
 		$mail->send();
 	}
 
 }
-
 
 ?>
