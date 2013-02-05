@@ -751,7 +751,7 @@ class IndexSearchRepository {
 	 * @return integer Integer intepretation of the md5 hash of input string.
 	 */
 	protected function md5inthash($str) {
-		return \TYPO3\CMS\IndexedSearch\Indexer::md5inthash($str);
+		return \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($str);
 	}
 
 	/**
