@@ -569,8 +569,19 @@ class tx_version_tcemain_CommandMap {
 				array($element)
 			);
 
+			$isTableUsed = !empty($orderedCommandMap[$table]);
+
 			$this->remove($table, $id, 'version');
 			$orderedCommandMap[$table][$id]['version'] = $commonProperties;
+
+			// If table is used already, ensure to put it to the end otherwise
+			// children might be process before a required parent has been
+			// processed - which conflicts with the main scope of this class
+			if ($isTableUsed) {
+				$tableElements = $orderedCommandMap[$table];
+				unset($orderedCommandMap[$table]);
+				$orderedCommandMap[$table] = $tableElements;
+			}
 
 			if ($this->getScopeData($scope, self::KEY_GetElementPropertiesCallback)) {
 				$orderedCommandMap[$table][$id]['version'] = array_merge(
