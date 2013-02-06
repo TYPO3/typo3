@@ -165,4 +165,13 @@ Ext.onReady(function(){
 			}
 		}
 	});
+
+	Ext.addBehaviors({
+			// Add a listener for click on run single task
+		'.t3-icon-scheduler-run-task@click' : function(event, element) {
+			var checkbox = Ext.get(element).parent('tr').child('input[type="checkbox"]');
+			var idParts = checkbox.id.split('_');
+			Ext.select('#executionstatus_' + idParts[1]).item(0).set({src: TYPO3.settings.scheduler.runningIcon});
+		}
+	})
 });

@@ -945,7 +945,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				'0' => array(
 					'tr' => array('<tr class="t3-row-header">', '</tr>'),
 					'defCol' => array('<td>', '</td>'),
-					'1' => array('<td style="width: 56px;">', '</td>'),
+					'1' => array('<td style="width: 76px;">', '</td>'),
 					'3' => array('<td colspan="2">', '</td>')
 				),
 				'defRow' => array(
@@ -987,8 +987,9 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				$editAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:edit', TRUE) . '" class="icon">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 				$deleteAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.delete') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:delete', TRUE) . '" class="icon">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
 				$stopAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.stop') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop', TRUE) . '" class="icon"><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler') . '/res/gfx/stop.png')) . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop') . '" /></a>';
-				$enableAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=enable&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:enable', TRUE) . '" class="icon">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-unhide') . '</a>';
-				$disableAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=disable&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:disable', TRUE) . '" class="icon">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-hide') . '</a>';
+				$enableAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=enable&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:activate', TRUE) . '" class="icon">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-unhide') . '</a>';
+				$disableAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=disable&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:deactivate', TRUE) . '" class="icon">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-hide') . '</a>';
+				$runAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&tx_scheduler[execute][]=' . $schedulerRecord['uid'] . '" title="' . $GLOBALS['LANG']->getLL('action.run_task') . '" class="icon">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-scheduler-run-task') . '</a>';
 				// Define some default values
 				$lastExecution = '-';
 				$isRunning = FALSE;
@@ -1070,11 +1071,9 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					}
 					// Define checkbox
 					$startExecutionElement = '<input type="checkbox" name="tx_scheduler[execute][]" value="' . $schedulerRecord['uid'] . '" id="task_' . $schedulerRecord['uid'] . '" class="checkboxes" />';
-					// Show no action links (edit, delete) if task is running
+
 					$actions = $editAction . $deleteAction;
-					if ($isRunning) {
-						$actions = $stopAction;
-					}
+
 					// Check the disable status
 					// Row is shown dimmed if task is disabled, unless it is still running
 					if ($schedulerRecord['disable'] == 1 && !$isRunning) {
@@ -1084,6 +1083,14 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					} elseif (!$isRunning) {
 						$actions .= $disableAction;
 					}
+
+					// Show no action links (edit, delete) if task is running
+					if ($isRunning) {
+						$actions = $stopAction;
+					} else {
+						$actions .= $runAction;
+					}
+
 					// Check if the last run failed
 					$failureOutput = '';
 					if (!empty($schedulerRecord['lastexecution_failure'])) {

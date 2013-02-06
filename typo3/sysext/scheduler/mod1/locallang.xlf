@@ -357,6 +357,9 @@
 			<trans-unit id="title" xml:space="preserve">
 				<source>TYPO3 Scheduler administration module</source>
 			</trans-unit>
+			<trans-unit id="action.run_task" xml:space="preserve">
+				<source>Run task</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
