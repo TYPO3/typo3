@@ -1,13 +1,36 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
-$TCA['sys_file'] = array(
-	'ctrl' => $TCA['sys_file']['ctrl'],
+return array(
+	'ctrl' => array(
+		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file',
+		'label' => 'name',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'type' => 'type',
+		'hideTable' => TRUE,
+		'rootLevel' => TRUE,
+		'versioningWS' => TRUE,
+		'origUid' => 't3_origuid',
+		'default_sortby' => 'ORDER BY crdate DESC',
+		'delete' => 'deleted',
+		'dividers2tabs' => TRUE,
+		'typeicon_column' => 'type',
+		'typeicon_classes' => array(
+			'1' => 'mimetypes-text-text',
+			'2' => 'mimetypes-media-image',
+			'3' => 'mimetypes-media-audio',
+			'4' => 'mimetypes-media-video',
+			'5' => 'mimetypes-application',
+			'default' => 'mimetypes-other-other'
+		),
+		'security' => array(
+			'ignoreWebMountRestriction' => TRUE,
+			'ignoreRootLevelRestriction' => TRUE,
+		),
+	),
 	'interface' => array(
 		'showRecordFieldList' => 'storage, name, description, alternative, type, mime_type, size, sha1'
 	),
-	'feInterface' => $TCA['sys_file']['feInterface'],
 	'columns' => array(
 		't3ver_label' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel',
@@ -118,7 +141,6 @@ $TCA['sys_file'] = array(
 				'readOnly' => 1,
 				'type' => 'input',
 				'size' => '30',
-				'readOnly' => 1
 			)
 		),
 		'size' => array(

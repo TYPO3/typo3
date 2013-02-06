@@ -1,9 +1,30 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
-$TCA['sys_category'] = array(
-	'ctrl' => $TCA['sys_category']['ctrl'],
+return array(
+	'ctrl' => array(
+		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_category',
+		'label' => 'title',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'delete' => 'deleted',
+		'default_sortby' => 'ORDER BY title ASC',
+		'dividers2tabs' => TRUE,
+		'versioningWS' => 2,
+		'versioning_followPages' => TRUE,
+		'origUid' => 't3_origuid',
+		'languageField' => 'sys_language_uid',
+		'transOrigPointerField' => 'l10n_parent',
+		'transOrigDiffSourceField' => 'l10n_diffsource',
+		'searchFields' => 'title,description',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime'
+		),
+		'typeicon_classes' => array(
+			'default' => 'mimetypes-x-sys_category'
+		)
+	),
 	'interface' => array(
 		'showRecordFieldList' => 'title,description'
 	),
