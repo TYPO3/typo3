@@ -163,10 +163,26 @@ Ext.onReady(function(){
 				idParts = checkboxes.item(i).id.split('_');
 				Ext.select('#executionstatus_' + idParts[1]).item(0).set({src: TYPO3.settings.scheduler.runningIcon});
 			}
-		}
-	});
+		},
+			// Add a listener for click on a row to check/uncheck the checkbox
+		'.tx_scheduler_mod1 tr.db_list_normal@click' : function(e, t) {
+			if (t.tagName == 'SPAN' || t.tagName == 'A') {
+				return;
+			}
 
-	Ext.addBehaviors({
+			var checkboxes = Ext.select(t.up('tr').select('input.checkboxes'));
+			if (t.type != 'checkbox') {
+				if (checkboxes.item(0).dom.checked == true) {
+					checkboxes.item(0).dom.checked = false;
+				} else {
+					checkboxes.item(0).dom.checked = true;
+				}
+			}
+			if (Ext.query('input.checkboxes:checked').length == checkboxes.getCount()) {
+				allCheckedStatus = !allCheckedStatus;
+			}
+		},
+
 			// Add a listener for click on run single task
 		'.t3-icon-scheduler-run-task@click' : function(event, element) {
 			var checkbox = Ext.get(element).parent('tr').child('input[type="checkbox"]');
