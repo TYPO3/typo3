@@ -300,13 +300,6 @@ class TemplateService {
 	public $MPmap = '';
 
 	/**
-	 * TRUE after the default TS is added during parsing. This prevents double addition of the same TS code.
-	 *
-	 * @var boolean
-	 */
-	protected $defaultTSAdded = FALSE;
-
-	/**
 	 * Initialize
 	 * MUST be called directly after creating a new template-object
 	 *
@@ -459,14 +452,7 @@ class TemplateService {
 			if ($setupData && !$this->forceTemplateParsing) {
 				// If TypoScript setup structure was cached we unserialize it here:
 				$this->setup = unserialize($setupData);
-				if ($this->tt_track) {
-					$GLOBALS['TT']->setTSLogMessage('Using cached TS template data');
-				}
 			} else {
-				if ($this->tt_track) {
-					$GLOBALS['TT']->setTSLogMessage('Not using any cached TS data');
-				}
-
 				// Make configuration
 				$this->generateConfig();
 				// This stores the template hash thing
@@ -531,9 +517,8 @@ class TemplateService {
 		$this->config = array();
 		$this->rowSum = array();
 		$this->hierarchyInfoToRoot = array();
+		// Is the TOTAL rootline
 		$this->absoluteRootLine = $theRootLine;
-		$this->defaultTSAdded = FALSE;
-
 		reset($this->absoluteRootLine);
 		$c = count($this->absoluteRootLine);
 		for ($a = 0; $a < $c; $a++) {
@@ -566,13 +551,6 @@ class TemplateService {
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			$this->rootLine[] = $this->absoluteRootLine[$a];
 		}
-
-		if (!$this->defaultTSAdded) {
-			array_unshift($this->constants, '' . $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants']);
-			array_unshift($this->config, '' . $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup']);
-			$this->defaultTSAdded = TRUE;
-		}
-
 		$this->processIncludes();
 	}
 
@@ -847,13 +825,11 @@ class TemplateService {
 	 * @todo Define visibility
 	 */
 	public function generateConfig() {
-		if (!$this->defaultTSAdded) {
-			// Add default TS for all code types
-			array_unshift($this->constants, '' . $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants']);
-			array_unshift($this->config, '' . $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup']);
-			$this->defaultTSAdded = TRUE;
-		}
-
+		// Add default TS for all three code types:
+		array_unshift($this->constants, '' . $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants']);
+		// Adding default TS/constants
+		array_unshift($this->config, '' . $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup']);
+		// Adding default TS/setup
 		// Parse the TypoScript code text for include-instructions!
 		$this->processIncludes();
 		// These vars are also set lateron...
