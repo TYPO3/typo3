@@ -163,6 +163,15 @@ Ext.onReady(function(){
 				idParts = checkboxes.item(i).id.split('_');
 				Ext.select('#executionstatus_' + idParts[1]).item(0).set({src: TYPO3.settings.scheduler.runningIcon});
 			}
+		},
+			// Add a listener for click on a row to check/uncheck the checkbox
+		'.tx_scheduler_mod1 tr.db_list_normal@click' : function(e, t) {
+			var checkbox = Ext.select(t.up('tr').select('input.checkboxes'));
+			if (checkbox.item(0).dom.checked == true) {
+				checkbox.item(0).dom.checked = false;
+			} else {
+				checkbox.item(0).dom.checked = true;
+			}
 		}
 	});
 });
