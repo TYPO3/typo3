@@ -625,7 +625,7 @@ class Bootstrap {
 
 	/**
 	 * Unsetting reserved global variables:
-	 * Those which are/can be set in "stddb/tables.php" files:
+	 * Those which are/can be set in "ext:core/ext_tables.php" file:
 	 *
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
@@ -791,9 +791,6 @@ class Bootstrap {
 		global $TBE_MODULES, $TBE_MODULES_EXT, $TCA;
 		global $PAGES_TYPES, $TBE_STYLES, $FILEICONS;
 		global $_EXTKEY;
-		// Include standard tables.php file
-		require PATH_t3lib . 'stddb/tables.php';
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtTables($allowCaching);
 		// Load additional ext tables script if the file exists
 		$extTablesFile = PATH_typo3conf . TYPO3_extTableDef_script;

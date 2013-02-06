@@ -1720,9 +1720,6 @@ tt_content.' . $key . $prefix . ' {
 				if ($columnsConfigFile) {
 					if (GeneralUtility::isAbsPath($columnsConfigFile)) {
 						include($columnsConfigFile);
-					} elseif (strpos($columnsConfigFile, 'T3LIB:') === 0) {
-						// Resolve T3LIB prefix, internal core use only.
-						include(PATH_t3lib . 'stddb/' . substr($columnsConfigFile, 6));
 					} else {
 						throw new \RuntimeException(
 							'Columns configuration file not found',

@@ -4109,7 +4109,7 @@ if (version == "n3") {
 	 * Pass the content through tidy - a little program that cleans up HTML-code.
 	 * Requires $this->TYPO3_CONF_VARS['FE']['tidy'] to be TRUE and $this->TYPO3_CONF_VARS['FE']['tidy_path'] to
 	 * contain the filename/path of tidy including clean-up arguments for tidy. See default value in
-	 * TYPO3_CONF_VARS in t3lib/stddb/DefaultSettings.php
+	 * TYPO3_CONF_VARS in ext:core/Configuration/DefaultConfiguration.php
 	 *
 	 * @param string $content The page content to clean up. Will be written to a temporary file which "tidy" is then asked to clean up. File content is read back and returned.
 	 * @return string Returns the

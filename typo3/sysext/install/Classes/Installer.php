@@ -737,7 +737,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 							sql-file.
 							<br />
 							The database is also verified against your
-							\'tables.php\' configuration ($TCA) and you can
+							configuration ($TCA) and you can
 							even see suggestions to entries in $TCA or new
 							fields in the database.
 						</p>
@@ -1943,7 +1943,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 					the limits for uploaded filesizes and not TYPO3.
 					<br />
 					<strong>Notice:</strong> The limits for filesizes attached
-					to database records are set in the tables.php configuration
+					to database records are set in the configuration
 					files (\\$TCA) for each group/file field. You may override
 					these values in the local configuration or by page TSconfig settings.
 				</p>
@@ -4867,9 +4867,8 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				</dl>
 				<p>
 					The SQL-files are selected from typo3conf/ (here you can put
-					your own) and t3lib/stddb/ (TYPO3 distribution). The
-					SQL-files should be made by the <em>mysqldump</em> tool or
-					at least be formatted like that tool would do.
+					your own) The SQL-files should be made by the <em>mysqldump</em>
+					tool or at least be formatted like that tool would do.
 				</p>
 			' . $menu, 0, 1);
 		}
