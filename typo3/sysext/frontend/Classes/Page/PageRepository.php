@@ -141,11 +141,14 @@ class PageRepository {
 		if (!$this->versioningPreview) {
 			$this->where_hid_del .= ' AND NOT pages.t3ver_state>0';
 		} else {
-			// For version previewing, make sure that enable-fields are not de-selecting hidden pages - we need versionOL() to unset them only if the overlay record instructs us to.
+			// For version previewing, make sure that enable-fields are not de-selecting hidden
+			// pages - we need versionOL() to unset them only if the overlay record instructs us to.
 			// Copy where_hid_del to other variable (used in relation to versionOL())
 			$this->versioningPreview_where_hid_del = $this->where_hid_del;
 			// Clear where_hid_del
 			$this->where_hid_del = ' AND pages.deleted=0 ';
+			// Restrict to live and current workspaces
+			$this->where_hid_del .= ' AND (pages.t3ver_wsid=0 OR pages.t3ver_wsid=' . intval($this->versioningWorkspaceId) . ')';
 		}
 	}
 

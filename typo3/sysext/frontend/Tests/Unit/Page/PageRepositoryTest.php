@@ -120,6 +120,64 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		)));
 	}
 
+	////////////////////////////////
+// Tests concerning workspaces
+////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function noPagesFromWorkspaceAreShownLive() {
+		// initialization
+		$wsid = 987654321;
+
+		// simulate calls from tslib_fe->fetch_the_id()
+		$this->pageSelectObject->versioningPreview = FALSE;
+		$this->pageSelectObject->versioningWorkspaceId = $wsid;
+		$this->pageSelectObject->init(FALSE);
+
+		// check SQL created by t3lib_pageSelect->getPage()
+		$GLOBALS['TYPO3_DB']->expects($this->once())
+			->method('exec_SELECTquery')
+			->with(
+			'*',
+			'pages',
+			$this->logicalAnd(
+				$this->logicalNot(
+					$this->stringContains('(pages.t3ver_wsid=0 or pages.t3ver_wsid=' . $wsid . ')')
+				),
+				$this->stringContains('AND NOT pages.t3ver_state>0')
+			)
+		);
+
+		$this->pageSelectObject->getPage(1);
+
+	}
+
+	/**
+	 * @test
+	 */
+	public function previewShowsPagesFromLiveAndCurrentWorkspace() {
+		// initialization
+		$wsid = 987654321;
+
+		// simulate calls from tslib_fe->fetch_the_id()
+		$this->pageSelectObject->versioningPreview = TRUE;
+		$this->pageSelectObject->versioningWorkspaceId = $wsid;
+		$this->pageSelectObject->init(FALSE);
+
+		// check SQL created by t3lib_pageSelect->getPage()
+		$GLOBALS['TYPO3_DB']->expects($this->once())
+			->method('exec_SELECTquery')
+			->with(
+			'*',
+			'pages',
+			$this->stringContains('(pages.t3ver_wsid=0 or pages.t3ver_wsid=' . $wsid . ')')
+		);
+
+		$this->pageSelectObject->getPage(1);
+
+	}
 
 	////////////////////////////////
 	// Tests concerning versioning
