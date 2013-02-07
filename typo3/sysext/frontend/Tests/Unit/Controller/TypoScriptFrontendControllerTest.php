@@ -205,19 +205,6 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		$this->assertSame(array_reverse($rootLine), $this->fixture->tmpl->rootLine);
 	}
 
-	/*
-	 * @todo Implement me!
-	 */
-	public function getDomainDataForPageId() {
-	}
-
-	/**
-	 * @test
-	 * @todo Implement me!
-	 */
-	public function getDomainNameForPageId() {
-	}
-
 }
 
 ?>
