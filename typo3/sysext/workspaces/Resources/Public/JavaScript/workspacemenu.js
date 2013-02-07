@@ -98,9 +98,20 @@ var WorkspaceMenu = Class.create({
 		var clickedElement = Event.element(event);
 		var workspaceId = clickedElement.identify().substring(3);
 
-		TYPO3.Ajax.ExtDirect.ToolbarMenu.setWorkspace({'workSpaceId': workspaceId }, function(response) {
+		TYPO3.Ajax.ExtDirect.ToolbarMenu.setWorkspace({
+			'workSpaceId': workspaceId,
+			'pageId': fsMod.recentIds['web']
+		}, function(response) {
 			if (!response.id) {
 				response.id = 0;
+			}
+
+			if (Ext.isNumber(response.page)) {
+				fsMod.recentIds['web'] = parseInt(response.page, 10);
+				var url = TYPO3.Backend.ContentContainer.getUrl().split('?');
+				var parameters = Ext.urlDecode(url[1]);
+				parameters.id = fsMod.recentIds['web'];
+				TYPO3.Backend.ContentContainer.setUrl(Ext.urlAppend(url[0], Ext.urlEncode(parameters)));
 			}
 
 			TYPO3BackendWorkspaceMenu.performWorkspaceSwitch(response.id, response.title);
