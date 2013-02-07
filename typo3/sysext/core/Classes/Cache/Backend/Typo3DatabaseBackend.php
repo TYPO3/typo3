@@ -170,7 +170,7 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 	/**
 	 * Loads data from a cache file.
 	 *
-	 * @param string An identifier which describes the cache entry to load
+	 * @param string $entryIdentifier An identifier which describes the cache entry to load
 	 * @return mixed The cache entry's data as a string or FALSE if the cache entry could not be loaded
 	 */
 	public function get($entryIdentifier) {
@@ -189,7 +189,7 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 	/**
 	 * Checks if a cache entry with the specified identifier exists.
 	 *
-	 * @param string Specifies the identifier to check for existence
+	 * @param string $entryIdentifier Specifies the identifier to check for existence
 	 * @return boolean TRUE if such an entry exists, FALSE if not
 	 */
 	public function has($entryIdentifier) {
@@ -206,7 +206,7 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 	 * Removes all cache entries matching the specified identifier.
 	 * Usually this only affects one entry.
 	 *
-	 * @param string Specifies the cache entry to remove
+	 * @param string $entryIdentifier Specifies the cache entry to remove
 	 * @return boolean TRUE if (at least) an entry could be removed or FALSE if no entry was found
 	 */
 	public function remove($entryIdentifier) {
