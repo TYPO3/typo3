@@ -49,10 +49,27 @@ class ToolbarMenu {
 	 */
 	public function setWorkspace($parameter) {
 		$workspaceId = intval($parameter->workSpaceId);
+		$pageId = intval($parameter->pageId);
+
 		$GLOBALS['BE_USER']->setWorkspace($workspaceId);
+
+		while ($pageId) {
+			$page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pageId, '*',
+				' AND pages.t3ver_wsid IN (0, ' . $workspaceId . ')');
+			if ($page) {
+				if ($GLOBALS['BE_USER']->doesUserHaveAccess($page, 1)) {
+					break;
+				}
+			} else {
+				$page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pageId);
+			}
+			$pageId = $page['pid'];
+		}
+
 		return array(
 			'title' => \TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($workspaceId),
-			'id' => $workspaceId
+			'id' => $workspaceId,
+			'page' => (isset($page['uid']) && ($parameter->pageId == $page['uid'])) ? NULL : intval($page['uid'])
 		);
 	}
 
