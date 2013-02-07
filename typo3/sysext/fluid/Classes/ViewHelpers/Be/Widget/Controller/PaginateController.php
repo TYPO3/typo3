@@ -102,7 +102,7 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
 	 * @return array
 	 */
 	protected function buildPagination() {
-		$endRecord = $this->offset + $this->itemsPerPage + 1;
+		$endRecord = $this->offset + $this->itemsPerPage;
 		if ($endRecord > $this->numberOfObjects) {
 			$endRecord = $this->numberOfObjects;
 		}
