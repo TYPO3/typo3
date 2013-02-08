@@ -220,6 +220,7 @@ abstract class AbstractTask {
 		$execution->setEnd($timestamp);
 		$execution->setCronCmd('');
 		$execution->setMultiple(0);
+		$execution->setEnd(0);
 		$execution->setIsNewSingleExecution(TRUE);
 		// Replace existing execution object
 		$this->execution = $execution;
