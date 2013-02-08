@@ -1224,7 +1224,13 @@ class TemplateService {
 		if ($pageTitle != '' && $siteTitle != '') {
 			$pageTitleSeparator = ': ';
 			if (isset($this->setup['config.']['pageTitleSeparator']) && $this->setup['config.']['pageTitleSeparator']) {
-				$pageTitleSeparator = $this->setup['config.']['pageTitleSeparator'] . ' ';
+				$pageTitleSeparator = $this->setup['config.']['pageTitleSeparator'];
+
+				if (is_object($GLOBALS['TSFE']->cObj) && isset($this->setup['config.']['pageTitleSeparator.']) && is_array($this->setup['config.']['pageTitleSeparator.'])) {
+					$pageTitleSeparator = $GLOBALS['TSFE']->cObj->stdWrap($pageTitleSeparator, $this->setup['config.']['pageTitleSeparator.']);
+				} else {
+					$pageTitleSeparator .= ' ';
+				}
 			}
 		}
 		return $siteTitle . $pageTitleSeparator . $pageTitle;
