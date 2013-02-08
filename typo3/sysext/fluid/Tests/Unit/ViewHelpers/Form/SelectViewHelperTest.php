@@ -144,6 +144,9 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 		if (!setlocale(LC_COLLATE, $locale)) {
 			$this->markTestSkipped('Locale ' . $locale . ' is not available.');
 		}
+		if (stristr(PHP_OS, 'Darwin')) {
+			$this->markTestSkipped('Test skipped caused by a bug in the C libraries on BSD/OSX');
+		}
 
 		setlocale(LC_CTYPE, $locale);
 		setlocale(LC_MONETARY, $locale);
