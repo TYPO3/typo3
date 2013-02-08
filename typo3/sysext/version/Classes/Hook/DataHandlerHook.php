@@ -264,6 +264,49 @@ class DataHandlerHook {
 	}
 
 	/**
+	 * Hook that is called after tcemain made field processing.
+	 * Move tt_content records on colPos change in workspace
+	 *
+	 * @param string $status
+	 * @param string $table
+	 * @param integer &$uid
+	 * @param array $fieldArray
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler
+	 * @return void
+	 */
+	public function processDatamap_postProcessFieldArray($status, $table, &$uid, $fieldArray, \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler) {
+		if ($table != 'tt_content') {
+			return;
+		}
+
+		// Move tt_content records on colPos change in workspace
+		if ($status == 'update' && $dataHandler->BE_USER->workspace !== 0 && isset($fieldArray['colPos'])) {
+			$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid);
+			// Move only for existing live record
+			if ($record['t3ver_state'] <= 0) {
+				$command = array(
+					$table => array(
+						$uid => array(
+							'move' => '-' . $uid
+						)
+					)
+				);
+
+				/* @var $moveDataHandler \TYPO3\CMS\Core\DataHandling\DataHandler */
+				$moveDataHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Core\DataHandling\DataHandler');
+				$moveDataHandler->stripslashes_values = 0;
+				$moveDataHandler->start(array(), $command, $dataHandler->BE_USER);
+				$moveDataHandler->process_cmdmap();
+
+				if (isset($moveDataHandler->copyMappingArray[$table][$uid])) {
+					// edit new move placeholder
+					$uid = $moveDataHandler->copyMappingArray[$table][$uid];
+				}
+			}
+		}
+	}
+
+	/**
 	 * Hook for \TYPO3\CMS\Core\DataHandling\DataHandler::moveRecord that cares about
 	 * moving records that are *not* in the live workspace
 	 *
@@ -1242,6 +1285,10 @@ class DataHandlerHook {
 				't3ver_state' => 4
 			);
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($wsUid), $updateFields);
+		}
+		// Workspace move is a copy operation
+		if ($destPid < 0) {
+			$tcemainObj->fixCopyAfterDuplFields($table, $wsUid, abs($destPid), 1);
 		}
 		// Check for the localizations of that element and move them as well
 		$tcemainObj->moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid);
