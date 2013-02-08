@@ -193,6 +193,9 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid
 		if (!setlocale(LC_COLLATE, $locale)) {
 			$this->markTestSkipped('Locale ' . $locale . ' is not available.');
 		}
+		if (stristr(PHP_OS, 'Darwin')) {
+			$this->markTestSkipped('Test skipped caused by a bug in the C libraries on BSD/OSX');
+		}
 
 		setlocale(LC_CTYPE, $locale);
 		setlocale(LC_MONETARY, $locale);
@@ -486,5 +489,4 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid
 		$this->viewHelper->render();
 	}
 }
-
 ?>
