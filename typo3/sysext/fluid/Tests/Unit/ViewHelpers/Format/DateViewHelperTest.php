@@ -11,16 +11,17 @@
  *                                                                        */
 
 /**
+ *
  */
 class Tx_Fluid_Tests_Unit_ViewHelpers_Format_DateViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * @var array Backup of current locale, it is manipulated in tests	16
+	 * @var array Backup of current locale, it is manipulated in tests
 	 */
 	protected $backupLocales = array();
 
 	/**
-	 * @var string Backup of current timezone, it is manipulated in tests	21
+	 * @var string Backup of current timezone, it is manipulated in tests
 	 */
 	protected $timezone;
 
@@ -110,32 +111,46 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_DateViewHelperTest extends Tx_Extba
 	}
 
 	/**
-	 * @test
+	 * Data provider for viewHelperRespectsDefaultTimezoneForIntegerTimestamp
+	 *
+	 * @return array
 	 */
-	public function viewHelperRespectsDefaultTimezoneForIntegerTimestamp() {
-		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
+	public function viewHelperRespectsDefaultTimezoneForIntegerTimestampDataProvider() {
+		return array(
+			'Europe/Berlin' => array(
+				'Europe/Berlin',
+				'2013-02-03 12:40',
+			),
+			'Asia/Riyadh' => array(
+				'Asia/Riyadh',
+				'2013-02-03 14:40',
+			),
+		);
+	}
 
+	/**
+	 * @test
+	 * @dataProvider viewHelperRespectsDefaultTimezoneForIntegerTimestampDataProvider
+	 */
+	public function viewHelperRespectsDefaultTimezoneForIntegerTimestamp($timezone, $expected) {
+		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
 		$date = 1359891658; // 2013-02-03 11:40 UTC
 		$format = 'Y-m-d H:i';
 
-		date_default_timezone_set('Europa/Berlin');
-		$expected = '2013-02-03 12:40';
-		$this->assertEquals($expected, $viewHelper->render($date, $format));
-
-		date_default_timezone_set('Asia/Riyadh');
-		$expected = '2013-02-03 14:40';
+		date_default_timezone_set($timezone);
 		$this->assertEquals($expected, $viewHelper->render($date, $format));
 	}
 
 	/**
 	 * @test
+	 * @TODO: Split the single sets to a data provider
 	 */
 	public function viewHelperRespectsDefaultTimezoneForStringTimestamp() {
 		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
 
 		$format = 'Y-m-d H:i';
 
-		date_default_timezone_set('Europa/Berlin');
+		date_default_timezone_set('Europe/Berlin');
 		$date = '@1359891658'; // 2013-02-03 11:40 UTC
 		$expected = '2013-02-03 12:40';
 		$this->assertEquals($expected, $viewHelper->render($date, $format));
@@ -156,6 +171,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_DateViewHelperTest extends Tx_Extba
 
 	/**
 	 * @test
+	 * @TODO: Split the single sets to a data provider
 	 */
 	public function dateViewHelperFormatsDateLocalized() {
 		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
@@ -185,4 +201,5 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_DateViewHelperTest extends Tx_Extba
 		setlocale(LC_TIME, $locale);
 	}
 }
+
 ?>
