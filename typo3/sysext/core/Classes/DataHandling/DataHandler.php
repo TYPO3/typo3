@@ -1256,7 +1256,12 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function placeholderShadowing($table, $id) {
-		if ($liveRec = BackendUtility::getLiveVersionOfRecord($table, $id, '*')) {
+		if (($liveRec = BackendUtility::getLiveVersionOfRecord($table, $id, '*'))) {
+			// Use placeholderShadowing also for move placeholder
+			$moveRecord = BackendUtility::getMovePlaceholder($table, $liveRec['uid'], '*');
+			if ($moveRecord !== FALSE) {
+				$liveRec = $moveRecord;
+			}
 			if ((int) $liveRec['t3ver_state'] > 0) {
 				$justStoredRecord = BackendUtility::getRecord($table, $id);
 				$newRecord = array();
