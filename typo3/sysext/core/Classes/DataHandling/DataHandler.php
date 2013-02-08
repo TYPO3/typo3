@@ -1090,6 +1090,11 @@ class DataHandler {
 	 */
 	public function placeholderShadowing($table, $id) {
 		if ($liveRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionOfRecord($table, $id, '*')) {
+			// Use placeholderShadowing also for move placeholder
+			$moveRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getMovePlaceholder($table, $liveRec['uid'], '*');
+			if ($moveRecord !== FALSE) {
+				$liveRec = $moveRecord;
+			}
 			if ((int) $liveRec['t3ver_state'] > 0) {
 				$justStoredRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id);
 				$newRecord = array();
