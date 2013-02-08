@@ -270,6 +270,49 @@ class DataHandlerHook {
 	}
 
 	/**
+	 * Hook that is called after the field processing in DataHandler is done.
+	 * Move tt_content records on colPos change in workspace
+	 *
+	 * @param string $status
+	 * @param string $table
+	 * @param integer &$uid
+	 * @param array $fieldArray
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler
+	 * @return void
+	 */
+	public function processDatamap_postProcessFieldArray($status, $table, &$uid, $fieldArray, \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler) {
+		if ($table !== 'tt_content') {
+			return;
+		}
+
+		// Move tt_content records on colPos change in workspace
+		if ($status === 'update' && $dataHandler->BE_USER->workspace !== 0 && isset($fieldArray['colPos'])) {
+			$record = BackendUtility::getRecord($table, $uid);
+			// Move only for existing live record
+			if ($record['t3ver_state'] <= 0) {
+				$command = array(
+					$table => array(
+						$uid => array(
+							'move' => '-' . $uid
+						)
+					)
+				);
+
+				/* @var $moveDataHandler \TYPO3\CMS\Core\DataHandling\DataHandler */
+				$moveDataHandler = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+				$moveDataHandler->stripslashes_values = 0;
+				$moveDataHandler->start(array(), $command, $dataHandler->BE_USER);
+				$moveDataHandler->process_cmdmap();
+
+				if (isset($moveDataHandler->copyMappingArray[$table][$uid])) {
+					// edit new move placeholder
+					$uid = $moveDataHandler->copyMappingArray[$table][$uid];
+				}
+			}
+		}
+	}
+
+	/**
 	 * Hook for \TYPO3\CMS\Core\DataHandling\DataHandler::moveRecord that cares about
 	 * moving records that are *not* in the live workspace
 	 *
