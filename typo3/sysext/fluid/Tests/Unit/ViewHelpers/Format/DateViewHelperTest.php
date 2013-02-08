@@ -108,32 +108,47 @@ class DateViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	}
 
 	/**
-	 * @test
+	 * Data provider for viewHelperRespectsDefaultTimezoneForIntegerTimestamp
+	 *
+	 * @return array
 	 */
-	public function viewHelperRespectsDefaultTimezoneForIntegerTimestamp() {
+	public function viewHelperRespectsDefaultTimezoneForIntegerTimestampDataProvider() {
+		return array(
+			'Europe/Berlin' => array(
+				'Europe/Berlin',
+				'2013-02-03 12:40',
+			),
+			'Asia/Riyadh' => array(
+				'Asia/Riyadh',
+				'2013-02-03 14:40',
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider viewHelperRespectsDefaultTimezoneForIntegerTimestampDataProvider
+	 */
+	public function viewHelperRespectsDefaultTimezoneForIntegerTimestamp($timezone, $expected) {
 		$viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\DateViewHelper', array('renderChildren'));
 
 		$date = 1359891658; // 2013-02-03 11:40 UTC
 		$format = 'Y-m-d H:i';
 
-		date_default_timezone_set('Europa/Berlin');
-		$expected = '2013-02-03 12:40';
-		$this->assertEquals($expected, $viewHelper->render($date, $format));
-
-		date_default_timezone_set('Asia/Riyadh');
-		$expected = '2013-02-03 14:40';
+		date_default_timezone_set($timezone);
 		$this->assertEquals($expected, $viewHelper->render($date, $format));
 	}
 
 	/**
 	 * @test
+	 * @TODO: Split the single sets to a data provider
 	 */
 	public function viewHelperRespectsDefaultTimezoneForStringTimestamp() {
 		$viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\DateViewHelper', array('renderChildren'));
 
 		$format = 'Y-m-d H:i';
 
-		date_default_timezone_set('Europa/Berlin');
+		date_default_timezone_set('Europe/Berlin');
 		$date = '@1359891658'; // 2013-02-03 11:40 UTC
 		$expected = '2013-02-03 12:40';
 		$this->assertEquals($expected, $viewHelper->render($date, $format));
@@ -154,6 +169,7 @@ class DateViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
+	 * @TODO: Split the single sets to a data provider
 	 */
 	public function dateViewHelperFormatsDateLocalized() {
 		$viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\DateViewHelper', array('renderChildren'));
