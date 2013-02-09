@@ -459,7 +459,7 @@ class ResourceStorage {
 	 * @throws Exception\FolderDoesNotExistException
 	 * @return void
 	 */
-	public function injectFileMount($folderIdentifier, $additionalData = array()) {
+	public function addFileMount($folderIdentifier, $additionalData = array()) {
 		// check for the folder before we add it as a filemount
 		if ($this->driver->folderExists($folderIdentifier) === FALSE) {
 			// if there is an error, this is important and should be handled
@@ -525,12 +525,12 @@ class ResourceStorage {
 	}
 
 	/**
-	 * Adds user permissions to the storage
+	 * Sets the user permissions of the storage
 	 *
 	 * @param array $userPermissions
 	 * @return void
 	 */
-	public function injectUserPermissions(array $userPermissions) {
+	public function setUserPermissions(array $userPermissions) {
 		$this->userPermissions = $userPermissions;
 	}
 
