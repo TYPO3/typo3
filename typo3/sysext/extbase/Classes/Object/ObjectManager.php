@@ -91,12 +91,6 @@ class ObjectManager implements ObjectManagerInterface {
 	/**
 	 * Returns a fresh or existing instance of the object specified by $objectName.
 	 *
-	 * Important:
-	 *
-	 * If possible, instances of Prototype objects should always be created with the
-	 * Object Manager's create() method and Singleton objects should rather be
-	 * injected by some type of Dependency Injection.
-	 *
 	 * @param string $objectName The name of the object to return an instance of
 	 * @return object The object instance
 	 * @api
@@ -104,7 +98,13 @@ class ObjectManager implements ObjectManagerInterface {
 	public function get($objectName) {
 		$arguments = func_get_args();
 		array_shift($arguments);
-		return $this->objectContainer->getInstance($objectName, $arguments);
+		if ($objectName === 'DateTime') {
+			array_unshift($arguments, $objectName);
+			$instance = call_user_func_array(array('TYPO3\\CMS\\Core\\Utility\\GeneralUtility', 'makeInstance'), $arguments);
+		} else {
+			$instance = $this->objectContainer->getInstance($objectName, $arguments);
+		}
+		return $instance;
 	}
 
 	/**
@@ -117,21 +117,12 @@ class ObjectManager implements ObjectManagerInterface {
 	 *
 	 * @param string $objectName The name of the object to create
 	 * @return object The new object instance
-	 * @throws \TYPO3\CMS\Extbase\Object\Exception\WrongScopeException if the created object is not of scope prototype
-	 * @api
+	 * @deprecated since Extbase 6.1.0; will be removed in Extbase 6.3.0
 	 */
 	public function create($objectName) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$arguments = func_get_args();
-		array_shift($arguments);
-		if ($objectName === 'DateTime') {
-			array_unshift($arguments, $objectName);
-			$instance = call_user_func_array(array('TYPO3\\CMS\\Core\\Utility\\GeneralUtility', 'makeInstance'), $arguments);
-		} else {
-			$instance = $this->objectContainer->getInstance($objectName, $arguments);
-		}
-		if ($instance instanceof \TYPO3\CMS\Core\SingletonInterface) {
-			throw new \TYPO3\CMS\Extbase\Object\Exception\WrongScopeException('Object "' . $objectName . '" is of not of scope prototype, but only prototype is supported by create()', 1265203124);
-		}
+		$instance = call_user_func_array(array($this, 'get'), $arguments);
 		return $instance;
 	}
 
