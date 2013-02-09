@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\Parser;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Stores all information relevant for one parsing pass - that is, the root node,
  * and the current stack of open nodes (nodeStack) and a variable container used
@@ -131,9 +132,9 @@ class ParsingState implements \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterfa
 
 	/**
 	 * Returns a variable container which will be then passed to the postParseFacet.
-	 * TODO: Rename to getPostParseVariableContainer
 	 *
 	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer The variable container or NULL if none has been set yet
+	 * @todo Rename to getPostParseVariableContainer
 	 */
 	public function getVariableContainer() {
 		return $this->variableContainer;
@@ -170,8 +171,8 @@ class ParsingState implements \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterfa
 	 * This requires the current rendering context in order to be able to evaluate the layout name
 	 *
 	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-	 * @throws \TYPO3\CMS\Fluid\View\Exception
 	 * @return string
+	 * @throws \TYPO3\CMS\Fluid\View\Exception
 	 */
 	public function getLayoutName(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		if (!$this->hasLayout()) {

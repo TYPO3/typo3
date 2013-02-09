@@ -10,10 +10,34 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Formats a string using PHPs str_pad function.
- *
  * @see http://www.php.net/manual/en/function.str_pad.php
+ *
+ * = Examples =
+ *
+ * <code title="Defaults">
+ * <f:format.padding padLength="10">TYPO3</f:format.padding>
+ * </code>
+ * <output>
+ * TYPO3     (note the trailing whitespace)
+ * <output>
+ *
+ * <code title="Specify padding string">
+ * <f:format.padding padLength="10" padString="-=">TYPO3</f:format.padding>
+ * </code>
+ * <output>
+ * TYPO3-=-=-
+ * </output>
+ *
+ * <code title="Specify padding type">
+ * <f:format.padding padLength="10" padString="-" padType="both">TYPO3</f:format.padding>
+ * </code>
+ * <output>
+ * --TYPO3---
+ * </output>
+ *
  * @api
  */
 class PaddingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {

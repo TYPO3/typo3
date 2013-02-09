@@ -10,10 +10,27 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Wrapper for PHPs nl2br function.
- *
  * @see http://www.php.net/manual/en/function.nl2br.php
+ *
+ * = Examples =
+ *
+ * <code title="Example">
+ * <f:format.nl2br>{text_with_linebreaks}</f:format.nl2br>
+ * </code>
+ * <output>
+ * text with line breaks replaced by <br />
+ * </output>
+ *
+ * <code title="Inline notation">
+ * {text_with_linebreaks -> f:format.nl2br()}
+ * </code>
+ * <output>
+ * text with line breaks replaced by <br />
+ * </output>
+ *
  * @api
  */
 class Nl2brViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {

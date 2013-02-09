@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper\Facets;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * If a ViewHelper implements CompilableInterface, it can directly influence the way
  * the syntax tree is compiled to a static PHP file.
@@ -60,9 +61,9 @@ interface CompilableInterface {
 	 * $renderingContext contains references to the TemplateVariableContainer, the
 	 * ViewHelperVariableContainer and the ControllerContext.
 	 *
-	 * @var array $arguments
-	 * @var \Closure $renderChildrenClosure
-	 * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return string the resulting string which is directly shown
 	 */
 	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext);
@@ -85,7 +86,7 @@ interface CompilableInterface {
 	 * Return Value
 	 * ============
 	 * Besides returning a single string, it can also return the constant
-	 * Tx_Fluid_Core_Compiler_TemplateCompiler::SHOULD_GENERATE_VIEWHELPER_INVOCATION
+	 * \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler::SHOULD_GENERATE_VIEWHELPER_INVOCATION
 	 * which means that after the $initializationPhpCode, the ViewHelper invocation
 	 * is built as normal. This is especially needed if you want to build new arguments
 	 * at run-time, as it is done for the AbstractConditionViewHelper.

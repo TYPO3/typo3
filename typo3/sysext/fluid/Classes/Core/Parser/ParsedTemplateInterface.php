@@ -10,8 +10,9 @@ namespace TYPO3\CMS\Fluid\Core\Parser;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
- * This interface is returned by Tx_Fluid_Core_Parser_TemplateParser->parse()
+ * This interface is returned by \TYPO3\CMS\Fluid\Core\Parser\TemplateParser->parse()
  * method and is a parsed template
  */
 interface ParsedTemplateInterface {
@@ -26,8 +27,8 @@ interface ParsedTemplateInterface {
 
 	/**
 	 * Returns a variable container used in the PostParse Facet.
-	 * TODO: remove
 	 *
+	 * @todo remove
 	 * @return \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
 	 */
 	public function getVariableContainer();

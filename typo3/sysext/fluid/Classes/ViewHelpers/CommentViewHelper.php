@@ -10,9 +10,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * This ViewHelper prevents rendering of any content inside the tag
- * Note: Contents of the comment will still be *parsed* thus throwing an
+ * Note: Contents of the comment will still be **parsed** thus throwing an
  * Exception if it contains syntax errors. You can put child nodes in
  * CDATA tags to avoid this.
  *
@@ -21,8 +22,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * <code title="Commenting out fluid code">
  * Before
  * <f:comment>
- * This is completely hidden.
- * <f:debug>This does not get parsed</f:debug>
+ *   This is completely hidden.
+ *   <f:debug>This does not get parsed</f:debug>
  * </f:comment>
  * After
  * </code>
@@ -33,7 +34,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * <code title="Prevent parsing">
  * <f:comment><![CDATA[
- * <f:some.invalid.syntax />
+ *  <f:some.invalid.syntax />
  * ]]></f:comment>
  * </code>
  * <output>

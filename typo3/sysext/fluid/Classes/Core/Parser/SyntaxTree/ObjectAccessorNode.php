@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * A node which handles object access. This means it handles structures like {object.accessor.bla}
  */
@@ -85,6 +86,7 @@ class ObjectAccessorNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\Abstrac
 			} else {
 				$subject = $propertyValue;
 			}
+
 			if ($subject instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RenderingContextAwareInterface) {
 				$subject->setRenderingContext($renderingContext);
 			}

@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Node in the syntax tree.
  */
@@ -26,7 +27,7 @@ interface NodeInterface {
 	/**
 	 * Returns all child nodes for a given node.
 	 *
-	 * @return array<Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface> A list of nodes
+	 * @return array<\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface> A list of nodes
 	 */
 	public function getChildNodes();
 

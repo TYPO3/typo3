@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Else-Branch of a condition. Only has an effect inside of "If". See the If-ViewHelper for documentation.
  *
@@ -17,9 +18,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * <code title="Output content if condition is not met">
  * <f:if condition="{someCondition}">
- * <f:else>
- * condition was not true
- * </f:else>
+ *   <f:else>
+ *     condition was not true
+ *   </f:else>
  * </f:if>
  * </code>
  * <output>
@@ -27,7 +28,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * Otherwise nothing is outputted in this example.
  * </output>
  *
- * @see Tx_Fluid_ViewHelpers_IfViewHelper
+ * @see TYPO3\CMS\Fluid\ViewHelpers\IfViewHelper
  * @api
  */
 class ElseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {

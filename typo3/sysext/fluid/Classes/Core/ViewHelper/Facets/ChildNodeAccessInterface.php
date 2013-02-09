@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper\Facets;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Child Node Access Facet. View Helpers should implement this interface if they
  * need access to the direct children in the Syntax Tree at rendering-time.
@@ -18,16 +19,15 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper\Facets;
  * To render subnodes, you can fetch the RenderingContext via $this->renderingContext.
  *
  * In most cases, you will not need this facet, and it is NO PUBLIC API!
- * Right now it is only used internally for conditions, so by subclassing Tx_Fluid_Core_ViewHelpers_AbstractConditionViewHelper, this should be all you need.
+ * Right now it is only used internally for conditions, so by subclassing TYPO3\CMS\Fluid\Core\ViewHelpers\AbstractConditionViewHelper, this should be all you need.
  *
- * See Tx_Fluid_ViewHelpers_IfViewHelper for an example how it is used.
+ * See \TYPO3\CMS\Fluid\ViewHelpers\IfViewHelper for an example how it is used.
  */
 interface ChildNodeAccessInterface {
-
 	/**
 	 * Sets the direct child nodes of the current syntax tree node.
 	 *
-	 * @param array<Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode> $childNodes
+	 * @param array<\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode> $childNodes
 	 * @return void
 	 */
 	public function setChildNodes(array $childNodes);

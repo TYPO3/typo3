@@ -10,10 +10,27 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Formats a number with custom precision, decimal point and grouped thousands.
- *
  * @see http://www.php.net/manual/en/function.number-format.php
+ *
+ * = Examples =
+ *
+ * <code title="Defaults">
+ * <f:format.number>423423.234</f:format.number>
+ * </code>
+ * <output>
+ * 423,423.20
+ * </output>
+ *
+ * <code title="With all parameters">
+ * <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".">423423.234</f:format.number>
+ * </code>
+ * <output>
+ * 423.423,2
+ * </output>
+ *
  * @api
  */
 class NumberViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {

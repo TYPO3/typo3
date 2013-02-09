@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * A node which is used inside boolean arguments
  */
@@ -103,6 +104,7 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 			// is a text node with a literal comparison like "1 == 1"
 			$childNodes = array($syntaxTreeNode);
 		}
+
 		$this->leftSide = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode();
 		$this->rightSide = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode();
 		$this->comparator = NULL;
@@ -113,10 +115,12 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 				// skip loop and fall back to classical to boolean conversion.
 				break;
 			}
+
 			if ($this->comparator !== NULL) {
 				// comparator already set, we are evaluating the right side of the comparator
 				$this->rightSide->addChildNode($childNode);
-			} elseif ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode && ($this->comparator = $this->getComparatorFromString($childNode->getText()))) {
+			} elseif ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode
+				&& ($this->comparator = $this->getComparatorFromString($childNode->getText()))) {
 				// comparator in current string segment
 				$explodedString = explode($this->comparator, $childNode->getText());
 				if (isset($explodedString[0]) && trim($explodedString[0]) !== '') {
@@ -140,6 +144,7 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 				$this->leftSide->addChildNode($childNode);
 			}
 		}
+
 		if ($this->comparator === NULL) {
 			// No Comparator found, we need to evaluate the given syntax tree node manually
 			$this->syntaxTreeNode = $syntaxTreeNode;
@@ -196,35 +201,35 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 	 *
 	 * Some special rules apply:
 	 * - The == and != operators are comparing the Object Identity using === and !==, when one of the two
-	 * operands are objects.
+	 *   operands are objects.
 	 * - For arithmetic comparisons (%, >, >=, <, <=), some special rules apply:
-	 * - arrays are only comparable with arrays, else the comparison yields FALSE
-	 * - objects are only comparable with objects, else the comparison yields FALSE
-	 * - the comparison is FALSE when two types are not comparable according to the table
-	 * "Comparison with various types" on http://php.net/manual/en/language.operators.comparison.php
+	 *   - arrays are only comparable with arrays, else the comparison yields FALSE
+	 *   - objects are only comparable with objects, else the comparison yields FALSE
+	 *   - the comparison is FALSE when two types are not comparable according to the table
+	 *     "Comparison with various types" on http://php.net/manual/en/language.operators.comparison.php
 	 *
 	 * This function must be static public, as it is also directly called from cached templates.
 	 *
 	 * @param string $comparator
 	 * @param mixed $evaluatedLeftSide
 	 * @param mixed $evaluatedRightSide
-	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 * @return boolean TRUE if comparison of left and right side using the comparator emit TRUE, false otherwise
+	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 */
 	static public function evaluateComparator($comparator, $evaluatedLeftSide, $evaluatedRightSide) {
 		switch ($comparator) {
 			case '==':
 				if (is_object($evaluatedLeftSide) || is_object($evaluatedRightSide)) {
-					return $evaluatedLeftSide === $evaluatedRightSide;
+					return ($evaluatedLeftSide === $evaluatedRightSide);
 				} else {
-					return $evaluatedLeftSide == $evaluatedRightSide;
+					return ($evaluatedLeftSide == $evaluatedRightSide);
 				}
 				break;
 			case '!=':
 				if (is_object($evaluatedLeftSide) || is_object($evaluatedRightSide)) {
-					return $evaluatedLeftSide !== $evaluatedRightSide;
+					return ($evaluatedLeftSide !== $evaluatedRightSide);
 				} else {
-					return $evaluatedLeftSide != $evaluatedRightSide;
+					return ($evaluatedLeftSide != $evaluatedRightSide);
 				}
 				break;
 			case '%':
@@ -268,7 +273,8 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 	 * @return boolean TRUE if the operands can be compared using arithmetic operators, FALSE otherwise.
 	 */
 	static protected function isComparable($evaluatedLeftSide, $evaluatedRightSide) {
-		if ((is_null($evaluatedLeftSide) || is_string($evaluatedLeftSide)) && is_string($evaluatedRightSide)) {
+		if ((is_null($evaluatedLeftSide) || is_string($evaluatedLeftSide))
+			&& is_string($evaluatedRightSide)) {
 			return TRUE;
 		}
 		if (is_bool($evaluatedLeftSide) || is_null($evaluatedLeftSide)) {
@@ -277,7 +283,8 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 		if (is_object($evaluatedLeftSide) && is_object($evaluatedRightSide)) {
 			return TRUE;
 		}
-		if ((is_string($evaluatedLeftSide) || is_resource($evaluatedLeftSide) || is_numeric($evaluatedLeftSide)) && (is_string($evaluatedRightSide) || is_resource($evaluatedRightSide) || is_numeric($evaluatedRightSide))) {
+		if ((is_string($evaluatedLeftSide) || is_resource($evaluatedLeftSide) || is_numeric($evaluatedLeftSide))
+			&& (is_string($evaluatedRightSide) || is_resource($evaluatedRightSide) || is_numeric($evaluatedRightSide))) {
 			return TRUE;
 		}
 		if (is_array($evaluatedLeftSide) && is_array($evaluatedRightSide)) {
@@ -317,9 +324,9 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 			return $value > 0;
 		}
 		if (is_string($value)) {
-			return !empty($value) && strtolower($value) !== 'false';
+			return (!empty($value) && strtolower($value) !== 'false');
 		}
-		if (is_array($value) || is_object($value) && $value instanceof \Countable) {
+		if (is_array($value) || (is_object($value) && $value instanceof \Countable)) {
 			return count($value) > 0;
 		}
 		if (is_object($value)) {

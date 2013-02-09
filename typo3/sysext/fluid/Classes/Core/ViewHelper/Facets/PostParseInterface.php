@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper\Facets;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Post Parse Facet. Your view helper should implement this if you want a callback
  * to be called directly after the syntax tree node corresponding to this view
@@ -17,7 +18,7 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper\Facets;
  *
  * In the callback, it is possible to store some variables inside the
  * parseVariableContainer (which is different from the runtime variable container!).
- * This implicates that you usually have to adjust the Tx_Fluid_View_TemplateView
+ * This implicates that you usually have to adjust the \TYPO3\CMS\Fluid\View\TemplateView
  * in case you implement this facet.
  *
  * Normally, this facet is not needed, except in really really rare cases.
@@ -39,6 +40,7 @@ interface PostParseInterface {
 	 * @return void
 	 */
 	static public function postParseEvent(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $syntaxTreeNode, array $viewHelperArguments, \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer);
+
 }
 
 ?>

@@ -10,19 +10,33 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * This view helper is an abstract ViewHelper which implements an if/else condition.
+ * @see TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::convertArgumentValue() to find see how boolean arguments are evaluated
  *
- * @see Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode::convertArgumentValue() to find see how boolean arguments are evaluated
- * @see Tx_Fluid_ViewHelpers_IfViewHelper for a more detailed explanation and a simple usage example.
+ * = Usage =
+ *
+ * To create a custom Condition ViewHelper, you need to subclass this class, and
+ * implement your own render() method. Inside there, you should call $this->renderThenChild()
+ * if the condition evaluated to TRUE, and $this->renderElseChild() if the condition evaluated
+ * to FALSE.
+ *
+ * Every Condition ViewHelper has a "then" and "else" argument, so it can be used like:
+ * <[aConditionViewHelperName] .... then="condition true" else="condition false" />,
+ * or as well use the "then" and "else" child nodes.
+ *
+ * @see TYPO3\CMS\Fluid\ViewHelpers\IfViewHelper for a more detailed explanation and a simple usage example.
+ * Make sure to NOT OVERRIDE the constructor.
+ *
  * @api
  */
 abstract class AbstractConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface, \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface {
 
 	/**
-	 * An array of Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
+	 * An array containing child nodes
 	 *
-	 * @var array
+	 * @var array<\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode>
 	 */
 	private $childNodes = array();
 
@@ -62,16 +76,20 @@ abstract class AbstractConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHel
 		} elseif ($this->hasArgument('__elseClosure') || $this->hasArgument('else')) {
 			return '';
 		}
+
 		$elseViewHelperEncountered = FALSE;
 		foreach ($this->childNodes as $childNode) {
-			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode && $childNode->getViewHelperClassName() === 'TYPO3\\CMS\\Fluid\\ViewHelpers\\ThenViewHelper') {
+			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
+				&& $childNode->getViewHelperClassName() === 'TYPO3\\CMS\\Fluid\\ViewHelpers\\ThenViewHelper') {
 				$data = $childNode->evaluate($this->renderingContext);
 				return $data;
 			}
-			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode && $childNode->getViewHelperClassName() === 'TYPO3\\CMS\\Fluid\\ViewHelpers\\ElseViewHelper') {
+			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
+				&& $childNode->getViewHelperClassName() === 'TYPO3\\CMS\\Fluid\\ViewHelpers\\ElseViewHelper') {
 				$elseViewHelperEncountered = TRUE;
 			}
 		}
+
 		if ($elseViewHelperEncountered) {
 			return '';
 		} else {
@@ -96,10 +114,12 @@ abstract class AbstractConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHel
 			return $elseClosure();
 		}
 		foreach ($this->childNodes as $childNode) {
-			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode && $childNode->getViewHelperClassName() === 'TYPO3\\CMS\\Fluid\\ViewHelpers\\ElseViewHelper') {
+			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
+				&& $childNode->getViewHelperClassName() === 'TYPO3\\CMS\\Fluid\\ViewHelpers\\ElseViewHelper') {
 				return $childNode->evaluate($this->renderingContext);
 			}
 		}
+
 		return '';
 	}
 
@@ -117,11 +137,15 @@ abstract class AbstractConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHel
 	 */
 	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode, \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler) {
 		foreach ($syntaxTreeNode->getChildNodes() as $childNode) {
-			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode && $childNode->getViewHelperClassName() === 'TYPO3\\CMS\\Fluid\\ViewHelpers\\ThenViewHelper') {
+			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
+				&& $childNode->getViewHelperClassName() === 'TYPO3\\CMS\\Fluid\\ViewHelpers\\ThenViewHelper') {
+
 				$childNodesAsClosure = $templateCompiler->wrapChildNodesInClosure($childNode);
 				$initializationPhpCode .= sprintf('%s[\'__thenClosure\'] = %s;', $argumentsVariableName, $childNodesAsClosure) . chr(10);
 			}
-			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode && $childNode->getViewHelperClassName() === 'TYPO3\\CMS\\Fluid\\ViewHelpers\\ElseViewHelper') {
+			if ($childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
+				&& $childNode->getViewHelperClassName() === 'TYPO3\\CMS\\Fluid\\ViewHelpers\\ElseViewHelper') {
+
 				$childNodesAsClosure = $templateCompiler->wrapChildNodesInClosure($childNode);
 				$initializationPhpCode .= sprintf('%s[\'__elseClosure\'] = %s;', $argumentsVariableName, $childNodesAsClosure) . chr(10);
 			}

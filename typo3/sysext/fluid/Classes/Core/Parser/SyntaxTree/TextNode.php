@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Text Syntax Tree Node - is a container for strings.
  */
@@ -26,6 +27,7 @@ class TextNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 	 * Constructor.
 	 *
 	 * @param string $text text to store in this textNode
+	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 */
 	public function __construct($text) {
 		if (!is_string($text)) {

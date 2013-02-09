@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\Parser;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * The parser configuration. Contains all configuration needed to configure
  * the building of a SyntaxTree.
@@ -43,8 +44,8 @@ class Configuration {
 	/**
 	 * Returns all interceptors for a given Interception Point.
 	 *
-	 * @param integer $interceptionPoint one of the Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_* constants,
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Tx_Fluid_Core_Parser_InterceptorInterface>
+	 * @param integer $interceptionPoint one of the \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_* constants,
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface>
 	 */
 	public function getInterceptors($interceptionPoint) {
 		if (isset($this->interceptors[$interceptionPoint]) && $this->interceptors[$interceptionPoint] instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {

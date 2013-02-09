@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Tag based view helper.
  * Sould be used as the base class for all view helpers which output simple tags, as it provides some
@@ -78,6 +79,7 @@ abstract class AbstractTagBasedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
 		if ($this->hasArgument('additionalAttributes') && is_array($this->arguments['additionalAttributes'])) {
 			$this->tag->addAttributes($this->arguments['additionalAttributes']);
 		}
+
 		if (isset(self::$tagAttributes[get_class($this)])) {
 			foreach (self::$tagAttributes[get_class($this)] as $attributeName) {
 				if ($this->hasArgument($attributeName) && $this->arguments[$attributeName] !== '') {

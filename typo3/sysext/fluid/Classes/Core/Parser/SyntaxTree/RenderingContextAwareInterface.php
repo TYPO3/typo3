@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Interface for objects which are aware of Fluid's rendering context. All objects
  * marked with this interface will get the current rendering context injected
@@ -24,6 +25,7 @@ interface RenderingContextAwareInterface {
 	 * @return void
 	 */
 	public function setRenderingContext(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext);
+
 }
 
 ?>

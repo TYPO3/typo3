@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * A view helper for creating URIs to external targets.
  * Currently the specified URI is simply passed through.

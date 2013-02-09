@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\Parser\Interceptor;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * An interceptor adding the escape viewhelper to the suitable places.
  */
@@ -26,7 +27,7 @@ class Escape implements \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface {
 	 * A stack of ViewHelperNodes which currently disable the interceptor.
 	 * Needed to enable the interceptor again.
 	 *
-	 * @var array<Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface>
+	 * @var array<\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface>
 	 */
 	protected $viewHelperNodesWhichDisableTheInterceptor = array();
 
@@ -69,7 +70,11 @@ class Escape implements \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface {
 			}
 		} elseif ($this->interceptorEnabled && $node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode) {
 			$escapeViewHelper = $this->objectManager->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\HtmlspecialcharsViewHelper');
-			$node = $this->objectManager->create('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode', $escapeViewHelper, array('value' => $node));
+			$node = $this->objectManager->get(
+				'TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode',
+				$escapeViewHelper,
+				array('value' => $node)
+			);
 		}
 		return $node;
 	}

@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * VariableContainer which stores template variables.
  * Is used in two contexts:
@@ -50,16 +51,16 @@ class TemplateVariableContainer implements \ArrayAccess {
 	 *
 	 * @param string $identifier Identifier of the variable to add
 	 * @param mixed $value The variable's value
-	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
 	 * @return void
+	 * @throws Exception\InvalidVariableException
 	 * @api
 	 */
 	public function add($identifier, $value) {
 		if (array_key_exists($identifier, $this->variables)) {
-			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException('Duplicate variable declarations!', 1224479063);
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException('Duplicate variable declaration, "' . $identifier . '" already set!', 1224479063);
 		}
 		if (in_array(strtolower($identifier), self::$reservedVariableNames)) {
-			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException('"' . $identifier . '" is a reserved variable name and can\'t be used as variable identifier.', 1256730379);
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException('"' . $identifier . '" is a reserved variable name and cannot be used as variable identifier.', 1256730379);
 		}
 		$this->variables[$identifier] = $value;
 	}
@@ -67,9 +68,11 @@ class TemplateVariableContainer implements \ArrayAccess {
 	/**
 	 * Get a variable from the context. Throws exception if variable is not found in context.
 	 *
+	 * If "_all" is given as identifier, all variables are returned in an array.
+	 *
 	 * @param string $identifier
-	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
-	 * @return mixed The variable identified by $identifier
+	 * @return mixed The variable value identified by $identifier
+	 * @throws Exception\InvalidVariableException
 	 * @api
 	 */
 	public function get($identifier) {
@@ -86,8 +89,8 @@ class TemplateVariableContainer implements \ArrayAccess {
 	 * Remove a variable from context. Throws exception if variable is not found in context.
 	 *
 	 * @param string $identifier The identifier to remove
-	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
 	 * @return void
+	 * @throws Exception\InvalidVariableException
 	 * @api
 	 */
 	public function remove($identifier) {
@@ -126,6 +129,7 @@ class TemplateVariableContainer implements \ArrayAccess {
 		if ($identifier === '_all') {
 			return TRUE;
 		}
+
 		return array_key_exists($identifier, $this->variables);
 	}
 
@@ -146,7 +150,7 @@ class TemplateVariableContainer implements \ArrayAccess {
 	 * @return void
 	 */
 	public function offsetSet($identifier, $value) {
-		return $this->add($identifier, $value);
+		$this->add($identifier, $value);
 	}
 
 	/**
@@ -156,7 +160,7 @@ class TemplateVariableContainer implements \ArrayAccess {
 	 * @return void
 	 */
 	public function offsetUnset($identifier) {
-		return $this->remove($identifier);
+		$this->remove($identifier);
 	}
 
 	/**

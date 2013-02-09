@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * This ViewHelper counts elements of the specified array or countable object.
  *
@@ -41,8 +42,9 @@ class CountViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	/**
 	 * Counts the items of a given property.
 	 *
-	 * @param array $subject The array or Countable to be counted
+	 * @param array $subject The array or \Countable to be counted
 	 * @return integer The number of elements
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @api
 	 */
 	public function render($subject = NULL) {
@@ -50,7 +52,7 @@ class CountViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 			$subject = $this->renderChildren();
 		}
 		if (is_object($subject) && !$subject instanceof \Countable) {
-			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('CountViewHelper only supports arrays and objects implementing Countable interface. Given: "' . get_class($subject) . '"', 1279808078);
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('CountViewHelper only supports arrays and objects implementing \Countable interface. Given: "' . get_class($subject) . '"', 1279808078);
 		}
 		return count($subject);
 	}
