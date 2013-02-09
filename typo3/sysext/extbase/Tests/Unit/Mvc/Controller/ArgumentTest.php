@@ -53,13 +53,10 @@ class ArgumentTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->mockPropertyMapper = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\PropertyMapper');
 		$this->simpleValueArgument->injectPropertyMapper($this->mockPropertyMapper);
 		$this->objectArgument->injectPropertyMapper($this->mockPropertyMapper);
-		$this->mockConfigurationBuilder = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfigurationBuilder');
-		$this->mockConfiguration = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfigurationInterface');
-		$this->mockConfigurationBuilder->expects($this->any())->method('build')->with('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\MvcPropertyMappingConfiguration')->will($this->returnValue($this->mockConfiguration));
-		$this->simpleValueArgument->injectPropertyMappingConfigurationBuilder($this->mockConfigurationBuilder);
-		$this->objectArgument->injectPropertyMappingConfigurationBuilder($this->mockConfigurationBuilder);
-		$this->simpleValueArgument->initializeObject();
-		$this->objectArgument->initializeObject();
+		$this->mockConfiguration = new \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration();
+		$propertyMappingConfiguranion = new \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration();
+		$this->simpleValueArgument->injectPropertyMappingConfiguration($propertyMappingConfiguranion);
+		$this->objectArgument->injectPropertyMappingConfiguration($propertyMappingConfiguranion);
 	}
 
 	/**
@@ -288,8 +285,9 @@ class ArgumentTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function defaultPropertyMappingConfigurationShouldBeFetchable() {
-		$this->assertSame($this->mockConfiguration, $this->simpleValueArgument->getPropertyMappingConfiguration());
+	public function defaultPropertyMappingConfigurationDoesNotAllowCreationOrModificationOfObjects() {
+		$this->assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue('TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
+		$this->assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue('TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
 	}
 
 	/**

@@ -44,6 +44,11 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	protected $mockUriBuilder;
 
+	/**
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService
+	 */
+	protected $mockMvcPropertyMappingConfigurationService;
+
 	public function setUp() {
 		$this->actionController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController');
 	}
@@ -59,6 +64,7 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder')->will($this->returnValue($mockUriBuilder));
 		$mockResponse = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Response', array(), array(), '', FALSE);
+		$configurationService = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\MvcPropertyMappingConfigurationService');
 		/** @var \TYPO3\CMS\Extbase\Mvc\Controller\ActionController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array(
 			'initializeFooAction',
@@ -74,6 +80,7 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'checkRequestHash'
 		), array(), '', FALSE);
 		$mockController->_set('objectManager', $mockObjectManager);
+
 		$mockController->expects($this->at(0))->method('resolveActionMethodName')->will($this->returnValue('fooAction'));
 		$mockController->expects($this->at(1))->method('initializeActionMethodArguments');
 		$mockController->expects($this->at(2))->method('initializeActionMethodValidators');
@@ -83,6 +90,10 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockController->expects($this->at(6))->method('checkRequestHash');
 		$mockController->expects($this->at(7))->method('buildControllerContext');
 		$mockController->expects($this->at(8))->method('resolveView');
+
+		$mockController->injectMvcPropertyMappingConfigurationService($configurationService);
+		$mockController->_set('arguments', new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments());
+
 		$mockController->processRequest($mockRequest, $mockResponse);
 		$this->assertSame($mockRequest, $mockController->_get('request'));
 		$this->assertSame($mockResponse, $mockController->_get('response'));

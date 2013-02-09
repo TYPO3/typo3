@@ -64,11 +64,6 @@ class Argument {
 	protected $propertyMapper;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder
-	 */
-	protected $propertyMappingConfigurationBuilder;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration
 	 */
 	protected $propertyMappingConfiguration;
@@ -218,14 +213,6 @@ class Argument {
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder $propertyMappingConfigurationBuilder
-	 * @return void
-	 */
-	public function injectPropertyMappingConfigurationBuilder(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder $propertyMappingConfigurationBuilder) {
-		$this->propertyMappingConfigurationBuilder = $propertyMappingConfigurationBuilder;
-	}
-
-	/**
 	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
 	 * @return void
 	 */
@@ -264,21 +251,20 @@ class Argument {
 	}
 
 	/**
-	 * Initializer.
-	 *
-	 * @return void
-	 */
-	public function initializeObject() {
-		$this->propertyMappingConfiguration = $this->propertyMappingConfigurationBuilder->build('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\MvcPropertyMappingConfiguration');
-	}
-
-	/**
 	 * @param \TYPO3\CMS\Extbase\Service\TypeHandlingService $typeHandlingService
 	 * @return void
 	 */
 	public function injectTypeHandlingService(\TYPO3\CMS\Extbase\Service\TypeHandlingService $typeHandlingService) {
 		$this->typeHandlingService = $typeHandlingService;
 		$this->dataType = $this->typeHandlingService->normalizeType($this->dataType);
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration $mvcPropertyMappingConfiguration
+	 * @return void
+	 */
+	public function injectPropertyMappingConfiguration(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration $mvcPropertyMappingConfiguration) {
+		$this->propertyMappingConfiguration = $mvcPropertyMappingConfiguration;
 	}
 
 	/**

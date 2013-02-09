@@ -164,7 +164,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 		foreach ($typeConverter->getSourceChildPropertiesToBeConverted($source) as $sourcePropertyName => $sourcePropertyValue) {
 			$targetPropertyName = $configuration->getTargetPropertyName($sourcePropertyName);
 			if (!$configuration->shouldMap($targetPropertyName)) {
-				continue;
+				throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException('It is not allowed to map property "' . $targetPropertyName . '". You need to use $propertyMappingConfiguration->allowProperties(\'' . $targetPropertyName . '\') to enable mapping of this property.', 1355155913);
 			}
 			$targetPropertyType = $typeConverter->getTypeOfChildProperty($targetType, $targetPropertyName, $configuration);
 			$subConfiguration = $configuration->getConfigurationFor($targetPropertyName);

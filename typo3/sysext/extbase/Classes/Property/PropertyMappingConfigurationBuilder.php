@@ -39,6 +39,7 @@ class PropertyMappingConfigurationBuilder implements \TYPO3\CMS\Core\SingletonIn
 			\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE,
 			\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED => TRUE
 		));
+		$configuration->allowAllProperties();
 		return $configuration;
 	}
 }

@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
 /**
  * Testcase for the Property Mapper
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
  */
 class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
@@ -39,7 +38,6 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::getTargetPropertyName
 	 */
 	public function getTargetPropertyNameShouldReturnTheUnmodifiedPropertyNameWithoutConfiguration() {
@@ -50,16 +48,45 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 	/**
 	 * @test
 	 * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldMap
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function shouldMapReturnsTrue() {
+	public function shouldMapReturnsFalseByDefault() {
+		$this->assertFalse($this->propertyMappingConfiguration->shouldMap('someSourceProperty'));
+		$this->assertFalse($this->propertyMappingConfiguration->shouldMap('someOtherSourceProperty'));
+	}
+
+	/**
+	 * @test
+	 * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldMap
+	 */
+	public function shouldMapReturnsTrueIfConfigured() {
+		$this->propertyMappingConfiguration->allowAllProperties();
 		$this->assertTrue($this->propertyMappingConfiguration->shouldMap('someSourceProperty'));
 		$this->assertTrue($this->propertyMappingConfiguration->shouldMap('someOtherSourceProperty'));
 	}
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldMap
+	 */
+	public function shouldMapReturnsTrueForAllowedProperties() {
+		$this->propertyMappingConfiguration->allowProperties('someSourceProperty', 'someOtherProperty');
+		$this->assertTrue($this->propertyMappingConfiguration->shouldMap('someSourceProperty'));
+		$this->assertTrue($this->propertyMappingConfiguration->shouldMap('someOtherProperty'));
+	}
+
+	/**
+	 * @test
+	 * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldMap
+	 */
+	public function shouldMapReturnsFalseForBlacklistedProperties() {
+		$this->propertyMappingConfiguration->allowAllPropertiesExcept('someSourceProperty', 'someOtherProperty');
+		$this->assertFalse($this->propertyMappingConfiguration->shouldMap('someSourceProperty'));
+		$this->assertFalse($this->propertyMappingConfiguration->shouldMap('someOtherProperty'));
+		$this->assertTrue($this->propertyMappingConfiguration->shouldMap('someOtherPropertyWhichHasNotBeenConfigured'));
+	}
+
+	/**
+	 * @test
 	 */
 	public function setTypeConverterOptionsCanBeRetrievedAgain() {
 		$this->propertyMappingConfiguration->setTypeConverterOptions('someConverter', array('k1' => 'v1', 'k2' => 'v2'));
@@ -69,7 +96,6 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function inexistentTypeConverterOptionsReturnNull() {
 		$this->assertNull($this->propertyMappingConfiguration->getConfigurationValue('foo', 'bar'));
@@ -77,7 +103,6 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setTypeConverterOptionsShouldOverrideAlreadySetOptions() {
 		$this->propertyMappingConfiguration->setTypeConverterOptions('someConverter', array('k1' => 'v1', 'k2' => 'v2'));
@@ -88,7 +113,6 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setTypeConverterOptionShouldOverrideAlreadySetOptions() {
 		$this->propertyMappingConfiguration->setTypeConverterOptions('someConverter', array('k1' => 'v1', 'k2' => 'v2'));
@@ -99,7 +123,6 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getTypeConverterReturnsNullIfNoTypeConverterSet() {
 		$this->assertNull($this->propertyMappingConfiguration->getTypeConverter());
@@ -107,7 +130,6 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getTypeConverterReturnsTypeConverterIfItHasBeenSet() {
 		$mockTypeConverter = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\TypeConverterInterface');
@@ -117,7 +139,6 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 
 	/**
 	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function buildChildConfigurationForSingleProperty() {
 		$childConfiguration = $this->propertyMappingConfiguration->forProperty('key1.key2');
@@ -127,7 +148,6 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getTargetPropertyNameShouldRespectMapping() {
 		$this->propertyMappingConfiguration->setMapping('k1', 'k1a');

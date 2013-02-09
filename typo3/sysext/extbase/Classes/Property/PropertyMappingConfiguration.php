@@ -20,10 +20,10 @@ namespace TYPO3\CMS\Extbase\Property;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Concrete configuration object for the PropertyMapper.
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
 class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface {
@@ -65,9 +65,31 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	protected $typeConverter = NULL;
 
 	/**
+	 * List of allowed property names to be converted
+	 *
+	 * @var array
+	 */
+	protected $propertiesToBeMapped = array();
+
+	/**
+	 * List of disallowed property names which will be ignored while property mapping
+	 *
+	 * @var array
+	 */
+	protected $propertiesNotToBeMapped = array();
+
+	/**
+	 * If TRUE, unknown properties will be mapped.
+	 *
+	 * @var boolean
+	 */
+	protected $mapUnknownProperties = FALSE;
+
+	/**
 	 * Set the parent PropertyMappingConfiguration. Only used internally!
 	 *
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $parentConfiguration
+	 *
 	 * @return void
 	 */
 	protected function setParent(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $parentConfiguration) {
@@ -75,21 +97,74 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	}
 
 	/**
-	 * returns TRUE if the given propertyName should be mapped, FALSE otherwise.
+	 * The behavior is as follows:
+	 *
+	 * - if a property has been explicitely forbidden using allowAllPropertiesExcept(...), it is directly rejected
+	 * - if a property has been allowed using allowProperties(...), it is directly allowed.
+	 * - if allowAllProperties* has been called, we allow unknown properties
+	 * - else, return FALSE.
 	 *
 	 * @param string $propertyName
-	 * @return boolean
+	 * @return boolean TRUE if the given propertyName should be mapped, FALSE otherwise.
 	 * @todo : extend to enable whitelisting / blacklisting of properties.
 	 * @api
 	 */
 	public function shouldMap($propertyName) {
-		return TRUE;
+		if (isset($this->propertiesNotToBeMapped[$propertyName])) {
+			return FALSE;
+		}
+		if (isset($this->propertiesToBeMapped[$propertyName])) {
+			return TRUE;
+		}
+		return $this->mapUnknownProperties;
+	}
+
+	/**
+	 * Allow all properties in property mapping, even unknown ones.
+	 *
+	 * @return void
+	 * @api
+	 */
+	public function allowAllProperties() {
+		$this->mapUnknownProperties = TRUE;
+	}
+
+	/**
+	 * Allow a list of specific properties. All arguments of
+	 * allowProperties are used here (varargs).
+	 *
+	 * Example: allowProperties('title', 'content', 'author')
+	 *
+	 * @return void
+	 * @api
+	 */
+	public function allowProperties() {
+		foreach (func_get_args() as $propertyName) {
+			$this->propertiesToBeMapped[$propertyName] = $propertyName;
+		}
+	}
+
+	/**
+	 * Allow all properties during property mapping, but reject a few
+	 * selected ones (blacklist).
+	 *
+	 * Example: allowAllPropertiesExcept('password', 'userGroup')
+	 *
+	 * @return void
+	 * @api
+	 */
+	public function allowAllPropertiesExcept() {
+		$this->mapUnknownProperties = TRUE;
+		foreach (func_get_args() as $propertyName) {
+			$this->propertiesNotToBeMapped[$propertyName] = $propertyName;
+		}
 	}
 
 	/**
 	 * Returns the sub-configuration for the passed $propertyName. Must ALWAYS return a valid configuration object!
 	 *
 	 * @param string $propertyName
+	 *
 	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface the property mapping configuration for the given $propertyName.
 	 * @api
 	 */
@@ -104,6 +179,7 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 * Maps the given $sourcePropertyName to a target property name.
 	 *
 	 * @param string $sourcePropertyName
+	 *
 	 * @return string property name of target
 	 * @api
 	 */
@@ -117,6 +193,7 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	/**
 	 * @param string $typeConverterClassName
 	 * @param string $key
+	 *
 	 * @return mixed configuration value for the specific $typeConverterClassName. Can be used by Type Converters to fetch converter-specific configuration.
 	 * @api
 	 */
@@ -132,6 +209,7 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 *
 	 * @param string $sourcePropertyName
 	 * @param string $targetPropertyName
+	 *
 	 * @return void
 	 * @api
 	 */
@@ -144,6 +222,7 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 *
 	 * @param string $typeConverter class name of type converter
 	 * @param array $options
+	 *
 	 * @return void
 	 * @api
 	 */
@@ -157,6 +236,7 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 * @param string $typeConverter class name of type converter
 	 * @param string $optionKey
 	 * @param mixed $optionValue
+	 *
 	 * @return void
 	 * @api
 	 */
@@ -170,6 +250,7 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 * $configuration->forProperty('foo.bar')->setTypeConverterOption(....)
 	 *
 	 * @param string $propertyPath
+	 *
 	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration (or a subclass thereof)
 	 * @api
 	 */
@@ -182,6 +263,7 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 * Traverse the property configuration. Only used by forProperty().
 	 *
 	 * @param array $splittedPropertyPath
+	 *
 	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration (or a subclass thereof)
 	 */
 	public function traverseProperties(array $splittedPropertyPath) {
@@ -211,6 +293,7 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 * Set a type converter which should be used for this specific conversion.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Property\TypeConverterInterface $typeConverter
+	 *
 	 * @return void
 	 * @api
 	 */
