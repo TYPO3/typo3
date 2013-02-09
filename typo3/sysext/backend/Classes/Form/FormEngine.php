@@ -2781,11 +2781,7 @@ function ' . $evalData . '(value) {
 					// for whatever reason,
 					// now, only using <title> in an unnested way is fine.
 					$theTitle = $value['title'];
-					// Old syntax is deprecated and will be removed in TYPO3 6.1
-					if (!$theTitle && isset($value['tx_templavoila']['title'])) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('The flexform XML, used in ' . htmlspecialchars($table) . ':' . htmlspecialchars($field) . ' is using legacy syntax, the <title> is wrapped in <tx_templavoila>, however should be moved outside of that XML tag container. This functionality will be removed in TYPO3 6.1.');
-						$theTitle = $value['tx_templavoila']['title'];
-					}
+
 					// If there is a title, check for LLL label
 					if (strlen($theTitle) > 0) {
 						$theTitle = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($this->sL($theTitle), 30));

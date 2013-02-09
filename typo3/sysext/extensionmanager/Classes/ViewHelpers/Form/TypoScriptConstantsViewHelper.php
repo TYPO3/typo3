@@ -45,8 +45,6 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		'user' => 'renderUserFunction',
 		'small' => 'renderSmallTextField',
 		'string' => 'renderTextField',
-		'input' => 'renderTextField',	// only for backwards compatibility, will be removed with TYPO3 6.1
-		'default' => 'renderTextField'	// only for backwards compatibility, will be removed with TYPO3 6.1
 	);
 
 	public $tagName = 'input';
@@ -207,10 +205,6 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	 * @return string
 	 */
 	protected function renderTextField(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration) {
-		if ($configuration->getType() !== 'string') {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('The type "' . $configuration->getType() .
-				'" is deprecated and will be removed with TYPO3 6.1');
-		}
 		$this->tag->setTagName('input');
 		$this->tag->addAttribute('type', 'text');
 		$this->tag->addAttribute('name', $this->getName($configuration));
