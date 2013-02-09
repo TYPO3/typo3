@@ -134,7 +134,7 @@ class ProcessedFileRepository extends AbstractRepository {
 	 */
 	public function update($processedFile) {
 		if ($processedFile->isPersisted()) {
-			$uid = intval($processedFile->getProperty('uid'));
+			$uid = intval($processedFile->getUid());
 			$updateFields = $this->cleanUnavailableColumns($processedFile->toArray());
 			$updateFields['tstamp'] = time();
 			$this->databaseConnection->exec_UPDATEquery($this->table, 'uid=' . intval($uid), $updateFields);
