@@ -44,7 +44,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$isRequired = TRUE;
 		$expected = new Tx_Fluid_Core_ViewHelper_ArgumentDefinition($name, $type, $description, $isRequired);
 
-		$viewHelper->_call('registerArgument', $name, $type, $isRequired, $description);
+		$viewHelper->_call('registerArgument', $name, $type, $description, $isRequired);
 		$this->assertEquals($viewHelper->prepareArguments(), array($name => $expected), 'Argument definitions not returned correctly.');
 	}
 
@@ -61,8 +61,8 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$type = "string";
 		$isRequired = TRUE;
 
-		$viewHelper->_call('registerArgument', $name, $type, $isRequired, $description);
-		$viewHelper->_call('registerArgument', $name, "integer", $isRequired, $description);
+		$viewHelper->_call('registerArgument', $name, $type, $description, $isRequired);
+		$viewHelper->_call('registerArgument', $name, "integer", $description, $isRequired);
 	}
 
 	/**
@@ -83,8 +83,8 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$isRequired = TRUE;
 		$expected = new Tx_Fluid_Core_ViewHelper_ArgumentDefinition($name, $overriddenType, $overriddenDescription, $isRequired);
 
-		$viewHelper->_call('registerArgument', $name, $type, $isRequired, $description);
-		$viewHelper->_call('overrideArgument', $name, $overriddenType, $isRequired, $overriddenDescription);
+		$viewHelper->_call('registerArgument', $name, $type, $description, $isRequired);
+		$viewHelper->_call('overrideArgument', $name, $overriddenType, $overriddenDescription, $isRequired) ;
 		$this->assertEquals($viewHelper->prepareArguments(), array($name => $expected), 'Argument definitions not returned correctly. The original ArgumentDefinition could not be overridden.');
 	}
 
