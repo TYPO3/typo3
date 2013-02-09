@@ -339,6 +339,29 @@ class PropertyMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$propertyMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Property\\PropertyMapper', array('dummy'));
 		$this->assertNull($propertyMapper->_call('findFirstEligibleTypeConverterInObjectHierarchy', 'source', 'unknownSourceType', 'TYPO3\\CMS\\Extbase\\Core\\Bootstrap'));
 	}
+
+	/**
+	 * @test
+	 */
+	public function convertReturnsSourceUnchangedIfAlreadyConverted() {
+		$source = new \ArrayObject();
+		$targetType = 'ArrayObject';
+		$propertyPath = '';
+		$propertyMapper = new \TYPO3\CMS\Extbase\Property\PropertyMapper();
+		$this->assertSame($source, $propertyMapper->convert($source, $targetType, $this->mockConfiguration, $propertyPath));
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertReturnsSourceUnchangedIfAlreadyConvertedToCompositeType() {
+		$source = new \ArrayObject();
+		$targetType = 'ArrayObject<SomeEntity>';
+		$propertyPath = '';
+		$propertyMapper = new \TYPO3\CMS\Extbase\Property\PropertyMapper();
+		$this->assertSame($source, $propertyMapper->convert($source, $targetType, $this->mockConfiguration, $propertyPath));
+	}
+
 }
 
 ?>
