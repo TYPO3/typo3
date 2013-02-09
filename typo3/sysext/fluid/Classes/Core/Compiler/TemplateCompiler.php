@@ -134,7 +134,7 @@ return %s;
 	protected function convert(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $node) {
 		if ($node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode) {
 			return $this->convertTextNode($node);
-		} elseif ($node instanceof \TYPO3\Fluid\Core\Parser\SyntaxTree\NumericNode) {
+		} elseif ($node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NumericNode) {
 			return $this->convertNumericNode($node);
 		} elseif ($node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode) {
 			return $this->convertViewHelperNode($node);
