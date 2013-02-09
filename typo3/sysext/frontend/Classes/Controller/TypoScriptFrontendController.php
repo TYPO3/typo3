@@ -2120,23 +2120,6 @@ class TypoScriptFrontendController {
 	}
 
 	/**
-	 * Splits the input query-parameters into an array with certain parameters filtered out.
-	 * Used to create the cHash value
-	 *
-	 * @param string $addQueryParams Query-parameters: "&xxx=yyy&zzz=uuu
-	 * @return array Array with key/value pairs of query-parameters WITHOUT a certain list of variable names (like id, type, no_cache etc) and WITH a variable, encryptionKey, specific for this server/installation
-	 * @access private
-	 * @see makeCacheHash(), tslib_cObj::typoLink()
-	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 6.1 - use t3lib_cacheHash instead
-	 * @obsolete
-	 * @todo Define visibility
-	 */
-	public function cHashParams($addQueryParams) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return $this->cacheHash->calculateCacheHash($addQueryParams);
-	}
-
-	/**
 	 * Initialize the TypoScript template parser
 	 *
 	 * @return void
@@ -4194,25 +4177,6 @@ if (version == "n3") {
 	/********************************************
 	 * PUBLIC ACCESSIBLE WORKSPACES FUNCTIONS
 	 *******************************************/
-	/**
-	 * Initialize workspace preview
-	 *
-	 * @return void
-	 * @deprecated since TYPO3 4.7, will be removed in TYPO3 6.1 as this is part of Tx_Version now
-	 */
-	public function workspacePreviewInit() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		$previewWS = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ADMCMD_previewWS');
-		if ($this->beUserLogin && is_object($GLOBALS['BE_USER']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($previewWS)) {
-			if ($previewWS == 0 || $previewWS >= -1 && $GLOBALS['BE_USER']->checkWorkspace($previewWS)) {
-				// Check Access to workspace. Live (0) is OK to preview for all.
-				$this->workspacePreview = intval($previewWS);
-			} else {
-				// No preview, will default to "Live" at the moment
-				$this->workspacePreview = -99;
-			}
-		}
-	}
 
 	/**
 	 * Returns TRUE if workspace preview is enabled

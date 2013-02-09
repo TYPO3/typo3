@@ -723,21 +723,6 @@ class GeneralUtility {
 	}
 
 	/**
-	 * Returns an integer from a three part version number, eg '4.12.3' -> 4012003
-	 *
-	 * @param string $verNumberStr Version number on format x.x.x
-	 * @return integer Integer version of version number (where each part can count to 999)
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.1 - Use t3lib_utility_VersionNumber::convertVersionNumberToInteger() instead
-	 */
-	static public function int_from_ver($verNumberStr) {
-		// Deprecation log is activated only for TYPO3 4.7 and above
-		if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 4007000) {
-			self::logDeprecatedFunction();
-		}
-		return \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($verNumberStr);
-	}
-
-	/**
 	 * Returns TRUE if the current TYPO3 version (or compatibility version) is compatible to the input version
 	 * Notice that this function compares branches, not versions (4.0.1 would be > 4.0.0 although they use the same compat_version)
 	 *
@@ -3694,69 +3679,6 @@ Connection: close
 		$authCode = $preKey . '||' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 		$authCode = substr(md5($authCode), 0, $codeLength);
 		return $authCode;
-	}
-
-	/**
-	 * Splits the input query-parameters into an array with certain parameters filtered out.
-	 * Used to create the cHash value
-	 *
-	 * @param string $addQueryParams Query-parameters: "&xxx=yyy&zzz=uuu
-	 * @return array Array with key/value pairs of query-parameters WITHOUT a certain list of variable names (like id, type, no_cache etc.) and WITH a variable, encryptionKey, specific for this server/installation
-	 * @see tslib_fe::makeCacheHash(), tslib_cObj::typoLink(), \TYPO3\CMS\Core\Utility\GeneralUtility::calculateCHash()
-	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 6.1 - use t3lib_cacheHash instead
-	 */
-	static public function cHashParams($addQueryParams) {
-		self::logDeprecatedFunction();
-		// Splitting parameters up
-		$params = explode('&', substr($addQueryParams, 1));
-		/* @var $cacheHash t3lib_cacheHash */
-		$cacheHash = self::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
-		$pA = $cacheHash->getRelevantParameters($addQueryParams);
-		// Hook: Allows to manipulate the parameters which are taken to build the chash:
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['cHashParamsHook'])) {
-			$cHashParamsHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['cHashParamsHook'];
-			if (is_array($cHashParamsHook)) {
-				$hookParameters = array(
-					'addQueryParams' => &$addQueryParams,
-					'params' => &$params,
-					'pA' => &$pA
-				);
-				$hookReference = NULL;
-				foreach ($cHashParamsHook as $hookFunction) {
-					self::callUserFunction($hookFunction, $hookParameters, $hookReference);
-				}
-			}
-		}
-		return $pA;
-	}
-
-	/**
-	 * Returns the cHash based on provided query parameters and added values from internal call
-	 *
-	 * @param string $addQueryParams Query-parameters: "&xxx=yyy&zzz=uuu
-	 * @return string Hash of all the values
-	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::cHashParams(), \TYPO3\CMS\Core\Utility\GeneralUtility::calculateCHash()
-	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 6.1 - use t3lib_cacheHash instead
-	 */
-	static public function generateCHash($addQueryParams) {
-		self::logDeprecatedFunction();
-		/* @var $cacheHash t3lib_cacheHash */
-		$cacheHash = self::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
-		return $cacheHash->generateForParameters($addQueryParams);
-	}
-
-	/**
-	 * Calculates the cHash based on the provided parameters
-	 *
-	 * @param array $params Array of key-value pairs
-	 * @return string Hash of all the values
-	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 6.1 - use t3lib_cacheHash instead
-	 */
-	static public function calculateCHash($params) {
-		self::logDeprecatedFunction();
-		/* @var $cacheHash t3lib_cacheHash */
-		$cacheHash = self::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
-		return $cacheHash->calculateCacheHash($params);
 	}
 
 	/**

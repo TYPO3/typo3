@@ -353,7 +353,13 @@ class Indexer {
 		$this->conf['gr_list'] = '0,-1';
 		// Group list (hardcoded for now...)
 		// cHash values:
-		$this->conf['cHash'] = $createCHash ? \TYPO3\CMS\Core\Utility\GeneralUtility::generateCHash(\TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $cHash_array)) : '';
+		if ($createCHash) {
+			/* @var $cacheHash \TYPO3\CMS\Frontend\Page\CacheHashCalculator */
+			$cacheHash = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
+			$this->conf['cHash'] = $cacheHash->generateForParameters(\TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $cHash_array));
+		} else {
+			$this->conf['cHash'] = '';
+		}
 		// cHash string for additional parameters
 		$this->conf['cHash_array'] = $cHash_array;
 		// Array of the additional parameters
