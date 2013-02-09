@@ -36,13 +36,23 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 		^                 # Start with first input symbol
 		(?:               # start repeat
 			COMPARATORS   # We allow all comparators
-			|\\s*          # Arbitary spaces
+			|\s*          # Arbitary spaces
 			|-?           # Numbers, possibly with the "minus" symbol in front.
 				[0-9]+    # some digits
 				(?:       # and optionally a dot, followed by some more digits
 					\\.
 					[0-9]+
 				)?
+			|\'[^\'\\\\]* # single quoted string literals with possibly escaped single quotes
+				(?:
+					\\\\.      # escaped character
+					[^\'\\\\]* # unrolled loop following Jeffrey E.F. Friedl
+				)*\'
+			|"[^"\\\\]*   # double quoted string literals with possibly escaped double quotes
+				(?:
+					\\\\.     # escaped character
+					[^"\\\\]* # unrolled loop following Jeffrey E.F. Friedl
+				)*"
 		)*
 		$/x';
 
@@ -110,10 +120,20 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 				// comparator in current string segment
 				$explodedString = explode($this->comparator, $childNode->getText());
 				if (isset($explodedString[0]) && trim($explodedString[0]) !== '') {
-					$this->leftSide->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode(trim($explodedString[0])));
+					$value = trim($explodedString[0]);
+					if (is_numeric($value)) {
+						$this->leftSide->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NumericNode($value));
+					} else {
+						$this->leftSide->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode(preg_replace('/(^[\'"]|[\'"]$)/', '', $value)));
+					}
 				}
 				if (isset($explodedString[1]) && trim($explodedString[1]) !== '') {
-					$this->rightSide->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode(trim($explodedString[1])));
+					$value = trim($explodedString[1]);
+					if (is_numeric($value)) {
+						$this->rightSide->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NumericNode($value));
+					} else {
+						$this->rightSide->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode(preg_replace('/(^[\'"]|[\'"]$)/', '', $value)));
+					}
 				}
 			} else {
 				// comparator not found yet, on the left side of the comparator

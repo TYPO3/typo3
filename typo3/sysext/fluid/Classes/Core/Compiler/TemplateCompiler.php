@@ -134,6 +134,8 @@ return %s;
 	protected function convert(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $node) {
 		if ($node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode) {
 			return $this->convertTextNode($node);
+		} elseif ($node instanceof \TYPO3\Fluid\Core\Parser\SyntaxTree\NumericNode) {
+			return $this->convertNumericNode($node);
 		} elseif ($node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode) {
 			return $this->convertViewHelperNode($node);
 		} elseif ($node instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode) {
@@ -158,6 +160,18 @@ return %s;
 		return array(
 			'initialization' => '',
 			'execution' => '\'' . $this->escapeTextForUseInSingleQuotes($node->getText()) . '\''
+		);
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NumericNode $node
+	 * @return array
+	 * @see convert()
+	 */
+	protected function convertNumericNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NumericNode $node) {
+		return array(
+			'initialization' => '',
+			'execution' => $node->getValue()
 		);
 	}
 
