@@ -1520,11 +1520,11 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 					$storageObject = $storageRepository->findByUid($userHomeStorageUid);
 					// First try and mount with [uid]_[username]
 					$userHomeFilterIdentifier = $userHomeFilter . $this->user['uid'] . '_' . $this->user['username'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
-					$didMount = $storageObject->injectFileMount($userHomeFilterIdentifier);
+					$didMount = $storageObject->addFileMount($userHomeFilterIdentifier);
 					// If that failed, try and mount with only [uid]
 					if (!$didMount) {
 						$userHomeFilterIdentifier = $userHomeFilter . $this->user['uid'] . '_' . $this->user['username'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
-						$storageObject->injectFileMount($userHomeFilterIdentifier);
+						$storageObject->addFileMount($userHomeFilterIdentifier);
 					}
 					$this->fileStorages[$storageObject->getUid()] = $storageObject;
 				}
@@ -1538,7 +1538,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 					$storageObject = $storageRepository->findByUid($groupHomeStorageUid);
 					foreach ($this->userGroups as $groupUid => $groupData) {
 						$groupHomeFilterIdentifier = $groupHomeFilter . $groupData['uid'];
-						$storageObject->injectFileMount($groupHomeFilterIdentifier);
+						$storageObject->addFileMount($groupHomeFilterIdentifier);
 					}
 					$this->fileStorages[$storageObject->getUid()] = $storageObject;
 				}
@@ -1550,7 +1550,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_filemounts', 'deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . $this->dataLists['filemount_list'] . ')', '', $orderBy);
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$storageObject = $storageRepository->findByUid($row['base']);
-					$storageObject->injectFileMount($row['path'], $row);
+					$storageObject->addFileMount($row['path'], $row);
 					$this->fileStorages[$storageObject->getUid()] = $storageObject;
 				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -1559,7 +1559,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		// Injects the users' permissions to each storage
 		foreach ($this->fileStorages as $storageObject) {
 			$storagePermissions = $this->getFilePermissionsForStorage($storageObject);
-			$storageObject->injectUserPermissions($storagePermissions);
+			$storageObject->setUserPermissions($storagePermissions);
 		}
 		// more narrowing down through the workspace
 		$this->initializeFileStoragesForWorkspace();
@@ -1940,7 +1940,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 					// TODO: check if the filter is narrowing down the existing user
 					$storageObject = $storageRepository->findByUid($row['base']);
 					if (isset($existingFileStoragesOfUser[$storageObject->getUid()])) {
-						$storageObject->injectFileMount($row['path']);
+						$storageObject->addFileMount($row['path']);
 						$this->fileStorages[$storageObject->getUid()] = $storageObject;
 					}
 				}
