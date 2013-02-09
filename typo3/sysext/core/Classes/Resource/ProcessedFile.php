@@ -417,11 +417,21 @@ class ProcessedFile extends AbstractFile {
 	 * @return mixed
 	 */
 	public function getProperty($key) {
-		if ($this->isUnchanged()) {
+		// The uid always (!) has to come from this file and never the original file (see getOriginalFile() to get this)
+		if ($this->isUnchanged() && $key !== 'uid') {
 			return $this->originalFile->getProperty($key);
 		} else {
 			return $this->properties[$key];
 		}
+	}
+
+	/**
+	 * Returns the uid of this file
+	 *
+	 * @return int
+	 */
+	public function getUid() {
+		return $this->properties['uid'];
 	}
 
 
