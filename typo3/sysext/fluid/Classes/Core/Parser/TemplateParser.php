@@ -20,6 +20,14 @@ class TemplateParser {
 	static public $SCAN_PATTERN_XMLNSDECLARATION = '/\sxmlns:(?P<identifier>.*?)="(?P<xmlNamespace>.*?)"/m';
 
 	/**
+	 * The following two constants are used for tracking whether we are currently
+	 * parsing ViewHelper arguments or not. This is used to parse arrays only as
+	 * ViewHelper argument.
+	 */
+	const CONTEXT_INSIDE_VIEWHELPER_ARGUMENTS = 1;
+	const CONTEXT_OUTSIDE_VIEWHELPER_ARGUMENTS = 2;
+
+	/**
 	 * This regular expression splits the input string at all dynamic tags, AND
 	 * on all <![CDATA[...]]> sections.
 	 */
@@ -316,7 +324,8 @@ class TemplateParser {
 
 		$templateString = $this->extractNamespaceDefinitions($templateString);
 		$splitTemplate = $this->splitTemplateAtDynamicTags($templateString);
-		$parsingState = $this->buildObjectTree($splitTemplate);
+
+		$parsingState = $this->buildObjectTree($splitTemplate, self::CONTEXT_OUTSIDE_VIEWHELPER_ARGUMENTS);
 
 		$variableContainer = $parsingState->getVariableContainer();
 		if ($variableContainer !== NULL && $variableContainer->exists('layoutName')) {
@@ -405,11 +414,12 @@ class TemplateParser {
 	/**
 	 * Build object tree from the split template
 	 *
-	 * @param array $splitTemplate The split template, so that every tag with a namespace declaration is already a seperate array element.
+	 * @param array $splitTemplate The split template, so that every tag with a namespace declaration is already a separate array element.
+	 * @param integer $context one of the CONTEXT_* constants, defining whether we are inside or outside of ViewHelper arguments currently.
 	 * @return \TYPO3\CMS\Fluid\Core\Parser\ParsingState
 	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 */
-	protected function buildObjectTree($splitTemplate) {
+	protected function buildObjectTree($splitTemplate, $context) {
 		$regularExpression_openingViewHelperTag = $this->prepareTemplateRegularExpression(self::$SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG);
 		$regularExpression_closingViewHelperTag = $this->prepareTemplateRegularExpression(self::$SCAN_PATTERN_TEMPLATE_CLOSINGVIEWHELPERTAG);
 
@@ -427,7 +437,7 @@ class TemplateParser {
 			} elseif (preg_match($regularExpression_closingViewHelperTag, $templateElement, $matchedVariables) > 0) {
 				$this->closingViewHelperTagHandler($state, $matchedVariables['NamespaceIdentifier'], $matchedVariables['MethodIdentifier']);
 			} else {
-				$this->textAndShorthandSyntaxHandler($state, $templateElement);
+				$this->textAndShorthandSyntaxHandler($state, $templateElement, $context);
 			}
 		}
 
@@ -732,7 +742,7 @@ class TemplateParser {
 			return $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\TextNode', $argumentString);
 		}
 		$splitArgument = $this->splitTemplateAtDynamicTags($argumentString);
-		$rootNode = $this->buildObjectTree($splitArgument)->getRootNode();
+		$rootNode = $this->buildObjectTree($splitArgument, self::CONTEXT_INSIDE_VIEWHELPER_ARGUMENTS)->getRootNode();
 		return $rootNode;
 	}
 
@@ -778,16 +788,18 @@ class TemplateParser {
 	 *
 	 * @param \TYPO3\CMS\Fluid\Core\Parser\ParsingState $state Current parsing state
 	 * @param string $text Text to process
+	 * @param integer $context one of the CONTEXT_* constants, defining whether we are inside or outside of ViewHelper arguments currently.
 	 * @return void
 	 */
-	protected function textAndShorthandSyntaxHandler(\TYPO3\CMS\Fluid\Core\Parser\ParsingState $state, $text) {
+	protected function textAndShorthandSyntaxHandler(\TYPO3\CMS\Fluid\Core\Parser\ParsingState $state, $text, $context) {
 		$sections = preg_split($this->prepareTemplateRegularExpression(self::$SPLIT_PATTERN_SHORTHANDSYNTAX), $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 
 		foreach ($sections as $section) {
 			$matchedVariables = array();
 			if (preg_match(self::$SCAN_PATTERN_SHORTHANDSYNTAX_OBJECTACCESSORS, $section, $matchedVariables) > 0) {
-				$this->objectAccessorHandler($state, $matchedVariables['Object'], $matchedVariables['Delimiter'], (isset($matchedVariables['ViewHelper']) ? $matchedVariables['ViewHelper'] : ''), (isset($matchedVariables['AdditionalViewHelpers']) ? $matchedVariables['AdditionalViewHelpers'] : ''));
-			} elseif (preg_match(self::$SCAN_PATTERN_SHORTHANDSYNTAX_ARRAYS, $section, $matchedVariables) > 0) {
+				$this->objectAccessorHandler($state, $matchedVariables['Object'], $matchedVariables['Delimiter'], isset($matchedVariables['ViewHelper']) ? $matchedVariables['ViewHelper'] : '', isset($matchedVariables['AdditionalViewHelpers']) ? $matchedVariables['AdditionalViewHelpers'] : '');
+			} elseif ($context === self::CONTEXT_INSIDE_VIEWHELPER_ARGUMENTS && preg_match(self::$SCAN_PATTERN_SHORTHANDSYNTAX_ARRAYS, $section, $matchedVariables) > 0) {
+				// We only match arrays if we are INSIDE viewhelper arguments
 				$this->arrayHandler($state, $matchedVariables['Array']);
 			} else {
 				$this->textHandler($state, $section);
