@@ -638,7 +638,6 @@ class TypoScriptParser {
 
 	/**
 	 * Stacks errors/messages from the TypoScript parser into an internal array, $this->error
-	 * If "TT" is a global object (as it is in the frontend when backend users are logged in) the message will be registered here as well.
 	 *
 	 * @param string $err The error message string
 	 * @param integer $num The error severity (in the scale of $GLOBALS['TT']->setTSlogMessage: Approx: 2=warning, 1=info, 0=nothing, 3=fatal.)
@@ -646,9 +645,6 @@ class TypoScriptParser {
 	 * @todo Define visibility
 	 */
 	public function error($err, $num = 2) {
-		if (is_object($GLOBALS['TT'])) {
-			$GLOBALS['TT']->setTSlogMessage($err, $num);
-		}
 		$this->errors[] = array($err, $num, $this->rawP - 1, $this->lineNumberOffset);
 	}
 

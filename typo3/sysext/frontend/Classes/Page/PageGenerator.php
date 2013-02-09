@@ -226,8 +226,6 @@ class PageGenerator {
 	 */
 	static public function renderContent() {
 		// PAGE CONTENT
-		$GLOBALS['TT']->incStackPointer();
-		$GLOBALS['TT']->push($GLOBALS['TSFE']->sPre, 'PAGE');
 		$pageContent = $GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup);
 		if ($GLOBALS['TSFE']->pSetup['wrap']) {
 			$pageContent = $GLOBALS['TSFE']->cObj->wrap($pageContent, $GLOBALS['TSFE']->pSetup['wrap']);
@@ -242,8 +240,6 @@ class PageGenerator {
 		} else {
 			self::renderContentWithHeader($pageContent);
 		}
-		$GLOBALS['TT']->pull($GLOBALS['TT']->LR ? $GLOBALS['TSFE']->content : '');
-		$GLOBALS['TT']->decStackPointer();
 	}
 
 	/**
@@ -789,20 +785,11 @@ class PageGenerator {
 			$pageRenderer->enableCompressJavascript();
 			$minifyErrorScript = ($minifyErrorInline = '');
 			$scriptJsCode = \TYPO3\CMS\Core\Utility\GeneralUtility::minifyJavaScript($scriptJsCode, $minifyErrorScript);
-			if ($minifyErrorScript) {
-				$GLOBALS['TT']->setTSlogMessage($minifyErrorScript, 3);
-			}
 			if ($inlineJS) {
 				$inlineJS = \TYPO3\CMS\Core\Utility\GeneralUtility::minifyJavaScript($inlineJS, $minifyErrorInline);
-				if ($minifyErrorInline) {
-					$GLOBALS['TT']->setTSlogMessage($minifyErrorInline, 3);
-				}
 			}
 			if ($inlineFooterJs) {
 				$inlineFooterJs = \TYPO3\CMS\Core\Utility\GeneralUtility::minifyJavaScript($inlineFooterJs, $minifyErrorInline);
-				if ($minifyErrorInline) {
-					$GLOBALS['TT']->setTSlogMessage($minifyErrorInline, 3);
-				}
 			}
 		}
 		if (!$GLOBALS['TSFE']->config['config']['removeDefaultJS']) {

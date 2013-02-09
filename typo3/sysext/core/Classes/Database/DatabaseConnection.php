@@ -1402,9 +1402,6 @@ class DatabaseConnection {
 		if ((int) $this->explainOutput == 1 || (int) $this->explainOutput == 2 && \TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])) {
 			// Raw HTML output
 			$explainMode = 1;
-		} elseif ((int) $this->explainOutput == 3 && is_object($GLOBALS['TT'])) {
-			// Embed the output into the TS admin panel
-			$explainMode = 2;
 		} else {
 			return FALSE;
 		}
@@ -1459,8 +1456,6 @@ class DatabaseConnection {
 				}
 				if ($explainMode == 1) {
 					\TYPO3\CMS\Core\Utility\DebugUtility::debug($data, 'Tables: ' . $from_table, 'DB SQL EXPLAIN');
-				} elseif ($explainMode == 2) {
-					$GLOBALS['TT']->setTSselectQuery($data);
 				}
 			}
 			return TRUE;

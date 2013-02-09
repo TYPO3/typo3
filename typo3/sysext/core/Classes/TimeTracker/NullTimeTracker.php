@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Core\TimeTracker;
  * This is done to save some performance over the real time tracker.
  *
  * @author Ingo Renner <ingo@typo3.org>
+ * @depracated since 6.1; will be removed 2 versions later
  */
 class NullTimeTracker {
 
@@ -40,7 +41,7 @@ class NullTimeTracker {
 	 * @return void
 	 */
 	public function start() {
-
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**
@@ -53,7 +54,7 @@ class NullTimeTracker {
 	 * @return void
 	 */
 	public function push($tslabel, $value = '') {
-
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**
@@ -65,7 +66,7 @@ class NullTimeTracker {
 	 * @return void
 	 */
 	public function pull($content = '') {
-
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**
@@ -78,7 +79,7 @@ class NullTimeTracker {
 	 * @return void
 	 */
 	public function setTSselectQuery(array $data, $msg = '') {
-
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**
@@ -91,7 +92,7 @@ class NullTimeTracker {
 	 * @return void
 	 */
 	public function setTSlogMessage($content, $num = 0) {
-
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**
@@ -102,7 +103,7 @@ class NullTimeTracker {
 	 * @return string HTML table with the information about parsing times.
 	 */
 	public function printTSlog() {
-
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**
@@ -113,7 +114,7 @@ class NullTimeTracker {
 	 * @return void
 	 */
 	public function incStackPointer() {
-
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**
@@ -124,7 +125,7 @@ class NullTimeTracker {
 	 * @return void
 	 */
 	public function decStackPointer() {
-
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**
@@ -134,7 +135,7 @@ class NullTimeTracker {
 	 * @return integer The microtime value as milliseconds value
 	 */
 	public function getMilliseconds($microtime = NULL) {
-
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 	}
 
 }

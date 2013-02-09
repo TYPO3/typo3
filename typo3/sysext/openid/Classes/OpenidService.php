@@ -529,8 +529,6 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 		}
 		if (TYPO3_MODE == 'BE') {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($message, $this->extKey, \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_NOTICE);
-		} else {
-			$GLOBALS['TT']->setTSlogMessage($message);
 		}
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($message, $this->extKey, \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_NOTICE);

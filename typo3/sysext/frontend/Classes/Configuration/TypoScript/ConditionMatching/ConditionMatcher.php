@@ -181,9 +181,6 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @return void
 	 */
 	protected function log($message) {
-		if (is_object($GLOBALS['TT'])) {
-			$GLOBALS['TT']->setTSlogMessage($message, 3);
-		}
 	}
 
 }

@@ -142,10 +142,6 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 			if (TYPO3_ERROR_DLOG) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($message, $logTitle, $severity + 1);
 			}
-			// Write error message to TSlog (admin panel)
-			if (is_object($GLOBALS['TT'])) {
-				$GLOBALS['TT']->setTSlogMessage($logTitle . ': ' . $message, $severity + 1);
-			}
 			// Write error message to sys_log table (ext: belog, Tools->Log)
 			if ($errorLevel & $GLOBALS['TYPO3_CONF_VARS']['SYS']['belogErrorReporting']) {
 				$this->writeLog($logTitle . ': ' . $message, $severity);
