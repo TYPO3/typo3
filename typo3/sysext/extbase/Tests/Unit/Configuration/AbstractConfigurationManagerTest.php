@@ -461,55 +461,6 @@ class AbstractConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 	/**
 	 * @test
 	 */
-	public function getConfigurationParsesCObjectsForStoragePid() {
-		$this->markTestIncomplete('This can\'t be tested as we currently cannot mock the FE environment');
-		$storagePidSettings = array(
-			'cObject' => array(
-				'value' => '8,3',
-				'_typoScriptNodeValue' => 'TEXT'
-			)
-		);
-		$storagePidSettingsConverted = array(
-			'cObject' => 'TEXT',
-			'cObject.' => array(
-				'value' => '8,3'
-			)
-		);
-		$pluginConfiguration = ($pluginConfigurationConverted = $this->testPluginConfiguration);
-		$pluginConfiguration['persistence']['storagePid'] = $storagePidSettings;
-		$pluginConfigurationConverted['persistence']['storagePid'] = $storagePidSettingsConverted;
-		$abstractConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\AbstractConfigurationManager', array('getSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getRecursiveStoragePids'));
-		$this->mockTypoScriptService->expects($this->any())->method('convertPlainArrayToTypoScriptArray')->with($storagePidSettings)->will($this->returnValue($storagePidSettingsConverted));
-		$this->mockTypoScriptService->expects($this->atLeastOnce())->method('convertTypoScriptArrayToPlainArray')->with($this->testTypoScriptSetup['config.']['tx_extbase.'])->will($this->returnValue($this->testTypoScriptSetupConverted['config']['tx_extbase']));
-		$abstractConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
-		$abstractConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($this->testTypoScriptSetup));
-		$abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue($pluginConfiguration));
-		$abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with('CurrentExtensionName', 'CurrentPluginName')->will($this->returnValue(NULL));
-		$expectedResult = array(
-			'settings' => array(
-				'setting1' => 'overriddenValue1',
-				'setting2' => 'value2',
-				'setting3' => 'additionalValue'
-			),
-			'view' => array(
-				'viewSub' => array(
-					'key1' => 'overridden',
-					'key2' => 'value2',
-					'key3' => 'new key'
-				)
-			),
-			'persistence' => array(
-				'storagePid' => '8,3'
-			),
-			'controllerConfiguration' => NULL
-		);
-		$actualResult = $abstractConfigurationManager->getConfiguration('CurrentExtensionName', 'CurrentPluginName');
-		$this->assertEquals($expectedResult, $actualResult);
-	}
-
-	/**
-	 * @test
-	 */
 	public function getContentObjectReturnsNullIfNoContentObjectHasBeenSet() {
 		$this->assertNull($this->abstractConfigurationManager->getContentObject());
 	}

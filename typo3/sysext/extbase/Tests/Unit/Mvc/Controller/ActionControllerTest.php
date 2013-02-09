@@ -493,14 +493,6 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	}
 
 	/**
-	 * @test
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
-	 */
-	public function defaultErrorActionCallsGetErrorFlashMessageAndPutsFlashMessage() {
-		$this->markTestIncomplete('To be implemented');
-	}
-
-	/**
 	 * Data Provider for checkRequestHashDoesNotThrowExceptionInNormalOperations
 	 *
 	 * @return array

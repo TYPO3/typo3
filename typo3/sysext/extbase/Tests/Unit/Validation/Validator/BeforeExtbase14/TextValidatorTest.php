@@ -74,15 +74,6 @@ Ke kille Minutt d\'Kirmes net. Hir Wand Lann Gaas da, wÃ¤r hu Heck Gart zÃ«n
 	/**
 	 * @test
 	 */
-	public function textValidatorReturnsFalseForAStringWithPercentEncodedHtml() {
-		$this->markTestIncomplete('The text validator currently allows percent encoded HTML!');
-		$textValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\TextValidator', array('addError'), array(), '', FALSE);
-		$this->assertFalse($textValidator->isValid('%3cspan style="color: #BBBBBB;"%3ea nice text%3c/span%3e'));
-	}
-
-	/**
-	 * @test
-	 */
 	public function textValidatorCreatesTheCorrectErrorIfTheSubjectContainsHtmlEntities() {
 		$textValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\TextValidator', array('addError'), array(), '', FALSE);
 		$textValidator->expects($this->once())->method('addError')->with('The given subject was not a valid text (e.g. contained XML tags).', 1221565786);

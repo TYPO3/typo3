@@ -65,13 +65,6 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	/**
 	 * @test
 	 */
-	public function getTypoScriptSetupCanBeTested() {
-		$this->markTestIncomplete('This method can\'t be tested with the current TYPO3 version, because we can\'t mock objects returned from TYPO3\\CMS\\Core\\Utility\\GeneralUtility::makeInstance().');
-	}
-
-	/**
-	 * @test
-	 */
 	public function getCurrentPageIdReturnsPageIdFromGet() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('id' => 123));
 		$expectedResult = 123;

@@ -94,20 +94,6 @@ class PersistenceManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$persistenceManager->injectSession($persistenceSession);
 		$persistenceManager->persistAll();
 	}
-
-	/**
-	 * @test
-	 */
-	public function persistAllAddsRemovedObjectsFromRepositoriesToBackendsDeletedObjects() {
-		$this->markTestIncomplete();
-	}
-
-	/**
-	 * @test
-	 */
-	public function persistAllAddsAddedObjectsFromRepositoriesToBackendsAggregateRootObjects() {
-		$this->markTestIncomplete();
-	}
 }
 
 ?>

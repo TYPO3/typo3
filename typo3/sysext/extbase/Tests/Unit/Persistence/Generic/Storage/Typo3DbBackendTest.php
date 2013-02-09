@@ -62,35 +62,6 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 */
-	public function getStatementWorksWithMinimalisticQueryObjectModel() {
-		$this->markTestIncomplete();
-	}
-
-	/**
-	 * @test
-	 */
-	public function getStatementWorksWithBasicEqualsCondition() {
-		$this->markTestIncomplete();
-	}
-
-	/**
-	 * @test
-	 * @expectedException \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException
-	 */
-	public function countRowsWithStatementConstraintResultsInAnException() {
-		$this->markTestIncomplete();
-	}
-
-	/**
-	 * @test
-	 */
-	public function joinStatementGenerationWorks() {
-		$this->markTestIncomplete();
-	}
-
-	/**
-	 * @test
-	 */
 	public function addSysLanguageStatementWorksForDefaultLanguage() {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'][$table]['ctrl'] = array(
