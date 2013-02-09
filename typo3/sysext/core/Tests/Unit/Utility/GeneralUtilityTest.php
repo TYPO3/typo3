@@ -1324,32 +1324,6 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	//////////////////////////////////
-	// Tests concerning int_from_ver
-	//////////////////////////////////
-	/**
-	 * Data Provider for intFromVerConvertsVersionNumbersToIntegersDataProvider
-	 *
-	 * return array
-	 */
-	public function intFromVerConvertsVersionNumbersToIntegersDataProvider() {
-		return array(
-			array('4003003', '4.3.3'),
-			array('4012003', '4.12.3'),
-			array('5000000', '5.0.0'),
-			array('3008001', '3.8.1'),
-			array('1012', '0.1.12')
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider intFromVerConvertsVersionNumbersToIntegersDataProvider
-	 */
-	public function intFromVerConvertsVersionNumbersToIntegers($expected, $version) {
-		$this->assertEquals($expected, Utility\GeneralUtility::int_from_ver($version));
-	}
-
-	//////////////////////////////////
 	// Tests concerning revExplode
 	//////////////////////////////////
 	/**

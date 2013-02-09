@@ -1173,20 +1173,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	}
 
 	/**
-	 * Returns TRUE if $item is in $in_list
-	 *
-	 * @param string $in_list Comma list with items, no spaces between items!
-	 * @param string $item The string to find in the list of items
-	 * @return string Boolean
-	 * @deprecated since TYPO3 4.7, should be removed in TYPO3 6.1, use equivalent function \TYPO3\CMS\Core\Utility\GeneralUtility::inList()
-	 * @todo Define visibility
-	 */
-	public function inList($in_list, $item) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::inList($in_list, $item);
-	}
-
-	/**
 	 * Returns an array with the webmounts.
 	 * If no webmounts, and empty array is returned.
 	 * NOTICE: Deleted pages WILL NOT be filtered out! So if a mounted page has been deleted it is STILL coming out as a webmount. This is not checked due to performance.
