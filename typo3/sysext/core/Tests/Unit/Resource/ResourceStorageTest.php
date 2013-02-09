@@ -334,7 +334,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 */
 	public function checkUserActionPermissionReturnsFalseIfPermissionIsSetToZero() {
 		$this->prepareFixture(array());
-		$this->fixture->injectUserPermissions(array('readFolder' => TRUE, 'writeFile' => TRUE));
+		$this->fixture->setUserPermissions(array('readFolder' => TRUE, 'writeFile' => TRUE));
 		$this->assertTrue($this->fixture->checkUserActionPermission('read', 'folder'));
 	}
 
@@ -364,7 +364,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 */
 	public function checkUserActionPermissionAcceptsArbitrarilyCasedArguments($permissions, $action, $type) {
 		$this->prepareFixture(array());
-		$this->fixture->injectUserPermissions($permissions);
+		$this->fixture->setUserPermissions($permissions);
 		$this->assertTrue($this->fixture->checkUserActionPermission($action, $type));
 	}
 
@@ -373,7 +373,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 */
 	public function userActionIsDisallowedIfPermissionIsSetToFalse() {
 		$this->prepareFixture(array());
-		$this->fixture->injectUserPermissions(array('readFolder' => FALSE));
+		$this->fixture->setUserPermissions(array('readFolder' => FALSE));
 		$this->assertFalse($this->fixture->checkUserActionPermission('read', 'folder'));
 	}
 
@@ -382,7 +382,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 */
 	public function userActionIsDisallowedIfPermissionIsNotSet() {
 		$this->prepareFixture(array());
-		$this->fixture->injectUserPermissions(array('readFolder' => TRUE));
+		$this->fixture->setUserPermissions(array('readFolder' => TRUE));
 		$this->assertFalse($this->fixture->checkUserActionPermission('write', 'folder'));
 	}
 
@@ -476,7 +476,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$mockedDriver = $this->createDriverMock(array('basePath' => $this->getMountRootUrl()), NULL, NULL);
 		$this->initializeVfs();
 		$this->prepareFixture(array(), NULL, $mockedDriver);
-		$this->fixture->injectFileMount('/mountFolder');
+		$this->fixture->addFileMount('/mountFolder');
 		$this->assertEquals(1, count($this->fixture->getFileMounts()));
 		$this->fixture->isWithinFileMountBoundaries($mockedFile);
 	}
