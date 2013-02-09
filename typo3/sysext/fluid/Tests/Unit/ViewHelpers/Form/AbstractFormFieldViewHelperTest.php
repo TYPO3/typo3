@@ -21,9 +21,9 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 	 * @test
 	 */
 	public function ifAnAttributeValueIsAnObjectMaintainedByThePersistenceManagerItIsConvertedToAUID() {
-		$this->markTestIncomplete('TODO - fix test in backporter');
 		$mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('6f487e40-4483-11de-8a39-0800200c9a66'));
+
 		$className = 'Object' . uniqid();
 		$fullClassName = 'TYPO3\\Fluid\\ViewHelpers\\Form\\' . $className;
 		eval('namespace TYPO3\\Fluid\\ViewHelpers\\Form; class ' . $className . ' {
@@ -31,12 +31,15 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 		}');
 		$object = $this->getMock($fullClassName);
 		$object->expects($this->any())->method('FLOW3_Persistence_isNew')->will($this->returnValue(FALSE));
+
 		$formViewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\AbstractFormFieldViewHelper', array('dummy'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($formViewHelper);
 		$formViewHelper->injectPersistenceManager($mockPersistenceManager);
+
 		$arguments = array('name' => 'foo', 'value' => $object, 'property' => NULL);
 		$formViewHelper->_set('arguments', $arguments);
 		$formViewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(FALSE));
+
 		$this->assertSame('foo[__identity]', $formViewHelper->_call('getName'));
 		$this->assertSame('6f487e40-4483-11de-8a39-0800200c9a66', $formViewHelper->_call('getValue'));
 	}
