@@ -1030,5 +1030,4 @@ class PageGenerator {
 
 }
 
-
 ?>

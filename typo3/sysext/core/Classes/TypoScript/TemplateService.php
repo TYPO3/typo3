@@ -41,13 +41,6 @@ namespace TYPO3\CMS\Core\TypoScript;
  */
 class TemplateService {
 
-	// Debugging, analysis:
-	// If set, the global tt-timeobject is used to log the performance.
-	/**
-	 * @todo Define visibility
-	 */
-	public $tt_track = 1;
-
 	// If set, the template is always rendered. Used from Admin Panel.
 	/**
 	 * @todo Define visibility
@@ -466,9 +459,6 @@ class TemplateService {
 				$hash = md5(serialize($cc));
 				// This stores the data.
 				\TYPO3\CMS\Frontend\Page\PageRepository::storeHash($hash, serialize($this->setup), 'TS_TEMPLATE');
-				if ($this->tt_track) {
-					$GLOBALS['TT']->setTSlogMessage('TS template size, serialized: ' . strlen(serialize($this->setup)) . ' bytes');
-				}
 				$rowSumHash = md5('ROWSUM:' . serialize($this->rowSum));
 				\TYPO3\CMS\Frontend\Page\PageRepository::storeHash($rowSumHash, serialize($cc['all']), 'TMPL_CONDITIONS_ALL');
 			}
@@ -877,13 +867,7 @@ class TemplateService {
 ' . $str;
 		}
 		// Substitute constants in the Setup code:
-		if ($this->tt_track) {
-			$GLOBALS['TT']->push('Substitute Constants (' . count($this->flatSetup) . ')');
-		}
 		$all = $this->substituteConstants($all);
-		if ($this->tt_track) {
-			$GLOBALS['TT']->pull();
-		}
 		// Searching for possible unsubstituted constants left (only for information)
 		if (strstr($all, '{$')) {
 			$theConstList = array();
@@ -893,13 +877,6 @@ class TemplateService {
 				$constLen = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(strcspn($constVal, '}'), 0, 50);
 				$theConstList[] = '{$' . substr($constVal, 0, ($constLen + 1));
 			}
-			if ($this->tt_track) {
-				$GLOBALS['TT']->setTSlogMessage(implode(', ', $theConstList) . ': Constants may remain un-substituted!!', 2);
-			}
-		}
-		// Logging the textual size of the TypoScript Setup field text with all constants substituted:
-		if ($this->tt_track) {
-			$GLOBALS['TT']->setTSlogMessage('TypoScript template size as textfile: ' . strlen($all) . ' bytes');
 		}
 		// Finally parse the Setup field TypoScript code (where constants are now substituted)
 		$config->parse($all, $matchObj);
@@ -1036,9 +1013,6 @@ class TemplateService {
 	 * @todo Define visibility
 	 */
 	public function substituteConstants($all) {
-		if ($this->tt_track) {
-			$GLOBALS['TT']->setTSlogMessage('Constants to substitute: ' . count($this->flatSetup));
-		}
 		$noChange = FALSE;
 		// Recursive substitution of constants (up to 10 nested levels)
 		for ($i = 0; $i < 10 && !$noChange; $i++) {
@@ -1152,9 +1126,6 @@ class TemplateService {
 		if (!$file) {
 			return;
 		} elseif (strstr($file, '../')) {
-			if ($this->tt_track) {
-				$GLOBALS['TT']->setTSlogMessage('File path "' . $file . '" contained illegal string "../"!', 3);
-			}
 			return;
 		}
 		// Cache
@@ -1170,10 +1141,6 @@ class TemplateService {
 				$newFile = substr($extPath, strlen(PATH_site)) . $script;
 			}
 			if (!@is_file((PATH_site . $newFile))) {
-				if ($this->tt_track) {
-					$GLOBALS['TT']->setTSlogMessage('Extension media file "' . $newFile . '" was not found!', 3);
-				}
-				return;
 			} else {
 				$file = $newFile;
 			}
@@ -1201,11 +1168,7 @@ class TemplateService {
 				if ($OK) {
 					$this->fileCache[$hash] = $outFile;
 					return $outFile;
-				} elseif ($this->tt_track) {
-					$GLOBALS['TT']->setTSlogMessage('"' . $file . '" was not located in the allowed paths: (' . implode(',', $this->allowedPaths) . ')', 3);
 				}
-			} elseif ($this->tt_track) {
-				$GLOBALS['TT']->setTSlogMessage('"' . $this->getFileName_backPath . $file . '" is not a file (non-uploads/.. resource, did not exist).', 3);
 			}
 		}
 	}

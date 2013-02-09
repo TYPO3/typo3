@@ -46,15 +46,10 @@ define('TYPO3_MODE', 'FE');
 if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
 	die('<strong>Error:</strong> The main frontend extension "cms" was not loaded. Enable it in the extension manager in the backend.');
 }
-// Timetracking started
-if ($_COOKIE[\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName()]) {
-	require_once PATH_t3lib . 'class.t3lib_timetrack.php';
-	$TT = new \TYPO3\CMS\Core\TimeTracker\TimeTracker();
-} else {
-	require_once PATH_t3lib . 'class.t3lib_timetracknull.php';
-	$TT = new t3lib_timeTrackNull();
-}
-$TT->start();
+// Timetracking dummy
+require_once PATH_typo3 . 'sysext/Core/Classes/TimeTracker/NullTimeTracker.php';
+$TT = new \TYPO3\CMS\Core\TimeTracker\NullTimeTracker();
+
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeTypo3DbGlobal(FALSE);
 // Hook to preprocess the current request:
 if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'])) {
@@ -96,12 +91,12 @@ if ($TYPO3_CONF_VARS['FE']['compressionLevel'] && extension_loaded('zlib')) {
 	ob_start(array(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Utility\\CompressionUtility'), 'compressionOutputHandler'));
 }
 // FE_USER
-$TT->push('Front End user initialized', '');
+
 /**
  * @var $TSFE \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
  */
 $TSFE->initFEuser();
-$TT->pull();
+
 // BE_USER
 /**
  * @var $BE_USER \TYPO3\CMS\Backend\FrontendBackendUserAuthentication
@@ -109,7 +104,7 @@ $TT->pull();
 $BE_USER = $TSFE->initializeBackendUser();
 // Process the ID, type and other parameters
 // After this point we have an array, $page in TSFE, which is the page-record of the current page, $id
-$TT->push('Process ID', '');
+
 // Initialize admin panel since simulation settings are required here:
 if ($TSFE->isBackendUserLoggedIn()) {
 	$BE_USER->initializeAdminPanel();
@@ -129,7 +124,7 @@ if ($TSFE->isBackendUserLoggedIn() && (!$BE_USER->extPageReadAccess($TSFE->page)
 	$TSFE->determineId();
 }
 $TSFE->makeCacheHash();
-$TT->pull();
+
 // Admin Panel & Frontend editing
 if ($TSFE->isBackendUserLoggedIn()) {
 	$BE_USER->initializeFrontendEdit();
@@ -141,28 +136,26 @@ if ($TSFE->isBackendUserLoggedIn()) {
 	}
 }
 
-$GLOBALS['TT']->push('Load extension tables');
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(TRUE);
-$GLOBALS['TT']->pull();
 
 // Starts the template
-$TT->push('Start Template', '');
+
 $TSFE->initTemplate();
-$TT->pull();
+
 // Get from cache
-$TT->push('Get Page from cache', '');
+
 $TSFE->getFromCache();
-$TT->pull();
+
 // Get config if not already gotten
 // After this, we should have a valid config-array ready
 $TSFE->getConfigArray();
 // Convert POST data to internal "renderCharset" if different from the metaCharset
 $TSFE->convPOSTCharset();
 // Setting language and locale
-$TT->push('Setting language and locale', '');
+
 $TSFE->settingLanguage();
 $TSFE->settingLocale();
-$TT->pull();
+
 // Check JumpUrl
 $TSFE->setExternalJumpUrl();
 $TSFE->checkJumpUrlReferer();
@@ -177,7 +170,7 @@ case 'email':
 $TSFE->checkPageForShortcutRedirect();
 // Generate page
 $TSFE->setUrlIdToken();
-$TT->push('Page generation', '');
+
 if ($TSFE->isGeneratePage()) {
 	$TSFE->generatePage_preProcessing();
 	$temp_theScript = $TSFE->generatePage_whichScript();
@@ -190,20 +183,20 @@ if ($TSFE->isGeneratePage()) {
 } elseif ($TSFE->isINTincScript()) {
 	include PATH_tslib . 'pagegen.php';
 }
-$TT->pull();
+
 // $TSFE->config['INTincScript']
 if ($TSFE->isINTincScript()) {
-	$TT->push('Non-cached objects', '');
+
 	$TSFE->INTincScript();
-	$TT->pull();
+
 }
 // Output content
 $sendTSFEContent = FALSE;
 if ($TSFE->isOutputting()) {
-	$TT->push('Print Content', '');
+
 	$TSFE->processOutput();
 	$sendTSFEContent = TRUE;
-	$TT->pull();
+
 }
 // Store session data for fe_users
 $TSFE->storeSessionData();
@@ -220,7 +213,7 @@ $TSFE->previewInfo();
 // Hook for end-of-frontend
 $TSFE->hook_eofe();
 // Finish timetracking
-$TT->pull();
+
 // Check memory usage
 \TYPO3\CMS\Core\Utility\MonitorUtility::peakMemoryUsage();
 // beLoginLinkIPList

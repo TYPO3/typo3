@@ -161,7 +161,6 @@ class AdminPanelView {
 			// Saving
 			$GLOBALS['BE_USER']->writeUC();
 		}
-		$GLOBALS['TT']->LR = $this->extGetFeAdminValue('tsdebug', 'LR');
 		if ($this->extGetFeAdminValue('cache', 'noCache')) {
 			$GLOBALS['TSFE']->set_no_cache('Admin Panel: No Caching');
 		}
@@ -245,9 +244,6 @@ class AdminPanelView {
 			}
 			if ($this->isAdminModuleEnabled('edit')) {
 				$moduleContent .= $this->getEditModule();
-			}
-			if ($this->isAdminModuleEnabled('tsdebug')) {
-				$moduleContent .= $this->getTSDebugModule();
 			}
 			if ($this->isAdminModuleEnabled('info')) {
 				$moduleContent .= $this->getInfoModule();
@@ -447,33 +443,6 @@ class AdminPanelView {
 						return false;
 						')) . '">' . $this->extGetLL('edit_openAB') . '</a>');
 			}
-		}
-		return $out;
-	}
-
-	/**
-	 * Creates the content for the "tsdebug" section ("module") of the Admin Panel
-	 *
-	 * @return string HTML content for the section. Consists of a string with table-rows with four columns.
-	 * @see display()
-	 */
-	protected function getTSDebugModule() {
-		$out = $this->extGetHead('tsdebug');
-		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_tsdebug']) {
-			$this->extNeedUpdate = TRUE;
-			$out .= $this->extGetItem('tsdebug_tree', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_tree]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_tree]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['tsdebug_tree'] ? ' checked="checked"' : '') . ' />');
-			$out .= $this->extGetItem('tsdebug_displayTimes', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayTimes]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_displayTimes]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['tsdebug_displayTimes'] ? ' checked="checked"' : '') . ' />');
-			$out .= $this->extGetItem('tsdebug_displayMessages', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayMessages]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_displayMessages]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['tsdebug_displayMessages'] ? ' checked="checked"' : '') . ' />');
-			$out .= $this->extGetItem('tsdebug_LR', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_LR]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_LR]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['tsdebug_LR'] ? ' checked="checked"' : '') . ' />');
-			$out .= $this->extGetItem('tsdebug_displayContent', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayContent]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_displayContent]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['tsdebug_displayContent'] ? ' checked="checked"' : '') . ' />');
-			$out .= $this->extGetItem('tsdebug_displayQueries', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_displayQueries]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_displayQueries]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['tsdebug_displayQueries'] ? ' checked="checked"' : '') . ' />');
-			$out .= $this->extGetItem('tsdebug_forceTemplateParsing', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]" value="0" /><input type="checkbox" name="TSFE_ADMIN_PANEL[tsdebug_forceTemplateParsing]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['tsdebug_forceTemplateParsing'] ? ' checked="checked"' : '') . ' />');
-			$GLOBALS['TT']->printConf['flag_tree'] = $this->extGetFeAdminValue('tsdebug', 'tree');
-			$GLOBALS['TT']->printConf['allTime'] = $this->extGetFeAdminValue('tsdebug', 'displayTimes');
-			$GLOBALS['TT']->printConf['flag_messages'] = $this->extGetFeAdminValue('tsdebug', 'displayMessages');
-			$GLOBALS['TT']->printConf['flag_content'] = $this->extGetFeAdminValue('tsdebug', 'displayContent');
-			$GLOBALS['TT']->printConf['flag_queries'] = $this->extGetFeAdminValue('tsdebug', 'displayQueries');
-			$out .= '<tr><td colspan="2">' . $GLOBALS['TT']->printTSlog() . '</td></tr>';
 		}
 		return $out;
 	}

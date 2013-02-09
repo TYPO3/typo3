@@ -120,13 +120,11 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				if (is_array($oldArguments) && count($oldArguments)) {
 					$arguments = $this->getLocalConentObject()->joinTSarrays($arguments, $oldArguments);
 				}
-				$GLOBALS['TT']->incStackPointer();
 				$contentObject = array(
 					'cObj' => $class,
 					'cObj.' => $arguments
 				);
 				$this->addElement($parentElement, 'content', $contentObject);
-				$GLOBALS['TT']->decStackPointer();
 			} else {
 				$contentObject = array(
 					'cObj' => $class,

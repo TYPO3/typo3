@@ -273,7 +273,6 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 			} else {
 				$theValue = $this->cObj->cObjGetSingle($conf['noResultObj'], $conf['noResultObj.'], 'noResultObj');
 			}
-			$GLOBALS['TT']->setTSlogMessage('Search in fields:   ' . $this->listOfSearchFields);
 			// Wrapping
 			$content = $theValue;
 			$wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];

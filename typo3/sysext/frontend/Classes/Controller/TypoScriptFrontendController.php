@@ -759,10 +759,7 @@ class TypoScriptFrontendController {
 		$this->id = $id;
 		$this->type = $type;
 		if ($no_cache) {
-			if ($this->TYPO3_CONF_VARS['FE']['disableNoCacheParameter']) {
-				$warning = '&no_cache=1 has been ignored because $TYPO3_CONF_VARS[\'FE\'][\'disableNoCacheParameter\'] is set!';
-				$GLOBALS['TT']->setTSlogMessage($warning, 2);
-			} else {
+			if (!$this->TYPO3_CONF_VARS['FE']['disableNoCacheParameter']) {
 				$warning = '&no_cache=1 has been supplied, so caching is disabled! URL: "' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '"';
 				$this->disableCache();
 			}
@@ -1061,7 +1058,6 @@ class TypoScriptFrontendController {
 		// we proceed and check if a backend user is logged in.
 		if ($_COOKIE[\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName()]) {
 			$GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] = microtime(TRUE);
-			$GLOBALS['TT']->push('Back End user initialized', '');
 			// TODO: validate the comment below: is this necessary? if so,
 			// formfield_status should be set to "" in t3lib_tsfeBeUserAuth
 			// which is a subclass of t3lib_beUserAuth
@@ -1085,7 +1081,6 @@ class TypoScriptFrontendController {
 				$this->beUserLogin = 0;
 				$_SESSION['TYPO3-TT-start'] = FALSE;
 			}
-			$GLOBALS['TT']->pull();
 			$GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] = microtime(TRUE);
 		}
 		// POST BE_USER HOOK
@@ -1118,7 +1113,6 @@ class TypoScriptFrontendController {
 		// Getting ARG-v values if some
 		$this->setIDfromArgV();
 		// If there is a Backend login we are going to check for any preview settings:
-		$GLOBALS['TT']->push('beUserLogin', '');
 		if ($this->beUserLogin || $this->doWorkspacePreview()) {
 			// Backend user preview features:
 			if ($this->beUserLogin && $GLOBALS['BE_USER']->adminPanel instanceof \TYPO3\CMS\Frontend\View\AdminPanelView) {
@@ -1177,7 +1171,6 @@ class TypoScriptFrontendController {
 				$this->disableCache();
 			}
 		}
-		$GLOBALS['TT']->pull();
 		// Now, get the id, validate access etc:
 		$this->fetch_the_id();
 		// Check if backend user has read access to this page. If not, recalculate the id.
@@ -1255,7 +1248,6 @@ class TypoScriptFrontendController {
 	 * @todo Define visibility
 	 */
 	public function fetch_the_id() {
-		$GLOBALS['TT']->push('fetch_the_id initialize/', '');
 		// Initialize the page-select functions.
 		$this->sys_page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 		$this->sys_page->versioningPreview = $this->fePreview === 2 || intval($this->workspacePreview) || \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ADMCMD_view') ? TRUE : FALSE;
@@ -1304,9 +1296,7 @@ class TypoScriptFrontendController {
 		// The id and type is set to the integer-value - just to be sure...
 		$this->id = intval($this->id);
 		$this->type = intval($this->type);
-		$GLOBALS['TT']->pull();
 		// We find the first page belonging to the current domain
-		$GLOBALS['TT']->push('fetch_the_id domain/', '');
 		// The page_id of the current domain
 		$this->domainStartPage = $this->findDomainRecord($this->TYPO3_CONF_VARS['SYS']['recursiveDomainSearch']);
 		if (!$this->id) {
@@ -1329,12 +1319,9 @@ class TypoScriptFrontendController {
 				}
 			}
 		}
-		$GLOBALS['TT']->pull();
-		$GLOBALS['TT']->push('fetch_the_id rootLine/', '');
 		// We store the originally requested id
 		$requestedId = $this->id;
 		$this->getPageAndRootlineWithDomain($this->domainStartPage);
-		$GLOBALS['TT']->pull();
 		if ($this->pageNotFound && $this->TYPO3_CONF_VARS['FE']['pageNotFound_handling']) {
 			$pNotFoundMsg = array(
 				1 => 'ID was not an accessible page',
@@ -2078,7 +2065,6 @@ class TypoScriptFrontendController {
 					$this->pageNotFoundAndExit('Request parameters could not be validated (&cHash comparison failed)');
 				} else {
 					$this->disableCache();
-					$GLOBALS['TT']->setTSlogMessage('The incoming cHash "' . $this->cHash . '" and calculated cHash "' . $cHash_calc . '" did not match, so caching was disabled. The fieldlist used was "' . implode(',', array_keys($this->cHash_array)) . '"', 2);
 				}
 			}
 		} elseif (is_array($GET)) {
@@ -2106,7 +2092,6 @@ class TypoScriptFrontendController {
 				$this->pageNotFoundAndExit('Request parameters could not be validated (&cHash empty)');
 			} else {
 				$this->disableCache();
-				$GLOBALS['TT']->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled', 2);
 			}
 		}
 	}
@@ -2183,7 +2168,6 @@ class TypoScriptFrontendController {
 			$lockHash = $this->getLockHash();
 			if ($this->all) {
 				$this->newHash = $this->getHash();
-				$GLOBALS['TT']->push('Cache Row', '');
 				$row = $this->getFromCache_queryRow();
 				if (!is_array($row)) {
 					$isLocked = $this->acquirePageGenerationLock($this->pages_lockObj, $lockHash);
@@ -2221,7 +2205,6 @@ class TypoScriptFrontendController {
 						$this->content .= LF . '<!-- Cached page generated ' . date(($dateFormat . ' ' . $timeFormat), $row['tstamp']) . '. Expires ' . Date(($dateFormat . ' ' . $timeFormat), $row['expires']) . ' -->';
 					}
 				}
-				$GLOBALS['TT']->pull();
 			} else {
 				$this->acquirePageGenerationLock($this->pages_lockObj, $lockHash);
 			}
@@ -2235,9 +2218,7 @@ class TypoScriptFrontendController {
 	 * @todo Define visibility
 	 */
 	public function getFromCache_queryRow() {
-		$GLOBALS['TT']->push('Cache Query', '');
 		$row = $this->pageCache->get($this->newHash);
-		$GLOBALS['TT']->pull();
 		return $row;
 	}
 
@@ -2341,14 +2322,11 @@ class TypoScriptFrontendController {
 		$setStatPageName = FALSE;
 		// If config is not set by the cache (which would be a major mistake somewhere) OR if INTincScripts-include-scripts have been registered, then we must parse the template in order to get it
 		if (!is_array($this->config) || is_array($this->config['INTincScript']) || $this->forceTemplateParsing) {
-			$GLOBALS['TT']->push('Parse template', '');
 			// Force parsing, if set?:
 			$this->tmpl->forceTemplateParsing = $this->forceTemplateParsing;
 			// Start parsing the TS template. Might return cached version.
 			$this->tmpl->start($this->rootLine);
-			$GLOBALS['TT']->pull();
 			if ($this->tmpl->loaded) {
-				$GLOBALS['TT']->push('Setting the config-array', '');
 				// toplevel - objArrayName
 				$this->sPre = $this->tmpl->setup['types.'][$this->type];
 				$this->pSetup = $this->tmpl->setup[$this->sPre . '.'];
@@ -2398,7 +2376,6 @@ class TypoScriptFrontendController {
 						}
 					}
 				}
-				$GLOBALS['TT']->pull();
 			} else {
 				if ($this->checkPageUnavailableHandler()) {
 					$this->pageUnavailableAndExit('No TypoScript template found!');
@@ -2603,8 +2580,6 @@ class TypoScriptFrontendController {
 				setlocale(LC_MONETARY, $this->config['config']['locale_all']);
 				setlocale(LC_TIME, $this->config['config']['locale_all']);
 				$this->localeCharset = $this->csConvObj->get_locale_charset($this->config['config']['locale_all']);
-			} else {
-				$GLOBALS['TT']->setTSlogMessage('Locale "' . htmlspecialchars($this->config['config']['locale_all']) . '" not found.', 3);
 			}
 		}
 	}
@@ -2650,11 +2625,8 @@ class TypoScriptFrontendController {
 					if ($formtype_mail) {
 						$ret = 'email';
 					}
-					$GLOBALS['TT']->setTSlogMessage('"Check Data Submission": Return value: ' . $ret, 0);
 					return $ret;
 				}
-			} else {
-				$GLOBALS['TT']->setTSlogMessage('"Check Data Submission": HTTP_HOST and REFERER HOST did not match when processing submitted formdata!', 3);
 			}
 		}
 		// Hook for processing data submission to extensions:
@@ -2694,11 +2666,7 @@ class TypoScriptFrontendController {
 			// $locData[1] -check means that a record is checked only if the locationData has a value for a record else than the page.
 			if (count($this->sys_page->getPage($locData[0]))) {
 				return 1;
-			} else {
-				$GLOBALS['TT']->setTSlogMessage('LocationData Error: The page pointed to by location data (' . $locationData . ') was not accessible.', 2);
 			}
-		} else {
-			$GLOBALS['TT']->setTSlogMessage('LocationData Error: Location data (' . $locationData . ') record pointed to was not accessible.', 2);
 		}
 	}
 
@@ -2728,10 +2696,7 @@ class TypoScriptFrontendController {
 						$EMAIL_VARS[$fieldKey] = $res;
 					} elseif ($integrityCheck) {
 						// Otherwise abort:
-						$GLOBALS['TT']->setTSlogMessage('"Formmail" discovered a field (' . $fieldKey . ') which could not be decoded to a valid string. Sending formmail aborted due to security reasons!', 3);
 						return FALSE;
-					} else {
-						$GLOBALS['TT']->setTSlogMessage('"Formmail" discovered a field (' . $fieldKey . ') which could not be decoded to a valid string. The security level accepts this, but you should consider a correct coding though!', 2);
 					}
 				}
 			}
@@ -2750,7 +2715,6 @@ class TypoScriptFrontendController {
 		}
 		$formmail->start($EMAIL_VARS);
 		$formmail->sendtheMail();
-		$GLOBALS['TT']->setTSlogMessage('"Formmail" invoked, sending mail to ' . $EMAIL_VARS['recipient'], 0);
 	}
 
 	/**
@@ -3262,22 +3226,16 @@ class TypoScriptFrontendController {
 		}
 		// Tidy up the code, if flag...
 		if ($this->TYPO3_CONF_VARS['FE']['tidy_option'] == 'all') {
-			$GLOBALS['TT']->push('Tidy, all', '');
 			$this->content = $this->tidyHTML($this->content);
-			$GLOBALS['TT']->pull();
 		}
 		// XHTML-clean the code, if flag set
 		if ($this->doXHTML_cleaning() == 'all') {
-			$GLOBALS['TT']->push('XHTML clean, all', '');
 			$XHTML_clean = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 			$this->content = $XHTML_clean->XHTML_clean($this->content);
-			$GLOBALS['TT']->pull();
 		}
 		// Fix local anchors in links, if flag set
 		if ($this->doLocalAnchorFix() == 'all') {
-			$GLOBALS['TT']->push('Local anchor fix, all', '');
 			$this->prefixLocalAnchorsWithScript();
-			$GLOBALS['TT']->pull();
 		}
 		// Hook for post-processing of page content cached/non-cached:
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'])) {
@@ -3290,22 +3248,16 @@ class TypoScriptFrontendController {
 		if (!$this->no_cache) {
 			// Tidy up the code, if flag...
 			if ($this->TYPO3_CONF_VARS['FE']['tidy_option'] == 'cached') {
-				$GLOBALS['TT']->push('Tidy, cached', '');
 				$this->content = $this->tidyHTML($this->content);
-				$GLOBALS['TT']->pull();
 			}
 			// XHTML-clean the code, if flag set
 			if ($this->doXHTML_cleaning() == 'cached') {
-				$GLOBALS['TT']->push('XHTML clean, cached', '');
 				$XHTML_clean = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 				$this->content = $XHTML_clean->XHTML_clean($this->content);
-				$GLOBALS['TT']->pull();
 			}
 			// Fix local anchors in links, if flag set
 			if ($this->doLocalAnchorFix() == 'cached') {
-				$GLOBALS['TT']->push('Local anchor fix, cached', '');
 				$this->prefixLocalAnchorsWithScript();
-				$GLOBALS['TT']->pull();
 			}
 			// Hook for post-processing of page content before being cached:
 			if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-cached'])) {
@@ -3365,14 +3317,12 @@ class TypoScriptFrontendController {
 			$INTiS_config = array_diff_assoc($this->config['INTincScript'], $INTiS_config);
 			$reprocess = count($INTiS_config) ? TRUE : FALSE;
 		} while ($reprocess);
-		$GLOBALS['TT']->push('Substitute header section');
 		$this->INTincScript_loadJSCode();
 		$this->content = $this->getPageRenderer()->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey']);
 		$this->content = str_replace('<!--HD_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset(implode(LF, $this->additionalHeaderData), 'HD'), $this->content);
 		$this->content = str_replace('<!--FD_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset(implode(LF, $this->additionalFooterData), 'FD'), $this->content);
 		$this->content = str_replace('<!--TDS_' . $this->config['INTincScript_ext']['divKey'] . '-->', $this->convOutputCharset($this->divSection, 'TDS'), $this->content);
 		$this->setAbsRefPrefix();
-		$GLOBALS['TT']->pull();
 	}
 
 	/**
@@ -3399,18 +3349,14 @@ class TypoScriptFrontendController {
 	 * @see INTincScript()
 	 */
 	protected function INTincScript_process($INTiS_config) {
-		$GLOBALS['TT']->push('Split content');
 		// Splits content with the key.
 		$INTiS_splitC = explode('<!--INT_SCRIPT.', $this->content);
 		$this->content = '';
-		$GLOBALS['TT']->setTSlogMessage('Parts: ' . count($INTiS_splitC));
-		$GLOBALS['TT']->pull();
 		foreach ($INTiS_splitC as $INTiS_c => $INTiS_cPart) {
 			// If the split had a comment-end after 32 characters it's probably a split-string
 			if (substr($INTiS_cPart, 32, 3) === '-->') {
 				$INTiS_key = 'INT_SCRIPT.' . substr($INTiS_cPart, 0, 32);
 				if (is_array($INTiS_config[$INTiS_key])) {
-					$GLOBALS['TT']->push('Include ' . $INTiS_config[$INTiS_key]['file'], '');
 					$incContent = '';
 					$INTiS_cObj = unserialize($INTiS_config[$INTiS_key]['cObj']);
 					/* @var $INTiS_cObj tslib_cObj */
@@ -3428,7 +3374,6 @@ class TypoScriptFrontendController {
 					}
 					$this->content .= $this->convOutputCharset($incContent, 'INC-' . $INTiS_c);
 					$this->content .= substr($INTiS_cPart, 35);
-					$GLOBALS['TT']->pull($incContent);
 				} else {
 					$this->content .= substr($INTiS_cPart, 35);
 				}
@@ -3582,22 +3527,16 @@ if (version == "n3") {
 		}
 		// Tidy up the code, if flag...
 		if ($this->TYPO3_CONF_VARS['FE']['tidy_option'] == 'output') {
-			$GLOBALS['TT']->push('Tidy, output', '');
 			$this->content = $this->tidyHTML($this->content);
-			$GLOBALS['TT']->pull();
 		}
 		// XHTML-clean the code, if flag set
 		if ($this->doXHTML_cleaning() == 'output') {
-			$GLOBALS['TT']->push('XHTML clean, output', '');
 			$XHTML_clean = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 			$this->content = $XHTML_clean->XHTML_clean($this->content);
-			$GLOBALS['TT']->pull();
 		}
 		// Fix local anchors in links, if flag set
 		if ($this->doLocalAnchorFix() == 'output') {
-			$GLOBALS['TT']->push('Local anchor fix, output', '');
 			$this->prefixLocalAnchorsWithScript();
-			$GLOBALS['TT']->pull();
 		}
 		// Hook for post-processing of page content before output:
 		if (isset($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output']) && is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'])) {
@@ -3646,14 +3585,11 @@ if (version == "n3") {
 			$this->isClientCachable = FALSE;
 			// Now, if a backend user is logged in, tell him in the Admin Panel log what the caching status would have been:
 			if ($this->beUserLogin) {
-				if ($doCache) {
-					$GLOBALS['TT']->setTSlogMessage('Cache-headers with max-age "' . ($this->cacheExpires - $GLOBALS['EXEC_TIME']) . '" would have been sent');
-				} else {
+				if (!$doCache) {
 					$reasonMsg = '';
 					$reasonMsg .= !$this->no_cache ? '' : 'Caching disabled (no_cache). ';
 					$reasonMsg .= !$this->isINTincScript() ? '' : '*_INT object(s) on page. ';
 					$reasonMsg .= !is_array($this->fe_user->user) ? '' : 'Frontend user logged in. ';
-					$GLOBALS['TT']->setTSlogMessage('Cache-headers would disable proxy caching! Reason(s): "' . $reasonMsg . '"', 1);
 				}
 			}
 		}
@@ -3760,7 +3696,7 @@ if (version == "n3") {
 		$microtime_end = isset($GLOBALS['TYPO3_MISC']['microtime_end']) ? $GLOBALS['TYPO3_MISC']['microtime_end'] : NULL;
 		$microtime_BE_USER_start = isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start']) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] : NULL;
 		$microtime_BE_USER_end = isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end']) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] : NULL;
-		$this->scriptParseTime = $GLOBALS['TT']->getMilliseconds($microtime_end) - $GLOBALS['TT']->getMilliseconds($microtime_start) - ($GLOBALS['TT']->getMilliseconds($microtime_BE_USER_end) - $GLOBALS['TT']->getMilliseconds($microtime_BE_USER_start));
+		$this->scriptParseTime = round($microtime_end * 1000) - round($microtime_start * 1000) - round($microtime_BE_USER_end * 1000) - round($microtime_BE_USER_start * 1000);
 	}
 
 	/**
@@ -4089,7 +4025,6 @@ if (version == "n3") {
 	 */
 	public function logDeprecatedTyposcript($typoScriptProperty, $explanation = '') {
 		$explanationText = strlen($explanation) ? ' - ' . $explanation : '';
-		$GLOBALS['TT']->setTSlogMessage($typoScriptProperty . ' is deprecated.' . $explanationText, 2);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('TypoScript ' . $typoScriptProperty . ' is deprecated' . $explanationText);
 	}
 
@@ -4136,9 +4071,7 @@ if (version == "n3") {
 			if (!trim($content)) {
 				// Restore old content due empty return value.
 				$content = $oldContent;
-				$GLOBALS['TT']->setTSlogMessage('"tidy" returned an empty value!', 2);
 			}
-			$GLOBALS['TT']->setTSlogMessage('"tidy" content lenght: ' . strlen($content), 0);
 		}
 		return $content;
 	}
@@ -4227,17 +4160,12 @@ if (version == "n3") {
 	 */
 	public function includeLibraries(array $libraries) {
 		global $TYPO3_CONF_VARS;
-		$GLOBALS['TT']->push('Include libraries');
-		$GLOBALS['TT']->setTSlogMessage('Files for inclusion: "' . implode(', ', $libraries) . '"');
 		foreach ($libraries as $library) {
 			$file = $GLOBALS['TSFE']->tmpl->getFileName($library);
 			if ($file) {
 				include_once './' . $file;
-			} else {
-				$GLOBALS['TT']->setTSlogMessage('Include file "' . $file . '" did not exist!', 2);
 			}
 		}
-		$GLOBALS['TT']->pull();
 	}
 
 	/********************************************
@@ -4392,10 +4320,7 @@ if (version == "n3") {
 			$trigger = $file . ' on line ' . $line;
 			$warning = '$TSFE->set_no_cache() was triggered by ' . $trigger . '.';
 		}
-		if ($this->TYPO3_CONF_VARS['FE']['disableNoCacheParameter']) {
-			$warning .= ' However, $TYPO3_CONF_VARS[\'FE\'][\'disableNoCacheParameter\'] is set, so it will be ignored!';
-			$GLOBALS['TT']->setTSlogMessage($warning, 2);
-		} else {
+		if (!$this->TYPO3_CONF_VARS['FE']['disableNoCacheParameter']) {
 			$warning .= ' Caching is disabled!';
 			$this->disableCache();
 		}

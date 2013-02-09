@@ -53,8 +53,6 @@ class ContentObjectArrayInternalContentObject extends \TYPO3\CMS\Frontend\Conten
 				'type' => 'COA'
 			);
 			return $content;
-		} else {
-			$GLOBALS['TT']->setTSlogMessage('No elements in this content object array (COA_INT).', 2);
 		}
 	}
 

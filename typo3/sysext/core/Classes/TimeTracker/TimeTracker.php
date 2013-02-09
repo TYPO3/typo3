@@ -42,6 +42,7 @@ namespace TYPO3\CMS\Core\TimeTracker;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @see t3lib_tsfeBeUserAuth, tslib_fe, tslib_cObj, TSpagegen
+ * @depracated since 6.1; will be removed two versions later
  */
 class TimeTracker {
 
@@ -137,6 +138,7 @@ class TimeTracker {
 	 * @return void
 	 */
 	public function start() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$this->wrapError = array(
 			0 => array('', ''),
 			1 => array('<strong>', '</strong>'),
@@ -161,6 +163,7 @@ class TimeTracker {
 	 * @see tslib_cObj::cObjGetSingle(), pull()
 	 */
 	public function push($tslabel, $value = '') {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		array_push($this->tsStack[$this->tsStackPointer], $tslabel);
 		array_push($this->currentHashPointer, 'timetracker_' . $this->uniqueCounter++);
 		$this->tsStackLevel++;
@@ -184,6 +187,7 @@ class TimeTracker {
 	 * @see tslib_cObj::cObjGetSingle(), push()
 	 */
 	public function pull($content = '') {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$k = end($this->currentHashPointer);
 		$this->tsStackLog[$k]['endtime'] = microtime(TRUE);
 		$this->tsStackLog[$k]['content'] = $content;
@@ -201,6 +205,7 @@ class TimeTracker {
 	 * @see tslib_cObj::CONTENT()
 	 */
 	public function setTSlogMessage($content, $num = 0) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		end($this->currentHashPointer);
 		$k = current($this->currentHashPointer);
 		// Enlarge the "details" column by adding a wide clear.gif
@@ -218,6 +223,7 @@ class TimeTracker {
 	 * @return void
 	 */
 	public function setTSselectQuery(array $data, $msg = '') {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		end($this->currentHashPointer);
 		$k = current($this->currentHashPointer);
 		if (strlen($msg)) {
@@ -233,6 +239,7 @@ class TimeTracker {
 	 * @see decStackPointer(), TSpagegen::renderContent(), tslib_cObj::cObjGetSingle()
 	 */
 	public function incStackPointer() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$this->tsStackPointer++;
 		$this->tsStack[$this->tsStackPointer] = array();
 	}
@@ -244,6 +251,7 @@ class TimeTracker {
 	 * @see incStackPointer(), TSpagegen::renderContent(), tslib_cObj::cObjGetSingle()
 	 */
 	public function decStackPointer() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		unset($this->tsStack[$this->tsStackPointer]);
 		$this->tsStackPointer--;
 	}
@@ -255,6 +263,7 @@ class TimeTracker {
 	 * @return integer The microtime value as milliseconds value
 	 */
 	public function getMilliseconds($microtime = NULL) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		if (!isset($microtime)) {
 			$microtime = microtime(TRUE);
 		}
@@ -268,6 +277,7 @@ class TimeTracker {
 	 * @return integer The difference between a given microtime value and starting time as milliseconds
 	 */
 	public function getDifferenceToStarttime($microtime = NULL) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		return $this->getMilliseconds($microtime) - $this->starttime;
 	}
 
@@ -283,6 +293,7 @@ class TimeTracker {
 	 * @see t3lib_tsfeBeUserAuth::extGetCategory_tsdebug()
 	 */
 	public function printTSlog() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		// Calculate times and keys for the tsStackLog
 		foreach ($this->tsStackLog as $uniqueId => &$data) {
 			$data['endtime'] = $this->getDifferenceToStarttime($data['endtime']);
@@ -420,6 +431,7 @@ class TimeTracker {
 	 * @return string Returns the $content string generated/modified. Also the $arr array is modified!
 	 */
 	protected function fixContent(&$arr, $content, $depthData = '', $first = 0, $vKey = '') {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$ac = 0;
 		$c = 0;
 		// First, find number of entries
@@ -478,6 +490,7 @@ class TimeTracker {
 	 * @return string
 	 */
 	protected function fixCLen($c, $v) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$len = $v == 'FILE' ? $this->printConf['contentLength_FILE'] : $this->printConf['contentLength'];
 		if (strlen($c) > $len) {
 			$c = '<span style="color:green;">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($c, $len)) . '</span>';
@@ -494,6 +507,7 @@ class TimeTracker {
 	 * @return string
 	 */
 	protected function fw($str) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		return '<span style="font-family:Verdana,Arial,Helvetica,sans-serif; font-size:10px; color:black; vertical-align:top;">' . $str . '&nbsp;</span>';
 	}
 
@@ -508,6 +522,7 @@ class TimeTracker {
 	 * @see printTSlog()
 	 */
 	protected function createHierarchyArray(&$arr, $pointer, $uniqueId) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		if (!is_array($arr)) {
 			$arr = array();
 		}

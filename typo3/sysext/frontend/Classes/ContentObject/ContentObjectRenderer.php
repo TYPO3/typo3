@@ -705,9 +705,6 @@ class ContentObjectRenderer {
 		$GLOBALS['TSFE']->cObjectDepthCounter--;
 		if ($GLOBALS['TSFE']->cObjectDepthCounter > 0) {
 			$name = trim($name);
-			if ($GLOBALS['TT']->LR) {
-				$GLOBALS['TT']->push($TSkey, $name);
-			}
 			// Checking if the COBJ is a reference to another object. (eg. name of 'blabla.blabla = < styles.something')
 			if (substr($name, 0, 1) == '<') {
 				$key = trim(substr($name, 1));
@@ -719,9 +716,7 @@ class ContentObjectRenderer {
 					$conf = $this->joinTSarrays($conf, $old_conf);
 				}
 				// Getting the cObject
-				$GLOBALS['TT']->incStackPointer();
 				$content .= $this->cObjGetSingle($name, $conf, $key);
-				$GLOBALS['TT']->decStackPointer();
 			} else {
 				$hooked = FALSE;
 				// Application defined cObjects
@@ -746,16 +741,9 @@ class ContentObjectRenderer {
 								/** @var $hookObject \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface */
 								$content .= $hookObject->getSingleContentObject($name, (array) $conf, $TSkey, $this);
 							}
-						} else {
-							// Log error in AdminPanel
-							$warning = sprintf('Content Object "%s" does not exist', $name);
-							$GLOBALS['TT']->setTSlogMessage($warning, 2);
 						}
 					}
 				}
-			}
-			if ($GLOBALS['TT']->LR) {
-				$GLOBALS['TT']->pull($content);
 			}
 		}
 		// Increasing on exit...
@@ -931,9 +919,7 @@ class ContentObjectRenderer {
 	 * @return void
 	 */
 	public function convertToUserIntObject() {
-		if ($this->userObjectType !== self::OBJECTTYPE_USER) {
-			$GLOBALS['TT']->setTSlogMessage('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer::convertToUserIntObject() ' . 'is called in the wrong context or for the wrong object type', 2);
-		} else {
+		if ($this->userObjectType === self::OBJECTTYPE_USER) {
 			$this->doConvertToUserIntObject = TRUE;
 		}
 	}
@@ -1725,7 +1711,6 @@ class ContentObjectRenderer {
 	 * @see substituteSubpart(), substituteMarker(), substituteMarkerInObject(), TEMPLATE()
 	 */
 	public function substituteMarkerArrayCached($content, array $markContentArray = NULL, array $subpartContentArray = NULL, array $wrappedSubpartContentArray = NULL) {
-		$GLOBALS['TT']->push('substituteMarkerArrayCached');
 		// If not arrays then set them
 		if (is_null($markContentArray)) {
 			// Plain markers
@@ -1744,7 +1729,6 @@ class ContentObjectRenderer {
 		$wPkeys = array_keys($wrappedSubpartContentArray);
 		$aKeys = array_merge(array_keys($markContentArray), $sPkeys, $wPkeys);
 		if (!count($aKeys)) {
-			$GLOBALS['TT']->pull();
 			return $content;
 		}
 		asort($aKeys);
@@ -1754,7 +1738,6 @@ class ContentObjectRenderer {
 		)));
 		if ($this->substMarkerCache[$storeKey]) {
 			$storeArr = $this->substMarkerCache[$storeKey];
-			$GLOBALS['TT']->setTSlogMessage('Cached', 0);
 		} else {
 			$storeArrDat = $GLOBALS['TSFE']->sys_page->getHash($storeKey);
 			if (!isset($storeArrDat)) {
@@ -1784,13 +1767,11 @@ class ContentObjectRenderer {
 				$this->substMarkerCache[$storeKey] = $storeArr;
 				// Storing the cached data:
 				$GLOBALS['TSFE']->sys_page->storeHash($storeKey, serialize($storeArr), 'substMarkArrayCached');
-				$GLOBALS['TT']->setTSlogMessage('Parsing', 0);
 			} else {
 				// Unserializing
 				$storeArr = unserialize($storeArrDat);
 				// Setting cache:
 				$this->substMarkerCache[$storeKey] = $storeArr;
-				$GLOBALS['TT']->setTSlogMessage('Cached from DB', 0);
 			}
 		}
 		// Substitution/Merging:
@@ -1809,7 +1790,6 @@ class ContentObjectRenderer {
 			}
 		}
 		$content .= $storeArr['c'][count($storeArr['k'])];
-		$GLOBALS['TT']->pull();
 		return $content;
 	}
 
@@ -3421,9 +3401,7 @@ class ContentObjectRenderer {
 		$result = FALSE;
 		$conf['select.']['selectFields'] = 'count(*)';
 		$res = $this->exec_getQuery($conf['table'], $conf['select.']);
-		if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
-			$GLOBALS['TT']->setTSlogMessage($error, 3);
-		} else {
+		if (!($error = $GLOBALS['TYPO3_DB']->sql_error())) {
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 			$result = intval($row[0]);
 		}
@@ -5760,7 +5738,6 @@ class ContentObjectRenderer {
 						$finalTagParts['TYPE'] = 'file';
 						$finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], $finalTagParts['TYPE']);
 					} else {
-						$GLOBALS['TT']->setTSlogMessage('typolink(): File \'' . $splitLinkParam[0] . '\' did not exist, so \'' . $linktxt . '\' was not linked.', 1);
 						return $linktxt;
 					}
 				} else {
@@ -5814,7 +5791,6 @@ class ContentObjectRenderer {
 						if (is_array($mount_info) && $mount_info['overlay']) {
 							$page = $GLOBALS['TSFE']->sys_page->getPage($mount_info['mount_pid'], $disableGroupAccessCheck);
 							if (!count($page)) {
-								$GLOBALS['TT']->setTSlogMessage('typolink(): Mount point \'' . $mount_info['mount_pid'] . '\' was not available, so \'' . $linktxt . '\' was not linked.', 1);
 								return $linktxt;
 							}
 							$MPvarAcc['re-map'] = $mount_info['MPvar'];
@@ -5969,7 +5945,6 @@ class ContentObjectRenderer {
 						$finalTagParts['targetParams'] = $targetPart;
 						$finalTagParts['TYPE'] = 'page';
 					} else {
-						$GLOBALS['TT']->setTSlogMessage('typolink(): Page id \'' . $link_param . '\' was not found, so \'' . $linktxt . '\' was not linked.', 1);
 						return $linktxt;
 					}
 				}
@@ -6403,18 +6378,12 @@ class ContentObjectRenderer {
 						$content,
 						$conf
 					));
-				} else {
-					$GLOBALS['TT']->setTSlogMessage('Method "' . $parts[1] . '" did not exist in class "' . $parts[0] . '"', 3);
 				}
-			} else {
-				$GLOBALS['TT']->setTSlogMessage('Class "' . $parts[0] . '" did not exist', 3);
 			}
 		} else {
 			// Function
 			if (function_exists($funcName)) {
 				$content = call_user_func($funcName, $content, $conf);
-			} else {
-				$GLOBALS['TT']->setTSlogMessage('Function "' . $funcName . '" did not exist', 3);
 			}
 		}
 		return $content;
@@ -7413,9 +7382,7 @@ class ContentObjectRenderer {
 			// Finding the total number of records, if used:
 			if (strstr(strtolower($conf['begin'] . $conf['max']), 'total')) {
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $table, $queryParts['WHERE'], $queryParts['GROUPBY']);
-				if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
-					$GLOBALS['TT']->setTSlogMessage($error);
-				} else {
+				if (!($error = $GLOBALS['TYPO3_DB']->sql_error())) {
 					$row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 					$conf['max'] = str_ireplace('total', $row[0], $conf['max']);
 					$conf['begin'] = str_ireplace('total', $row[0], $conf['begin']);
@@ -7605,9 +7572,7 @@ class ContentObjectRenderer {
 		$outArr = array();
 		if (is_array($listArr) && count($listArr)) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'uid IN (' . implode(',', $listArr) . ')' . $this->enableFields('pages') . ' AND doktype NOT IN (' . $this->checkPid_badDoktypeList . ')');
-			if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
-				$GLOBALS['TT']->setTSlogMessage($error . ': ' . $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery, 3);
-			} else {
+			if (!($error = $GLOBALS['TYPO3_DB']->sql_error())) {
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$outArr[] = $row['uid'];
 				}

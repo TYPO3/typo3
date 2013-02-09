@@ -56,8 +56,6 @@ class ContentObjectArrayContentObject extends \TYPO3\CMS\Frontend\ContentObject\
 				}
 			}
 			return $content;
-		} else {
-			$GLOBALS['TT']->setTSlogMessage('No elements in this content object array (COBJ_ARRAY, COA).', 2);
 		}
 	}
 

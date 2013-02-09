@@ -105,11 +105,9 @@ class ImageProcessingService {
 		}
 		if ($fileConfiguration['sample']) {
 			$gifCreator->scalecmd = '-sample';
-			$GLOBALS['TT']->setTSlogMessage('Sample option: Images are scaled with -sample.');
 		}
 		if ($fileConfiguration['alternativeTempPath'] && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['FE']['allowedTempPaths'], $fileConfiguration['alternativeTempPath'])) {
 			$gifCreator->tempPath = $fileConfiguration['alternativeTempPath'];
-			$GLOBALS['TT']->setTSlogMessage('Set alternativeTempPath: ' . $fileConfiguration['alternativeTempPath']);
 		}
 		if (!trim($fileConfiguration['ext'])) {
 			$fileConfiguration['ext'] = 'web';
