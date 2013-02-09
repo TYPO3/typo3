@@ -4,7 +4,7 @@ if (!defined('TYPO3_MODE')) {
 }
 if (TYPO3_MODE == 'BE') {
 	// register Extbase dispatcher for modules
-	$TBE_MODULES['_dispatcher'][] = 'TYPO3\\CMS\\Extbase\\Core\\BootstrapInterface';
+	$TBE_MODULES['_dispatcher'][] = 'TYPO3\\CMS\\Extbase\\Core\\ModuleRunnerInterface';
 }
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['extbase'][] = 'TYPO3\\CMS\\Extbase\\Utility\\ExtbaseRequirementsCheckUtility';
 if (!isset($TCA['fe_users']['ctrl']['type'])) {

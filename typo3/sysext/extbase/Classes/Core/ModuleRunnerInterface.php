@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Extbase\Core;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2012 Extbase Team (http://forge.typo3.org/projects/typo3v4-mvc)
+ *  (c) 2010-2013 Extbase Team (http://forge.typo3.org/projects/typo3v4-mvc)
  *  Extbase is a backport of TYPO3 Flow. All credits go to the TYPO3 Flow team.
  *  All rights reserved
  *
@@ -27,21 +27,20 @@ namespace TYPO3\CMS\Extbase\Core;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Bootstrap Interface
- */
-interface BootstrapInterface {
 
+/**
+ * Interface for module runners that can execute requests to Extbase controllers in the backend
+ */
+interface ModuleRunnerInterface {
 	/**
-	 * Runs the the Extbase Framework by resolving an appropriate Request Handler and passing control to it.
-	 * If the Framework is not initialized yet, it will be initialized.
+	 * Initializes and runs a module.
 	 *
-	 * @param string $content The content. Not used
-	 * @param array $configuration The TS configuration array
-	 * @return string $content The processed content
-	 * @api
+	 * @param string $moduleSignature
+	 * @throws \RuntimeException
+	 * @return boolean TRUE, if the request request could be dispatched
+	 * @see run()
 	 */
-	public function run($content, $configuration);
+	public function callModule($moduleSignature);
 }
 
 ?>
