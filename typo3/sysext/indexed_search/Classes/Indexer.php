@@ -2097,9 +2097,6 @@ class Indexer {
 	 * @todo Define visibility
 	 */
 	public function log_push($msg, $key) {
-		if (is_object($GLOBALS['TT'])) {
-			$GLOBALS['TT']->push($msg, $key);
-		}
 	}
 
 	/**
@@ -2109,9 +2106,6 @@ class Indexer {
 	 * @todo Define visibility
 	 */
 	public function log_pull() {
-		if (is_object($GLOBALS['TT'])) {
-			$GLOBALS['TT']->pull();
-		}
 	}
 
 	/**
@@ -2123,9 +2117,6 @@ class Indexer {
 	 * @todo Define visibility
 	 */
 	public function log_setTSlogMessage($msg, $errorNum = 0) {
-		if (is_object($GLOBALS['TT'])) {
-			$GLOBALS['TT']->setTSlogMessage($msg, $errorNum);
-		}
 		$this->internal_log[] = $msg;
 	}
 

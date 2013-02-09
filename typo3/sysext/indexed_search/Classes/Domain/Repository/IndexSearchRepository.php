@@ -142,13 +142,11 @@ class IndexSearchRepository {
 	 */
 	public function doSearch($searchWords, $freeIndexUid = -1) {
 		// Getting SQL result pointer:
-		$GLOBALS['TT']->push('Searching result');
 		if ($hookObj = &$this->hookRequest('getResultRows_SQLpointer')) {
 			$res = $hookObj->getResultRows_SQLpointer($searchWords, $freeIndexUid);
 		} else {
 			$res = $this->getResultRows_SQLpointer($searchWords, $freeIndexUid);
 		}
-		$GLOBALS['TT']->pull();
 		// Organize and process result:
 		if ($res) {
 			// Total search-result count
@@ -237,9 +235,7 @@ class IndexSearchRepository {
 		// Perform SQL Search / collection of result rows array:
 		if ($list) {
 			// Do the search:
-			$GLOBALS['TT']->push('execFinalQuery');
 			$res = $this->execFinalQuery($list, $freeIndexUid);
-			$GLOBALS['TT']->pull();
 			return $res;
 		} else {
 			return FALSE;
@@ -272,7 +268,6 @@ class IndexSearchRepository {
 			if (strstr($sWord, ' ')) {
 				$theType = 20;
 			}
-			$GLOBALS['TT']->push('SearchWord "' . $sWord . '" - $theType=' . $theType);
 			$res = '';
 			$wSel = '';
 			// Perform search for word:
@@ -346,7 +341,6 @@ class IndexSearchRepository {
 					$totalHashList = $phashList;
 				}
 			}
-			$GLOBALS['TT']->pull();
 			$c++;
 		}
 		return implode(',', $totalHashList);

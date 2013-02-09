@@ -57,9 +57,7 @@ class MysqlFulltextIndexHook {
 		$resource = FALSE;
 		if ($searchData) {
 			// Do the search:
-			$GLOBALS['TT']->push('execFinalQuery');
 			$resource = $this->execFinalQuery_fulltext($searchData, $freeIndexUid);
-			$GLOBALS['TT']->pull();
 		}
 		return $resource;
 	}

@@ -77,11 +77,8 @@ class ContentContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 			$again = FALSE;
 			do {
 				$res = $this->cObj->exec_getQuery($conf['table'], $conf['select.']);
-				if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
-					$GLOBALS['TT']->setTSlogMessage($error, 3);
-				} else {
+				if (!($error = $GLOBALS['TYPO3_DB']->sql_error())) {
 					$this->cObj->currentRecordTotal = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
-					$GLOBALS['TT']->setTSlogMessage('NUMROWS: ' . $GLOBALS['TYPO3_DB']->sql_num_rows($res));
 					/** @var $cObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
 					$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 					$cObj->setParent($this->cObj->data, $this->cObj->currentRecord);

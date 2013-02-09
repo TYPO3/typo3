@@ -512,13 +512,11 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public function getResultRows($searchWordArray, $freeIndexUid = -1) {
 		// Getting SQL result pointer. This fetches ALL results (1,000,000 if found)
-		$GLOBALS['TT']->push('Searching result');
 		if ($hookObj = &$this->hookRequest('getResultRows_SQLpointer')) {
 			$res = $hookObj->getResultRows_SQLpointer($searchWordArray, $freeIndexUid);
 		} else {
 			$res = $this->getResultRows_SQLpointer($searchWordArray, $freeIndexUid);
 		}
-		$GLOBALS['TT']->pull();
 		// Organize and process result:
 		$result = FALSE;
 		if ($res) {
@@ -623,9 +621,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		// Perform SQL Search / collection of result rows array:
 		if ($list) {
 			// Do the search:
-			$GLOBALS['TT']->push('execFinalQuery');
 			$res = $this->execFinalQuery($list, $freeIndexUid);
-			$GLOBALS['TT']->pull();
 			return $res;
 		} else {
 			return FALSE;
@@ -644,7 +640,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	public function getDisplayResults($sWArr, $resData, $freeIndexUid = -1) {
 		// Perform display of result rows array:
 		if ($resData) {
-			$GLOBALS['TT']->push('Display Final result');
 			// Set first selected row (for calculation of ranking later)
 			$this->firstRow = $resData['firstRow'];
 			// Result display here:
@@ -665,7 +660,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			} else {
 				$content = '<p' . $this->pi_classParam('noresults') . '>' . $this->pi_getLL('noResults', '', 1) . '</p>';
 			}
-			$GLOBALS['TT']->pull();
 		} else {
 			$content .= '<p' . $this->pi_classParam('noresults') . '>' . $this->pi_getLL('noResults', '', 1) . '</p>';
 		}
@@ -786,7 +780,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				// If there are spaces in the search-word, make a full text search instead.
 				$theType = 20;
 			}
-			$GLOBALS['TT']->push('SearchWord "' . $sWord . '" - $theType=' . $theType);
 			// Perform search for word:
 			switch ($theType) {
 			case '1':
@@ -851,7 +844,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 					$totalHashList = $phashList;
 				}
 			}
-			$GLOBALS['TT']->pull();
 			$c++;
 		}
 		return implode(',', $totalHashList);

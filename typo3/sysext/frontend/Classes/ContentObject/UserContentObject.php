@@ -43,7 +43,6 @@ class UserContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 	 */
 	public function render($conf = array()) {
 		if (!is_array($conf) || empty($conf)) {
-			$GLOBALS['TT']->setTSlogMessage('USER_INT without configuration.', 2);
 			return '';
 		}
 		$content = '';

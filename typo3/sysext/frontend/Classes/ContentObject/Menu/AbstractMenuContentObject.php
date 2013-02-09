@@ -372,11 +372,8 @@ class AbstractMenuContentObject {
 			}
 			$this->imgNameNotRandom = $this->mconf['imgNameNotRandom'];
 			$retVal = TRUE;
-		} else {
-			$GLOBALS['TT']->setTSlogMessage('ERROR in menu', 3);
-			$retVal = FALSE;
 		}
-		return $retVal;
+		return FALSE;
 	}
 
 	/**

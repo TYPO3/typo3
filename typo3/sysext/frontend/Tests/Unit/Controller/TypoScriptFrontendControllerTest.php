@@ -84,7 +84,6 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		$tsfe->content = file_get_contents(__DIR__ . '/Fixtures/renderedPage.html');
 		$tsfe->config['INTincScript_ext']['divKey'] = '679b52796e75d474ccbbed486b6837ab';
 		$tsfe->config['INTincScript'] = array('INT_SCRIPT.679b52796e75d474ccbbed486b6837ab' => array());
-		$GLOBALS['TT'] = new \TYPO3\CMS\Core\TimeTracker\NullTimeTracker();
 		return $tsfe;
 	}
 
@@ -149,7 +148,6 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 * @test
 	 */
 	public function isModifyPageIdTestCalled() {
-		$GLOBALS['TT'] = $this->getMock('TYPO3\\CMS\Core\\TimeTracker\\TimeTracker');
 		$this->fixture = $this->getMock(
 			'\\TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
 			array(
