@@ -160,6 +160,12 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 		// This is needed to correctly convert old class names to new ones
 		// This compatibility layer will be removed with 7.0
 		$targetType = \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($targetType);
+		if (is_object($source)) {
+			$targetType = $this->parseCompositeType($targetType);
+			if ($source instanceof $targetType) {
+				return $source;
+			}
+		}
 		$typeConverter = $this->findTypeConverter($source, $targetType, $configuration);
 		if (!is_object($typeConverter) || !$typeConverter instanceof \TYPO3\CMS\Extbase\Property\TypeConverterInterface) {
 			throw new \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException('Type converter for "' . $source . '" -> "' . $targetType . '" not found.');
@@ -206,9 +212,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!is_string($targetType)) {
 			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('The target type was no string, but of type "' . gettype($targetType) . '"', 1297941727);
 		}
-		if (strpos($targetType, '<') !== FALSE) {
-			$targetType = substr($targetType, 0, strpos($targetType, '<'));
-		}
+		$targetType = $this->parseCompositeType($targetType);
 		$converter = NULL;
 		if ($this->typeHandlingService->isSimpleType($targetType)) {
 			if (isset($this->typeConverters[$sourceType][$targetType])) {
@@ -331,6 +335,21 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException('The source is not of type string, array, float, integer or boolean, but of type "' . gettype($source) . '"', 1297773150);
 		}
 	}
+
+	/**
+	 * Parse a composite type like \Foo\Collection<\Bar\Entity> into
+	 * \Foo\Collection
+	 *
+	 * @param string $compositeType
+	 * @return string
+	 */
+	public function parseCompositeType($compositeType) {
+		if (strpos($compositeType, '<') !== FALSE) {
+			$compositeType = substr($compositeType, 0, strpos($compositeType, '<'));
+		}
+		return $compositeType;
+	}
+
 }
 
 ?>
