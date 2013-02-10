@@ -24,13 +24,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for class \TYPO3\CMS\Extbase\Utility\NamingUtilityTest
+ * Testcase for class \TYPO3\CMS\Core\Utility\ClassNamingUtility
  */
 class ClassNamingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * DataProvider for translateModelNameToRepositoryName
 	 * and translateRepositoryNameToModelName
+	 * and translateModelNameToValidatorName
 	 *
 	 * @return array
 	 */
@@ -113,9 +114,10 @@ class ClassNamingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider repositoryAndModelClassNames
 	 * @param string $expectedRepositoryName
 	 * @param string $modelName
+	 * @param string $dummyValidatorName not needed here - just a dummy to be able to cleanly use the same dataprovider
 	 * @test
 	 */
-	public function translateModelNameToRepositoryName($expectedRepositoryName, $modelName) {
+	public function translateModelNameToRepositoryName($expectedRepositoryName, $modelName, $dummyValidatorName) {
 		$translatedRepositoryName = \TYPO3\CMS\Core\Utility\ClassNamingUtility::translateModelNameToRepositoryName($modelName);
 		$this->assertSame($expectedRepositoryName, $translatedRepositoryName);
 	}
@@ -124,9 +126,10 @@ class ClassNamingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider repositoryAndModelClassNames
 	 * @param string $repositoryName
 	 * @param string $expectedModelName
+	 * @param string $dummyValidatorName not needed here - just a dummy to be able to use the same dataprovider
 	 * @test
 	 */
-	public function translateRepositoryNameToModelName($repositoryName, $expectedModelName) {
+	public function translateRepositoryNameToModelName($repositoryName, $expectedModelName, $dummyValidatorName) {
 		$translatedModelName = \TYPO3\CMS\Core\Utility\ClassNamingUtility::translateRepositoryNameToModelName($repositoryName);
 		$this->assertSame($expectedModelName, $translatedModelName);
 	}

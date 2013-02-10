@@ -45,8 +45,8 @@ class ClassNamingUtility {
 	 */
 	static public function translateModelNameToRepositoryName($modelName) {
 		return str_replace(
-			array('\\Domain\\Model', 'Domain_Model'),
-			array('\\Domain\\Repository', 'Domain_Repository'),
+			array('\\Domain\\Model', '_Domain_Model_'),
+			array('\\Domain\\Repository', '_Domain_Repository_'),
 			$modelName
 		) . 'Repository';
 	}
@@ -57,7 +57,6 @@ class ClassNamingUtility {
 	 * or \TYPO3\CMS\Extbase\Domain\Model\Foo to \TYPO3\CMS\Extbase\Domain\Validator\FooValidator
 	 *
 	 * @param string $modelName Name of the model to translate
-	 *
 	 * @return string Name of the repository
 	 */
 	static public function translateModelNameToValidatorName($modelName) {
@@ -78,8 +77,8 @@ class ClassNamingUtility {
 	 */
 	static public function translateRepositoryNameToModelName($repositoryName) {
 		return preg_replace(
-			array('/\\\Domain\\\Repository/', '/Domain_Repository/', '/Repository$/'),
-			array('\\Domain\\Model', 'Domain_Model', ''),
+			array('/\\\\Domain\\\\Repository/', '/_Domain_Repository_/', '/Repository$/'),
+			array('\\Domain\\Model', '_Domain_Model_', ''),
 			$repositoryName
 		);
 	}
@@ -97,14 +96,14 @@ class ClassNamingUtility {
 		$matches = array();
 
 		if (strpos($controllerObjectName, '\\') !== FALSE) {
-			if (substr($controllerObjectName, 0, 9) === 'TYPO3\CMS') {
-				$extensionName = '^(?P<vendorName>[^\\\]+\\\[^\\\]+)\\\(?P<extensionName>[^\\\]+)';
+			if (substr($controllerObjectName, 0, 9) === 'TYPO3\\CMS') {
+				$extensionName = '^(?P<vendorName>[^\\\\]+\\\[^\\\\]+)\\\(?P<extensionName>[^\\\\]+)';
 			} else {
-				$extensionName = '^(?P<vendorName>[^\\\]+)\\\(?P<extensionName>[^\\\]+)';
+				$extensionName = '^(?P<vendorName>[^\\\\]+)\\\\(?P<extensionName>[^\\\\]+)';
 			}
 
 			preg_match(
-				'/' . $extensionName . '\\\(Controller|Command|(?P<subpackageKey>.+)\\\Controller)\\\(?P<controllerName>[a-z\\\]+)Controller$/ix',
+				'/' . $extensionName . '\\\\(Controller|Command|(?P<subpackageKey>.+)\\\\Controller)\\\\(?P<controllerName>[a-z\\\\]+)Controller$/ix',
 				$controllerObjectName,
 				$matches
 			);
