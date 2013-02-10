@@ -3,7 +3,7 @@
 <f:layout name="Default" />
 
 <f:section name="iconButtons">
-	<a href="#" onclick="window.location.href='alt_doc.php?returnUrl='+T3_THIS_LOCATION+'&edit[be_users][0]=new'; return false;"><bu:SpriteManagerIcon iconName="actions-document-new" /></a>
+	<a href="#" onclick="window.location.href='alt_doc.php?returnUrl='+T3_THIS_LOCATION+'&edit[be_users][0]=new'; return false;"><bu:spriteManagerIcon iconName="actions-document-new" /></a>
 </f:section>
 
 <f:section name="content">
@@ -22,7 +22,7 @@
 						><bu:SpriteManagerIcon iconName="actions-selection-delete" /></f:link.action>
 
 						<a href="#" onClick="showClickmenu('be_users', '{compareUser.uid}', '1', '', '', ''); return false;" title="id={compareUser.uid}">
-							<bu:SpriteIconForRecord table="be_users" object="{compareUser}" />
+							<bu:spriteIconForRecord table="be_users" object="{compareUser}" />
 						</a>
 
  						{compareUser.userName}
@@ -99,5 +99,4 @@
 			</table>
 		</f:else>
 	</f:if>
-
 </f:section>

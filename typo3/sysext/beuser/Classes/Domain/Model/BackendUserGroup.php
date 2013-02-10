@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Beuser\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Model for backend user group
  *

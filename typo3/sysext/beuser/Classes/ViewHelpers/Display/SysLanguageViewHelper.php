@@ -33,6 +33,8 @@ namespace TYPO3\CMS\Beuser\ViewHelpers\Display;
 class SysLanguageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
+	 * Render unordered list for sys_language
+	 *
 	 * @param string $uids
 	 * @return string
 	 */
@@ -51,6 +53,7 @@ class SysLanguageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$content .= '<li>' . $row['title'] . ' [' . $row['uid'] . ']</li>';
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return '<ul>' . $content . '</ul>';
 	}
 

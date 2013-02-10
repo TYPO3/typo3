@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Issue command ViewHelper, see TYPO3 Core Engine method issueCommand
  *
