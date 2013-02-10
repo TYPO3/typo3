@@ -91,7 +91,7 @@ class RequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface {
 	public function handleRequest() {
 		$request = $this->requestBuilder->build();
 		/** @var $response \TYPO3\CMS\Extbase\Mvc\Cli\Response */
-		$response = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
+		$response = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
 		$this->dispatcher->dispatch($request, $response);
 		$response->send();
 	}

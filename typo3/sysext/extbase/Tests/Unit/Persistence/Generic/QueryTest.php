@@ -81,7 +81,7 @@ class QueryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function executeReturnsQueryResultInstanceAndInjectsItself() {
 		$queryResult = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult', array(), array(), '', FALSE);
-		$this->objectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Persistence\\QueryResultInterface', $this->query)->will($this->returnValue($queryResult));
+		$this->objectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Persistence\\QueryResultInterface', $this->query)->will($this->returnValue($queryResult));
 		$actualResult = $this->query->execute();
 		$this->assertSame($queryResult, $actualResult);
 	}

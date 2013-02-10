@@ -99,12 +99,12 @@ class QueryFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->dataMap->expects($this->any())->method('getRootLevel')->will($this->returnValue($rootLevel));
 
 		$query = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface');
-		$this->objectManager->expects($this->at(0))->method('create')
+		$this->objectManager->expects($this->at(0))->method('get')
 			->with('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface')
 			->will($this->returnValue($query));
 
 		$querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
-		$this->objectManager->expects($this->at(1))->method('create')
+		$this->objectManager->expects($this->at(1))->method('get')
 			->with('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface')
 			->will($this->returnValue($querySettings));
 		$query->expects($this->once())->method('setQuerySettings')->with($querySettings);

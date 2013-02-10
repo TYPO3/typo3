@@ -74,7 +74,7 @@ abstract class AbstractFileCollectionConverter extends \TYPO3\CMS\Extbase\Proper
 			throw new \TYPO3\CMS\Extbase\Property\Exception('Expected object of type "' . $this->expectedObjectType . '" but got ' . get_class($object), 1342895975);
 		}
 		/** @var $subject \TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection */
-		$subject = $this->objectManager->create($targetType);
+		$subject = $this->objectManager->get($targetType);
 		$subject->setObject($object);
 		return $subject;
 	}

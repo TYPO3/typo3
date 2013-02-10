@@ -177,7 +177,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	 */
 	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
-		$this->arguments = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments');
+		$this->arguments = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments');
 	}
 
 	/**
@@ -246,7 +246,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
-		$this->uriBuilder = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
+		$this->uriBuilder = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
 		$this->uriBuilder->setRequest($request);
 		$this->initializeControllerArgumentsBaseValidators();
 		$this->mapRequestArgumentsToControllerArguments();
@@ -260,7 +260,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	 * @api
 	 */
 	protected function buildControllerContext() {
-		$controllerContext = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext');
+		$controllerContext = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext');
 		$controllerContext->setRequest($this->request);
 		$controllerContext->setResponse($this->response);
 		if ($this->arguments !== NULL) {
@@ -438,7 +438,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 				}
 			}
 			/** @var $validator ArgumentsValidator */
-			$validator = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ArgumentsValidator');
+			$validator = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ArgumentsValidator');
 			$this->deprecatedPropertyMapper->mapAndValidate($allPropertyNames, $this->request->getArguments(), $this->arguments, $optionalPropertyNames, $validator);
 			$this->argumentsMappingResults = $this->deprecatedPropertyMapper->getMappingResults();
 		}

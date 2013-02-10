@@ -392,7 +392,7 @@ class Argument {
 	 */
 	public function setNewValidatorConjunction(array $objectNames) {
 		if ($this->validator === NULL) {
-			$this->validator = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator');
+			$this->validator = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator');
 		}
 		foreach ($objectNames as $objectName) {
 			if (!class_exists($objectName)) {
@@ -504,7 +504,7 @@ class Argument {
 	 * @return object Either the object matching the uid or, if none or more than one object was found, NULL
 	 */
 	protected function findObjectByUid($uid) {
-		$query = $this->queryFactory->create($this->dataType);
+		$query = $this->queryFactory->get($this->dataType);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		return $query->matching($query->equals('uid', $uid))->execute()->getFirst();

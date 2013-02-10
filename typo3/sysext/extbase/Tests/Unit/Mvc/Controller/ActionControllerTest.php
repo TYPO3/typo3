@@ -62,7 +62,7 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockUriBuilder = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
 		$mockUriBuilder->expects($this->once())->method('setRequest')->with($mockRequest);
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-		$mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder')->will($this->returnValue($mockUriBuilder));
+		$mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder')->will($this->returnValue($mockUriBuilder));
 		$mockResponse = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Response', array(), array(), '', FALSE);
 		$configurationService = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\MvcPropertyMappingConfigurationService');
 		/** @var \TYPO3\CMS\Extbase\Mvc\Controller\ActionController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
@@ -210,7 +210,7 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockFluidTemplateView->expects($this->once())->method('setControllerContext')->with($mockControllerContext);
 		$mockFluidTemplateView->expects($this->once())->method('canRender')->with($mockControllerContext)->will($this->returnValue(TRUE));
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface', array(), array(), '', FALSE);
-		$mockObjectManager->expects($this->at(0))->method('create')->with('TYPO3\\CMS\\Fluid\\View\\TemplateView')->will($this->returnValue($mockFluidTemplateView));
+		$mockObjectManager->expects($this->at(0))->method('get')->with('TYPO3\\CMS\\Fluid\\View\\TemplateView')->will($this->returnValue($mockFluidTemplateView));
 		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('buildControllerContext', 'resolveViewObjectName', 'setViewConfiguration'), array(), '', FALSE);
 		$mockController->expects($this->once())->method('resolveViewObjectName')->will($this->returnValue(FALSE));
 		$mockController->_set('session', $mockSession);

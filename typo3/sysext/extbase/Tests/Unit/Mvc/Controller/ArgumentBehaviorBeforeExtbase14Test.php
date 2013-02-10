@@ -133,7 +133,7 @@ class ArgumentBehaviorBeforeExtbase14Test extends \TYPO3\CMS\Extbase\Tests\Unit\
 		$argument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('dummy', 'Text');
 		$mockConjunctionValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator');
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-		$mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator')->will($this->returnValue($mockConjunctionValidator));
+		$mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator')->will($this->returnValue($mockConjunctionValidator));
 		$argument->injectObjectManager($mockObjectManager);
 		$argument->setNewValidatorConjunction(array());
 		$this->assertSame($mockConjunctionValidator, $argument->getValidator());

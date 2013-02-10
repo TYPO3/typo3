@@ -74,7 +74,7 @@ abstract class AbstractFileFolderConverter extends \TYPO3\CMS\Extbase\Property\T
 			throw new \TYPO3\CMS\Extbase\Property\Exception('Expected object of type "' . $this->expectedObjectType . '" but got ' . get_class($object), 1342895975);
 		}
 		/** @var $subject \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder */
-		$subject = $this->objectManager->create($targetType);
+		$subject = $this->objectManager->get($targetType);
 		$subject->setOriginalResource($object);
 		return $subject;
 	}

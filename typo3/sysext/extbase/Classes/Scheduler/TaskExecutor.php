@@ -90,8 +90,8 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Initializes Request, Response and Dispatcher
 	 */
 	public function initializeObject() {
-		$this->request = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Request');
-		$this->response = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
+		$this->request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Request');
+		$this->response = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
 		$this->dispatcher = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Dispatcher');
 	}
 

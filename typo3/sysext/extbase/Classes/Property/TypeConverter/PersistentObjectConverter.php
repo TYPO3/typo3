@@ -250,7 +250,7 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 				throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Missing constructor argument "' . $constructorArgumentName . '" for object of type "' . $objectType . '".', 1268734872);
 			}
 		}
-		return call_user_func_array(array($this->objectManager, 'create'), array_merge(array($objectType), $constructorArguments));
+		return call_user_func_array(array($this->objectManager, 'get'), array_merge(array($objectType), $constructorArguments));
 	}
 }
 

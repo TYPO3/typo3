@@ -424,7 +424,7 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!class_exists($className)) {
 			throw new \TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException('The classname "' . $className . '" was not found and thus can not be reflected.', 1278450972);
 		}
-		$classSchema = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Reflection\\ClassSchema', $className);
+		$classSchema = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ClassSchema', $className);
 		if (is_subclass_of($className, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity')) {
 			$classSchema->setModelType(\TYPO3\CMS\Extbase\Reflection\ClassSchema::MODELTYPE_ENTITY);
 			if (strpos($className, '\\') !== FALSE) {

@@ -79,7 +79,7 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 */
 	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
-		$this->arguments = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments');
+		$this->arguments = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments');
 	}
 
 	/**

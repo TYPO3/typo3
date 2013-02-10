@@ -280,7 +280,7 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 				$propertyValue = NULL;
 			} else {
 				try {
-					$propertyValue = $this->objectManager->create($targetType, $propertyValue);
+					$propertyValue = $this->objectManager->get($targetType, $propertyValue);
 				} catch (\Exception $e) {
 					$propertyValue = NULL;
 				}
@@ -309,7 +309,7 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 						}
 					}
 				} else {
-					$newObject = $this->objectManager->create($targetType);
+					$newObject = $this->objectManager->get($targetType);
 					if ($this->map(array_keys($propertyValue), $propertyValue, $newObject)) {
 						$propertyValue = $newObject;
 					} else {

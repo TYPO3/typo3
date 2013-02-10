@@ -159,7 +159,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 		/** @var $dataMap \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap */
-		$dataMap = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap', $className, $tableName, $recordType, $subclasses);
+		$dataMap = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap', $className, $tableName, $recordType, $subclasses);
 		$dataMap = $this->addMetaDataColumnNames($dataMap, $tableName);
 		// $classPropertyNames = $this->reflectionService->getClassPropertyNames($className);
 		$tcaColumnsDefinition = $this->getColumnsDefinition($tableName);

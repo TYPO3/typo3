@@ -291,7 +291,7 @@ class MvcPropertyMappingConfigurationServiceTest extends \TYPO3\CMS\Extbase\Test
 
 		$mockArgument->injectPropertyMappingConfiguration($propertyMappingConfiguration);
 		$mockArgument->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-		$mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument')->will($this->returnValue($mockArgument));
+		$mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument')->will($this->returnValue($mockArgument));
 
 		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 		$arguments->injectObjectManager($mockObjectManager);

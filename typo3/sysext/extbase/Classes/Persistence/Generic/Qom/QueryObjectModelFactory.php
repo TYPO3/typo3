@@ -57,7 +57,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($selectorName === '') {
 			$selectorName = $nodeTypeName;
 		}
-		return $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Selector', $selectorName, $nodeTypeName);
+		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Selector', $selectorName, $nodeTypeName);
 	}
 
 	/**
@@ -69,7 +69,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement
 	 */
 	public function statement($statement, array $boundVariables = array(), $language = \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement::TYPO3_SQL_MYSQL) {
-		return $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Statement', $statement, $boundVariables, $language);
+		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Statement', $statement, $boundVariables, $language);
 	}
 
 	/**
@@ -82,7 +82,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface the join; non-null
 	 */
 	public function join(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $left, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $right, $joinType, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinConditionInterface $joinCondition) {
-		return $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Join', $left, $right, $joinType, $joinCondition);
+		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Join', $left, $right, $joinType, $joinCondition);
 	}
 
 	/**
@@ -96,7 +96,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */
 	public function equiJoinCondition($selector1Name, $property1Name, $selector2Name, $property2Name) {
-		return $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\EquiJoinCondition', $selector1Name, $property1Name, $selector2Name, $property2Name);
+		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\EquiJoinCondition', $selector1Name, $property1Name, $selector2Name, $property2Name);
 	}
 
 	/**
@@ -108,7 +108,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */
 	public function _and(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint1, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint2) {
-		return $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\LogicalAnd', $constraint1, $constraint2);
+		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\LogicalAnd', $constraint1, $constraint2);
 	}
 
 	/**
@@ -120,7 +120,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */
 	public function _or(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint1, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint2) {
-		return $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\LogicalOr', $constraint1, $constraint2);
+		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\LogicalOr', $constraint1, $constraint2);
 	}
 
 	/**
@@ -131,7 +131,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */
 	public function not(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint) {
-		return $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\LogicalNot', $constraint);
+		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\LogicalNot', $constraint);
 	}
 
 	/**
@@ -144,7 +144,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */
 	public function comparison(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand1, $operator, $operand2) {
-		return $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Comparison', $operand1, $operator, $operand2);
+		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Comparison', $operand1, $operator, $operand2);
 	}
 
 	/**
@@ -156,7 +156,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */
 	public function propertyValue($propertyName, $selectorName = '') {
-		return $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\PropertyValue', $propertyName, $selectorName);
+		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\PropertyValue', $propertyName, $selectorName);
 	}
 
 	/**
@@ -167,7 +167,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */
 	public function lowerCase(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand) {
-		return $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\LowerCase', $operand);
+		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\LowerCase', $operand);
 	}
 
 	/**
@@ -178,7 +178,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */
 	public function upperCase(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand) {
-		return $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\UpperCase', $operand);
+		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\UpperCase', $operand);
 	}
 
 	/**
@@ -191,7 +191,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */
 	public function ascending(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand) {
-		return $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Ordering', $operand, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING);
+		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Ordering', $operand, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING);
 	}
 
 	/**
@@ -204,7 +204,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */
 	public function descending(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand) {
-		return $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Ordering', $operand, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING);
+		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Ordering', $operand, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING);
 	}
 
 	/**
@@ -215,7 +215,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */
 	public function bindVariable($bindVariableName) {
-		return $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\BindVariableValue', $bindVariableName);
+		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\BindVariableValue', $bindVariableName);
 	}
 }
 

@@ -268,7 +268,7 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$convertedChildProperties = array(
 			'property1' => 'bar'
 		);
-		$this->mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSetters')->will($this->returnValue($object));
+		$this->mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSetters')->will($this->returnValue($object));
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSetters', '__construct')->will($this->returnValue(array()));
 		$configuration = $this->buildConfiguration(array(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
 		$result = $this->converter->convertFrom($source, 'TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSetters', $convertedChildProperties, $configuration);
@@ -283,7 +283,7 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$source = array('propertyX' => 'bar');
 		$model = new $className();
 		$convertedChildProperties = array('property1' => 'bar');
-		$this->mockObjectManager->expects($this->once())->method('create')->with($className)->will($this->returnValue($model));
+		$this->mockObjectManager->expects($this->once())->method('get')->with($className)->will($this->returnValue($model));
 		$configuration = $this->buildConfiguration(array(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
 		$reflectionException = new \ReflectionException('Method ' . $className . '::__construct() does not exist');
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with($className, '__construct')->will($this->throwException($reflectionException));
@@ -304,7 +304,7 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$convertedChildProperties = array(
 			'propertyNotExisting' => 'bar'
 		);
-		$this->mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSetters')->will($this->returnValue($object));
+		$this->mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSetters')->will($this->returnValue($object));
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSetters', '__construct')->will($this->returnValue(array()));
 		$configuration = $this->buildConfiguration(array(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
 		$result = $this->converter->convertFrom($source, 'TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSetters', $convertedChildProperties, $configuration);
@@ -324,7 +324,7 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 			'property1' => 'param1',
 			'property2' => 'bar'
 		);
-		$this->mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSettersAndConstructor', 'param1')->will($this->returnValue($object));
+		$this->mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSettersAndConstructor', 'param1')->will($this->returnValue($object));
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSettersAndConstructor', '__construct')->will($this->returnValue(array(
 			'property1' => array('optional' => FALSE)
 		)));
@@ -343,7 +343,7 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 			'propertyX' => 'bar'
 		);
 		$object = new \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor('param1');
-		$this->mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSettersAndConstructor', 'thisIsTheDefaultValue')->will($this->returnValue($object));
+		$this->mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSettersAndConstructor', 'thisIsTheDefaultValue')->will($this->returnValue($object));
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSettersAndConstructor', '__construct')->will($this->returnValue(array(
 			'property1' => array('optional' => TRUE, 'defaultValue' => 'thisIsTheDefaultValue')
 		)));

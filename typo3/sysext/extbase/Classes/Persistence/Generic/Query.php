@@ -244,7 +244,7 @@ class Query implements \TYPO3\CMS\Extbase\Persistence\QueryInterface {
 		if ($this->getQuerySettings()->getReturnRawQueryResult() === TRUE) {
 			return $this->persistenceManager->getObjectDataByQuery($this);
 		} else {
-			return $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\QueryResultInterface', $this);
+			return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\QueryResultInterface', $this);
 		}
 	}
 

@@ -158,7 +158,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
-		$this->uriBuilder = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
+		$this->uriBuilder = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
 		$this->uriBuilder->setRequest($request);
 		$this->actionMethodName = $this->resolveActionMethodName();
 		$this->initializeActionMethodArguments();
@@ -334,7 +334,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 		$viewObjectName = $this->resolveViewObjectName();
 		if ($viewObjectName !== FALSE) {
 			/** @var $view \TYPO3\CMS\Extbase\Mvc\View\ViewInterface */
-			$view = $this->objectManager->create($viewObjectName);
+			$view = $this->objectManager->get($viewObjectName);
 			$this->setViewConfiguration($view);
 			if ($view->canRender($this->controllerContext) === FALSE) {
 				unset($view);
@@ -342,14 +342,14 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 		}
 		if (!isset($view) && $this->defaultViewObjectName != '') {
 			/** @var $view \TYPO3\CMS\Extbase\Mvc\View\ViewInterface */
-			$view = $this->objectManager->create($this->defaultViewObjectName);
+			$view = $this->objectManager->get($this->defaultViewObjectName);
 			$this->setViewConfiguration($view);
 			if ($view->canRender($this->controllerContext) === FALSE) {
 				unset($view);
 			}
 		}
 		if (!isset($view)) {
-			$view = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\View\\NotFoundView');
+			$view = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\View\\NotFoundView');
 			$view->assign('errorMessage', 'No template was found. View could not be resolved for action "' . $this->request->getControllerActionName() . '"');
 		}
 		$view->setControllerContext($this->controllerContext);

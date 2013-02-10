@@ -91,7 +91,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected function injectDependencies() {
 		$this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
 		$this->requestBuilder->injectConfigurationManager($this->mockConfigurationManager);
-		$this->mockObjectManager->expects($this->any())->method('create')->with('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request')->will($this->returnValue($this->mockRequest));
+		$this->mockObjectManager->expects($this->any())->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request')->will($this->returnValue($this->mockRequest));
 		$this->requestBuilder->injectObjectManager($this->mockObjectManager);
 		$pluginNamespace = 'tx_' . strtolower(($this->configuration['extensionName'] . '_' . $this->configuration['pluginName']));
 		$this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue($pluginNamespace));
