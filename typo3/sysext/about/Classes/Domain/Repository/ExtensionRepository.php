@@ -56,7 +56,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 				$emconfPath = PATH_site . $extension['siteRelPath'] . 'ext_emconf.php';
 				if (file_exists($emconfPath)) {
 					include $emconfPath;
-					$extension = $this->objectManager->create('TYPO3\\CMS\\About\\Domain\\Model\\Extension');
+					$extension = $this->objectManager->get('TYPO3\\CMS\\About\\Domain\\Model\\Extension');
 					$extension->setKey($extensionKey);
 					$extension->setTitle($EM_CONF['']['title']);
 					$extension->setAuthor($EM_CONF['']['author']);
