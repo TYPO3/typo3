@@ -82,7 +82,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$repositoryRepository = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository');
 		$this->extensionRepository = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository');
-		$repository = $repositoryRepository->findByUid(1);
+		$repository = $repositoryRepository->findByIdentifier(1);
 		if (is_object($repository)) {
 			$this->setRepository($repository);
 		}

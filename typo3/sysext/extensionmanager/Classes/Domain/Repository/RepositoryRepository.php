@@ -39,7 +39,7 @@ class RepositoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		/** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface */
 		$defaultQuerySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
 		$defaultQuerySettings->setRespectStoragePage(FALSE);
-		$this->setDefaultQuerySettings($defaultQuerySettings);
+		$this->persistenceManager->setDefaultQuerySettings($defaultQuerySettings);
 	}
 
 	/**
