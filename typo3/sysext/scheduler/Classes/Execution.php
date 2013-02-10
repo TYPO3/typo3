@@ -207,6 +207,7 @@ class Execution {
 	 * This method gets or calculates the next execution date
 	 *
 	 * @return integer Timestamp of the next execution
+	 * @throws \OutOfBoundsException
 	 */
 	public function getNextExecution() {
 		if ($this->getIsNewSingleExecution()) {

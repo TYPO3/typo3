@@ -401,10 +401,15 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		$tasks = $this->fetchTasksWithCondition('');
 		$nextExecution = FALSE;
 		foreach ($tasks as $task) {
-			/** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask */
-			$tempNextExecution = $task->getNextDueExecution();
-			if ($nextExecution === FALSE || $tempNextExecution < $nextExecution) {
-				$nextExecution = $tempNextExecution;
+			try {
+				/** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask */
+				$tempNextExecution = $task->getNextDueExecution();
+				if ($nextExecution === FALSE || $tempNextExecution < $nextExecution) {
+					$nextExecution = $tempNextExecution;
+				}
+			} catch (\OutOfBoundsException $e) {
+				// The event will not be executed again or has already ended - we don't have to consider it for
+				// scheduling the next "at" run
 			}
 		}
 		if ($nextExecution !== FALSE) {
