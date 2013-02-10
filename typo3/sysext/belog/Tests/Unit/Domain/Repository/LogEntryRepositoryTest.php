@@ -36,9 +36,7 @@ class LogEntryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	protected $querySettings = NULL;
 
 	public function setUp() {
-		$this->querySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
-		$this->objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-		$this->objectManager->expects($this->any())->method('get')->with('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface')->will($this->returnValue($this->querySettings));
+		$this->fixture = new \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository($this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface'));
 	}
 
 	public function tearDown() {
@@ -49,9 +47,13 @@ class LogEntryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	 * @test
 	 */
 	public function initializeObjectSetsRespectStoragePidToFalse() {
-		$this->querySettings->expects($this->atLeastOnce())->method('setRespectStoragePage')->with(FALSE);
-		$fixture = $this->getMock('TYPO3\\CMS\\Belog\\Domain\\Repository\\LogEntryRepository', array('setDefaultQuerySettings'), array($this->objectManager));
-		$fixture->expects($this->once())->method('setDefaultQuerySettings')->with($this->querySettings);
+		/** @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManagerInterface */
+		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$fixture = new \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository($objectManager);
+		$fixture->injectPersistenceManager(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager'));
+		$querySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
+		$querySettings->expects($this->once())->method('setRespectStoragePage')->with(FALSE);
+		$objectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface')->will($this->returnValue($querySettings));
 		$fixture->initializeObject();
 	}
 
