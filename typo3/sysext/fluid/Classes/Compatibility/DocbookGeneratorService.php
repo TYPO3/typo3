@@ -70,7 +70,7 @@ class DocbookGeneratorService extends \TYPO3\CMS\Fluid\Service\DocbookGenerator 
 
 	protected function instanciateViewHelper($className) {
 		$objectFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		return $objectFactory->create($className);
+		return $objectFactory->get($className);
 	}
 }
 

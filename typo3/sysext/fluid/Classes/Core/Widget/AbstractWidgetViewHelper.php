@@ -77,7 +77,7 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 	 */
 	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
-		$this->widgetContext = $this->objectManager->create('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetContext');
+		$this->widgetContext = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetContext');
 	}
 
 	/**
@@ -129,7 +129,7 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 	 * @return void
 	 */
 	public function setChildNodes(array $childNodes) {
-		$rootNode = $this->objectManager->create('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\RootNode');
+		$rootNode = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\RootNode');
 		foreach ($childNodes as $childNode) {
 			$rootNode->addChildNode($childNode);
 		}
@@ -160,10 +160,10 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 			}
 			throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\MissingControllerException('initiateSubRequest() can not be called if there is no controller inside $this->controller. Make sure to add a corresponding injectController method to your WidgetViewHelper class "' . get_class($this) . '".', 1284401632);
 		}
-		$subRequest = $this->objectManager->create('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest');
+		$subRequest = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest');
 		$subRequest->setWidgetContext($this->widgetContext);
 		$this->passArgumentsToSubRequest($subRequest);
-		$subResponse = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Response');
+		$subResponse = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Response');
 		$this->controller->processRequest($subRequest, $subResponse);
 		return $subResponse;
 	}

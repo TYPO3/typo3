@@ -44,7 +44,7 @@ class WidgetRequestBuilder extends \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder {
 	 * @return \TYPO3\CMS\Fluid\Core\Widget\WidgetRequest The widget request as an object
 	 */
 	public function build() {
-		$request = $this->objectManager->create('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest');
+		$request = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest');
 		$request->setRequestURI(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseURI(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
 		$request->setMethod(isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : NULL);

@@ -219,7 +219,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 			// in case we render a layout right now, we will render a section inside a TEMPLATE.
 			$renderingTypeOnNextLevel = self::RENDERING_TEMPLATE;
 		} else {
-			$variableContainer = $this->objectManager->create('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer', $variables);
+			$variableContainer = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer', $variables);
 			$renderingContext = clone $renderingContext;
 			$renderingContext->injectTemplateVariableContainer($variableContainer);
 			$renderingTypeOnNextLevel = $this->getCurrentRenderingType();
@@ -274,7 +274,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 				$this->templateCompiler->store($partialIdentifier, $parsedPartial);
 			}
 		}
-		$variableContainer = $this->objectManager->create('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer', $variables);
+		$variableContainer = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer', $variables);
 		$renderingContext = clone $this->getCurrentRenderingContext();
 		$renderingContext->injectTemplateVariableContainer($variableContainer);
 		$this->startRendering(self::RENDERING_PARTIAL, $parsedPartial, $renderingContext);
@@ -353,7 +353,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 	 * @return \TYPO3\CMS\Fluid\Core\Parser\Configuration
 	 */
 	protected function buildParserConfiguration() {
-		$parserConfiguration = $this->objectManager->create('TYPO3\\CMS\\Fluid\\Core\\Parser\\Configuration');
+		$parserConfiguration = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\Configuration');
 		if ($this->controllerContext->getRequest()->getFormat() === 'html') {
 			$parserConfiguration->addInterceptor($this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\Interceptor\\Escape'));
 		}

@@ -97,7 +97,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 	public function __construct() {
 		$this->injectTemplateParser(\TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder::build());
 		$this->injectObjectManager(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager'));
-		$this->setRenderingContext($this->objectManager->create('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContextInterface'));
+		$this->setRenderingContext($this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContextInterface'));
 	}
 
 	public function initializeView() {

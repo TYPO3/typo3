@@ -72,7 +72,7 @@ class WidgetRequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		$this->widgetRequestBuilder = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequestBuilder', array('setArgumentsFromRawRequestData'));
 		$this->mockWidgetRequest = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest');
 		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-		$this->mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest')->will($this->returnValue($this->mockWidgetRequest));
+		$this->mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest')->will($this->returnValue($this->mockWidgetRequest));
 		$this->widgetRequestBuilder->_set('objectManager', $this->mockObjectManager);
 		$this->mockWidgetContext = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetContext');
 		$this->mockAjaxWidgetContextHolder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Widget\\AjaxWidgetContextHolder');
