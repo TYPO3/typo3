@@ -154,6 +154,15 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 		$this->assertEquals('k1a', $this->propertyMappingConfiguration->getTargetPropertyName('k1'));
 		$this->assertEquals('k2', $this->propertyMappingConfiguration->getTargetPropertyName('k2'));
 	}
+
+	/**
+	 * @test
+	 */
+	public function shouldMapAllowsArbitraryPropertiesWhenConfiguredWithAsterisk() {
+		$this->propertyMappingConfiguration->forProperty('items.*')->setTypeConverterOptions('someConverter', array('k1' => 'v1'));
+		$configuration = $this->propertyMappingConfiguration->forProperty('items');
+		$this->assertTrue($configuration->shouldMap(uniqid()));
+	}
 }
 
 ?>

@@ -29,6 +29,11 @@ namespace TYPO3\CMS\Extbase\Property;
 class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface {
 
 	/**
+	 * Placeholder in property paths for multi-valued types
+	 */
+	const PROPERTY_PATH_PLACEHOLDER = '*';
+
+	/**
 	 * multi-dimensional array which stores type-converter specific configuration:
 	 * 1. Dimension: Fully qualified class name of the type converter
 	 * 2. Dimension: Configuration Key
@@ -99,14 +104,13 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	/**
 	 * The behavior is as follows:
 	 *
-	 * - if a property has been explicitely forbidden using allowAllPropertiesExcept(...), it is directly rejected
+	 * - if a property has been explicitly forbidden using allowAllPropertiesExcept(...), it is directly rejected
 	 * - if a property has been allowed using allowProperties(...), it is directly allowed.
 	 * - if allowAllProperties* has been called, we allow unknown properties
 	 * - else, return FALSE.
 	 *
 	 * @param string $propertyName
 	 * @return boolean TRUE if the given propertyName should be mapped, FALSE otherwise.
-	 * @todo : extend to enable whitelisting / blacklisting of properties.
 	 * @api
 	 */
 	public function shouldMap($propertyName) {
@@ -114,6 +118,9 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 			return FALSE;
 		}
 		if (isset($this->propertiesToBeMapped[$propertyName])) {
+			return TRUE;
+		}
+		if (isset($this->subConfigurationForProperty[self::PROPERTY_PATH_PLACEHOLDER])) {
 			return TRUE;
 		}
 		return $this->mapUnknownProperties;
