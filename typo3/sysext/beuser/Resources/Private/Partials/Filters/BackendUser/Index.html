@@ -1,6 +1,6 @@
 {namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
 
-<bu:Section title="Filter" collapsible="TRUE">
+<bu:section title="Filter" collapsible="TRUE">
 	<f:form action="index" objectName="demand" object="{demand}">
 		<div>
 			<label for="tx_Beuser_username"><f:translate key="userName">Username</f:translate></label>
@@ -44,4 +44,4 @@
 		</div>
 		<f:form.submit class="indent" value="{f:translate(key: 'filter')}" />
 	</f:form>
-</bu:Section>
+</bu:section>

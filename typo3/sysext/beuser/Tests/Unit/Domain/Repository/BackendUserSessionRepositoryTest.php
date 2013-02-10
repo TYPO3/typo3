@@ -23,8 +23,9 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Repository;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the Tx_Beuser_Domain_Repository_BackendUserSessionRepository class.
+ * Testcase for the \TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository class.
  *
  * @author Felix Kopp <felix-source@phorax.com>
  */
@@ -53,6 +54,5 @@ class BackendUserSessionRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 	}
 
 }
-
 
 ?>

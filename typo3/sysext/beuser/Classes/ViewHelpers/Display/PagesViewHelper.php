@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Beuser\ViewHelpers\Display;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Converts comma separated list of pages uids to html unordered list (<ul>) with speaking titles
  *
@@ -33,6 +34,8 @@ namespace TYPO3\CMS\Beuser\ViewHelpers\Display;
 class PagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
+	 * Render unordered list for pages
+	 *
 	 * @param string $uids
 	 * @return string
 	 */
@@ -51,6 +54,7 @@ class PagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$content .= '<li>' . $row['title'] . ' [' . $row['uid'] . ']</li>';
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return '<ul>' . $content . '</ul>';
 	}
 
