@@ -744,9 +744,16 @@ class Clipboard {
 						$this->changed = 1;
 					}
 				} else {
-					if (!$v || \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($v) === NULL) {
+					if (!$v) {
 						unset($this->clipData[$this->current]['el'][$k]);
 						$this->changed = 1;
+					} else {
+						try {
+							\TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($v);
+						} catch (\RuntimeException $e) {
+							// The file has been deleted in the meantime, so just remove it silently
+							unset($this->clipData[$this->current]['el'][$k]);
+						}
 					}
 				}
 			}
