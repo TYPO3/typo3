@@ -45,7 +45,7 @@ class UpdateScriptController extends \TYPO3\CMS\Extensionmanager\Controller\Abst
 		\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Request for update script', 'extensionmanager', 0, $extensionKey);
 
 		/** @var $updateScriptUtility \TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility */
-		$updateScriptUtility = $this->objectManager->create('TYPO3\\CMS\\Extensionmanager\\Utility\\UpdateScriptUtility');
+		$updateScriptUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\UpdateScriptUtility');
 		$updateScriptResult = $updateScriptUtility->executeUpdateIfNeeded($extensionKey);
 		$this->view
 			->assign('updateScriptResult', $updateScriptResult)

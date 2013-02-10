@@ -127,7 +127,7 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 		if ($constraint === NULL) {
 			$constraint = $this->getConstraintFromBeUserData();
 			if ($constraint === NULL) {
-				$constraint = $this->objectManager->create('TYPO3\\CMS\\Belog\\Domain\\Model\\Constraint');
+				$constraint = $this->objectManager->get('TYPO3\\CMS\\Belog\\Domain\\Model\\Constraint');
 			}
 		} else {
 			$this->persistConstraintInBeUserData($constraint);

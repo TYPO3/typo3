@@ -106,7 +106,7 @@ class LanguageRepository {
 					$label = htmlspecialchars($language);
 				}
 
-				$this->languages[$locale] = $this->objectManager->create(
+				$this->languages[$locale] = $this->objectManager->get(
 					'TYPO3\CMS\Lang\Domain\Model\Language',
 					$locale,
 					$label,

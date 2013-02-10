@@ -88,7 +88,7 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		$actionName = $this->request->getControllerActionName();
 		if (in_array($actionName, $this->jsonActions)) {
 			$viewObjectName = 'TYPO3\\CMS\\Lang\\View\\Language\\' . ucfirst($actionName) . 'Json';
-			$this->view = $this->objectManager->create($viewObjectName);
+			$this->view = $this->objectManager->get($viewObjectName);
 			$this->view->setControllerContext($this->controllerContext);
 			$this->view->initializeView();
 		}
@@ -105,7 +105,7 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 */
 	public function indexAction(\TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm $languageSelectionForm = NULL, $extensions = NULL) {
 		if ($languageSelectionForm === NULL) {
-			$languageSelectionForm = $this->objectManager->create('TYPO3\\CMS\\Lang\\Domain\\Model\\LanguageSelectionForm');
+			$languageSelectionForm = $this->objectManager->get('TYPO3\\CMS\\Lang\\Domain\\Model\\LanguageSelectionForm');
 			$languageSelectionForm->setLanguages($this->languageRepository->findAll());
 			$languageSelectionForm->setSelectedLanguages($this->languageRepository->findSelected());
 		}

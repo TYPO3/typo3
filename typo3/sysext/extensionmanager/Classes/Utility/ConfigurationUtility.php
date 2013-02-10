@@ -127,7 +127,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		if (strlen($rawConfigurationString) > 0) {
 			$extensionPathInformation = $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey];
 
-			$tsStyleConfig = $this->objectManager->create('TYPO3\\CMS\\Core\\TypoScript\\ConfigurationForm');
+			$tsStyleConfig = $this->objectManager->get('TYPO3\\CMS\\Core\\TypoScript\\ConfigurationForm');
 			$tsStyleConfig->doNotSortCategoriesBeforeMakingForm = TRUE;
 
 			$theConstants = $tsStyleConfig->ext_initTSstyleConfig(
