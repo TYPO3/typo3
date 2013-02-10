@@ -64,6 +64,50 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 */
+	public function settingOneToOneRelationSetsRelationTableMatchFields() {
+		$mockColumnMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\ColumnMap', array(), array(), '', FALSE);
+		$matchFields = array(
+				'fieldname' => 'foo_model'
+			);
+		$columnConfiguration = array(
+			'type' => 'select',
+			'foreign_table' => 'tx_myextension_bar',
+			'foreign_field' => 'parentid',
+			'foreign_match_fields' => $matchFields
+		);
+
+		$mockColumnMap->expects($this->once())
+			->method('setRelationTableMatchFields')
+			->with($matchFields);
+		$mockDataMapFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory', array('dummy'), array(), '', FALSE);
+		$mockDataMapFactory->_call('setOneToOneRelation', $mockColumnMap, $columnConfiguration);
+	}
+
+	/**
+	 * @test
+	 */
+	public function settingOneToManyRelationSetsRelationTableMatchFields() {
+		$mockColumnMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\ColumnMap', array(), array(), '', FALSE);
+		$matchFields = array(
+				'fieldname' => 'foo_model'
+			);
+		$columnConfiguration = array(
+			'type' => 'select',
+			'foreign_table' => 'tx_myextension_bar',
+			'foreign_field' => 'parentid',
+			'foreign_match_fields' => $matchFields
+		);
+
+		$mockColumnMap->expects($this->once())
+			->method('setRelationTableMatchFields')
+			->with($matchFields);
+		$mockDataMapFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory', array('dummy'), array(), '', FALSE);
+		$mockDataMapFactory->_call('setOneToManyRelation', $mockColumnMap, $columnConfiguration);
+	}
+
+	/**
+	 * @test
+	 */
 	public function setRelationsDetectsOneToOneRelationWithIntermediateTable() {
 		$mockColumnMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\ColumnMap', array(), array(), '', FALSE);
 		$columnConfiguration = array(

@@ -348,6 +348,9 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		$columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby']);
 		$columnMap->setParentKeyFieldName($columnConfiguration['foreign_field']);
 		$columnMap->setParentTableFieldName($columnConfiguration['foreign_table_field']);
+		if (is_array($columnConfiguration['foreign_match_fields'])) {
+			$columnMap->setRelationTableMatchFields($columnConfiguration['foreign_match_fields']);
+		}
 		return $columnMap;
 	}
 
@@ -366,6 +369,9 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		$columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby']);
 		$columnMap->setParentKeyFieldName($columnConfiguration['foreign_field']);
 		$columnMap->setParentTableFieldName($columnConfiguration['foreign_table_field']);
+		if (is_array($columnConfiguration['foreign_match_fields'])) {
+			$columnMap->setRelationTableMatchFields($columnConfiguration['foreign_match_fields']);
+		}
 		return $columnMap;
 	}
 
