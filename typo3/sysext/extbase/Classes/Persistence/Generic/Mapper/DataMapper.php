@@ -382,7 +382,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function getPreparedQuery(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		$type = $this->getType(get_class($parentObject), $propertyName);
-		$query = $this->queryFactory->get($type);
+		$query = $this->queryFactory->create($type);
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 		if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {

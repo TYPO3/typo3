@@ -504,7 +504,7 @@ class Argument {
 	 * @return object Either the object matching the uid or, if none or more than one object was found, NULL
 	 */
 	protected function findObjectByUid($uid) {
-		$query = $this->queryFactory->get($this->dataType);
+		$query = $this->queryFactory->create($this->dataType);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		return $query->matching($query->equals('uid', $uid))->execute()->getFirst();
