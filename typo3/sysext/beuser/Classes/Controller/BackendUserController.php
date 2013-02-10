@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Beuser\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Backend module user administration controller
  *
@@ -66,8 +67,8 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 	 *
 	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
 	 * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
 	 * @return void
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
 	 */
 	public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
 		$this->moduleData = $this->moduleDataStorageService->loadModuleData();
@@ -84,8 +85,8 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 	/**
 	 * Initialize actions
 	 *
-	 * @throws \RuntimeException
 	 * @return void
+	 * @throws \RuntimeException
 	 */
 	public function initializeAction() {
 		// @TODO: Extbase backend modules relies on frontend TypoScript for view, persistence
@@ -193,7 +194,10 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 	 * @return void
 	 */
 	protected function terminateBackendUserSessionAction(\TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser, $sessionId) {
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('be_sessions', 'ses_userid = "' . intval($backendUser->getUid()) . '" AND ses_id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($sessionId, 'be_sessions') . ' LIMIT 1');
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+			'be_sessions',
+			'ses_userid = "' . intval($backendUser->getUid()) . '" AND ses_id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($sessionId, 'be_sessions') . ' LIMIT 1'
+		);
 		if ($GLOBALS['TYPO3_DB']->sql_affected_rows() == 1) {
 			$message = 'Session successfully terminated.';
 			$this->flashMessageContainer->add($message, '', \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
@@ -204,7 +208,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 	/**
 	 * Switches to a given user (SU-mode) and then redirects to the start page of the backend to refresh the navigation etc.
 	 *
-	 * @param array $switchUser BE-user record that will be switched to
+	 * @param string $switchUser BE-user record that will be switched to
 	 * @param boolean $switchBack
 	 * @return void
 	 */
@@ -216,7 +220,16 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 			if ($switchBack) {
 				$updateData['ses_backuserid'] = intval($GLOBALS['BE_USER']->user['uid']);
 			}
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_sessions', 'ses_id=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['BE_USER']->id, 'be_sessions') . ' AND ses_name=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName(), 'be_sessions') . ' AND ses_userid=' . intval($GLOBALS['BE_USER']->user['uid']), $updateData);
+
+			$whereClause = 'ses_id=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['BE_USER']->id, 'be_sessions');
+			$whereClause .= ' AND ses_name=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName(), 'be_sessions');
+			$whereClause .= ' AND ses_userid=' . intval($GLOBALS['BE_USER']->user['uid']);
+
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+				'be_sessions',
+				$whereClause,
+				$updateData
+			);
 			$redirectUrl = $GLOBALS['BACK_PATH'] . 'index.php' . ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] ? '' : '?commandLI=1');
 			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
 		}

@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Beuser\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Module data storage service.
  * Used to store and retrieve module state (eg. checkboxes, selections).
