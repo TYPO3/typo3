@@ -25,8 +25,9 @@ namespace TYPO3\CMS\Beuser\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Repository for Tx_Beuser_Domain_Model_BackendUser
+ * Repository for \TYPO3\CMS\Beuser\Domain\Model\BackendUser
  *
  * @author Felix Kopp <felix-source@phorax.com>
  */
@@ -36,18 +37,18 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
 	 * Finds Backend Users on a given list of uids
 	 *
 	 * @param array $uidList
-	 * @return Tx_Extbase_Persistence_QueryResult<Tx_Beuser_Domain_Model_BackendUser>
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult<\TYPO3\CMS\Beuser\Domain\Model\BackendUser>
 	 */
-	public function findByUidList($uidList) {
+	public function findByUidList(array $uidList) {
 		$query = $this->createQuery();
-		return $query->matching($query->in('uid', $GLOBALS['TYPO3_DB']::cleanIntArray($uidList)))->execute();
+		return $query->matching($query->in('uid', $GLOBALS['TYPO3_DB']->cleanIntArray($uidList)))->execute();
 	}
 
 	/**
 	 * Find Backend Users matching to Demand object properties
 	 *
 	 * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand
-	 * @return Tx_Extbase_Persistence_QueryResult<Tx_Beuser_Domain_Model_BackendUser>
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult<\TYPO3\CMS\Beuser\Domain\Model\BackendUser>
 	 */
 	public function findDemanded(\TYPO3\CMS\Beuser\Domain\Model\Demand $demand) {
 		$constraints = array();
@@ -104,7 +105,7 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
 	/**
 	 * Find Backend Users currently online
 	 *
-	 * @return Tx_Extbase_Persistence_QueryResult<Tx_Beuser_Domain_Model_BackendUser>
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult<\TYPO3\CMS\Beuser\Domain\Model\BackendUser>
 	 */
 	public function findOnline() {
 		$uids = array();
@@ -112,6 +113,7 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$uids[] = $row['ses_userid'];
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		$query = $this->createQuery();
 		$query->matching($query->in('uid', $uids));
 		return $query->execute();

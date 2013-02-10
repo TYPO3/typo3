@@ -25,8 +25,9 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Test case for class Tx_Beuser_Domain_Model_BackendUser
+ * Test case for class \TYPO3\CMS\Beuser\Domain\Model\BackendUser
  *
  * @author Felix Kopp <felix-source@phorax.com>
  */
@@ -108,6 +109,5 @@ class BackendUserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	}
 
 }
-
 
 ?>
