@@ -3,7 +3,7 @@
 <f:layout name="Default" />
 
 <f:section name="iconButtons">
-	<f:link.action action="index"><bu:SpriteManagerIcon iconName="actions-view-go-back" /></f:link.action>
+	<f:link.action action="index"><bu:spriteManagerIcon iconName="actions-view-go-back" /></f:link.action>
 </f:section>
 
 <f:section name="content">
@@ -15,7 +15,7 @@
 			<f:for each="{compareUserList}" as="compareUser">
 				<td>
 					<a href="#" onClick="showClickmenu('be_users', '{compareUser.uid}', '1', '', '', ''); return false;" title="id={compareUser.uid}">
-						<bu:SpriteIconForRecord table="be_users" object="{compareUser}" />
+						<bu:spriteIconForRecord table="be_users" object="{compareUser}" />
 					</a>
 					{compareUser.userName}
 				</td>
@@ -64,12 +64,12 @@
 					<f:if condition="{compareUser.isDisabled} == 1">
 						<f:then>
 							<a href="<bu:issueCommand parameters="tce_db.php?&data[be_users][{compareUser.uid}][disable]=0&redirect={redirectUrl}" />">
-								<bu:SpriteManagerIcon iconName="actions-edit-unhide" options="{title: 'unhide'}" />
+								<bu:spriteManagerIcon iconName="actions-edit-unhide" options="{title: 'unhide'}" />
 							</a>
 						</f:then>
 						<f:else>
 							<a href="<bu:issueCommand parameters="tce_db.php?&data[be_users][{compareUser.uid}][disable]=1&redirect={redirectUrl}" />">
-								<bu:SpriteManagerIcon iconName="actions-edit-hide" options="{title: 'hide'}" />
+								<bu:spriteManagerIcon iconName="actions-edit-hide" options="{title: 'hide'}" />
 							</a>
 						</f:else>
 					</f:if>
@@ -127,7 +127,7 @@
 				<td>
 					<f:for each="{compareUser.BackendUserGroups}" as="backendUserGroup">
 						<a href="#" onClick="showClickmenu('be_groups', '{backendUserGroup.uid}', '1', '', '', ''); return false;" title="id={backendUserGroup.uid}">
-							<bu:SpriteIconForRecord table="be_users" object="{backendUserGroup}" />
+							<bu:spriteIconForRecord table="be_users" object="{backendUserGroup}" />
 						</a>
 						{backendUserGroup.title}<br />
 					</f:for>
@@ -195,5 +195,4 @@
 			</f:for>
 		</tr>
 	</table>
-
 </f:section>

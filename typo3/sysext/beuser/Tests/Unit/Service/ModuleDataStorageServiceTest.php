@@ -25,8 +25,9 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Test case for class Tx_Beuser_Service_ModuleDataStorageService
+ * Test case for class \TYPO3\CMS\Beuser\Service\ModuleDataStorageService
  *
  * @author Felix Kopp <felix-source@phorax.com>
  * @author Nikolas Hagelstein <nikolas.hagelstein@gmail.com>
@@ -57,6 +58,5 @@ class ModuleDataStorageServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 	}
 
 }
-
 
 ?>
