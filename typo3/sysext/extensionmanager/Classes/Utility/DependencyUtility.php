@@ -152,7 +152,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 						$highest = '';
 					}
 					/** @var $dependencyObject \TYPO3\CMS\Extensionmanager\Domain\Model\Dependency */
-					$dependencyObject = $this->objectManager->create('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency');
+					$dependencyObject = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency');
 					$dependencyObject->setType($dependencyType);
 					$dependencyObject->setIdentifier($dependency);
 					$dependencyObject->setLowestVersion($lowest);

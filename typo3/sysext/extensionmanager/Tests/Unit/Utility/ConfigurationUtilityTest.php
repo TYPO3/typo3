@@ -87,7 +87,7 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		$configurationUtility->_set('objectManager', $objectManagerMock);
 		$objectManagerMock
 			->expects($this->once())
-			->method('create')
+			->method('get')
 			->with('TYPO3\\CMS\\Core\\TypoScript\\ConfigurationForm')
 			->will($this->returnValue($tsStyleConfig));
 

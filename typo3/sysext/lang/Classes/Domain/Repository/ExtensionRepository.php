@@ -79,7 +79,7 @@ class ExtensionRepository {
 
 			foreach ($availableAndInstalledExtensions as $entry) {
 				/** @var $extension \TYPO3\CMS\Lang\Domain\Model\Extension */
-				$extension = $this->objectManager->create(
+				$extension = $this->objectManager->get(
 					'TYPO3\CMS\Lang\Domain\Model\Extension',
 					$entry['key'],
 					$entry['title'],
