@@ -25,13 +25,13 @@ namespace TYPO3\CMS\Belog\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Repository for workspaces
  *
- * TODO this should be moved to EXT:workspaces if EXT:belog works no matter if workspaces are installed or not
- *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
+ * @todo This should be moved to EXT:workspaces if EXT:belog works no matter if workspaces are installed or not
  */
 class WorkspaceRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
@@ -48,6 +48,5 @@ class WorkspaceRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	}
 
 }
-
 
 ?>

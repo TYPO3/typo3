@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Get history entry from for log entry
  *
@@ -50,7 +51,11 @@ class HistoryEntryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 		if (!$historyEntry instanceof \TYPO3\CMS\Belog\Domain\Model\HistoryEntry) {
 			return '';
 		}
-		$historyLabel = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('changesInFields', $this->controllerContext->getRequest()->getControllerExtensionName(), array($historyEntry->getFieldlist()));
+		$historyLabel = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+			'changesInFields',
+			$this->controllerContext->getRequest()->getControllerExtensionName(),
+			array($historyEntry->getFieldlist())
+		);
 		$historyIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-history-open', array(
 			'title' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('showHistory', $this->controllerContext->getRequest()->getControllerExtensionName())
 		));
@@ -60,6 +65,5 @@ class HistoryEntryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	}
 
 }
-
 
 ?>
