@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Belog\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Find system history entries
  *
@@ -46,6 +47,5 @@ class HistoryEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	}
 
 }
-
 
 ?>

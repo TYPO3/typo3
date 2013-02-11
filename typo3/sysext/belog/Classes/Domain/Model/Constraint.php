@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Belog\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Constraints for log entries
  *
@@ -40,7 +41,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $userOrGroup = '0';
 
 	/**
-	 * number of log rows to show
+	 * Number of log rows to show
 	 *
 	 * @var integer
 	 */
@@ -54,70 +55,70 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $workspaceUid = \TYPO3\CMS\Belog\Domain\Model\Workspace::UID_ANY_WORKSPACE;
 
 	/**
-	 * selected time frame
+	 * Selected time frame
 	 *
 	 * @var integer
 	 */
 	protected $timeFrame = 0;
 
 	/**
-	 * selected action
+	 * Selected action
 	 *
 	 * @var integer
 	 */
 	protected $action = 0;
 
 	/**
-	 * whether rows should be grouped by page
+	 * Whether rows should be grouped by page
 	 *
 	 * @var boolean
 	 */
 	protected $groupByPage = FALSE;
 
 	/**
-	 * manual date start
+	 * Manual date start
 	 *
 	 * @var \DateTime
 	 */
 	protected $manualDateStart = NULL;
 
 	/**
-	 * manual date stop
+	 * Manual date stop
 	 *
 	 * @var \DateTime
 	 */
 	protected $manualDateStop = NULL;
 
 	/**
-	 * calculated start timestamp
+	 * Calculated start timestamp
 	 *
 	 * @var integer
 	 */
 	protected $startTimestamp = 0;
 
 	/**
-	 * calculated end timestamp
+	 * Calculated end timestamp
 	 *
 	 * @var integer
 	 */
 	protected $endTimestamp = 0;
 
 	/**
-	 * whether the plugin is called in page context (submodule of Web > Info)
+	 * Whether the plugin is called in page context (submodule of Web > Info)
 	 *
 	 * @var boolean
 	 */
 	protected $isInPageContext = FALSE;
 
 	/**
-	 * selected page ID in page context
+	 * Selected page ID in page context
 	 *
 	 * @var integer
 	 */
 	protected $pageId = 0;
 
 	/**
-	 * page level depth
+	 * Page level depth
 	 *
 	 * @var integer
 	 */
@@ -378,6 +379,5 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 }
-
 
 ?>
