@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Belog\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Stub model for sys history - only properties required for belog module are added currently
  *
@@ -33,7 +34,7 @@ namespace TYPO3\CMS\Belog\Domain\Model;
 class HistoryEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
-	 * list of changed fields
+	 * List of changed fields
 	 *
 	 * @var string
 	 */
@@ -60,6 +61,5 @@ class HistoryEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 }
-
 
 ?>

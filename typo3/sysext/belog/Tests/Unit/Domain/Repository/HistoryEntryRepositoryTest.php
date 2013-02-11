@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Repository;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Testcase
  *
@@ -56,6 +57,5 @@ class HistoryEntryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestC
 	}
 
 }
-
 
 ?>

@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Returns true, if a specific extension is loaded
  *
@@ -43,6 +44,5 @@ class IsExtensionLoadedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
 	}
 
 }
-
 
 ?>
