@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers\Be;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * View helper to add a additional javascript settings to the backend header
  *
@@ -47,6 +48,5 @@ class InlineSettingsArrayViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abst
 	}
 
 }
-
 
 ?>

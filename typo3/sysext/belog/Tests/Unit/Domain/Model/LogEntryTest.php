@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Model;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Testcase
  *
@@ -84,6 +85,5 @@ class LogEntryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	}
 
 }
-
 
 ?>

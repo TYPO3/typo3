@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Belog\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Controller for log entry listings in Web->Info module
  *
@@ -43,6 +44,5 @@ class WebInfoController extends \TYPO3\CMS\Belog\Controller\AbstractController {
 	}
 
 }
-
 
 ?>
