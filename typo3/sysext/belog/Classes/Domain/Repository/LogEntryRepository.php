@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Belog\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Sys log entry repository
  *
@@ -33,7 +34,7 @@ namespace TYPO3\CMS\Belog\Domain\Repository;
 class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
 	/**
-	 * backend users, with UID as key
+	 * Backend users, with UID as key
 	 *
 	 * @var array
 	 */
@@ -113,7 +114,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 			return;
 		}
 		$pageIds = array();
-		// check if we should get a whole tree of pages and not only a single page
+		// Check if we should get a whole tree of pages and not only a single page
 		if ($constraint->getDepth() > 0) {
 			/** @var $pageTree \TYPO3\CMS\Backend\Tree\View\PageTreeView */
 			$pageTree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
@@ -163,6 +164,5 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	}
 
 }
-
 
 ?>
