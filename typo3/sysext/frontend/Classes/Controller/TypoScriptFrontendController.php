@@ -1166,8 +1166,15 @@ class TypoScriptFrontendController {
 					// Initialize the page-select functions to check rootline:
 					$temp_sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 					$temp_sys_page->init($this->showHiddenPage);
+					if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->id)) {
+						$aid = $temp_sys_page->getPageIdFromAlias($this->id);
+						if ($aid > 0) { // do not set zero, leave the original alias to be handled later
+							$this->id = $aid;
+						}
+					}
 					// If root line contained NO records and ->error_getRootLine_failPid tells us that it was because of a pid=-1 (indicating a "version" record)...:
-					if (!count($temp_sys_page->getRootLine($this->id, $this->MP)) && $temp_sys_page->error_getRootLine_failPid == -1) {
+					// only get rootline if $this->id is greater than 0 to avoid an exception
+					if (intval($this->id) > 0 && !count($temp_sys_page->getRootLine($this->id, $this->MP)) && $temp_sys_page->error_getRootLine_failPid == -1) {
 						// Setting versioningPreview flag and try again:
 						$temp_sys_page->versioningPreview = TRUE;
 						if (count($temp_sys_page->getRootLine($this->id, $this->MP))) {
