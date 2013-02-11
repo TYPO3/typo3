@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers\Be;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Get page path string from page id
  *
@@ -44,6 +45,5 @@ class PagePathViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 	}
 
 }
-
 
 ?>

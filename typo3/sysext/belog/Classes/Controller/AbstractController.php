@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Belog\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Abstract class to show log entries from sys_log
  *
@@ -36,39 +37,46 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	 * @var integer
 	 */
 	const TIMEFRAME_THISWEEK = 0;
+
 	/**
 	 * @var integer
 	 */
 	const TIMEFRAME_LASTWEEK = 1;
+
 	/**
 	 * @var integer
 	 */
 	const TIMEFRAME_LASTSEVENDAYS = 2;
+
 	/**
 	 * @var integer
 	 */
 	const TIMEFRAME_THISMONTH = 10;
+
 	/**
 	 * @var integer
 	 */
 	const TIMEFRAME_LASTMONTH = 11;
+
 	/**
 	 * @var integer
 	 */
 	const TIMEFRAME_LAST31DAYS = 12;
+
 	/**
 	 * @var integer
 	 */
 	const TIMEFRAME_CUSTOM = 30;
+
 	/**
-	 * whether plugin is running in page context (sub module of Web > Info)
+	 * Whether plugin is running in page context (sub module of Web > Info)
 	 *
 	 * @var boolean
 	 */
 	protected $isInPageContext = FALSE;
 
 	/**
-	 * page ID in page context
+	 * Page ID in page context
 	 *
 	 * @var integer
 	 */
@@ -174,7 +182,7 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	 *
 	 * [pid][dayTimestamp][items]
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\QueryResultInterface<TYPO3\CMS\Belog\Domain\Model\LogEntry> $logEntries
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryResultInterface<\TYPO3\CMS\Belog\Domain\Model\LogEntry> $logEntries
 	 * @param boolean $groupByPage Whether or not log entries should be grouped by page
 	 * @return array
 	 */
@@ -304,48 +312,48 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 		$endTime = $GLOBALS['EXEC_TIME'];
 		// @TODO: Refactor this construct
 		switch ($constraint->getTimeFrame()) {
-		case self::TIMEFRAME_THISWEEK:
-			// This week
-			$week = (date('w') ?: 7) - 1;
-			$startTime = mktime(0, 0, 0) - $week * 3600 * 24;
-			break;
-		case self::TIMEFRAME_LASTWEEK:
-			// Last week
-			$week = (date('w') ?: 7) - 1;
-			$startTime = mktime(0, 0, 0) - ($week + 7) * 3600 * 24;
-			$endTime = mktime(0, 0, 0) - $week * 3600 * 24;
-			break;
-		case self::TIMEFRAME_LASTSEVENDAYS:
-			// Last 7 days
-			$startTime = mktime(0, 0, 0) - 7 * 3600 * 24;
-			break;
-		case self::TIMEFRAME_THISMONTH:
-			// This month
-			$startTime = mktime(0, 0, 0, date('m'), 1);
-			break;
-		case self::TIMEFRAME_LASTMONTH:
-			// Last month
-			$startTime = mktime(0, 0, 0, date('m') - 1, 1);
-			$endTime = mktime(0, 0, 0, date('m'), 1);
-			break;
-		case self::TIMEFRAME_LAST31DAYS:
-			// Last 31 days
-			$startTime = mktime(0, 0, 0) - 31 * 3600 * 24;
-			break;
-		case self::TIMEFRAME_CUSTOM:
-			if ($constraint->getManualDateStart() instanceof \DateTime) {
-				$startTime = $constraint->getManualDateStart()->format('U');
-				if ($constraint->getManualDateStop() instanceof \DateTime) {
-					$manualEndTime = $constraint->getManualDateStop()->format('U');
-					if ($manualEndTime > $startTime) {
-						$endTime = $manualEndTime;
+			case self::TIMEFRAME_THISWEEK:
+				// This week
+				$week = (date('w') ?: 7) - 1;
+				$startTime = mktime(0, 0, 0) - $week * 3600 * 24;
+				break;
+			case self::TIMEFRAME_LASTWEEK:
+				// Last week
+				$week = (date('w') ?: 7) - 1;
+				$startTime = mktime(0, 0, 0) - ($week + 7) * 3600 * 24;
+				$endTime = mktime(0, 0, 0) - $week * 3600 * 24;
+				break;
+			case self::TIMEFRAME_LASTSEVENDAYS:
+				// Last 7 days
+				$startTime = mktime(0, 0, 0) - 7 * 3600 * 24;
+				break;
+			case self::TIMEFRAME_THISMONTH:
+				// This month
+				$startTime = mktime(0, 0, 0, date('m'), 1);
+				break;
+			case self::TIMEFRAME_LASTMONTH:
+				// Last month
+				$startTime = mktime(0, 0, 0, date('m') - 1, 1);
+				$endTime = mktime(0, 0, 0, date('m'), 1);
+				break;
+			case self::TIMEFRAME_LAST31DAYS:
+				// Last 31 days
+				$startTime = mktime(0, 0, 0) - 31 * 3600 * 24;
+				break;
+			case self::TIMEFRAME_CUSTOM:
+				if ($constraint->getManualDateStart() instanceof \DateTime) {
+					$startTime = $constraint->getManualDateStart()->format('U');
+					if ($constraint->getManualDateStop() instanceof \DateTime) {
+						$manualEndTime = $constraint->getManualDateStop()->format('U');
+						if ($manualEndTime > $startTime) {
+							$endTime = $manualEndTime;
+						}
+					} else {
+						$endTime = $GLOBALS['EXEC_TIME'];
 					}
-				} else {
-					$endTime = $GLOBALS['EXEC_TIME'];
 				}
-			}
-			break;
-		default:
+				break;
+			default:
 
 		}
 		$constraint->setStartTimestamp($startTime);
@@ -353,6 +361,5 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	}
 
 }
-
 
 ?>

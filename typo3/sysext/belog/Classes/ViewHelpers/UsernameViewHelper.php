@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Get username from backend user id
  *
@@ -54,6 +55,5 @@ class UsernameViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	}
 
 }
-
 
 ?>
