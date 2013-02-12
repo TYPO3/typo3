@@ -196,6 +196,8 @@ class ThumbnailView {
 	 * @todo Define visibility
 	 */
 	public function main() {
+		// Clean output buffer to ensure no extraneous output exists
+		ob_clean();
 		// If file exists, we make a thumbnail of the file.
 		if (is_object($this->image)) {
 			// Check file extension:
