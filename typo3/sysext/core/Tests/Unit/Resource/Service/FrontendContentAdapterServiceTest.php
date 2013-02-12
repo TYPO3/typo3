@@ -62,6 +62,7 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 			->method('findByRelation')
 			->will($this->returnValue(array()));
 		$dbRow = array(
+			'CType' => 'image',
 			'image' => '1'
 		);
 
@@ -75,9 +76,6 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 	public function imageFieldIsFilledWithPathOfImage() {
 		$fileReference = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileReference', array(), array(), '', FALSE);
 		$fileReference->expects($this->any())
-			->method('getProperty')
-			->will($this->returnArgument(0));
-		$fileReference->expects($this->any())
 			->method('getOriginalFile')
 			->will($this->returnValue($this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE)));
 		$fileReference->expects($this->any())
@@ -87,12 +85,79 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 			->method('findByRelation')
 			->will($this->returnValue(array($fileReference)));
 		$dbRow = array(
+			'CType' => 'image',
 			'image' => '1'
 		);
 
 		\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($dbRow, 'tt_content');
 		$this->assertSame('../../path/to/file', $dbRow['image']);
 	}
+
+	public function conteRowsOfDifferentTypesDataProvider() {
+		$filePropertiesImage = array(
+			'title' => 'Image',
+			'description' => 'IMAGE DESCRIPTION',
+		);
+
+		$filePropertiesMedia = array(
+			'title' => 'Media',
+			'description' => 'MEDIA DESCRIPTION',
+		);
+
+		return array(
+			'Image Element' => array(
+				array(
+					'CType' => 'image',
+					'image' => '',
+					'media' => '',
+				),
+				'IMAGE DESCRIPTION',
+				$filePropertiesImage
+			),
+			'Textpic Element' => array(
+				array(
+					'CType' => 'textpic',
+					'image' => '',
+					'media' => '',
+				),
+				'IMAGE DESCRIPTION',
+				$filePropertiesImage
+			),
+			'Uploads Element' => array(
+				array(
+					'CType' => 'uploads',
+					'image' => '',
+					'media' => '',
+				),
+				'MEDIA DESCRIPTION',
+				$filePropertiesMedia
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider conteRowsOfDifferentTypesDataProvider
+	 */
+	public function migrationOfLegacyFieldsIsOnlyDoneWhenRelationFieldIsVisibleInType($dbRow, $expectedCaption, $fileProperties) {
+		$fileReference = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileReference', array(), array(), '', FALSE);
+		$fileReference->expects($this->once())
+			->method('getProperties')
+			->will($this->returnValue($fileProperties));
+		$fileReference->expects($this->any())
+			->method('getOriginalFile')
+			->will($this->returnValue($this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE)));
+		$fileReference->expects($this->any())
+			->method('getPublicUrl')
+			->will($this->returnValue('path/to/file'));
+		$this->fileRepositoryMock->expects($this->any())
+			->method('findByRelation')
+			->will($this->returnValue(array($fileReference)));
+
+		\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($dbRow, 'tt_content');
+		$this->assertSame($expectedCaption, $dbRow['imagecaption']);
+	}
+
 }
 
 
