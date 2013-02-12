@@ -784,6 +784,18 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * Checks if stdWrap.cropHTML handles linebreaks correctly (by ignoring them)
+	 *
+	 * @test
+	 */
+	public function cropHtmlWorksWithLinebreaks() {
+		$subject = "Lorem ipsum dolor sit amet,\nconsetetur sadipscing elitr,\nsed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam";
+		$expected = "Lorem ipsum dolor sit amet,\nconsetetur sadipscing elitr,\nsed diam nonumy eirmod tempor invidunt ut labore et dolore magna";
+		$result = $this->cObj->cropHTML($subject, '121');
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
 	 * Test for the stdWrap function "round"
 	 *
 	 * @param float $float
