@@ -1488,6 +1488,7 @@ class AbstractMenuContentObject {
 		}
 		$recs = $this->sys_page->getMenu($uid, 'uid,pid,doktype,mount_pid,mount_pid_ol,nav_hide,shortcut,shortcut_mode,l18n_cfg');
 		$hasSubPages = FALSE;
+		$bannedUids = $this->getBannedUids();
 		foreach ($recs as $theRec) {
 			// no valid subpage if the document type is excluded from the menu
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->doktypeExcludeList, $theRec['doktype'])) {
@@ -1507,6 +1508,10 @@ class AbstractMenuContentObject {
 			// are requiring a valid overlay but it doesn't exists
 			$hideIfNotTranslated = \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($theRec['l18n_cfg']);
 			if ($GLOBALS['TSFE']->sys_language_uid && $hideIfNotTranslated && !$theRec['_PAGES_OVERLAY']) {
+				continue;
+			}
+			// No valid subpage if the subpage is banned by excludeUidList
+			if (in_array($theRec['uid'], $bannedUids)) {
 				continue;
 			}
 			$hasSubPages = TRUE;

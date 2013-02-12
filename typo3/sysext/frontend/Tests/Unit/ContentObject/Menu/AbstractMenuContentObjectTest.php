@@ -225,6 +225,67 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$this->fixture->_call('sectionIndex', 'field', 12);
 	}
 
+	////////////////////////////////////
+	// Tests concerning menu item states
+	////////////////////////////////////
+	/**
+	 * @return array
+	 */
+	public function ifsubHasToCheckExcludeUidListDataProvider() {
+		return array(
+			'none excluded' => array (
+				array(12, 34, 56),
+				'1, 23, 456',
+				TRUE
+			),
+			'one excluded' => array (
+				array(1, 234, 567),
+				'1, 23, 456',
+				TRUE
+			),
+			'three excluded' => array (
+				array(1, 23, 456),
+				'1, 23, 456',
+				FALSE
+			),
+			'empty excludeList' => array (
+				array(1, 123, 45),
+				'',
+				TRUE
+			),
+			'empty menu' => array (
+				array(),
+				'1, 23, 456',
+				FALSE
+			),
+		);
+
+	}
+
+	/**
+	 * @test
+	 * @dataProvider ifsubHasToCheckExcludeUidListDataProvider
+	 * @param array $menuItems
+	 * @param string $excludeUidList
+	 * @param boolean $expectedResult
+	 */
+	public function ifsubHasToCheckExcludeUidList($menuItems, $excludeUidList, $expectedResult) {
+		$menu = array();
+		foreach ($menuItems as $page) {
+			$menu[] = array('uid' => $page);
+		}
+
+		$this->prepareSectionIndexTest();
+		$this->fixture->parent_cObj = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array());
+
+		$this->fixture->sys_page->expects($this->once())->method('getMenu')->will($this->returnValue($menu));
+		$this->fixture->menuArr = array(
+			0 => array('uid' => 1)
+		);
+		$this->fixture->conf['excludeUidList'] = $excludeUidList;
+
+		$this->assertEquals($expectedResult, $this->fixture->isItemState('IFSUB', 0));
+	}
 }
 
 
