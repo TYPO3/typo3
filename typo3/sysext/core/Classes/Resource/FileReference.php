@@ -82,17 +82,13 @@ class FileReference implements FileInterface {
 	protected $originalFile;
 
 	/**
-	 * Defines properties that are merged with the parent object (File) if
+	 * Properties merged with the parent object (File) if
 	 * the value is not defined (NULL). Thus, FileReference properties act
 	 * as overlays for the defined File properties.
 	 *
 	 * @var array
 	 */
-	protected $parentFallbackProperties = array(
-		'title' => 'title',
-		'description' => 'description',
-		'alternative' => 'alternative',
-	);
+	protected $mergedProperties = array();
 
 	/**
 	 * Constructor for a file in use object. Should normally not be used
@@ -131,7 +127,7 @@ class FileReference implements FileInterface {
 	 * @return boolean
 	 */
 	public function hasProperty($key) {
-		return array_key_exists($key, $this->propertiesOfFileReference);
+		return array_key_exists($key, $this->getProperties());
 	}
 
 	/**
@@ -139,27 +135,26 @@ class FileReference implements FileInterface {
 	 *
 	 * @param string $key The property to be looked up
 	 * @return mixed
+	 * @throws \InvalidArgumentException
 	 */
 	public function getProperty($key) {
-		$value = $this->getReferenceProperty($key);
-
-		if ($value === NULL && !empty($this->parentFallbackProperties[$key])) {
-			$value = $this->originalFile->getProperty($key);
+		if (!$this->hasProperty($key)) {
+			throw new \InvalidArgumentException('Property "' . $key . '" was not found in file reference or original file.', 1314226805);
 		}
-
-		return $value;
+		$properties = $this->getProperties();
+		return $properties[$key];
 	}
 
 	/**
-	 * Gets a property.
+	 * Gets a property of the file reference.
 	 *
 	 * @param string $key The property to be looked up
 	 * @return mixed
 	 * @throws \InvalidArgumentException
 	 */
 	public function getReferenceProperty($key) {
-		if (!$this->hasProperty($key)) {
-			throw new \InvalidArgumentException('Property "' . $key . '" was not found.', 1314226805);
+		if (!array_key_exists($key, $this->propertiesOfFileReference)) {
+			throw new \InvalidArgumentException('Property "' . $key . '" of file reference was not found.', 1360684914);
 		}
 		return $this->propertiesOfFileReference[$key];
 	}
@@ -170,26 +165,39 @@ class FileReference implements FileInterface {
 	 * @return array
 	 */
 	public function getProperties() {
-		$properties = $this->getReferenceProperties();
-		$keys = array_keys($properties);
+		if (empty($this->mergedProperties)) {
+			$this->mergedProperties = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule(
+				$this->propertiesOfFileReference,
+				$this->originalFile->getProperties(),
+				FALSE,
+				TRUE,
+				FALSE
+			);
+			array_walk($this->mergedProperties, array($this, 'restoreNonNullValuesCallback'));
+		}
 
-		foreach ($this->parentFallbackProperties as $localKey => $parentKey) {
-			if (array_key_exists($localKey, $keys) && $properties[$localKey] === NULL) {
-				$properties[$localKey] = $this->originalFile->getProperty($parentKey);
-			}
+		return $this->mergedProperties;
+	}
+
+	/**
+	 * Callback to handle the NULL value feature
+	 *
+	 * @param mixed $value
+	 * @param mixed $key
+	 */
+	protected function restoreNonNullValuesCallback(&$value, $key) {
+		if (array_key_exists($key, $this->propertiesOfFileReference) && $this->propertiesOfFileReference[$key] !== NULL) {
+			$value = $this->propertiesOfFileReference[$key];
 		}
 	}
 
 	/**
-	 * Gets all properties.
+	 * Gets all properties of the file reference.
 	 *
 	 * @return array
 	 */
 	public function getReferenceProperties() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule(
-			$this->originalFile->getProperties(),
-			$this->propertiesOfFileReference
-		);
+		return $this->propertiesOfFileReference;
 	}
 
 	/**
