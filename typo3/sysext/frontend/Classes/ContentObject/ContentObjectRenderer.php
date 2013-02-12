@@ -3873,17 +3873,17 @@ class ContentObjectRenderer {
 					$cropPosition = $absChars - $strLen;
 					// The snippet "&[^&\s;]{2,8};" in the RegEx below represents entities.
 					$patternMatchEntityAsSingleChar = '(&[^&\\s;]{2,8};|.)';
-					$cropRegEx = $chars < 0 ? '#' . $patternMatchEntityAsSingleChar . '{0,' . ($cropPosition + 1) . '}$#ui' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . ($cropPosition + 1) . '}#ui';
+					$cropRegEx = $chars < 0 ? '#' . $patternMatchEntityAsSingleChar . '{0,' . ($cropPosition + 1) . '}$#uis' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . ($cropPosition + 1) . '}#uis';
 					if (preg_match($cropRegEx, $tempContent, $croppedMatch)) {
 						$tempContentPlusOneCharacter = $croppedMatch[0];
 					} else {
 						$tempContentPlusOneCharacter = FALSE;
 					}
-					$cropRegEx = $chars < 0 ? '#' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}$#ui' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}#ui';
+					$cropRegEx = $chars < 0 ? '#' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}$#uis' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}#uis';
 					if (preg_match($cropRegEx, $tempContent, $croppedMatch)) {
 						$tempContent = $croppedMatch[0];
 						if ($crop2space && $tempContentPlusOneCharacter !== FALSE) {
-							$cropRegEx = $chars < 0 ? '#(?<=\\s)' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}$#ui' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}(?=\\s)#ui';
+							$cropRegEx = $chars < 0 ? '#(?<=\\s)' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}$#uis' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}(?=\\s)#uis';
 							if (preg_match($cropRegEx, $tempContentPlusOneCharacter, $croppedMatch)) {
 								$tempContent = $croppedMatch[0];
 							}
