@@ -58,6 +58,11 @@ class ShockwaveFlashObjectContentObject extends \TYPO3\CMS\Frontend\ContentObjec
 		if (!$installUrl) {
 			$installUrl = $prefix . TYPO3_mainDir . 'contrib/flashmedia/swfobject/expressInstall.swf';
 		}
+		// If file is audio and an explicit path has not been set,
+		// take path from audio fallback property
+		if ($type == 'audio' && empty($conf['file'])) {
+			$conf['file'] = $conf['audioFallback'];
+		}
 		$filename = isset($conf['file.']) ? $this->cObj->stdWrap($conf['file'], $conf['file.']) : $conf['file'];
 		$forcePlayer = isset($conf['forcePlayer.']) ? $this->cObj->stdWrap($conf['forcePlayer'], $conf['forcePlayer.']) : $conf['forcePlayer'];
 		if ($filename && $forcePlayer) {

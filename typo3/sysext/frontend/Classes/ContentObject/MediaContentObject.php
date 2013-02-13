@@ -69,6 +69,7 @@ class MediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 		}
 		// Video fallback and backward compatibility file
 		$videoFallback = $this->doFlexFormOverlay($conf, 'file');
+
 		// Backward compatibility file
 		if ($videoFallback !== NULL) {
 			$conf['file'] = $this->retrieveMediaUrl($videoFallback);
@@ -251,18 +252,33 @@ class MediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 	 */
 	protected function retrieveMediaUrl($file) {
 		$returnValue = NULL;
+
+		// because the file value can possibly have link parameters, use explode to split all values
+		$fileParts = explode(' ', $file);
+
 		/** @var $mediaWizard \TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderInterface */
-		$mediaWizard = \TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderManager::getValidMediaWizardProvider($file);
+		$mediaWizard = \TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderManager::getValidMediaWizardProvider($fileParts[0]);
 		// Get the path relative to the page currently outputted
-		if (is_file(PATH_site . $file)) {
-			$returnValue = $GLOBALS['TSFE']->tmpl->getFileName($file);
+		if (substr($fileParts[0], 0, 5) === "file:") {
+			$fileUid = substr($fileParts[0], 5);
+
+			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($fileUid)) {
+				$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($fileUid);
+
+				if ($fileObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
+					$returnValue = $fileObject->getPublicUrl();
+				}
+			}
+		} elseif (is_file(PATH_site . $fileParts[0])) {
+			$returnValue = $GLOBALS['TSFE']->tmpl->getFileName($fileParts[0]);
 		} elseif ($mediaWizard !== NULL) {
 			$returnValue = $this->cObj->typoLink_URL(array(
-				'parameter' => $mediaWizard->rewriteUrl($file)
+				'parameter' => $mediaWizard->rewriteUrl($fileParts[0])
 			));
-		} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl($file)) {
-			$returnValue = $file;
+		} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl($fileParts[0])) {
+			$returnValue = $fileParts[0];
 		}
+
 		return $returnValue;
 	}
 
