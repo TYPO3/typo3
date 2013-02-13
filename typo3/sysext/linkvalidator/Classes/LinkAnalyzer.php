@@ -119,6 +119,9 @@ class LinkAnalyzer {
 	public function init(array $searchField, $pid) {
 		$this->searchFields = $searchField;
 		$this->pidList = $pid;
+		foreach ($searchField as $tableName => $table) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName);
+		}
 	}
 
 	/**
