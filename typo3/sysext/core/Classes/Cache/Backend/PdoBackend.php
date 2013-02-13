@@ -274,7 +274,12 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
 	 */
 	protected function createCacheTables() {
 		try {
-			\TYPO3\CMS\Core\Database\PdoHelper::importSql($this->databaseHandle, $this->pdoDriver, PATH_t3lib . 'cache/backend/resources/ddl.sql');
+			\TYPO3\CMS\Core\Database\PdoHelper::importSql(
+				$this->databaseHandle,
+				$this->pdoDriver,
+				\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') .
+				'Resources/Private/Sql/Cache/Backend/PdoBackendCacheAndTags.sql'
+			);
 		} catch (\PDOException $e) {
 			throw new \RuntimeException('Could not create cache tables with DSN "' . $this->dataSourceName . '". PDO error: ' . $e->getMessage(), 1259576985);
 		}

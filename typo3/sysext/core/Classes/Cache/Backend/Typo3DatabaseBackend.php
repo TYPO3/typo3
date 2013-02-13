@@ -344,9 +344,15 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 	 * @return string SQL of table definitions
 	 */
 	public function getTableDefinitions() {
-		$cacheTableSql = file_get_contents(PATH_t3lib . 'cache/backend/resources/dbbackend-layout-cache.sql');
+		$cacheTableSql = file_get_contents(
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') .
+			'Resources/Private/Sql/Cache/Backend/Typo3DatabaseBackendCache.sql'
+		);
 		$requiredTableStructures = str_replace('###CACHE_TABLE###', $this->cacheTable, $cacheTableSql) . LF . LF;
-		$tagsTableSql = file_get_contents(PATH_t3lib . 'cache/backend/resources/dbbackend-layout-tags.sql');
+		$tagsTableSql = file_get_contents(
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') .
+			'Resources/Private/Sql/Cache/Backend/Typo3DatabaseBackendTags.sql'
+		);
 		$requiredTableStructures .= str_replace('###TAGS_TABLE###', $this->tagsTable, $tagsTableSql) . LF;
 		return $requiredTableStructures;
 	}
