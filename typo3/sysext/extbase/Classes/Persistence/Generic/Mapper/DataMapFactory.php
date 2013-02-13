@@ -230,6 +230,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array The TCA columns definition
 	 */
 	protected function getControlSection($tableName) {
+		$this->includeTca($tableName);
 		return is_array($GLOBALS['TCA'][$tableName]['ctrl']) ? $GLOBALS['TCA'][$tableName]['ctrl'] : NULL;
 	}
 
@@ -240,7 +241,21 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array The TCA columns definition
 	 */
 	protected function getColumnsDefinition($tableName) {
+		$this->includeTca($tableName);
 		return is_array($GLOBALS['TCA'][$tableName]['columns']) ? $GLOBALS['TCA'][$tableName]['columns'] : array();
+	}
+
+	/**
+	 * Includes the TCA for the given table
+	 *
+	 * @param string $tableName An optional table name to fetch the columns definition from
+	 * @return void
+	 */
+	protected function includeTca($tableName) {
+		if (TYPO3_MODE === 'FE') {
+			$GLOBALS['TSFE']->includeTCA();
+		}
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName);
 	}
 
 	/**
