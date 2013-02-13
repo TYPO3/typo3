@@ -793,7 +793,6 @@ class Bootstrap {
 		global $_EXTKEY;
 		// Include standard tables.php file
 		require PATH_t3lib . 'stddb/tables.php';
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtTables($allowCaching);
 		// Load additional ext tables script if the file exists
 		$extTablesFile = PATH_typo3conf . TYPO3_extTableDef_script;

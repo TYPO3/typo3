@@ -2,6 +2,7 @@
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('fe_users');
 $GLOBALS['TCA']['fe_users']['columns']['password']['config']['max'] = 100;
 if (\TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled('FE')) {
 	// Get eval field operations methods as array keys
@@ -14,6 +15,7 @@ if (\TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled('F
 	$GLOBALS['TCA']['fe_users']['columns']['password']['config']['eval'] = implode(',', array_keys($operations));
 	unset($operations);
 }
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('be_users');
 $GLOBALS['TCA']['be_users']['columns']['password']['config']['max'] = 100;
 if (\TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled('BE')) {
 	// Get eval field operations methods as array keys

@@ -303,6 +303,7 @@ class DatabaseIntegrityCheck {
 		$this->lostPagesList = '';
 		if ($pid_list) {
 			foreach ($GLOBALS['TCA'] as $table => $tableConf) {
+				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 				$pid_list_tmp = $pid_list;
 				if (!isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) || !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 					// Remove preceding "-1," for non-versioned tables
@@ -362,6 +363,7 @@ class DatabaseIntegrityCheck {
 		$list_n = array();
 		if ($pid_list) {
 			foreach ($GLOBALS['TCA'] as $table => $tableConf) {
+				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 				$pid_list_tmp = $pid_list;
 				if (!isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) || !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 					// Remove preceding "-1," for non-versioned tables
@@ -390,6 +392,7 @@ class DatabaseIntegrityCheck {
 	public function getGroupFields($mode) {
 		$result = array();
 		foreach ($GLOBALS['TCA'] as $table => $tableConf) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			$cols = $GLOBALS['TCA'][$table]['columns'];
 			foreach ($cols as $field => $config) {
 				if ($config['config']['type'] == 'group') {
@@ -418,6 +421,7 @@ class DatabaseIntegrityCheck {
 	public function getFileFields($uploadfolder) {
 		$result = array();
 		foreach ($GLOBALS['TCA'] as $table => $tableConf) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			$cols = $GLOBALS['TCA'][$table]['columns'];
 			foreach ($cols as $field => $config) {
 				if ($config['config']['type'] == 'group' && $config['config']['internal_type'] == 'file' && $config['config']['uploadfolder'] == $uploadfolder) {
@@ -438,6 +442,7 @@ class DatabaseIntegrityCheck {
 	public function getDBFields($theSearchTable) {
 		$result = array();
 		foreach ($GLOBALS['TCA'] as $table => $tableConf) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			$cols = $GLOBALS['TCA'][$table]['columns'];
 			foreach ($cols as $field => $config) {
 				if ($config['config']['type'] == 'group' && $config['config']['internal_type'] == 'db') {
@@ -464,6 +469,7 @@ class DatabaseIntegrityCheck {
 		if (is_array($fkey_arrays)) {
 			foreach ($fkey_arrays as $table => $field_list) {
 				if ($GLOBALS['TCA'][$table] && trim($field_list)) {
+					\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 					$fieldArr = explode(',', $field_list);
 					if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal')) {
 						$fields = $GLOBALS['TYPO3_DB']->admin_get_fields($table);
@@ -658,6 +664,7 @@ class DatabaseIntegrityCheck {
 		foreach ($fileFields as $info) {
 			$table = $info[0];
 			$field = $info[1];
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,' . $GLOBALS['TCA'][$table]['ctrl']['label'] . ',' . $field, $table, $field . ' LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($id, $table) . '%\'');
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
 				// Now this is the field, where the reference COULD come from. But we're not garanteed, so we must carefully examine the data.

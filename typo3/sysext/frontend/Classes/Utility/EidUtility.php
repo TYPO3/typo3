@@ -105,13 +105,15 @@ class EidUtility {
 		// but in fact it is not loaded. The check below ensure that
 		// TCA is still loaded if such bad extensions are installed
 		if (!is_array($GLOBALS['TCA']) || !isset($GLOBALS['TCA']['pages'])) {
-			\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(TRUE);
+			// Load TCA using TSFE
+			self::getTSFE()->includeTCA(FALSE);
 		}
 	}
 
 	/**
 	 * Makes TCA for the extension available inside eID. Use this function if
-	 * you need not to include the whole $GLOBALS['TCA'].
+	 * you need not to include the whole $GLOBALS['TCA']. However, you still need to call
+	 * \TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA() if you want to access column array!
 	 *
 	 * @param string $extensionKey Extension key
 	 * @return void
