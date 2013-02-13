@@ -3172,6 +3172,13 @@ class DataHandler {
 					} elseif (isset($this->registerDBPids[$table][$uid])) {
 						$this->registerDBPids[$v['table']][$v['id']] = $this->registerDBPids[$table][$uid];
 					}
+
+					$specificNewId = $this->getAutoVersionId($v['table'], $newId);
+					// Use specific version uid for comma separated list values
+					if ($inlineSubType === 'list' && $specificNewId !== NULL) {
+						$newId = $specificNewId;
+					}
+
 					$dbAnalysis->itemArray[$k]['id'] = $newId;
 				}
 				// Store the new values, we will set up the uids for the subtype later on (exception keep localization from original record):
