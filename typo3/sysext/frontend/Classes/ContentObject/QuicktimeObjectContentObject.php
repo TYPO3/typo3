@@ -49,8 +49,17 @@ class QuicktimeObjectContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abs
 		if ($GLOBALS['TSFE']->absRefPrefix) {
 			$prefix = $GLOBALS['TSFE']->absRefPrefix;
 		}
-		$filename = isset($conf['file.']) ? $this->cObj->stdWrap($conf['file'], $conf['file.']) : $conf['file'];
 		$type = isset($conf['type.']) ? $this->cObj->stdWrap($conf['type'], $conf['type.']) : $conf['type'];
+
+		// If file is audio and an explicit path has not been set,
+		// take path from audio fallback property
+		if ($type == 'audio' && empty($conf['file'])) {
+			$conf['file'] = $conf['audioFallback'];
+		}
+		$filename = isset( $conf['file.'])
+			? $this->cObj->stdWrap($conf['file'], $conf['file.'])
+			: $conf['file'];
+
 		$typeConf = $conf[$type . '.'];
 		// Add QTobject js-file
 		$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/flashmedia/qtobject/qtobject.js');
