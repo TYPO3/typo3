@@ -239,6 +239,12 @@ class TypoScriptFrontendController {
 	 */
 	public $config = '';
 
+	// Array of cached information from TCA. This is NOT TCA itself!
+	/**
+	 * @todo Define visibility
+	 */
+	public $TCAcachedExtras = array();
+
 	// TEMPLATE / CACHE
 	/**
 	 * The TypoScript template object. Used to parse the TypoScript template
@@ -649,6 +655,12 @@ class TypoScriptFrontendController {
 	 * @todo Define visibility
 	 */
 	public $scriptParseTime = 0;
+
+	// Set ONLY if the full TCA is loaded
+	/**
+	 * @todo Define visibility
+	 */
+	public $TCAloaded = 0;
 
 	// Character set (charset) conversion object:
 	/**
@@ -2436,36 +2448,65 @@ class TypoScriptFrontendController {
 	 * (jumpurl/submission of forms)
 	 *
 	 *******************************************/
-
 	/**
 	 * Get the compressed $GLOBALS['TCA'] array for use in the front-end
-	 * A compressed $GLOBALS['TCA'] array holds only the ctrl- and feInterface-part for each table.
-	 * But the column-definitions are omitted in order to save some memory and be more efficient.
+	 * A compressed $GLOBALS['TCA'] array holds only the ctrl- and feInterface-part for each table. But the column-definitions are omitted in order to save some memory and be more efficient.
 	 * Operates on the global variable, $TCA
 	 *
 	 * @return void
-	 * @deprecated since 6,1, will be removed in two versions.
+	 * @see includeTCA()
+	 * @todo Define visibility
 	 */
 	public function getCompressedTCarray() {
-		// Full TCA is always loaded during bootstrap in FE, this method is obsolete.
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		$GLOBALS['TT']->push('Get Compressed TC array');
+		if (!$this->TCAloaded) {
+			// Create hash string for storage / retrieval of cached content:
+			$tempHash = md5('tables.php:' . filemtime((TYPO3_extTableDef_script ? PATH_typo3conf . TYPO3_extTableDef_script : PATH_t3lib . 'stddb/tables.php')) . (TYPO3_extTableDef_script ? filemtime(PATH_typo3conf . TYPO3_extTableDef_script) : ''));
+			list($GLOBALS['TCA'], $this->TCAcachedExtras) = unserialize($this->sys_page->getHash($tempHash));
+			// If no result, create it:
+			if (!is_array($GLOBALS['TCA'])) {
+				$this->includeTCA(0);
+				$newTc = array();
+				// Collects other information
+				$this->TCAcachedExtras = array();
+				foreach ($GLOBALS['TCA'] as $key => $val) {
+					$newTc[$key]['ctrl'] = $val['ctrl'];
+					$newTc[$key]['feInterface'] = $val['feInterface'];
+					// Collect information about localization exclusion of fields:
+					\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($key);
+					if (is_array($GLOBALS['TCA'][$key]['columns'])) {
+						$this->TCAcachedExtras[$key]['l10n_mode'] = array();
+						foreach ($GLOBALS['TCA'][$key]['columns'] as $fN => $fV) {
+							if ($fV['l10n_mode']) {
+								$this->TCAcachedExtras[$key]['l10n_mode'][$fN] = $fV['l10n_mode'];
+							}
+						}
+					}
+				}
+				$GLOBALS['TCA'] = $newTc;
+				$this->sys_page->storeHash($tempHash, serialize(array($newTc, $this->TCAcachedExtras)), 'SHORT_TC');
+			}
+		}
+		$GLOBALS['TT']->pull();
 	}
 
 	/**
 	 * Includes TCA definitions from loaded extensions (ext_table.php files).
 	 * Normally in the frontend only a part of the global $TCA array is loaded,
 	 * namely the "ctrl" part. Thus it doesn't take up too much memory. To load
-	 * full TCA for the table, use \TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName)
-	 * after calling this function.
+	 * full TCA for the table, use \TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName) after calling
+	 * this function.
 	 *
-	 * @param integer $TCAloaded Probably, keep hands of this value. Just don't set it.
+	 * @param integer $TCAloaded Probably, keep hands of this value. Just don't set it. (This may affect the first-ever time this function is called since if you set it to zero/FALSE any subsequent call will still trigger the inclusion; In other words, this value will be set in $this->TCAloaded after inclusion and therefore if its FALSE, another inclusion will be possible on the next call. See ->getCompressedTCarray())
 	 * @return void
 	 * @see getCompressedTCarray()
-	 * @deprecated since 6.1, will be removed in two versions
 	 */
 	public function includeTCA($TCAloaded = 1) {
-		// Full TCA is always loaded during bootstrap in FE, this method is obsolete.
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		if (!$this->TCAloaded) {
+			$GLOBALS['TCA'] = array();
+			\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(TRUE);
+			$this->TCAloaded = $TCAloaded;
+		}
 	}
 
 	/**
@@ -2553,13 +2594,13 @@ class TypoScriptFrontendController {
 		$table_fields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->config['config']['sys_language_softMergeIfNotBlank'], 1);
 		foreach ($table_fields as $TF) {
 			list($tN, $fN) = explode(':', $TF);
-			$GLOBALS['TCA'][$tN]['columns'][$fN]['l10n_mode'] = 'mergeIfNotBlank';
+			$this->TCAcachedExtras[$tN]['l10n_mode'][$fN] = 'mergeIfNotBlank';
 		}
 		// Setting softExclude:
 		$table_fields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->config['config']['sys_language_softExclude'], 1);
 		foreach ($table_fields as $TF) {
 			list($tN, $fN) = explode(':', $TF);
-			$GLOBALS['TCA'][$tN]['columns'][$fN]['l10n_mode'] = 'exclude';
+			$this->TCAcachedExtras[$tN]['l10n_mode'][$fN] = 'exclude';
 		}
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_postProcess'])) {
 			$_params = array();

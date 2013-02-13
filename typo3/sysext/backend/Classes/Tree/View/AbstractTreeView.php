@@ -333,6 +333,9 @@ abstract class AbstractTreeView {
 			$this->MOUNTS = array(0 => 0);
 		}
 		$this->setTreeName();
+		if ($this->table) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($this->table);
+		}
 		// Setting this to FALSE disables the use of array-trees by default
 		$this->data = FALSE;
 		$this->dataLookup = FALSE;
