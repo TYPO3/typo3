@@ -1422,13 +1422,24 @@ class InlineElement {
 	protected function getLocalizationDifferences($table, array $options, array $recordsOriginal, array $recordsLocalization) {
 		$records = array();
 		$transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+		$considerWorkspaces = ($GLOBALS['BE_USER']->workspace > 0 && \TYPO3\CMS\Backend\Utility\BackendUtility::isTableWorkspaceEnabled($table));
 		// Compare original to localized version of the records:
 		foreach ($recordsLocalization as $uid => $row) {
-			// If the record points to a original translation which doesn't exist anymore, it could be removed:
 			if (isset($row[$transOrigPointerField]) && $row[$transOrigPointerField] > 0) {
-				$transOrigPointer = $row[$transOrigPointerField];
-				if (isset($recordsOriginal[$transOrigPointer])) {
-					unset($recordsOriginal[$transOrigPointer]);
+				// Check whether record is present in original records.
+				// In workspaces mode, new placeholders and versions of records
+				// localization point to the live version (placeholder) of the
+				// original translation, but here we are working on the versioned
+				// child references already.
+				$recordsOriginalIndex = $this->searchInRecords(
+					$row[$transOrigPointerField],
+					$recordsOriginal,
+					$considerWorkspaces
+				);
+
+				// If the record points to a original translation which doesn't exist anymore, it could be removed:
+				if ($recordsOriginalIndex !== FALSE) {
+					unset($recordsOriginal[$recordsOriginalIndex]);
 				} elseif ($options['showRemoved']) {
 					$row['__remove'] = TRUE;
 				}
@@ -1444,6 +1455,32 @@ class InlineElement {
 			}
 		}
 		return $records;
+	}
+
+	/**
+	 * Determines whether a record with a given uid is in an array
+	 * of record rows. Additionally workspaces origins are checked.
+	 *
+	 * @param integer $uid The uid to be searched for (needle)
+	 * @param array $records The record array to be searched in (haystack)
+	 * @param boolean $considerWorkspaces Whether to consider workspaces and compare against t3ver_oid as well
+	 * @return boolean|string Array index that contained the searched uid, FALSE if nothing was found
+	 */
+	protected function searchInRecords($uid, array $records, $considerWorkspaces = TRUE) {
+		$result = FALSE;
+		$uid = (int) $uid;
+
+		foreach ($records as $index => $record) {
+			if (!empty($record['uid']) && (int) $record['uid'] === $uid) {
+				$result = $index;
+				break;
+			} elseif ($considerWorkspaces && !empty($record['t3ver_oid']) && (int) $record['t3ver_oid'] === $uid) {
+				$result = $index;
+				break;
+			}
+		}
+
+		return $result;
 	}
 
 	/**

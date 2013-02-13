@@ -3733,6 +3733,8 @@ class DataHandler {
 	public function localize($table, $uid, $language) {
 		$newId = FALSE;
 		$uid = intval($uid);
+		$originalTranslationUid = $uid;
+
 		if ($GLOBALS['TCA'][$table] && $uid && $this->isNestedElementCallRegistered($table, $uid, 'localize') === FALSE) {
 			$this->registerNestedElementCall($table, $uid, 'localize');
 			if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] || $table === 'pages') {
@@ -3743,11 +3745,17 @@ class DataHandler {
 						if (is_array($row)) {
 							if ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] <= 0 || $table === 'pages') {
 								if ($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] == 0 || $table === 'pages') {
+									// Check for placeholder records of reference records (thus, $uid is a workspace version in this case)
+									$placeholderUid = $this->getPlaceholderUid($table, $uid, $row);
+									if ($placeholderUid !== NULL) {
+										$originalTranslationUid = $placeholderUid;
+									}
+
 									if ($table === 'pages') {
-										$pass = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'] === 'pages_language_overlay' && !\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $uid, (' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . '=' . intval($langRec['uid'])));
+										$pass = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'] === 'pages_language_overlay' && !\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $originalTranslationUid, (' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . '=' . intval($langRec['uid'])));
 										$Ttable = 'pages_language_overlay';
 									} else {
-										$pass = !\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordLocalization($table, $uid, $langRec['uid'], ('AND pid=' . intval($row['pid'])));
+										$pass = !\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordLocalization($table, $originalTranslationUid, $langRec['uid'], ('AND pid=' . intval($row['pid'])));
 										$Ttable = $table;
 									}
 									if ($pass) {
@@ -3756,7 +3764,9 @@ class DataHandler {
 										$excludeFields = array();
 										// Set override values:
 										$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['languageField']] = $langRec['uid'];
-										$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']] = $uid;
+										// For historic reasons, the pointer value is the live/placeholder value, since
+										// IRRE works on the specific version already, it needs to be resolved again
+										$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']] = $overrideValues;
 										// Copy the type (if defined in both tables) from the original record so that translation has same type as original record
 										if (isset($GLOBALS['TCA'][$table]['ctrl']['type']) && isset($GLOBALS['TCA'][$Ttable]['ctrl']['type'])) {
 											$overrideValues[$GLOBALS['TCA'][$Ttable]['ctrl']['type']] = $row[$GLOBALS['TCA'][$table]['ctrl']['type']];
@@ -5466,6 +5476,43 @@ class DataHandler {
 				return $result;
 			}
 		}
+	}
+
+	/**
+	 * Gets a possible(!) live placeholder of a record.
+	 *
+	 * @param string $table Name of the table
+	 * @param integer $uid Uid of the record
+	 * @param NULL|array $record Versionized record data
+	 * @return NULL|integer
+	 */
+	protected function getPlaceholderUid($table, $uid, array $record = NULL) {
+		$placeholderUid = NULL;
+
+		if ($this->BE_USER->workspace == 0 || !\TYPO3\CMS\Backend\Utility\BackendUtility::isTableWorkspaceEnabled($table)) {
+			return $placeholderUid;
+		}
+
+		if ($record === NULL) {
+			$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid);
+		}
+
+		if (empty($record['t3ver_oid']) || $record['t3ver_wsid'] == 0) {
+			return $placeholderUid;
+		}
+
+		$liveRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord(
+			$table,
+			$record['t3ver_oid'],
+			'uid',
+			' AND t3ver_wsid=' . (int) $record['t3ver_wsid'] . ' AND t3ver_state=1'
+		);
+
+		if (!empty($liveRecord)) {
+			$placeholderUid = $liveRecord['uid'];
+		}
+
+		return $placeholderUid;
 	}
 
 	/**
