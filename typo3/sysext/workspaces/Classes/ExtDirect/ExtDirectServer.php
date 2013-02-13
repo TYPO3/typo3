@@ -129,6 +129,8 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		$icon_Workspace = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconClass($parameter->table, $versionRecord);
 		$stagePosition = $this->getStagesService()->getPositionOfCurrentStage($parameter->stage);
 		$fieldsOfRecords = array_keys($liveRecord);
+		// get field list from TCA configuration, if available
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($parameter->table);
 		if ($GLOBALS['TCA'][$parameter->table]) {
 			if ($GLOBALS['TCA'][$parameter->table]['interface']['showRecordFieldList']) {
 				$fieldsOfRecords = $GLOBALS['TCA'][$parameter->table]['interface']['showRecordFieldList'];
