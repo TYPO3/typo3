@@ -770,6 +770,9 @@ class DataHandler {
 					if (is_array($incomingFieldArray)) {
 						// Handle native date/time fields
 						$dateTimeFormats = $GLOBALS['TYPO3_DB']->getDateTimeFormats($table);
+						if (!isset($GLOBALS['TCA'][$table]['columns'])) {
+							\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
+						}
 						foreach ($GLOBALS['TCA'][$table]['columns'] as $column => $config) {
 							if (isset($incomingFieldArray[$column])) {
 								if (isset($config['config']['dbType']) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList('date,datetime', $config['config']['dbType'])) {
@@ -1089,6 +1092,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function placeholderShadowing($table, $id) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if ($liveRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionOfRecord($table, $id, '*')) {
 			if ((int) $liveRec['t3ver_state'] > 0) {
 				$justStoredRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id);
@@ -1128,6 +1132,7 @@ class DataHandler {
 	 */
 	public function fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $realPid, $status, $tscPID) {
 		// Initialize:
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$originalLanguageRecord = NULL;
 		$originalLanguage_diffStorage = NULL;
 		$diffStorageFlag = FALSE;
@@ -1337,6 +1342,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function checkValue($table, $field, $value, $id, $status, $realPid, $tscPID) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		// Result array
 		$res = array();
 		$recFID = $table . ':' . $id . ':' . $field;
@@ -2166,6 +2172,7 @@ class DataHandler {
 	 */
 	public function getUnique($table, $field, $value, $id, $newPid = 0) {
 		// Initialize:
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$whereAdd = '';
 		$newValue = '';
 		if (intval($newPid)) {
@@ -2769,6 +2776,7 @@ class DataHandler {
 		$uid = ($origUid = intval($uid));
 		// Only copy if the table is defined in $GLOBALS['TCA'], a uid is given and the record wasn't copied before:
 		if ($GLOBALS['TCA'][$table] && $uid && !$this->isRecordCopied($table, $uid)) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			// This checks if the record can be selected which is all that a copy action requires.
 			if ($this->doesRecordExist($table, $uid, 'show')) {
 				$fullLanguageCheckNeeded = $table != 'pages';
@@ -2981,6 +2989,7 @@ class DataHandler {
 		}
 		// Only copy if the table is defined in TCA, a uid is given and the record wasn't copied before:
 		if ($GLOBALS['TCA'][$table] && $uid && !$this->isRecordCopied($table, $uid)) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			if ($this->doesRecordExist($table, $uid, 'show')) {
 				// Set up fields which should not be processed. They are still written - just passed through no-questions-asked!
 				$nonFields = array('uid', 'pid', 't3ver_id', 't3ver_oid', 't3ver_wsid', 't3ver_label', 't3ver_state', 't3ver_count', 't3ver_stage', 't3ver_tstamp', 'perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody');
@@ -3624,6 +3633,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function moveRecord_procFields($table, $uid, $destPid) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$conf = $GLOBALS['TCA'][$table]['columns'];
 		$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $uid);
 		if (is_array($row)) {
@@ -3735,6 +3745,7 @@ class DataHandler {
 		$uid = intval($uid);
 		if ($GLOBALS['TCA'][$table] && $uid && $this->isNestedElementCallRegistered($table, $uid, 'localize') === FALSE) {
 			$this->registerNestedElementCall($table, $uid, 'localize');
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] || $table === 'pages') {
 				if ($langRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_language', intval($language), 'uid,title')) {
 					if ($this->doesRecordExist($table, $uid, 'show')) {
@@ -3746,6 +3757,7 @@ class DataHandler {
 									if ($table === 'pages') {
 										$pass = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'] === 'pages_language_overlay' && !\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $uid, (' AND ' . $GLOBALS['TCA']['pages_language_overlay']['ctrl']['languageField'] . '=' . intval($langRec['uid'])));
 										$Ttable = 'pages_language_overlay';
+										\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($Ttable);
 									} else {
 										$pass = !\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordLocalization($table, $uid, $langRec['uid'], ('AND pid=' . intval($row['pid'])));
 										$Ttable = $table;
@@ -4074,6 +4086,7 @@ class DataHandler {
 						}
 					} else {
 						// Fetches all fields with flexforms and look for files to delete:
+						\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 						foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $cfg) {
 							$conf = $cfg['config'];
 							switch ($conf['type']) {
@@ -4328,6 +4341,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function deleteRecord_procFields($table, $uid, $undeleteRecord = FALSE) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$conf = $GLOBALS['TCA'][$table]['columns'];
 		$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid, '*', '', FALSE);
 		foreach ($row as $field => $value) {
@@ -4623,6 +4637,7 @@ class DataHandler {
 	public function remapListedDBRecords() {
 		if (count($this->registerDBList)) {
 			foreach ($this->registerDBList as $table => $records) {
+				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 				foreach ($records as $uid => $fields) {
 					$newData = array();
 					$theUidToUpdate = $this->copyMappingArray_merged[$table][$uid];
@@ -5377,6 +5392,7 @@ class DataHandler {
 	public function getExcludeListArray() {
 		$list = array();
 		foreach (array_keys($GLOBALS['TCA']) as $table) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			if (isset($GLOBALS['TCA'][$table]['columns'])) {
 				foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $config) {
 					if ($config['exclude'] && !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->BE_USER->groupData['non_exclude_fields'], ($table . ':' . $field))) {
@@ -5916,6 +5932,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function newFieldArray($table) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$fieldArray = array();
 		if (is_array($GLOBALS['TCA'][$table]['columns'])) {
 			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $content) {
@@ -6289,6 +6306,7 @@ class DataHandler {
 	 */
 	public function fixUniqueInPid($table, $uid) {
 		if ($GLOBALS['TCA'][$table]) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			$curData = $this->recordInfo($table, $uid, '*');
 			$newData = array();
 			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
@@ -6323,6 +6341,7 @@ class DataHandler {
 	 */
 	public function fixCopyAfterDuplFields($table, $uid, $prevUid, $update, $newData = array()) {
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields']) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			$prevData = $this->recordInfo($table, $prevUid, '*');
 			$theFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'], 1);
 			foreach ($theFields as $field) {
@@ -6346,6 +6365,7 @@ class DataHandler {
 	 */
 	public function extFileFields($table) {
 		$listArr = array();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if (isset($GLOBALS['TCA'][$table]['columns'])) {
 			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $configArr) {
 				if ($configArr['config']['type'] == 'group' && ($configArr['config']['internal_type'] == 'file' || $configArr['config']['internal_type'] == 'file_reference')) {
@@ -6365,6 +6385,7 @@ class DataHandler {
 	 */
 	public function getUniqueFields($table) {
 		$listArr = array();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if ($GLOBALS['TCA'][$table]['columns']) {
 			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $configArr) {
 				if ($configArr['config']['type'] === 'input') {
@@ -6510,6 +6531,7 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function extFileFunctions($table, $field, $filelist, $func) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$uploadFolder = $GLOBALS['TCA'][$table]['columns'][$field]['config']['uploadfolder'];
 		if ($uploadFolder && trim($filelist) && $GLOBALS['TCA'][$table]['columns'][$field]['config']['internal_type'] == 'file') {
 			$uploadPath = $this->destPathFromUploadFolder($uploadFolder);

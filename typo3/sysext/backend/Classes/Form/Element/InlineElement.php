@@ -181,6 +181,7 @@ class InlineElement {
 		// Init:
 		$config = $PA['fieldConf']['config'];
 		$foreign_table = $config['foreign_table'];
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($foreign_table);
 		if (\TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($table)) {
 			$language = intval($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
 		}
@@ -1802,6 +1803,7 @@ class InlineElement {
 				if ($i > 0 && $i % 3 == 0) {
 					// Load the TCA configuration of the table field and store it in the stack
 					if ($loadConfig) {
+						\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($unstable['table']);
 						$unstable['config'] = $GLOBALS['TCA'][$unstable['table']]['columns'][$unstable['field']]['config'];
 						// Fetch TSconfig:
 						$TSconfig = $this->fObj->setTSconfig($unstable['table'], array('uid' => $unstable['uid'], 'pid' => $this->inlineFirstPid), $unstable['field']);
