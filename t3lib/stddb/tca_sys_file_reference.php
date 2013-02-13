@@ -1,33 +1,13 @@
 <?php
-return array(
-	'ctrl' => array(
-		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference',
-		'label' => 'uid',
-		'tstamp' => 'tstamp',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'type' => 'uid_local:type',
-		'hideTable' => TRUE,
-		'rootLevel' => TRUE,
-		'sortby' => 'sorting',
-		'delete' => 'deleted',
-		'versioningWS' => TRUE,
-		'languageField' => 'sys_language_uid',
-		'transOrigPointerField' => 'l10n_parent',
-		'transOrigDiffSourceField' => 'l10n_diffsource',
-		// records can and should be edited in workspaces
-		'shadowColumnsForNewPlaceholders' => 'tablenames,fieldname,uid_local,uid_foreign',
-		'enablecolumns' => array(
-			'disabled' => 'hidden'
-		),
-		'security' => array(
-			'ignoreWebMountRestriction' => TRUE,
-			'ignoreRootLevelRestriction' => TRUE,
-		),
-	),
+if (!defined('TYPO3_MODE')) {
+	die('Access denied.');
+}
+$TCA['sys_file_reference'] = array(
+	'ctrl' => $TCA['sys_file_reference']['ctrl'],
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,uid_local,uid_foreign,tablenames,fieldname,sorting_foreign,table_local,title,description'
 	),
+	'feInterface' => $TCA['sys_file_reference']['feInterface'],
 	'columns' => array(
 		't3ver_label' => array(
 			'exclude' => 0,
@@ -237,12 +217,12 @@ return array(
 		)
 	),
 	'palettes' => array(
-		// Used for basic overlays: having a file list etc
+		// used for basic overlays: having a file list etc
 		'basicoverlayPalette' => array(
 			'showitem' => 'title,description',
 			'canNotCollapse' => TRUE
 		),
-		// Used for everything that is an image (because it has a link and a alternative text)
+		// used for everything that is an image (because it has a link and a alternative text)
 		'imageoverlayPalette' => array(
 			'showitem' => '
 				title,alternative;;;;3-3-3,--linebreak--,
@@ -250,7 +230,7 @@ return array(
 				',
 			'canNotCollapse' => TRUE
 		),
-		// File palette, hidden but needs to be included all the time
+		// file palette, hidden but needs to be included all the time
 		'filePalette' => array(
 			'showitem' => 'uid_local, hidden, sys_language_uid, l10n_parent',
 			'isHiddenPalette' => TRUE
