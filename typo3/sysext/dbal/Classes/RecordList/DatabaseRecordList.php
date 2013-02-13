@@ -54,6 +54,8 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecord
 	public function makeSearchString($table) {
 		// Make query, only if table is valid and a search string is actually defined:
 		if ($GLOBALS['TCA'][$table] && $this->searchString) {
+			// Loading full table description - we need to traverse fields:
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			// Initialize field array:
 			$sfields = array();
 			$or = '';
