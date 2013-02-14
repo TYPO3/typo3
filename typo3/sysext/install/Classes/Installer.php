@@ -2590,14 +2590,16 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 		$programs = explode(',', 'gm,convert,combine,composite,identify');
 		$isExt = TYPO3_OS == 'WIN' ? '.exe' : '';
 		$this->config_array['im_combine_filename'] = 'combine';
+		$errors = array();
 		foreach ($paths as $k => $v) {
 			if (!preg_match('/[\\/]$/', $v)) {
 				$v .= '/';
 			}
 			foreach ($programs as $filename) {
 				if (ini_get('open_basedir') || file_exists($v) && @is_file(($v . $filename . $isExt))) {
-					$version = $this->_checkImageMagick_getVersion($filename, $v);
-					if ($version > 0) {
+
+					list($error, $version) = $this->_checkImageMagick_getVersion($filename, $v);
+					if (!$error && $version > 0) {
 						// Assume GraphicsMagick
 						if ($filename == 'gm') {
 							$index[$v]['gm'] = $version;
@@ -2607,6 +2609,8 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 							// Assume ImageMagick
 							$index[$v][$filename] = $version;
 						}
+					} else {
+						$errors[] = array('path' => $v, 'file' => $filename, 'output' => $version);
 					}
 				}
 			}
@@ -2633,6 +2637,19 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 					\'combine\'/\'composite\' and \'identify\' to be available
 				</p>
 			', 2);
+
+			// Generate list of errors encountered while running #_checkImageMagick_getVersion
+			$errorMessages = '';
+			foreach($errors as $error) {
+				$errorMessages .= "
+					<p>
+						Invoked File: {$error['path']}{$error['file']} <br/>
+						<pre style='white-space: pre-wrap'>{$error['output']}</pre><br/>
+					</p>
+				";
+			}
+			$this->message($ext, 'Errors encountered while searching for ImageMagick installation:', $errorMessages, 3);
+
 		} else {
 			// Get the subpart for the ImageMagick versions
 			$theCode = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###VERSIONS###');
@@ -2747,16 +2764,29 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename'] = $file;
 			}
 		}
+
 		$cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::imageMagickCommand($file, $parameters, $path);
-		$retVal = FALSE;
-		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $retVal);
-		$string = $retVal[0];
-		list(, $ver) = explode('Magick', $string);
-		list($ver) = explode(' ', trim($ver));
+		$cmd .= " 2>&1"; // Redirect stderr to stdout, so that we can intercept possible error messages
+
+		$output = NULL;
+		$error = FALSE;
+		$retVal = 1;
+		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $retVal);
+
+		// Determine whether the image magick command call resulted in an error
+		if($retVal > 0) {
+			$error = TRUE;
+			$output = implode("\n", $output);
+		} else {
+			list(, $ver) = explode('Magick', $output[0]);
+			list($ver) = explode(' ', trim($ver));
+			$output = trim($ver);
+		}
+
 		// Restore the values
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] = $im_version;
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename'] = $combine_filename;
-		return trim($ver);
+		return array($error, $output);
 	}
 
 	/**
