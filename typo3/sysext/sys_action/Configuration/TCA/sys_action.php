@@ -1,10 +1,26 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
-
-$GLOBALS['TCA']['sys_action'] = array(
-	'ctrl' => $GLOBALS['TCA']['sys_action']['ctrl'],
+return array(
+	'ctrl' => array(
+		'label' => 'title',
+		'tstamp' => 'tstamp',
+		'default_sortby' => 'ORDER BY title',
+		'sortby' => 'sorting',
+		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.php:LGL.prependAtCopy',
+		'title' => 'LLL:EXT:sys_action/locallang_tca.xlf:sys_action',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'adminOnly' => 1,
+		'rootLevel' => -1,
+		'setToDefaultOnCopy' => 'assign_to_groups',
+		'enablecolumns' => array(
+			'disabled' => 'hidden'
+		),
+		'typeicon_classes' => array(
+			'default' => 'mimetypes-x-sys_action'
+		),
+		'type' => 'type',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('sys_action') . 'x-sys_action.png',
+	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,title,type,description,assign_to_groups'
 	),

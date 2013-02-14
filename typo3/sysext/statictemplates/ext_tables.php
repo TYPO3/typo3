@@ -33,7 +33,6 @@ $tempField = array(
 		)
 	)
 );
-\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('sys_template');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('sys_template', $tempField, 1);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('sys_template', 'include_static;;2;;5-5-5', '', 'before:includeStaticAfterBasedOn');
 ?>

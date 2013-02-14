@@ -1,13 +1,25 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
-$TCA['index_config'] = array(
-	'ctrl' => $TCA['index_config']['ctrl'],
+return array(
+	'ctrl' => array(
+		'title' => 'LLL:EXT:indexed_search/locallang_db.php:index_config',
+		'label' => 'title',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'type' => 'type',
+		'default_sortby' => 'ORDER BY crdate',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime'
+		),
+		'iconfile' => 'default.gif'
+	),
+	'feInterface' => array(
+		'fe_admin_fieldList' => 'hidden, starttime, title, description, type, depth, table2index, alternative_source_pid, get_params, chashcalc, filepath, extensions'
+	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,starttime,title,description,type,depth,table2index,alternative_source_pid,get_params,chashcalc,filepath,extensions'
 	),
-	'feInterface' => $TCA['index_config']['feInterface'],
 	'columns' => array(
 		'hidden' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',

@@ -1,9 +1,17 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
-$TCA['sys_note'] = array(
-	'ctrl' => $TCA['sys_note']['ctrl'],
+return array(
+	'ctrl' => array(
+		'label' => 'subject',
+		'default_sortby' => 'ORDER BY crdate',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser',
+		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
+		'delete' => 'deleted',
+		'title' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('sys_note') . 'ext_icon.gif',
+		'sortby' => 'sorting',
+	),
 	'interface' => array(
 		'showRecordFieldList' => 'category,subject,message,personal'
 	),

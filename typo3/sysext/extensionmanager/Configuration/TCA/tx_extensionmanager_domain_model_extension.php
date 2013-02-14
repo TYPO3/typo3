@@ -1,9 +1,11 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
-$TCA['tx_extensionmanager_domain_model_extension'] = array(
-	'ctrl' => $TCA['tx_extensionmanager_domain_model_extension']['ctrl'],
+return array(
+	'ctrl' => array(
+		'title' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_db.xml:tx_extensionmanager_domain_model_extension',
+		'label' => 'uid',
+		'default_sortby' => '',
+		'hideTable' => TRUE
+	),
 	'interface' => array(
 		'showRecordFieldList' => 'extension_key,version,integer_version,title,description,state,category,last_updated,update_comment,author_name,author_email,md5hash,serialized_dependencies'
 	),

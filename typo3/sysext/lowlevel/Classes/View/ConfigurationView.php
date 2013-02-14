@@ -122,9 +122,6 @@ class ConfigurationView {
 			$arrayBrowser->varName = '$TYPO3_CONF_VARS';
 			break;
 		case 1:
-			foreach ($GLOBALS['TCA'] as $table => $config) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
-			}
 			$theVar = $GLOBALS['TCA'];
 			\TYPO3\CMS\Core\Utility\GeneralUtility::naturalKeySortRecursive($theVar);
 			$arrayBrowser->varName = '$TCA';
@@ -214,14 +211,6 @@ class ConfigurationView {
 				if ($var === '$TCA') {
 					// check if we are editing the TCA
 					preg_match_all('/\\[\'([^\']+)\'\\]/', $line, $parts);
-					if ($parts[1][1] !== 'ctrl') {
-						// anything else than ctrl section requires to load TCA
-						$loadTCA = 'TYPO3\\CMS\\Core\\Utility\\GeneralUtility::loadTCA(\'' . $parts[1][0] . '\');';
-						if (strpos($extTables, $loadTCA) === FALSE) {
-							// check if the loadTCA statement is not already present in the file
-							$changedLine = $loadTCA . LF . $changedLine;
-						}
-					}
 				}
 				// insert line in extTables.php
 				$extTables = preg_replace('/<\\?php|\\?>/is', '', $extTables);

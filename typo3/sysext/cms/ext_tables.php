@@ -11,239 +11,67 @@ if (TYPO3_MODE == 'BE') {
 }
 // Add allowed records to pages:
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('pages_language_overlay,tt_content,sys_template,sys_domain,backend_layout');
-// This is the standard TypoScript content table, tt_content
-$TCA['tt_content'] = array(
-	'ctrl' => array(
-		'label' => 'header',
-		'label_alt' => 'subheader,bodytext',
-		'sortby' => 'sorting',
-		'tstamp' => 'tstamp',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'title' => 'LLL:EXT:cms/locallang_tca.xml:tt_content',
-		'delete' => 'deleted',
-		'versioningWS' => 2,
-		'versioning_followPages' => TRUE,
-		'origUid' => 't3_origuid',
-		'type' => 'CType',
-		'hideAtCopy' => TRUE,
-		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
-		'copyAfterDuplFields' => 'colPos,sys_language_uid',
-		'useColumnsForDefaultValues' => 'colPos,sys_language_uid',
-		'shadowColumnsForNewPlaceholders' => 'colPos',
-		'transOrigPointerField' => 'l18n_parent',
-		'transOrigDiffSourceField' => 'l18n_diffsource',
-		'languageField' => 'sys_language_uid',
-		'enablecolumns' => array(
-			'disabled' => 'hidden',
-			'starttime' => 'starttime',
-			'endtime' => 'endtime',
-			'fe_group' => 'fe_group'
-		),
-		'typeicon_column' => 'CType',
-		'typeicon_classes' => array(
-			'header' => 'mimetypes-x-content-header',
-			'textpic' => 'mimetypes-x-content-text-picture',
-			'image' => 'mimetypes-x-content-image',
-			'bullets' => 'mimetypes-x-content-list-bullets',
-			'table' => 'mimetypes-x-content-table',
-			'uploads' => 'mimetypes-x-content-list-files',
-			'multimedia' => 'mimetypes-x-content-multimedia',
-			'media' => 'mimetypes-x-content-multimedia',
-			'menu' => 'mimetypes-x-content-menu',
-			'list' => 'mimetypes-x-content-plugin',
-			'mailform' => 'mimetypes-x-content-form',
-			'search' => 'mimetypes-x-content-form-search',
-			'login' => 'mimetypes-x-content-login',
-			'shortcut' => 'mimetypes-x-content-link',
-			'script' => 'mimetypes-x-content-script',
-			'div' => 'mimetypes-x-content-divider',
-			'html' => 'mimetypes-x-content-html',
-			'text' => 'mimetypes-x-content-text',
-			'default' => 'mimetypes-x-content-text'
-		),
-		'typeicons' => array(
-			'header' => 'tt_content_header.gif',
-			'textpic' => 'tt_content_textpic.gif',
-			'image' => 'tt_content_image.gif',
-			'bullets' => 'tt_content_bullets.gif',
-			'table' => 'tt_content_table.gif',
-			'uploads' => 'tt_content_uploads.gif',
-			'multimedia' => 'tt_content_mm.gif',
-			'media' => 'tt_content_mm.gif',
-			'menu' => 'tt_content_menu.gif',
-			'list' => 'tt_content_list.gif',
-			'mailform' => 'tt_content_form.gif',
-			'search' => 'tt_content_search.gif',
-			'login' => 'tt_content_login.gif',
-			'shortcut' => 'tt_content_shortcut.gif',
-			'script' => 'tt_content_script.gif',
-			'div' => 'tt_content_div.gif',
-			'html' => 'tt_content_html.gif'
-		),
-		'thumbnail' => 'image',
-		'requestUpdate' => 'list_type,rte_enabled,menu_type',
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tbl_tt_content.php',
-		'dividers2tabs' => 1,
-		'searchFields' => 'header,header_link,subheader,bodytext,pi_flexform'
-	)
-);
-// fe_users
-$TCA['fe_users'] = array(
-	'ctrl' => array(
-		'label' => 'username',
-		'default_sortby' => 'ORDER BY username',
-		'tstamp' => 'tstamp',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'fe_cruser_id' => 'fe_cruser_id',
-		'title' => 'LLL:EXT:cms/locallang_tca.xml:fe_users',
-		'delete' => 'deleted',
-		'enablecolumns' => array(
-			'disabled' => 'disable',
-			'starttime' => 'starttime',
-			'endtime' => 'endtime'
-		),
-		'typeicon_classes' => array(
-			'default' => 'status-user-frontend'
-		),
-		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,disable,starttime,endtime',
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tbl_cms.php',
-		'dividers2tabs' => 1,
-		'searchFields' => 'username,name,first_name,last_name,middle_name,address,telephone,fax,email,title,zip,city,country,company'
-	),
-	'feInterface' => array(
-		'fe_admin_fieldList' => 'username,password,usergroup,name,address,telephone,fax,email,title,zip,city,country,www,company'
-	)
-);
-// fe_groups
-$TCA['fe_groups'] = array(
-	'ctrl' => array(
-		'label' => 'title',
-		'tstamp' => 'tstamp',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'delete' => 'deleted',
-		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
-		'enablecolumns' => array(
-			'disabled' => 'hidden'
-		),
-		'title' => 'LLL:EXT:cms/locallang_tca.xml:fe_groups',
-		'typeicon_classes' => array(
-			'default' => 'status-user-group-frontend'
-		),
-		'useColumnsForDefaultValues' => 'lockToDomain',
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tbl_cms.php',
-		'dividers2tabs' => 1,
-		'searchFields' => 'title,description'
-	)
-);
-// sys_domain
-$TCA['sys_domain'] = array(
-	'ctrl' => array(
-		'label' => 'domainName',
-		'tstamp' => 'tstamp',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'sortby' => 'sorting',
-		'title' => 'LLL:EXT:cms/locallang_tca.xml:sys_domain',
-		'iconfile' => 'domain.gif',
-		'enablecolumns' => array(
-			'disabled' => 'hidden'
-		),
-		'typeicon_classes' => array(
-			'default' => 'mimetypes-x-content-domain'
-		),
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tbl_cms.php',
-		'searchFields' => 'domainName,redirectTo'
-	)
-);
-// pages_language_overlay
-$TCA['pages_language_overlay'] = array(
-	'ctrl' => array(
-		'label' => 'title',
-		'tstamp' => 'tstamp',
-		'title' => 'LLL:EXT:cms/locallang_tca.xml:pages_language_overlay',
-		'versioningWS' => TRUE,
-		'versioning_followPages' => TRUE,
-		'origUid' => 't3_origuid',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'delete' => 'deleted',
-		'enablecolumns' => array(
-			'disabled' => 'hidden',
-			'starttime' => 'starttime',
-			'endtime' => 'endtime'
-		),
-		'transOrigPointerField' => 'pid',
-		'transOrigPointerTable' => 'pages',
-		'transOrigDiffSourceField' => 'l18n_diffsource',
-		'shadowColumnsForNewPlaceholders' => 'title',
-		'languageField' => 'sys_language_uid',
-		'mainpalette' => 1,
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tbl_cms.php',
-		'type' => 'doktype',
-		'typeicon_classes' => array(
-			'default' => 'mimetypes-x-content-page-language-overlay'
-		),
-		'dividers2tabs' => TRUE,
-		'searchFields' => 'title,subtitle,nav_title,keywords,description,abstract,author,author_email,url'
-	)
-);
-// sys_template
-$TCA['sys_template'] = array(
-	'ctrl' => array(
-		'label' => 'title',
-		'tstamp' => 'tstamp',
-		'sortby' => 'sorting',
-		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
-		'title' => 'LLL:EXT:cms/locallang_tca.xml:sys_template',
-		'versioningWS' => TRUE,
-		'origUid' => 't3_origuid',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'delete' => 'deleted',
-		'adminOnly' => 1,
-		// Only admin, if any
-		'iconfile' => 'template.gif',
-		'enablecolumns' => array(
-			'disabled' => 'hidden',
-			'starttime' => 'starttime',
-			'endtime' => 'endtime'
-		),
-		'typeicon_column' => 'root',
-		'typeicon_classes' => array(
-			'default' => 'mimetypes-x-content-template-extension',
-			'1' => 'mimetypes-x-content-template'
-		),
-		'typeicons' => array(
-			'0' => 'template_add.gif'
-		),
-		'dividers2tabs' => 1,
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tbl_cms.php',
-		'searchFields' => 'title,constants,config'
-	)
-);
-// layouts
-$TCA['backend_layout'] = array(
-	'ctrl' => array(
-		'title' => 'LLL:EXT:cms/locallang_tca.xml:backend_layout',
-		'label' => 'title',
-		'tstamp' => 'tstamp',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
-		'versioningWS' => TRUE,
-		'origUid' => 't3_origuid',
-		'sortby' => 'sorting',
-		'delete' => 'deleted',
-		'enablecolumns' => array(
-			'disabled' => 'hidden'
-		),
-		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tbl_cms.php',
-		'iconfile' => 'backend_layout.gif',
-		'selicon_field' => 'icon',
-		'selicon_field_path' => 'uploads/media',
-		'thumbnail' => 'resources'
-	)
-);
+
+if (!function_exists('user_sortPluginList')) {
+	function user_sortPluginList(array &$parameters) {
+		usort($parameters['items'], create_function('$item1,$item2', 'return strcasecmp($GLOBALS[\'LANG\']->sL($item1[0]),$GLOBALS[\'LANG\']->sL($item2[0]));'));
+	}
+}
+
+// keep old code (pre-FAL) for installations that haven't upgraded yet. please remove this code in TYPO3 7.0
+// @deprecated since TYPO3 6.0, please remove in TYPO3 7.0
+// existing installation - and files are merged, nothing to do
+if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard']) || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard'], 'tt_content:image')) && !\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('6.0')) {
+	\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('This installation hasn\'t been migrated to FAL for the field $TCA[tt_content][columns][image] yet. Please do so before TYPO3 v7.');
+	// Existing installation and no upgrade wizard was executed - and files haven't been merged: use the old code
+	$TCA['tt_content']['columns']['image']['config'] = array(
+		'type' => 'group',
+		'internal_type' => 'file',
+		'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
+		'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
+		'uploadfolder' => 'uploads/pics',
+		'show_thumbs' => '1',
+		'size' => '3',
+		'maxitems' => '200',
+		'minitems' => '0',
+		'autoSizeMax' => 40
+	);
+}
+
+if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard']) || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard'], 'tt_content:media')) && !\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('6.0')) {
+	\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('This installation hasn\'t been migrated to FAL for the field $TCA[tt_content][columns][media] yet. Please do so before TYPO3 v7.');
+	// Existing installation and no upgrade wizard was executed - and files haven't been merged: use the old code
+	$TCA['tt_content']['columns']['media']['config'] = array(
+		'type' => 'group',
+		'internal_type' => 'file',
+		'allowed' => '',
+		// Must be empty for disallowed to work.
+		'disallowed' => PHP_EXTENSIONS_DEFAULT,
+		'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
+		'uploadfolder' => 'uploads/media',
+		'show_thumbs' => '1',
+		'size' => '3',
+		'maxitems' => '10',
+		'minitems' => '0'
+	);
+}
+
+// Keep old code (pre-FAL) for installations that haven't upgraded yet.
+// @deprecated since TYPO3 6.0, please remove at earliest in TYPO3 6.2
+// existing installation - and files are merged, nothing to do
+if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard']) || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard'], 'pages_language_overlay:media')) && !\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('6.0')) {
+	\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('This installation hasn\'t been migrated to FAL for the field $TCA[pages_language_overlay][columns][media] yet. Please do so before TYPO3 v7.');
+	// Existing installation and no upgrade wizard was executed - and files haven't been merged: use the old code
+	$TCA['pages_language_overlay']['columns']['media']['config'] = array(
+		'type' => 'group',
+		'internal_type' => 'file',
+		'allowed' => $TCA['pages']['columns']['media']['config']['allowed'],
+		'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
+		'uploadfolder' => 'uploads/media',
+		'show_thumbs' => '1',
+		'size' => '3',
+		'maxitems' => '100',
+		'minitems' => '0'
+	);
+}
 ?>

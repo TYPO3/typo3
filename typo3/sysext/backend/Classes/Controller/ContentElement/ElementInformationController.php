@@ -119,7 +119,6 @@ class ElementInformationController {
 		// Checking if the $table value is really a table and if the user has
 		// access to it.
 		if (isset($GLOBALS['TCA'][$this->table])) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($this->table);
 			$this->type = 'db';
 			$this->uid = intval($this->uid);
 			// Check permissions and uid value:
@@ -150,7 +149,6 @@ class ElementInformationController {
 				$this->access = $this->fileObject->checkActionPermission('read');
 				$this->type = 'file';
 				$this->table = 'sys_file';
-				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($this->table);
 				try {
 					$this->row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($this->table, $this->fileObject->getUid());
 				} catch (\Exception $e) {
@@ -387,7 +385,6 @@ class ElementInformationController {
 	 * @return string Field name
 	 */
 	public function getFieldName($tableName, $fieldName) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName);
 		if ($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label'] !== NULL) {
 			$field = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
 			if (trim($field) === '') {
