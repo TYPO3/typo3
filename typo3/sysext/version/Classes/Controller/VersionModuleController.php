@@ -346,7 +346,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 				$diff_1_record = \t3lib_BEfunc::getRecord($this->table, $diff_1);
 				$diff_2_record = \t3lib_BEfunc::getRecord($this->table, $diff_2);
 				if (is_array($diff_1_record) && is_array($diff_2_record)) {
-					\t3lib_div::loadTCA($this->table);
 					$t3lib_diff_Obj = \t3lib_div::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
 					$tRows = array();
 					$tRows[] = '
@@ -1200,8 +1199,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 		$pctChange = 'N/A';
 		// Check that records are arrays:
 		if (is_array($diff_1_record) && is_array($diff_2_record)) {
-			// Load full table description and initialize diff-object:
-			\t3lib_div::loadTCA($table);
 			$t3lib_diff_Obj = \t3lib_div::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
 			// Add header row:
 			$tRows = array();
