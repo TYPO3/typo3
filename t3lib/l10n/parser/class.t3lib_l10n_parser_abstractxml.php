@@ -63,7 +63,7 @@ abstract class t3lib_l10n_parser_AbstractXml implements t3lib_l10n_parser {
 		$this->languageKey = $languageKey;
 		$this->charset = $this->getCharset($languageKey, $charset);
 
-		if (($this->languageKey !== 'default' && $this->languageKey !== 'en')) {
+		if ($this->languageKey !== 'default') {
 			$this->sourcePath = t3lib_div::getFileAbsFileName(
 				t3lib_div::llXmlAutoFileName($this->sourcePath, $this->languageKey)
 			);
