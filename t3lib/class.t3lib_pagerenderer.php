@@ -53,6 +53,14 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	protected $locales;
 	protected $lang;
 
+	/**
+	 * List of language dependencies for actual language. This is used for local variants of a language
+	 * that depend on their "main" language, like Brazilian Portuguese or Canadian French.
+	 *
+	 * @var array
+	 */
+	protected $languageDependencies = array();
+
 	/** @var t3lib_Compressor $compressor */
 	protected $compressor;
 
@@ -252,6 +260,15 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 */
 	public function setLanguage($lang) {
 		$this->lang = $lang;
+		$this->languageDependencies = array();
+
+		// Language is found. Configure it:
+		if (in_array($this->lang, $this->locales->getLocales())) {
+			$this->languageDependencies[] = $this->lang;
+			foreach ($this->locales->getLocaleDependencies($this->lang) as $language) {
+				$this->languageDependencies[] = $language;
+			}
+		}
 	}
 
 	/**
@@ -1885,7 +1902,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		}
 
 		$labelsFromFile = array();
-		$allLabels = t3lib_div::readLLfile($fileRef, $this->lang, $this->charSet, $errorMode);
+		$allLabels = $this->readLLfile($fileRef, $errorMode);
 
 			// Regular expression to strip the selection prefix and possibly something from the label name:
 		$labelPattern = '#^' . preg_quote($selectionPrefix, '#') . '(' . preg_quote($stripFromSelectionName, '#') . ')?#';
@@ -1910,6 +1927,41 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 			$this->inlineLanguageLabels = array_merge($this->inlineLanguageLabels, $labelsFromFile);
 		}
+	}
+
+	/**
+	 * Reads a locallang file.
+	 *
+	 * @param string $fileRef Reference to a relative filename to include.
+	 * @param integer $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
+	 * @return array Returns the $LOCAL_LANG array found in the file. If no array found, returns empty array.
+	 */
+	protected function readLLfile($fileRef, $errorMode = 0) {
+		if ($this->lang !== 'default') {
+			$languages = array_reverse($this->languageDependencies);
+			// At least we need to have English
+			if (empty($languages)) {
+				$languages[] = 'default';
+			}
+		} else {
+			$languages = array('default');
+		}
+
+		$localLanguage = array();
+		foreach ($languages as $language) {
+			$tempLL = t3lib_div::readLLfile($fileRef, $language, $this->charSet, $errorMode);
+			$localLanguage['default'] = $tempLL['default'];
+			if (!isset($localLanguage[$this->lang])) {
+				$localLanguage[$this->lang] = $localLanguage['default'];
+			}
+			if ($this->lang !== 'default' && isset($tempLL[$language])) {
+				// Merge current language labels onto labels from previous language
+				// This way we have a labels with fall back applied
+				$localLanguage[$this->lang] = t3lib_div::array_merge_recursive_overrule($localLanguage[$this->lang], $tempLL[$language], FALSE, FALSE);
+			}
+		}
+
+		return $localLanguage;
 	}
 
 	/*****************************************************/
