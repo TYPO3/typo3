@@ -223,6 +223,14 @@
 	var $LL_labels_cache=array();
 	var $LL_files_cache=array();
 
+	 /**
+	  * List of language dependencies for actual language. This is used for local variants of a language
+	  * that depend on their "main" language, like Brazilian Portuguese or Canadian French.
+	  *
+	  * @var array
+	  */
+	 protected $languageDependencies = array();
+
 	/**
 	 * Locking object
 	 *
@@ -4659,8 +4667,32 @@ if (version == "n3") {
 	 * @param	string		Reference to a relative filename to include.
 	 * @return	array		Returns the $LOCAL_LANG array found in the file. If no array found, returns empty array.
 	 */
-	function readLLfile($fileRef)	{
-		return t3lib_div::readLLfile($fileRef, $this->lang, $this->renderCharset);
+	function readLLfile($fileRef) {
+		if ($this->lang !== 'default') {
+			$languages = array_reverse($this->languageDependencies);
+			// At least we need to have English
+			if (empty($languages)) {
+				$languages[] = 'default';
+			}
+		} else {
+			$languages = array('default');
+		}
+
+		$localLanguage = array();
+		foreach ($languages as $language) {
+			$tempLL = t3lib_div::readLLfile($fileRef, $language, $this->renderCharset);
+			$localLanguage['default'] = $tempLL['default'];
+			if (!isset($localLanguage[$this->lang])) {
+				$localLanguage[$this->lang] = $localLanguage['default'];
+			}
+			if ($this->lang !== 'default' && isset($tempLL[$language])) {
+				// Merge current language labels onto labels from previous language
+				// This way we have a label with fall back applied
+				$localLanguage[$this->lang] = t3lib_div::array_merge_recursive_overrule($localLanguage[$this->lang], $tempLL[$language], FALSE, FALSE);
+			}
+		}
+
+		return $localLanguage;
 	}
 
 	/**
@@ -4690,6 +4722,19 @@ if (version == "n3") {
 			// Setting language key and split index:
 		$this->lang = $this->config['config']['language'] ? $this->config['config']['language'] : 'default';
 		$this->getPageRenderer()->setLanguage($this->lang);
+
+		// Finding the requested language in this list based
+		// on the $lang key being inputted to this function.
+		/** @var $locales t3lib_l10n_Locales */
+		$locales = t3lib_div::makeInstance('t3lib_l10n_Locales');
+
+		// Language is found. Configure it:
+		if (in_array($this->lang, $locales->getLocales())) {
+			$this->languageDependencies[] = $this->lang;
+			foreach ($locales->getLocaleDependencies($this->lang) as $language) {
+				$this->languageDependencies[] = $language;
+			}
+		}
 
 			// Setting charsets:
 		$this->renderCharset = $this->csConvObj->parse_charset($this->config['config']['renderCharset'] ? $this->config['config']['renderCharset'] : ($this->TYPO3_CONF_VARS['BE']['forceCharset'] ? $this->TYPO3_CONF_VARS['BE']['forceCharset'] : $this->defaultCharSet));	// Rendering charset of HTML page.
