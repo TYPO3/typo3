@@ -77,6 +77,7 @@ class tslib_content_Media extends tslib_content_Abstract {
 			$conf['file'] = $this->cObj->typoLink_URL(array(
 				'parameter' => $url
 			));
+			unset($conf['file.']);
 		}
 
 		$renderType = isset($conf['renderType.'])
