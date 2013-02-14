@@ -625,7 +625,7 @@ class Bootstrap {
 
 	/**
 	 * Unsetting reserved global variables:
-	 * Those which are/can be set in "stddb/tables.php" files:
+	 * Those which are/can be set in "ext:core/ext_tables.php" file:
 	 *
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
@@ -765,6 +765,35 @@ class Bootstrap {
 	}
 
 	/**
+	 * Load TCA for frontend
+	 *
+	 * This method is *only* executed in frontend scope. The idea is to execute the
+	 * whole TCA and ext_tables (which manipulate TCA) on first frontend access,
+	 * and then cache the full TCA on disk to be used for the next run again.
+	 *
+	 * This way, ext_tables.php ist not executed every time, but $GLOBALS['TCA']
+	 * is still always there.
+	 *
+	 * @return \TYPO3\CMS\Core\Core\Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
+	 */
+	public function loadCachedTca() {
+		$cacheIdentifier = 'tca_fe_' . sha1((TYPO3_version . PATH_site . 'tca_fe'));
+		/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
+		$codeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
+		if ($codeCache->has($cacheIdentifier)) {
+			$codeCache->requireOnce($cacheIdentifier);
+		} else {
+			$this->loadExtensionTables(TRUE);
+			$phpCodeToCache = '$GLOBALS[\'TCA\'] = ';
+			$phpCodeToCache .= \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($GLOBALS['TCA']);
+			$phpCodeToCache .= ';';
+			$codeCache->set($cacheIdentifier, $phpCodeToCache);
+		}
+		return $this;
+	}
+
+	/**
 	 * Load ext_tables and friends.
 	 *
 	 * This will mainly set up $TCA and several other global arrays
@@ -772,43 +801,51 @@ class Bootstrap {
 	 * Executes ext_tables.php files of loaded extensions or the
 	 * according cache file if exists.
 	 *
-	 * Note: For backwards compatibility some global variables are
-	 * explicitly set as global to be used without $GLOBALS[] in
-	 * ext_tables.php. It is discouraged to access variables like
-	 * $TBE_MODULES directly in ext_tables.php, but we can not prohibit
-	 * this without heavily breaking backwards compatibility.
-	 *
-	 * @TODO : We could write a scheduler / reports module or an update checker
-	 * @TODO : It should be defined, which global arrays are ok to be manipulated
 	 * @param boolean $allowCaching True, if reading compiled ext_tables file from cache is allowed
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function loadExtensionTables($allowCaching = TRUE) {
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadBaseTca($allowCaching);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtTables($allowCaching);
+		$this->executeExtTablesAdditionalFile();
+		$this->runExtTablesPostProcessingHooks();
+		return $this;
+	}
+
+	/**
+	 * Execute TYPO3_extTableDef_script if defined and exists
+	 *
+	 * Note: For backwards compatibility some global variables are
+	 * explicitly set as global to be used without $GLOBALS[] in
+	 * the extension table script. It is discouraged to access variables like
+	 * $TBE_MODULES directly, but we can not prohibit
+	 * this without heavily breaking backwards compatibility.
+	 *
+	 * @TODO : We could write a scheduler / reports module or an update checker
+	 * @TODO : It should be defined, which global arrays are ok to be manipulated
+	 *
+	 * @return void
+	 */
+	protected function executeExtTablesAdditionalFile() {
 		// It is discouraged to use those global variables directly, but we
 		// can not prohibit this without breaking backwards compatibility
 		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
 		global $TBE_MODULES, $TBE_MODULES_EXT, $TCA;
 		global $PAGES_TYPES, $TBE_STYLES, $FILEICONS;
 		global $_EXTKEY;
-		// Include standard tables.php file
-		require PATH_t3lib . 'stddb/tables.php';
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtTables($allowCaching);
 		// Load additional ext tables script if the file exists
 		$extTablesFile = PATH_typo3conf . TYPO3_extTableDef_script;
 		if (file_exists($extTablesFile)) {
 			include $extTablesFile;
 		}
-		// Run post hook for additional manipulation
-		$this->runExtTablesPostProcessingHooks();
-		return $this;
 	}
 
 	/**
 	 * Check for registered ext tables hooks and run them
 	 *
 	 * @throws \UnexpectedValueException
-	 * @return \TYPO3\CMS\Core\Core\Bootstrap
+	 * @return void
 	 */
 	protected function runExtTablesPostProcessingHooks() {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'])) {
@@ -821,7 +858,6 @@ class Bootstrap {
 				$hookObject->processData();
 			}
 		}
-		return $this;
 	}
 
 	/**

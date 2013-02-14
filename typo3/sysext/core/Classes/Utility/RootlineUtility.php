@@ -206,12 +206,6 @@ class RootlineUtility {
 	 */
 	protected function getRecordArray($uid) {
 		if (!isset(self::$pageRecordCache[$this->getCacheIdentifier($uid)])) {
-			if (!is_array($GLOBALS['TCA']['pages']['columns'])) {
-				if (isset($GLOBALS['TSFE'])) {
-					$GLOBALS['TSFE']->includeTCA($GLOBALS['TSFE']->TCAloaded);
-				}
-				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('pages');
-			}
 			$row = $this->databaseConnection->exec_SELECTgetSingleRow(implode(',', self::$rootlineFields), 'pages', 'uid = ' . intval($uid) . ' AND pages.deleted = 0 AND pages.doktype <> ' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER);
 			if (empty($row)) {
 				throw new \RuntimeException('Could not fetch page data for uid ' . $uid . '.', 1343589451);

@@ -178,7 +178,6 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 		$this->pObj->MOD_MENU['includeTypoScriptFileContent'] = TRUE;
 		$edit = $this->pObj->edit;
 		$e = $this->pObj->e;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('sys_template');
 		// Checking for more than one template an if, set a menu...
 		$manyTemplatesMenu = $this->pObj->templateMenu();
 		$template_uid = 0;

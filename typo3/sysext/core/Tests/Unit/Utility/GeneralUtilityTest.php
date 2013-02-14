@@ -1933,32 +1933,6 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertNull($returnValue);
 	}
 
-	////////////////////////////////////////
-	// Tests concerning loadTCA
-	////////////////////////////////////////
-
-	/**
-	 * @test
-	 * @expectedException \RuntimeException
-	 */
-	public function loadTCAIncludesConfiguredDynamicConfigFile() {
-		$dynamicConfigurationAbsoluteFilePath = PATH_site . 'typo3temp/' . uniqid('testLoadTca_');
-		file_put_contents(
-			$dynamicConfigurationAbsoluteFilePath,
-			'<?php throw new \RuntimeException(\'foo\', 1310203814); ?>'
-		);
-		$this->testFilesToDelete[] = $dynamicConfigurationAbsoluteFilePath;
-
-		$testTableName = uniqid('testTable_');
-		$GLOBALS['TCA'][$testTableName] = array(
-			'ctrl' => array(
-				'dynamicConfigFile' => $dynamicConfigurationAbsoluteFilePath,
-			),
-		);
-
-		Utility\GeneralUtility::loadTCA($testTableName);
-	}
-
 	//////////////////////////////////////
 	// Tests concerning addSlashesOnArray
 	//////////////////////////////////////

@@ -580,8 +580,6 @@ class user_feAdmin {
 				$fileNameList[] = ($fI2['basename'] . '|') . $infoArr['name'];
 			} else {
 				$this->createFileFuncObj();
-				$GLOBALS['TSFE']->includeTCA();
-				t3lib_div::loadTCA($this->theTable);
 				if (is_array($GLOBALS['TCA'][$this->theTable]['columns'][$theField])) {
 					$uploadPath = $GLOBALS['TCA'][$this->theTable]['columns'][$theField]['config']['uploadfolder'];
 				}
@@ -901,8 +899,6 @@ class user_feAdmin {
 	public function deleteFilesFromRecord($uid) {
 		$table = $this->theTable;
 		$rec = $GLOBALS['TSFE']->sys_page->getRawRecord($table, $uid);
-		$GLOBALS['TSFE']->includeTCA();
-		t3lib_div::loadTCA($table);
 		$iFields = array();
 		foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
 			if ($conf['config']['type'] == 'group' && $conf['config']['internal_type'] == 'file') {

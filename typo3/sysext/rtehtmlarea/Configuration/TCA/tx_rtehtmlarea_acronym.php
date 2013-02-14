@@ -1,9 +1,18 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
-$TCA['tx_rtehtmlarea_acronym'] = array(
-	'ctrl' => $TCA['tx_rtehtmlarea_acronym']['ctrl'],
+return array(
+	'ctrl' => array(
+		'title' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym',
+		'label' => 'term',
+		'default_sortby' => 'ORDER BY term',
+		'sortby' => 'sorting',
+		'delete' => 'deleted',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime'
+		),
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('rtehtmlarea') . 'extensions/Acronym/skin/images/acronym.gif'
+	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,sys_language_uid,term,acronym'
 	),

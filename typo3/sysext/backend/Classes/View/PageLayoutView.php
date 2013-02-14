@@ -182,8 +182,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @todo Define visibility
 	 */
 	public function getTable($table, $id) {
-		// Load full table definition:
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if (isset($this->externalTables[$table])) {
 			return $this->getExternalTables($id, $table);
 		} else {
@@ -893,7 +891,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	public function dataFields($fieldArr, $table, $row, $out = array()) {
 		// Check table validity:
 		if ($GLOBALS['TCA'][$table]) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			$thumbsCol = $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
 			// Traverse fields:
 			foreach ($fieldArr as $fieldName) {
@@ -940,7 +937,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @todo Define visibility
 	 */
 	public function headerFields($fieldArr, $table, $out = array()) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		foreach ($fieldArr as $fieldName) {
 			$ll = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'], 1);
 			$out[$fieldName] = $ll ? $ll : '&nbsp;';
@@ -1140,8 +1136,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 */
 	public function tt_content_drawHeader($row, $space = 0, $disableMoveAndNewButtons = FALSE, $langMode = FALSE, $dragDropEnabled = FALSE) {
 		$out = '';
-		// Load full table description:
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
 		// If show info is set...;
 		if ($this->tt_contentConfig['showInfo'] && $GLOBALS['BE_USER']->recordEditAccessInternals('tt_content', $row)) {
 			// Render control panel for the element:

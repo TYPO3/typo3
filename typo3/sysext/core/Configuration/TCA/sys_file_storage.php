@@ -1,16 +1,25 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die('Access denied.');
-}
-/**
- * File storages
- */
-$TCA['sys_file_storage'] = array(
-	'ctrl' => $TCA['sys_file_storage']['ctrl'],
+return array(
+	'ctrl' => array(
+		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage',
+		'label' => 'name',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'default_sortby' => 'ORDER BY name',
+		'delete' => 'deleted',
+		'rootLevel' => TRUE,
+		'versioningWS_alwaysAllowLiveEdit' => TRUE, // Only have LIVE records of file storages
+		'enablecolumns' => array(
+			'disabled' => 'hidden'
+		),
+		'dividers2tabs' => TRUE,
+		'requestUpdate' => 'driver',
+		'iconfile' => '_icon_ftp.gif',
+	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,name,description,driver,processingfolder,configuration'
 	),
-	'feInterface' => $TCA['sys_file_storage']['feInterface'],
 	'columns' => array(
 		'hidden' => array(
 			'exclude' => 1,
@@ -106,9 +115,4 @@ $TCA['sys_file_storage'] = array(
 		'capabilities' => array('showitem' => 'is_browsable, is_public, is_writable', 'canNotCollapse' => TRUE)
 	)
 );
-/**
- * @var \TYPO3\CMS\Core\Resource\Driver\DriverRegistry $registry
- */
-$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Driver\\DriverRegistry');
-$registry->addDriversToTCA();
 ?>

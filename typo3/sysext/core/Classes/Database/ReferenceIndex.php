@@ -200,7 +200,6 @@ class ReferenceIndex {
 					}
 				}
 				// Word indexing:
-				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 				foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
 					if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('input,text', $conf['config']['type']) && strcmp($record[$field], '') && !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($record[$field])) {
 						$this->words_strings[$field] = $record[$field];
@@ -341,8 +340,6 @@ class ReferenceIndex {
 	 * @todo Define visibility
 	 */
 	public function getRelations($table, $row, $onlyField = '') {
-		// Load full table description
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		// Initialize:
 		$uid = $row['uid'];
 		$nonFields = explode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,pid');
