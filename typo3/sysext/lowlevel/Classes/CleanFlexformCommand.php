@@ -99,7 +99,6 @@ Cleaning XML for FlexForm fields.
 	 * @todo Define visibility
 	 */
 	public function main_parseTreeCallBack($tableName, $uid, $echoLevel, $versionSwapmode, $rootIsVersion) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName);
 		foreach ($GLOBALS['TCA'][$tableName]['columns'] as $colName => $config) {
 			if ($config['config']['type'] == 'flex') {
 				if ($echoLevel > 2) {

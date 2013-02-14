@@ -323,7 +323,8 @@ CREATE TABLE sys_file (
 #
 # Table structure for table 'sys_file_processedfile'.
 # which is a "temporary" file, like an image preview
-# This table does not have a TCA representation, as it's only written do using direct SQL queries in the code
+# This table does not have a TCA representation, as it is only written
+# to using direct SQL queries in the code
 #
 CREATE TABLE sys_file_processedfile (
 	uid int(11) NOT NULL auto_increment,

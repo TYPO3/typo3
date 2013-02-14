@@ -47,7 +47,6 @@ class EditController {
 			// Initialize:
 			$table = $this->P['table'];
 			$field = $this->P['field'];
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 			$fTable = $this->P['currentValue'] < 0 ? $config['neg_foreign_table'] : $config['foreign_table'];
 			// Detecting the various allowed field type setups and acting accordingly.

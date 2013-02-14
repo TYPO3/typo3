@@ -162,7 +162,6 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 		// Check validity of the input data and load TCA
 		if (isset($TCA[$tableName])) {
 			$this->relatingTable = $tableName;
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName);
 			if ($fieldName && isset($TCA[$tableName]['columns'][$fieldName])) {
 				$this->relatingField = $fieldName;
 			}

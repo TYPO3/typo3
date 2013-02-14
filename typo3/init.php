@@ -43,8 +43,6 @@
  * - extracts and defines path's
  * - includes certain libraries
  * - authenticates the user
- * - sets the configuration values (localconf.php)
- * - includes tables.php that sets more values and possibly overrides others
  * - load the groupdata for the user and set filemounts / webmounts
  *
  * For a detailed description of this script, the scope of constants and variables in it,
