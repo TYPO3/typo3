@@ -1,42 +1,78 @@
 <?php
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *  A copy is found in the textfile GPL.txt and important notices to the license
- *  from the author is found in LICENSE.txt distributed with these scripts.
- *
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
-/**
- * Dynamic configuration of the tt_content table
- * This gets it's own file because it's so huge and central to typical TYPO3 use.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-if (!function_exists('user_sortPluginList')) {
-	function user_sortPluginList(array &$parameters) {
-		usort($parameters['items'], create_function('$item1,$item2', 'return strcasecmp($GLOBALS[\'LANG\']->sL($item1[0]),$GLOBALS[\'LANG\']->sL($item2[0]));'));
-	}
-}
-$TCA['tt_content'] = array(
-	'ctrl' => $TCA['tt_content']['ctrl'],
+return array(
+	'ctrl' => array(
+		'label' => 'header',
+		'label_alt' => 'subheader,bodytext',
+		'sortby' => 'sorting',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'title' => 'LLL:EXT:cms/locallang_tca.xml:tt_content',
+		'delete' => 'deleted',
+		'versioningWS' => 2,
+		'versioning_followPages' => TRUE,
+		'origUid' => 't3_origuid',
+		'type' => 'CType',
+		'hideAtCopy' => TRUE,
+		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
+		'copyAfterDuplFields' => 'colPos,sys_language_uid',
+		'useColumnsForDefaultValues' => 'colPos,sys_language_uid',
+		'shadowColumnsForNewPlaceholders' => 'colPos',
+		'transOrigPointerField' => 'l18n_parent',
+		'transOrigDiffSourceField' => 'l18n_diffsource',
+		'languageField' => 'sys_language_uid',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime',
+			'fe_group' => 'fe_group'
+		),
+		'typeicon_column' => 'CType',
+		'typeicon_classes' => array(
+			'header' => 'mimetypes-x-content-header',
+			'textpic' => 'mimetypes-x-content-text-picture',
+			'image' => 'mimetypes-x-content-image',
+			'bullets' => 'mimetypes-x-content-list-bullets',
+			'table' => 'mimetypes-x-content-table',
+			'uploads' => 'mimetypes-x-content-list-files',
+			'multimedia' => 'mimetypes-x-content-multimedia',
+			'media' => 'mimetypes-x-content-multimedia',
+			'menu' => 'mimetypes-x-content-menu',
+			'list' => 'mimetypes-x-content-plugin',
+			'mailform' => 'mimetypes-x-content-form',
+			'search' => 'mimetypes-x-content-form-search',
+			'login' => 'mimetypes-x-content-login',
+			'shortcut' => 'mimetypes-x-content-link',
+			'script' => 'mimetypes-x-content-script',
+			'div' => 'mimetypes-x-content-divider',
+			'html' => 'mimetypes-x-content-html',
+			'text' => 'mimetypes-x-content-text',
+			'default' => 'mimetypes-x-content-text'
+		),
+		'typeicons' => array(
+			'header' => 'tt_content_header.gif',
+			'textpic' => 'tt_content_textpic.gif',
+			'image' => 'tt_content_image.gif',
+			'bullets' => 'tt_content_bullets.gif',
+			'table' => 'tt_content_table.gif',
+			'uploads' => 'tt_content_uploads.gif',
+			'multimedia' => 'tt_content_mm.gif',
+			'media' => 'tt_content_mm.gif',
+			'menu' => 'tt_content_menu.gif',
+			'list' => 'tt_content_list.gif',
+			'mailform' => 'tt_content_form.gif',
+			'search' => 'tt_content_search.gif',
+			'login' => 'tt_content_login.gif',
+			'shortcut' => 'tt_content_shortcut.gif',
+			'script' => 'tt_content_script.gif',
+			'div' => 'tt_content_div.gif',
+			'html' => 'tt_content_html.gif'
+		),
+		'thumbnail' => 'image',
+		'requestUpdate' => 'list_type,rte_enabled,menu_type',
+		'dividers2tabs' => 1,
+		'searchFields' => 'header,header_link,subheader,bodytext,pi_flexform'
+	),
 	'interface' => array(
 		'always_description' => 0,
 		'showRecordFieldList' => 'CType,header,header_link,bodytext,image,imagewidth,imageorient,media,records,colPos,starttime,endtime,fe_group'
@@ -2065,40 +2101,5 @@ $TCA['tt_content'] = array(
 		)
 	)
 );
-// keep old code (pre-FAL) for installations that haven't upgraded yet. please remove this code in TYPO3 7.0
-// @deprecated since TYPO3 6.0, please remove in TYPO3 7.0
-// existing installation - and files are merged, nothing to do
-if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard']) || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard'], 'tt_content:image')) && !\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('6.0')) {
-	\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('This installation hasn\'t been migrated to FAL for the field $TCA[tt_content][columns][image] yet. Please do so before TYPO3 v7.');
-	// Existing installation and no upgrade wizard was executed - and files haven't been merged: use the old code
-	$TCA['tt_content']['columns']['image']['config'] = array(
-		'type' => 'group',
-		'internal_type' => 'file',
-		'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
-		'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
-		'uploadfolder' => 'uploads/pics',
-		'show_thumbs' => '1',
-		'size' => '3',
-		'maxitems' => '200',
-		'minitems' => '0',
-		'autoSizeMax' => 40
-	);
-}
-if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard']) || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard'], 'tt_content:media')) && !\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('6.0')) {
-	\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('This installation hasn\'t been migrated to FAL for the field $TCA[tt_content][columns][media] yet. Please do so before TYPO3 v7.');
-	// Existing installation and no upgrade wizard was executed - and files haven't been merged: use the old code
-	$TCA['tt_content']['columns']['media']['config'] = array(
-		'type' => 'group',
-		'internal_type' => 'file',
-		'allowed' => '',
-		// Must be empty for disallowed to work.
-		'disallowed' => PHP_EXTENSIONS_DEFAULT,
-		'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
-		'uploadfolder' => 'uploads/media',
-		'show_thumbs' => '1',
-		'size' => '3',
-		'maxitems' => '10',
-		'minitems' => '0'
-	);
-}
+
 ?>

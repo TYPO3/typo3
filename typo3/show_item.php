@@ -64,7 +64,6 @@ class transferData extends \TYPO3\CMS\Backend\Form\DataPreprocessor {
 	 * @todo Define visibility
 	 */
 	public function regItem($table, $id, $field, $content) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 		switch ($config['type']) {
 		case 'input':

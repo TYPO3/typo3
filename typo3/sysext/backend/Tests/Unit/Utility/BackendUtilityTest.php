@@ -164,7 +164,6 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider getCommonSelectFieldsReturnsCorrectFieldsDataProvider
 	 */
 	public function getCommonSelectFieldsReturnsCorrectFields($table, $prefix = '', array $presetFields, array $tca, $expectedFields = '') {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$tcaBackup = $GLOBALS['TCA'][$table];
 		unset($GLOBALS['TCA'][$table]);
 		$GLOBALS['TCA'][$table] = $tca;
@@ -251,7 +250,6 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider getLabelFromItemlistReturnsCorrectFieldsDataProvider
 	 */
 	public function getLabelFromItemlistReturnsCorrectFields($table, $col = '', $key = '', array $tca, $expectedLabel = '') {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$tcaBackup = $GLOBALS['TCA'][$table];
 		unset($GLOBALS['TCA'][$table]);
 		$GLOBALS['TCA'][$table] = $tca;
@@ -320,7 +318,6 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider getLabelFromItemListMergedReturnsCorrectFieldsDataProvider
 	 */
 	public function getLabelFromItemListMergedReturnsCorrectFields($pageId, $table, $column = '', $key = '', array $tca, $expectedLabel = '') {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		$tcaBackup = $GLOBALS['TCA'][$table];
 		unset($GLOBALS['TCA'][$table]);
 		$GLOBALS['TCA'][$table] = $tca;

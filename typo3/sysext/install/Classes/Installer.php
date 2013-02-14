@@ -737,7 +737,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 							sql-file.
 							<br />
 							The database is also verified against your
-							\'tables.php\' configuration ($TCA) and you can
+							configuration ($TCA) and you can
 							even see suggestions to entries in $TCA or new
 							fields in the database.
 						</p>
@@ -1809,8 +1809,8 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 								}
 								if (preg_match('/^boolean/i', $description)) {
 									// When submitting settings in the Install Tool, values that default to "FALSE" or "TRUE"
-									// in t3lib/stddb/DefaultConfiguration.php will be sent as "0" resp. "1". Therefore, reset the values
-									// to their boolean equivalent.
+									// in EXT:core/Configuration/DefaultConfiguration.php will be sent as "0" resp. "1".
+									// Therefore, reset the values to their boolean equivalent.
 									if ($GLOBALS['TYPO3_CONF_VARS'][$k][$vk] === FALSE && $value === '0') {
 										$value = FALSE;
 									} elseif ($GLOBALS['TYPO3_CONF_VARS'][$k][$vk] === TRUE && $value === '1') {
@@ -1831,9 +1831,9 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	}
 
 	/**
-	 * Make an array of the comments in the t3lib/stddb/DefaultConfiguration.php file
+	 * Make an array of the comments in the EXT:core/Configuration/DefaultConfiguration.php file
 	 *
-	 * @param string $string The contents of the t3lib/stddb/DefaultConfiguration.php file
+	 * @param string $string The contents of the EXT:core/Configuration/DefaultConfiguration.php file
 	 * @param array $mainArray
 	 * @param array $commentArray
 	 * @return array
@@ -1943,7 +1943,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 					the limits for uploaded filesizes and not TYPO3.
 					<br />
 					<strong>Notice:</strong> The limits for filesizes attached
-					to database records are set in the tables.php configuration
+					to database records are set in the configuration
 					files (\\$TCA) for each group/file field. You may override
 					these values in the local configuration or by page TSconfig settings.
 				</p>
@@ -3715,7 +3715,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 			<br />
 			The options in the TYPO3_CONF_VARS array and how to use it for your
 			own purposes is discussed in the base configuration file,
-			t3lib/stddb/DefaultConfiguration.php. This file sets up the default values and
+			EXT:core/Configuration/DefaultConfiguration.php. This file sets up the default values and
 			subsequently includes the LocalConfiguration.php file in which you can then
 			override values.
 			<br />
@@ -4867,9 +4867,8 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				</dl>
 				<p>
 					The SQL-files are selected from typo3conf/ (here you can put
-					your own) and t3lib/stddb/ (TYPO3 distribution). The
-					SQL-files should be made by the <em>mysqldump</em> tool or
-					at least be formatted like that tool would do.
+					your own) The SQL-files should be made by the <em>mysqldump</em>
+					tool or at least be formatted like that tool would do.
 				</p>
 			' . $menu, 0, 1);
 		}
@@ -4891,7 +4890,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 					}
 				}
 				if (!strcmp($actionParts[1], 'CURRENT_TABLES')) {
-					$tblFileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_t3lib . 'stddb/tables.sql');
+					$tblFileContent = '';
 					foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $loadedExtConf) {
 						if (is_array($loadedExtConf) && $loadedExtConf['ext_tables.sql']) {
 							$extensionSqlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($loadedExtConf['ext_tables.sql']);
@@ -5116,7 +5115,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				$tblFileContent = '';
 				if (preg_match('/^CURRENT_/', $actionParts[1])) {
 					if (!strcmp($actionParts[1], 'CURRENT_TABLES') || !strcmp($actionParts[1], 'CURRENT_TABLES+STATIC')) {
-						$tblFileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_t3lib . 'stddb/tables.sql');
+						$tblFileContent = '';
 						foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $loadedExtConf) {
 							if (is_array($loadedExtConf) && $loadedExtConf['ext_tables.sql']) {
 								$tblFileContent .= LF . LF . LF . LF . \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($loadedExtConf['ext_tables.sql']);
@@ -6475,9 +6474,6 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	 */
 	public function includeTCA() {
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(FALSE);
-		foreach ($GLOBALS['TCA'] as $table => $conf) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
-		}
 	}
 
 	/**********************

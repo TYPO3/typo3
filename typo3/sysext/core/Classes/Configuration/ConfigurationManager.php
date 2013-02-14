@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility;
  * configuration.
  *
  * This class handles the access to the files
- * - t3lib/stddb/DefaultConfiguration.php (default TYPO3_CONF_VARS)
+ * - EXT:core/Configuration/DefaultConfiguration.php (default TYPO3_CONF_VARS)
  * - typo3conf/LocalConfiguration.php (overrides of TYPO3_CONF_VARS)
  * - typo3conf/AdditionalConfiguration.php (optional additional local code blocks)
  * - typo3conf/localconf.php (legacy configuration file)
@@ -41,7 +41,7 @@ class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Path to default TYPO3_CONF_VARS file, relative to PATH_site
 	 */
-	const DEFAULT_CONFIGURATION_FILE = 't3lib/stddb/DefaultConfiguration.php';
+	const DEFAULT_CONFIGURATION_FILE = 'typo3/sysext/core/Configuration/DefaultConfiguration.php';
 
 	/**
 	 * Path to local overload TYPO3_CONF_VARS file, relative to PATH_site
@@ -72,7 +72,7 @@ class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 	);
 
 	/**
-	 * Return default configuration array t3lib/stddb/DefaultConfiguration.php
+	 * Return default configuration array
 	 *
 	 * @return array
 	 */
@@ -240,7 +240,7 @@ class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 			global $TYPO3_CONF_VARS, $typo_db, $typo_db_username, $typo_db_password, $typo_db_host, $typo_db_extTableDef_script;
 			require PATH_site . self::LOCALCONF_FILE;
 			// If the localconf.php was not upgraded to LocalConfiguration.php, the default extListArray
-			// from t3lib/stddb/DefaultConfiguration.php is still set. In this case we just unset
+			// from EXT:core/Configuration/DefaultConfiguration.php is still set. In this case we just unset
 			// this key here, so \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray() falls back to use extList string
 			// @deprecated: This case can be removed later if localconf.php is not supported anymore
 			unset($TYPO3_CONF_VARS['EXT']['extListArray']);

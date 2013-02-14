@@ -32,11 +32,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Core;
 class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var boolean Enable backup of global and system variables
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var array Backup of typo3CacheManager
 	 */
 	protected $typo3CacheManager = NULL;

@@ -813,8 +813,6 @@ class PageLayoutController {
 		// Traverse the list of table names which has records on this page (that array is populated
 		// by the $dblist object during the function getTableMenu()):
 		foreach ($dblist->activeTables as $table => $value) {
-			// Load full table definitions:
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			if (!isset($dblist->externalTables[$table])) {
 				$q_count = $this->getNumberOfHiddenElements();
 				$h_func_b = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], 'db_layout.php', '', 'id="checkTt_content_showHidden"') . '<label for="checkTt_content_showHidden">' . (!$q_count ? $GLOBALS['TBE_TEMPLATE']->dfw($GLOBALS['LANG']->getLL('hiddenCE')) : $GLOBALS['LANG']->getLL('hiddenCE') . ' (' . $q_count . ')') . '</label>';

@@ -705,7 +705,7 @@ class IconUtility {
 	 * statuses, used for overlays.
 	 * You should not use this directly besides if you need classes for ExtJS iconCls.
 	 *
-	 * see t3lib/stddb/tables.php for an example with the TCA table "pages"
+	 * see ext:core/Configuration/TCA/Pages.php for an example with the TCA table "pages"
 	 *
 	 * @param string $table The TCA table
 	 * @param array	$row The selected record
@@ -727,7 +727,7 @@ class IconUtility {
 	 * statuses, used for overlays.
 	 * You should not use this directly besides if you need it in tceforms/core classes
 	 *
-	 * see t3lib/stddb/tables.php for an example with the TCA table "pages"
+	 * see ext:core/Configuration/TCA/Pages.php for an example with the TCA table "pages"
 	 *
 	 * @param string $tableThe TCA table
 	 * @param array $row The selected record
@@ -810,7 +810,7 @@ class IconUtility {
 	 * We wanted to not have these icons blown over by tons of overlays, so this is limited
 	 * to just one.
 	 *
-	 * see t3lib/stddb/DefaultSettings for the default options, you will find
+	 * see ext:core/Configuration/DefaultConfiguration.php for the default options, you will find
 	 * $GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconRecordOverlayNames'] that shows
 	 * the list of CSS classes that will be used for the sprites, mapped to the statuses here
 	 *

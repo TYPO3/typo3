@@ -5542,8 +5542,6 @@ class ContentObjectRenderer {
 		$table = $conf['table'];
 		$field = $conf['field'];
 		$delimiter = $conf['delimiter'] ? $conf['delimiter'] : ' ,';
-		$GLOBALS['TSFE']->includeTCA();
-		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$field]) && is_array($GLOBALS['TCA'][$table]['columns'][$field]['config']['items'])) {
 			$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $inputValue);
 			$output = array();
