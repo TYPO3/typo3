@@ -86,9 +86,6 @@ class t3lib_l10n_Factory implements t3lib_Singleton {
 			$hash = md5($fileReference . $languageKey . $charset);
 			$this->errorMode = $errorMode;
 
-				// English is the default language
-			$languageKey = ($languageKey === 'en') ? 'default' : $languageKey;
-
 				// Check if the default language is processed before processing other language
 			if (!$this->store->hasData($fileReference, 'default') && $languageKey !== 'default') {
 				$this->getParsedData($fileReference, 'default', $charset, $this->errorMode);
