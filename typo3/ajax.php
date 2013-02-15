@@ -24,16 +24,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * AJAX dispatcher
  *
  * @author Benjamin Mack <mack@xnos.org>
  */
+
 $TYPO3_AJAX = TRUE;
-// Include t3lib_div at this time to get the GET/POST methods it provides
-require_once dirname(__FILE__) . '/../t3lib/class.t3lib_div.php';
-// First get the ajaxID
-$ajaxID = (string) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ajaxID');
+
 // This is a list of requests that don't necessarily need a valid BE user
 $noUserAjaxIDs = array(
 	'BackendLogin::login',
@@ -42,11 +41,20 @@ $noUserAjaxIDs = array(
 	'BackendLogin::isTimedOut',
 	'BackendLogin::getChallenge'
 );
+
+// First get the ajaxID
+$ajaxID = isset($_POST['ajaxID']) ? $_POST['ajaxID'] : $_GET['ajaxID'];
+if (isset($ajaxID)) {
+	$ajaxID = (string)stripslashes($ajaxID);
+}
+
 // If we're trying to do an ajax login, don't require a user.
 if (in_array($ajaxID, $noUserAjaxIDs)) {
 	define('TYPO3_PROCEED_IF_NO_USER', 2);
 }
+
 require 'init.php';
+
 // finding the script path from the variable
 $ajaxScript = $TYPO3_CONF_VARS['BE']['AJAX'][$ajaxID];
 // Instantiating the AJAX object
