@@ -50,6 +50,11 @@ class StorageRepository extends AbstractRepository {
 	protected $typeField = 'driver';
 
 	/**
+	 * @var string
+	 */
+	protected $driverField = 'driver';
+
+	/**
 	 * @var \TYPO3\CMS\Core\Log\Logger
 	 */
 	protected $logger;
@@ -73,6 +78,36 @@ class StorageRepository extends AbstractRepository {
 		$driverRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\Driver\DriverRegistry');
 		$storageObjects = array();
 		$whereClause = $this->typeField . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($storageType, $this->table);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'*',
+			$this->table,
+			$whereClause . $this->getWhereClauseForEnabledFields()
+		);
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			if ($driverRegistry->driverExists($row['driver'])) {
+				$storageObjects[] = $this->createDomainObject($row);
+			} else {
+				$this->logger->warning(
+					sprintf('Could not instantiate storage "%s" because of missing driver.', array($row['name'])),
+					$row
+				);
+			}
+		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		return $storageObjects;
+	}
+
+	/**
+	 * Finds storages by driver.
+	 *
+	 * @param string $storageDriver
+	 * @return ResourceStorage[]
+	 */
+	public function findByStorageDriver($storageDriver) {
+		/** @var $driverRegistry Driver\DriverRegistry */
+		$driverRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\Driver\DriverRegistry');
+		$storageObjects = array();
+		$whereClause = $this->driverField . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($storageDriver, $this->table);
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'*',
 			$this->table,
