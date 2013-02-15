@@ -58,6 +58,13 @@ class FileRepository extends AbstractRepository {
 	protected $indexerService = NULL;
 
 	/**
+	 * Basic cache for fileIndexRecord-rows
+	 *
+	 * @var array
+	 */
+	protected $cacheFileIndexRecords = array();
+
+	/**
 	 * Internal function to retrieve the indexer service,
 	 * if it does not exist, an instance will be created
 	 *
@@ -105,14 +112,22 @@ class FileRepository extends AbstractRepository {
 	public function getFileIndexStatus(File $fileObject) {
 		$storageUid = $fileObject->getStorage()->getUid();
 		$identifier = $fileObject->getIdentifier();
+
+		$cacheKey = serialize(array($storageUid, $identifier));
+		if (isset($this->cacheFileIndexRecords[$cacheKey])) {
+			return $this->cacheFileIndexRecords[$cacheKey];
+		}
+
 		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'uid,storage,identifier',
 			$this->table,
 			sprintf('storage=%u AND identifier=%s', $storageUid, $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, $this->table))
 		);
 		if (!is_array($row)) {
+			$this->cacheFileIndexRecords[$cacheKey] = FALSE;
 			return FALSE;
 		} else {
+			// we can't cache this entry since we haven't yet fetched the full row
 			return $row['uid'];
 		}
 	}
@@ -127,14 +142,22 @@ class FileRepository extends AbstractRepository {
 	public function getFileIndexRecord(File $fileObject) {
 		$storageUid = $fileObject->getStorage()->getUid();
 		$identifier = $fileObject->getIdentifier();
+
+		$cacheKey = serialize(array($storageUid, $identifier));
+		if (isset($this->cacheFileIndexRecords[$cacheKey])) {
+			return $this->cacheFileIndexRecords[$cacheKey];
+		}
+
 		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 			'*',
 			$this->table,
 			sprintf('storage=%u AND identifier=%s', $storageUid, $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, $this->table))
 		);
 		if (!is_array($row)) {
+			$this->cacheFileIndexRecords[$cacheKey] = FALSE;
 			return FALSE;
 		} else {
+			$this->cacheFileIndexRecords[$cacheKey] = $row;
 			return $row;
 		}
 	}
@@ -161,6 +184,12 @@ class FileRepository extends AbstractRepository {
 			'',
 			'identifier'
 		);
+
+		foreach ($rows as $row) {
+			$cacheKey = serialize(array($row['storage'], $row['identifier']));
+			$this->cacheFileIndexRecords[$cacheKey] = $row;
+		}
+
 		return (array) $rows;
 	}
 
@@ -261,6 +290,12 @@ class FileRepository extends AbstractRepository {
 			$updateFields[$propertyName] = $properties[$propertyName];
 		}
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_file', 'uid=' . $modifiedObject->getUid(), $updateFields);
+
+		$storageUid = $modifiedObject->getStorage()->getUid();
+		$identifier = $modifiedObject->getIdentifier();
+
+		$cacheKey = serialize(array($storageUid, $identifier));
+		unset($this->cacheFileIndexRecords[$cacheKey]);
 	}
 
 	/**
