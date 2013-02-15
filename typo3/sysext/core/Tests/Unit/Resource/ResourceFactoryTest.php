@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2011 Andreas Wolf <andreas.wolf@ikt-werk.de>
+ * (c) 2011-2013 Andreas Wolf <andreas.wolf@ikt-werk.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
-class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var array A backup of registered singleton instances
@@ -53,7 +53,7 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-		$this->fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', array('dummy'));
+		$this->fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', array('dummy'), array(), '', FALSE);
 	}
 
 	public function tearDown() {
@@ -103,8 +103,8 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function directoryDataProviderValidFolderValues() {
 		return array(
-			'relative path' => array('typo3'),
-			'path with PATH_site' => array(PATH_site . 'typo3')
+			'relative path' => array('fileadmin'),
+			'path with PATH_site' => array(PATH_site . 'fileadmin')
 		);
 	}
 
@@ -116,7 +116,7 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$storage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('getFile', 'getFolder'), array(), '', FALSE);
 		$storage->expects($this->once())
 			->method('getFolder')
-			->with('typo3');
+			->with('fileadmin');
 		$this->fixture->_set('storageInstances', array(0 => $storage));
 		$this->fixture->retrieveFileOrFolderObject($source);
 	}
@@ -135,6 +135,58 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filename, '42');
 		$this->filesCreated[] = PATH_site . $filename;
 		$this->fixture->retrieveFileOrFolderObject($filename);
+	}
+
+	/***********************************
+	 * Storage AutoDetection
+	 ***********************************/
+
+	/**
+	 * @param array $storageConfiguration
+	 * @param string $path
+	 * @param integer $expectedStorageId
+	 * @test
+	 * @dataProvider storageDetectionDataProvider
+	 */
+
+	public function findBestMatchingStorageByLocalPathReturnsDefaultStorageIfNoMatchIsFound(array $storageConfiguration, $path, $expectedStorageId) {
+		$this->fixture->_set('localDriverStorageCache', $storageConfiguration);
+		$this->assertSame($expectedStorageId, $this->fixture->_callRef('findBestMatchingStorageByLocalPath', $path));
+	}
+
+
+
+	/**
+	 * @return array
+	 */
+	public function storageDetectionDataProvider() {
+		return array(
+			'NoLocalStoragesReturnDefaultStorage' => array(
+				array(),
+				'my/dummy/Image.png',
+				0
+			),
+			'NoMatchReturnsDefaultStorage' => array(
+				array(1 => 'fileadmin/', 2 => 'fileadmin2/public/'),
+				'my/dummy/Image.png',
+				0
+			),
+			'MatchReturnsTheMatch' => array(
+				array(1 => 'fileadmin/', 2 => 'other/public/'),
+				'fileadmin/dummy/Image.png',
+				1
+			),
+			'TwoFoldersWithSameStartReturnsCorrect' => array(
+				array(1 => 'fileadmin/', 2 => 'fileadmin/public/'),
+				'fileadmin/dummy/Image.png',
+				1
+			),
+			'NestedStorageReallyReturnsTheBestMatching' => array(
+				array(1 => 'fileadmin/', 2 => 'fileadmin/public/'),
+				'fileadmin/public/Image.png',
+				2
+			)
+		);
 	}
 }
 
