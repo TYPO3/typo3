@@ -50,7 +50,7 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-		$this->fixture = new \TYPO3\CMS\Core\Resource\ResourceFactory();
+		$this->fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', array('dummy'), array(), '', FALSE);
 	}
 
 	protected function tearDown() {
@@ -91,6 +91,58 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver', $obj);
 	}
 
+
+	/***********************************
+	 * Storage AutoDetection
+	 ***********************************/
+
+	/**
+	 * @param array $storageConfiguration
+	 * @param string $path
+	 * @param integer $expectedStorageId
+	 * @test
+	 * @dataProvider storageDetectionDataProvider
+	 */
+
+	public function findBestMatchingStorageByLocalPathReturnsDefaultStorageIfNoMatchIsFound(array $storageConfiguration, $path, $expectedStorageId) {
+		$this->fixture->_set('localDriverStorageCache', $storageConfiguration);
+		$this->assertSame($expectedStorageId, $this->fixture->_callRef('findBestMatchingStorageByLocalPath', $path));
+	}
+
+
+
+	/**
+	 * @return array
+	 */
+	public function storageDetectionDataProvider() {
+		return array(
+			'NoLocalStoragesReturnDefaultStorage' => array(
+				array(),
+				'my/dummy/Image.png',
+				0
+			),
+			'NoMatchReturnsDefaultStorage' => array(
+				array(1 => 'fileadmin/', 2 => 'fileadmin2/public/'),
+				'my/dummy/Image.png',
+				0
+			),
+			'MatchReturnsTheMatch' => array(
+				array(1 => 'fileadmin/', 2 => 'other/public/'),
+				'fileadmin/dummy/Image.png',
+				1
+			),
+			'TwoFoldersWithSameStartReturnsCorrect' => array(
+				array(1 => 'fileadmin/', 2 => 'fileadmin/public/'),
+				'fileadmin/dummy/Image.png',
+				1
+			),
+			'NestedStorageReallyReturnsTheBestMatching' => array(
+				array(1 => 'fileadmin/', 2 => 'fileadmin/public/'),
+				'fileadmin/public/Image.png',
+				2
+			)
+		);
+	}
 }
 
 ?>
