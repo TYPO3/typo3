@@ -50,6 +50,11 @@ class StorageRepository extends AbstractRepository {
 	protected $typeField = 'driver';
 
 	/**
+	 * @var string
+	 */
+	protected $driverField = 'driver';
+
+	/**
 	 * @var \TYPO3\CMS\Core\Log\Logger
 	 */
 	protected $logger;
@@ -63,7 +68,7 @@ class StorageRepository extends AbstractRepository {
 	}
 
 	/**
-	 * Finds storages by type.
+	 * Finds storages by type, i.e. the driver used
 	 *
 	 * @param string $storageType
 	 * @return ResourceStorage[]
