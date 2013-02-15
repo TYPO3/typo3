@@ -210,7 +210,7 @@ $TCA['sys_file_reference'] = array(
 				--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.basicoverlayPalette;basicoverlayPalette,
 				--palette--;;filePalette'
 		),
-		\TYPO3\CMS\Core\Resource\File::FILETYPE_SOFTWARE => array(
+		\TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
 			'showitem' => '
 				--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.basicoverlayPalette;basicoverlayPalette,
 				--palette--;;filePalette'
