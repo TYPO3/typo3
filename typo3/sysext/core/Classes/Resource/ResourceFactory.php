@@ -87,11 +87,12 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param integer $uid The uid of the storage to instantiate.
 	 * @param array $recordData The record row from database.
+	 * @param string $fileIdentifier Identifier for a file. Used for auto-detection of a storage, but only if $uid === 0 (Local default storage) is used
 	 *
 	 * @throws \InvalidArgumentException
 	 * @return ResourceStorage
 	 */
-	public function getStorageObject($uid, array $recordData = array()) {
+	public function getStorageObject($uid, array $recordData = array(), &$fileIdentifier = NULL) {
 		if (!is_numeric($uid)) {
 			throw new \InvalidArgumentException('uid of Storage has to be numeric.', 1314085991);
 		}
@@ -100,6 +101,36 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			$storageObject = NULL;
 			// If the built-in storage with UID=0 is requested:
 			if (intval($uid) === 0) {
+				// See if we can find a matching storage (and choose the best-matching)
+				// Otherwise the default-storage will be used
+				if ($fileIdentifier !== NULL) {
+					/** @var $storageRepository StorageRepository */
+					$storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+					/** @var $storage ResourceStorage */
+					$storageObjects = $storageRepository->findByStorageDriver('Local');
+
+					$fileIdentifierParts = explode('/', $fileIdentifier);
+
+					$bestMatchStorage = FALSE;
+					$bestMatchLength = 0;
+
+					foreach ($storageObjects as $currentStorageObject) {
+						// TODO currently only handles relative paths
+						$storageConfiguration = $currentStorageObject->getConfiguration();
+						$commonPrefix = \TYPO3\CMS\Core\Utility\PathUtility::getCommonPrefix(
+							array($storageConfiguration['basePath'], $fileIdentifier)
+						);
+						if (strlen($commonPrefix) > $bestMatchLength) {
+							$bestMatchStorage = $currentStorageObject;
+							$bestMatchLength = strlen($commonPrefix);
+						}
+					}
+					if ($bestMatchStorage !== FALSE) {
+						$storageObject = $bestMatchStorage;
+						$fileIdentifier = substr($fileIdentifier, $bestMatchLength);
+					}
+				}
+
 				$recordData = array(
 					'uid' => 0,
 					'pid' => 0,
@@ -283,8 +314,11 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			// use virtual Storage (uid=0)
 			$storageUid = 0;
 			$fileIdentifier = $parts[0];
+
+			// please note that getStorageObject() might modify $fileIdentifier when
+			// auto-detecting the best-matching storage to use
 		}
-		return $this->getStorageObject($storageUid)->getFile($fileIdentifier);
+		return $this->getStorageObject($storageUid, array(), $fileIdentifier)->getFile($fileIdentifier);
 	}
 
 	/**
@@ -348,8 +382,11 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			// use virtual Storage (uid=0)
 			$storageUid = 0;
 			$folderIdentifier = substr($parts[0], strlen(PATH_site));
+
+			// please note that getStorageObject() might modify $folderIdentifier when
+			// auto-detecting the best-matching storage to use
 		}
-		return $this->getStorageObject($storageUid)->getFolder($folderIdentifier);
+		return $this->getStorageObject($storageUid, array(), $folderIdentifier)->getFolder($folderIdentifier);
 	}
 
 	/**
