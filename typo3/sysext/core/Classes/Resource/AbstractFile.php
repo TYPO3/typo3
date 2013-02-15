@@ -78,26 +78,43 @@ abstract class AbstractFile implements FileInterface {
 	 * any other file
 	 */
 	const FILETYPE_UNKNOWN = 0;
+
 	/**
 	 * Any kind of text
+	 * @see http://www.iana.org/assignments/media-types/text
 	 */
 	const FILETYPE_TEXT = 1;
+
 	/**
 	 * Any kind of image
+	 * @see http://www.iana.org/assignments/media-types/image
 	 */
 	const FILETYPE_IMAGE = 2;
+
 	/**
 	 * Any kind of audio file
+	 * @see http://www.iana.org/assignments/media-types/audio
 	 */
 	const FILETYPE_AUDIO = 3;
+
 	/**
 	 * Any kind of video
+	 * @see http://www.iana.org/assignments/media-types/video
 	 */
 	const FILETYPE_VIDEO = 4;
+
+	/**
+	 * Any kind of application
+	 * @see http://www.iana.org/assignments/media-types/application
+	 */
+	const FILETYPE_APPLICATION = 5;
+
 	/**
 	 * Any kind of software, often known as "application"
+	 * @deprecated since 6.1, will be removed in 6.3. Use rather FILETYPE_APPLICATION which matches the Iana standard.
 	 */
 	const FILETYPE_SOFTWARE = 5;
+
 	/******************
 	 * VARIOUS FILE PROPERTY GETTERS
 	 ******************/
@@ -280,7 +297,7 @@ abstract class AbstractFile implements FileInterface {
 			case 'application':
 
 			case 'software':
-				$this->properties['type'] = self::FILETYPE_SOFTWARE;
+				$this->properties['type'] = self::FILETYPE_APPLICATION;
 				break;
 			default:
 				$this->properties['type'] = self::FILETYPE_UNKNOWN;
