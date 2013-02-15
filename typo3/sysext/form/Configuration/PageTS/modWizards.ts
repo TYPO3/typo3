@@ -154,10 +154,13 @@ prefix = tx_form
 							showProperties = accept, acceptcharset, action, class, dir, enctype, id, lang, method, name, style, title
 						}
 						postProcessor {
-							showPostProcessors = mail
+							showPostProcessors = mail, redirect
 							postProcessors {
 								mail {
 									showProperties = recipientEmail, senderEmail, subject
+								}
+								redirect {
+									showProperties = destination
 								}
 							}
 						}
