@@ -126,7 +126,7 @@ class BackendLayoutView {
 		if ($backendLayoutUid) {
 			$backendLayout = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'backend_layout', 'uid=' . $backendLayoutUid);
 		} else {
-			$backendLayout['config'] = $this->getDefaultColumnLayout();
+			$backendLayout['config'] = self::getDefaultColumnLayout();
 		}
 		if ($backendLayout) {
 			/** @var $parser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
@@ -158,8 +158,9 @@ class BackendLayoutView {
 	 * Get default columns layout
 	 *
 	 * @return string Default four column layout
+	 * @static
 	 */
-	public function getDefaultColumnLayout() {
+	static public function getDefaultColumnLayout() {
 		return '
 		backend_layout {
 			colCount = 4
