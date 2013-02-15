@@ -159,7 +159,7 @@ class BackendLayoutView {
 	 *
 	 * @return string Default four column layout
 	 */
-	public function getDefaultColumnLayout() {
+	static public function getDefaultColumnLayout() {
 		return '
 		backend_layout {
 			colCount = 4
