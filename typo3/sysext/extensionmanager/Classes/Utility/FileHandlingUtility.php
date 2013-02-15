@@ -340,20 +340,46 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string
 	 */
 	public function createZipFileFromExtension($extension) {
+
 		$extensionPath = $this->getAbsoluteExtensionPath($extension);
+
+			// Add trailing slash to the extension path,
+			// getAllFilesAndFoldersInPath explicitely requires
+			// that.
+		$extensionPath = \TYPO3\CMS\Core\Utility\PathUtility::sanitizeTrailingSeparator($extensionPath);
+
 		$version = $this->getExtensionVersion($extension);
+		$version = empty($version) ? 'noversion' : $version;
+
 		$fileName = $this->getAbsolutePath('typo3temp/' . $extension . '_' . $version . '.zip');
+
 		$zip = new \ZipArchive();
 		$zip->open($fileName, \ZipArchive::CREATE);
-		$iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($extensionPath));
-		foreach ($iterator as $key => $value) {
-			$archiveName = str_replace($extensionPath, '', $key);
-			if (\TYPO3\CMS\Core\Utility\StringUtility::isLastPartOfString($key, '.')) {
-				continue;
-			} else {
-				$zip->addFile($key, $archiveName);
-			}
+
+			// Get all the files of the extension, but exclude hidden files like
+			// .git directories or .gitignore files.
+			// Exception: do not exclude .htaccess files. More exceptions needed?
+		$files = \TYPO3\CMS\Core\Utility\GeneralUtility::getAllFilesAndFoldersInPath(
+			array(),				// No files pre-added
+			$extensionPath,			// Start from here
+			'',						// Do not filter files by extension
+			TRUE,					// Include subdirectories
+			PHP_INT_MAX,			// Recursion level
+			'^\.(?!htaccess$).*'	// Files and directories to exclude.
+									// Exclude everything starting with a dot,
+									// except a file directory named .htaccess
+		);
+
+			// Make paths relative to extension root directory.
+		$files = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($files, $extensionPath);
+
+			// Remove the one empty path that is the extension dir itself.
+		$files = array_filter($files);
+
+		foreach ($files as $file) {
+			$zip->addFile($extensionPath . $file, $file);
 		}
+
 		$zip->close();
 		return $fileName;
 	}
