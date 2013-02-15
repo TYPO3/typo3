@@ -110,6 +110,7 @@ return array(
 	'tx_form_system_layout' => $extensionClassesPath . 'System/Layout/Layout.php',
 	'tx_form_system_localization' => $extensionClassesPath . 'System/Localization/Localization.php',
 	'tx_form_system_postprocessor_mail' => $extensionClassesPath . 'System/Postprocessor/Mail.php',
+	'tx_form_system_postprocessor_redirect' => $extensionClassesPath . 'System/Postprocessor/Redirect.php',
 	'tx_form_system_postprocessor' => $extensionClassesPath . 'System/Postprocessor/Postprocessor.php',
 	'tx_form_system_request' => $extensionClassesPath . 'System/Request/Request.php',
 	'tx_form_system_validate_abstract' => $extensionClassesPath . 'System/Validate/Abstract.php',
