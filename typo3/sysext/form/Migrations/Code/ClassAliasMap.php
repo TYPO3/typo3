@@ -113,6 +113,7 @@ return array(
 	'tx_form_System_Layout' => 'TYPO3\\CMS\\Form\\Layout',
 	'tx_form_System_Localization' => 'TYPO3\\CMS\\Form\\Localization',
 	'tx_form_System_Postprocessor_Mail' => 'TYPO3\\CMS\\Form\\PostProcess\\MailPostProcessor',
+	'tx_form_System_Postprocessor_Redirect' => 'TYPO3\\CMS\\Form\\PostProcess\\RedirectPostProcessor',
 	'tx_form_System_Postprocessor' => 'TYPO3\\CMS\\Form\\PostProcess\\PostProcessor',
 	'tx_form_System_Postprocessor_Interface' => 'TYPO3\\CMS\\Form\\PostProcess\\PostProcessorInterface',
 	'tx_form_System_Request' => 'TYPO3\\CMS\\Form\\Request',

@@ -89,6 +89,9 @@ TYPO3.Form.Wizard.Elements.Basic.Form = Ext.extend(TYPO3.Form.Wizard.Elements, {
 					mail: {
 						recipientEmail: '',
 						senderEmail: ''
+					},
+					redirect: {
+						destination: ''
 					}
 				}
 			}
