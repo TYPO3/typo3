@@ -271,7 +271,7 @@ CREATE TABLE sys_file_storage (
 	processingfolder tinytext,
 
 	PRIMARY KEY (uid),
-	KEY parent (pid)
+	KEY parent (pid,deleted)
 );
 
 #
@@ -316,8 +316,10 @@ CREATE TABLE sys_file (
 	alternative text,
 
 	PRIMARY KEY (uid),
-	KEY parent (pid),
-	KEY t3ver_oid (t3ver_oid,t3ver_wsid)
+	KEY parent (pid,deleted),
+	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
+	KEY sel01 (storage,identifier(20)),
+	KEY sha1 (sha1(40))
 );
 
 #
@@ -391,9 +393,7 @@ CREATE TABLE sys_file_reference (
 	downloadname tinytext,
 
 	PRIMARY KEY (uid),
-	KEY uid_local (uid_local),
-	KEY uid_foreign (uid_foreign),
-	KEY parent (pid)
+	KEY parent (pid,deleted)
 );
 
 
@@ -437,7 +437,7 @@ CREATE TABLE sys_file_collection (
 	folder text NOT NULL,
 
 	PRIMARY KEY (uid),
-	KEY parent (pid),
+	KEY parent (pid,deleted),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid)
 );
 
@@ -476,7 +476,7 @@ CREATE TABLE sys_collection (
 	items int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
-	KEY parent (pid),
+	KEY parent (pid,deleted),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid)
 );
 
