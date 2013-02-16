@@ -718,18 +718,8 @@ class PageGenerator {
 			$GLOBALS['TSFE']->INTincScript_loadJSCode();
 		}
 		$JSef = self::JSeventFunctions();
-		// Adding default Java Script:
-		$scriptJsCode = '
-		var browserName = navigator.appName;
-		var browserVer = parseInt(navigator.appVersion);
-		var version = "";
-		var msie4 = (browserName == "Microsoft Internet Explorer" && browserVer >= 4);
-		if ((browserName == "Netscape" && browserVer >= 3) || msie4 || browserName=="Konqueror" || browserName=="Opera") {version = "n3";} else {version = "n2";}
-			// Blurring links:
-		function blurLink(theObject) {	//
-			if (msie4) {theObject.blur();}
-		}
-		' . $JSef[0];
+		$scriptJsCode = $JSef[0];
+
 		if ($GLOBALS['TSFE']->spamProtectEmailAddresses && $GLOBALS['TSFE']->spamProtectEmailAddresses !== 'ascii') {
 			$scriptJsCode .= '
 			// decrypt helper function
@@ -831,7 +821,9 @@ class PageGenerator {
 			if ($inlineJSint) {
 				$pageRenderer->addJsInlineCode('TS_inlineJSint', $inlineJSint, $GLOBALS['TSFE']->config['config']['compressJs']);
 			}
-			$pageRenderer->addJsFile(self::inline2TempFile($scriptJsCode . $inlineJS, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['compressJs']);
+			if (trim($scriptJsCode . $inlineJS)) {
+				$pageRenderer->addJsFile(self::inline2TempFile($scriptJsCode . $inlineJS, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['compressJs']);
+			}
 			if ($inlineFooterJs) {
 				$inlineFooterJSint = '';
 				self::stripIntObjectPlaceholder($inlineFooterJs, $inlineFooterJSint);
