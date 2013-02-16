@@ -391,12 +391,12 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 			// check if the file still has references
 			if (count($refIndexRecords) > 0) {
 				$shortcutContent = array();
-				foreach ($refIndexRecords as $row) {
-					$shortcutRecord = NULL;
-					$shortcutRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($row['tablename'], $row['recuid']);
-					if (is_array($shortcutRecord) && $row['tablename'] !== 'sys_file_reference') {
+				foreach ($refIndexRecords as $fileReferenceRow) {
+					if ($fileReferenceRow['tablename'] === 'sys_file_reference') {
+						$row = $this->transformFileReferenceToRecordReference($fileReferenceRow);
+						$shortcutRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($row['tablename'], $row['recuid']);
 						$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($row['tablename'], $shortcutRecord);
-						$onClick = 'showClickmenu("' . $row['tablename'] . '", "' . $row['recuid'] . '", "1", "+info,history,edit,delete", "|", "");return false;';
+						$onClick = 'showClickmenu("' . $row['tablename'] . '", "' . $row['recuid'] . '", "1", "+info,history,edit", "|", "");return false;';
 						$shortcutContent[] = '<a href="#" oncontextmenu="' . htmlspecialchars($onClick) . '" onclick="' . htmlspecialchars($onClick) . '">' . $icon . '</a>' . htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($row['tablename'], $shortcutRecord) . '  [' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($shortcutRecord['pid'], '', 80) . ']'));
 					}
 				}
@@ -432,6 +432,25 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 			$this->writelog(4, 0, 3, 'Directory "%s" deleted', array($fileObject->getIdentifier()));
 		}
 		return $result;
+	}
+
+	/**
+	 * Maps results from the fal file reference table on the
+	 * structure of  the normal reference index table.
+	 *
+	 * @param array $referenceRecord
+	 * @return array
+	 */
+	protected function transformFileReferenceToRecordReference(array $referenceRecord) {
+		$fileReference = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_reference', 'uid=' . (int)$referenceRecord['recuid']);
+		return array(
+			'recuid' => $fileReference['uid_foreign'],
+			'tablename' => $fileReference['tablenames'],
+			'field' => $fileReference['fieldname'],
+			'flexpointer' => '',
+			'softref_key' => '',
+			'sorting' => $fileReference['sorting_foreign']
+		);
 	}
 
 	/**
