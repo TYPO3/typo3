@@ -268,10 +268,7 @@ background-color for the gap-tablecells]]></description>
 		<property name="ATagParams" type="string">
 			<description><![CDATA[<A>-params
       Additional parameters to all links in TYPO3 (excluding menu-links)
-
-Example:
-To blur links, insert:
-onFocus="blurLink(this)"]]></description>
+]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -839,7 +836,7 @@ Keywords are the same as for "xhtml_cleaning", see above.]]></description>
 		</property>
 		<property name="removeDefaultJS" type="string">
 			<description><![CDATA[If set, the default JavaScript in the header will be removed.
-The default JavaScript is the blurLink function and browser detection variables.
+The default JavaScript is the decryption function for email addresses.
 
 Special case: if the value is "external" then the default JavaScript is written to a temporary file and included from that file. See "inlineStyle2TempFile" below.
 
