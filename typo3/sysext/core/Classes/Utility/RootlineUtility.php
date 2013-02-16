@@ -188,10 +188,11 @@ class RootlineUtility {
 	public function get() {
 		$cacheIdentifier = $this->getCacheIdentifier();
 		if (!isset(self::$localCache[$cacheIdentifier])) {
-			if (!self::$cache->has($cacheIdentifier)) {
+			$entry = self::$cache->get($cacheIdentifier);
+			if (!$entry) {
 				$this->generateRootlineCache();
 			} else {
-				self::$localCache[$cacheIdentifier] = self::$cache->get($cacheIdentifier);
+				self::$localCache[$cacheIdentifier] = $entry;
 			}
 		}
 		return self::$localCache[$cacheIdentifier];
