@@ -340,20 +340,45 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string
 	 */
 	public function createZipFileFromExtension($extension) {
+
 		$extensionPath = $this->getAbsoluteExtensionPath($extension);
+
+		// Add trailing slash to the extension path, getAllFilesAndFoldersInPath
+		// explicitely requires that.
+		$extensionPath = \TYPO3\CMS\Core\Utility\PathUtility::sanitizeTrailingSeparator($extensionPath);
+
 		$version = $this->getExtensionVersion($extension);
+		$version = empty($version) ? 'noversion' : $version;
+
 		$fileName = $this->getAbsolutePath('typo3temp/' . $extension . '_' . $version . '.zip');
+
 		$zip = new \ZipArchive();
 		$zip->open($fileName, \ZipArchive::CREATE);
-		$iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($extensionPath));
-		foreach ($iterator as $key => $value) {
-			$archiveName = str_replace($extensionPath, '', $key);
-			if (\TYPO3\CMS\Core\Utility\StringUtility::isLastPartOfString($key, '.')) {
-				continue;
-			} else {
-				$zip->addFile($key, $archiveName);
-			}
+
+		global $TYPO3_CONF_VARS;
+		$excludePattern = $TYPO3_CONF_VARS['EXT']['excludeForPackaging'];
+
+		// Get all the files of the extension, but exclude the ones specified
+		// in the excludePattern
+		$files = \TYPO3\CMS\Core\Utility\GeneralUtility::getAllFilesAndFoldersInPath(
+			array(),			// No files pre-added
+			$extensionPath,		// Start from here
+			'',					// Do not filter files by extension
+			TRUE,				// Include subdirectories
+			PHP_INT_MAX,		// Recursion level
+			$excludePattern		// Files and directories to exclude.
+		);
+
+		// Make paths relative to extension root directory.
+		$files = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($files, $extensionPath);
+
+		// Remove the one empty path that is the extension dir itself.
+		$files = array_filter($files);
+
+		foreach ($files as $file) {
+			$zip->addFile($extensionPath . $file, $file);
 		}
+
 		$zip->close();
 		return $fileName;
 	}
