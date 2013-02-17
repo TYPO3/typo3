@@ -3788,7 +3788,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					foreach ($this->INSTALL['localconf.php'] as $key => $value) {
 						switch((string)$key) {
 							case 'typo_db_username':
-								if (strlen($value)<50) {
+								if (strlen($value) <= 50) {
 									if (strcmp(TYPO3_db_username,$value))		$this->setValueInLocalconfFile($lines, '$typo_db_username', trim($value));
 								} else {
 									$this->errorMessages[] = '
@@ -3798,7 +3798,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								}
 							break;
 							case 'typo_db_password':
-								if (strlen($value)<50) {
+								if (strlen($value) <= 50) {
 									if (strcmp(TYPO3_db_password,$value))		$this->setValueInLocalconfFile($lines, '$typo_db_password',  trim($value));
 								} else {
 									$this->errorMessages[] = '
@@ -3807,7 +3807,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								}
 							break;
 							case 'typo_db_host':
-								if (preg_match('/^[a-zA-Z0-9_\.-]+(:.+)?$/',$value) && strlen($value)<50) {
+								if (preg_match('/^[a-zA-Z0-9_\.-]+(:.+)?$/',$value) && strlen($value) <= 50) {
 									if (strcmp(TYPO3_db_host,$value))		$this->setValueInLocalconfFile($lines, '$typo_db_host', $value);
 								} else {
 									$this->errorMessages[] = '
@@ -3818,7 +3818,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								}
 							break;
 							case 'typo_db':
-								if (strlen($value)<50) {
+								if (strlen($value) <= 50) {
 									if (strcmp(TYPO3_db,$value))		$this->setValueInLocalconfFile($lines, '$typo_db',  trim($value));
 								} else {
 									$this->errorMessages[] = '
