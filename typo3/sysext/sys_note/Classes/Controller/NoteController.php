@@ -47,7 +47,7 @@ class NoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	/**
 	 * Render notes by single PID or PID list
 	 *
-	 * @param mixed $pids Single PID or comma separated list of PIDs
+	 * @param string $pids Single PID or comma separated list of PIDs
 	 * @return string
 	 * @dontvalidate $pids
 	 */

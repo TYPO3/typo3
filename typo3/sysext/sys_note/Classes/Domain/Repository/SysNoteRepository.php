@@ -46,7 +46,7 @@ class SysNoteRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	/**
 	 * Find notes by given pids and author
 	 *
-	 * @param mixed $pids Single PID or comma separated list of PIDs
+	 * @param string $pids Single PID or comma separated list of PIDs
 	 * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUser $author The author
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
 	 */
