@@ -3183,7 +3183,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				foreach ($this->INSTALL['Database'] as $key => $value) {
 					switch ((string) $key) {
 					case 'typo_db_username':
-						if (strlen($value) < 50) {
+						if (strlen($value) <= 50) {
 							if (strcmp(TYPO3_db_username, $value)) {
 								$localConfigurationPathValuePairs['DB/username'] = $value;
 							}
@@ -3195,7 +3195,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 						}
 						break;
 					case 'typo_db_password':
-						if (strlen($value) < 50) {
+						if (strlen($value) <= 50) {
 							if (strcmp(TYPO3_db_password, $value)) {
 								$localConfigurationPathValuePairs['DB/password'] = $value;
 							}
@@ -3206,7 +3206,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 						}
 						break;
 					case 'typo_db_host':
-						if (preg_match('/^[a-zA-Z0-9_\\.-]+(:.+)?$/', $value) && strlen($value) < 50) {
+						if (preg_match('/^[a-zA-Z0-9_\\.-]+(:.+)?$/', $value) && strlen($value) <= 50) {
 							if (strcmp(TYPO3_db_host, $value)) {
 								$localConfigurationPathValuePairs['DB/host'] = $value;
 							}
@@ -3219,7 +3219,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 						}
 						break;
 					case 'typo_db':
-						if (strlen($value) < 50) {
+						if (strlen($value) <= 50) {
 							if (strcmp(TYPO3_db, $value)) {
 								$localConfigurationPathValuePairs['DB/database'] = $value;
 							}
