@@ -559,16 +559,27 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							// Render the grid cell
 							$colSpan = intval($columnConfig['colspan']);
 							$rowSpan = intval($columnConfig['rowspan']);
-							$grid .= '<td valign="top"' . ($colSpan > 0 ? ' colspan="' . $colSpan . '"' : '') . ($rowSpan > 0 ? ' rowspan="' . $rowSpan . '"' : '') . ' class="t3-gridCell t3-page-column t3-page-column-' . $columnKey . (!isset($columnConfig['colPos']) ? ' t3-gridCell-unassigned' : '') . (isset($columnConfig['colPos']) && !$head[$columnKey] ? ' t3-gridCell-restricted' : '') . ($colSpan > 0 ? ' t3-gridCell-width' . $colSpan : '') . ($rowSpan > 0 ? ' t3-gridCell-height' . $rowSpan : '') . '">';
+							$grid .= '<td valign="top"' .
+								($colSpan > 0 ? ' colspan="' . $colSpan . '"' : '') .
+								($rowSpan > 0 ? ' rowspan="' . $rowSpan . '"' : '') .
+								' class="t3-gridCell t3-page-column t3-page-column-' . $columnKey .
+								((!isset($columnConfig['colPos']) || $columnConfig['colPos'] === '') ? ' t3-gridCell-unassigned' : '') .
+								((isset($columnConfig['colPos']) && $columnConfig['colPos'] !== '' && !$head[$columnKey]) ? ' t3-gridCell-restricted' : '') .
+								($colSpan > 0 ? ' t3-gridCell-width' . $colSpan : '') .
+								($rowSpan > 0 ? ' t3-gridCell-height' . $rowSpan : '') . '">';
+
 							// Draw the pre-generated header with edit and new buttons if a colPos is assigned.
 							// If not, a new header without any buttons will be generated.
-							if (isset($columnConfig['colPos']) && $head[$columnKey]) {
+							if (isset($columnConfig['colPos']) && $columnConfig['colPos'] !== '' && $head[$columnKey]) {
 								$grid .= $head[$columnKey] . $content[$columnKey];
-							} elseif ($columnConfig['colPos']) {
+							} elseif (isset($columnConfig['colPos']) && $columnConfig['colPos'] !== '') {
 								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('noAccess'), '', '');
+							} elseif (isset($columnConfig['name']) && strlen($columnConfig['name']) > 0) {
+								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->sL($columnConfig['name']) . ' (' . $GLOBALS['LANG']->getLL('notAssigned') . ')', '', '');
 							} else {
 								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('notAssigned'), '', '');
 							}
+
 							$grid .= '</td>';
 						}
 						$grid .= '</tr>';
