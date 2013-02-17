@@ -625,19 +625,19 @@ class tx_cms_layout extends recordList {
 							$rowSpan = intval($columnConfig['rowspan']);
 
 							$grid .= '<td valign="top"' .
-									($colSpan > 0 ? ' colspan="' . $colSpan . '"' : '') .
-									($rowSpan > 0 ? ' rowspan="' . $rowSpan . '"' : '') .
-									' class="t3-gridCell t3-page-column t3-page-column-' . $columnKey .
-									(!isset($columnConfig['colPos']) ? ' t3-gridCell-unassigned' : '') .
-									((isset($columnConfig['colPos']) && ! $head[$columnKey]) ? ' t3-gridCell-restricted' : '') .
-									($colSpan > 0 ? ' t3-gridCell-width' . $colSpan : '') .
-									($rowSpan > 0 ? ' t3-gridCell-height' . $rowSpan : '') . '">';
+								($colSpan > 0 ? ' colspan="' . $colSpan . '"' : '') .
+								($rowSpan > 0 ? ' rowspan="' . $rowSpan . '"' : '') .
+								' class="t3-gridCell t3-page-column t3-page-column-' . $columnKey .
+								((!isset($columnConfig['colPos']) || $columnConfig['colPos'] === '') ? ' t3-gridCell-unassigned' : '') .
+								((isset($columnConfig['colPos']) &&  $columnConfig['colPos'] !== '' && !$head[$columnKey]) ? ' t3-gridCell-restricted' : '') .
+								($colSpan > 0 ? ' t3-gridCell-width' . $colSpan : '') .
+								($rowSpan > 0 ? ' t3-gridCell-height' . $rowSpan : '') . '">';
 
 							// Draw the pre-generated header with edit and new buttons if a colPos is assigned.
 							// If not, a new header without any buttons will be generated.
-							if (isset($columnConfig['colPos']) && $head[$columnKey]) {
+							if (isset($columnConfig['colPos']) && $columnConfig['colPos'] !== '' && $head[$columnKey]) {
 								$grid .= $head[$columnKey] . $content[$columnKey];
-							} else if ($columnConfig['colPos']) {
+							} elseif ($columnConfig['colPos'] !== '') {
 								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('noAccess'), '', '');
 							} else {
 								$grid .= $this->tt_content_drawColHeader($GLOBALS['LANG']->getLL('notAssigned'), '', '');
