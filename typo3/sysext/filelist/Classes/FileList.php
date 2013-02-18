@@ -356,19 +356,20 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 					$theData[$v] = $theT;
 				}
 			}
-			$out .= '<thead>' . $this->addelement(1, $levelUp, $theData, ' class="t3-row-header"', '') . '</thead>';
-			$out .= '<tbody>' . $iOut . '</tbody>';
-			// half line is drawn
-			// finish
-			$out = '
 
-
+			if (!empty($iOut)) {
+				$out .= '<thead>' . $this->addelement(1, $levelUp, $theData, ' class="t3-row-header"', '') . '</thead>';
+				$out .= '<tbody>' . $iOut . '</tbody>';
+				// half line is drawn
+				// finish
+				$out = '
 		<!--
 			File list table:
 		-->
 			<table cellpadding="0" cellspacing="0" id="typo3-filelist">
 				' . $out . '
 			</table>';
+			}
 		} else {
 			/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('storageNotBrowsableMessage'), $GLOBALS['LANG']->getLL('storageNotBrowsableTitle'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
