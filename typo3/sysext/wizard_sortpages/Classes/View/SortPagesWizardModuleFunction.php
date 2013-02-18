@@ -26,6 +26,7 @@ namespace TYPO3\CMS\WizardSortpages\View;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Creates the "Sort pages" wizard
  *
@@ -63,9 +64,9 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 			if ($sortByField) {
 				$menuItems = array();
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('title,subtitle,crdate,tstamp', $sortByField)) {
-					$menuItems = $sys_pages->getMenu($this->pObj->id, 'uid,pid,title', $sortByField, '', 0);
+					$menuItems = $sys_pages->getMenu($this->pObj->id, 'uid,pid,title', $sortByField, '', FALSE);
 				} elseif ($sortByField == 'REV') {
-					$menuItems = $sys_pages->getMenu($this->pObj->id, 'uid,pid,title', 'sorting', '', 0);
+					$menuItems = $sys_pages->getMenu($this->pObj->id, 'uid,pid,title', 'sorting', '', FALSE);
 					$menuItems = array_reverse($menuItems);
 				}
 				if (count($menuItems)) {
@@ -81,7 +82,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 					\TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal('updatePageTree');
 				}
 			}
-			$menuItems = $sys_pages->getMenu($this->pObj->id, '*', 'sorting', '', 0);
+			$menuItems = $sys_pages->getMenu($this->pObj->id, '*', 'sorting', '', FALSE);
 
 			if (count($menuItems)) {
 				$lines = array();

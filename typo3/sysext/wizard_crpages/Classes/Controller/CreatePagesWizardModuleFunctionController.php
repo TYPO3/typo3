@@ -277,5 +277,4 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 
 }
 
-
 ?>
