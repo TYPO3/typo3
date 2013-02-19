@@ -24,7 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-$GLOBALS['LANG']->includeLLFile('EXT:tstemplate/ts/locallang.xml');
+$GLOBALS['LANG']->includeLLFile('EXT:tstemplate/ts/locallang.xlf');
 $BE_USER->modAccess($MCONF, TRUE);
 /*
  * @deprecated since 6.0, the classname SC_mod_web_ts_index and this file is obsolete
