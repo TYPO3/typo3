@@ -21,7 +21,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-$LANG->includeLLFile('EXT:taskcenter/task/locallang.xml');
+$LANG->includeLLFile('EXT:taskcenter/task/locallang.xlf');
 $BE_USER->modAccess($MCONF, 1);
 /*
  * @deprecated since 6.0, the classname SC_mod_user_task_index and this file is obsolete
