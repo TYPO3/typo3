@@ -436,8 +436,6 @@ class ReflectionService implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		} elseif (is_subclass_of($className, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractValueObject')) {
 			$classSchema->setModelType(\TYPO3\CMS\Extbase\Reflection\ClassSchema::MODELTYPE_VALUEOBJECT);
-		} else {
-			return NULL;
 		}
 		foreach ($this->getClassPropertyNames($className) as $propertyName) {
 			if (!$this->isPropertyTaggedWith($className, $propertyName, 'transient') && $this->isPropertyTaggedWith($className, $propertyName, 'var')) {
