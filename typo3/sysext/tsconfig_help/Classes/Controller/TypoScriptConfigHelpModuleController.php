@@ -1,6 +1,29 @@
 <?php
 namespace TYPO3\CMS\TsconfigHelp\Controller;
 
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2007-2011 Stephane Schitter <stephane.schitter@free.fr>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
 /**
  * Module 'TypoScript Help' for the 'tsconfig_help' extension.
  *
@@ -265,47 +288,47 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 		$style = array();
 		foreach ($vals as $node) {
 			switch ($node['type']) {
-			case 'open':
-				switch ($node['tag']) {
-				case 'STYLE:STYLE':
-					$currentStyleName = $node['attributes']['STYLE:NAME'];
-					if (array_key_exists('STYLE:PARENT-STYLE-NAME', $node['attributes'])) {
-						$parentStyleName = $node['attributes']['STYLE:PARENT-STYLE-NAME'];
-						// Keep trace of parents in the style array
-						$style[$currentStyleName]['parents'][] = $parentStyleName;
-					} else {
-						// This style has no parent, therefore clean the variable to avoid side effects with next use of that variable
-						$parentStyleName = '';
-					}
-					// The style parent is already documented in the array
-					if (array_key_exists($parentStyleName, $style)) {
-						// Inherit parent style
-						$style[$currentStyleName] = $style[$parentStyleName];
-					}
-					break;
-				}
-				break;
-			case 'complete':
-				switch ($node['tag']) {
-				case 'STYLE:PROPERTIES':
-					if (is_array($node['attributes']) && array_key_exists('FO:FONT-WEIGHT', $node['attributes'])) {
-						$style[$currentStyleName]['font-weight'] = $node['attributes']['FO:FONT-WEIGHT'];
-					}
-					if (is_array($node['attributes']) && array_key_exists('FO:FONT-STYLE', $node['attributes'])) {
-						$style[$currentStyleName]['font-style'] = $node['attributes']['FO:FONT-STYLE'];
+				case 'open':
+					switch ($node['tag']) {
+						case 'STYLE:STYLE':
+							$currentStyleName = $node['attributes']['STYLE:NAME'];
+							if (array_key_exists('STYLE:PARENT-STYLE-NAME', $node['attributes'])) {
+								$parentStyleName = $node['attributes']['STYLE:PARENT-STYLE-NAME'];
+								// Keep trace of parents in the style array
+								$style[$currentStyleName]['parents'][] = $parentStyleName;
+							} else {
+								// This style has no parent, therefore clean the variable to avoid side effects with next use of that variable
+								$parentStyleName = '';
+							}
+							// The style parent is already documented in the array
+							if (array_key_exists($parentStyleName, $style)) {
+								// Inherit parent style
+								$style[$currentStyleName] = $style[$parentStyleName];
+							}
+							break;
 					}
 					break;
-				}
-				break;
-			case 'close':
-				switch ($node['tag']) {
-				case 'STYLE:STYLE':
-					$currentStyleName = '';
+				case 'complete':
+					switch ($node['tag']) {
+						case 'STYLE:PROPERTIES':
+							if (is_array($node['attributes']) && array_key_exists('FO:FONT-WEIGHT', $node['attributes'])) {
+								$style[$currentStyleName]['font-weight'] = $node['attributes']['FO:FONT-WEIGHT'];
+							}
+							if (is_array($node['attributes']) && array_key_exists('FO:FONT-STYLE', $node['attributes'])) {
+								$style[$currentStyleName]['font-style'] = $node['attributes']['FO:FONT-STYLE'];
+							}
+							break;
+					}
 					break;
-				case 'STYLE:PROPERTIES':
+				case 'close':
+					switch ($node['tag']) {
+						case 'STYLE:STYLE':
+							$currentStyleName = '';
+							break;
+						case 'STYLE:PROPERTIES':
+							break;
+					}
 					break;
-				}
-				break;
 			}
 		}
 		return $style;
@@ -388,14 +411,14 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 		global $Styles;
 		$styleName = $node['attributes']['TEXT:STYLE-NAME'];
 		switch ($Styles[$styleName]['font-weight']) {
-		case 'bold':
-			$styleTags[] = 'b';
-			break;
+			case 'bold':
+				$styleTags[] = 'b';
+				break;
 		}
 		switch ($Styles[$styleName]['font-style']) {
-		case 'italic':
-			$styleTags[] = 'i';
-			break;
+			case 'italic':
+				$styleTags[] = 'i';
+				break;
 		}
 		return $styleTags;
 	}
@@ -493,111 +516,111 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 				die('Malformed XML (P)' . LF);
 			}
 			switch ($node['type']) {
-			case 'open':
-				switch ($node['tag']) {
-				case 'TABLE:TABLE-HEADER-ROWS':
-					$sectionHeader++;
-					break;
-				case 'TABLE:TABLE-ROW':
-					// Skip section header, we only look at the *contents* of the table
-					if (!$sectionHeader) {
-						$sectionRow++;
-						// Make sure we are within a top-level row
-						if ($sectionRow == 1) {
-							$rowID++;
-							$cellID = 0;
-						}
+				case 'open':
+					switch ($node['tag']) {
+						case 'TABLE:TABLE-HEADER-ROWS':
+							$sectionHeader++;
+							break;
+						case 'TABLE:TABLE-ROW':
+							// Skip section header, we only look at the *contents* of the table
+							if (!$sectionHeader) {
+								$sectionRow++;
+								// Make sure we are within a top-level row
+								if ($sectionRow == 1) {
+									$rowID++;
+									$cellID = 0;
+								}
+							}
+							break;
+						case 'TABLE:TABLE-CELL':
+							// Skip section header, we only look at the *contents* of the table
+							if (!$sectionHeader) {
+								$sectionCell++;
+								// Make sure we are within a top-level cell
+								if ($sectionCell == 1) {
+									$cellID++;
+									// No newline required after this
+									$newLineRequired = '';
+								}
+							}
+							break;
+						case 'TEXT:P':
+							// Make sure we are in a cell
+							if ($sectionCell) {
+								$sectionP++;
+								$table[$rowID - 1][$cellID - 1] .= $this->styleHTML($this->styleTags($node), '') . $newLineRequired . $this->HSCtext($node['value']);
+								// No newline required after this
+								$newLineRequired = '';
+								$latestTEXTPopen = $node;
+							}
+							break;
 					}
 					break;
-				case 'TABLE:TABLE-CELL':
-					// Skip section header, we only look at the *contents* of the table
-					if (!$sectionHeader) {
-						$sectionCell++;
-						// Make sure we are within a top-level cell
-						if ($sectionCell == 1) {
-							$cellID++;
-							// No newline required after this
-							$newLineRequired = '';
-						}
+				case 'complete':
+					switch ($node['tag']) {
+						case 'TEXT:P':
+							// make sure we are in a cell
+							if ($sectionCell) {
+								$table[$rowID - 1][$cellID - 1] .= $this->styleHTML($this->styleTags($node), '') . $newLineRequired . $this->HSCtext($node['value']) . $this->styleHTML($this->styleTags($node), '/');
+								$newLineRequired = '<br>';
+							}
+							break;
+						case 'TEXT:SPAN':
+							// make sure we are in a cell
+							if ($sectionCell) {
+								$table[$rowID - 1][$cellID - 1] .= $this->styleHTML($this->styleTags($node), '') . $newLineRequired . $this->HSCtext($node['value']) . $this->styleHTML($this->styleTags($node), '/');
+								$newLineRequired = '';
+							}
+							break;
+						case 'TEXT:S':
+							// make sure we are in a cell
+							if ($sectionCell) {
+								for ($i = 0; $i < $node['attributes']['TEXT:C']; $i++) {
+									$table[$rowID - 1][$cellID - 1] .= '&nbsp;';
+								}
+								// no newline required after this
+								$newLineRequired = '';
+							}
+							break;
 					}
 					break;
-				case 'TEXT:P':
-					// Make sure we are in a cell
-					if ($sectionCell) {
-						$sectionP++;
-						$table[$rowID - 1][$cellID - 1] .= $this->styleHTML($this->styleTags($node), '') . $newLineRequired . $this->HSCtext($node['value']);
-						// No newline required after this
-						$newLineRequired = '';
-						$latestTEXTPopen = $node;
+				case 'cdata':
+					switch ($node['tag']) {
+						case 'TEXT:P':
+							// make sure we are in a cell
+							if ($sectionCell) {
+								$table[$rowID - 1][$cellID - 1] .= $this->styleHTML($this->styleTags($node), '') . $newLineRequired . $this->HSCtext($node['value']) . $this->styleHTML($this->styleTags($node), '/');
+								// no newline required after this
+								$newLineRequired = '';
+							}
+							break;
 					}
 					break;
-				}
-				break;
-			case 'complete':
-				switch ($node['tag']) {
-				case 'TEXT:P':
-					// make sure we are in a cell
-					if ($sectionCell) {
-						$table[$rowID - 1][$cellID - 1] .= $this->styleHTML($this->styleTags($node), '') . $newLineRequired . $this->HSCtext($node['value']) . $this->styleHTML($this->styleTags($node), '/');
-						$newLineRequired = '<br>';
+				case 'close':
+					switch ($node['tag']) {
+						case 'TABLE:TABLE-HEADER-ROWS':
+							$sectionHeader--;
+							break;
+						case 'TABLE:TABLE-ROW':
+							// skip section header, we only look at the *contents* of the table
+							if (!$sectionHeader) {
+								$sectionRow--;
+							}
+							break;
+						case 'TABLE:TABLE-CELL':
+							// skip section header, we only look at the *contents* of the table
+							if (!$sectionHeader) {
+								$sectionCell--;
+							}
+							break;
+						case 'TEXT:P':
+							$sectionP--;
+							// after a paragraph, require a new-line
+							$newLineRequired = '<br>';
+							$table[$rowID - 1][$cellID - 1] .= $this->styleHTML($this->styleTags($latestTEXTPopen), '/');
+							break;
 					}
 					break;
-				case 'TEXT:SPAN':
-					// make sure we are in a cell
-					if ($sectionCell) {
-						$table[$rowID - 1][$cellID - 1] .= $this->styleHTML($this->styleTags($node), '') . $newLineRequired . $this->HSCtext($node['value']) . $this->styleHTML($this->styleTags($node), '/');
-						$newLineRequired = '';
-					}
-					break;
-				case 'TEXT:S':
-					// make sure we are in a cell
-					if ($sectionCell) {
-						for ($i = 0; $i < $node['attributes']['TEXT:C']; $i++) {
-							$table[$rowID - 1][$cellID - 1] .= '&nbsp;';
-						}
-						// no newline required after this
-						$newLineRequired = '';
-					}
-					break;
-				}
-				break;
-			case 'cdata':
-				switch ($node['tag']) {
-				case 'TEXT:P':
-					// make sure we are in a cell
-					if ($sectionCell) {
-						$table[$rowID - 1][$cellID - 1] .= $this->styleHTML($this->styleTags($node), '') . $newLineRequired . $this->HSCtext($node['value']) . $this->styleHTML($this->styleTags($node), '/');
-						// no newline required after this
-						$newLineRequired = '';
-					}
-					break;
-				}
-				break;
-			case 'close':
-				switch ($node['tag']) {
-				case 'TABLE:TABLE-HEADER-ROWS':
-					$sectionHeader--;
-					break;
-				case 'TABLE:TABLE-ROW':
-					// skip section header, we only look at the *contents* of the table
-					if (!$sectionHeader) {
-						$sectionRow--;
-					}
-					break;
-				case 'TABLE:TABLE-CELL':
-					// skip section header, we only look at the *contents* of the table
-					if (!$sectionHeader) {
-						$sectionCell--;
-					}
-					break;
-				case 'TEXT:P':
-					$sectionP--;
-					// after a paragraph, require a new-line
-					$newLineRequired = '<br>';
-					$table[$rowID - 1][$cellID - 1] .= $this->styleHTML($this->styleTags($latestTEXTPopen), '/');
-					break;
-				}
-				break;
 			}
 			$id = $id + 1;
 		}
@@ -726,6 +749,5 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 	}
 
 }
-
 
 ?>
