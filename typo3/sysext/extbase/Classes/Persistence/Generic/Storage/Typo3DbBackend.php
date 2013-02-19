@@ -385,27 +385,19 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 *
 	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject $object The Value Object
 	 * @return mixed The matching uid if an object was found, else FALSE
-	 *
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException
 	 */
 	public function getUidOfAlreadyPersistedValueObject(\TYPO3\CMS\Extbase\DomainObject\AbstractValueObject $object) {
 		$fields = array();
 		$parameters = array();
-		$className = get_class($object);
-		$dataMap = $this->dataMapper->getDataMap($className);
-
+		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$properties = $object->_getProperties();
 		foreach ($properties as $propertyName => $propertyValue) {
-			$columnMap = $dataMap->getColumnMap($propertyName);
-			if ($columnMap === NULL) {
-				throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException('The ColumnMap for property "' . $propertyName . '" of class "' . $className . '" is missing.', 1353170711);
-			}
 			// FIXME We couple the Backend to the Entity implementation (uid, isClone); changes there breaks this method
 			if ($dataMap->isPersistableProperty($propertyName) && $propertyName !== 'uid' && $propertyName !== 'pid' && $propertyName !== 'isClone') {
 				if ($propertyValue === NULL) {
-					$fields[] = $columnMap->getColumnName() . ' IS NULL';
+					$fields[] = $dataMap->getColumnMap($propertyName)->getColumnName() . ' IS NULL';
 				} else {
-					$fields[] = $columnMap->getColumnName() . '=?';
+					$fields[] = $dataMap->getColumnMap($propertyName)->getColumnName() . '=?';
 					$parameters[] = $this->getPlainValue($propertyValue);
 				}
 			}
@@ -558,7 +550,6 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @param array &$sql SQL query parts to add to
 	 * @param array &$parameters Parameters to bind to the SQL
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException
 	 * @return void
 	 */
 	protected function parseComparison(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface $comparison, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source, array &$sql, array &$parameters) {
@@ -594,9 +585,6 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
 				$dataMap = $this->dataMapper->getDataMap($className);
 				$columnMap = $dataMap->getColumnMap($propertyName);
-				if ($columnMap === NULL) {
-					throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException('The ColumnMap for property "' . $propertyName . '" of class "' . $className . '" is missing.', 1355142273);
-				}
 				$typeOfRelation = $columnMap instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap ? $columnMap->getTypeOfRelation() : NULL;
 				if ($typeOfRelation === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 					$relationTableName = $columnMap->getRelationTableName();
@@ -701,7 +689,6 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @param array $sql
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException
 	 */
 	protected function addUnionStatement(&$className, &$tableName, &$propertyPath, array &$sql) {
 		$explodedPropertyPath = explode('.', $propertyPath, 2);
@@ -709,11 +696,6 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
 		$tableName = $this->dataMapper->convertClassNameToTableName($className);
 		$columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
-
-		if ($columnMap === NULL) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException('The ColumnMap for property "' . $propertyName . '" of class "' . $className . '" is missing.', 1355142232);
-		}
-
 		$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 		$childTableName = $columnMap->getChildTableName();
 
