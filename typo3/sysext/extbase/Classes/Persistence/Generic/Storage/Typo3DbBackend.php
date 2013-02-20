@@ -689,6 +689,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @param array $sql
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException
 	 */
 	protected function addUnionStatement(&$className, &$tableName, &$propertyPath, array &$sql) {
 		$explodedPropertyPath = explode('.', $propertyPath, 2);
@@ -696,6 +697,11 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
 		$tableName = $this->dataMapper->convertClassNameToTableName($className);
 		$columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
+
+		if ($columnMap === NULL) {
+			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException('The ColumnMap for property "' . $propertyName . '" of class "' . $className . '" is missing.', 1355142232);
+		}
+
 		$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 		$childTableName = $columnMap->getChildTableName();
 
