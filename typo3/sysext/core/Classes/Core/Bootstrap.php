@@ -851,10 +851,12 @@ class Bootstrap {
 		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
 			$backendUser->dontSetCookie = TRUE;
 		}
+		// The global must be available very early, because methods below
+		// might triger code which relies on it. See: #45625
+		$GLOBALS['BE_USER'] = $backendUser;
 		$backendUser->start();
 		$backendUser->checkCLIuser();
 		$backendUser->backendCheckLogin();
-		$GLOBALS['BE_USER'] = $backendUser;
 		return $this;
 	}
 
