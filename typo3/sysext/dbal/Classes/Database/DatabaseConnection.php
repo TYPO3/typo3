@@ -526,7 +526,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				'ORIG_tablename' => $ORIG_tableName
 			));
 		}
-		foreach ($this->postProcessHookObjects as $hookObject) {
+		foreach ($this->postProcessnObjects as $hookObject) {
 			$hookObject->exec_INSERTquery_postProcessAction($table, $fields_values, $no_quote_fields, $this);
 		}
 		// Return output:
@@ -814,6 +814,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				$data['numberRows'] = $this->sql_num_rows($sqlResult);
 			}
 			$this->debugHandler('exec_SELECTquery', \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt, $data);
+		}
+		foreach ($this->postProcessHookObjects as $hookObject) {
+			$hookObject->exec_SELECTquery_postProcessAction($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', $this);
 		}
 		// Return result handler.
 		return $sqlResult;
@@ -1160,6 +1163,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @return 	string		Full SQL query for SELECT
 	 */
 	public function SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
+		foreach ($this->preProcessHookObjects as $hookObject) {
+			$hookObject->SELECTquery_preProcessAction($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit, $this);
+		}
 		$this->lastHandlerKey = $this->handler_getFromTableList($from_table);
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
 		if ($hType === 'adodb' && $this->runningADOdbDriver('postgres')) {
