@@ -34,6 +34,20 @@ namespace TYPO3\CMS\Core\Database;
  */
 interface PostProcessQueryHookInterface {
 	/**
+	 * Post-processor for the SELECTquery method.
+	 *
+	 * @param string $select_fields Fields to be selected
+	 * @param string $from_table Table to select data from
+	 * @param string $where_clause Where clause
+	 * @param string $groupBy Group by statement
+	 * @param string $orderBy Order by statement
+	 * @param integer $limit Database return limit
+	 * @param \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject
+	 * @return void
+	 */
+	public function exec_SELECTquery_postProcessAction(&$select_fields, &$from_table, &$where_clause, &$groupBy, &$orderBy, &$limit, \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject);
+
+	/**
 	 * Post-processor for the exec_INSERTquery method.
 	 *
 	 * @param string $table Database table name
