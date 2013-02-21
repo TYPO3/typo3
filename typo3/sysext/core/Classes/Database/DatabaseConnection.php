@@ -232,6 +232,9 @@ class DatabaseConnection {
 		if ($this->explainOutput) {
 			$this->explain($query, $from_table, $this->sql_num_rows($res));
 		}
+		foreach ($this->postProcessHookObjects as $hookObject) {
+			$hookObject->exec_SELECTquery_postProcessAction($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', $this);
+		}
 		return $res;
 	}
 
@@ -520,6 +523,9 @@ class DatabaseConnection {
 	 * @todo Define visibility
 	 */
 	public function SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
+		foreach ($this->preProcessHookObjects as $hookObject) {
+			$hookObject->SELECTquery_preProcessAction($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit, $this);
+		}
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
 		// Build basic query
 		$query = 'SELECT ' . $select_fields . ' FROM ' . $from_table . (strlen($where_clause) > 0 ? ' WHERE ' . $where_clause : '');
