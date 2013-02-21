@@ -472,6 +472,53 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockTypo3DbBackend->_set('pageRepository', $pageRepositoryMock);
 		$this->assertSame(array($comparisonRow), $mockTypo3DbBackend->_call('doLanguageAndWorkspaceOverlay', $sourceMock, array($row), $languageUid, $workspaceUid));
 	}
+
+	/**
+	 * DataProvider for addPageIdStatement Tests
+	 */
+	public function providerForAddPageIdStatementData() {
+		$table = uniqid('tx_coretest_table');
+		return array(
+			'set Pid to zero if rootLevel = 1' => array(
+				'1',
+				$table,
+				array('additionalWhereClause' => array($table . '.pid = 0'))
+			),
+			'set Pid to given Pids if rootLevel = 0' => array(
+				'0',
+				$table,
+				array('additionalWhereClause' => array($table . '.pid IN (42, 27)'))
+			),
+			'set no statement if rootLevel = -1' => array(
+				'-1',
+				$table,
+				array()
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider providerForAddPageIdStatementData
+	 */
+	public function addPageIdStatementSetsPidToZeroIfTableDeclaresRootlevel($rootLevel, $table, $expectedSql) {
+
+		$GLOBALS['TCA'][$table]['ctrl'] = array(
+			'rootLevel' => $rootLevel
+		);
+		$querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
+		$querySettings->initializeObject();
+		$sql = array();
+		$storagePageIds = array(42,27);
+		$mockTypo3DbBackend = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend', array('dummy'), array(), '', FALSE);
+		$mockFrontendVariableCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend', array(), array(), '', FALSE);
+		$mockTypo3DbBackend->_set('tableColumnCache', $mockFrontendVariableCache);
+		$mockFrontendVariableCache->expects($this->once())->method('get')->will($this->returnValue(array('pid' => '42')));
+		$mockTypo3DbBackend->_callRef('addPageIdStatement', $table, $sql, $storagePageIds);
+
+		$this->assertSame($expectedSql, $sql);
+	}
+
 }
 
 ?>

@@ -1001,7 +1001,14 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			$this->tableColumnCache->set($tableName, $tableColumns);
 		}
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl']) && array_key_exists('pid', $tableColumns)) {
-			$sql['additionalWhereClause'][] = $tableName . '.pid IN (' . implode(', ', $storagePageIds) . ')';
+			$rootLevel = (int)$GLOBALS['TCA'][$tableName]['ctrl']['rootLevel'];
+			if ($rootLevel) {
+				if ($rootLevel === 1) {
+					$sql['additionalWhereClause'][] = $tableName . '.pid = 0';
+				}
+			} else {
+				$sql['additionalWhereClause'][] = $tableName . '.pid IN (' . implode(', ', $storagePageIds) . ')';
+			}
 		}
 	}
 
