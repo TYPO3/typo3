@@ -250,11 +250,7 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 							continue;
 						}
 					}
-				} elseif (
-					$targetClassSchema !== NULL
-					&& is_subclass_of($target, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity')
-					&& is_subclass_of($target, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractValueObject')
-				) {
+				} elseif ($targetClassSchema !== NULL) {
 					$this->mappingResults->addError(new \TYPO3\CMS\Extbase\Error\Error("Property '{$propertyName}' does not exist in target class schema.", 1251813614), $propertyName);
 				}
 				if (is_array($target)) {
