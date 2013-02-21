@@ -44,22 +44,22 @@ class MapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function setUp() {
 		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$objectManager = new \TYPO3\CMS\Extbase\Object\ObjectManager();
 
 		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager */
-		$persistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+		$persistenceManager = new \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager();
 
 		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory $queryFactory */
-		$queryFactory = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryFactory');
+		$queryFactory = new \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory();
 
 		/** @var \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService */
-		$reflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
+		$reflectionService = new \TYPO3\CMS\Extbase\Reflection\ReflectionService();
 		$reflectionService->injectObjectManager($objectManager);
 
 		/** @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver */
-		$validatorResolver = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver');
+		$validatorResolver = new \TYPO3\CMS\Extbase\Validation\ValidatorResolver();
 
-		$this->fixture = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Property\\Mapper', array('dummy'));
+		$this->fixture = new \TYPO3\CMS\Extbase\Property\Mapper();
 		$this->fixture->injectObjectManager($objectManager);
 		$this->fixture->injectPersistenceManager($persistenceManager);
 		$this->fixture->injectQueryFactory($queryFactory);
@@ -84,7 +84,7 @@ class MapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$expectedObject->setProperty1($source['property1']);
 		$expectedObject->setProperty2($source['property2']);
 
-		$this->assertTrue($this->fixture->map(array('property1', 'property2'), $source, $expectedObject));
+		$this->assertEquals($expectedObject, $this->fixture->map(array('property1', 'property2'), $source, 'TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithGettersAndSetters'));
 	}
 
 	/**
@@ -100,7 +100,7 @@ class MapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$expectedObject->setProperty1($source['property1']);
 		$expectedObject->setProperty2($source['property2']);
 
-		$this->assertTrue($this->fixture->map(array('property1', 'property2'), $source, $expectedObject));
+		$this->assertEquals($expectedObject, $this->fixture->map(array('property1', 'property2'), $source, 'Tx_Extbase_Tests_Fixture_TxClassWithGettersAndSetters'));
 	}
 }
 
