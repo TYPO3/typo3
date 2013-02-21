@@ -3052,13 +3052,16 @@ class BackendUtility {
 		$fTWHERE = str_replace('###PAGE_TSCONFIG_ID###', intval($TSconfig[$field]['PAGE_TSCONFIG_ID']), $fTWHERE);
 		$fTWHERE = str_replace('###PAGE_TSCONFIG_IDLIST###', $GLOBALS['TYPO3_DB']->cleanIntList($TSconfig[$field]['PAGE_TSCONFIG_IDLIST']), $fTWHERE);
 		$fTWHERE = str_replace('###PAGE_TSCONFIG_STR###', $GLOBALS['TYPO3_DB']->quoteStr($TSconfig[$field]['PAGE_TSCONFIG_STR'], $foreign_table), $fTWHERE);
-		// rootLevel = -1 is not handled 'properly' here - it goes as if it was rootLevel = 1 (that is pid=0)
 		$wgolParts = $GLOBALS['TYPO3_DB']->splitGroupOrderLimit($fTWHERE);
-		if ($rootLevel) {
+		// rootLevel = -1 means that elements can be on the rootlevel OR on any page (pid!=-1)
+		// rootLevel = 0 means that elements are not allowed on root level
+		// rootLevel = 1 means that elements are only on the root level (pid=0)
+		if ($rootLevel == 1 || $rootLevel == -1) {
+			$pidWhere = $foreign_table . '.pid' . (($rootLevel == -1) ? '<>-1' : '=0');
 			$queryParts = array(
 				'SELECT' => self::getCommonSelectFields($foreign_table, $foreign_table . '.'),
 				'FROM' => $foreign_table,
-				'WHERE' => $foreign_table . '.pid=0 ' . self::deleteClause($foreign_table) . ' ' . $wgolParts['WHERE'],
+				'WHERE' => $pidWhere . ' ' . self::deleteClause($foreign_table) . ' ' . $wgolParts['WHERE'],
 				'GROUPBY' => $wgolParts['GROUPBY'],
 				'ORDERBY' => $wgolParts['ORDERBY'],
 				'LIMIT' => $wgolParts['LIMIT']
