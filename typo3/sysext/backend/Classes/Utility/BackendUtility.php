@@ -3053,10 +3053,11 @@ class BackendUtility {
 		// rootLevel = -1 is not handled 'properly' here - it goes as if it was rootLevel = 1 (that is pid=0)
 		$wgolParts = $GLOBALS['TYPO3_DB']->splitGroupOrderLimit($fTWHERE);
 		if ($rootLevel) {
+			$pidWhere = ($rootLevel == -1) ? $foreign_table . '.pid<>-1 ' : $foreign_table . '.pid=0 ';
 			$queryParts = array(
 				'SELECT' => self::getCommonSelectFields($foreign_table, $foreign_table . '.'),
 				'FROM' => $foreign_table,
-				'WHERE' => $foreign_table . '.pid=0 ' . self::deleteClause($foreign_table) . ' ' . $wgolParts['WHERE'],
+				'WHERE' => $pidWhere . self::deleteClause($foreign_table) . ' ' . $wgolParts['WHERE'],
 				'GROUPBY' => $wgolParts['GROUPBY'],
 				'ORDERBY' => $wgolParts['ORDERBY'],
 				'LIMIT' => $wgolParts['LIMIT']
