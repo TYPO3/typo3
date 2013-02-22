@@ -53,5 +53,24 @@ class GeneralUtilityFixture extends GeneralUtility {
 		return FALSE;
 	}
 
+	/**
+	 * Parses HTTP headers and returns the content of the "Location" header
+	 * or the empty string if no such header found.
+	 *
+	 * @param string $content
+	 * @return string
+	 */
+	static public function getRedirectUrlFromHttpHeaders($content) {
+		return parent::getRedirectUrlFromHttpHeaders($content);
+	}
 
+	/**
+	 * Strips HTTP headers from the content.
+	 *
+	 * @param string $content
+	 * @return string
+	 */
+	static public function stripHttpHeaders($content) {
+		return parent::stripHttpHeaders($content);
+	}
 }
