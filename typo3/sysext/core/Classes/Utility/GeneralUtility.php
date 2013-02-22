@@ -63,6 +63,14 @@ class GeneralUtility {
 	 */
 	static protected $nonSingletonInstances = array();
 
+	/**
+	 * Sets test mode for getUrl. This would change certain options to let
+	 * unit tests to their work.
+	 *
+	 * @var bool
+	 */
+	static protected $getUrlTestModeEnabled = FALSE;
+
 	/*************************
 	 *
 	 * GET/POST Variables
@@ -2323,14 +2331,17 @@ class GeneralUtility {
 				}
 				return FALSE;
 			}
+
+			$followLocation = !self::$getUrlTestModeEnabled && @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+
 			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_HEADER, $includeHeader ? 1 : 0);
+			curl_setopt($ch, CURLOPT_HEADER, !$followLocation || $includeHeader ? 1 : 0);
 			curl_setopt($ch, CURLOPT_NOBODY, $includeHeader == 2 ? 1 : 0);
 			curl_setopt($ch, CURLOPT_HTTPGET, $includeHeader == 2 ? 'HEAD' : 'GET');
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
 			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, max(0, intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout'])));
-			$followLocation = @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+
 			if (is_array($requestHeaders)) {
 				curl_setopt($ch, CURLOPT_HTTPHEADER, $requestHeaders);
 			}
@@ -2345,18 +2356,42 @@ class GeneralUtility {
 				}
 			}
 			$content = curl_exec($ch);
+
+			if (!$followLocation) {
+				// Check if we need to do redirects
+				$stripHeaders = TRUE;
+				$curlInfo = curl_getinfo($ch);
+				if ($curlInfo['http_code'] >= 300 && $curlInfo['http_code'] < 400) {
+					$locationUrl = $curlInfo['redirect_url'];
+					if ($locationUrl) {
+						$content = self::getUrl($locationUrl, $includeHeader, $requestHeaders, $report);
+						$stripHeaders = FALSE;
+					} else {
+						// We got a 3xx status but no "Location" header or the URl is empty.
+						// The only thing we can do is to return the content "as is". We need to
+						// reset $followLocation to send the info to the caller.
+						$followLocation = TRUE;
+					}
+				}
+				if ($stripHeaders) {
+					$headersEndPosition = strpos($content, "\r\n\r\n");
+					if ($headersEndPosition) {
+						$content = substr($content, $headersEndPosition + 4);
+					}
+					else {
+						$content = '';
+					}
+				}
+			}
+
 			if (isset($report)) {
 				if ($content === FALSE) {
 					$report['error'] = curl_errno($ch);
 					$report['message'] = curl_error($ch);
 				} else {
-					$curlInfo = curl_getinfo($ch);
-					// We hit a redirection but we couldn't follow it
-					if (!$followLocation && $curlInfo['status'] >= 300 && $curlInfo['status'] < 400) {
-						$report['error'] = -1;
-						$report['message'] = 'Couldn\'t follow location redirect (PHP configuration option open_basedir is in effect).';
-					} elseif ($includeHeader) {
+					if ($includeHeader && $followLocation) {
 						// Set only for $includeHeader to work exactly like PHP variant
+						$curlInfo = curl_getinfo($ch);
 						$report['http_code'] = $curlInfo['http_code'];
 						$report['content_type'] = $curlInfo['content_type'];
 					}
@@ -2457,6 +2492,16 @@ Connection: close
 			}
 		}
 		return $content;
+	}
+
+	/**
+	 * Sets test mode for RealURL.
+	 *
+	 * @param bool $testMode
+	 * @return void
+	 */
+	static public function setGetUrlTestMode($testMode) {
+		self::$getUrlTestModeEnabled = $testMode;
 	}
 
 	/**

@@ -4082,6 +4082,43 @@ text with a ' . $urlMatch . '$|s'),
 		$this->assertTrue(preg_match($expectedPreg, Utility\GeneralUtility::substUrlsInPlainText($input, 1, 'http://example.com/index.php')) == 1);
 	}
 
+	/**
+	 * @test
+	 */
+	public function testGetUrlRedirects() {
+		$url = Utility\GeneralUtility::locationHeaderUrl('/typo3/sysext/core/Tests/Unit/Utility/Fixtures/redirect.php');
+
+		Utility\GeneralUtility::setGetUrlTestMode(TRUE);
+		$content = Utility\GeneralUtility::getUrl($url);
+		Utility\GeneralUtility::setGetUrlTestMode(FALSE);
+
+		self::assertEquals('Success.', $content);
+	}
+
+	/**
+	 * @test
+	 */
+	public function testGetUrlRedirectsWithoutUrl() {
+		$url = Utility\GeneralUtility::locationHeaderUrl('/typo3/sysext/core/Tests/Unit/Utility/Fixtures/redirect.php?redirectNoLocation=1');
+
+		Utility\GeneralUtility::setGetUrlTestMode(TRUE);
+		$content = Utility\GeneralUtility::getUrl($url);
+		Utility\GeneralUtility::setGetUrlTestMode(FALSE);
+
+		self::assertFalse($content);
+	}
+
+	/**
+	 * @test
+	 */
+	public function testGetUrlRedirectsWithFollowActive() {
+		$url = Utility\GeneralUtility::locationHeaderUrl('/typo3/sysext/core/Tests/Unit/Utility/Fixtures/redirect.php');
+
+		$content = Utility\GeneralUtility::getUrl($url);
+
+		self::assertEquals('Success.', $content);
+	}
+
 }
 
 ?>
