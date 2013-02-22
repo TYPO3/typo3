@@ -48,6 +48,12 @@ class GeneralUtility {
 	const SYSLOG_SEVERITY_WARNING = 2;
 	const SYSLOG_SEVERITY_ERROR = 3;
 	const SYSLOG_SEVERITY_FATAL = 4;
+
+	/** Disables CURLOT_FOLLOWLOCATION in self::getUrl() */
+	const TESTOPTION_NOFOLLOWLOCATION = 1;
+	/** Disables 'redirect_url' handling in curl information in self::getUrl() */
+	const TESTOPTION_NOREDIRECTURL = 1;
+
 	/**
 	 * Singleton instances returned by makeInstance, using the class names as
 	 * array keys
@@ -62,6 +68,13 @@ class GeneralUtility {
 	 * @var array<array><object>
 	 */
 	static protected $nonSingletonInstances = array();
+
+	/**
+	 * Options for GeneralUtility unit testing.
+	 *
+	 * @var array[]
+	 */
+	static protected $testModeOptions = array();
 
 	/*************************
 	 *
@@ -2321,14 +2334,17 @@ class GeneralUtility {
 				}
 				return FALSE;
 			}
+
+			$followLocationSucceeded = !self::$testModeOptions[self::TESTOPTION_NOFOLLOWLOCATION] && @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+
 			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_HEADER, $includeHeader ? 1 : 0);
+			curl_setopt($ch, CURLOPT_HEADER, !$followLocationSucceeded || $includeHeader ? 1 : 0);
 			curl_setopt($ch, CURLOPT_NOBODY, $includeHeader == 2 ? 1 : 0);
 			curl_setopt($ch, CURLOPT_HTTPGET, $includeHeader == 2 ? 'HEAD' : 'GET');
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
 			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, max(0, intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout'])));
-			$followLocation = @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+
 			if (is_array($requestHeaders)) {
 				curl_setopt($ch, CURLOPT_HTTPHEADER, $requestHeaders);
 			}
@@ -2343,21 +2359,42 @@ class GeneralUtility {
 				}
 			}
 			$content = curl_exec($ch);
+			$curlInfo = curl_getinfo($ch);
+
+			if (!$followLocationSucceeded) {
+				// Check if we need to do redirects
+				if ($curlInfo['http_code'] >= 300 && $curlInfo['http_code'] < 400) {
+					$locationUrl = $curlInfo['redirect_url'];
+					if (!$locationUrl || self::$testModeOptions[self::TESTOPTION_NOREDIRECTURL]) {
+						// Some curllib versions do not return redirect_url. Examine headers.
+						$locationUrl = self::getRedirectUrlFromHeaders($content);
+					}
+					if ($locationUrl) {
+						$content = self::getUrl($locationUrl, $includeHeader, $requestHeaders, $report);
+						$followLocationSucceeded = TRUE;
+					} else {
+						// Failure: we got a redirection status code but not the URL to redirect to.
+						$content = FALSE;
+					}
+				}
+				if ($content && !$includeHeader) {
+					$content = self::stripHttpHeaders($content);
+				}
+			}
+
 			if (isset($report)) {
-				if ($content === FALSE) {
+				if (!$followLocationSucceeded && $curlInfo['http_code'] >= 300 && $curlInfo['http_code'] < 400) {
+					$report['http_code'] = $curlInfo['http_code'];
+					$report['content_type'] = $curlInfo['content_type'];
+					$report['error'] = 52; // This is a code for CURLE_GOT_NOTHING
+					$report['message'] = 'Expected "Location" header but got nothing.';
+				} elseif ($content === FALSE) {
 					$report['error'] = curl_errno($ch);
 					$report['message'] = curl_error($ch);
-				} else {
-					$curlInfo = curl_getinfo($ch);
-					// We hit a redirection but we couldn't follow it
-					if (!$followLocation && $curlInfo['status'] >= 300 && $curlInfo['status'] < 400) {
-						$report['error'] = -1;
-						$report['message'] = 'Couldn\'t follow location redirect (PHP configuration option open_basedir is in effect).';
-					} elseif ($includeHeader) {
-						// Set only for $includeHeader to work exactly like PHP variant
-						$report['http_code'] = $curlInfo['http_code'];
-						$report['content_type'] = $curlInfo['content_type'];
-					}
+				} elseif ($includeHeader) {
+					// Set only for $includeHeader to work exactly like PHP variant
+					$report['http_code'] = $curlInfo['http_code'];
+					$report['content_type'] = $curlInfo['content_type'];
 				}
 			}
 			curl_close($ch);
@@ -2455,6 +2492,56 @@ Connection: close
 			}
 		}
 		return $content;
+	}
+
+	/**
+	 * Parses HTTP headers and returns the content of the "Location" header
+	 * or the empty string if no such header found.
+	 *
+	 * @param string $content
+	 * @return string
+	 */
+	static protected function getRedirectUrlFromHeaders($content) {
+		$result = '';
+		$headers = explode("\r\n", $content);
+		foreach ($headers as $header) {
+			if ($header == '') {
+				break;
+			}
+			if (preg_match('/^\s*Location\s*:/i', $header)) {
+				list(, $result) = self::trimExplode(':', $header, FALSE, 2);
+				if ($result) {
+					$result = self::locationHeaderUrl($result);
+				}
+				break;
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Strips HTTP headers from the content.
+	 *
+	 * @param string $content
+	 * @return string
+	 */
+	static protected function stripHttpHeaders($content) {
+		$headersEndPos = strpos($content, "\r\n\r\n");
+		if ($headersEndPos) {
+			$content = substr($content, $headersEndPos + 4);
+		}
+		return $content;
+	}
+
+	/**
+	 * Sets test mode options for this. You must not use this outside unit tests!
+	 *
+	 * @param int $testModeOption
+	 * @param mixed $value
+	 * @return void
+	 */
+	static public function setTestModeOption($testModeOption, $value) {
+		self::$testModeOptions[$testModeOption] = $value;
 	}
 
 	/**
