@@ -63,6 +63,14 @@ class GeneralUtility {
 	 */
 	static protected $nonSingletonInstances = array();
 
+	/**
+	 * Sets test mode for getUrl. This would change certain options to let
+	 * unit tests to their work.
+	 *
+	 * @var boolean
+	 */
+	static protected $getUrlTestModeEnabled = FALSE;
+
 	/*************************
 	 *
 	 * GET/POST Variables
@@ -2323,6 +2331,7 @@ class GeneralUtility {
 				}
 				return FALSE;
 			}
+
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_HEADER, $includeHeader ? 1 : 0);
 			curl_setopt($ch, CURLOPT_NOBODY, $includeHeader == 2 ? 1 : 0);
@@ -2330,7 +2339,9 @@ class GeneralUtility {
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
 			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, max(0, intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout'])));
-			$followLocation = @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+
+			$followLocationSucceeded = !self::$getUrlTestModeEnabled && @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+
 			if (is_array($requestHeaders)) {
 				curl_setopt($ch, CURLOPT_HTTPHEADER, $requestHeaders);
 			}
@@ -2345,21 +2356,35 @@ class GeneralUtility {
 				}
 			}
 			$content = curl_exec($ch);
+			$curlInfo = curl_getinfo($ch);
+
+			if (!$followLocationSucceeded) {
+				// Check if we need to do redirects
+				if ($curlInfo['http_code'] >= 300 && $curlInfo['http_code'] < 400) {
+					$locationUrl = $curlInfo['redirect_url'];
+					if ($locationUrl) {
+						$content = self::getUrl($locationUrl, $includeHeader, $requestHeaders, $report);
+						$followLocationSucceeded = TRUE;
+					} else {
+						// Failure: we got a redirection status code but not the URL to redirect to.
+						$content = FALSE;
+					}
+				}
+			}
+
 			if (isset($report)) {
-				if ($content === FALSE) {
+				if (!$followLocationSucceeded && $curlInfo['http_code'] >= 300 && $curlInfo['http_code'] < 400) {
+					$report['http_code'] = $curlInfo['http_code'];
+					$report['content_type'] = $curlInfo['content_type'];
+					$report['error'] = 52; // This is a code for CURLE_GOT_NOTHING
+					$report['message'] = 'Expected "Location" header but got nothing.';
+				} elseif ($content === FALSE) {
 					$report['error'] = curl_errno($ch);
 					$report['message'] = curl_error($ch);
-				} else {
-					$curlInfo = curl_getinfo($ch);
-					// We hit a redirection but we couldn't follow it
-					if (!$followLocation && $curlInfo['status'] >= 300 && $curlInfo['status'] < 400) {
-						$report['error'] = -1;
-						$report['message'] = 'Couldn\'t follow location redirect (PHP configuration option open_basedir is in effect).';
-					} elseif ($includeHeader) {
-						// Set only for $includeHeader to work exactly like PHP variant
-						$report['http_code'] = $curlInfo['http_code'];
-						$report['content_type'] = $curlInfo['content_type'];
-					}
+				} elseif ($includeHeader) {
+					// Set only for $includeHeader to work exactly like PHP variant
+					$report['http_code'] = $curlInfo['http_code'];
+					$report['content_type'] = $curlInfo['content_type'];
 				}
 			}
 			curl_close($ch);
@@ -2457,6 +2482,16 @@ Connection: close
 			}
 		}
 		return $content;
+	}
+
+	/**
+	 * Sets test mode for getUrl.
+	 *
+	 * @param boolean $testMode
+	 * @return void
+	 */
+	static public function setGetUrlTestMode($testMode) {
+		self::$getUrlTestModeEnabled = $testMode;
 	}
 
 	/**
