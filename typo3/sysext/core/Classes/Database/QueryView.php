@@ -497,7 +497,6 @@ class QueryView {
 		if ($swords) {
 			foreach ($GLOBALS['TCA'] as $table => $value) {
 				// Get fields list
-				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 				$conf = $GLOBALS['TCA'][$table];
 				// Avoid querying tables with no columns
 				if (empty($conf['columns'])) {
@@ -601,7 +600,6 @@ class QueryView {
 	public function getProcessedValueExtra($table, $fN, $fV, $conf, $splitString) {
 		// Analysing the fields in the table.
 		if (is_array($GLOBALS['TCA'][$table])) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			$fC = $GLOBALS['TCA'][$table]['columns'][$fN];
 			$fields = $fC['config'];
 			$fields['exclude'] = $fC['exclude'];
@@ -869,7 +867,6 @@ class QueryView {
 				}
 				$counter = 1;
 				if (is_array($GLOBALS['TCA'][$from_table])) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($from_table);
 					$labelField = $GLOBALS['TCA'][$from_table]['ctrl']['label'];
 					$altLabelField = $GLOBALS['TCA'][$from_table]['ctrl']['label_alt'];
 					if ($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items']) {

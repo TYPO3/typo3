@@ -130,8 +130,10 @@ if ($TSFE->isBackendUserLoggedIn() && (!$BE_USER->extPageReadAccess($TSFE->page)
 }
 $TSFE->makeCacheHash();
 $TT->pull();
+
 // Admin Panel & Frontend editing
 if ($TSFE->isBackendUserLoggedIn()) {
+	\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(TRUE);
 	$BE_USER->initializeFrontendEdit();
 	if ($BE_USER->adminPanel instanceof \TYPO3\CMS\Frontend\View\AdminPanelView) {
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeLanguageObject();
@@ -139,10 +141,10 @@ if ($TSFE->isBackendUserLoggedIn()) {
 	if ($BE_USER->frontendEdit instanceof \TYPO3\CMS\Core\FrontendEditing\FrontendEditingController) {
 		$BE_USER->frontendEdit->initConfigOptions();
 	}
+} else {
+	\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca(TRUE);
 }
-// Get compressed $TCA-Array();
-// After this, we should now have a valid $TCA, though minimized
-$TSFE->getCompressedTCarray();
+
 // Starts the template
 $TT->push('Start Template', '');
 $TSFE->initTemplate();
