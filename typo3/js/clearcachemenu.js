@@ -50,6 +50,7 @@ var ClearCacheMenu = Class.create({
 				// observe all clicks on clear cache actions in the menu
 			$$('#clear-cache-actions-menu li a').each(function(element) {
 				$(element).onclick = function(event) {
+					event = event || window.event;
 					self.clearCache.call(self, event);
 					return false;
 				};
