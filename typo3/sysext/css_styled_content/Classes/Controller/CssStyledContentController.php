@@ -260,9 +260,13 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				$fileList = $this->cObj->data[$field];
 				$GLOBALS['TSFE']->includeTCA();
 				$path = 'uploads/media/';
-				if (is_array($GLOBALS['TCA']['tt_content']['columns'][$field]) && !empty($GLOBALS['TCA']['tt_content']['columns'][$field]['config']['uploadfolder'])) {
-					// In TCA-Array folders are saved without trailing slash, so $path.$fileName won't work
-					$path = $GLOBALS['TCA']['tt_content']['columns'][$field]['config']['uploadfolder'] . '/';
+				if (is_array($GLOBALS['TCA']['tt_content']['columns'][$field]) && isset($GLOBALS['TCA']['tt_content']['columns'][$field]['config']['uploadfolder'])) {
+					if (empty($GLOBALS['TCA']['tt_content']['columns'][$field]['config']['uploadfolder'])) {
+						$path = '';
+					} else {
+						// In TCA-Array folders are saved without trailing slash, so $path.$fileName won't work
+						$path = $GLOBALS['TCA']['tt_content']['columns'][$field]['config']['uploadfolder'] . '/';
+					}
 				}
 			}
 			$path = trim($path);
@@ -305,6 +309,15 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				$filesData = array();
 				foreach ($fileArray as $key => $fileName) {
 					$absPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(\TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($path . $fileName));
+
+					// $fileName should only the name itself, not include any path
+					// When using 'internal_type' => 'file_reference' in TCA (non-default TCA) the $fileName can contain part of the path
+					$dir = dirname($fileName);
+					if (!empty($dir)) {
+						$path .= $dir . '/';
+						$fileName = basename($fileName);
+					}
+					
 					if (@is_file($absPath)) {
 						$fI = pathinfo($fileName);
 						$filesData[$key] = array();
