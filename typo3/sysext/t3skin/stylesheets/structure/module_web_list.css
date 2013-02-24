@@ -85,7 +85,7 @@ table.typo3-dblist tr td.col-icon a img.collapseIcon {
 table.typo3-dblist tr td.col-title {
 	overflow: hidden;
 	vertical-align: middle;
-	width: 240px;
+	width: 300px;
 }
 
 table.typo3-dblist tr td.col-title.localization {
