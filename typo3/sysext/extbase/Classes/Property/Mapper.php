@@ -185,11 +185,11 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param array $propertyNames Names of the properties to map.
 	 * @param mixed $source Source containing the properties to map to the target object. Must either be an array, ArrayObject or any other object.
-	 * @param object|array $target The target object
+	 * @param object|array|string $target The target object
 	 * @param array $optionalPropertyNames Names of optional properties. If a property is specified here and it doesn't exist in the source, no error is issued.
 	 * @throws Exception\InvalidSourceException
 	 * @throws Exception\InvalidTargetException
-	 * @return boolean TRUE if the properties could be mapped, otherwise FALSE
+	 * @return boolean TRUE if the properties could be mapped, otherwise FALSE, or the object in case it could be resolved
 	 * @see mapAndValidate()
 	 * @api
 	 */
