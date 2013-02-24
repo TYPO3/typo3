@@ -72,6 +72,8 @@ class ContentObjectRenderer {
 		'current.' => 'array',
 		'cObject' => 'cObject',
 		'cObject.' => 'array',
+		'flexform' => 'fieldName',
+		'flexform.' => 'array',
 		'numRows.' => 'array',
 		'filelist' => 'dir',
 		'filelist.' => 'array',
@@ -2110,6 +2112,19 @@ class ContentObjectRenderer {
 		$content = $this->getData($conf['data'], is_array($this->alternativeData) ? $this->alternativeData : $this->data);
 		// This must be unset directly after
 		$this->alternativeData = '';
+		return $content;
+	}
+
+	/**
+	 * flexform
+	 * Gets values from the flexform to the corresponding content element
+	 *
+	 * @param string $content Input value undergoing processing in this function.
+	 * @param array $conf stdWrap properties for data.
+	 * @return string The processed input value
+	 */
+	public function stdWrap_flexform($content = '', $conf = array()) {
+		$content = $this->getFlexformValue($conf['flexform']);
 		return $content;
 	}
 
@@ -5232,6 +5247,22 @@ class ContentObjectRenderer {
 	}
 
 	/**
+	 * Get value from a flexform field
+	 *
+	 * @param string $fieldName The fieldname from the flexform processed along with the $this->data array
+	 * @return string
+	 */
+	public function getFlexformValue($fieldName) {
+		$data = $this->data['pi_flexform'];
+		$dataArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($data);
+		foreach($dataArray['data'] as $sheetFields) {
+			if(array_key_exists($fieldName, $sheetFields['lDEF']) === TRUE) {
+				return $sheetFields['lDEF'][$fieldName]['vDEF'];
+			}
+		}
+	}
+
+	/**
 	 * Implements the TypoScript data type "getText". This takes a string with parameters and based on those a value from somewhere in the system is returned.
 	 *
 	 * @param string $string The parameter string, eg. "field : title" or "field : navtitle // field : title" (in the latter case and example of how the value is FIRST splitted by "//" is shown)
@@ -5268,6 +5299,9 @@ class ContentObjectRenderer {
 					break;
 				case 'field':
 					$retVal = $fieldArray[$key];
+					break;
+				case 'flexform':
+					$retVal = $this->getFlexformValue($key);
 					break;
 				case 'file':
 					$retVal = $this->getFileDataKey($key);

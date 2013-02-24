@@ -802,6 +802,85 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * Return test data, taken from a saved tt_content record. This is _not_ a flexform xml document!
+	 *
+	 * @return array
+	 */
+	public function stdWrap_flexformDataProvider() {
+		return array(
+			array(
+				'fieldOne',
+				'<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+					<T3FlexForms>
+						<data>
+							<sheet index="sDEF">
+								<fields index="lDEF">
+									<field index="fieldOne">
+										<value index="vDEF">valueOne</value>
+									</field>
+									<field index="fieldTwo">
+										<value index="vDEF">valueTwo</value>
+									</field>
+									<field index="fieldThree">
+										<value index="vDEF">fieldThree</value>
+									</field>
+								</fields>
+							</sheet>
+						</data>
+					</T3FlexForms>',
+				'valueOne'
+			),
+			array('sheetTwoValueOne',
+				'<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+					<T3FlexForms>
+						<data>
+							<sheet index="sDEF">
+								<language index="lDEF">
+									<field index="fieldOne">
+										<value index="vDEF">valueOne</value>
+									</field>
+									<field index="fieldTwo">
+										<value index="vDEF">valueTwo</value>
+									</field>
+									<field index="fieldThree">
+										<value index="vDEF">fieldThree</value>
+									</field>
+								</language>
+							</sheet>
+							<sheet index="sheetTwo">
+								<language index="lDEF">
+									<field index="sheetTwoValueOne">
+										<value index="vDEF">Sheet two - Value one</value>
+									</field>
+									<field index="sheetTwoValueTwo">
+										<value index="vDEF">A second value</value>
+									</field>
+								</language>
+							</sheet>
+						</data>
+					</T3FlexForms>',
+				'Sheet two - Value one'
+			)
+		);
+	}
+
+	/**
+	 * Test for the stdWrap function flexform
+	 *
+	 * @dataProvider stdWrap_flexformDataProvider
+	 * @test
+	 */
+	public function stdWrap_flexform($field, $flexformValues, $expected) {
+		$this->cObj->data['pi_flexform'] = $flexformValues;
+		$conf = array(
+			'flexform' => $field
+		);
+
+		$result = $this->cObj->stdWrap_flexform('', $conf);
+		$this->assertSame($expected, $result);
+	}
+
+	/**
 	 * @return array
 	 */
 	public function stdWrap_strPadDataProvider() {
