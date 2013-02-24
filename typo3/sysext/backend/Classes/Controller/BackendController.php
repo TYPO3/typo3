@@ -274,7 +274,7 @@ class BackendController {
 						$additionalAttributes .= 'class="separator"';
 					}
 				}
-				$toolbar .= '<li' . $additionalAttributes . '>' . $menu . '</li>';
+				$toolbar .= '<li ' . $additionalAttributes . '>' . $menu . '</li>';
 			}
 		}
 		return $toolbar . '</ul>';
