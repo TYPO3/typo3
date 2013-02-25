@@ -3656,7 +3656,7 @@ function ' . $evalData . '(value) {
 		// Create selector box of the options
 		$sSize = $params['autoSizeMax'] ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($itemArrayC + 1, \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($params['size'], 1), $params['autoSizeMax']) : $params['size'];
 		if (!$selector) {
-			$isMultiple = $params['size'] != 1;
+			$isMultiple = $params['maxitems'] != 1;
 			$selector = '<select id="' . uniqid('tceforms-multiselect-') . '" ' . ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '"' . $this->insertDefStyle('group', 'tceforms-multiselect')) . ($isMultiple ? ' multiple="multiple"' : '') . ' name="' . $fName . '_list" ' . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt) . '</select>';
 		}
 		$icons = array(
@@ -4021,6 +4021,10 @@ function ' . $evalData . '(value) {
 							break;
 						}
 						$outArr[] = $this->suggest->renderSuggestSelector($PA['itemFormElName'], $table, $field, $row, $PA);
+						// If the suggest wizard is configured on a simple unique select field, then additional JS will be required, not otherwise included
+						if ($PA['fieldConf']['config']['type'] == 'select' && $PA['fieldConf']['config']['maxitems'] == 1) {
+							$this->printNeededJS['dbFileIcons'] = 1;	
+						}
 						break;
 					}
 					// Color wizard colorbox:
