@@ -259,6 +259,10 @@ button span.t3-install-form-button-icon-positive {
 	background-image: url('../Images/menuConfig.png');
 }
 
+#t3-install-menu #t3-install-menu-systemEnvironment {
+	background-image: url('../Images/menuSystemEnvironment.png');
+}
+
 #t3-install-menu #t3-install-menu-database {
 	background-image: url('../Images/menuDatabase.png');
 }
