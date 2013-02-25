@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="install">
+		<header/>
+		<body>
+			<trans-unit id="environment.status.title" xml:space="preserve">
+				<source>System environment check</source>
+			</trans-unit>
+			<trans-unit id="environment.status.value" xml:space="preserve">
+				<source>%1s Test(s)</source>
+			</trans-unit>
+			<trans-unit id="environment.status.message.error" xml:space="preserve">
+				<source>The system environment check returned errors. Those errors will affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+			</trans-unit>
+			<trans-unit id="environment.status.message.warning" xml:space="preserve">
+				<source>The system environment check returned warnings. Those errors might have a negative affect to the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+			</trans-unit>
+			<trans-unit id="environment.status.message.notice" xml:space="preserve">
+				<source>The system environment check returned notices. Those should not affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+			</trans-unit>
+			<trans-unit id="environment.status.message.ok" xml:space="preserve">
+				<source />
+			</trans-unit>
+			<trans-unit id="environment.status.message.info" xml:space="preserve">
+				<source />
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

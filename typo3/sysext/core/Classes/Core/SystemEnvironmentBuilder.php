@@ -57,8 +57,6 @@ class SystemEnvironmentBuilder {
 	 * @return void
 	 */
 	static public function run($relativePathPart = '') {
-		self::ensureRequiredEnvironment();
-		self::checkGlobalsAreNotSetViaPostOrGet();
 		self::defineBaseConstants();
 		self::definePaths($relativePathPart);
 		self::checkMainPathsExist();
@@ -69,42 +67,6 @@ class SystemEnvironmentBuilder {
 		self::initializeGlobalVariables();
 		self::initializeGlobalTimeTrackingVariables();
 		self::initializeBasicErrorReporting();
-	}
-
-	/**
-	 * Check php version requirement or exit script
-	 *
-	 * @return void
-	 */
-	static protected function ensureRequiredEnvironment() {
-		if (version_compare(phpversion(), '5.3', '<')) {
-			die('TYPO3 requires PHP 5.3.0 or higher.');
-		}
-		if (self::getPhpIniValueBoolean('register_globals')) {
-			die('TYPO3 requires PHP setting "register_globals" set to Off. (Error: #1345284320)');
-		}
-	}
-
-	/**
-	 * Cast a on/off php ini value to boolean
-	 *
-	 * @param string $configOption
-	 * @return boolean TRUE if the given option is enabled, FALSE if disabled
-	 * @see t3lib_utility_PhpOptions::getIniValueBoolean
-	 */
-	static protected function getPhpIniValueBoolean($configOption) {
-		return filter_var(ini_get($configOption), FILTER_VALIDATE_BOOLEAN, array(FILTER_REQUIRE_SCALAR, FILTER_NULL_ON_FAILURE));
-	}
-
-	/**
-	 * Exit script if globals are set via post or get
-	 *
-	 * @return void
-	 */
-	static protected function checkGlobalsAreNotSetViaPostOrGet() {
-		if (isset($_POST['GLOBALS']) || isset($_GET['GLOBALS'])) {
-			die('You cannot set the GLOBALS array from outside the script.');
-		}
 	}
 
 	/**

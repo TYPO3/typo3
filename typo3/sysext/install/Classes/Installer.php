@@ -165,12 +165,6 @@ class Installer {
 	 */
 	public $config_array = array(
 		// Flags are set in this array if the options are available and checked ok.
-		'gd' => 0,
-		'gd_gif' => 0,
-		'gd_png' => 0,
-		'gd_jpg' => 0,
-		'freetype' => 0,
-		'safemode' => 0,
 		'dir_typo3temp' => 0,
 		'dir_temp' => 0,
 		'im_versions' => array(),
@@ -204,6 +198,7 @@ class Installer {
 	 */
 	public $menuitems = array(
 		'config' => 'Basic Configuration',
+		'systemEnvironment' => 'System environment',
 		'database' => 'Database Analyser',
 		'update' => 'Upgrade Wizard',
 		'images' => 'Image Processing',
@@ -213,22 +208,6 @@ class Installer {
 		'typo3conf_edit' => 'Edit files in typo3conf/',
 		'about' => 'About',
 		'logout' => 'Logout from Install Tool'
-	);
-
-	// PHP modules which are required. Can be changed by hook in getMissingPhpModules()
-	protected $requiredPhpModules = array(
-		'fileinfo',
-		'filter',
-		'gd',
-		'json',
-		'mysql',
-		'pcre',
-		'session',
-		'SPL',
-		'standard',
-		'openssl',
-		'xml',
-		'zlib'
 	);
 
 	/**
@@ -316,6 +295,7 @@ class Installer {
 				'extConfig',
 				'cleanup',
 				'phpinfo',
+				'systemEnvironment',
 				'typo3conf_edit',
 				'about',
 				'logout'
@@ -681,6 +661,10 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 			case 'phpinfo':
 				$this->silent = 0;
 				$this->phpinformation();
+				break;
+			case 'systemEnvironment':
+				$this->silent = 0;
+				$this->systemEnvironmentCheck();
 				break;
 			case 'typo3conf_edit':
 				$this->silent = 0;
@@ -1155,9 +1139,6 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 		}
 		$paths = array_unique($paths);
 		asort($paths);
-		if (\TYPO3\CMS\Core\Utility\PhpOptionsUtility::isSafeModeEnabled()) {
-			$paths = array(ini_get('safe_mode_exec_dir'), '/usr/local/php/bin/');
-		}
 		if ($this->INSTALL['checkIM']['lzw']) {
 			$this->checkIMlzw = 1;
 		}
@@ -1333,6 +1314,69 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	}
 
 	/**
+	 * Show system environment check
+	 */
+	protected function systemEnvironmentCheck() {
+		/** @var $statusCheck \TYPO3\CMS\Install\SystemEnvironment\Check */
+		$statusCheck = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\SystemEnvironment\\Check');
+		$statusObjects = $statusCheck->getStatus();
+
+		$orderedStatus = array(
+			'ErrorStatus' => array(),
+			'WarningStatus' => array(),
+			'OkStatus' => array(),
+			'InfoStatus' => array(),
+			'NoticeStatus' => array(),
+		);
+
+		foreach ($statusObjects as $statusObject) {
+			$className = get_class($statusObject);
+			// Last part of class name
+			$severityIdentifier = array_pop(explode('\\', $className));
+			if (!is_array($orderedStatus[$severityIdentifier])) {
+				throw new \TYPO3\CMS\Install\Exception('Unknown status severity type', 1362602559);
+			}
+			$orderedStatus[$severityIdentifier][] = $statusObject;
+		}
+
+		$severityToCssClass = array(
+			'ErrorStatus' => 'error',
+			'WarningStatus' => 'warning',
+			'OkStatus' => 'ok',
+			'InfoStatus' => 'information',
+			'NoticeStatus' => 'notice',
+		);
+
+		$messageHtmlBoilerPlate =
+			'<div class="typo3-message message-%1s" >' .
+				'<div class="header-container" >' .
+					'<div class="message-header message-left" >%2s</div>' .
+					'<div class="message-header message-right" ></div>' .
+				'</div >' .
+				'<div class="message-body" >%3s</div>' .
+			'</div >' .
+			'<p></p>';
+
+		$html = '<h3>System environment check</h3>';
+		foreach ($orderedStatus as $severity) {
+			foreach ($severity as $status) {
+				/** @var $status \TYPO3\CMS\Install\SystemEnvironment\AbstractStatus */
+				$className = get_class($status);
+				// Last part of class name
+				$severityIdentifier = array_pop(explode('\\', $className));
+				$html .= sprintf(
+					$messageHtmlBoilerPlate,
+					$severityToCssClass[$severityIdentifier],
+					$status->getTitle(),
+					$status->getMessage()
+				);
+			}
+		}
+
+		$this->output($this->outputWrapper($html));
+	}
+
+	/**
 	 * Outputs system information
 	 *
 	 * @return void
@@ -1355,7 +1399,6 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 		$sVar['imagejpeg()'] = function_exists('imagejpeg');
 		$sVar['imagettftext()'] = function_exists('imagettftext');
 		$sVar['OTHER: IMAGE_TYPES'] = function_exists('imagetypes') ? imagetypes() : 0;
-		$sVar['OTHER: memory_limit'] = ini_get('memory_limit');
 		$gE_keys = explode(',', 'SERVER_PORT,SERVER_SOFTWARE,GATEWAY_INTERFACE,SCRIPT_NAME,PATH_TRANSLATED');
 		foreach ($gE_keys as $k) {
 			$sVar['SERVER: ' . $k] = $_SERVER[$k];
@@ -1880,415 +1923,12 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	 * @todo Define visibility
 	 */
 	public function checkConfiguration() {
-		$ext = 'php.ini configuration checked';
+		$ext = 'php.ini configuration tests';
 		$this->message($ext);
-		// *****************
-		// Incoming values:
-		// *****************
-		// Includepath
-		$incPaths = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(TYPO3_OS == 'WIN' ? ';' : ':', ini_get('include_path'));
-		if (!in_array('.', $incPaths)) {
-			$this->message($ext, 'Current directory (./) is not in include path!', '
-				<p>
-					<em>include_path=' . ini_get('include_path') . '</em>
-					<br />
-					Normally the current path, \'.\', is included in the
-					include_path of PHP. Although TYPO3 does not rely on this,
-					it is an unusual setting that may introduce problems for
-					some extensions.
-				</p>
-			', 1);
-		} else {
-			$this->message($ext, 'Current directory in include path', '', -1);
-		}
-		// *****************
-		// File uploads
-		// *****************
-		if (!ini_get('file_uploads')) {
-			$this->message($ext, 'File uploads not allowed', '
-				<p>
-					<em>file_uploads=' . ini_get('file_uploads') . '</em>
-					<br />
-					TYPO3 uses the ability to upload files from the browser in
-					various cases.
-					<br />
-					As long as this flag is disabled, you\'ll not be able to
-					upload files.
-					<br />
-					But it doesn\'t end here, because not only are files not
-					accepted by the server - ALL content in the forms are
-					discarded and therefore nothing at all will be editable
-					if you don\'t set this flag!
-					<br />
-					However if you cannot enable fileupload for some reason
-					alternatively you change the default form encoding value
-					with \\$TYPO3_CONF_VARS[SYS][form_enctype].
-				</p>
-			', 3);
-		} else {
-			$this->message($ext, 'File uploads allowed', '', -1);
-		}
-		$upload_max_filesize = \TYPO3\CMS\Core\Utility\GeneralUtility::getBytesFromSizeMeasurement(ini_get('upload_max_filesize'));
-		$post_max_size = \TYPO3\CMS\Core\Utility\GeneralUtility::getBytesFromSizeMeasurement(ini_get('post_max_size'));
-		if ($upload_max_filesize < 1024 * 1024 * 10) {
-			$this->message($ext, 'Maximum upload filesize too small?', '
-				<p>
-					<em>upload_max_filesize=' . ini_get('upload_max_filesize') . '</em>
-					<br />
-					By default TYPO3 supports uploading, copying and moving
-					files of sizes up to 10MB (You can alter the TYPO3 defaults
-					by the config option TYPO3_CONF_VARS[BE][maxFileSize]).
-					<br />
-					Your current value is below this, so at this point, PHP sets
-					the limits for uploaded filesizes and not TYPO3.
-					<br />
-					<strong>Notice:</strong> The limits for filesizes attached
-					to database records are set in the configuration
-					files (\\$TCA) for each group/file field. You may override
-					these values in the local configuration or by page TSconfig settings.
-				</p>
-			', 1);
-		}
-		if ($upload_max_filesize > $post_max_size) {
-			$this->message($ext, 'Maximum size for POST requests is smaller than max. upload filesize', '
-				<p>
-					<em>upload_max_filesize=' . ini_get('upload_max_filesize') . '
-					, post_max_size=' . ini_get('post_max_size') . '</em>
-					<br />
-					You have defined a maximum size for file uploads which
-					exceeds the allowed size for POST requests. Therefore the
-					file uploads can not be larger than ' . ini_get('post_max_size') . '
-				</p>
-			', 1);
-		}
-		// *****************
-		// Memory and functions
-		// *****************
-		$memory_limit_value = \TYPO3\CMS\Core\Utility\GeneralUtility::getBytesFromSizeMeasurement(ini_get('memory_limit'));
-		if ($memory_limit_value <= 0) {
-			$this->message($ext, 'Unlimited memory limit!', '<p>Your webserver is configured to not limit PHP memory usage at all. This is a risk
-				and should be avoided in production setup. In general it\'s best practice to limit this
-				in the configuration of your webserver. To be safe, ask the system administrator of the
-				webserver to raise the limit to something over ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT . '.</p>', 2);
-		} elseif ($memory_limit_value < \TYPO3\CMS\Core\Utility\GeneralUtility::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT)) {
-			$this->message($ext, 'Memory limit below ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT, '
-				<p>
-					<em>memory_limit=' . ini_get('memory_limit') . '</em>
-					<br />
-					Your system is configured to enforce a memory limit of PHP
-					scripts lower than ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT . '.
-					The Extension Manager needs to include more PHP-classes than
-					will fit into this memory space. There is nothing else to do
-					than raise the limit. To be safe, ask the system
-					administrator of the webserver to raise the limit to over
-					' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT . '.
-				</p>
-			', 3);
-		} else {
-			$this->message($ext, 'Memory limit: ' . ini_get('memory_limit'), '', -1);
-		}
-		if (ini_get('max_execution_time') < 30) {
-			$this->message($ext, 'Maximum execution time below 30 seconds', '
-				<p>
-					<em>max_execution_time=' . ini_get('max_execution_time') . '</em>
-					<br />
-					May impose problems if too low.
-				</p>
-			', 1);
-		} else {
-			$this->message($ext, 'Maximum execution time: ' . ini_get('max_execution_time') . ' seconds', '', -1);
-		}
-		if (ini_get('disable_functions')) {
-			$this->message($ext, 'Functions disabled!', '
-				<p>
-					<em>disable_functions=' . ini_get('disable_functions') . '</em>
-					<br />
-					The above list of functions are disabled. If TYPO3 use any
-					of these there might be trouble.
-					<br />
-					TYPO3 is designed to use the default set of PHP4.3.0+
-					functions plus the functions of GDLib.
-					<br />
-					Possibly these functions are disabled due to security risks
-					and most likely the list would include a function like
-					<em>exec()</em> which is use by TYPO3 to access ImageMagick.
-				</p>
-			', 2);
-		} else {
-			$this->message($ext, 'Functions disabled: none', '', -1);
-		}
-		// Mail tests
-		if (TYPO3_OS == 'WIN') {
-			$smtp = ini_get('SMTP');
-			$bad_smtp = FALSE;
-			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validIP($smtp)) {
-				$smtp_addr = @gethostbyname($smtp);
-				$bad_smtp = $smtp_addr == $smtp;
-			} else {
-				$smtp_addr = $smtp;
-			}
-			if (!$smtp || $bad_smtp || !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger(ini_get('smtp_port'))) {
-				$this->message($ext, 'Mail configuration is not set correctly', '
-					<p>
-						Mail configuration is not set
-						<br />
-						PHP mail() function requires SMTP and smtp_port to have
-						correct values on Windows.
-					</p>
-				', 2);
-			} else {
-				if (($smtp_addr == '127.0.0.1' || $smtp_addr == '::1') && ($_SERVER['SERVER_ADDR'] == '127.0.0.1' || $_SERVER['SERVER_ADDR'] == '::1')) {
-					$this->message($ext, 'Mail is configured (potential problem exists!)', '
-						<p>
-							<em>SMTP=' . $smtp . '</em> - <strong>Note:</strong>
-							this server! Are you sure it runs SMTP server?
-							<br />
-							<em>smtp_port=' . ini_get('smtp_port') . '</em>
-						</p>' . $this->check_mail('get_form') . '
-					', 1);
-				} else {
-					$this->message($ext, 'Mail is configured', '
-						<p>
-							<em>SMTP=' . $smtp . '</em>
-							<br />
-							<em>smtp_port=' . ini_get('smtp_port') . '</em>
-						</p>' . $this->check_mail('get_form') . '
-					', -1);
-				}
-			}
-		} elseif (!ini_get('sendmail_path')) {
-			$this->message($ext, 'Sendmail path not defined!', '
-				<p>
-					This may be critical to TYPO3\'s use of the mail() function.
-					Please be sure that the mail() function in your
-					php-installation works!
-				</p>' . $this->check_mail('get_form') . '
-			', 1);
-		} else {
-			list($prg) = explode(' ', ini_get('sendmail_path'));
-			if (!@is_executable($prg)) {
-				$this->message($ext, 'Sendmail program not found or not executable?', '
-					<p>
-						<em>sendmail_path=' . ini_get('sendmail_path') . '</em>
-						<br />
-						This may be critical to TYPO3\'s use of the mail()
-						function. Please be sure that the mail() function in
-						your php-installation works!
-					</p>' . $this->check_mail('get_form') . '
-				', 1);
-			} else {
-				$this->message($ext, 'Sendmail OK', '
-					<p>
-						<em>sendmail_path=' . ini_get('sendmail_path') . '</em>
-					</p>' . $this->check_mail('get_form') . '
-				', -1);
-			}
-		}
-		// *****************
-		// Safe mode related
-		// *****************
-		if (\TYPO3\CMS\Core\Utility\PhpOptionsUtility::isSafeModeEnabled()) {
-			$this->message($ext, 'Safe mode turned on', '
-				<p>
-					<em>safe_mode=' . ini_get('safe_mode') . '</em>
-					<br />
-					In safe_mode PHP is restricted in several ways. This is a
-					good thing because it adds protection to your (and others)
-					scripts. But it may also introduce problems. In TYPO3 this
-					<em>may be</em> a problem in two areas: File administration
-					and execution of external programs, in particular
-					ImageMagick.
-					<br />
-					If you just ignore this warning, you\'ll most likely find,
-					that TYPO3 seems to work except from the image-generation.
-					The problem in that case is that the external ImageMagick
-					programs are not allowed to be executed from the regular
-					paths like "/usr/bin/" or "/usr/X11R6/bin/".
-					<br />
-					If you use safe_mode with TYPO3, you should disable use of
-					external programs ([BE][disable_exec_function]=1).
-					<br />
-					In safe mode you must ensure that all the php-scripts and
-					upload folders are owned by the same user.
-				</p>
-				<p>
-					<em>safe_mode_exec_dir=' . ini_get('safe_mode_exec_dir') . '</em>
-					<br />
-					If the ImageMagick utilities are located in this directory,
-					everything is fine. Below on this page, you can see if
-					ImageMagick is found here. If not, ask you ISP to put the
-					three ImageMagick programs, \'convert\',
-					\'combine\'/\'composite\' and \'identify\' there (eg. with
-					symlinks if Unix server)
-				</p>
-				<p>
-					<strong>Example of safe_mode settings:</strong>
-					<br />
-					Set this in the php.ini file:
-				</p>
-				<p>
-					; Safe Mode
-					<br />
-					safe_mode = On
-					<br />
-					safe_mode_exec_dir = /usr/bin/
-				</p>
-				<p>
-					...and the ImageMagick \'/usr/bin/convert\' will be
-					executable.
-					<br />
-					The last slash is important (..../) and you can only specify
-					one directory.
-				</p>
-				<p>
-					<strong>Notice: </strong>
-					<br />
-					ImageMagick 6 or GraphicsMagick is recommended and the binaries are
-					normally installed in /usr/bin.
-					<br />
-					Paths to ImageMagick are defined in local configuration and may be
-					something else than /usr/bin/, but this is default for
-					ImageMagick 6+
-				</p>
-			', 2);
-			if (ini_get('doc_root')) {
-				$this->message($ext, 'doc_root set', '
-					<p>
-						<em>doc_root=' . ini_get('doc_root') . '</em>
-						<br />
-						PHP cannot execute scripts outside this directory. If
-						that is a problem is please correct it.
-					</p>
-				', 1);
-			}
-			$this->config_array['safemode'] = 1;
-		} else {
-			$this->message($ext, 'safe_mode: off', '', -1);
-		}
+		$this->message($ext, 'Mail test', $this->check_mail('get_form'), -1);
+
 		if (\TYPO3\CMS\Core\Utility\PhpOptionsUtility::isSqlSafeModeEnabled()) {
-			$this->message($ext, 'sql.safe_mode is enabled', '
-				<p>
-					<em>sql.safe_mode=' . ini_get('sql.safe_mode') . '</em>
-					<br />
-					This means that you can only connect to the database with a
-					username corresponding to the user of the webserver process
-					or fileowner. Consult your ISP for information about this.
-					Also see <a href="http://www.wrox.com/Consumer/Store/Books/2963/29632002.htm">
-					http://www.wrox.com/Consumer/Store/Books/2963/29632002.htm</a>
-					<br />
-					The owner of the current file is:
-					<strong>' . get_current_user() . '</strong>
-				</p>
-			', 1);
 			$this->config_array['sql.safe_mode_user'] = get_current_user();
-		} else {
-			$this->message($ext, 'sql.safe_mode: off', '', -1);
-		}
-		if (ini_get('open_basedir')) {
-			$this->message($ext, 'open_basedir set', '
-				<p>
-					<em>open_basedir=' . ini_get('open_basedir') . '</em>
-					<br />
-					This restricts TYPO3 to open and include files only in this
-					path. Please make sure that this does not prevent TYPO3 from
-					running.
-					<br />
-					<strong>Notice (UNIX):</strong> Before checking a path
-					according to open_basedir, PHP resolves all symbolic links.
-				</p>
-			', 1);
-		} else {
-			$this->message($ext, 'open_basedir: off', '', -1);
-		}
-		// Check availability of PHP session support
-		if (extension_loaded('session')) {
-			$this->message($ext, 'PHP sessions available', '
-				<p>
-					<em>PHP Sessions available</em>
-					<br />
-					PHP is compiled with session support and session support is
-					available.
-				</p>
-			', -1);
-		} else {
-			$this->message($ext, 'PHP Sessions not available', '
-				<p>
-					PHP is not compiled with session support, or session support
-					is disabled in php.ini.
-					<br />
-					TYPO3 needs session support.
-				</p>
-			', 3);
-		}
-		// Suhosin/Hardened PHP:
-		$suhosinDescription = '
-			<p>
-				Suhosin limits the number of elements that can be submitted in
-				forms to the server. This will affect for example the
-				"All configuration" section in the Install Tool or Inline
-				Relational Record Editing (IRRE) with many child records.
-			</p>';
-		if (extension_loaded('suhosin')) {
-			$suhosinSuggestion = '
-				<p>
-					At least a value of 400 is suggested.
-				</p>
-			';
-			$suhosinSuggestionGetMaxValueLength = '
-				<p>
-					At least a value of 2000 is suggested.
-				</p>
-			';
-			$suhosinRequestMaxVars = ini_get('suhosin.request.max_vars');
-			$suhosinPostMaxVars = ini_get('suhosin.post.max_vars');
-			$suhosinGetMaxValueLength = ini_get('suhosin.get.max_value_length');
-			$suhosinRequestMaxVarsType = $suhosinRequestMaxVars < 400 ? 2 : -1;
-			$suhosinPostMaxVarsType = $suhosinPostMaxVars < 400 ? 2 : -1;
-			$suhosinGetMaxValueLengthType = $suhosinGetMaxValueLength < 2000 ? 2 : -1;
-			$suhosinType = $suhosinRequestMaxVars < 400 || $suhosinPostMaxVars < 400 || $suhosinGetMaxValueLength < 2000 ? 2 : -1;
-			$this->message($ext, 'Suhosin/Hardened PHP is loaded', $suhosinDescription, $suhosinType);
-			$this->message($ext, 'suhosin.request.max_vars: ' . $suhosinRequestMaxVars, $suhosinSuggestion, $suhosinRequestMaxVarsType);
-			$this->message($ext, 'suhosin.post.max_vars: ' . $suhosinPostMaxVars, $suhosinSuggestion, $suhosinPostMaxVarsType);
-			$this->message($ext, 'suhosin.get.max_value_length: ' . $suhosinGetMaxValueLength, $suhosinSuggestionGetMaxValueLength, $suhosinGetMaxValueLengthType);
-		} else {
-			$this->message($ext, 'Suhosin/Hardened PHP is not loaded', $suhosinDescription, 0);
-		}
-		// Check for stripped PHPdoc comments that are required to evaluate annotations:
-		$method = new \ReflectionMethod('TYPO3\\CMS\\Install\\Installer', 'check_mail');
-		if (strlen($method->getDocComment()) === 0) {
-			$description = '
-				<p>
-					The system extension Extbase evaluates annotations in PHPdoc
-					comments and thus requires eAccelerator not to strip away
-					these parts. However, this is currently the only part in the
-					TYPO3 Core (beside deprecation log and unit tests). If
-					Extbase is not used, recompiling eAccelerator is not
-					required at all.
-					<br/>
-					<br/>
-					If you do not want comments to be stripped by eAccelerator,
-					please recompile with the following configuration setting
-					(<a href="http://eaccelerator.net/ticket/229" target="_blank">
-					more details</a>):
-					<br />
-					<em>--with-eaccelerator-doc-comment-inclusion</em>
-				</p>
-			';
-			$this->message($ext, 'PHPdoc comments are stripped', $description, 2);
-		}
-		// ThreadStackSize on Windows systems with Apache
-		$threadStackSizeDescription = '
-			<p>
-				Fluid uses complex regular expressions which require a lot of stack space during the first processing.
-				On Windows the default stack size for Apache is a lot smaller than on unix.
-				You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
-				<br /><br />&lt;IfModule mpm_winnt_module&gt;
-				<br />ThreadStackSize 8388608
-				<br />&lt;/IfModule&gt;
-				<br /><br />Restart Apache after this change.
-			</p>';
-		if (TYPO3_OS === 'WIN' && substr($_SERVER['SERVER_SOFTWARE'], 0, 6) === 'Apache') {
-			$this->message($ext, 'ThreadStackSize', $threadStackSizeDescription, 2);
 		}
 	}
 
@@ -2351,119 +1991,20 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	 * @todo Define visibility
 	 */
 	public function checkExtensions() {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('testingTrueTypeSupport')) {
+			$this->checkTrueTypeSupport();
+		}
 		$ext = 'GDLib';
 		$this->message($ext);
-		$software_info = 1;
-		if (extension_loaded('gd') && $this->isGD()) {
-			$this->config_array['gd'] = 1;
-			$this->message($ext, 'GDLib found', '', -1);
-			if ($this->isPNG()) {
-				$this->config_array['gd_png'] = 1;
-				$this->message($ext, 'PNG supported', '', -1);
-			}
-			if ($this->isGIF()) {
-				$this->config_array['gd_gif'] = 1;
-				$this->message($ext, 'GIF supported', '', -1);
-			}
-			if ($this->isJPG()) {
-				$this->config_array['gd_jpg'] = 1;
-				$this->message($ext, 'JPG supported (not used by TYPO3)', '');
-			}
-			if (!$this->config_array['gd_gif'] && !$this->config_array['gd_png']) {
-				$this->message($ext, 'PNG or GIF not supported', '
-					<p>
-						Your GDLib supports either GIF nor PNG. It must support
-						either one of them.
-					</p>
-				', 2);
-			} else {
-				$msg = array();
-				if ($this->config_array['gd_gif'] && $this->config_array['gd_png']) {
-					$msg[] = '
-						<p>
-							You can choose between generating GIF or PNG files,
-							as your GDLib supports both.
-						</p>
-					';
-				}
-				if ($this->config_array['gd_gif']) {
-					$msg[] = '
-						<p>
-							You should watch out for the generated size of the
-							GIF-files because some versions of the GD library do
-							not compress them with LZW, but RLE and ImageMagick
-							is subsequently used to compress with LZW. But in
-							the case of ImageMagick failing this task (eg. not
-							being compiled with LZW which is the case with some
-							versions) you\'ll end up with GIF-filesizes all too
-							big!
-							<br />
-							This Install Tool tests what kinds of GIF
-							compression are available in the ImageMagick
-							installations by a physical test. You can also check
-							it manually by opening a TYPO3 generated gif-file
-							with Photoshop and save it in a new file. If the
-							file sizes of the original and the new file are
-							almost the same, you\'re having LZW compression and
-							everything is fine.
-						</p>
-					';
-				}
-				if ($this->config_array['gd_png']) {
-					$msg[] = '
-						<p>
-							TYPO3 prefers the use of GIF-files and most likely
-							your visitors on your website does too as not all
-							browsers support PNG yet.
-						</p>
-					';
-				}
-				$this->message($ext, 'GIF / PNG issues', implode(LF, $msg), 1);
-			}
-			if (!$this->isTTF()) {
-				$this->message($ext, 'FreeType is apparently not installed', '
-					<p>
-						It looks like the FreeType library is not compiled into
-						GDLib. This is required when TYPO3 uses GDLib and
-						you\'ll most likely get errors like \'ImageTTFBBox is
-						not a function\' or \'ImageTTFText is not a function\'.
-					</p>
-				', 2);
-			} else {
-				$this->message($ext, 'FreeType quick-test (' . ($this->isGIF() ? 'as GIF' : 'as PNG') . ')', '
-					<p>
-						<img src="' . htmlspecialchars((\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '&testingTrueTypeSupport=1')) . '" alt="" />
-						<br />
-						(If the text is exceeding the image borders you are
-						using Freetype 2 and need to set
-						TYPO3_CONF_VARS[GFX][TTFdpi]=96.
-						<br />
-						If there is no image at all Freetype is most likely NOT
-						available and you can just as well disable GDlib for
-						TYPO3...)
-					</p>
-				', -1);
-				$this->config_array['freetype'] = 1;
-			}
-		} else {
-			$this->message($ext, 'GDLib2 not found', '
-				<p>
-					GDLib2 is required if you want to use the GIFBUILDER object
-					in TypoScript. GIFBUILDER is in charge of all advanced image
-					generation in TypoScript, including graphical menuitems.
-					<br />
-					GDLib2 is also used in the TYPO3 Backend (TBE) to generate
-					record icons and new module tabs.
-					<br />
-					It\'s highly recommended to install this library. Remember
-					to compile GD with FreeType which is also required.
-					<br />
-					If you choose not to install GDLib, you can disable it in
-					the configuration with [GFX][gdlib]=0;.
-				</p>
-			', 2);
-		}
-		$this->message($ext, 'GDLib software information', $this->getGDSoftwareInfo());
+		$this->message($ext, 'FreeType quick-test (as GIF)', '
+			<p>
+				<img src="' . htmlspecialchars((\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '&testingTrueTypeSupport=1')) . '" alt="" />
+				<br />
+				If the text is exceeding the image borders you are
+				using Freetype 2 and need to set
+				TYPO3_CONF_VARS[GFX][TTFdpi]=96.
+			</p>
+		', -1);
 	}
 
 	/**
@@ -3449,16 +2990,11 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	}
 
 	/**
-	 * Calculates the suggested setup that should be written to localconf.php
-	 *
-	 * If safe_mode
-	 * - disable_exec_function = 1
-	 * - im = 0
+	 * Calculates the suggested setup that should be written to typo3conf/LocalConfiguration.php
 	 *
 	 * if PNG/GIF/GD
 	 * - disable gdlib if nothing
 	 * - select png/gif if only one of them is available, else PNG/GIF selector, defaulting to GIF
-	 * - (safe_mode is on)
 	 * - im_path (default to 4.2.9, preferable with LZW)		im_ver5-flag is set based on im_path being 4.2.9 or 5+
 	 * - im_path_lzw (default to LZW version, pref. 4.2.9)
 	 *
@@ -3473,20 +3009,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 		$formArray['im_version_5'] = array('');
 		$formArray['im'] = array(1);
 		$formArray['gdlib'] = array(1);
-		if ($this->config_array['gd'] && ($this->config_array['gd_gif'] || $this->config_array['gd_png'])) {
-			if ($this->config_array['gd_gif'] && !$this->config_array['gd_png']) {
-				$formArray['gdlib_png'] = array(0);
-			} elseif (!$this->config_array['gd_gif'] && $this->config_array['gd_png']) {
-				$formArray['gdlib_png'] = array(1);
-			} else {
-				$formArray['gdlib_png'] = array(0, 1);
-			}
-		} else {
-			$formArray['gdlib'] = array(0);
-		}
-		if ($this->config_array['safemode']) {
-			$formArray['disable_exec_function'] = array(1);
-		}
+		$formArray['gdlib_png'] = array(0, 1);
 		if ($this->config_array['im']) {
 			$formArray['im'] = array(1);
 			$found = ($LZW_found = 0);
@@ -3544,49 +3067,43 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	/**
 	 * Returns TRUE if TTF lib is installed.
 	 *
-	 * @return boolean TRUE if TrueType support
-	 * @todo Define visibility
+	 * @return void
 	 */
-	public function isTTF() {
-		// Return right away if imageTTFtext does not exist.
-		if (!function_exists('imagettftext')) {
-			return 0;
-		}
-		// try, print truetype font:
+	public function checkTrueTypeSupport() {
 		$im = @imagecreate(300, 50);
 		$background_color = imagecolorallocate($im, 255, 255, 55);
 		$text_color = imagecolorallocate($im, 233, 14, 91);
-		$test = @imagettftext($im, \TYPO3\CMS\Core\Utility\GeneralUtility::freetypeDpiComp(20), 0, 10, 20, $text_color, (PATH_t3lib . '/fonts/vera.ttf'), 'Testing Truetype support');
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('testingTrueTypeSupport')) {
-			if ($this->isGIF()) {
-				header('Content-type: image/gif');
-				imagegif($im);
-			} else {
-				header('Content-type: image/png');
-				imagepng($im);
-			}
-			die;
-		}
-		return is_array($test) ? 1 : 0;
+		@imagettftext(
+			$im,
+			\TYPO3\CMS\Core\Utility\GeneralUtility::freetypeDpiComp(20),
+			0,
+			10,
+			20,
+			$text_color,
+			(PATH_t3lib . '/fonts/vera.ttf'),
+			'Testing Truetype support'
+		);
+		header('Content-type: image/gif');
+		imagegif($im);
+		die;
 	}
 
 	/**
-	 * Checks if the essential PHP modules are loaded
+	 * Checks if extensions need further PHP modules
 	 *
 	 * @return array list of modules which are missing
 	 */
 	protected function getMissingPhpModules() {
-		// Hook to adjust the required PHP modules in the 1-2-3 installer
-		$modules = $this->requiredPhpModules;
+		// Hook to add additional required PHP modules in the 1-2-3 installer
+		$modules = array();
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['requiredPhpModules'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['requiredPhpModules'] as $classData) {
 				$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classData);
 				$modules = $hookObject->setRequiredPhpModules($modules, $this);
 			}
 		}
-		$this->requiredPhpModules = $modules;
 		$result = array();
-		foreach ($this->requiredPhpModules as $module) {
+		foreach ($modules as $module) {
 			if (is_array($module)) {
 				$detectedSubmodules = FALSE;
 				foreach ($module as $submodule) {
@@ -3604,99 +3121,6 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 			}
 		}
 		return $result;
-	}
-
-	/*****************************************
-	 *
-	 * ABOUT the isXXX functions.
-	 *
-	 * I had a very real experience that these checks DID NOT fail eg PNG support if it didn't exist!
-	 * So first (1) we check if the functions are there. If they ARE we are going to make further investigations (2) by creating an actual image.
-	 * And if THAT succeeds also, then we can be certain of the support!
-	 */
-	/**
-	 * Check if GD module is available by checking the function imagecreate
-	 *
-	 * @return boolean TRUE if GD is available
-	 * @todo Define visibility
-	 */
-	public function isGD() {
-		if (function_exists('imagecreatetruecolor')) {
-			if (@imagecreatetruecolor(50, 100)) {
-				return 1;
-			}
-		}
-		return 0;
-	}
-
-	/**
-	 * Check if GIF functions are available
-	 *
-	 * @return boolean TRUE if GIF functions are available
-	 * @todo Define visibility
-	 */
-	public function isGIF() {
-		// If GIF-functions exists, also do a real test of them:
-		if (function_exists('imagecreatefromgif') && function_exists('imagegif') && $this->ImageTypes() & IMG_GIF) {
-			$im = @imagecreatefromgif((\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/jesus.gif'));
-			return $im ? 1 : 0;
-		}
-	}
-
-	/**
-	 * Check if JPG functions are available
-	 *
-	 * @return boolean TRUE if JPEG functions are available
-	 * @todo Define visibility
-	 */
-	public function isJPG() {
-		if (function_exists('imagecreatefromjpeg') && function_exists('imagejpeg') && $this->ImageTypes() & IMG_JPG) {
-			return 1;
-		}
-	}
-
-	/**
-	 * Check if PNG functions are available
-	 *
-	 * @return boolean TRUE if PNG functions are available
-	 * @todo Define visibility
-	 */
-	public function isPNG() {
-		if (function_exists('imagecreatefrompng') && function_exists('imagepng') && $this->ImageTypes() & IMG_PNG) {
-			$im = imagecreatefrompng(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'imgs/jesus.png');
-			return $im ? 1 : 0;
-		}
-	}
-
-	/**
-	 * Return the image types supported by this PHP build
-	 *
-	 * @return integer A bit-field corresponding to the image formats supported by the version of GD linked into PHP. The following bits are returned, IMG_GIF | IMG_JPG | IMG_PNG | IMG_WBMP | IMG_XPM.
-	 * @todo Define visibility
-	 */
-	public function ImageTypes() {
-		return imagetypes();
-	}
-
-	/**
-	 * Returns general information about GDlib
-	 *
-	 * @return string HTML with GD lib information
-	 * @todo Define visibility
-	 */
-	public function getGDSoftwareInfo() {
-		return '
-			<p>
-				You can get GDLib in the PNG version from
-				<a href="http://www.libgd.org/">http://www.libgd.org/</a>
-				<br />
-				FreeType is for download at
-				<a href="http://www.freetype.org/">http://www.freetype.org/</a>
-				<br />
-				Generally, TYPO3 packages are listed at
-				<a href="' . TYPO3_URL_DOWNLOAD . '">' . TYPO3_URL_DOWNLOAD . '</a>
-			</p>
-		';
 	}
 
 	/**
@@ -3745,11 +3169,6 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	 * Imagemagick
 	 * - Read formats
 	 * - Write png, gif, jpg
-	 *
-	 * Problems may arise from the use of safe_mode (eg. png)
-	 * In safemode you will automatically execute the program convert in the safe_mode_exec_path no matter what other path you specify
-	 * check fileexist before anything...
-	 *
 	 * - compare gif size
 	 * - scaling (by stdgraphic)
 	 * - combining (by stdgraphic)
@@ -3800,11 +3219,9 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				by setting [GFX][im_version_5] to \'gm\'. This is recommended and
 				enabled by default.
 				<br />
-				Because ImageMagick and Graphicsmagick are external programs, two
-				requirements must be met: 1) The programs must be installed on the
-				server and working and 2) if safe_mode is enabled, the programs must
-				be located in the folder defined by the php.ini setting,
-				<em>safe_mode_exec_dir</em> (else they are not executed).
+				Because ImageMagick and Graphicsmagick are external programs, a
+				requirement must be met: The programs must be installed on the
+				server and working.
 				<br />
 				ImageMagick is available for both Windows and Unix. The current
 				version is 6+.
@@ -3819,13 +3236,11 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				TypoScript GIFBUILDER object is based on GDlib, but extensively
 				utilizing ImageMagick to process intermediate results.
 				<br />
-				GDLib is accessed through internal functions in PHP, so in this
-				case, you have no safe_mode problems, but you\'ll need a version
+				GDLib is accessed through internal functions in PHP, you\'ll need a version
 				of PHP with GDLib compiled in. Also in order to use TrueType
 				fonts with GDLib you\'ll need FreeType compiled in as well.
 				<br />
 			</p>
-			' . $this->getGDSoftwareInfo() . '
 			<p>
 				You can disable all image processing options in TYPO3
 				([GFX][image_processing]=0), but that would seriously disable
@@ -4008,13 +3423,9 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 		// Very temporary!!!
 		$imageProc->dontUnlinkTempFiles = 0;
 		$imActive = $this->config_array['im'] && $im_path;
-		$gdActive = $this->config_array['gd'] && $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'];
+		$gdActive = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'];
 		switch ($this->INSTALL['images_type']) {
 		case 'read':
-			$refParseTime = '5600';
-			// 4.2.9
-			$refParseTime = '3300';
-			// 5.2.3
 			$headCode = 'Reading and converting images';
 			$this->message($headCode, 'Supported file formats', '
 					<p>
@@ -4081,7 +3492,6 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 			}
 			break;
 		case 'write':
-			$refParseTime = '300';
 			// Writingformats - writing JPG
 			$headCode = 'Writing images';
 			$this->message($headCode, 'Writing GIF and PNG', '
@@ -4134,7 +3544,6 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 			}
 			break;
 		case 'scaling':
-			$refParseTime = '650';
 			// Scaling
 			$headCode = 'Scaling images';
 			$this->message($headCode, 'Scaling transparent images', '
@@ -4195,10 +3604,6 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 			}
 			break;
 		case 'combining':
-			$refParseTime = '150';
-			// 4.2.9
-			$refParseTime = '250';
-			// 5.2.3
 			// Combine
 			$headCode = 'Combining images';
 			$this->message($headCode, 'Combining images', '
@@ -4263,12 +3668,6 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 			}
 			break;
 		case 'gdlib':
-			// GIF / 4.2.9 / LZW (5.2.3)
-			$refParseTime = '1800';
-			// PNG / 4.2.9 / LZW (5.2.3)
-			$refParseTime = '2700';
-			// GIF / 5.2.3 / LZW (5.2.3)
-			$refParseTime = '1600';
 			// GDLibrary
 			$headCode = 'GDLib';
 			$this->message($headCode, 'Testing GDLib', '
