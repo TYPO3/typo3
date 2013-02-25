@@ -1,8 +1,10 @@
 <?php
+namespace TYPO3\CMS\Install\SystemEnvironment;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2011 Ingo Renner <ingo@typo3.org>
+ *  (c) 2013 Christian Kuhn <lolli@schwarzbu.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,10 +23,13 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/*
- * @deprecated since 6.0, the classname tx_install_report_InstallStatus and this file is obsolete
- * and will be removed with 6.2. The class was renamed and is now located at:
- * typo3/sysext/install/Classes/Report/InstallStatusReport.php
+
+/**
+ * Notice level status
+ *
+ * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/Report/InstallStatusReport.php';
+class NoticeStatus extends AbstractStatus implements StatusInterface {
+
+}
 ?>
