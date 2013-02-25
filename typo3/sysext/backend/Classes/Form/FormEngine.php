@@ -3656,7 +3656,7 @@ function ' . $evalData . '(value) {
 		// Create selector box of the options
 		$sSize = $params['autoSizeMax'] ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($itemArrayC + 1, \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($params['size'], 1), $params['autoSizeMax']) : $params['size'];
 		if (!$selector) {
-			$isMultiple = $params['size'] != 1;
+			$isMultiple = $params['maxitems'] != 1;
 			$selector = '<select id="' . uniqid('tceforms-multiselect-') . '" ' . ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '"' . $this->insertDefStyle('group', 'tceforms-multiselect')) . ($isMultiple ? ' multiple="multiple"' : '') . ' name="' . $fName . '_list" ' . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt) . '</select>';
 		}
 		$icons = array(
@@ -5750,8 +5750,8 @@ function ' . $evalData . '(value) {
 	public function printNeededJSFunctions() {
 		// JS evaluation:
 		$out = $this->JSbottom($this->formName);
-		// Integrate JS functions for the element browser if such fields or IRRE fields were processed:
-		if ($this->printNeededJS['dbFileIcons'] || $this->inline->inlineCount) {
+		// Integrate JS functions for the element browser if such fields or IRRE fields or suggest wizard were processed:
+		if ($this->printNeededJS['dbFileIcons'] || $this->inline->inlineCount || $this->suggest->suggestCount > 0) {
 			$out .= '
 
 
