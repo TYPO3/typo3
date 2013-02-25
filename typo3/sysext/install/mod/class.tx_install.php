@@ -30,8 +30,6 @@
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author 	Ingmar Schlecht <ingmar@typo3.org>
  */
-// include requirements definition:
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'requirements.php';
 // include session handling
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'mod/class.tx_install_session.php';
 // include update classes
