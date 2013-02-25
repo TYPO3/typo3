@@ -95,9 +95,6 @@ class Session {
 		ini_set('session.gc_probability', 100);
 		ini_set('session.gc_divisor', 100);
 		ini_set('session.gc_maxlifetime', $this->expireTimeInMinutes * 2 * 60);
-		if (version_compare(phpversion(), '5.2', '<')) {
-			ini_set('session.cookie_httponly', TRUE);
-		}
 		if (\TYPO3\CMS\Core\Utility\PhpOptionsUtility::isSessionAutoStartEnabled()) {
 			$sessionCreationError = 'Error: session.auto-start is enabled.<br />';
 			$sessionCreationError .= 'The PHP option session.auto-start is enabled. Disable this option in php.ini or .htaccess:<br />';
@@ -165,17 +162,10 @@ class Session {
 	/**
 	 * Generates a new session ID and sends it to the client.
 	 *
-	 * Also moves session information from the old session to the new one
-	 * (in PHP 5.1 or later)
-	 *
 	 * @return string the new session ID
 	 */
 	private function renewSession() {
-		if (version_compare(phpversion(), '5.1', '<')) {
-			session_regenerate_id(TRUE);
-		} else {
-			session_regenerate_id();
-		}
+		session_regenerate_id();
 		return session_id();
 	}
 
