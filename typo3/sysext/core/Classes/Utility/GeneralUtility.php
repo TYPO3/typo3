@@ -4770,10 +4770,6 @@ Connection: close
 		}
 		$log = $GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'];
 		$date = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ': ');
-		// Legacy values (no strict comparison, $log can be boolean, string or int)
-		if ($log === TRUE || $log == '1') {
-			$log = 'file';
-		}
 		if (stripos($log, 'file') !== FALSE) {
 			// In case lock is acquired before autoloader was defined:
 			if (class_exists('TYPO3\\CMS\\Core\\Locking\\Locker') === FALSE) {
