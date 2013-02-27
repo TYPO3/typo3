@@ -4785,13 +4785,15 @@ Connection: close
 		if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']) {
 			return;
 		}
-		$log = $GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'];
-		$date = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ': ');
 		// Legacy values (no strict comparison, $log can be boolean, string or int)
+		$log = $GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'];
 		if ($log === TRUE || $log == '1') {
-			$log = 'file';
+			$log = array('file');
+		} else {
+			$log = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'], TRUE);
 		}
-		if (stripos($log, 'file') !== FALSE) {
+		$date = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ': ');
+		if (in_array('file', $log) !== FALSE) {
 			// In case lock is acquired before autoloader was defined:
 			if (class_exists('TYPO3\\CMS\\Core\\Locking\\Locker') === FALSE) {
 				require_once ExtensionManagementUtility::extPath('core') . 'Classes/Locking/Locker.php';
@@ -4810,12 +4812,12 @@ Connection: close
 			}
 			$lockObject->release();
 		}
-		if (stripos($log, 'devlog') !== FALSE) {
+		if (in_array('devlog', $log) !== FALSE) {
 			// Copy message also to the developer log
 			self::devLog($msg, 'Core', self::SYSLOG_SEVERITY_WARNING);
 		}
 		// Do not use console in login screen
-		if (stripos($log, 'console') !== FALSE && isset($GLOBALS['BE_USER']->user['uid'])) {
+		if (in_array('console', $log) !== FALSE && isset($GLOBALS['BE_USER']->user['uid'])) {
 			\TYPO3\CMS\Core\Utility\DebugUtility::debug($msg, $date, 'Deprecation Log');
 		}
 	}
