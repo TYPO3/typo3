@@ -179,8 +179,8 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function getPropertyCanAccessPropertiesOfAnArrayObject() {
 		$arrayObject = new \ArrayObject(array('key' => 'value'));
-		$expected = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($arrayObject, 'key');
-		$this->assertEquals($expected, 'value', 'getProperty does not work with ArrayObject property.');
+		$actual = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($arrayObject, 'key');
+		$this->assertEquals('value', $actual, 'getProperty does not work with ArrayObject property.');
 	}
 
 	/**
@@ -188,8 +188,8 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function getPropertyCanAccessPropertiesOfAnObjectImplementingArrayAccess() {
 		$arrayAccessInstance = new \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\ArrayAccessClass(array('key' => 'value'));
-		$expected = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($arrayAccessInstance, 'key');
-		$this->assertEquals($expected, 'value', 'getPropertyPath does not work with Array Access property.');
+		$actual = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($arrayAccessInstance, 'key');
+		$this->assertEquals('value', $actual, 'getProperty does not work with Array Access property.');
 	}
 
 	/**
@@ -206,8 +206,8 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function getPropertyPathCanAccessPropertiesOfAnArray() {
 		$array = array('parent' => array('key' => 'value'));
-		$expected = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.key');
-		$this->assertEquals($expected, 'value', 'getPropertyPath does not work with Array property.');
+		$actual = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.key');
+		$this->assertEquals('value', $actual, 'getPropertyPath does not work with Array property.');
 	}
 
 	/**
@@ -215,8 +215,22 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function getPropertyPathCanAccessPropertiesOfAnObjectImplementingArrayAccess() {
 		$array = array('parent' => new \ArrayObject(array('key' => 'value')));
-		$expected = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.key');
-		$this->assertEquals($expected, 'value', 'getPropertyPath does not work with Array Access property.');
+		$actual = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.key');
+		$this->assertEquals('value', $actual, 'getPropertyPath does not work with Array Access property.');
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPropertyPathCanNotAccessPropertiesOfAnSplObjectStorageObject() {
+		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$exampleObject = new \stdClass();
+		$exampleObject->key = 'value';
+		$objectStorage->attach($exampleObject);
+		$array = array(
+			'parent' => $objectStorage,
+		);
+		$this->assertNull(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.0.key'));
 	}
 
 	/**

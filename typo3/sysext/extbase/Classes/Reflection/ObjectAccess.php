@@ -38,7 +38,9 @@ namespace TYPO3\CMS\Extbase\Reflection;
 class ObjectAccess {
 
 	const ACCESS_GET = 0;
+
 	const ACCESS_SET = 1;
+
 	const ACCESS_PUBLIC = 2;
 
 	/**
@@ -55,6 +57,7 @@ class ObjectAccess {
 	 * @param mixed $subject Object or array to get the property from
 	 * @param string $propertyName name of the property to retrieve
 	 * @param boolean $forceDirectAccess directly access property using reflection(!)
+	 *
 	 * @throws Exception\PropertyNotAccessibleException
 	 * @throws \InvalidArgumentException in case $subject was not an object or $propertyName was not a string
 	 * @return mixed Value of the property
@@ -80,10 +83,12 @@ class ObjectAccess {
 	 * If you can't make sure that $subject is either of type array or object and $propertyName of type string you should use getProperty() instead.
 	 *
 	 * @see getProperty()
+	 *
 	 * @param mixed $subject Object or array to get the property from
 	 * @param string $propertyName name of the property to retrieve
 	 * @param boolean $forceDirectAccess directly access property using reflection(!)
 	 * @param boolean $propertyExists (by reference) will be set to TRUE if the specified property exists and is gettable
+	 *
 	 * @throws Exception\PropertyNotAccessibleException
 	 * @return mixed Value of the property
 	 * @internal
@@ -110,7 +115,11 @@ class ObjectAccess {
 				throw new \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject does not exist.', 1302855001);
 			}
 		}
-		if ($subject instanceof \ArrayAccess && isset($subject[$propertyName])) {
+		if (
+			$subject instanceof \ArrayAccess
+			&& !($subject instanceof \SplObjectStorage || $subject instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage)
+			&& isset($subject[$propertyName])
+		) {
 			return $subject[$propertyName];
 		}
 		$getterMethodName = 'get' . ucfirst($propertyName);
@@ -138,6 +147,7 @@ class ObjectAccess {
 	 *
 	 * @param mixed $subject Object or array to get the property path from
 	 * @param string $propertyPath
+	 *
 	 * @return mixed Value of the property
 	 */
 	static public function getPropertyPath($subject, $propertyPath) {
@@ -145,7 +155,16 @@ class ObjectAccess {
 		foreach ($propertyPathSegments as $pathSegment) {
 			$propertyExists = FALSE;
 			$propertyValue = self::getPropertyInternal($subject, $pathSegment, FALSE, $propertyExists);
-			if ($propertyExists !== TRUE && (is_array($subject) || $subject instanceof \ArrayAccess) && isset($subject[$pathSegment])) {
+			if (
+				$propertyExists !== TRUE
+				&& ($subject instanceof \SplObjectStorage || $subject instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage)
+			) {
+				$subject = NULL;
+			} elseif (
+				$propertyExists !== TRUE
+				&& (is_array($subject) || $subject instanceof \ArrayAccess)
+				&& isset($subject[$pathSegment])
+			) {
 				$subject = $subject[$pathSegment];
 			} else {
 				$subject = $propertyValue;
@@ -169,6 +188,7 @@ class ObjectAccess {
 	 * @param string $propertyName Name of the property to set
 	 * @param mixed $propertyValue Value of the property
 	 * @param boolean $forceDirectAccess directly access property using reflection(!)
+	 *
 	 * @throws \InvalidArgumentException in case $object was not an object or $propertyName was not a string
 	 * @return boolean TRUE if the property could be set, FALSE otherwise
 	 */
@@ -211,6 +231,7 @@ class ObjectAccess {
 	 * - public properties which can be directly get.
 	 *
 	 * @param object $object Object to receive property names for
+	 *
 	 * @throws \InvalidArgumentException
 	 * @return array Array of all gettable property names
 	 */
@@ -246,6 +267,7 @@ class ObjectAccess {
 	 * - public properties which can be directly set.
 	 *
 	 * @param object $object Object to receive property names for
+	 *
 	 * @throws \InvalidArgumentException
 	 * @return array Array of all settable property names
 	 */
@@ -273,6 +295,7 @@ class ObjectAccess {
 	 *
 	 * @param object $object Object containting the property
 	 * @param string $propertyName Name of the property to check
+	 *
 	 * @throws \InvalidArgumentException
 	 * @return boolean
 	 */
@@ -293,6 +316,7 @@ class ObjectAccess {
 	 *
 	 * @param object $object Object containting the property
 	 * @param string $propertyName Name of the property to check
+	 *
 	 * @throws \InvalidArgumentException
 	 * @return boolean
 	 */
@@ -321,6 +345,7 @@ class ObjectAccess {
 	 * $object that are accessible through this class.
 	 *
 	 * @param object $object Object to get all properties from.
+	 *
 	 * @throws \InvalidArgumentException
 	 * @return array Associative array of all properties.
 	 * @todo What to do with ArrayAccess
@@ -345,6 +370,7 @@ class ObjectAccess {
 	 * first letter of the property, and prepending it with "set".
 	 *
 	 * @param string $propertyName Name of the property
+	 *
 	 * @return string Name of the setter method name
 	 */
 	static public function buildSetterMethodName($propertyName) {
