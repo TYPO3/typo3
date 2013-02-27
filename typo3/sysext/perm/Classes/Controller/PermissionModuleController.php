@@ -478,14 +478,10 @@ class PermissionModuleController {
 		$code = '
 			<tr class="t3-row-header">
 				<td colspan="2">&nbsp;</td>
-				<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 				<td>' . $GLOBALS['LANG']->getLL('Owner', TRUE) . '</td>
-				<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-				<td align="center">' . $GLOBALS['LANG']->getLL('Group', TRUE) . '</td>
-				<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-				<td align="center">' . $GLOBALS['LANG']->getLL('Everybody', TRUE) . '</td>
-				<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-				<td align="center">' . $GLOBALS['LANG']->getLL('EditLock', TRUE) . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('Group', TRUE) . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('Everybody', TRUE) . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('EditLock', TRUE) . '</td>
 			</tr>
 		';
 		// Traverse tree:
@@ -525,27 +521,20 @@ class PermissionModuleController {
 			}
 
 			$cells[] = '
-				<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 				<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_user'], $pageId, 'user') . ' ' . $userName : '') . '</td>
-
-				<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 				<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_group'], $pageId, 'group') . ' ' . $groupName : '') . '</td>
-
-				<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 				<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? ' ' . \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_everybody'], $pageId, 'everybody') : '') . '</td>
-
-				<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 				<td' . $bgCol . ' nowrap="nowrap">' . ($data['row']['editlock'] ? '<span id="el_' . $pageId . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'' . $pageId . '\', \'1\');" title="' . $GLOBALS['LANG']->getLL('EditLock_descr', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-warning-lock') . '</a></span>' : ($pageId === 0 ? '' : '<span id="el_' . $pageId . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'' . $pageId . '\', \'0\');" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a></span>')) . '</td>
 			';
 			// Compile table row:
 			$code .= '
-				<tr>
+				<tr class="db_list_normal">
 					' . implode('
 					', $cells) . '
 				</tr>';
 		}
 		// Wrap rows in table tags:
-		$code = '<table border="0" cellspacing="0" cellpadding="0" id="typo3-permissionList">' . $code . '</table>';
+		$code = '<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' . $code . '</table>';
 		// Adding the content as a section:
 		$this->content .= $this->doc->section('', $code);
 		// CSH for permissions setting
