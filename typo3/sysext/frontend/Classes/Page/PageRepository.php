@@ -328,6 +328,17 @@ class PageRepository {
 				}
 			}
 		}
+
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'] as $classRef) {
+				$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+				if (!$hookObject instanceof \TYPO3\CMS\Frontend\Page\PageRepositoryGetPageOverlayHookInterface) {
+					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\Page\\PageRepositoryGetPageOverlayHookInterface', 1361967877);
+				}
+				$hookObject->getPageOverlay_postProcess($pageInput, $row, $lUid, $this);
+			}
+		}
+
 		// Create output:
 		if (is_array($pageInput)) {
 			// If the input was an array, simply overlay the newfound array and return...
