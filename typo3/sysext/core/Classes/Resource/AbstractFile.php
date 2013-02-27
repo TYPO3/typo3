@@ -156,7 +156,9 @@ abstract class AbstractFile implements FileInterface {
 	 * @return string
 	 */
 	public function getNameWithoutExtension() {
-		return pathinfo($this->getName(), PATHINFO_FILENAME);
+		/** @var $basicFileFunctions \TYPO3\CMS\Core\Utility\File\BasicFileUtility */
+		$basicFileFunctions = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
+		return $basicFileFunctions->cleanFileName(pathinfo($this->getName(), PATHINFO_FILENAME));
 	}
 
 	/**

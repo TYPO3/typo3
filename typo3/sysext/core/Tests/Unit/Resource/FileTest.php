@@ -365,6 +365,8 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array('somefile', 'somefile', ''),
 			array('somefile.tar.gz', 'somefile.tar', 'gz'),
 			array('somefile.tar.bz2', 'somefile.tar', 'bz2'),
+			array('s0me Filé wìth nôn-@scii_Char-acters.jpg', 's0me_File_with_non-_scii_Char-acters', 'jpg'),
+			array('s0me Filé wìth nôn-@scii_Char-acters.tar.bz2', 's0me_File_with_non-_scii_Char-acters.tar', 'bz2'),
 		);
 	}
 
