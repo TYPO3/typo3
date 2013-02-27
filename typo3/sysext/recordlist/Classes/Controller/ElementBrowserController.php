@@ -105,7 +105,8 @@ class ElementBrowserController {
 				foreach ($altMountPoints as $filePathRelativeToFileadmindir) {
 					$GLOBALS['BE_USER']->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1, 'readonly');
 				}
-				$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->returnFilemounts();
+				$GLOBALS['BE_USER']->getFileStorages();
+				$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->groupData['filemounts'];
 			}
 			break;
 		}
