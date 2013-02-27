@@ -905,7 +905,8 @@ class Bootstrap {
 	public function initializeBackendUserMounts() {
 		// Includes deleted mount pages as well! @TODO: Figure out why ...
 		$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
-		$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->returnFilemounts();
+		$GLOBALS['BE_USER']->getFileStorages();
+		$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->groupData['filemounts'];
 		return $this;
 	}
 
