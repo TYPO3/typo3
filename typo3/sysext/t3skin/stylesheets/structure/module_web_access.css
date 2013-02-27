@@ -3,10 +3,6 @@ Web > Access
 
 - - - - - - - - - - - - - - - - - - - - - */
 
-table#typo3-permissionList img {
-	vertical-align: middle;
-}
-
 table#typo3-permissionMatrix td {
 	width: 16%;
 }
