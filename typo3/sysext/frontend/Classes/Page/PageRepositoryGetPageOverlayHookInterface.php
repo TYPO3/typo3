@@ -42,6 +42,17 @@ interface PageRepositoryGetPageOverlayHookInterface {
 	 */
 	public function getPageOverlay_preProcess(&$pageInput, &$lUid, \TYPO3\CMS\Frontend\Page\PageRepository $parent);
 
+	/**
+	 * Enables to postprocess the pageoverlay
+	 *
+	 * @param array $pageInput The page record
+	 * @param array $rpw The overlayed page record
+	 * @param integer $lUid The overlay language
+	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $parent The calling parent object
+	 * @return void
+	 */
+	public function getPageOverlay_postProcess(&$pageInput, &$row, &$lUid, \TYPO3\CMS\Frontend\Page\PageRepository $parent);
+
 }
 
 ?>
