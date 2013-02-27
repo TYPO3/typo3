@@ -23,7 +23,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * </output>
  *
  * <code title="All parameters">
- * <f:format.currency currencySign="$" decimalSeparator="." thousandsSeparator="," prependCurrency="TRUE" separateCurrency="FALSE">54321</f:format.currency>
+ * <f:format.currency currencySign="$" decimalSeparator="." thousandsSeparator="," prependCurrency="TRUE" separateCurrency="FALSE" decimals="2">54321</f:format.currency>
  * </code>
  * <output>
  * $54,321.00
@@ -47,17 +47,18 @@ class CurrencyViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	 * @param string $thousandsSeparator (optional) The thousands separator.
 	 * @param boolean $prependCurrency (optional) Select if the curreny sign should be prepended
 	 * @param boolean $separateCurrency (optional) Separate the currency sign from the number by a single space, defaults to true due to backwards compatibility
+	 * @param int $decimals (optional) Set decimals places.
 	 * @return string the formatted amount.
 	 * @api
 	 */
-	public function render($currencySign = '', $decimalSeparator = ',', $thousandsSeparator = '.', $prependCurrency = FALSE, $separateCurrency = TRUE) {
+	public function render($currencySign = '', $decimalSeparator = ',', $thousandsSeparator = '.', $prependCurrency = FALSE, $separateCurrency = TRUE, $decimals = 2) {
 		$floatToFormat = $this->renderChildren();
 		if (empty($floatToFormat)) {
 			$floatToFormat = 0.0;
 		} else {
 			$floatToFormat = floatval($floatToFormat);
 		}
-		$output = number_format($floatToFormat, 2, $decimalSeparator, $thousandsSeparator);
+		$output = number_format($floatToFormat, $decimals, $decimalSeparator, $thousandsSeparator);
 		if ($currencySign !== '') {
 			$currencySeparator = $separateCurrency ? ' ' : '';
 			if ($prependCurrency === TRUE) {

@@ -132,6 +132,26 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$actualResult = $viewHelper->render();
 		$this->assertEquals('12,00', $actualResult);
 	}
+
+	/**
+	 * @test
+	 */
+	public function viewHelperRendersValuesWithoutDecimals() {
+		$viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\CurrencyViewHelper', array('renderChildren'));
+		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('54321'));
+		$actualResult = $viewHelper->render('', ',', '.', FALSE, TRUE, 0);
+		$this->assertEquals('54.321', $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function viewHelperRendersThreeDecimals() {
+		$viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\CurrencyViewHelper', array('renderChildren'));
+		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('54321'));
+		$actualResult = $viewHelper->render('', ',', '.', FALSE, TRUE, 3);
+		$this->assertEquals('54.321,000', $actualResult);
+	}
 }
 
 ?>
