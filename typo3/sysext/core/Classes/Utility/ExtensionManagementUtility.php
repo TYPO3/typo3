@@ -1645,7 +1645,12 @@ tt_content.' . $key . $prefix . ' {
 			if (is_dir($tcaConfigurationDirectory)) {
 				$files = scandir($tcaConfigurationDirectory);
 				foreach ($files as $file) {
-					if (is_file($tcaConfigurationDirectory . '/' . $file) && ($file !== '.') && ($file !== '..')) {
+					if (
+						is_file($tcaConfigurationDirectory . '/' . $file)
+						&& ($file !== '.')
+						&& ($file !== '..')
+						&& (substr($file, -4, 4) === '.php')
+					) {
 						$tcaOfTable = require($tcaConfigurationDirectory . '/' . $file);
 						if (is_array($tcaOfTable)) {
 							// TCA table name is filename without .php suffix, eg 'sys_notes', not 'sys_notes.php'
@@ -1786,8 +1791,12 @@ tt_content.' . $key . $prefix . ' {
 	 * $TCA[$tableName]['ctrl']['dynamicConfigFile'] must be the
 	 * absolute path to a file.
 	 *
+	 * Be aware that 'dynamicConfigFile' is obsolete, and all TCA
+	 * table definitions should be moved to Configuration/TCA/tablename.php
+	 * to be fully loaded automatically.
+	 *
 	 * Example:
-	 * dynamicConfigFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/SysNote.php',
+	 * dynamicConfigFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'SysNote.php',
 	 *
 	 * @return void
 	 * @throws \RuntimeException
@@ -1796,7 +1805,7 @@ tt_content.' . $key . $prefix . ' {
 	static public function loadNewTcaColumnsConfigFiles() {
 		global $TCA;
 
-		foreach ($TCA as $tableName => $configuration) {
+		foreach (array_keys($TCA) as $tableName) {
 			if (!isset($TCA[$tableName]['columns'])) {
 				$columnsConfigFile = $TCA[$tableName]['ctrl']['dynamicConfigFile'];
 				if ($columnsConfigFile) {
