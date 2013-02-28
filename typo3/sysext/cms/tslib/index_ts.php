@@ -142,7 +142,7 @@ if ($TSFE->isBackendUserLoggedIn()) {
 		$BE_USER->frontendEdit->initConfigOptions();
 	}
 } else {
-	\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca(TRUE);
+	\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
 }
 
 // Starts the template

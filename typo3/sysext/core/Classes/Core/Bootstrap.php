@@ -625,7 +625,7 @@ class Bootstrap {
 
 	/**
 	 * Unsetting reserved global variables:
-	 * Those which are/can be set in "ext:core/ext_tables.php" file:
+	 * Those are set in "ext:core/ext_tables.php" file:
 	 *
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */

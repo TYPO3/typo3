@@ -24,7 +24,7 @@ if (!function_exists('user_sortPluginList')) {
 if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard']) || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard'], 'tt_content:image')) && !\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('6.0')) {
 	\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('This installation hasn\'t been migrated to FAL for the field $TCA[tt_content][columns][image] yet. Please do so before TYPO3 v7.');
 	// Existing installation and no upgrade wizard was executed - and files haven't been merged: use the old code
-	$TCA['tt_content']['columns']['image']['config'] = array(
+	$GLOBALS['TCA']['tt_content']['columns']['image']['config'] = array(
 		'type' => 'group',
 		'internal_type' => 'file',
 		'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
@@ -41,7 +41,7 @@ if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Upd
 if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard']) || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard'], 'tt_content:media')) && !\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('6.0')) {
 	\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('This installation hasn\'t been migrated to FAL for the field $TCA[tt_content][columns][media] yet. Please do so before TYPO3 v7.');
 	// Existing installation and no upgrade wizard was executed - and files haven't been merged: use the old code
-	$TCA['tt_content']['columns']['media']['config'] = array(
+	$GLOBALS['TCA']['tt_content']['columns']['media']['config'] = array(
 		'type' => 'group',
 		'internal_type' => 'file',
 		'allowed' => '',
@@ -62,7 +62,7 @@ if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Upd
 if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard']) || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard'], 'pages_language_overlay:media')) && !\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('6.0')) {
 	\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('This installation hasn\'t been migrated to FAL for the field $TCA[pages_language_overlay][columns][media] yet. Please do so before TYPO3 v7.');
 	// Existing installation and no upgrade wizard was executed - and files haven't been merged: use the old code
-	$TCA['pages_language_overlay']['columns']['media']['config'] = array(
+	$GLOBALS['TCA']['pages_language_overlay']['columns']['media']['config'] = array(
 		'type' => 'group',
 		'internal_type' => 'file',
 		'allowed' => $TCA['pages']['columns']['media']['config']['allowed'],

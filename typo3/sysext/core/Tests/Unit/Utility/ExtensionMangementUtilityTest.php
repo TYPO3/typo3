@@ -870,7 +870,7 @@ throw new \RuntimeException(\'\', 1340559079);
 	/**
 	 * @test
 	 */
-	public function loadBaseTcaCreatesCacheFileWithContentOfAnExtensionsConfigurationTcaFile() {
+	public function loadBaseTcaCreatesCacheFileWithContentOfAnExtensionsConfigurationTcaPhpFile() {
 		$extensionName = uniqid('test_baseTca_');
 		$this->fakedExtensions[] = $extensionName;
 		$absoluteExtPath = PATH_site . 'typo3temp/' . $extensionName . '/';
@@ -885,7 +885,7 @@ throw new \RuntimeException(\'\', 1340559079);
 		$uniqueTableName = uniqid('table_name_');
 		$uniqueStringInTableConfiguration = uniqid('table_configuration_');
 		$tableConfiguration = '<?php return array(\'foo\' => \'' . $uniqueStringInTableConfiguration . '\'); ?>';
-		file_put_contents($absoluteExtPath . 'Configuration/TCA/' . $uniqueTableName, $tableConfiguration);
+		file_put_contents($absoluteExtPath . 'Configuration/TCA/' . $uniqueTableName . '.php', $tableConfiguration);
 		$mockCache = $this->getMock(
 			'TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend',
 			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'),
