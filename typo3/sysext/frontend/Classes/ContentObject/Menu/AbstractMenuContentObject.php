@@ -479,7 +479,9 @@ class AbstractMenuContentObject {
 					if ($value == '') {
 						$value = $this->id;
 					}
-					$loadDB = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('FE_loadDBGroup');
+					/** @var \TYPO3\CMS\Core\Database\RelationHandler $loadDB*/
+					$loadDB = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+					$loadDB->setFetchAllFields(TRUE);
 					$loadDB->start($value, 'pages');
 					$loadDB->additionalWhere['pages'] = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::enableFields('pages');
 					$loadDB->getFromDB();
