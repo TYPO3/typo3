@@ -141,8 +141,11 @@
 			<trans-unit id="extensionList.header.author" xml:space="preserve">
 				<source>Author</source>
 			</trans-unit>
+			<trans-unit id="searchTemplate.searchExtensions" xml:space="preserve">
+				<source>Search extensions</source>
+			</trans-unit>
 			<trans-unit id="searchTemplate.submitButton" xml:space="preserve">
-				<source>Search</source>
+				<source>Go</source>
 			</trans-unit>
 			<trans-unit id="searchTemplate.resetSearchButton" xml:space="preserve">
 				<source>Reset Search</source>
