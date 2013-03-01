@@ -10,14 +10,23 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('fronte
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @see tslib_cObj::RECORDS()
+ * @deprecated since 6.1 will be removed in 6.3
  */
 class FE_loadDBGroup extends \TYPO3\CMS\Core\Database\RelationHandler {
 
-	// Means that everything is returned instead of only uid and label-field
 	/**
-	 * @todo Define visibility
+	 * @var boolean $fetchAllFields if false getFromDB() fetches only uid, pid, thumbnail and label fields (as defined in TCA)
 	 */
-	public $fromTC = 0;
+	public $fetchAllFields = TRUE;
+
+	/**
+	 * Default constructor writes deprecation log.
+	 */
+	public function __construct() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+			'Class FE_loadDBGroup is deprecated and unused since TYPO3 6.1. It will be removed with version 6.3.'
+		);
+	}
 
 }
 

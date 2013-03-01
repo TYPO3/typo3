@@ -646,7 +646,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		$content = '';
 		$actionList = array();
 		$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
-		$dbAnalysis->fromTC = 0;
+		$dbAnalysis->setFetchAllFields(TRUE);
 		$dbAnalysis->start($record['t4_recordsToEdit'], '*');
 		$dbAnalysis->getFromDB();
 		// collect the records
