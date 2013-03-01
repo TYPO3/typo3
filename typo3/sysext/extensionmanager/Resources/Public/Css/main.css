@@ -1602,6 +1602,21 @@ button.ui-button::-moz-focus-inner {
 .beta {
   background-color: #aaffcb !important; }
 
+.stable,
+.alpha,
+.beta {
+  font-weight: bold;
+  color: #fff; }
+
+.typo3-extension-list td.icons {
+  width: 140px; }
+
+.typo3-extension-list .icons a {
+  display: none; }
+
+.typo3-extension-list tr:hover .icons a {
+  display: inline; }
+
 #typo3-extension-configuration-forms .info {
   font-size: 9px;
   color: #666;
@@ -1615,6 +1630,9 @@ button.ui-button::-moz-focus-inner {
 
 .typo3-extension-manager .insecure {
   color: #ff2262; }
+
+.typo3-extension-list .inactive {
+  color: #aaaaaa; }
 
 .headerTooltip,
 .tooltip {
@@ -1642,6 +1660,13 @@ button.ui-button::-moz-focus-inner {
       position: absolute;
       right: 3px;
       top: 4px; }
+
+.headerRow {
+  overflow: auto;
+  width: 100%; }
+
+.typo3-extensionmanager-headerRowLeft {
+  float: left; }
 
 .typo3-extensionmanager-headerRowRight {
   float: right; }
@@ -1683,7 +1708,8 @@ button.ui-button::-moz-focus-inner {
     vertical-align: middle;
     font-weight: bold;
     color: #fff;
-    cursor: pointer; }
+    cursor: pointer;
+    white-space: nowrap; }
     .typo3-extension-list th:hover {
       background: rgba(200, 200, 200, 0.3); }
     .typo3-extension-list th .DataTables_sort_icon {
