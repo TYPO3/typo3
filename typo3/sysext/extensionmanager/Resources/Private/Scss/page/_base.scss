@@ -102,6 +102,25 @@
 	background-color: #aaffcb !important;
 }
 
+.stable,
+.alpha,
+.beta {
+	font-weight: bold;
+	color: #fff;
+}
+
+.typo3-extension-list td.icons {
+	width: 140px;
+}
+
+.typo3-extension-list .icons a {
+	display: none;
+}
+
+.typo3-extension-list tr:hover .icons a {
+	display: inline;
+}
+
 #typo3-extension-configuration-forms .info {
 	font-size: 9px;
 	color: #666;
@@ -118,6 +137,10 @@
 
 .typo3-extension-manager .insecure {
 	color: #ff2262;
+}
+
+.typo3-extension-list .inactive {
+	color: rgb(170, 170, 170);
 }
 
 .headerTooltip,
