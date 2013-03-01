@@ -1,13 +1,16 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 
 <f:layout name="main" />
-<f:section name="docHeaderRow1">
+
+<f:section name="functions">
+</f:section>
+
+<f:section name="buttons">
 	<f:be.buttons.icon uri="{f:uri.action(action:'form',controller:'UploadExtensionFile')}" icon="actions-edit-upload" title="{f:translate(key:'extensionList.uploadExtension')}"/>
 </f:section>
-<f:section name="docHeaderRow2">
-</f:section>
+
 <f:section name="Content">
-	<div class="headerRow">
+	<div class="headerRow ui-helper-clearfix">
 		<div class="typo3-extensionmanager-headerRowLeft">
 		</div>
 		<div class="typo3-extensionmanager-headerRowRight">
@@ -30,10 +33,10 @@
 			<f:for each="{extensions}" as="extension" key="extensionKey">
 				<f:if condition="{extension.terObject}">
 					<f:then>
-						<tr id="{extensionKey}" class="{f:if(condition:'{extension.terObject.reviewState} >= 0', then:'', else:'insecure')}">
+						<tr id="{extensionKey}" class="{f:if(condition:'{extension.terObject.reviewState} >= 0', then:'', else:'insecure')} {f:if(condition:'{extension.installed}', then: '', else: 'inactive')}">
 					</f:then>
 					<f:else>
-						<tr id="{extensionKey}">
+						<tr id="{extensionKey}" class="{f:if(condition:'{extension.installed}', then: '', else: 'inactive')}">
 					</f:else>
 				</f:if>
 				<td>
@@ -65,7 +68,7 @@
 				<td>
 					{extension.version}
 				</td>
-				<td>
+				<td class="icons">
 					<em:configureExtension extension="{extension}" />
 					<em:updateScript extensionKey="{extension.key}" />
 					<em:removeExtension extension="{extension}" />
