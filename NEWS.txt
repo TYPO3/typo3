@@ -30,6 +30,23 @@ Changes and Improvements
 General
 -------------------------------------------------------------------------------
 
+* Improved TCA load mechanism
+
+The initialization of the central $GLOBAL['TCA'] array was refactored,
+accelerated and simplified. Frontend code can now rely on a fully loaded array
+including columns and the requirement to call loadTca() in ext_tables.php if
+manipulating TCA is gone.
+Extension authors should catch up with this evolvment: Definition of new TCA
+tables should be moved to the extensions Configuration/TCA/ directory, every
+table must be declared in an own file "tablename.php". The file must return the
+full TCA definition of the specific table, with ctrl and columns sections
+merged together, without the former dynamicConfigFile definition. The
+declaration of TCA for new tables can be dropped from ext_tables.php, the
+bootstrap will find and execute any new table definitions in Configuration/TCA
+automatically if the extension author sticks to the convention. Examples of
+correct registration can be found in sys_note and extensionmanager and other
+system extensions.
+
 -------------------------------------------------------------------------------
 Backend
 -------------------------------------------------------------------------------
