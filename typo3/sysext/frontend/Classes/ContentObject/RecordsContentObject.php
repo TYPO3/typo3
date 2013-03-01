@@ -60,7 +60,9 @@ class RecordsContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 					}
 				}
 			}
-			$loadDB = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('FE_loadDBGroup');
+			/** @var \TYPO3\CMS\Core\Database\RelationHandler $loadDB*/
+			$loadDB = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
+			$loadDB->setFetchAllFields(TRUE);
 			$loadDB->start($source, $allowedTables);
 			foreach ($loadDB->tableArray as $table => $v) {
 				if (is_array($GLOBALS['TCA'][$table])) {
