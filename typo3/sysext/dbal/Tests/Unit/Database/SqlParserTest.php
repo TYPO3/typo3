@@ -1194,6 +1194,18 @@ class SqlParserTest extends AbstractTestCase
 
     /**
      * @test
+     * @see https://forge.typo3.org/issues/38838
+     */
+    public function caseWithBooleanConditionIsSupportedWithinAggregateFunction()
+    {
+        $parseString = 'MIN(CASE WHEN foo < 100 THEN NULL ELSE foo END) AS foo';
+        $result = $this->subject->parseFieldList($parseString);
+        $this->assertInternalType('array', $result);
+        $this->assertEmpty($parseString);
+    }
+
+    /**
+     * @test
      * @see http://forge.typo3.org/issues/21903
      */
     public function caseWithMultipleWhenIsProperlyCompiled()

@@ -4729,20 +4729,51 @@ class TypoScriptFrontendController
         }
         // Additional fields
         $showHidden = $tableName === 'pages' ? $this->showHiddenPage : $this->showHiddenRecords;
-        $enableFields = $this->sys_page->enableFields($tableName, $showHidden, array('starttime' => true, 'endtime' => true));
-        // For each start or end time field, get the minimum value
+        $enableFields = $this->sys_page->enableFields(
+            $tableName,
+            $showHidden,
+            array('starttime' => true, 'endtime' => true)
+        );
+
+        $timeFields = array();
+        $selectFields = array();
+        $whereConditions = array();
         foreach (array('starttime', 'endtime') as $field) {
             if (isset($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field])) {
-                $timeField = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field];
-                $selectField = 'MIN(' . $timeField . ') AS ' . $field;
-                $whereCondition = $timeField . ' > ' . $now;
-                // Find the smallest timestamp which could influence the cache duration (but is larger than 0)
-                $row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow($selectField, $tableName, 'pid = ' . (int)$pid . ' AND ' . $whereCondition . $enableFields);
-                if ($row && !is_null($row[$field])) {
-                    $result = min($result, $row[$field]);
+                $timeFields[$field] = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field];
+                $selectFields[$field]
+                    = 'MIN('
+                        . 'CASE WHEN ' . $timeFields[$field] . ' <= ' . $now
+                        . ' THEN NULL ELSE ' . $timeFields[$field] . ' END'
+                        . ') AS ' . $field;
+                $whereConditions[$field] = $timeFields[$field] . '>' . $now;
+            }
+        }
+
+        // if starttime or endtime are defined, evaluate them
+        if (!empty($timeFields)) {
+            // find the timestamp, when the current page's content changes the next time
+            $row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+                implode(', ', $selectFields),
+                $tableName,
+                'pid=' . (int)$pid
+                . ' AND (' . implode(' OR ', $whereConditions) . ')'
+                . $enableFields
+            );
+            if ($row) {
+                foreach ($timeFields as $timeField => $_) {
+                    // if a MIN value is found, take it into account for the
+                    // cache lifetime we have to filter out start/endtimes < $now,
+                    // as the SQL query also returns rows with starttime < $now
+                    // and endtime > $now (and using a starttime from the past
+                    // would be wrong)
+                    if ($row[$timeField] !== null && (int)$row[$timeField] > $now) {
+                        $result = min($result, (int)$row[$timeField]);
+                    }
                 }
             }
         }
+
         return $result;
     }
 
