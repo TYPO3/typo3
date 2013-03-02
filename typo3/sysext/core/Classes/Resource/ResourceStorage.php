@@ -819,7 +819,7 @@ class ResourceStorage {
 	 * @return array
 	 */
 	public function getFileInfoByIdentifier($identifier) {
-		throw new \BadMethodCallException("The method ResourceStorage::getFileInfoByIdentifier() has been deprecated. Please fix your method call and use getFileInfo with the file object instead.", 1346577887);
+		throw new \BadMethodCallException('The method ResourceStorage::getFileInfoByIdentifier() has been deprecated. Please fix your method call and use getFileInfo with the file object instead.', 1346577887);
 	}
 
 	/**
