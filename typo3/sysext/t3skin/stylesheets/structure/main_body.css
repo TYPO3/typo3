@@ -22,25 +22,6 @@ The class name will be "typo3-[classname]"
 In particular we set the width of these wrapper-sections:
 - - - - - - - - - - - - - - - - - - - - - */
 
-div.typo3-bigDoc,
-div.typo3-noDoc {
-	margin-left: 10px;
-	margin-top: 5px;
-	width: 740px;
-}
-
-div.typo3-noDoc h2 {
-	width: 740px;
-}
-
-div.typo3-mediumDoc {
-	width: 470px;
-}
-
-div.typo3-smallDoc {
-	width: 350px;
-}
-
 div.typo3-fullDoc {
 	height: 100%;
 	width: 100%;
