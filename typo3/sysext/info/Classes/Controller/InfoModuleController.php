@@ -28,7 +28,7 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Document Template Object
 	 *
-	 * @var \TYPO3\CMS\Backend\Template\MediumDocumentTemplate
+	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 * @todo Define visibility
 	 */
 	public $doc;
@@ -92,7 +92,7 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		} else {
 			// If no access or if ID == zero
-			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\MediumDocumentTemplate');
+			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->content = $this->doc->header($GLOBALS['LANG']->getLL('title'));
 			$this->content .= $this->doc->spacer(5);
