@@ -568,7 +568,17 @@ class PageRepository {
 				return array();
 			}
 		} else {
-			return $rootline->get();
+			try {
+				return $rootline->get();
+			} catch (\RuntimeException $ex) {
+				/**
+				 * @see \TYPO3\CMS\Core\Utility\RootlineUtility::getRecordArray
+				 */
+				if ($ex->getCode() === 1343589451) {
+					return array();
+				}
+				throw $ex;
+			}
 		}
 	}
 
