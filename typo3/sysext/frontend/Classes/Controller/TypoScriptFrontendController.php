@@ -2474,28 +2474,42 @@ class TypoScriptFrontendController {
 			// If no result, create it:
 			if (!is_array($GLOBALS['TCA'])) {
 				$this->includeTCA(0);
-				$newTc = array();
-				// Collects other information
-				$this->TCAcachedExtras = array();
-				foreach ($GLOBALS['TCA'] as $key => $val) {
-					$newTc[$key]['ctrl'] = $val['ctrl'];
-					$newTc[$key]['feInterface'] = $val['feInterface'];
-					// Collect information about localization exclusion of fields:
-					\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($key);
-					if (is_array($GLOBALS['TCA'][$key]['columns'])) {
-						$this->TCAcachedExtras[$key]['l10n_mode'] = array();
-						foreach ($GLOBALS['TCA'][$key]['columns'] as $fN => $fV) {
-							if ($fV['l10n_mode']) {
-								$this->TCAcachedExtras[$key]['l10n_mode'][$fN] = $fV['l10n_mode'];
-							}
-						}
-					}
-				}
+				$newTc = $this->getFullCompressedTCArray();
+
 				$GLOBALS['TCA'] = $newTc;
 				$this->sys_page->storeHash($tempHash, serialize(array($newTc, $this->TCAcachedExtras)), 'SHORT_TC');
 			}
 		}
 		$GLOBALS['TT']->pull();
+	}
+
+	/**
+	 * Get a new freshly created compressed $GLOBALS['TCA'] array for use in the front-end.
+	 * Can be called to get a full $this->TCAcachedExtra without resetting TCA array.
+	 * ie. usage to simulate frontend environment in BE
+	 *
+	 * @return array
+	 */
+	public function getFullCompressedTCArray() {
+		 $newTc = array();
+		 $this->TCAcachedExtras = array();
+		 foreach ($GLOBALS['TCA'] as $key => $val) {
+			 $newTc[$key]['ctrl']        = $val['ctrl'];
+			 $newTc[$key]['feInterface'] = $val['feInterface'];
+
+				// Collect information about localization exclusion of fields:
+			t3lib_div::loadTCA($key);
+			if (is_array($GLOBALS['TCA'][$key]['columns'])) {
+				$this->TCAcachedExtras[$key]['l10n_mode'] = array();
+				foreach ($GLOBALS['TCA'][$key]['columns'] as $fN => $fV) {
+					if ($fV['l10n_mode']) {
+						$this->TCAcachedExtras[$key]['l10n_mode'][$fN] = $fV['l10n_mode'];
+					}
+				}
+			}
+		}
+
+		return $newTc;
 	}
 
 	/**
