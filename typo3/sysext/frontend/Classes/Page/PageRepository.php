@@ -554,18 +554,20 @@ class PageRepository {
 	 */
 	public function getRootLine($uid, $MP = '', $ignoreMPerrors = FALSE) {
 		$rootline = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\RootlineUtility', $uid, $MP, $this);
-		if ($ignoreMPerrors) {
-			try {
-				return $rootline->get();
-			} catch (\Exception $e) {
-				$this->error_getRootLine = $e->getMessage();
-				if (substr($e->getMessage(), -7) == 'uid -1.') {
+		try {
+			return $rootline->get();
+		} catch (\RuntimeException $ex) {
+			if ($ignoreMPerrors) {
+				$this->error_getRootLine = $ex->getMessage();
+				if (substr($this->error_getRootLine, -7) == 'uid -1.') {
 					$this->error_getRootLine_failPid = -1;
 				}
 				return array();
+			/** @see \TYPO3\CMS\Core\Utility\RootlineUtility::getRecordArray */
+			} elseif ($ex->getCode() === 1343589451) {
+				return array();
 			}
-		} else {
-			return $rootline->get();
+			throw $ex;
 		}
 	}
 
