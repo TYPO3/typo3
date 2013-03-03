@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Core\Resource\Driver;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 /**
  * An abstract implementation of a storage driver.
  *
@@ -154,7 +157,7 @@ abstract class AbstractDriver {
 	 * @return string
 	 */
 	protected function getNameFromIdentifier($identifier) {
-		return basename($identifier);
+		return PathUtility::basename($identifier);
 	}
 
 	/**
