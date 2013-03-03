@@ -1,6 +1,5 @@
 <?php
 namespace TYPO3\CMS\Core\Resource\Driver;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  * Copyright notice
@@ -27,6 +26,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Driver for the local file system
@@ -156,7 +158,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		// If requested, make the path relative to the current script in order to make it possible
 		// to use the relative file
 		if ($relativeToCurrentScript) {
-			$publicUrl = \TYPO3\CMS\Core\Utility\PathUtility::getRelativePathTo(dirname((PATH_site . $publicUrl))) . basename($publicUrl);
+			$publicUrl = PathUtility::getRelativePathTo(PathUtility::dirname((PATH_site . $publicUrl))) . PathUtility::basename($publicUrl);
 		}
 		return $publicUrl;
 	}
@@ -212,7 +214,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		// Makes sure the Path given as parameter is valid
 		$this->checkFilePath($fileIdentifier);
 		$dirPath = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(
-			dirname($fileIdentifier)
+			PathUtility::dirname($fileIdentifier)
 		);
 		if ($dirPath !== '' && $dirPath !== '/') {
 			$dirPath = '/' . trim($dirPath, '/') . '/';
@@ -431,7 +433,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 * @return array
 	 */
 	protected function extractFileInformation($filePath, $containerPath) {
-		$fileName = basename($filePath);
+		$fileName = PathUtility::basename($filePath);
 		$fileInformation = array(
 			'size' => filesize($filePath),
 			'atime' => fileatime($filePath),
@@ -453,7 +455,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 * @return array
 	 */
 	protected function extractFolderInformation($folderPath, $containerPath) {
-		$folderName = basename($folderPath);
+		$folderName = PathUtility::basename($folderPath);
 		$folderInformation = array(
 			'ctime' => filectime($folderPath),
 			'mtime' => filemtime($folderPath),
@@ -578,7 +580,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 			throw new \InvalidArgumentException('Cannot add a file that is already part of this storage.', 1314778269);
 		}
 		$relativeTargetPath = ltrim($targetFolder->getIdentifier(), '/');
-		$relativeTargetPath .= $this->sanitizeFileName($fileName ? $fileName : basename($localFilePath));
+		$relativeTargetPath .= $this->sanitizeFileName($fileName ? $fileName : PathUtility::basename($localFilePath));
 		$targetPath = $this->absoluteBasePath . $relativeTargetPath;
 		if (is_uploaded_file($localFilePath)) {
 			$moveResult = move_uploaded_file($localFilePath, $targetPath);
@@ -895,7 +897,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	public function renameFile(\TYPO3\CMS\Core\Resource\FileInterface $file, $newName) {
 		// Makes sure the Path given as parameter is valid
 		$newName = $this->sanitizeFileName($newName);
-		$newIdentifier = rtrim(GeneralUtility::fixWindowsFilePath(dirname($file->getIdentifier())), '/') . '/' . $newName;
+		$newIdentifier = rtrim(GeneralUtility::fixWindowsFilePath(PathUtility::dirname($file->getIdentifier())), '/') . '/' . $newName;
 		// The target should not exist already
 		if ($this->fileExists($newIdentifier)) {
 			throw new \TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException('The target file already exists.', 1320291063);
@@ -935,7 +937,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		$newName = $this->sanitizeFileName($newName);
 		$relativeSourcePath = $folder->getIdentifier();
 		$sourcePath = $this->getAbsolutePath($relativeSourcePath);
-		$relativeTargetPath = rtrim(GeneralUtility::fixWindowsFilePath(dirname($relativeSourcePath)), '/') . '/' . $newName . '/';
+		$relativeTargetPath = rtrim(GeneralUtility::fixWindowsFilePath(PathUtility::dirname($relativeSourcePath)), '/') . '/' . $newName . '/';
 		$targetPath = $this->getAbsolutePath($relativeTargetPath);
 		// get all files and folders we are going to move, to have a map for updating later.
 		$filesAndFolders = $this->getFileAndFoldernamesInPath($sourcePath, TRUE);

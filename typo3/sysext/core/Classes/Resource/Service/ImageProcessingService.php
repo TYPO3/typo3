@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Core\Resource\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 // TODO should this be a singleton?
 /**
  * Thumbnail service
@@ -87,7 +90,7 @@ class ImageProcessingService {
 		$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
 		$gifCreator->init();
 		if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']) {
-			$filename = basename($theImage);
+			$filename = PathUtility::basename($theImage);
 			// Remove extension
 			$filename = substr($filename, 0, strrpos($filename, '.'));
 			$tempFilePrefixLength = intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']);
