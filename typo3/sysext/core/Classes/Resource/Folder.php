@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Core\Resource;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 /**
  * A folder that groups files in a storage. This may be a folder on the local
  * disk, a bucket in Amazon S3 or a user or a tag in Flickr.
@@ -273,7 +276,7 @@ class Folder implements FolderInterface {
 	 * @return File The file object
 	 */
 	public function addFile($localFilePath, $fileName = NULL, $conflictMode = 'cancel') {
-		$fileName = $fileName ? $fileName : basename($localFilePath);
+		$fileName = $fileName ? $fileName : PathUtility::basename($localFilePath);
 		return $this->storage->addFile($localFilePath, $this, $fileName, $conflictMode);
 	}
 
