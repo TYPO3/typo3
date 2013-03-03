@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Core\Resource\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 /**
  * Magic image service
  *
@@ -97,7 +100,7 @@ class MagicImageService {
 		// Create the magic image
 		$magicImageInfo = $this->getImageObject()->imageMagickConvert($imageFilePath, 'WEB', $maxWidth . 'm', $maxHeight . 'm');
 		if ($magicImageInfo[3]) {
-			$targetFileName = 'RTEmagicC_' . pathInfo($imageFileObject->getName(), PATHINFO_FILENAME) . '.' . pathinfo($magicImageInfo[3], PATHINFO_EXTENSION);
+			$targetFileName = 'RTEmagicC_' . PathUtility::pathInfo($imageFileObject->getName(), PATHINFO_FILENAME) . '.' . PathUtility::pathinfo($magicImageInfo[3], PATHINFO_EXTENSION);
 			$magicFolder = $this->getMagicFolder($targetFolderCombinedIdentifier);
 			if ($magicFolder instanceof \TYPO3\CMS\Core\Resource\Folder) {
 				$magicImage = $magicFolder->addFile($magicImageInfo[3], $targetFileName, 'changeName');
