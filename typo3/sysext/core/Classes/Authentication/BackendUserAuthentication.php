@@ -2191,7 +2191,6 @@ This is a dump of the failures:
 					$email_body .= date(($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']), $testRows['tstamp']) . ':  ' . @sprintf($testRows['details'], ('' . $theData[0]), ('' . $theData[1]), ('' . $theData[2]));
 					$email_body .= LF;
 				}
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				$from = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
 				/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
 				$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
@@ -2199,6 +2198,7 @@ This is a dump of the failures:
 				$mail->send();
 				// Logout written to log
 				$this->writelog(255, 4, 0, 3, 'Failure warning (%s failures within %s seconds) sent by email to %s', array($GLOBALS['TYPO3_DB']->sql_num_rows($res), $secondsBack, $email));
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 		}
 	}
