@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Abstract Form View Helper. Bundles functionality related to direct property access of objects in other Form ViewHelpers.
  *
@@ -64,10 +65,12 @@ abstract class AbstractFormViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
 	 * @param object $object Object to create the identity field for
 	 * @param string $name Name
 	 * @return string A hidden field containing the Identity (UID in TYPO3 Flow, uid in Extbase) of the given object or NULL if the object is unknown to the persistence framework
-	 * @see Tx_Fluid_MVC_Controller_Argument::setValue()
+	 * @see \TYPO3\CMS\Extbase\Mvc\Controller\Argument::setValue()
 	 */
 	protected function renderHiddenIdentityField($object, $name) {
-		if (!is_object($object) || !$object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject || $object->_isNew() && !$object->_isClone()) {
+		if (!is_object($object)
+			|| !($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject)
+			|| ($object->_isNew() && !$object->_isClone())) {
 			return '';
 		}
 		// Intentionally NOT using PersistenceManager::getIdentifierByObject here!!
@@ -78,7 +81,8 @@ abstract class AbstractFormViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
 		}
 		$name = $this->prefixFieldName($name) . '[__identity]';
 		$this->registerFieldNameForFormTokenGeneration($name);
-		return chr(10) . '<input type="hidden" name="' . $name . '" value="' . $identifier . '" />' . chr(10);
+
+		return chr(10) . '<input type="hidden" name="'. $name . '" value="' . $identifier .'" />' . chr(10);
 	}
 
 	/**

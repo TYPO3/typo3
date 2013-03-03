@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Renders an <input type="hidden" ...> tag.
  *
@@ -54,9 +55,11 @@ class HiddenViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 	public function render() {
 		$name = $this->getName();
 		$this->registerFieldNameForFormTokenGeneration($name);
+
 		$this->tag->addAttribute('type', 'hidden');
 		$this->tag->addAttribute('name', $name);
 		$this->tag->addAttribute('value', $this->getValue());
+
 		return $this->tag->render();
 	}
 }

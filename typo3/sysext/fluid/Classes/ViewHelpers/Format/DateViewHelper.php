@@ -10,8 +10,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
- * Formats a DateTime object.
+ * Formats a \DateTime object.
  *
  * = Examples =
  *
@@ -85,8 +86,8 @@ class DateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 *
 	 * @param mixed $date either a DateTime object or a string that is accepted by DateTime constructor
 	 * @param string $format Format String which is taken to format the Date/Time
-	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return string Formatted date
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @api
 	 */
 	public function render($date = NULL, $format = 'Y-m-d') {
@@ -105,7 +106,7 @@ class DateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 				}
 				$date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
 			} catch (\Exception $exception) {
-				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('"' . $date . '" could not be parsed by DateTime constructor.', 1241722579);
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('"' . $date . '" could not be parsed by \DateTime constructor.', 1241722579);
 			}
 		}
 

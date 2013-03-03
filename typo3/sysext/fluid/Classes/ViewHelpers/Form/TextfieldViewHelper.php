@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * View Helper which creates a text field (<input type="text">).
  *
@@ -59,19 +60,26 @@ class TextfieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractForm
 	public function render($required = NULL, $type = 'text', $placeholder = NULL) {
 		$name = $this->getName();
 		$this->registerFieldNameForFormTokenGeneration($name);
+
 		$this->tag->addAttribute('type', $type);
 		$this->tag->addAttribute('name', $name);
+
 		$value = $this->getValue();
+
 		if ($placeholder !== NULL) {
 			$this->tag->addAttribute('placeholder', $placeholder);
 		}
+
 		if ($value !== NULL) {
 			$this->tag->addAttribute('value', $value);
 		}
+
 		if ($required !== NULL) {
 			$this->tag->addAttribute('required', 'required');
 		}
+
 		$this->setErrorClassAttribute();
+
 		return $this->tag->render();
 	}
 }

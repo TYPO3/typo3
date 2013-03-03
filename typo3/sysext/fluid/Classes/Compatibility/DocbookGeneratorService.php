@@ -29,21 +29,25 @@ namespace TYPO3\CMS\Fluid\Compatibility;
  */
 class DocbookGeneratorService extends \TYPO3\CMS\Fluid\Service\DocbookGenerator {
 
+	/**
+	 *
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 */
+	protected $objectManager;
+
 	public function userFunc() {
-		if (!class_exists('TYPO3\\CMS\\Extbase\\Utility\\ClassLoaderUtility')) {
-			require \t3lib_extmgm::extPath('extbase') . 'Classes/Utility/ClassLoader.php';
-		}
-		$classLoader = new \TYPO3\CMS\Extbase\Utility\ClassLoaderUtility();
-		spl_autoload_register(array($classLoader, 'loadClass'));
-		return $this->generateDocbook('Tx_Fluid_ViewHelpers');
+		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->injectDocCommentParser($this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\DocCommentParser'));
+		$this->injectReflectionService($this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService'));
+		return $this->generateDocbook('TYPO3\CMS\Fluid\ViewHelpers');
 	}
 
 	protected function getClassNamesInNamespace($namespace) {
-		$namespaceParts = explode('_', $namespace);
+		$namespaceParts = explode('\\', $namespace);
 		if ($namespaceParts[count($namespaceParts) - 1] == '') {
 		}
-		$classFilePathAndName = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(\TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($namespaceParts[1])) . 'Classes/';
-		$classFilePathAndName .= implode(array_slice($namespaceParts, 2, -1), '/') . '/';
+		$classFilePathAndName = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(\TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($namespaceParts[2])) . 'Classes/';
+		$classFilePathAndName .= implode(array_slice($namespaceParts, 3, -1), '/') . '/';
 		$classNames = array();
 		$this->recursiveClassNameSearch($namespace, $classFilePathAndName, $classNames);
 		sort($classNames);
@@ -51,7 +55,9 @@ class DocbookGeneratorService extends \TYPO3\CMS\Fluid\Service\DocbookGenerator 
 	}
 
 	private function recursiveClassNameSearch($namespace, $directory, &$classNames) {
+
 		$dh = opendir($directory);
+		$counter = 0;
 		while (($file = readdir($dh)) !== FALSE) {
 			if ($file == '.' || $file == '..' || $file == '.svn') {
 				continue;
@@ -62,16 +68,12 @@ class DocbookGeneratorService extends \TYPO3\CMS\Fluid\Service\DocbookGenerator 
 				}
 				$classNames[] = $namespace . substr($file, 0, -4);
 			} elseif (is_dir($directory . $file)) {
-				$this->recursiveClassNameSearch($namespace . $file . '_', $directory . $file . '/', $classNames);
+				$this->recursiveClassNameSearch($namespace . $file . '\\', $directory . $file . '/', $classNames);
 			}
 		}
 		closedir($dh);
 	}
 
-	protected function instanciateViewHelper($className) {
-		$objectFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		return $objectFactory->get($className);
-	}
 }
 
 ?>

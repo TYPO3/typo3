@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Textarea view helper.
  * The value of the text area needs to be set via the "value" attribute, as with all other form ViewHelpers.
@@ -56,10 +57,13 @@ class TextareaViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
 	public function render() {
 		$name = $this->getName();
 		$this->registerFieldNameForFormTokenGeneration($name);
+
 		$this->tag->forceClosingTag(TRUE);
 		$this->tag->addAttribute('name', $name);
 		$this->tag->setContent(htmlspecialchars($this->getValue()));
+
 		$this->setErrorClassAttribute();
+
 		return $this->tag->render();
 	}
 }

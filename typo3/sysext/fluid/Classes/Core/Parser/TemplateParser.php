@@ -10,12 +10,14 @@ namespace TYPO3\CMS\Fluid\Core\Parser;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Template parser building up an object syntax tree
  */
 class TemplateParser {
 
-	static public $SCAN_PATTERN_NAMESPACEDECLARATION = '/(?<!\\\\){namespace\\s*([a-zA-Z]+[a-zA-Z0-9]*)\\s*=\\s*((?:[A-Za-z0-9\.]+|Tx)(?:LEGACY_NAMESPACE_SEPARATOR\\w+|FLUID_NAMESPACE_SEPARATOR\\w+)+)\\s*}/m';
+	static public $SCAN_PATTERN_NAMESPACEDECLARATION = '/(?<!\\\\){namespace\\s*(?P<identifier>[a-zA-Z]+[a-zA-Z0-9]*)\\s*=\\s*(?P<phpNamespace>(?:[A-Za-z0-9\.]+|Tx)(?:LEGACY_NAMESPACE_SEPARATOR\\w+|FLUID_NAMESPACE_SEPARATOR\\w+)+)\\s*}/m';
+	static public $SCAN_PATTERN_XMLNSDECLARATION = '/\sxmlns:(?P<identifier>.*?)="(?P<xmlNamespace>.*?)"/m';
 
 	/**
 	 * This regular expression splits the input string at all dynamic tags, AND
@@ -26,7 +28,7 @@ class TemplateParser {
 			(?: <\\/?                                      # Start dynamic tags
 					(?:(?:NAMESPACE):[a-zA-Z0-9\\.]+)     # A tag consists of the namespace prefix and word characters
 					(?:                                   # Begin tag arguments
-						\\s*[a-zA-Z0-9:]+                  # Argument Keys
+						\\s*[a-zA-Z0-9:-]+                  # Argument Keys
 						=                                 # =
 						(?>                               # either... If we have found an argument, we will not back-track (That does the Atomic Bracket)
 							"(?:\\\\"|[^"])*"              # a double-quoted string
@@ -53,7 +55,7 @@ class TemplateParser {
 		(?P<Attributes>                                   # Begin Tag Attributes
 			(?:                                           # A tag might have multiple attributes
 				\\s*
-				[a-zA-Z0-9:]+                             # The attribute name
+				[a-zA-Z0-9:-]+                             # The attribute name
 				=                                         # =
 				(?>                                       # either... # If we have found an argument, we will not back-track (That does the Atomic Bracket)
 					"(?:\\\\"|[^"])*"                      # a double-quoted string
@@ -79,7 +81,7 @@ class TemplateParser {
 		(?:                                              #
 			\\s*                                          #
 			(?P<Argument>                                # The attribute name
-				[a-zA-Z0-9:]+                            #
+				[a-zA-Z0-9:-]+                            #
 			)                                            #
 			=                                            # =
 			(?>                                          # If we have found an argument, we will not back-track (That does the Atomic Bracket)
@@ -228,8 +230,13 @@ class TemplateParser {
 	/x';
 
 	/**
-	 * Namespace identifiers and their component name prefix (Associative array).
+	 * This pattern detects the default xml namespace
 	 *
+	 */
+	static public $SCAN_PATTERN_DEFAULT_XML_NAMESPACE = '/^http\:\/\/typo3\.org\/ns\/(?P<PhpNamespace>.+)$/s';
+
+	/**
+	 * Namespace identifiers and their component name prefix (Associative array).
 	 * @var array
 	 */
 	protected $namespaces = array(
@@ -247,12 +254,26 @@ class TemplateParser {
 	protected $configuration;
 
 	/**
+	 * @var array
+	 */
+	protected $settings;
+
+	/**
 	 * Constructor. Preprocesses the $SCAN_PATTERN_NAMESPACEDECLARATION by
 	 * inserting the correct namespace separator.
 	 */
 	public function __construct() {
 		self::$SCAN_PATTERN_NAMESPACEDECLARATION = str_replace('LEGACY_NAMESPACE_SEPARATOR', preg_quote(\TYPO3\CMS\Fluid\Fluid::LEGACY_NAMESPACE_SEPARATOR), self::$SCAN_PATTERN_NAMESPACEDECLARATION);
 		self::$SCAN_PATTERN_NAMESPACEDECLARATION = str_replace('FLUID_NAMESPACE_SEPARATOR', preg_quote(\TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR), self::$SCAN_PATTERN_NAMESPACEDECLARATION);
+	}
+
+	/**
+	 * Injects Fluid settings
+	 *
+	 * @param array $settings
+	 */
+	public function injectSettings(array $settings) {
+		$this->settings = $settings;
 	}
 
 	/**
@@ -284,21 +305,24 @@ class TemplateParser {
 	 * TemplateParser directly.
 	 *
 	 * @param string $templateString The template to parse as a string
-	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 * @return \TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterface Parsed template
+	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 */
 	public function parse($templateString) {
 		if (!is_string($templateString)) {
 			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Parse requires a template string as argument, ' . gettype($templateString) . ' given.', 1224237899);
 		}
 		$this->reset();
+
 		$templateString = $this->extractNamespaceDefinitions($templateString);
 		$splitTemplate = $this->splitTemplateAtDynamicTags($templateString);
 		$parsingState = $this->buildObjectTree($splitTemplate);
+
 		$variableContainer = $parsingState->getVariableContainer();
 		if ($variableContainer !== NULL && $variableContainer->exists('layoutName')) {
 			$parsingState->setLayoutNameNode($variableContainer->get('layoutName'));
 		}
+
 		return $parsingState;
 	}
 
@@ -327,22 +351,43 @@ class TemplateParser {
 	 * $this->namespaces.
 	 *
 	 * @param string $templateString Template string to extract the namespaces from
-	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 * @return string The updated template string without namespace declarations inside
+	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception if a namespace can't be resolved or has been declared already
 	 */
 	protected function extractNamespaceDefinitions($templateString) {
-		$matchedVariables = array();
-		if (preg_match_all(self::$SCAN_PATTERN_NAMESPACEDECLARATION, $templateString, $matchedVariables) > 0) {
-			foreach (array_keys($matchedVariables[0]) as $index) {
-				$namespaceIdentifier = $matchedVariables[1][$index];
-				$fullyQualifiedNamespace = $matchedVariables[2][$index];
-				if (key_exists($namespaceIdentifier, $this->namespaces)) {
-					throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Namespace identifier "' . $namespaceIdentifier . '" is already registered. Do not redeclare namespaces!', 1224241246);
-				}
-				$this->namespaces[$namespaceIdentifier] = $fullyQualifiedNamespace;
+		$matches = array();
+		preg_match_all(self::$SCAN_PATTERN_XMLNSDECLARATION, $templateString, $matches, PREG_SET_ORDER);
+		foreach ($matches as $match) {
+				// skip reserved "f" namespace identifier
+			if ($match['identifier'] === 'f') {
+				continue;
 			}
+			if (array_key_exists($match['identifier'], $this->namespaces)) {
+				throw new \TYPO3\CMS\Fluid\Core\Parser\Exception(sprintf('Namespace identifier "%s" is already registered. Do not re-declare namespaces!', $match['identifier']), 1331135889);
+			}
+			if (isset($this->settings['namespaces'][$match['xmlNamespace']])) {
+				$phpNamespace = $this->settings['namespaces'][$match['xmlNamespace']];
+			} else {
+				$matchedPhpNamespace = array();
+				if (preg_match(self::$SCAN_PATTERN_DEFAULT_XML_NAMESPACE, $match['xmlNamespace'], $matchedPhpNamespace) === 0) {
+					continue;
+				}
+				$phpNamespace = str_replace('/', '\\', $matchedPhpNamespace['PhpNamespace']);
+			}
+			$this->namespaces[$match['identifier']] = $phpNamespace;
+		}
+		$matches = array();
+		preg_match_all(self::$SCAN_PATTERN_NAMESPACEDECLARATION, $templateString, $matches, PREG_SET_ORDER);
+		foreach ($matches as $match) {
+			if (array_key_exists($match['identifier'], $this->namespaces)) {
+				throw new \TYPO3\CMS\Fluid\Core\Parser\Exception(sprintf('Namespace identifier "%s" is already registered. Do not re-declare namespaces!', $match['identifier']), 1224241246);
+			}
+			$this->namespaces[$match['identifier']] = $match['phpNamespace'];
+		}
+		if ($matches !== array()) {
 			$templateString = preg_replace(self::$SCAN_PATTERN_NAMESPACEDECLARATION, '', $templateString);
 		}
+
 		return $templateString;
 	}
 
@@ -360,29 +405,32 @@ class TemplateParser {
 	/**
 	 * Build object tree from the split template
 	 *
-	 * @param array $splitTemplate The split template, so that every tag with a namespace declaration is already a separate array element.
-	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
+	 * @param array $splitTemplate The split template, so that every tag with a namespace declaration is already a seperate array element.
 	 * @return \TYPO3\CMS\Fluid\Core\Parser\ParsingState
+	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 */
 	protected function buildObjectTree($splitTemplate) {
 		$regularExpression_openingViewHelperTag = $this->prepareTemplateRegularExpression(self::$SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG);
 		$regularExpression_closingViewHelperTag = $this->prepareTemplateRegularExpression(self::$SCAN_PATTERN_TEMPLATE_CLOSINGVIEWHELPERTAG);
+
 		$state = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\ParsingState');
 		$rootNode = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\RootNode');
 		$state->setRootNode($rootNode);
 		$state->pushNodeToStack($rootNode);
+
 		foreach ($splitTemplate as $templateElement) {
 			$matchedVariables = array();
 			if (preg_match(self::$SCAN_PATTERN_CDATA, $templateElement, $matchedVariables) > 0) {
 				$this->textHandler($state, $matchedVariables[1]);
 			} elseif (preg_match($regularExpression_openingViewHelperTag, $templateElement, $matchedVariables) > 0) {
-				$this->openingViewHelperTagHandler($state, $matchedVariables['NamespaceIdentifier'], $matchedVariables['MethodIdentifier'], $matchedVariables['Attributes'], $matchedVariables['Selfclosing'] === '' ? FALSE : TRUE);
+				$this->openingViewHelperTagHandler($state, $matchedVariables['NamespaceIdentifier'], $matchedVariables['MethodIdentifier'], $matchedVariables['Attributes'], ($matchedVariables['Selfclosing'] === '' ? FALSE : TRUE));
 			} elseif (preg_match($regularExpression_closingViewHelperTag, $templateElement, $matchedVariables) > 0) {
 				$this->closingViewHelperTagHandler($state, $matchedVariables['NamespaceIdentifier'], $matchedVariables['MethodIdentifier']);
 			} else {
 				$this->textAndShorthandSyntaxHandler($state, $templateElement);
 			}
 		}
+
 		if ($state->countNodeStack() !== 1) {
 			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Not all tags were closed!', 1238169398);
 		}
@@ -402,6 +450,7 @@ class TemplateParser {
 	protected function openingViewHelperTagHandler(\TYPO3\CMS\Fluid\Core\Parser\ParsingState $state, $namespaceIdentifier, $methodIdentifier, $arguments, $selfclosing) {
 		$argumentsObjectTree = $this->parseArguments($arguments);
 		$this->initializeViewHelperAndAddItToStack($state, $namespaceIdentifier, $methodIdentifier, $argumentsObjectTree);
+
 		if ($selfclosing) {
 			$node = $state->popNodeFromStack();
 			$this->callInterceptor($node, \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER, $state);
@@ -416,31 +465,38 @@ class TemplateParser {
 	 * @param string $namespaceIdentifier Namespace identifier - being looked up in $this->namespaces
 	 * @param string $methodIdentifier Method identifier
 	 * @param array $argumentsObjectTree Arguments object tree
-	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 * @return void
+	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 */
 	protected function initializeViewHelperAndAddItToStack(\TYPO3\CMS\Fluid\Core\Parser\ParsingState $state, $namespaceIdentifier, $methodIdentifier, $argumentsObjectTree) {
 		if (!array_key_exists($namespaceIdentifier, $this->namespaces)) {
 			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Namespace could not be resolved. This exception should never be thrown!', 1224254792);
 		}
 		$viewHelper = $this->objectManager->get($this->resolveViewHelperName($namespaceIdentifier, $methodIdentifier));
+
 		// The following three checks are only done *in an uncached template*, and not needed anymore in the cached version
 		$expectedViewHelperArguments = $viewHelper->prepareArguments();
 		$this->abortIfUnregisteredArgumentsExist($expectedViewHelperArguments, $argumentsObjectTree);
 		$this->abortIfRequiredArgumentsAreMissing($expectedViewHelperArguments, $argumentsObjectTree);
 		$this->rewriteBooleanNodesInArgumentsObjectTree($expectedViewHelperArguments, $argumentsObjectTree);
+
 		$currentViewHelperNode = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode', $viewHelper, $argumentsObjectTree);
+
 		$state->getNodeFromStack()->addChildNode($currentViewHelperNode);
-		if ($viewHelper instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface && !$viewHelper instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface) {
+
+		if ($viewHelper instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface && !($viewHelper instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface)) {
 			$state->setCompilable(FALSE);
 		}
+
 		// PostParse Facet
 		if ($viewHelper instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\PostParseInterface) {
 			// Don't just use $viewHelper::postParseEvent(...),
 			// as this will break with PHP < 5.3.
 			call_user_func(array($viewHelper, 'postParseEvent'), $currentViewHelperNode, $argumentsObjectTree, $state->getVariableContainer());
 		}
+
 		$this->callInterceptor($currentViewHelperNode, \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_OPENING_VIEWHELPER, $state);
+
 		$state->pushNodeToStack($currentViewHelperNode);
 	}
 
@@ -448,7 +504,7 @@ class TemplateParser {
 	 * Throw an exception if there are arguments which were not registered
 	 * before.
 	 *
-	 * @param array $expectedArguments Array of Tx_Fluid_Core_ViewHelper_ArgumentDefinition of all expected arguments
+	 * @param array $expectedArguments Array of \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition of all expected arguments
 	 * @param array $actualArguments Actual arguments
 	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 */
@@ -457,6 +513,7 @@ class TemplateParser {
 		foreach ($expectedArguments as $expectedArgument) {
 			$expectedArgumentNames[] = $expectedArgument->getName();
 		}
+
 		foreach (array_keys($actualArguments) as $argumentName) {
 			if (!in_array($argumentName, $expectedArgumentNames)) {
 				throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Argument "' . $argumentName . '" was not registered.', 1237823695);
@@ -467,7 +524,7 @@ class TemplateParser {
 	/**
 	 * Throw an exception if required arguments are missing
 	 *
-	 * @param array $expectedArguments Array of Tx_Fluid_Core_ViewHelper_ArgumentDefinition of all expected arguments
+	 * @param array $expectedArguments Array of \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition of all expected arguments
 	 * @param array $actualArguments Actual arguments
 	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 */
@@ -499,7 +556,7 @@ class TemplateParser {
 	 * Resolve a viewhelper name.
 	 *
 	 * @param string $namespaceIdentifier Namespace identifier for the view helper.
-	 * @param string $methodIdentifier Method identifier, might be hierarchical like "link.url
+	 * @param string $methodIdentifier Method identifier, might be hierarchical like "link.url"
 	 * @return string The fully qualified class name of the viewhelper
 	 */
 	protected function resolveViewHelperName($namespaceIdentifier, $methodIdentifier) {
@@ -529,7 +586,7 @@ class TemplateParser {
 			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Namespace could not be resolved. This exception should never be thrown!', 1224256186);
 		}
 		$lastStackElement = $state->popNodeFromStack();
-		if (!$lastStackElement instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode) {
+		if (!($lastStackElement instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode)) {
 			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('You closed a templating tag which you never opened!', 1224485838);
 		}
 		if ($lastStackElement->getViewHelperClassName() != $this->resolveViewHelperName($namespaceIdentifier, $methodIdentifier)) {
@@ -540,7 +597,7 @@ class TemplateParser {
 
 	/**
 	 * Handles the appearance of an object accessor (like {posts.author.email}).
-	 * Creates a new instance of Tx_Fluid_ObjectAccessorNode.
+	 * Creates a new instance of \TYPO3\CMS\Fluid\ObjectAccessorNode.
 	 *
 	 * Handles ViewHelpers as well which are in the shorthand syntax.
 	 *
@@ -554,19 +611,23 @@ class TemplateParser {
 	protected function objectAccessorHandler(\TYPO3\CMS\Fluid\Core\Parser\ParsingState $state, $objectAccessorString, $delimiter, $viewHelperString, $additionalViewHelpersString) {
 		$viewHelperString .= $additionalViewHelpersString;
 		$numberOfViewHelpers = 0;
+
 		// The following post-processing handles a case when there is only a ViewHelper, and no Object Accessor.
 		// Resolves bug #5107.
 		if (strlen($delimiter) === 0 && strlen($viewHelperString) > 0) {
 			$viewHelperString = $objectAccessorString . $viewHelperString;
 			$objectAccessorString = '';
 		}
+
 		// ViewHelpers
 		$matches = array();
 		if (strlen($viewHelperString) > 0 && preg_match_all(self::$SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER, $viewHelperString, $matches, PREG_SET_ORDER) > 0) {
 			// The last ViewHelper has to be added first for correct chaining.
 			foreach (array_reverse($matches) as $singleMatch) {
 				if (strlen($singleMatch['ViewHelperArguments']) > 0) {
-					$arguments = $this->postProcessArgumentsForObjectAccessor($this->recursiveArrayHandler($singleMatch['ViewHelperArguments']));
+					$arguments = $this->postProcessArgumentsForObjectAccessor(
+						$this->recursiveArrayHandler($singleMatch['ViewHelperArguments'])
+					);
 				} else {
 					$arguments = array();
 				}
@@ -574,14 +635,18 @@ class TemplateParser {
 				$numberOfViewHelpers++;
 			}
 		}
+
 		// Object Accessor
 		if (strlen($objectAccessorString) > 0) {
+
 			$node = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ObjectAccessorNode', $objectAccessorString);
 			$this->callInterceptor($node, \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_OBJECTACCESSOR, $state);
+
 			$state->getNodeFromStack()->addChildNode($node);
 		}
+
 		// Close ViewHelper Tags if needed.
-		for ($i = 0; $i < $numberOfViewHelpers; $i++) {
+		for ($i=0; $i<$numberOfViewHelpers; $i++) {
 			$node = $state->popNodeFromStack();
 			$this->callInterceptor($node, \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER, $state);
 		}
@@ -591,8 +656,8 @@ class TemplateParser {
 	 * Call all interceptors registered for a given interception point.
 	 *
 	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface $node The syntax tree node which can be modified by the interceptors.
-	 * @param integer $interceptionPoint the interception point. One of the Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_* constants.
-	 * @param \TYPO3\CMS\Fluid\Core\Parser\ParsingState the parsing state
+	 * @param integer $interceptionPoint the interception point. One of the \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_* constants.
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\ParsingState $state the parsing state
 	 * @return void
 	 */
 	protected function callInterceptor(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface &$node, $interceptionPoint, \TYPO3\CMS\Fluid\Core\Parser\ParsingState $state) {
@@ -613,14 +678,14 @@ class TemplateParser {
 	/**
 	 * Post process the arguments for the ViewHelpers in the object accessor
 	 * syntax. We need to convert an array into an array of (only) nodes
-	 * TODO: This method should become superflous once the rest has been refactored, so that this code is not needed.
 	 *
 	 * @param array $arguments The arguments to be processed
 	 * @return array the processed array
+	 * @todo This method should become superflous once the rest has been refactored, so that this code is not needed.
 	 */
 	protected function postProcessArgumentsForObjectAccessor(array $arguments) {
 		foreach ($arguments as $argumentName => $argumentValue) {
-			if (!$argumentValue instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode) {
+			if (!($argumentValue instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode)) {
 				$arguments[$argumentName] = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\TextNode', (string) $argumentValue);
 			}
 		}
@@ -660,7 +725,7 @@ class TemplateParser {
 	 * no { or < is found, then we just return a TextNode.
 	 *
 	 * @param string $argumentString
-	 * @return mixed ArgumentObject the corresponding argument object tree.
+	 * @return SyntaxTree\AbstractNode the corresponding argument object tree.
 	 */
 	protected function buildArgumentObjectTree($argumentString) {
 		if (strpos($argumentString, '{') === FALSE && strpos($argumentString, '<') === FALSE) {
@@ -683,11 +748,13 @@ class TemplateParser {
 	protected function unquoteString($quotedValue) {
 		switch ($quotedValue[0]) {
 			case '"':
-				$value = str_replace('\\"', '"', trim($quotedValue, '"'));
-				break;
-			case '\'':
-				$value = str_replace('\\\'', '\'', trim($quotedValue, '\''));
-				break;
+				$value = str_replace('\\"', '"', preg_replace('/(^"|"$)/', '', $quotedValue));
+			break;
+			case "'":
+				$value = str_replace("\\'", "'", preg_replace('/(^\'|\'$)/', '', $quotedValue));
+			break;
+			default:
+				$value = $quotedValue;
 		}
 		return str_replace('\\\\', '\\', $value);
 	}
@@ -715,10 +782,11 @@ class TemplateParser {
 	 */
 	protected function textAndShorthandSyntaxHandler(\TYPO3\CMS\Fluid\Core\Parser\ParsingState $state, $text) {
 		$sections = preg_split($this->prepareTemplateRegularExpression(self::$SPLIT_PATTERN_SHORTHANDSYNTAX), $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+
 		foreach ($sections as $section) {
 			$matchedVariables = array();
 			if (preg_match(self::$SCAN_PATTERN_SHORTHANDSYNTAX_OBJECTACCESSORS, $section, $matchedVariables) > 0) {
-				$this->objectAccessorHandler($state, $matchedVariables['Object'], $matchedVariables['Delimiter'], isset($matchedVariables['ViewHelper']) ? $matchedVariables['ViewHelper'] : '', isset($matchedVariables['AdditionalViewHelpers']) ? $matchedVariables['AdditionalViewHelpers'] : '');
+				$this->objectAccessorHandler($state, $matchedVariables['Object'], $matchedVariables['Delimiter'], (isset($matchedVariables['ViewHelper']) ? $matchedVariables['ViewHelper'] : ''), (isset($matchedVariables['AdditionalViewHelpers']) ? $matchedVariables['AdditionalViewHelpers'] : ''));
 			} elseif (preg_match(self::$SCAN_PATTERN_SHORTHANDSYNTAX_ARRAYS, $section, $matchedVariables) > 0) {
 				$this->arrayHandler($state, $matchedVariables['Array']);
 			} else {
@@ -736,7 +804,9 @@ class TemplateParser {
 	 * @return void
 	 */
 	protected function arrayHandler(\TYPO3\CMS\Fluid\Core\Parser\ParsingState $state, $arrayText) {
-		$state->getNodeFromStack()->addChildNode($this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ArrayNode', $this->recursiveArrayHandler($arrayText)));
+		$state->getNodeFromStack()->addChildNode(
+			$this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ArrayNode', $this->recursiveArrayHandler($arrayText))
+		);
 	}
 
 	/**
@@ -750,8 +820,8 @@ class TemplateParser {
 	 * - sub-arrays
 	 *
 	 * @param string $arrayText Array text
+	 * @return SyntaxTree\ArrayNode the array node built up
 	 * @throws \TYPO3\CMS\Fluid\Core\Parser\Exception
-	 * @return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface the array node built up
 	 */
 	protected function recursiveArrayHandler($arrayText) {
 		$matches = array();
@@ -763,7 +833,7 @@ class TemplateParser {
 					$arrayToBuild[$arrayKey] = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ObjectAccessorNode', $singleMatch['VariableIdentifier']);
 				} elseif (array_key_exists('Number', $singleMatch) && (!empty($singleMatch['Number']) || $singleMatch['Number'] === '0')) {
 					$arrayToBuild[$arrayKey] = floatval($singleMatch['Number']);
-				} elseif (array_key_exists('QuotedString', $singleMatch) && !empty($singleMatch['QuotedString'])) {
+				} elseif ((array_key_exists('QuotedString', $singleMatch) && !empty($singleMatch['QuotedString']))) {
 					$argumentString = $this->unquoteString($singleMatch['QuotedString']);
 					$arrayToBuild[$arrayKey] = $this->buildArgumentObjectTree($argumentString);
 				} elseif (array_key_exists('Subarray', $singleMatch) && !empty($singleMatch['Subarray'])) {
@@ -788,6 +858,7 @@ class TemplateParser {
 	protected function textHandler(\TYPO3\CMS\Fluid\Core\Parser\ParsingState $state, $text) {
 		$node = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\TextNode', $text);
 		$this->callInterceptor($node, \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_TEXT, $state);
+
 		$state->getNodeFromStack()->addChildNode($node);
 	}
 }

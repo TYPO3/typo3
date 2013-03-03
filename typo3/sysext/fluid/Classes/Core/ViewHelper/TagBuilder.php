@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Tag builder. Can be easily accessed in AbstractTagBasedViewHelper
  *
@@ -122,6 +123,41 @@ class TagBuilder {
 	 */
 	public function forceClosingTag($forceClosingTag) {
 		$this->forceClosingTag = $forceClosingTag;
+	}
+
+	/**
+	 * Returns TRUE if the tag has an attribute with the given name
+	 *
+	 * @param string $attributeName name of the attribute
+	 * @return boolean TRUE if the tag has an attribute with the given name, otherwise FALSE
+	 * @api
+	 */
+	public function hasAttribute($attributeName) {
+		return array_key_exists($attributeName, $this->attributes);
+	}
+
+	/**
+	 * Get an attribute from the $attributes-collection
+	 *
+	 * @param string $attributeName name of the attribute
+	 * @return string The attribute value or NULL if the attribute is not registered
+	 * @api
+	 */
+	public function getAttribute($attributeName) {
+		if (!$this->hasAttribute($attributeName)) {
+			return NULL;
+		}
+		return $this->attributes[$attributeName];
+	}
+
+	/**
+	 * Get all attribute from the $attributes-collection
+	 *
+	 * @return array Attributes indexed by attribute name
+	 * @api
+	 */
+	public function getAttributes() {
+		return $this->attributes;
 	}
 
 	/**

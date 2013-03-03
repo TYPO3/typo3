@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * @api
  */
@@ -34,9 +35,9 @@ class ViewHelperVariableContainer {
 	 *
 	 * In case the value is already inside, an exception is thrown.
 	 *
-	 * @param string $viewHelperName The ViewHelper Class name (Fully qualified, like Tx_Fluid_ViewHelpers_ForViewHelper)
+	 * @param string $viewHelperName The ViewHelper Class name (Fully qualified, like \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper)
 	 * @param string $key Key of the data
-	 * @param object $value The value to store
+	 * @param mixed $value The value to store
 	 * @return void
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException if there was no key with the specified name
 	 * @api
@@ -53,9 +54,9 @@ class ViewHelperVariableContainer {
 	 * to your fully qualified ViewHelper Class Name.
 	 * In case the value is already inside, it is silently overridden.
 	 *
-	 * @param string $viewHelperName The ViewHelper Class name (Fully qualified, like Tx_Fluid_ViewHelpers_ForViewHelper)
+	 * @param string $viewHelperName The ViewHelper Class name (Fully qualified, like \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper)
 	 * @param string $key Key of the data
-	 * @param object $value The value to store
+	 * @param mixed $value The value to store
 	 * @return void
 	 */
 	public function addOrUpdate($viewHelperName, $key, $value) {
@@ -68,9 +69,9 @@ class ViewHelperVariableContainer {
 	/**
 	 * Gets a variable which is stored
 	 *
-	 * @param string $viewHelperName The ViewHelper Class name (Fully qualified, like Tx_Fluid_ViewHelpers_ForViewHelper)
+	 * @param string $viewHelperName The ViewHelper Class name (Fully qualified, like \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper)
 	 * @param string $key Key of the data
-	 * @return object The object stored
+	 * @return mixed The object stored
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException if there was no key with the specified name
 	 * @api
 	 */
@@ -84,7 +85,7 @@ class ViewHelperVariableContainer {
 	/**
 	 * Determine whether there is a variable stored for the given key
 	 *
-	 * @param string $viewHelperName The ViewHelper Class name (Fully qualified, like Tx_Fluid_ViewHelpers_ForViewHelper)
+	 * @param string $viewHelperName The ViewHelper Class name (Fully qualified, like \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper)
 	 * @param string $key Key of the data
 	 * @return boolean TRUE if a value for the given ViewHelperName / Key is stored, FALSE otherwise.
 	 * @api
@@ -96,7 +97,7 @@ class ViewHelperVariableContainer {
 	/**
 	 * Remove a value from the variable container
 	 *
-	 * @param string $viewHelperName The ViewHelper Class name (Fully qualified, like Tx_Fluid_ViewHelpers_ForViewHelper)
+	 * @param string $viewHelperName The ViewHelper Class name (Fully qualified, like \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper)
 	 * @param string $key Key of the data to remove
 	 * @return void
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException if there was no key with the specified name

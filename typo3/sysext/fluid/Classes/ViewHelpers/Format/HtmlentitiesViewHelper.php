@@ -10,10 +10,27 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Applies htmlentities() escaping to a value
- *
  * @see http://www.php.net/manual/function.htmlentities.php
+ *
+ * = Examples =
+ *
+ * <code title="default notation">
+ * <f:format.htmlentities>{text}</f:format.htmlentities>
+ * </code>
+ * <output>
+ * Text with & " ' < > * replaced by HTML entities (htmlentities applied).
+ * </output>
+ *
+ * <code title="inline notation">
+ * {text -> f:format.htmlentities(encoding: 'ISO-8859-1')}
+ * </code>
+ * <output>
+ * Text with & " ' < > * replaced by HTML entities (htmlentities applied).
+ * </output>
+ *
  * @api
  */
 class HtmlentitiesViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\AbstractEncodingViewHelper implements \TYPO3\CMS\Core\SingletonInterface {

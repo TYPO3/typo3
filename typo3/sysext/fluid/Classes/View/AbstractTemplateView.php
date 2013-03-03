@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\View;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Abstract Fluid Template View.
  *
@@ -124,8 +125,8 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 
 	public function initializeView() {
 	}
-
 	// Here, the backporter can insert the initializeView method, which is needed for Fluid v4.
+
 	/**
 	 * Assign a value to the variable container.
 	 *
@@ -173,6 +174,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 	public function render($actionName = NULL) {
 		$this->baseRenderingContext->setControllerContext($this->controllerContext);
 		$this->templateParser->setConfiguration($this->buildParserConfiguration());
+
 		$templateIdentifier = $this->getTemplateIdentifier($actionName);
 		if ($this->templateCompiler->has($templateIdentifier)) {
 			$parsedTemplate = $this->templateCompiler->get($templateIdentifier);
@@ -182,6 +184,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 				$this->templateCompiler->store($templateIdentifier, $parsedTemplate);
 			}
 		}
+
 		if ($parsedTemplate->hasLayout()) {
 			$layoutName = $parsedTemplate->getLayoutName($this->baseRenderingContext);
 			$layoutIdentifier = $this->getLayoutIdentifier($layoutName);
@@ -201,6 +204,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 			$output = $parsedTemplate->render($this->baseRenderingContext);
 			$this->stopRendering();
 		}
+
 		return $output;
 	}
 
@@ -224,7 +228,9 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 			$renderingContext->injectTemplateVariableContainer($variableContainer);
 			$renderingTypeOnNextLevel = $this->getCurrentRenderingType();
 		}
+
 		$parsedTemplate = $this->getCurrentParsedTemplate();
+
 		if ($parsedTemplate->isCompiled()) {
 			$methodNameOfSection = 'section_' . sha1($sectionName);
 			if ($ignoreUnknown && !method_exists($parsedTemplate, $methodNameOfSection)) {
@@ -244,11 +250,14 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 				}
 			}
 			$section = $sections[$sectionName];
+
 			$renderingContext->getViewHelperVariableContainer()->add('TYPO3\\CMS\\Fluid\\ViewHelpers\\SectionViewHelper', 'isCurrentlyRenderingSection', 'TRUE');
+
 			$this->startRendering($renderingTypeOnNextLevel, $parsedTemplate, $renderingContext);
 			$output = $section->evaluate($renderingContext);
 			$this->stopRendering();
 		}
+
 		return $output;
 	}
 
@@ -266,6 +275,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 			$this->partialIdentifierCache[$partialName] = $this->getPartialIdentifier($partialName);
 		}
 		$partialIdentifier = $this->partialIdentifierCache[$partialName];
+
 		if ($this->templateCompiler->has($partialIdentifier)) {
 			$parsedPartial = $this->templateCompiler->get($partialIdentifier);
 		} else {
@@ -274,9 +284,11 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 				$this->templateCompiler->store($partialIdentifier, $parsedPartial);
 			}
 		}
+
 		$variableContainer = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer', $variables);
 		$renderingContext = clone $this->getCurrentRenderingContext();
 		$renderingContext->injectTemplateVariableContainer($variableContainer);
+
 		$this->startRendering(self::RENDERING_PARTIAL, $parsedPartial, $renderingContext);
 		if ($sectionName !== NULL) {
 			$output = $this->renderSection($sectionName, $variables);
@@ -284,6 +296,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 			$output = $parsedPartial->render($renderingContext);
 		}
 		$this->stopRendering();
+
 		return $output;
 	}
 
@@ -323,7 +336,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 	 * this method returns that path, otherwise a path and filename will be
 	 * resolved using the layoutPathAndFilenamePattern.
 	 *
-	 * @param string $layoutName Name of the layout to use. If none given, use "Default
+	 * @param string $layoutName Name of the layout to use. If none given, use "Default"
 	 * @return string Path and filename of layout file
 	 * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
 	 */
@@ -385,7 +398,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 	/**
 	 * Get the current rendering type.
 	 *
-	 * @return one of RENDERING_* constants
+	 * @return integer one of RENDERING_* constants
 	 */
 	protected function getCurrentRenderingType() {
 		$currentRendering = end($this->renderingStack);

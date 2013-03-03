@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\View;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * The main template view. Should be used as view if you want Fluid Templating
  *
@@ -104,6 +105,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 	}
 
 	// Here, the backporter can insert a constructor method, which is needed for Fluid v4.
+
 	/**
 	 * Sets the path and name of of the template file. Effectively overrides the
 	 * dynamic resolving of a template file.
@@ -236,7 +238,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 	 * this method returns that path, otherwise a path and filename will be
 	 * resolved using the layoutPathAndFilenamePattern.
 	 *
-	 * @param string $layoutName Name of the layout to use. If none given, use "Default
+	 * @param string $layoutName Name of the layout to use. If none given, use "Default"
 	 * @return string contents of the layout template
 	 * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
 	 */
@@ -257,7 +259,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 	 * this method returns that path, otherwise a path and filename will be
 	 * resolved using the layoutPathAndFilenamePattern.
 	 *
-	 * @param string $layoutName Name of the layout to use. If none given, use "Default
+	 * @param string $layoutName Name of the layout to use. If none given, use "Default"
 	 * @return string Path and filename of layout files
 	 * @throws \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
 	 */
@@ -402,9 +404,9 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 	 * as Controller Object Name and the current format is "html"
 	 *
 	 * If pattern is "@templateRoot/@subpackage/@controller/@action.@format", then the resulting array is:
-	 * - "Resources/Private/Templates/MySubPackage/My/@action.html"
-	 * - "Resources/Private/Templates/MySubPackage/@action.html"
-	 * - "Resources/Private/Templates/@action.html"
+	 *  - "Resources/Private/Templates/MySubPackage/My/@action.html"
+	 *  - "Resources/Private/Templates/MySubPackage/@action.html"
+	 *  - "Resources/Private/Templates/@action.html"
 	 *
 	 * If you set $formatIsOptional to TRUE, then for any of the above arrays, every element will be duplicated  - once with "@format"
 	 * replaced by the current request format, and once with ."@format" stripped off.
@@ -418,6 +420,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		$pattern = str_replace('@templateRoot', $this->getTemplateRootPath(), $pattern);
 		$pattern = str_replace('@partialRoot', $this->getPartialRootPath(), $pattern);
 		$pattern = str_replace('@layoutRoot', $this->getLayoutRootPath(), $pattern);
+
 		$subpackageKey = $this->controllerContext->getRequest()->getControllerSubpackageKey();
 		$controllerName = $this->controllerContext->getRequest()->getControllerName();
 		if ($subpackageKey !== NULL) {
@@ -431,7 +434,8 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 			$subpackageParts = array();
 		}
 		$results = array();
-		$i = $controllerName === NULL ? 0 : -1;
+
+		$i = ($controllerName === NULL) ? 0 : -1;
 		do {
 			$temporaryPattern = $pattern;
 			if ($i < 0) {
@@ -439,12 +443,14 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 			} else {
 				$temporaryPattern = str_replace('//', '/', str_replace('@controller', '', $temporaryPattern));
 			}
-			$temporaryPattern = str_replace('@subpackage', implode('/', $i < 0 ? $subpackageParts : array_slice($subpackageParts, $i)), $temporaryPattern);
+			$temporaryPattern = str_replace('@subpackage', implode('/', ($i < 0 ? $subpackageParts : array_slice($subpackageParts, $i))), $temporaryPattern);
+
 			$results[] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(str_replace('@format', $this->controllerContext->getRequest()->getFormat(), $temporaryPattern));
 			if ($formatIsOptional) {
 				$results[] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(str_replace('.@format', '', $temporaryPattern));
 			}
 		} while ($i++ < count($subpackageParts) && $bubbleControllerAndSubpackage);
+
 		return $results;
 	}
 

@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\Rendering;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 interface RenderingContextInterface {
 
 	/**

@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Declares new variables which are aliases of other variables.
  * Takes a "map"-Parameter which is an associative array which defines the shorthand mapping.
@@ -28,7 +29,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * <code title="Multiple mappings">
  * <f:alias map="{x: foo.bar.baz, y: foo.bar.baz.name}">
- * {x.name} or {y}
+ *   {x.name} or {y}
  * </f:alias>
  * </code>
  * <output>
@@ -41,9 +42,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 class AliasViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * Render alias
 	 *
-	 * @param array $map Array that specifies which variables should be mapped to which alias
+	 * @param array $map array that specifies which variables should be mapped to which alias
 	 * @return string Rendered string
 	 * @api
 	 */

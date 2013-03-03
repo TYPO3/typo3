@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\Parser\SyntaxTree;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Node which will call a ViewHelper associated with this node.
  */
@@ -91,7 +92,7 @@ class ViewHelperNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNod
 	 *
 	 * First, it evaluates the arguments of the view helper.
 	 *
-	 * If the view helper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface,
+	 * If the view helper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface,
 	 * it calls setChildNodes(array childNodes) on the view helper.
 	 *
 	 * Afterwards, checks that the view helper did not leave a variable lying around.
@@ -107,6 +108,7 @@ class ViewHelperNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNod
 			$viewHelper = clone $this->uninitializedViewHelper;
 			$this->viewHelpersByContext->attach($renderingContext, $viewHelper);
 		}
+
 		$evaluatedArguments = array();
 		if (count($viewHelper->prepareArguments())) {
 			foreach ($viewHelper->prepareArguments() as $argumentName => $argumentDefinition) {
@@ -118,13 +120,17 @@ class ViewHelperNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNod
 				}
 			}
 		}
+
 		$viewHelper->setArguments($evaluatedArguments);
 		$viewHelper->setViewHelperNode($this);
 		$viewHelper->setRenderingContext($renderingContext);
+
 		if ($viewHelper instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface) {
 			$viewHelper->setChildNodes($this->childNodes);
 		}
+
 		$output = $viewHelper->initializeArgumentsAndRender();
+
 		return $output;
 	}
 

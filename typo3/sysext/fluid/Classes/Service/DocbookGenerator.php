@@ -10,11 +10,12 @@ namespace TYPO3\CMS\Fluid\Service;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * XML Schema (XSD) Generator. Will generate an XML schema which can be used for autocompletion
  * in schema-aware editors like Eclipse XML editor.
  */
-class DocbookGenerator extends \TYPO3\CMS\Fluid\Compatibility\DocbookGeneratorService {
+class DocbookGenerator extends \TYPO3\CMS\Fluid\Service\AbstractGenerator {
 
 	/**
 	 * Generate the XML Schema definition for a given namespace.
@@ -176,8 +177,7 @@ class DocbookGenerator extends \TYPO3\CMS\Fluid\Compatibility\DocbookGeneratorSe
 				}
 				$this->addChildWithCData($example, 'programlisting', trim($tmp[2]));
 			} else {
-				$textParts = explode('
-', $singleMatch);
+				$textParts = explode("\n", $singleMatch);
 				foreach ($textParts as $text) {
 					if (trim($text) === '') {
 						continue;

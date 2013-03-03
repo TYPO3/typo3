@@ -51,7 +51,7 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
-	private $objectManager;
+	protected $objectManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService

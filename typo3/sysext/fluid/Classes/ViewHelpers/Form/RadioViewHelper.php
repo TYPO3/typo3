@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * View Helper which creates a simple radio button (<input type="radio">).
  *
@@ -72,20 +73,29 @@ class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFiel
 	 */
 	public function render($checked = NULL) {
 		$this->tag->addAttribute('type', 'radio');
+
 		$nameAttribute = $this->getName();
 		$valueAttribute = $this->getValue();
 		if ($checked === NULL && $this->isObjectAccessorMode()) {
-			$propertyValue = $this->getPropertyValue();
-			// no type-safe comparisation by intention
+			if ($this->hasMappingErrorOccured()) {
+				$propertyValue = $this->getLastSubmittedFormData();
+			} else {
+				$propertyValue = $this->getPropertyValue();
+			}
+
+			// no type-safe comparison by intention
 			$checked = $propertyValue == $valueAttribute;
 		}
+
 		$this->registerFieldNameForFormTokenGeneration($nameAttribute);
 		$this->tag->addAttribute('name', $nameAttribute);
 		$this->tag->addAttribute('value', $valueAttribute);
 		if ($checked) {
 			$this->tag->addAttribute('checked', 'checked');
 		}
+
 		$this->setErrorClassAttribute();
+
 		return $this->tag->render();
 	}
 }

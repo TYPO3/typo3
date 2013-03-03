@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * With this tag, you can select a layout to be used for the current template.
  *
@@ -50,6 +51,7 @@ class LayoutViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 		} else {
 			$layoutNameNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('Default');
 		}
+
 		$variableContainer->add('layoutName', $layoutNameNode);
 	}
 

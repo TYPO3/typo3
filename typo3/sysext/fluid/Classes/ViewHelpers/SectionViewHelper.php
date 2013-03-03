@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * A Section view helper
  *
@@ -25,27 +26,27 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * <code title="Rendering recursive sections">
  * <f:section name="mySection">
- * <ul>
- * <f:for each="{myMenu}" as="menuItem">
- * <li>
- * {menuItem.text}
- * <f:if condition="{menuItem.subItems}">
- * <f:render section="mySection" arguments="{myMenu: menuItem.subItems}" />
- * </f:if>
- * </li>
- * </f:for>
- * </ul>
+ *  <ul>
+ *    <f:for each="{myMenu}" as="menuItem">
+ *      <li>
+ *        {menuItem.text}
+ *        <f:if condition="{menuItem.subItems}">
+ *          <f:render section="mySection" arguments="{myMenu: menuItem.subItems}" />
+ *        </f:if>
+ *      </li>
+ *    </f:for>
+ *  </ul>
  * </f:section>
  * <f:render section="mySection" arguments="{myMenu: menu}" />
  * </code>
  * <output>
  * <ul>
- * <li>menu1
- * <ul>
- * <li>menu1a</li>
- * <li>menu1b</li>
- * </ul>
- * </li>
+ *   <li>menu1
+ *     <ul>
+ *       <li>menu1a</li>
+ *       <li>menu1b</li>
+ *     </ul>
+ *   </li>
  * [...]
  * (depending on the value of {menu})
  * </output>
