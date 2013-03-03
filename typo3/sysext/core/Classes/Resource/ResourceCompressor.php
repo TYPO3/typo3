@@ -33,6 +33,8 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * @author 	Steffen Gebert <steffen@steffen-gebert.de>
  */
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 class ResourceCompressor {
 
 	protected $targetDirectory = 'typo3temp/compressor/';
@@ -312,7 +314,7 @@ class ResourceCompressor {
 				$contents = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($this->rootPath . $filename));
 				// only fix paths if files aren't already in typo3temp (already processed)
 				if ($type === 'css' && !\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($filename, $this->targetDirectory)) {
-					$contents = $this->cssFixRelativeUrlPaths($contents, dirname($filename) . '/');
+					$contents = $this->cssFixRelativeUrlPaths($contents, PathUtility::dirname($filename) . '/');
 				}
 				$concatenated .= LF . $contents;
 			}
@@ -362,7 +364,7 @@ class ResourceCompressor {
 		// generate the unique name of the file
 		$filenameAbsolute = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($this->rootPath . $this->getFilenameFromMainDir($filename));
 		$unique = $filenameAbsolute . filemtime($filenameAbsolute) . filesize($filenameAbsolute);
-		$pathinfo = pathinfo($filename);
+		$pathinfo = PathUtility::pathinfo($filename);
 		$targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.css';
 		// only create it, if it doesn't exist, yet
 		if (!file_exists((PATH_site . $targetFile)) || $this->createGzipped && !file_exists((PATH_site . $targetFile . '.gzip'))) {
@@ -403,7 +405,7 @@ class ResourceCompressor {
 			// we have to fix relative paths, if we aren't working on a file in our target directory
 			if (strpos($filename, $this->targetDirectory) === FALSE) {
 				$filenameRelativeToMainDir = substr($filename, strlen($this->backPath));
-				$contents = $this->cssFixRelativeUrlPaths($contents, dirname($filenameRelativeToMainDir) . '/');
+				$contents = $this->cssFixRelativeUrlPaths($contents, PathUtility::dirname($filenameRelativeToMainDir) . '/');
 			}
 			$this->writeFileAndCompressed($targetFile, $contents);
 		}
@@ -496,7 +498,7 @@ class ResourceCompressor {
 		// generate the unique name of the file
 		$filenameAbsolute = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($this->rootPath . $this->getFilenameFromMainDir($filename));
 		$unique = $filenameAbsolute . filemtime($filenameAbsolute) . filesize($filenameAbsolute);
-		$pathinfo = pathinfo($filename);
+		$pathinfo = PathUtility::pathinfo($filename);
 		$targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.js';
 		// only create it, if it doesn't exist, yet
 		if (!file_exists((PATH_site . $targetFile)) || $this->createGzipped && !file_exists((PATH_site . $targetFile . '.gzip'))) {

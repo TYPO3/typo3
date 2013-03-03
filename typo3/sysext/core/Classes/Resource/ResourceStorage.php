@@ -64,6 +64,8 @@ namespace TYPO3\CMS\Core\Resource;
  * @author Andreas Wolf <andreas.wolf@typo3.org>
  * @author Ingmar Schlecht <ingmar@typo3.org>
  */
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 class ResourceStorage {
 
 	const SIGNAL_PreProcessConfiguration = 'preProcessConfiguration';
@@ -713,7 +715,7 @@ class ResourceStorage {
 			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
 		}
 		$targetFolder = $targetFolder ? $targetFolder : $this->getDefaultFolder();
-		$fileName = $fileName ? $fileName : basename($localFilePath);
+		$fileName = $fileName ? $fileName : PathUtility::basename($localFilePath);
 		if ($conflictMode === 'cancel' && $this->driver->fileExistsInFolder($fileName, $targetFolder)) {
 			throw new Exception\ExistingTargetFileNameException('File "' . $fileName . '" already exists in folder ' . $targetFolder->getIdentifier(), 1322121068);
 		} elseif ($conflictMode === 'changeName') {
