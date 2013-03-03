@@ -129,6 +129,70 @@ class PathUtility {
 		return rtrim($path, $separator) . $separator;
 	}
 
+
+	/**
+	 * Returns trailing name component of path
+	 * Since basename() is locale dependent we need to access
+	 * the filesystem with the same locale of the system, not
+	 * the rendering context.
+	 * @see http://www.php.net/manual/en/function.basename.php
+	 *
+	 *
+	 * @param string $path
+	 *
+	 * @return string
+	 *
+	 */
+	static public function basename($path) {
+		$currentLocale = setlocale(LC_CTYPE, 0);
+		setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+		$basename = basename($path);
+		setlocale(LC_CTYPE, $currentLocale);
+		return $basename;
+	}
+
+	/**
+	 * Returns parent directory's path
+	 * Since dirname() is locale dependent we need to access
+	 * the filesystem with the same locale of the system, not
+	 * the rendering context.
+	 * @see http://www.php.net/manual/en/function.dirname.php
+	 *
+	 *
+	 * @param string $path
+	 *
+	 * @return string
+	 *
+	 */
+	static public function dirname($path) {
+		$currentLocale = setlocale(LC_CTYPE, 0);
+		setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+		$dirname = dirname($path);
+		setlocale(LC_CTYPE, $currentLocale);
+		return $dirname;
+	}
+
+	/**
+	 * Returns parent directory's path
+	 * Since dirname() is locale dependent we need to access
+	 * the filesystem with the same locale of the system, not
+	 * the rendering context.
+	 * @see http://www.php.net/manual/en/function.dirname.php
+	 *
+	 *
+	 * @param string $path
+	 * @param integer $options
+	 *
+	 * @return string|array
+	 *
+	 */
+	static public function pathinfo($path, $options = NULL) {
+		$currentLocale = setlocale(LC_CTYPE, 0);
+		setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+		$pathinfo = $options == NULL ? pathinfo($path) : pathinfo($path, $options);
+		setlocale(LC_CTYPE, $currentLocale);
+		return $pathinfo;
+	}
 }
 
 

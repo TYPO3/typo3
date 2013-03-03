@@ -32,6 +32,9 @@ namespace TYPO3\CMS\Core\Resource\Service;
  *
  * @author Andreas Wolf <andreas.wolf@typo3.org>
  */
+
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 class ImageProcessingService {
 
 	/**
@@ -87,7 +90,7 @@ class ImageProcessingService {
 		$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
 		$gifCreator->init();
 		if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']) {
-			$filename = basename($theImage);
+			$filename = PathUtility::basename($theImage);
 			// Remove extension
 			$filename = substr($filename, 0, strrpos($filename, '.'));
 			$tempFilePrefixLength = intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']);

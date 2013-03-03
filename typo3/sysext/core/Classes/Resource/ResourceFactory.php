@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Core\Resource;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 // TODO implement constructor-level caching
 /**
  * Factory class for FAL objects.
@@ -323,7 +326,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				return $this->getObjectFromCombinedIdentifier($input);
 			} elseif ($prefix == 'EXT') {
 				$input = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($input);
-				$input = \t3lib_Utility_Path::getRelativePath(PATH_site, dirname($input)) . basename($input);
+				$input = PathUtility::getRelativePath(PATH_site, PathUtility::dirname($input)) . PathUtility::basename($input);
 				return $this->getFileObjectFromCombinedIdentifier($input);
 			}
 		} else {
