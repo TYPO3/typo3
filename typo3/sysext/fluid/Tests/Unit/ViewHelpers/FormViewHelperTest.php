@@ -144,7 +144,7 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$viewHelper->expects($this->once())->method('renderHiddenReferrerFields')->will($this->returnValue('hiddenReferrerFields'));
 		$viewHelper->expects($this->once())->method('renderRequestHashField')->will($this->returnValue('requestHashField'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('formContent'));
-		$expectedResult = chr(10) . '<div style="display: none">' . 'hiddenIdentityFieldadditionalIdentityFieldshiddenReferrerFieldsrequestHashField' . chr(10) . '</div>' . chr(10) . 'formContent';
+		$expectedResult = chr(10) . '<div>' . 'hiddenIdentityFieldadditionalIdentityFieldshiddenReferrerFieldsrequestHashField' . chr(10) . '</div>' . chr(10) . 'formContent';
 		$this->tagBuilder->expects($this->once())->method('setContent')->with($expectedResult);
 		$viewHelper->render();
 	}
@@ -164,8 +164,29 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$viewHelper->expects($this->once())->method('renderAdditionalIdentityFields')->will($this->returnValue('additionalIdentityFields'));
 		$viewHelper->expects($this->once())->method('renderHiddenReferrerFields')->will($this->returnValue('hiddenReferrerFields'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('formContent'));
-		$expectedResult = chr(10) . '<div style="display: none">' . 'hiddenIdentityFieldadditionalIdentityFieldshiddenReferrerFields' . chr(10) . '</div>' . chr(10) . 'formContent';
+		$expectedResult = chr(10) . '<div>' . 'hiddenIdentityFieldadditionalIdentityFieldshiddenReferrerFields' . chr(10) . '</div>' . chr(10) . 'formContent';
 		$this->tagBuilder->expects($this->once())->method('setContent')->with($expectedResult);
+		$viewHelper->render();
+	}
+
+	/**
+	 * @test
+	 */
+	public function renderWrapsHiddenFieldsWithDivAndAnAdditionalClassForXhtmlCompatibilityWithRewrittenPropertyMapper() {
+		$viewHelper = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper'), array('renderChildren', 'renderHiddenIdentityField', 'renderAdditionalIdentityFields', 'renderHiddenReferrerFields', 'renderTrustedPropertiesField'), array(), '', FALSE);
+		$configurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('isFeatureEnabled'));
+		$configurationManager->expects($this->once())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(TRUE));
+		$viewHelper->injectConfigurationManager($configurationManager);
+		$this->mvcPropertyMapperConfigurationService->injectHashService(new \TYPO3\CMS\Extbase\Security\Cryptography\HashService());
+		$viewHelper->injectMvcPropertyMapperConfigurationService($this->mvcPropertyMapperConfigurationService);
+		parent::injectDependenciesIntoViewHelper($viewHelper);
+		$viewHelper->expects($this->once())->method('renderHiddenIdentityField')->will($this->returnValue('hiddenIdentityField'));
+		$viewHelper->expects($this->once())->method('renderAdditionalIdentityFields')->will($this->returnValue('additionalIdentityFields'));
+		$viewHelper->expects($this->once())->method('renderHiddenReferrerFields')->will($this->returnValue('hiddenReferrerFields'));
+		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('formContent'));
+		$expectedResult = chr(10) . '<div class="hidden">' . 'hiddenIdentityFieldadditionalIdentityFieldshiddenReferrerFields' . chr(10) . '</div>' . chr(10) . 'formContent';
+		$this->tagBuilder->expects($this->once())->method('setContent')->with($expectedResult);
+		$viewHelper->setArguments(array('hiddenFieldClassName' => 'hidden'));
 		$viewHelper->render();
 	}
 

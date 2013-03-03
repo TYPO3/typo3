@@ -164,9 +164,10 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 	 * @param string $fieldNamePrefix Prefix that will be added to all field names within this form. If not set the prefix will be tx_yourExtension_plugin
 	 * @param string $actionUri can be used to overwrite the "action" attribute of the form tag
 	 * @param string $objectName name of the object that is bound to this form. If this argument is not specified, the name attribute of this form is used to determine the FormObjectName
+	 * @param string $hiddenFieldClassName
 	 * @return string rendered form
 	 */
-	public function render($action = NULL, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, $object = NULL, $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $format = '', array $additionalParams = array(), $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array(), $fieldNamePrefix = NULL, $actionUri = NULL, $objectName = NULL) {
+	public function render($action = NULL, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, $object = NULL, $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $format = '', array $additionalParams = array(), $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array(), $fieldNamePrefix = NULL, $actionUri = NULL, $objectName = NULL, $hiddenFieldClassName = NULL) {
 		$this->setFormActionUri();
 		if (strtolower($this->arguments['method']) === 'get') {
 			$this->tag->addAttribute('method', 'get');
@@ -178,7 +179,13 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 		$this->addFieldNamePrefixToViewHelperVariableContainer();
 		$this->addFormFieldNamesToViewHelperVariableContainer();
 		$formContent = $this->renderChildren();
-		$content = chr(10) . '<div style="display: none">';
+
+		if ($this->arguments['hiddenFieldClassName'] !== NULL) {
+			$content = chr(10) . '<div class="' . htmlspecialchars($this->arguments['hiddenFieldClassName']) . '">';
+		} else {
+			$content = chr(10) . '<div>';
+		}
+
 		$content .= $this->renderHiddenIdentityField($this->arguments['object'], $this->getFormObjectName());
 		$content .= $this->renderAdditionalIdentityFields();
 		$content .= $this->renderHiddenReferrerFields();
