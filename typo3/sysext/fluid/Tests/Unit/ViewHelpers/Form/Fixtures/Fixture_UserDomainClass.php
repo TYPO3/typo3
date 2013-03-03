@@ -2,7 +2,7 @@
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures;
 
 /*                                                                        *
- * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
+ * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License, either version 3   *
@@ -10,10 +10,11 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Example domain class which can be used to test different view helpers, e.g. the "select" view helper.
  */
-class Fixture_UserDomainClass {
+class UserDomainClass {
 
 	protected $id;
 

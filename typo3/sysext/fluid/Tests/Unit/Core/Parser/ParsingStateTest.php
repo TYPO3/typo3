@@ -2,7 +2,7 @@
 namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser;
 
 /*                                                                        *
- * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
+ * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License, either version 3   *
@@ -10,8 +10,10 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Testcase for ParsingState
+ *
  */
 class ParsingStateTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
@@ -54,6 +56,7 @@ class ParsingStateTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function renderCallsTheRightMethodsOnTheRootNode() {
 		$renderingContext = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContextInterface');
+
 		$rootNode = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\RootNode');
 		$rootNode->expects($this->once())->method('evaluate')->with($renderingContext)->will($this->returnValue('T3DD09 Rock!'));
 		$this->parsingState->setRootNode($rootNode);

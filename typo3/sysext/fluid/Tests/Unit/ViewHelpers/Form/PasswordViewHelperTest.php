@@ -2,7 +2,7 @@
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
 
 /*                                                                        *
- * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
+ * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License, either version 3   *
@@ -10,12 +10,13 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-require_once dirname(__FILE__) . '/Fixtures/EmptySyntaxTreeNode.php';
-require_once dirname(__FILE__) . '/Fixtures/Fixture_UserDomainClass.php';
-require_once dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php';
+
+require_once(dirname(__FILE__) . '/Fixtures/EmptySyntaxTreeNode.php');
+require_once(dirname(__FILE__) . '/Fixtures/Fixture_UserDomainClass.php');
+require_once(dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php');
 
 /**
- * Test for the "Textbox" Form view helper
+ * Test for the "Password" Form view helper
  */
 class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase {
 
@@ -39,6 +40,7 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
 		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('setTagName'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
@@ -54,11 +56,13 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('value', 'Current value');
 		$mockTagBuilder->expects($this->once())->method('render');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+
 		$arguments = array(
 			'name' => 'NameOfTextbox',
 			'value' => 'Current value'
 		);
 		$this->viewHelper->setArguments($arguments);
+
 		$this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();

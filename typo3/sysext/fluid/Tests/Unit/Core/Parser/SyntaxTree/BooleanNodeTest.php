@@ -2,7 +2,7 @@
 namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\SyntaxTree;
 
 /*                                                                        *
- * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
+ * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License, either version 3   *
@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser\SyntaxTree;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Testcase for ViewHelperNode's evaluateBooleanExpression()
  */
@@ -39,6 +40,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function havingMoreThanThreeElementsInTheSyntaxTreeThrowsException() {
 		$rootNode = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\RootNode');
 		$rootNode->expects($this->once())->method('getChildNodes')->will($this->returnValue(array(1, 2, 3, 4)));
+
 		new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 	}
 
@@ -50,6 +52,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('5'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('=='));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('5'));
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
@@ -62,6 +65,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('5'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('=='));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('3'));
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertFalse($booleanNode->evaluate($this->renderingContext));
 	}
@@ -74,6 +78,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('5'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('!='));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('5'));
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertFalse($booleanNode->evaluate($this->renderingContext));
 	}
@@ -86,6 +91,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('5'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('!='));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('3'));
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
@@ -98,6 +104,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('43'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('%'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('2'));
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
@@ -110,6 +117,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('42'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('%'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('2'));
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertFalse($booleanNode->evaluate($this->renderingContext));
 	}
@@ -122,6 +130,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('10'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('>'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('9'));
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
@@ -134,6 +143,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('10'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('>'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('10'));
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertFalse($booleanNode->evaluate($this->renderingContext));
 	}
@@ -146,6 +156,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('10'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('>='));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('9'));
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
@@ -158,6 +169,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('10'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('>='));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('10'));
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
@@ -170,6 +182,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('10'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('>='));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('11'));
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertFalse($booleanNode->evaluate($this->renderingContext));
 	}
@@ -182,6 +195,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('9'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('<'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('10'));
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
@@ -194,6 +208,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('10'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('<'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('10'));
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertFalse($booleanNode->evaluate($this->renderingContext));
 	}
@@ -206,6 +221,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('9'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('<='));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('10'));
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
@@ -218,6 +234,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('10'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('<='));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('10'));
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
@@ -230,6 +247,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('11'));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('<='));
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('10'));
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertFalse($booleanNode->evaluate($this->renderingContext));
 	}
@@ -327,14 +345,19 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function objectsAreComparedStrictly() {
 		$object1 = new \stdClass();
 		$object2 = new \stdClass();
+
 		$rootNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode();
+
 		$object1Node = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ObjectAccessorNode', array('evaluate'), array('foo'));
 		$object1Node->expects($this->any())->method('evaluate')->will($this->returnValue($object1));
+
 		$object2Node = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ObjectAccessorNode', array('evaluate'), array('foo'));
 		$object2Node->expects($this->any())->method('evaluate')->will($this->returnValue($object2));
+
 		$rootNode->addChildNode($object1Node);
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('=='));
 		$rootNode->addChildNode($object2Node);
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertFalse($booleanNode->evaluate($this->renderingContext));
 	}
@@ -345,14 +368,19 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function objectsAreComparedStrictlyInUnequalComparison() {
 		$object1 = new \stdClass();
 		$object2 = new \stdClass();
+
 		$rootNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode();
+
 		$object1Node = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ObjectAccessorNode', array('evaluate'), array('foo'));
 		$object1Node->expects($this->any())->method('evaluate')->will($this->returnValue($object1));
+
 		$object2Node = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ObjectAccessorNode', array('evaluate'), array('foo'));
 		$object2Node->expects($this->any())->method('evaluate')->will($this->returnValue($object2));
+
 		$rootNode->addChildNode($object1Node);
 		$rootNode->addChildNode(new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode('!='));
 		$rootNode->addChildNode($object2Node);
+
 		$booleanNode = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode($rootNode);
 		$this->assertTrue($booleanNode->evaluate($this->renderingContext));
 	}
@@ -372,6 +400,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertFalse(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean(''));
 		$this->assertFalse(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean('false'));
 		$this->assertFalse(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean('FALSE'));
+
 		$this->assertTrue(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean('true'));
 		$this->assertTrue(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean('TRUE'));
 	}
@@ -384,6 +413,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertFalse(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean(-1));
 		$this->assertFalse(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean('-1'));
 		$this->assertFalse(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean(-0.5));
+
 		$this->assertTrue(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean(1));
 		$this->assertTrue(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean(0.5));
 	}
@@ -393,6 +423,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function convertToBooleanProperlyConvertsValuesOfTypeArray() {
 		$this->assertFalse(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean(array()));
+
 		$this->assertTrue(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean(array('foo')));
 		$this->assertTrue(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean(array('foo' => 'bar')));
 	}
@@ -402,6 +433,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function convertToBooleanProperlyConvertsObjects() {
 		$this->assertFalse(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean(NULL));
+
 		$this->assertTrue(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::convertToBoolean(new \stdClass()));
 	}
 }

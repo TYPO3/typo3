@@ -2,7 +2,7 @@
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
 
 /*                                                                        *
- * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
+ * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License, either version 3   *
@@ -10,9 +10,10 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-require_once dirname(__FILE__) . '/Fixtures/EmptySyntaxTreeNode.php';
-require_once dirname(__FILE__) . '/Fixtures/Fixture_UserDomainClass.php';
-require_once dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php';
+
+require_once(dirname(__FILE__) . '/Fixtures/EmptySyntaxTreeNode.php');
+require_once(dirname(__FILE__) . '/Fixtures/Fixture_UserDomainClass.php');
+require_once(dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php');
 
 /**
  * Test for the "Upload" Form view helper
@@ -37,6 +38,7 @@ class UploadViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	 */
 	public function renderCorrectlySetsTagName() {
 		$this->tagBuilder->expects($this->once())->method('setTagName')->with('input');
+
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}

@@ -2,7 +2,7 @@
 namespace TYPO3\CMS\Fluid\Tests\Unit\View;
 
 /*                                                                        *
- * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
+ * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License, either version 3   *
@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Testcase for the TemplateView
  */
@@ -66,7 +67,10 @@ class AbstractTemplateViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		$this->templateVariableContainer->expects($this->at(1))->method('add')->with('foo', 'FooValue');
 		$this->templateVariableContainer->expects($this->at(2))->method('exists')->with('bar')->will($this->returnValue(FALSE));
 		$this->templateVariableContainer->expects($this->at(3))->method('add')->with('bar', 'BarValue');
-		$this->view->assign('foo', 'FooValue')->assign('bar', 'BarValue');
+
+		$this->view
+			->assign('foo', 'FooValue')
+			->assign('bar', 'BarValue');
 	}
 
 	/**
@@ -78,6 +82,7 @@ class AbstractTemplateViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		$this->templateVariableContainer->expects($this->at(2))->method('exists')->with('foo')->will($this->returnValue(TRUE));
 		$this->templateVariableContainer->expects($this->at(3))->method('remove')->with('foo');
 		$this->templateVariableContainer->expects($this->at(4))->method('add')->with('foo', 'FooValueOverridden');
+
 		$this->view->assign('foo', 'FooValue');
 		$this->view->assign('foo', 'FooValueOverridden');
 	}
@@ -92,7 +97,10 @@ class AbstractTemplateViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		$this->templateVariableContainer->expects($this->at(3))->method('add')->with('bar', 'BarValue');
 		$this->templateVariableContainer->expects($this->at(4))->method('exists')->with('baz')->will($this->returnValue(FALSE));
 		$this->templateVariableContainer->expects($this->at(5))->method('add')->with('baz', 'BazValue');
-		$this->view->assignMultiple(array('foo' => 'FooValue', 'bar' => 'BarValue'))->assignMultiple(array('baz' => 'BazValue'));
+
+		$this->view
+			->assignMultiple(array('foo' => 'FooValue', 'bar' => 'BarValue'))
+			->assignMultiple(array('baz' => 'BazValue'));
 	}
 
 	/**
@@ -106,6 +114,7 @@ class AbstractTemplateViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 		$this->templateVariableContainer->expects($this->at(4))->method('add')->with('foo', 'FooValueOverridden');
 		$this->templateVariableContainer->expects($this->at(5))->method('exists')->with('bar')->will($this->returnValue(FALSE));
 		$this->templateVariableContainer->expects($this->at(6))->method('add')->with('bar', 'BarValue');
+
 		$this->view->assign('foo', 'FooValue');
 		$this->view->assignMultiple(array('foo' => 'FooValueOverridden', 'bar' => 'BarValue'));
 	}

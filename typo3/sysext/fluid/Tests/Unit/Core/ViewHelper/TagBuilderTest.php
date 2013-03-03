@@ -2,7 +2,7 @@
 namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
 
 /*                                                                        *
- * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
+ * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License, either version 3   *
@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Testcase for TagBuilder
  */
@@ -144,6 +145,25 @@ class TagBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 */
+	public function attributesCanBeAccessed() {
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder('tag');
+		$tagBuilder->addAttribute('attribute1', 'attribute1value');
+		$attributeValue = $tagBuilder->getAttribute('attribute1');
+		$this->assertSame('attribute1value', $attributeValue);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getAttributeWithMissingAttributeReturnsNull() {
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder('tag');
+		$attributeValue = $tagBuilder->getAttribute('missingattribute');
+		$this->assertNull($attributeValue);
+	}
+
+	/**
+	 * @test
+	 */
 	public function resetResetsTagBuilder() {
 		$tagBuilder = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('dummy'));
 		$tagBuilder->setTagName('tagName');
@@ -152,6 +172,7 @@ class TagBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$tagBuilder->addAttribute('attribute1', 'attribute1value');
 		$tagBuilder->addAttribute('attribute2', 'attribute2value');
 		$tagBuilder->reset();
+
 		$this->assertEquals('', $tagBuilder->_get('tagName'));
 		$this->assertEquals('', $tagBuilder->_get('content'));
 		$this->assertEquals(array(), $tagBuilder->_get('attributes'));

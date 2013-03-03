@@ -32,9 +32,10 @@ class AbstractFormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers
 	 */
 	public function renderHiddenIdentityFieldReturnsAHiddenInputFieldContainingTheObjectsUID() {
 		$className = 'Object' . uniqid();
-		eval('class ' . $className . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
+		$fullClassName = '\\TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\' . $className;
+		eval('namespace TYPO3\\CMS\\Fluid\\ViewHelpers\\Form; class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
 		}');
-		$object = $this->getAccessibleMock($className, array('dummy'));
+		$object = $this->getAccessibleMock($fullClassName, array('dummy'));
 		$object->_set('uid', 123);
 		$expectedResult = chr(10) . '<input type="hidden" name="prefix[theName][__identity]" value="123" />' . chr(10);
 		$viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', array('prefixFieldName', 'registerFieldNameForFormTokenGeneration'), array(), '', FALSE);

@@ -2,7 +2,7 @@
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
 
 /*                                                                        *
- * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
+ * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU General Public License, either version 3 of the   *
@@ -10,6 +10,10 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
+/**
+ * Test for \TYPO3\CMS\Fluid\ViewHelpers\Format\StripTagsViewHelper
+ */
 class StripTagsViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
@@ -51,7 +55,7 @@ class StripTagsViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 	 *
 	 * @return array
 	 */
-	public function testStrings() {
+	public function stringsTestDataProvider() {
 		return array(
 			array('This is a sample text without special characters.', 'This is a sample text without special characters.'),
 			array('This is a sample text <b>with <i>some</i> tags</b>.', 'This is a sample text with some tags.'),
@@ -61,7 +65,7 @@ class StripTagsViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 
 	/**
 	 * @test
-	 * @dataProvider testStrings
+	 * @dataProvider stringsTestDataProvider
 	 */
 	public function renderCorrectlyConvertsIntoPlaintext($source, $expectedResult) {
 		$actualResult = $this->viewHelper->render($source);

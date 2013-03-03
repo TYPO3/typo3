@@ -2,7 +2,7 @@
 namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
 
 /*                                                                        *
- * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
+ * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License, either version 3   *
@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * Testcase for TagBasedViewHelper
  */
@@ -26,6 +27,7 @@ class AbstractTagBasedViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('reset'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('reset');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+
 		$this->viewHelper->initialize();
 	}
 
@@ -36,6 +38,7 @@ class AbstractTagBasedViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('addAttribute'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('foo', 'bar');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+
 		$this->viewHelper->_call('registerTagAttribute', 'foo', 'string', 'Description', FALSE);
 		$arguments = array('foo' => 'bar');
 		$this->viewHelper->setArguments($arguments);
@@ -49,6 +52,7 @@ class AbstractTagBasedViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('addAttribute'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('foo', 'bar');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+
 		$this->viewHelper->_call('registerTagAttribute', 'foo', 'string', 'Description', FALSE);
 		$arguments = array('additionalAttributes' => array('foo' => 'bar'));
 		$this->viewHelper->setArguments($arguments);
@@ -69,6 +73,7 @@ class AbstractTagBasedViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$mockTagBuilder->expects($this->at(6))->method('addAttribute')->with('accesskey', 'accesskeyAttribute');
 		$mockTagBuilder->expects($this->at(7))->method('addAttribute')->with('tabindex', 'tabindexAttribute');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+
 		$arguments = array(
 			'class' => 'classAttribute',
 			'dir' => 'dirAttribute',

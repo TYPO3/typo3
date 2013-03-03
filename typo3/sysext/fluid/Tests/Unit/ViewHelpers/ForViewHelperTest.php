@@ -2,7 +2,7 @@
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 
 /*                                                                        *
- * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
+ * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License, either version 3   *
@@ -10,8 +10,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-include_once dirname(__FILE__) . '/Fixtures/ConstraintSyntaxTreeNode.php';
-require_once dirname(__FILE__) . '/ViewHelperBaseTestcase.php';
+
+include_once(dirname(__FILE__) . '/Fixtures/ConstraintSyntaxTreeNode.php');
+require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 
 /**
  * Testcase for ForViewHelper
@@ -22,6 +23,7 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 		parent::setUp();
 		$this->templateVariableContainer = new \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer(array());
 		$this->renderingContext->injectTemplateVariableContainer($this->templateVariableContainer);
+
 		$this->arguments['reverse'] = NULL;
 		$this->arguments['key'] = '';
 		$this->arguments['iteration'] = NULL;
@@ -32,12 +34,15 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 	 */
 	public function renderExecutesTheLoopCorrectly() {
 		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper();
+
 		$viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
 		$this->arguments['each'] = array(0, 1, 2, 3);
 		$this->arguments['as'] = 'innerVariable';
+
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as']);
+
 		$expectedCallProtocol = array(
 			array('innerVariable' => 0),
 			array('innerVariable' => 1),
@@ -52,13 +57,17 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 	 */
 	public function renderPreservesKeys() {
 		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper();
+
 		$viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
+
 		$this->arguments['each'] = array('key1' => 'value1', 'key2' => 'value2');
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['key'] = 'someKey';
+
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key']);
+
 		$expectedCallProtocol = array(
 			array(
 				'innerVariable' => 'value1',
@@ -77,9 +86,12 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 	 */
 	public function renderReturnsEmptyStringIfObjectIsNull() {
 		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper();
+
 		$this->arguments['each'] = NULL;
 		$this->arguments['as'] = 'foo';
+
 		$this->injectDependenciesIntoViewHelper($viewHelper);
+
 		$this->assertEquals('', $viewHelper->render($this->arguments['each'], $this->arguments['as']));
 	}
 
@@ -88,9 +100,12 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 	 */
 	public function renderReturnsEmptyStringIfObjectIsEmptyArray() {
 		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper();
+
 		$this->arguments['each'] = array();
 		$this->arguments['as'] = 'foo';
+
 		$this->injectDependenciesIntoViewHelper($viewHelper);
+
 		$this->assertEquals('', $viewHelper->render($this->arguments['each'], $this->arguments['as']));
 	}
 
@@ -99,13 +114,17 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 	 */
 	public function renderIteratesElementsInReverseOrderIfReverseIsTrue() {
 		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper();
+
 		$viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
+
 		$this->arguments['each'] = array(0, 1, 2, 3);
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['reverse'] = TRUE;
+
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key'], $this->arguments['reverse']);
+
 		$expectedCallProtocol = array(
 			array('innerVariable' => 3),
 			array('innerVariable' => 2),
@@ -120,14 +139,18 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 	 */
 	public function renderPreservesKeysIfReverseIsTrue() {
 		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper();
+
 		$viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
+
 		$this->arguments['each'] = array('key1' => 'value1', 'key2' => 'value2');
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['key'] = 'someKey';
 		$this->arguments['reverse'] = TRUE;
+
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key'], $this->arguments['reverse']);
+
 		$expectedCallProtocol = array(
 			array(
 				'innerVariable' => 'value2',
@@ -146,13 +169,17 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 	 */
 	public function keyContainsNumericalIndexIfTheGivenArrayDoesNotHaveAKey() {
 		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper();
+
 		$viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
+
 		$this->arguments['each'] = array('foo', 'bar', 'baz');
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['key'] = 'someKey';
+
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key']);
+
 		$expectedCallProtocol = array(
 			array(
 				'innerVariable' => 'foo',
@@ -175,14 +202,18 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 	 */
 	public function keyContainsNumericalIndexInAscendingOrderEvenIfReverseIsTrueIfTheGivenArrayDoesNotHaveAKey() {
 		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper();
+
 		$viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
+
 		$this->arguments['each'] = array('foo', 'bar', 'baz');
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['key'] = 'someKey';
 		$this->arguments['reverse'] = TRUE;
+
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key'], $this->arguments['reverse']);
+
 		$expectedCallProtocol = array(
 			array(
 				'innerVariable' => 'baz',
@@ -207,25 +238,32 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 	public function renderThrowsExceptionWhenPassingObjectsToEachThatAreNotTraversable() {
 		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper();
 		$object = new \stdClass();
+
 		$this->arguments['each'] = $object;
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['key'] = 'someKey';
 		$this->arguments['reverse'] = TRUE;
+
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key']);
 	}
+
 
 	/**
 	 * @test
 	 */
 	public function renderIteratesThroughElementsOfTraversableObjects() {
 		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper();
+
 		$viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
+
 		$this->arguments['each'] = new \ArrayObject(array('key1' => 'value1', 'key2' => 'value2'));
 		$this->arguments['as'] = 'innerVariable';
+
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as']);
+
 		$expectedCallProtocol = array(
 			array('innerVariable' => 'value1'),
 			array('innerVariable' => 'value2')
@@ -238,13 +276,17 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 	 */
 	public function renderPreservesKeyWhenIteratingThroughElementsOfObjectsThatImplementIteratorInterface() {
 		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper();
+
 		$viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
+
 		$this->arguments['each'] = new \ArrayIterator(array('key1' => 'value1', 'key2' => 'value2'));
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['key'] = 'someKey';
+
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key']);
+
 		$expectedCallProtocol = array(
 			array(
 				'innerVariable' => 'value1',
@@ -263,20 +305,25 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 	 */
 	public function keyContainsTheNumericalIndexWhenIteratingThroughElementsOfObjectsOfTyeSplObjectStorage() {
 		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper();
+
 		$viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
+
 		$splObjectStorageObject = new \SplObjectStorage();
 		$object1 = new \stdClass();
 		$splObjectStorageObject->attach($object1);
 		$object2 = new \stdClass();
-		$splObjectStorageObject->attach($object2);
+		$splObjectStorageObject->attach($object2, 'foo');
 		$object3 = new \stdClass();
-		$splObjectStorageObject->attach($object3);
+		$splObjectStorageObject->attach($object3, 'bar');
+
 		$this->arguments['each'] = $splObjectStorageObject;
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['key'] = 'someKey';
+
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key']);
+
 		$expectedCallProtocol = array(
 			array(
 				'innerVariable' => $object1,
@@ -299,13 +346,17 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 	 */
 	public function iterationDataIsAddedToTemplateVariableContainerIfIterationArgumentIsSet() {
 		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\ForViewHelper();
+
 		$viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
+
 		$this->arguments['each'] = array('foo' => 'bar', 'FLOW3' => 'Fluid', 'TYPO3' => 'rocks');
 		$this->arguments['as'] = 'innerVariable';
 		$this->arguments['iteration'] = 'iteration';
+
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 		$viewHelper->setViewHelperNode($viewHelperNode);
 		$viewHelper->render($this->arguments['each'], $this->arguments['as'], $this->arguments['key'], $this->arguments['reverse'], $this->arguments['iteration']);
+
 		$expectedCallProtocol = array(
 			array(
 				'innerVariable' => 'bar',

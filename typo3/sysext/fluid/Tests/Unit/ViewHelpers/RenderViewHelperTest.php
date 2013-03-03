@@ -2,7 +2,7 @@
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 
 /*                                                                        *
- * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
+ * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License, either version 3   *
@@ -10,7 +10,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-require_once dirname(__FILE__) . '/ViewHelperBaseTestcase.php';
+
+require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 
 /**
  * Testcase for RenderViewHelper
@@ -42,6 +43,7 @@ class RenderViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
 			'settings' => 'theSettings'
 		);
 		$this->templateVariableContainer->add('settings', 'theSettings');
+
 		$actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments);
 		$this->assertEquals($expected, $actual);
 	}
@@ -59,6 +61,7 @@ class RenderViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
 			'settings' => 'specifiedSettings'
 		);
 		$this->templateVariableContainer->add('settings', 'theSettings');
+
 		$actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments);
 		$this->assertEquals($expected, $actual);
 	}
@@ -73,6 +76,7 @@ class RenderViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
 		$expected = array(
 			'someArgument' => 'someValue'
 		);
+
 		$actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments);
 		$this->assertEquals($expected, $actual);
 	}

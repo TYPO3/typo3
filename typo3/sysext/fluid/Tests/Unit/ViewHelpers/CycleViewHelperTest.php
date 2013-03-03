@@ -2,7 +2,7 @@
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 
 /*                                                                        *
- * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
+ * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License, either version 3   *
@@ -10,7 +10,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-require_once dirname(__FILE__) . '/ViewHelperBaseTestcase.php';
+
+require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 
 /**
  * Testcase for CycleViewHelper
@@ -35,6 +36,7 @@ class CycleViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 	public function renderAddsCurrentValueToTemplateVariableContainerAndRemovesItAfterRendering() {
 		$this->templateVariableContainer->expects($this->at(0))->method('add')->with('innerVariable', 'bar');
 		$this->templateVariableContainer->expects($this->at(1))->method('remove')->with('innerVariable');
+
 		$values = array('bar', 'Fluid');
 		$this->viewHelper->render($values, 'innerVariable');
 	}
@@ -49,6 +51,7 @@ class CycleViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 		$this->templateVariableContainer->expects($this->at(3))->method('remove')->with('innerVariable');
 		$this->templateVariableContainer->expects($this->at(4))->method('add')->with('innerVariable', 'bar');
 		$this->templateVariableContainer->expects($this->at(5))->method('remove')->with('innerVariable');
+
 		$values = array('bar', 'Fluid');
 		$this->viewHelper->render($values, 'innerVariable');
 		$this->viewHelper->render($values, 'innerVariable');
@@ -65,6 +68,7 @@ class CycleViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 		$this->templateVariableContainer->expects($this->at(3))->method('remove')->with('innerVariable');
 		$this->templateVariableContainer->expects($this->at(4))->method('add')->with('innerVariable', 'FLOW3');
 		$this->templateVariableContainer->expects($this->at(5))->method('remove')->with('innerVariable');
+
 		$values = array('foo' => 'FLOW3', 'bar' => 'Fluid');
 		$this->viewHelper->render($values, 'innerVariable');
 		$this->viewHelper->render($values, 'innerVariable');
@@ -77,6 +81,7 @@ class CycleViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 	 */
 	public function renderThrowsExceptionWhenPassingObjectsToValuesThatAreNotTraversable() {
 		$object = new \stdClass();
+
 		$this->viewHelper->render($object, 'innerVariable');
 	}
 
@@ -85,6 +90,7 @@ class CycleViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 	 */
 	public function renderReturnsChildNodesIfValuesIsNull() {
 		$this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('Child nodes'));
+
 		$this->assertEquals('Child nodes', $this->viewHelper->render(NULL, 'foo'));
 	}
 
@@ -94,7 +100,9 @@ class CycleViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 	public function renderReturnsChildNodesIfValuesIsAnEmptyArray() {
 		$this->templateVariableContainer->expects($this->at(0))->method('add')->with('foo', NULL);
 		$this->templateVariableContainer->expects($this->at(1))->method('remove')->with('foo');
+
 		$this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('Child nodes'));
+
 		$this->assertEquals('Child nodes', $this->viewHelper->render(array(), 'foo'));
 	}
 
@@ -108,6 +116,7 @@ class CycleViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 		$this->templateVariableContainer->expects($this->at(3))->method('remove')->with('innerVariable');
 		$this->templateVariableContainer->expects($this->at(4))->method('add')->with('innerVariable', 'value1');
 		$this->templateVariableContainer->expects($this->at(5))->method('remove')->with('innerVariable');
+
 		$traversableObject = new \ArrayObject(array('key1' => 'value1', 'key2' => 'value2'));
 		$this->viewHelper->render($traversableObject, 'innerVariable');
 		$this->viewHelper->render($traversableObject, 'innerVariable');
