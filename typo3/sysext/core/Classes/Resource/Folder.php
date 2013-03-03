@@ -41,6 +41,8 @@ namespace TYPO3\CMS\Core\Resource;
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  * @author Ingmar Schlecht <ingmar@typo3.org>
  */
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 class Folder implements FolderInterface {
 
 	/**
@@ -276,7 +278,7 @@ class Folder implements FolderInterface {
 	 * @return File The file object
 	 */
 	public function addFile($localFilePath, $fileName = NULL, $conflictMode = 'cancel') {
-		$fileName = $fileName ? $fileName : basename($localFilePath);
+		$fileName = $fileName ? $fileName : PathUtility::basename($localFilePath);
 		return $this->storage->addFile($localFilePath, $this, $fileName, $conflictMode);
 	}
 

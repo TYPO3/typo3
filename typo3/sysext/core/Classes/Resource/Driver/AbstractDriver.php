@@ -32,6 +32,8 @@ namespace TYPO3\CMS\Core\Resource\Driver;
  * @author Ingmar Schlecht <ingmar.schlecht@typo3.org>
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 abstract class AbstractDriver {
 
 	/**
@@ -154,7 +156,7 @@ abstract class AbstractDriver {
 	 * @return string
 	 */
 	protected function getNameFromIdentifier($identifier) {
-		return basename($identifier);
+		return PathUtility::basename($identifier);
 	}
 
 	/**

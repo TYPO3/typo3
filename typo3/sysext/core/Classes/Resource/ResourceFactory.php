@@ -34,6 +34,8 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * @author Andreas Wolf <andreas.wolf@typo3.org>
  */
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
@@ -322,7 +324,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				return $this->getObjectFromCombinedIdentifier($input);
 			} elseif ($prefix == 'EXT') {
 				$input = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($input);
-				$input = \t3lib_Utility_Path::getRelativePath(PATH_site, dirname($input)) . basename($input);
+				$input = \t3lib_Utility_Path::getRelativePath(PATH_site, PathUtility::dirname($input)) . PathUtility::basename($input);
 				return $this->getFileObjectFromCombinedIdentifier($input);
 			}
 		} else {

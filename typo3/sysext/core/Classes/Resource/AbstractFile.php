@@ -31,6 +31,8 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * @author Ingmar Schlecht <ingmar@typo3.org>
  */
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 abstract class AbstractFile implements FileInterface {
 
 	/**
@@ -156,7 +158,7 @@ abstract class AbstractFile implements FileInterface {
 	 * @return string
 	 */
 	public function getNameWithoutExtension() {
-		return pathinfo($this->getName(), PATHINFO_FILENAME);
+		return PathUtility::pathinfo($this->getName(), PATHINFO_FILENAME);
 	}
 
 	/**
@@ -226,7 +228,7 @@ abstract class AbstractFile implements FileInterface {
 	 * @return string The file extension
 	 */
 	public function getExtension() {
-		$pathinfo = pathinfo($this->getName());
+		$pathinfo = PathUtility::pathinfo($this->getName());
 
 		$extension = strtolower($pathinfo['extension']);
 
