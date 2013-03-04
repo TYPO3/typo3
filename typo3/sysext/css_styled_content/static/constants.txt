@@ -15,6 +15,8 @@ content {
   spaceAfter = 0
 }
 
+    # cat=content/cHeader/position; type=list; label= Header position below Images: A list of image position ids in "Text & Images" records where the headline is placed below the images html (default is "Beside Text, Left" [26] and "Beside Text, Right" [25]).
+styles.content.imgtext.headlineBelow = 25,26
 
     # cat=advanced; type=int+; label= News Content PID: If your template has a column with "news"-content fetched from another page-id, this is where you enter the id-number of that page!
 styles.content.getNews.newsPid = 0
