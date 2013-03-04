@@ -1072,7 +1072,8 @@ class PageRepository {
 			}
 			// Find pointed-to record.
 			if ($moveID) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', array_keys($row)), $table, 'uid=' . intval($moveID) . $this->enableFields($table));
+				// The query below intentionally does not include a call to enablefields(). See: http://forge.typo3.org/issues/32778
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', array_keys($row)), $table, 'uid=' . intval($moveID));
 				$origRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				if ($origRow) {
