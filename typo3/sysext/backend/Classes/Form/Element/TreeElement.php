@@ -185,7 +185,16 @@ class TreeElement {
 						if (node.id !== "root") {
 							top.TYPO3.BackendUserSettings.ExtDirect.addToList("tcaTrees." + this.ucId, node.attributes.uid);
 						}
-					}
+					},
+					beforerender: function(treeCmp) {
+						// Check if that tree element is already rendered. It is appended on the first tceforms_inline call.
+						if (Ext.fly(treeCmp.getId())) {
+							return false;
+						}
+					}' . ($expanded ? ',
+					afterrender: function(treeCmp) {
+						treeCmp.expandAll();
+					}' : '') . '
 				},
 				tcaMaxItems: ' . ($PA['fieldConf']['config']['maxitems'] ? intval($PA['fieldConf']['config']['maxitems']) : 99999) . ',
 				tcaSelectRecursiveAllowed: ' . ($appearance['allowRecursiveMode'] ? 'true' : 'false') . ',
@@ -194,7 +203,14 @@ class TreeElement {
 				ucId: "' . md5(($table . '|' . $field)) . '",
 				selModel: TYPO3.Components.Tree.EmptySelectionModel,
 				disabled: ' . ($PA['fieldConf']['config']['readOnly'] ? 'true' : 'false') . '
-			});' . LF . ($autoSizeMax ? 'tree' . $id . '.bodyStyle = "max-height: ' . $autoSizeMax . 'px;min-height: ' . $height . 'px;";' : 'tree' . $id . '.height = ' . $height . ';') . LF . 'tree' . $id . '.render("tree_' . $id . '");' . ($expanded ? 'tree' . $id . '.expandAll();' : '') . '
+			});' . LF .
+				($autoSizeMax
+					? 'tree' . $id . '.bodyStyle = "max-height: ' . $autoSizeMax . 'px;min-height: ' . $height . 'px;";'
+					: 'tree' . $id . '.height = ' . $height . ';'
+				) . LF .
+				'(function() {
+					tree' . $id . '.render("tree_' . $id . '");
+				}).defer(20);
 		');
 		$formField = '
 			<div class="typo3-tceforms-tree">
