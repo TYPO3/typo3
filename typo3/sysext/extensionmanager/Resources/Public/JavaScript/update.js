@@ -27,9 +27,6 @@
 			dataType: 'json',
 			success: function(data) {
 
-				// Hide loader
-				$('.splash-receivedata').removeClass('is-shown');
-
 				// Something went wrong, show message
 				if (data.errorMessage.length) {
 					TYPO3.Flashmessage.display(TYPO3.Severity.warning, TYPO3.l10n.localize('extensionList.updateFromTerFlashMessage.title'), data.errorMessage, 10);
@@ -39,12 +36,6 @@
 				$('.typo3-extensionmanager-headerRowRight .splash-receivedata .text').html(
 					data.message
 				);
-
-				// Show content
-				$('#terTable_wrapper').removeClass('is-loading');
-
-				// Header: Show message
-				$('.typo3-extensionmanager-headerRowRight .splash-receivedata').removeClass('is-hidden');
 
 				if (data.updated) {
 					$.ajax({
@@ -58,6 +49,29 @@
 						}
 					});
 				}
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				// Create an error message with diagnosis info.
+				var errorMessage = textStatus + '(' + errorThrown + '): ' + jqXHR.responseText;
+
+
+				TYPO3.Flashmessage.display(
+					TYPO3.Severity.warning,
+					TYPO3.l10n.localize('extensionList.updateFromTerFlashMessage.title'),
+					errorMessage,
+					10
+				);
+			},
+			complete: function() {
+
+				// Hide loader
+				$('.splash-receivedata').removeClass('is-shown');
+
+				// Show content
+				$('#terTable_wrapper').removeClass('is-loading');
+
+				// Header: Show message
+				$('.typo3-extensionmanager-headerRowRight .splash-receivedata').removeClass('is-hidden');
 			}
 		});
 	}
