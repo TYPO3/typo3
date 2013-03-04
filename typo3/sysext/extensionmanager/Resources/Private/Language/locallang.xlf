@@ -239,7 +239,13 @@
 				<source>Show all versions</source>
 			</trans-unit>
 			<trans-unit id="extensionList.updateFromTer.label" xml:space="preserve">
-				<source>Retrieving Extension-List from TYPO3 Extension Repository (TER)</source>
+				<source>Retrieve Extension-List from TYPO3 Extension Repository (TER)</source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateFromTer.lastUpdate.label" xml:space="preserve">
+				<source>Last update:</source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateFromTer.lastUpdate.noInfo" xml:space="preserve">
+				<source>no information available</source>
 			</trans-unit>
 
 			<trans-unit id="task.updateExtensionListTask.name" xml:space="preserve">

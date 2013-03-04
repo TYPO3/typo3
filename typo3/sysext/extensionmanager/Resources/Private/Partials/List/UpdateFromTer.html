@@ -1,0 +1,14 @@
+
+<div class="splash-receivedata x-mask-loading is-shown">
+	<div class="spinner"></div>
+	<f:link.action
+		action="updateExtensionListFromTer"
+		controller="UpdateFromTer"
+		format="json"
+		>
+		<span class="t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-refresh"
+			  title="{f:translate(key: 'extensionList.updateFromTer.label')}">&nbsp;</span>
+	</f:link.action>
+	{f:translate(key: 'extensionList.updateFromTer.lastUpdate.label')}
+	<span class="text">{f:translate(key: 'extensionList.updateFromTer.noInfo')}</span>
+</div>
