@@ -1,0 +1,16 @@
+
+<div class="splash-receivedata x-mask-loading is-shown">
+	<div class="spinner"></div>
+	<f:form
+		action="updateExtensionListFromTer"
+		controller="UpdateFromTer"
+		format="json"
+		class="update-from-ter"
+		>
+		{f:translate(key: 'extensionList.updateFromTer.lastUpdate.label')}
+		<span class="text">{f:translate(key: 'extensionList.updateFromTer.lastUpdate.noInfo')}</span>
+		<input
+			type="submit"
+			value="{f:translate(key: 'extensionList.updateFromTer.buttonLabel')}" />
+	</f:form>
+</div>
