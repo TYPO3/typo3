@@ -1631,6 +1631,9 @@ button.ui-button::-moz-focus-inner {
 .headerTooltip {
   width: 150px; }
 
+.typo3-extensionmanager-headerRowLeft {
+  display: inline-block; }
+
 .typo3-extensionmanager-headerRowRight {
   float: right; }
 

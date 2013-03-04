@@ -2,14 +2,26 @@
 (function ($) {
 
 	$(document).ready(function() {
-		$('.splash-receivedata a').each(function() {
-			$(this).data('href', $(this).attr('href'));
-			$(this).attr('href', '#');
-			$(this).click(function() {
-					// force update on click
-				updateFromTer($(this).data('href'), 1);
+
+		// Register "update from ter" action
+		$('.splash-receivedata form.update-from-ter').each(function() {
+
+			// "this" is the form which updates the extension list from
+			// TER on submit
+			var updateURL = $(this).attr('action');
+			$(this).attr('action', '#');
+
+			$(this).submit(function() {
+				// Force update on click.
+				updateFromTer(updateURL, 1);
+
+				// Prevent normal submit action.
+				return false;
 			});
-			updateFromTer($(this).data('href'), 0);
+
+			// This might give problems when there are more "update"-buttons,
+			// each one would trigger a TER-update.
+			updateFromTer(updateURL, 0);
 		});
 	});
 
