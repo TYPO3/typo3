@@ -143,7 +143,6 @@
 	}
 
 	function resetSearchField() {
-		var dataTablesFilter = find(".dataTables_filter");
 		$('.dataTables_wrapper').find('.dataTables_filter').append($('<span />', {
 			'class':'t3-icon t3-icon-actions t3-icon-actions-input t3-icon-input-clear t3-tceforms-input-clearer',
 			'id':'resetSearch',
