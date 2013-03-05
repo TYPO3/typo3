@@ -26,6 +26,8 @@ namespace TYPO3\CMS\Extbase\Property;
  *
  * @api
  */
+use TYPO3\CMS\Core\Core\ClassLoader;
+
 class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface {
 
 	/**
@@ -234,6 +236,9 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 * @api
 	 */
 	public function setTypeConverterOptions($typeConverter, array $options) {
+		if (strpos($typeConverter, '_') !== FALSE) {
+			$typeConverter = ClassLoader::getClassNameForAlias($typeConverter);
+		}
 		$this->configuration[$typeConverter] = $options;
 	}
 
@@ -248,6 +253,9 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 * @api
 	 */
 	public function setTypeConverterOption($typeConverter, $optionKey, $optionValue) {
+		if (strpos($typeConverter, '_') !== FALSE) {
+			$typeConverter = ClassLoader::getClassNameForAlias($typeConverter);
+		}
 		$this->configuration[$typeConverter][$optionKey] = $optionValue;
 	}
 
