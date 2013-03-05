@@ -327,7 +327,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		} else {
 			// only the path
-			return $this->getFileObjectFromCombinedIdentifier($input);
+			return $this->getFolderObjectFromCombinedIdentifier($input);
 		}
 	}
 
