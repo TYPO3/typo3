@@ -329,14 +329,18 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				$input = PathUtility::getRelativePath(PATH_site, PathUtility::dirname($input)) . PathUtility::basename($input);
 				return $this->getFileObjectFromCombinedIdentifier($input);
 			}
-		} else {
-			// only the path
+		// this is a backwards-compatible way to access "0-storage" files or folders
+		} elseif (@is_file(PATH_site . $input)) {
+			// only the local file
 			return $this->getFileObjectFromCombinedIdentifier($input);
+		} else {
+			// only the local path
+			return $this->getFolderObjectFromCombinedIdentifier($input);
 		}
 	}
 
 	/**
-	 * Gets an file object from an identifier [storage]:[fileId]
+	 * Gets a folder object from an identifier [storage]:[fileId]
 	 *
 	 * @TODO check naming, inserted by SteffenR while working on filelist
 	 * @param string $identifier
