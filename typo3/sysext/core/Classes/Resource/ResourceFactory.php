@@ -327,12 +327,12 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		} else {
 			// only the path
-			return $this->getFileObjectFromCombinedIdentifier($input);
+			return $this->getFolderObjectFromCombinedIdentifier($input);
 		}
 	}
 
 	/**
-	 * Gets an file object from an identifier [storage]:[fileId]
+	 * Gets an folder object from an identifier [storage]:[fileId]
 	 *
 	 * @TODO check naming, inserted by SteffenR while working on filelist
 	 * @param string $identifier
