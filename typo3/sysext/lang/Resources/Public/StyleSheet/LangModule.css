@@ -55,12 +55,7 @@ div.dataTables_wrapper div.dataTables_scroll {
 }
 
 div.dataTables_wrapper div.dataTables_scrollHead {
-	background-color: #5B5B5B;
-	background-image: url(../../../../t3skin/images/backgrounds/row-header.png);
-	background-image: linear-gradient(center top,#7F7F7F 10%,#5B5B5B 100%);
-	background-image: -moz-linear-gradient(center top,#7F7F7F 10%,#5B5B5B 100%);
-	background-image: -webkit-gradient(linear,0% 0%,0% 100%,color-stop(0.1,#7F7F7F),color-stop(1,#5B5B5B));
-	background-repeat: repeat-x;
+	background-color: #666;
 	color: white;
 	font-size: 10px;
 	line-height: 19px;
