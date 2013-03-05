@@ -93,6 +93,14 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
 		$this->validatorOptions(array('is' => TRUE));
 		$this->assertTrue($this->validator->validate('a string')->hasErrors());
 	}
+
+	/**
+	 * @test
+	 */
+	public function booleanValidatorReturnsTrueIfNoParameterIsGiven() {
+		$this->validatorOptions(array());
+		$this->assertFalse($this->validator->validate(TRUE)->hasErrors());
+	}
 }
 
 ?>

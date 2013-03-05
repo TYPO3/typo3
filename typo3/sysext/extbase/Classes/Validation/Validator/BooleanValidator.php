@@ -44,6 +44,9 @@ class BooleanValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractV
 	 * @return boolean TRUE if the value is within the range, otherwise FALSE
 	 */
 	public function isValid($value) {
+		if (!isset($this->options['is'])) {
+			return TRUE;
+		}
 		switch (strtolower((string)$this->options['is'])) {
 			case 'true':
 			case '1':
