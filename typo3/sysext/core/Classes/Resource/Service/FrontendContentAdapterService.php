@@ -44,7 +44,7 @@ class FrontendContentAdapterService {
 				'captions' => 'imagecaption',
 				'links' => 'image_link',
 				'alternativeTexts' => 'altText',
-				'typeMatch' => array(
+				'__typeMatch' => array(
 					'typeField' => 'CType',
 					'types' => array('image', 'textpic'),
 				)
@@ -52,7 +52,7 @@ class FrontendContentAdapterService {
 			'media' => array(
 				'paths' => 'media',
 				'captions' => 'imagecaption',
-				'typeMatch' => array(
+				'__typeMatch' => array(
 					'typeField' => 'CType',
 					'types' => array('uploads'),
 				)
@@ -111,6 +111,9 @@ class FrontendContentAdapterService {
 						$fileFieldContents[$migrateFieldName .  '_fileUids'][] = $file->getOriginalFile()->getUid();
 					}
 					foreach ($oldFieldNames as $oldFieldType => $oldFieldName) {
+						if ($oldFieldType === '__typeMatch') {
+							continue;
+						}
 						// For paths, make comma separated list
 						if ($oldFieldType === 'paths' || substr($oldFieldType, -9) == '_fileUids') {
 							$fieldContents = implode(',', $fileFieldContents[$oldFieldType]);
@@ -136,10 +139,10 @@ class FrontendContentAdapterService {
 	 */
 	static protected function fieldIsInType($fieldName, $table, array $row) {
 		$fieldConfiguration = static::$migrateFields[$table][$fieldName];
-		if (empty($fieldConfiguration['typeMatch'])) {
+		if (empty($fieldConfiguration['__typeMatch'])) {
 			return TRUE;
 		} else {
-			return in_array($row[$fieldConfiguration['typeMatch']['typeField']], $fieldConfiguration['typeMatch']['types']);
+			return in_array($row[$fieldConfiguration['__typeMatch']['typeField']], $fieldConfiguration['__typeMatch']['types']);
 		}
 	}
 }
