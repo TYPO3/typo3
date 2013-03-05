@@ -91,6 +91,24 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver', $obj);
 	}
 
+	/***********************************
+	 *  File Handling
+	 ***********************************/
+
+	public function directoryDataProviderValidValues() {
+		return array(
+			'relative path' => array('fileadmin'),
+			'relative path with PATH_site' => array(PATH_site . 'fileadmin')
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider directoryDataProviderValidValues
+	 */
+	public function retrieveFileOrFolderObjectReturnsFolderIfPathIsGiven($source) {
+		$this->assertTrue($this->fixture->retrieveFileOrFolderObject($source) instanceof \TYPO3\CMS\Core\Resource\Folder);
+	}
 }
 
 ?>
