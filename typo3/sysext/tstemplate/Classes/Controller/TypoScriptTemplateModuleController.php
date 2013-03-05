@@ -138,7 +138,6 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 				TABLE#typo3-objectBrowser A { text-decoration: none; }
 				TABLE#typo3-objectBrowser .comment { color: maroon; font-weight: bold; }
 				TABLE#ts-analyzer { width: 100% }
-				TABLE#ts-analyzer tr.t3-row-header { background-color: #A2AAB8; }
 				TABLE#ts-analyzer tr td {padding: 0 4px;}
 				TABLE#ts-analyzer tr.t3-row-header td { padding: 2px 4px; font-weight:bold; color: #fff; }
 				.ts-typoscript { width: 100%; }
