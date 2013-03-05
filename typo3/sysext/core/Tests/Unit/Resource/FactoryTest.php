@@ -48,13 +48,21 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	private $objectCreated = FALSE;
 
+	/**
+	 * @var array
+	 */
+	private $filesCreated = array();
+
 	public function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		$this->fixture = new \TYPO3\CMS\Core\Resource\ResourceFactory();
 	}
 
-	protected function tearDown() {
+	public function tearDown() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
+		foreach ($this->filesCreated as $file) {
+			unlink($file);
+		}
 	}
 
 	/**********************************
@@ -91,6 +99,35 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver', $obj);
 	}
 
+	/***********************************
+	 *  File Handling
+	 ***********************************/
+
+	public function directoryDataProviderValidFolderValues() {
+		return array(
+			'relative path' => array('fileadmin'),
+			'path with PATH_site' => array(PATH_site . 'fileadmin')
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider directoryDataProviderValidFolderValues
+	 */
+	public function retrieveFileOrFolderObjectReturnsFolderIfPathIsGiven($source) {
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\Folder', $this->fixture->retrieveFileOrFolderObject($source), 'No Folder Object can be retrieved');
+	}
+
+	/**
+	 * @test
+	 */
+	public function retrieveFileOrFolderObjectReturnsFileIfPathIsGiven() {
+		// Create and prepare test file
+		$filename = 'typo3temp/' . uniqid('test_') . '.txt';
+		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filename, '42');
+		$this->filesCreated[] = PATH_site . $filename;
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\File', $this->fixture->retrieveFileOrFolderObject($filename), 'No File Object can be retrieved');
+	}
 }
 
 ?>
