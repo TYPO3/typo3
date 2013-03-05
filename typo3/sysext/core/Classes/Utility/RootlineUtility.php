@@ -160,7 +160,7 @@ class RootlineUtility {
 			self::$cache = $GLOBALS['typo3CacheManager']->getCache('cache_rootline');
 		}
 		self::$rootlineFields = array_merge(self::$rootlineFields, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'], TRUE));
-		array_unique(self::$rootlineFields);
+		self::$rootlineFields = array_unique(self::$rootlineFields);
 		$this->databaseConnection = $GLOBALS['TYPO3_DB'];
 	}
 
