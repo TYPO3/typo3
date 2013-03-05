@@ -193,12 +193,7 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 	border-bottom:1px solid #A2AAB8;
 }
 .htmlarea .statusBar {
-	background-color: #5b5b5b;
-	background-image: url('../images/backgrounds/row-header.png');
-	background-image: linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
-	background-image: -moz-linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
-	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #7f7f7f), color-stop(1, #5b5b5b));
-	background-repeat: repeat-x;
+	background-color: #666;
 	color: #FFFFFF;
 	font-size: 10px;
 	border: 1px solid #c7c7c7;
