@@ -4961,7 +4961,9 @@ class ContentObjectRenderer {
 					$target = $GLOBALS['TSFE']->extTarget;
 				}
 				if ($GLOBALS['TSFE']->config['config']['jumpurl_enable']) {
-					$res = '<a' . ' href="' . htmlspecialchars(($GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode(('http://' . $parts[0])) . $GLOBALS['TSFE']->getMethodUrlIdToken)) . '"' . ($target ? ' target="' . $target . '"' : '') . $aTagParams . $this->extLinkATagParams(('http://' . $parts[0]), 'url') . '>';
+					$jumpurl = 'http://' . $parts[0];
+					$juHash = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($jumpurl, 'jumpurl');
+					$res = '<a' . ' href="' . htmlspecialchars(($GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode($jumpurl))) . '&juHash=' . $juHash . $GLOBALS['TSFE']->getMethodUrlIdToken . '"' . ($target ? ' target="' . $target . '"' : '') . $aTagParams . $this->extLinkATagParams(('http://' . $parts[0]), 'url') . '>';
 				} else {
 					$res = '<a' . ' href="http://' . htmlspecialchars($parts[0]) . '"' . ($target ? ' target="' . $target . '"' : '') . $aTagParams . $this->extLinkATagParams(('http://' . $parts[0]), 'url') . '>';
 				}
@@ -5693,7 +5695,10 @@ class ContentObjectRenderer {
 						$scheme = '';
 					}
 					if ($GLOBALS['TSFE']->config['config']['jumpurl_enable']) {
-						$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode(($scheme . $link_param)) . $GLOBALS['TSFE']->getMethodUrlIdToken;
+						$url = $GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP;
+						$jumpurl = $scheme . $link_param;
+						$juHash = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($jumpurl, 'jumpurl');
+						$this->lastTypoLinkUrl = $url . '&jumpurl=' . rawurlencode($jumpurl) . '&juHash='. $juHash . $GLOBALS['TSFE']->getMethodUrlIdToken;
 					} else {
 						$this->lastTypoLinkUrl = $scheme . $link_param;
 					}
@@ -5711,7 +5716,13 @@ class ContentObjectRenderer {
 						}
 						if ($GLOBALS['TSFE']->config['config']['jumpurl_enable'] || $conf['jumpurl']) {
 							$theFileEnc = str_replace('%2F', '/', rawurlencode(rawurldecode($link_param)));
-							$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode($link_param) . ($conf['jumpurl.']['secure'] ? $this->locDataJU($theFileEnc, $conf['jumpurl.']['secure.']) : '') . $GLOBALS['TSFE']->getMethodUrlIdToken;
+							$url = $GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode($link_param);
+							if ($conf['jumpurl.']['secure']) {
+								$url .= $this->locDataJU($theFileEnc, $conf['jumpurl.']['secure.']);
+							} else {
+								$url .= '&juHash=' . \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($link_param, 'jumpurl');
+							}
+							$this->lastTypoLinkUrl =  $url . $GLOBALS['TSFE']->getMethodUrlIdToken;
 						} else {
 							$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix . $link_param;
 						}
@@ -6248,7 +6259,8 @@ class ContentObjectRenderer {
 				$linktxt = str_ireplace($mailAddress, $spamProtectedMailAddress, $linktxt);
 			}
 		} else {
-			$mailToUrl = $GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode($mailToUrl) . $GLOBALS['TSFE']->getMethodUrlIdToken;
+			$juHash = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($mailToUrl, 'jumpurl');
+			$mailToUrl = $GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode($mailToUrl) . '&juHash=' . $juHash . $GLOBALS['TSFE']->getMethodUrlIdToken;
 		}
 		return array(
 			$mailToUrl,
