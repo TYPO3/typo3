@@ -588,15 +588,17 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				$typeOfRelation = $columnMap instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap ? $columnMap->getTypeOfRelation() : NULL;
 				if ($typeOfRelation === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 					$relationTableName = $columnMap->getRelationTableName();
-					$sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=' . $this->getPlainValue($operand2) . ')';
+					$sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=?)';
+					$parameters[] = intval($this->getPlainValue($operand2));
 				} elseif ($typeOfRelation === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
 					$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 					if (isset($parentKeyFieldName)) {
 						$childTableName = $columnMap->getChildTableName();
-						$sql['where'][] = $tableName . '.uid=(SELECT ' . $childTableName . '.' . $parentKeyFieldName . ' FROM ' . $childTableName . ' WHERE ' . $childTableName . '.uid=' . $this->getPlainValue($operand2) . ')';
+						$sql['where'][] = $tableName . '.uid=(SELECT ' . $childTableName . '.' . $parentKeyFieldName . ' FROM ' . $childTableName . ' WHERE ' . $childTableName . '.uid=?)';
+						$parameters[] = intval($this->getPlainValue($operand2));
 					} else {
-						$statement = 'FIND_IN_SET(' . $this->getPlainValue($operand2) . ',' . $tableName . '.' . $columnName . ')';
-						$sql['where'][] = $statement;
+						$sql['where'][] = 'FIND_IN_SET(?,' . $tableName . '.' . $columnName . ')';
+						$parameters[] = intval($this->getPlainValue($operand2));
 					}
 				} else {
 					throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException('Unsupported or non-existing property name "' . $propertyName . '" used in relation matching.', 1327065745);
@@ -1045,9 +1047,9 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 */
 	protected function parseLimitAndOffset($limit, $offset, array &$sql) {
 		if ($limit !== NULL && $offset !== NULL) {
-			$sql['limit'] = $offset . ', ' . $limit;
+			$sql['limit'] = intval($offset) . ', ' . intval($limit);
 		} elseif ($limit !== NULL) {
-			$sql['limit'] = $limit;
+			$sql['limit'] = intval($limit);
 		}
 	}
 
