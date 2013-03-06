@@ -2919,7 +2919,29 @@ class TypoScriptFrontendController {
 						break;
 					}
 				}
-				\TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->jumpurl, $statusCode);
+
+				$allowRedirect = FALSE;
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::hmac($this->jumpurl, 'jumpurl') === (string)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('juHash')) {
+					$allowRedirect = TRUE;
+				} elseif (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['jumpurlRedirectHandler'])) {
+					foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['jumpurlRedirectHandler'] as $classReference) {
+						$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classReference);
+						$allowRedirectFromHook = FALSE;
+						if (method_exists($hookObject, 'jumpurlRedirectHandler')) {
+							$allowRedirectFromHook = $hookObject->jumpurlRedirectHandler($this->jumpurl, $this);
+						}
+						if ($allowRedirectFromHook === TRUE) {
+							$allowRedirect = TRUE;
+							break;
+						}
+					}
+				}
+
+				if ($allowRedirect) {
+					\TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->jumpurl, $statusCode);
+				} else {
+					throw new \Exception('jumpurl: Calculated juHash did not match the submitted juHash.', 1359987599);
+				}
 			}
 		}
 	}
