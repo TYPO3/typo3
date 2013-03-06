@@ -1,3 +1,13 @@
+2013-03-06  3cbef1f                  [RELEASE] Release of TYPO3 4.5.24 (TYPO3 Release Team)
+2013-03-06  79e2370                  [TASK] Raise submodule pointer (TYPO3 Release Team)
+2013-03-06  71135d8  #28587          [SECURITY] Open redirection with jumpurl (Franz G. Jahn)
+2013-03-01  0d77b86  #25003          [BUGFIX] Check minitems for TCAtree (Georg Ringer)
+2013-03-01  796680a  #34371          [BUGFIX] Keep hyphens in custom HTML5 attributes (Jigal van Hemert)
+2013-02-25  06571e6  #45570          Revert "[BUGFIX] FE session records are never removed" (Oliver Hader)
+2013-02-14  98153a5                  [TASK] Set TYPO3 version to 4.5.24-dev (TYPO3 Release Team)
+2013-02-14  73e6f37                  [RELEASE] Release of TYPO3 4.5.23 (TYPO3 Release Team)
+
+
 2013-02-14  de390e0                  [RELEASE] Release of TYPO3 4.5.23 (TYPO3 Release Team)
 2013-02-14  63a1e27                  [TASK] Raise submodule pointer (TYPO3 Release Team)
 2013-02-09  c9ef82d  #24248          [BUGFIX] t3lib_iconWorks must check if array exists before using it (Jigal van Hemert)
