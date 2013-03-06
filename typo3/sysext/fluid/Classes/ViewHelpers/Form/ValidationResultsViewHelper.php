@@ -20,35 +20,50 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
- * Error messages view helper
+ * Validation results view helper
  *
  * = Examples =
  *
  * <code title="Output error messages as a list">
- * <ul class="errors">
- * <f:form.errors>
- * <li>{error.code}: {error.message}</li>
- * </f:form.errors>
- * </ul>
+ * <f:form.validationResults>
+ *   <f:if condition="{validationResults.flattenedErrors}">
+ *     <ul class="errors">
+ *       <f:for each="{validationResults.flattenedErrors}" as="errors" key="propertyPath">
+ *         <li>{propertyPath}
+ *           <ul>
+ *           <f:for each="{errors}" as="error">
+ *             <li>{error.code}: {error}</li>
+ *           </f:for>
+ *           </ul>
+ *         </li>
+ *       </f:for>
+ *     </ul>
+ *   </f:if>
+ * </f:form.validationResults>
  * </code>
  * <output>
- * <ul>
- * <li>1234567890: Validation errors for argument "newBlog"</li>
+ * <ul class="errors">
+ *   <li>1234567890: Validation errors for argument "newBlog"</li>
  * </ul>
  * </output>
  *
  * <code title="Output error messages for a single property">
- * <f:form.errors for="someProperty">
- * <div class="error">
- * <strong>{error.propertyName}</strong>: <f:for each="{error.errors}" as="errorDetail">{errorDetail.message}</f:for>
- * </div>
- * </f:form.errors>
+ * <f:form.validationResults for="someProperty">
+ *   <f:if condition="{validationResults.flattenedErrors}">
+ *     <ul class="errors">
+ *       <f:for each="{validationResults.errors}" as="error">
+ *         <li>{error.code}: {error}</li>
+ *       </f:for>
+ *     </ul>
+ *   </f:if>
+ * </f:form.validationResults>
  * </code>
  * <output>
- * <div class="error>
- * <strong>someProperty:</strong> errorMessage1 errorMessage2
- * </div>
+ * <ul class="errors">
+ *   <li>1234567890: Some error message</li>
+ * </ul>
  * </output>
  *
  * @api
