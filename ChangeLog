@@ -1,3 +1,11 @@
+2013-03-06  fb3f3b6                  [RELEASE] Release of TYPO3 4.7.9 (TYPO3 Release Team)
+2013-03-06  d816f5b                  [TASK] Raise submodule pointer (TYPO3 Release Team)
+2013-03-06  85a52fe  #28587          [SECURITY] Open redirection with jumpurl (Franz G. Jahn)
+2013-02-17  236defa  #40085          [BUGFIX] Invalid RSA key when submitting form twice (Benjamin Mack)
+2013-02-14  282fa60                  [TASK] Set TYPO3 version to 4.7.9-dev (TYPO3 Release Team)
+2013-02-14  6a30604                  [RELEASE] Release of TYPO3 4.7.8 (TYPO3 Release Team)
+
+
 2013-02-14  e83abe1                  [RELEASE] Release of TYPO3 4.7.8 (TYPO3 Release Team)
 2013-02-14  71ef699  #44099          [BUGFIX] L10n fallback does not work for TS labels (Xavier Perseguers)
 2013-02-14  f2aeff0  #44273          [BUGFIX] L10n fallback does not work for ExtJS in BE (Xavier Perseguers)
