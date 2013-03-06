@@ -117,19 +117,19 @@ class ExtDirectApi {
 				}
 				if (is_array($configuration)) {
 					$className = $configuration['callbackClass'];
-				}
-				$serverObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($className, FALSE);
-				$javascriptNamespaces[$javascriptNamespace]['actions'][$javascriptObjectName] = array();
-				foreach (get_class_methods($serverObject) as $methodName) {
-					$reflectionMethod = new \ReflectionMethod($serverObject, $methodName);
-					$numberOfParameters = $reflectionMethod->getNumberOfParameters();
-					$docHeader = $reflectionMethod->getDocComment();
-					$formHandler = strpos($docHeader, '@formHandler') !== FALSE;
-					$javascriptNamespaces[$javascriptNamespace]['actions'][$javascriptObjectName][] = array(
-						'name' => $methodName,
-						'len' => $numberOfParameters,
-						'formHandler' => $formHandler
-					);
+					$serverObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($className, FALSE);
+					$javascriptNamespaces[$javascriptNamespace]['actions'][$javascriptObjectName] = array();
+					foreach (get_class_methods($serverObject) as $methodName) {
+						$reflectionMethod = new \ReflectionMethod($serverObject, $methodName);
+						$numberOfParameters = $reflectionMethod->getNumberOfParameters();
+						$docHeader = $reflectionMethod->getDocComment();
+						$formHandler = strpos($docHeader, '@formHandler') !== FALSE;
+						$javascriptNamespaces[$javascriptNamespace]['actions'][$javascriptObjectName][] = array(
+							'name' => $methodName,
+							'len' => $numberOfParameters,
+							'formHandler' => $formHandler
+						);
+					}
 				}
 			}
 		}
