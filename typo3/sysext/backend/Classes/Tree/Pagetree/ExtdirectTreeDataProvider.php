@@ -97,9 +97,30 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
 		$this->initDataProvider();
 		if ($nodeId === 'root') {
-			$nodeCollection = $this->dataProvider->getTreeMounts($searchFilter);
+			$nodeCollection = $this->dataProvider->getTreeMounts($searchFilter, $nodeData->language);
 		} else {
-			$nodeCollection = $this->dataProvider->getFilteredNodes($node, $searchFilter, $node->getMountPoint());
+			$nodeCollection = $this->dataProvider->getFilteredNodes($node, $searchFilter, $node->getMountPoint(), $nodeData->language);
+		}
+		return $nodeCollection->toArray();
+	}
+
+	/**
+	 * Fetches the next tree level with titles in choosen language
+	 *
+	 * @param integer $nodeId
+	 * @param stdClass $nodeData
+	 * @param integer $language
+	 * @return array
+	 */
+	public function getLanguageTree($nodeId, $nodeData, $language = 0) {
+		$language = intval($language);
+		$this->initDataProvider();
+		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
+		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
+		if ($nodeId === 'root') {
+			$nodeCollection = $this->dataProvider->getTreeMounts('', $language);
+		} else {
+			$nodeCollection = $this->dataProvider->getNodes($node, 0, 0, $language);
 		}
 		return $nodeCollection->toArray();
 	}
@@ -180,6 +201,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 				'dropZoneElementRemoved' => $GLOBALS['LANG']->sL($file . 'tree.dropZoneElementRemoved', TRUE),
 				'dropZoneElementRestored' => $GLOBALS['LANG']->sL($file . 'tree.dropZoneElementRestored', TRUE),
 				'searchTermInfo' => $GLOBALS['LANG']->sL($file . 'tree.searchTermInfo', TRUE),
+				'comboLanguage' => $GLOBALS['LANG']->sL($file . 'tree.comboLanguage', TRUE),
 				'temporaryMountPointIndicatorInfo' => $GLOBALS['LANG']->sl($file . 'labels.temporaryDBmount', TRUE),
 				'deleteDialogTitle' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:deleteItem', TRUE),
 				'deleteDialogMessage' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:deleteWarning', TRUE),
@@ -187,6 +209,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 			),
 			'Configuration' => array(
 				'hideFilter' => $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.hideFilter'),
+				'hideLanguageSelection' => $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.hideLanguageSelection'),
 				'displayDeleteConfirmation' => $GLOBALS['BE_USER']->jsConfirmation(4),
 				'canDeleteRecursivly' => $GLOBALS['BE_USER']->uc['recursiveDelete'] == TRUE,
 				'disableIconLinkToContextmenu' => $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.disableIconLinkToContextmenu'),
@@ -204,6 +227,29 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 			)
 		);
 		return $configuration;
+	}
+
+	/**
+	 * Returns the json encoded list of system languages (id and title)
+	 *
+	 *
+	 * @return string
+	 */
+	public function getLanguages() {
+			// There is no way to get only active system languages via BackendUtility::getSystemLanguages
+			// TODO ??
+		/** @var $backendUtility \TYPO3\CMS\Backend\Utility\BackendUtility */
+		$backendUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Utility\\BackendUtility');
+		$languages = $backendUtility->getSystemLanguages();
+		$systemLanguages = array();
+		foreach ($languages as $language) {
+			$systemLanguages[] = array(
+				'lid' => $language[1],
+				'languageLabel' => preg_replace('/\[\d+\]$/', '', $language[0]),
+				'icon' => $language[2]
+			);
+		}
+		return json_encode($systemLanguages);
 	}
 
 }

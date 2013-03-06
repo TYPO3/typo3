@@ -99,6 +99,13 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 	filteringTree: null,
 
 	/**
+	 * Language Tree
+	 *
+	 * @cfg {TYPO3.Components.PageTree.LanguageTree}
+	 */
+	languageTree: null,
+
+	/**
 	 * Page Tree
 	 *
 	 * @cfg {TYPO3.Components.PageTree.Tree}
@@ -135,6 +142,13 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 		}
 
 		this.getTopToolbar().addItem({xtype: 'tbfill'});
+
+		if (!TYPO3.Components.PageTree.Configuration.hideLanguageSelection
+			|| TYPO3.Components.PageTree.Configuration.hideLanguageSelection === '0'
+		) {
+			this.addLanguageSelection();
+		}
+
 		this.addRefreshTreeFeature();
 	},
 
@@ -215,13 +229,23 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 
 		this.filteringTree.searchWord = searchWord;
 		if (this.filteringTree.searchWord === '') {
-			this.app.activeTree = this.tree;
+			if (this.filteringTree.language == '0' || !this.languageTree) {
+				this.app.activeTree = this.tree;
+			} else {
+				this.app.activeTree = this.languageTree
+			}
 
 			textField.setHideTrigger(true);
 			this.filteringTree.hide();
-			this.tree.show().refreshTree(function() {
-				textField.focus(false, 500);
-			}, this);
+			if (this.filteringTree.language == '0' || !this.languageTree) {
+				this.tree.show().refreshTree(function() {
+					textField.focus(false, 500);
+				}, this);
+			} else {
+				this.languageTree.show().refreshTree(function() {
+					textField.focus(false, 500);
+				}, this);
+			}
 
 			if (this.filteringIndicator) {
 				this.app.removeIndicator(this.filteringIndicator);
@@ -478,6 +502,100 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.addButton(topPanelButton);
+	},
+
+	/**
+	 * Adds a combobox to the toolbar for language selection
+	 *
+	 * @return {void}
+	 */
+	addLanguageSelection: function() {
+		var topPanelLanguageSelection = new Ext.form.ComboBox({
+			id: this.id + '-combo-language',
+			cls: this.id + '-combo',
+			fieldLabel: 'Language',
+			hiddenName: 'language',
+			store: new Ext.data.SimpleStore({
+				fields: ['lid', 'languageLabel', 'icon'],
+				data: []
+			}),
+			displayField: 'languageLabel',
+			valueField:'lid',
+			typeAhead: true,
+			mode: 'local',
+			triggerAction: 'all',
+			emptyText:TYPO3.Components.PageTree.LLL.comboLanguage,
+			selectOnFocus:true,
+			languageTree: this.languageTree,
+			editable: false,
+			listeners: {
+				select: {
+					scope: this,
+					fn: function(field, value, index) {
+						var selectedLanguage = field.getValue();
+						this.filteringTree.language = selectedLanguage;
+						if (selectedLanguage == 0) {
+							if (this.filteringIndicator) {
+								this.app.ownerCt.getEl().mask('', 'x-mask-loading-message');
+								this.app.ownerCt.getEl().addClass('t3-mask-loading');
+								this.filteringTree.show().refreshTree(function() {
+									if (selectedNode) {
+										this.app.select(selectedNode.attributes.nodeData.id, false);
+									}
+									this.app.ownerCt.getEl().unmask();
+								}, this);
+							} else {
+								this.app.activeTree = this.tree;
+
+								this.languageTree.hide();
+								this.tree.show().refreshTree(function() {
+									//textField.focus(false, 500);
+								}, this);
+							}
+						} else {
+							if (this.filteringIndicator) {
+								this.app.ownerCt.getEl().mask('', 'x-mask-loading-message');
+								this.app.ownerCt.getEl().addClass('t3-mask-loading');
+								this.filteringTree.show().refreshTree(function() {
+									if (selectedNode) {
+										this.app.select(selectedNode.attributes.nodeData.id, false);
+									}
+									this.app.ownerCt.getEl().unmask();
+								}, this);
+
+							} else {
+								this.tree.hide();
+								this.languageTree.language = selectedLanguage;
+								var selectedNode = this.app.getSelected();
+								this.app.activeTree = this.languageTree;
+								this.app.ownerCt.getEl().mask('', 'x-mask-loading-message');
+								this.app.ownerCt.getEl().addClass('t3-mask-loading');
+								this.languageTree.show().refreshTree(function() {
+									if (selectedNode) {
+										this.app.select(selectedNode.attributes.nodeData.id, false);
+									}
+									//textField.focus();
+									this.app.ownerCt.getEl().unmask();
+								}, this);
+							}
+						}
+					}
+				}
+			}
+		}).hide();
+
+		this.dataProvider.getLanguages(function(response) {
+			languages = Ext.util.JSON.decode(response, true);
+			languages.each(function(record) {
+				topPanelLanguageSelection.store.add(new Ext.data.Record(record));
+			}, this);
+			if (languages.length > 1) {
+				topPanelLanguageSelection.show();
+				topPanelLanguageSelection.setValue(0);
+			}
+
+		}, this);
+		this.getTopToolbar().addItem(topPanelLanguageSelection);
 	}
 });
 

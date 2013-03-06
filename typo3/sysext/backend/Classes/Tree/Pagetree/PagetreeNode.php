@@ -171,6 +171,25 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	}
 
 	/**
+	 * Sets the language
+	 *
+	 * @param integer $language
+	 * @return void
+	 */
+	public function setLanguage($language) {
+		$this->language = $language;
+	}
+
+	/**
+	 * Returns the language
+	 *
+	 * @return integer
+	 */
+	public function getLanguage() {
+		return $this->language;
+	}
+
+	/**
 	 * Checks if the user may create pages below the given page
 	 *
 	 * @return boolean
@@ -345,6 +364,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 		$arrayRepresentation['nodeData']['isMountPoint'] = $this->isMountPoint();
 		$arrayRepresentation['nodeData']['backgroundColor'] = htmlspecialchars($this->getBackgroundColor());
 		$arrayRepresentation['nodeData']['serializeClassName'] = get_class($this);
+		$arrayRepresentation['nodeData']['language'] = $this->getLanguage();
 		return $arrayRepresentation;
 	}
 
@@ -361,6 +381,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 		$this->setReadableRootline($data['readableRootline']);
 		$this->setIsMountPoint($data['isMountPoint']);
 		$this->setBackgroundColor($data['backgroundColor']);
+		$this->setLanguage($data['language']);
 	}
 
 }
