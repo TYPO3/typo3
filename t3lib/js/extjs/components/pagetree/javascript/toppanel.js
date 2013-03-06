@@ -99,6 +99,13 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 	filteringTree: null,
 
 	/**
+	 * Language Tree
+	 *
+	 * @cfg {TYPO3.Components.PageTree.LanguageTree}
+	 */
+	languageTree: null,
+
+	/**
 	 * Page Tree
 	 *
 	 * @cfg {TYPO3.Components.PageTree.Tree}
@@ -111,6 +118,34 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 	 * @cfg {TYPO3.Components.PageTree.App}
 	 */
 	app: null,
+
+	/**
+	 * Panel topPanelItems Standard Height
+	 *
+	 * @cfg {Integer}
+	 */
+	topPanelItemsHeight: 49,
+
+	/**
+	 * Language Panel Single Item Height
+	 *
+	 * @cfg {Integer}
+	 */
+	languagePanelItemHeight: 22,
+
+	/**
+	 * Language Panel All Items Height
+	 *
+	 * @cfg {Integer}
+	 */
+	languagePanelAllItemsHeight: 0,
+
+	/**
+	 * Indicator Bar Height
+	 *
+	 * @cfg {Integer}
+	 */
+	indicatorBarHeight: 35,
 
 	/**
 	 * Initializes the component
@@ -134,7 +169,14 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 			this.addFilterFeature();
 		}
 
+		if (!TYPO3.Components.PageTree.Configuration.hideLanguageSelection
+			|| TYPO3.Components.PageTree.Configuration.hideLanguageSelection === '0'
+		) {
+			this.addLanguageSelection();
+		}
+
 		this.getTopToolbar().addItem({xtype: 'tbfill'});
+
 		this.addRefreshTreeFeature();
 	},
 
@@ -146,7 +188,19 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 	 */
 	getButtonTemplate: function() {
 		return new Ext.Template(
-			'<div id="{4}" class="x-btn {3}"><button type="{0}"">&nbsp;</button></div>'
+			'<div id="{4}" class="x-btn {3}"><button type="{0}">&nbsp;</button></div>'
+		);
+	},
+
+	/**
+	 * Returns a custom button template for the language button to fix some nasty webkit issues
+	 * by removing some useless wrapping html code
+	 *
+	 * @return {void}
+	 */
+	getLanguageButtonTemplate: function(languageLabel) {
+		return new Ext.Template(
+			'<div id="{4}" class="x-btn {3}"><button type="{0}">&nbsp;</button>' + languageLabel + '</div>'
 		);
 	},
 
@@ -181,6 +235,17 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 	 */
 	topbarButtonCallback: function() {
 		var topPanel = this.ownerCt.ownerCt;
+		var topPanelItems = Ext.getCmp('typo3-pagetree-topPanelItems');
+		var temporaryMountPointInfoIndicator = Ext.getCmp('typo3-pagetree-indicatorBar-temporaryMountPoint');
+		var filterButton = Ext.getCmp('typo3-pagetree-topPanel-button-filter');
+
+		var indicatorBarHeight = 0;
+		if (topPanel.filteringIndicator) {
+			indicatorBarHeight += topPanel.filteringIndicator.getHeight();
+		}
+		if (temporaryMountPointInfoIndicator) {
+			indicatorBarHeight += temporaryMountPointInfoIndicator.getHeight();
+		}
 
 		topPanel.currentlyShownPanel.hide();
 		if (topPanel.currentlyClickedButton) {
@@ -189,11 +254,17 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 
 		if (topPanel.currentlyClickedButton === this) {
 			topPanel.currentlyClickedButton = null;
+			topPanelItems.setHeight(topPanel.topPanelItemsHeight + indicatorBarHeight);
 			topPanel.currentlyShownPanel = topPanel.get(topPanel.id + '-defaultPanel');
 		} else {
 			this.toggle(true);
 			topPanel.currentlyClickedButton = this;
 			topPanel.currentlyShownPanel = this.connectedWidget;
+			if (this.connectedWidget.id === topPanel.id + '-languageWrap') {
+				topPanelItems.setHeight(topPanel.topPanelItemsHeight - topPanel.languagePanelItemHeight + topPanel.languagePanelAllItemsHeight + indicatorBarHeight);
+			} else {
+				topPanelItems.setHeight(topPanel.topPanelItemsHeight + indicatorBarHeight);
+			}
 		}
 
 		topPanel.currentlyShownPanel.show();
@@ -215,13 +286,31 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 
 		this.filteringTree.searchWord = searchWord;
 		if (this.filteringTree.searchWord === '') {
-			this.app.activeTree = this.tree;
+			if (this.filteringTree.language == '0' || !this.languageTree) {
+				this.app.activeTree = this.tree;
+			} else {
+				var selectedNode = this.app.getSelected();
+				this.languageTree.language = this.filteringTree.language;
+				this.app.activeTree = this.languageTree
+			}
 
 			textField.setHideTrigger(true);
 			this.filteringTree.hide();
-			this.tree.show().refreshTree(function() {
-				textField.focus(false, 500);
-			}, this);
+			if (this.filteringTree.language == '0' || !this.languageTree) {
+				this.tree.show().refreshTree(function() {
+					textField.focus(false, 500);
+				}, this);
+			} else {
+				this.app.ownerCt.getEl().mask('', 'x-mask-loading-message');
+				this.app.ownerCt.getEl().addClass('t3-mask-loading');
+				this.languageTree.show().refreshTree(function() {
+					if (selectedNode) {
+						this.app.select(selectedNode.attributes.nodeData.id, false);
+					}
+					textField.focus(false, 500);
+					this.app.ownerCt.getEl().unmask();
+				}, this);
+			}
 
 			if (this.filteringIndicator) {
 				this.app.removeIndicator(this.filteringIndicator);
@@ -478,6 +567,131 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.addButton(topPanelButton);
+	},
+
+	/**
+	 * Adds buttons to the toolbar for language selection
+	 *
+	 * @return {void}
+	 */
+	addLanguageSelection: function() {
+		this.topPanelLanguageButton = new Ext.Button({
+			id: this.id + '-button-language-top',
+			cls: this.id + '-button',
+			iconCls: 't3-icon-flags-multiple',
+			tooltip: TYPO3.Components.PageTree.LLL.buttonLanguage,
+		}).hide();
+
+		var topPanelWidget = new Ext.Panel({
+			border: false,
+			id: this.id + '-languageWrap',
+			cls: this.id + '-item-languageWrap'
+		});
+
+		this.addButton(this.topPanelLanguageButton, topPanelWidget);
+
+		this.dataProvider.getLanguages(function(response) {
+			languages = Ext.util.JSON.decode(response, true);
+			var i = 0;
+
+			languages.each(function(record) {
+				if (i === 0) {
+					Ext.getCmp(this.id + '-button-language-top').setIconClass(record['iconCls']);
+					Ext.getCmp(this.id + '-button-language-top').setTooltip(TYPO3.Components.PageTree.LLL.activeLanguage + ' ' + record['languageLabel']);
+				}
+				var topPanelButton = new Ext.Button({
+					id: this.id + '-button-language-'+record['icon'],
+					cls: this.id + '-button',
+					iconCls: record['iconCls'],
+					tooltip: TYPO3.Components.PageTree.LLL.buttonLanguage + ' ' + record['languageLabel'],
+					width:'98%',
+					template: this.getLanguageButtonTemplate(record['languageLabel']),
+
+					listeners: {
+						click: {
+							scope: this,
+							fn: function() {
+								Ext.getCmp(this.id + '-button-language-top').fireEvent('click');
+								Ext.getCmp(this.id + '-button-language-top').setIconClass(record['iconCls']);
+								Ext.getCmp(this.id + '-button-language-top').setTooltip(TYPO3.Components.PageTree.LLL.activeLanguage + ' ' + record['languageLabel']);
+								var selectedLanguage = record['lid'];
+								this.filteringTree.language = selectedLanguage;
+								if (selectedLanguage == 0) {
+									if (this.filteringIndicator) {
+										this.app.ownerCt.getEl().mask('', 'x-mask-loading-message');
+										this.app.ownerCt.getEl().addClass('t3-mask-loading');
+										this.filteringTree.show().refreshTree(function() {
+											if (selectedNode) {
+												this.app.select(selectedNode.attributes.nodeData.id, false);
+											}
+											this.app.ownerCt.getEl().unmask();
+										}, this);
+									} else {
+										this.app.activeTree = this.tree;
+										this.languageTree.hide();
+										this.tree.show().refreshTree(function() {
+											//textField.focus(false, 500);
+										}, this);
+									}
+								} else {
+									if (this.filteringIndicator) {
+										this.app.ownerCt.getEl().mask('', 'x-mask-loading-message');
+										this.app.ownerCt.getEl().addClass('t3-mask-loading');
+										this.filteringTree.show().refreshTree(function() {
+											if (selectedNode) {
+												this.app.select(selectedNode.attributes.nodeData.id, false);
+											}
+											this.app.ownerCt.getEl().unmask();
+										}, this);
+									} else {
+										this.tree.hide();
+										this.languageTree.language = selectedLanguage;
+										var selectedNode = this.app.getSelected();
+										this.app.activeTree = this.languageTree;
+										this.app.ownerCt.getEl().mask('', 'x-mask-loading-message');
+										this.app.ownerCt.getEl().addClass('t3-mask-loading');
+										this.languageTree.show().refreshTree(function() {
+											if (selectedNode) {
+												this.app.select(selectedNode.attributes.nodeData.id, false);
+											}
+											this.app.ownerCt.getEl().unmask();
+										}, this);
+									}
+								}
+							}
+						}
+					}
+				});
+
+				Ext.getCmp(this.id + '-languageWrap').add(topPanelButton);
+				Ext.getCmp(this.id + '-languageWrap').doLayout();
+				i++;
+			}, this);
+
+			this.languagePanelAllItemsHeight = this.languagePanelItemHeight * languages.length;
+			Ext.getCmp(this.id + '-languageWrap').setHeight(this.languagePanelAllItemsHeight);
+			Ext.getCmp(this.id + '-languageWrap').doLayout();
+
+			if (languages.length > 1) {
+				Ext.getCmp(this.id + '-button-language-top').show();
+			} else {
+				if (languages[0]['lid'] != 0) {
+					this.tree.hide();
+					this.languageTree.language = languages[0]['lid'];
+					this.filteringTree.language = languages[0]['lid'];
+					var selectedNode = this.app.getSelected();
+					this.app.activeTree = this.languageTree;
+					this.app.ownerCt.getEl().mask('', 'x-mask-loading-message');
+					this.app.ownerCt.getEl().addClass('t3-mask-loading');
+					this.languageTree.show().refreshTree(function() {
+						if (selectedNode) {
+							this.app.select(selectedNode.attributes.nodeData.id, false);
+						}
+						this.app.ownerCt.getEl().unmask();
+					}, this);
+				}
+			}
+		}, this);
 	}
 });
 
