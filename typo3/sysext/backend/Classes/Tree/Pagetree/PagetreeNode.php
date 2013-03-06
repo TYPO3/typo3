@@ -171,6 +171,25 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	}
 
 	/**
+	 * Sets the language
+	 *
+	 * @param integer $language
+	 * @return void
+	 */
+	public function setLanguage($language) {
+		$this->language = $language;
+	}
+
+	/**
+	 * Returns the language
+	 *
+	 * @return integer
+	 */
+	public function getLanguage() {
+		return $this->language;
+	}
+
+	/**
 	 * Checks if the user may create pages below the given page
 	 *
 	 * @return boolean
@@ -219,6 +238,15 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	}
 
 	/**
+	 * Checks if the page overlay can be disabled
+	 *
+	 * @return boolean
+	 */
+	public function overlayCanBeDisabledAndEnabled() {
+		return $this->canEdit($this->record) && $GLOBALS['BE_USER']->checkLanguageAccess($this->getLanguage());
+	}
+
+	/**
 	 * Checks if the page is allowed to can be cut
 	 *
 	 * @return boolean
@@ -234,6 +262,15 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	 */
 	public function canBeEdited() {
 		return $this->canEdit($this->record);
+	}
+
+	/**
+	 * Checks if the page overlay is allowed to be edited
+	 *
+	 * @return boolean
+	 */
+	public function overlayCanBeEdited() {
+		return $this->canEdit($this->record) && $GLOBALS['BE_USER']->checkLanguageAccess($this->getLanguage());
 	}
 
 	/**
@@ -328,6 +365,22 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	}
 
 	/**
+	 * Returns the database record array
+	 *
+	 * @return array
+	 */
+	public function getOverlayRecord() {
+		/** @var $pageRepository \TYPO3\\CMS\\Frontend\\Page\\PageRepository */
+		$pageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages_language_overlay', 'pid=' . intval($this->getWorkspaceId()) . '
+						AND sys_language_uid=' . intval($this->getLanguage()) . $pageRepository->enableFields('pages_language_overlay', 1), '1', '', '1');
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		$pageRepository->versionOL('pages_language_overlay', $row);
+		return $row;
+	}
+
+	/**
 	 * Returns the node in an array representation that can be used for serialization
 	 *
 	 * @param boolean $addChildNodes
@@ -345,6 +398,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 		$arrayRepresentation['nodeData']['isMountPoint'] = $this->isMountPoint();
 		$arrayRepresentation['nodeData']['backgroundColor'] = htmlspecialchars($this->getBackgroundColor());
 		$arrayRepresentation['nodeData']['serializeClassName'] = get_class($this);
+		$arrayRepresentation['nodeData']['language'] = $this->getLanguage();
 		return $arrayRepresentation;
 	}
 
@@ -361,6 +415,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 		$this->setReadableRootline($data['readableRootline']);
 		$this->setIsMountPoint($data['isMountPoint']);
 		$this->setBackgroundColor($data['backgroundColor']);
+		$this->setLanguage($data['language']);
 	}
 
 }

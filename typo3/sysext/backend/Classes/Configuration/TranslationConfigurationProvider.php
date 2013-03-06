@@ -47,10 +47,11 @@ class TranslationConfigurationProvider {
 	 *
 	 * @param integer $page_id Page id (only used to get TSconfig configuration setting flag and label for default language)
 	 * @param string $backPath Backpath for flags
+	 * @param boolean $onlyActive If TRUE, return only not hidden languages
 	 * @return array Array with languages (title, uid, flagIcon)
 	 * @todo Define visibility
 	 */
-	public function getSystemLanguages($page_id = 0, $backPath = '') {
+	public function getSystemLanguages($page_id = 0, $backPath = '', $onlyActive = FALSE) {
 		$modSharedTSconfig = BackendUtility::getModTSconfig($page_id, 'mod.SHARED');
 		$languageIconTitles = array();
 		// fallback "old iconstyles"
@@ -71,7 +72,7 @@ class TranslationConfigurationProvider {
 			'flagIcon' => 'flags-multiple'
 		);
 		// Find all system languages:
-		$sys_languages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_language', '');
+		$sys_languages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_language', ($onlyActive === TRUE ? '1' . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('sys_language') : ''));
 		foreach ($sys_languages as $row) {
 			$languageIconTitles[$row['uid']] = $row;
 			if ($row['static_lang_isocode'] && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {

@@ -83,13 +83,14 @@ TYPO3.Components.PageTree.Actions = {
 		}
 
 		updatedNode.uiProvider = node.ownerTree.uiProvider;
+		updatedNode.language = node.ownerTree.language;
 		var newTreeNode = new Ext.tree.TreeNode(updatedNode);
 
 		var refreshCallback = this.restoreNodeStateAfterRefresh;
 		if (callback) {
 			refreshCallback = refreshCallback.createSequence(callback);
 		}
-
+		
 		node.parentNode.replaceChild(newTreeNode, node);
 		newTreeNode.ownerTree.refreshNode(newTreeNode, refreshCallback);
 
@@ -336,6 +337,34 @@ TYPO3.Components.PageTree.Actions = {
 
 		TYPO3.Backend.ContentContainer.setUrl(
 			'alt_doc.php?edit[pages][' + node.attributes.nodeData.id + ']=edit&returnUrl=' + returnUrl
+		);
+	},
+
+	/**
+	 * Opens the edit page overlay properties dialog
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
+	editPageOverlayProperties: function(node) {
+		node.select();
+		var returnUrl = TYPO3.Backend.ContentContainer.src;
+		if (returnUrl.indexOf('returnUrl') !== -1) {
+			returnUrl = TYPO3.Utility.getParameterFromUrl(returnUrl, 'returnUrl');
+		} else {
+			returnUrl = encodeURIComponent(returnUrl);
+		}
+
+		TYPO3.Components.PageTree.Commands.getNodeOverlay(
+			node.attributes.nodeData,
+			function(response) {
+				if (this.evaluateResponse(response)) {
+					TYPO3.Backend.ContentContainer.setUrl(
+						'alt_doc.php?edit[pages_language_overlay][' + response._PAGES_OVERLAY_UID + ']=edit&returnUrl=' + returnUrl
+					);
+				}
+			},
+			this
 		);
 	},
 
@@ -677,6 +706,24 @@ TYPO3.Components.PageTree.Actions = {
 	},
 
 	/**
+	 * Visibilizes a page overlay
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
+	enablePageOverlay: function(node) {
+		TYPO3.Components.PageTree.Commands.visiblyNodeOverlay(
+			node.attributes.nodeData,
+			function(response) {
+				if (this.evaluateResponse(response)) {
+					this.updateNode(node, node.isExpanded(), response);
+				}
+			},
+			this
+		);
+	},
+
+	/**
 	 * Disables a page
 	 *
 	 * @param {Ext.tree.TreeNode} node
@@ -684,6 +731,24 @@ TYPO3.Components.PageTree.Actions = {
 	 */
 	disablePage: function(node) {
 		TYPO3.Components.PageTree.Commands.disableNode(
+			node.attributes.nodeData,
+			function(response) {
+				if (this.evaluateResponse(response)) {
+					this.updateNode(node, node.isExpanded(), response);
+				}
+			},
+			this
+		);
+	},
+
+	/**
+	 * Disables a page
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
+	disablePageOverlay: function(node) {
+		TYPO3.Components.PageTree.Commands.disableNodeOverlay(
 			node.attributes.nodeData,
 			function(response) {
 				if (this.evaluateResponse(response)) {

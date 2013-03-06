@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  ***************************************************************/
 
 use TYPO3\CMS\Backend\Tree\Pagetree\Commands;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -102,9 +103,30 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 		$node = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
 		$this->initDataProvider();
 		if ($nodeId === 'root') {
-			$nodeCollection = $this->dataProvider->getTreeMounts($searchFilter);
+			$nodeCollection = $this->dataProvider->getTreeMounts($searchFilter, $nodeData->language);
 		} else {
-			$nodeCollection = $this->dataProvider->getFilteredNodes($node, $searchFilter, $node->getMountPoint());
+			$nodeCollection = $this->dataProvider->getFilteredNodes($node, $searchFilter, $node->getMountPoint(), $nodeData->language);
+		}
+		return $nodeCollection->toArray();
+	}
+
+	/**
+	 * Fetches the next tree level with titles in choosen language
+	 *
+	 * @param integer $nodeId
+	 * @param stdClass $nodeData
+	 * @param integer $language
+	 * @return array
+	 */
+	public function getLanguageTree($nodeId, $nodeData, $language = 0) {
+		$language = intval($language);
+		$this->initDataProvider();
+		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
+		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
+		if ($nodeId === 'root') {
+			$nodeCollection = $this->dataProvider->getTreeMounts('', $language);
+		} else {
+			$nodeCollection = $this->dataProvider->getNodes($node, 0, 0, $language);
 		}
 		return $nodeCollection->toArray();
 	}
@@ -185,6 +207,8 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 				'dropZoneElementRemoved' => $GLOBALS['LANG']->sL($file . 'tree.dropZoneElementRemoved', TRUE),
 				'dropZoneElementRestored' => $GLOBALS['LANG']->sL($file . 'tree.dropZoneElementRestored', TRUE),
 				'searchTermInfo' => $GLOBALS['LANG']->sL($file . 'tree.searchTermInfo', TRUE),
+				'buttonLanguage' => $GLOBALS['LANG']->sL($file . 'tree.buttonLanguage', TRUE),
+				'activeLanguage' => $GLOBALS['LANG']->sL($file . 'tree.activeLanguage', TRUE),
 				'temporaryMountPointIndicatorInfo' => $GLOBALS['LANG']->sl($file . 'labels.temporaryDBmount', TRUE),
 				'deleteDialogTitle' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:deleteItem', TRUE),
 				'deleteDialogMessage' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:deleteWarning', TRUE),
@@ -192,6 +216,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 			),
 			'Configuration' => array(
 				'hideFilter' => $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.hideFilter'),
+				'hideLanguageSelection' => $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.languageSelection.hide'),
 				'displayDeleteConfirmation' => $GLOBALS['BE_USER']->jsConfirmation(4),
 				'canDeleteRecursivly' => $GLOBALS['BE_USER']->uc['recursiveDelete'] == TRUE,
 				'disableIconLinkToContextmenu' => $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.disableIconLinkToContextmenu'),
@@ -209,6 +234,40 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 			)
 		);
 		return $configuration;
+	}
+
+	/**
+	 * Returns the json encoded list of system languages
+	 *
+	 *
+	 * @return string
+	 */
+	public function getLanguages() {
+		$languages = BackendUtility::getSystemLanguages(TRUE);
+		if ($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.languageSelection.sortAlphabetically') == 1) {
+			$defaultLanguage = array_shift($languages);
+			$sortArray = array();
+			foreach ($languages as $key => $array) {
+				$sortArray[$key] = $array[0];
+			}
+			array_multisort($sortArray, SORT_ASC, SORT_STRING, $languages);
+			array_unshift($languages, $defaultLanguage);
+		}
+		$systemLanguages = array();
+		foreach ($languages as $language) {
+			if ($GLOBALS['BE_USER']->checkLanguageAccess($language[1])) {
+				if ($language[2] === 'empty-empty') {
+					$language[2] = 'flags-multiple';
+				}
+				$systemLanguages[] = array(
+					'lid' => $language[1],
+					'languageLabel' => preg_replace('/\[\d+\]$/', '', $language[0]),
+					'icon' => $language[2],
+					'iconCls' => IconUtility::getSpriteIconClasses($language[2])
+				);
+			}
+		}
+		return json_encode($systemLanguages);
 	}
 
 }

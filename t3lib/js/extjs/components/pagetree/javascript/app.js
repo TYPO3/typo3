@@ -123,9 +123,26 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 				app: this
 			}).hide();
 
+			var languageTree = new TYPO3.Components.PageTree.LanguageTree({
+				id: this.id + '-languageTree',
+				deletionDropZoneId: this.id + '-deletionDropZone',
+				ddGroup: this.id,
+				stateful: true,
+				stateId: 'Pagetree' + TYPO3.Components.PageTree.Configuration.temporaryMountPoint,
+				stateEvents: [],
+				autoScroll: true,
+				autoHeight: false,
+				plugins: new Ext.ux.state.TreePanel(),
+				commandProvider: TYPO3.Components.PageTree.Actions,
+				contextMenuProvider: TYPO3.Components.PageTree.ContextMenuDataProvider,
+				treeDataProvider: TYPO3.Components.PageTree.DataProvider,
+				app: this
+			});
+
 			var topPanel = new TYPO3.Components.PageTree.TopPanel({
 				dataProvider: TYPO3.Components.PageTree.DataProvider,
 				filteringTree: filteringTree,
+				languageTree: languageTree,
 				ddGroup: this.id,
 				tree: this.mainTree,
 				app: this
@@ -162,7 +179,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 						id: this.id + '-treeContainer',
 						region: 'center',
 						layout: 'fit',
-						items: [this.mainTree, filteringTree]
+						items: [this.mainTree, filteringTree, languageTree]
 					},
 					deletionDropZone
 				]

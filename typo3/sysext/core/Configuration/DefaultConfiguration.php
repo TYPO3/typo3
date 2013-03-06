@@ -376,6 +376,24 @@ return array(
 								callbackAction = enablePage
 							}
 
+							430 = ITEM
+							430 {
+								name = disablePageOverlay
+								label = LLL:EXT:lang/locallang_core.xml:cm.disablePageOverlay
+								spriteIcon = actions-edit-hide
+								displayCondition = getOverlayRecord|hidden = 0 && getOverlayRecord|title !=  && overlayCanBeDisabledAndEnabled != 0 && getLanguage > 0
+								callbackAction = disablePageOverlay
+							}
+
+							460 = ITEM
+							460 {
+								name = enablePageOverlay
+								label = LLL:EXT:lang/locallang_core.xml:cm.enablePageOverlay
+								spriteIcon = actions-edit-unhide
+								displayCondition = getOverlayRecord|hidden = 1 && getOverlayRecord|title !=  && overlayCanBeDisabledAndEnabled != 0  && getLanguage > 0
+								callbackAction = enablePageOverlay
+							}
+
 							500 = ITEM
 							500 {
 								name = edit
@@ -383,6 +401,15 @@ return array(
 								spriteIcon = actions-page-open
 								displayCondition = canBeEdited != 0
 								callbackAction = editPageProperties
+							}
+
+							550 = ITEM
+							550 {
+								name = edit
+								label = LLL:EXT:lang/locallang_core.xml:cm.editPageOverlay
+								spriteIcon = actions-page-open
+								displayCondition = overlayCanBeEdited != 0 && getOverlayRecord|hidden = 0 && getOverlayRecord|title !=  && getLanguage > 0
+								callbackAction = editPageOverlayProperties
 							}
 
 							600 = ITEM

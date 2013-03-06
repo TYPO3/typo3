@@ -49,7 +49,30 @@ class ExtdirectTreeCommands {
 		$node = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
 		try {
 			Commands::visiblyNode($node);
-			$newNode = Commands::getNode($node->getId());
+			$newNode = Commands::getNode($node->getId(), TRUE, $node->getLanguage());
+			$newNode->setLeaf($node->isLeafNode());
+			$returnValue = $newNode->toArray();
+		} catch (\Exception $exception) {
+			$returnValue = array(
+				'success' => FALSE,
+				'error' => $exception->getMessage()
+			);
+		}
+		return $returnValue;
+	}
+
+	/**
+	 * Visibly the page overlay
+	 *
+	 * @param stdClass $nodeData
+	 * @return array
+	 */
+	public function visiblyNodeOverlay($nodeData) {
+		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
+		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
+		try {
+			Commands::visiblyNodeOverlay($node);
+			$newNode = Commands::getNode($node->getId(), TRUE, $node->getLanguage());
 			$newNode->setLeaf($node->isLeafNode());
 			$returnValue = $newNode->toArray();
 		} catch (\Exception $exception) {
@@ -72,9 +95,53 @@ class ExtdirectTreeCommands {
 		$node = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
 		try {
 			Commands::disableNode($node);
-			$newNode = Commands::getNode($node->getId());
+			$newNode = Commands::getNode($node->getId(), TRUE, $node->getLanguage());
 			$newNode->setLeaf($node->isLeafNode());
 			$returnValue = $newNode->toArray();
+		} catch (\Exception $exception) {
+			$returnValue = array(
+				'success' => FALSE,
+				'message' => $exception->getMessage()
+			);
+		}
+		return $returnValue;
+	}
+
+	/**
+	 * Hide the page overlay
+	 *
+	 * @param stdClass $nodeData
+	 * @return array
+	 */
+	public function disableNodeOverlay($nodeData) {
+		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
+		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
+		try {
+			\TYPO3\CMS\Backend\Tree\Pagetree\Commands::disableNodeOverlay($node);
+			$newNode = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNode($node->getId(), TRUE, $node->getLanguage());
+			$newNode->setLeaf($node->isLeafNode());
+			$returnValue = $newNode->toArray();
+		} catch (\Exception $exception) {
+			$returnValue = array(
+				'success' => FALSE,
+				'message' => $exception->getMessage()
+			);
+		}
+		return $returnValue;
+	}
+
+	/**
+	 * Get the page overlay
+	 *
+	 * @param stdClass $nodeData
+	 * @return array
+	 */
+	public function getNodeOverlay($nodeData) {
+		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
+		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
+		try {
+			$newNode = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNodeRecord($node->getId(), TRUE, $node->getLanguage());
+			$returnValue = $newNode;
 		} catch (\Exception $exception) {
 			$returnValue = array(
 				'success' => FALSE,
@@ -191,7 +258,7 @@ class ExtdirectTreeCommands {
 		$node = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
 		try {
 			Commands::moveNode($node, $destination);
-			$newNode = Commands::getNode($node->getId(), FALSE);
+			$newNode = Commands::getNode($node->getId(), FALSE, $node->getLanguage());
 			$newNode->setLeaf($node->isLeafNode());
 			$returnValue = $newNode->toArray();
 		} catch (\Exception $exception) {
@@ -215,7 +282,7 @@ class ExtdirectTreeCommands {
 		$node = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
 		try {
 			Commands::moveNode($node, -$destination);
-			$newNode = Commands::getNode($node->getId(), FALSE);
+			$newNode = Commands::getNode($node->getId(), FALSE, $node->getLanguage());
 			$newNode->setLeaf($node->isLeafNode());
 			$returnValue = $newNode->toArray();
 		} catch (\Exception $exception) {
@@ -242,7 +309,7 @@ class ExtdirectTreeCommands {
 		$dataProvider = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\DataProvider');
 		try {
 			$newPageId = Commands::copyNode($node, $destination);
-			$newNode = Commands::getNode($newPageId);
+			$newNode = Commands::getNode($newPageId, TRUE, $node->getLanguage());
 			$newNode->setLeaf($node->isLeafNode());
 			$returnValue = $newNode->toArray();
 		} catch (\Exception $exception) {
@@ -269,7 +336,7 @@ class ExtdirectTreeCommands {
 		$dataProvider = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\DataProvider');
 		try {
 			$newPageId = Commands::copyNode($node, -$destination);
-			$newNode = Commands::getNode($newPageId);
+			$newNode = Commands::getNode($newPageId, TRUE, $node->getLanguage());
 			$newNode->setLeaf($node->isLeafNode());
 			$returnValue = $newNode->toArray();
 		} catch (\Exception $exception) {
