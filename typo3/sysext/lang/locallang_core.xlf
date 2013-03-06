@@ -790,6 +790,15 @@ Would you like to save now in order to refresh the display?</source>
 			<trans-unit id="cm.expandBranch" xml:space="preserve">
 				<source>Expand Branch</source>
 			</trans-unit>
+			<trans-unit id="cm.editPageOverlay" xml:space="preserve">
+				<source>Edit Page Language</source>
+			</trans-unit>
+			<trans-unit id="cm.disablePageOverlay" xml:space="preserve">
+				<source>Disable Page Language</source>
+			</trans-unit>
+			<trans-unit id="cm.enablePageOverlay" xml:space="preserve">
+				<source>Enable Page Language</source>
+			</trans-unit>
 			<trans-unit id="tree.defaultPageTitle" xml:space="preserve">
 				<source>[Default Title]</source>
 			</trans-unit>
@@ -816,6 +825,18 @@ Would you like to save now in order to refresh the display?</source>
 			</trans-unit>
 			<trans-unit id="tree.searchTermInfo" xml:space="preserve">
 				<source>Enter search term</source>
+			</trans-unit>
+			<trans-unit id="tree.buttonLanguage" xml:space="preserve">
+				<source>Choose language</source>
+			</trans-unit>
+			<trans-unit id="tree.activeLanguage" xml:space="preserve">
+				<source>Active language: </source>
+			</trans-unit>
+			<trans-unit id="tree.standardLanguagePageTitle" xml:space="preserve">
+				<source>Standard title: </source>
+			</trans-unit>
+			<trans-unit id="tree.noAlternativePageTitle" xml:space="preserve">
+				<source>No alternative page title defined. Double click on title to edit and delete square brackets to create one</source>
 			</trans-unit>
 			<trans-unit id="warning.install_password" xml:space="preserve">
 				<source>The Install Tool is still using the default password "joh316". Update this within the %sAbout section%s of the Install Tool.</source>
