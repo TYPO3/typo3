@@ -2596,6 +2596,7 @@
 	function setExternalJumpUrl()	{
 		if ($extUrl = $this->sys_page->getExtURL($this->page, $this->config['config']['disablePageExternalUrl']))	{
 			$this->jumpurl = $extUrl;
+			t3lib_div::_GETset(t3lib_div::hmac($this->jumpurl, 'jumpurl'), 'juHash');
 		}
 	}
 
