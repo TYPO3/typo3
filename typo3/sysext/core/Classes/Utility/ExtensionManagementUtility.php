@@ -1570,20 +1570,22 @@ tt_content.' . $key . $prefix . ' {
 		$phpCodeToCache[] = '';
 		// Iterate through loaded extensions and add ext_localconf content
 		foreach ($extensionInformation as $extensionKey => $extensionDetails) {
-			// Include a header per extension to make the cache file more readable
-			$phpCodeToCache[] = '/**';
-			$phpCodeToCache[] = ' * Extension: ' . $extensionKey;
-			$phpCodeToCache[] = ' * File: ' . $extensionDetails['ext_localconf.php'];
-			$phpCodeToCache[] = ' */';
-			$phpCodeToCache[] = '';
-			// Set $_EXTKEY and $_EXTCONF for this extension
-			$phpCodeToCache[] = '$_EXTKEY = \'' . $extensionKey . '\';';
-			$phpCodeToCache[] = '$_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];';
-			$phpCodeToCache[] = '';
-			// Add ext_localconf.php content of extension
-			$phpCodeToCache[] = trim(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extensionDetails['ext_localconf.php']));
-			$phpCodeToCache[] = '';
-			$phpCodeToCache[] = '';
+			if (isset($extensionDetails['ext_localconf.php']) && $extensionDetails['ext_localconf.php']) {
+				// Include a header per extension to make the cache file more readable
+				$phpCodeToCache[] = '/**';
+				$phpCodeToCache[] = ' * Extension: ' . $extensionKey;
+				$phpCodeToCache[] = ' * File: ' . $extensionDetails['ext_localconf.php'];
+				$phpCodeToCache[] = ' */';
+				$phpCodeToCache[] = '';
+				// Set $_EXTKEY and $_EXTCONF for this extension
+				$phpCodeToCache[] = '$_EXTKEY = \'' . $extensionKey . '\';';
+				$phpCodeToCache[] = '$_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];';
+				$phpCodeToCache[] = '';
+				// Add ext_localconf.php content of extension
+				$phpCodeToCache[] = trim(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extensionDetails['ext_localconf.php']));
+				$phpCodeToCache[] = '';
+				$phpCodeToCache[] = '';
+			}
 		}
 		$phpCodeToCache = implode(LF, $phpCodeToCache);
 		// Remove all start and ending php tags from content
@@ -1760,21 +1762,23 @@ tt_content.' . $key . $prefix . ' {
 		$phpCodeToCache[] = '';
 		// Iterate through loaded extensions and add ext_tables content
 		foreach ($extensionInformation as $extensionKey => $extensionDetails) {
-			// Include a header per extension to make the cache file more readable
-			$phpCodeToCache[] = '/**';
-			$phpCodeToCache[] = ' * Extension: ' . $extensionKey;
-			$phpCodeToCache[] = ' * File: ' . $extensionDetails['ext_tables.php'];
-			$phpCodeToCache[] = ' */';
-			$phpCodeToCache[] = '';
-			// Set $_EXTKEY and $_EXTCONF for this extension
-			$phpCodeToCache[] = '$_EXTKEY = \'' . $extensionKey . '\';';
-			$phpCodeToCache[] = '$_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];';
-			$phpCodeToCache[] = '';
-			// Add ext_tables.php content of extension
-			$phpCodeToCache[] = trim(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extensionDetails['ext_tables.php']));
-			$phpCodeToCache[] = '';
-			$phpCodeToCache[] = '\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();';
-			$phpCodeToCache[] = '';
+			if (isset($extensionDetails['ext_tables.php']) && $extensionDetails['ext_tables.php']) {
+				// Include a header per extension to make the cache file more readable
+				$phpCodeToCache[] = '/**';
+				$phpCodeToCache[] = ' * Extension: ' . $extensionKey;
+				$phpCodeToCache[] = ' * File: ' . $extensionDetails['ext_tables.php'];
+				$phpCodeToCache[] = ' */';
+				$phpCodeToCache[] = '';
+				// Set $_EXTKEY and $_EXTCONF for this extension
+				$phpCodeToCache[] = '$_EXTKEY = \'' . $extensionKey . '\';';
+				$phpCodeToCache[] = '$_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];';
+				$phpCodeToCache[] = '';
+				// Add ext_tables.php content of extension
+				$phpCodeToCache[] = trim(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extensionDetails['ext_tables.php']));
+				$phpCodeToCache[] = '';
+				$phpCodeToCache[] = '\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();';
+				$phpCodeToCache[] = '';
+			}
 		}
 		$phpCodeToCache = implode(LF, $phpCodeToCache);
 		// Remove all start and ending php tags from content
