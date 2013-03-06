@@ -26,22 +26,15 @@
 Ext.namespace('TYPO3.Components.PageTree');
 
 /**
- * @class TYPO3.Components.PageTree.FilteringTree
+ * @class TYPO3.Components.PageTree.LanguageTree
  *
- * Filtering Tree
+ * Language Tree
  *
  * @namespace TYPO3.Components.PageTree
  * @extends TYPO3.Components.PageTree.Tree
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
-TYPO3.Components.PageTree.FilteringTree = Ext.extend(TYPO3.Components.PageTree.Tree, {
-	/**
-	 * Search word
-	 *
-	 * @type {String}
-	 */
-	searchWord: '',
-
+TYPO3.Components.PageTree.LanguageTree = Ext.extend(TYPO3.Components.PageTree.Tree, {
 	/**
 	 * language ID
 	 *
@@ -56,8 +49,8 @@ TYPO3.Components.PageTree.FilteringTree = Ext.extend(TYPO3.Components.PageTree.T
 	 */
 	addTreeLoader: function() {
 		this.loader = new Ext.tree.TreeLoader({
-			directFn: this.treeDataProvider.getFilteredTree,
-			paramOrder: 'nodeId,attributes,searchWord',
+			directFn: this.treeDataProvider.getLanguageTree,
+			paramOrder: 'nodeId,attributes,language',
 			nodeParameter: 'nodeId',
 			baseAttrs: {
 				uiProvider: this.uiProvider
@@ -65,14 +58,12 @@ TYPO3.Components.PageTree.FilteringTree = Ext.extend(TYPO3.Components.PageTree.T
 
 			listeners: {
 				beforeload: function(treeLoader, node) {
-					if (!node.ownerTree.searchWord || node.ownerTree.searchWord === '') {
+					if (!node.ownerTree.language || node.ownerTree.language === '') {
 						return false;
 					}
 
-					node.attributes.nodeData.language = node.ownerTree.language;
-					node.attributes.nodeData.searchWord = node.ownerTree.searchWord;
 					treeLoader.baseParams.nodeId = node.id;
-					treeLoader.baseParams.searchWord = node.ownerTree.searchWord;
+					treeLoader.baseParams.language = node.ownerTree.language;
 					treeLoader.baseParams.attributes = node.attributes.nodeData;
 				}
 			}
@@ -81,4 +72,4 @@ TYPO3.Components.PageTree.FilteringTree = Ext.extend(TYPO3.Components.PageTree.T
 });
 
 // XTYPE Registration
-Ext.reg('TYPO3.Components.PageTree.FilteringTree', TYPO3.Components.PageTree.FilteringTree);
+Ext.reg('TYPO3.Components.PageTree.LanguageTree', TYPO3.Components.PageTree.LanguageTree);
