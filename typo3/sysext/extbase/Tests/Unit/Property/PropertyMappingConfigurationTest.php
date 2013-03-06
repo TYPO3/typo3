@@ -58,13 +58,38 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 	}
 
 	/**
-	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * DataProvider for typeConfiguration tests
+	 * @return array
 	 */
-	public function setTypeConverterOptionsCanBeRetrievedAgain() {
-		$this->propertyMappingConfiguration->setTypeConverterOptions('someConverter', array('k1' => 'v1', 'k2' => 'v2'));
-		$this->assertEquals('v1', $this->propertyMappingConfiguration->getConfigurationValue('someConverter', 'k1'));
-		$this->assertEquals('v2', $this->propertyMappingConfiguration->getConfigurationValue('someConverter', 'k2'));
+	public function provideTypeConverterSettings () {
+		return array(
+			// kept for historical reasons, this test was the initial one
+			'dummy data' => array(
+				'someConverter',
+				'someConverter',
+				array('k1' => 'v1', 'k2' => 'v2')
+			),
+			'typeConverterName oldschool' => array(
+				'Tx_Extbase_Property_TypeConverter_DateTimeConverter',
+				'TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter',
+				array('k1' => 'v1', 'k2' => 'v2')
+			),
+			'typeConverterName namespaced' => array(
+				'TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter',
+				'TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter',
+				array('k1' => 'v1', 'k2' => 'v2')
+			)
+		);
+	}
+
+	/**
+	 * @dataProvider provideTypeConverterSettings
+	 * @test
+	 */
+	public function setTypeConverterOptionsCanBeRetrievedAgain($converterName, $converterClass, $values) {
+		$this->propertyMappingConfiguration->setTypeConverterOptions($converterName, $values);
+		$this->assertEquals($values['k1'], $this->propertyMappingConfiguration->getConfigurationValue($converterClass, 'k1'));
+		$this->assertEquals($values['k2'], $this->propertyMappingConfiguration->getConfigurationValue($converterClass, 'k2'));
 	}
 
 	/**
