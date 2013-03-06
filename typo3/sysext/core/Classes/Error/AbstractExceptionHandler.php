@@ -117,7 +117,7 @@ abstract class AbstractExceptionHandler implements \TYPO3\CMS\Core\Error\Excepti
 				'action' => 0,
 				'error' => 2,
 				'details_nr' => 0,
-				'details' => $logMessage,
+				'details' => str_replace('%', '%%', $logMessage),
 				'IP' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'),
 				'tstamp' => $GLOBALS['EXEC_TIME'],
 				'workspace' => $workspace
