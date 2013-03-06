@@ -186,7 +186,7 @@ class ExtdirectTreeCommands {
 		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
 		try {
 			\TYPO3\CMS\Backend\Tree\Pagetree\Commands::moveNode($node, $destination);
-			$newNode = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNode($node->getId(), FALSE);
+			$newNode = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNode($node->getId(), FALSE, $node->getLanguage());
 			$newNode->setLeaf($node->isLeafNode());
 			$returnValue = $newNode->toArray();
 		} catch (\Exception $exception) {
@@ -210,7 +210,7 @@ class ExtdirectTreeCommands {
 		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
 		try {
 			\TYPO3\CMS\Backend\Tree\Pagetree\Commands::moveNode($node, -$destination);
-			$newNode = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNode($node->getId(), FALSE);
+			$newNode = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNode($node->getId(), FALSE, $node->getLanguage());
 			$newNode->setLeaf($node->isLeafNode());
 			$returnValue = $newNode->toArray();
 		} catch (\Exception $exception) {
@@ -237,7 +237,7 @@ class ExtdirectTreeCommands {
 		$dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\DataProvider');
 		try {
 			$newPageId = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::copyNode($node, $destination);
-			$newNode = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNode($newPageId);
+			$newNode = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNode($newPageId, TRUE, $node->getLanguage());
 			$newNode->setLeaf($node->isLeafNode());
 			$returnValue = $newNode->toArray();
 		} catch (\Exception $exception) {
@@ -264,7 +264,7 @@ class ExtdirectTreeCommands {
 		$dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\DataProvider');
 		try {
 			$newPageId = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::copyNode($node, -$destination);
-			$newNode = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNode($newPageId);
+			$newNode = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNode($newPageId, TRUE, $node->getLanguage());
 			$newNode->setLeaf($node->isLeafNode());
 			$returnValue = $newNode->toArray();
 		} catch (\Exception $exception) {
