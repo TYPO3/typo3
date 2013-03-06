@@ -779,25 +779,27 @@ class GeneralUtility {
 	 * Returns a proper HMAC on a given input string and secret TYPO3 encryption key.
 	 *
 	 * @param string $input Input string to create HMAC from
+	 * @param string $additionalSecret additionalSecret to prevent hmac beeing used in a different context
 	 * @return string resulting (hexadecimal) HMAC currently with a length of 40 (HMAC-SHA-1)
 	 */
-	static public function hmac($input) {
+	static public function hmac($input, $additionalSecret = '') {
 		$hashAlgorithm = 'sha1';
 		$hashBlocksize = 64;
 		$hmac = '';
+		$secret = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . $additionalSecret;
 		if (extension_loaded('hash') && function_exists('hash_hmac') && function_exists('hash_algos') && in_array($hashAlgorithm, hash_algos())) {
-			$hmac = hash_hmac($hashAlgorithm, $input, $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
+			$hmac = hash_hmac($hashAlgorithm, $input, $secret);
 		} else {
 			// Outer padding
 			$opad = str_repeat(chr(92), $hashBlocksize);
 			// Inner padding
 			$ipad = str_repeat(chr(54), $hashBlocksize);
-			if (strlen($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) > $hashBlocksize) {
+			if (strlen($secret) > $hashBlocksize) {
 				// Keys longer than block size are shorten
-				$key = str_pad(pack('H*', call_user_func($hashAlgorithm, $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])), $hashBlocksize, chr(0));
+				$key = str_pad(pack('H*', call_user_func($hashAlgorithm, $secret)), $hashBlocksize, chr(0));
 			} else {
 				// Keys shorter than block size are zero-padded
-				$key = str_pad($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'], $hashBlocksize, chr(0));
+				$key = str_pad($secret, $hashBlocksize, chr(0));
 			}
 			$hmac = call_user_func($hashAlgorithm, ($key ^ $opad) . pack('H*', call_user_func($hashAlgorithm, (($key ^ $ipad) . $input))));
 		}
