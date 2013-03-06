@@ -76,6 +76,28 @@ class Commands {
 	}
 
 	/**
+	 * Visibly the page overlay
+	 *
+	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
+	 * @return void
+	 */
+	static public function visiblyNodeOverlay(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node) {
+		/** @var $pageRepository \TYPO3\\CMS\\Frontend\\Page\\PageRepository */
+		$pageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		// $pageRepository->getPageOverlay doesn't give back hidden records, so we have to query the database
+		// Selecting overlay record:
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages_language_overlay', 'pid=' . intval($node->getWorkspaceId()) . '
+						AND sys_language_uid=' . intval($node->getLanguage()) . $pageRepository->enableFields('pages_language_overlay', 1), '1', '', '1');
+		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		$pageRepository->versionOL('pages_language_overlay', $row);
+		if (is_array($row)) {
+			$data['pages_language_overlay'][$row['uid']]['hidden'] = 0;
+			self::processTceCmdAndDataMap(array(), $data);
+		}
+	}
+
+	/**
 	 * Hide the page
 	 *
 	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
@@ -84,6 +106,22 @@ class Commands {
 	static public function disableNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node) {
 		$data['pages'][$node->getWorkspaceId()]['hidden'] = 1;
 		self::processTceCmdAndDataMap(array(), $data);
+	}
+
+	/**
+	 * Hide the page overlay
+	 *
+	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
+	 * @return void
+	 */
+	static public function disableNodeOverlay(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node) {
+		/** @var $pageRepository \TYPO3\\CMS\\Frontend\\Page\\PageRepository */
+		$pageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$pageOverlay = $pageRepository->getPageOverlay($node->getWorkspaceId(), $node->getLanguage());
+		if ($pageOverlay['_PAGES_OVERLAY'] === TRUE) {
+			$data['pages_language_overlay'][$pageOverlay['_PAGES_OVERLAY_UID']]['hidden'] = 1;
+			self::processTceCmdAndDataMap(array(), $data);
+		}
 	}
 
 	/**
@@ -120,8 +158,33 @@ class Commands {
 	 * @return void
 	 */
 	static public function updateNodeLabel(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node, $updatedLabel) {
-		$data['pages'][$node->getWorkspaceId()][$node->getTextSourceField()] = $updatedLabel;
-		self::processTceCmdAndDataMap(array(), $data);
+		preg_match('/\[.*\]/', $updatedLabel, $matches);
+		if (!((!empty($matches) && $GLOBALS['BE_USER']->checkLanguageAccess(0)) || (empty($matches) && $GLOBALS['BE_USER']->checkLanguageAccess($node->getLanguage()))) ) {
+			throw new \RuntimeException(implode(chr(10), array('Editing title of page id \'' . $node->getWorkspaceId() .  '\' failed. Editing default language is not allowed.')), 1365513336);
+			return FALSE;
+		}
+		$newPageOverlay = array();
+		if ($node->getLanguage() == 0 || !empty($matches)) {
+			if (!empty($matches)) {
+				$updatedLabel = substr($updatedLabel, 1, strlen($updatedLabel)-2);
+			}
+			$data['pages'][$node->getWorkspaceId()][$node->getTextSourceField()] = $updatedLabel;
+		} else {
+			/** @var $pageRepository \TYPO3\\CMS\\Frontend\\Page\\PageRepository */
+			$pageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+			$pageOverlay = $pageRepository->getPageOverlay($node->getWorkspaceId(), $node->getLanguage());
+
+			if ($pageOverlay['_PAGES_OVERLAY'] !== TRUE) {
+				$newPageOverlay = array (
+							'pid' => $node->getWorkspaceId(),
+							'language' => $node->getLanguage()
+							);
+				$data['pages_language_overlay'][$node->getWorkspaceId()][$node->getTextSourceField()] = $updatedLabel;
+			} else {
+				$data['pages_language_overlay'][$pageOverlay['_PAGES_OVERLAY_UID']][$node->getTextSourceField()] = $updatedLabel;
+			}
+		}
+		self::processTceCmdAndDataMap(array(), $data, $newPageOverlay);
 	}
 
 	/**
@@ -199,27 +262,45 @@ class Commands {
 	 *
 	 * @param array $cmd
 	 * @param array $data
+	 * @param array $newPageOverlay
 	 * @return array
 	 * @throws \RuntimeException if an error happened while the TCE processing
 	 */
-	static protected function processTceCmdAndDataMap(array $cmd, array $data = array()) {
+	static protected function processTceCmdAndDataMap(array $cmd, array $data = array(), array $newPageOverlay = array()) {
 		/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
 		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		$tce->start($data, $cmd);
-		$tce->copyTree = MathUtility::forceIntegerInRange($GLOBALS['BE_USER']->uc['copyLevels'], 0, 100);
-		if (count($cmd)) {
-			$tce->process_cmdmap();
-			$returnValues = $tce->copyMappingArray_merged;
-		} elseif (count($data)) {
-			$tce->process_datamap();
-			$returnValues = $tce->substNEWwithIDs;
+		if (!empty($newPageOverlay)) {
+			$newPageOverlay['uid'] = $tce->localize('pages', $newPageOverlay['pid'], $newPageOverlay['language']);
+			$data['pages_language_overlay'][$newPageOverlay['uid']] = $data['pages_language_overlay'][$newPageOverlay['pid']];
+			unset($data['pages_language_overlay'][$newPageOverlay['pid']]);
+
+			$tce2 = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce2->stripslashes_values = 0;
+			$tce2->start($data, $cmd);
+			$tce2->copyTree = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($GLOBALS['BE_USER']->uc['copyLevels'], 0, 100);
+			$tce2->process_datamap();
+			$returnValues = $tce2->substNEWwithIDs;
 		} else {
-			$returnValues = array();
+			$tce->copyTree = MathUtility::forceIntegerInRange($GLOBALS['BE_USER']->uc['copyLevels'], 0, 100);
+
+			if (count($cmd)) {
+				$tce->process_cmdmap();
+				$returnValues = $tce->copyMappingArray_merged;
+			} elseif (count($data)) {
+				$tce->process_datamap();
+				$returnValues = $tce->substNEWwithIDs;
+			} else {
+				$returnValues = array();
+			}
 		}
 		// check errors
 		if (count($tce->errorLog)) {
 			throw new \RuntimeException(implode(chr(10), $tce->errorLog), 1333754629);
+		}
+		if ($tce2 && count($tce2->errorLog)) {
+			throw new \RuntimeException(implode(chr(10), $tce2->errorLog), 1362391795);
 		}
 		return $returnValues;
 	}
@@ -229,10 +310,11 @@ class Commands {
 	 *
 	 * @param integer $nodeId
 	 * @param boolean $unsetMovePointers
+	 * @param integer $language
 	 * @return \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode
 	 */
-	static public function getNode($nodeId, $unsetMovePointers = TRUE) {
-		$record = self::getNodeRecord($nodeId, $unsetMovePointers);
+	static public function getNode($nodeId, $unsetMovePointers = TRUE, $language = 0) {
+		$record = self::getNodeRecord($nodeId, $unsetMovePointers, $language);
 		return self::getNewNode($record);
 	}
 
@@ -240,9 +322,10 @@ class Commands {
 	 * Returns the mount point path for a temporary mount or the given id
 	 *
 	 * @param integer $uid
+	 * @param integer $language
 	 * @return string
 	 */
-	static public function getMountPointPath($uid = -1) {
+	static public function getMountPointPath($uid = -1, $language = 0) {
 		if ($uid === -1) {
 			$uid = intval($GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint']);
 		}
@@ -256,7 +339,7 @@ class Commands {
 		array_shift($rootline);
 		$path = array();
 		foreach ($rootline as $rootlineElement) {
-			$record = self::getNodeRecord($rootlineElement['uid']);
+			$record = self::getNodeRecord($rootlineElement['uid'], TRUE, $language);
 			$text = $record['title'];
 			if (self::$useNavTitle && trim($record['nav_title']) !== '') {
 				$text = $record['nav_title'];
@@ -271,10 +354,23 @@ class Commands {
 	 *
 	 * @param integer $nodeId
 	 * @param boolean $unsetMovePointers
+	 * @param integer $language
 	 * @return array
 	 */
-	static public function getNodeRecord($nodeId, $unsetMovePointers = TRUE) {
+	static public function getNodeRecord($nodeId, $unsetMovePointers = TRUE, $language = 0) {
 		$record = BackendUtility::getRecordWSOL('pages', $nodeId, '*', '', TRUE, $unsetMovePointers);
+		if ($language > 0) {
+			/** @var $pageRepository \TYPO3\\CMS\\Frontend\\Page\\PageRepository */
+			$pageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+			$pageOverlay = $pageRepository->getPageOverlay($nodeId, $language);
+			if ($pageOverlay['title'] != '') {
+				$record['title'] = $pageOverlay['title'];
+			} else {
+				$record['title'] = "[".$record['title']."]";
+			}
+			$record['_PAGES_OVERLAY_UID'] = $pageOverlay['_PAGES_OVERLAY_UID'];
+		}
+		$record['language'] = $language;
 		return $record;
 	}
 
@@ -295,9 +391,10 @@ class Commands {
 	 *
 	 * @param array $record
 	 * @param integer $mountPoint
+	 * @param integer $language
 	 * @return \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode
 	 */
-	static public function getNewNode($record, $mountPoint = 0) {
+	static public function getNewNode($record, $mountPoint = 0, $language = 0) {
 		if (self::$titleLength === NULL) {
 			self::$useNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
 			self::$addIdAsPrefix = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
@@ -314,11 +411,40 @@ class Commands {
 		$subNode->setMountPoint($mountPoint);
 		$subNode->setWorkspaceId($record['_ORIG_uid'] ? $record['_ORIG_uid'] : $record['uid']);
 		$subNode->setBackgroundColor(self::$backgroundColors[$record['uid']]);
+		$subNode->setLanguage($record['language']);
 		$field = 'title';
 		$text = $record['title'];
 		if (self::$useNavTitle && trim($record['nav_title']) !== '') {
 			$field = 'nav_title';
 			$text = $record['nav_title'];
+		}
+		$qtipLanguage = '';
+		if (($language > 0 || $record['language'] > 0) && $record['uid'] > 0) {
+			/** @var $pageRepository \TYPO3\\CMS\\Frontend\\Page\\PageRepository */
+			$pageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+			$page = $pageRepository->getPage($record['uid']);
+			$pageOverlay = $pageRepository->getPageOverlay($record['uid'], $language);
+			if (empty($pageOverlay)) {
+				// $pageRepository->getPageOverlay doesn't give back hidden records, so we have to query the database
+				// Selecting overlay record:
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages_language_overlay', 'pid=' . intval($record['uid']) . '
+								AND sys_language_uid=' . intval($record['language']) . $pageRepository->enableFields('pages_language_overlay', 1), '1', '', '1');
+				$pageOverlay = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+				$pageRepository->versionOL('pages_language_overlay', $pageOverlay);
+			}
+			if ($pageOverlay['title'] != '') {
+				$text = $pageOverlay['title'];
+			}
+			if ($record['language'] > 0) {
+				$qtipLanguage = '<br />' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:tree.standardLanguagePageTitle', TRUE) . $page['title'];
+			}
+			if (substr($record['title'], 0, 1) == '[' && substr($record['title'], -1) == ']' && $pageOverlay['title'] == '') {
+				$qtipLanguage = '<br />' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:tree.noAlternativePageTitle', TRUE);
+			}
+			if ((substr($record['title'], 0, 1) != '[' || substr($record['title'], -1) != ']') && $pageOverlay['title'] == '') {
+				$text = '[' . $text . ']';
+			}
 		}
 		if (trim($text) === '') {
 			$visibleText = '[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', TRUE) . ']';
@@ -332,6 +458,7 @@ class Commands {
 			$suffix = $domain !== '' ? ' [' . $domain . ']' : '';
 		}
 		$qtip = str_replace(' - ', '<br />', htmlspecialchars(BackendUtility::titleAttribForPages($record, '', FALSE)));
+		$qtip .= $qtipLanguage;
 		$prefix = '';
 		$lockInfo = BackendUtility::isRecordLocked('pages', $record['uid']);
 		if (is_array($lockInfo)) {
@@ -354,6 +481,9 @@ class Commands {
 		$subNode->setText(htmlspecialchars($visibleText), $field, $prefix, htmlspecialchars($suffix) . $stat);
 		$subNode->setQTip($qtip);
 		if ($record['uid'] !== 0) {
+			if (!empty($pageOverlay) && $pageOverlay['hidden'] == 1) {
+				$record['hidden'] = 1;
+			}
 			$spriteIconCode = IconUtility::getSpriteIconForRecord('pages', $record);
 		} else {
 			$spriteIconCode = IconUtility::getSpriteIcon('apps-pagetree-root');

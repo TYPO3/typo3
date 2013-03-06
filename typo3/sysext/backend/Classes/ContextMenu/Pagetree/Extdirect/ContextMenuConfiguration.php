@@ -54,7 +54,7 @@ class ContextMenuConfiguration extends \TYPO3\CMS\Backend\ContextMenu\Extdirect\
 	public function getActionsForNodeArray($nodeData) {
 		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
 		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
-		$node->setRecord(\TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNodeRecord($node->getId()));
+		$node->setRecord(\TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNodeRecord($node->getId(), TRUE, $node->getLanguage()));
 		$this->initDataProvider();
 		$this->dataProvider->setContextMenuType('table.' . $node->getType());
 		$actionCollection = $this->dataProvider->getActionsForNode($node);

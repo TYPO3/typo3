@@ -118,9 +118,10 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	 * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
 	 * @param integer $mountPoint
 	 * @param integer $level internally used variable as a recursion limiter
+	 * @param integer $language the language ID for the page titles
 	 * @return \TYPO3\CMS\Backend\Tree\TreeNodeCollection
 	 */
-	public function getNodes(\TYPO3\CMS\Backend\Tree\TreeNode $node, $mountPoint = 0, $level = 0) {
+	public function getNodes(\TYPO3\CMS\Backend\Tree\TreeNode $node, $mountPoint = 0, $level = 0, $language = 0) {
 		/** @var $nodeCollection \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection */
 		$nodeCollection = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNodeCollection');
 		if ($level >= 99) {
@@ -159,6 +160,17 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 				if (!$subpage) {
 					continue;
 				}
+				if ($language > 0) {
+					/** @var $pageRepository \TYPO3\\CMS\\Frontend\\Page\\PageRepository */
+					$pageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+					$pageOverlay = $pageRepository->getPageOverlay($subpage['uid'], $language);
+					if ($pageOverlay['title'] != '') {
+						$subpage['title'] = $pageOverlay['title'];
+					} else {
+						$subpage['title'] = "[".$subpage['title']."]";
+					}
+				}
+				$subpage['language'] = $language;
 				$subNode = Commands::getNewNode($subpage, $mountPoint);
 				$subNode->setIsMountPoint($isMountPoint);
 				if ($isMountPoint && $this->showRootlineAboveMounts) {
@@ -166,7 +178,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 					$subNode->setReadableRootline($rootline);
 				}
 				if ($this->nodeCounter < $this->nodeLimit) {
-					$childNodes = $this->getNodes($subNode, $mountPoint, $level + 1);
+					$childNodes = $this->getNodes($subNode, $mountPoint, $level + 1, $language);
 					$subNode->setChildNodes($childNodes);
 					$this->nodeCounter += $childNodes->count();
 				} else {
@@ -199,12 +211,14 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	 * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
 	 * @param string $searchFilter
 	 * @param integer $mountPoint
+	 * @param integer $language
 	 * @return \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection the filtered nodes
 	 */
-	public function getFilteredNodes(\TYPO3\CMS\Backend\Tree\TreeNode $node, $searchFilter, $mountPoint = 0) {
+	public function getFilteredNodes(\TYPO3\CMS\Backend\Tree\TreeNode $node, $searchFilter, $mountPoint = 0, $language = 0) {
 		/** @var $nodeCollection \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection */
 		$nodeCollection = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNodeCollection');
-		$records = $this->getSubpages(-1, $searchFilter);
+		$language = intval($language);
+		$records = $this->getSubpages(-1, $searchFilter, $language);
 		if (!is_array($records) || !count($records)) {
 			return $nodeCollection;
 		} elseif (count($records) > 500) {
@@ -248,6 +262,9 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 			$amountOfRootlineElements = count($rootline);
 			for ($i = 0; $i < $amountOfRootlineElements; ++$i) {
 				$rootlineElement = $rootline[$i];
+				if ($rootlineElement['uid'] == $mountPoints[0] && $rootlineElement['uid'] !== $GLOBALS['BE_USER']->isInWebMount($rootlineElement['uid'])) {
+					continue;
+				}
 				$isInWebMount = $GLOBALS['BE_USER']->isInWebMount($rootlineElement['uid']);
 				if (!$isInWebMount
 					|| (intval($rootlineElement['uid']) === intval($mountPoints[0])
@@ -266,6 +283,17 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 					continue;
 				}
 				$rootlineElement = Commands::getNodeRecord($rootlineElement['uid']);
+				if ($language > 0) {
+					/** @var $pageRepository \TYPO3\\CMS\\Frontend\\Page\\PageRepository */
+					$pageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+					$pageOverlay = $pageRepository->getPageOverlay($rootlineElement['uid'], $language);
+					if ($pageOverlay['title'] != '') {
+						$rootlineElement['title'] = $pageOverlay['title'];
+					} else {
+						$rootlineElement['title'] = "[".$rootlineElement['title']."]";
+					}
+				}
+				$rootlineElement['language'] = $language;
 				$ident = intval($rootlineElement['sorting']) . intval($rootlineElement['uid']);
 				if ($reference && $reference->offsetExists($ident)) {
 					/** @var $refNode \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
@@ -278,7 +306,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 						$refNode->setChildNodes($reference);
 					}
 				} else {
-					$refNode = Commands::getNewNode($rootlineElement, $mountPoint);
+					$refNode = Commands::getNewNode($rootlineElement, $mountPoint, $language);
 					$replacement = '<span class="typo3-pagetree-filteringTree-highlight">$1</span>';
 					if ($isNumericSearchFilter && intval($rootlineElement['uid']) === intval($searchFilter)) {
 						$text = str_replace('$1', $refNode->getText(), $replacement);
@@ -289,7 +317,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 					/** @var $childCollection \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection */
 					$childCollection = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNodeCollection');
 					if ($i + 1 >= $amountOfRootlineElements) {
-						$childNodes = $this->getNodes($refNode, $mountPoint);
+						$childNodes = $this->getNodes($refNode, $mountPoint, '', $language);
 						foreach ($childNodes as $childNode) {
 							/** @var $childNode \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
 							$childRecord = $childNode->getRecord();
@@ -318,12 +346,14 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	 * Note: If you add the search filter parameter, the nodes will be filtered by this string.
 	 *
 	 * @param string $searchFilter
+	 * @param integer $language
 	 * @return \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection
 	 */
-	public function getTreeMounts($searchFilter = '') {
+	public function getTreeMounts($searchFilter = '', $language = 0) {
 		/** @var $nodeCollection \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection */
 		$nodeCollection = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNodeCollection');
 		$isTemporaryMountPoint = FALSE;
+		$language = intval($language);
 		$rootNodeIsVirtual = FALSE;
 		$mountPoints = intval($GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint']);
 		if (!$mountPoints) {
@@ -354,7 +384,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 					'uid' => 0,
 					'title' => $sitename
 				);
-				$subNode = Commands::getNewNode($record);
+				$subNode = Commands::getNewNode($record, 0, $language);
 				$subNode->setLabelIsEditable(FALSE);
 				if ($rootNodeIsVirtual) {
 					$subNode->setType('virtual_root');
@@ -371,7 +401,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 				if (!$record) {
 					continue;
 				}
-				$subNode = Commands::getNewNode($record, $mountPoint);
+				$subNode = Commands::getNewNode($record, $mountPoint, $language);
 				if ($this->showRootlineAboveMounts && !$isTemporaryMountPoint) {
 					$rootline = Commands::getMountPointPath($record['uid']);
 					$subNode->setReadableRootline($rootline);
@@ -384,9 +414,9 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 			$subNode->setIsMountPoint(TRUE);
 			$subNode->setDraggable(FALSE);
 			if ($searchFilter === '') {
-				$childNodes = $this->getNodes($subNode, $mountPoint);
+				$childNodes = $this->getNodes($subNode, $mountPoint, 0, $language);
 			} else {
-				$childNodes = $this->getFilteredNodes($subNode, $searchFilter, $mountPoint);
+				$childNodes = $this->getFilteredNodes($subNode, $searchFilter, $mountPoint, $language);
 				$subNode->setExpanded(TRUE);
 			}
 			$subNode->setChildNodes($childNodes);
@@ -428,15 +458,43 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	}
 
 	/**
+	 * Returns the where clause for fetching pages_language_overlay
+	 *
+	 * @param string $searchFilter
+	 * @param integer $language
+	 * @return string
+	 */
+	protected function getWhereClausePagesLanguageOverlay($searchFilter = '', $language = 0) {
+		$where = 'pages.uid=pages_language_overlay.pid AND pages_language_overlay.sys_language_uid=' . intval($language) . ' AND ';
+		$where .= $GLOBALS['BE_USER']->getPagePermsClause(1) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages') . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages');
+		if ($searchFilter !== '') {
+			if (is_numeric($searchFilter) && $searchFilter > 0) {
+				$seachWhere .= 'pages.uid = ' . intval($searchFilter) . ' OR ';
+			}
+			$searchFilter = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . $searchFilter . '%', 'pages_language_overlay');
+			$seachWhere .= 'pages_language_overlay.title LIKE ' . $searchFilter;
+			$where .= ' AND (' . $seachWhere . ')';
+		}
+		return $where;
+	}
+
+	/**
 	 * Returns all sub-pages of a given id
 	 *
 	 * @param integer $id
 	 * @param string $searchFilter
+	 * @param integer $language
 	 * @return array
 	 */
-	protected function getSubpages($id, $searchFilter = '') {
-		$where = $this->getWhereClause($id, $searchFilter);
-		return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'pages', $where, '', 'sorting', '', 'uid');
+	protected function getSubpages($id, $searchFilter = '', $language = 0) {
+		if ($searchFilter !== '' && $language > 0) {
+			$where = $this->getWhereClausePagesLanguageOverlay($searchFilter, $language);
+			$subpages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('pages.uid AS uid', 'pages,pages_language_overlay', $where, '', 'sorting', '', 'uid'	);
+		} else {
+			$where = $this->getWhereClause($id, $searchFilter);
+			$subpages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'pages', $where, '', 'sorting', '', 'uid');
+		}
+		return $subpages;
 	}
 
 	/**

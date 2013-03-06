@@ -589,10 +589,11 @@ class BackendUtility {
 	 * \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(<flags-xx>) to get an HTML
 	 * which will represent the flag of this language.
 	 *
+	 * @param boolean $onlyActive If TRUE, return only not hidden languages
 	 * @return array Array with languages (title, uid, flagIcon)
 	 */
-	static public function getSystemLanguages() {
-		$languages = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TranslationConfigurationProvider')->getSystemLanguages();
+	static public function getSystemLanguages($onlyActive = FALSE) {
+		$languages = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TranslationConfigurationProvider')->getSystemLanguages(0, '', $onlyActive);
 		$sysLanguages = array();
 		foreach ($languages as $language) {
 			if ($language['uid'] !== -1) {
