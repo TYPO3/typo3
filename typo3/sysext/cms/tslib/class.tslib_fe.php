@@ -2676,7 +2676,27 @@
 							break;
 					}
 				}
-				t3lib_utility_Http::redirect($this->jumpurl, $statusCode);
+				$allowRedirect = FALSE;
+				if (t3lib_div::hmac($this->jumpurl, 'jumpurl') === (string)t3lib_div::_GP('juHash')) {
+					$allowRedirect = TRUE;
+				} elseif (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['jumpurlRedirectHandler'])) {
+					foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['jumpurlRedirectHandler'] as $classReference) {
+						$hookObject = t3lib_div::getUserObj($classReference);
+						$allowRedirectFromHook = FALSE;
+						if (method_exists($hookObject, 'jumpurlRedirectHandler')) {
+							$allowRedirectFromHook = $hookObject->jumpurlRedirectHandler($this->jumpurl, $this);
+						}
+						if ($allowRedirectFromHook === TRUE) {
+							$allowRedirect = TRUE;
+							break;
+						}
+					}
+				}
+				if ($allowRedirect) {
+					t3lib_utility_Http::redirect($this->jumpurl, $statusCode);
+				} else {
+					throw new Exception('jumpurl: Calculated juHash did not match the submitted juHash.', 1359987599);
+				}
 			}
 		}
 	}
