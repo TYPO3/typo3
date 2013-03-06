@@ -581,15 +581,17 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				$typeOfRelation = ($columnMap instanceof Tx_Extbase_Persistence_Mapper_ColumnMap ? $columnMap->getTypeOfRelation() : NULL);
 				if ($typeOfRelation === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 					$relationTableName = $columnMap->getRelationTableName();
-					$sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=' . $this->getPlainValue($operand2) . ')';
+					$sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=?)';
+					$parameters[] = intval($this->getPlainValue($operand2));
 				} elseif ($typeOfRelation === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 					$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 					if (isset($parentKeyFieldName)) {
 						$childTableName = $columnMap->getChildTableName();
-						$sql['where'][] = $tableName . '.uid=(SELECT ' . $childTableName . '.' . $parentKeyFieldName . ' FROM ' . $childTableName . ' WHERE ' . $childTableName . '.uid=' . $this->getPlainValue($operand2) . ')';
+						$sql['where'][] = $tableName . '.uid=(SELECT ' . $childTableName . '.' . $parentKeyFieldName . ' FROM ' . $childTableName . ' WHERE ' . $childTableName . '.uid=?)';
+						$parameters[] = intval($this->getPlainValue($operand2));
 					} else {
-						$statement = 'FIND_IN_SET(' . $this->getPlainValue($operand2) . ',' . $tableName . '.' . $columnName . ')';
-						$sql['where'][] = $statement;
+						$sql['where'][] = 'FIND_IN_SET(?,' . $tableName . '.' . $columnName . ')';
+						$parameters[] = intval($this->getPlainValue($operand2));
 					}
 				} else {
 					throw new Tx_Extbase_Persistence_Exception_RepositoryException(
@@ -918,9 +920,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	protected function parseLimitAndOffset($limit, $offset, array &$sql) {
 		if ($limit !== NULL && $offset !== NULL) {
-			$sql['limit'] = $offset . ', ' . $limit;
+			$sql['limit'] = intval($offset) . ', ' . intval($limit);
 		} elseif ($limit !== NULL) {
-			$sql['limit'] = $limit;
+			$sql['limit'] = intval($limit);
 		}
 	}
 
