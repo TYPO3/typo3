@@ -758,11 +758,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$extensionName = uniqid('foo');
 		$extLocalconfLocation = PATH_site . 'typo3temp/' . uniqid('test_ext_localconf') . '.php';
 		$this->testFilesToDelete[] = $extLocalconfLocation;
-		file_put_contents($extLocalconfLocation, '<?php
-
-throw new \RuntimeException(\'\', 1340559079);
-
-?>');
+		file_put_contents($extLocalconfLocation, "<?php\n\nthrow new RuntimeException('', 1340559079);\n\n?>");
 		$GLOBALS['TYPO3_LOADED_EXT'] = array(
 			$extensionName => array(
 				'ext_localconf.php' => $extLocalconfLocation
@@ -782,11 +778,7 @@ throw new \RuntimeException(\'\', 1340559079);
 		$extLocalconfLocation = PATH_site . 'typo3temp/' . uniqid('test_ext_localconf') . '.php';
 		$this->testFilesToDelete[] = $extLocalconfLocation;
 		$uniqueStringInLocalconf = uniqid('foo');
-		file_put_contents($extLocalconfLocation, '<?php
-
-' . $uniqueStringInLocalconf . '
-
-?>');
+		file_put_contents($extLocalconfLocation, "<?php\n\n" . $uniqueStringInLocalconf . "\n\n?>");
 		$GLOBALS['TYPO3_LOADED_EXT'] = array(
 			$extensionName => array(
 				'ext_localconf.php' => $extLocalconfLocation
@@ -802,6 +794,29 @@ throw new \RuntimeException(\'\', 1340559079);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains($uniqueStringInLocalconf), $this->anything());
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtilityAccessibleProxy::createExtLocalconfCacheEntry();
+	}
+
+	/**
+	 * @test
+	 */
+	public function createExtLocalconfCacheEntryWritesCacheEntryWithExtensionContentOnlyIfExtLocalconfExists() {
+		$extensionName = uniqid('foo');
+		$GLOBALS['TYPO3_LOADED_EXT'] = array(
+			$extensionName => array(),
+		);
+		$mockCache = $this->getMock(
+			'TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend',
+			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'),
+			array(),
+			'',
+			FALSE
+		);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+		$mockCache->expects($this->once())
+			->method('set')
+			->with($this->anything(), $this->logicalNot($this->stringContains($extensionName)), $this->anything());
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtilityAccessibleProxy::createExtLocalconfCacheEntry();
 	}
 
@@ -977,11 +992,7 @@ throw new \RuntimeException(\'\', 1340559079);
 		$extTablesLocation = PATH_site . 'typo3temp/' . uniqid('test_ext_tables') . '.php';
 		$this->testFilesToDelete[] = $extTablesLocation;
 		$uniqueStringInTables = uniqid('foo');
-		file_put_contents($extTablesLocation, '<?php
-
-' . $uniqueStringInTables . '
-
-?>');
+		file_put_contents($extTablesLocation, "<?php\n\n$uniqueStringInTables\n\n?>");
 		$GLOBALS['TYPO3_LOADED_EXT'] = array(
 			$extensionName => array(
 				'ext_tables.php' => $extTablesLocation
@@ -997,6 +1008,29 @@ throw new \RuntimeException(\'\', 1340559079);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains($uniqueStringInTables), $this->anything());
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry();
+	}
+
+	/**
+	 * @test
+	 */
+	public function createExtTablesCacheEntryWritesCacheEntryWithExtensionContentOnlyIfExtTablesExists() {
+		$extensionName = uniqid('foo');
+		$GLOBALS['TYPO3_LOADED_EXT'] = array(
+			$extensionName => array(),
+		);
+		$mockCache = $this->getMock(
+			'TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend',
+			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'),
+			array(),
+			'',
+			FALSE
+		);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+		$mockCache->expects($this->once())
+			->method('set')
+			->with($this->anything(), $this->logicalNot($this->stringContains($extensionName)), $this->anything());
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry();
 	}
 
