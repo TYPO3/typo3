@@ -116,7 +116,7 @@ class SystemEnvironmentBuilder {
 		// This version, branch and copyright
 		define('TYPO3_version', '6.1-dev');
 		define('TYPO3_branch', '6.1');
-		define('TYPO3_copyright_year', '1998-2012');
+		define('TYPO3_copyright_year', '1998-2013');
 		// TYPO3 external links
 		define('TYPO3_URL_GENERAL', 'http://typo3.org/');
 		define('TYPO3_URL_ORG', 'http://typo3.org/');
