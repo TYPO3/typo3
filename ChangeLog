@@ -1,3 +1,9 @@
+2013-03-07  b2ae78f                  [RELEASE] Release of TYPO3 4.5.25 (TYPO3 Release Team)
+2013-03-06  abaf8be  #46071          [BUFIX] External URL regression by jumpurl security fix (Helmut Hummel)
+2013-03-06  84cc884                  [TASK] Set TYPO3 version to 4.5.25-dev (TYPO3 Release Team)
+2013-03-06  90ace0b                  [RELEASE] Release of TYPO3 4.5.24 (TYPO3 Release Team)
+
+
 2013-03-06  3cbef1f                  [RELEASE] Release of TYPO3 4.5.24 (TYPO3 Release Team)
 2013-03-06  79e2370                  [TASK] Raise submodule pointer (TYPO3 Release Team)
 2013-03-06  71135d8  #28587          [SECURITY] Open redirection with jumpurl (Franz G. Jahn)
