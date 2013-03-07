@@ -1,3 +1,9 @@
+2013-03-07  5a1fa79                  [RELEASE] Release of TYPO3 6.0.4 (TYPO3 Release Team)
+2013-03-06  0bee97e  #46071          [BUFIX] External URL regression by jumpurl security fix (Helmut Hummel)
+2013-03-06  bb0dc58                  [TASK] Set TYPO3 version to 6.0.4-dev (TYPO3 Release Team)
+2013-03-06  1398455                  [RELEASE] Release of TYPO3 6.0.3 (TYPO3 Release Team)
+
+
 2013-03-06  ca8c78e                  [RELEASE] Release of TYPO3 6.0.3 (TYPO3 Release Team)
 2013-03-06  87b38e2                  [TASK] Raise submodule pointer (TYPO3 Release Team)
 2013-03-06  c6f0f43  #28587          [SECURITY] Open redirection with jumpurl (Franz G. Jahn)
