@@ -213,7 +213,9 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 			}
 			// Cache
 			$buttons['cache'] = '<a href="' . htmlspecialchars(($this->listURL() . '&clear_cache=1')) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.clear_cache', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-cache-clear') . '</a>';
-			if ($this->table) {
+			if ($this->table && (!isset($GLOBALS['SOBE']->modTSconfig['properties']['noExportRecordsLinks'])
+				|| (isset($GLOBALS['SOBE']->modTSconfig['properties']['noExportRecordsLinks']) && !$GLOBALS['SOBE']->modTSconfig['properties']['noExportRecordsLinks']))
+			) {
 				// CSV
 				$buttons['csv'] = '<a href="' . htmlspecialchars(($this->listURL() . '&csv=1')) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.csv', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('mimetypes-text-csv') . '</a>';
 				// Export
