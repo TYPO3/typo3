@@ -236,18 +236,18 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			$return = self::$defaultCategories;
 		} else {
 			if (is_string($cat)) {
-				// default category
-				$catIndex = 4;
-				if (array_key_exists(strtolower($cat), self::$defaultCategories)) {
-					$catIndex = self::$defaultCategories[strtolower($cat)];
+				$catIndex = array_search(strtolower($cat), self::$defaultCategories);
+				if ($catIndex === FALSE) {
+					// default category
+					$catIndex = 4;
 				}
 				$return = $catIndex;
 			} else {
 				if (is_int($cat) && $cat >= 0) {
-					$catTitle = array_search($cat, self::$defaultCategories);
 					// default category
-					if (!$catTitle) {
-						$catTitle = 'misc';
+					$catTitle = 'misc';
+					if (array_key_exists($cat, self::$defaultCategories)) {
+						$catTitle = self::$defaultCategories[$cat];
 					}
 					$return = $catTitle;
 				}
