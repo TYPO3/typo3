@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2012 Extbase Team (http://forge.typo3.org/projects/typo3v4-mvc)
+ *  (c) 2010-2013 Extbase Team (http://forge.typo3.org/projects/typo3v4-mvc)
  *  Extbase is a backport of TYPO3 Flow. All credits go to the TYPO3 Flow team.
  *  All rights reserved
  *
@@ -34,6 +34,22 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  */
 class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder {
 
+	/**
+	 * @var \TYPO3\CMS\Core\Resource\FileRepository
+	 * @inject
+	 */
+	protected $fileRepository;
+
+	/**
+	 * @return \TYPO3\CMS\Core\Resource\FileReference
+	 */
+	public function getOriginalResource() {
+		if ($this->originalResource === NULL) {
+			$this->originalResource = $this->fileRepository->findFileReferenceByUid($this->getUid());
+		}
+
+		return $this->originalResource;
+	}
 }
 
 ?>
