@@ -4,7 +4,8 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Oliver Hader <oliver.hader@typo3.org>
+ *  (c) 2010-2013 Extbase Team (http://forge.typo3.org/projects/typo3v4-mvc)
+ *  Extbase is a backport of TYPO3 Flow. All credits go to the TYPO3 Flow team.
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,6 +31,22 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  */
 class File extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder {
 
+	/**
+	 * @var \TYPO3\CMS\Core\Resource\FileRepository
+	 * @inject
+	 */
+	protected $fileRepository;
+
+	/**
+	 * @return \TYPO3\CMS\Core\Resource\File
+	 */
+	public function getOriginalResource() {
+		if ($this->originalResource === NULL) {
+			$this->originalResource = $this->fileRepository->findByUid($this->getUid());
+		}
+
+		return $this->originalResource;
+	}
 }
 
 ?>
