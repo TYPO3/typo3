@@ -1071,11 +1071,11 @@ class InlineElement {
 		$current = $this->inlineStructure['unstable'];
 		// The parent table - this table embeds the current table
 		$parent = $this->getStructureLevel(-1);
+		$config = $parent['config'];
 		// Get TCA 'config' of the parent table
-		if (!$this->checkConfiguration($parent['config'])) {
+		if (!$this->checkConfiguration($config)) {
 			return $this->getErrorMessageForAJAX('Wrong configuration in table ' . $parent['table']);
 		}
-		$config = $parent['config'];
 		$collapseAll = isset($config['appearance']['collapseAll']) && $config['appearance']['collapseAll'];
 		$expandSingle = isset($config['appearance']['expandSingle']) && $config['appearance']['expandSingle'];
 		// Put the current level also to the dynNestedStack of TCEforms:
@@ -1090,6 +1090,14 @@ class InlineElement {
 				$childLanguageField = $GLOBALS['TCA'][$current['table']]['ctrl']['languageField'];
 				if ($parentRecord[$parentLanguageField] > 0) {
 					$record[$childLanguageField] = $parentRecord[$parentLanguageField];
+				}
+			}
+			// Set default values for new created records
+			if (isset($config['foreign_table_defaultValues']) && is_array($config['foreign_table_defaultValues'])) {
+				foreach($config['foreign_table_defaultValues'] as $fieldName => $defaultValue) {
+					if(isset($record[$fieldName])) {
+						$record[$fieldName] = $defaultValue;
+					}
 				}
 			}
 		} else {
