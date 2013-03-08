@@ -148,7 +148,7 @@ pointing to the source package:
 
 On Windows Vista or Windows 7 create a symbolic link named typo3_src
 pointing to the source package:
-	mklink /D C:\<dir>\typo3_src-4.5.0 C:\<dir>\example.com\typo3_src
+	mklink /D C:\<dir>\example.com\typo3_src C:\<dir>\typo3_src-4.5.0
 
 Users of Windows XP/2000 or newer can use the "junction" program by
 Marc Russinovich to create links. The program can be obtained at:
