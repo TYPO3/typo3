@@ -64,8 +64,8 @@ return array(
 				'type' => 'input'
 			)
 		),
-		'detail_nr' => array(
-			'label' => 'detail_nr',
+		'details_nr' => array(
+			'label' => 'details_nr',
 			'config' => array(
 				'type' => 'input'
 			)
