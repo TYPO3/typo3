@@ -266,7 +266,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			$sql = $this->buildQuery($statementParts, $parameters);
 		}
 		$tableName = 'foo';
-		if (is_array($statementParts && !empty($statementParts['tables'][0]))) {
+		if (is_array($statementParts) && !empty($statementParts['tables'][0])) {
 			$tableName = $statementParts['tables'][0];
 		}
 		$this->replacePlaceholders($sql, $parameters, $tableName);
