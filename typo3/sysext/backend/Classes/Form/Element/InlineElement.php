@@ -1079,11 +1079,11 @@ class InlineElement {
 		$current = $this->inlineStructure['unstable'];
 		// The parent table - this table embeds the current table
 		$parent = $this->getStructureLevel(-1);
+		$config = $parent['config'];
 		// Get TCA 'config' of the parent table
-		if (!$this->checkConfiguration($parent['config'])) {
+		if (!$this->checkConfiguration($config)) {
 			return $this->getErrorMessageForAJAX('Wrong configuration in table ' . $parent['table']);
 		}
-		$config = $parent['config'];
 		$collapseAll = isset($config['appearance']['collapseAll']) && $config['appearance']['collapseAll'];
 		$expandSingle = isset($config['appearance']['expandSingle']) && $config['appearance']['expandSingle'];
 		// Put the current level also to the dynNestedStack of TCEforms:
@@ -1091,6 +1091,29 @@ class InlineElement {
 		// Dynamically create a new record using \TYPO3\CMS\Backend\Form\DataPreprocessor
 		if (!$foreignUid || !MathUtility::canBeInterpretedAsInteger($foreignUid) || $config['foreign_selector']) {
 			$record = $this->getNewRecord($this->inlineFirstPid, $current['table']);
+			// Set default values for new created records
+			if (isset($config['foreign_record_defaults']) && is_array($config['foreign_record_defaults'])) {
+				$foreignTableConfig = $GLOBALS['TCA'][$current['table']];
+				// the following system relevant fields can't be set by foreign_record_defaults
+				$notSettableFields = array(
+					'uid', 'pid', 't3ver_oid', 't3ver_id', 't3ver_label', 't3ver_wsid', 't3ver_state', 't3ver_stage',
+					't3ver_count', 't3ver_tstamp', 't3ver_move_id'
+				);
+				$configurationKeysForNotSettableFields = array(
+					'crdate', 'cruser_id', 'delete', 'origUid', 'transOrigDiffSourceField', 'transOrigPointerField',
+					'tstamp'
+				);
+				foreach ($configurationKeysForNotSettableFields as $configurationKey) {
+					if (isset($foreignTableConfig['ctrl'][$configurationKey])) {
+						$notSettableFields[] = $foreignTableConfig['ctrl'][$configurationKey];
+					}
+				}
+				foreach ($config['foreign_record_defaults'] as $fieldName => $defaultValue) {
+					if (isset($foreignTableConfig['columns'][$fieldName]) && !in_array($fieldName, $notSettableFields)) {
+						$record[$fieldName] = $defaultValue;
+					}
+				}
+			}
 			// Set language of new child record to the language of the parent record:
 			if ($config['localizationMode'] == 'select') {
 				$parentRecord = $this->getRecord(0, $parent['table'], $parent['uid']);
