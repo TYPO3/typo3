@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2013 Tobias Burger <tobias_burger@hotmail.com>
+ *  (c) 2013 Philipp Gampe <philipp.gampe@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,11 +25,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  ***************************************************************/
 
 /**
- * Testcase for the WinCache cache backend
+ * Test case
  *
- * @author Tobias Burger <tobias_burger@hotmail.com>
+ * @author Philipp Gampe <philipp.gampe@typo3.org>
  */
-class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class XcacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Sets up this testcase
@@ -37,8 +37,11 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		if (!extension_loaded('wincache')) {
-			$this->markTestSkipped('WinCache extension was not available');
+		if (!extension_loaded('xcache')) {
+			$this->markTestSkipped('xcache extension was not available');
+		}
+		if (php_sapi_name() === 'cli') {
+			$this->markTestSkipped('XCache is not supported in CLI mode.');
 		}
 	}
 
@@ -47,7 +50,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \TYPO3\CMS\Core\Cache\Exception
 	 */
 	public function setThrowsExceptionIfNoFrontEndHasBeenSet() {
-		$backend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend('Testing');
+		$backend = new \TYPO3\CMS\Core\Cache\Backend\XcacheBackend('Testing');
 		$data = 'Some data';
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
@@ -62,7 +65,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 		$inCache = $backend->has($identifier);
-		$this->assertTrue($inCache, 'WinCache backend failed to set and check entry');
+		$this->assertTrue($inCache, 'xcache backend failed to set and check entry');
 	}
 
 	/**
@@ -74,7 +77,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 		$fetchedData = $backend->get($identifier);
-		$this->assertEquals($data, $fetchedData, 'Winache backend failed to set and retrieve data');
+		$this->assertEquals($data, $fetchedData, 'xcache backend failed to set and retrieve data');
 	}
 
 	/**
@@ -87,7 +90,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$backend->set($identifier, $data);
 		$backend->remove($identifier);
 		$inCache = $backend->has($identifier);
-		$this->assertFalse($inCache, 'Failed to set and remove data from WinCache backend');
+		$this->assertFalse($inCache, 'Failed to set and remove data from xcache backend');
 	}
 
 	/**
@@ -101,7 +104,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$otherData = 'some other data';
 		$backend->set($identifier, $otherData);
 		$fetchedData = $backend->get($identifier);
-		$this->assertEquals($otherData, $fetchedData, 'WinCache backend failed to overwrite and retrieve data');
+		$this->assertEquals($otherData, $fetchedData, 'xcache backend failed to overwrite and retrieve data');
 	}
 
 	/**
@@ -157,13 +160,13 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function flushByTagRemovesCacheEntriesWithSpecifiedTag() {
 		$backend = $this->setUpBackend();
 		$data = 'some data' . microtime();
-		$backend->set('BackendWincacheTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
-		$backend->set('BackendWincacheTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
-		$backend->set('BackendWincacheTest3', $data, array('UnitTestTag%test'));
+		$backend->set('BackendXcacheTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
+		$backend->set('BackendXcacheTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
+		$backend->set('BackendXcacheTest3', $data, array('UnitTestTag%test'));
 		$backend->flushByTag('UnitTestTag%special');
-		$this->assertTrue($backend->has('BackendWincacheTest1'), 'BackendWincacheTest1');
-		$this->assertFalse($backend->has('BackendWincacheTest2'), 'BackendWincacheTest2');
-		$this->assertTrue($backend->has('BackendWincacheTest3'), 'BackendWincacheTest3');
+		$this->assertTrue($backend->has('BackendXcacheTest1'), 'BackendXcacheTest1');
+		$this->assertFalse($backend->has('BackendXcacheTest2'), 'BackendXcacheTest2');
+		$this->assertTrue($backend->has('BackendXcacheTest3'), 'BackendXcacheTest3');
 	}
 
 	/**
@@ -172,13 +175,13 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function flushRemovesAllCacheEntries() {
 		$backend = $this->setUpBackend();
 		$data = 'some data' . microtime();
-		$backend->set('BackendWincacheTest1', $data);
-		$backend->set('BackendWincacheTest2', $data);
-		$backend->set('BackendWincacheTest3', $data);
+		$backend->set('BackendXcacheTest1', $data);
+		$backend->set('BackendXcacheTest2', $data);
+		$backend->set('BackendXcacheTest3', $data);
 		$backend->flush();
-		$this->assertFalse($backend->has('BackendWincacheTest1'), 'BackendWincacheTest1');
-		$this->assertFalse($backend->has('BackendWincacheTest2'), 'BackendWincacheTest2');
-		$this->assertFalse($backend->has('BackendWincacheTest3'), 'BackendWincacheTest3');
+		$this->assertFalse($backend->has('BackendXcacheTest1'), 'BackendXcacheTest1');
+		$this->assertFalse($backend->has('BackendXcacheTest2'), 'BackendXcacheTest2');
+		$this->assertFalse($backend->has('BackendXcacheTest3'), 'BackendXcacheTest3');
 	}
 
 	/**
@@ -187,11 +190,11 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function flushRemovesOnlyOwnEntries() {
 		$thisCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
 		$thisCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thisCache'));
-		$thisBackend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend('Testing');
+		$thisBackend = new \TYPO3\CMS\Core\Cache\Backend\XcacheBackend('Testing');
 		$thisBackend->setCache($thisCache);
 		$thatCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
 		$thatCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thatCache'));
-		$thatBackend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend('Testing');
+		$thatBackend = new \TYPO3\CMS\Core\Cache\Backend\XcacheBackend('Testing');
 		$thatBackend->setCache($thatCache);
 		$thisBackend->set('thisEntry', 'Hello');
 		$thatBackend->set('thatEntry', 'World!');
@@ -215,13 +218,13 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Sets up the WinCache backend used for testing
+	 * Sets up the xcache backend used for testing
 	 *
-	 * @return \TYPO3\CMS\Core\Cache\Backend\WincacheBackend
+	 * @return \TYPO3\CMS\Core\Cache\Backend\XcacheBackend
 	 */
 	protected function setUpBackend() {
 		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
-		$backend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend('Testing');
+		$backend = new \TYPO3\CMS\Core\Cache\Backend\XcacheBackend('Testing');
 		$backend->setCache($cache);
 		return $backend;
 	}
