@@ -17,6 +17,11 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures;
 class ConstraintSyntaxTreeNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode {
 	public $callProtocol = array();
 
+	/**
+	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
+	 */
+	protected $variableContainer;
+
 	public function __construct(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $variableContainer) {
 		$this->variableContainer = $variableContainer;
 	}

@@ -256,7 +256,6 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 		$errors = $this->controllerContext->getRequest()->getErrors();
 		$formObjectName = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObjectName');
 		$propertyName = $this->arguments['property'];
-		$formErrors = array();
 		foreach ($errors as $error) {
 			if ($error instanceof \TYPO3\CMS\Extbase\Validation\PropertyError && $error->getPropertyName() === $formObjectName) {
 				$formErrors = $error->getErrors();

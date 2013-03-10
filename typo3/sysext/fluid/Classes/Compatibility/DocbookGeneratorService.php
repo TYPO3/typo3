@@ -13,17 +13,16 @@ namespace TYPO3\CMS\Fluid\Compatibility;
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
+
 /**
  * Class extending the docbook generator service for use in typo3 v4.
  *
  * Usage in TypoScript:
  *
- *
- *
  * config.disableAllHeaderCode = 1
  * page = PAGE
  * page.10 = USER_INT
- * page.10.userFunc = Tx_Fluid_Compatibility_DocbookGeneratorService->userFunc
+ * page.10.userFunc = \TYPO3\CMS\Fluid\Compatibility\DocbookGeneratorService->userFunc
  *
  * @internal
  */
@@ -35,6 +34,11 @@ class DocbookGeneratorService extends \TYPO3\CMS\Fluid\Service\DocbookGenerator 
 	 */
 	protected $objectManager;
 
+	/**
+	 * User function
+	 *
+	 * @return string
+	 */
 	public function userFunc() {
 		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$this->injectDocCommentParser($this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\DocCommentParser'));
@@ -42,6 +46,12 @@ class DocbookGeneratorService extends \TYPO3\CMS\Fluid\Service\DocbookGenerator 
 		return $this->generateDocbook('TYPO3\CMS\Fluid\ViewHelpers');
 	}
 
+	/**
+	 * Get class names within namespace
+	 *
+	 * @param string $namespace
+	 * @return array
+	 */
 	protected function getClassNamesInNamespace($namespace) {
 		$namespaceParts = explode('\\', $namespace);
 		if ($namespaceParts[count($namespaceParts) - 1] == '') {
@@ -54,6 +64,14 @@ class DocbookGeneratorService extends \TYPO3\CMS\Fluid\Service\DocbookGenerator 
 		return $classNames;
 	}
 
+	/**
+	 * Search recursivly class names within namespace
+	 *
+	 * @param string $namespace
+	 * @param string $directory
+	 * @param array $classNames
+	 * @return void
+	 */
 	private function recursiveClassNameSearch($namespace, $directory, &$classNames) {
 
 		$dh = opendir($directory);

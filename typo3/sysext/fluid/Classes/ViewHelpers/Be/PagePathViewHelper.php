@@ -42,7 +42,6 @@ class PagePathViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 	 * @see template::getPagePath() Note: can't call this method as it's protected!
 	 */
 	public function render() {
-		$doc = $this->getDocInstance();
 		$id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 		$pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(1));
 		// Is this a real page

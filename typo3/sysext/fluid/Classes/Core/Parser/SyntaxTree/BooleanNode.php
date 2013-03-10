@@ -224,14 +224,12 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 				} else {
 					return ($evaluatedLeftSide == $evaluatedRightSide);
 				}
-				break;
 			case '!=':
 				if (is_object($evaluatedLeftSide) || is_object($evaluatedRightSide)) {
 					return ($evaluatedLeftSide !== $evaluatedRightSide);
 				} else {
 					return ($evaluatedLeftSide != $evaluatedRightSide);
 				}
-				break;
 			case '%':
 				if (!self::isComparable($evaluatedLeftSide, $evaluatedRightSide)) {
 					return FALSE;

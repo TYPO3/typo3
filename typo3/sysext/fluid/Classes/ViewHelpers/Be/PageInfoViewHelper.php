@@ -58,7 +58,7 @@ class PageInfoViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 		} else {
 			// On root-level of page tree
 			// Make Icon
-			$iconImg = '<img' . IconUtility::skinImg($this->backPath, 'gfx/i/_icon_website.gif') . ' alt="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '" />';
+			$iconImg = '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_website.gif') . ' alt="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '" />';
 			if ($GLOBALS['BE_USER']->user['admin']) {
 				$theIcon = $doc->wrapClickMenuOnIcon($iconImg, 'pages', 0);
 			} else {

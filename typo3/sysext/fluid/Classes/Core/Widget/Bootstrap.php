@@ -39,6 +39,11 @@ class Bootstrap {
 	protected $objectManager;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 */
+	protected $configurationManager;
+
+	/**
 	 * @param string $content The content
 	 * @param array $configuration The TS configuration array
 	 * @return string $content The processed content
