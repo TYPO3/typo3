@@ -36,11 +36,21 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 	protected $fakedExtensions = array();
 
 	/**
+	 * @var array List of created files that need to be removed in tearDown() again
+	 */
+	protected $filesToRemove = array();
+
+	/**
 	 * @return void
 	 */
 	public function tearDown() {
 		foreach ($this->fakedExtensions as $extension => $dummy) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir(PATH_site . 'typo3conf/ext/' . $extension, TRUE);
+		}
+		foreach ($this->filesToRemove as $file) {
+				if (file_exists($file)) {
+					unlink($file);
+				}
 		}
 	}
 
@@ -164,6 +174,25 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$this->assertTrue(is_dir($extDirPath));
 		$fileHandlerMock->_call('removeDirectory', $extDirPath);
 		$this->assertFalse(is_dir($extDirPath));
+	}
+
+	/**
+	 * @test
+	 * @return void
+	 */
+	public function removeDirectoryRemovesSymlinkButNotTheTargetDirectory() {
+		$realPath = $this->fakedExtensions[$this->createFakeExtension()]['siteAbsPath'];
+		$symlinkPath = $realPath . 'symlink';
+		$realFilePath = $realPath . DIRECTORY_SEPARATOR . 'file.txt';
+		$this->filesToRemove[] = $symlinkPath;
+		$this->filesToRemove[] = $realFilePath;
+		$this->assertTrue(is_dir($realPath), 'can create fake extension directory');
+		$this->assertTrue(symlink($realPath, $symlinkPath), 'can create symlink ' . $symlinkPath . ' -> ' . $realPath);
+		$this->assertTrue(touch($realFilePath));
+		$fileHandler = new \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility();
+		$fileHandler->removeDirectory($symlinkPath);
+		$this->assertFalse(is_link($symlinkPath), 'symlink is removed.');
+		$this->assertTrue(is_file($realFilePath), 'contents of target dir are not removed');
 	}
 
 	/**
