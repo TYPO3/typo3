@@ -36,11 +36,23 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 	protected $fakedExtensions = array();
 
 	/**
+	 * @var array List of resources (files or empty directories) that need to be removed in tearDown() again
+	 */
+	protected $resourcesToRemove = array();
+
+	/**
 	 * @return void
 	 */
 	public function tearDown() {
 		foreach ($this->fakedExtensions as $extension => $dummy) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir(PATH_site . 'typo3conf/ext/' . $extension, TRUE);
+		}
+		foreach ($this->resourcesToRemove as $resource) {
+			if (file_exists($resource) && is_file($resource)) {
+				unlink($resource);
+			} elseif(file_exists($resource) && is_dir($resource)) {
+				rmdir($resource);
+			}
 		}
 	}
 
@@ -164,6 +176,43 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$this->assertTrue(is_dir($extDirPath));
 		$fileHandlerMock->_call('removeDirectory', $extDirPath);
 		$this->assertFalse(is_dir($extDirPath));
+	}
+
+	/**
+	 * @test
+	 * @return void
+	 */
+	public function removeDirectoryRemovesSymlink() {
+		$absoluteSymlinkPath = PATH_site . 'typo3temp/' . uniqid('test_symlink_');
+		$absoluteFilePath = PATH_site . 'typo3temp/' . uniqid('test_file_');
+		touch($absoluteFilePath);
+		$this->resourcesToRemove[] = $absoluteFilePath;
+		symlink($absoluteFilePath, $absoluteSymlinkPath);
+		$fileHandler = new \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility();
+		$fileHandler->removeDirectory($absoluteSymlinkPath);
+		$this->assertFalse(is_link($absoluteSymlinkPath));
+	}
+
+	/**
+	 * @test
+	 * @return void
+	 */
+	public function removeDirectoryDoesNotRemoveContentOfSymlinkedTargetDirectory() {
+		$absoluteSymlinkPath = PATH_site . 'typo3temp/' . uniqid('test_symlink_');
+		$absoluteDirectoryPath = PATH_site . 'typo3temp/' . uniqid('test_dir_') . '/';
+		$relativeFilePath = uniqid('test_file_');
+
+		mkdir($absoluteDirectoryPath);
+		touch($absoluteDirectoryPath . $relativeFilePath);
+
+		$this->resourcesToRemove[] = $absoluteDirectoryPath . $relativeFilePath;
+		$this->resourcesToRemove[] = $absoluteDirectoryPath;
+
+		symlink($absoluteDirectoryPath, $absoluteSymlinkPath);
+
+		$fileHandler = new \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility();
+		$fileHandler->removeDirectory($absoluteSymlinkPath);
+		$this->assertTrue(is_file($absoluteDirectoryPath . $relativeFilePath));
 	}
 
 	/**
