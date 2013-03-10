@@ -836,7 +836,7 @@ class Bootstrap {
 		global $_EXTKEY;
 		// Load additional ext tables script if the file exists
 		$extTablesFile = PATH_typo3conf . TYPO3_extTableDef_script;
-		if (file_exists($extTablesFile)) {
+		if (file_exists($extTablesFile) && is_file($extTablesFile)) {
 			include $extTablesFile;
 		}
 	}
