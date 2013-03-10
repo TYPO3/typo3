@@ -250,8 +250,13 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function removeDirectory($extDirPath) {
-		$res = GeneralUtility::rmdir($extDirPath, TRUE);
-		if ($res === FALSE) {
+		$extensionPathWithoutTrailingSlash = rtrim($extDirPath, DIRECTORY_SEPARATOR);
+		if (is_link($extensionPathWithoutTrailingSlash)) {
+			$result = unlink($extensionPathWithoutTrailingSlash);
+		} else {
+			$result = GeneralUtility::rmdir($extDirPath, TRUE);
+		}
+		if ($result === FALSE) {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf($GLOBALS['LANG']->getLL('clearMakeExtDir_could_not_remove_dir'), $this->getRelativePath($extDirPath)), 1337280415);
 		}
 	}
