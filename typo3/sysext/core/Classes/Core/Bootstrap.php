@@ -796,7 +796,7 @@ class Bootstrap {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtTables($allowCaching);
 		// Load additional ext tables script if the file exists
 		$extTablesFile = PATH_typo3conf . TYPO3_extTableDef_script;
-		if (file_exists($extTablesFile)) {
+		if (file_exists($extTablesFile) && is_file($extTablesFile)) {
 			include $extTablesFile;
 		}
 		// Run post hook for additional manipulation
