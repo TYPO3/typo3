@@ -26,13 +26,14 @@ namespace TYPO3\CMS\Taskcenter;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Interface for classes which provide a task.
  *
  * @author Georg Ringer <typo3@ringerge.org
  */
-interface TaskInterface
-{
+interface TaskInterface {
+
 	/**
 	 * Returns the content for a task
 	 *

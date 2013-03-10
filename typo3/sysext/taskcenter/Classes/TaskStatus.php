@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Taskcenter;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Status of tasks
  *
@@ -63,6 +64,5 @@ class TaskStatus {
 	}
 
 }
-
 
 ?>

@@ -21,7 +21,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-$LANG->includeLLFile('EXT:tsconfig_help/mod1/locallang.xml');
+$LANG->includeLLFile('EXT:tsconfig_help/mod1/locallang.xlf');
 // This checks permissions and exits if the users has no permission for entry.
 $BE_USER->modAccess($MCONF, 1);
 /*
