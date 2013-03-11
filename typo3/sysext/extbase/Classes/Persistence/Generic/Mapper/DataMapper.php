@@ -281,7 +281,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 						break;
 					default:
 						if ($propertyData['type'] === 'DateTime' || in_array('DateTime', class_parents($propertyData['type']))) {
-							$propertyValue = $this->mapDateTime($row[$columnName]);
+							$propertyValue = $this->mapDateTime($row[$columnName], $columnMap->getDateTimeStorageFormat());
 						} else {
 							$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $this->fetchRelated($object, $propertyName, $row[$columnName]));
 						}
@@ -295,18 +295,25 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Creates a DateTime from an unix timestamp. If the input is empty
-	 * NULL is returned.
+	 * Creates a DateTime from an unix timestamp or date/datetime value.
+	 * If the input is empty, NULL is returned.
 	 *
-	 * @param integer $timestamp
+	 * @param integer|string $value Unix timestamp or date/datetime value
+	 * @param NULL|string $storageFormat Storage format for native date/datetime fields
 	 * @return \DateTime
 	 */
-	protected function mapDateTime($timestamp) {
-		if (empty($timestamp)) {
+	protected function mapDateTime($value, $storageFormat = NULL) {
+		if (empty($value) || $value === '0000-00-00' || $value === '0000-00-00 00:00:00') {
 			// 0 -> NULL !!!
 			return NULL;
+		} elseif ($storageFormat === 'date' || $storageFormat === 'datetime') {
+			// native date/datetime values are stored in UTC
+			$utcTimeZone = new \DateTimeZone('UTC');
+			$utcDateTime = new \DateTime($value, $utcTimeZone);
+			$currentTimeZone = new \DateTimeZone(date_default_timezone_get());
+			return $utcDateTime->setTimezone($currentTimeZone);
 		} else {
-			return new \DateTime(date('c', $timestamp));
+			return new \DateTime(date('c', $value));
 		}
 	}
 

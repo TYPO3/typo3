@@ -176,6 +176,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			$columnMap = $this->createColumnMap($columnName, $propertyName);
 			$propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
 			$columnMap = $this->setRelations($columnMap, $columnDefinition['config'], $propertyMetaData);
+			$columnMap = $this->setFieldEvaluations($columnMap, $columnDefinition['config']);
 			$dataMap->addColumnMap($columnMap);
 		}
 		// debug($dataMap);
@@ -318,6 +319,26 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		} else {
 			$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_NONE);
 		}
+		return $columnMap;
+	}
+
+	/**
+	 * Sets field evaluations based on $TCA column configuration.
+	 *
+	 * @param ColumnMap $columnMap The column map
+	 * @param NULL|array $columnConfiguration The column configuration from $TCA
+	 * @return ColumnMap
+	 */
+	protected function setFieldEvaluations(ColumnMap $columnMap, array $columnConfiguration = NULL) {
+		if (!empty($columnConfiguration['eval'])) {
+			$fieldEvaluations = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $columnConfiguration['eval'], TRUE);
+			$dateTimeEvaluations = array('date', 'datetime');
+
+			if (count(array_intersect($dateTimeEvaluations, $fieldEvaluations)) > 0 && !empty($columnConfiguration['dbType'])) {
+				$columnMap->setDateTimeStorageFormat($columnConfiguration['dbType']);
+			}
+		}
+
 		return $columnMap;
 	}
 

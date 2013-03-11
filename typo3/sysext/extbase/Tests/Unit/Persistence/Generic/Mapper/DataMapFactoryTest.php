@@ -314,6 +314,43 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function columnMapIsInitializedWithFieldEvaluationsForDateTimeFieldsDataProvider() {
+		return array(
+			'date field' => array('date', 'date'),
+			'datetime field' => array('datetime', 'datetime'),
+			'no date/datetime field' => array('', NULL),
+		);
+	}
+
+	/**
+	 * @param string $type
+	 * @param NULL|string $expectedValue
+	 * @test
+	 * @dataProvider columnMapIsInitializedWithFieldEvaluationsForDateTimeFieldsDataProvider
+	 */
+	public function columnMapIsInitializedWithFieldEvaluationsForDateTimeFields($type, $expectedValue) {
+		$columnDefinition = array(
+			'type' => 'input',
+			'dbType' => $type,
+			'eval' => $type,
+		);
+
+		$mockColumnMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\ColumnMap', array('setDateTimeStorageFormat'), array(), '', FALSE);
+
+		if ($expectedValue !== NULL) {
+			$mockColumnMap->expects($this->once())->method('setDateTimeStorageFormat')->with($this->equalTo($type));
+		} else {
+			$mockColumnMap->expects($this->never())->method('setDateTimeStorageFormat');
+		}
+
+		$accessibleClassName = $this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory');
+		$accessibleDataMapFactory = new $accessibleClassName();
+		$accessibleDataMapFactory->_callRef('setFieldEvaluations', $mockColumnMap, $columnDefinition);
+	}
+
+	/**
 	 * @test
 	 * @expectedException \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException
 	 */
