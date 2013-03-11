@@ -136,6 +136,46 @@ class DataMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$result = $dataMapper->_call('fetchRelatedEager', $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity'), 'SomeName', '');
 		$this->assertEquals(array(), $result);
 	}
+
+	/**
+	 * Data provider for date checks. Date will be stored based on UTC in
+	 * the database. That's why it's not possible to check for explicit date
+	 * strings but using the date('c') conversion instead, which considers the
+	 * current local timezone setting.
+	 *
+	 * @return array
+	 */
+	public function mapDateTimeHandlesDifferentFieldEvaluationsDataProvider() {
+		return array(
+			'nothing' => array(NULL, NULL, NULL),
+			'timestamp' => array(1, NULL, date('c', 1)),
+			'empty date' => array('0000-00-00', 'date', NULL),
+			'valid date' => array('2013-01-01', 'date', date('c', strtotime('2013-01-01T00:00:00+00:00'))),
+			'empty datetime' => array('0000-00-00 00:00:00', 'datetime', NULL),
+			'valid datetime' => array('2013-01-01 01:02:03', 'datetime', date('c', strtotime('2013-01-01T01:02:03+00:00'))),
+		);
+	}
+
+	/**
+	 * @param NULL|string|integer $value
+	 * @param NULL|string $storageFormat
+	 * @param NULL|string $expectedValue
+	 * @test
+	 * @dataProvider mapDateTimeHandlesDifferentFieldEvaluationsDataProvider
+	 */
+	public function mapDateTimeHandlesDifferentFieldEvaluations($value, $storageFormat, $expectedValue) {
+		$accessibleClassName = $this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper');
+		$accessibleDataMapFactory = new $accessibleClassName();
+
+		/** @var $dateTime NULL|\DateTime */
+		$dateTime = $accessibleDataMapFactory->_callRef('mapDateTime', $value, $storageFormat);
+
+		if ($expectedValue === NULL) {
+			$this->assertNull($dateTime);
+		} else {
+			$this->assertEquals($expectedValue, $dateTime->format('c'));
+		}
+	}
 }
 
 ?>
