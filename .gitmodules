@@ -1,18 +1,24 @@
 [submodule "typo3/sysext/version"]
 	path = typo3/sysext/version
-	url = git://git.typo3.org/TYPO3v4/CoreProjects/workspaces/version.git
+	url = ../CoreProjects/workspaces/version.git
+	branch = master
 [submodule "typo3/sysext/workspaces"]
 	path = typo3/sysext/workspaces
-	url = git://git.typo3.org/TYPO3v4/CoreProjects/workspaces/workspaces.git
+	url = ../CoreProjects/workspaces/workspaces.git
+	branch = master
 [submodule "typo3/sysext/dbal"]
 	path = typo3/sysext/dbal
-	url = git://git.typo3.org/TYPO3v4/Extensions/dbal.git
+	url = ../Extensions/dbal.git
+	branch = master
 [submodule "typo3/sysext/fluid"]
 	path = typo3/sysext/fluid
-	url = git://git.typo3.org/TYPO3v4/CoreProjects/MVC/fluid.git
+	url = ../CoreProjects/MVC/fluid.git
+	branch = master
 [submodule "typo3/sysext/extbase"]
 	path = typo3/sysext/extbase
-	url = git://git.typo3.org/TYPO3v4/CoreProjects/MVC/extbase.git
+	url = ../CoreProjects/MVC/extbase.git
+	branch = master
 [submodule "typo3/sysext/linkvalidator"]
 	path = typo3/sysext/linkvalidator
-	url = git://git.typo3.org/TYPO3v4/Extensions/linkvalidator.git
+	url = ../Extensions/linkvalidator.git
+	branch = master
