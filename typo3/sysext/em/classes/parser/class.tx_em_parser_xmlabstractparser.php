@@ -93,6 +93,14 @@ abstract class tx_em_Parser_XmlAbstractParser {
 	abstract public function parseXML($file);
 
 	/**
+	 * Method creates the required parser.
+	 *
+	 * @access  protected
+	 * @return  void
+	 */
+	abstract protected function createParser();
+
+	/**
 	 * Method provides a wrapper for an exception call
 	 *
 	 * @access  protected

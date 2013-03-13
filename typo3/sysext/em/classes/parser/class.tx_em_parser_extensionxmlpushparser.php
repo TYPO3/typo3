@@ -48,6 +48,12 @@
  */
 class tx_em_Parser_ExtensionXmlPushParser extends tx_em_Parser_ExtensionXmlAbstractParser implements SplSubject {
 
+	/**
+	 * Keeps XML parser.
+	 *
+	 * @var null|resource
+	 */
+	protected $objXML = NULL;
 
 	/**
 	 * Keeps current element to process.
@@ -63,11 +69,17 @@ class tx_em_Parser_ExtensionXmlPushParser extends tx_em_Parser_ExtensionXmlAbstr
 	 */
 	function __construct() {
 		$this->requiredPHPExt = 'xml';
+	}
 
-		if ($this->isAvailable()) {
-			$this->objXML = xml_parser_create();
-			xml_set_object($this->objXML, $this);
-		}
+	/**
+	 * Method creates the required parser.
+	 *
+	 * @access  protected
+	 * @return  void
+	 */
+	protected function createParser() {
+		$this->objXML = xml_parser_create();
+		xml_set_object($this->objXML, $this);
 	}
 
 	/**
@@ -78,7 +90,7 @@ class tx_em_Parser_ExtensionXmlPushParser extends tx_em_Parser_ExtensionXmlAbstr
 	 * @throws  tx_em_ExtensionXmlException  in case of XML parser errors
 	 */
 	public function parseXML($file) {
-
+		$this->createParser();
 		if (!is_resource($this->objXML)) {
 			$this->throwException('Unable to create XML parser.');
 		}

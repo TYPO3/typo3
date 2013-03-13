@@ -53,6 +53,12 @@
  */
 class tx_em_Parser_MirrorXmlPushParser extends tx_em_Parser_MirrorXmlAbstractParser implements SplSubject {
 
+	/**
+	 * Keeps XML parser.
+	 *
+	 * @var null|resource
+	 */
+	protected $objXML = NULL;
 
 	/**
 	 * Keeps list of attached observers.
@@ -69,11 +75,17 @@ class tx_em_Parser_MirrorXmlPushParser extends tx_em_Parser_MirrorXmlAbstractPar
 	 */
 	function __construct() {
 		$this->requiredPHPExt = 'xml';
+	}
 
-		if ($this->isAvailable()) {
-			$this->objXML = xml_parser_create();
-			xml_set_object($this->objXML, $this);
-		}
+	/**
+	 * Method creates the required parser.
+	 *
+	 * @access  protected
+	 * @return  void
+	 */
+	protected function createParser() {
+		$this->objXML = xml_parser_create();
+		xml_set_object($this->objXML, $this);
 	}
 
 	/**
@@ -84,7 +96,7 @@ class tx_em_Parser_MirrorXmlPushParser extends tx_em_Parser_MirrorXmlAbstractPar
 	 * @throws  em_mirrorxml_Exception  in case of XML parser errors
 	 */
 	public function parseXML($file) {
-
+		$this->createParser();
 		if (!is_resource($this->objXML)) {
 			$this->throwException('Unable to create XML parser.');
 		}
