@@ -659,7 +659,24 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 					$GLOBALS['TSFE']->ATagParams .= ' title="' . $titleText . '"';
 				}
 			}
-			if ($imgConf || $imgConf['file']) {
+
+			$customRendering = '';
+			if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['css_styled_content']['pi1_hooks']['render_singleMediaElement'])
+				&& is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['css_styled_content']['pi1_hooks']['render_singleMediaElement'])) {
+				$parameters = array(
+					'file' => $totalImagePath,
+					'customRendering' => $customRendering,
+					'imageConfiguration' => $imgConf
+				);
+
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['css_styled_content']['pi1_hooks']['render_singleMediaElement'] as $reference) {
+					$customRendering = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($reference, $parameters, $this);
+				}
+			}
+
+			if (!empty($customRendering)) {
+				$imgsTag[$imgKey] = $customRendering;
+			} elseif ($imgConf || $imgConf['file']) {
 				if ($this->cObj->image_effects[$image_effects]) {
 					$imgConf['file.']['params'] .= ' ' . $this->cObj->image_effects[$image_effects];
 				}
