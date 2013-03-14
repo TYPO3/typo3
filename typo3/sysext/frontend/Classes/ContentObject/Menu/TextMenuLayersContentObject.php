@@ -26,25 +26,16 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains the GMENU_LAYERS extension class, tslib_gmenu_layers
- *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
- * Class extending tslib_gmenu for the creation of DHTML menus
- * NOTICE: The contents of this class is made so that it can be copied
- * EXACTLY AS IS to the tmenu_layers class! See notes in class
- * (for BEGIN/END) and also "diff.xmenu_layers.txt"
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-class GraphicalMenuLayers extends \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject {
 
-	// FULL DUPLICATE TO tmenu_layers BEGIN:
+/**
+ * Contains the TMENU_LAYERS menu object
+ * Class for the creation of text based DHTML menus
+ *
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ */
+class TextMenuLayersContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject {
+
+	// FULL DUPLICATE FROM gmenu_layers BEGIN:
 	/**
 	 * @todo Define visibility
 	 */
@@ -151,8 +142,7 @@ class GraphicalMenuLayers extends \TYPO3\CMS\Frontend\ContentObject\Menu\Graphic
 	public $VMmouseoutActions = array();
 
 	/**
-	 * Creating unique menu id string plus other initialization of internal
-	 * variables (all prefixed "WM")
+	 * Creating unique menu id string plus other initialization of internal variables (all prefixed "WM")
 	 *
 	 * @return void
 	 * @todo Define visibility
@@ -168,8 +158,7 @@ class GraphicalMenuLayers extends \TYPO3\CMS\Frontend\ContentObject\Menu\Graphic
 	}
 
 	/**
-	 * Processing of mouse-over features depending on whether "freezeMouseover"
-	 * property is set.
+	 * Processing of mouse-over features depending on whether "freezeMouseover" property is set.
 	 *
 	 * @param integer $key Pointer to $this->menuArr[$key] where the current menu element record is found OR $this->result['RO'][$key] where the configuration for that elements RO version is found! Here it is used with the ->WMid to make unique names
 	 * @return void
@@ -220,8 +209,13 @@ GLV_restoreMenu["' . $this->WMid . '"] = "' . $this->WMactiveKey . '";
 				if ($this->mconf['ieSelectFix']) {
 					$this->I['linkHREF']['onMouseover'] = $this->I['linkHREF']['onMouseover'] . 'GL_iframer(\'' . $this->WMid . '\',\'Menu' . $this->WMid . $key . '\',true);';
 				}
-				// Added 120802; This means that everytime leaving a menuitem the layer should be shut down (and if the layer is hit in the meantime it is not though).
-				// This should happen only for items that are auto-hidden when not over and possibly only when a hide-timer is set. Problem is if the hide-timer is not set and we leave the main element, then the layer will be hidden unless we reach the layer before the timeout will happen and the menu hidden.
+				// Added 120802; This means that everytime leaving a menuitem the layer
+				// should be shut down (and if the layer is hit in the meantime it is
+				// not though). This should happen only for items that are auto-hidden
+				// when not over and possibly only when a hide-timer is set. Problem is
+				// if the hide-timer is not set and we leave the main element, then the
+				// layer will be hidden unless we reach the layer before the timeout will
+				// happen and the menu hidden.
 				if (\TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->mconf['hideMenuWhenNotOver'], 0, 600) && $this->mconf['hideMenuTimer']) {
 					$event .= 'GL_resetAll("' . $this->WMid . '");';
 				}
@@ -240,8 +234,8 @@ GLV_restoreMenu["' . $this->WMid . '"] = "' . $this->WMactiveKey . '";
 	}
 
 	/**
-	 * Processing after linking, basically setting the <div>-layers for the
-	 * menu items. Also some more JavaScript code is made.
+	 * Processing after linking, basically setting the <div>-layers for the menu
+	 * items. Also some more JavaScript code is made.
 	 *
 	 * @param integer $key Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return void
@@ -274,8 +268,8 @@ GLV_restoreMenu["' . $this->WMid . '"] = "' . $this->WMactiveKey . '";
 	/**
 	 * Wrapping the item in a <div> section if 'relativeToTriggerItem' was set
 	 *
-	 * @param string The current content of the menu item, $this->I['theItem'], passed along.
-	 * @param integer Pointer to $this->menuArr[$key] where the current menu element record is found
+	 * @param string $item The current content of the menu item, $this->I['theItem'], passed along.
+	 * @param integer $key Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return string The modified version of $item, going back into $this->I['theItem']
 	 * @todo Define visibility
 	 */
@@ -298,8 +292,7 @@ GLV_restoreMenu["' . $this->WMid . '"] = "' . $this->WMactiveKey . '";
 	}
 
 	/**
-	 * Putting things together, in particular the JavaScript code needed
-	 * for the DHTML menu.
+	 * Putting things together, in particular the JavaScript code needed for the DHTML menu.
 	 *
 	 * @return mixed Returns the value of a call to the parent function, parent::extProc_finish();
 	 * @todo Define visibility
@@ -478,8 +471,8 @@ GLV_timeout_count++;
 	}
 
 	/**
-	 * Creates a JavaScript line which corrects the position of the layer
-	 * based on the constraints in TypoScript property 'bordersWithin'
+	 * Creates a JavaScript line which corrects the position of the layer based on
+	 * the constraints in TypoScript property 'bordersWithin'
 	 *
 	 * @param string $kind Direction to test.
 	 * @param integer $integer The boundary limit in the direction set by $kind. If set then a value is returned, otherwise blank.
