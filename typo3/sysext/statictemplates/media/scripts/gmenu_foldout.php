@@ -5,5 +5,4 @@
  * typo3/sysext/frontend/Classes/ContentObject/Menu/GraphicalMenuFoldout.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('frontend') . 'Classes/ContentObject/Menu/GraphicalMenuFoldout.php';
-$GLOBALS['TSFE']->tmpl->menuclasses .= ',gmenu_foldout';
 ?>

@@ -5,6 +5,4 @@
  * typo3/sysext/frontend/Classes/ContentObject/Menu/TextMenuLayers.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('frontend') . 'Classes/ContentObject/Menu/TextMenuLayers.php';
-// FULL DUPLICATE FROM gmenu_layers END:
-$GLOBALS['TSFE']->tmpl->menuclasses .= ',tmenu_layers';
 ?>
