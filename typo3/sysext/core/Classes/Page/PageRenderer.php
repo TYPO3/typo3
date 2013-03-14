@@ -270,6 +270,13 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $jsLibraryNames = array('prototype', 'scriptaculous', 'extjs');
 
 	// Paths to contibuted libraries
+
+	/**
+	 * default path to the requireJS library, relative to the typo3/ directory
+	 * @var string
+	 */
+	protected $requireJsPath = 'contrib/requirejs/';
+
 	/**
 	 * @var string
 	 */
@@ -342,6 +349,18 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		'msn' => '//ajax.aspnetcdn.com/ajax/jQuery/jquery-%1$s%2$s.js',
 		'jquery' => 'http://code.jquery.com/jquery-%1$s%2$s.js'
 	);
+
+	/**
+	 * if set, the requireJS library is included
+	 * @var boolean
+	 */
+	protected $addRequireJs = FALSE;
+
+	/**
+	 * inline configuration for requireJS
+	 * @var array
+	 */
+	protected $requireJsConfig = array();
 
 	/**
 	 * @var boolean
@@ -658,6 +677,16 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function setBodyContent($content) {
 		$this->bodyContent = $content;
+	}
+
+	/**
+	 * Sets path to requireJS library (relative to typo3 directory)
+	 *
+	 * @param string $path Path to requireJS library
+	 * @return void
+	 */
+	public function setRequireJsPath($path) {
+		$this->requireJsPath = $path;
 	}
 
 	/**
@@ -1535,6 +1564,65 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Call function if you need the requireJS library
+	 * this automatically adds the JavaScript path of all loaded extensions in the requireJS path option
+	 * so it resolves names like TYPO3/CMS/MyExtension/MyJsFile to EXT:MyExtension/Resources/Public/JavaScript/MyJsFile.js
+	 * when using requireJS
+	 *
+	 * @return void
+	 */
+	public function loadRequireJs() {
+
+			// load all paths to map to package names / namespaces
+		if (count($this->requireJsConfig) === 0) {
+				// first, load all paths for the namespaces
+			$this->requireJsConfig['paths'] = array();
+			// get all extensions that are loaded
+			$loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
+			foreach ($loadedExtensions as $packageName) {
+				$fullJsPath = 'EXT:' . $packageName . '/Resources/Public/JavaScript/';
+				$fullJsPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fullJsPath);
+				$fullJsPath = \TYPO3\CMS\Core\Utility\PathUtility::getRelativePath(PATH_typo3, $fullJsPath);
+				$fullJsPath = rtrim($fullJsPath, '/');
+				if ($fullJsPath) {
+					$this->requireJsConfig['paths']['TYPO3/CMS/' . \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($packageName)] = $this->backPath . $fullJsPath;
+				}
+			}
+
+				// check if additional AMD modules need to be loaded if a single AMD module is initialized
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['postInitializationModules'])) {
+				$this->addInlineSettingArray('RequireJS.PostInitializationModules', $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['postInitializationModules']);
+			}
+		}
+
+		$this->addRequireJs = TRUE;
+	}
+
+	/**
+	 * includes a AMD-compatible JS file by resolving the ModuleName, and then requires the file via a requireJS request
+	 *
+	 * this function only works for AMD-ready JS modules, used like "define('TYPO3/CMS/Backend/FormEngine..."
+	 * in the JS file
+	 *
+	 *	TYPO3/CMS/Backend/FormEngine =>
+	 * 		"TYPO3": Vendor Name
+	 * 		"CMS": Product Name
+	 *		"Backend": Extension Name
+	 *		"FormEngine": FileName in the Resources/Public/JavaScript folder
+	 *
+	 * @param $mainModuleName must be in the form of "TYPO3/CMS/PackageName/ModuleName" e.g. "TYPO3/CMS/Backend/FormEngine"
+	 * @return void
+	 */
+	public function loadRequireJsModule($mainModuleName) {
+
+		// make sure requireJS is initialized
+		$this->loadRequireJs();
+
+		// execute the main module
+		$this->addJsInlineCode('RequireJS-Module-' . $mainModuleName, 'require(["' . $mainModuleName . '"]);');
+	}
+
+	/**
 	 * Call function if you need the prototype library
 	 *
 	 * @return void
@@ -1986,14 +2074,23 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Helper function for render the main JavaScript libraries,
-	 * currently: jQuery, prototype, SVG, ExtJs
+	 * currently: RequireJS, jQuery, PrototypeJS, Scriptaculous, SVG, ExtJs
 	 *
 	 * @return string Content with JavaScript libraries
 	 */
 	protected function renderMainJavaScriptLibraries() {
 		$out = '';
+
+		// Include RequireJS
+		if ($this->addRequireJs) {
+				// load the paths of the requireJS configuration
+			$out .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS('var require = ' . json_encode($this->requireJsConfig)) . LF;
+				// directly after that, include the require.js file
+			$out .= '<script src="' . $this->processJsFile(($this->backPath . $this->requireJsPath . 'require.js')) . '" type="text/javascript"></script>' . LF;
+		}
+
 		if ($this->addSvg) {
-			$out .= '<script src="' . $this->processJsFile(($this->backPath . $this->svgPath . 'svg.js')) . '" data-path="' . $this->backPath . $this->svgPath . '"' . ($this->enableSvgDebug ? ' data-debug="true"' : '') . '></script>';
+			$out .= '<script src="' . $this->processJsFile(($this->backPath . $this->svgPath . 'svg.js')) . '" data-path="' . $this->backPath . $this->svgPath . '"' . ($this->enableSvgDebug ? ' data-debug="true"' : '') . '></script>' . LF;
 		}
 		// Include jQuery Core for each namespace, depending on the version and source
 		if (!empty($this->jQueryVersions)) {
@@ -2144,14 +2241,14 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		// Set the noConflict mode to be available via "TYPO3.jQuery" in all installations
 		switch ($namespace) {
 		case self::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT:
-			$scriptTag .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS('jQuery.noConflict();');
+			$scriptTag .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS('jQuery.noConflict();') . LF;
 			break;
 		case self::JQUERY_NAMESPACE_NONE:
 			break;
 		case self::JQUERY_NAMESPACE_DEFAULT:
 
 		default:
-			$scriptTag .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS('var TYPO3 = TYPO3 || {}; TYPO3.' . $namespace . ' = jQuery.noConflict(true);');
+			$scriptTag .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS('var TYPO3 = TYPO3 || {}; TYPO3.' . $namespace . ' = jQuery.noConflict(true);') . LF;
 			break;
 		}
 		return $scriptTag;
