@@ -246,7 +246,8 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	protected function createTabs() {
 		$panelCheck = '';
 		if ($this->modTS['showCheckLinkTab'] == 1) {
-			$panelCheck = '{
+			$panelCheck = ',
+			{
 				title: TYPO3.lang.CheckLink,
 				html: ' . json_encode($this->flush()) . '
 			}';
@@ -264,8 +265,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 				autoHeight: true,
 				title: TYPO3.lang.Report,
 				html: ' . json_encode($this->flush(TRUE)) . '
-			},
-			' . $panelCheck . '
+			}' . $panelCheck . '
 			]
 
 		});
