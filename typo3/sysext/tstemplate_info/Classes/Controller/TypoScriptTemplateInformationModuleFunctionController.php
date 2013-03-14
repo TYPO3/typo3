@@ -201,6 +201,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 	public function main() {
 		global $BACK_PATH;
 		global $tmpl, $tplRow, $theConstants;
+		$GLOBALS['LANG']->includeLLFile('EXT:tstemplate_info/locallang.xlf');
 		$this->pObj->MOD_MENU['includeTypoScriptFileContent'] = TRUE;
 		$edit = $this->pObj->edit;
 		$e = $this->pObj->e;

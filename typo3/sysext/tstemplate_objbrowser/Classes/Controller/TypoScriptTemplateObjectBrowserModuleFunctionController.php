@@ -55,6 +55,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 	 * @todo Define visibility
 	 */
 	public function modMenu() {
+		$GLOBALS['LANG']->includeLLFile('EXT:tstemplate_objbrowser/locallang.xlf');
 		$modMenu = array(
 			'ts_browser_type' => array(
 				'const' => $GLOBALS['LANG']->getLL('constants'),
