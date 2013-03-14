@@ -24,18 +24,13 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains a class with functions used to read email content
- *
- * Revised for TYPO3 3.6 May 2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * Functions used to read email content
  * The class is still just a bunch of miscellaneous functions used to read content out of emails
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @deprecated since 6.0, will be removed with 6.2
  */
 class t3lib_readmail {
 
@@ -62,6 +57,14 @@ class t3lib_readmail {
 	 * @todo Define visibility
 	 */
 	public $serverGMToffsetMinutes = 60;
+
+	/**
+	 * Deprecation constructor
+	 */
+	public function __construct() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('Class t3lib_readmail is deprecated and unused since TYPO3 6.0. It will be removed with version 6.2.');
+	}
+
 
 	/*******************************
 	 *
