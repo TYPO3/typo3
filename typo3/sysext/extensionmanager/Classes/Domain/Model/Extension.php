@@ -241,6 +241,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 					// default category
 					$catIndex = 4;
 				}
+				$return = $catIndex;
 			} else {
 				if (is_int($cat) && $cat >= 0) {
 					// default category
