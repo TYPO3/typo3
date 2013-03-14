@@ -367,7 +367,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 	 */
 	protected function buildParserConfiguration() {
 		$parserConfiguration = $this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\Configuration');
-		if ($this->controllerContext->getRequest()->getFormat() === 'html') {
+		if ($this->controllerContext->getRequest()->getFormat() === 'html' || $this->controllerContext->getRequest()->getFormat() === 'xml') {
 			$parserConfiguration->addInterceptor($this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Parser\\Interceptor\\Escape'));
 		}
 		return $parserConfiguration;
