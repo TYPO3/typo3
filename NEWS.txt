@@ -54,3 +54,22 @@ Backend
 -------------------------------------------------------------------------------
 Administration / Customization
 -------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Extbase
+-------------------------------------------------------------------------------
+
+* Enabled rewritten property mapper as default mapper
+
+Property mapping is the process to create method parameters or objects from
+incoming form or ajax data. With TYPO3 CMS version 4.6 a new property mapper
+was included as a backport from FLOW. It is much better configurable
+and can for example handle complex mapping tasks like creating a DateTime
+object from different given string formats. The FLOW documentation at
+http://docs.typo3.org/flow/TYPO3FlowDocumentation/TheDefinitiveGuide/ section
+PropertyMapping can be used as basic feature reference.
+This mapper is now enabled by default deprecating the old mapper one. extbase
+extensions might have minor issues with the new default if not coded in a clean
+way. While it is better to fix those issues, a quick fix is to swich back
+to the old mapper with a TypoScript setting:
+plugin.tx_extname.features.rewrittenPropertyMapper = 0
