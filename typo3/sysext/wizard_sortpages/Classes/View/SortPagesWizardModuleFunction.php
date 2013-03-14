@@ -54,8 +54,8 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 	 * @todo Define visibility
 	 */
 	public function main() {
-		global $SOBE, $LANG;
-		$out = $this->pObj->doc->header($LANG->getLL('wiz_sort'));
+		$GLOBALS['LANG']->includeLLFile('EXT:wizard_sortpages/locallang.xlf');
+		$out = $this->pObj->doc->header($GLOBALS['LANG']->getLL('wiz_sort'));
 		if ($GLOBALS['BE_USER']->workspace === 0) {
 			$theCode = '';
 			// Check if user has modify permissions to
@@ -87,34 +87,34 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 			if (count($menuItems)) {
 				$lines = array();
 				$lines[] = '<tr class="t3-row-header">
-				<td>' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'), 'title') . '</td>
-				' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms') ? '<td> ' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_subtitle'), 'subtitle') . '</td>' : '') . '
-				<td>' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tChange'), 'tstamp') . '</td>
-				<td>' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'), 'crdate') . '</td>
+				<td>' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_title'), 'title') . '</td>
+				' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms') ? '<td> ' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_subtitle'), 'subtitle') . '</td>' : '') . '
+				<td>' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_tChange'), 'tstamp') . '</td>
+				<td>' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_tCreate'), 'crdate') . '</td>
 				</tr>';
 				foreach ($menuItems as $rec) {
 					$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(2);
 					// edit permissions for that page!
 					$pRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $rec['uid'], 'uid', ' AND ' . $m_perms_clause);
-					$lines[] = '<tr><td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rec) . (!is_array($pRec) ? $GLOBALS['TBE_TEMPLATE']->rfw('<strong>' . $LANG->getLL('wiz_W', 1) . '</strong> ') : '') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '&nbsp;</td>
+					$lines[] = '<tr><td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rec) . (!is_array($pRec) ? $GLOBALS['TBE_TEMPLATE']->rfw('<strong>' . $GLOBALS['LANG']->getLL('wiz_W', 1) . '</strong> ') : '') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '&nbsp;</td>
 					' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms') ? '<td nowrap="nowrap">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['subtitle'], $GLOBALS['BE_USER']->uc['titleLen'])) . '&nbsp;</td>' : '') . '
 					<td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($rec['tstamp']) . '&nbsp;&nbsp;</td>
 					<td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($rec['crdate']) . '&nbsp;&nbsp;</td>
 					</tr>';
 				}
-				$theCode .= '<h4>' . $LANG->getLL('wiz_currentPageOrder', TRUE) . '</h4>
+				$theCode .= '<h4>' . $GLOBALS['LANG']->getLL('wiz_currentPageOrder', TRUE) . '</h4>
 			<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' . implode('', $lines) . '</table><br />';
 				// Menu:
 				$lines = array();
-				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'), 'title');
+				$lines[] = $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_title'), 'title');
 				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
-					$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_subtitle'), 'subtitle');
+					$lines[] = $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_subtitle'), 'subtitle');
 				}
-				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tChange'), 'tstamp');
-				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'), 'crdate');
+				$lines[] = $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_tChange'), 'tstamp');
+				$lines[] = $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_tCreate'), 'crdate');
 				$lines[] = '';
-				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_REVERSE'), 'REV');
-				$theCode .= '<h4>' . $LANG->getLL('wiz_changeOrder') . '</h4>' . implode('<br />', $lines);
+				$lines[] = $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_REVERSE'), 'REV');
+				$theCode .= '<h4>' . $GLOBALS['LANG']->getLL('wiz_changeOrder') . '</h4>' . implode('<br />', $lines);
 			} else {
 				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('no_subpages'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE);
 				$theCode .= $flashMessage->render();

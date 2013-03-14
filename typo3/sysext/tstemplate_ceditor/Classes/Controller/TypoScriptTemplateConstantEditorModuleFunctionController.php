@@ -101,6 +101,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 	public function main() {
 		global $TYPO3_CONF_VARS;
 		global $tmpl, $tplRow, $theConstants;
+		$GLOBALS['LANG']->includeLLFile('EXT:tstemplate_ceditor/locallang.xlf');
 		$theOutput = '';
 		// Create extension template
 		$this->pObj->createTemplate($this->pObj->id);
