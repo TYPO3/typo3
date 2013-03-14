@@ -80,7 +80,7 @@ class CommandLineController {
 	 */
 	public function __construct() {
 		// Loads the cli_args array with command line arguments
-		$this->cli_args = $this->cli_getArgIndex();
+		$this->cli_setArguments($_SERVER['argv']);
 	}
 
 	/**
@@ -130,13 +130,14 @@ class CommandLineController {
 	 * Argument names (eg. "-s") will be keys and values after (eg. "-s value1 value2 ..." or "-s=value1") will be in the array.
 	 * Array is empty if no values
 	 *
+	 * @param array $argv Configuration options
 	 * @return array
 	 * @todo Define visibility
 	 */
-	public function cli_getArgIndex() {
+	public function cli_getArgIndex(array $argv = array()) {
 		$cli_options = array();
 		$index = '_DEFAULT';
-		foreach ($_SERVER['argv'] as $token) {
+		foreach ($argv as $token) {
 			// Options starting with a number is invalid - they could be negative values!
 			if ($token[0] === '-' && !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($token[1])) {
 				list($index, $opt) = explode('=', $token, 2);
@@ -191,6 +192,16 @@ class CommandLineController {
 			echo wordwrap('ERROR: Option ' . implode(',', array_keys($cli_args_copy)) . ' was unknown to this script!' . LF . '(Options are: ' . implode(', ', $allOptions) . ')' . LF);
 			die;
 		}
+	}
+
+	/**
+	 * Set environment array to $cli_args
+	 *
+	 * @param array $argv Configuration options
+	 * @return void
+	 */
+	public function cli_setArguments(array $argv = array()) {
+		$this->cli_args = $this->cli_getArgIndex($argv);
 	}
 
 	/**

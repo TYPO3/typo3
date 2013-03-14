@@ -118,6 +118,9 @@ This will show you missing files in the TYPO3 system and only report back if err
 	 * @todo Define visibility
 	 */
 	public function cli_main($argv) {
+
+		$this->cli_setArguments($argv);
+
 		// Force user to admin state and set workspace to "Live":
 		$GLOBALS['BE_USER']->user['admin'] = 1;
 		$GLOBALS['BE_USER']->setWorkspace(0);
