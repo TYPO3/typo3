@@ -270,6 +270,13 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $jsLibraryNames = array('prototype', 'scriptaculous', 'extjs');
 
 	// Paths to contibuted libraries
+
+	/**
+	 * default path to the requireJS library, relative to the typo3/ directory
+	 * @var string
+	 */
+	protected $requireJsPath = 'contrib/requirejs/';
+
 	/**
 	 * @var string
 	 */
@@ -341,6 +348,12 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		'msn' => '//ajax.aspnetcdn.com/ajax/jQuery/jquery-%1$s%2$s.js',
 		'jquery' => 'http://code.jquery.com/jquery-%1$s%2$s.js'
 	);
+
+	/**
+	 * if set, the requireJS library is included
+	 * @var boolean
+	 */
+	protected $addRequireJs = FALSE;
 
 	/**
 	 * @var boolean
@@ -657,6 +670,16 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function setBodyContent($content) {
 		$this->bodyContent = $content;
+	}
+
+	/**
+	 * Sets path to requireJS library (relative to typo3 directory)
+	 *
+	 * @param string $path Path to requireJS library
+	 * @return void
+	 */
+	public function setRequireJsPath($path) {
+		$this->requireJsPath = $path;
 	}
 
 	/**
@@ -1534,6 +1557,70 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Call function if you need the requireJS library
+	 *
+	 * @return void
+	 */
+	public function loadRequireJs() {
+		$this->addRequireJs = TRUE;
+	}
+
+	/**
+	 * includes a JS file JS file by resolving the ModuleName, and then requires the file via a requireJS request
+	 * note that this does not work with the classic "main" config file for requireJS
+	 *
+	 * this function only works for AMD-ready JS modules, used like "define('TYPO3.CMS.Backend.FormEngine.." in the JS file
+	 * additionally, via a hook, additional AMD-ready JS modules can be loaded via RequireJS
+	 * this allows that when the BE required "TYPO3.CMS.Backend.FormEngine" that other modules are loaded automatically
+	 *
+	 *	TYPO3.CMS.Backend.FormEngine =>
+	 * 		"TYPO3": Vendor Name
+	 * 		"CMS": Product Name
+	 *		"Backend": Extension Name
+	 *		"FormEngine": FileName in Resources/Public/JavaScript
+	 *
+	 * @param $mainModuleName must be in the form of "TYPO3.CMS.PackageName.ModuleName" e.g. "TYPO3.CMS.Backend.FormEngine"
+	 * @param $alternativeFileName (optional), usually, the filename is resolved by the module name
+	 */
+	public function loadRequireJsModule($mainModuleName, $alternativeFileName = NULL) {
+		$moduleNames = array();
+
+		// make sure requireJS is loaded
+		$this->loadRequireJs();
+
+		list($vendorName, $productName, $packageName, $jsFileName) = explode('.', $mainModuleName, 4);
+
+		// load the JS file for the main module at first (right after the libraries)
+		if ($alternativeFileName === NULL) {
+			$fullJsFile = 'EXT:' . strtolower($packageName) . '/Resources/Public/JavaScript/' . $jsFileName . '.js';
+		} else {
+			$fullJsFile = $alternativeFileName;
+		}
+		$fullJsFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fullJsFile);
+		$fullJsFile = \TYPO3\CMS\Core\Utility\PathUtility::getRelativePath(PATH_typo3, $fullJsFile);
+		$fullJsFile = rtrim($fullJsFile, '/');
+		if ($fullJsFile) {
+			$moduleNames[] = $mainModuleName;
+			$this->addJsFile($this->backPath . $fullJsFile, 'text/javascript', FALSE, TRUE, '', TRUE);
+		}
+
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['processors'][$mainModuleName])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['processors'][$mainModuleName] as $additionalModuleName => $additionalJsFile) {
+				$additionalJsFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($additionalJsFile);
+				$additionalJsFile = \TYPO3\CMS\Core\Utility\PathUtility::getRelativePath(PATH_typo3, $additionalJsFile);
+				$additionalJsFile = rtrim($additionalJsFile, '/');
+				if ($additionalJsFile) {
+					$moduleNames[] = $additionalModuleName;
+					$this->addJsFile($this->backPath . $additionalJsFile, 'text/javascript', FALSE, TRUE, '', TRUE);
+				}
+			}
+		}
+
+		// execute the main module
+		$this->addJsInlineCode('requireJSExecuteAmdModule: ' . $mainModuleName, 'require(["' . implode('","', $moduleNames) . '"]);');
+	}
+
+	/**
 	 * Call function if you need the prototype library
 	 *
 	 * @return void
@@ -1985,12 +2072,18 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Helper function for render the main JavaScript libraries,
-	 * currently: jQuery, prototype, SVG, ExtJs
+	 * currently: RequireJS, svg, jQuery, prototype, SVG, ExtJs
 	 *
 	 * @return string Content with JavaScript libraries
 	 */
 	protected function renderMainJavaScriptLibraries() {
 		$out = '';
+
+		// Include RequireJS
+		if ($this->addRequireJs) {
+			$out .= '<script src="' . $this->processJsFile(($this->backPath . $this->requireJsPath . 'require.js')) . '" type="text/javascript"></script>' . LF;
+		}
+
 		if ($this->addSvg) {
 			$out .= '<script src="' . $this->processJsFile(($this->backPath . $this->svgPath . 'svg.js')) . '" data-path="' . $this->backPath . $this->svgPath . '"' . ($this->enableSvgDebug ? ' data-debug="true"' : '') . '></script>';
 		}
