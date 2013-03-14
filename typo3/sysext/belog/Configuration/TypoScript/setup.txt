@@ -1,6 +1,4 @@
 module.tx_belog {
-	features.rewrittenPropertyMapper = 1
-
 	persistence.classes {
 		TYPO3\CMS\Belog\Domain\Model\LogEntry {
 			mapping {
