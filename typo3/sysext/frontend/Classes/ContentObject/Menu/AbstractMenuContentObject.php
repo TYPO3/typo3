@@ -26,33 +26,15 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Generating navigation / menus from TypoScript
  *
- * This file contains five classes, four of which are extensions to the main class, tslib_menu.
- * The main class, tslib_menu, is also extended by other external PHP scripts such as the GMENU_LAYERS and GMENU_FOLDOUT scripts which creates pop-up menus.
- * Notice that extension classes (like "tslib_tmenu") must have their suffix (here "tmenu") listed in $this->tmpl->menuclasses - otherwise they cannot be instantiated.
- *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
  * Base class. The HMENU content object uses this (or more precisely one of the extension classes).
  * Amoung others the class generates an array of menuitems. Thereafter functions from the subclasses are called.
  * The class is ALWAYS used through extension classes (like tslib_gmenu or tslib_tmenu which are classics) and
  *
- * Example of usage (from tslib_cObj):
- *
- * $menu = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_'.$cls);
- * $menu->parent_cObj = $this;
- * $menu->start($GLOBALS['TSFE']->tmpl, $GLOBALS['TSFE']->sys_page, '', $conf,1);
- * $menu->makeMenu();
- * $content.=$menu->writeMenu();
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @see tslib_cObj::HMENU()
  */
 class AbstractMenuContentObject {
 
@@ -1390,38 +1372,41 @@ class AbstractMenuContentObject {
 			$altArray = $this->menuArr[$this->I['key']]['_SUB_MENU'];
 		}
 		// Make submenu if the page is the next active
-		$cls = strtolower($this->conf[($this->menuNumber + 1) . $objSuffix]);
-		$subLevelClass = $cls && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->tmpl->menuclasses, $cls) ? $cls : '';
+		$menuType = $this->conf[($this->menuNumber + 1) . $objSuffix];
 		// stdWrap for expAll
 		if (isset($this->mconf['expAll.'])) {
 			$this->mconf['expAll'] = $this->parent_cObj->stdWrap($this->mconf['expAll'], $this->mconf['expAll.']);
 		}
-		if ($subLevelClass && ($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($this->I['key'])) || is_array($altArray)) && !$this->mconf['sectionIndex']) {
-			$submenu = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_' . $subLevelClass);
-			$submenu->entryLevel = $this->entryLevel + 1;
-			$submenu->rL_uidRegister = $this->rL_uidRegister;
-			$submenu->MP_array = $this->MP_array;
-			if ($this->menuArr[$this->I['key']]['_MP_PARAM']) {
-				$submenu->MP_array[] = $this->menuArr[$this->I['key']]['_MP_PARAM'];
-			}
-			// Especially scripts that build the submenu needs the parent data
-			$submenu->parent_cObj = $this->parent_cObj;
-			$submenu->parentMenuArr = $this->menuArr;
-			// Setting alternativeMenuTempArray (will be effective only if an array)
-			if (is_array($altArray)) {
-				$submenu->alternativeMenuTempArray = $altArray;
-			}
-			if ($submenu->start($this->tmpl, $this->sys_page, $uid, $this->conf, $this->menuNumber + 1, $objSuffix)) {
-				$submenu->makeMenu();
-				// Memorize the current menu item count
-				$tempCountMenuObj = $GLOBALS['TSFE']->register['count_MENUOBJ'];
-				// Reset the menu item count for the submenu
-				$GLOBALS['TSFE']->register['count_MENUOBJ'] = 0;
-				$content = $submenu->writeMenu();
-				// Restore the item count now that the submenu has been handled
-				$GLOBALS['TSFE']->register['count_MENUOBJ'] = $tempCountMenuObj;
-				$GLOBALS['TSFE']->register['count_menuItems'] = count($this->menuArr);
-				return $content;
+		if (($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($this->I['key'])) || is_array($altArray)) && !$this->mconf['sectionIndex']) {
+			try {
+				$menuObjectFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\MenuContentObjectFactory');
+				$submenu = $menuObjectFactory->getMenuObjectByType($menuType);
+				$submenu->entryLevel = $this->entryLevel + 1;
+				$submenu->rL_uidRegister = $this->rL_uidRegister;
+				$submenu->MP_array = $this->MP_array;
+				if ($this->menuArr[$this->I['key']]['_MP_PARAM']) {
+					$submenu->MP_array[] = $this->menuArr[$this->I['key']]['_MP_PARAM'];
+				}
+				// Especially scripts that build the submenu needs the parent data
+				$submenu->parent_cObj = $this->parent_cObj;
+				$submenu->parentMenuArr = $this->menuArr;
+				// Setting alternativeMenuTempArray (will be effective only if an array)
+				if (is_array($altArray)) {
+					$submenu->alternativeMenuTempArray = $altArray;
+				}
+				if ($submenu->start($this->tmpl, $this->sys_page, $uid, $this->conf, $this->menuNumber + 1, $objSuffix)) {
+					$submenu->makeMenu();
+					// Memorize the current menu item count
+					$tempCountMenuObj = $GLOBALS['TSFE']->register['count_MENUOBJ'];
+					// Reset the menu item count for the submenu
+					$GLOBALS['TSFE']->register['count_MENUOBJ'] = 0;
+					$content = $submenu->writeMenu();
+					// Restore the item count now that the submenu has been handled
+					$GLOBALS['TSFE']->register['count_MENUOBJ'] = $tempCountMenuObj;
+					$GLOBALS['TSFE']->register['count_menuItems'] = count($this->menuArr);
+					return $content;
+				}
+			} catch (\TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException $e) {
 			}
 		}
 	}
