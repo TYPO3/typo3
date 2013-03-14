@@ -44,8 +44,10 @@ class HierarchicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Ab
 	public function render($conf = array()) {
 		$theValue = '';
 		if ($this->cObj->checkIf($conf['if.'])) {
-			$cls = strtolower($conf[1]);
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TSFE']->tmpl->menuclasses, $cls)) {
+			$menuType = $conf[1];
+			try {
+				$menuObjectFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\MenuContentObjectFactory');
+				$menu = $menuObjectFactory->getMenuObjectByType($menuType);
 				if (isset($conf['excludeUidList.'])) {
 					$conf['excludeUidList'] = $this->cObj->stdWrap($conf['excludeUidList'], $conf['excludeUidList.']);
 				}
@@ -57,11 +59,11 @@ class HierarchicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Ab
 				$GLOBALS['TSFE']->register['count_MENUOBJ'] = 0;
 				$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid'] = array();
 				$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMparentId'] = array();
-				$menu = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_' . $cls);
 				$menu->parent_cObj = $this->cObj;
 				$menu->start($GLOBALS['TSFE']->tmpl, $GLOBALS['TSFE']->sys_page, '', $conf, 1);
 				$menu->makeMenu();
 				$theValue .= $menu->writeMenu();
+			} catch (\TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException $e) {
 			}
 			$wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
 			if ($wrap) {
