@@ -1619,7 +1619,8 @@ class Indexer {
 			'externalUrl' => $fileParts['scheme'] ? 1 : 0,
 			'recordUid' => intval($this->conf['recordUid']),
 			'freeIndexUid' => intval($this->conf['freeIndexUid']),
-			'freeIndexSetId' => intval($this->conf['freeIndexSetId'])
+			'freeIndexSetId' => intval($this->conf['freeIndexSetId']),
+			'sys_language_uid' => intval($this->conf['sys_language_uid'])
 		);
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_phash')) {
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('index_phash', $fields);
