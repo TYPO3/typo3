@@ -57,7 +57,7 @@ class t3lib_xml {
 	 * @return void
 	 */
 	public function __construct($topLevelName) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('Class TYPO3\\CMS\\Core\\Utility\\GeneralUtility is deprecated since TYPO3 6.0. ' . 'It will be removed with TYPO3 6.2, please use other xml helper solutions instead.');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('Class t3lib_xml is deprecated since TYPO3 6.0. It will be removed with TYPO3 6.2, please use other xml helper solutions instead.');
 		$this->topLevelName = $topLevelName;
 	}
 
