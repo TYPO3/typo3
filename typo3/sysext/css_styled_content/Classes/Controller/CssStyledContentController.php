@@ -680,7 +680,30 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 					$GLOBALS['TSFE']->ATagParams .= ' title="' . $titleText . '"';
 				}
 			}
-			if ($imgConf || $imgConf['file']) {
+
+			// hook to allow custom rendering of a single element
+			// This hook is needed to render alternative content which is not just a plain image,
+			// like showing other FAL content, like videos, things which need to be embedded as JS, ...
+			$customRendering = '';
+			if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['css_styled_content']['pi1_hooks']['render_singleMediaElement'])
+				&& is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['css_styled_content']['pi1_hooks']['render_singleMediaElement'])) {
+				$hookParameters = array(
+					'file' => $totalImagePath,
+					'imageConfiguration' => $imgConf
+				);
+
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['css_styled_content']['pi1_hooks']['render_singleMediaElement'] as $reference) {
+					$customRendering = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($reference, $hookParameters, $this);
+					// if there is a renderer found, don't run through the other renderers
+					if (!empty($customRendering)) {
+						break;
+					}
+				}
+			}
+
+			if (!empty($customRendering)) {
+				$imgsTag[$imgKey] = $customRendering;
+			} elseif ($imgConf || $imgConf['file']) {
 				if ($this->cObj->image_effects[$image_effects]) {
 					$imgConf['file.']['params'] .= ' ' . $this->cObj->image_effects[$image_effects];
 				}
