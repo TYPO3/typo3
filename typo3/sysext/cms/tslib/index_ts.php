@@ -166,13 +166,16 @@ $TT->pull();
 // Check JumpUrl
 $TSFE->setExternalJumpUrl();
 $TSFE->checkJumpUrlReferer();
+
 // Check Submission of data.
 // This is done at this point, because we need the config values
+// @deprecated since 6.0 and will be removed with 6.2
 switch ($TSFE->checkDataSubmission()) {
 case 'email':
 	$TSFE->sendFormmail();
 	break;
 }
+
 // Check for shortcut page and redirect
 $TSFE->checkPageForShortcutRedirect();
 // Generate page

@@ -24,19 +24,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Contains a class for formmail
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * Formmail class
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
- * Formmail class, used by the TYPO3 "cms" extension (default frontend) to send email forms.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @see tslib_fe::sendFormmail(), t3lib/formmail.php
- * @TODO: Deprecate this class
+ * @deprecated since 6.0, will be removed with 6.2
  */
 class t3lib_formmail {
 
@@ -78,6 +71,13 @@ class t3lib_formmail {
 	 * @var array Files to clean up at the end (attachments)
 	 */
 	protected $temporaryFiles = array();
+
+	/**
+	 * Default constructor for deprecation
+	 */
+	public function __construct() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('Class t3lib_formmail is deprecated and unused since TYPO3 6.0. It will be removed with version 6.2.');
+	}
 
 	/**
 	 * Start function

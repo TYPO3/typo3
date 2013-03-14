@@ -2646,7 +2646,7 @@ class TypoScriptFrontendController {
 	 * Checks if any email-submissions
 	 *
 	 * @return string "email" if a formmail has been sent, "" if none.
-	 * @todo Define visibility
+	 * @deprecated since 6.0, will be removed with 6.2. This method is called in index_ts and can not create a deprecation log therefor. Remove it together with the call in index_ts
 	 */
 	public function checkDataSubmission() {
 		$ret = '';
@@ -2714,11 +2714,11 @@ class TypoScriptFrontendController {
 	 * Sends the emails from the formmail content object.
 	 *
 	 * @return void
-	 * @access private
-	 * @see checkDataSubmission()
-	 * @todo Define visibility
+	 * @deprecated since 6.0, will be removed in 6.2
 	 */
 	public function sendFormmail() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+
 		$formmail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_formmail');
 		$EMAIL_VARS = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
 		$locationData = $EMAIL_VARS['locationData'];

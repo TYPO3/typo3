@@ -79,6 +79,7 @@ class SystemEnvironmentBuilder {
 		define('TYPO3_version', '6.1-dev');
 		define('TYPO3_branch', '6.1');
 		define('TYPO3_copyright_year', '1998-2013');
+
 		// TYPO3 external links
 		define('TYPO3_URL_GENERAL', 'http://typo3.org/');
 		define('TYPO3_URL_ORG', 'http://typo3.org/');
@@ -94,20 +95,44 @@ class SystemEnvironmentBuilder {
 		define('TYPO3_URL_DOWNLOAD', 'http://typo3.org/download/');
 		define('TYPO3_URL_SYSTEMREQUIREMENTS', 'http://typo3.org/about/typo3-the-cms/system-requirements/');
 		define('TYPO3_URL_DONATE', 'http://typo3.org/donate/online-donation/');
+
 		// A tabulator, a linefeed, a carriage return, a CR-LF combination
 		define('TAB', chr(9));
 		define('LF', chr(10));
 		define('CR', chr(13));
 		define('CRLF', CR . LF);
+
 		// Security related constant: Default value of fileDenyPattern
 		define('FILE_DENY_PATTERN_DEFAULT', '\\.(php[3-6]?|phpsh|phtml)(\\..*)?$|^\\.htaccess$');
 		// Security related constant: List of file extensions that should be registered as php script file extensions
 		define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6,phpsh,inc,phtml');
+
 		// List of extensions required to run the core
 		define('REQUIRED_EXTENSIONS', 'core,backend,frontend,cms,lang,sv,extensionmanager,recordlist,extbase,fluid,cshmanual,install');
+
 		// Operating system identifier
 		// Either "WIN" or empty string
 		define('TYPO3_OS', self::getTypo3Os());
+
+		// Service error constants
+		// General error - something went wrong
+		define('T3_ERR_SV_GENERAL', -1);
+		// During execution it showed that the service is not available and should be ignored. The service itself should call $this->setNonAvailable()
+		define('T3_ERR_SV_NOT_AVAIL', -2);
+		// Passed subtype is not possible with this service
+		define('T3_ERR_SV_WRONG_SUBTYPE', -3);
+		// Passed subtype is not possible with this service
+		define('T3_ERR_SV_NO_INPUT', -4);
+		// File not found which the service should process
+		define('T3_ERR_SV_FILE_NOT_FOUND', -20);
+		// File not readable
+		define('T3_ERR_SV_FILE_READ', -21);
+		// File not writable
+		define('T3_ERR_SV_FILE_WRITE', -22);
+		// Passed subtype is not possible with this service
+		define('T3_ERR_SV_PROG_NOT_FOUND', -40);
+		// Passed subtype is not possible with this service
+		define('T3_ERR_SV_PROG_FAILED', -41);
 	}
 
 	/**
