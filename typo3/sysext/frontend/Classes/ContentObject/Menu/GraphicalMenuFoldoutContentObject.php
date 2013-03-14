@@ -26,20 +26,14 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Contains the GMENU_FOLDOUT extension class, tslib_gmenu_foldout
- *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
- * XHTML compliant
+ * Contains the GMENU_FOLDOUT menu object
+ * Class for the creation of DHTML foldout menus
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-/**
- * Class extension tslib_gmenu for the creation of DHTML foldout menus
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-class GraphicalMenuFoldout extends \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject {
+class GraphicalMenuFoldoutContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject {
 
 	/**
 	 * @todo Define visibility
