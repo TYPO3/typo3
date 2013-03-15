@@ -444,6 +444,60 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 			)
 		);
 	}
+
+	/**
+	 * Warning: This test asserts multiple things at once to keep the setup short.
+	 *
+	 * @test
+	 */
+	public function createZipFileFromExtensionGeneratesCorrectArchive() {
+		// Create extension for testing:
+		$extKey = $this->createFakeExtension();
+		$extensionRoot = $this->fakedExtensions[$extKey]['siteAbsPath'];
+
+		// Build mocked fileHandlingUtility:
+		$fileHandlerMock = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility',
+			array('getAbsoluteExtensionPath', 'getExtensionVersion')
+		);
+		$fileHandlerMock->expects($this->any())
+			->method('getAbsoluteExtensionPath')
+			->will($this->returnValue($extensionRoot));
+		$fileHandlerMock->expects($this->any())
+			->method('getExtensionVersion')
+			->will($this->returnValue('0.0.0'));
+
+		// Add files and directories to extension:
+		touch($extensionRoot . 'emptyFile.txt');
+		file_put_contents($extensionRoot . 'notEmptyFile.txt', 'content');
+		touch($extensionRoot . '.hiddenFile');
+		mkdir($extensionRoot . 'emptyDir');
+		mkdir($extensionRoot . 'notEmptyDir');
+		touch($extensionRoot . 'notEmptyDir/file.txt');
+
+		// Create zip-file from extension
+		$filename = $fileHandlerMock->_call('createZipFileFromExtension', $extKey);
+
+		$expectedFilename = PATH_site . 'typo3temp/' . $extKey . '_0.0.0.zip';
+		$this->assertEquals($expectedFilename, $filename, 'Archive file name differs from expectation');
+
+		// File was created
+		$this->assertTrue(file_exists($filename), 'Zip file not created');
+		$this->resourcesToRemove[] = $filename;
+
+		// Read archive and check its contents
+		$archive = new \ZipArchive();
+		$this->assertTrue($archive->open($filename), 'Unable to open archive');
+		$this->assertEquals($archive->statName('emptyFile.txt')->size, 0, 'Empty file not in archive');
+		$this->assertEquals($archive->getFromName('notEmptyFile.txt'), 'content', 'Expected content not found');
+		$this->assertFalse($archive->statName('.hiddenFile'), 'Hidden file not in archive');
+		$this->assertTrue(is_array($archive->statName('emptyDir/')), 'Empty directory not in archive');
+		$this->assertTrue(is_array($archive->statName('notEmptyDir/')), 'Not empty directory not in archive');
+		$this->assertTrue(is_array($archive->statName('notEmptyDir/file.txt')), 'File within directory not in archive');
+
+		// Check that the archive has no additional content
+		$this->assertEquals($archive->numFiles, 5, 'Too many or too less files in archive');
+	}
 }
 
 ?>
