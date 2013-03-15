@@ -617,25 +617,6 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 			$alttext = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordIconAltText($row, $table);
 			$iconImg = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row, array('title' => htmlspecialchars($alttext), 'style' => $indent ? ' margin-left: ' . $indent . 'px;' : ''));
 			$theIcon = $this->clickMenuEnabled ? $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, $table, $row['uid']) : $iconImg;
-
-			// Have labels respect possible itemsProcFunc results
-			/** @var $formEngine \TYPO3\CMS\Backend\Form\FormEngine */
-			$formEngine = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
-			if (isset($GLOBALS['TCA'][$table]['columns'])) {
-				foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $fieldSetup) {
-					if (isset($fieldSetup['config']['itemsProcFunc']) && $fieldSetup['config']['itemsProcFunc']) {
-						$GLOBALS['TCA'][$table]['columns'][$field]['config']['items'] = $formEngine->procItems(
-							$fieldSetup['config']['items'],
-							$fieldSetup['config']['itemsProcFunc'],
-							$fieldSetup['config'],
-							$table,
-							$row,
-							$field
-						);
-					}
-				}
-			}
-
 			// Preparing and getting the data-array
 			$theData = array();
 			foreach ($this->fieldArray as $fCol) {
