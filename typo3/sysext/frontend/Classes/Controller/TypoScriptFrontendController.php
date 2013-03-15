@@ -383,6 +383,14 @@ class TypoScriptFrontendController {
 		'onunload' => array()
 	);
 
+	/**
+	 * Adds JavaScript code
+	 *
+	 * @var string
+	 * @deprecated since TYPO3 3.5 - use additionalJavaScript instead.
+	 */
+	public $JSCode = '';
+
 	// Used to accumulate JavaScript loaded images (by menus)
 	/**
 	 * @todo Define visibility
@@ -3383,6 +3391,7 @@ class TypoScriptFrontendController {
 		$this->additionalFooterData = is_array($this->config['INTincScript_ext']['additionalFooterData']) ? $this->config['INTincScript_ext']['additionalFooterData'] : array();
 		$this->additionalJavaScript = $this->config['INTincScript_ext']['additionalJavaScript'];
 		$this->additionalCSS = $this->config['INTincScript_ext']['additionalCSS'];
+		$this->JSCode = $this->additionalHeaderData['JSCode'];
 		$this->JSImgCode = $this->additionalHeaderData['JSImgCode'];
 		$this->divSection = '';
 		if (!empty($this->config['INTincScript_ext']['pageRenderer'])) {
