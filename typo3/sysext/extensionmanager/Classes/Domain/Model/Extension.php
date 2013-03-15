@@ -224,36 +224,26 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * Returns either array with all default categories or index/title
-	 * of a category entry.
+	 * Returns category index from a given string or a integer.
+	 * Fallback to 4 - 'misc' in case string is not found or integer ist out of range.
 	 *
-	 * @param mixed $cat category title or category index
-	 * @return mixed
+	 * @param string|integer $category Category string or integer
+	 * @return integer Valid category index
 	 */
-	public function getDefaultCategory($cat = NULL) {
-		$return = '';
-		if (is_null($cat)) {
-			$return = self::$defaultCategories;
-		} else {
-			if (is_string($cat)) {
-				// default category
-				$catIndex = 4;
-				if (array_key_exists(strtolower($cat), self::$defaultCategories)) {
-					$catIndex = self::$defaultCategories[strtolower($cat)];
-				}
-				$return = $catIndex;
-			} else {
-				if (is_int($cat) && $cat >= 0) {
-					$catTitle = array_search($cat, self::$defaultCategories);
-					// default category
-					if (!$catTitle) {
-						$catTitle = 'misc';
-					}
-					$return = $catTitle;
-				}
+	public function getCategoryIndexFromStringOrNumber($category) {
+		$categoryIndex = 4;
+		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($category)) {
+			$categoryIndex = (integer)$category;
+			if ($categoryIndex < 0 || $categoryIndex > 9) {
+				$categoryIndex = 4;
+			}
+		} elseif (is_string($category)) {
+			$categoryIndex = array_search($category, self::$defaultCategories);
+			if ($categoryIndex === FALSE) {
+				$categoryIndex = 4;
 			}
 		}
-		return $return;
+		return $categoryIndex;
 	}
 
 	/**
