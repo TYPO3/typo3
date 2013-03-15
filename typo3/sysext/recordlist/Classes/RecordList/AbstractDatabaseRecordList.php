@@ -916,7 +916,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 				\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(sprintf('$TCA is broken for the table "%s": no required "columns" entry in $TCA.', $table), 'core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 			}
 		}
-		return $fieldListArr;
+		return array_unique($fieldListArr);
 	}
 
 	/**

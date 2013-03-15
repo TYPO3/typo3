@@ -1309,33 +1309,46 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 		$fields[] = '_CONTROL_';
 		$fields[] = '_CLIPBOARD_';
 		// Create an option for each field:
-		$opt = array();
-		$opt[] = '<option value=""></option>';
-		foreach ($fields as $fN) {
-			// Field label
-			$fL = is_array($GLOBALS['TCA'][$table]['columns'][$fN]) ? rtrim($GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fN]['label']), ':') : '[' . $fN . ']';
-			$opt[] = '
-											<option value="' . $fN . '"' . (in_array($fN, $setFields) ? ' selected="selected"' : '') . '>' . htmlspecialchars($fL) . '</option>';
-		}
+		$options = array();		
+//		foreach ($fields as $fieldName) {
+//			// Field label
+//			$fieldLabel = is_array($GLOBALS['TCA'][$table]['columns'][$fieldName]) ? rtrim($GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label']), ':') : '[' . $fieldName . ']';
+//			$options[] = '
+//				<input id="field-' . $fieldName .'" name="displayFields[' . $table . '][]" type="checkbox" value="' . $fieldName . '"' . (in_array($fieldName, $setFields) ? ' checked="yes"' : '') . ' /> <label for="field-' . $fieldName .'">' . htmlspecialchars($fieldLabel) . '</label><br>
+//			';
+//		}
 		// Compile the options into a multiple selector box:
-		$lMenu = '
-										<select size="' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange((count($fields) + 1), 3, 20) . '" multiple="multiple" name="displayFields[' . $table . '][]">' . implode('', $opt) . '
-										</select>
-				';
 		// Table with the field selector::
 		$content = $formElements[0] . '
-
 				<!--
 					Field selector for extended table view:
 				-->
-				<table border="0" cellpadding="0" cellspacing="0" id="typo3-dblist-fieldSelect">
+				<table cellpadding="0" cellspacing="0" height="200" class="typo3-dblist" id="typo3-dblist-fieldSelect">
+				    <thead>
 					<tr>
-						<td>' . $lMenu . '</td>
-						<td><input type="submit" name="search" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.setFields', 1) . '" /></td>
+					    <td class="t3-row-header">
+				   		Visible fields
+					    </td>
 					</tr>
+				    </thead>
+				    <tbody><tr><td>';
+					foreach ($fields as $fieldName) {
+						// Field label
+						$fieldLabel = is_array($GLOBALS['TCA'][$table]['columns'][$fieldName]) ? rtrim($GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label']), ':') : '[' . $fieldName . ']';
+						$content .= '
+							<input id="field-' . $fieldName .'" name="displayFields[' . $table . '][]" type="checkbox" value="' . $fieldName . '"' . (in_array($fieldName, $setFields) ? ' checked="yes"' : '') . ' /> <label for="field-' . $fieldName .'">' . htmlspecialchars($fieldLabel) . '</label>
+						';
+					}
+				$content .= '
+				    </td></tr></tbody>
+				    <tfoot>
+					<td>
+					    <input type="submit" name="search" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.setFields', 1) . '" />
+					</td>
+				    </tfoot>
 				</table>
 			' . $formElements[1];
-		return '<div class="db_list-fieldSelect">' . $content . '</div>';
+		return $content;
 	}
 
 	/*********************************

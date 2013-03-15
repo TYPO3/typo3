@@ -3,7 +3,7 @@ Web > List
 
 - - - - - - - - - - - - - - - - - - - - - */
 
-table.typo3-dblist {
+.typo3-dblist {
 	background: #fff;
 	border: 1px solid #a2aab8;
 }
