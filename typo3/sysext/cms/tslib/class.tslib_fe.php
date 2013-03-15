@@ -145,6 +145,13 @@
 		'onload' => array(),
 		'onunload' => array(),
 	);
+	/**
+	 * Adds JavaScript code
+	 *
+	 * @var string
+	 * @deprecated since TYPO3 3.5 - use additionalJavaScript instead.
+	 */
+	var $JSCode='';
 	var $JSImgCode='';					// Used to accumulate JavaScript loaded images (by menus)
 	var $divSection='';					// Used to accumulate DHTML-layers.
 	var $defaultBodyTag='<body>';		// Default bodytag, if nothing else is set. This can be overridden by applications like TemplaVoila.
@@ -3219,6 +3226,7 @@
 		$this->additionalFooterData = is_array($this->config['INTincScript_ext']['additionalFooterData']) ? $this->config['INTincScript_ext']['additionalFooterData'] : array();
 		$this->additionalJavaScript = $this->config['INTincScript_ext']['additionalJavaScript'];
 		$this->additionalCSS = $this->config['INTincScript_ext']['additionalCSS'];
+		$this->JSCode = $this->additionalHeaderData['JSCode'];
 		$this->JSImgCode = $this->additionalHeaderData['JSImgCode'];
 		$this->divSection='';
 
