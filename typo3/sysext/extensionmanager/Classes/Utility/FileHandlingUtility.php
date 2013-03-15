@@ -380,7 +380,17 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$files = array_filter($files);
 
 		foreach ($files as $file) {
-			$zip->addFile($extensionPath . $file, $file);
+			$fullPath = $extensionPath . $file;
+
+			// Distinguish between files and directories, as creation of the
+			// archive fails on Windows when trying to add a directory with
+			// "addFile".
+			if (is_file($fullPath)) {
+				$zip->addFile($fullPath, $file);
+			}
+			else if (is_dir($fullPath)) {
+				$zip->addEmptyDir($file);
+			}
 		}
 
 		$zip->close();
