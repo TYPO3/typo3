@@ -237,7 +237,8 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	protected function createTabs() {
 		$panelCheck = '';
 		if ($this->modTS['showCheckLinkTab'] == 1) {
-			$panelCheck = '{
+			$panelCheck = ',
+			{
 				title: TYPO3.l10n.localize(\'CheckLink\'),
 				html: ' . json_encode($this->flush()) . ',
 			}';
@@ -254,8 +255,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 				autoHeight: true,
 				title: TYPO3.l10n.localize(\'Report\'),
 				html: ' . json_encode($this->flush(TRUE)) . '
-			},
-			' . $panelCheck . '
+			}' . $panelCheck . '
 			]
 
 		});
