@@ -24,8 +24,6 @@ namespace TYPO3\CMS\Linkvalidator;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modfuncreport/locallang.xml');
-
 /**
  * This class provides Processing plugin implementation
  *
@@ -101,6 +99,7 @@ class LinkAnalyzer {
 	 * Fill hookObjectsArr with different link types and possible XClasses.
 	 */
 	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xml');
 		// Hook to handle own checks
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $key => $classRef) {
@@ -226,7 +225,7 @@ class LinkAnalyzer {
 	public function analyzeRecord(array &$results, $table, array $fields, array $record) {
 		// Put together content of all relevant fields
 		$haystack = '';
-		/** @var \TYPO3\CMS\Core\Html\HtmlParser $htmlParser */
+		/** @var $htmlParser \TYPO3\CMS\Core\Html\HtmlParser */
 		$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 		$idRecord = $record['uid'];
 		// Get all references
@@ -240,7 +239,7 @@ class LinkAnalyzer {
 				$softRefs = \TYPO3\CMS\Backend\Utility\BackendUtility::explodeSoftRefParserList($conf['softref']);
 				// Traverse soft references
 				foreach ($softRefs as $spKey => $spParams) {
-					/** @var \TYPO3\CMS\Core\Database\SoftReferenceIndex $softRefObj Create or get the soft reference object */
+					/** @var $softRefObj \TYPO3\CMS\Core\Database\SoftReferenceIndex */
 					$softRefObj = \TYPO3\CMS\Backend\Utility\BackendUtility::softRefParserObj($spKey);
 					// If there is an object returned...
 					if (is_object($softRefObj)) {
@@ -267,7 +266,7 @@ class LinkAnalyzer {
 	 * @param array $record UID of the current record
 	 * @param string $field The current field
 	 * @param string $table The current table
-	 * @return 	void
+	 * @return void
 	 */
 	protected function analyseLinks(array $resultArray, array &$results, array $record, $field, $table) {
 		foreach ($resultArray['elements'] as $element) {
@@ -275,7 +274,7 @@ class LinkAnalyzer {
 			$type = '';
 			$idRecord = $record['uid'];
 			if (!empty($r)) {
-				/** @var \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype $hookObj */
+				/** @var $hookObj \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype */
 				foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
 					$type = $hookObj->fetchType($r, $type, $keyArr);
 					// Store the type that was found
@@ -333,7 +332,7 @@ class LinkAnalyzer {
 					}
 				}
 			}
-			/** @var \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype $hookObj */
+			/** @var $hookObj \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype */
 			foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
 				$type = $hookObj->fetchType($currentR, $type, $keyArr);
 				// Store the type that was found
@@ -418,6 +417,8 @@ class LinkAnalyzer {
 	}
 
 	/**
+	 * Check if rootline contains a hidden page
+	 *
 	 * @param array $pageInfo Array with uid, title, hidden, extendToSubpages from pages table
 	 * @return boolean TRUE if rootline contains a hidden page, FALSE if not
 	 */

@@ -24,6 +24,7 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * This class provides Check Link Handler plugin implementation
  *
@@ -32,7 +33,11 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  */
 class LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 
+	/**
+	 * @var string
+	 */
 	const DELETED = 'deleted';
+
 	/**
 	 * TSconfig of the module tx_linkhandler
 	 *
@@ -42,8 +47,6 @@ class LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 
 	/**
 	 * Get TSconfig when loading the class
-	 *
-	 * @todo Define visibility
 	 */
 	public function __construct() {
 		$this->tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig(1, 'mod.tx_linkhandler');

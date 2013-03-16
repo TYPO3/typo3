@@ -24,6 +24,7 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * This class provides Check External Links plugin implementation
  *
@@ -77,18 +78,18 @@ class ExternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 			'follow_redirects' => TRUE,
 			'strict_redirects' => TRUE
 		);
-		/** @var \TYPO3\CMS\Core\Http\HttpRequest|\HTTP_Request2 $request */
+		/** @var $request \TYPO3\CMS\Core\Http\HttpRequest|\HTTP_Request2 */
 		$request = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\\HttpRequest', $url, 'HEAD', $config);
 		// Observe cookies
 		$request->setCookieJar(TRUE);
 		try {
-			/** @var \HTTP_Request2_Response $response */
+			/** @var $response \HTTP_Request2_Response */
 			$response = $request->send();
 			// HEAD was not allowed, now trying GET
 			if (isset($response) && $response->getStatus() === 405) {
 				$request->setMethod('GET');
 				$request->setHeader('Range', 'bytes = 0 - 4048');
-				/** @var \HTTP_Request2_Response $response */
+				/** @var $response \HTTP_Request2_Response */
 				$response = $request->send();
 			}
 		} catch (\Exception $e) {
@@ -129,26 +130,26 @@ class ExternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 	public function getErrorMessage($errorParams) {
 		$errorType = $errorParams['errorType'];
 		switch ($errorType) {
-		case 300:
-			$response = sprintf($GLOBALS['LANG']->getLL('list.report.externalerror'), $errorType);
+			case 300:
+				$response = sprintf($GLOBALS['LANG']->getLL('list.report.externalerror'), $errorType);
 			break;
-		case 403:
-			$response = $GLOBALS['LANG']->getLL('list.report.pageforbidden403');
+			case 403:
+				$response = $GLOBALS['LANG']->getLL('list.report.pageforbidden403');
 			break;
-		case 404:
-			$response = $GLOBALS['LANG']->getLL('list.report.pagenotfound404');
+			case 404:
+				$response = $GLOBALS['LANG']->getLL('list.report.pagenotfound404');
 			break;
-		case 500:
-			$response = $GLOBALS['LANG']->getLL('list.report.internalerror500');
+			case 500:
+				$response = $GLOBALS['LANG']->getLL('list.report.internalerror500');
 			break;
-		case 'loop':
-			$response = sprintf($GLOBALS['LANG']->getLL('list.report.redirectloop'), $errorParams['errorCode'], $errorParams['location']);
+			case 'loop':
+				$response = sprintf($GLOBALS['LANG']->getLL('list.report.redirectloop'), $errorParams['errorCode'], $errorParams['location']);
 			break;
-		case 'exception':
-			$response = sprintf($GLOBALS['LANG']->getLL('list.report.httpexception'), $errorParams['message']);
+			case 'exception':
+				$response = sprintf($GLOBALS['LANG']->getLL('list.report.httpexception'), $errorParams['message']);
 			break;
-		default:
-			$response = sprintf($GLOBALS['LANG']->getLL('list.report.otherhttpcode'), $errorType, $errorParams['message']);
+			default:
+				$response = sprintf($GLOBALS['LANG']->getLL('list.report.otherhttpcode'), $errorType, $errorParams['message']);
 		}
 		return $response;
 	}

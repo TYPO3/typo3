@@ -24,6 +24,7 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * This class provides Check File Links plugin implementation
  *

@@ -135,11 +135,6 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	protected $pageRenderer;
 
 	/**
-	 * @var string $resPath Path to "linkvalidator/res/" to be used in pageRenderer
-	 */
-	protected $resPath = '';
-
-	/**
 	 * @var \TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface[]
 	 */
 	protected $hookObjectsArr = array();
@@ -155,7 +150,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	 * @return string Module content
 	 */
 	public function main() {
-		$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modfuncreport/locallang.xml');
+		$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
 		$this->searchLevel = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('search_levels');
 		if (isset($this->pObj->id)) {
 			$this->modTS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
@@ -191,11 +186,12 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		}
 		$GLOBALS['BE_USER']->pushModuleData('web_info', $this->pObj->MOD_SETTINGS);
 		$this->initialize();
-		// Setting up the context sensitive menu
-		$this->resPath = $this->doc->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('linkvalidator') . 'res/';
+
 		$this->pageRenderer = $this->doc->getPageRenderer();
 		// Localization
-		$this->pageRenderer->addInlineLanguageLabelFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('linkvalidator', 'modfuncreport/locallang.xml'));
+		$this->pageRenderer->addInlineLanguageLabelFile(
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('linkvalidator', 'Resources/Private/Language/Module/locallang.xlf')
+		);
 		$this->pageRenderer->addJsInlineCode('linkvalidator', 'function toggleActionButton(prefix) {
 			var buttonDisable = true;
 			Ext.select(\'.\' + prefix ,false).each(function(checkBox,i){
@@ -219,7 +215,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		if ($this->modTS['showCheckLinkTab'] == 1) {
 			$this->updateListHtml = '<input type="submit" name="updateLinkList" id="updateLinkList" value="' . $GLOBALS['LANG']->getLL('label_update') . '"/>';
 		}
-		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" id="refreshLinkList"  value="' . $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
+		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" id="refreshLinkList" value="' . $GLOBALS['LANG']->getLL('label_refresh') . '"/>';
 		$this->processor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Linkvalidator\\LinkAnalyzer');
 		$this->updateBrokenLinks();
 		$brokenLinkOverView = $this->processor->getLinkCounts($this->pObj->id);
@@ -293,7 +289,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		}
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('linkvalidator') . 'modfuncreport/mod_template.html');
+		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('linkvalidator') . 'Resources/Private/Templates/mod_template.html');
 		$this->relativePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('linkvalidator');
 		$this->pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->pObj->id, $GLOBALS['BE_USER']->getPagePermsClause(1));
 		$this->isAccessibleForCurrentUser = FALSE;
@@ -384,11 +380,11 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		// Build level selector
 		$opt = array();
 		$parts = array(
-			0 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_0'),
-			1 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_1'),
-			2 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_2'),
-			3 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_3'),
-			999 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_infi')
+			0 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
+			1 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
+			2 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
+			3 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
+			999 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
 		);
 		foreach ($parts as $kv => $label) {
 			$opt[] = '<option value="' . $kv . '"' . ($kv == intval($this->searchLevel) ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
@@ -442,6 +438,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 				} else {
 					$brokenLinksMarker = $this->getNoBrokenLinkMessage($brokenLinksMarker);
 				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 		} else {
 			$brokenLinksMarker = $this->getNoBrokenLinkMessage($brokenLinksMarker);
@@ -463,7 +460,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	 */
 	protected function getNoBrokenLinkMessage(array $brokenLinksMarker) {
 		$brokenLinksMarker['LIST_HEADER'] = $this->doc->sectionHeader($GLOBALS['LANG']->getLL('list.header'));
-		/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
+		/** @var $message \TYPO3\CMS\Core\Messaging\FlashMessage */
 		$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 			'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 			$GLOBALS['LANG']->getLL('list.no.broken.links'),
@@ -610,7 +607,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 						}
 						$translation = $GLOBALS['LANG']->getLL('hooks.' . $type);
 						$translation = $translation ? $translation : $type;
-						$option = '<input type="checkbox" ' . $additionalAttr . '  id="' . $prefix . 'SET_' . $type . '" name="' . $prefix . 'SET[' . $type . ']" value="1"' . ($this->pObj->MOD_SETTINGS[$type] ? ' checked="checked"' : '') . '/>' . '<label for="' . $prefix . 'SET[' . $type . ']">' . htmlspecialchars($translation) . '</label>';
+						$option = '<input type="checkbox" ' . $additionalAttr . ' id="' . $prefix . 'SET_' . $type . '" name="' . $prefix . 'SET[' . $type . ']" value="1"' . ($this->pObj->MOD_SETTINGS[$type] ? ' checked="checked"' : '') . '/>' . '<label for="' . $prefix . 'SET[' . $type . ']">' . htmlspecialchars($translation) . '</label>';
 						$hookSectionMarker['option'] = $option;
 						$hookSectionContent .= \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray(
 							$hookSectionTemplate,
@@ -635,7 +632,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	 * @return void
 	 */
 	protected function loadHeaderData() {
-		$this->doc->addStyleSheet('linkvalidator', $this->relativePath . 'res/linkvalidator.css', 'linkvalidator');
+		$this->doc->addStyleSheet('linkvalidator', $this->relativePath . 'Resources/Public/Css/linkvalidator.css', 'linkvalidator');
 		$this->doc->getPageRenderer()->addJsFile($this->doc->backPath . '../t3lib/js/extjs/ux/Ext.ux.FitToParent.js');
 	}
 
@@ -716,6 +713,5 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	}
 
 }
-
 
 ?>

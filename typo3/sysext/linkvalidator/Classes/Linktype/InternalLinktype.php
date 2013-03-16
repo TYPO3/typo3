@@ -24,6 +24,7 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * This class provides Check Internal Links plugin implementation
  *
@@ -32,10 +33,26 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  */
 class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 
+	/**
+	 * @var string
+	 */
 	const DELETED = 'deleted';
+
+	/**
+	 * @var string
+	 */
 	const HIDDEN = 'hidden';
+
+	/**
+	 * @var string
+	 */
 	const MOVED = 'moved';
+
+	/**
+	 * @var string
+	 */
 	const NOTEXISTING = 'notExisting';
+
 	/**
 	 * All parameters needed for rendering the error message
 	 *
@@ -183,43 +200,43 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 		$errorType = $errorParams['errorType'];
 		if (is_array($errorParams['page'])) {
 			switch ($errorType['page']) {
-			case self::DELETED:
-				$errorPage = $GLOBALS['LANG']->getLL('list.report.pagedeleted');
-				$errorPage = str_replace('###title###', $errorParams['page']['title'], $errorPage);
-				$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
+				case self::DELETED:
+					$errorPage = $GLOBALS['LANG']->getLL('list.report.pagedeleted');
+					$errorPage = str_replace('###title###', $errorParams['page']['title'], $errorPage);
+					$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
 				break;
-			case self::HIDDEN:
-				$errorPage = $GLOBALS['LANG']->getLL('list.report.pagenotvisible');
-				$errorPage = str_replace('###title###', $errorParams['page']['title'], $errorPage);
-				$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
+				case self::HIDDEN:
+					$errorPage = $GLOBALS['LANG']->getLL('list.report.pagenotvisible');
+					$errorPage = str_replace('###title###', $errorParams['page']['title'], $errorPage);
+					$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
 				break;
-			default:
-				$errorPage = $GLOBALS['LANG']->getLL('list.report.pagenotexisting');
-				$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
+				default:
+					$errorPage = $GLOBALS['LANG']->getLL('list.report.pagenotexisting');
+					$errorPage = str_replace('###uid###', $errorParams['page']['uid'], $errorPage);
 			}
 		}
 		if (is_array($errorParams['content'])) {
 			switch ($errorType['content']) {
-			case self::DELETED:
-				$errorContent = $GLOBALS['LANG']->getLL('list.report.contentdeleted');
-				$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
-				$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
+				case self::DELETED:
+					$errorContent = $GLOBALS['LANG']->getLL('list.report.contentdeleted');
+					$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
+					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
 				break;
-			case self::HIDDEN:
-				$errorContent = $GLOBALS['LANG']->getLL('list.report.contentnotvisible');
-				$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
-				$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
+				case self::HIDDEN:
+					$errorContent = $GLOBALS['LANG']->getLL('list.report.contentnotvisible');
+					$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
+					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
 				break;
-			case self::MOVED:
-				$errorContent = $GLOBALS['LANG']->getLL('list.report.contentmoved');
-				$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
-				$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
-				$errorContent = str_replace('###wrongpage###', $errorParams['content']['wrongPage'], $errorContent);
-				$errorContent = str_replace('###rightpage###', $errorParams['content']['rightPage'], $errorContent);
+				case self::MOVED:
+					$errorContent = $GLOBALS['LANG']->getLL('list.report.contentmoved');
+					$errorContent = str_replace('###title###', $errorParams['content']['title'], $errorContent);
+					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
+					$errorContent = str_replace('###wrongpage###', $errorParams['content']['wrongPage'], $errorContent);
+					$errorContent = str_replace('###rightpage###', $errorParams['content']['rightPage'], $errorContent);
 				break;
-			default:
-				$errorContent = $GLOBALS['LANG']->getLL('list.report.contentnotexisting');
-				$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
+				default:
+					$errorContent = $GLOBALS['LANG']->getLL('list.report.contentnotexisting');
+					$errorContent = str_replace('###uid###', $errorParams['content']['uid'], $errorContent);
 			}
 		}
 		if (isset($errorPage) && isset($errorContent)) {

@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * This class provides Check Base plugin implementation
  *
@@ -82,6 +83,5 @@ abstract class AbstractLinktype implements \TYPO3\CMS\Linkvalidator\Linktype\Lin
 	}
 
 }
-
 
 ?>

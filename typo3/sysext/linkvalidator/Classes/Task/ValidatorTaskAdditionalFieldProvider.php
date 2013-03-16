@@ -23,6 +23,7 @@ namespace TYPO3\CMS\Linkvalidator\Task;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * This class provides Scheduler Additional Field plugin implementation
  *
@@ -89,7 +90,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 		}
 		if (empty($taskInfo['emailTemplateFile'])) {
 			if ($schedulerModule->CMD == 'add') {
-				$taskInfo['emailTemplateFile'] = 'EXT:linkvalidator/res/mailtemplate.html';
+				$taskInfo['emailTemplateFile'] = 'EXT:linkvalidator/Resources/Private/Templates/mailtemplate.html';
 			} elseif ($schedulerModule->CMD == 'edit') {
 				$taskInfo['emailTemplateFile'] = $task->getEmailTemplateFile();
 			} else {
@@ -97,8 +98,8 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 			}
 		}
 		$fieldId = 'task_page';
-		$fieldCode = '<input type="text" name="tx_scheduler[linkvalidator][page]"  id="' . $fieldId . '" value="' . htmlspecialchars($taskInfo['page']) . '"/>';
-		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.page');
+		$fieldCode = '<input type="text" name="tx_scheduler[linkvalidator][page]" id="' . $fieldId . '" value="' . htmlspecialchars($taskInfo['page']) . '"/>';
+		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.page');
 		$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldCode,
@@ -107,12 +108,12 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 		// input for depth
 		$fieldId = 'task_depth';
 		$fieldValueArray = array(
-			'0' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_0'),
-			'1' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_1'),
-			'2' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_2'),
-			'3' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_3'),
-			'4' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_4'),
-			'999' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_infi')
+			'0' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
+			'1' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
+			'2' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
+			'3' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
+			'4' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_4'),
+			'999' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
 		);
 		$fieldCode = '<select name="tx_scheduler[linkvalidator][depth]" id="' . $fieldId . '">';
 		foreach ($fieldValueArray as $depth => $label) {
@@ -121,7 +122,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 						'>' . $label . '</option>';
 		}
 		$fieldCode .= '</select>';
-		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.depth');
+		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.depth');
 		$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldCode,
@@ -130,7 +131,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 		$fieldId = 'task_configuration';
 		$fieldCode = '<textarea  name="tx_scheduler[linkvalidator][configuration]" id="' . $fieldId . '" >' .
 					htmlspecialchars($taskInfo['configuration']) . '</textarea>';
-		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.conf');
+		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.conf');
 		$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldCode,
@@ -139,7 +140,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 		$fieldId = 'task_email';
 		$fieldCode = '<input type="text"  name="tx_scheduler[linkvalidator][email]" id="' . $fieldId . '" value="' .
 					htmlspecialchars($taskInfo['email']) . '" />';
-		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.email');
+		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.email');
 		$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldCode,
@@ -148,7 +149,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 		$fieldId = 'task_emailOnBrokenLinkOnly';
 		$fieldCode = '<input type="checkbox"  name="tx_scheduler[linkvalidator][emailOnBrokenLinkOnly]" id="' . $fieldId . '" ' .
 					(htmlspecialchars($taskInfo['emailOnBrokenLinkOnly']) ? 'checked="checked"' : '') . ' />';
-		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.emailOnBrokenLinkOnly');
+		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.emailOnBrokenLinkOnly');
 		$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldCode,
@@ -157,7 +158,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 		$fieldId = 'task_emailTemplateFile';
 		$fieldCode = '<input type="text"  name="tx_scheduler[linkvalidator][emailTemplateFile]" id="' . $fieldId .
 					'" value="' . htmlspecialchars($taskInfo['emailTemplateFile']) . '" />';
-		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.emailTemplateFile');
+		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.emailTemplateFile');
 		$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldCode,
@@ -197,7 +198,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 			foreach ($emailList as $emailAdd) {
 				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($emailAdd)) {
 					$isValid = FALSE;
-					$schedulerModule->addMessage($GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.invalidEmail'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					$schedulerModule->addMessage($GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.invalidEmail'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				}
 			}
 		}
@@ -205,7 +206,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) == 0 && $submittedData['linkvalidator']['page'] > 0) {
 				$isValid = FALSE;
 				$schedulerModule->addMessage(
-					$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.invalidPage'),
+					$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.invalidPage'),
 					\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
 				);
 			}
@@ -213,14 +214,14 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 		} else {
 			$isValid = FALSE;
 			$schedulerModule->addMessage(
-				$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.invalidPage'),
+				$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.invalidPage'),
 				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
 			);
 		}
 		if ($submittedData['linkvalidator']['depth'] < 0) {
 			$isValid = FALSE;
 			$schedulerModule->addMessage(
-				$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.invalidDepth'),
+				$GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.invalidDepth'),
 				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
 			);
 		}
