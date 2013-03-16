@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Tolleiv Nietsch <typo3@tolleiv.de>
+ *  (c) 2011-2013 Tolleiv Nietsch <typo3@tolleiv.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
