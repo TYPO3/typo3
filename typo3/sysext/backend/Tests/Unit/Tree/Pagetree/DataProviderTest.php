@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree\Pagetree;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Stefan Galinski <stefan.galinski@gmail.com>
+ *  (c) 2012-2013 Stefan Galinski <stefan.galinski@gmail.com>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

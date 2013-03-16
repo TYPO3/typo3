@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Backend\View;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2011 Ingo Renner <ingo@typo3.org>
+ *  (c) 2007-2013 Ingo Renner <ingo@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

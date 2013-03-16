@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Database;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Xavier Perseguers <typo3@perseguers.ch>
+ *  (c) 2011-2013 Xavier Perseguers <typo3@perseguers.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,8 +32,7 @@ namespace TYPO3\CMS\Core\Database;
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  */
-interface PostProcessQueryHookInterface
-{
+interface PostProcessQueryHookInterface {
 	/**
 	 * Post-processor for the exec_INSERTquery method.
 	 *

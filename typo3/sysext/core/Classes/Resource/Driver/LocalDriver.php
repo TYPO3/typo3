@@ -5,7 +5,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2011 Andreas Wolf <andreas.wolf@ikt-werk.de>
+ * (c) 2011-2013 Andreas Wolf <andreas.wolf@ikt-werk.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is

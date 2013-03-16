@@ -15,8 +15,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *
  * @api
  */
-interface TaggableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\BackendInterface
-{
+interface TaggableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\BackendInterface {
 	/**
 	 * Removes all cache entries of this cache which are tagged by the specified tag.
 	 *

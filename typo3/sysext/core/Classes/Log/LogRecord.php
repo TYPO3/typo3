@@ -4,8 +4,8 @@ namespace TYPO3\CMS\Core\Log;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2011-2012 Ingo Renner (ingo@typo3.org)
- * (c) 2012 Steffen Müller (typo3@t3node.com)
+ * (c) 2011-2013 Ingo Renner (ingo@typo3.org)
+ * (c) 2012-2013 Steffen Müller (typo3@t3node.com)
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is

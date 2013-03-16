@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2011 Helmut Hummel <helmut@typo3.org>
+ *  (c) 2010-2013 Helmut Hummel <helmut@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

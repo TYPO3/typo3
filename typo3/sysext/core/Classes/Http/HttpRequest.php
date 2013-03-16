@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Http;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011-2012 Philipp Gampe <philipp.gampe@typo3.org>
+ *  (c) 2011-2013 Philipp Gampe <philipp.gampe@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
