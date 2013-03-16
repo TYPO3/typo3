@@ -35,4 +35,12 @@ $tempField = array(
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('sys_template', $tempField, 1);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('sys_template', 'include_static;;2;;5-5-5', '', 'before:includeStaticAfterBasedOn');
+
+if (TYPO3_MODE == 'BE') {
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateModuleController']['newStandardTemplateView'] =
+		'TYPO3\\CMS\\Statictemplates\\TypoScriptTemplateModuleControllerHook->render';
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateModuleController']['newStandardTemplateHandler'] =
+		'TYPO3\\CMS\\Statictemplates\\TypoScriptTemplateModuleControllerHook->handle';
+}
+
 ?>
