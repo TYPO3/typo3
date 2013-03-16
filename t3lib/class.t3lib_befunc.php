@@ -3253,6 +3253,8 @@ final class t3lib_BEfunc {
 						if (strcmp($typeVal, '') && is_array($val['types.'][$typeVal . '.'])) {
 							$res[$fieldN] = t3lib_div::array_merge_recursive_overrule($res[$fieldN], $val['types.'][$typeVal . '.']);
 						}
+					} else {
+						$res[$key] = $val;
 					}
 				}
 			}
