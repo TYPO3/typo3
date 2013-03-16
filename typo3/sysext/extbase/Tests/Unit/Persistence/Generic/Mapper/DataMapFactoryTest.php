@@ -389,6 +389,21 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$dataMapFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory', array('dummy'));
 		$this->assertSame($expected, $dataMapFactory->_call('resolveTableName', $className));
 	}
+
+	/**
+	 * @test
+	 */
+	public function createColumnMapReturnsAValidColumnMap() {
+		/** @var $dataMapFactory \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory */
+		$dataMapFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory', array('dummy'));
+		$dataMapFactory->injectObjectManager($this->objectManager);
+
+		$this->assertEquals(
+			new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap('column', 'property'),
+			$dataMapFactory->_call('createColumnMap', 'column', 'property')
+		);
+	}
+
 }
 
 ?>

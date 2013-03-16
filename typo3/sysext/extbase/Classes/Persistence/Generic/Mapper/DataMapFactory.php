@@ -173,7 +173,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				$propertyName = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($columnName);
 			}
 			// if (in_array($propertyName, $classPropertyNames)) { // TODO Enable check for property existance
-			$columnMap = new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap($columnName, $propertyName);
+			$columnMap = $this->createColumnMap($columnName, $propertyName);
 			$propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
 			$columnMap = $this->setRelations($columnMap, $columnDefinition['config'], $propertyMetaData);
 			$dataMap->addColumnMap($columnMap);
@@ -401,6 +401,18 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			$columnMap->setRelationTablePageIdColumnName('pid');
 		}
 		return $columnMap;
+	}
+
+	/**
+	 * Creates the ColumnMap object for the given columnName and propertyName
+	 *
+	 * @param string $columnName
+	 * @param string $propertyName
+	 *
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap
+	 */
+	protected function createColumnMap($columnName, $propertyName) {
+		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\ColumnMap', $columnName, $propertyName);
 	}
 
 }
