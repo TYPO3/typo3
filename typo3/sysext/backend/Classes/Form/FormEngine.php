@@ -5286,11 +5286,13 @@ function ' . $evalData . '(value) {
 			$this->loadJavascriptLib('../t3lib/js/extjs/tceforms.js');
 			// If IRRE fields were processed, add the JavaScript functions:
 			if ($this->inline->inlineCount) {
-				$GLOBALS['SOBE']->doc->getPageRenderer()->loadScriptaculous();
-				$this->loadJavascriptLib('../t3lib/jsfunc.inline.js');
+				$pageRenderer->loadScriptaculous();
+				$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/InlineElement');
 				$out .= '
-				inline.setPrependFormFieldNames("' . $this->inline->prependNaming . '");
-				inline.setNoTitleString("' . addslashes(\TYPO3\CMS\Backend\Utility\BackendUtility::getNoRecordTitle(TRUE)) . '");
+				require(["TYPO3/CMS/Backend/InlineElement"], function(inline) {
+					inline.setPrependFormFieldNames("' . $this->inline->prependNaming . '");
+					inline.setNoTitleString("' . addslashes(\TYPO3\CMS\Backend\Utility\BackendUtility::getNoRecordTitle(TRUE)) . '");
+				});
 				';
 				// Always include JS functions for Suggest fields as we don't know what will come
 				$this->loadJavascriptLib('../t3lib/js/jsfunc.tceforms_suggest.js');
@@ -5394,7 +5396,9 @@ function ' . $evalData . '(value) {
 		// Add JS required for inline fields
 		if (count($this->inline->inlineData)) {
 			$out .= '
-			inline.addToDataArray(' . json_encode($this->inline->inlineData) . ');
+			require(["TYPO3/CMS/Backend/InlineElement"], function(inline) {
+				inline.addToDataArray(' . json_encode($this->inline->inlineData) . ');
+			});
 			';
 		}
 		// Registered nested elements for tabs or inline levels:

@@ -901,8 +901,9 @@ class InlineElement {
 	 */
 	public function addJavaScriptSortable($objectId) {
 		$this->fObj->additionalJS_post[] = '
+		require(["TYPO3/CMS/Backend/InlineElement"], function(inline) {
 			inline.createDragAndDropSorting("' . $objectId . '");
-		';
+		});';
 	}
 
 	/*******************************************************
