@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Resource\Hook;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Benjamin Mack <benni@typo3.org>
+ *  (c) 2012-2013 Benjamin Mack <benni@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Backend\Wizard;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2008-2011 Steffen Kamper <info@sk-typo3.de>
+ *  (c) 2008-2013 Steffen Kamper <info@sk-typo3.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,8 +31,7 @@ namespace TYPO3\CMS\Backend\Wizard;
  *
  * @author Steffen Kamper <info@sk-typo3.de>
  */
-interface NewContentElementWizardHookInterface
-{
+interface NewContentElementWizardHookInterface {
 	/**
 	 * Modifies WizardItems array
 	 *

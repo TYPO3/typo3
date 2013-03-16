@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Frontend\Page;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2011 Christian Kuhn <lolli@schwarzbu.ch>
+ *  (c) 2009-2013 Christian Kuhn <lolli@schwarzbu.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,8 +31,7 @@ namespace TYPO3\CMS\Frontend\Page;
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-interface PageRepositoryGetPageHookInterface
-{
+interface PageRepositoryGetPageHookInterface {
 	/**
 	 * Modifies the DB params
 	 *

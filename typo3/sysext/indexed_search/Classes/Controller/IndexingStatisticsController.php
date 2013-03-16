@@ -4,7 +4,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2004-2011 Dimitri Ebert (dimitri.ebert@dkd.de)
+ *  (c) 2004-2013 Dimitri Ebert (dimitri.ebert@dkd.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

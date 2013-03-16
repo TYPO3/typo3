@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
+ *  (c) 2012-2013 Andreas Lappe <nd@kaeufli.ch>, kaeufli.ch
  *
  *  All rights reserved
  *

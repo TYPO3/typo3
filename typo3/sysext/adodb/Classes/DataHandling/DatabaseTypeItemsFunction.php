@@ -4,8 +4,8 @@ namespace TYPO3\CMS\Adodb\DataHandling;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2004-2011 Robert Lemke (robert@typo3.org)
- *  (c) 2006-2011 Karsten Dambekalns (karsten@typo3.org)
+ *  (c) 2004-2013 Robert Lemke (robert@typo3.org)
+ *  (c) 2006-2013 Karsten Dambekalns (karsten@typo3.org)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

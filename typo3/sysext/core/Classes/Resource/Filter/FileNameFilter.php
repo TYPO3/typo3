@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Resource\Filter;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Andreas Wolf <andreas.wolf@ikt-werk.de>
+ *  (c) 2012-2013 Andreas Wolf <andreas.wolf@ikt-werk.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

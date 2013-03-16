@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Utility\File;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2011 Xavier Perseguers <typo3@perseguers.ch>
+ *  (c) 2010-2013 Xavier Perseguers <typo3@perseguers.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,8 +31,7 @@ namespace TYPO3\CMS\Core\Utility\File;
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  */
-interface ExtendedFileUtilityProcessDataHookInterface
-{
+interface ExtendedFileUtilityProcessDataHookInterface {
 	/**
 	 * Post-process a file action.
 	 *

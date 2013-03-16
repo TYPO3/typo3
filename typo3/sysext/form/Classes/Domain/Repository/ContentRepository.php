@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Form\Domain\Repository;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Patrick Broens <patrick@patrickbroens.nl>
+ *  (c) 2010-2013 Patrick Broens <patrick@patrickbroens.nl>
  *
  *  All rights reserved
  *

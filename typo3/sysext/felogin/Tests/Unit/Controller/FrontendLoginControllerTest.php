@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Helmut Hummel <helmut@typo3.org>
+ *  (c) 2012-2013 Helmut Hummel <helmut@typo3.org>
  *
  *  All rights reserved
  *

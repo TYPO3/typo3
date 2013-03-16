@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Frontend\Page;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2011 Tolleiv Nietsch <nietsch@aoemedia.de>
+ *  (c) 2010-2013 Tolleiv Nietsch <nietsch@aoemedia.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,8 +31,7 @@ namespace TYPO3\CMS\Frontend\Page;
  *
  * @author Tolleiv Nietsch <nietsch@aoemedia.de>
  */
-interface PageRepositoryGetPageOverlayHookInterface
-{
+interface PageRepositoryGetPageOverlayHookInterface {
 	/**
 	 * enables to preprocess the pageoverlay
 	 *

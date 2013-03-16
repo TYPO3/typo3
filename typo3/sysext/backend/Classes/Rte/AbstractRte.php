@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Backend\Rte;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2004-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2004-2013 Kasper Skårhøj (kasperYYYY@typo3.com)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

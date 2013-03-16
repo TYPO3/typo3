@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Peter Beernink <p.beernink@drecomm.nl>
+ *  (c) 2011-2013 Peter Beernink <p.beernink@drecomm.nl>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

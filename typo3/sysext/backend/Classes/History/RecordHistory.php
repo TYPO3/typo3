@@ -4,8 +4,8 @@ namespace TYPO3\CMS\Backend\History;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 1999-2009 Kasper Skårhøj (kasperYYYY@typo3.com)
- *  (c) 2006-2009 Sebastian Kurfürst (sebastian@garbage-group.de)
+ *  (c) 1999-2013 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2006-2013 Sebastian Kurfürst (sebastian@garbage-group.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

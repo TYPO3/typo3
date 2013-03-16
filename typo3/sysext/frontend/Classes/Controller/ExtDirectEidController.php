@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Frontend\Controller;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2010-2011 Stefan Galinski <stefan.galinski@gmail.com>
+ * (c) 2010-2013 Stefan Galinski <stefan.galinski@gmail.com>
  *
  * All rights reserved
  *
