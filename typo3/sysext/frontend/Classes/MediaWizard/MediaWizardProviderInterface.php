@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Frontend\MediaWizard;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2011 Ernesto Baschny <ernst@cron-it.de>
+ *  (c) 2010-2013 Ernesto Baschny <ernst@cron-it.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,8 +32,7 @@ namespace TYPO3\CMS\Frontend\MediaWizard;
  *
  * @author Ernesto Baschny <ernst@cron-it.de>
  */
-interface MediaWizardProviderInterface
-{
+interface MediaWizardProviderInterface {
 	/**
 	 * Tells the calling party if we can handle the URL passed to the constructor
 	 *

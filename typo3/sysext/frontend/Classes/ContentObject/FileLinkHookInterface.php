@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Oliver Hader <oliver@typo3.org>
+ *  (c) 2011-2013 Oliver Hader <oliver@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,8 +31,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * @author Oliver Hader <oliver@typo3.org>
  */
-interface FileLinkHookInterface
-{
+interface FileLinkHookInterface {
 	/**
 	 * Finds alternative previewImage for given File.
 	 *

@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Backend\View\PageLayout\ExtDirect;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Jigal van Hemert <jigal.van.hemert@typo3.org>
+ *  (c) 2012-2013 Jigal van Hemert <jigal.van.hemert@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

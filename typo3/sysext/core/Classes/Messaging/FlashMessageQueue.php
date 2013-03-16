@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Messaging;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2011 Rupert Germann <rupi@gmx.li>
+ *  (c) 2009-2013 Rupert Germann <rupi@gmx.li>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

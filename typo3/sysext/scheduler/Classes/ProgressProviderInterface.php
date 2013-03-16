@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Scheduler;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Ingo Renner <ingo@typo3.org>
+ *  (c) 2012-2013 Ingo Renner <ingo@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,8 +28,7 @@ namespace TYPO3\CMS\Scheduler;
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-interface ProgressProviderInterface
-{
+interface ProgressProviderInterface {
 	/**
 	 * Gets the progress of a task.
 	 *

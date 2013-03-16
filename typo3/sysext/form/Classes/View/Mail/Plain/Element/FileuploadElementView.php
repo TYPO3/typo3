@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Form\View\Mail\Plain\Element;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Rens Admiraal (r.admiraal@drecomm.nl)
+ *  (c) 2011-2013 Rens Admiraal (r.admiraal@drecomm.nl)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

@@ -4,8 +4,8 @@ namespace TYPO3\CMS\Install\CoreUpdates;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2008-2011  Steffen Ritter (info@rs-websystems.de)
- *           2009  Benjamin Mack (benni@typo3.org)
+ *  (c) 2008-2013  Steffen Ritter (info@rs-websystems.de)
+ *      2009-2013  Benjamin Mack (benni@typo3.org)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

@@ -31,8 +31,7 @@ namespace TYPO3\CMS\Core\Database;
  *
  * @author Steffen Ritter <steffen.ritter@typo3.org>
  */
-interface TableConfigurationPostProcessingHookInterface
-{
+interface TableConfigurationPostProcessingHookInterface {
 	/**
 	 * Function which may process data created / registered by extTables
 	 * scripts (f.e. modifying TCA data of all extensions)

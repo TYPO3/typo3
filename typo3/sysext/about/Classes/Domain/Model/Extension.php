@@ -4,7 +4,7 @@ namespace TYPO3\CMS\About\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Felix Kopp <felix-source@phorax.com>
+ *  (c) 2012-2013 Felix Kopp <felix-source@phorax.com>
  *
  *  All rights reserved
  *

@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\Controller;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Andy Grunwald <andreas.grunwald@wmdb.de>
+ *  (c) 2011-2013 Andy Grunwald <andreas.grunwald@wmdb.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

@@ -4,8 +4,8 @@ namespace TYPO3\CMS\Backend\Controller\File;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
- *  (c) 2009-2011 Benjamin Mack (benni.typo3.org)
+ *  (c) 1999-2013 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2009-2013 Benjamin Mack (benni.typo3.org)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

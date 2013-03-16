@@ -4,8 +4,8 @@ namespace TYPO3\CMS\Impexp\Task;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 1999-2011 Kasper Skårhøj (kasper@typo3.com)
- *  (c) 2010-2011 Georg Ringer (typo3@ringerge.org)
+ *  (c) 1999-2013 Kasper Skårhøj (kasper@typo3.com)
+ *  (c) 2010-2013 Georg Ringer (typo3@ringerge.org)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

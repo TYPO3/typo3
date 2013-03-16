@@ -4,8 +4,8 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Connection;
 /* **************************************************************
  *  Copyright notice
  *
- *  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
- *  (c) 2006-2010 Karsten Dambekalns <karsten@typo3.org>
+ *  (c) 1999-2013 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2006-2013 Karsten Dambekalns <karsten@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

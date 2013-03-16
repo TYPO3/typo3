@@ -4,7 +4,7 @@ namespace TYPO3\CMS\IndexedSearch\Utility;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Dmitry Dulepov (dmitry@typo3.com)
+ *  (c) 2011-2013 Dmitry Dulepov (dmitry@typo3.com)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

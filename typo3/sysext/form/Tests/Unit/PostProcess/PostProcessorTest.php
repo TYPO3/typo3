@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\PostProcess;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Susanne Moog, <typo3@susannemoog.de>
+ *  (c) 2012-2013 Susanne Moog, <typo3@susannemoog.de>
  *
  *  All rights reserved
  *

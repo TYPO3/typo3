@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Form\PostProcess;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Franz Geiger (mail@fx-g.de)
+ *  (c) 2012-2013 Franz Geiger (mail@fx-g.de)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

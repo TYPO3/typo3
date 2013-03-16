@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Felogin\Controller;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2011 Steffen Kamper <info@sk-typo3.de>
+ *  (c) 2007-2013 Steffen Kamper <info@sk-typo3.de>
  *  Based on Newloginbox (c) 2002-2004 Kasper Skårhøj <kasper@typo3.com>
  *
  *  All rights reserved

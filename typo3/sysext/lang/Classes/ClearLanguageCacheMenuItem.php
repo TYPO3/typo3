@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Lang;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2007-2011 Dominique Feyer <dominique.feyer@reelpeek.net>
+ *  (c) 2007-2013 Dominique Feyer <dominique.feyer@reelpeek.net>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

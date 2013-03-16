@@ -31,8 +31,7 @@ namespace TYPO3\CMS\Core\DataHandling;
  *
  * @author Oliver Hader <oliver@typo3.org>
  */
-interface DataHandlerCheckModifyAccessListHookInterface
-{
+interface DataHandlerCheckModifyAccessListHookInterface {
 	/**
 	 * Hook that determines whether a user has access to modify a table.
 	 *

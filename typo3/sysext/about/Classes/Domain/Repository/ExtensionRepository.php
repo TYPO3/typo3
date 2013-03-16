@@ -4,7 +4,7 @@ namespace TYPO3\CMS\About\Domain\Repository;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Felix Kopp <felix@phorax.com>
+ *  (c) 2012-2013 Felix Kopp <felix@phorax.com>
  *
  *  All rights reserved
  *

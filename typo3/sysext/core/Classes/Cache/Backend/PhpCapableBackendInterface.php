@@ -33,8 +33,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * @api
  * @author Robert Lemke <robert@typo3.org>
  */
-interface PhpCapableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\BackendInterface
-{
+interface PhpCapableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\BackendInterface {
 	/**
 	 * Loads PHP code from the cache and require_onces it right away.
 	 *

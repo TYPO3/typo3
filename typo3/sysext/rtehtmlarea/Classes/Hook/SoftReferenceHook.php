@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Rtehtmlarea\Hook;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Stanislas Rolland <stanislas.rolland@typo3.org>
+ *  (c) 2012-2013 Stanislas Rolland <stanislas.rolland@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the Typo3 project. The Typo3 project is

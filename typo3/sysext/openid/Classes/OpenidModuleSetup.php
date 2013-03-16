@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Openid;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2011 Steffen Gebert <steffen@steffen-gebert.de>
+ *  (c) 2009-2013 Steffen Gebert <steffen@steffen-gebert.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Install\CoreUpdates;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 1999-2011 Sebastian Kurfürst <sebastian@garbage-group.de>
+ *  (c) 1999-2013 Sebastian Kurfürst <sebastian@garbage-group.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

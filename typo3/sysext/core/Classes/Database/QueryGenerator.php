@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Database;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2001-2011 Christian Jul Jensen (christian@typo3.com)
+ *  (c) 2001-2013 Christian Jul Jensen (christian@typo3.com)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
