@@ -3102,21 +3102,22 @@ final class t3lib_BEfunc {
 	 * @see t3lib_transferData::lockRecord(), alt_doc.php, db_layout.php, db_list.php, wizard_rte.php
 	 */
 	public static function lockRecords($table = '', $uid = 0, $pid = 0) {
-		$user_id = intval($GLOBALS['BE_USER']->user['uid']);
-		if ($table && $uid) {
-			$fields_values = array(
-				'userid' => $user_id,
-				'feuserid' => 0,
-				'tstamp' => $GLOBALS['EXEC_TIME'],
-				'record_table' => $table,
-				'record_uid' => $uid,
-				'username' => $GLOBALS['BE_USER']->user['username'],
-				'record_pid' => $pid
-			);
-
-			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_lockedrecords', $fields_values);
-		} else {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_lockedrecords', 'userid=' . intval($user_id));
+		if (isset($GLOBALS['BE_USER']->user['uid'])) {
+			$user_id = intval($GLOBALS['BE_USER']->user['uid']);
+			if ($table && $uid) {
+				$fields_values = array(
+					'userid' => $user_id,
+					'feuserid' => 0,
+					'tstamp' => $GLOBALS['EXEC_TIME'],
+					'record_table' => $table,
+					'record_uid' => $uid,
+					'username' => $GLOBALS['BE_USER']->user['username'],
+					'record_pid' => $pid
+				);
+				$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_lockedrecords', $fields_values);
+			} else {
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_lockedrecords', 'userid=' . intval($user_id));
+			}
 		}
 	}
 
