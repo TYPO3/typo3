@@ -5,7 +5,7 @@ use TYPO3\CMS\Extensionmanager\Report;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2012 Christian Kuhn <lolli@schwarzbu.ch>
+ *  (c) 2010-2013 Christian Kuhn <lolli@schwarzbu.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

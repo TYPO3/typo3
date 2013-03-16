@@ -4,8 +4,8 @@ namespace TYPO3\CMS\Rtehtmlarea;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 1999-2011 Kasper Skårhøj (kasper@typo3.com)
- *  (c) 2004-2012 Stanislas Rolland <typo3(arobas)sjbr.ca>
+ *  (c) 1999-2013 Kasper Skårhøj (kasper@typo3.com)
+ *  (c) 2004-2013 Stanislas Rolland <typo3(arobas)sjbr.ca>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

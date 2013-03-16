@@ -4,8 +4,8 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2011 Marcus Krause <marcus#exp2009@t3sec.info>
- *  (c) 2009-2011 Steffen Ritter <info@rs-websystems.de>
+ *  (c) 2009-2013 Marcus Krause <marcus#exp2009@t3sec.info>
+ *  (c) 2009-2013 Steffen Ritter <info@rs-websystems.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,8 +39,7 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  * @author Steffen Ritter <info@rs-websystems.de>
  * @since 2009-09-06
  */
-interface SaltInterface
-{
+interface SaltInterface {
 	/**
 	 * Method checks if a given plaintext password is correct by comparing it with
 	 * a given salted hashed password.

@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 /***************************************************************
 * Copyright notice
 *
-* (c) 2010-2011 Oliver Klee (typo3-coding@oliverklee.de)
+* (c) 2010-2013 Oliver Klee (typo3-coding@oliverklee.de)
 * All rights reserved
 *
 * This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,7 +26,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
 /**
  * Testcase for the \TYPO3\CMS\Core\FormProtection\BackendFormProtection class.
- *
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */

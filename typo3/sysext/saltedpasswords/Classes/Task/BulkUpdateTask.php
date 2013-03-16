@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Saltedpasswords\Task;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2011 Christian Kuhn <lolli@schwarzbu.ch>
+ *  (c) 2010-2013 Christian Kuhn <lolli@schwarzbu.ch>
  *		Marcus Krause <marcus#exp2010@t3sec.info>
  *
  *  All rights reserved

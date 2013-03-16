@@ -4,9 +4,9 @@ namespace TYPO3\CMS\Install\CoreUpdates;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2008-2011 Benjamin Mack <benni@typo3.org>
- *  (c) 2008-2011 Steffen Kamper <info@sk-typo3.de>
- *  (c) 2012 Kai Vogel <kai.vogel@speedprogs.de>
+ *  (c) 2008-2013 Benjamin Mack <benni@typo3.org>
+ *  (c) 2008-2013 Steffen Kamper <info@sk-typo3.de>
+ *  (c) 2012-2013 Kai Vogel <kai.vogel@speedprogs.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

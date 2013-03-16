@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Resource\Collection;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2011 Steffen Ritter <steffen.ritter@typo3.org>
+ * (c) 2011-2013 Steffen Ritter <steffen.ritter@typo3.org>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is

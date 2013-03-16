@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Utility;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2011 Jigal van Hemert <jigal@xs4all.nl>
+ * (c) 2011-2013 Jigal van Hemert <jigal@xs4all.nl>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is

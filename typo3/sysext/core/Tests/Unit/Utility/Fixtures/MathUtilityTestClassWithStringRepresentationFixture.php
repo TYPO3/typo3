@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Philipp Gampe (forge.typo3.org@philippgampe.info)
+ *  (c) 2012-2013 Philipp Gampe (forge.typo3.org@philippgampe.info)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

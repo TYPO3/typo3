@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2012 Tobias Burger <tobias_burger@hotmail.com>
+ *  (c) 2009-2013 Tobias Burger <tobias_burger@hotmail.com>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

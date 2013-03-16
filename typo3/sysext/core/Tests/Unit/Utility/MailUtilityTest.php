@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2010-2011 Oliver Klee (typo3-coding@oliverklee.de)
+ * (c) 2010-2013 Oliver Klee (typo3-coding@oliverklee.de)
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is

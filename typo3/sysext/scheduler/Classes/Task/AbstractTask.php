@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Scheduler\Task;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2005 Christian Jul Jensen (julle@typo3.org)
+ *  (c) 2005-2013 Christian Jul Jensen (julle@typo3.org)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

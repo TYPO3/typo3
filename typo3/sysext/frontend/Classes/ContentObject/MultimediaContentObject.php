@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2011 Xavier Perseguers <typo3@perseguers.ch>
+ *  (c) 2010-2013 Xavier Perseguers <typo3@perseguers.ch>
  *  (c) Steffen Kamper <steffen@typo3.org>
  *  All rights reserved
  *

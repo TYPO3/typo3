@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011-2012 Stanislas Rolland <>
+ *  (c) 2011-2013 Stanislas Rolland <>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

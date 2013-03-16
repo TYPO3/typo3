@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Filelist;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2008 Steffen Kamper <info@sk-typo3.de>
+ *  (c) 2008-2013 Steffen Kamper <info@sk-typo3.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

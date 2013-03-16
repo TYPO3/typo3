@@ -31,8 +31,7 @@ namespace TYPO3\CMS\Core\Log\Processor;
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-interface ProcessorInterface
-{
+interface ProcessorInterface {
 	/**
 	 * Processes a log record and adds additional data.
 	 *

@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2008-2011 Oliver Hader <oh@inpublica.de>
+ * (c) 2008-2013 Oliver Hader <oh@inpublica.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is

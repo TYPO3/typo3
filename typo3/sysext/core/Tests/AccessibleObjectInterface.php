@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Tests;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2012 Nicole Cordes <nicole.cordes@googlemail.com>
+ * (c) 2012-2013 Nicole Cordes <nicole.cordes@googlemail.com>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is

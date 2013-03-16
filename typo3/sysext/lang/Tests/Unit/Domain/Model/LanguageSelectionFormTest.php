@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Lang\Tests\Unit\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Wouter Wolters <typo3@wouterwolters.nl>
+ *  (c) 2012-2013 Wouter Wolters <typo3@wouterwolters.nl>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

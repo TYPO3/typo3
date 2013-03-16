@@ -4,7 +4,7 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Benjamin Mack (benni@typo3.org)
+ *  (c) 2011-2013 Benjamin Mack (benni@typo3.org)
  *
  *  All rights reserved
  *

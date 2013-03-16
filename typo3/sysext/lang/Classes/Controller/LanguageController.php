@@ -4,8 +4,8 @@ namespace TYPO3\CMS\Lang\Controller;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Sebastian Fischer <typo3@evoweb.de>
- *      2012 Kai Vogel <kai.vogel@speedprogs.de>
+ *  (c) 2012-2013 Sebastian Fischer <typo3@evoweb.de>
+ *      2012-2013 Kai Vogel <kai.vogel@speedprogs.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

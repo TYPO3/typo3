@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Philipp Gampe <dev.typo3@philippgampe.info>
+ *  (c) 2011-2013 Philipp Gampe <dev.typo3@philippgampe.info>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
