@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Version\Hook;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Francois Suter (francois.suter@typo3.org)
+ *  (c) 2011-2013 Francois Suter (francois.suter@typo3.org)
  *
  *  All rights reserved
  *

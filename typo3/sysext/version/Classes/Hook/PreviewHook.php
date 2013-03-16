@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Version\Hook;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 TYPO3 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ *  (c) 2011-2013 TYPO3 Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
