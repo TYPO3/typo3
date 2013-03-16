@@ -5489,11 +5489,6 @@ class tx_coreupdates_notinmenu extends \TYPO3\CMS\Install\CoreUpdates\NotInMenuU
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_coreupdates_statictemplates extends \TYPO3\CMS\Install\CoreUpdates\StaticTemplatesUpdate {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class tx_coreupdates_t3skin extends \TYPO3\CMS\Install\CoreUpdates\T3skinUpdate {}
 
 /**
@@ -6355,11 +6350,6 @@ class tx_scheduler_TableGarbageCollection extends \TYPO3\CMS\Scheduler\Task\Tabl
  * @deprecated since 6.0 will be removed in 7.0
  */
 class SC_mod_user_setup_index extends \TYPO3\CMS\Setup\Controller\SetupModuleController {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_statictemplates extends \TYPO3\CMS\Statictemplates\StaticTemplatesHook {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0

@@ -28,7 +28,9 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  ***************************************************************/
 
 /**
- * Factory for menu content objects
+ * Factory for menu content objects. Allows overriding the default
+ * types like 'GMENU' with an own implementation (only one possible)
+ * and new types can be registered.
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
@@ -41,9 +43,6 @@ class MenuContentObjectFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected $menuTypeToClassMapping = array(
 		'GMENU' => 'TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\GraphicalMenuContentObject',
-		'GMENU_LAYERS' => 'TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\GraphicalMenuLayersContentObject',
-		'GMENU_FOLDOUT' => 'TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\GraphicalMenuFoldoutContentObject',
-		'TMENU_LAYERS' => 'TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\TextMenuLayersContentObject',
 		'TMENU' => 'TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\TextMenuContentObject',
 		'IMGMENU' => 'TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\ImageMenuContentObject',
 		'JSMENU' => 'TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\JavaScriptMenuContentObject',
@@ -57,8 +56,9 @@ class MenuContentObjectFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws Exception\NoSuchMenuTypeException
 	 */
 	public function getMenuObjectByType($type = '') {
-		if (array_key_exists(strtoupper($type), $this->menuTypeToClassMapping)) {
-			$object = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($this->menuTypeToClassMapping[strtoupper($type)]);
+		$uppercasedClassname = strtoupper($type);
+		if (array_key_exists($uppercasedClassname, $this->menuTypeToClassMapping)) {
+			$object = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($this->menuTypeToClassMapping[$uppercasedClassname]);
 		} else {
 			throw new Exception\NoSuchMenuTypeException(
 				'Menu type ' . (string)$type . ' has no implementing class.',
@@ -66,6 +66,23 @@ class MenuContentObjectFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			);
 		}
 		return $object;
+	}
+
+	/**
+	 * Register new menu type or override existing type
+	 *
+	 * @param string $type Menu type to be used in TypoScript
+	 * @param string $className Class rendering the menu
+	 * @throws \InvalidArgumentException
+	 */
+	public function registerMenuType($type, $className) {
+		if (!is_string($type) || !is_string($className)) {
+			throw new \InvalidArgumentException(
+				'type and className must be strings',
+				1363429303
+			);
+		}
+		$this->menuTypeToClassMapping[strtoupper($type)] = $className;
 	}
 }
 

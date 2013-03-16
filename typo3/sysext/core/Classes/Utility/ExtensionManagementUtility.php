@@ -1288,7 +1288,6 @@ tt_content.' . $key . $prefix . ' {
 
 	/**
 	 * Call this method to add an entry in the static template list found in sys_templates
-	 * "static template files" are the modern equivalent (provided from extensions) to the traditional records in "static_templates"
 	 * FOR USE IN ext_localconf.php FILES
 	 *
 	 * @param string $extKey Is of course the extension key
