@@ -75,7 +75,12 @@ abstract class AbstractXmlParser {
 	 */
 	abstract public function parseXml($file);
 
+	/**
+	 * Create required parser
+	 *
+	 * @return  void
+	 */
+	abstract protected function createParser();
 }
-
 
 ?>

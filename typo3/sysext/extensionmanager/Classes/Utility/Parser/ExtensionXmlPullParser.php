@@ -51,9 +51,15 @@ class ExtensionXmlPullParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\
 	 */
 	public function __construct() {
 		$this->requiredPhpExtensions = 'xmlreader';
-		if ($this->isAvailable()) {
-			$this->objXml = new \XMLReader();
-		}
+	}
+
+	/**
+	 * Create required parser
+	 *
+	 * @return  void
+	 */
+	protected function createParser() {
+		$this->objXml = new \XMLReader();
 	}
 
 	/**
@@ -64,6 +70,7 @@ class ExtensionXmlPullParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\
 	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException in case of parser error
 	 */
 	public function parseXml($file) {
+		$this->createParser();
 		if (!(is_object($this->objXml) && get_class($this->objXml) == 'XMLReader')) {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Unable to create XML parser.', 1342640540);
 		}

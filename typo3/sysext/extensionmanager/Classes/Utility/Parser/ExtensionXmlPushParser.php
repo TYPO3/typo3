@@ -62,10 +62,16 @@ class ExtensionXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\
 	 */
 	public function __construct() {
 		$this->requiredPhpExtensions = 'xml';
-		if ($this->isAvailable()) {
-			$this->objXml = xml_parser_create();
-			xml_set_object($this->objXml, $this);
-		}
+	}
+
+	/**
+	 * Create required parser
+	 *
+	 * @return  void
+	 */
+	protected function createParser() {
+		$this->objXml = xml_parser_create();
+		xml_set_object($this->objXml, $this);
 	}
 
 	/**
@@ -76,6 +82,7 @@ class ExtensionXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\
 	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException in case of parse errors
 	 */
 	public function parseXml($file) {
+		$this->createParser();
 		if (!is_resource($this->objXml)) {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Unable to create XML parser.', 1342640663);
 		}
