@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\ContentObject\Menu;
+namespace TYPO3\CMS\Statictemplates\ContentObject\Menu;
 
 /***************************************************************
  *  Copyright notice

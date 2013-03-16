@@ -15,7 +15,6 @@ return array(
 	'tx_coreupdates_mergeadvanced' => 'TYPO3\\CMS\\Install\\CoreUpdates\\MergeAdvancedUpdate',
 	'tx_coreupdates_migrateworkspaces' => 'TYPO3\\CMS\\Install\\CoreUpdates\\MigrateWorkspacesUpdate',
 	'tx_coreupdates_notinmenu' => 'TYPO3\\CMS\\Install\\CoreUpdates\\NotInMenuUpdate',
-	'tx_coreupdates_statictemplates' => 'TYPO3\\CMS\\Install\\CoreUpdates\\StaticTemplatesUpdate',
 	'tx_coreupdates_t3skin' => 'TYPO3\\CMS\\Install\\CoreUpdates\\T3skinUpdate',
 	'tx_install_ajax' => 'TYPO3\\CMS\\Install\\EidHandler',
 	'Tx_Install_Service_BasicService' => 'TYPO3\\CMS\\Install\\EnableFileService',

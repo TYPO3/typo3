@@ -40,7 +40,6 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('instal
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/MergeAdvancedUpdate.php';
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/InstallSysExtsUpdate.php';
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/ImagecolsUpdate.php';
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/StaticTemplatesUpdate.php';
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/T3skinUpdate.php';
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/CompressionLevelUpdate.php';
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/MigrateWorkspacesUpdate.php';
