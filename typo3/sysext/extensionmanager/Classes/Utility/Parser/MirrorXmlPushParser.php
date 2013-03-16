@@ -52,10 +52,16 @@ class MirrorXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\Abs
 	 */
 	public function __construct() {
 		$this->requiredPhpExtensions = 'xml';
-		if ($this->isAvailable()) {
-			$this->objXml = xml_parser_create();
-			xml_set_object($this->objXml, $this);
-		}
+	}
+
+	/**
+	 * Create required parser
+	 *
+	 * @return  void
+	 */
+	protected function createParser() {
+		$this->objXml = xml_parser_create();
+		xml_set_object($this->objXml, $this);
 	}
 
 	/**
@@ -66,6 +72,7 @@ class MirrorXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\Abs
 	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException in case of XML parser errors
 	 */
 	public function parseXml($file) {
+		$this->createParser();
 		if (!is_resource($this->objXml)) {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Unable to create XML parser.', 1342641009);
 		}
