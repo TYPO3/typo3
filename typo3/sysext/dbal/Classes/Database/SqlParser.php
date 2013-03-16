@@ -4,9 +4,9 @@ namespace TYPO3\CMS\Dbal\Database;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2004-2009 Kasper Skårhøj (kasperYYYY@typo3.com)
- *  (c) 2004-2009 Karsten Dambekalns <karsten@typo3.org>
- *  (c) 2009-2011 Xavier Perseguers <xavier@typo3.org>
+ *  (c) 2004-2013 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2004-2013 Karsten Dambekalns <karsten@typo3.org>
+ *  (c) 2009-2013 Xavier Perseguers <xavier@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
