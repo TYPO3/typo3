@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Extbase\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Utilities to process FlexForms
+ * Service for determining basic extension params
  */
 class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 
