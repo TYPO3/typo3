@@ -95,7 +95,7 @@ class LocalConfigurationUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate
 						$typo3DatabaseVariables['extTablesDefinitionScript'] = $typo_db_extTableDef_script;
 					}
 					unset($typo_db_host, $typo_db, $typo_db_username, $typo_db_password, $typo_db_extTableDef_script);
-				} elseif (strlen($line) > 0 && preg_match('/^\\/\\/.+|^#.+|^<\\?php$|^<\\?$|^\\?>$/', $line, $matches) === 0) {
+				} elseif (strlen($line) && preg_match('/^\\/\\/.+|^#.+|^<\\?php$|^<\\?$|^\\?>$/', $line, $matches) === 0) {
 					$additionalConfiguration[] = $line;
 				}
 			}

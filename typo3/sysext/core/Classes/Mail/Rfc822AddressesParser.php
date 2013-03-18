@@ -260,7 +260,7 @@ class Rfc822AddressesParser {
 		if ($is_group && substr($address, 0, 1) == ',') {
 			$address = trim(substr($address, 1));
 			return $address;
-		} elseif (strlen($address) > 0) {
+		} elseif (strlen($address)) {
 			return $address;
 		} else {
 			return '';
@@ -416,7 +416,7 @@ class Rfc822AddressesParser {
 		// If a group then split on comma and put into an array.
 		// Otherwise, Just put the whole address in an array.
 		if ($is_group) {
-			while (strlen($address['address']) > 0) {
+			while (strlen($address['address'])) {
 				$parts = explode(',', $address['address']);
 				$addresses[] = $this->_splitCheck($parts, ',');
 				$address['address'] = trim(substr($address['address'], strlen(end($addresses) . ',')));

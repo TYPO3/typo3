@@ -473,7 +473,7 @@ class DatabaseConnection {
 				}
 			}
 			// Build query
-			$query = 'UPDATE ' . $table . ' SET ' . implode(',', $fields) . (strlen($where) > 0 ? ' WHERE ' . $where : '');
+			$query = 'UPDATE ' . $table . ' SET ' . implode(',', $fields) . (strlen($where) ? ' WHERE ' . $where : '');
 			if ($this->debugOutput || $this->store_lastBuiltQuery) {
 				$this->debug_lastBuiltQuery = $query;
 			}
@@ -497,7 +497,7 @@ class DatabaseConnection {
 				$hookObject->DELETEquery_preProcessAction($table, $where, $this);
 			}
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
-			$query = 'DELETE FROM ' . $table . (strlen($where) > 0 ? ' WHERE ' . $where : '');
+			$query = 'DELETE FROM ' . $table . (strlen($where) ? ' WHERE ' . $where : '');
 			if ($this->debugOutput || $this->store_lastBuiltQuery) {
 				$this->debug_lastBuiltQuery = $query;
 			}
@@ -522,13 +522,13 @@ class DatabaseConnection {
 	public function SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
 		// Build basic query
-		$query = 'SELECT ' . $select_fields . ' FROM ' . $from_table . (strlen($where_clause) > 0 ? ' WHERE ' . $where_clause : '');
+		$query = 'SELECT ' . $select_fields . ' FROM ' . $from_table . (strlen($where_clause) ? ' WHERE ' . $where_clause : '');
 		// Group by
-		$query .= strlen($groupBy) > 0 ? ' GROUP BY ' . $groupBy : '';
+		$query .= strlen($groupBy) ? ' GROUP BY ' . $groupBy : '';
 		// Order by
-		$query .= strlen($orderBy) > 0 ? ' ORDER BY ' . $orderBy : '';
+		$query .= strlen($orderBy) ? ' ORDER BY ' . $orderBy : '';
 		// Group by
-		$query .= strlen($limit) > 0 ? ' LIMIT ' . $limit : '';
+		$query .= strlen($limit) ? ' LIMIT ' . $limit : '';
 		// Return query
 		if ($this->debugOutput || $this->store_lastBuiltQuery) {
 			$this->debug_lastBuiltQuery = $query;
@@ -548,7 +548,7 @@ class DatabaseConnection {
 	public function SELECTsubquery($select_fields, $from_table, $where_clause) {
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
 		// Build basic query:
-		$query = 'SELECT ' . $select_fields . ' FROM ' . $from_table . (strlen($where_clause) > 0 ? ' WHERE ' . $where_clause : '');
+		$query = 'SELECT ' . $select_fields . ' FROM ' . $from_table . (strlen($where_clause) ? ' WHERE ' . $where_clause : '');
 		// Return query
 		if ($this->debugOutput || $this->store_lastBuiltQuery) {
 			$this->debug_lastBuiltQuery = $query;

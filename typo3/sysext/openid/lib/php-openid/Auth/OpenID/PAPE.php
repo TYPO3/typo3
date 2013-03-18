@@ -273,7 +273,7 @@ class Auth_OpenID_PAPE_Response extends Auth_OpenID_Extension {
     function getExtensionArgs()
     {
         $ns_args = array();
-        if (count($this->auth_policies) > 0) {
+        if (count($this->auth_policies)) {
             $ns_args['auth_policies'] = implode(' ', $this->auth_policies);
         } else {
             $ns_args['auth_policies'] = 'none';

@@ -154,7 +154,7 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 				break;
 			case \Swift_Mime_Header::TYPE_MAILBOX:
 				$addressList = $this->parseAddresses($headerValue);
-				if (count($addressList) > 0) {
+				if (count($addressList)) {
 					$header->setNameAddresses($addressList);
 				}
 				break;
@@ -183,7 +183,7 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 
 			case 'Sender':
 				$addressList = $this->parseAddresses($headerValue);
-				if (count($addressList) > 0) {
+				if (count($addressList)) {
 					$this->messageHeaders->addMailboxHeader($headerName, $addressList);
 				}
 				break;
@@ -236,7 +236,7 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 				}
 				// first line is empty leftover from splitting
 				array_shift($lines);
-				while (count($lines) > 0) {
+				while (count($lines)) {
 					$line = array_shift($lines);
 					if (preg_match('/^content-type:(.*);( charset=(.*))?$/i', $line, $matches)) {
 						$contentType = trim($matches[1]);
@@ -324,7 +324,7 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 	 */
 	protected function fixSender() {
 		$from = $this->message->getFrom();
-		if (count($from) > 0) {
+		if (count($from)) {
 			reset($from);
 			list($fromAddress, $fromName) = each($from);
 		} else {

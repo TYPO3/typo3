@@ -450,7 +450,7 @@ class EditDocumentController {
 				$newEditConf = array();
 				foreach ($this->editconf as $tableName => $tableCmds) {
 					$keys = array_keys($tce->substNEWwithIDs_table, $tableName);
-					if (count($keys) > 0) {
+					if (count($keys)) {
 						foreach ($keys as $key) {
 							$editId = $tce->substNEWwithIDs[$key];
 							// Check if the $editId isn't a child record of an IRRE action

@@ -212,7 +212,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$items = $newSorting + $items;
 			}
 		}
-		if (is_array($items) && count($items) > 0) {
+		if (is_array($items) && count($items)) {
 			foreach ($items as $item) {
 				$title = htmlspecialchars($item['title']);
 				$icon = ($additionalClass = ($collapsedStyle = ''));
@@ -280,7 +280,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$tasks = array();
 		$icon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('taskcenter') . 'task/task.gif';
 		// Render the tasks only if there are any available
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']) && count($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']) > 0) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']) && count($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'] as $extKey => $extensionReports) {
 				foreach ($extensionReports as $taskClass => $task) {
 					if (!$this->checkAccess($extKey, $taskClass)) {

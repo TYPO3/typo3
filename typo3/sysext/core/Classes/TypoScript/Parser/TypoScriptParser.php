@@ -366,7 +366,7 @@ class TypoScriptParser {
 								$line = ltrim(substr($line, $varL));
 								if ($this->syntaxHighLight) {
 									$this->regHighLight('objstr_postspace', $lineP, strlen($line));
-									if (strlen($line) > 0) {
+									if (strlen($line)) {
 										$this->regHighLight('operator', $lineP, strlen($line) - 1);
 										$this->regHighLight('operator_postspace', $lineP, strlen(ltrim(substr($line, 1))));
 									}

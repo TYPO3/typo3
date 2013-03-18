@@ -321,7 +321,7 @@ class DeletedRecords {
 				if ($row[0] == 'pages' && $recursive == TRUE) {
 					$this->loadData($row[1], '', $depth, '');
 					$childRecords = $this->getDeletedRows();
-					if (count($childRecords) > 0) {
+					if (count($childRecords)) {
 						foreach ($childRecords as $table => $childRows) {
 							foreach ($childRows as $childKey => $childRow) {
 								$cmd[$table][$childRow['uid']]['undelete'] = 1;

@@ -211,7 +211,7 @@ class HtmlParser {
 					// use strtr instead of strtoupper to avoid locale problems with Turkish
 					$marker = strtr($marker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 				}
-				if (count($wrapArr) > 0) {
+				if (count($wrapArr)) {
 					$marker = $wrapArr[0] . $marker . $wrapArr[1];
 				}
 				$content = str_replace($marker, $markContent, $content);
@@ -278,7 +278,7 @@ class HtmlParser {
 				// Use strtr instead of strtoupper to avoid locale problems with Turkish
 				$subpartMarker = strtr($subpartMarker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 			}
-			if (count($wraps) > 0) {
+			if (count($wraps)) {
 				$subpartMarker = $wraps[0] . $subpartMarker . $wraps[1];
 			}
 			$subTemplates[$subpartMarker] = self::getSubpart($content, $subpartMarker);
@@ -291,7 +291,7 @@ class HtmlParser {
 					// use strtr instead of strtoupper to avoid locale problems with Turkish
 					$completeMarker = strtr($completeMarker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 				}
-				if (count($wraps) > 0) {
+				if (count($wraps)) {
 					$completeMarker = $wraps[0] . $completeMarker . $wraps[1];
 				}
 				$subpartSubstitutes[$completeMarker] .= self::substituteMarkerAndSubpartArrayRecursive($subTemplates[$completeMarker], $partialMarkersAndSubparts, $wrap, $uppercase, $deleteUnused);
