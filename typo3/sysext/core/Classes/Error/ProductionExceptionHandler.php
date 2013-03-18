@@ -104,7 +104,7 @@ class ProductionExceptionHandler extends \TYPO3\CMS\Core\Error\AbstractException
 	 * @return string
 	 */
 	protected function getTitle(\Exception $exception) {
-		if ($this->discloseExceptionInformation($exception) && method_exists($exception, 'getTitle') && strlen($exception->getTitle()) > 0) {
+		if ($this->discloseExceptionInformation($exception) && method_exists($exception, 'getTitle') && strlen($exception->getTitle())) {
 			return htmlspecialchars($exception->getTitle());
 		} else {
 			return $this->defaultTitle;

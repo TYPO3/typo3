@@ -134,7 +134,7 @@ class RecordCollectionRepository {
 	 */
 	protected function queryMultipleRecords(array $conditions = array()) {
 		$result = NULL;
-		if (count($conditions) > 0) {
+		if (count($conditions)) {
 			$conditionsWhereClause = implode(' AND ', $conditions);
 		} else {
 			$conditionsWhereClause = '1=1';

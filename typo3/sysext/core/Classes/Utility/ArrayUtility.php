@@ -76,7 +76,7 @@ class ArrayUtility {
 				($resultArray[$key] = $value);
 			} elseif (is_array($value)) {
 				($subArrayMatches = \TYPO3\CMS\Core\Utility\ArrayUtility::filterByValueRecursive($needle, $value));
-				if (count($subArrayMatches) > 0) {
+				if (count($subArrayMatches)) {
 					($resultArray[$key] = $subArrayMatches);
 				}
 			}
@@ -264,7 +264,7 @@ class ArrayUtility {
 				$lines .= is_int($key) ? $key . ' => ' : '\'' . $key . '\' => ';
 			}
 			if (is_array($value)) {
-				if (count($value) > 0) {
+				if (count($value)) {
 					$lines .= self::arrayExport($value, $level);
 				} else {
 					$lines .= 'array(),' . LF;

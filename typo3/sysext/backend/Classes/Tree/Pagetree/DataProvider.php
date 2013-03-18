@@ -142,7 +142,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 				}
 			}
 		}
-		if (is_array($subpages) && count($subpages) > 0) {
+		if (is_array($subpages) && count($subpages)) {
 			foreach ($subpages as $subpage) {
 				if (in_array($subpage['uid'], $this->hiddenRecords)) {
 					continue;

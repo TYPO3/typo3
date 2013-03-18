@@ -237,7 +237,7 @@ class SuggestDefaultReceiver {
 			}
 		}
 		// add an additional search condition comment
-		if (isset($this->config['searchCondition']) && strlen($this->config['searchCondition']) > 0) {
+		if (isset($this->config['searchCondition']) && strlen($this->config['searchCondition'])) {
 			$this->selectClause .= ' AND ' . $this->config['searchCondition'];
 		}
 		// add the global clauses to the where-statement
@@ -260,7 +260,7 @@ class SuggestDefaultReceiver {
 			++$level;
 			$pidList = $GLOBALS['TYPO3_DB']->cleanIntArray($pageIds);
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'pages', 'pid IN (' . implode(', ', $pidList) . ')', '', '', '', 'uid');
-			if (count($rows) > 0) {
+			if (count($rows)) {
 				$pageIds = array_keys($rows);
 				$pages = array_merge($pages, $pageIds);
 			} else {

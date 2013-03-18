@@ -493,7 +493,7 @@ class HTTP_Request2_CookieJar implements Serializable
             return $sub;
         }
 
-        return (strlen($result) > 0) ? ($result . '.' . $sub) : null;
+        return strlen($result) ? ($result . '.' . $sub) : null;
     }
 }
 ?>

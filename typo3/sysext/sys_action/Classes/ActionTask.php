@@ -84,7 +84,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		} else {
 			$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_action', $show);
 			// If the action is not found
-			if (count($record) == 0) {
+			if (!count($record)) {
 				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('action_error-not-found', TRUE), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$content .= $flashMessage->render();
 			} else {
@@ -130,7 +130,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		$content = '<p>' . $GLOBALS['LANG']->getLL('description') . '</p>';
 		// Get the actions
 		$actionList = $this->getActions();
-		if (count($actionList) > 0) {
+		if (count($actionList)) {
 			$items = '';
 			// Render a single action menu item
 			foreach ($actionList as $action) {
@@ -191,7 +191,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		// Get the sys_action records
 		$actionList = $this->getActions();
 		// If any actions are found for the current users
-		if (count($actionList) > 0) {
+		if (count($actionList)) {
 			$content .= $this->taskObject->renderListMenu($actionList);
 		} else {
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('action_not-found-description', TRUE), $GLOBALS['LANG']->getLL('action_not-found'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
@@ -245,7 +245,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 				}
 			}
 			// Show errors if there are any
-			if (count($errors) > 0) {
+			if (count($errors)) {
 				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', implode('<br />', $errors), $GLOBALS['LANG']->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$content .= $flashMessage->render() . '<br />';
 			} else {

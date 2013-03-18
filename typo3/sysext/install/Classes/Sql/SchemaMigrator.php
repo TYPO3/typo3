@@ -682,7 +682,7 @@ class SchemaMigrator {
 				}
 			}
 		}
-		if (count($result) > 0) {
+		if (count($result)) {
 			return $result;
 		} else {
 			return TRUE;

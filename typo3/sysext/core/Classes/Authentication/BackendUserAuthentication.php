@@ -1739,7 +1739,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			$uploadFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($uploadFolder);
 		} else {
 			$storages = $this->getFileStorages();
-			if (count($storages) > 0) {
+			if (count($storages)) {
 				/** @var $firstStorage \TYPO3\CMS\Core\Resource\ResourceStorage */
 				$firstStorage = reset($storages);
 				$uploadFolder = $firstStorage->getDefaultFolder();

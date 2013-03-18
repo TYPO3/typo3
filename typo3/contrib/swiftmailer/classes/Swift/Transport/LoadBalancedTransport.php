@@ -122,7 +122,7 @@ class Swift_Transport_LoadBalancedTransport implements Swift_Transport
       }
     }
     
-    if (count($this->_transports) == 0)
+    if (!count($this->_transports))
     {
       throw new Swift_TransportException(
         'All Transports in LoadBalancedTransport failed, or no Transports available'

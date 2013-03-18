@@ -221,7 +221,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 						unset($this->fileCmdMap['upload'][$upload['data']]);
 					}
 				}
-				if (count($this->fileCmdMap['upload']) == 0) {
+				if (!count($this->fileCmdMap['upload'])) {
 					$this->writelog(1, 1, 108, 'No file was uploaded!', '');
 				}
 			}
@@ -389,7 +389,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 				'deleted=0 AND ref_table="sys_file" AND ref_uid=' . intval($fileObject->getUid())
 			);
 			// check if the file still has references
-			if (count($refIndexRecords) > 0) {
+			if (count($refIndexRecords)) {
 				$shortcutContent = array();
 				foreach ($refIndexRecords as $fileReferenceRow) {
 					if ($fileReferenceRow['tablename'] === 'sys_file_reference') {

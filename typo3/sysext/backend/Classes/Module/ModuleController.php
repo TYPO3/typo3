@@ -59,7 +59,7 @@ class ModuleController {
 	 * @return void
 	 */
 	public function createModuleMenu() {
-		if (count($this->moduleMenu->getEntries()) === 0) {
+		if (!count($this->moduleMenu->getEntries())) {
 			/** @var $moduleMenu \TYPO3\CMS\Backend\View\ModuleMenuView */
 			$moduleMenu = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\ModuleMenuView');
 			$rawData = $moduleMenu->getRawModuleData();
@@ -78,7 +78,7 @@ class ModuleController {
 	protected function convertRawModuleDataToModuleMenuObject(array $rawModuleData) {
 		foreach ($rawModuleData as $module) {
 			$entry = $this->createEntryFromRawData($module);
-			if (isset($module['subitems']) && count($module['subitems']) > 0) {
+			if (isset($module['subitems']) && count($module['subitems'])) {
 				foreach ($module['subitems'] as $subitem) {
 					$subEntry = $this->createEntryFromRawData($subitem);
 					$entry->addChild($subEntry);
@@ -136,7 +136,7 @@ class ModuleController {
 			$mainEntry = $this->moduleMenuRepository->findByModuleName($main);
 			if ($mainEntry !== FALSE) {
 				$subEntries = $mainEntry->getChildren();
-				if (count($subEntries) > 0) {
+				if (count($subEntries)) {
 					$matchingSubEntry = $this->moduleMenuRepository->findByModuleName($mainModule);
 					if ($matchingSubEntry !== FALSE) {
 						if (array_key_exists('MOD_MENU', $tbeModuleExt) && array_key_exists('function', $tbeModuleExt['MOD_MENU'])) {

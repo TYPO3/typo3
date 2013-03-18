@@ -45,7 +45,7 @@ class DeletedRecordsController {
 			'rows' => array()
 		);
 		// iterate
-		if (is_array($deletedRowsArray) && count($deletedRowsArray) > 0) {
+		if (is_array($deletedRowsArray) && count($deletedRowsArray)) {
 			foreach ($deletedRowsArray as $table => $rows) {
 				$total += count($deletedRowsArray[$table]);
 				foreach ($rows as $row) {

@@ -537,7 +537,7 @@ class Swift_Mime_SimpleMessage extends Swift_Mime_MimePart
    */
   public function toString()
   {
-    if (count($children = $this->getChildren()) > 0 && $this->getBody() != '')
+    if (count($children = $this->getChildren()) && $this->getBody() != '')
     {
       $this->setChildren(array_merge(array($this->_becomeMimePart()), $children));
       $string = parent::toString();
@@ -568,7 +568,7 @@ class Swift_Mime_SimpleMessage extends Swift_Mime_MimePart
    */
   public function toByteStream(Swift_InputByteStream $is)
   {
-    if (count($children = $this->getChildren()) > 0 && $this->getBody() != '')
+    if (count($children = $this->getChildren()) && $this->getBody() != '')
     {
       $this->setChildren(array_merge(array($this->_becomeMimePart()), $children));
       parent::toByteStream($is);
