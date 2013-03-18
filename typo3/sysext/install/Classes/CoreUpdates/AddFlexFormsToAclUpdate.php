@@ -92,7 +92,7 @@ class AddFlexFormsToAclUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 	 */
 	protected function getGroupAddFields() {
 		$addFields = array();
-		$contentTable = !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']) ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'] : 'tt_content';
+		$contentTable = $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'] ?: 'tt_content';
 		// Initialize TCA if not loaded yet
 		if (empty($GLOBALS['TCA'])) {
 			$this->pObj->includeTCA();

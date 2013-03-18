@@ -405,7 +405,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			}
 			$this->contentTypo3Language = $this->language == 'en' ? 'default' : $this->language;
 			$this->contentISOLanguage = 'en';
-			$this->contentLanguageUid = $row['sys_language_uid'] > 0 ? $row['sys_language_uid'] : 0;
+			$this->contentLanguageUid = $row['sys_language_uid'] ?: 0;
 			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
 				if ($this->contentLanguageUid) {
 					$tableA = 'sys_language';
@@ -422,7 +422,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 						$this->contentTypo3Language = trim($languageRow['lg_typo3']) ? strtolower(trim($languageRow['lg_typo3'])) : 'default';
 					}
 				} else {
-					$this->contentISOLanguage = trim($this->thisConfig['defaultContentLanguage']) ? trim($this->thisConfig['defaultContentLanguage']) : 'en';
+					$this->contentISOLanguage = trim($this->thisConfig['defaultContentLanguage']) ?: 'en';
 					$selectFields = 'lg_iso_2, lg_typo3';
 					$tableAB = 'static_languages';
 					$whereClause = 'lg_iso_2 = ' . $TYPO3_DB->fullQuoteStr(strtoupper($this->contentISOLanguage), $tableAB);
@@ -452,9 +452,9 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 				$RTEPaddingRight = '0';
 				$editorWrapWidth = '100%';
 			} else {
-				$RTEWidth = isset($GLOBALS['BE_USER']->userTS['options.']['RTESmallWidth']) ? $GLOBALS['BE_USER']->userTS['options.']['RTESmallWidth'] : '530';
-				$RTEHeight = isset($GLOBALS['BE_USER']->userTS['options.']['RTESmallHeight']) ? $GLOBALS['BE_USER']->userTS['options.']['RTESmallHeight'] : '380';
-				$RTEWidth = $RTEWidth + ($this->TCEform->docLarge ? (isset($GLOBALS['BE_USER']->userTS['options.']['RTELargeWidthIncrement']) ? $GLOBALS['BE_USER']->userTS['options.']['RTELargeWidthIncrement'] : '150') : 0);
+				$RTEWidth = $GLOBALS['BE_USER']->userTS['options.']['RTESmallWidth'] ?: '530';
+				$RTEHeight = $GLOBALS['BE_USER']->userTS['options.']['RTESmallHeight'] ?: '380';
+				$RTEWidth = $RTEWidth + ($this->TCEform->docLarge ? ($GLOBALS['BE_USER']->userTS['options.']['RTELargeWidthIncrement'] ?: '150') : 0);
 				$RTEWidth -= $inline->getStructureDepth() > 0 ? ($inline->getStructureDepth() + 1) * $inline->getLevelMargin() : 0;
 				$RTEWidthOverride = is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteWidth']) && trim($GLOBALS['BE_USER']->uc['rteWidth']) ? trim($GLOBALS['BE_USER']->uc['rteWidth']) : trim($this->thisConfig['RTEWidthOverride']);
 				if ($RTEWidthOverride) {
@@ -467,9 +467,9 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 					}
 				}
 				$RTEWidth = strstr($RTEWidth, '%') ? $RTEWidth : $RTEWidth . 'px';
-				$RTEHeight = $RTEHeight + ($this->TCEform->docLarge ? (isset($GLOBALS['BE_USER']->userTS['options.']['RTELargeHeightIncrement']) ? $GLOBALS['BE_USER']->userTS['options.']['RTELargeHeightIncrement'] : 0) : 0);
+				$RTEHeight = $RTEHeight + ($this->TCEform->docLarge ? ($GLOBALS['BE_USER']->userTS['options.']['RTELargeHeightIncrement'] ?: 0) : 0);
 				$RTEHeightOverride = is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteHeight']) && intval($GLOBALS['BE_USER']->uc['rteHeight']) ? intval($GLOBALS['BE_USER']->uc['rteHeight']) : intval($this->thisConfig['RTEHeightOverride']);
-				$RTEHeight = $RTEHeightOverride > 0 ? $RTEHeightOverride : $RTEHeight;
+				$RTEHeight = $RTEHeightOverride ?: $RTEHeight;
 				$RTEPaddingRight = '2px';
 				$editorWrapWidth = '99%';
 			}
@@ -555,7 +555,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 */
 	protected function addSkin() {
 		// Get skin file name from Page TSConfig if any
-		$skinFilename = trim($this->thisConfig['skin']) ? trim($this->thisConfig['skin']) : 'EXT:' . $this->ID . '/htmlarea/skins/default/htmlarea.css';
+		$skinFilename = trim($this->thisConfig['skin']) ?: 'EXT:' . $this->ID . '/htmlarea/skins/default/htmlarea.css';
 		$this->editorCSS = $this->getFullFileName($skinFilename);
 		$skinDir = dirname($this->editorCSS);
 		// Editing area style sheet
@@ -681,7 +681,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 				$this->defaultToolbarOrder = $plugin->addButtonsToToolbar();
 			}
 		}
-		$toolbarOrder = $this->thisConfig['toolbarOrder'] ? $this->thisConfig['toolbarOrder'] : $this->defaultToolbarOrder;
+		$toolbarOrder = $this->thisConfig['toolbarOrder'] ?: $this->defaultToolbarOrder;
 		// Getting rid of undefined buttons
 		$this->toolbarOrderArray = array_intersect(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $toolbarOrder, 1), \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->defaultToolbarOrder, 1));
 		$toolbarOrder = array_unique(array_values($this->toolbarOrderArray));
@@ -708,9 +708,9 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		} else {
 			$show = $toolbarOrder;
 		}
-		// Resticting to RTEkeyList for backend user
+		// Restricting to RTEkeyList for backend user
 		if (is_object($GLOBALS['BE_USER'])) {
-			$RTEkeyList = isset($GLOBALS['BE_USER']->userTS['options.']['RTEkeyList']) ? $GLOBALS['BE_USER']->userTS['options.']['RTEkeyList'] : '*';
+			$RTEkeyList = $GLOBALS['BE_USER']->userTS['options.']['RTEkeyList'] ?: '*';
 			if ($RTEkeyList != '*') {
 				// If not all
 				$show = array_intersect($show, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $RTEkeyList, 1));
@@ -888,7 +888,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			RTEarea[editornumber].RTEWidthOverride = "' . (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteWidth']) && trim($GLOBALS['BE_USER']->uc['rteWidth']) ? trim($GLOBALS['BE_USER']->uc['rteWidth']) : trim($this->thisConfig['RTEWidthOverride'])) . '";
 			RTEarea[editornumber].RTEHeightOverride = "' . (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteHeight']) && intval($GLOBALS['BE_USER']->uc['rteHeight']) ? intval($GLOBALS['BE_USER']->uc['rteHeight']) : intval($this->thisConfig['RTEHeightOverride'])) . '";
 			RTEarea[editornumber].resizable = ' . (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteResize']) && $GLOBALS['BE_USER']->uc['rteResize'] ? 'true' : (trim($this->thisConfig['rteResize']) ? 'true' : 'false')) . ';
-			RTEarea[editornumber].maxHeight = "' . (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteMaxHeight']) && intval($GLOBALS['BE_USER']->uc['rteMaxHeight']) ? trim($GLOBALS['BE_USER']->uc['rteMaxHeight']) : (intval($this->thisConfig['rteMaxHeight']) ? intval($this->thisConfig['rteMaxHeight']) : '2000')) . '";
+			RTEarea[editornumber].maxHeight = "' . (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->uc['rteMaxHeight']) && intval($GLOBALS['BE_USER']->uc['rteMaxHeight']) ? trim($GLOBALS['BE_USER']->uc['rteMaxHeight']) : (intval($this->thisConfig['rteMaxHeight']) ?: '2000')) . '";
 			RTEarea[editornumber].fullScreen = ' . ($this->fullScreen ? 'true' : 'false') . ';
 			RTEarea[editornumber].showStatusBar = ' . (trim($this->thisConfig['showStatusBar']) ? 'true' : 'false') . ';
 			RTEarea[editornumber].enableWordClean = ' . (trim($this->thisConfig['enableWordClean']) ? 'true' : 'false') . ';
@@ -1133,14 +1133,14 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		} else {
 			$output = $contents;
 		}
-		$relativeFilename = 'typo3temp/' . $this->ID . '_' . str_replace('-', '_', $label) . '_' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5((TYPO3_version . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . ($sourceFileName ? $sourceFileName : $output)), 20) . '.' . $fileExtension;
+		$relativeFilename = 'typo3temp/' . $this->ID . '_' . str_replace('-', '_', $label) . '_' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5((TYPO3_version . $TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . ($sourceFileName ?: $output)), 20) . '.' . $fileExtension;
 		$destination = PATH_site . $relativeFilename;
 		if (!file_exists($destination)) {
 			$minifiedJavaScript = '';
 			if ($fileExtension == 'js' && $output != '') {
 				$minifiedJavaScript = \TYPO3\CMS\Core\Utility\GeneralUtility::minifyJavaScript($output);
 			}
-			$failure = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($destination, $minifiedJavaScript ? $minifiedJavaScript : $output);
+			$failure = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($destination, $minifiedJavaScript ?: $output);
 			if ($failure) {
 				throw new \RuntimeException($failure, 1294585668);
 			}

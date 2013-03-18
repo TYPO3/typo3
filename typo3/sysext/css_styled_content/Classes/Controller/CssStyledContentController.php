@@ -149,7 +149,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			$rows = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $content);
 			reset($rows);
 			// Find number of columns to render:
-			$cols = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cObj->data['cols'] ? $this->cObj->data['cols'] : count(explode($delimiter, current($rows))), 0, 100);
+			$cols = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->cObj->data['cols'] ?: count(explode($delimiter, current($rows))), 0, 100);
 			// Traverse rows (rendering the table here)
 			$rCount = count($rows);
 			foreach ($rows as $k => $v) {
@@ -256,7 +256,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				list($path) = explode('|', $filePathConf);
 			} else {
 				// Get the list of files from the field
-				$field = trim($conf['field']) ? trim($conf['field']) : 'media';
+				$field = trim($conf['field']) ?: 'media';
 				$fileList = $this->cObj->data[$field];
 				$path = 'uploads/media/';
 				if (is_array($GLOBALS['TCA']['tt_content']['columns'][$field]) && !empty($GLOBALS['TCA']['tt_content']['columns'][$field]['config']['uploadfolder'])) {
@@ -406,7 +406,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				}
 			}
 		}
-		return $relations ? $relations : $equalRelations;
+		return $relations ?: $equalRelations;
 	}
 
 	/**
@@ -520,7 +520,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		$colspacing = intval($this->cObj->stdWrap($conf['colSpace'], $conf['colSpace.']));
 		$border = intval($this->cObj->stdWrap($conf['border'], $conf['border.'])) ? 1 : 0;
 		$borderThickness = intval($this->cObj->stdWrap($conf['borderThick'], $conf['borderThick.']));
-		$borderThickness = $borderThickness ? $borderThickness : 1;
+		$borderThickness = $borderThickness ?: 1;
 		$borderSpace = $conf['borderSpace'] && $border ? intval($conf['borderSpace']) : 0;
 		// Generate cols
 		$cols = intval($this->cObj->stdWrap($conf['cols'], $conf['cols.']));
@@ -836,7 +836,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				}
 			}
 			// Set the margin for image + text, no wrap always to avoid multiple stylesheets
-			$noWrapMargin = (int) (($maxWInText ? $maxWInText : $fiftyPercentWidthInText) + intval($this->cObj->stdWrap($conf['textMargin'], $conf['textMargin.'])));
+			$noWrapMargin = (int) (($maxWInText ?: $fiftyPercentWidthInText) + intval($this->cObj->stdWrap($conf['textMargin'], $conf['textMargin.'])));
 			$this->addPageStyle('.csc-textpic-intext-right-nowrap .csc-textpic-text', 'margin-right: ' . $noWrapMargin . 'px;');
 			$this->addPageStyle('.csc-textpic-intext-left-nowrap .csc-textpic-text', 'margin-left: ' . $noWrapMargin . 'px;');
 			// Beside Text where the image block width is not equal to maxW
@@ -853,7 +853,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			}
 			// Add the border class if needed
 			if ($border) {
-				$classes[] = $conf['borderClass'] ? $conf['borderClass'] : 'csc-textpic-border';
+				$classes[] = $conf['borderClass'] ?: 'csc-textpic-border';
 			}
 			// Add the class for equal height if needed
 			if ($equalHeight) {
@@ -965,7 +965,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			}
 			$borderClass = '';
 			if ($border) {
-				$borderClass = $conf['borderClass'] ? $conf['borderClass'] : 'csc-textpic-border';
+				$borderClass = $conf['borderClass'] ?: 'csc-textpic-border';
 			}
 			// Multiple classes with all properties, to be styled in CSS
 			$class = '';

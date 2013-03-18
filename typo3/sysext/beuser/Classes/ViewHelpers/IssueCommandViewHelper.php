@@ -43,7 +43,7 @@ class IssueCommandViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	 * @see template::issueCommand()
 	 */
 	public function render($parameters, $redirectUrl = '') {
-		$redirectUrl = $redirectUrl ? $redirectUrl : \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI');
+		$redirectUrl = $redirectUrl ?: \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI');
 		return $GLOBALS['BACK_PATH'] . 'tce_db.php?' . $parameters . '&redirect=' . ($redirectUrl == '' ? '\' + T3_THIS_LOCATION + \'' : rawurlencode($redirectUrl)) . '&vC=' . rawurlencode($GLOBALS['BE_USER']->veriCode()) . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction') . '&prErr=1&uPT=1';
 	}
 

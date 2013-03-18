@@ -278,7 +278,7 @@ class QueryGenerator {
 		if (is_array($GLOBALS['TCA'][$table])) {
 			$this->name = $name;
 			$this->table = $table;
-			$this->fieldList = $fieldList ? $fieldList : $this->makeFieldList();
+			$this->fieldList = $fieldList ?: $this->makeFieldList();
 			$fieldArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->fieldList, 1);
 			foreach ($fieldArr as $fN) {
 				$fC = $GLOBALS['TCA'][$this->table]['columns'][$fN];
@@ -1239,7 +1239,7 @@ class QueryGenerator {
 		$prefix = $this->enablePrefix ? $this->table . '.' : '';
 		if (!$first) {
 			// Is it OK to insert the AND operator if none is set?
-			$qs .= trim(($conf['operator'] ? $conf['operator'] : 'AND')) . ' ';
+			$qs .= trim(($conf['operator'] ?: 'AND')) . ' ';
 		}
 		$qsTmp = str_replace('#FIELD#', $prefix . trim(substr($conf['type'], 6)), $this->compSQL[$conf['comparison']]);
 		$inputVal = $this->cleanInputVal($conf);

@@ -319,8 +319,8 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Form\Request The request handler
 	 */
 	public function setRequestHandler($typoscript) {
-		$prefix = isset($typoscript['prefix']) ? $typoscript['prefix'] : '';
-		$method = isset($typoscript['method']) ? $typoscript['method'] : '';
+		$prefix = $typoscript['prefix'] ?: '';
+		$method = $typoscript['method'] ?: '';
 		/** @var $requestHandler \TYPO3\CMS\Form\Request */
 		$requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Request');
 		// singleton
@@ -339,7 +339,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Form\Utility\ValidatorUtility The validation object
 	 */
 	public function setRules(array $typoscript) {
-		$rulesTyposcript = isset($typoscript['rules.']) ? $typoscript['rules.'] : NULL;
+		$rulesTyposcript = $typoscript['rules.'] ?: NULL;
 		/** @var $rulesClass \TYPO3\CMS\Form\Utility\ValidatorUtility */
 		$rulesClass = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Utility\\ValidatorUtility', $rulesTyposcript);
 		// singleton
@@ -351,7 +351,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 					$elementArguments = $rulesTyposcript[$key . '.'];
 					$rule = $rulesClass->createRule($class, $elementArguments);
 					$rule->setFieldName($elementArguments['element']);
-					$breakOnError = isset($elementArguments['breakOnError']) ? $elementArguments['breakOnError'] : FALSE;
+					$breakOnError = $elementArguments['breakOnError'] ?: FALSE;
 					$rulesClass->addRule($rule, $elementArguments['element'], $breakOnError);
 				}
 			}

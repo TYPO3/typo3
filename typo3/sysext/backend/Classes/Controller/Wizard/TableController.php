@@ -97,7 +97,7 @@ class TableController {
 		$this->xmlStorage = $this->P['params']['xmlOutput'];
 		$this->numNewRows = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->P['params']['numNewRows'], 1, 50, 5);
 		// Textareas or input fields:
-		$this->inputStyle = isset($this->TABLECFG['textFields']) ? $this->TABLECFG['textFields'] : 1;
+		$this->inputStyle = $this->TABLECFG['textFields'] ?: 1;
 		// Document template object:
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
@@ -546,7 +546,7 @@ class TableController {
 		if (!$cols && trim($tLines[0])) {
 			$cols = count(explode($this->tableParsing_delimiter, $tLines[0]));
 		}
-		$cols = $cols ? $cols : 4;
+		$cols = $cols ?: 4;
 		// Traverse the number of table elements:
 		$cfgArr = array();
 		foreach ($tLines as $k => $v) {

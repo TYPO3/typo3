@@ -184,7 +184,7 @@ class CompatVersionUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 		if ($this->userInput['version']) {
 			$customMessages .= 'If you want to see what you need to do to use the new features, run the update wizard again!';
 		}
-		$version = $this->userInput['version'] ? $this->userInput['version'] : TYPO3_branch;
+		$version = $this->userInput['version'] ?: TYPO3_branch;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('SYS/compat_version', $version);
 		$customMessages .= '<br />The compatibility version has been set to ' . $version . '.';
 		return 1;
@@ -230,7 +230,7 @@ class CompatVersionUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 					$description_acknowledge = isset($details['description_acknowledge']) ? str_replace(chr(10), '<br />', $details['description_acknowledge']) : '';
 					$updateWizardBoxes .= '
 						<div style="border: 1px solid; padding: 10px; margin: 10px; padding-top: 0px; width: 500px;">
-							<h3>' . (isset($details['title']) ? $details['title'] : $internalName) . '</h3>
+							<h3>' . ($details['title'] ?: $internalName) . '</h3>
 							' . $description . (strlen($description_acknowledge) ? '<p>' . $description_acknowledge . '</p>' : '') . (strlen($inputPrefix) ? '
 								<fieldset>
 									<ol>

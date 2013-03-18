@@ -203,7 +203,7 @@ class InlineElement {
 			// If the parent is a page, use the uid(!) of the (new?) page as pid for the child records:
 			if ($table == 'pages') {
 				$liveVersionId = \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionIdOfRecord('pages', $row['uid']);
-				$this->inlineFirstPid = is_null($liveVersionId) ? $row['uid'] : $liveVersionId;
+				$this->inlineFirstPid = $liveVersionId ?: $row['uid'];
 			} elseif ($row['pid'] < 0) {
 				$prevRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, abs($row['pid']));
 				$this->inlineFirstPid = $prevRec['pid'];
@@ -403,7 +403,7 @@ class InlineElement {
 			// Render full content ONLY IF this is a AJAX-request, a new record, the record is not collapsed or AJAX-loading is explicitly turned off
 			if ($isNewRecord || $isExpanded || !$ajaxLoad) {
 				$combination = $this->renderCombinationTable($rec, $appendFormFieldNames, $config);
-				$overruleTypesArray = isset($config['foreign_types']) ? $config['foreign_types'] : array();
+				$overruleTypesArray = $config['foreign_types'] ?: array();
 				$fields = $this->renderMainFields($foreign_table, $rec, $overruleTypesArray);
 				$fields = $this->wrapFormsSection($fields);
 				// Replace returnUrl in Wizard-Code, if this is an AJAX call
@@ -768,7 +768,7 @@ class InlineElement {
 		$foreign_selector = $conf['foreign_selector'];
 		$PA = array();
 		$PA['fieldConf'] = $GLOBALS['TCA'][$foreign_table]['columns'][$foreign_selector];
-		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
+		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ?: $PA['fieldConf']['config']['type'];
 		// Using "form_type" locally in this script
 		$PA['fieldTSConfig'] = $this->fObj->setTSconfig($foreign_table, array(), $foreign_selector);
 		$config = $PA['fieldConf']['config'];
@@ -1245,7 +1245,7 @@ class InlineElement {
 		// Get the name of the field pointing to the original record:
 		$transOrigPointerField = $GLOBALS['TCA'][$current['table']]['ctrl']['transOrigPointerField'];
 		// Get the name of the field used as foreign selector (if any):
-		$foreignSelector = isset($parent['config']['foreign_selector']) && $parent['config']['foreign_selector'] ? $parent['config']['foreign_selector'] : FALSE;
+		$foreignSelector = $parent['config']['foreign_selector'] ?: FALSE;
 		// Convert lists to array with uids of child records:
 		$oldItems = $this->getRelatedRecordsUidArray($oldItemList);
 		$newItems = $this->getRelatedRecordsUidArray($newItemList);
@@ -2195,7 +2195,7 @@ class InlineElement {
 			if ($PA['fieldConf'] && $conf['foreign_selector_fieldTcaOverride']) {
 				$PA['fieldConf'] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($PA['fieldConf'], $conf['foreign_selector_fieldTcaOverride']);
 			}
-			$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
+			$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ?: $PA['fieldConf']['config']['type'];
 			// Using "form_type" locally in this script
 			$PA['fieldTSConfig'] = $this->fObj->setTSconfig($foreign_table, array(), $field);
 			$config = $PA['fieldConf']['config'];
@@ -2411,7 +2411,7 @@ class InlineElement {
 	 */
 	protected function wrapWithAnchor($text, $link, $attributes = array()) {
 		$link = trim($link);
-		$result = '<a href="' . ($link ? $link : '#') . '"';
+		$result = '<a href="' . ($link ?: '#') . '"';
 		foreach ($attributes as $key => $value) {
 			$result .= ' ' . $key . '="' . htmlspecialchars(trim($value)) . '"';
 		}

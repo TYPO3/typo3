@@ -170,7 +170,7 @@ class SuggestDefaultReceiver {
 					continue;
 				}
 				$iconPath = $this->getIcon($row);
-				$uid = $row['t3ver_oid'] > 0 ? $row['t3ver_oid'] : $row['uid'];
+				$uid = $row['t3ver_oid'] ?: $row['uid'];
 				$path = $this->getRecordPath($row, $uid);
 				if (strlen($path) > 30) {
 					$croppedPath = '<abbr title="' . htmlspecialchars($path) . '">' . htmlspecialchars(($GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $path, 10) . '...' . $GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $path, -20))) . '</abbr>';
@@ -181,13 +181,13 @@ class SuggestDefaultReceiver {
 				$entry = array(
 					'text' => '<span class="suggest-label">' . $label . '</span><span class="suggest-uid">[' . $uid . ']</span><br />
 								<span class="suggest-path">' . $croppedPath . '</span>',
-					'table' => $this->mmForeignTable ? $this->mmForeignTable : $this->table,
+					'table' => $this->mmForeignTable ?: $this->table,
 					'label' => $label,
 					'path' => $path,
 					'uid' => $uid,
 					'icon' => $iconPath,
 					'style' => 'background-image:url(' . $iconPath . ');',
-					'class' => isset($this->config['cssClass']) ? $this->config['cssClass'] : ''
+					'class' => $this->config['cssClass'] ?: ''
 				);
 				$rows[$this->table . '_' . $uid] = $this->renderRecord($row, $entry);
 			}
@@ -300,7 +300,7 @@ class SuggestDefaultReceiver {
 	 */
 	protected function checkRecordAccess($row, $uid) {
 		$retValue = TRUE;
-		$table = $this->mmForeignTable ? $this->mmForeignTable : $this->table;
+		$table = $this->mmForeignTable ?: $this->table;
 		if ($table == 'pages') {
 			if (!\TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($uid, $GLOBALS['BE_USER']->getPagePermsClause(1))) {
 				$retValue = FALSE;
@@ -324,7 +324,7 @@ class SuggestDefaultReceiver {
 	protected function makeWorkspaceOverlay(&$row) {
 		// Check for workspace-versions
 		if ($GLOBALS['BE_USER']->workspace != 0 && $GLOBALS['TCA'][$this->table]['ctrl']['versioningWS'] == TRUE) {
-			\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL($this->mmForeignTable ? $this->mmForeignTable : $this->table, $row);
+			\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL($this->mmForeignTable ?: $this->table, $row);
 		}
 	}
 
@@ -335,7 +335,7 @@ class SuggestDefaultReceiver {
 	 * @return string The path to the icon
 	 */
 	protected function getIcon($row) {
-		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getIcon($this->mmForeignTable ? $this->mmForeignTable : $this->table, $row);
+		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getIcon($this->mmForeignTable ?: $this->table, $row);
 		return \TYPO3\CMS\Backend\Utility\IconUtility::skinImg('', $icon, '', 1);
 	}
 
@@ -351,7 +351,7 @@ class SuggestDefaultReceiver {
 	 */
 	protected function getRecordPath(&$row, $uid) {
 		$titleLimit = max($this->config['maxPathTitleLength'], 0);
-		if (($this->mmForeignTable ? $this->mmForeignTable : $this->table) == 'pages') {
+		if (($this->mmForeignTable ?: $this->table) == 'pages') {
 			$path = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($uid, '', $titleLimit);
 			// For pages we only want the first (n-1) parts of the path,
 			// because the n-th part is the page itself
@@ -369,7 +369,7 @@ class SuggestDefaultReceiver {
 	 * @return string The label
 	 */
 	protected function getLabel($row) {
-		return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($this->mmForeignTable ? $this->mmForeignTable : $this->table, $row, TRUE);
+		return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($this->mmForeignTable ?: $this->table, $row, TRUE);
 	}
 
 	/**

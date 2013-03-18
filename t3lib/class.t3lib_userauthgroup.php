@@ -557,7 +557,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			} else {
 				$l10nTable = $table;
 				$pointerField = $GLOBALS['TCA'][$l10nTable]['ctrl']['transOrigPointerField'];
-				$pointerValue = $record[$pointerField] > 0 ? $record[$pointerField] : $record['uid'];
+				$pointerValue = $record[$pointerField] ?: $record['uid'];
 			}
 			$recordLocalizations = t3lib_BEfunc::getRecordsByField($l10nTable, $pointerField, $pointerValue, '', '', '', '1');
 			if (is_array($recordLocalizations)) {
@@ -1680,7 +1680,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				// We now have a path with slash after and slash before (if unix)
 				if (@is_dir($path) && ($GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] && t3lib_div::isFirstPartOfStr($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath']) || t3lib_div::isFirstPartOfStr($path, $fdir))) {
 					// Alternative title?
-					$name = $title ? $title : $altTitle;
+					$name = $title ?: $altTitle;
 					// Adds the filemount. The same filemount with same name, type and path cannot be set up twice because of the hash string used as key.
 					$this->groupData['filemounts'][md5($name . '|' . $path . '|' . $type)] = array('name' => $name, 'path' => $path, 'type' => $type);
 					// Return TRUE - went well, success!
@@ -1986,7 +1986,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 */
 	public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename = '', $recuid = '', $recpid = '', $event_pid = -1, $NEWid = '', $userId = 0) {
 		$fields_values = array(
-			'userid' => $userId ? $userId : intval($this->user['uid']),
+			'userid' => $userId ?: intval($this->user['uid']),
 			'type' => intval($type),
 			'action' => intval($action),
 			'error' => intval($error),

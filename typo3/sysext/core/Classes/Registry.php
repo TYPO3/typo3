@@ -60,7 +60,7 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!isset($this->entries[$namespace])) {
 			$this->loadEntriesByNamespace($namespace);
 		}
-		return isset($this->entries[$namespace][$key]) ? $this->entries[$namespace][$key] : $defaultValue;
+		return $this->entries[$namespace][$key] ?: $defaultValue;
 	}
 
 	/**

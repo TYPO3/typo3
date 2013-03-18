@@ -609,7 +609,7 @@ class PageLayoutController {
 				}
 				$inValue = 'tt_content:' . $cRow['uid'];
 				$is_selected += intval($edit_record == $inValue);
-				$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(($cRow['header'] ? $cRow['header'] : '[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title') . '] ' . strip_tags($cRow['bodytext'])), $GLOBALS['BE_USER']->uc['titleLen'])) . '</option>';
+				$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(($cRow['header'] ?: '[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title') . '] ' . strip_tags($cRow['bodytext'])), $GLOBALS['BE_USER']->uc['titleLen'])) . '</option>';
 				$prev = -$cRow['uid'];
 			}
 		}
@@ -682,7 +682,7 @@ class PageLayoutController {
 			if ($uidVal == 'new') {
 				$new_unique_uid = uniqid('NEW');
 				$rec['uid'] = $new_unique_uid;
-				$rec['pid'] = intval($ex_pid) ? intval($ex_pid) : $this->id;
+				$rec['pid'] = intval($ex_pid) ?: $this->id;
 				$recordAccess = TRUE;
 			} else {
 				$rec['uid'] = $uidVal;

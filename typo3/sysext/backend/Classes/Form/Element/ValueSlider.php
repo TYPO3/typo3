@@ -61,12 +61,12 @@ class ValueSlider {
 		$max = 10000;
 		// Use the range property, if defined, to set min and max values
 		if (isset($params['fieldConfig']['range'])) {
-			$min = isset($params['fieldConfig']['range']['lower']) ? intval($params['fieldConfig']['range']['lower']) : 0;
-			$max = isset($params['fieldConfig']['range']['upper']) ? intval($params['fieldConfig']['range']['upper']) : 10000;
+			$min = intval($params['fieldConfig']['range']['lower'] ?: 0);
+			$max = intval($params['fieldConfig']['range']['upper'] ?: 10000);
 		}
 		$elementType = $params['fieldConfig']['type'];
-		$step = $params['wConf']['step'] ? $params['wConf']['step'] : 1;
-		$width = intval($params['wConf']['width']) ? intval($params['wConf']['width']) : 400;
+		$step = $params['wConf']['step'] ?: 1;
+		$width = intval($params['wConf']['width']) ?: 400;
 		$type = 'null';
 		if (isset($params['fieldConfig']['eval'])) {
 			$eval = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $params['fieldConfig']['eval'], TRUE);

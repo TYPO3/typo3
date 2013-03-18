@@ -119,20 +119,20 @@ class t3lib_formmail {
 		}
 		if (isset($valueList['recipient'])) {
 			// Convert form data from renderCharset to mail charset
-			$this->subject = $valueList['subject'] ? $valueList['subject'] : 'Formmail on ' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST');
+			$this->subject = $valueList['subject'] ?: 'Formmail on ' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST');
 			$this->subject = $this->sanitizeHeaderString($this->subject);
-			$this->fromName = $valueList['from_name'] ? $valueList['from_name'] : ($valueList['name'] ? $valueList['name'] : '');
+			$this->fromName = $valueList['from_name'] ?: ($valueList['name'] ?: '');
 			$this->fromName = $this->sanitizeHeaderString($this->fromName);
-			$this->replyToName = $valueList['replyto_name'] ? $valueList['replyto_name'] : $this->fromName;
+			$this->replyToName = $valueList['replyto_name'] ?: $this->fromName;
 			$this->replyToName = $this->sanitizeHeaderString($this->replyToName);
-			$this->organisation = $valueList['organisation'] ? $valueList['organisation'] : '';
+			$this->organisation = $valueList['organisation'] ?: '';
 			$this->organisation = $this->sanitizeHeaderString($this->organisation);
-			$this->fromAddress = $valueList['from_email'] ? $valueList['from_email'] : ($valueList['email'] ? $valueList['email'] : '');
+			$this->fromAddress = $valueList['from_email'] ?: ($valueList['email'] ?: '');
 			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($this->fromAddress)) {
 				$this->fromAddress = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
 				$this->fromName = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromName();
 			}
-			$this->replyToAddress = $valueList['replyto_email'] ? $valueList['replyto_email'] : $this->fromAddress;
+			$this->replyToAddress = $valueList['replyto_email'] ?: $this->fromAddress;
 			$this->priority = $valueList['priority'] ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($valueList['priority'], 1, 5) : 3;
 			// Auto responder
 			$this->autoRespondMessage = trim($valueList['auto_respond_msg']) && $this->fromAddress ? trim($valueList['auto_respond_msg']) : '';
@@ -172,7 +172,7 @@ class t3lib_formmail {
 				$this->mailMessage->setBody($plainTextContent, 'text/plain', $this->characterSet);
 			}
 			for ($a = 0; $a < 10; $a++) {
-				$variableName = 'attachment' . ($a ? $a : '');
+				$variableName = 'attachment' . ($a ?: '');
 				if (!isset($_FILES[$variableName])) {
 					continue;
 				}

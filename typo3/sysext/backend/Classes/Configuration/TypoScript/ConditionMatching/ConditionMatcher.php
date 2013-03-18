@@ -171,7 +171,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @return array The properties for the current page.
 	 */
 	protected function getPage() {
-		$pageId = isset($this->pageId) ? $this->pageId : $this->determinePageId();
+		$pageId = $this->pageId ?: $this->determinePageId();
 		return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pageId);
 	}
 
@@ -241,7 +241,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @return array The rootline for the current page.
 	 */
 	protected function determineRootline() {
-		$pageId = isset($this->pageId) ? $this->pageId : $this->determinePageId();
+		$pageId = $this->pageId ?: $this->determinePageId();
 		$rootline = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($pageId, '', TRUE);
 		return $rootline;
 	}

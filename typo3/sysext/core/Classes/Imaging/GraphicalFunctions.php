@@ -1146,8 +1146,8 @@ class GraphicalFunctions {
 								if ($c + 1 < count($explodedParts)) {
 									$newResult[] = array(
 										'str' => $cfg['value'],
-										'fontSize' => $cfg['fontSize'] ? $cfg['fontSize'] : $part['fontSize'],
-										'fontFile' => $cfg['fontFile'] ? $cfg['fontFile'] : $part['fontFile'],
+										'fontSize' => $cfg['fontSize'] ?: $part['fontSize'],
+										'fontFile' => $cfg['fontFile'] ?: $part['fontFile'],
 										'color' => $cfg['color'],
 										'xSpaceBefore' => $cfg['xSpaceBefore'],
 										'xSpaceAfter' => $cfg['xSpaceAfter'],
@@ -1256,7 +1256,7 @@ class GraphicalFunctions {
 	public function calcWordSpacing($conf, $scaleFactor = 1) {
 		$spacing = intval($conf['spacing']);
 		$wordSpacing = intval($conf['wordSpacing']);
-		$wordSpacing = $wordSpacing ? $wordSpacing : $spacing * 2;
+		$wordSpacing = $wordSpacing ?: $spacing * 2;
 		$spacing *= $scaleFactor;
 		$wordSpacing *= $scaleFactor;
 		return array($spacing, $wordSpacing);

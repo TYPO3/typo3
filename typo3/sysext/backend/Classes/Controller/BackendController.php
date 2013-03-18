@@ -290,7 +290,7 @@ class BackendController {
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-user-' . ($GLOBALS['BE_USER']->isAdmin() ? 'admin' : 'backend'));
 		$realName = $GLOBALS['BE_USER']->user['realName'];
 		$username = $GLOBALS['BE_USER']->user['username'];
-		$label = $realName ? $realName : $username;
+		$label = $realName ?: $username;
 		$title = $username;
 		// Link to user setup if it's loaded and user has access
 		$link = '';
@@ -458,7 +458,7 @@ class BackendController {
 			'veriCode' => $GLOBALS['BE_USER']->veriCode(),
 			'denyFileTypes' => PHP_EXTENSIONS_DEFAULT,
 			'moduleMenuWidth' => $this->menuWidth - 1,
-			'topBarHeight' => isset($GLOBALS['TBE_STYLES']['dims']['topFrameH']) ? intval($GLOBALS['TBE_STYLES']['dims']['topFrameH']) : 30,
+			'topBarHeight' => intval($GLOBALS['TBE_STYLES']['dims']['topFrameH'] ?: 30),
 			'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? intval($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) : FALSE,
 			'listModulePath' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('recordlist') ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('recordlist') . 'mod1/' : '',
 			'debugInWindow' => $GLOBALS['BE_USER']->uc['debugInWindow'] ? 1 : 0,

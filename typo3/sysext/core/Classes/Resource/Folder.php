@@ -276,7 +276,7 @@ class Folder implements FolderInterface {
 	 * @return File The file object
 	 */
 	public function addFile($localFilePath, $fileName = NULL, $conflictMode = 'cancel') {
-		$fileName = $fileName ? $fileName : basename($localFilePath);
+		$fileName = $fileName ?: basename($localFilePath);
 		return $this->storage->addFile($localFilePath, $this, $fileName, $conflictMode);
 	}
 

@@ -52,7 +52,7 @@ class ContentContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 		$conf['table'] = isset($conf['table.']) ? trim($this->cObj->stdWrap($conf['table'], $conf['table.'])) : trim($conf['table']);
 		$tablePrefix = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('_', $conf['table'], TRUE);
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('pages,tt,fe,tx,ttx,user,static', $tablePrefix[0])) {
-			$renderObjName = $conf['renderObj'] ? $conf['renderObj'] : '<' . $conf['table'];
+			$renderObjName = $conf['renderObj'] ?: '<' . $conf['table'];
 			$renderObjKey = $conf['renderObj'] ? 'renderObj' : '';
 			$renderObjConf = $conf['renderObj.'];
 			$slide = isset($conf['slide.']) ? intval($this->cObj->stdWrap($conf['slide'], $conf['slide.'])) : intval($conf['slide']);

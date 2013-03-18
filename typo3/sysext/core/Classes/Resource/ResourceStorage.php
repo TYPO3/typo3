@@ -712,8 +712,8 @@ class ResourceStorage {
 		if (!file_exists($localFilePath)) {
 			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
 		}
-		$targetFolder = $targetFolder ? $targetFolder : $this->getDefaultFolder();
-		$fileName = $fileName ? $fileName : basename($localFilePath);
+		$targetFolder = $targetFolder ?: $this->getDefaultFolder();
+		$fileName = $fileName ?: basename($localFilePath);
 		if ($conflictMode === 'cancel' && $this->driver->fileExistsInFolder($fileName, $targetFolder)) {
 			throw new Exception\ExistingTargetFileNameException('File "' . $fileName . '" already exists in folder ' . $targetFolder->getIdentifier(), 1322121068);
 		} elseif ($conflictMode === 'changeName') {
@@ -1359,7 +1359,7 @@ class ResourceStorage {
 		if (!$targetParentFolder->getStorage() == $this) {
 			throw new \InvalidArgumentException('Cannot move a folder into a folder that does not belong to this storage.', 1325777289);
 		}
-		$newFolderName = $newFolderName ? $newFolderName : $folderToMove->getName();
+		$newFolderName = $newFolderName ?: $folderToMove->getName();
 		// TODO check if folder already exists in $targetParentFolder, handle this conflict then
 		$this->emitPreFolderMoveSignal($folderToMove, $targetParentFolder, $newFolderName);
 		// Get all file objects now so we are able to update them after moving the folder
@@ -1414,7 +1414,7 @@ class ResourceStorage {
 		// TODO implement the $conflictMode handling
 		// TODO permission checks
 		$returnObject = NULL;
-		$newFolderName = $newFolderName ? $newFolderName : $folderToCopy->getName();
+		$newFolderName = $newFolderName ?: $folderToCopy->getName();
 		$this->emitPreFolderCopySignal($folderToCopy, $targetParentFolder, $newFolderName);
 		$sourceStorage = $folderToCopy->getStorage();
 		// call driver method to move the file

@@ -172,7 +172,7 @@ class IconUtility {
 			}
 		} else {
 			if (!($iconfile = $GLOBALS['TCA'][$table]['ctrl']['typeicons'][$row[$GLOBALS['TCA'][$table]['ctrl']['typeicon_column']]])) {
-				$iconfile = $GLOBALS['TCA'][$table]['ctrl']['iconfile'] ? $GLOBALS['TCA'][$table]['ctrl']['iconfile'] : $table . '.gif';
+				$iconfile = $GLOBALS['TCA'][$table]['ctrl']['iconfile'] ?: $table . '.gif';
 			}
 		}
 		// Setting path of iconfile if not already set. Default is "gfx/i/"
@@ -309,7 +309,7 @@ class IconUtility {
 			// Otherwise, test if auto-detection is enabled:
 			// Search for alternative icon automatically:
 			$fExt = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['forceFileExtension'];
-			$scaleFactor = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] : 1;
+			$scaleFactor = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] ?: 1;
 			// Scaling factor
 			$lookUpName = $fExt ? preg_replace('/\\.[[:alnum:]]+$/', '', $srcKey) . '.' . $fExt : $srcKey;
 			// Set filename to look for
@@ -575,8 +575,8 @@ class IconUtility {
 	 * @access public
 	 */
 	static public function getSpriteIcon($iconName, array $options = array(), array $overlays = array()) {
-		$innerHtml = isset($options['html']) ? $options['html'] : NULL;
-		$tagName = isset($options['tagName']) ? $options['tagName'] : NULL;
+		$innerHtml = $options['html'] ?: NULL;
+		$tagName = $options['tagName'] ?: NULL;
 		// Deal with the overlays
 		if (count($overlays)) {
 			foreach ($overlays as $overlayIconName => $overlayOptions) {
@@ -607,8 +607,8 @@ class IconUtility {
 	 * @access public
 	 */
 	static public function getSpriteIconForFile($fileExtension, array $options = array()) {
-		$innerHtml = isset($options['html']) ? $options['html'] : NULL;
-		$tagName = isset($options['tagName']) ? $options['tagName'] : NULL;
+		$innerHtml = $options['html']?: NULL;
+		$tagName = $options['tagName']?: NULL;
 		// Create the CSS class
 		$options['class'] = self::mapFileExtensionToSpriteIconClass($fileExtension) . (isset($options['class']) ? ' ' . $options['class'] : '');
 		unset($options['html']);
@@ -676,8 +676,8 @@ class IconUtility {
 	 * @access public
 	 */
 	static public function getSpriteIconForRecord($table, array $row, array $options = array()) {
-		$innerHtml = isset($options['html']) ? $options['html'] : NULL;
-		$tagName = isset($options['tagName']) ? $options['tagName'] : NULL;
+		$innerHtml = $options['html'] ?: NULL;
+		$tagName = $options['tagName'] ?: NULL;
 		// Overlay this record icon with the status of the row
 		$overlaySpriteIconName = self::mapRecordOverlayToSpriteIconName($table, $row);
 		if ($overlaySpriteIconName) {

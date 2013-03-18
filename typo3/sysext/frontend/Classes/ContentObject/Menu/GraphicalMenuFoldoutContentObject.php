@@ -149,12 +149,12 @@ class GraphicalMenuFoldoutContentObject extends \TYPO3\CMS\Frontend\ContentObjec
 	 * @todo Define visibility
 	 */
 	public function extProc_finish() {
-		$bHeight = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->mconf['bottomHeight'] ? $this->mconf['bottomHeight'] : 100, 0, 3000);
+		$bHeight = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->mconf['bottomHeight'] ?: 100, 0, 3000);
 		$bottomContent = $this->mconf['bottomContent'] ? $GLOBALS['TSFE']->cObj->cObjGetSingle($this->mconf['bottomContent'], $this->mconf['bottomContent.'], '/GMENU_FOLDOUT/.bottomContent') : '';
 		$adjustTopHeights = intval($this->mconf['adjustItemsH']);
 		$adjustSubHeights = intval($this->mconf['adjustSubItemsH']);
-		$mWidth = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->mconf['menuWidth'] ? $this->mconf['menuWidth'] : 170, 0, 3000);
-		$mHeight = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->mconf['menuHeight'] ? $this->mconf['menuHeight'] : 400, 0, 3000);
+		$mWidth = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->mconf['menuWidth'] ?: 170, 0, 3000);
+		$mHeight = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->mconf['menuHeight'] ?: 400, 0, 3000);
 		$insertmColor = $this->mconf['menuBackColor'] ? 'BACKGROUND-COLOR: ' . $this->mconf['menuBackColor'] . '; layer-background-color: ' . $this->mconf['menuBackColor'] : '';
 		$insertBottomColor = $this->mconf['bottomBackColor'] ? 'BACKGROUND-COLOR: ' . $this->mconf['bottomBackColor'] . '; layer-background-color: ' . $this->mconf['bottomBackColor'] : '';
 		$menuOffset = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->mconf['menuOffset'] . ',');
@@ -182,7 +182,7 @@ class GraphicalMenuFoldoutContentObject extends \TYPO3\CMS\Frontend\ContentObjec
 /*<![CDATA[*/
 <!--
 GFV_foldNumber=' . $this->WMmenuItems . ';          //How many toplinks do you have?
-GFV_foldTimer=' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(($this->mconf['foldTimer'] ? $this->mconf['foldTimer'] : 40), 1, 3000) . ';          //The timeout in the animation, these are milliseconds.
+GFV_foldTimer=' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(($this->mconf['foldTimer'] ?: 40), 1, 3000) . ';          //The timeout in the animation, these are milliseconds.
 GFV_foldSpeed=' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->mconf['foldSpeed'], 1, 100) . ';           //How many steps in an animation?
 GFV_stayFolded=' . ($this->mconf['stayFolded'] ? 'true' : 'false') . ';      //Stay open when you click a new toplink?
 GFV_foldImg=' . $this->WMimagesFlag . ';             //Do you want images (if not set to 0 and remove the images from the body)?

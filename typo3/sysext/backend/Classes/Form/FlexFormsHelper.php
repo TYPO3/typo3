@@ -74,13 +74,13 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 	 */
 	public function modifyFlexFormDS(array $dataStructure, $table, $tableField, array $tableRow, array $tableConf) {
 		$singleSheet = !isset($dataStructure['sheets']) || !is_array($dataStructure['sheets']);
-		$metaConf = !empty($dataStructure['meta']) ? $dataStructure['meta'] : array();
+		$metaConf = $dataStructure['meta'] ?: array();
 		$sheetConf = array();
 		// Get extension identifier (uses second pointer field if it's value is not empty,
 		// "list" or "*", else it must be a plugin and first one will be used)
-		$pointerFields = !empty($tableConf['config']['ds_pointerField']) ? $tableConf['config']['ds_pointerField'] : 'list_type,CType';
+		$pointerFields = $tableConf['config']['ds_pointerField'] ?: 'list_type,CType';
 		$pointerFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pointerFields);
-		$flexformIdentifier = !empty($tableRow[$pointerFields[0]]) ? $tableRow[$pointerFields[0]] : '';
+		$flexformIdentifier = $tableRow[$pointerFields[0]] ?: '';
 		if (!empty($tableRow[$pointerFields[1]]) && $tableRow[$pointerFields[1]] != 'list' && $tableRow[$pointerFields[1]] != '*') {
 			$flexformIdentifier = $tableRow[$pointerFields[1]];
 		}
@@ -126,7 +126,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 				$dataStructure['sheets'][$sheetName]['ROOT']['TCEforms']['sheetShortDescr'] = $sheetConf[$sheetName]['sheetShortDescr'];
 			}
 			// Modify all configured fields in sheet (tab)
-			$dataStructure['sheets'][$sheetName]['ROOT']['el'] = $this->modifySingleFlexFormSheet($sheet['ROOT']['el'], $table, $tableField, $tableRow, !empty($sheetConf[$sheetName]) ? $sheetConf[$sheetName] : array(), !empty($nonExcludeFields[$sheetName]) ? $nonExcludeFields[$sheetName] : array());
+			$dataStructure['sheets'][$sheetName]['ROOT']['el'] = $this->modifySingleFlexFormSheet($sheet['ROOT']['el'], $table, $tableField, $tableRow, $sheetConf[$sheetName] ?: array(), $nonExcludeFields[$sheetName] ?: array());
 			// Remove empty sheet (tab)
 			if (empty($dataStructure['sheets'][$sheetName]['ROOT']['el'])) {
 				unset($dataStructure['sheets'][$sheetName]);

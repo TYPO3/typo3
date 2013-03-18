@@ -1079,7 +1079,7 @@ class ImportExport {
 			)
 		);
 		// Creating XML file from $outputArray:
-		$charset = $this->dat['header']['charset'] ? $this->dat['header']['charset'] : 'utf-8';
+		$charset = $this->dat['header']['charset'] ?: 'utf-8';
 		$XML = '<?xml version="1.0" encoding="' . $charset . '" standalone="yes" ?>' . LF;
 		$XML .= \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml($this->dat, '', 0, 'T3RecordDocument', 0, $options);
 		return $XML;
@@ -1168,7 +1168,7 @@ class ImportExport {
 				foreach ($pagesFromTree as $uid) {
 					$thisRec = $this->dat['header']['records']['pages'][$uid];
 					// PID: Set the main $pid, unless a NEW-id is found
-					$setPid = isset($this->import_newId_pids[$thisRec['pid']]) ? $this->import_newId_pids[$thisRec['pid']] : $pid;
+					$setPid = $this->import_newId_pids[$thisRec['pid']] ?: $pid;
 					$this->addSingle('pages', $uid, $setPid);
 					unset($pageRecords[$uid]);
 				}
@@ -1259,7 +1259,7 @@ class ImportExport {
 				if ($table != 'pages') {
 					foreach ($recs as $uid => $thisRec) {
 						// PID: Set the main $pid, unless a NEW-id is found
-						$setPid = isset($this->import_mapId['pages'][$thisRec['pid']]) ? $this->import_mapId['pages'][$thisRec['pid']] : $pid;
+						$setPid = $this->import_mapId['pages'][$thisRec['pid']] ?: $pid;
 						if (is_array($GLOBALS['TCA'][$table]) && $GLOBALS['TCA'][$table]['ctrl']['rootLevel']) {
 							$setPid = 0;
 						}
@@ -1312,7 +1312,7 @@ class ImportExport {
 		}
 		if (is_array($this->dat['header']['pid_lookup'])) {
 			foreach ($this->dat['header']['pid_lookup'] as $pid => $recList) {
-				$newPid = isset($this->import_mapId['pages'][$pid]) ? $this->import_mapId['pages'][$pid] : $mainPid;
+				$newPid = $this->import_mapId['pages'][$pid] ?: $mainPid;
 				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($newPid)) {
 					foreach ($recList as $tableName => $uidList) {
 						// If $mainPid===$newPid then we are on root level and we can consider to move pages as well!

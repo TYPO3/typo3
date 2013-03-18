@@ -115,7 +115,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 		// initialize
 		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);
 		if ($existTemplate) {
-			$saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
+			$saveId = $tplRow['_ORIG_uid'] ?: $tplRow['uid'];
 			// Update template ?
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('submit') || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('submit_x')) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('submit_y'))) {
 				$tmpl->changed = 0;

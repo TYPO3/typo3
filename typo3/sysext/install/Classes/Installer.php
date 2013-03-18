@@ -416,7 +416,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	 */
 	public function loginForm() {
 		$password = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('password');
-		$redirect_url = $this->redirect_url ? $this->redirect_url : $this->action;
+		$redirect_url = $this->redirect_url ?: $this->action;
 		// Get the template file
 		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'LoginForm.html'));
 		// Get the template part from the file
@@ -4650,7 +4650,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 									$tableMarkers = array(
 										'table' => $table,
 										'definition' => md5($definition),
-										'count' => $insertCount[$table] ? $insertCount[$table] : '',
+										'count' => $insertCount[$table] ?: '',
 										'rowLabel' => $insertCount[$table] ? 'Rows: ' : '',
 										'tableExists' => 'Table exists!',
 										'backPath' => $this->backPath
@@ -5001,7 +5001,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 			$this->sqlHandler->performUpdateQueries($updateStatements['change'], $updateStatements['change']);
 		}
 		// call wizard
-		$action = $this->INSTALL['database_type'] ? $this->INSTALL['database_type'] : 'checkForUpdate';
+		$action = $this->INSTALL['database_type'] ?: 'checkForUpdate';
 		$this->updateWizard_parts($action);
 		$this->output($this->outputWrapper($this->printAll()));
 	}
@@ -5155,7 +5155,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				if (method_exists($tmpObj, 'checkUserInput') && !$tmpObj->checkUserInput($customOutput)) {
 					$customOutput = '';
 					$userInputMarkers = array(
-						'customOutput' => $customOutput ? $customOutput : 'Something went wrong',
+						'customOutput' => $customOutput ?: 'Something went wrong',
 						'goBack' => 'Go back to update configuration'
 					);
 					$checkUserInput = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($checkUserInputSubpart, $userInputMarkers, '###|###', TRUE, FALSE);
@@ -5372,7 +5372,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 		// Define the markers content
 		$templateMarkers = array(
 			'headerFieldName' => 'Field name:',
-			'headerLabel' => $label ? $label : 'Info:'
+			'headerLabel' => $label ?: 'Info:'
 		);
 		if (is_array($arr)) {
 			$rows = array();
@@ -5679,7 +5679,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 		default:
 			break;
 		}
-		return $out ? $out : $fieldInfo;
+		return $out ?: $fieldInfo;
 	}
 
 	/**
@@ -5866,7 +5866,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 ),';
 			break;
 		}
-		return $out ? $out : $fieldInfo;
+		return $out ?: $fieldInfo;
 	}
 
 	/**
@@ -6515,7 +6515,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				// Define the markers content
 				$itemMarkers = array(
 					'key' => htmlspecialchars((string) $key),
-					'description' => !empty($description) ? $description : '&nbsp;'
+					'description' => $description ?: '&nbsp;'
 				);
 				// Fill the markers in the subpart
 				$items[] = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($itemSubpart, $itemMarkers, '###|###', TRUE, FALSE);

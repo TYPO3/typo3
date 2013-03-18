@@ -672,8 +672,8 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 							<td align="center">' . ($row['root'] ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '') . '&nbsp;&nbsp;</td>
 							<td align="center">' . ($row['clConf'] ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '') . '&nbsp;&nbsp;' . '</td>
 							<td align="center">' . ($row['clConst'] ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '') . '&nbsp;&nbsp;' . '</td>
-							<td align="center">' . ($row['pid'] ? $row['pid'] : '') . '</td>
-							<td align="center">' . (strcmp($RL, '') ? $RL : '') . '</td>
+							<td align="center">' . ($row['pid'] ?: '') . '</td>
+							<td align="center">' . $RL . '</td>
 							<td>' . ($row['next'] ? '&nbsp;' . $row['next'] . '&nbsp;&nbsp;' : '') . '</td>
 						</tr>';
 			if ($deeper) {
@@ -1185,9 +1185,9 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 					case 'offset':
 						$wArr = explode(',', $fV);
 						$labels = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $typeDat['paramstr']);
-						$p_field = ($labels[0] ? $labels[0] : 'x') . ':<input type="text" name="' . $fN . '" value="' . $wArr[0] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
+						$p_field = ($labels[0] ?: 'x') . ':<input type="text" name="' . $fN . '" value="' . $wArr[0] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
 						$p_field .= ' , ';
-						$p_field .= ($labels[1] ? $labels[1] : 'y') . ':<input type="text" name="W' . $fN . '" value="' . $wArr[1] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
+						$p_field .= ($labels[1] ?: 'y') . ':<input type="text" name="W' . $fN . '" value="' . $wArr[1] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
 						$labelsCount = count($labels);
 						for ($aa = 2; $aa < $labelsCount; $aa++) {
 							if ($labels[$aa]) {
@@ -1203,7 +1203,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 							foreach ($typeDat['params'] as $val) {
 								$vParts = explode('=', $val, 2);
 								$label = $vParts[0];
-								$val = isset($vParts[1]) ? $vParts[1] : $vParts[0];
+								$val = $vParts[1] ?: $vParts[0];
 								// option tag:
 								$sel = '';
 								if ($val == $params['value']) {
@@ -1220,7 +1220,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 						if ($fV) {
 							$sel = ' checked';
 						}
-						$p_field .= '<input id="' . $fN . '" type="checkbox" name="' . $fN . '" value="' . ($typeDat['paramstr'] ? $typeDat['paramstr'] : 1) . '"' . $sel . ' onClick="uFormUrl(' . $aname . ')" />';
+						$p_field .= '<input id="' . $fN . '" type="checkbox" name="' . $fN . '" value="' . ($typeDat['paramstr'] ?: 1) . '"' . $sel . ' onClick="uFormUrl(' . $aname . ')" />';
 						break;
 					case 'comment':
 						$p_field = '<input type="hidden" name="' . $fN . '" value="#" />';
@@ -1542,7 +1542,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 							break;
 						case 'boolean':
 							if ($var) {
-								$var = $typeDat['paramstr'] ? $typeDat['paramstr'] : 1;
+								$var = $typeDat['paramstr'] ?: 1;
 							}
 							break;
 						}

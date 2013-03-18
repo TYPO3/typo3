@@ -39,7 +39,7 @@ class RecordTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected function getRecord(array $parameters = array()) {
 		/** @var $record \TYPO3\CMS\Core\Log\LogRecord */
-		$record = new \TYPO3\CMS\Core\Log\LogRecord(!empty($parameters['component']) ? $parameters['component'] : 'test.core.log', !empty($parameters['level']) ? $parameters['level'] : \TYPO3\CMS\Core\Log\LogLevel::DEBUG, !empty($parameters['message']) ? $parameters['message'] : 'test message', !empty($parameters['data']) ? $parameters['data'] : array());
+		$record = new \TYPO3\CMS\Core\Log\LogRecord($parameters['component'] ?: 'test.core.log', $parameters['level'] ?: \TYPO3\CMS\Core\Log\LogLevel::DEBUG, $parameters['message'] ?: 'test message', $parameters['data'] ?: array());
 		return $record;
 	}
 

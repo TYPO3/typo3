@@ -261,7 +261,7 @@ class DatabaseConnection {
 		$mmWhere .= ($local_table and $foreign_table) ? ' AND ' : '';
 		$tables = ($local_table ? $local_table . ',' : '') . $mm_table;
 		if ($foreign_table) {
-			$mmWhere .= ($foreign_table_as ? $foreign_table_as : $foreign_table) . '.uid=' . $mm_table . '.uid_foreign';
+			$mmWhere .= ($foreign_table_as ?: $foreign_table) . '.uid=' . $mm_table . '.uid_foreign';
 			$tables .= ',' . $foreign_table . ($foreign_table_as ? ' AS ' . $foreign_table_as : '');
 		}
 		return $this->exec_SELECTquery($select, $tables, $mmWhere . ' ' . $whereClause, $groupBy, $orderBy, $limit);
@@ -1343,7 +1343,7 @@ class DatabaseConnection {
 			\TYPO3\CMS\Core\Utility\DebugUtility::debug(array(
 				'caller' => 'TYPO3\\CMS\\Core\\Database\\DatabaseConnection::' . $func,
 				'ERROR' => $error,
-				'lastBuiltQuery' => $query ? $query : $this->debug_lastBuiltQuery,
+				'lastBuiltQuery' => $query ?: $this->debug_lastBuiltQuery,
 				'debug_backtrace' => \TYPO3\CMS\Core\Utility\DebugUtility::debugTrail()
 			), $func, is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'], 'debug')) ? '' : 'DB Error');
 		}

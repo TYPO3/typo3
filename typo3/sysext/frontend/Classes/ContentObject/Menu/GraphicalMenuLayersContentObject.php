@@ -190,8 +190,8 @@ class GraphicalMenuLayersContentObject extends \TYPO3\CMS\Frontend\ContentObject
 			array_pop($GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMparentId']);
 			$this->WMisSub = trim($this->WMtheSubMenu) ? 1 : 0;
 			if ($this->mconf['lockPosition_addSelf']) {
-				$this->WMy += (strcmp($this->mconf['setFixedHeight'], '') ? $this->mconf['setFixedHeight'] : $this->I['val']['output_h']) + intval($this->mconf['lockPosition_adjust']);
-				$this->WMx += (strcmp($this->mconf['setFixedWidth'], '') ? $this->mconf['setFixedWidth'] : $this->I['val']['output_w']) + intval($this->mconf['lockPosition_adjust']);
+				$this->WMy += ($this->mconf['setFixedHeight'] ?: $this->I['val']['output_h']) + intval($this->mconf['lockPosition_adjust']);
+				$this->WMx += ($this->mconf['setFixedWidth'] ?: $this->I['val']['output_w']) + intval($this->mconf['lockPosition_adjust']);
 			}
 			// orig: && $this->WMisSub, changed 210901
 			if ($this->isActive($this->I['uid'], $this->getMPvar($key)) && $this->mconf['displayActiveOnLoad']) {
@@ -241,7 +241,7 @@ GLV_restoreMenu["' . $this->WMid . '"] = "' . $this->WMactiveKey . '";
 	public function extProc_afterLinking($key) {
 		if ($this->I['uid']) {
 			if (!$this->I['spacer'] && $this->WMisSub) {
-				$exStyle = $this->mconf['layerStyle'] ? $this->mconf['layerStyle'] : 'position:absolute;visibility:hidden';
+				$exStyle = $this->mconf['layerStyle'] ?: 'position:absolute;visibility:hidden';
 				if (trim($exStyle)) {
 					$exStyle = ' ' . $exStyle;
 				}
@@ -255,8 +255,8 @@ GLV_restoreMenu["' . $this->WMid . '"] = "' . $this->WMactiveKey . '";
 				$this->WMlastKey = 'Menu' . $this->WMid . $key;
 			}
 			if (!$this->mconf['lockPosition_addSelf']) {
-				$this->WMy += (strcmp($this->mconf['setFixedHeight'], '') ? $this->mconf['setFixedHeight'] : $this->I['val']['output_h']) + intval($this->mconf['lockPosition_adjust']);
-				$this->WMx += (strcmp($this->mconf['setFixedWidth'], '') ? $this->mconf['setFixedWidth'] : $this->I['val']['output_w']) + intval($this->mconf['lockPosition_adjust']);
+				$this->WMy += ($this->mconf['setFixedHeight'] ?: $this->I['val']['output_h']) + intval($this->mconf['lockPosition_adjust']);
+				$this->WMx += ($this->mconf['setFixedWidth'] ?: $this->I['val']['output_w']) + intval($this->mconf['lockPosition_adjust']);
 			}
 		}
 		$this->WMresult .= $this->I['theItem'];

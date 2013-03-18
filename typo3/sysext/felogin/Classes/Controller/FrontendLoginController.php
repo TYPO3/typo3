@@ -150,7 +150,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		}
 		$this->redirectUrl = $this->validateRedirectUrl($this->redirectUrl);
 		// Get Template
-		$templateFile = $this->conf['templateFile'] ? $this->conf['templateFile'] : 'EXT:felogin/template.html';
+		$templateFile = $this->conf['templateFile'] ?: 'EXT:felogin/template.html';
 		$this->template = $this->cObj->fileResource($templateFile);
 		// Is user logged in?
 		$this->userIsLoggedIn = $GLOBALS['TSFE']->loginUser;
@@ -286,7 +286,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	protected function changePassword() {
 		$subpartArray = ($linkpartArray = array());
 		$done = FALSE;
-		$minLength = intval($this->conf['newPasswordMinLength']) ? intval($this->conf['newPasswordMinLength']) : 6;
+		$minLength = intval($this->conf['newPasswordMinLength']) ?: 6;
 		$subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_CHANGEPASSWORD###');
 		$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('change_password_header', $this->conf['changePasswordHeader_stdWrap.']);
 		$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_message', $this->conf['changePasswordMessage_stdWrap.']), $minLength);
@@ -372,7 +372,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	 * @return string Empty string with success, error message with no success
 	 */
 	protected function generateAndSendHash($user) {
-		$hours = intval($this->conf['forgotLinkHashValidTime']) > 0 ? intval($this->conf['forgotLinkHashValidTime']) : 24;
+		$hours = intval($this->conf['forgotLinkHashValidTime']) ?: 24;
 		$validEnd = time() + 3600 * $hours;
 		$validEndString = date($this->conf['dateFormat'], $validEnd);
 		$hash = md5(\TYPO3\CMS\Core\Utility\GeneralUtility::generateRandomBytes(64));
@@ -527,7 +527,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		$extraHiddenAr = array();
 		// Check for referer redirect method. if present, save referer in form field
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->conf['redirectMode'], 'referer') || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->conf['redirectMode'], 'refererDomains')) {
-			$referer = $this->referer ? $this->referer : \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_REFERER');
+			$referer = $this->referer ?: \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_REFERER');
 			if ($referer) {
 				$extraHiddenAr[] = '<input type="hidden" name="referer" value="' . htmlspecialchars($referer) . '" />';
 				if ($this->piVars['redirectReferrer'] === 'off') {

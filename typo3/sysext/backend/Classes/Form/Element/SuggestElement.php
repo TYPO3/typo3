@@ -89,7 +89,7 @@ class SuggestElement {
 		if (isset($config['fieldTSConfig']['suggest.']['default.']['minimumCharacters'])) {
 			$minChars = intval($config['fieldTSConfig']['suggest.']['default.']['minimumCharacters']);
 		}
-		$minChars = $minChars > 0 ? $minChars : 2;
+		$minChars = $minChars ?: 2;
 		// Replace "-" with ucwords for the JS object name
 		$jsObj = str_replace(' ', '', ucwords(str_replace('-', ' ', \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($suggestId))));
 		$this->TCEformsObj->additionalJS_post[] = '
@@ -222,7 +222,7 @@ class SuggestElement {
 			asort($rowsSort);
 			$rowsSort = array_keys($rowsSort);
 			// Limit the number of items in the result list
-			$maxItems = $config['maxItemsInResultList'] ? $config['maxItemsInResultList'] : 10;
+			$maxItems = $config['maxItemsInResultList'] ?: 10;
 			$maxItems = min(count($resultRows), $maxItems);
 			// put together the selector entry
 			for ($i = 0; $i < $maxItems; $i++) {

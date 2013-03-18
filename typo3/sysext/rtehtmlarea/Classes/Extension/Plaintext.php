@@ -82,7 +82,7 @@ class Plaintext extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			RTEarea[' . $RTEcounter . '].buttons.' . $button . ' = new Object();';
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.current = "' . (isset($GLOBALS['BE_USER']->uc['rteCleanPasteBehaviour']) ? $GLOBALS['BE_USER']->uc['rteCleanPasteBehaviour'] : 'plainText') . '";';
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.current = "' . ($GLOBALS['BE_USER']->uc['rteCleanPasteBehaviour'] ?: 'plainText') . '";';
 		}
 		return $registerRTEinJavascriptString;
 	}

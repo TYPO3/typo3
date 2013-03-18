@@ -342,7 +342,7 @@ class EditDocumentController {
 			$this->defVals = $this->overrideVals;
 		}
 		// Setting return URL
-		$this->retUrl = $this->returnUrl ? $this->returnUrl : 'dummy.php';
+		$this->retUrl = $this->returnUrl ?: 'dummy.php';
 		// Fix $this->editconf if versioning applies to any of the records
 		$this->fixWSversioningInEditConf();
 		// Make R_URL (request url) based on input GETvars:
@@ -1328,7 +1328,7 @@ class EditDocumentController {
 	 */
 	public function getNewIconMode($table, $key = 'saveDocNew') {
 		$TSconfig = $GLOBALS['BE_USER']->getTSConfig('options.' . $key);
-		$output = trim(isset($TSconfig['properties'][$table]) ? $TSconfig['properties'][$table] : $TSconfig['value']);
+		$output = trim($TSconfig['properties'][$table] ?: $TSconfig['value']);
 		return $output;
 	}
 

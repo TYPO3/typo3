@@ -340,7 +340,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 			}
 		}
 		// Get configuration of collapsed tables from user uc and merge with sanitized GP vars
-		$this->tablesCollapsed = is_array($GLOBALS['BE_USER']->uc['moduleData']['list']) ? $GLOBALS['BE_USER']->uc['moduleData']['list'] : array();
+		$this->tablesCollapsed = is_array($GLOBALS['BE_USER']->uc['moduleData']['list']) ?: array();
 		$collapseOverride = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('collapse');
 		if (is_array($collapseOverride)) {
 			foreach ($collapseOverride as $collapseTable => $collapseValue) {
@@ -403,9 +403,9 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 				}
 				// iLimit is set depending on whether we're in single- or multi-table mode
 				if ($this->table) {
-					$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']) ? intval($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']) : $this->itemsLimitSingleTable;
+					$this->iLimit = intval($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems'] ?: $this->itemsLimitSingleTable);
 				} else {
-					$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']) ? intval($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']) : $this->itemsLimitPerTable;
+					$this->iLimit = intval($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems'] ?: $this->itemsLimitPerTable);
 				}
 				if ($this->showLimit) {
 					$this->iLimit = $this->showLimit;
@@ -471,7 +471,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 					</tr>
 					<tr>
 						<td><label for="showLimit">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showRecords', 1) . ':</label></td>
-						<td colspan="3"><input type="text" name="showLimit" id="showLimit" value="' . htmlspecialchars(($this->showLimit ? $this->showLimit : '')) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td>
+						<td colspan="3"><input type="text" name="showLimit" id="showLimit" value="' . htmlspecialchars(($this->showLimit ?: '')) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td>
 					</tr>
 				</table>
 			' . $formElements[1] . '</div>';
