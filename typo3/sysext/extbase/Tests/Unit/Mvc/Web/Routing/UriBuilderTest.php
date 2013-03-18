@@ -80,6 +80,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->uriBuilder->_set('contentObject', $this->mockContentObject);
 		$this->uriBuilder->injectConfigurationManager($this->mockConfigurationManager);
 		$this->uriBuilder->injectExtensionService($this->mockExtensionService);
+		$this->uriBuilder->injectEnvironmentService($this->objectManager->get('TYPO3\\CMS\\Extbase\\Service\\EnvironmentService'));
 	}
 
 	public function tearDown() {

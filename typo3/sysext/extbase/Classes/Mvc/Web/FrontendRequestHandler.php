@@ -91,7 +91,7 @@ class FrontendRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestH
 	 * @return boolean If the request is a web request, TRUE otherwise FALSE
 	 */
 	public function canHandleRequest() {
-		return TYPO3_MODE === 'FE';
+		return $this->environmentService->isEnvironmentInFrontendMode();
 	}
 }
 

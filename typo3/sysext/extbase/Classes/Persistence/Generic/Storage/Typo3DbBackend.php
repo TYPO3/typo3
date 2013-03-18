@@ -82,6 +82,11 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	protected $tableColumnCache;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
+	 */
+	protected $environmentService;
+
+	/**
 	 * Constructor. takes the database handle from $GLOBALS['TYPO3_DB']
 	 */
 	public function __construct() {
@@ -128,6 +133,14 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 */
 	public function injectCacheService(\TYPO3\CMS\Extbase\Service\CacheService $cacheService) {
 		$this->cacheService = $cacheService;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+	 * @return void
+	 */
+	public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService) {
+		$this->environmentService = $environmentService;
 	}
 
 	/**
@@ -851,7 +864,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	protected function addEnableFieldsStatement($tableName, array &$sql) {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
-			if ($this->getTypo3Mode() === 'FE') {
+			if ($this->environmentService->isEnvironmentInFrontendMode()) {
 				$statement = $this->getPageRepository()->enableFields($tableName);
 			} else {
 				// TYPO3_MODE === 'BE'
@@ -879,7 +892,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			$ignoreEnableFields = $querySettings->getIgnoreEnableFields();
 			$enableFieldsToBeIgnored = $querySettings->getEnableFieldsToBeIgnored();
 			$includeDeleted = $querySettings->getIncludeDeleted();
-			if ($this->getTypo3Mode() === 'FE') {
+			if ($this->environmentService->isEnvironmentInFrontendMode()) {
 				$statement .= $this->getFrontendConstraintStatement($tableName, $ignoreEnableFields, $enableFieldsToBeIgnored, $includeDeleted);
 			} else {
 				// TYPO3_MODE === 'BE'
@@ -1152,7 +1165,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 */
 	protected function getPageRepository() {
 		if (!$this->pageRepository instanceof \TYPO3\CMS\Frontend\Page\PageRepository) {
-			if ($this->getTypo3Mode() === 'FE' && is_object($GLOBALS['TSFE'])) {
+			if ($this->environmentService->isEnvironmentInFrontendMode() && is_object($GLOBALS['TSFE'])) {
 				$this->pageRepository = $GLOBALS['TSFE']->sys_page;
 			} else {
 				$this->pageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
@@ -1228,16 +1241,6 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		foreach ($pageIdsToClear as $pageIdToClear) {
 			$this->cacheService->getPageIdStack()->push($pageIdToClear);
 		}
-	}
-
-	/**
-	 * Returns the TYPO3 Mode ("FE" for front-end or "BE" for back-end). This method is necessary to enable unit tests to
-	 * mock this constant.
-	 *
-	 * @return string
-	 */
-	protected function getTypo3Mode() {
-		return TYPO3_MODE;
 	}
 }
 

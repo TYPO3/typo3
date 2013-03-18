@@ -46,11 +46,32 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 	protected $concreteConfigurationManager;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
+	 */
+	protected $environmentService;
+
+	/**
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
 	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+	 * @return void
+	 */
+	public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService) {
+		$this->environmentService = $environmentService;
+	}
+
+	/**
+	 * Initializes the object
+	 *
+	 * @return void
+	 */
+	public function initializeObject() {
 		$this->initializeConcreteConfigurationManager();
 	}
 
@@ -58,7 +79,7 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 	 * @return void
 	 */
 	protected function initializeConcreteConfigurationManager() {
-		if (TYPO3_MODE === 'FE') {
+		if ($this->environmentService->isEnvironmentInFrontendMode()) {
 			$this->concreteConfigurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\FrontendConfigurationManager');
 		} else {
 			$this->concreteConfigurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\BackendConfigurationManager');

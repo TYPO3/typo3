@@ -115,6 +115,11 @@ class UriBuilder {
 	protected $argumentPrefix = NULL;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
+	 */
+	protected $environmentService;
+
+	/**
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
@@ -128,6 +133,14 @@ class UriBuilder {
 	 */
 	public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService) {
 		$this->extensionService = $extensionService;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+	 * @return void
+	 */
+	public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService) {
+		$this->environmentService = $environmentService;
 	}
 
 	/**
@@ -480,16 +493,16 @@ class UriBuilder {
 		if ($extensionName === NULL) {
 			$extensionName = $this->request->getControllerExtensionName();
 		}
-		if ($pluginName === NULL && TYPO3_MODE === 'FE') {
+		if ($pluginName === NULL && $this->environmentService->isEnvironmentInFrontendMode()) {
 			$pluginName = $this->extensionService->getPluginNameByAction($extensionName, $controllerArguments['controller'], $controllerArguments['action']);
 		}
 		if ($pluginName === NULL) {
 			$pluginName = $this->request->getPluginName();
 		}
-		if (TYPO3_MODE === 'FE' && $this->configurationManager->isFeatureEnabled('skipDefaultArguments')) {
+		if ($this->environmentService->isEnvironmentInFrontendMode() && $this->configurationManager->isFeatureEnabled('skipDefaultArguments')) {
 			$controllerArguments = $this->removeDefaultControllerAndAction($controllerArguments, $extensionName, $pluginName);
 		}
-		if ($this->targetPageUid === NULL && TYPO3_MODE === 'FE') {
+		if ($this->targetPageUid === NULL && $this->environmentService->isEnvironmentInFrontendMode()) {
 			$this->targetPageUid = $this->extensionService->getTargetPidByPlugin($extensionName, $pluginName);
 		}
 		if ($this->format !== '') {
@@ -540,7 +553,7 @@ class UriBuilder {
 	 * @see buildFrontendUri()
 	 */
 	public function build() {
-		if (TYPO3_MODE === 'BE') {
+		if ($this->environmentService->isEnvironmentInBackendMode()) {
 			return $this->buildBackendUri();
 		} else {
 			return $this->buildFrontendUri();

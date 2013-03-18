@@ -54,7 +54,7 @@ class BackendRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHa
 	 * @return boolean If we are in backend mode TRUE otherwise FALSE
 	 */
 	public function canHandleRequest() {
-		return TYPO3_MODE === 'BE';
+		return $this->environmentService->isEnvironmentInBackendMode();
 	}
 }
 
