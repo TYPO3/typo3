@@ -109,7 +109,7 @@ class RemoveXSS {
 			}
 		}
 			//only process potential words
-		if (count($ra) > 0) {
+		if (count($ra)) {
 				// keep replacing as long as the previous round replaced something
 			$found = TRUE;
 			while ($found == TRUE) {

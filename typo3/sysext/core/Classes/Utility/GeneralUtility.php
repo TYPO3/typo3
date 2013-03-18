@@ -503,7 +503,7 @@ class GeneralUtility {
 			$left = count($chunksLeft);
 			$right = count($chunksRight);
 			// Special case: leading zero-only blocks count to 1, should be 0
-			if ($left == 1 && strlen($chunksLeft[0]) == 0) {
+			if ($left == 1 && !strlen($chunksLeft[0])) {
 				$left = 0;
 			}
 			$hiddenBlocks = 8 - ($left + $right);
@@ -922,7 +922,7 @@ class GeneralUtility {
 	 */
 	static public function formatSize($sizeInBytes, $labels = '') {
 		// Set labels:
-		if (strlen($labels) == 0) {
+		if (!strlen($labels)) {
 			$labels = ' | K| M| G';
 		} else {
 			$labels = str_replace('"', '', $labels);
@@ -2512,7 +2512,7 @@ Connection: close
 				// Set createGroup if not empty
 				if (
 					isset($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])
-					&& strlen($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']) > 0
+					&& strlen($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])
 				) {
 					// "@" is there because file is not necessarily OWNED by the user
 					$changeGroupResult = @chgrp($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']);
@@ -2635,7 +2635,7 @@ Connection: close
 			throw new \InvalidArgumentException('The specified directory is of type "' . gettype($deepDirectory) . '" but a string is expected.', 1303662956);
 		}
 		$fullPath = $directory . $deepDirectory;
-		if (!is_dir($fullPath) && strlen($fullPath) > 0) {
+		if (!is_dir($fullPath) && strlen($fullPath)) {
 			$firstCreatedPath = self::createDirectoryPath($fullPath);
 			if ($firstCreatedPath !== '') {
 				self::fixPermissions($firstCreatedPath, TRUE);

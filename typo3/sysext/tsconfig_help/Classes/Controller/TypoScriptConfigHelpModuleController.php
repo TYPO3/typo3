@@ -433,7 +433,7 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 	 */
 	public function styleHTML($style, $char) {
 		$string = '';
-		if (count($style) > 0) {
+		if (count($style)) {
 			foreach ($style as $tag) {
 				$string .= '<' . $char . $tag . '>';
 			}

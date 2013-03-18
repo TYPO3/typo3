@@ -296,7 +296,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 				$addTags = array_diff($tags, $existingTags);
 				$removeTags = array_diff($existingTags, $tags);
 			}
-			if (count($removeTags) > 0 || count($addTags) > 0) {
+			if (count($removeTags) || count($addTags)) {
 				$queue = $this->redis->multi(\Redis::PIPELINE);
 				foreach ($removeTags as $tag) {
 					$queue->sRemove(self::IDENTIFIER_TAGS_PREFIX . $entryIdentifier, $tag);
@@ -329,7 +329,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 		if ($this->connected) {
 			$storedEntry = $this->redis->get(self::IDENTIFIER_DATA_PREFIX . $entryIdentifier);
 		}
-		if ($this->compression && strlen($storedEntry) > 0) {
+		if ($this->compression && strlen($storedEntry)) {
 			$storedEntry = gzuncompress($storedEntry);
 		}
 		return $storedEntry;
@@ -437,7 +437,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 		}
 		if ($this->connected) {
 			$identifiers = $this->redis->sMembers(self::TAG_IDENTIFIERS_PREFIX . $tag);
-			if (count($identifiers) > 0) {
+			if (count($identifiers)) {
 				$this->removeIdentifierEntriesAndRelations($identifiers, array($tag));
 			}
 		}

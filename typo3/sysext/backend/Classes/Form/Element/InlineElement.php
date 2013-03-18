@@ -1817,7 +1817,7 @@ class InlineElement {
 						$fieldParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(self::FlexForm_Substitute, $unstable['field']);
 						$unstable['field'] = array_shift($fieldParts);
 						// FlexForm parts start with data:
-						if (count($fieldParts) > 0 && $fieldParts[0] === 'data') {
+						if (count($fieldParts) && $fieldParts[0] === 'data') {
 							$unstable['flexform'] = $fieldParts;
 						}
 					}

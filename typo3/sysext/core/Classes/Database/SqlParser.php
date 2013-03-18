@@ -411,7 +411,7 @@ class SqlParser {
 		$result['TABLE'] = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]*\\(', TRUE);
 		if ($result['TABLE']) {
 			// While the parseString is not yet empty:
-			while (strlen($parseString) > 0) {
+			while (strlen($parseString)) {
 				// Getting key
 				if ($key = $this->nextPart($parseString, '^(KEY|PRIMARY KEY|UNIQUE KEY|UNIQUE)([[:space:]]+|\\()')) {
 					$key = strtoupper(str_replace(array(' ', TAB, CR, LF), '', $key));
@@ -666,7 +666,7 @@ class SqlParser {
 	public function parseFieldList(&$parseString, $stopRegex = '') {
 		$stack = array();
 		// Contains the parsed content
-		if (strlen($parseString) == 0) {
+		if (!strlen($parseString)) {
 			return $stack;
 		}
 		// FIXME - should never happen, why does it?

@@ -1326,7 +1326,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				} elseif (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'])) {
 					$hookArr = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'];
 				}
-				if (count($hookArr) > 0) {
+				if (count($hookArr)) {
 					$_params = array('pObj' => &$this, 'row' => $row, 'infoArr' => $infoArr);
 					foreach ($hookArr as $_funcRef) {
 						$hookOut .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
