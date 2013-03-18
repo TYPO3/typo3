@@ -122,11 +122,11 @@ class FileExtensionFilter {
 		$result = TRUE;
 		$fileExt = $file->getExtension();
 		// Check allowed file extensions
-		if ($this->allowedFileExtensions !== NULL && count($this->allowedFileExtensions) > 0 && !in_array($fileExt, $this->allowedFileExtensions)) {
+		if ($this->allowedFileExtensions !== NULL && count($this->allowedFileExtensions) && !in_array($fileExt, $this->allowedFileExtensions)) {
 			$result = FALSE;
 		}
 		// Check disallowed file extensions
-		if ($this->disallowedFileExtensions !== NULL && count($this->disallowedFileExtensions) > 0 && in_array($fileExt, $this->disallowedFileExtensions)) {
+		if ($this->disallowedFileExtensions !== NULL && count($this->disallowedFileExtensions) && in_array($fileExt, $this->disallowedFileExtensions)) {
 			$result = FALSE;
 		}
 		return $result;
@@ -160,7 +160,7 @@ class FileExtensionFilter {
 		$returnValue = NULL;
 		if (is_array($inputArgument)) {
 			$returnValue = $inputArgument;
-		} elseif (strlen($inputArgument) > 0) {
+		} elseif (strlen($inputArgument)) {
 			$returnValue = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $inputArgument);
 		}
 		return $returnValue;

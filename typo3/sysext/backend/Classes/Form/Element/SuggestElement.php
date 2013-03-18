@@ -130,7 +130,7 @@ class SuggestElement {
 		$fieldConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 		$parts = explode('|', $field);
 		if ($GLOBALS['TCA'][$table]['columns'][$parts[0]]['config']['type'] === 'flex') {
-			if (is_array($row) && count($row) > 0) {
+			if (is_array($row) && count($row)) {
 				$flexfieldTCAConfig = $GLOBALS['TCA'][$table]['columns'][$parts[0]]['config'];
 				$flexformDSArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($flexfieldTCAConfig, $row, $table);
 				$flexformDSArray = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveAllSheetsInDS($flexformDSArray);
@@ -213,7 +213,7 @@ class SuggestElement {
 			unset($rows);
 		}
 		$listItems = array();
-		if (count($resultRows) > 0) {
+		if (count($resultRows)) {
 			// traverse all found records and sort them
 			$rowsSort = array();
 			foreach ($resultRows as $key => $row) {
@@ -231,7 +231,7 @@ class SuggestElement {
 				$listItems[] = '<li' . ($row['class'] != '' ? ' class="' . $row['class'] . '"' : '') . ' id="' . $rowId . '" style="' . $row['style'] . '">' . $row['text'] . '</li>';
 			}
 		}
-		if (count($listItems) > 0) {
+		if (count($listItems)) {
 			$list = implode('', $listItems);
 		} else {
 			$list = '<li class="suggest-noresults"><i>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.noRecordFound') . '</i></li>';

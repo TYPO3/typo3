@@ -104,7 +104,7 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 				}
 			}
 		}
-		if (count($xclassFoundArray) > 0) {
+		if (count($xclassFoundArray)) {
 			$value = $GLOBALS['LANG']->getLL('status_xclassUsageFound');
 			$message = $GLOBALS['LANG']->getLL('status_xclassUsageFound_message') . '<br />';
 			$message .= '<ol>';

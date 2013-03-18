@@ -250,7 +250,7 @@ class Folder implements FolderInterface {
 
 		$folderObjects = array();
 		$folderArray = $this->storage->getFolderList($this->identifier, $start, $numberOfItems, $useFilters);
-		if (count($folderArray) > 0) {
+		if (count($folderArray)) {
 			/** @var $factory ResourceFactory */
 			$factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 			// TODO this will not work with non-hierarchical storages
@@ -422,7 +422,7 @@ class Folder implements FolderInterface {
 				break;
 
 			case self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS:
-				if (count($this->fileAndFolderNameFilters) > 0) {
+				if (count($this->fileAndFolderNameFilters)) {
 					$backedUpFilters = $this->storage->getFileAndFolderNameFilters();
 					foreach ($this->fileAndFolderNameFilters as $filter) {
 						$this->storage->addFileAndFolderNameFilter($filter);

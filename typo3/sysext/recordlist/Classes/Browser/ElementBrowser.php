@@ -234,7 +234,7 @@ class ElementBrowser {
 		// CurrentUrl - the current link url must be passed around if it exists
 		if ($this->mode == 'wizard') {
 			$currentValues = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, trim($this->P['currentValue']));
-			if (count($currentValues) > 0) {
+			if (count($currentValues)) {
 				$currentValue = array_pop($currentValues);
 			} else {
 				$currentValue = '';

@@ -113,7 +113,7 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 		$hasErrors = FALSE;
 		try {
 			$dependencyTypes = $this->managementService->getAndResolveDependencies($extension);
-			if (count($dependencyTypes) > 0) {
+			if (count($dependencyTypes)) {
 				$hasDependencies = TRUE;
 				$message = $this->translate('downloadExtension.dependencies.headline');
 				foreach ($dependencyTypes as $dependencyType => $dependencies) {

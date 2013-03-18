@@ -88,7 +88,7 @@ class HTTP_Request2_Adapter_Mock extends HTTP_Request2_Adapter
     */
     public function sendRequest(HTTP_Request2 $request)
     {
-        if (count($this->responses) > 0) {
+        if (count($this->responses)) {
             $response = array_shift($this->responses);
             if ($response instanceof HTTP_Request2_Response) {
                 return $response;

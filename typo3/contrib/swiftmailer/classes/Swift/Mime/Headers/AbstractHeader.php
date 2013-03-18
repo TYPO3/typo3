@@ -336,7 +336,7 @@ abstract class Swift_Mime_Headers_AbstractHeader implements Swift_Mime_Header
       }
       else
       {
-        if (strlen($encodedToken) > 0)
+        if (strlen($encodedToken))
         {
           $tokens[] = $encodedToken;
           $encodedToken = '';
@@ -481,7 +481,7 @@ abstract class Swift_Mime_Headers_AbstractHeader implements Swift_Mime_Header
       //Line longer than specified maximum or token was just a new line
       if (("\r\n" == $token) ||
         ($i > 0 && strlen($currentLine . $token) > $this->_lineLength)
-        && 0 < strlen($currentLine))
+        && strlen($currentLine))
       {
         $headerLines[] = '';
         $currentLine =& $headerLines[$lineCount++];

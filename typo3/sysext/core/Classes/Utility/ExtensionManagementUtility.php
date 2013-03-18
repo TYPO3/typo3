@@ -410,10 +410,10 @@ class ExtensionManagementUtility {
 		}
 		// Make sure item keys are integers
 		$GLOBALS['TCA'][$table]['columns'][$field]['config']['items'] = array_values($GLOBALS['TCA'][$table]['columns'][$field]['config']['items']);
-		if (strlen($relativePosition) > 0) {
+		if (strlen($relativePosition)) {
 			// Insert at specified position
 			$matchedPosition = \TYPO3\CMS\Core\Utility\ArrayUtility::filterByValueRecursive($relativeToField, $GLOBALS['TCA'][$table]['columns'][$field]['config']['items']);
-			if (count($matchedPosition) > 0) {
+			if (count($matchedPosition)) {
 				$relativeItemKey = key($matchedPosition);
 				if ($relativePosition === 'replace') {
 					$GLOBALS['TCA'][$table]['columns'][$field]['config']['items'][$relativeItemKey] = $item;
@@ -739,7 +739,7 @@ class ExtensionManagementUtility {
 			$defaultModuleConfiguration['navigationComponentId'] = 'typo3-pagetree';
 		}
 		$moduleConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($defaultModuleConfiguration, $moduleConfiguration);
-		if (strlen($subModuleName) > 0) {
+		if (strlen($subModuleName)) {
 			$moduleSignature = $mainModuleName . '_' . $subModuleName;
 		} else {
 			$moduleSignature = $mainModuleName;

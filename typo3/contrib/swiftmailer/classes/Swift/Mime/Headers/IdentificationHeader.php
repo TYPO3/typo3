@@ -87,7 +87,7 @@ class Swift_Mime_Headers_IdentificationHeader
    */
   public function getId()
   {
-    if (count($this->_ids) > 0)
+    if (count($this->_ids))
     {
       return $this->_ids[0];
     }

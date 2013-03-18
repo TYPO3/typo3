@@ -621,7 +621,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		if ($this->searchString) {
 			$result = ' AND 0=1';
 			$searchableFields = $this->getSearchFields($table);
-			if (count($searchableFields) > 0) {
+			if (count($searchableFields)) {
 				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->searchString)) {
 					$whereParts = array(
 						'uid=' . $this->searchString

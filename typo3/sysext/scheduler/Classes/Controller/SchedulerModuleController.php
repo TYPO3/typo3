@@ -405,7 +405,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$content = '';
 		$registeredClasses = self::getRegisteredClasses();
 		// No classes available, display information message
-		if (count($registeredClasses) == 0) {
+		if (!count($registeredClasses)) {
 			/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('msg.noTasksDefined'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			$content .= $flashMessage->render();
@@ -665,7 +665,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$taskInfo['multiple'] = 0;
 			$process = 'add';
 		}
-		if (count($this->submittedData) > 0) {
+		if (count($this->submittedData)) {
 			// If some data was already submitted, use it to override
 			// existing data
 			$taskInfo = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($taskInfo, $this->submittedData);
@@ -870,7 +870,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$this->scheduler->scheduleNextSchedulerRunUsingAtDaemon();
 		}
 		// Continue if some elements have been chosen for execution
-		if (isset($this->submittedData['execute']) && count($this->submittedData['execute']) > 0) {
+		if (isset($this->submittedData['execute']) && count($this->submittedData['execute'])) {
 			// Get list of registered classes
 			$registeredClasses = self::getRegisteredClasses();
 			// Loop on all selected tasks
@@ -1136,7 +1136,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$content .= $this->doc->table($table, $tableLayout);
 			$content .= '<input type="submit" class="button" name="go" id="scheduler_executeselected" value="' . $GLOBALS['LANG']->getLL('label.executeSelected') . '" />';
 		}
-		if (!count($registeredClasses) > 0) {
+		if (!count($registeredClasses)) {
 			/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('msg.noTasksDefined'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			$content .= $flashMessage->render();
