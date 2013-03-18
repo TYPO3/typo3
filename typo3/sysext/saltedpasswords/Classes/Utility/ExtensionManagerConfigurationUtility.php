@@ -76,7 +76,7 @@ class ExtensionManagerConfigurationUtility {
 	private function renderFlashMessage() {
 		$message = '';
 		// If there are problems, render them into an unordered list
-		if (count($this->problems) > 0) {
+		if (count($this->problems)) {
 			$message = '<ul>
 	<li>###PROBLEMS###</li>
 </ul>';

@@ -137,7 +137,7 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 			}
 			$updateUsers[] = $user;
 		}
-		if (count($updateUsers) > 0) {
+		if (count($updateUsers)) {
 			$this->updatePasswords($mode, $updateUsers);
 		}
 	}

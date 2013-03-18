@@ -2787,7 +2787,7 @@ function ' . $evalData . '(value) {
 						$theTitle = $value['tx_templavoila']['title'];
 					}
 					// If there is a title, check for LLL label
-					if (strlen($theTitle) > 0) {
+					if (strlen($theTitle)) {
 						$theTitle = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($this->sL($theTitle), 30));
 					}
 					// If it's a "section" or "container":

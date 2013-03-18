@@ -184,7 +184,7 @@ class LiveSearch {
 	protected function findByTable($tableName, $pageIdList, $limit) {
 		$fieldsToSearchWithin = $this->extractSearchableFieldsFromTable($tableName);
 		$getRecordArray = array();
-		if (count($fieldsToSearchWithin) > 0) {
+		if (count($fieldsToSearchWithin)) {
 			$pageBasedPermission = $tableName == 'pages' && $this->userPermissions ? $this->userPermissions : '1=1 ';
 			$where = 'pid IN (' . $pageIdList . ') AND ' . $pageBasedPermission . $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin);
 			$orderBy = $this->makeOrderByTable($tableName);
@@ -353,7 +353,7 @@ class LiveSearch {
 			}
 		}
 		// If at least one condition was defined, create the search query
-		if (count($whereParts) > 0) {
+		if (count($whereParts)) {
 			$queryPart = ' AND (' . implode(' OR ', $whereParts) . ')';
 			// And the relevant conditions for deleted and versioned records
 			$queryPart .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableName);

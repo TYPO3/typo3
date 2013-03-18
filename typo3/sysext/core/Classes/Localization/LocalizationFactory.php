@@ -145,7 +145,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				$overrides = array_merge($overrides, $locallangXMLOverride[$fileReferenceWithoutExtension . '.' . $extension]);
 			}
 		}
-		if (count($overrides) > 0) {
+		if (count($overrides)) {
 			foreach ($overrides as $overrideFile) {
 				$languageOverrideFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($overrideFile);
 				$LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($LOCAL_LANG, $this->getParsedData($languageOverrideFileName, $languageKey, $charset, $errorMode, TRUE));

@@ -271,7 +271,7 @@ class Installer {
 		if ($this->mode === '123') {
 			// Check for mandatory PHP modules
 			$missingPhpModules = $this->getMissingPhpModules();
-			if (count($missingPhpModules) > 0) {
+			if (count($missingPhpModules)) {
 				throw new \RuntimeException(
 					'TYPO3 Installation Error: The following PHP module(s) is/are missing: "' .
 						implode('", "', $missingPhpModules) .

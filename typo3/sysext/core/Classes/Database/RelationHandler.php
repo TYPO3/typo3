@@ -497,7 +497,7 @@ class RelationHandler {
 				}
 			}
 			// Delete all not-used relations:
-			if (is_array($oldMMs) && count($oldMMs) > 0) {
+			if (is_array($oldMMs) && count($oldMMs)) {
 				$removeClauses = array();
 				$updateRefIndex_records = array();
 				foreach ($oldMMs as $oldMM_key => $mmItem) {

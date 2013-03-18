@@ -156,7 +156,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 		// add extension at the end of the download queue
 		$this->downloadQueue->addExtensionToInstallQueue($extensionKey);
 		$installQueue = $this->downloadQueue->getExtensionInstallStorage();
-		if (count($installQueue) > 0) {
+		if (count($installQueue)) {
 			$installedDependencies = $this->installDependencies($installQueue);
 		}
 		return array_merge($downloadedDependencies, $updatedDependencies, $installedDependencies);
@@ -223,7 +223,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getAndResolveDependencies(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
 		$this->dependencyUtility->buildExtensionDependenciesTree($extension);
 		$installQueue = $this->downloadQueue->getExtensionInstallStorage();
-		if (is_array($installQueue) && count($installQueue) > 0) {
+		if (is_array($installQueue) && count($installQueue) {
 			$installQueue = array('install' => $installQueue);
 		}
 		return array_merge($this->downloadQueue->getExtensionQueue(), $installQueue);

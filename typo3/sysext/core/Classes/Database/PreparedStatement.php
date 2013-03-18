@@ -272,7 +272,7 @@ class PreparedStatement {
 		$query = $this->query;
 		$precompiledQueryParts = $this->precompiledQueryParts;
 		$parameterValues = $this->parameters;
-		if (count($input_parameters) > 0) {
+		if (count($input_parameters)) {
 			$parameterValues = array();
 			foreach ($input_parameters as $key => $value) {
 				$parameterValues[$key] = array(
@@ -282,7 +282,7 @@ class PreparedStatement {
 			}
 		}
 		$this->replaceValuesInQuery($query, $precompiledQueryParts, $parameterValues);
-		if (count($precompiledQueryParts) > 0) {
+		if (count($precompiledQueryParts)) {
 			$query = implode('', $precompiledQueryParts['queryParts']);
 		}
 		$this->resource = $GLOBALS['TYPO3_DB']->exec_PREPAREDquery($query, $precompiledQueryParts);
@@ -437,7 +437,7 @@ class PreparedStatement {
 	 * @return void
 	 */
 	protected function replaceValuesInQuery(&$query, array &$precompiledQueryParts, array $parameterValues) {
-		if (count($precompiledQueryParts['queryParts']) === 0) {
+		if (!count($precompiledQueryParts['queryParts'])) {
 			$query = $this->tokenizeQueryParameterMarkers($query, $parameterValues);
 		}
 		foreach ($parameterValues as $key => $typeValue) {
@@ -458,7 +458,7 @@ class PreparedStatement {
 				throw new \InvalidArgumentException(sprintf('Unknown type %s used for parameter %s.', $typeValue['type'], $key), 1281859196);
 			}
 			if (is_int($key)) {
-				if (count($precompiledQueryParts['queryParts']) > 0) {
+				if (count($precompiledQueryParts['queryParts'])) {
 					$precompiledQueryParts['queryParts'][2 * $key + 1] = $value;
 				} else {
 					$parts = explode($this->parameterWrapToken . '?' . $this->parameterWrapToken, $query, 2);

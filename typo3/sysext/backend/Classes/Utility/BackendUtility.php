@@ -1772,7 +1772,7 @@ class BackendUtility {
 	static public function getLabelsFromItemsList($table, $column, $key) {
 		$labels = array();
 		$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $key, TRUE);
-		if (count($values) > 0) {
+		if (count($values)) {
 			// Check if there is an "items" array
 			if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$column]) && is_array($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'])) {
 				// Loop on all selected values
@@ -1963,7 +1963,7 @@ class BackendUtility {
 						$dbGroup = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 						$dbGroup->start($value, $theColConf['foreign_table'], $theColConf['MM'], $uid, $table, $theColConf);
 						$selectUids = $dbGroup->tableArray[$theColConf['foreign_table']];
-						if (is_array($selectUids) && count($selectUids) > 0) {
+						if (is_array($selectUids) && count($selectUids)) {
 							$MMres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, ' . $MMfield, $theColConf['foreign_table'], 'uid IN (' . implode(',', $selectUids) . ')' . self::deleteClause($theColConf['foreign_table']));
 							while ($MMrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($MMres)) {
 								$mmlA[] = $noRecordLookup ? $MMrow['uid'] : self::getRecordTitle($theColConf['foreign_table'], $MMrow, FALSE, $forceResult);
@@ -2515,7 +2515,7 @@ class BackendUtility {
 			$rootLine = self::BEgetRootLine($pageId);
 		}
 		// Checks alternate domains
-		if (count($rootLine) > 0) {
+		if (count($rootLine)) {
 			$urlParts = parse_url($domain);
 			/** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPage */
 			$sysPage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
@@ -3929,7 +3929,7 @@ class BackendUtility {
 							}
 						}
 					}
-					if (count($failed) > 0) {
+					if (count($failed)) {
 						$warnings['memcached'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.memcache_not_usable') . '<br/>' . implode(', ', $failed);
 					}
 				}

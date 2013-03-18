@@ -127,7 +127,7 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		$title = parent::getTitleStr($row, $titleLen);
 		if (isset($row['is_siteroot']) && $row['is_siteroot'] != 0 && $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showDomainNameWithTitle')) {
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('domainName,sorting', 'sys_domain', 'pid=' . $GLOBALS['TYPO3_DB']->quoteStr(($row['uid'] . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_domain') . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('sys_domain')), 'sys_domain'), '', 'sorting', 1);
-			if (is_array($rows) && count($rows) > 0) {
+			if (is_array($rows) && count($rows)) {
 				$title = sprintf('%s [%s]', $title, htmlspecialchars($rows[0]['domainName']));
 			}
 		}

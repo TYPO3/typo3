@@ -357,7 +357,7 @@ class Check {
 	 */
 	protected function checkDisableFunctions() {
 		$disabledFunctions = trim(ini_get('disable_functions'));
-		if (strlen($disabledFunctions) > 0) {
+		if (strlen($disabledFunctions)) {
 			$status = new ErrorStatus();
 			$status->setTitle('Some PHP functions disabled');
 			$status->setMessage(
@@ -409,7 +409,7 @@ class Check {
 	 */
 	protected function checkDocRoot() {
 		$docRootSetting = trim(ini_get('doc_root'));
-		if (strlen($docRootSetting) > 0) {
+		if (strlen($docRootSetting)) {
 			$status = new NoticeStatus();
 			$status->setTitle('doc_root is set');
 			$status->setMessage(
@@ -463,7 +463,7 @@ class Check {
 	 */
 	protected function checkOpenBaseDir() {
 		$openBaseDirSetting = trim(ini_get('open_basedir'));
-		if (strlen($openBaseDirSetting) > 0) {
+		if (strlen($openBaseDirSetting) {
 			$status = new NoticeStatus();
 			$status->setTitle('open_basedir set');
 			$status->setMessage(
@@ -697,7 +697,7 @@ class Check {
 	 */
 	protected function checkReflectionDocComment() {
 		$testReflection = new \ReflectionMethod(get_class($this), __FUNCTION__);
-		if (strlen($testReflection->getDocComment()) === 0) {
+		if (!strlen($testReflection->getDocComment())) {
 			$status = new ErrorStatus();
 			$status->setTitle('Doc comment reflection broken');
 			$status->setMessage(

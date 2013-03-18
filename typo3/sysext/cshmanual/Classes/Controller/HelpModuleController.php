@@ -128,7 +128,7 @@ class HelpModuleController {
 		// The field is the second one
 		$this->field = array_shift($identifierParts);
 		// There may be extra parts for FlexForms
-		if (count($identifierParts) > 0) {
+		if (count($identifierParts)) {
 			// There's at least one extra part
 			$extraIdentifierInformation = array();
 			$extraIdentifierInformation[] = array_shift($identifierParts);
