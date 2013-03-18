@@ -202,8 +202,9 @@ class SC_t3lib_thumbs {
 	 */
 	function main()	{
 		global $TYPO3_CONF_VARS;
-
-			// If file exists, we make a thumbsnail of the file.
+			// Clean output buffer to ensure no extraneous output exists
+		ob_clean();
+			// If file exists, we make a thumbnail of the file.
 		if ($this->input && file_exists($this->input))	{
 
 				// Check file extension:
