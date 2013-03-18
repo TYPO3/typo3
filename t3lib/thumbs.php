@@ -182,6 +182,8 @@ class SC_t3lib_thumbs {
 	 * @return	void
 	 */
 	function main() {
+			// Clean output buffer to ensure no extraneous output exists
+		ob_clean();
 			// If file exists, we make a thumbsnail of the file.
 		if ($this->input && file_exists($this->input)) {
 
