@@ -209,6 +209,9 @@ class Commands {
 			$tce->process_datamap();
 			$returnValues = $tce->substNEWwithIDs;
 		}
+		else {
+			$returnValues = array();
+		}
 		// check errors
 		if (count($tce->errorLog)) {
 			throw new \RuntimeException(implode(chr(10), $tce->errorLog), 1333754629);
@@ -253,9 +256,9 @@ class Commands {
 			if (self::$useNavTitle && trim($record['nav_title']) !== '') {
 				$text = $record['nav_title'];
 			}
-			$path[] = $text;
+			$path[] = htmlspecialchars($text);
 		}
-		return htmlspecialchars('/' . implode('/', $path));
+		return '/' . implode('/', $path);
 	}
 
 	/**
@@ -277,13 +280,13 @@ class Commands {
 	 * @return string
 	 */
 	static public function getDomainName($uid) {
-		$whereClause = $GLOBALS['TYPO3_DB']->quoteStr('pid=' . intval($uid) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_domain') . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('sys_domain'), 'sys_domain');
+		$whereClause = 'pid=' . intval($uid) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_domain') . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('sys_domain');
 		$domain = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('domainName', 'sys_domain', $whereClause, '', 'sorting');
-		return htmlspecialchars($domain['domainName']);
+		return is_array($domain) ? htmlspecialchars($domain['domainName']) : '';
 	}
 
 	/**
-	 * Creates a node with the given record information's
+	 * Creates a node with the given record information
 	 *
 	 * @param array $record
 	 * @param integer $mountPoint
@@ -336,8 +339,9 @@ class Commands {
 		$stat = '';
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
 			$_params = array('pages', $record['uid']);
+			$fakeThis = NULL;
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
-				$stat .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+				$stat .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $fakeThis);
 			}
 		}
 		$prefix .= htmlspecialchars(self::$addIdAsPrefix ? '[' . $record['uid'] . '] ' : '');
