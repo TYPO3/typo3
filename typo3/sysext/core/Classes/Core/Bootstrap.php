@@ -328,7 +328,7 @@ class Bootstrap {
 
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']) &&
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] !== '-1' &&
-			preg_match('/SET NAMES utf8/', $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']) === FALSE &&
+			preg_match('/SET NAMES [\'"]?utf8[\'"]?/i', $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']) === FALSE &&
 			TYPO3_enterInstallScript !== '1') {
 
 			// Only accept "SET NAMES utf8" for this setting, otherwise die with a nice error
