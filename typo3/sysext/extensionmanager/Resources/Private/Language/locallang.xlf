@@ -238,6 +238,7 @@
 			<trans-unit id="extensionList.showAllVersions.label" xml:space="preserve">
 				<source>Show all versions</source>
 			</trans-unit>
+
 			<trans-unit id="extensionList.updateFromTer.label" xml:space="preserve">
 				<source>Retrieving Extension-List from TYPO3 Extension Repository (TER)</source>
 			</trans-unit>
@@ -247,8 +248,35 @@
 			<trans-unit id="extensionList.updateFromTer.lastUpdate.label" xml:space="preserve">
 				<source>Last update:</source>
 			</trans-unit>
+			<trans-unit id="extensionList.updateFromTer.lastUpdate.timeSinceLastUpdateLabel" xml:space="preserve">
+				<source>Time since last update:</source>
+			</trans-unit>
 			<trans-unit id="extensionList.updateFromTer.lastUpdate.noInfo" xml:space="preserve">
-				<source>No information available about last update.</source>
+				<source>unknown</source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateFromTer.lastUpdate.fullTimeFormat" xml:space="preserve">
+				<source>Y-m-d H:i:s</source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateFromTer.lastUpdate.timeOfLastUpdate" xml:space="preserve">
+				<source>Time of last update: </source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateFromTer.lastUpdate.noTimeOfLastUpdate" xml:space="preserve">
+				<source>No last update time known.</source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateFromTer.lastUpdate.days.plural" xml:space="preserve">
+				<source> days</source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateFromTer.lastUpdate.days.singular" xml:space="preserve">
+				<source> day</source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateFromTer.lastUpdate.hours.plural" xml:space="preserve">
+				<source> hours</source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateFromTer.lastUpdate.hours.singular" xml:space="preserve">
+				<source> hour</source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateFromTer.lastUpdate.lessThanOneHour" xml:space="preserve">
+				<source>Less than one hour</source>
 			</trans-unit>
 
 			<trans-unit id="task.updateExtensionListTask.name" xml:space="preserve">
