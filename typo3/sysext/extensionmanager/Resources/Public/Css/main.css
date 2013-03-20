@@ -1797,6 +1797,11 @@ p {
   #terTableWrapper .spinner {
     display: inline-block; }
 
+.time-since-last-update {
+  font-weight: bold;
+  padding-right: 0.4em;
+  cursor: help; }
+
 .is-loading {
   opacity: 0; }
 
