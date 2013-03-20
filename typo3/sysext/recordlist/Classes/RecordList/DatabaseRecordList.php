@@ -628,7 +628,11 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 					}
 					$theData[$fCol] = $warning . $this->linkWrapItems($table, $row['uid'], $recTitle, $row);
 					// Render thumbsnails if a thumbnail column exists and there is content in it:
-					if ($this->thumbs && trim($row[$thumbsCol])) {
+					if ($this->thumbs
+						&& trim($row[$thumbsCol])
+						// do only show the thumbnail for content element records, if they're of a type that contains images
+						&& ($table == 'tt_content' && ($row['CType'] == 'image' OR $row['CType'] == 'textpic'))
+					) {
 						$theData[$fCol] .= '<br />' . $this->thumbCode($row, $table, $thumbsCol);
 					}
 					$localizationMarkerClass = '';
