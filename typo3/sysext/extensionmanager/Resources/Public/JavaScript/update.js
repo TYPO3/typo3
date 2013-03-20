@@ -4,7 +4,7 @@
 	$(document).ready(function() {
 
 		// Register "update from ter" action
-		$('.splash-receivedata form.update-from-ter').each(function() {
+		$('.update-from-ter').each(function() {
 
 			// "this" is the form which updates the extension list from
 			// TER on submit
@@ -29,9 +29,12 @@
 		if (forceUpdate == 1) {
 			url = url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager%5BforceUpdateCheck%5D=1';
 		}
-		$('.splash-receivedata').addClass('is-shown');
-		$('.typo3-extensionmanager-headerRowRight .splash-receivedata').addClass('is-hidden');
 
+		// Hide triggers for TER update
+		$('.update-from-ter').addClass('is-hidden');
+
+		// Show loaders
+		$('.splash-receivedata').addClass('is-shown');
 		$('#terTable_wrapper').addClass('is-loading');
 
 		$.ajax({
@@ -45,7 +48,7 @@
 				}
 
 				// Message with latest updates
-				$('.typo3-extensionmanager-headerRowRight .splash-receivedata .text').html(
+				$('.update-from-ter .text').html(
 					data.message
 				);
 
@@ -76,14 +79,12 @@
 			},
 			complete: function() {
 
-				// Hide loader
+				// Hide loaders
 				$('.splash-receivedata').removeClass('is-shown');
-
-				// Show content
 				$('#terTable_wrapper').removeClass('is-loading');
 
-				// Header: Show message
-				$('.typo3-extensionmanager-headerRowRight .splash-receivedata').removeClass('is-hidden');
+				// Show triggers for TER-update
+				$('.update-from-ter').removeClass('is-hidden');
 			}
 		});
 	}
