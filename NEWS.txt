@@ -22,6 +22,21 @@ System environment
 Deprecated and removed components
 -------------------------------------------------------------------------------
 
+* Removed extension statictemplates
+
+Static templates is an extension that delivers ready to use frontend templates
+like the "Green" template. The extension is outdated for years and currently
+unmaintained. It is removed from the core in the hope that it finds an
+interested new maintainer who can develop it further. If it still was in use
+for the given instance, an ugrade wizard is in place to fetch it from the
+online extension repository.
+Some frontend HMENU types are removed together with this extension as they use
+javascript files included in statictemplates. Namely GMENU_LAYERS, TMENU_LAYERS
+and GMENU_FOLDOUT are not delivered with the core anymore. If those TypoScript
+HMENU types are still used, the extension statictemplates should be fetched
+and installed from the TYPO3 extension repository as they are delivered
+together with the extension.
+
 ===============================================================================
 Changes and Improvements
 ===============================================================================
