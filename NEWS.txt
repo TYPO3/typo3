@@ -73,3 +73,17 @@ extensions might have minor issues with the new default if not coded in a clean
 way. While it is better to fix those issues, a quick fix is to swich back
 to the old mapper with a TypoScript setting:
 plugin.tx_extname.features.rewrittenPropertyMapper = 0
+
+-------------------------------------------------------------------------------
+Fluid
+-------------------------------------------------------------------------------
+
+* Removed inline styling of f:form viewhelper hidden div
+
+The f:form view helper renders several hidden input fields. Those are
+encapsulated in a <div>. In versions prior to 6.1, this div had an inline style
+attribute 'sytle="display: none". This inline style was removed in 6.1 for
+accessibility reasons. While this change won't have any effects on most
+systems, this is a potentially breaking change if javascript DOM manipulation
+is done. The new optional viewhelper parameter "hiddenFieldClassName"
+was introduced and can be used to match this div.
