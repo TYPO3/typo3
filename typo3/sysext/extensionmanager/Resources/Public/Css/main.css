@@ -1762,11 +1762,6 @@ button.ui-button::-moz-focus-inner {
 .is-loading {
   opacity: 0; }
 
-.typo3-extensionmanager-headerRowRight .splash-receivedata {
-  position: relative; }
-  .typo3-extensionmanager-headerRowRight .splash-receivedata .spinner {
-    display: none; }
-
 .is-hidden {
   display: none; }
 
