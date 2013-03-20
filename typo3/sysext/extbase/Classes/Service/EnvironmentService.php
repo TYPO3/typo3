@@ -37,7 +37,7 @@ class EnvironmentService {
 	 *
 	 * @return boolean
 	 */
-	public function isInFrontendMode() {
+	public function isEnvironmentInFrontendMode() {
 		return (defined('TYPO3_MODE') && TYPO3_MODE === 'FE') ?: FALSE;
 	}
 
@@ -46,7 +46,7 @@ class EnvironmentService {
 	 *
 	 * @return boolean
 	 */
-	public function isInBackendMode() {
+	public function isEnvironmentInBackendMode() {
 		return (defined('TYPO3_MODE') && TYPO3_MODE === 'BE') ?: FALSE;
 	}
 }
