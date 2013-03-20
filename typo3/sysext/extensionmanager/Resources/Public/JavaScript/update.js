@@ -48,8 +48,11 @@
 				}
 
 				// Message with latest updates
-				$('.update-from-ter .text').html(
-					data.message
+				var $lastUpdate = $('.update-from-ter .time-since-last-update');
+				$lastUpdate.text(data.timeSinceLastUpdate);
+				$lastUpdate.attr(
+					'title',
+					TYPO3.l10n.localize('extensionList.updateFromTer.lastUpdate.timeOfLastUpdate') + data.lastUpdateTime
 				);
 
 				if (data.updated) {
