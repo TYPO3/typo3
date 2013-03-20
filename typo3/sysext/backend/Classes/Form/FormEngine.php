@@ -26,14 +26,7 @@ namespace TYPO3\CMS\Backend\Form;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains TYPO3 Core Form generator - AKA "TCEforms"
- *
- * Revised for TYPO3 3.6 August/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * 'TCEforms' - Class for creating the backend editing forms.
  *
@@ -1008,8 +1001,26 @@ class FormEngine {
 		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
 		// Using "form_type" locally in this script
 		$skipThisField = $this->inline->skipField($table, $field, $row, $PA['fieldConf']['config']);
-		// Now, check if this field is configured and editable (according to excludefields + other configuration)
-		if (is_array($PA['fieldConf']) && !$skipThisField && (!$PA['fieldConf']['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $table . ':' . $field)) && $PA['fieldConf']['config']['form_type'] != 'passthrough' && ($this->RTEenabled || !$PA['fieldConf']['config']['showIfRTE']) && (!$PA['fieldConf']['displayCond'] || $this->isDisplayCondition($PA['fieldConf']['displayCond'], $row)) && (!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || $PA['fieldConf']['l10n_display'] || strcmp($PA['fieldConf']['l10n_mode'], 'exclude') || $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] <= 0) && (!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || !$this->localizationMode || $this->localizationMode === $PA['fieldConf']['l10n_cat'])) {
+
+		// Evaluate display condition
+		$displayConditionResult = TRUE;
+		if (is_array($PA['fieldConf']) && $PA['fieldConf']['displayCond'] && is_array($row)) {
+			/** @var $elementConditionMatcher \TYPO3\CMS\Backend\Form\ElementConditionMatcher */
+			$elementConditionMatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\ElementConditionMatcher');
+			$displayConditionResult = $elementConditionMatcher->match($PA['fieldConf']['displayCond'], $row);
+		}
+
+		// Check if this field is configured and editable (according to excludefields + other configuration)
+		if (
+			is_array($PA['fieldConf'])
+			&& !$skipThisField
+			&& (!$PA['fieldConf']['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $table . ':' . $field))
+			&& $PA['fieldConf']['config']['form_type'] != 'passthrough'
+			&& ($this->RTEenabled || !$PA['fieldConf']['config']['showIfRTE'])
+			&& $displayConditionResult
+			&& (!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || $PA['fieldConf']['l10n_display'] || strcmp($PA['fieldConf']['l10n_mode'], 'exclude') || $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] <= 0)
+			&& (!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || !$this->localizationMode || $this->localizationMode === $PA['fieldConf']['l10n_cat'])
+		) {
 			// Fetching the TSconfig for the current table/field. This includes the $row which means that
 			$PA['fieldTSConfig'] = $this->setTSconfig($table, $row, $field);
 			// If the field is NOT disabled from TSconfig (which it could have been) then render it
@@ -2613,6 +2624,10 @@ function ' . $evalData . '(value) {
 			} else {
 				$tabsToTraverse = array($sheet);
 			}
+
+			/** @var $elementConditionMatcher \TYPO3\CMS\Backend\Form\ElementConditionMatcher */
+			$elementConditionMatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\ElementConditionMatcher');
+
 			foreach ($rotateLang as $lKey) {
 				if (!$langChildren && !$langDisabled) {
 					$item .= '<strong>' . $this->getLanguageIcon($table, $row, ('v' . $lKey)) . $lKey . ':</strong>';
@@ -2650,8 +2665,12 @@ function ' . $evalData . '(value) {
 							$skipCondition = TRUE;
 							break;
 						}
+						$displayConditionResult = TRUE;
+						if ($dataStruct['ROOT']['TCEforms']['displayCond']) {
+							$displayConditionResult = $elementConditionMatcher->match($dataStruct['ROOT']['TCEforms']['displayCond'], $fakeRow, 'vDef');
+						}
 						// If sheets displayCond leads to false
-						if (!$skipCondition && !$this->isDisplayCondition($dataStruct['ROOT']['TCEforms']['displayCond'], $fakeRow, 'vDEF')) {
+						if (!$skipCondition && !$displayConditionResult) {
 							// Don't create this sheet
 							continue;
 						}
@@ -2912,9 +2931,17 @@ function ' . $evalData . '(value) {
 						// Add current $row to data processed by isDisplayCondition()
 						$conditionData['parentRec'] = $row;
 						$tRows = array();
+
+						/** @var $elementConditionMatcher \TYPO3\CMS\Backend\Form\ElementConditionMatcher */
+						$elementConditionMatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\ElementConditionMatcher');
+
 						foreach ($rotateLang as $vDEFkey) {
 							$vDEFkey = 'v' . $vDEFkey;
-							if (!$value['TCEforms']['displayCond'] || $this->isDisplayCondition($value['TCEforms']['displayCond'], $conditionData, $vDEFkey)) {
+							$displayConditionResult = TRUE;
+							if ($value['TCEforms']['displayCond']) {
+								$displayConditionResult = $elementConditionMatcher->match($value['TCEforms']['displayCond'], $conditionData, $vDEFkey);
+							}
+							if ($displayConditionResult) {
 								$fakePA = array();
 								$fakePA['fieldConf'] = array(
 									'label' => $this->sL(trim($value['TCEforms']['label'])),
@@ -5918,130 +5945,15 @@ function ' . $evalData . '(value) {
 	 * @param string $ffValueKey FlexForm value key, eg. vDEF
 	 * @return boolean
 	 * @todo Define visibility
+	 * @deprecated since TYPO3 6.1, will be removed 2 versions later - Use \TYPO3\CMS\Backend\Form\ElementConditionMatcher instead
 	 */
 	public function isDisplayCondition($displayCond, $row, $ffValueKey = '') {
-		$output = FALSE;
-		$parts = explode(':', $displayCond);
-		// Type of condition:
-		switch ((string) $parts[0]) {
-		case 'FIELD':
-			if ($ffValueKey) {
-				if (strpos($parts[1], 'parentRec.') !== FALSE) {
-					$fParts = explode('.', $parts[1]);
-					$theFieldValue = $row['parentRec'][$fParts[1]];
-				} else {
-					$theFieldValue = $row[$parts[1]][$ffValueKey];
-				}
-			} else {
-				$theFieldValue = $row[$parts[1]];
-			}
-			switch ((string) $parts[2]) {
-			case 'REQ':
-				if (strtolower($parts[3]) == 'true') {
-					$output = $theFieldValue ? TRUE : FALSE;
-				} elseif (strtolower($parts[3]) == 'false') {
-					$output = !$theFieldValue ? TRUE : FALSE;
-				}
-				break;
-			case '>':
-				$output = $theFieldValue > $parts[3];
-				break;
-			case '<':
-				$output = $theFieldValue < $parts[3];
-				break;
-			case '>=':
-				$output = $theFieldValue >= $parts[3];
-				break;
-			case '<=':
-				$output = $theFieldValue <= $parts[3];
-				break;
-			case '-':
-
-			case '!-':
-				$cmpParts = explode('-', $parts[3]);
-				$output = $theFieldValue >= $cmpParts[0] && $theFieldValue <= $cmpParts[1];
-				if ($parts[2][0] == '!') {
-					$output = !$output;
-				}
-				break;
-			case 'IN':
-
-			case '!IN':
-				$output = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($parts[3], $theFieldValue);
-				if ($parts[2][0] == '!') {
-					$output = !$output;
-				}
-				break;
-			case '=':
-
-			case '!=':
-				$output = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($parts[3], $theFieldValue);
-				if ($parts[2][0] == '!') {
-					$output = !$output;
-				}
-				break;
-			}
-			break;
-		case 'EXT':
-			switch ((string) $parts[2]) {
-			case 'LOADED':
-				if (strtolower($parts[3]) == 'true') {
-					$output = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($parts[1]) ? TRUE : FALSE;
-				} elseif (strtolower($parts[3]) == 'false') {
-					$output = !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($parts[1]) ? TRUE : FALSE;
-				}
-				break;
-			}
-			break;
-		case 'REC':
-			switch ((string) $parts[1]) {
-			case 'NEW':
-				if (strtolower($parts[2]) == 'true') {
-					$output = !(intval($row['uid']) > 0) ? TRUE : FALSE;
-				} elseif (strtolower($parts[2]) == 'false') {
-					$output = intval($row['uid']) > 0 ? TRUE : FALSE;
-				}
-				break;
-			}
-			break;
-		case 'HIDE_L10N_SIBLINGS':
-			if ($ffValueKey === 'vDEF') {
-				$output = TRUE;
-			} elseif ($parts[1] === 'except_admin' && $GLOBALS['BE_USER']->isAdmin()) {
-				$output = TRUE;
-			}
-			break;
-		case 'HIDE_FOR_NON_ADMINS':
-			$output = $GLOBALS['BE_USER']->isAdmin() ? TRUE : FALSE;
-			break;
-		case 'VERSION':
-			switch ((string) $parts[1]) {
-			case 'IS':
-				$isNewRecord = intval($row['uid']) > 0 ? FALSE : TRUE;
-				// Detection of version can be done be detecting the workspace of the user
-				$isUserInWorkspace = $GLOBALS['BE_USER']->workspace > 0 ? TRUE : FALSE;
-				if (intval($row['pid']) == -1 || intval($row['_ORIG_pid']) == -1) {
-					$isRecordDetectedAsVersion = TRUE;
-				} else {
-					$isRecordDetectedAsVersion = FALSE;
-				}
-				// New records in a workspace are not handled as a version record
-				// if it's no new version, we detect versions like this:
-				// -- if user is in workspace: always TRUE
-				// -- if editor is in live ws: only TRUE if pid == -1
-				$isVersion = ($isUserInWorkspace || $isRecordDetectedAsVersion) && !$isNewRecord;
-				if (strtolower($parts[2]) == 'true') {
-					$output = $isVersion;
-				} else {
-					if (strtolower($parts[2]) == 'false') {
-						$output = !$isVersion;
-					}
-				}
-				break;
-			}
-			break;
-		}
-		return $output;
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		/** @var $elementConditionMatcher \TYPO3\CMS\Backend\Form\ElementConditionMatcher */
+		$elementConditionMatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\ElementConditionMatcher');
+		$elementConditionMatcher->setRecord($row);
+		$elementConditionMatcher->setFlexformValueKey($ffValueKey);
+		return $elementConditionMatcher->match($displayCond);
 	}
 
 	/**
