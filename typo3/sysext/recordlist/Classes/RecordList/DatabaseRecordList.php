@@ -627,8 +627,16 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 						$warning = '<a href="#" onclick="' . htmlspecialchars(('alert(' . $GLOBALS['LANG']->JScharCode($lockInfo['msg']) . '); return false;')) . '" title="' . htmlspecialchars($lockInfo['msg']) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-warning-in-use') . '</a>';
 					}
 					$theData[$fCol] = $warning . $this->linkWrapItems($table, $row['uid'], $recTitle, $row);
-					// Render thumbsnails if a thumbnail column exists and there is content in it:
-					if ($this->thumbs && trim($row[$thumbsCol])) {
+					// Render thumbsnails, if:
+					// - a thumbnail column exists
+					// - there is content in it
+					// - the content element type contains images - in case of a tt_content record
+					if ($this->thumbs &&
+						trim($row[$thumbsCol]) &&
+							($table !== 'tt_content' ||
+								($row['CType'] === 'image' || $row['CType'] === 'textpic')
+							)
+					) {
 						$theData[$fCol] .= '<br />' . $this->thumbCode($row, $table, $thumbsCol);
 					}
 					$localizationMarkerClass = '';
