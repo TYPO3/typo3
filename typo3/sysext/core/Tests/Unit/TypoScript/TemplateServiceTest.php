@@ -39,6 +39,29 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $backupGlobals = TRUE;
 
 	/**
+	 * @var \TYPO3\CMS\Core\TypoScript\TemplateService
+	 */
+	protected $templateService;
+
+	/**
+	 * Sets up this test case.
+	 *
+	 * @return void
+	 */
+	protected function setUp() {
+		$this->templateService = new \TYPO3\CMS\Core\TypoScript\TemplateService();
+	}
+
+	/**
+	 * Tears down this test case.
+	 *
+	 * @return void
+	 */
+	protected function tearDown() {
+		unset($this->templateService);
+	}
+
+	/**
 	 * @test
 	 */
 	public function versionOlCallsVersionOlOfPageSelectClassWithGivenRow() {
@@ -47,8 +70,46 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$sysPageMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 		$sysPageMock->expects($this->once())->method('versionOL')->with('sys_template', $row);
 		$GLOBALS['TSFE']->sys_page = $sysPageMock;
-		$instance = new \TYPO3\CMS\Core\TypoScript\TemplateService();
-		$instance->versionOL($row);
+		$this->templateService->versionOL($row);
+	}
+
+	/**
+	 * @test
+	 */
+	public function extensionStaticFilesAreNotProcessedIfNotExplicitlyRequested() {
+		$identifier = uniqid('test');
+		$GLOBALS['TYPO3_LOADED_EXT'] = array(
+			$identifier => array(
+				'ext_typoscript_setup.txt' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(
+					'core', 'Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt'
+				),
+			),
+		);
+
+		$this->templateService->runThroughTemplates(array(), 0);
+		$this->assertFalse(
+			in_array('test.Core.TypoScript = 1', $this->templateService->config)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function extensionStaticsAreProcessedIfExplicitlyRequested() {
+		$identifier = uniqid('test');
+		$GLOBALS['TYPO3_LOADED_EXT'] = array(
+			$identifier => array(
+				'ext_typoscript_setup.txt' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(
+					'core', 'Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt'
+				),
+			),
+		);
+
+		$this->templateService->setProcessExtensionStatics(TRUE);
+		$this->templateService->runThroughTemplates(array(), 0);
+		$this->assertTrue(
+			in_array('test.Core.TypoScript = 1', $this->templateService->config)
+		);
 	}
 
 }

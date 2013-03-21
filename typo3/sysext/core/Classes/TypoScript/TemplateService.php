@@ -295,6 +295,38 @@ class TemplateService {
 	public $MPmap = '';
 
 	/**
+	 * Indicator that extension statics are processed.
+	 *
+	 * These files are considered if either a root template
+	 * has been processed or the $processExtensionStatics
+	 * property has been set to TRUE.
+	 *
+	 * @var boolean
+	 */
+	protected $extensionStaticsProcessed = FALSE;
+
+	/**
+	 * Trigger value, to ensure that extension statics are processed.
+	 *
+	 * @var boolean
+	 */
+	protected $processExtensionStatics = FALSE;
+
+	/**
+	 * @return boolean
+	 */
+	public function getProcessExtensionStatics() {
+		return $this->processExtensionStatics;
+	}
+
+	/**
+	 * @param boolean $processExtensionStatics
+	 */
+	public function setProcessExtensionStatics($processExtensionStatics) {
+		$this->processExtensionStatics = (bool) $processExtensionStatics;
+	}
+
+	/**
 	 * Initialize
 	 * MUST be called directly after creating a new template-object
 	 *
@@ -543,6 +575,10 @@ class TemplateService {
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			$this->rootLine[] = $this->absoluteRootLine[$a];
 		}
+		// Process extension static files if not done yet, but explicitly requested
+		if (!$this->extensionStaticsProcessed && $this->processExtensionStatics) {
+			$this->addExtensionStatics('sys_0', 'sys_0', 0, array());
+		}
 		$this->processIncludes();
 	}
 
@@ -749,6 +785,8 @@ class TemplateService {
 	 * @todo Define visibility
 	 */
 	public function addExtensionStatics($idList, $templateID, $pid, $row) {
+		$this->extensionStaticsProcessed = TRUE;
+
 		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $files) {
 			if (is_array($files) && ($files['ext_typoscript_constants.txt'] || $files['ext_typoscript_setup.txt'])) {
 				$mExtKey = str_replace('_', '', $extKey);
