@@ -1,7 +1,6 @@
 <?php
 return array(
 	'tx_version_cm1' => 'TYPO3\\CMS\\Version\\Controller\\VersionModuleController',
-	'SC_mod_user_ws_index' => 'TYPO3\\CMS\\Version\\Controller\\WorkspaceModuleController',
 	'tx_version_tcemain_CommandMap' => 'TYPO3\\CMS\\Version\\DataHandler\\CommandMap',
 	't3lib_utility_Dependency_Factory' => 'TYPO3\\CMS\\Version\\Dependency\\DependencyEntityFactory',
 	't3lib_utility_Dependency' => 'TYPO3\\CMS\\Version\\Dependency\\DependencyResolver',
