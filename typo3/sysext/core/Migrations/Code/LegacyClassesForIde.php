@@ -6469,11 +6469,6 @@ class tx_version_cm1 extends \TYPO3\CMS\Version\Controller\VersionModuleControll
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class SC_mod_user_ws_index extends \TYPO3\CMS\Version\Controller\WorkspaceModuleController {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class tx_version_tcemain_CommandMap extends \TYPO3\CMS\Version\DataHandler\CommandMap {}
 
 /**
