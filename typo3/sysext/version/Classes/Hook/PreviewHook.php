@@ -108,7 +108,6 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 			$params['BE_USER'] = $BE_USER;
 		}
-		// @previouslyknownas $TSFE->workspacePreviewInit()
 		// if there is a valid BE user, and the full workspace should be
 		// previewed, the workspacePreview option shouldbe set
 		$workspaceUid = $this->previewConfiguration['fullWorkspace'];
