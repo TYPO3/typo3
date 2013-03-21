@@ -729,6 +729,29 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			$infoOnClick = 'top.launchView( \'_FILE\', \'' . $fullIdentifier . '\');return false;';
 		}
 		$cells['info'] = '<a href="#" onclick="' . $infoOnClick . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.info') . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-information') . '</a>';
+
+		// delete the file
+		if ($fileOrFolderObject->checkActionPermission('remove')) {
+			$identifier = $fileOrFolderObject->getIdentifier();
+			if ($fileOrFolderObject instanceof TYPO3\CMS\Core\Resource\Folder) {
+				$referenceCountText = \TYPO3\CMS\Backend\Utility\BackendUtility::referenceCount('_FILE', $identifier, ' (There are %s reference(s) to this folder!)');
+			} else {
+				$referenceCountText = \TYPO3\CMS\Backend\Utility\BackendUtility::referenceCount('sys_file', $identifier, ' (There are %s reference(s) to this file!)');
+			}
+
+			if ($GLOBALS['BE_USER']->jsConfirmation(4)) {
+				$confirmationCheck = 'confirm(' . $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.delete'), basename($identifier)) . $referenceCountText) . ')';
+			} else {
+				$confirmationCheck = '1 == 1';
+			}
+
+			$removeOnClick = 'if (' . $confirmationCheck . ') { top.content.list_frame.location.href=top.TS.PATH_typo3+\'tce_file.php?file[delete][0][data]=' . rawurlencode($fileOrFolderObject->getCombinedIdentifier()) . '&vC=' . $GLOBALS['BE_USER']->veriCode() . '&redirect=\'+top.rawurlencode(top.content.list_frame.document.location.pathname+top.content.list_frame.document.location.search);};';
+
+			$cells['delete'] = '<a href="#" onclick="' . htmlspecialchars($removeOnClick) . '"  title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.delete') . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
+		} else {
+			$cells['delete'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('empty-empty');
+		}
+
 		// Hook for manipulating edit icons.
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'] as $classData) {
