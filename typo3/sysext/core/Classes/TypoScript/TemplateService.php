@@ -295,6 +295,11 @@ class TemplateService {
 	public $MPmap = '';
 
 	/**
+	 * @var boolean
+	 */
+	protected $areExtensionStaticsProcessed;
+
+	/**
 	 * Initialize
 	 * MUST be called directly after creating a new template-object
 	 *
@@ -543,6 +548,9 @@ class TemplateService {
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			$this->rootLine[] = $this->absoluteRootLine[$a];
 		}
+		if ($this->areExtensionStaticsProcessed !== TRUE) {
+			$this->addExtensionStatics('sys_0', 'sys_0', 0, array());
+		}
 		$this->processIncludes();
 	}
 
@@ -749,6 +757,7 @@ class TemplateService {
 	 * @todo Define visibility
 	 */
 	public function addExtensionStatics($idList, $templateID, $pid, $row) {
+		$this->areExtensionStaticsProcessed = TRUE;
 		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $files) {
 			if (is_array($files) && ($files['ext_typoscript_constants.txt'] || $files['ext_typoscript_setup.txt'])) {
 				$mExtKey = str_replace('_', '', $extKey);
