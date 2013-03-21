@@ -645,6 +645,31 @@ Would you like to save now in order to refresh the display?</source>
 			<trans-unit id="rm.delete" xml:space="preserve">
 				<source>Delete</source>
 			</trans-unit>
+			<trans-unit id="message.header.fileNotDeletedHasReferences" xml:space="preserve">
+				<source>File not deleted</source>
+			</trans-unit>
+			<trans-unit id="message.description.fileNotDeletedHasReferences" xml:space="preserve">
+				<source>The file cannot be deleted since it is still used at the following places:</source>
+			</trans-unit>
+			<trans-unit id="message.header.fileDeleted" xml:space="preserve">
+				<source>File deleted</source>
+			</trans-unit>
+			<trans-unit id="message.description.fileDeleted" xml:space="preserve">
+				<source>The file "%s" was successfully deleted.</source>
+			</trans-unit>
+			<trans-unit id="message.header.folderDeleted" xml:space="preserve">
+				<source>Folder deleted</source>
+			</trans-unit>
+			<trans-unit id="message.description.folderDeleted" xml:space="preserve">
+				<source>The folder "%s" was successfully deleted.</source>
+			</trans-unit>
+			<trans-unit id="message.header.folderNotDeletedHasFiles" xml:space="preserve">
+				<source>Folder not deleted</source>
+			</trans-unit>
+			<trans-unit id="message.description.folderNotDeletedHasFiles" xml:space="preserve">
+				<source>The folder cannot be deleted since it still contains files.</source>
+			</trans-unit>
+
 			<trans-unit id="buttons.logout" xml:space="preserve">
 				<source>Logout</source>
 			</trans-unit>
