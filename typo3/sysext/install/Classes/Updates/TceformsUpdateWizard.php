@@ -247,6 +247,9 @@ class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 					// TODO add sorting/sorting_foreign
 					'fieldname' => $fieldname,
 					'table_local' => 'sys_file',
+					// the sys_file_reference record should always placed on the same page
+					// as the record to link to, see issue #46497
+					'pid' => ($table === 'pages' ? $row['uid'] : $row['pid']),
 					'uid_foreign' => $row['uid'],
 					'uid_local' => $file->getUid(),
 					'tablenames' => $table,
