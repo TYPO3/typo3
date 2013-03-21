@@ -45,9 +45,12 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 		$pageId = $this->getCurrentPageId();
 
 		if (!array_key_exists($pageId, $this->typoScriptSetupCache)) {
+			/** @var $template \TYPO3\CMS\Core\TypoScript\TemplateService */
 			$template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\TemplateService');
 			// do not log time-performance information
 			$template->tt_track = 0;
+			// Explicitly trigger processing of extension static files
+			$template->setProcessExtensionStatics(TRUE);
 			$template->init();
 			// Get the root line
 			$rootline = array();
