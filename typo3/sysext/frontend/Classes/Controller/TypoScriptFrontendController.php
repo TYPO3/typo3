@@ -2881,31 +2881,6 @@ class TypoScriptFrontendController {
 					throw new \Exception('jumpurl Secure: Calculated juHash did not match the submitted juHash.', 1294585196);
 				}
 			} else {
-				$TSConf = $this->getPagesTSconfig();
-				if ($TSConf['TSFE.']['jumpUrl_transferSession']) {
-					$uParts = parse_url($this->jumpurl);
-					$params = '&FE_SESSION_KEY=' . rawurlencode(($this->fe_user->id . '-' . md5(($this->fe_user->id . '/' . $this->TYPO3_CONF_VARS['SYS']['encryptionKey']))));
-					// Add the session parameter ...
-					$this->jumpurl .= ($uParts['query'] ? '' : '?') . $params;
-				}
-				if ($TSConf['TSFE.']['jumpURL_HTTPStatusCode']) {
-					switch ((int)$TSConf['TSFE.']['jumpURL_HTTPStatusCode']) {
-						case 301:
-							$statusCode = HttpUtility::HTTP_STATUS_301;
-							break;
-						case 302:
-							$statusCode = HttpUtility::HTTP_STATUS_302;
-							break;
-						case 307:
-							$statusCode = HttpUtility::HTTP_STATUS_307;
-							break;
-						case 303:
-
-						default:
-							$statusCode = HttpUtility::HTTP_STATUS_303;
-					}
-				}
-
 				$allowRedirect = FALSE;
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::hmac($this->jumpurl, 'jumpurl') === (string)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('juHash')) {
 					$allowRedirect = TRUE;
@@ -2922,8 +2897,28 @@ class TypoScriptFrontendController {
 						}
 					}
 				}
-
 				if ($allowRedirect) {
+					$TSConf = $this->getPagesTSconfig();
+					if ($TSConf['TSFE.']['jumpUrl_transferSession']) {
+						$uParts = parse_url($this->jumpurl);
+						$params = '&FE_SESSION_KEY=' . rawurlencode(($this->fe_user->id . '-' . md5(($this->fe_user->id . '/' . $this->TYPO3_CONF_VARS['SYS']['encryptionKey']))));
+						// Add the session parameter ...
+						$this->jumpurl .= ($uParts['query'] ? '' : '?') . $params;
+					}
+					$statusCode = HttpUtility::HTTP_STATUS_303;
+					if ($TSConf['TSFE.']['jumpURL_HTTPStatusCode']) {
+						switch ((int)$TSConf['TSFE.']['jumpURL_HTTPStatusCode']) {
+							case 301:
+								$statusCode = HttpUtility::HTTP_STATUS_301;
+								break;
+							case 302:
+								$statusCode = HttpUtility::HTTP_STATUS_302;
+								break;
+							case 307:
+								$statusCode = HttpUtility::HTTP_STATUS_307;
+								break;
+						}
+					}
 					HttpUtility::redirect($this->jumpurl, $statusCode);
 				} else {
 					throw new \Exception('jumpurl: Calculated juHash did not match the submitted juHash.', 1359987599);
