@@ -313,7 +313,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		'edit_showFieldHelp' => 'icon',
 		'edit_RTE' => '1',
 		'edit_docModuleUpload' => '1',
-		'enableFlashUploader' => '1',
 		'navFrameWidth' => '',
 		// Default is 245 pixels
 		'navFrameResizable' => 0,

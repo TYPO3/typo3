@@ -121,11 +121,6 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 				'LLL:EXT:setup/mod/locallang.xml:clearSessionVarsQuestion'
 			)
 		),
-		'enableFlashUploader' => array(
-			'type' => 'check',
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:enableFlashUploader',
-			'csh' => 'enableFlashUploader'
-		),
 		'resizeTextareas' => array(
 			'type' => 'check',
 			'label' => 'LLL:EXT:setup/mod/locallang.xml:resizeTextareas',
@@ -149,7 +144,7 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 	),
 	'showitem' => '--div--;LLL:EXT:setup/mod/locallang.xml:personal_data,realName,email,emailMeAtLogin,password,password2,lang,
 			--div--;LLL:EXT:setup/mod/locallang.xml:opening,startModule,thumbnailsByDefault,titleLen,
-			--div--;LLL:EXT:setup/mod/locallang.xml:editFunctionsTab,edit_RTE,edit_wideDocument,edit_docModuleUpload,showHiddenFilesAndFolders,enableFlashUploader,resizeTextareas,resizeTextareas_Flexible,resizeTextareas_MaxHeight,copyLevels,recursiveDelete,resetConfiguration,clearSessionVars,
+			--div--;LLL:EXT:setup/mod/locallang.xml:editFunctionsTab,edit_RTE,edit_wideDocument,edit_docModuleUpload,showHiddenFilesAndFolders,resizeTextareas,resizeTextareas_Flexible,resizeTextareas_MaxHeight,copyLevels,recursiveDelete,resetConfiguration,clearSessionVars,
 			--div--;LLL:EXT:setup/mod/locallang.xml:adminFunctions,simulate,debugInWindow'
 );
 ?>
