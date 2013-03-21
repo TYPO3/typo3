@@ -209,66 +209,7 @@ class FileListController {
 		$this->doc->getPageRenderer()->loadPrototype();
 		// There there was access to this file path, continue, make the list
 		if ($this->folderObject) {
-			// Include the initialization for the flash uploader
-			if ($GLOBALS['BE_USER']->uc['enableFlashUploader']) {
-				$this->doc->JScodeArray['flashUploader'] = '
-					if (top.TYPO3.FileUploadWindow.isFlashAvailable()) {
-						document.observe("dom:loaded", function() {
-								// monitor the button
-							$("button-upload").observe("click", initFlashUploader);
 
-							function initFlashUploader(event) {
-									// set the page specific options for the flashUploader
-								var flashUploadOptions = {
-									uploadURL:           top.TS.PATH_typo3 + "ajax.php",
-									uploadFileSizeLimit: "' . \TYPO3\CMS\Core\Utility\GeneralUtility::getMaxUploadFileSize() . '",
-									uploadFileTypes: {
-										allow:  "' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace']['allow'] . '",
-										deny: "' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace']['deny'] . '"
-									},
-									uploadFilePostName:  "upload_1",
-									uploadPostParams: {
-										"file[upload][1][target]": "' . ($this->folderObject ? $this->folderObject->getCombinedIdentifier() : '') . '",
-										"file[upload][1][data]": 1,
-										"file[upload][1][charset]": "utf-8",
-										"ajaxID": "TYPO3_tcefile::process"
-									}
-								};
-
-									// get the flashUploaderWindow instance from the parent frame
-								var flashUploader = top.TYPO3.FileUploadWindow.getInstance(flashUploadOptions);
-								// add an additional function inside the container to show the checkbox option
-								var infoComponent = new top.Ext.Panel({
-									autoEl: { tag: "div" },
-									height: "auto",
-									bodyBorder: false,
-									border: false,
-									hideBorders: true,
-									cls: "t3-upload-window-infopanel",
-									id: "t3-upload-window-infopanel-addition",
-									html: \'<label for="overrideExistingFilesCheckbox"><input id="overrideExistingFilesCheckbox" type="checkbox" onclick="setFlashPostOptionOverwriteExistingFiles(this);" />\' + top.String.format(top.TYPO3.LLL.fileUpload.infoComponentOverrideFiles) + \'</label>\'
-								});
-								flashUploader.add(infoComponent);
-
-									// do a reload of this frame once all uploads are done
-								flashUploader.on("totalcomplete", function() {
-									window.location.reload();
-								});
-
-									// this is the callback function that delivers the additional post parameter to the flash application
-								top.setFlashPostOptionOverwriteExistingFiles = function(checkbox) {
-									var uploader = top.TYPO3.getInstance("FileUploadWindow");
-									if (uploader.isVisible()) {
-										uploader.swf.addPostParam("overwriteExistingFiles", (checkbox.checked == true ? 1 : 0));
-									}
-								};
-
-								event.stop();
-							};
-						});
-					}
-				';
-			}
 			// Create filelisting object
 			$this->filelist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Filelist\\FileList');
 			$this->filelist->backPath = $GLOBALS['BACK_PATH'];

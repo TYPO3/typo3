@@ -843,13 +843,7 @@ class ClickMenu {
 		$script = 'file_upload.php';
 		$type = 'upload';
 		$image = 'upload.gif';
-		if ($GLOBALS['BE_USER']->uc['enableFlashUploader']) {
-			$loc = 'top.content.list_frame';
-			$editOnClick = 'if (top.TYPO3.FileUploadWindow.isFlashAvailable()) { initFlashUploader("' . rawurlencode($path) . '"); } else if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . $script . '?target=' . rawurlencode($path) . '\';}';
-			return $this->linkItem($this->label($type), $this->excludeIcon('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->PH_backPath, ('gfx/' . $image), 'width="12" height="12"') . ' alt="" />'), $editOnClick . 'return hideCM();');
-		} else {
-			return $this->FILE_launch($path, $script, $type, $image, TRUE);
-		}
+		return $this->FILE_launch($path, $script, $type, $image, TRUE);
 	}
 
 	/**
