@@ -286,8 +286,10 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 * @param string $redirect Redirect URL (for creating link in message)
 	 * @return void
 	 * @todo Define visibility
+	 * @deprecated since TYPO3 6.1, will be removed two versions later, use ->getErrorMessages directly instead
 	 */
 	public function printLogErrorMessages($redirect = '') {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		$this->getErrorMessages();
 	}
 
@@ -400,13 +402,26 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 						$shortcutContent[] = '<a href="#" oncontextmenu="' . htmlspecialchars($onClick) . '" onclick="' . htmlspecialchars($onClick) . '">' . $icon . '</a>' . htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($row['tablename'], $shortcutRecord) . '  [' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($shortcutRecord['pid'], '', 80) . ']'));
 					}
 				}
-				$out = '<p>The file cannot be deleted since it is still used at the following places:<br />' . implode('<br />', $shortcutContent) . '</p>';
-				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_flashMessage', $out, 'File not deleted', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING, TRUE);
+
+				// render a message that the file could not be deleted
+				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+					'\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+					sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.fileNotDeletedHasReferences'), $fileObject->getName()) . '<br />' . implode('<br />', $shortcutContent),
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.fileNotDeletedHasReferences'),
+					\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING, TRUE);
 				\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
-				return;
 			} else {
 				try {
 					$result = $fileObject->delete();
+
+					// show the user that the file was deleted
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+						'\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.fileDeleted'), $fileObject->getName()),
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.fileDeleted'),
+						\TYPO3\CMS\Core\Messaging\FlashMessage::OK, TRUE);
+					\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
+
 				} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException $e) {
 					$this->writelog(4, 1, 112, 'You are not allowed to access the file', array($fileObject->getIdentifier()));
 				} catch (\TYPO3\CMS\Core\Resource\Exception\NotInMountPointException $e) {
@@ -420,7 +435,28 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 		} else {
 			try {
 				/** @var $fileObject \TYPO3\CMS\Core\Resource\FolderInterface */
-				$result = $fileObject->delete(TRUE);
+				if ($fileObject->getFileCount() > 0) {
+					// render a message that the folder could not be deleted because it still contains files
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+						'\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.folderNotDeletedHasFiles'), $fileObject->getName()),
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.folderNotDeletedHasFiles'),
+						\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING, TRUE);
+					\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
+
+				} else {
+					$result = $fileObject->delete(TRUE);
+
+					// notify the user that the folder was deleted
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+						'\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.folderDeleted'), $fileObject->getName()),
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.folderDeleted'),
+						\TYPO3\CMS\Core\Messaging\FlashMessage::OK, TRUE);
+					\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
+				}
+
+
 			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException $e) {
 				$this->writelog(4, 1, 123, 'You are not allowed to access the directory', array($fileObject->getIdentifier()));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\NotInMountPointException $e) {
