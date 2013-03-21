@@ -110,6 +110,12 @@ class TypoScriptFrontendController {
 	 */
 	public $jumpurl = '';
 
+	/**
+	 * Set to TRUE when jumpurl is set internally to a safe value
+	 * @var boolean
+	 */
+	public $jumpurlIsSafe = FALSE;
+
 	// Is set to 1 if a pageNotFound handler could have been called.
 	/**
 	 * @todo Define visibility
@@ -2769,7 +2775,7 @@ class TypoScriptFrontendController {
 	public function setExternalJumpUrl() {
 		if ($extUrl = $this->sys_page->getExtURL($this->page, $this->config['config']['disablePageExternalUrl'])) {
 			$this->jumpurl = $extUrl;
-			\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(\TYPO3\CMS\Core\Utility\GeneralUtility::hmac($this->jumpurl, 'jumpurl'), 'juHash');
+			$this->jumpurlIsSafe = TRUE;
 		}
 	}
 
@@ -2864,7 +2870,7 @@ class TypoScriptFrontendController {
 				}
 
 				$allowRedirect = FALSE;
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::hmac($this->jumpurl, 'jumpurl') === (string)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('juHash')) {
+				if ($this->jumpurlIsSafe || \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($this->jumpurl, 'jumpurl') === (string)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('juHash')) {
 					$allowRedirect = TRUE;
 				} elseif (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['jumpurlRedirectHandler'])) {
 					foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['jumpurlRedirectHandler'] as $classReference) {
