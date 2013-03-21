@@ -210,6 +210,7 @@
 	 */
 	var $sys_page='';
 	var $jumpurl='';
+	public $jumpurlIsSafe = FALSE;			// Set to TRUE when jumpurl is set internally to a safe value
 	var $pageNotFound=0;				// Is set to 1 if a pageNotFound handler could have been called.
 	var $domainStartPage=0;				// Domain start page
 	var $pageAccessFailureHistory=array();	// Array containing a history of why a requested page was not accessible.
@@ -2630,7 +2631,7 @@
 	function setExternalJumpUrl()	{
 		if ($extUrl = $this->sys_page->getExtURL($this->page, $this->config['config']['disablePageExternalUrl']))	{
 			$this->jumpurl = $extUrl;
-			t3lib_div::_GETset(t3lib_div::hmac($this->jumpurl, 'jumpurl'), 'juHash');
+			$this->jumpurlIsSafe = TRUE;
 		}
 	}
 
@@ -2712,7 +2713,7 @@
 					}
 				}
 				$allowRedirect = FALSE;
-				if (t3lib_div::hmac($this->jumpurl, 'jumpurl') === (string)t3lib_div::_GP('juHash')) {
+				if ($this->jumpurlIsSafe || t3lib_div::hmac($this->jumpurl, 'jumpurl') === (string)t3lib_div::_GP('juHash')) {
 					$allowRedirect = TRUE;
 				} elseif (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['jumpurlRedirectHandler'])) {
 					foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['jumpurlRedirectHandler'] as $classReference) {
