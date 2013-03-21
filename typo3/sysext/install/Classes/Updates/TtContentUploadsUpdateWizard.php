@@ -165,6 +165,9 @@ class TtContentUploadsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUp
 					'uid_local' => $fileObject->getUid(),
 					'tablenames' => 'tt_content',
 					'uid_foreign' => $record['uid'],
+					// the sys_file_reference record should always placed on the same page
+					// as the record to link to, see issue #46497
+					'pid' => $record['pid'],
 					'fieldname' => 'media',
 					'sorting_foreign' => $i
 				);
