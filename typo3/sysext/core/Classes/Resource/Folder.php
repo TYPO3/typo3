@@ -232,8 +232,6 @@ class Folder implements FolderInterface {
 		if (!$this->storage->hasFolderInFolder($name, $this)) {
 			throw new \InvalidArgumentException('Folder "' . $name . '" does not exist in "' . $this->identifier . '"', 1329836110);
 		}
-		// TODO this will not work with non-hierarchical storages -> the identifier for subfolders is not composed of
-		// the current item's identifier for these
 		/** @var $factory ResourceFactory */
 		$factory = ResourceFactory::getInstance();
 		$folderObject = $factory->createFolderObject($this->storage, $this->identifier . $name . '/', $name);
@@ -467,7 +465,14 @@ class Folder implements FolderInterface {
 		$this->fileAndFolderNameFilters = $filters;
 	}
 
+	/**
+	 * Returns the role of this folder (if any). See FolderInterface::ROLE_* constants for possible values.
+	 *
+	 * @return integer
+	 */
+	public function getRole() {
+		return $this->storage->getRole($this);
+	}
 }
-
 
 ?>

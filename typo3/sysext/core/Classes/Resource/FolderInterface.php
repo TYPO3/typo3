@@ -34,6 +34,15 @@ namespace TYPO3\CMS\Core\Resource;
 interface FolderInterface extends ResourceInterface
 {
 	/**
+	 * Roles for folders
+	 */
+	const ROLE_DEFAULT = 'default';
+	const ROLE_RECYCLER = 'recycler';
+	const ROLE_PROCESSING = 'processing';
+	const ROLE_TEMPORARY = 'temporary';
+	const ROLE_USERUPLOAD = 'userupload';
+
+	/**
 	 * Returns a list of all subfolders
 	 *
 	 * @return Folder[]

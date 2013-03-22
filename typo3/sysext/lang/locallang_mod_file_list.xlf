@@ -54,6 +54,12 @@
 			<trans-unit id="temp" xml:space="preserve">
 				<source>Temporary files</source>
 			</trans-unit>
+			<trans-unit id="role_folder_temporary" xml:space="preserve">
+				<source>Temporary files</source>
+			</trans-unit>
+			<trans-unit id="role_folder_recycler" xml:space="preserve">
+				<source>Recycler</source>
+			</trans-unit>
 			<trans-unit id="read" xml:space="preserve">
 				<source>R</source>
 			</trans-unit>
