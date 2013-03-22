@@ -40,6 +40,11 @@ use \TYPO3\CMS\Core\Resource, \TYPO3\CMS\Core\Utility;
 abstract class AbstractGraphicalTask extends AbstractTask {
 
 	/**
+	 * @var string
+	 */
+	protected $targetFileExtension;
+
+	/**
 	 * Sets parameters needed in the checksum. Can be overridden to add additional parameters to the checksum.
 	 * This should include all parameters that could possibly vary between different task instances, e.g. the
 	 * TYPO3 image configuration in TYPO3_CONF_VARS[GFX] for graphic processing tasks.
@@ -54,22 +59,49 @@ abstract class AbstractGraphicalTask extends AbstractTask {
 	}
 
 	/**
-	 * Returns the filename
+	 * Returns the name the processed file should have
+	 * in the filesystem.
 	 *
 	 * @return string
 	 */
 	public function getTargetFilename() {
-		if ($this->targetFile->getOriginalFile()->getExtension() === 'jpg') {
+		return $this->targetFile->getOriginalFile()->getNameWithoutExtension()
+			. '_' . $this->getConfigurationChecksum()
+			. '.' . $this->getTargetFileExtension();
+	}
+
+	/**
+	 * Determines the file extension the processed file
+	 * should have in the filesystem.
+	 *
+	 * @return string
+	 */
+	public function getTargetFileExtension() {
+		if (!isset($this->targetFileExtension)) {
+			$this->targetFileExtension = $this->determineTargetFileExtension();
+		}
+
+		return $this->targetFileExtension;
+	}
+
+	/**
+	 * Gets the file extension the processed file should
+	 * have in the filesystem by either using the configuration
+	 * setting, or the extension of the original file.
+	 *
+	 * @return string
+	 */
+	protected function determineTargetFileExtension() {
+		if (!empty($this->configuration['fileExtension'])) {
+			$targetFileExtension = $this->configuration['fileExtension'];
+		} elseif ($this->targetFile->getOriginalFile()->getExtension() === 'jpg') {
 			$targetFileExtension = 'jpg';
 		} else {
 			$targetFileExtension = 'png';
 		}
 
-		return $this->targetFile->getOriginalFile()->getNameWithoutExtension()
-			. '_' . $this->getConfigurationChecksum()
-			. '.' . $targetFileExtension;
+		return $targetFileExtension;
 	}
-
 
 }
 
