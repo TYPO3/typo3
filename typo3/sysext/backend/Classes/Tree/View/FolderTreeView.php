@@ -328,13 +328,17 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 */
 	public function getFolderTree(\TYPO3\CMS\Core\Resource\Folder $folderObject, $depth = 999, $type = '') {
 		$depth = intval($depth);
+
 		// This generates the directory tree
+		/* array of \TYPO3\CMS\Core\Resource\Folder */
 		$subFolders = $folderObject->getSubfolders();
-		sort($subFolders);
+		$subFolders = \TYPO3\CMS\Core\Resource\Utility\ListUtility::resolveSpecialFolderNames($subFolders);
+		uksort($subFolders, 'strnatcasecmp');
+
 		$totalSubFolders = count($subFolders);
 		$HTML = '';
 		$subFolderCounter = 0;
-		foreach ($subFolders as $subFolder) {
+		foreach ($subFolders as $subFolderName => $subFolder) {
 			$subFolderCounter++;
 			// Reserve space.
 			$this->tree[] = array();
@@ -346,7 +350,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 			$row = array(
 				'uid' => $specUID,
 				'path' => $subFolder->getCombinedIdentifier(),
-				'title' => $subFolder->getName(),
+				'title' => $subFolderName,
 				'folder' => $subFolder
 			);
 			// Make a recursive call to the next level
@@ -374,17 +378,16 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 				} else {
 					$icon = 'apps-filetree-folder-default';
 				}
-				if ($subFolder->getName() == '_temp_') {
+				$role = $subFolder->getRole();
+				if ($role !== \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_DEFAULT) {
+					$row['_title'] = '<strong>' . $subFolderName . '</strong>';
+				}
+				if ($role === \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_TEMPORARY) {
 					$icon = 'apps-filetree-folder-temp';
-					$row['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:temp', TRUE);
-					$row['_title'] = '<strong>' . $row['title'] . '</strong>';
-				}
-				if ($subFolder->getName() == '_recycler_') {
+				} elseif ($role === \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_RECYCLER) {
 					$icon = 'apps-filetree-folder-recycler';
-					$row['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:recycler', TRUE);
-					$row['_title'] = '<strong>' . $row['title'] . '</strong>';
 				}
-				$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($icon, array('title' => $subFolder->getIdentifier()), $overlays);
+				$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($icon, array('title' => $subFolderName), $overlays);
 				$HTML .= $this->wrapIcon($icon, $subFolder);
 			}
 			// Finally, add the row/HTML content to the ->tree array in the reserved key.
