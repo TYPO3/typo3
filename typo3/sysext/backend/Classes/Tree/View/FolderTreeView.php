@@ -130,7 +130,10 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		$theFolderIcon = $this->addTagAttributes($icon, $this->titleAttrib ? $this->titleAttrib . '="' . $this->getTitleAttrib($folderObject) . '"' : '');
 		// Wrap icon in click-menu link.
 		if (!$this->ext_IconMode) {
-			$theFolderIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($theFolderIcon, $folderObject->getCombinedIdentifier(), '', 0);
+			// Check storage access to wrap with click menu
+			if ($folderObject->getStorage()->hasFolder('/')) {
+				$theFolderIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($theFolderIcon, $folderObject->getCombinedIdentifier(), '', 0);
+			}
 		} elseif (!strcmp($this->ext_IconMode, 'titlelink')) {
 			$aOnClick = 'return jumpTo(\'' . $this->getJumpToParam($folderObject) . '\',this,\'' . $this->domIdPrefix . $this->getId($folderObject) . '\',' . $this->bank . ');';
 			$theFolderIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $theFolderIcon . '</a>';
@@ -148,6 +151,10 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @internal
 	 */
 	public function wrapTitle($title, \TYPO3\CMS\Core\Resource\Folder $folderObject, $bank = 0) {
+		// Check storage access to wrap with click menu
+		if (!$folderObject->getStorage()->hasFolder('/')) {
+			return $title;
+		}
 		$aOnClick = 'return jumpTo(\'' . $this->getJumpToParam($folderObject) . '\', this, \'' . $this->domIdPrefix . $this->getId($folderObject) . '\', ' . $bank . ');';
 		$CSM = ' oncontextmenu="' . htmlspecialchars($GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('', $folderObject->getCombinedIdentifier(), '', 0, ('&bank=' . $this->bank), '', TRUE)) . '"';
 		return '<a href="#" title="' . htmlspecialchars($title) . '" onclick="' . htmlspecialchars($aOnClick) . '"' . $CSM . '>' . $title . '</a>';
