@@ -51,6 +51,10 @@ class EnvironmentStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterf
 		);
 
 		foreach ($statusObjects as $statusObject) {
+			if (is_null($statusObject)) {
+				continue;
+			}
+
 			$className = get_class($statusObject);
 			// Uppercase last part of class name, without last 6 chars:
 			// TYPO3\CMS\Install\SystemEnvironment\ErrorStatus -> ERROR

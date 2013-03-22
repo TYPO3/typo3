@@ -53,6 +53,10 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class Check {
+	const SUHOSIN_MAXVALUELENGTH = 2000;
+	const SUHOSIN_REQUESTMAXVARS = 400;
+	const SUHOSIN_POSTMAXVARS = 400;
+
 
 	/**
 	 * @var array List of required PHP extensions
@@ -490,13 +494,23 @@ class Check {
 			$status = new OkStatus();
 			$status->setTitle('PHP suhosin extension loaded');
 		} else {
+			$additionalInformation = array(
+				'If enabling suhosin, suhosin.get.max_value_length' .
+					' should be set to at least ' . self::SUHOSIN_MAXVALUELENGTH,
+				'If enabling suhosin, suhosin.request.max_vars' .
+					' should be set to at least ' . self::SUHOSIN_REQUESTMAXVARS,
+				'If enabling suhosin, suhosin.post.max_vars' .
+					' should be set to at least ' . self::SUHOSIN_POSTMAXVARS,
+				'If enabling suhosin, a useful setting is "suhosin.executor.include.whitelist = phar vfs"'
+			);
 			$status = new NoticeStatus();
 			$status->setTitle('PHP suhosin extension not loaded');
 			$status->setMessage(
 				'suhosin is an extension to harden the PHP environment. In general, it is' .
 				' good to have it from a security point of view. While TYPO3 CMS works' .
 				' fine with suhosin, it has some requirements different from default settings' .
-				' to be set if enabled.'
+				' to be set if enabled.' .
+				'<br /><br />' . implode('<br />', $additionalInformation)
 			);
 		}
 		return $status;
@@ -508,7 +522,7 @@ class Check {
 	 * @return ErrorStatus|InfoStatus|OkStatus
 	 */
 	protected function checkSuhosinRequestMaxVars() {
-		$recommendedRequestMaxVars = 400;
+		$recommendedRequestMaxVars = self::SUHOSIN_REQUESTMAXVARS;
 		if ($this->isSuhosinLoaded()) {
 			$currentRequestMaxVars = ini_get('suhosin.request.max_vars');
 			if ($currentRequestMaxVars < $recommendedRequestMaxVars) {
@@ -524,13 +538,6 @@ class Check {
 				$status = new OkStatus();
 				$status->setTitle('PHP suhosin.request.max_vars ok');
 			}
-		} else {
-			$status = new InfoStatus();
-			$status->setTitle('Suhosin not loaded');
-			$status->setMessage(
-				'If enabling suhosin, suhosin.request.max_vars' .
-				' should be set to at least ' . $recommendedRequestMaxVars
-			);
 		}
 		return $status;
 	}
@@ -541,7 +548,7 @@ class Check {
 	 * @return ErrorStatus|InfoStatus|OkStatus
 	 */
 	protected function checkSuhosinPostMaxVars() {
-		$recommendedPostMaxVars = 400;
+		$recommendedPostMaxVars = self::SUHOSIN_POSTMAXVARS;
 		if ($this->isSuhosinLoaded()) {
 			$currentPostMaxVars = ini_get('suhosin.post.max_vars');
 			if ($currentPostMaxVars < $recommendedPostMaxVars) {
@@ -557,13 +564,6 @@ class Check {
 				$status = new OkStatus();
 				$status->setTitle('PHP suhosin.post.max_vars ok');
 			}
-		} else {
-			$status = new InfoStatus();
-			$status->setTitle('Suhosin not loaded');
-			$status->setMessage(
-				'If enabling suhosin, suhosin.post.max_vars' .
-				' should be set to at least ' . $recommendedPostMaxVars
-			);
 		}
 		return $status;
 	}
@@ -574,7 +574,7 @@ class Check {
 	 * @return ErrorStatus|InfoStatus|OkStatus
 	 */
 	protected function checkSuhosinGetMaxValueLength() {
-		$recommendedGetMaxValueLength = 2000;
+		$recommendedGetMaxValueLength = self::SUHOSIN_MAXVALUELENGTH;
 		if ($this->isSuhosinLoaded()) {
 			$currentGetMaxValueLength = ini_get('suhosin.get.max_value_length');
 			if ($currentGetMaxValueLength < $recommendedGetMaxValueLength) {
@@ -590,13 +590,6 @@ class Check {
 				$status = new OkStatus();
 				$status->setTitle('PHP suhosin.get.max_value_length ok');
 			}
-		} else {
-			$status = new InfoStatus();
-			$status->setTitle('Suhosin not loaded');
-			$status->setMessage(
-				'If enabling suhosin, suhosin.get.max_value_length' .
-				' should be set to at least ' . $recommendedGetMaxValueLength
-			);
 		}
 		return $status;
 	}
@@ -621,12 +614,6 @@ class Check {
 				$status = new OkStatus();
 				$status->setTitle('PHP suhosin.executor.include.whitelist contains phar');
 			}
-		} else {
-			$status = new InfoStatus();
-			$status->setTitle('Suhosin not loaded');
-			$status->setMessage(
-				'If enabling suhosin, a useful setting is "suhosin.executor.include.whitelist = phar vfs"'
-			);
 		}
 		return $status;
 	}
@@ -652,12 +639,6 @@ class Check {
 				$status = new OkStatus();
 				$status->setTitle('PHP suhosin.executor.include.whitelist contains vfs');
 			}
-		} else {
-			$status = new InfoStatus();
-			$status->setTitle('Suhosin not loaded');
-			$status->setMessage(
-				'If enabling suhosin, a useful setting is "suhosin.executor.include.whitelist = phar vfs"'
-			);
 		}
 		return $status;
 	}

@@ -1356,6 +1356,9 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 		);
 
 		foreach ($statusObjects as $statusObject) {
+			if (is_null($statusObject)) {
+				continue;
+			}
 			$className = get_class($statusObject);
 			// Last part of class name
 			$severityIdentifier = array_pop(explode('\\', $className));
