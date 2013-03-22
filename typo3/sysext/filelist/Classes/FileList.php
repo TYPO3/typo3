@@ -304,10 +304,9 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 					}
 					$filesToSort[$sortingKey . $i] = $fileObject;
 				}
+				uksort($filesToSort, 'strnatcasecmp');
 				if (intval($this->sortRev) === 1) {
-					krsort($filesToSort);
-				} else {
-					ksort($filesToSort);
+					$filesToSort = array_reverse($filesToSort);
 				}
 				$files = $filesToSort;
 			}
