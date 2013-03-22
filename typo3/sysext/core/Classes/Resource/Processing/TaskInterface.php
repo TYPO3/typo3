@@ -91,6 +91,13 @@ interface TaskInterface {
 	public function getTargetFileName();
 
 	/**
+	 * Gets the file extension the processed file should have in the filesystem.
+	 *
+	 * @return string
+	 */
+	public function getTargetFileExtension();
+
+	/**
 	 * Returns TRUE if the file has to be processed at all, such as e.g. the original file does.
 	 *
 	 * Note: This does not indicate if the concrete ProcessedFile attached to this task has to be (re)processed.
