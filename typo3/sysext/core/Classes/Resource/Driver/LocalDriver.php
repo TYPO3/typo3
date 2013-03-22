@@ -860,6 +860,34 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	}
 
 	/**
+	 * Copy a folder from another storage.
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folderToCopy
+	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param string $newFileName
+	 * @throws \BadMethodCallException
+	 * @return boolean
+	 */
+	public function copyFolderBetweenStorages(\TYPO3\CMS\Core\Resource\Folder $folderToCopy, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newFolderName) {
+		throw new \BadMethodCallException('Not yet implemented!', 1330262731);
+	}
+
+	/**
+	 * Move a folder from another storage.
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folderToMove
+	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param string $newFileName* @throws \BadMethodCallException
+	 * @return boolean
+	 */
+	public function moveFolderBetweenStorages(\TYPO3\CMS\Core\Resource\Folder $folderToMove, \TYPO3\CMS\Core\Resource\Folder $targetParentFolder, $newFolderName) {
+		// This is not implemented for now as moving files between storages might cause quite some headaches when
+		// something goes wrong. It is also not that common of a use case, so it does not hurt that much to leave it out
+		// for now.
+		throw new \BadMethodCallException('Moving folders between storages is not implemented.');
+	}
+
+	/**
 	 * Renames a file in this storage.
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file

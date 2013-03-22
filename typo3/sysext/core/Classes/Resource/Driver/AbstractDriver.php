@@ -524,12 +524,32 @@ abstract class AbstractDriver {
 	/**
 	 * Folder equivalent to copyFileWithinStorage().
 	 *
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folderToCopy
+	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param string $newFileName
+	 * @return boolean
+	 */
+	abstract public function copyFolderWithinStorage(\TYPO3\CMS\Core\Resource\Folder $folderToCopy, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newFileName);
+
+	/**
+	 * Move a folder from another storage.
+	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderToMove
 	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
 	 * @param string $newFileName
 	 * @return boolean
 	 */
-	abstract public function copyFolderWithinStorage(\TYPO3\CMS\Core\Resource\Folder $folderToMove, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newFileName);
+	abstract public function moveFolderBetweenStorages(\TYPO3\CMS\Core\Resource\Folder $folderToMove, \TYPO3\CMS\Core\Resource\Folder $targetParentFolder, $newFolderName);
+
+	/**
+	 * Copy a folder from another storage.
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folderToCopy
+	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param string $newFileName
+	 * @return boolean
+	 */
+	abstract public function copyFolderBetweenStorages(\TYPO3\CMS\Core\Resource\Folder $folderToCopy, \TYPO3\CMS\Core\Resource\Folder $targetParentFolder, $newFolderName);
 
 	/**
 	 * Removes a file from this storage. This does not check if the file is
