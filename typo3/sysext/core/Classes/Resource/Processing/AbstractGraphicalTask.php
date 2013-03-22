@@ -65,7 +65,12 @@ abstract class AbstractGraphicalTask extends AbstractTask {
 			$targetFileExtension = 'png';
 		}
 
-		return $this->targetFile->getOriginalFile()->getNameWithoutExtension()
+		// normalize the file name
+		$fileName = $this->targetFile->getOriginalFile()->getNameWithoutExtension();
+		$fileUtility = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
+		$fileName = $fileUtility ->cleanFileName($fileName);
+
+		return $fileName
 			. '_' . $this->getConfigurationChecksum()
 			. '.' . $targetFileExtension;
 	}
