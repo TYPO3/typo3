@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Filelist;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Resource\FolderInterface;
+
 /**
  * Class for rendering of File>Filelist
  *
@@ -216,7 +218,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		);
 		// Makes the code for the foldericon in the top
 		if ($folderObject) {
-			list($title, $icon, $path) = $this->dirData($folderObject);
+			list($_, $icon, $path) = $this->dirData($folderObject);
 			$title = htmlspecialchars($folderObject->getIdentifier());
 			// Start compiling the HTML
 			// @todo: how to fix this? $title = $GLOBALS['SOBE']->basicFF->blindPath($title);
@@ -329,6 +331,10 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			foreach ($folders as $folder) {
 				$folderObjects[] = $storage->getFolder($folder['identifier']);
 			}
+
+			$folderObjects = \TYPO3\CMS\Core\Resource\Utility\ListUtility::resolveSpecialFolderNames($folderObjects);
+			uksort($folderObjects, 'strnatcasecmp');
+
 			// Directories are added
 			$iOut = $this->formatDirList($folderObjects);
 			if ($iOut) {
@@ -408,15 +414,26 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	 */
 	public function formatDirList(array $folders) {
 		$out = '';
-		foreach ($folders as $folderObject) {
+		foreach ($folders as $folderName => $folderObject) {
+			$role = $folderObject->getRole();
+			if ($role === FolderInterface::ROLE_PROCESSING) {
+				// don't show processing-folder
+				continue;
+			}
+			if ($role !== FolderInterface::ROLE_DEFAULT) {
+				$displayName = '<strong>' . htmlspecialchars($folderName) . '</strong>';
+			} else {
+				$displayName = htmlspecialchars($folderName);
+			}
+
 			list($flag, $code) = $this->fwd_rwd_nav();
 			$out .= $code;
 			if ($flag) {
 				// Initialization
 				$this->counter++;
-				list($title, $icon, $path) = $this->dirData($folderObject);
+				list($_, $icon, $path) = $this->dirData($folderObject);
 				// The icon with link
-				$theIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('folder', array('title' => strip_tags($title)));
+				$theIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($icon, array('title' => $folderName));
 				if ($this->clickMenus) {
 					$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon, $folderObject->getCombinedIdentifier());
 				}
@@ -439,7 +456,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 							$theData[$field] = '-';
 							break;
 						case 'file':
-							$theData[$field] = $this->linkWrapDir($title, $folderObject);
+							$theData[$field] = $this->linkWrapDir($displayName, $folderObject);
 							break;
 						case '_CLIPBOARD_':
 							$temp = '';
@@ -526,11 +543,11 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	public function dirData(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
 		$title = htmlspecialchars($folderObject->getName());
 		$icon = 'apps-filetree-folder-default';
-		if ($title == '_temp_') {
-			$icon = 'apps-filetree-folder-temp';
+		$role = $folderObject->getRole();
+		if ($role === FolderInterface::ROLE_TEMPORARY) {
 			$title = '<strong>' . $GLOBALS['LANG']->getLL('temp', TRUE) . '</strong>';
-		}
-		if ($title == '_recycler_') {
+			$icon = 'apps-filetree-folder-temp';
+		} elseif ($role === FolderInterface::ROLE_RECYCLER) {
 			$icon = 'apps-filetree-folder-recycler';
 			$title = '<strong>' . $GLOBALS['LANG']->getLL('recycler', TRUE) . '</strong>';
 		}

@@ -1,6 +1,8 @@
 <?php
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use TYPO3\CMS\Core\Resource\ResourceStorage;
+
 /***************************************************************
  * Copyright notice
  *
@@ -23,7 +25,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 require_once 'vfsStream/vfsStream.php';
 
 /**
@@ -647,6 +648,46 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$this->fixture->getFileList('/', 0, 0, TRUE, TRUE, TRUE);
 	}
 
+	/**
+	 * @test
+	 */
+	public function getRoleReturnsDefaultForRegularFolders() {
+		$folderIdentifier = uniqid();
+		$this->addToMount(array(
+			$folderIdentifier => array()
+		));
+		$this->prepareFixture(array());
+
+		$role = $this->fixture->getRole($this->getSimpleFolderMock('/' . $folderIdentifier . '/'));
+
+		$this->assertSame(\TYPO3\CMS\Core\Resource\FolderInterface::ROLE_DEFAULT, $role);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getRoleReturnsCorrectValueForDefaultProcessingFolder() {
+		$this->prepareFixture(array());
+
+		$role = $this->fixture->getRole($this->getSimpleFolderMock('/' . ResourceStorage::DEFAULT_ProcessingFolder . '/'));
+
+		$this->assertSame(\TYPO3\CMS\Core\Resource\FolderInterface::ROLE_PROCESSING, $role);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getRoleReturnsCorrectValueForConfiguredProcessingFolder() {
+		$folderIdentifier = uniqid();
+		$this->addToMount(array(
+			$folderIdentifier => array()
+		));
+		$this->prepareFixture(array(), FALSE, NULL, array('processingfolder' => '/' . $folderIdentifier . '/'));
+
+		$role = $this->fixture->getRole($this->getSimpleFolderMock('/' . $folderIdentifier . '/'));
+
+		$this->assertSame(\TYPO3\CMS\Core\Resource\FolderInterface::ROLE_PROCESSING, $role);
+	}
 }
 
 ?>
