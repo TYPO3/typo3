@@ -288,8 +288,10 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 			if ($updateNecessity & self::PROBLEM_NO_VERSIONS_IN_DATABASE) {
 				$updateNecessity &= ~self::PROBLEM_NO_VERSIONS_IN_DATABASE;
 			} else {
-				// using straight sql here as extbases "remove" runs into memory problems
-				$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_extensionmanager_domain_model_extension', 'repository=' . $this->repository->getUid());
+				// Use straight query as extbase "remove" is too slow here
+				// This truncates the whole table. It would be more correct to remove only rows of a specific
+				// repository, but multiple repository handling is not implemented, and truncate is quicker.
+				$this->getDatabaseConnection()->exec_TRUNCATEquery('tx_extensionmanager_domain_model_extension');
 			}
 			// no further problems - start of import process
 			if ($updateNecessity === 0) {
@@ -301,6 +303,15 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 		return $updated;
+	}
+
+	/**
+	 * Get database connection
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }
