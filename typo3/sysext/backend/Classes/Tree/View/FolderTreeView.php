@@ -317,7 +317,9 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		$depth = intval($depth);
 		// This generates the directory tree
 		$subFolders = $folderObject->getSubfolders();
-		sort($subFolders);
+		usort($subFolders, function($a, $b) {
+			return strnatcasecmp($a->getName(), $b->getName());
+		});
 		$totalSubFolders = count($subFolders);
 		$HTML = '';
 		$subFolderCounter = 0;
