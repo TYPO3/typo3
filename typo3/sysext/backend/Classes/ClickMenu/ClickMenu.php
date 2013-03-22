@@ -734,6 +734,10 @@ class ClickMenu {
 				->retrieveFileOrFolderObject($combinedIdentifier);
 		if ($fileObject) {
 			$folder = FALSE;
+			$isStorageRoot = FALSE;
+			$isOnline = TRUE;
+			$selectStorage = FALSE;
+			$editStorage = FALSE;
 			$identifier = $fileObject->getCombinedIdentifier();
 			if ($fileObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
 				$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('folder', array(
@@ -741,39 +745,72 @@ class ClickMenu {
 					'title' => htmlspecialchars($fileObject->getName())
 				));
 				$folder = TRUE;
+				if ($fileObject->getIdentifier() === $fileObject->getStorage()->getRootLevelFolder()->getIdentifier()) {
+					$isStorageRoot = TRUE;
+					if ($GLOBALS['BE_USER']->check('tables_select', 'sys_file_storage')) {
+						$selectStorage = TRUE;
+					}
+					if ($GLOBALS['BE_USER']->check('tables_modify', 'sys_file_storage')) {
+						$editStorage = TRUE;
+					}
+				}
+				if (!$fileObject->getStorage()->isOnline()) {
+					$online = FALSE;
+				}
 			} else {
 				$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($fileObject->getExtension(), array(
 					'class' => 'absmiddle',
 					'title' => htmlspecialchars($fileObject->getName() . ' (' . GeneralUtility::formatSize($fileObject->getSize()) . ')')
 				));
 			}
+			// Hide
+			if (!in_array('hide', $this->disabledItems) && $isStorageRoot && $editStorage) {
+				$record = \t3lib_BEfunc::getRecord('sys_file_storage', $fileObject->getStorage()->getUid());
+				$menuItems['hide'] = $this->DB_changeFlag(
+					'sys_file_storage',
+					$record,
+					'is_online',
+					$this->label($record['is_online'] ? 'offline' : 'online'),
+					'hide'
+				);
+			}
 			// Edit
-			if (!in_array('edit', $this->disabledItems) && !$folder && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $fileObject->getExtension())) {
-				$menuItems['edit'] = $this->FILE_launch($identifier, 'file_edit.php', 'edit', 'edit_file.gif');
+			if (!in_array('edit', $this->disabledItems)) {
+				if (!$folder && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $fileObject->getExtension())) {
+					$menuItems['edit'] = $this->FILE_launch($identifier, 'file_edit.php', 'edit', 'edit_file.gif');
+				} elseif ($isStorageRoot && $editStorage) {
+					$menuItems['edit'] = $this->DB_edit('sys_file_storage', $fileObject->getStorage()->getUid());
+				}
 			}
 			// Rename
-			if (!in_array('rename', $this->disabledItems)) {
+			if (!in_array('rename', $this->disabledItems) && !$isStorageRoot) {
 				$menuItems['rename'] = $this->FILE_launch($identifier, 'file_rename.php', 'rename', 'rename.gif');
 			}
 			// Upload
-			if (!in_array('upload', $this->disabledItems) && $folder) {
+			if (!in_array('upload', $this->disabledItems) && $folder && $isOnline) {
 				$menuItems['upload'] = $this->FILE_upload($identifier);
 			}
 			// New
-			if (!in_array('new', $this->disabledItems) && $folder) {
+			if (!in_array('new', $this->disabledItems) && $folder && $isOnline) {
 				$menuItems['new'] = $this->FILE_launch($identifier, 'file_newfolder.php', 'new', 'new_file.gif');
 			}
 			// Info
 			if (!in_array('info', $this->disabledItems)) {
-				$menuItems['info'] = $this->fileInfo($identifier);
+				if ($isStorageRoot) {
+					if ($selectStorage) {
+						$menuItems['info'] = $this->DB_info('sys_file_storage', $fileObject->getStorage()->getUid());
+					}
+				} elseif (!$folder) {
+					$menuItems['info'] = $this->fileInfo($identifier);
+				}
 			}
 			$menuItems[] = 'spacer';
 			// Copy:
-			if (!in_array('copy', $this->disabledItems)) {
+			if (!in_array('copy', $this->disabledItems) && !$isStorageRoot) {
 				$menuItems['copy'] = $this->FILE_copycut($identifier, 'copy');
 			}
 			// Cut:
-			if (!in_array('cut', $this->disabledItems)) {
+			if (!in_array('cut', $this->disabledItems) && !$isStorageRoot) {
 				$menuItems['cut'] = $this->FILE_copycut($identifier, 'cut');
 			}
 			// Paste:
@@ -791,7 +828,13 @@ class ClickMenu {
 			$menuItems[] = 'spacer';
 			// Delete:
 			if (!in_array('delete', $this->disabledItems)) {
-				$menuItems['delete'] = $this->FILE_delete($identifier);
+				if ($isStorageRoot) {
+					if ($editStorage) {
+						$menuItems['delete'] = $this->DB_delete('sys_file_storage', $fileObject->getStorage()->getUid());
+					}
+				} else {
+					$menuItems['delete'] = $this->FILE_delete($identifier);
+				}
 			}
 		}
 		// Adding external elements to the menuItems array
