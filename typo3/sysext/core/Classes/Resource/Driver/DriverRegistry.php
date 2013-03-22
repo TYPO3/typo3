@@ -97,12 +97,12 @@ class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		if (TYPO3_MODE !== 'BE') {
 			return;
 		}
+		$driverFieldConfig = &$GLOBALS['TCA']['sys_file_storage']['columns']['driver']['config'];
+		$configurationFieldConfig = &$GLOBALS['TCA']['sys_file_storage']['columns']['configuration']['config'];
 		foreach ($this->driverConfigurations as $driver) {
 			$label = $driver['label'] ?: $driver['class'];
-			$driverFieldConfig = &$GLOBALS['TCA']['sys_file_storage']['columns']['driver']['config'];
 			$driverFieldConfig['items'][] = array($label, $driver['shortName']);
 			if ($driver['flexFormDS']) {
-				$configurationFieldConfig = &$GLOBALS['TCA']['sys_file_storage']['columns']['configuration']['config'];
 				$configurationFieldConfig['ds'][$driver['shortName']] = $driver['flexFormDS'];
 			}
 		}
