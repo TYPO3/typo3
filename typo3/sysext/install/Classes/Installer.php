@@ -712,11 +712,6 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				$this->message('About', 'Warning - very important!', $this->securityRisk() . $this->alterPasswordForm(), 2);
 				$this->message('About', 'Using this script', '
 						<p>
-							Installing TYPO3 has always been a hot topic on the
-							mailing list and forums. Therefore we\'ve developed
-							this tool which will help you through configuration
-							and testing.
-							<br />
 							There are three primary steps for you to take:
 						</p>
 						<p>
@@ -789,24 +784,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 							your database.
 						</p>
 					');
-				$this->message('About', 'Why is this script stand-alone?', '
-						<p>
-							You would think that this script should rather be a
-							module in the backend and access-controlled to only
-							admin-users from the database. But that\'s not how
-							it works.
-							<br />
-							The reason is, that this script must not be
-							depending on the success of the configuration of
-							TYPO3 and whether or not there is a working database
-							behind. Therefore the script is invoked from the
-							backend init.php file, which allows access if the
-							constant \'TYPO3_enterInstallScript\' has been
-							defined and is not FALSE. That is and should be the
-							case <em>only</em> when calling the script
-							\'typo3/install/index.php\' - this script!
-						</p>
-					');
+
 				$headCode = 'Header legend';
 				$this->message($headCode, 'Notice!', '
 						<p>
