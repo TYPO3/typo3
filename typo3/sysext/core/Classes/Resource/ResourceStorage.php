@@ -1391,14 +1391,10 @@ class ResourceStorage {
 	 * @param Folder $targetParentFolder
 	 * @param string $newFolderName
 	 *
-	 * @throws \BadMethodCallException
-	 * @return array Mapping of old file identifiers to new ones
+	 * @return boolean
 	 */
-	protected function moveFolderBetweenStorages(Folder $folderToMove, Folder $targetParentFolder, $newFolderName = NULL) {
-		// This is not implemented for now as moving files between storages might cause quite some headaches when
-		// something goes wrong. It is also not that common of a use case, so it does not hurt that much to leave it out
-		// for now.
-		throw new \BadMethodCallException('Moving folders between storages is not implemented.');
+	protected function moveFolderBetweenStorages(Folder $folderToMove, Folder $targetParentFolder, $newFolderName) {
+		return $this->getDriver()->moveFolderBetweenStorages($folderToMove, $targetParentFolder, $newFolderName);
 	}
 
 	/**
@@ -1434,17 +1430,16 @@ class ResourceStorage {
 	}
 
 	/**
-	 * Moves files between storages
+	 * Copy folders between storages
 	 *
-	 * @param Folder $folderToMove
+	 * @param Folder $folderToCopy
 	 * @param Folder $targetParentFolder
-	 * @param null $newFolderName
+	 * @param string $newFolderName
 	 *
-	 * @throws \RuntimeException
-	 * @return void
+	 * @return boolean
 	 */
-	protected function copyFolderBetweenStorages(Folder $folderToMove, Folder $targetParentFolder, $newFolderName = NULL) {
-		throw new \RuntimeException('Not yet implemented!', 1330262731);
+	protected function copyFolderBetweenStorages(Folder $folderToCopy, Folder $targetParentFolder, $newFolderName) {
+		return $this->getDriver()->copyFolderBetweenStorages($folderToCopy, $targetParentFolder, $newFolderName);
 	}
 
 	/**

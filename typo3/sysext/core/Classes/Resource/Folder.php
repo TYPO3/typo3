@@ -340,7 +340,7 @@ class Folder implements FolderInterface {
 	 * @return Folder New (copied) folder object.
 	 */
 	public function copyTo(Folder $targetFolder, $targetFolderName = NULL, $conflictMode = 'renameNewFile') {
-		return $this->storage->copyFolder($this, $targetFolder, $targetFolderName, $conflictMode);
+		return $targetFolder->getStorage()->copyFolder($this, $targetFolder, $targetFolderName, $conflictMode);
 	}
 
 	/**
@@ -352,7 +352,7 @@ class Folder implements FolderInterface {
 	 * @return Folder New (copied) folder object.
 	 */
 	public function moveTo(Folder $targetFolder, $targetFolderName = NULL, $conflictMode = 'renameNewFile') {
-		return $this->storage->moveFolder($this, $targetFolder, $targetFolderName, $conflictMode);
+		return $targetFolder->getStorage()->moveFolder($this, $targetFolder, $targetFolderName, $conflictMode);
 	}
 
 	/**
