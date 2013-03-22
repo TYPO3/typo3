@@ -526,13 +526,12 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	public function dirData(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
 		$title = htmlspecialchars($folderObject->getName());
 		$icon = 'apps-filetree-folder-default';
-		if ($title == '_temp_') {
+		if ($title ==  $GLOBALS['LANG']->getLL('temp', TRUE)) {
 			$icon = 'apps-filetree-folder-temp';
-			$title = '<strong>' . $GLOBALS['LANG']->getLL('temp', TRUE) . '</strong>';
-		}
-		if ($title == '_recycler_') {
+			$title = '<strong>' . $title . '</strong>';
+		} elseif ($title == $GLOBALS['LANG']->getLL('recycler', TRUE)) {
 			$icon = 'apps-filetree-folder-recycler';
-			$title = '<strong>' . $GLOBALS['LANG']->getLL('recycler', TRUE) . '</strong>';
+			$title = '<strong>' . $title . '</strong>';
 		}
 		// Mark the icon as read-only icon if the folder is not writable
 		if ($folderObject->checkActionPermission('write') === FALSE) {
