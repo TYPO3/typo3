@@ -1,6 +1,8 @@
 <?php
 namespace TYPO3\CMS\Filelist;
 
+use TYPO3\CMS\Core\Resource\FolderInterface;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -216,7 +218,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		);
 		// Makes the code for the foldericon in the top
 		if ($folderObject) {
-			list($title, $icon, $path) = $this->dirData($folderObject);
+			list($icon, $path) = $this->dirData($folderObject);
 			$title = htmlspecialchars($folderObject->getIdentifier());
 			// Start compiling the HTML
 			// @todo: how to fix this? $title = $GLOBALS['SOBE']->basicFF->blindPath($title);
@@ -329,6 +331,10 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			foreach ($folders as $folder) {
 				$folderObjects[] = $storage->getFolder($folder['identifier']);
 			}
+
+			$folderObjects = \TYPO3\CMS\Core\Resource\Utility\ListUtility::resolveSpecialFolderNames($folderObjects);
+			uksort($folderObjects, 'strnatcasecmp');
+
 			// Directories are added
 			$iOut = $this->formatDirList($folderObjects);
 			if ($iOut) {
@@ -408,15 +414,25 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	 */
 	public function formatDirList(array $folders) {
 		$out = '';
-		foreach ($folders as $folderObject) {
+		foreach ($folders as $folderName => $folderObject) {
+			$role = $folderObject->getRole();
+			$highlightFolder = FALSE;
+			if ($role === FolderInterface::ROLE_PROCESSING) {
+				// don't show processing-folder
+				continue;
+			}
+			if ($role !== FolderInterface::ROLE_DEFAULT) {
+				$highlightFolder = TRUE;
+			}
+
 			list($flag, $code) = $this->fwd_rwd_nav();
 			$out .= $code;
 			if ($flag) {
 				// Initialization
 				$this->counter++;
-				list($title, $icon, $path) = $this->dirData($folderObject);
+				list($icon, $path) = $this->dirData($folderObject);
 				// The icon with link
-				$theIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('folder', array('title' => strip_tags($title)));
+				$theIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('folder', array('title' => $folderName));
 				if ($this->clickMenus) {
 					$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon, $folderObject->getCombinedIdentifier());
 				}
@@ -439,7 +455,11 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 							$theData[$field] = '-';
 							break;
 						case 'file':
-							$theData[$field] = $this->linkWrapDir($title, $folderObject);
+							if ($highlightFolder) {
+								$theData[$field] = $this->linkWrapDir('<strong>' . $folderName . '</strong>', $folderObject);
+							} else {
+								$theData[$field] = $this->linkWrapDir($folderName, $folderObject);
+							}
 							break;
 						case '_CLIPBOARD_':
 							$temp = '';
@@ -520,25 +540,21 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	 * Returns some data specific for the directories...
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject File information array
-	 * @return array (title, icon, path)
+	 * @return array (icon, path)
 	 * @todo Define visibility
 	 */
 	public function dirData(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
-		$title = htmlspecialchars($folderObject->getName());
 		$icon = 'apps-filetree-folder-default';
-		if ($title == '_temp_') {
+		if ($title ==  $GLOBALS['LANG']->getLL('temp', TRUE)) {
 			$icon = 'apps-filetree-folder-temp';
-			$title = '<strong>' . $GLOBALS['LANG']->getLL('temp', TRUE) . '</strong>';
-		}
-		if ($title == '_recycler_') {
+		} elseif ($title == $GLOBALS['LANG']->getLL('recycler', TRUE)) {
 			$icon = 'apps-filetree-folder-recycler';
-			$title = '<strong>' . $GLOBALS['LANG']->getLL('recycler', TRUE) . '</strong>';
 		}
 		// Mark the icon as read-only icon if the folder is not writable
 		if ($folderObject->checkActionPermission('write') === FALSE) {
 			$icon = 'apps-filetree-folder-locked';
 		}
-		return array($title, $icon, $folderObject->getIdentifier());
+		return array($icon, $folderObject->getIdentifier());
 	}
 
 	/**
