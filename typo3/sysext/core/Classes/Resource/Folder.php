@@ -257,7 +257,7 @@ class Folder implements FolderInterface {
 			// -> the identifier for subfolders is not composed of the
 			// current item's identifier for these
 			foreach ($folderArray as $folder) {
-				$folderObjects[$folder['name']] = $factory->createFolderObject($this->storage, $this->identifier . $folder['name'] . '/', $folder['name']);
+				$folderObjects[$folder['name']] = $factory->createFolderObject($this->storage, $folder['identifier'], $folder['name']);
 			}
 		}
 
