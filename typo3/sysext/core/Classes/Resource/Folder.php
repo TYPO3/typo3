@@ -253,11 +253,8 @@ class Folder implements FolderInterface {
 		if (count($folderArray) > 0) {
 			/** @var $factory ResourceFactory */
 			$factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
-			// TODO this will not work with non-hierarchical storages
-			// -> the identifier for subfolders is not composed of the
-			// current item's identifier for these
 			foreach ($folderArray as $folder) {
-				$folderObjects[$folder['name']] = $factory->createFolderObject($this->storage, $this->identifier . $folder['name'] . '/', $folder['name']);
+				$folderObjects[$folder['name']] = $factory->createFolderObject($this->storage, $folder['identifier'], $folder['name']);
 			}
 		}
 
