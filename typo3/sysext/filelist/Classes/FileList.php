@@ -416,7 +416,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 				$this->counter++;
 				list($title, $icon, $path) = $this->dirData($folderObject);
 				// The icon with link
-				$theIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('folder', array('title' => $title));
+				$theIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('folder', array('title' => strip_tags($title)));
 				if ($this->clickMenus) {
 					$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon, $folderObject->getCombinedIdentifier());
 				}
