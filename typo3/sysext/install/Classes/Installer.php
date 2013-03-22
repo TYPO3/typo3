@@ -1376,7 +1376,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 		$messageHtmlBoilerPlate =
 			'<div class="typo3-message message-%1s" >' .
 				'<div class="header-container" >' .
-					'<div class="message-header message-left" >%2s</div>' .
+					'<div class="message-header message-left" ><strong>%2s</strong></div>' .
 					'<div class="message-header message-right" ></div>' .
 				'</div >' .
 				'<div class="message-body" >%3s</div>' .
