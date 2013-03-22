@@ -247,6 +247,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param array $fileData The record row from database.
 	 *
 	 * @throws \InvalidArgumentException
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
 	 * @return File
 	 */
 	public function getFileObject($uid, array $fileData = array()) {
@@ -259,7 +260,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				/** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
 				$fileData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file', 'uid=' . intval($uid) . ' AND deleted=0');
 				if (!is_array($fileData)) {
-					throw new \InvalidArgumentException('No file found for given UID.', 1317178604);
+					throw new \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException('No file found for given UID.', 1317178604);
 				}
 			}
 			$this->fileInstances[$uid] = $this->createFileObject($fileData);
@@ -372,7 +373,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $identifier
 	 *
-	 * @throws \RuntimeException
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException
 	 * @return FileInterface|Folder
 	 */
 	public function getObjectFromCombinedIdentifier($identifier) {
@@ -383,7 +384,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		} elseif ($storage->hasFolder($objectIdentifier)) {
 			return $storage->getFolder($objectIdentifier);
 		} else {
-			throw new \RuntimeException('Object with identifier "' . $identifier . '" does not exist in storage', 1329647780);
+			throw new \TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException('Object with identifier "' . $identifier . '" does not exist in storage', 1329647780);
 		}
 	}
 
