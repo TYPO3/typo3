@@ -1984,6 +1984,21 @@ class ResourceStorage {
 		return $this->fileProcessingService;
 	}
 
+	public function getFolderRole(FolderInterface $folder) {
+		$folderRole = FolderInterface::ROLE_DEFAULT;
+		if (method_exists($this->driver, 'getFolderRole')) {
+			$folderRole = $this->driver->getFolderRole($folder);
+		}
+
+/*
+		if ($folder->getIdentifier() === $this->getProcessingFolder()->getIdentifier()) {
+			$folderRole = FolderInterface::ROLE_PROCESSING;
+		}
+*/
+
+		return $folderRole;
+	}
+
 	/**
 	 * Getter function to return the folder where the files can
 	 * be processed. does not check for access rights here

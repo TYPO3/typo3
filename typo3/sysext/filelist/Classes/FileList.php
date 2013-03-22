@@ -259,6 +259,31 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	}
 
 	/**
+	 * Resolve special folders (by their role) into localised string and sort list accordingly
+	 *
+	 * @param array Array of \TYPO3\CMS\Core\Resource\Folder
+	 * @return array Array of \TYPO3\CMS\Core\Resource\Folder; will name name / sorting-key as array-key
+	 */
+	protected function resolveAndSortFolders(array $folders) {
+		$sortedFolders = array();
+		foreach($folders as $folder) {
+			$name = $folder->getName();
+			$role = $folder->getRole();
+			if ($role !== \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_DEFAULT) {
+				$tempName = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:role_' . $role, TRUE);
+				if(!empty($tempName) && ($tempName !== $name)) {
+					// Set new name and append original name
+					$name = $tempName . ' (' . $name . ')';
+				}
+			}
+			$sortedFolders[$name] = $folder;
+		}
+		uksort($sortedFolders, 'strnatcasecmp');
+
+		return $sortedFolders;
+	}
+
+	/**
 	 * Returns a table with directories and files listed.
 	 *
 	 * @param array $rowlist Array of files from path
@@ -329,6 +354,9 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			foreach ($folders as $folder) {
 				$folderObjects[] = $storage->getFolder($folder['identifier']);
 			}
+
+			$folderObjects = $this->resolveAndSortFolders($folderObjects);
+
 			// Directories are added
 			$iOut = $this->formatDirList($folderObjects);
 			if ($iOut) {
@@ -408,7 +436,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	 */
 	public function formatDirList(array $folders) {
 		$out = '';
-		foreach ($folders as $folderObject) {
+		foreach ($folders as $folderName => $folderObject) {
 			list($flag, $code) = $this->fwd_rwd_nav();
 			$out .= $code;
 			if ($flag) {
@@ -439,7 +467,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 							$theData[$field] = '-';
 							break;
 						case 'file':
-							$theData[$field] = $this->linkWrapDir($title, $folderObject);
+							$theData[$field] = $this->linkWrapDir($folderName, $folderObject);
 							break;
 						case '_CLIPBOARD_':
 							$temp = '';
@@ -526,13 +554,12 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	public function dirData(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
 		$title = htmlspecialchars($folderObject->getName());
 		$icon = 'apps-filetree-folder-default';
-		if ($title == '_temp_') {
+		if ($title ==  $GLOBALS['LANG']->getLL('temp', TRUE)) {
 			$icon = 'apps-filetree-folder-temp';
-			$title = '<strong>' . $GLOBALS['LANG']->getLL('temp', TRUE) . '</strong>';
-		}
-		if ($title == '_recycler_') {
+			$title = '<strong>' . $title . '</strong>';
+		} elseif ($title == $GLOBALS['LANG']->getLL('recycler', TRUE)) {
 			$icon = 'apps-filetree-folder-recycler';
-			$title = '<strong>' . $GLOBALS['LANG']->getLL('recycler', TRUE) . '</strong>';
+			$title = '<strong>' . $title . '</strong>';
 		}
 		// Mark the icon as read-only icon if the folder is not writable
 		if ($folderObject->checkActionPermission('write') === FALSE) {

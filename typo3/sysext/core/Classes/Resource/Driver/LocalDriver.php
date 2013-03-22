@@ -62,6 +62,13 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 */
 	protected $charsetConversion;
 
+	protected $mappingNameToRole = array(
+		'_recycler_' => \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_RECYCLER,
+		'_processing' => \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_PROCESSING,
+		'_temp_' => \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_TEMPORARY,
+		'user_upload' => \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_USERUPLOAD,
+	);
+
 	/**
 	 * Checks if a configuration is valid for this storage.
 	 *
@@ -1156,6 +1163,16 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 			}
 		}
 		return $this->charsetConversion;
+	}
+
+
+	/**
+	 * Returns the role of a folder
+	 *
+	 * @return string
+	 */
+	public function getFolderRole(\TYPO3\CMS\Core\Resource\FolderInterface $folder) {
+		return $this->mappingNameToRole[$folder->getName()] ?: \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_DEFAULT;
 	}
 
 }

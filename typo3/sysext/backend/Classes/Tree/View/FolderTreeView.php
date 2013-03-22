@@ -318,6 +318,31 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	}
 
 	/**
+	 * Resolve special folders (by their role) into localised string and sort list accordingly
+	 *
+	 * @param array Array of \TYPO3\CMS\Core\Resource\Folder
+	 * @return array Array of \TYPO3\CMS\Core\Resource\Folder; will name name / sorting-key as array-key
+	 */
+	protected function resolveAndSortFolders(array $folders) {
+		$sortedFolders = array();
+		foreach($folders as $folder) {
+			$name = $folder->getName();
+			$role = $folder->getRole();
+			if ($role !== \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_DEFAULT) {
+				$tempName = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:role_' . $role, TRUE);
+				if(!empty($tempName) && ($tempName !== $name)) {
+					// Set new name and append original name
+					$name = $tempName . ' (' . $name . ')';
+				}
+			}
+			$sortedFolders[$name] = $folder;
+		}
+		uksort($sortedFolders, 'strnatcasecmp');
+
+		return $sortedFolders;
+	}
+
+	/**
 	 * Fetches the data for the tree
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject the folderobject
@@ -329,12 +354,13 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	public function getFolderTree(\TYPO3\CMS\Core\Resource\Folder $folderObject, $depth = 999, $type = '') {
 		$depth = intval($depth);
 		// This generates the directory tree
+		/* array of \TYPO3\CMS\Core\Resource\Folder */
 		$subFolders = $folderObject->getSubfolders();
-		sort($subFolders);
+		$subFolders = $this->resolveAndSortFolders($subFolders);
 		$totalSubFolders = count($subFolders);
 		$HTML = '';
 		$subFolderCounter = 0;
-		foreach ($subFolders as $subFolder) {
+		foreach ($subFolders as $subFolderName => $subFolder) {
 			$subFolderCounter++;
 			// Reserve space.
 			$this->tree[] = array();
@@ -346,7 +372,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 			$row = array(
 				'uid' => $specUID,
 				'path' => $subFolder->getCombinedIdentifier(),
-				'title' => $subFolder->getName(),
+				'title' => $subFolderName,
 				'folder' => $subFolder
 			);
 			// Make a recursive call to the next level
