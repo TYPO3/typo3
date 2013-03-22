@@ -115,7 +115,17 @@ abstract class AbstractTask implements TaskInterface {
 	public function getTargetFilename() {
 		return $this->targetFile->getNameWithoutExtension()
 			. '_' . $this->getConfigurationChecksum()
-			. '.' . $this->targetFile->getExtension();
+			. '.' . $this->getTargetFileExtension();
+	}
+
+	/**
+	 * Gets the file extension the processed file should
+	 * have in the filesystem.
+	 *
+	 * @return string
+	 */
+	public function getTargetFileExtension() {
+		return $this->targetFile->getExtension();
 	}
 
 	/**
