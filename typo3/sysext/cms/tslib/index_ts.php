@@ -95,24 +95,26 @@ if ($TYPO3_CONF_VARS['FE']['compressionLevel'] && extension_loaded('zlib')) {
 	}
 	ob_start(array(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Utility\\CompressionUtility'), 'compressionOutputHandler'));
 }
+
 // FE_USER
 $TT->push('Front End user initialized', '');
-/**
- * @var $TSFE \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
- */
+/** @var $TSFE \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
 $TSFE->initFEuser();
 $TT->pull();
+
 // BE_USER
-/**
- * @var $BE_USER \TYPO3\CMS\Backend\FrontendBackendUserAuthentication
- */
+/** @var $BE_USER \TYPO3\CMS\Backend\FrontendBackendUserAuthentication */
 $BE_USER = $TSFE->initializeBackendUser();
+
 // Process the ID, type and other parameters
 // After this point we have an array, $page in TSFE, which is the page-record of the current page, $id
 $TT->push('Process ID', '');
 // Initialize admin panel since simulation settings are required here:
 if ($TSFE->isBackendUserLoggedIn()) {
 	$BE_USER->initializeAdminPanel();
+	\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(TRUE);
+} else {
+	\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
 }
 $TSFE->checkAlternativeIdMethods();
 $TSFE->clear_preview();
@@ -134,7 +136,6 @@ $TT->pull();
 
 // Admin Panel & Frontend editing
 if ($TSFE->isBackendUserLoggedIn()) {
-	\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(TRUE);
 	$BE_USER->initializeFrontendEdit();
 	if ($BE_USER->adminPanel instanceof \TYPO3\CMS\Frontend\View\AdminPanelView) {
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeLanguageObject();
@@ -142,8 +143,6 @@ if ($TSFE->isBackendUserLoggedIn()) {
 	if ($BE_USER->frontendEdit instanceof \TYPO3\CMS\Core\FrontendEditing\FrontendEditingController) {
 		$BE_USER->frontendEdit->initConfigOptions();
 	}
-} else {
-	\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
 }
 
 // Starts the template
