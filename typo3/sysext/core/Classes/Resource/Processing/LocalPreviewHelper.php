@@ -66,15 +66,8 @@ class LocalPreviewHelper {
 
 		$originalFileName = $targetFile->getOriginalFile()->getForLocalProcessing(FALSE);
 
-			// Create a temporary file in typo3temp/
-		if ($targetFile->getOriginalFile()->getExtension() === 'jpg') {
-			$targetFileExtension = '.jpg';
-		} else {
-			$targetFileExtension = '.png';
-		}
-
 			// Create the thumb filename in typo3temp/preview_....jpg
-		$temporaryFileName = Utility\GeneralUtility::tempnam('preview_') . $targetFileExtension;
+		$temporaryFileName = Utility\GeneralUtility::tempnam('preview_') . '.' . $task->getTargetFileExtension();
 			// Check file extension
 		if ($targetFile->getOriginalFile()->getType() != Resource\File::FILETYPE_IMAGE &&
 			!Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $targetFile->getOriginalFile()->getExtension())) {

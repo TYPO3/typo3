@@ -69,6 +69,10 @@ class LocalCropScaleMaskHelper {
 		$configuration = $targetFile->getProcessingConfiguration();
 		$configuration['additionalParameters'] = $this->modifyImageMagickStripProfileParameters($configuration['additionalParameters'], $configuration);
 
+		if (empty($configuration['fileExtension'])) {
+			$configuration['fileExtension'] = $task->getTargetFileExtension();
+		}
+
 		$options = $this->getConfigurationForImageCropScaleMask($targetFile, $gifBuilder);
 
 		// Normal situation (no masking)
