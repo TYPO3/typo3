@@ -1,6 +1,8 @@
 <?php
 namespace TYPO3\CMS\Core\Resource\Driver;
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Resource\FolderInterface;
 
 /***************************************************************
  * Copyright notice
@@ -61,6 +63,12 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 * @var \TYPO3\CMS\Core\Charset\CharsetConverter
 	 */
 	protected $charsetConversion;
+
+	protected $mappingNameToRole = array(
+		'_recycler_' => FolderInterface::ROLE_RECYCLER,
+		'_temp_' => FolderInterface::ROLE_TEMPORARY,
+		'user_upload' => FolderInterface::ROLE_USERUPLOAD,
+	);
 
 	/**
 	 * Checks if a configuration is valid for this storage.
@@ -1156,6 +1164,19 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 			}
 		}
 		return $this->charsetConversion;
+	}
+
+
+	/**
+	 * Returns the role of a folder
+	 *
+         * (could later be extended to also work for files - thus the generic name)
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\FolderInterface $item
+	 * @return string
+	 */
+	public function getRole(\TYPO3\CMS\Core\Resource\FolderInterface $item) {
+		return $this->mappingNameToRole[$item->getName()] ?: FolderInterface::ROLE_DEFAULT;
 	}
 
 }
