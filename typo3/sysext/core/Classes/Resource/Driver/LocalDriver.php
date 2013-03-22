@@ -860,6 +860,30 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	}
 
 	/**
+	 * Move a folder from another storage.
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folderToMove
+	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param string $newFileName
+	 * @return boolean
+	 */
+	public function moveFolderBetweenStorages(\TYPO3\CMS\Core\Resource\Folder $folderToMove, \TYPO3\CMS\Core\Resource\Folder $targetParentFolder, $newFolderName) {
+		parent::moveFolderBetweenStorages($folderToMove, $targetParentFolder, $newFolderName);
+	}
+
+	/**
+	 * Copy a folder from another storage.
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folderToCopy
+	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
+	 * @param string $newFileName
+	 * @return boolean
+	 */
+	public function copyFolderBetweenStorages(\TYPO3\CMS\Core\Resource\Folder $folderToCopy, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newFolderName) {
+		parent::copyFolderBetweenStorages($folderToCopy, $targetFolder, $newFolderName);
+	}
+
+	/**
 	 * Renames a file in this storage.
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
