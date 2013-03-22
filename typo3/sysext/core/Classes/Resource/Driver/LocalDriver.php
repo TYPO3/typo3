@@ -138,6 +138,16 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	}
 
 	/**
+	 * Returns the name of a file/folder based on its identifier.
+	 *
+	 * @param string $identifier
+	 * @return string
+	 */
+	protected function getNameFromIdentifier($identifier) {
+		return $this->resolveHumanReadableName(basename($identifier));
+	}
+
+	/**
 	 * Returns the public URL to a file. For the local driver, this will always
 	 * return a path relative to PATH_site.
 	 *
@@ -355,6 +365,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		if (!is_file($filePath)) {
 			return array('', array());
 		}
+		$fileName = $this->resolveHumanReadableName($fileName);
 		// TODO add unit test for existing file row case
 		if (!empty($fileRow) && filemtime($filePath) <= $fileRow['modification_date']) {
 			return array($fileName, $fileRow);
@@ -382,6 +393,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		}
 		// remove the trailing slash from the folder name (the trailing slash comes from the DirectoryIterator)
 		$folderName = substr($folderName, 0, -1);
+		$folderName = $this->resolveHumanReadableName($folderName);
 		return array($folderName, $this->extractFolderInformation($folderPath, $parentPath));
 	}
 
@@ -438,7 +450,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 			'mtime' => filemtime($filePath),
 			'ctime' => filectime($filePath),
 			'mimetype' => $this->getMimeTypeOfFile($filePath),
-			'name' => $fileName,
+			'name' => $this->resolveHumanReadableName($fileName),
 			'identifier' => $containerPath . $fileName,
 			'storage' => $this->storage->getUid()
 		);
@@ -457,11 +469,37 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		$folderInformation = array(
 			'ctime' => filectime($folderPath),
 			'mtime' => filemtime($folderPath),
-			'name' => $folderName,
+			'name' => $this->resolveHumanReadableName($folderName),
 			'identifier' => $containerPath . $folderName . '/',
 			'storage' => $this->storage->getUid()
 		);
 		return $folderInformation;
+	}
+
+	/**
+	 * This function returns human readable names for some system folders like _temp_ or _recycler_ folder
+	 *
+	 * @param $fileOrFolderName
+	 *
+	 * @return string
+	 */
+	protected function resolveHumanReadableName($fileOrFolderName) {
+		$fileOrFolderName = htmlspecialchars($fileOrFolderName);
+		$newFileOrFolderName = $fileOrFolderName;
+
+		// Resolve file or folder name
+		if ($fileOrFolderName == '_temp_') {
+			$newFileOrFolderName = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:temp', TRUE);
+		} elseif ($fileOrFolderName == '_recycler_') {
+			$newFileOrFolderName = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:recycler', TRUE);
+		}
+
+		// Append original name
+		if ($newFileOrFolderName !== $fileOrFolderName) {
+			$newFileOrFolderName .= ' (' . $fileOrFolderName . ')';
+		}
+
+		return $newFileOrFolderName;
 	}
 
 	/**
