@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Core\Resource\Exception;
  * An exception to throw if a folder does not exist
  *
  */
-class FolderDoesNotExistException extends \TYPO3\CMS\Core\Resource\Exception {
+class FolderDoesNotExistException extends ResourceDoesNotExistException {
 
 
 }
