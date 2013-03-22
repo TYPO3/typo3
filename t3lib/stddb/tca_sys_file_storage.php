@@ -85,7 +85,8 @@ $TCA['sys_file_storage'] = array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(),
-				'default' => ''
+				'default' => 'Local',
+				'onChange' => 'reload'
 			)
 		),
 		'configuration' => array(
@@ -96,7 +97,6 @@ $TCA['sys_file_storage'] = array(
 				'ds_pointerField' => 'driver',
 				'ds' => array()
 			),
-			'displayCond' => 'REC:NEW:false'
 		)
 	),
 	'types' => array(
