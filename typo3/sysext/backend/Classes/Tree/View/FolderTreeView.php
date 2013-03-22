@@ -130,10 +130,11 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		$theFolderIcon = $this->addTagAttributes($icon, $this->titleAttrib ? $this->titleAttrib . '="' . $this->getTitleAttrib($folderObject) . '"' : '');
 		// Wrap icon in click-menu link.
 		if (!$this->ext_IconMode) {
-			// Check storage access to wrap with click menu
-			if ($folderObject->getStorage()->hasFolder('/')) {
-				$theFolderIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($theFolderIcon, $folderObject->getCombinedIdentifier(), '', 0);
+			// Disable context menu for offline storages
+			if (!$folderObject->getStorage()->isOnline()) {
+				return $theFolderIcon;
 			}
+			$theFolderIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($theFolderIcon, $folderObject->getCombinedIdentifier(), '', 0);
 		} elseif (!strcmp($this->ext_IconMode, 'titlelink')) {
 			$aOnClick = 'return jumpTo(\'' . $this->getJumpToParam($folderObject) . '\',this,\'' . $this->domIdPrefix . $this->getId($folderObject) . '\',' . $this->bank . ');';
 			$theFolderIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $theFolderIcon . '</a>';
@@ -151,12 +152,14 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @internal
 	 */
 	public function wrapTitle($title, \TYPO3\CMS\Core\Resource\Folder $folderObject, $bank = 0) {
-		// Check storage access to wrap with click menu
-		if (!$folderObject->getStorage()->hasFolder('/')) {
+		// Disable context menu for offline storages
+		if (!$folderObject->getStorage()->isOnline()) {
 			return $title;
 		}
+
 		$aOnClick = 'return jumpTo(\'' . $this->getJumpToParam($folderObject) . '\', this, \'' . $this->domIdPrefix . $this->getId($folderObject) . '\', ' . $bank . ');';
 		$CSM = ' oncontextmenu="' . htmlspecialchars($GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('', $folderObject->getCombinedIdentifier(), '', 0, ('&bank=' . $this->bank), '', TRUE)) . '"';
+
 		return '<a href="#" title="' . htmlspecialchars($title) . '" onclick="' . htmlspecialchars($aOnClick) . '"' . $CSM . '>' . $title . '</a>';
 	}
 
@@ -275,7 +278,12 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 				$rootIcon = 'minusonly';
 			}
 			$icon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . $rootIcon . '.gif')) . ' alt="" />';
-			$firstHtml = $this->PM_ATagWrap($icon, $cmd);
+			// Only link icon if storage is browseable
+			if (in_array($rootIcon, array('minusonly', 'plusonly'))) {
+				$firstHtml = $this->PM_ATagWrap($icon, $cmd);
+			} else {
+				$firstHtml = $icon;
+			}
 			// @todo: create sprite icons for user/group mounts etc
 			if ($storageObject->isBrowsable() === FALSE) {
 				$icon = 'apps-filetree-folder-locked';
