@@ -180,10 +180,10 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 */
 	public function getDefaultFolder() {
 		if (!$this->defaultLevelFolder) {
-			if (!file_exists(($this->absoluteBasePath . '_temp_/'))) {
-				mkdir($this->absoluteBasePath . '_temp_/');
+			if (!file_exists(($this->absoluteBasePath . 'user_upload/'))) {
+				mkdir($this->absoluteBasePath . 'user_upload/');
 			}
-			$this->defaultLevelFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->createFolderObject($this->storage, '/_temp_/', '');
+			$this->defaultLevelFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->createFolderObject($this->storage, '/user_upload/', '');
 		}
 		return $this->defaultLevelFolder;
 	}
