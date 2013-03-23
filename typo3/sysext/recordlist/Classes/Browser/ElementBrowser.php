@@ -1426,7 +1426,7 @@ class ElementBrowser {
 	 */
 	public function TBE_expandSubFolders(\TYPO3\CMS\Core\Resource\Folder $folder) {
 		$content = '';
-		if ($folder->checkActionPermission('browse')) {
+		if ($folder->checkActionPermission('read')) {
 			$content .= $this->folderList($folder);
 		}
 		// Return accumulated content for folderlisting:
@@ -1449,7 +1449,7 @@ class ElementBrowser {
 	public function expandFolder(\TYPO3\CMS\Core\Resource\Folder $folder, $extensionList = '') {
 		$out = '';
 		$renderFolders = $this->act === 'folder';
-		if ($folder->checkActionPermission('browse')) {
+		if ($folder->checkActionPermission('read')) {
 			// Create header for filelisting:
 			$out .= $this->barheader($GLOBALS['LANG']->getLL('files') . ':');
 			// Prepare current path value for comparison (showing red arrow)
@@ -1518,7 +1518,7 @@ class ElementBrowser {
 	public function TBE_expandFolder(\TYPO3\CMS\Core\Resource\Folder $folder, $extensionList = '', $noThumbs = 0) {
 		$extensionList = $extensionList == '*' ? '' : $extensionList;
 		$content = '';
-		if ($folder->checkActionPermission('browse')) {
+		if ($folder->checkActionPermission('read')) {
 			// Listing the files:
 			$files = $folder->getFiles($extensionList);
 			$content = $this->fileList($files, $folder, $noThumbs);
