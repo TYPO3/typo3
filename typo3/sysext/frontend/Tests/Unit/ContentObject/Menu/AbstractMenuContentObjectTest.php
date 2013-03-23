@@ -31,13 +31,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
 class AbstractMenuContentObjectTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * A backup of the global database
 	 *
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection

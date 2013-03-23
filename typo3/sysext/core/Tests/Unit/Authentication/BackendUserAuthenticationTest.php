@@ -36,13 +36,6 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	private $fixture = NULL;
 
-	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
 	public function setUp() {
 		// reset hooks
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] = array();

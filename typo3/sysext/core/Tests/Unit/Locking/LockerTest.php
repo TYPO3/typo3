@@ -31,13 +31,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Locking;
  */
 class LockerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
-	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
 	///////////////////////////////
 	// tests concerning __construct
 	///////////////////////////////

@@ -31,13 +31,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
 class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var \TYPO3\CMS\Core\Page\PageRenderer
 	 */
 	private $fixture;

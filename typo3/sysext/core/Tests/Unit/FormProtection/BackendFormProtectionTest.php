@@ -30,12 +30,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
 
 	/**
 	 * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection

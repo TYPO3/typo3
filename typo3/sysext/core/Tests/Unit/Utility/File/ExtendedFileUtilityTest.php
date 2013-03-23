@@ -31,11 +31,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility\File;
 class ExtendedFileUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var boolean Enable backup of global and system variables
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var array A backup of registered singleton instances
 	 */
 	protected $singletonInstances = array();

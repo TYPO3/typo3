@@ -34,13 +34,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log;
 class LogManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var \TYPO3\CMS\Core\Log\LogManager
 	 */
 	protected $logManagerInstance = NULL;

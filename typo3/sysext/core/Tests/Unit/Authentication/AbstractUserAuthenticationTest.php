@@ -31,13 +31,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * phpunit still needs some globals that are
 	 * reconstructed before $backupGlobals is handled. Those
 	 * important globals are handled in tearDown() directly.

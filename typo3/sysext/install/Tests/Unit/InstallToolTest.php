@@ -34,11 +34,6 @@ namespace TYPO3\CMS\Install\Tests\Unit;
 class InstallToolTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var boolean Enable backup of global and system variables
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var boolean True, if a test set a different error handler
 	 */
 	protected $customErrorHandlerUsed = FALSE;

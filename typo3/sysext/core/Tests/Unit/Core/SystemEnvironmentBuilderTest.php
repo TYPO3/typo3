@@ -34,13 +34,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Core;
 class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $fixture = NULL;

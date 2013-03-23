@@ -30,13 +30,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Sprite;
  */
 class SpriteManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
-	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
 	//////////////////////////////////////////
 	// Tests concerning addTcaTypeIcon
 	//////////////////////////////////////////

@@ -35,11 +35,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Service;
 class IndexerServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var boolean Backup all $GLOBALS
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var Store backup of TYPO3_DB
 	 */
 	protected $dbBackup;

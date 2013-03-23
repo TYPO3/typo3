@@ -35,13 +35,6 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Utility;
 class SaltedPasswordsUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @test
 	 */
 	public function doesReturnExtConfReturnDefaultSettingsIfNoExtensionConfigurationIsFound() {
