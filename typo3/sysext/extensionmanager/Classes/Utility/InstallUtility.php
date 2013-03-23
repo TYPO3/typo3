@@ -130,7 +130,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function install($extensionKey) {
 		$extension = $this->enrichExtensionWithDetails($extensionKey);
-		$this->processDatabaseUpdates($extension);
 		$this->ensureConfiguredDirectoriesExist($extension);
 		if ($extension['clearcacheonload']) {
 			$GLOBALS['typo3CacheManager']->flushCaches();
@@ -139,6 +138,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->loadExtension($extensionKey);
 		}
 		$this->reloadCaches();
+		// To ensure the caching framework is loaded with new extension process database updates after cache reload
+		$this->processDatabaseUpdates($extension);
 		$this->saveDefaultConfiguration($extension['key']);
 	}
 
@@ -235,11 +236,14 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function processDatabaseUpdates(array $extension) {
 		$extTablesSqlFile = PATH_site . $extension['siteRelPath'] . '/ext_tables.sql';
+		$extTablesSqlContent = '';
 		if (file_exists($extTablesSqlFile)) {
-			$extTablesSqlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extTablesSqlFile);
-				// @TODO: This should probably moved to TYPO3\CMS\Core\Cache\Cache->getDatabaseTableDefinitions ?!
-			$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-			$extTablesSqlContent .= \TYPO3\CMS\Core\Cache\Cache::getDatabaseTableDefinitions();
+			$extTablesSqlContent .= \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extTablesSqlFile);
+		}
+		// @TODO: This should probably moved to TYPO3\CMS\Core\Cache\Cache->getDatabaseTableDefinitions ?!
+		$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+		$extTablesSqlContent .= \TYPO3\CMS\Core\Cache\Cache::getDatabaseTableDefinitions();
+		if ($extTablesSqlContent !== '') {
 			$this->updateDbWithExtTablesSql($extTablesSqlContent);
 		}
 		$extTablesStaticSqlFile = PATH_site . $extension['siteRelPath'] . '/ext_tables_static+adt.sql';
