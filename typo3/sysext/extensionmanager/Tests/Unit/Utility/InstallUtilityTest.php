@@ -62,6 +62,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'unloadExtension',
 			'processDatabaseUpdates',
 			'reloadCaches',
+			'processCachingFrameworkUpdates',
 			'saveDefaultConfiguration',
 			'enrichExtensionWithDetails',
 			'ensureConfiguredDirectoriesExist',
@@ -112,6 +113,16 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->installMock->expects($this->once())
 				->method('processDatabaseUpdates')
 				->with($this->extensionData);
+
+		$this->installMock->install($this->extensionKey);
+	}
+
+	/**
+	 * @test
+	 */
+	public function installCallsProcessCachingFrameworkUpdates() {
+		$this->installMock->expects($this->once())
+			->method('processCachingFrameworkUpdates');
 
 		$this->installMock->install($this->extensionKey);
 	}
@@ -183,20 +194,6 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 */
-	public function processDatabaseUpdatesCallsUpdateDbWithExtTablesSqlIncludingCachingFrameworkTables() {
-		$extKey = $this->createFakeExtension();
-		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
-		$extTablesFile = $extPath . 'ext_tables.sql';
-		$fileContent = 'DUMMY TEXT TO COMPARE';
-		file_put_contents($extTablesFile, $fileContent);
-		$installMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility', array('updateDbWithExtTablesSql'));
-		$installMock->expects($this->once())->method('updateDbWithExtTablesSql')->with($this->stringContains('CREATE TABLE cf_cache_hash'));
-		$installMock->processDatabaseUpdates($this->fakedExtensions[$extKey]);
-	}
-
-	/**
-	 * @test
-	 */
 	public function processDatabaseUpdatesCallsImportStaticSql() {
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
@@ -206,6 +203,30 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$installMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility', array('importStaticSql'));
 		$installMock->expects($this->once())->method('importStaticSql')->with($fileContent);
 		$installMock->processDatabaseUpdates($this->fakedExtensions[$extKey]);
+	}
+
+	/**
+	 * @test
+	 */
+	public function InstallCallsUpdateDbWithCachingFrameworkTables() {
+		$extKey = $this->createFakeExtension();
+		$installMock = $this->getMock(
+			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility',
+			array(
+				'enrichExtensionWithDetails',
+				'ensureConfiguredDirectoriesExist',
+				'updateDbWithExtTablesSql'
+			)
+		);
+		$installMock->expects($this->any())
+			->method('enrichExtensionWithDetails')
+			->with($extKey)
+			->will($this->returnValue(array('key' => $extKey)));
+		$installMock->expects($this->at(2))
+			->method('updateDbWithExtTablesSql')
+			->with($this->stringContains('CREATE TABLE cf_cache_hash'));
+
+		$installMock->install($extKey);
 	}
 }
 ?>
