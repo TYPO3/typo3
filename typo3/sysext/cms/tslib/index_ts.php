@@ -43,17 +43,13 @@ define('TYPO3_MODE', 'FE');
 	->loadTypo3LoadedExtAndExtLocalconf(TRUE)
 	->applyAdditionalConfigurationSettings();
 
-if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('cms')) {
-	die('<strong>Error:</strong> The main frontend extension "cms" was not loaded. Enable it in the extension manager in the backend.');
-}
 // Timetracking started
 if ($_COOKIE[\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName()]) {
-	require_once PATH_t3lib . 'class.t3lib_timetrack.php';
 	$TT = new \TYPO3\CMS\Core\TimeTracker\TimeTracker();
 } else {
-	require_once PATH_t3lib . 'class.t3lib_timetracknull.php';
-	$TT = new t3lib_timeTrackNull();
+	$TT = new \TYPO3\CMS\Core\TimeTracker\NullTimeTracker();
 }
+
 $TT->start();
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeTypo3DbGlobal(FALSE);
 // Hook to preprocess the current request:
