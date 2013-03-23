@@ -306,7 +306,11 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 			$logData = unserialize($row['log_data']);
 			$msg = $row['error'] . ': ' . sprintf($row['details'], $logData[0], $logData[1], $logData[2], $logData[3], $logData[4]);
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $msg, '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR, TRUE);
-			\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
+			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+			$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+			/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+			$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+			$defaultFlashMessageQueue->enqueue($flashMessage);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 	}

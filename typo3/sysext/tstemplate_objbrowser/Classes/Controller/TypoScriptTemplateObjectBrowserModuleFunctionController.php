@@ -234,23 +234,23 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 						$property = trim($POST['data'][$name]['name']);
 						if (preg_replace('/[^a-zA-Z0-9_\\.]*/', '', $property) != $property) {
 							$badPropertyMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('noSpaces') . '<br />' . $GLOBALS['LANG']->getLL('nothingUpdated'), $GLOBALS['LANG']->getLL('badProperty'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-							\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($badPropertyMessage);
+							$this->addFlashMessage($badPropertyMessage);
 						} else {
 							$pline = $name . '.' . $property . ' = ' . trim($POST['data'][$name]['propertyValue']);
 							$propertyAddedMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($pline), $GLOBALS['LANG']->getLL('propertyAdded'));
-							\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($propertyAddedMessage);
+							$this->addFlashMessage($propertyAddedMessage);
 							$line .= LF . $pline;
 						}
 					} elseif ($POST['update_value']) {
 						$pline = $name . ' = ' . trim($POST['data'][$name]['value']);
 						$updatedMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($pline), $GLOBALS['LANG']->getLL('valueUpdated'));
-						\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($updatedMessage);
+						$this->addFlashMessage($updatedMessage);
 						$line .= LF . $pline;
 					} elseif ($POST['clear_object']) {
 						if ($POST['data'][$name]['clearValue']) {
 							$pline = $name . ' >';
 							$objectClearedMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($pline), $GLOBALS['LANG']->getLL('objectCleared'));
-							\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($objectClearedMessage);
+							$this->addFlashMessage($objectClearedMessage);
 							$line .= LF . $pline;
 						}
 					}
@@ -354,7 +354,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 				$theOutput .= $this->pObj->doc->spacer(10);
 			} else {
 				$noTemplateMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('noCurrentTemplate'), $GLOBALS['LANG']->getLL('edit'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-				\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($noTemplateMessage);
+				$this->addFlashMessage($noTemplateMessage);
 			}
 			// Links:
 			$out = '';
@@ -475,6 +475,20 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			$theOutput .= $this->pObj->doc->sectionEnd();
 		}
 		return $theOutput;
+	}
+
+	/**
+	 * Add flash message to queue
+	 *
+	 * @param \TYPO3\CMS\Core\Messaging\FlashMessage $flasgMessage
+	 * @return void
+	 */
+	protected function addFlashMessage(\TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage) {
+		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+		$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+		/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+		$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+		$defaultFlashMessageQueue->enqueue($flashMessage);
 	}
 
 }
