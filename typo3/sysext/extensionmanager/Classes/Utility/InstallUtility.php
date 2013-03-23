@@ -139,6 +139,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->loadExtension($extensionKey);
 		}
 		$this->reloadCaches();
+		$this->processCachingFrameworkUpdates();
 		$this->saveDefaultConfiguration($extension['key']);
 	}
 
@@ -235,17 +236,34 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function processDatabaseUpdates(array $extension) {
 		$extTablesSqlFile = PATH_site . $extension['siteRelPath'] . '/ext_tables.sql';
+		$extTablesSqlContent = '';
 		if (file_exists($extTablesSqlFile)) {
-			$extTablesSqlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extTablesSqlFile);
-				// @TODO: This should probably moved to TYPO3\CMS\Core\Cache\Cache->getDatabaseTableDefinitions ?!
-			$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-			$extTablesSqlContent .= \TYPO3\CMS\Core\Cache\Cache::getDatabaseTableDefinitions();
+			$extTablesSqlContent .= \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extTablesSqlFile);
+		}
+		if ($extTablesSqlContent !== '') {
 			$this->updateDbWithExtTablesSql($extTablesSqlContent);
 		}
 		$extTablesStaticSqlFile = PATH_site . $extension['siteRelPath'] . '/ext_tables_static+adt.sql';
 		if (file_exists($extTablesStaticSqlFile)) {
 			$extTablesStaticSqlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extTablesStaticSqlFile);
 			$this->importStaticSql($extTablesStaticSqlContent);
+		}
+	}
+
+	/**
+	 * Gets all registered caches and creates required caching framework tables.
+	 *
+	 * @return void
+	 */
+	protected function processCachingFrameworkUpdates() {
+		$extTablesSqlContent = '';
+
+		// @TODO: This should probably moved to TYPO3\CMS\Core\Cache\Cache->getDatabaseTableDefinitions ?!
+		$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+		$extTablesSqlContent .= \TYPO3\CMS\Core\Cache\Cache::getDatabaseTableDefinitions();
+
+		if ($extTablesSqlContent !== '') {
+			$this->updateDbWithExtTablesSql($extTablesSqlContent);
 		}
 	}
 
