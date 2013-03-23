@@ -985,12 +985,18 @@ class ResourceStorage {
 		if (!$this->checkFileActionPermission('remove', $fileObject)) {
 			throw new Exception\InsufficientFileAccessPermissionsException('You are not allowed to delete the file "' . $fileObject->getIdentifier() . '\'', 1319550425);
 		}
+
+		$this->emitPreFileDeleteSignal($fileObject);
+
 		$result = $this->driver->deleteFile($fileObject);
 		if ($result === FALSE) {
 			throw new Exception\FileOperationErrorException('Deleting the file "' . $fileObject->getIdentifier() . '\' failed.', 1329831691);
 		}
 		// Mark the file object as deleted
 		$fileObject->setDeleted();
+
+		$this->emitPostFileDeleteSignal($fileObject);
+
 		return TRUE;
 	}
 
@@ -1260,6 +1266,9 @@ class ResourceStorage {
 		if (!$this->checkFileActionPermission('write', $file)) {
 			throw new Exception\InsufficientFileWritePermissionsException('You are not allowed to rename the file "' . $file->getIdentifier() . '\'', 1319219349);
 		}
+
+		$this->emitPreFileRenameSignal($file, $targetFileName);
+
 		// Call driver method to rename the file that also updates the file
 		// object properties
 		try {
@@ -1269,6 +1278,9 @@ class ResourceStorage {
 		} catch (\RuntimeException $e) {
 
 		}
+
+		$this->emitPostFileRenameSignal($file, $targetFileName);
+
 		return $file;
 	}
 
@@ -1462,7 +1474,9 @@ class ResourceStorage {
 		if ($this->driver->folderExistsInFolder($newName, $folderObject)) {
 			throw new \InvalidArgumentException('The folder ' . $newName . ' already exists in folder ' . $folderObject->getIdentifier(), 1325418870);
 		}
+
 		$this->emitPreFolderRenameSignal($folderObject, $newName);
+
 		$fileObjects = $this->getAllFileObjectsInFolder($folderObject);
 		try {
 			$fileMappings = $this->driver->renameFolder($folderObject, $newName);
@@ -1476,7 +1490,9 @@ class ResourceStorage {
 		} catch (\Exception $e) {
 			throw $e;
 		}
+
 		$this->emitPostFolderRenameSignal($folderObject, $newName);
+
 		return $returnObject;
 	}
 
@@ -1496,9 +1512,13 @@ class ResourceStorage {
 		if ($this->driver->isFolderEmpty($folderObject) && !$deleteRecursively) {
 			throw new \RuntimeException('Could not delete folder "' . $folderObject->getIdentifier() . '" because it is not empty.', 1325952534);
 		}
+
 		$this->emitPreFolderDeleteSignal($folderObject);
+
 		$result = $this->driver->deleteFolder($folderObject, $deleteRecursively);
+
 		$this->emitPostFolderDeleteSignal($folderObject);
+
 		return $result;
 	}
 
