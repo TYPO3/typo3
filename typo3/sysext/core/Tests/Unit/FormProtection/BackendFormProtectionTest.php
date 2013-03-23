@@ -185,7 +185,7 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * @expectedException UnexpectedValueException
+	 * @expectedException \UnexpectedValueException
 	 * @test
 	 */
 	public function restoreSessionTokenFromRegistryThrowsExceptionIfSessionTokenIsEmpty() {
