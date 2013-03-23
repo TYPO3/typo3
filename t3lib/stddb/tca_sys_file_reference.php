@@ -160,7 +160,7 @@ $TCA['sys_file_reference'] = array(
 		'description' => array(
 			// This is used for captions in the frontend
 			'l10n_mode' => 'mergeIfNotBlank',
-			'exclude' => 0,
+			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.description',
 			'config' => array(
 				'type' => 'text',
@@ -172,7 +172,7 @@ $TCA['sys_file_reference'] = array(
 		),
 		'alternative' => array(
 			'l10n_mode' => 'mergeIfNotBlank',
-			'exclude' => 0,
+			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.alternative',
 			'config' => array(
 				'type' => 'input',
