@@ -109,7 +109,7 @@ class UpdateFromTerController extends \TYPO3\CMS\Extensionmanager\Controller\Abs
 			}
 		}
 		/** @var $repository \TYPO3\CMS\Extensionmanager\Domain\Model\Repository */
-		$repository = $this->repositoryRepository->findByUid((int)$this->settings['repositoryUid']);
+		$repository = $this->repositoryRepository->findByIdentifier((int)$this->settings['repositoryUid']);
 		$this->view->assign('updated', $updated)
 				->assign('repository', $repository)
 				->assign('errorMessage', $errorMessage);
