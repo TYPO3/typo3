@@ -122,10 +122,15 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 			if ($movedFile === FALSE) {
 				// Crdate and tstamp should not be present when updating
 				// the file object, as they only relate to the index record
-				$indexRecord = array_merge($fileInfo, array(
+				$additionalInfo = array(
 					'crdate' => $GLOBALS['EXEC_TIME'],
 					'tstamp' => $GLOBALS['EXEC_TIME']
-				));
+				);
+				if (TYPO3_MODE === 'BE') {
+					$additionalInfo['cruser_id'] = intval($GLOBALS['BE_USER']->user['uid']);
+				}
+				$indexRecord = array_merge($fileInfo, $additionalInfo);
+
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_file', $indexRecord);
 				$fileInfo['uid'] = $GLOBALS['TYPO3_DB']->sql_insert_id();
 			}
