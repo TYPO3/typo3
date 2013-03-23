@@ -1032,7 +1032,7 @@ class ResourceStorage {
 		// Call driver method to create a new file from an existing file object,
 		// and return the new file object
 		try {
-			if ($sourceStorage == $this) {
+			if ($sourceStorage === $this) {
 				$newFileObject = $this->driver->copyFileWithinStorage($file, $targetFolder, $targetFileName);
 			} else {
 				$tempPath = $file->getForLocalProcessing();
@@ -1155,7 +1155,7 @@ class ResourceStorage {
 		// Call driver method to move the file that also updates the file
 		// object properties
 		try {
-			if ($sourceStorage == $this) {
+			if ($sourceStorage === $this) {
 				$newIdentifier = $this->driver->moveFileWithinStorage($file, $targetFolder, $targetFileName);
 				$this->updateFile($file, $newIdentifier);
 			} else {
@@ -1377,7 +1377,7 @@ class ResourceStorage {
 		// Get all file objects now so we are able to update them after moving the folder
 		$fileObjects = $this->getAllFileObjectsInFolder($folderToMove);
 		try {
-			if ($sourceStorage == $this) {
+			if ($sourceStorage === $this) {
 				$fileMappings = $this->driver->moveFolderWithinStorage($folderToMove, $targetParentFolder, $newFolderName);
 			} else {
 				$fileMappings = $this->moveFolderBetweenStorages($folderToMove, $targetParentFolder, $newFolderName);
@@ -1428,7 +1428,7 @@ class ResourceStorage {
 		// call driver method to move the file
 		// that also updates the file object properties
 		try {
-			if ($sourceStorage == $this) {
+			if ($sourceStorage === $this) {
 				$this->driver->copyFolderWithinStorage($folderToCopy, $targetParentFolder, $newFolderName);
 				$returnObject = $this->getFolder($targetParentFolder->getSubfolder($newFolderName)->getIdentifier());
 			} else {
