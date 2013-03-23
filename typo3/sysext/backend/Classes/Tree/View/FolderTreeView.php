@@ -376,12 +376,12 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 				} else {
 					$icon = 'apps-filetree-folder-default';
 				}
-				if ($subFolder->getIdentifier() == '_temp_') {
+				if ($subFolder->getName() == '_temp_') {
 					$icon = 'apps-filetree-folder-temp';
 					$row['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:temp', TRUE);
 					$row['_title'] = '<strong>' . $row['title'] . '</strong>';
 				}
-				if ($subFolder->getIdentifier() == '_recycler_') {
+				if ($subFolder->getName() == '_recycler_') {
 					$icon = 'apps-filetree-folder-recycler';
 					$row['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:recycler', TRUE);
 					$row['_title'] = '<strong>' . $row['title'] . '</strong>';
