@@ -1,31 +1,6 @@
 <?php
 namespace TYPO3\CMS\Core\Utility\File;
 
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *  A copy is found in the textfile GPL.txt and important notices to the license
- *  from the author is found in LICENSE.txt distributed with these scripts.
- *
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
 /**
  * Extending class to class t3lib_basicFileFunctions
  *
@@ -60,6 +35,34 @@ namespace TYPO3\CMS\Core\Utility\File;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility {
 
 	// External static variables:
@@ -141,6 +144,12 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 */
 	protected $fileFactory;
 
+
+	/**
+	 * @var \TYPO3\CMS\Core\Resource\FileRepository
+	 */
+	protected $fileRepository;
+
 	/**
 	 * Initialization of the class
 	 *
@@ -157,6 +166,8 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 		$this->unzipPath = $unzipPath;
 		// Initialize Object Factory
 		$this->fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+		// Initialize Object Factory
+		$this->fileRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 		// Initializing file processing commands:
 		$this->fileCmdMap = $fileCmds;
 	}
@@ -853,7 +864,10 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 				} else {
 					$conflictMode = 'cancel';
 				}
-				$resultObjects[] = $targetFolderObject->addUploadedFile($fileInfo, $conflictMode);
+				/** @var $fileObject File */
+				$fileObject = $targetFolderObject->addUploadedFile($fileInfo, $conflictMode);
+				$this->fileRepository->addToIndex($fileObject);
+				$resultObjects[] = $fileObject;
 				$this->writelog(1, 0, 1, 'Uploading file "%s" to "%s"', array($fileInfo['name'], $targetFolderObject->getIdentifier()));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\UploadException $e) {
 				$this->writelog(1, 2, 106, 'The upload has failed, no uploaded file found!', '');
@@ -871,6 +885,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 				$this->writelog(1, 1, 100, 'Uploaded file could not be moved! Write-permission problem in "%s"?', array($targetFolderObject->getIdentifier()));
 			}
 		}
+
 		return $resultObjects;
 	}
 
