@@ -48,13 +48,19 @@ class MagicImageService {
 	 * @return \TYPO3\CMS\Core\Resource\Folder
 	 */
 	protected function getMagicFolder($targetFolderCombinedIdentifier) {
-		$fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
-		// @todo Proper exception handling is missing here
-		if ($targetFolderCombinedIdentifier) {
-			$magicFolder = $fileFactory->getFolderObjectFromCombinedIdentifier($targetFolderCombinedIdentifier);
-		}
-		if (empty($magicFolder) || !$magicFolder instanceof \TYPO3\CMS\Core\Resource\Folder) {
-			$magicFolder = $fileFactory->getFolderObjectFromCombinedIdentifier($GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir']);
+		// check if the input is already a folder
+		if ($targetFolderCombinedIdentifier instanceof \TYPO3\CMS\Core\Resource\Folder) {
+			$magicFolder = $targetFolderCombinedIdentifier;
+		} else {
+			$fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+
+			// @todo Proper exception handling is missing here
+			if ($targetFolderCombinedIdentifier) {
+				$magicFolder = $fileFactory->getFolderObjectFromCombinedIdentifier($targetFolderCombinedIdentifier);
+			}
+			if (empty($magicFolder) || !$magicFolder instanceof \TYPO3\CMS\Core\Resource\Folder) {
+				$magicFolder = $fileFactory->getFolderObjectFromCombinedIdentifier($GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir']);
+			}
 		}
 		return $magicFolder;
 	}

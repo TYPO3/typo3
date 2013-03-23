@@ -351,7 +351,11 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			// We only got a path: Go into backwards compatibility mode and
 			// use virtual Storage (uid=0)
 			$storageUid = 0;
-			$folderIdentifier = substr($parts[0], strlen(PATH_site));
+			$folderIdentifier = $parts[0];
+			// make sure to not use an absolute path, and remove PATH_site if it is prepended
+			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($folderIdentifier, PATH_site)) {
+				$folderIdentifier = substr($parts[0], strlen(PATH_site));
+			}
 		}
 		return $this->getStorageObject($storageUid)->getFolder($folderIdentifier);
 	}
