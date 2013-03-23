@@ -865,8 +865,12 @@ class EditDocumentController {
 									}
 									// Display "is-locked" message:
 									if ($lockInfo = \TYPO3\CMS\Backend\Utility\BackendUtility::isRecordLocked($table, $rec['uid'])) {
-										$lockedMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($lockInfo['msg']), '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
-										\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($lockedMessage);
+										$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', htmlspecialchars($lockInfo['msg']), '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
+										/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+										$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+										/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+										$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+										$defaultFlashMessageQueue->enqueue($flashMessage);
 									}
 									// Combine it all:
 									$editForm .= $panel;

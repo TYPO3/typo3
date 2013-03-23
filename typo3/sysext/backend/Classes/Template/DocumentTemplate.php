@@ -1875,7 +1875,11 @@ class DocumentTemplate {
 		}
 		// adding flash messages
 		if ($this->showFlashMessages) {
-			$flashMessages = \TYPO3\CMS\Core\Messaging\FlashMessageQueue::renderFlashMessages();
+			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+			$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+			/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+			$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+			$flashMessages = $defaultFlashMessageQueue->renderFlashMessages();
 			if (!empty($flashMessages)) {
 				$markerArray['FLASHMESSAGES'] = '<div id="typo3-messages">' . $flashMessages . '</div>';
 				// If there is no dedicated marker for the messages present
