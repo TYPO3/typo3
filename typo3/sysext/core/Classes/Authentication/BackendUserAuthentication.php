@@ -1557,7 +1557,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * removeFile = 1
 	 *
 	 * addFolder = 1
-	 * browseFolder = 1
+	 * readFolder = 1
 	 * moveFolder = 1
 	 * writeFolder = 1
 	 * renameFolder = 1
@@ -1595,7 +1595,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				'unzipFile' => TRUE,
 				'removeFile' => TRUE,
 				'addFolder' => TRUE,
-				'browseFolder' => TRUE,
+				'readFolder' => TRUE,
 				// new option,, generic check of the user rights
 				'moveFolder' => TRUE,
 				'renameFolder' => TRUE,

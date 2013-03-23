@@ -1414,7 +1414,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * removeFile = 1
 	 *
 	 * addFolder = 1
-	 * browseFolder = 1
+	 * readFolder = 1
 	 * moveFolder = 1
 	 * writeFolder = 1
 	 * renameFolder = 1
@@ -1452,7 +1452,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				'unzipFile' => TRUE,
 				'removeFile' => TRUE,
 				'addFolder' => TRUE,
-				'browseFolder' => TRUE,
+				'readFolder' => TRUE,
 				// new option,, generic check of the user rights
 				'moveFolder' => TRUE,
 				'renameFolder' => TRUE,
