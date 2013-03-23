@@ -32,13 +32,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 class DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection Backup of original TYPO3_DB instance
 	 */
 	protected $typo3DbBackup;

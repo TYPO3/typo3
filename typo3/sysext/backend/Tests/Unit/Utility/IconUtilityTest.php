@@ -35,13 +35,6 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var array
 	 */
 	protected $mockRecord;

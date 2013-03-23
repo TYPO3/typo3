@@ -32,13 +32,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Category;
 class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var \TYPO3\CMS\Core\Category\CategoryRegistry
 	 */
 	protected $fixture;

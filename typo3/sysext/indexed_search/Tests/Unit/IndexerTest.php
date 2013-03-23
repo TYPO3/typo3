@@ -33,13 +33,6 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Unit;
 class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * Indexer instance
 	 *
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\IndexedSearch\Indexer

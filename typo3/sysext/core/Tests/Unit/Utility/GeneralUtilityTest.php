@@ -34,13 +34,6 @@ use TYPO3\CMS\Core\Utility;
 class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * Absolute path to files that must be removed
 	 * after a test - handled in tearDown
 	 *

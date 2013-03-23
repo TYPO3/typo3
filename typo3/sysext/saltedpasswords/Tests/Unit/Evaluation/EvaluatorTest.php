@@ -35,13 +35,6 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Evaluation;
 class EvaluatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var \TYPO3\CMS\Saltedpasswords\Evaluation\Evaluator
 	 */
 	protected $fixture;

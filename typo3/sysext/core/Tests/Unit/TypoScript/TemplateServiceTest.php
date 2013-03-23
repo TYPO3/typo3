@@ -32,13 +32,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
 class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @test
 	 */
 	public function versionOlCallsVersionOlOfPageSelectClassWithGivenRow() {

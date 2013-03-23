@@ -1175,7 +1175,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider stdWrap_strftimeReturnsFormattedStringDataProvider
 	 */
 	public function stdWrap_strftimeReturnsFormattedString($content, $conf) {
-			// Set exec_time to a hard timestamp (backed up by $this->backupGlobals = TRUE)
+			// Set exec_time to a hard timestamp
 		$GLOBALS['EXEC_TIME'] = 1346500800;
 			// Save current timezone and set to UTC to make the system unter test behave
 			// the same in all server timezone settings

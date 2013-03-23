@@ -32,13 +32,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandler;
 class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Enable backup of global and system variables
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * a backup of the global database
 	 *
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection

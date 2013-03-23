@@ -32,11 +32,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree\Pagetree;
 class DataProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var boolean
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $fixture = NULL;

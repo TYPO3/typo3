@@ -35,11 +35,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var boolean Enable backup of global and system variables
-	 */
-	protected $backupGlobals = TRUE;
-
-	/**
 	 * @var \TYPO3\CMS\Core\Resource\Driver\DriverRegistry
 	 */
 	private $fixture;
