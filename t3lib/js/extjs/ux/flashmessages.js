@@ -88,7 +88,7 @@ TYPO3.Flashmessage = function() {
 			messageContainer.alignTo(document, 't-t');
 			box.child('.t3-icon-actions-message-close').on('click',	function (e, t, o) {
 				var node;
-				node = Ext.get(t).findParent('div.typo3-message');
+				node = new Ext.Element(Ext.get(t).findParent('div.typo3-message'));
 				node.hide();
 				Ext.removeNode(node.dom);
 			}, box);
