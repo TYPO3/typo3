@@ -4769,6 +4769,7 @@ Connection: close
 			return;
 		}
 		$log = $GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'];
+		$logHash = '[' . substr(md5($msg), 0, 8) . ']';
 		$date = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ': ');
 		// Legacy values (no strict comparison, $log can be boolean, string or int)
 		if ($log === TRUE || $log == '1') {
@@ -4785,11 +4786,27 @@ Connection: close
 			/** @var \TYPO3\CMS\Core\Locking\Locker $lockObject */
 			$lockObject->setEnableLogging(FALSE);
 			$lockObject->acquire();
-			$file = @fopen($destination, 'a');
-			if ($file) {
-				@fwrite($file, ($date . $msg . LF));
-				@fclose($file);
-				self::fixPermissions($destination);
+			$writeEntry = TRUE;
+			if (@file_exists($destination)) {
+				$fileContent = file_get_contents($destination);
+				$lines = explode(LF, $fileContent);
+				foreach ($lines as $line) {
+					// Parse hash from end of line
+					$lineHash = substr($line, -strlen($logHash));
+					if ($lineHash === $logHash) {
+						// This log entry already exists, we're done
+						$writeEntry = FALSE;
+						break;
+					}
+				}
+			}
+			if ($writeEntry) {
+				$file = @fopen($destination, 'a');
+				if ($file) {
+					@fwrite($file, ($date . $msg . ' ' . $logHash . LF));
+					@fclose($file);
+					self::fixPermissions($destination);
+				}
 			}
 			$lockObject->release();
 		}

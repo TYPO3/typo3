@@ -38,6 +38,12 @@ Backend
 Administration / Customization
 -------------------------------------------------------------------------------
 
+* Improved deprecation log handling
+
+The deprecation log now only writes each method usage once into the deprecation
+log file. Hence, the file will not grow that much anymore.
+On upgrade consider deleting the old deprecation log file.
+
 -------------------------------------------------------------------------------
 Extbase
 -------------------------------------------------------------------------------
