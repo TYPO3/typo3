@@ -6646,6 +6646,9 @@ class DataHandler {
 							$GLOBALS['typo3CacheManager']->flushCachesByTag('pageId_' . $pageId);
 						}
 					}
+					// Delete cache for current table and record
+					$GLOBALS['typo3CacheManager']->flushCachesByTag($table);
+					$GLOBALS['typo3CacheManager']->flushCachesByTag($table . '_' . $uid);
 				}
 			}
 			// Clear cache for pages entered in TSconfig:
