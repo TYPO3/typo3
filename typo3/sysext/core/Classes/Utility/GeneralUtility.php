@@ -4064,10 +4064,11 @@ Connection: close
 			$instance = new $fullyQualifiedClassName();
 		}
 		// Create alias if not present
-		$alias = \TYPO3\CMS\Core\Core\ClassLoader::getAliasForClassName($finalClassName);
+		// Thats done in ClassLoader IMHO
+		/*$alias = \TYPO3\CMS\Core\Core\ClassLoader::getAliasForClassName($finalClassName);
 		if ($finalClassName !== $alias && !class_exists($alias, FALSE)) {
 			class_alias($finalClassName, $alias);
-		}
+		}*/
 		// Register new singleton instance
 		if ($instance instanceof \TYPO3\CMS\Core\SingletonInterface) {
 			self::$singletonInstances[$finalClassName] = $instance;
