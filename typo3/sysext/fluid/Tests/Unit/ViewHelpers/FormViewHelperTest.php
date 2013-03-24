@@ -145,6 +145,40 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 	/**
 	 * @test
 	 */
+	public function renderWrapsHiddenFieldsWithDivForXhtmlCompatibilityWithDeprecatedPropertyMapper() {
+		/** @var $viewHelper \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper */
+		$viewHelper = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper'), array('renderChildren', 'renderHiddenIdentityField', 'renderAdditionalIdentityFields', 'renderHiddenReferrerFields', 'renderTrustedPropertiesField', 'renderRequestHashField'), array(), '', FALSE);
+		parent::injectDependenciesIntoViewHelper($viewHelper);
+		$viewHelper->expects($this->once())->method('renderHiddenIdentityField')->will($this->returnValue('hiddenIdentityField'));
+		$viewHelper->expects($this->once())->method('renderAdditionalIdentityFields')->will($this->returnValue('additionalIdentityFields'));
+		$viewHelper->expects($this->once())->method('renderHiddenReferrerFields')->will($this->returnValue('hiddenReferrerFields'));
+		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('formContent'));
+		$expectedResult = LF . '<div style="display: none">' . 'hiddenIdentityFieldadditionalIdentityFieldshiddenReferrerFields' . LF . '</div>' . LF . 'formContent';
+		$this->tagBuilder->expects($this->once())->method('setContent')->with($expectedResult);
+		$viewHelper->render();
+	}
+
+	/**
+	 * @test
+	 */
+	public function renderWrapsHiddenFieldsWithDivAndAnAdditionalClassForXhtmlCompatibilityWithDeprecatedPropertyMapper() {
+		$viewHelper = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper'), array('renderChildren', 'renderHiddenIdentityField', 'renderAdditionalIdentityFields', 'renderHiddenReferrerFields', 'renderTrustedPropertiesField', 'renderRequestHashField'), array(), '', FALSE);
+		$configurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('isFeatureEnabled'));
+		$viewHelper->injectConfigurationManager($configurationManager);
+		parent::injectDependenciesIntoViewHelper($viewHelper);
+		$viewHelper->expects($this->once())->method('renderHiddenIdentityField')->will($this->returnValue('hiddenIdentityField'));
+		$viewHelper->expects($this->once())->method('renderAdditionalIdentityFields')->will($this->returnValue('additionalIdentityFields'));
+		$viewHelper->expects($this->once())->method('renderHiddenReferrerFields')->will($this->returnValue('hiddenReferrerFields'));
+		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('formContent'));
+		$expectedResult = LF . '<div class="hidden">' . 'hiddenIdentityFieldadditionalIdentityFieldshiddenReferrerFields' . LF . '</div>' . LF . 'formContent';
+		$this->tagBuilder->expects($this->once())->method('setContent')->with($expectedResult);
+		$viewHelper->setArguments(array('hiddenFieldClassName' => 'hidden'));
+		$viewHelper->render();
+	}
+
+	/**
+	 * @test
+	 */
 	public function renderAdditionalIdentityFieldsFetchesTheFieldsFromViewHelperVariableContainerAndBuildsHiddenFieldsForThem() {
 		$identityProperties = array(
 			'object1[object2]' => '<input type="hidden" name="object1[object2][__identity]" value="42" />',
