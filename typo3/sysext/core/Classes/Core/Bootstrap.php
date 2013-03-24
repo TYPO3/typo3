@@ -293,6 +293,7 @@ class Bootstrap {
 			\TYPO3\CMS\Core\Compatibility\CompatbilityClassLoaderPhpBelow50307::registerAutoloader();
 		} else {
 			\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
+			\TYPO3\CMS\Core\Compatibility\ClassLoaderBackward::registerAutoloader();
 		}
 		return $this;
 	}
