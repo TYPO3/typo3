@@ -142,12 +142,12 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	/**
 	 * @test
 	 */
-	public function getDefaultFolderReturnsFolderForTemporaryPath() {
+	public function getDefaultFolderReturnsFolderForUserUploadPath() {
 		$fixture = $this->createDriverFixture(array(
 			'basePath' => $this->getMountRootUrl()
 		));
 		$folder = $fixture->getDefaultFolder();
-		$this->assertStringEndsWith('_temp_/', $folder->getIdentifier());
+		$this->assertStringEndsWith('user_upload/', $folder->getIdentifier());
 	}
 
 	/**
@@ -158,7 +158,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			'basePath' => $this->getMountRootUrl()
 		));
 		$fixture->getDefaultFolder();
-		$this->assertFileExists($this->getUrlInMount('/_temp_/'));
+		$this->assertFileExists($this->getUrlInMount('/user_upload/'));
 	}
 
 	/**
