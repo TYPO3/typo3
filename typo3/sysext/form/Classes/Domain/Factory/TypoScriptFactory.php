@@ -193,6 +193,11 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function reconstituteElement(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $element, array $arguments = array()) {
+		if (isset($arguments['value.'])) {
+			$cObj = $this->getLocalConentObject();
+			$arguments['value'] = $cObj->stdWrap($arguments['value'], $arguments['value.']);
+		}
+
 		$this->setAttributes($element, $arguments);
 		$this->setAdditionals($element, $arguments);
 		if (isset($arguments['filters.'])) {
