@@ -334,7 +334,7 @@ if (!GLV_doReset["'.$mIdStr.'"] && GLV_currentLayer["'.$mIdStr.'"]!=null)	resetS
 		}
 		$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid']=array_merge($this->WMtempStore,$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid']);
 		$GLOBALS['TSFE']->additionalHeaderData['gmenu_layer_shared']='<script type="text/javascript" src="'.t3lib_extMgm::siteRelPath('cms').'tslib/media/scripts/jsfunc.layermenu.js"></script>';
-		$GLOBALS['TSFE']->JSCode.= '
+		$GLOBALS['TSFE']->additionalJavaScript['gmenu_layer_code'].= '
 
 GLV_curLayerWidth["'.$this->WMid.'"]=0;
 GLV_curLayerHeight["'.$this->WMid.'"]=0;
@@ -358,7 +358,7 @@ GLV_menuXY["'.$this->WMid.'"] = new Array();
 '.$this->WMrestoreVars;
 
 		if ($this->mconf['freezeMouseover'])	{
-			$GLOBALS['TSFE']->JSCode.= '
+			$GLOBALS['TSFE']->additionalJavaScript['gmenu_layer_code'].= '
 // Alternative rollover/out functions for use with GMENU_LAYER
 function GL'.$this->WMid.'_over(mitm_id)	{
 	GL'.$this->WMid.'_out("");	// removes any old roll over state of an item. Needed for alwaysKeep and Opera browsers.
@@ -375,7 +375,7 @@ function GL'.$this->WMid.'_out(mitm_id)	{
 }
 ';
 		}
-		$GLOBALS["TSFE"]->JSCode.= '
+		$GLOBALS["TSFE"]->additionalJavaScript['gmenu_layer_code'].= '
 function GL'.$this->WMid.'_getMouse(e) {
 	if (GLV_menuOn["'.$this->WMid.'"]!=null && !GLV_dontFollowMouse["'.$this->WMid.'"]){
 '.implode(LF,$GLV_menuOn).'
