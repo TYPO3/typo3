@@ -258,7 +258,7 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
 				$this->databaseHandle = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('PDO', $this->dataSourceName, $this->username, $this->password);
 			}
 			$this->databaseHandle->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-			if ($this->pdoDriver === 'mysql') {
+			if (substr($this->pdoDriver, 0, 5) === 'mysql') {
 				$this->databaseHandle->exec('SET SESSION sql_mode=\'ANSI\';');
 			}
 		} catch (\PDOException $e) {

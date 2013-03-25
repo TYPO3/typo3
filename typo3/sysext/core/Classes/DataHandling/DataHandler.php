@@ -5260,7 +5260,7 @@ class DataHandler {
 	 *
 	 * @param integer $id Page id
 	 * @param integer $perms Permission integer
-	 * @return pointer MySQL result pointer (from exec_SELECTquery())
+	 * @return resource MySQL result object (from exec_SELECTquery())
 	 * @access private
 	 * @see doesRecordExist()
 	 * @todo Define visibility

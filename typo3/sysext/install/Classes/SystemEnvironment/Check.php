@@ -63,7 +63,7 @@ class Check {
 		'gd',
 		'hash',
 		'json',
-		'mysql',
+		'mysqli',
 		'openssl',
 		'pcre',
 		'session',
