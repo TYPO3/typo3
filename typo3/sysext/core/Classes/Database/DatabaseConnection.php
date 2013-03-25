@@ -27,8 +27,8 @@ namespace TYPO3\CMS\Core\Database;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Contains the class "t3lib_db" containing functions for building SQL queries
- * and mysql wrappers, thus providing a foundational API to all database
+ * Contains the class "DatabaseConnection" containing functions for building SQL queries
+ * and mysqli wrappers, thus providing a foundational API to all database
  * interaction.
  * This class is instantiated globally as $TYPO3_DB in TYPO3 scripts.
  *
@@ -36,7 +36,7 @@ namespace TYPO3\CMS\Core\Database;
  * This class contains
  * - abstraction functions for executing INSERT/UPDATE/DELETE/SELECT queries ("Query execution"; These are REQUIRED for all future connectivity to the database, thus ensuring DBAL compliance!)
  * - functions for building SQL queries (INSERT/UPDATE/DELETE/SELECT) ("Query building"); These are transitional functions for building SQL queries in a more automated way. Use these to build queries instead of doing it manually in your code!
- * - mysql() wrapper functions; These are transitional functions. By a simple search/replace you should be able to substitute all mysql*() calls with $GLOBALS['TYPO3_DB']->sql*() and your application will work out of the box. YOU CANNOT (legally) use any mysql functions not found as wrapper functions in this class!
+ * - mysqli wrapper functions; These are transitional functions. By a simple search/replace you should be able to substitute all mysql*() calls with $GLOBALS['TYPO3_DB']->sql*() and your application will work out of the box. YOU CANNOT (legally) use any mysqli functions not found as wrapper functions in this class!
  * See the Project Coding Guidelines (doc_core_cgl) for more instructions on best-practise
  *
  * This class is not in itself a complete database abstraction layer but can be extended to be a DBAL (by extensions, see "dbal" for example)
@@ -135,11 +135,11 @@ class DatabaseConnection {
 	 * @param string $table Table name
 	 * @param array $fields_values Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
 	 * @param string/array $no_quote_fields See fullQuoteArray()
-	 * @return pointer MySQL result pointer / DBAL object
+	 * @return pointer MySQLi result object / DBAL object
 	 * @todo Define visibility
 	 */
 	public function exec_INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
-		$res = mysql_query($this->INSERTquery($table, $fields_values, $no_quote_fields), $this->link);
+		$res = $this->link->query($this->INSERTquery($table, $fields_values, $no_quote_fields));
 		if ($this->debugOutput) {
 			$this->debug('exec_INSERTquery');
 		}
@@ -156,10 +156,10 @@ class DatabaseConnection {
 	 * @param array $fields Field names
 	 * @param array $rows Table rows. Each row should be an array with field values mapping to $fields
 	 * @param string/array $no_quote_fields See fullQuoteArray()
-	 * @return pointer MySQL result pointer / DBAL object
+	 * @return pointer MySQLi result object / DBAL object
 	 */
 	public function exec_INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
-		$res = mysql_query($this->INSERTmultipleRows($table, $fields, $rows, $no_quote_fields), $this->link);
+		$res = $this->link->query($this->INSERTmultipleRows($table, $fields, $rows, $no_quote_fields));
 		if ($this->debugOutput) {
 			$this->debug('exec_INSERTmultipleRows');
 		}
@@ -177,11 +177,11 @@ class DatabaseConnection {
 	 * @param string $where WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
 	 * @param array $fields_values Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
 	 * @param string/array $no_quote_fields See fullQuoteArray()
-	 * @return pointer MySQL result pointer / DBAL object
+	 * @return pointer MySQLi result object / DBAL object
 	 * @todo Define visibility
 	 */
 	public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = FALSE) {
-		$res = mysql_query($this->UPDATEquery($table, $where, $fields_values, $no_quote_fields), $this->link);
+		$res = $this->link->query($this->UPDATEquery($table, $where, $fields_values, $no_quote_fields));
 		if ($this->debugOutput) {
 			$this->debug('exec_UPDATEquery');
 		}
@@ -196,11 +196,11 @@ class DatabaseConnection {
 	 *
 	 * @param string $table Database tablename
 	 * @param string $where WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
-	 * @return pointer MySQL result pointer / DBAL object
+	 * @return pointer MySQLi result object / DBAL object
 	 * @todo Define visibility
 	 */
 	public function exec_DELETEquery($table, $where) {
-		$res = mysql_query($this->DELETEquery($table, $where), $this->link);
+		$res = $this->link->query($this->DELETEquery($table, $where));
 		if ($this->debugOutput) {
 			$this->debug('exec_DELETEquery');
 		}
@@ -220,17 +220,17 @@ class DatabaseConnection {
 	 * @param string $groupBy Optional GROUP BY field(s), if none, supply blank string.
 	 * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
 	 * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
-	 * @return resource MySQL result pointer / DBAL object
+	 * @return resource MySQLi result object / DBAL object
 	 * @todo Define visibility
 	 */
 	public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
 		$query = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
-		$res = mysql_query($query, $this->link);
+		$res = $this->link->query($query);
 		if ($this->debugOutput) {
 			$this->debug('exec_SELECTquery');
 		}
 		if ($this->explainOutput) {
-			$this->explain($query, $from_table, $this->sql_num_rows($res));
+			$this->explain($query, $from_table, $res->num_rows);
 		}
 		return $res;
 	}
@@ -249,7 +249,7 @@ class DatabaseConnection {
 	 * @param string $groupBy Optional GROUP BY field(s), if none, supply blank string.
 	 * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
 	 * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
-	 * @return resource MySQL result pointer / DBAL object
+	 * @return resource MySQLi result object / DBAL object
 	 * @see exec_SELECTquery()
 	 * @todo Define visibility
 	 */
@@ -271,7 +271,7 @@ class DatabaseConnection {
 	 * Executes a select based on input query parts array
 	 *
 	 * @param array $queryParts Query parts array
-	 * @return resource MySQL select result pointer / DBAL object
+	 * @return resource MySQLi select result object / DBAL object
 	 * @see exec_SELECTquery()
 	 * @todo Define visibility
 	 */
@@ -334,7 +334,7 @@ class DatabaseConnection {
 			$this->debug('exec_SELECTquery');
 		}
 		$output = NULL;
-		if ($res) {
+		if ($res !== FALSE) {
 			if ($numIndex) {
 				$output = $this->sql_fetch_row($res);
 			} else {
@@ -371,7 +371,7 @@ class DatabaseConnection {
 	 * @return mixed Result from handler
 	 */
 	public function exec_TRUNCATEquery($table) {
-		$res = mysql_query($this->TRUNCATEquery($table), $this->link);
+		$res = $this->link->query($this->TRUNCATEquery($table));
 		if ($this->debugOutput) {
 			$this->debug('exec_TRUNCATEquery');
 		}
@@ -676,10 +676,10 @@ class DatabaseConnection {
 	 *
 	 * @param string $query The query to execute
 	 * @param array $queryComponents The components of the query to execute
-	 * @return pointer MySQL result pointer / DBAL object
+	 * @return resource MySQL result object / DBAL object
 	 */
 	public function exec_PREPAREDquery($query, array $queryComponents) {
-		$res = mysql_query($query, $this->link);
+		$res = $this->link->query($query);
 		if ($this->debugOutput) {
 			$this->debug('stmt_execute', $query);
 		}
@@ -711,7 +711,7 @@ class DatabaseConnection {
 			return 'NULL';
 		}
 
-		return '\'' . mysql_real_escape_string($str, $this->link) . '\'';
+		return '\'' . $this->link->real_escape_string($str) . '\'';
 	}
 
 	/**
@@ -751,7 +751,7 @@ class DatabaseConnection {
 	 * @todo Define visibility
 	 */
 	public function quoteStr($str, $table) {
-		return mysql_real_escape_string($str, $this->link);
+		return $this->link->real_escape_string($str);
 	}
 
 	/**
@@ -887,22 +887,22 @@ class DatabaseConnection {
 
 	/**************************************
 	 *
-	 * MySQL wrapper functions
+	 * MySQL(i) wrapper functions
 	 * (For use in your applications)
 	 *
 	 **************************************/
 	/**
 	 * Executes query
-	 * mysql_query() wrapper function
+	 * MySQLi query() wrapper function
 	 * Beware: Use of this method should be avoided as it is experimentally supported by DBAL. You should consider
 	 * using exec_SELECTquery() and similar methods instead.
 	 *
 	 * @param string $query Query to execute
-	 * @return pointer Result pointer / DBAL object
+	 * @return pointer MySQLi result oject / DBAL object
 	 * @todo Define visibility
 	 */
 	public function sql_query($query) {
-		$res = mysql_query($query, $this->link);
+		$res = $this->link->query($query);
 		if ($this->debugOutput) {
 			$this->debug('sql_query', $query);
 		}
@@ -910,38 +910,35 @@ class DatabaseConnection {
 	}
 
 	/**
-	 * Returns the error status on the last sql() execution
-	 * mysql_error() wrapper function
+	 * Returns the error status on the last query() execution
 	 *
-	 * @return string MySQL error string.
+	 * @return string MySQLi error string.
 	 * @todo Define visibility
 	 */
 	public function sql_error() {
-		return mysql_error($this->link);
+		return $this->link->error;
 	}
 
 	/**
-	 * Returns the error number on the last sql() execution
-	 * mysql_errno() wrapper function
+	 * Returns the error number on the last query() execution
 	 *
-	 * @return integer MySQL error number.
+	 * @return integer MySQLi error number
 	 * @todo Define visibility
 	 */
 	public function sql_errno() {
-		return mysql_errno($this->link);
+		return $this->link->errno;
 	}
 
 	/**
 	 * Returns the number of selected rows.
-	 * mysql_num_rows() wrapper function
 	 *
-	 * @param pointer $res MySQL result pointer (of SELECT query) / DBAL object
+	 * @param pointer $res MySQLi result object (of SELECT query) / DBAL object
 	 * @return integer Number of resulting rows
 	 * @todo Define visibility
 	 */
 	public function sql_num_rows($res) {
 		if ($this->debug_check_recordset($res)) {
-			return mysql_num_rows($res);
+			return $res->num_rows;
 		} else {
 			return FALSE;
 		}
@@ -949,15 +946,15 @@ class DatabaseConnection {
 
 	/**
 	 * Returns an associative array that corresponds to the fetched row, or FALSE if there are no more rows.
-	 * mysql_fetch_assoc() wrapper function
+	 * MySQLi fetch_assoc() wrapper function
 	 *
-	 * @param pointer $res MySQL result pointer (of SELECT query) / DBAL object
+	 * @param pointer $res MySQLi result object (of SELECT query) / DBAL object
 	 * @return array Associative array of result row.
 	 * @todo Define visibility
 	 */
 	public function sql_fetch_assoc($res) {
 		if ($this->debug_check_recordset($res)) {
-			return mysql_fetch_assoc($res);
+			return $res->fetch_assoc();
 		} else {
 			return FALSE;
 		}
@@ -966,15 +963,15 @@ class DatabaseConnection {
 	/**
 	 * Returns an array that corresponds to the fetched row, or FALSE if there are no more rows.
 	 * The array contains the values in numerical indices.
-	 * mysql_fetch_row() wrapper function
+	 * MySQLi fetch_row() wrapper function
 	 *
-	 * @param pointer $res MySQL result pointer (of SELECT query) / DBAL object
+	 * @param pointer $res MySQLi result object (of SELECT query) / DBAL object
 	 * @return array Array with result rows.
 	 * @todo Define visibility
 	 */
 	public function sql_fetch_row($res) {
 		if ($this->debug_check_recordset($res)) {
-			return mysql_fetch_row($res);
+			return $res->fetch_row();
 		} else {
 			return FALSE;
 		}
@@ -982,15 +979,15 @@ class DatabaseConnection {
 
 	/**
 	 * Free result memory
-	 * mysql_free_result() wrapper function
+	 * free_result() wrapper function
 	 *
-	 * @param pointer $res MySQL result pointer to free / DBAL object
+	 * @param pointer $res MySQLi result object to free / DBAL object
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 * @todo Define visibility
 	 */
 	public function sql_free_result($res) {
 		if ($this->debug_check_recordset($res)) {
-			return mysql_free_result($res);
+			return $res->free();
 		} else {
 			return FALSE;
 		}
@@ -998,38 +995,35 @@ class DatabaseConnection {
 
 	/**
 	 * Get the ID generated from the previous INSERT operation
-	 * mysql_insert_id() wrapper function
 	 *
 	 * @return integer The uid of the last inserted record.
 	 * @todo Define visibility
 	 */
 	public function sql_insert_id() {
-		return mysql_insert_id($this->link);
+		return $this->link->insert_id;
 	}
 
 	/**
 	 * Returns the number of rows affected by the last INSERT, UPDATE or DELETE query
-	 * mysql_affected_rows() wrapper function
 	 *
 	 * @return integer Number of rows affected by last query
 	 * @todo Define visibility
 	 */
 	public function sql_affected_rows() {
-		return mysql_affected_rows($this->link);
+		return $this->link->affected_rows;
 	}
 
 	/**
 	 * Move internal result pointer
-	 * mysql_data_seek() wrapper function
 	 *
-	 * @param pointer $res MySQL result pointer (of SELECT query) / DBAL object
+	 * @param pointer $res MySQLi result object (of SELECT query) / DBAL object
 	 * @param integer $seek Seek result number.
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 * @todo Define visibility
 	 */
 	public function sql_data_seek($res, $seek) {
 		if ($this->debug_check_recordset($res)) {
-			return mysql_data_seek($res, $seek);
+			return $res->data_seek($seek);
 		} else {
 			return FALSE;
 		}
@@ -1039,14 +1033,39 @@ class DatabaseConnection {
 	 * Get the type of the specified field in a result
 	 * mysql_field_type() wrapper function
 	 *
-	 * @param pointer $res MySQL result pointer (of SELECT query) / DBAL object
+	 * @param resource $res MySQLi result object (of SELECT query) / DBAL object
 	 * @param integer $pointer Field index.
-	 * @return string Returns the name of the specified field index
+	 * @return string Returns the name of the specified field index, or FALSE on error
 	 * @todo Define visibility
 	 */
 	public function sql_field_type($res, $pointer) {
+		// mysql_field_type compatibility map
+		// taken from: http://www.php.net/manual/en/mysqli-result.fetch-field-direct.php#89117
+		// Constant numbers see http://php.net/manual/en/mysqli.constants.php
+		$mysql_data_type_hash = array(
+			1=>'tinyint',
+			2=>'smallint',
+			3=>'int',
+			4=>'float',
+			5=>'double',
+			7=>'timestamp',
+			8=>'bigint',
+			9=>'mediumint',
+			10=>'date',
+			11=>'time',
+			12=>'datetime',
+			13=>'year',
+			16=>'bit',
+			//252 is currently mapped to all text and blob types (MySQL 5.0.51a)
+			253=>'varchar',
+			254=>'char',
+			246=>'decimal'
+		);
 		if ($this->debug_check_recordset($res)) {
-			return mysql_field_type($res, $pointer);
+			$metaInfo = $res->fetch_field_direct($pointer);
+			if ($metaInfo === FALSE)
+				return FALSE;
+			return $mysql_data_type_hash[$metaInfo['type']];
 		} else {
 			return FALSE;
 		}
@@ -1054,53 +1073,48 @@ class DatabaseConnection {
 
 	/**
 	 * Open a (persistent) connection to a MySQL server
-	 * mysql_pconnect() wrapper function
 	 *
 	 * @param string $TYPO3_db_host Database host IP/domain
 	 * @param string $TYPO3_db_username Username to connect with.
 	 * @param string $TYPO3_db_password Password to connect with.
-	 * @return pointer Returns a positive MySQL persistent link identifier on success, or FALSE on error.
+	 * @return resource Returns a positive MySQLi object on success, or FALSE on error.
 	 * @todo Define visibility
 	 */
 	public function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password) {
-		// mysql_error() is tied to an established connection
-		// if the connection fails we need a different method to get the error message
-		@ini_set('track_errors', 1);
-		@ini_set('html_errors', 0);
-		// Check if MySQL extension is loaded
-		if (!extension_loaded('mysql')) {
-			$message = 'Database Error: It seems that MySQL support for PHP is not installed!';
-			throw new \RuntimeException($message, 1271492606);
+		// Check if MySQLi extension is loaded
+		if (!extension_loaded('mysqli')) {
+			$message = 'Database Error: It seems that MySQLi support for PHP is not installed!';
+			throw new \RuntimeException($message, 1271492607);
 		}
 		// Check for client compression
 		$isLocalhost = $TYPO3_db_host == 'localhost' || $TYPO3_db_host == '127.0.0.1';
+		$this->link = mysqli_init();
+		$connected = FALSE;
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect']) {
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['dbClientCompress'] && !$isLocalhost) {
-				// We use PHP's default value for 4th parameter (new_link), which is FALSE.
-				// See PHP sources, for example: file php-5.2.5/ext/mysql/php_mysql.c,
-				// function php_mysql_do_connect(), near line 525
-				$this->link = @mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password, FALSE, MYSQL_CLIENT_COMPRESS);
+				// use default-port to connect to MySQL
+				$connected = $this->link->real_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password, NULL, MYSQLI_CLIENT_COMPRESS);
 			} else {
-				$this->link = @mysql_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+				$connected = $this->link->real_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
 			}
 		} else {
+			// prepend 'p:' to host to use a persistent connection
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['dbClientCompress'] && !$isLocalhost) {
-				// See comment about 4th parameter in block above
-				$this->link = @mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password, MYSQL_CLIENT_COMPRESS);
+				// use default-port to connect to MySQL
+				$connected = $this->link->real_connect('p:' . $TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password, NULL, MYSQLI_CLIENT_COMPRESS);
 			} else {
-				$this->link = @mysql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
+				$connected = $this->link->real_connect('p:' . $TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
 			}
 		}
-		$error_msg = $php_errormsg;
-		@ini_restore('track_errors');
-		@ini_restore('html_errors');
-		if (!$this->link) {
+		$error_msg = $this->link->connect_error;
+		if (!$connected) {
+			$this->link = FALSE;
 			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not connect to MySQL server ' . $TYPO3_db_host . ' with user ' . $TYPO3_db_username . ': ' . $error_msg, 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_FATAL);
 		} else {
 			$setDBinit = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, str_replace('\' . LF . \'', LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']), TRUE);
 			foreach ($setDBinit as $v) {
-				if (mysql_query($v, $this->link) === FALSE) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not initialize DB connection with query "' . $v . '": ' . mysql_error($this->link), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+				if ($this->link->query($v) === FALSE) {
+					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not initialize DB connection with query "' . $v . '": ' . $this->sql_error(), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 				}
 			}
 			$this->setSqlMode();
@@ -1119,7 +1133,7 @@ class DatabaseConnection {
 			$result = $this->sql_fetch_row($resource);
 			if (isset($result[0]) && $result[0] && strpos($result[0], 'NO_BACKSLASH_ESCAPES') !== FALSE) {
 				$modes = array_diff(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $result[0]), array('NO_BACKSLASH_ESCAPES'));
-				$query = 'SET sql_mode=\'' . mysql_real_escape_string(implode(',', $modes)) . '\';';
+				$query = 'SET sql_mode=\'' . $this->link->real_escape_string(implode(',', $modes)) . '\';';
 				$success = $this->sql_query($query);
 				\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('NO_BACKSLASH_ESCAPES could not be removed from SQL mode: ' . $this->sql_error(), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 			}
@@ -1127,17 +1141,16 @@ class DatabaseConnection {
 	}
 
 	/**
-	 * Select a MySQL database
-	 * mysql_select_db() wrapper function
+	 * Select a SQL database
 	 *
 	 * @param string $TYPO3_db Database to connect to.
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 * @todo Define visibility
 	 */
 	public function sql_select_db($TYPO3_db) {
-		$ret = @mysql_select_db($TYPO3_db, $this->link);
+		$ret = $this->link->select_db($TYPO3_db);
 		if (!$ret) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not select MySQL database ' . $TYPO3_db . ': ' . mysql_error(), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_FATAL);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not select MySQL database ' . $TYPO3_db . ': ' . $this->sql_error(), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_FATAL);
 		}
 		return $ret;
 	}
@@ -1159,8 +1172,8 @@ class DatabaseConnection {
 	 */
 	public function admin_get_dbs() {
 		$dbArr = array();
-		$db_list = mysql_list_dbs($this->link);
-		while ($row = mysql_fetch_object($db_list)) {
+		$db_list = $this->link->query("SHOW DATABASES");
+		while ($row = $db_list->fetch_object()) {
 			if ($this->sql_select_db($row->Database)) {
 				$dbArr[] = $row->Database;
 			}
@@ -1178,12 +1191,12 @@ class DatabaseConnection {
 	 */
 	public function admin_get_tables() {
 		$whichTables = array();
-		$tables_result = mysql_query('SHOW TABLE STATUS FROM `' . TYPO3_db . '`', $this->link);
-		if (!mysql_error()) {
-			while ($theTable = mysql_fetch_assoc($tables_result)) {
+		$tables_result = $this->link->query('SHOW TABLE STATUS FROM `' . TYPO3_db . '`');
+		if ($tables_result !== FALSE) {
+			while ($theTable = $tables_result->fetch_assoc()) {
 				$whichTables[$theTable['Name']] = $theTable;
 			}
-			$this->sql_free_result($tables_result);
+			$tables_result->free();
 		}
 		return $whichTables;
 	}
@@ -1202,11 +1215,11 @@ class DatabaseConnection {
 	 */
 	public function admin_get_fields($tableName) {
 		$output = array();
-		$columns_res = mysql_query('SHOW COLUMNS FROM `' . $tableName . '`', $this->link);
-		while ($fieldRow = mysql_fetch_assoc($columns_res)) {
+		$columns_res = $this->link->query('SHOW COLUMNS FROM `' . $tableName . '`');
+		while ($fieldRow = $columns_res->fetch_assoc()) {
 			$output[$fieldRow['Field']] = $fieldRow;
 		}
-		$this->sql_free_result($columns_res);
+		$columns_res->free();
 		return $output;
 	}
 
@@ -1220,11 +1233,11 @@ class DatabaseConnection {
 	 */
 	public function admin_get_keys($tableName) {
 		$output = array();
-		$keyRes = mysql_query('SHOW KEYS FROM `' . $tableName . '`', $this->link);
-		while ($keyRow = mysql_fetch_assoc($keyRes)) {
+		$keyRes = $this->link->query('SHOW KEYS FROM `' . $tableName . '`');
+		while ($keyRow = $keyRes->fetch_assoc()) {
 			$output[] = $keyRow;
 		}
-		$this->sql_free_result($keyRes);
+		$keyRes->free();
 		return $output;
 	}
 
@@ -1243,25 +1256,25 @@ class DatabaseConnection {
 	 */
 	public function admin_get_charsets() {
 		$output = array();
-		$columns_res = mysql_query('SHOW CHARACTER SET', $this->link);
-		if ($columns_res) {
-			while ($row = mysql_fetch_assoc($columns_res)) {
+		$columns_res = $this->link->query('SHOW CHARACTER SET');
+		if ($columns_res !== FALSE) {
+			while ($row = $columns_res->fetch_assoc()) {
 				$output[$row['Charset']] = $row;
 			}
-			$this->sql_free_result($columns_res);
+			$columns_res->free();
 		}
 		return $output;
 	}
 
 	/**
-	 * mysql() wrapper function, used by the Install Tool and EM for all queries regarding management of the database!
+	 * mysqli() wrapper function, used by the Install Tool and EM for all queries regarding management of the database!
 	 *
 	 * @param string $query Query to execute
-	 * @return pointer Result pointer
+	 * @return resource Result pointer (MySQLi result object)
 	 * @todo Define visibility
 	 */
 	public function admin_query($query) {
-		$res = mysql_query($query, $this->link);
+		$res = $this->link->query($query);
 		if ($this->debugOutput) {
 			$this->debug('admin_query', $query);
 		}
@@ -1352,12 +1365,12 @@ class DatabaseConnection {
 	/**
 	 * Checks if record set is valid and writes debugging information into devLog if not.
 	 *
-	 * @param resource|boolean $res record set
+	 * @param resource|boolean $res MySQLi result object
 	 * @return boolean TRUE if the  record set is valid, FALSE otherwise
 	 * @todo Define visibility
 	 */
 	public function debug_check_recordset($res) {
-		if (is_resource($res)) {
+		if ($res !== FALSE) {
 			return TRUE;
 		}
 		$msg = 'Invalid database result resource detected';

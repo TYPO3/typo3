@@ -26,7 +26,7 @@ The following configuration is the minimum required:
 	- filter
 	- GD2
 	- JSON
-	- mysql
+	- mysqli
 	- openssl
 	- pcre
 	- session
@@ -55,7 +55,7 @@ The following configuration is recommended:
 	- hash
 	- JSON
 	- mbstring
-	- mysql
+	- mysqli
 	- openssl
 	- pcre
 	- session

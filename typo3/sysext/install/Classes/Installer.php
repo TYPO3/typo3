@@ -2314,10 +2314,10 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	public function checkDatabase() {
 		$ext = 'Check database';
 		$this->message($ext);
-		if (!extension_loaded('mysql') && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal')) {
-			$this->message($ext, 'MySQL not available', '
+		if (!extension_loaded('mysqli') && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal')) {
+			$this->message($ext, 'MySQLi not available', '
 				<p>
-					PHP does not feature MySQL support (which is pretty unusual).
+					PHP does not feature MySQLi support (which is pretty unusual).
 				</p>
 			', 2);
 		} else {
