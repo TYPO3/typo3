@@ -126,9 +126,9 @@ class PreparedStatement {
 	protected $defaultFetchMode = self::FETCH_ASSOC;
 
 	/**
-	 * MySQL result pointer (of SELECT query) / DBAL object.
+	 * MySQLi result pointer (of SELECT query) / DBAL object.
 	 *
-	 * @var pointer
+	 * @var resource
 	 */
 	protected $resource;
 
