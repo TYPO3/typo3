@@ -123,7 +123,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 
 		if ($GLOBALS['TSFE']->type && $GLOBALS['TSFE']->config['config']['frameReloadIfNotInFrameset'])	{
 			$tdlLD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page,'_top',$GLOBALS['TSFE']->no_cache,'');
-			$GLOBALS['TSFE']->JSCode = 'if(!parent.'.trim($GLOBALS['TSFE']->sPre).' && !parent.view_frame) top.location.href="'.$GLOBALS['TSFE']->baseUrlWrap($tdlLD['totalURL']).'"';
+			$GLOBALS['TSFE']->additionalJavaScript['JSCode'] .= 'if(!parent.'.trim($GLOBALS['TSFE']->sPre).' && !parent.view_frame) top.location.href="'.$GLOBALS['TSFE']->baseUrlWrap($tdlLD['totalURL']).'"';
 		}
 		$GLOBALS['TSFE']->compensateFieldWidth = ''.$GLOBALS['TSFE']->config['config']['compensateFieldWidth'];
 		$GLOBALS['TSFE']->lockFilePath = ''.$GLOBALS['TSFE']->config['config']['lockFilePath'];
