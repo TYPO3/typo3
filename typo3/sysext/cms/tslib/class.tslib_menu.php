@@ -2902,7 +2902,7 @@ class tslib_jsmenu extends tslib_menu {
 			$JScode.= $this->generate_level($levels,1,$this->id,$this->menuArr,$this->MP_array).LF;
 
 			$GLOBALS['TSFE']->additionalHeaderData['JSMenuCode']='<script type="text/javascript" src="'.$GLOBALS['TSFE']->absRefPrefix.'t3lib/jsfunc.menu.js"></script>';
-			$GLOBALS['TSFE']->JSCode.=$JScode;
+			$GLOBALS['TSFE']->additionalJavaScript['JSCode'] .= $JScode;
 
 				// Printing:
 			$allFormCode="";
