@@ -74,8 +74,8 @@ class CompatbilityClassLoaderPhpBelow50307Test extends \TYPO3\CMS\Core\Tests\Uni
 				'static public function getClassFileContent() {' . LF .
 				'	return TYPO3\\CMS\\Core\\Tests\Unit\Compatibility\\CompatbilityClassLoaderPhpBelow50307Test::$classCode;' . LF .
 				'}' . LF .
-				'static public function rewriteMethodTypeHintsFromClassPath($classPath) {' . LF .
-				'	return parent::rewriteMethodTypeHintsFromClassPath($classPath);' . LF .
+				'static public function rewriteMethodTypeHintsFromClassPathAndAddToClassCache($classPath) {' . LF .
+				'	return parent::rewriteMethodTypeHintsFromClassPathAndAddToClassCache($classPath);' . LF .
 				'}' . LF .
 			'}'
 		);
@@ -104,7 +104,7 @@ class CompatbilityClassLoaderPhpBelow50307Test extends \TYPO3\CMS\Core\Tests\Uni
 				'class checkClassCacheEntryAndRequireTestException extends Exception {}' . LF .
 			'}' . LF .
 			'class ' . $mockClassName . ' extends \\TYPO3\\CMS\\Core\\Compatibility\\CompatbilityClassLoaderPhpBelow50307 {' . LF .
-				'protected static function checkClassCacheEntryAndRequire($classPath) {' . LF .
+				'protected static function rewriteClassAndAddToCache($classPath) {' . LF .
 					'throw new checkClassCacheEntryAndRequireTestException(\'Class path \' . $classPath);' . LF .
 				'}' . LF .
 			'}'

@@ -132,6 +132,7 @@ class Bootstrap {
 			->populateLocalConfiguration()
 			->registerExtDirectComponents()
 			->initializeCachingFramework()
+			->loadClassAliasMapCache()
 			->registerAutoloader()
 			->checkUtf8DatabaseSettingsOrDie()
 			->transferDeprecatedCurlSettings()
@@ -284,13 +285,27 @@ class Bootstrap {
 	}
 
 	/**
+	 *  Loads the class alias map cache
+	 *
+	 * @return \TYPO3\CMS\Core\Core\Bootstrap
+	 */
+	protected function loadClassAliasMapCache() {
+		if (PHP_VERSION_ID < 50307) {
+			\TYPO3\CMS\Core\Compatibility\CompatibilityClassAliasMapPhpBelow50307::loadClassAliasMapCache();
+		} else {
+			\TYPO3\CMS\Core\Core\ClassAliasMap::loadClassAliasMapCache();
+		}
+		return $this;
+	}
+
+	/**
 	 * Register autoloader
 	 *
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
 	protected function registerAutoloader() {
 		if (PHP_VERSION_ID < 50307) {
-			\TYPO3\CMS\Core\Compatibility\CompatbilityClassLoaderPhpBelow50307::registerAutoloader();
+			\TYPO3\CMS\Core\Compatibility\CompatibilityClassLoaderPhpBelow50307::registerAutoloader();
 		} else {
 			\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
 		}

@@ -1,6 +1,5 @@
 <?php
 namespace TYPO3\CMS\Core\Compatibility;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -28,6 +27,8 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This is a compatibility layer for systems running PHP < 5.3.7
  * It rewrites the type hints in method definitions so that they are identical to the
@@ -35,7 +36,7 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Thomas Maroschik <tmaroschik@dfau.de>
  */
-class CompatbilityClassLoaderPhpBelow50307 extends \TYPO3\CMS\Core\Core\ClassLoader {
+class CompatibilityClassLoaderPhpBelow50307 extends \TYPO3\CMS\Core\Core\ClassLoader {
 
 	/**
 	 * Contains the class loaders class name
@@ -69,85 +70,49 @@ class CompatbilityClassLoaderPhpBelow50307 extends \TYPO3\CMS\Core\Core\ClassLoa
 	 * Require the class file and rewrite non sysext files transparently
 	 *
 	 * @static
-	 * @param string $classPath
-	 * @param string $className
+	 * @param string $classFilePathAndName
+	 * @param string $classCacheEntryIdentifier
 	 * @return void
 	 */
-	static public function requireClassFileOnce($classPath, $className) {
+	static public function addClassToCache($classFilePathAndName, $classCacheEntryIdentifier) {
 		if (
-			GeneralUtility::isFirstPartOfStr($className, 'tx_')
-			|| GeneralUtility::isFirstPartOfStr($className, 'Tx_')
-			|| GeneralUtility::isFirstPartOfStr($className, 'ux_')
-			|| GeneralUtility::isFirstPartOfStr($className, 'user_')
-			|| GeneralUtility::isFirstPartOfStr($className, 'User_')
+			GeneralUtility::isFirstPartOfStr($classCacheEntryIdentifier, 'tx_')
+			|| GeneralUtility::isFirstPartOfStr($classCacheEntryIdentifier, 'Tx_')
+			|| GeneralUtility::isFirstPartOfStr($classCacheEntryIdentifier, 'ux_')
+			|| GeneralUtility::isFirstPartOfStr($classCacheEntryIdentifier, 'user_')
+			|| GeneralUtility::isFirstPartOfStr($classCacheEntryIdentifier, 'User_')
 		) {
 			// If class in question starts with one of the allowed old prefixes
-			static::checkClassCacheEntryAndRequire($classPath);
+			static::rewriteMethodTypeHintsFromClassPathAndAddToClassCache($classFilePathAndName, $classCacheEntryIdentifier);
 		} else {
-			// Do nothing for system extensions or external libraries.
-			// They are already using the proper type hints or do not use them at all.
-			static::requireClassFile($classPath);
+			parent::addClassToCache($classFilePathAndName, $classCacheEntryIdentifier);
 		}
-	}
-
-	/**
-	 * Require class file from cache and create if it doesn't exist yet
-	 *
-	 * @param $classPath
-	 * @return void
-	 */
-	static protected function checkClassCacheEntryAndRequire($classPath) {
-		$cacheIdentifier = static::getClassPathCacheIdentifier($classPath);
-		/** @var $phpCodeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
-		$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
-		if (!$phpCodeCache->has($cacheIdentifier)) {
-			$classCode = static::rewriteMethodTypeHintsFromClassPath($classPath);
-			$phpCodeCache->set($cacheIdentifier, $classCode, array(), 0);
-		}
-		$phpCodeCache->requireOnce($cacheIdentifier);
-	}
-
-	/**
-	 * Generates the cache identifier from the relative class path and the files sha1 hash
-	 *
-	 * @static
-	 * @param string $classPath
-	 * @return string
-	 */
-	static protected function getClassPathCacheIdentifier($classPath) {
-		// The relative class path is part of the cache identifier
-		$relativeClassPath = (GeneralUtility::isFirstPartOfStr($classPath, PATH_site)) ? substr($classPath, strlen(PATH_site)) : $classPath;
-		$fileExtension = strrchr($classPath, '.');
-		$fileNameWithoutExtension = substr(basename($classPath), 0, strlen($fileExtension) * -1);
-		// The class content has to be part of the identifier too
-		// otherwise the old class files get loaded from cache
-		$fileSha1 = sha1_file($classPath);
-		$cacheIdentifier = 'ClassLoader_' . $fileNameWithoutExtension . '_' . substr(sha1($fileSha1 . '|' . $relativeClassPath), 0, 20);
-		// Clean up identifier to be a valid cache entry identifier
-		$cacheIdentifier = preg_replace('/[^a-zA-Z0-9_%\-&]/i', '_', $cacheIdentifier);
-		return $cacheIdentifier;
 	}
 
 	/**
 	 * Loads the class path and rewrites the type hints
 	 *
 	 * @static
-	 * @param string $classPath
+	 * @param string $classFilePath
+	 * @param string $classCacheEntryIdentifier
 	 * @return string rewritten php code
 	 */
-	static protected function rewriteMethodTypeHintsFromClassPath($classPath) {
+	static protected function rewriteMethodTypeHintsFromClassPathAndAddToClassCache($classFilePath, $classCacheEntryIdentifier) {
+		/** @var $cacheBackend \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend */
+		$cacheBackend = static::$classesCache->getBackend();
 		$pcreBacktrackLimitOriginal = ini_get('pcre.backtrack_limit');
-		$classAliasMap = static::$aliasToClassNameMapping;
-		$fileContent = static::getClassFileContent($classPath);
+		$aliasToClassNameMapping = CompatibilityClassAliasMapPhpBelow50307::getAliasesForClassNames();
+		$fileContent = static::getClassFileContent($classFilePath);
 		$fileLength = strlen($fileContent);
 		$hasReplacements = FALSE;
+
 		// when the class file is bigger than the original pcre backtrace limit increase the limit
 		if ($pcreBacktrackLimitOriginal < $fileLength) {
 			ini_set('pcre.backtrack_limit', $fileLength);
 		}
 		$fileContent = preg_replace_callback(
 			'/function[ \t]+([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\s*\((.*?\$.*?)\)(\s*[{;])/ims',
-			function($matches) use($classAliasMap, &$hasReplacements) {
+			function($matches) use($aliasToClassNameMapping, &$hasReplacements) {
 			if (isset($matches[1]) && isset($matches[2])) {
 				list($functionName, $argumentList) = array_slice($matches, 1, 2);
 				$arguments = explode(',', $argumentList);
@@ -166,19 +131,39 @@ class CompatbilityClassLoaderPhpBelow50307 extends \TYPO3\CMS\Core\Core\ClassLoa
 			}
 			return $matches[0];
 		}, $fileContent);
-		$fileContent = preg_replace(array(
-			'/^\s*<\?php/',
-			'/\?>\s*$/'
-		), '', $fileContent);
 		if ($pcreBacktrackLimitOriginal < $fileLength) {
 			ini_set('pcre.backtrack_limit', $pcreBacktrackLimitOriginal);
 		}
 
 		if (!$hasReplacements) {
-			$fileContent = 'require_once \'' . $classPath . '\';';
+			$cacheBackend->setLinkToPhpFile($classCacheEntryIdentifier, $classFilePath);
+			return;
 		}
 
-		return $fileContent;
+		// Remove the php tags as they get introduced by the PhpCode cache frontend again
+		$fileContent = preg_replace(array(
+			'/^\s*<\?php/',
+			'/\?>\s*$/'
+		), '', $fileContent);
+
+		// Wrap the class in a condition that removes itself again if cache entry is invalid
+		$classFileSha1 = sha1_file($classFilePath);
+		$relativePathToClassFileFromCacheBackend = \TYPO3\CMS\Core\Utility\PathUtility::getRelativePath(
+			$cacheBackend->getCacheDirectory(),
+			dirname($classFilePath)
+		);
+		$relativePathToClassFileFromCacheBackend .= basename($classFilePath);
+
+		$ifClause = sprintf('
+			$pathToOriginalClassFile = __DIR__ . \'/%s\';
+			if (!file_exists($pathToOriginalClassFile) || sha1_file($pathToOriginalClassFile) !== \'%s\') {
+				return FALSE;
+			} else {
+		', $relativePathToClassFileFromCacheBackend, $classFileSha1);
+
+		$ifClosingClause = LF . '}' . LF;
+
+		static::$classesCache->set($classCacheEntryIdentifier, $ifClause . $fileContent . $ifClosingClause);
 	}
 
 	/**

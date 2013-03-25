@@ -137,6 +137,11 @@ return array(
 			'cacheConfigurations' => array(
 				// The cache_core cache is is for core php code only and must
 				// not be abused by third party extensions.
+				'cache_classes' => array(
+					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\PhpFrontend',
+					'backend' => 'TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend',
+					'options' => array()
+				),
 				'cache_core' => array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\PhpFrontend',
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend',
