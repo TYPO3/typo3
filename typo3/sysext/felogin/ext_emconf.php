@@ -35,7 +35,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'conflicts' => array(),
 		'suggests' => array()
 	),
-	'_md5_values_when_last_written' => 'a:13:{s:9:"ChangeLog";s:4:"a6aa";s:12:"ext_icon.gif";s:4:"7160";s:17:"ext_localconf.php";s:4:"0ae4";s:14:"ext_tables.php";s:4:"cd2c";s:14:"ext_tables.sql";s:4:"7d28";s:24:"ext_typoscript_setup.txt";s:4:"a5b2";s:12:"flexform.xml";s:4:"6a0a";s:16:"locallang_db.xlf";s:4:"2791";s:13:"template.html";s:4:"0075";s:14:"doc/manual.sxw";s:4:"c90f";s:28:"pi1/class.tx_felogin_pi1.php";s:4:"b301";s:17:"pi1/locallang.xlf";s:4:"bf93";s:24:"tests/tx_feloginTest.php";s:4:"cd06";}',
+	'_md5_values_when_last_written' => '',
 	'suggests' => array()
 );
 ?>

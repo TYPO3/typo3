@@ -35,7 +35,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'conflicts' => array(),
 		'suggests' => array()
 	),
-	'_md5_values_when_last_written' => 'a:3:{s:12:"ext_icon.gif";s:4:"9f86";s:17:"ext_localconf.php";s:4:"0933";s:34:"view/class.tx_feedit_editpanel.php";s:4:"9cdd";}',
+	'_md5_values_when_last_written' => '',
 	'suggests' => array()
 );
 ?>
