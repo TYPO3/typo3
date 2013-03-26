@@ -121,3 +121,22 @@ reasons. While this change won't have any effects on most systems, this is a
 potentially breaking change if javascript DOM manipulation is done. The new
 optional viewhelper parameter "hiddenFieldClassName" was introduced and can be
 used to match this div.
+
+* Allow Fluid arrays only in ViewHelper arguments
+
+Fluid arrays are a subset of the JavaScript object syntax, making it hard to
+work with them in mixed HTML/JavaScript documents. For example before the
+following JavaScript Object was parsed by Fluid:
+var uris = {
+	endPoint1: '{f:uri.action(.)}',
+	endPoint2: '{f:uri.action(.)}',
+};
+This is now changed. Fluid only parses arrays which are used inside ViewHelper
+arguments, such that an array inside normal text is not converted anymore.
+This change is only breaking in very rare cases where one relied on the inner
+contents of the ViewHelper being an array, f.e. if one used the debug
+ViewHelper as follows:
+	<f:debug>{key1: 'value1', key2: 'value2'}</f:debug>
+ViewHelpers which were written like this should be re-written to take the array
+as ViewHelper argument:
+	<f:debug value="{key1: 'value1', key2: 'value2'}" />
