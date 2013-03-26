@@ -89,6 +89,25 @@ way. While it is better to fix those issues, a quick fix is to swich back
 to the old mapper with a TypoScript setting:
 plugin.tx_extname.features.rewrittenPropertyMapper = 0
 
+* Removed forced single table inheritance of frontend users and groups
+
+Single table inheritance in extbase is used to stuff similar objects into a
+table, but still create different objects from it, depending on the value of
+column record_type of a specific row.
+With versions prior to 6.1, this was done for fe_users and fe_groups table. As
+a result, a frontend user object was only created from a row in persistence, if
+the record type was set to TYPO3\CMS\Extbase\Domain\Model\FrontendUser.
+Single table inheritance for fe_users and fe_groups was meant as a show case
+of the functionality in early extbase days, but didn't fit the current use
+cases anymore and was removed with 6.1.
+This change might affect backwards compatibility for your extensions, if they
+rely on single table inheritance of frontend users or groups. In seldom cases,
+this could lead to more objects being constituted from persistence in your
+repository calls than before. So keep a look at your frontend user object and
+groups and verify there is now not a bigger number ob objects fetched from
+persistence. To rebuild the previous behavior, revert the TypoScript change of
+https://review.typo3.org/#/c/17879 in your extension.
+
 -------------------------------------------------------------------------------
 Fluid
 -------------------------------------------------------------------------------
