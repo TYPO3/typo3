@@ -859,7 +859,9 @@ class InlineElement {
 				$createNewRelationText = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.createNewRelation', TRUE);
 			}
 			$item .= ' <a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onChange) . '" align="abstop">' . IconUtility::getSpriteIcon('actions-document-new', array('title' => $createNewRelationText)) . $createNewRelationText . '</a>';
-			$item = '<div class="t3-form-field-group">' . $item . '</div>';
+			// Wrap the selector and add a spacer to the bottom
+			$nameObject = $this->inlineNames['object'];
+			$item = '<div class="t3-form-field-group ' . $this->inlineData['config'][$nameObject]['md5'] . '">' . $item . '</div>';
 		}
 		return $item;
 	}
