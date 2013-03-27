@@ -815,7 +815,9 @@ class InlineElement {
 			}
 			$item .= '<a href="#" onclick="' . htmlspecialchars($onChange) . '" align="abstop">' . IconUtility::getSpriteIcon('actions-document-new', array('title' => $createNewRelationText)) . $createNewRelationText . '</a>';
 			// Wrap the selector and add a spacer to the bottom
-			$item = '<div style="margin-bottom: 20px;">' . $item . '</div>';
+			$nameObject = $this->inlineNames['object'];
+			$class = ' class="inlineForeignSelector ' . $this->inlineData['config'][$nameObject]['md5'] . '"';
+			$item = '<div ' . $class . ' style="margin-bottom: 20px;">' . $item . '</div>';
 		}
 		return $item;
 	}
