@@ -577,7 +577,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * @return string HTML string
 	 * @todo overwork this
 	 */
-	protected function makeDescription($row, $noMarkup = FALSE, $lgd = 180) {
+	protected function makeDescription($row, $noMarkup = FALSE, $length = 180) {
 		if ($row['show_resume']) {
 			if (!$noMarkup) {
 				$markedSW = '';
