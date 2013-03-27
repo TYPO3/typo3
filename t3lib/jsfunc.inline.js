@@ -718,6 +718,7 @@ var inline = {
 			var objectParent = this.parseObjectId('full', objectPrefix, 0 , 1);
 			var md5 = this.getObjectMD5(objectParent);
 			this.hideElementsWithClassName('.inlineNewButton'+(md5 ? '.'+md5 : ''), objectParent);
+			this.hideElementsWithClassName('.inlineForeignSelector'+(md5 ? '.'+md5 : ''), 't3-form-field-item');
 		}
 
 		if (TBE_EDITOR) {
@@ -905,6 +906,7 @@ var inline = {
 			var objectParent = this.parseObjectId('full', objectPrefix, 0 , 1);
 			var md5 = this.getObjectMD5(objectParent);
 			this.showElementsWithClassName('.inlineNewButton'+(md5 ? '.'+md5 : ''), objectParent);
+			this.showElementsWithClassName('.inlineForeignSelector'+(md5 ? '.'+md5 : ''), 't3-form-field-item');
 		}
 		return false;
 	},
