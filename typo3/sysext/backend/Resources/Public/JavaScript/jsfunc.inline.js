@@ -388,10 +388,12 @@ var inline = {
 				var recordObj = document.getElementsByName(this.prependFormFieldNames+'['+unique.table+']['+recordUid+']['+unique.field+']');
 				var values = $H(unique.used).values();
 				if (recordObj.length) {
-					var selectedValue = recordObj[0].options[recordObj[0].selectedIndex].value;
-					for (var i=0; i<values.length; i++) {
-						if (values[i] != selectedValue) {
-							this.removeSelectOption(recordObj[0], values[i]);
+					if (recordObj[0].hasOwnProperty('options')) {
+						var selectedValue = recordObj[0].options[recordObj[0].selectedIndex].value;
+						for (var i=0; i<values.length; i++) {
+							if (values[i] != selectedValue) {
+								this.removeSelectOption(recordObj[0], values[i]);
+							}
 						}
 					}
 				}
