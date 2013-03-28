@@ -177,7 +177,7 @@ class ResourceCompressor {
 	 * @return array CSS files
 	 */
 	public function concatenateCssFiles(array $cssFiles, array $options = array()) {
-		$filesToInclude = array();
+		$filesToIncludeCollection = array();
 		foreach ($cssFiles as $key => $fileOptions) {
 			// no concatenation allowed for this file, so continue
 			if (!empty($fileOptions['excludeFromConcatenation'])) {
@@ -186,24 +186,28 @@ class ResourceCompressor {
 			// we remove BACK_PATH from $filename, so make it relative to root path
 			$filenameFromMainDir = $this->getFilenameFromMainDir($fileOptions['file']);
 			// if $options['baseDirectories'] set, we only include files below these directories
-			if ((!isset($options['baseDirectories']) || $this->checkBaseDirectory($filenameFromMainDir, array_merge($options['baseDirectories'], array($this->targetDirectory)))) && $fileOptions['media'] === 'all') {
-				$filesToInclude[] = $filenameFromMainDir;
+			if ((!isset($options['baseDirectories']) || $this->checkBaseDirectory($filenameFromMainDir, array_merge($options['baseDirectories'], array($this->targetDirectory))))) {
+				$filesToIncludeCollection[$fileOptions['media']][] = $filenameFromMainDir;
 				// remove the file from the incoming file array
 				unset($cssFiles[$key]);
 			}
 		}
-		if (count($filesToInclude)) {
-			$targetFile = $this->createMergedCssFile($filesToInclude);
-			$targetFileRelative = $this->relativePath . $targetFile;
-			$concatenatedOptions = array(
-				'file' => $targetFileRelative,
-				'rel' => 'stylesheet',
-				'media' => 'all',
-				'compress' => TRUE
-			);
-			// place the merged stylesheet on top of the stylesheets
-			$cssFiles = array_merge(array($targetFileRelative => $concatenatedOptions), $cssFiles);
+
+		if (count($filesToIncludeCollection)) {
+			foreach($filesToIncludeCollection as $mediaOption => $filesToInclude) {
+				$targetFile = $this->createMergedCssFile($filesToInclude);
+				$targetFileRelative = $this->relativePath . $targetFile;
+				$concatenatedOptions = array(
+					'file' => $targetFileRelative,
+					'rel' => 'stylesheet',
+					'media' => $mediaOption,
+					'compress' => TRUE
+				);
+
+				$cssFiles = array_merge($cssFiles, array($targetFileRelative => $concatenatedOptions));
+			}
 		}
+
 		return $cssFiles;
 	}
 
