@@ -120,9 +120,17 @@ class BackendFormProtection extends \TYPO3\CMS\Core\FormProtection\AbstractFormP
 	 * @return void
 	 */
 	protected function createValidationErrorMessage() {
-		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:error.formProtection.tokenInvalid'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR, !(isset($GLOBALS['TYPO3_AJAX']) && $GLOBALS['TYPO3_AJAX'] === TRUE));
+		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:error.formProtection.tokenInvalid'),
+			'',
+			\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
+			!(isset($GLOBALS['TYPO3_AJAX']) && $GLOBALS['TYPO3_AJAX'] === TRUE)
+		);
 		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-		$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+		$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Core\\Messaging\\FlashMessageService'
+		);
 		/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 		$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 		$defaultFlashMessageQueue->enqueue($flashMessage);

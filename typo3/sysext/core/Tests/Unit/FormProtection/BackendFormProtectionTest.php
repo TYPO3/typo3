@@ -25,17 +25,25 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 ***************************************************************/
 
 /**
- * Testcase for the \TYPO3\CMS\Core\FormProtection\BackendFormProtection class.
+ * Testcase
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
+	 * @var $fixture \TYPO3\CMS\Core\FormProtection\BackendFormProtection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
-	private $fixture;
+	protected $fixture;
 
+	/**
+	 * Backup of current singleton instances
+	 */
+	protected $singletonInstances;
+
+	/**
+	 * Set up
+	 */
 	public function setUp() {
 		$GLOBALS['BE_USER'] = $this->getMock(
 			't3lib_beUserAuth',
@@ -43,74 +51,28 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$GLOBALS['BE_USER']->user['uid'] = 1;
 
-		$className = $this->createAccessibleProxyClass();
-		$this->fixture = $this->getMock($className, array('acquireLock', 'releaseLock'));
+		$this->fixture = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\FormProtection\BackendFormProtection',
+			array('acquireLock', 'releaseLock')
+		);
+
+		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 	}
 
 	public function tearDown() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		$this->fixture->__destruct();
-		unset($this->fixture);
-		\TYPO3\CMS\Core\Messaging\FlashMessageQueue::getAllMessagesAndFlush();
 	}
-
 
 	//////////////////////
 	// Utility functions
 	//////////////////////
 
 	/**
-	 * Creates a subclass \TYPO3\CMS\Core\FormProtection\BackendFormProtection with retrieveTokens made
-	 * public.
-	 *
-	 * @return string the name of the created class, will not be empty
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject
 	 */
-	private function createAccessibleProxyClass() {
-		$namespace = 'TYPO3\\CMS\\Core\\FormProtection';
-		$className = 'BackendFormProtectionAccessibleProxy';
-		if (!class_exists($namespace . '\\' .$className)) {
-			eval(
-				'namespace ' . $namespace . ';' .
-				'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection {' .
-				'  public function createValidationErrorMessage() {' .
-				'    parent::createValidationErrorMessage();' .
-				'  }' .
-				'  public function retrieveSessionToken() {' .
-				'    return parent::retrieveSessionToken();' .
-				'  }' .
-				'  public function setSessionToken($sessionToken) {' .
-				'    $this->sessionToken = $sessionToken;' .
-				'  }' .
-				'}'
-			);
-		}
-		$className = $namespace . '\\' . $className;
-		return $className;
-	}
-
-	/**
-	 * Mock session methods in t3lib_beUserAuth
-	 *
-	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication Instance of BE_USER object with mocked session storage methods
-	 */
-	private function createBackendUserSessionStorageStub() {
-		$namespace = 'TYPO3\\CMS\\Core\\Authentication';
-		$className = 'BackendUserAuthenticationMocked';
-		if (!class_exists($namespace . '\\' .$className)) {
-			eval(
-				'namespace ' . $namespace . ';' .
-				'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication {' .
-				'  protected $session=array();' .
-				'  public function getSessionData($key) {' .
-				'    return $this->session[$key];' .
-				'  }' .
-				'  public function setAndSaveSessionData($key, $data) {' .
-				'    $this->session[$key] = $data;' .
-				'  }' .
-				'}'
-			);
-		}
-		$className = $namespace . '\\' . $className;
-		return $this->getMock($className, array('foo'));// $className;
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 	////////////////////////////////////
@@ -120,33 +82,12 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function createAccessibleProxyCreatesBackendFormProtectionSubclass() {
-		$className = $this->createAccessibleProxyClass();
-
-		$this->assertTrue(
-			(new $className()) instanceof \TYPO3\CMS\Core\FormProtection\BackendFormProtection
+	public function getBackendUserReturnsInstanceOfBackendUserAuthenticationClass() {
+		$this->assertInstanceOf(
+			'TYPO3\\CMS\\Core\\Authentication\BackendUserAuthentication',
+			$this->getBackendUser()
 		);
 	}
-
-	/**
-	 * @test
-	 */
-	public function createBackendUserSessionStorageStubWorkProperly() {
-		$GLOBALS['BE_USER'] = $this->createBackendUserSessionStorageStub();
-
-		$allTokens = array(
-			'12345678' => array(
-					'formName' => 'foo',
-					'action' => 'edit',
-					'formInstanceName' => '42'
-				),
-		);
-
-		$GLOBALS['BE_USER']->setAndSaveSessionData('tokens', $allTokens);
-
-		$this->assertEquals($GLOBALS['BE_USER']->getSessionData('tokens'), $allTokens);
-	}
-
 
 	//////////////////////////////////////////////////////////
 	// Tests concerning the reading and saving of the tokens
@@ -156,10 +97,12 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function retrieveTokenReadsTokenFromSessionData() {
-		$GLOBALS['BE_USER']->expects($this->once())->method('getSessionData')
-			->with('formSessionToken')->will($this->returnValue(array()));
-
-		$this->fixture->retrieveSessionToken();
+		$this->getBackendUser()
+			->expects($this->once())
+			->method('getSessionData')
+			->with('formSessionToken')
+			->will($this->returnValue(array()));
+		$this->fixture->_call('retrieveSessionToken');
 	}
 
 	/**
@@ -171,13 +114,17 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$action = 'edit';
 		$formInstanceName = '42';
 
-		$tokenId = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($formName . $action . $formInstanceName . $sessionToken);
+		$tokenId = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(
+			$formName . $action . $formInstanceName . $sessionToken
+		);
 
-		$GLOBALS['BE_USER']->expects($this->atLeastOnce())->method('getSessionData')
+		$this->getBackendUser()
+			->expects($this->atLeastOnce())
+			->method('getSessionData')
 			->with('formSessionToken')
 			->will($this->returnValue($sessionToken));
 
-		$this->fixture->retrieveSessionToken();
+		$this->fixture->_call('retrieveSessionToken');
 
 		$this->assertTrue(
 			$this->fixture->validateToken($tokenId, $formName, $action, $formInstanceName)
@@ -185,13 +132,13 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * @expectedException UnexpectedValueException
+	 * @expectedException \UnexpectedValueException
 	 * @test
 	 */
 	public function restoreSessionTokenFromRegistryThrowsExceptionIfSessionTokenIsEmpty() {
-		$this->fixture->injectRegistry(
-			$this->getMock('t3lib_Registry')
-		);
+		/** @var $registryMock \TYPO3\CMS\Core\Registry */
+		$registryMock = $this->getMock('TYPO3\\CMS\\Core\\Registry');
+		$this->fixture->injectRegistry($registryMock);
 		$this->fixture->setSessionTokenFromRegistry();
 	}
 
@@ -199,12 +146,12 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function persistSessionTokenWritesTokenToSession() {
-		$sessionToken = '881ffea2159ac72182557b79dc0c723f5a8d20136f9fab56cdd4f8b3a1dbcfcd';
-		$this->fixture->setSessionToken($sessionToken);
-
-		$GLOBALS['BE_USER']->expects($this->once())
-			->method('setAndSaveSessionData')->with('formSessionToken', $sessionToken);
-
+		$sessionToken = uniqid('test_');
+		$this->fixture->_set('sessionToken', $sessionToken);
+		$this->getBackendUser()
+			->expects($this->once())
+			->method('setAndSaveSessionData')
+			->with('formSessionToken', $sessionToken);
 		$this->fixture->persistSessionToken();
 	}
 
@@ -216,38 +163,78 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function createValidationErrorMessageAddsErrorFlashMessage() {
-		$GLOBALS['BE_USER'] = $this->createBackendUserSessionStorageStub();
-		$this->fixture->createValidationErrorMessage();
-
-		$messages = \TYPO3\CMS\Core\Messaging\FlashMessageQueue::getAllMessagesAndFlush();
-
-		$this->assertNotEmpty($messages);
-		$this->assertContains(
-			$GLOBALS['LANG']->sL(
-				'LLL:EXT:lang/locallang_core.xml:error.formProtection.tokenInvalid'
-			),
-			$messages[0]->render()
+	public function createValidationErrorMessageAddsFlashMessage() {
+		/** @var $flashMessageServiceMock \TYPO3\CMS\Core\Messaging\FlashMessageService|\PHPUnit_Framework_MockObject_MockObject */
+		$flashMessageServiceMock = $this->getMock('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(
+			'TYPO3\\CMS\\Core\\Messaging\\FlashMessageService',
+			$flashMessageServiceMock
 		);
+		$flashMessageQueueMock = $this->getMock(
+			'TYPO3\\CMS\\Core\\Messaging\\FlashMessageQueue',
+			array(),
+			array(),
+			'',
+			FALSE
+		);
+		$flashMessageServiceMock
+			->expects($this->once())
+			->method('getMessageQueueByIdentifier')
+			->will($this->returnValue($flashMessageQueueMock));
+
+		$flashMessageQueueMock
+			->expects($this->once())
+			->method('enqueue')
+			->with($this->isInstanceOf('TYPO3\\CMS\\Core\\Messaging\\FlashMessage'))
+			->will($this->returnCallback(array($this, 'enqueueFlashMessageCallback')));
+
+		$this->fixture->_call('createValidationErrorMessage');
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage
+	 */
+	public function enqueueFlashMessageCallback(\TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage) {
+		$this->assertEquals(\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR, $flashMessage->getSeverity());
 	}
 
 	/**
 	 * @test
 	 */
 	public function createValidationErrorMessageAddsErrorFlashMessageButNotInSessionInAjaxRequest() {
-		$GLOBALS['BE_USER'] = $this->createBackendUserSessionStorageStub();
-		$GLOBALS['TYPO3_AJAX'] = TRUE;
-		$this->fixture->createValidationErrorMessage();
-
-		$messages = \TYPO3\CMS\Core\Messaging\FlashMessageQueue::getAllMessages();
-
-		$this->assertNotEmpty($messages);
-		$this->assertContains(
-			$GLOBALS['LANG']->sL(
-				'LLL:EXT:lang/locallang_core.xml:error.formProtection.tokenInvalid'
-			),
-			$messages[0]->render()
+		/** @var $flashMessageServiceMock \TYPO3\CMS\Core\Messaging\FlashMessageService|\PHPUnit_Framework_MockObject_MockObject */
+		$flashMessageServiceMock = $this->getMock('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(
+			'TYPO3\\CMS\\Core\\Messaging\\FlashMessageService',
+			$flashMessageServiceMock
 		);
+		$flashMessageQueueMock = $this->getMock(
+			'TYPO3\\CMS\\Core\\Messaging\\FlashMessageQueue',
+			array(),
+			array(),
+			'',
+			FALSE
+		);
+		$flashMessageServiceMock
+			->expects($this->once())
+			->method('getMessageQueueByIdentifier')
+			->will($this->returnValue($flashMessageQueueMock));
+
+		$flashMessageQueueMock
+			->expects($this->once())
+			->method('enqueue')
+			->with($this->isInstanceOf('TYPO3\\CMS\\Core\\Messaging\\FlashMessage'))
+			->will($this->returnCallback(array($this, 'enqueueAjaxFlashMessageCallback')));
+
+		$GLOBALS['TYPO3_AJAX'] = TRUE;
+		$this->fixture->_call('createValidationErrorMessage');
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage
+	 */
+	public function enqueueAjaxFlashMessageCallback(\TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage) {
+		$this->assertFalse($flashMessage->isSessionMessage());
 	}
 }
 ?>
