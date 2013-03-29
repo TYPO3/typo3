@@ -57,14 +57,15 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
 	/**
 	 * Constructs this backend
 	 *
-	 * @param mixed $options Configuration options - unused here
+	 * @param string $context FLOW3's application context
+	 * @param array $options Configuration options
 	 * @throws \TYPO3\CMS\Core\Cache\Exception If wincache PHP extension is not loaded
 	 */
-	public function __construct($options = array()) {
+	public function __construct($context, array $options = array()) {
 		if (!extension_loaded('wincache')) {
 			throw new \TYPO3\CMS\Core\Cache\Exception('The PHP extension "wincache" must be installed and loaded in order to use the wincache backend.', 1343331520);
 		}
-		parent::__construct($options);
+		parent::__construct($context, $options);
 	}
 
 	/**
