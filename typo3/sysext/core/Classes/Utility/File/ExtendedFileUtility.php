@@ -26,28 +26,23 @@ namespace TYPO3\CMS\Core\Utility\File;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Extending class to class t3lib_basicFileFunctions
+ * Contains functions for performing file operations like copying, pasting, uploading, moving,
+ * deleting etc. through the TCE
  *
- * Revised for TYPO3 3.6 May/2004 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
- * Contains functions for performing file operations like copying, pasting, uploading, moving, deleting etc. through the TCE
- * Extending class to class t3lib_basicFileFunctions.
- *
- * see basicFileFunctions
- * see document "TYPO3 Core API" for syntax
+ * See document "TYPO3 Core API" for syntax
  *
  * This class contains functions primarily used by tce_file.php (TYPO3 Core Engine for file manipulation)
  * Functions include copying, moving, deleting, uploading and so on...
  *
  * Important internal variables:
  *
- * $filemounts		(see basicFileFunctions)
- * $f_ext	  (see basicFileFunctions)
- * ... All fileoperations must be within the filemount-paths. Further the fileextension MUST validate TRUE with the f_ext array
+ * $filemounts (see basicFileFunctions)
+ * $f_ext (see basicFileFunctions)
+ *
+ * All fileoperations must be within the filemount-paths. Further the fileextension
+ * MUST validate TRUE with the f_ext array
  *
  * The unzip-function allows unzip only if the destination path has it's f_ext[]['allow'] set to '*'!!
  * You are allowed to copy/move folders within the same 'space' (web/ftp).
@@ -301,18 +296,24 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 * @todo Define visibility
 	 */
 	public function getErrorMessages() {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', 'type = 2 AND userid = ' . intval($GLOBALS['BE_USER']->user['uid']) . ' AND tstamp=' . intval($GLOBALS['EXEC_TIME']) . ' AND error<>0');
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		$res = $this->getDatabaseConnection()->exec_SELECTquery(
+			'*',
+			'sys_log',
+			'type = 2 AND userid = ' . intval($this->getBackendUser()->user['uid']) . ' AND tstamp=' . intval($GLOBALS['EXEC_TIME']) . ' AND error<>0'
+		);
+		while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
 			$logData = unserialize($row['log_data']);
 			$msg = $row['error'] . ': ' . sprintf($row['details'], $logData[0], $logData[1], $logData[2], $logData[3], $logData[4]);
-			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $msg, '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR, TRUE);
-			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-			$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
-			/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
-			$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-			$defaultFlashMessageQueue->enqueue($flashMessage);
+			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				$msg,
+				'',
+				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
+				TRUE
+			);
+			$this->addFlashMessage($flashMessage);
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		$this->getDatabaseConnection()->sql_free_result($res);
 	}
 
 	/**
@@ -360,8 +361,8 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	public function writeLog($action, $error, $details_nr, $details, $data) {
 		// Type value for tce_file.php
 		$type = 2;
-		if (is_object($GLOBALS['BE_USER'])) {
-			$GLOBALS['BE_USER']->writelog($type, $action, $error, $details_nr, $details, $data);
+		if (is_object($this->getBackendUser())) {
+			$this->getBackendUser()->writelog($type, $action, $error, $details_nr, $details, $data);
 		}
 		$this->lastError = vsprintf($details, $data);
 	}
@@ -389,7 +390,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 		// @todo implement the recycler feature which has been removed from the original implementation
 		// checks to delete the file
 		if ($fileObject instanceof \TYPO3\CMS\Core\Resource\File) {
-			$refIndexRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			$refIndexRecords = $this->getDatabaseConnection()->exec_SELECTgetRows(
 				'*',
 				'sys_refindex',
 				'deleted=0 AND ref_table="sys_file" AND ref_uid=' . intval($fileObject->getUid())
@@ -412,8 +413,10 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 					'\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 					sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.fileNotDeletedHasReferences'), $fileObject->getName()) . '<br />' . implode('<br />', $shortcutContent),
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.fileNotDeletedHasReferences'),
-					\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING, TRUE);
-				\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
+					\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING,
+					TRUE
+				);
+				$this->addFlashMessage($flashMessage);
 			} else {
 				try {
 					$result = $fileObject->delete();
@@ -423,8 +426,10 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 						'\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 						sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.fileDeleted'), $fileObject->getName()),
 						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.fileDeleted'),
-						\TYPO3\CMS\Core\Messaging\FlashMessage::OK, TRUE);
-					\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
+						\TYPO3\CMS\Core\Messaging\FlashMessage::OK,
+						TRUE
+					);
+					$this->addFlashMessage($flashMessage);
 
 				} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException $e) {
 					$this->writelog(4, 1, 112, 'You are not allowed to access the file', array($fileObject->getIdentifier()));
@@ -445,9 +450,10 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 						'\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 						sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.folderNotDeletedHasFiles'), $fileObject->getName()),
 						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.folderNotDeletedHasFiles'),
-						\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING, TRUE);
-					\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
-
+						\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING,
+						TRUE
+					);
+					$this->addFlashMessage($flashMessage);
 				} else {
 					$result = $fileObject->delete(TRUE);
 
@@ -456,8 +462,10 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 						'\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 						sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.folderDeleted'), $fileObject->getName()),
 						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.folderDeleted'),
-						\TYPO3\CMS\Core\Messaging\FlashMessage::OK, TRUE);
-					\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
+						\TYPO3\CMS\Core\Messaging\FlashMessage::OK,
+						TRUE
+					);
+					$this->addFlashMessage($flashMessage);
 				}
 
 
@@ -482,7 +490,11 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 * @return array
 	 */
 	protected function transformFileReferenceToRecordReference(array $referenceRecord) {
-		$fileReference = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_reference', 'uid=' . (int)$referenceRecord['recuid']);
+		$fileReference = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
+			'*',
+			'sys_file_reference',
+			'uid=' . (int)$referenceRecord['recuid']
+		);
 		return array(
 			'recuid' => $fileReference['uid_foreign'],
 			'tablename' => $fileReference['tablenames'],
@@ -975,6 +987,38 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 		}
 	}
 
+	/**
+	 * Add flash message to message queue
+	 *
+	 * @param \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage
+	 * @return void
+	 */
+	protected function addFlashMessage(\TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage) {
+		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+		$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Core\\Messaging\\FlashMessageService'
+		);
+		/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+		$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+		$defaultFlashMessageQueue->enqueue($flashMessage);
+	}
+
+
+	/**
+	 * Get database connection
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
 }
 
 
