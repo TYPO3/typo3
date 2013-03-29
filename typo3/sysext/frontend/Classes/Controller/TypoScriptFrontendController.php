@@ -3054,7 +3054,7 @@ class TypoScriptFrontendController {
 				// This is either the "Page is being generated" screen or it can be the final result.
 				// In any case we should not begin another rendering process also, so we silently disable caching and render the page ourselves and that's it.
 				// Actually $cachedRow contains content that we could show instead of rendering. Maybe we should do that to gain more performance but then we should set all the stuff done in $this->getFromCache()... For now we stick to this...
-				$this->set_no_cache('Another process wrote into the cache since the beginning of the render process');
+				$this->set_no_cache('Another process wrote into the cache since the beginning of the render process', TRUE);
 			} else {
 				$this->tempContent = TRUE;
 				// This flag shows that temporary content is put in the cache
@@ -3288,7 +3288,7 @@ class TypoScriptFrontendController {
 	public function generatePage_postProcessing() {
 		// This is to ensure, that the page is NOT cached if the no_cache parameter was set before the page was generated. This is a safety precaution, as it could have been unset by some script.
 		if ($this->no_cacheBeforePageGen) {
-			$this->set_no_cache('no_cache has been set before the page was generated - safety check');
+			$this->set_no_cache('no_cache has been set before the page was generated - safety check', TRUE);
 		}
 		// Tidy up the code, if flag...
 		if ($this->TYPO3_CONF_VARS['FE']['tidy_option'] == 'all') {
@@ -4382,10 +4382,17 @@ if (version == "n3") {
 	 * Sets the cache-flag to 1. Could be called from user-included php-files in order to ensure that a page is not cached.
 	 *
 	 * @param string $reason An optional reason to be written to the syslog.
+	 * @param boolean $internal Whether the call is done from core itself (should only be used by core).
 	 * @return void
 	 * @todo Define visibility
 	 */
-	public function set_no_cache($reason = '') {
+	public function set_no_cache($reason = '', $internal = FALSE) {
+		if ($internal && isset($GLOBALS['BE_USER]'])) {
+			$severity = \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_NOTICE;
+		} else {
+			$severity = \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING;
+		}
+
 		if (strlen($reason)) {
 			$warning = '$TSFE->set_no_cache() was triggered. Reason: ' . $reason . '.';
 		} else {
@@ -4409,7 +4416,7 @@ if (version == "n3") {
 			$warning .= ' Caching is disabled!';
 			$this->disableCache();
 		}
-		\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($warning, 'cms', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($warning, 'cms', $severity);
 	}
 
 	/**
