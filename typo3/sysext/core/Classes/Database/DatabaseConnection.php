@@ -94,11 +94,10 @@ class DatabaseConnection {
 	 */
 	public $explainOutput = 0;
 
-	// Default link identifier:
 	/**
-	 * @todo Define visibility
+	 * @var \mysqli $link Default database link object
 	 */
-	public $link = FALSE;
+	protected $link = NULL;
 
 	// Default character set, applies unless character set or collation are explicitly set
 	/**
@@ -1334,7 +1333,25 @@ class DatabaseConnection {
 	 * @return boolean
 	 */
 	public function isConnected() {
-		return is_resource($this->link);
+		return is_object($this->link);
+	}
+
+	/**
+	 * Returns current database handle
+	 *
+	 * @return \mysqli|NULL
+	 */
+	public function getDatabaseHandle() {
+		return $this->link;
+	}
+
+	/**
+	 * Set current database handle, usually \mysqli
+	 *
+	 * @param \mysqli $handle
+	 */
+	public function setDatabaseHandle($handle) {
+		$this->link = $handle;
 	}
 
 	/******************************

@@ -74,9 +74,9 @@ class DatabaseTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return PHPUnit_Framework_MockObject_MockObject
 	 */
 	private function setUpAndReturnDatabaseStub() {
-		$databaseLink = $GLOBALS['TYPO3_DB']->link;
+		$databaseLink = $GLOBALS['TYPO3_DB']->getDatabaseHandle();
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_INSERTquery'), array(), '', FALSE, FALSE);
-		$GLOBALS['TYPO3_DB']->link = $databaseLink;
+		$GLOBALS['TYPO3_DB']->setDatabaseHandle($databaseLink);
 		return $GLOBALS['TYPO3_DB'];
 	}
 
