@@ -18,6 +18,14 @@ Compatibility
 System environment
 -------------------------------------------------------------------------------
 
+* Switch from mysql to mysqli database extension
+
+The main database connection class now uses mysqli instead of the old mysql
+extension. mysql php extension is deprecated with the upcoming PHP 5.5 version
+and lacks some features and had to be exchanged. There are only slight API
+changes within the main database class, code using the API should run as before.
+mysqli is now a hard requirement in the PHP environment and must be loaded.
+
 -------------------------------------------------------------------------------
 Deprecated and removed components
 -------------------------------------------------------------------------------
