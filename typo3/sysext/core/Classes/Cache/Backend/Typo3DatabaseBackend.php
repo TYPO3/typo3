@@ -175,7 +175,7 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 	 */
 	public function get($entryIdentifier) {
 		$this->throwExceptionIfFrontendDoesNotExist();
-		$cacheEntry = FALSE;
+
 		$cacheEntry = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('content', $this->cacheTable, 'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable) . ' AND ' . $this->notExpiredStatement);
 		if (is_array($cacheEntry)) {
 			$cacheEntry = $cacheEntry['content'];
@@ -183,7 +183,7 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 		if ($this->compression && strlen($cacheEntry)) {
 			$cacheEntry = gzuncompress($cacheEntry);
 		}
-		return $cacheEntry;
+		return $cacheEntry !== NULL ? $cacheEntry : FALSE;
 	}
 
 	/**
