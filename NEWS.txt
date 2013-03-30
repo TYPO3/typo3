@@ -18,6 +18,23 @@ Compatibility
 System environment
 -------------------------------------------------------------------------------
 
+* Switch from mysql to mysqli PHP database extension
+
+The main database connection class (formerly known as TYPO3_DB) now uses
+"mysqli" instead of the old "mysql" extension. mysqli was introduced with
+PHP 5.0 and ships with all supported PHP versions by default. The original
+extension "mysql" is deprecated with the upcoming PHP 5.5 version, is only
+optimized for MySQL 4.1.3 or earlier, and lacks support for some newer
+features of MySQL Server.
+
+As TYPO3 CMS requires MySQL 5+ for some versions now, it is only natural to
+exchange the mysql library as well. As the mysql calls are encapsulated
+entirely in the main database connection class, there are only slight API
+changes -- all extension code using the API should run as before.
+
+"mysqli" is now a hard requirement in the PHP environment and must be loaded
+for TYPO3 to run.
+
 -------------------------------------------------------------------------------
 Deprecated and removed components
 -------------------------------------------------------------------------------
