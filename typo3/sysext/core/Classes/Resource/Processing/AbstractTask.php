@@ -50,6 +50,11 @@ abstract class AbstractTask implements TaskInterface {
 	protected $targetFile;
 
 	/**
+	 * @var Resource\File
+	 */
+	protected $sourceFile;
+
+	/**
 	 * @var array
 	 */
 	protected $configuration;
@@ -80,6 +85,7 @@ abstract class AbstractTask implements TaskInterface {
 	 */
 	public function __construct(Resource\ProcessedFile $targetFile, array $configuration) {
 		$this->targetFile = $targetFile;
+		$this->sourceFile = $targetFile->getOriginalFile();
 		$this->configuration = $configuration;
 	}
 
@@ -92,7 +98,7 @@ abstract class AbstractTask implements TaskInterface {
 	 */
 	protected function getChecksumData() {
 		return array(
-			$this->targetFile->getOriginalFile()->getUid(),
+			$this->getSourceFile()->getUid(),
 			$this->getType() . '.' . $this->getName(),
 			serialize($this->configuration)
 		);
@@ -151,6 +157,27 @@ abstract class AbstractTask implements TaskInterface {
 	 */
 	public function getTargetFile() {
 		return $this->targetFile;
+	}
+
+	/**
+	 * @param Resource\ProcessedFile $targetFile
+	 */
+	public function setTargetFile(Resource\ProcessedFile $targetFile) {
+		$this->targetFile = $targetFile;
+	}
+
+	/**
+	 * @return Resource\File
+	 */
+	public function getSourceFile() {
+		return $this->sourceFile;
+	}
+
+	/**
+	 * @param Resource\File $sourceFile
+	 */
+	public function setSourceFile(Resource\File $sourceFile) {
+		$this->sourceFile = $sourceFile;
 	}
 
 	/**
