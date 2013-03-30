@@ -60,8 +60,9 @@ class LocalCropScaleMaskHelper {
 	public function process(TaskInterface $task) {
 		$result = NULL;
 		$targetFile = $task->getTargetFile();
+		$sourceFile = $task->getSourceFile();
 
-		$originalFileName = $targetFile->getOriginalFile()->getForLocalProcessing(FALSE);
+		$originalFileName = $sourceFile->getForLocalProcessing(FALSE);
 		/** @var $gifBuilder \TYPO3\CMS\Frontend\Imaging\GifBuilder */
 		$gifBuilder = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
 		$gifBuilder->init();
@@ -88,7 +89,7 @@ class LocalCropScaleMaskHelper {
 				$options
 			);
 		} else {
-			$targetFileName = $this->getFilenameForImageCropScaleMask($targetFile);
+			$targetFileName = $this->getFilenameForImageCropScaleMask($task);
 			$temporaryFileName = $gifBuilder->tempPath . $targetFileName;
 			$maskImage = $configuration['maskImages']['maskImage'];
 			$maskBackgroundImage = $configuration['maskImages']['backgroundImage'];
@@ -200,21 +201,21 @@ class LocalCropScaleMaskHelper {
 	/**
 	 * Returns the filename for a cropped/scaled/masked file.
 	 *
-	 * @param Resource\ProcessedFile $processedFile
+	 * @param TaskInterface $task
 	 * @return string
 	 */
-	protected function getFilenameForImageCropScaleMask(Resource\ProcessedFile $processedFile) {
+	protected function getFilenameForImageCropScaleMask(TaskInterface $task) {
 
-		$configuration = $processedFile->getProcessingConfiguration();
-		$targetFileExtension = $processedFile->getOriginalFile()->getExtension();
+		$configuration = $task->getTargetFile()->getProcessingConfiguration();
+		$targetFileExtension = $task->getSourceFile()->getExtension();
 		$processedFileExtension = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] ? 'png' : 'gif';
-		if (is_array($configuration['maskImages']) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] && $processedFile->getOriginalFile()->getExtension() != $processedFileExtension) {
+		if (is_array($configuration['maskImages']) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] && $task->getSourceFile()->getExtension() != $processedFileExtension) {
 			$targetFileExtension = 'jpg';
 		} elseif ($configuration['fileExtension']) {
 			$targetFileExtension = $configuration['fileExtension'];
 		}
 
-		return $processedFile->generateProcessedFileNameWithoutExtension() . '.' . ltrim(trim($targetFileExtension), '.');
+		return $task->getTargetFile()->generateProcessedFileNameWithoutExtension() . '.' . ltrim(trim($targetFileExtension), '.');
 	}
 
 	/**

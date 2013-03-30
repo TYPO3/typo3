@@ -58,21 +58,22 @@ class LocalPreviewHelper {
 	 */
 	public function process(TaskInterface $task) {
 		$targetFile = $task->getTargetFile();
+		$sourceFile = $task->getSourceFile();
 
 			// Merge custom configuration with default configuration
 		$configuration = array_merge(array('width' => 64, 'height' => 64), $task->getConfiguration());
 		$configuration['width'] = Utility\MathUtility::forceIntegerInRange($configuration['width'], 1, 1000);
 		$configuration['height'] = Utility\MathUtility::forceIntegerInRange($configuration['height'], 1, 1000);
 
-		$originalFileName = $targetFile->getOriginalFile()->getForLocalProcessing(FALSE);
+		$originalFileName = $sourceFile->getForLocalProcessing(FALSE);
 
 			// Create the thumb filename in typo3temp/preview_....jpg
 		$temporaryFileName = Utility\GeneralUtility::tempnam('preview_') . '.' . $task->getTargetFileExtension();
 			// Check file extension
-		if ($targetFile->getOriginalFile()->getType() != Resource\File::FILETYPE_IMAGE &&
-			!Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $targetFile->getOriginalFile()->getExtension())) {
+		if ($sourceFile->getType() != Resource\File::FILETYPE_IMAGE &&
+			!Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $sourceFile->getExtension())) {
 				// Create a default image
-			$this->processor->getTemporaryImageWithText($temporaryFileName, 'Not imagefile!', 'No ext!', $targetFile->getOriginalFile()->getName());
+			$this->processor->getTemporaryImageWithText($temporaryFileName, 'Not imagefile!', 'No ext!', $sourceFile->getName());
 		} else {
 				// Create the temporary file
 			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
@@ -84,7 +85,7 @@ class LocalPreviewHelper {
 
 				if (!file_exists($temporaryFileName)) {
 						// Create a error gif
-					$this->processor->getTemporaryImageWithText($temporaryFileName, 'No thumb', 'generated!', $targetFile->getOriginalFile()->getName());
+					$this->processor->getTemporaryImageWithText($temporaryFileName, 'No thumb', 'generated!', $sourceFile->getName());
 				}
 			}
 		}

@@ -70,6 +70,13 @@ interface TaskInterface {
 	public function getTargetFile();
 
 	/**
+	 * Returns the original file this task is based on.
+	 *
+	 * @return Resource\File
+	 */
+	public function getSourceFile();
+
+	/**
 	 * Returns the configuration for this task.
 	 *
 	 * @return array
