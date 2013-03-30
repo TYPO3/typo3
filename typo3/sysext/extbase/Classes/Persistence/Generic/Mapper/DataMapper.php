@@ -281,7 +281,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 						break;
 					default:
 						if ($propertyData['type'] === 'DateTime' || in_array('DateTime', class_parents($propertyData['type']))) {
-							$propertyValue = $this->mapDateTime($row[$columnName], $columnMap->getDateTimeStorageFormat());
+							$propertyValue = $this->mapDateTime($row[$columnName]);
 						} else {
 							$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $this->fetchRelated($object, $propertyName, $row[$columnName]));
 						}
@@ -295,21 +295,18 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Creates a DateTime from an unix timestamp or date/datetime value.
-	 * If the input is empty, NULL is returned.
+	 * Creates a DateTime from an unix timestamp. If the input is empty
+	 * NULL is returned.
 	 *
-	 * @param integer|string $value Unix timestamp or date/datetime value
-	 * @param NULL|string $storageFormat Storage format for native date/datetime fields
+	 * @param integer $timestamp
 	 * @return \DateTime
 	 */
-	protected function mapDateTime($value, $storageFormat = NULL) {
-		if (empty($value) || $value === '0000-00-00' || $value === '0000-00-00 00:00:00') {
+	protected function mapDateTime($timestamp) {
+		if (empty($timestamp)) {
 			// 0 -> NULL !!!
 			return NULL;
-		} elseif ($storageFormat === 'date' || $storageFormat === 'datetime') {
-			return new \DateTime($value);
 		} else {
-			return new \DateTime(date('c', $value));
+			return new \DateTime(date('c', $timestamp));
 		}
 	}
 

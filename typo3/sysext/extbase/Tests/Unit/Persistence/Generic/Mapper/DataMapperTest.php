@@ -136,43 +136,6 @@ class DataMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$result = $dataMapper->_call('fetchRelatedEager', $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity'), 'SomeName', '');
 		$this->assertEquals(array(), $result);
 	}
-
-	/**
-	 * @return array
-	 */
-	public function mapDateTimeHandlesDifferentFieldEvaluationsDataProvider() {
-		$localTimeZoneOffset = date('Z');
-
-		return array(
-			'nothing' => array(NULL, NULL, NULL),
-			'timestamp' => array(86401 - $localTimeZoneOffset, NULL, '1970-01-02 00:00:01'),
-			'empty date' => array('0000-00-00', 'date', NULL),
-			'valid date' => array('2013-01-01', 'date', '2013-01-01 00:00:00'),
-			'empty datetime' => array('0000-00-00 00:00:00', 'datetime', NULL),
-			'valid datetime' => array('2013-01-01 01:02:03', 'datetime', '2013-01-01 01:02:03'),
-		);
-	}
-
-	/**
-	 * @param NULL|string|integer $value
-	 * @param NULL|string $storageFormat
-	 * @param NULL|string $expectedValue
-	 * @test
-	 * @dataProvider mapDateTimeHandlesDifferentFieldEvaluationsDataProvider
-	 */
-	public function mapDateTimeHandlesDifferentFieldEvaluations($value, $storageFormat, $expectedValue) {
-		$accessibleClassName = $this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper');
-		$accessibleDataMapFactory = new $accessibleClassName();
-
-		/** @var $dateTime NULL|\DateTime */
-		$dateTime = $accessibleDataMapFactory->_callRef('mapDateTime', $value, $storageFormat);
-
-		if ($expectedValue === NULL) {
-			$this->assertNull($dateTime);
-		} else {
-			$this->assertEquals($expectedValue, $dateTime->format('Y-m-d H:i:s'));
-		}
-	}
 }
 
 ?>

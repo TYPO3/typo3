@@ -162,15 +162,6 @@ class ColumnMap {
 	protected $childKeyFieldName;
 
 	/**
-	 * Alternative format for storing DataTime formats
-	 * (instead of using unix-time stamps). Allowed values
-	 * are 'date' and 'datetime'
-	 *
-	 * @var string
-	 */
-	protected $dateTimeStorageFormat;
-
-	/**
 	 * Constructs a Column Map
 	 *
 	 * @param string $columnName The column name
@@ -377,20 +368,6 @@ class ColumnMap {
 	 */
 	public function getChildKeyFieldName() {
 		return $this->childKeyFieldName;
-	}
-
-	/**
-	 * @param string $dateTimeStorageFormat
-	 */
-	public function setDateTimeStorageFormat($dateTimeStorageFormat) {
-		$this->dateTimeStorageFormat = $dateTimeStorageFormat;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getDateTimeStorageFormat() {
-		return $this->dateTimeStorageFormat;
 	}
 }
 
