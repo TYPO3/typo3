@@ -34,9 +34,9 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
-	private $fixture = NULL;
+	protected $fixture = NULL;
 
-	private $testTable;
+	protected $testTable;
 
 	public function setUp() {
 		$this->fixture = $GLOBALS['TYPO3_DB'];
@@ -249,7 +249,6 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$strippedQuery = $this->fixture->stripGroupBy($groupByClause);
 		$this->assertEquals($expectedResult, $strippedQuery);
 	}
-
 }
 
 ?>

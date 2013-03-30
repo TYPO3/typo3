@@ -43,8 +43,8 @@ class IntegrityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 *
 	 * @test
 	 */
-	public function globalsTypo3DbDatabaseLinkIsAResource() {
-		$this->assertTrue(is_resource($GLOBALS['TYPO3_DB']->link));
+	public function globalsTypo3DbDatabaseLinkIsAObject() {
+		$this->assertTrue(is_object($GLOBALS['TYPO3_DB']->getDatabaseHandle()));
 	}
 
 	/**
