@@ -47,7 +47,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setUp() {
 		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_SELECTquery', 'sql_fetch_assoc', 'sql_free_result'));
-		$this->pageSelectObject = new \TYPO3\CMS\Frontend\Page\PageRepository();
+		$this->pageSelectObject = $this->getAccessibleMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('dummy'), array(), '', FALSE);
 	}
 
 	/**
@@ -117,6 +117,47 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'urltype' => 0,
 			'url' => 'hello/world/'
 		)));
+	}
+
+	/**
+	 * @return array
+	 */
+	public function findMatchingDomainFuzzyDataProvider() {
+		return array(
+			'main domain wildcard' => array(
+				'www.example.com',
+				array(
+					'domain' => 'www.success.loc',
+					'domainNameExtended' => 'www.*.com'
+				)
+			),
+			'subdomain wildcard' => array(
+				'www.example.com',
+				array(
+					'domain' => 'www.success1.loc',
+					'domainNameExtended' => '*.example.com'
+				),
+			),
+			'multiline' => array(
+				'www.example.com',
+				array(
+					'domain' => 'www.success1.loc',
+					'domainNameExtended' => 'www.test.loc
+						www.example.*
+						super.loc'
+				)
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider findMatchingDomainFuzzyDataProvider
+	 */
+	public function findMatchingDomainFuzzyFindsDomain($domain, array $records) {
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->will($this->returnValue($records));
+		$row = $this->pageSelectObject->_call('findMatchingDomainFuzzy', $domain);
+		$this->assertEquals($records, $row);
 	}
 
 }
