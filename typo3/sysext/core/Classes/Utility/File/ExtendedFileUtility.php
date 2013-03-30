@@ -137,6 +137,11 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	protected $fileFactory;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected $signalSlotDispatcher;
+
+	/**
 	 * Initialization of the class
 	 *
 	 * @param array $fileCmds Array with the commands to execute. See "TYPO3 Core API" document
@@ -154,6 +159,8 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 		$this->fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
 		// Initializing file processing commands:
 		$this->fileCmdMap = $fileCmds;
+		//
+		$this->connectSignalSlotsOnFolderCommand();
 	}
 
 	/**
@@ -985,6 +992,102 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 			$this->writelog(7, 1, 100, 'File "%s" or destination "%s" was not within your mountpoints!', array($theFile, $theDest));
 			return FALSE;
 		}
+	}
+
+	/**
+	 * Check if the current deleted folder is the registered expandFolder in BeUser session
+	 *
+	 * @param string $folderIdentifier
+	 * @param array  $moduleData
+	 * @return bool
+	 */
+	protected function isFolderIdentifierInSession($folderIdentifier = '', &$moduleData) {
+		$moduleData = $this->getBackendUser()->getModuleData('browse_links.php', '');
+		return (isset($moduleData['expandFolder']) && $moduleData['expandFolder'] === $folderIdentifier);
+	}
+
+	/**
+	 * Update Module data beUser session storage info
+	 *
+	 * @param array $moduleData
+	 */
+	protected function updateBeUserModuleData(array $moduleData) {
+		$this->getBackendUser()->pushModuleData('browse_links.php', $moduleData);
+	}
+
+	/**
+	 * On move folder, update folder reference identifier in session if required
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject
+	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolderObject
+	 */
+	public function folderPostProcessMove($folderObject, $targetFolderObject) {
+		$folderIdentifier = $folderObject->getCombinedIdentifier();
+
+		if ($this->isFolderIdentifierInSession($folderIdentifier, $moduleData)) {
+			$moduleData['expandFolder'] = $targetFolderObject->getCombinedIdentifier();
+			$this->updateBeUserModuleData($moduleData);
+		}
+	}
+
+	/**
+	 * On rename folder, update folder reference identifier in session if required
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject
+	 * @param string                          $newFolderName
+	 */
+	public function folderPostProcessRename($folderObject, $newFolderName) {
+		$folderIdentifier = $folderObject->getCombinedIdentifier();
+
+		if ($this->isFolderIdentifierInSession($folderIdentifier, $moduleData)) {
+			$folderPathParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', $folderObject->getIdentifier(), TRUE);
+			$folderPathParts[count($folderPathParts)-1] = $newFolderName;
+			$newIdentifier = $folderObject->getStorage()->getUid() . ':/' . implode('/', $folderPathParts) . '/';
+			$moduleData['expandFolder'] = $newIdentifier;
+			$this->updateBeUserModuleData($moduleData);
+		}
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject
+	 */
+	public function folderPostProcessDelete($folderObject) {
+		$folderIdentifier = $folderObject->getCombinedIdentifier();
+
+		if ($this->isFolderIdentifierInSession($folderIdentifier, $moduleData)) {
+			$moduleData['expandFolder'] = '';
+			$this->updateBeUserModuleData($moduleData);
+		}
+	}
+
+	/**
+	 * Connect to Resource storage on folder post process actions
+	 */
+	protected function connectSignalSlotsOnFolderCommand() {
+		$this->getSignalSlotDispatcher()->connect('ResourceStorage', \TYPO3\CMS\Core\Resource\ResourceStorage::SIGNAL_PostFolderMove, $this, 'folderPostProcessMove');
+		$this->getSignalSlotDispatcher()->connect('ResourceStorage', \TYPO3\CMS\Core\Resource\ResourceStorage::SIGNAL_PostFolderRename, $this, 'folderPostProcessRename');
+		$this->getSignalSlotDispatcher()->connect('ResourceStorage', \TYPO3\CMS\Core\Resource\ResourceStorage::SIGNAL_PostFolderDelete, $this, 'folderPostProcessDelete');
+	}
+
+	/**
+	 * Get the SignalSlot dispatcher
+	 *
+	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected function getSignalSlotDispatcher() {
+		if (!isset($this->signalSlotDispatcher)) {
+			$this->signalSlotDispatcher = $this->getObjectManager()->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+		}
+		return $this->signalSlotDispatcher;
+	}
+
+	/**
+	 * Get the ObjectManager
+	 *
+	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+	 */
+	protected function getObjectManager() {
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 	}
 
 	/**
