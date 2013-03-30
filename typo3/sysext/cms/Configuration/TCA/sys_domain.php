@@ -14,7 +14,7 @@ return array(
 		'typeicon_classes' => array(
 			'default' => 'mimetypes-x-content-domain'
 		),
-		'searchFields' => 'domainName,redirectTo'
+		'searchFields' => 'domainName,redirectTo,domainNameExtended'
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,domainName,redirectTo'

@@ -54,6 +54,14 @@ If you're using TYPO3 on a unix computer you can make 'virtual subdirectories' t
 			<trans-unit id="prepend_params.description" xml:space="preserve">
 				<source>If set, any GET parameters in the calling URL will be transferred to the redirect URL.</source>
 			</trans-unit>
+			<trans-unit id="domainNameExtended.description" xml:space="preserve">
+				<source>Additional domains to match. Accepts wildcard (*) for domain parts, e.g *.example.com. Enter one domain per line.</source>
+			</trans-unit>
+			<trans-unit id="domainNameExtended.details" xml:space="preserve">
+				<source>The first domain record found with a matching pattern in this list is chosen as current	domain record.
+
+Only subparts of the domain can have a wildcard. So test.*.example.org is valid, while test*.example.org is not.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
