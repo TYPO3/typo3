@@ -65,7 +65,7 @@ abstract class AbstractGraphicalTask extends AbstractTask {
 	 * @return string
 	 */
 	public function getTargetFilename() {
-		return $this->targetFile->getOriginalFile()->getNameWithoutExtension()
+		return $this->getSourceFile()->getNameWithoutExtension()
 			. '_' . $this->getConfigurationChecksum()
 			. '.' . $this->getTargetFileExtension();
 	}
@@ -94,7 +94,7 @@ abstract class AbstractGraphicalTask extends AbstractTask {
 	protected function determineTargetFileExtension() {
 		if (!empty($this->configuration['fileExtension'])) {
 			$targetFileExtension = $this->configuration['fileExtension'];
-		} elseif ($this->targetFile->getOriginalFile()->getExtension() === 'jpg') {
+		} elseif ($this->getSourceFile()->getExtension() === 'jpg') {
 			$targetFileExtension = 'jpg';
 		} else {
 			$targetFileExtension = 'png';
