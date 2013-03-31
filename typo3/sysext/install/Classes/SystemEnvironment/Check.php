@@ -669,9 +669,10 @@ class Check {
 	 */
 	protected function checkSomePhpOpcodeCacheIsLoaded() {
 		if (
+			// Currently APCu identifies itself both as "apcu" and "apc" (for compatibility) although it doesn't provide the APC-opcache functionality
 			extension_loaded('eaccelerator')
 			|| extension_loaded('xcache')
-			|| extension_loaded('apc')
+			|| (extension_loaded('apc') && !extension_loaded('apcu'))
 			|| extension_loaded('Zend Optimizer+')
 			|| extension_loaded('Zend OPcache')
 			|| extension_loaded('wincache')
