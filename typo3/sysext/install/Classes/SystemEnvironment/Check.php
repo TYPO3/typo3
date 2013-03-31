@@ -671,7 +671,8 @@ class Check {
 		$eAcceleratorLoaded = extension_loaded('eaccelerator');
 		$xCacheLoaded = extension_loaded('xcache');
 		$apcLoaded = extension_loaded('apc');
-		if ($eAcceleratorLoaded || $xCacheLoaded || $apcLoaded) {
+		$zendOptimizerPlus = extension_loaded('Zend Optimizer+');
+		if ($eAcceleratorLoaded || $xCacheLoaded || $apcLoaded || $zendOptimizerPlus) {
 			$status = new OkStatus();
 			$status->setTitle('A PHP opcode cache is loaded');
 		} else {
