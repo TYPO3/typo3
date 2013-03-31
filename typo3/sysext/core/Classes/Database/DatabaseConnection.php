@@ -953,7 +953,12 @@ class DatabaseConnection {
 	 */
 	public function sql_fetch_assoc($res) {
 		if ($this->debug_check_recordset($res)) {
-			return $res->fetch_assoc();
+			$result = $res->fetch_assoc();
+			if ($result === NULL) {
+				// Needed for compatibility
+				$result = FALSE;
+			}
+			return $result;
 		} else {
 			return FALSE;
 		}
@@ -970,7 +975,12 @@ class DatabaseConnection {
 	 */
 	public function sql_fetch_row($res) {
 		if ($this->debug_check_recordset($res)) {
-			return $res->fetch_row();
+			$result = $res->fetch_row();
+			if ($result === NULL) {
+				// Needed for compatibility
+				$result = FALSE;
+			}
+			return $result;
 		} else {
 			return FALSE;
 		}
