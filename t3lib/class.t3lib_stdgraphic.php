@@ -1617,6 +1617,21 @@ class t3lib_stdGraphic {
 				case 'invert':
 					$commands .= ' -negate';
 				break;
+                                case 'level':
+                                        $params = t3lib_div::trimExplode(',', $value,3);
+                                        if (isset($params[1])) {
+                                                $lower = t3lib_div::intInRange($params[0],0,100);
+                                                $upper = t3lib_div::intInRange($params[1],0,100);
+                                                $gamma = 1;
+                                                if (isset($params[2])) {
+                                                        $gamma = $gamma > 100 ? 100 : (float) $params[2];
+                                                }
+                                                $commands .= ' -level ' . $lower . '%,' . $upper . '%,' . $gamma;
+                                        }
+                                break;
+                                case 'autolevel':
+                                        $commands .= ' -auto-level';
+                                break;
 			}
 		}
 		return $commands;
