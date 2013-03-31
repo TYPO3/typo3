@@ -663,15 +663,19 @@ class Check {
 	}
 
 	/**
-	 * Check apt, xcache or eaccelerator is loaded
+	 * Check if some opcode cache is loaded
 	 *
 	 * @return WarningStatus|OkStatus
 	 */
 	protected function checkSomePhpOpcodeCacheIsLoaded() {
-		$eAcceleratorLoaded = extension_loaded('eaccelerator');
-		$xCacheLoaded = extension_loaded('xcache');
-		$apcLoaded = extension_loaded('apc');
-		if ($eAcceleratorLoaded || $xCacheLoaded || $apcLoaded) {
+		if (
+			extension_loaded('eaccelerator')
+			|| extension_loaded('xcache')
+			|| extension_loaded('apc')
+			|| extension_loaded('Zend Optimizer+')
+			|| extension_loaded('Zend OPcache')
+			|| extension_loaded('wincache')
+		) {
 			$status = new OkStatus();
 			$status->setTitle('A PHP opcode cache is loaded');
 		} else {
@@ -683,8 +687,8 @@ class Check {
 				' This can be a massive performance improvement and can put load off a' .
 				' server in general, a parse time reduction by factor three for full cached' .
 				' pages can be achieved easily if using some opcode cache.' .
-				' If in doubt choosing one, apc is officially supported by PHP and can be' .
-				' used as data cache layer in TYPO3 CMS as additional feature.'
+				' If in doubt choosing one, APC runs well and can be used as data' .
+				' cache layer in TYPO3 CMS as additional feature.'
 			);
 		}
 		return $status;
