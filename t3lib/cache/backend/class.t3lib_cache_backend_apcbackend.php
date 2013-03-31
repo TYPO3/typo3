@@ -88,7 +88,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	public function __construct($context, array $options = array()) {
 		if (!extension_loaded('apc')) {
 			throw new t3lib_cache_Exception(
-				'The PHP extension "apc" must be installed and loaded in order to use the APC backend.',
+				'The PHP extension "apc" or "apcu" must be installed and loaded in order to use the APC backend.',
 				1232985414
 			);
 		}
