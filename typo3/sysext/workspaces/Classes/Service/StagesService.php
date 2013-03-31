@@ -255,7 +255,10 @@ class StagesService {
 				$orderedAllowedStages = $workspaceStageRecs;
 			} else {
 				foreach ($workspaceStageRecs as $workspaceStageRec) {
-					if ($this->isStageAllowedForUser($workspaceStageRec['uid'])) {
+					if ($workspaceStageRec['uid'] === self::STAGE_EDIT_ID) {
+						$allowedStages[self::STAGE_EDIT_ID] = $workspaceStageRec;
+						$stagesForWSUserData[$workspaceStageRec['uid']] = $workspaceStageRec;
+					} elseif ($this->isStageAllowedForUser($workspaceStageRec['uid'])) {
 						$stagesForWSUserData[$workspaceStageRec['uid']] = $workspaceStageRec;
 					} elseif ($workspaceStageRec['uid'] == self::STAGE_PUBLISH_EXECUTE_ID && $GLOBALS['BE_USER']->workspacePublishAccess($this->getWorkspaceId())) {
 						$allowedStages[] = $workspaceStageRec;
