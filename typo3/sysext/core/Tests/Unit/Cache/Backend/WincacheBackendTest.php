@@ -47,7 +47,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \TYPO3\CMS\Core\Cache\Exception
 	 */
 	public function setThrowsExceptionIfNoFrontEndHasBeenSet() {
-		$backend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend();
+		$backend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend('Testing');
 		$data = 'Some data';
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
@@ -187,11 +187,11 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function flushRemovesOnlyOwnEntries() {
 		$thisCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
 		$thisCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thisCache'));
-		$thisBackend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend();
+		$thisBackend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend('Testing');
 		$thisBackend->setCache($thisCache);
 		$thatCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
 		$thatCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thatCache'));
-		$thatBackend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend();
+		$thatBackend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend('Testing');
 		$thatBackend->setCache($thatCache);
 		$thisBackend->set('thisEntry', 'Hello');
 		$thatBackend->set('thatEntry', 'World!');
@@ -221,7 +221,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected function setUpBackend() {
 		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
-		$backend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend();
+		$backend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend('Testing');
 		$backend->setCache($cache);
 		return $backend;
 	}
