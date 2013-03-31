@@ -45,8 +45,9 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setUp() {
+		// Currently APCu identifies itself both as "apcu" and "apc" (for compatibility) although it doesn't provide the APC-opcache functionality
 		if (!extension_loaded('apc')) {
-			$this->markTestSkipped('APC extension was not available');
+			$this->markTestSkipped('APC/APCu extension was not available');
 		}
 
 		if (ini_get('apc.slam_defense') == 1) {
