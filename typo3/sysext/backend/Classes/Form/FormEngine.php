@@ -2381,7 +2381,7 @@ function ' . $evalData . '(value) {
 				'noDelete' => $noDelete
 			);
 			$item .= $this->dbFileIcons($PA['itemFormElName'], 'file', implode(',', $tempFT), $itemArray, '', $params, $PA['onFocus'], '', '', '', $config);
-			if (!$disabled && !(isset($config['disable_controls']) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($config['disable_controls'], 'upload'))) {
+			if (!$disabled && $this->checkIfUploadControlIsAllowed($config)) {
 				// Adding the upload field:
 				if ($this->edit_docModuleUpload && $config['uploadfolder']) {
 					// Insert the multiple attribute to enable HTML5 multiple file upload
@@ -2475,6 +2475,27 @@ function ' . $evalData . '(value) {
 			$item = $this->renderWizards(array($item, $altItem), $config['wizards'], $table, $row, $field, $PA, $PA['itemFormElName'], $specConf);
 		}
 		return $item;
+	}
+
+	/**
+	 * Check if the Upload control is allowed
+	 * This will check the field configuration and the global TSConfig user configuration
+	 *
+	 * @param array $config
+	 * @return bool
+	 */
+	private function checkIfUploadControlIsAllowed(array $config) {
+		// Check if the upload control is disabled by configuration
+		if (isset($config['disable_controls']) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($config['disable_controls'], 'upload')) {
+			return FALSE;
+		}
+
+		// Check if the upload control is disabled globally
+		if ($GLOBALS['BE_USER']->getTSConfigVal('options.disableUploadControlInTcaForm') == TRUE) {
+			return FALSE;
+		}
+
+		return TRUE;
 	}
 
 	/**
