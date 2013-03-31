@@ -132,6 +132,68 @@ class ElementConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'VERSION (#3)' => array(
 				'VERSION:IS:TRUE', array('uid' => NULL, 'pid' => NULL), NULL, FALSE
 			),
+			'multiple conditions, and (#1)' => array(
+				array(
+				      'AND' => array(
+					    'FIELD:testField:>:9',
+					    'FIELD:testField:<:11',
+				      )
+				), array('testField' => 10), NULL, TRUE
+			),
+			'multiple conditions, and (#2)' => array(
+				array(
+				      'AND' => array(
+					    'FIELD:testField:>:9',
+					    'FIELD:testField:<:11',
+				      )
+				), array('testField' => 99), NULL, FALSE
+			),
+			'multiple conditions, or (#1)' => array(
+				array(
+				      'OR' => array(
+					    'FIELD:testField:<:9',
+					    'FIELD:testField:<:11',
+				      )
+				), array('testField' => 10), NULL, TRUE
+			),
+			'multiple conditions, or (#2)' => array(
+				array(
+				      'OR' => array(
+					    'FIELD:testField:<:9',
+					    'FIELD:testField:<:11',
+				      )
+				), array('testField' => 99), NULL, FALSE
+			),
+			'multiple conditions, without operator (misconfiguration; return true)' => array(
+				array(
+				      '' => array(
+					    'FIELD:testField:<:9',
+					    'FIELD:testField:>:11',
+				      )
+				), array('testField' => 99), NULL, TRUE
+			),
+			'multiple conditions, nested conditions (#1)' => array(
+				array(
+					'AND' => array(
+						'FIELD:testField:>:9',
+						'OR' => array(
+							'FIELD:testField:<:100',
+							'FIELD:testField:>:-100',
+						)
+					)
+				), array('testField' => 10), NULL, TRUE
+			),
+			'multiple conditions, nested conditions (#2)' => array(
+				array(
+					'AND' => array(
+						'FIELD:testField:>:9',
+						'OR' => array(
+							'FIELD:testField:<:100',
+							'FIELD:testField:>:-100',
+						)
+					)
+				), array('testField' => -999), NULL, FALSE
+			),
 		);
 	}
 

@@ -53,9 +53,84 @@ class ElementConditionMatcher {
 	 * @param string $displayCondition
 	 * @param array $record
 	 * @param string $flexformValueKey
+	 * @param integer $recursionLevel Level of recursion
 	 * @return boolean
+	 * @see matchSingle()
 	 */
-	public function match($displayCondition, array $record = array(), $flexformValueKey = '') {
+	public function match($displayCondition, array $record = array(), $flexformValueKey = '', $recursionLevel = 0) {
+		if ($recursionLevel > 99) {
+			// this should not happen, treat as misconfiguration
+			return TRUE;
+		}
+		if (is_array($displayCondition)) {
+			// multiple conditions given as array ('AND|OR' => condition array)
+			$conditionEvaluations = array(
+				'AND' => array(),
+				'OR' => array(),
+			);
+			foreach ($displayCondition as $logicalOperator => $groupedDisplayConditions) {
+				$logicalOperator = strtoupper($logicalOperator);
+				if (($logicalOperator !== 'AND' && $logicalOperator !== 'OR') || !is_array($groupedDisplayConditions)) {
+					// invalid line. Skip it.
+					continue;
+				} else {
+					foreach ($groupedDisplayConditions as $key => $singleDisplayCondition) {
+						$key = strtoupper($key);
+						if (($key === 'AND' || $key === 'OR') && is_array($singleDisplayCondition)) {
+							// recursion statement: condition is 'AND' or 'OR' and is pointing to an array (should be conditions again)
+							$conditionEvaluations[$logicalOperator][] = $this->match(
+								array($key => $singleDisplayCondition),
+								$record,
+								$flexformValueKey,
+								$recursionLevel + 1
+							);
+						} else {
+							// condition statement: collect evaluation of this single condition.
+							$conditionEvaluations[$logicalOperator][] = $this->matchSingle(
+								$singleDisplayCondition,
+								$record,
+								$flexformValueKey
+							);
+						}
+					}
+				}
+			}
+			if (count($conditionEvaluations['OR']) > 0 && in_array(TRUE, $conditionEvaluations['OR'], TRUE)) {
+				// there were OR conditions and at least one of them is TRUE
+				$result = TRUE;
+			} elseif (count($conditionEvaluations['AND']) > 0 && !in_array(FALSE, $conditionEvaluations['AND'], TRUE)) {
+				// there were AND conditions and none of them is FALSE
+				$result = TRUE;
+			} elseif (count($conditionEvaluations['OR']) > 0 || count($conditionEvaluations['AND']) > 0) {
+				// there were some conditions. But no OR was TRUE and at least one AND was FALSE
+				$result = FALSE;
+			} else {
+				// there were no proper conditions - misconfigured. Return TRUE.
+				$result = TRUE;
+			}
+
+		} else {
+			// displayCondition is not an array - just get its value
+			$result = $this->matchSingle($displayCondition, $record, $flexformValueKey);
+		}
+		return $result;
+	}
+
+
+	/**
+	 * Evaluates the provided condition and returns TRUE if the form
+	 * element should be displayed.
+	 *
+	 * The condition string is separated by colons and the first part
+	 * indicates what type of evaluation should be performed.
+	 *
+	 * @param string $displayCondition
+	 * @param array $record
+	 * @param string $flexformValueKey
+	 * @return boolean
+	 * @see match()
+	 */
+	protected function matchSingle($displayCondition, array $record = array(), $flexformValueKey = '') {
 		$this->record = $record;
 		$this->flexformValueKey = $flexformValueKey;
 		$result = FALSE;
