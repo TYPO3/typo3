@@ -61,76 +61,262 @@ class ElementConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function conditionStringDataProvider() {
 		return array(
 			'Invalid condition string' => array(
-				'xINVALIDx:', array(), NULL, FALSE,
+				'xINVALIDx:',
+				array(),
+				NULL,
+				FALSE,
 			),
-			'EXT (#1)' => array (
-				'EXT:neverloadedext:LOADED:TRUE', array(), NULL, FALSE
+			'Not loaded extension compares to loaded as FALSE' => array(
+				'EXT:neverloadedext:LOADED:TRUE',
+				array(),
+				NULL,
+				FALSE,
 			),
-			'EXT (#2)' => array (
-				'EXT:neverloadedext:LOADED:FALSE', array(), NULL, TRUE
+			'Not loaded extension compares to not loaded as TRUE' => array(
+				'EXT:neverloadedext:LOADED:FALSE',
+				array(),
+				NULL,
+				TRUE,
 			),
-			'EXT (#3)' => array (
-				'EXT:backend:LOADED:TRUE', array(), NULL, TRUE
+			'Loaded extension compares to TRUE' => array(
+				'EXT:backend:LOADED:TRUE',
+				array(),
+				NULL,
+				TRUE,
 			),
-			'EXT (#4)' => array (
-				'EXT:backend:LOADED:FALSE', array(), NULL, FALSE
+			'Loaded extension compares to FALSE' => array(
+				'EXT:backend:LOADED:FALSE',
+				array(),
+				NULL,
+				FALSE,
 			),
-			'FIELD (#1)' => array(
-				'FIELD:uid:>:0', array(), NULL, FALSE
+			'Field is not greater zero if not given' => array(
+				'FIELD:uid:>:0',
+				array(),
+				NULL,
+				FALSE,
 			),
-			'FIELD (#2)' => array(
-				'FIELD:uid:=:0', array(), NULL, FALSE
+			'Field is not equal 0 if not given' => array(
+				'FIELD:uid:=:0',
+				array(),
+				NULL,
+				FALSE,
 			),
-			'FIELD (#3)' => array(
-				'FIELD:foo:=:bar', array('foo' => 'bar'), NULL, TRUE
+			'Field value string comparison' => array(
+				'FIELD:foo:=:bar',
+				array('foo' => 'bar'),
+				NULL,
+				TRUE,
 			),
-			'FIELD (#4)' => array(
-				'FIELD:foo:REQ:FALSE', array('foo' => 'bar'), NULL, FALSE
+			'Field value comparison for required value is false for different value' => array(
+				'FIELD:foo:REQ:FALSE',
+				array('foo' => 'bar'),
+				NULL,
+				FALSE,
 			),
-			'FIELD (#5)' => array(
-				'FIELD:foo:!=:baz', array('foo' => 'bar'), NULL, TRUE
+			'Field value string not equal comparison' => array(
+				'FIELD:foo:!=:baz',
+				array('foo' => 'bar'),
+				NULL,
+				TRUE,
 			),
-			'FIELD (#6)' => array(
-				'FIELD:uid:-:3-42', array('uid' => '23'), NULL, TRUE
+			'Field value in range' => array(
+				'FIELD:uid:-:3-42',
+				array('uid' => '23'),
+				NULL,
+				TRUE,
 			),
-			'FIELD (#7)' => array(
-				'FIELD:uid:>=:42', array('uid' => '23'), NULL, FALSE
+			'Field value greater than' => array(
+				'FIELD:uid:>=:42',
+				array('uid' => '23'),
+				NULL,
+				FALSE,
 			),
-			'FIELD (#8)' => array(
-				'FIELD:foo:=:bar', array('foo' => array('vDEF' => 'bar')), 'vDEF', TRUE
+			'Flexform value invalid comparison' => array(
+				'FIELD:foo:=:bar',
+				array(
+					'foo' => array(
+						'vDEF' => 'bar'
+					),
+				),
+				'vDEF',
+				TRUE,
 			),
-			'FIELD (#9)' => array(
-				'FIELD:parentRec.foo:=:bar', array('parentRec' => array('foo' => 'bar')), 'vDEF', TRUE
+			'Flexform value valid comparison' => array(
+				'FIELD:parentRec.foo:=:bar',
+				array(
+					'parentRec' => array(
+						'foo' => 'bar'
+					),
+				),
+				'vDEF',
+				TRUE,
 			),
-			'HIDE_L10N_SIBLINGS (#1)' => array(
-				'HIDE_L10N_SIBLINGS', array(), NULL, FALSE
+			'Field is value for default languge without flexform' => array(
+				'HIDE_L10N_SIBLINGS',
+				array(),
+				NULL,
+				FALSE,
 			),
-			'HIDE_L10N_SIBLINGS (#2)' => array(
-				'HIDE_L10N_SIBLINGS', array(), 'vDEF', TRUE
+			'Field is value for default languge with flexform' => array(
+				'HIDE_L10N_SIBLINGS',
+				array(),
+				'vDEF',
+				TRUE,
 			),
-			'HIDE_L10N_SIBLINGS (#3)' => array(
-				'HIDE_L10N_SIBLINGS', array(), 'vEN', FALSE
+			'Field is value for default languge with sibling' => array(
+				'HIDE_L10N_SIBLINGS',
+				array(),
+				'vEN',
+				FALSE,
 			),
-			'REC (#1)' => array(
-				'REC:NEW:TRUE', array('uid' => NULL), NULL, TRUE
+			'New is TRUE for new comparison with TRUE' => array(
+				'REC:NEW:TRUE',
+				array('uid' => NULL),
+				NULL,
+				TRUE,
 			),
-			'REC (#2)' => array(
-				'REC:NEW:FALSE', array('uid' => NULL), NULL, FALSE
+			'New is FALSE for new comparison with FALSE' => array(
+				'REC:NEW:FALSE',
+				array('uid' => NULL),
+				NULL,
+				FALSE,
 			),
-			'REC (#3)' => array(
-				'REC:NEW:TRUE', array('uid' => 42), NULL, FALSE
+			'New is FALSE for not new element' => array(
+				'REC:NEW:TRUE',
+				array('uid' => 42),
+				NULL,
+				FALSE,
 			),
-			'REC (#4)' => array(
-				'REC:NEW:FALSE', array('uid' => 42), NULL, TRUE
+			'New is TRUE for not new element compared to FALSE' => array(
+				'REC:NEW:FALSE',
+				array('uid' => 42),
+				NULL,
+				TRUE,
 			),
-			'VERSION (#1)' => array(
-				'VERSION:IS:TRUE', array('uid' => 42, 'pid' => -1), NULL, TRUE
+			'Version is TRUE for versioned row' => array(
+				'VERSION:IS:TRUE',
+				array(
+					'uid' => 42,
+					'pid' => -1
+				),
+				NULL,
+				TRUE,
 			),
-			'VERSION (#2)' => array(
-				'VERSION:IS:FALSE', array('uid' => 42, 'pid' => 1), NULL, TRUE
+			'Version is TRUE for not versioned row compared with FALSE' => array(
+				'VERSION:IS:FALSE',
+				array(
+					'uid' => 42,
+					'pid' => 1
+				),
+				NULL,
+				TRUE,
 			),
-			'VERSION (#3)' => array(
-				'VERSION:IS:TRUE', array('uid' => NULL, 'pid' => NULL), NULL, FALSE
+			'Version is TRUE for NULL row compared with TRUE' => array(
+				'VERSION:IS:TRUE',
+				array(
+					'uid' => NULL,
+					'pid' => NULL,
+				),
+				NULL,
+				FALSE,
+			),
+			'Multiple conditions with AND compare to TRUE if all are OK' => array(
+				array(
+					'AND' => array(
+						'FIELD:testField:>:9',
+						'FIELD:testField:<:11',
+					),
+				),
+				array(
+					'testField' => 10
+				),
+				NULL,
+				TRUE,
+			),
+			'Multiple conditions with AND compare to FALSE if one fails' => array(
+				array(
+					'AND' => array(
+						'FIELD:testField:>:9',
+						'FIELD:testField:<:11',
+					)
+				),
+				array(
+					'testField' => 99
+				),
+				NULL,
+				FALSE,
+			),
+			'Multiple conditions with OR compare to TRUE if one is OK' => array(
+				array(
+					'OR' => array(
+						'FIELD:testField:<:9',
+						'FIELD:testField:<:11',
+					),
+				),
+				array(
+					'testField' => 10
+				),
+				NULL,
+				TRUE,
+			),
+			'Multiple conditions with OR compare to FALSE is all fail' => array(
+				array(
+					'OR' => array(
+						'FIELD:testField:<:9',
+						'FIELD:testField:<:11',
+					),
+				),
+				array(
+					'testField' => 99
+				),
+				NULL,
+				FALSE,
+			),
+			'Multiple conditions without operator due to misconfiguration compare to TRUE' => array(
+				array(
+					'' => array(
+						'FIELD:testField:<:9',
+						'FIELD:testField:>:11',
+					)
+				),
+				array(
+					'testField' => 99
+				),
+				NULL,
+				TRUE,
+			),
+			'Multiple nested conditions evaluate to TRUE' => array(
+				array(
+					'AND' => array(
+						'FIELD:testField:>:9',
+						'OR' => array(
+							'FIELD:testField:<:100',
+							'FIELD:testField:>:-100',
+						),
+					),
+				),
+				array(
+					'testField' => 10
+				),
+				NULL,
+				TRUE,
+			),
+			'Multiple nested conditions evaluate to FALSE' => array(
+				array(
+					'AND' => array(
+						'FIELD:testField:>:9',
+						'OR' => array(
+							'FIELD:testField:<:100',
+							'FIELD:testField:>:-100',
+						),
+					),
+				),
+				array(
+					'testField' => -999
+				),
+				NULL,
+				FALSE,
 			),
 		);
 	}
