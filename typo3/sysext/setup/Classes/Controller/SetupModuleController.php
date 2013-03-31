@@ -40,6 +40,11 @@ namespace TYPO3\CMS\Setup\Controller;
  */
 class SetupModuleController {
 
+	const PASSWORD_NOT_UPDATED = 0;
+	const PASSWORD_UPDATED = 1;
+	const PASSWORD_NOT_THE_SAME = 2;
+	const PASSWORD_OLD_WRONG = 3;
+
 	// Internal variables:
 	/**
 	 * @todo Define visibility
@@ -97,7 +102,7 @@ class SetupModuleController {
 
 	protected $saveData = FALSE;
 
-	protected $passwordIsUpdated = FALSE;
+	protected $passwordIsUpdated = self::PASSWORD_NOT_UPDATED;
 
 	protected $passwordIsSubmitted = FALSE;
 
@@ -212,8 +217,14 @@ class SetupModuleController {
 				}
 				// Update the password:
 				if ($passwordIsConfirmed) {
-					$storeRec['be_users'][$beUserId]['password'] = $be_user_data['password2'];
-					$this->passwordIsUpdated = TRUE;
+					if ($GLOBALS['BE_USER']->user['password'] === $be_user_data['passwordCurrent']) {
+						$storeRec['be_users'][$beUserId]['password'] = $be_user_data['password2'];
+						$this->passwordIsUpdated = self::PASSWORD_UPDATED;
+					} else {
+						$this->passwordIsUpdated = self::PASSWORD_OLD_WRONG;
+					}
+				} else {
+					$this->passwordIsUpdated = self::PASSWORD_NOT_THE_SAME;
 				}
 				$this->saveData = TRUE;
 			}
@@ -358,10 +369,16 @@ class SetupModuleController {
 		}
 		// If password is updated, output whether it failed or was OK.
 		if ($this->passwordIsSubmitted) {
-			if ($this->passwordIsUpdated) {
-				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $LANG->getLL('newPassword_ok'), $LANG->getLL('newPassword'));
-			} else {
-				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $LANG->getLL('newPassword_failed'), $LANG->getLL('newPassword'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			switch ($this->passwordIsUpdated) {
+				case self::PASSWORD_OLD_WRONG:
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $LANG->getLL('oldPassword_failed'), $LANG->getLL('newPassword'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					break;
+				case self::PASSWORD_NOT_THE_SAME:
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $LANG->getLL('newPassword_failed'), $LANG->getLL('newPassword'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					break;
+				case self::PASSWORD_UPDATED:
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $LANG->getLL('newPassword_ok'), $LANG->getLL('newPassword'));
+					break;
 			}
 			$this->content .= $flashMessage->render();
 		}

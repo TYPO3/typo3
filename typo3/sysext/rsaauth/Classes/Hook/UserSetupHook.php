@@ -47,8 +47,11 @@ class UserSetupHook {
 				$key = $storage->get();
 				$password = $backend->decrypt($key, substr($be_user_data['password'], 4));
 				$password2 = $backend->decrypt($key, substr($be_user_data['password2'], 4));
+				$passwordCurrent = $backend->decrypt($key, substr($be_user_data['passwordCurrent'], 4));
+
 				$be_user_data['password'] = $password ? $password : $be_user_data['password'];
 				$be_user_data['password2'] = $password2 ? $password2 : $be_user_data['password2'];
+				$be_user_data['passwordCurrent'] = $passwordCurrent ? $passwordCurrent : $be_user_data['passwordCurrent'];
 			}
 		}
 	}
