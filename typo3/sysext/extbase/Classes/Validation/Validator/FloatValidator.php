@@ -45,7 +45,11 @@ class FloatValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVal
 		if (is_float($value) || is_string($value) && strpos($value, '.') !== FALSE && preg_match('/^[0-9.e+-]+$/', $value)) {
 			return TRUE;
 		}
-		$this->addError('The given subject was not a valid float.', 1221560288);
+		$this->addError(
+			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+			'validator.float.notvalid',
+			'extbase'
+			), 1221560288);
 		return FALSE;
 	}
 }

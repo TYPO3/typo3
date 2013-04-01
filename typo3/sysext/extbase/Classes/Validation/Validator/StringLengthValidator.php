@@ -63,11 +63,33 @@ class StringLengthValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abst
 		}
 		if ($isValid === FALSE) {
 			if (isset($this->options['minimum']) && isset($this->options['maximum'])) {
-				$this->addError('The length of the given string was not between %1$d and %2$d characters.', 1238108067, array($this->options['minimum'], $this->options['maximum']));
+				$this->addError(
+					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+						'validator.stringlength.between',
+						'extbase',
+						array (
+							$this->options['minimum'],
+							$this->options['maximum']
+						)
+					), 1238108067, array($this->options['minimum'], $this->options['maximum']));
 			} elseif (isset($this->options['minimum'])) {
-				$this->addError('The length of the given string less than %1$d characters.', 1238108068, array($this->options['minimum']));
+				$this->addError(
+					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+						'validator.stringlength.less',
+						'extbase',
+						array(
+							$this->options['minimum']
+						)
+					), 1238108068, array($this->options['minimum']));
 			} else {
-				$this->addError('The length of the given string exceeded %1$d characters.', 1238108069, array($this->options['maximum']));
+				$this->addError(
+					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+						'validator.stringlength.exceed',
+						'extbase',
+						array(
+							$this->options['maximum']
+						)
+					), 1238108069, array($this->options['maximum']));
 			}
 		}
 		return $isValid;

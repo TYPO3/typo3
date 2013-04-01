@@ -44,7 +44,11 @@ class AlphanumericValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abst
 	public function isValid($value) {
 		$this->errors = array();
 		if (!is_string($value) || preg_match('/^[\pL\d]*$/u', $value) !== 1) {
-			$this->addError('The given subject was not a valid alphanumeric string.', 1221551320);
+			$this->addError(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					'validator.alphanumeric.notvalid',
+					'extbase'
+				), 1221551320);
 			return FALSE;
 		}
 

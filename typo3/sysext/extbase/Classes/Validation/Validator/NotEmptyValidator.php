@@ -43,19 +43,35 @@ class NotEmptyValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
 	public function isValid($value) {
 		$this->errors = array();
 		if ($value === NULL) {
-			$this->addError('The given subject was NULL.', 1221560910);
+			$this->addError(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					'validator.notempty.null',
+					'extbase'
+				), 1221560910);
 			return FALSE;
 		}
 		if ($value === '') {
-			$this->addError('The given subject was empty.', 1221560718);
+			$this->addError(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					'validator.notempty.empty',
+					'extbase'
+				), 1221560718);
 			return FALSE;
 		}
 		if (is_array($value) && empty($value)) {
-			$this->addError('The given subject was empty.', 1347992400);
+			$this->addError(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					'validator.notempty.empty',
+					'extbase'
+				), 1347992400);
 			return FALSE;
 		}
 		if (is_object($value) && $value instanceof \Countable && $value->count() === 0) {
-			$this->addError('The given subject was empty.', 1347992453);
+			$this->addError(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					'validator.notempty.empty',
+					'extbase'
+				), 1347992453);
 			return FALSE;
 		}
 		return TRUE;

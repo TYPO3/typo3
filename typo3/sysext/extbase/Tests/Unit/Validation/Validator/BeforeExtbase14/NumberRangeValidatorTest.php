@@ -75,9 +75,13 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 	 * @test
 	 */
 	public function numberRangeValidatorCreatesTheCorrectErrorForANumberOutOfRange() {
+		$startRange = 1;
+		$endRange = 42;
+		$translatedMessage = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('validator.numberrange.range', 'extbase', array($startRange, $endRange));
+
 		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError'), array(), '', FALSE);
-		$numberRangeValidator->expects($this->once())->method('addError')->with('The given subject was not in the valid range (%1$d - %2$d).', 1221561046, array(1, 42));
-		$numberRangeValidator->setOptions(array('startRange' => 1, 'endRange' => 42));
+		$numberRangeValidator->expects($this->once())->method('addError')->with($translatedMessage, 1221561046, array(1, 42));
+		$numberRangeValidator->setOptions(array('startRange' => $startRange, 'endRange' => $endRange));
 		$numberRangeValidator->isValid(4711);
 	}
 

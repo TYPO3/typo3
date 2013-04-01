@@ -90,7 +90,9 @@ class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function integerValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
 		$integerValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\IntegerValidator', array('addError'), array(), '', FALSE);
-		$integerValidator->expects($this->once())->method('addError')->with('The given subject was not a valid integer.', 1221560494);
+
+		$translatedMessage = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('validator.integer.notvalid', 'extbase');
+		$integerValidator->expects($this->once())->method('addError')->with($translatedMessage, 1221560494);
 		$integerValidator->isValid('not a number');
 	}
 }

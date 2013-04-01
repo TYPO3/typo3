@@ -44,7 +44,11 @@ class EmailAddressValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abst
 		if (is_string($value) && \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($value)) {
 			return TRUE;
 		}
-		$this->addError('The given subject was not a valid email address.', 1221559976);
+		$this->addError(
+			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+				'validator.emailaddress.notvalid',
+				'extbase'
+			), 1221559976);
 		return FALSE;
 	}
 }
