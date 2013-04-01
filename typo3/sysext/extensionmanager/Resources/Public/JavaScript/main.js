@@ -5,15 +5,15 @@
 		manageExtensionListing();
 		$("#typo3-extension-configuration-forms ul").tabs("div.category");
 
-		$('#resetSearch').live('click', function (e) {
-			datatable.fnFilter('');
-		});
-
 		$('.onClickMaskExtensionManager').click(function() {
 			$('.typo3-extension-manager').mask();
 		});
 
-		resetSearchField();
+		$('.dataTables_wrapper .dataTables_filter input').clearable({
+			onClear: function() {
+				datatable.fnFilter('');
+			}
+		});
 	});
 
 	function getUrlVars() {
@@ -195,21 +195,5 @@
 		} else {
 			TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.l10n.localize('extensionList.removalConfirmation.title'), data.message, 15);
 		}
-	}
-
-	function resetSearchField() {
-		$('.dataTables_wrapper').find('.dataTables_filter').append($('<span />', {
-			'class':'t3-icon t3-icon-actions t3-icon-actions-input t3-icon-input-clear t3-tceforms-input-clearer',
-			'id':'resetSearch',
-			'style':'display:none'
-		}));
-		$('#typo3-extension-list_filter').mouseout(function() {
-			$(this).find('#resetSearch').css('display', 'none');
-		});
-		$('#typo3-extension-list_filter').mouseover(function() {
-			if ($(this).find('input').val()) {
-				$(this).find('#resetSearch').css('display', 'inline-block');
-			}
-		});
 	}
 }(jQuery));
