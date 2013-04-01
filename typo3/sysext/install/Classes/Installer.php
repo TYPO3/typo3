@@ -1736,7 +1736,9 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	 * @todo Define visibility
 	 */
 	public function generateConfigForm($type = '') {
-		$default_config_content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getDefaultConfigurationFileResource());
+		$default_config_content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(
+			\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getDefaultConfigurationFileLocation()
+		);
 		$commentArr = $this->getDefaultConfigArrayComments($default_config_content);
 		switch ($type) {
 		case 'get_form':

@@ -805,10 +805,6 @@ class TypoScriptFrontendController {
 			$GLOBALS['TYPO3_DB']->connectDB();
 		} catch (\RuntimeException $exception) {
 			switch ($exception->getCode()) {
-			case 1270853882:
-				// No database selected: Redirect to Install Tool 1-2-3 mode (fresh installation)
-				\TYPO3\CMS\Core\Utility\HttpUtility::redirect(TYPO3_mainDir . 'install/index.php?mode=123&step=1&password=joh316');
-				break;
 			case 1270853883:
 				// Cannot connect to current database
 				$message = 'Cannot connect to the configured database "' . TYPO3_db . '"';
