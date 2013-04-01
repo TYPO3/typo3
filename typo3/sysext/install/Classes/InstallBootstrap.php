@@ -38,6 +38,25 @@ namespace TYPO3\CMS\Install;
 class InstallBootstrap {
 
 	/**
+	 * During first install, typo3conf/LocalConfiguration.php does not
+	 * exist. It is created now based on factory configuration as a
+	 * first action in the install process.
+	 *
+	 * @return void
+	 * @internal This is not a public API method, do not use in own extensions
+	 */
+	static public function createLocalConfigurationIfNotExists() {
+		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
+		$configurationManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		if (
+			!file_exists($configurationManager->getLocalConfigurationFileLocation())
+			&& !file_exists($configurationManager->getLocalconfFileLocation())
+		) {
+			$configurationManager->createLocalConfigurationFromFactoryConfiguration();
+		}
+	}
+
+	/**
 	 * Check ENABLE_INSTALL_TOOL and FIRST_INSTALL file in typo3conf
 	 * or exit the script if conditions to access the install tool are not met.
 	 *

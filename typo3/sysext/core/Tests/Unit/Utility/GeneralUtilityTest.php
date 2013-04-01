@@ -1875,6 +1875,19 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function unlink_tempfileRemovesHiddenFile() {
+		$fixtureFile = __DIR__ . '/Fixtures/clear.gif';
+		$testFilename = PATH_site . 'typo3temp/' . uniqid('.test_') . '.gif';
+		@copy($fixtureFile, $testFilename);
+		Utility\GeneralUtility::unlink_tempfile($testFilename);
+		$fileExists = file_exists($testFilename);
+		@unlink($testFilename);
+		$this->assertFalse($fileExists);
+	}
+
+	/**
+	 * @test
+	 */
 	public function unlink_tempfileReturnsTrueIfFileWasRemoved() {
 		$fixtureFile = __DIR__ . '/Fixtures/clear.gif';
 		$testFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.gif';
@@ -2603,14 +2616,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// Create and prepare test file
 		$filename = PATH_site . 'typo3temp/' . uniqid('test_');
 		Utility\GeneralUtility::writeFileToTypo3tempDir($filename, '42');
+		$this->testFilesToDelete[] = $filename;
 		$currentGroupId = posix_getegid();
 		// Set target group and run method
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = $currentGroupId;
-		$fixPermissionsResult = Utility\GeneralUtility::fixPermissions($filename);
+		Utility\GeneralUtility::fixPermissions($filename);
 		clearstatcache();
-		$resultFileGroup = filegroup($filename);
-		unlink($filename);
-		$this->assertEquals($currentGroupId, $resultFileGroup);
+		$this->assertEquals($currentGroupId, filegroup($filename));
 	}
 
 	/**
@@ -2623,17 +2635,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// Create and prepare test file
 		$filename = PATH_site . 'typo3temp/' . uniqid('test_');
 		Utility\GeneralUtility::writeFileToTypo3tempDir($filename, '42');
+		$this->testFilesToDelete[] = $filename;
 		chmod($filename, 482);
 		// Set target permissions and run method
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0660';
 		$fixPermissionsResult = Utility\GeneralUtility::fixPermissions($filename);
-		// Get actual permissions and clean up
 		clearstatcache();
-		$resultFilePermissions = substr(decoct(fileperms($filename)), 2);
-		unlink($filename);
-		// Test if everything was ok
 		$this->assertTrue($fixPermissionsResult);
-		$this->assertEquals($resultFilePermissions, '0660');
+		$this->assertEquals('0660', substr(decoct(fileperms($filename)), 2));
 	}
 
 	/**
@@ -2646,17 +2655,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// Create and prepare test file
 		$filename = PATH_site . 'typo3temp/' . uniqid('.test_');
 		Utility\GeneralUtility::writeFileToTypo3tempDir($filename, '42');
+		$this->testFilesToDelete[] = $filename;
 		chmod($filename, 482);
 		// Set target permissions and run method
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0660';
 		$fixPermissionsResult = Utility\GeneralUtility::fixPermissions($filename);
-		// Get actual permissions and clean up
 		clearstatcache();
-		$resultFilePermissions = substr(decoct(fileperms($filename)), 2);
-		unlink($filename);
-		// Test if everything was ok
 		$this->assertTrue($fixPermissionsResult);
-		$this->assertEquals($resultFilePermissions, '0660');
+		$this->assertEquals('0660', substr(decoct(fileperms($filename)), 2));
 	}
 
 	/**
@@ -2679,7 +2685,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		Utility\GeneralUtility::rmdir($directory);
 		// Test if everything was ok
 		$this->assertTrue($fixPermissionsResult);
-		$this->assertEquals($resultDirectoryPermissions, '0770');
+		$this->assertEquals('0770', $resultDirectoryPermissions);
 	}
 
 	/**
@@ -2702,7 +2708,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		Utility\GeneralUtility::rmdir($directory);
 		// Test if everything was ok
 		$this->assertTrue($fixPermissionsResult);
-		$this->assertEquals($resultDirectoryPermissions, '0770');
+		$this->assertEquals('0770', $resultDirectoryPermissions);
 	}
 
 	/**
@@ -2725,7 +2731,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		Utility\GeneralUtility::rmdir($directory);
 		// Test if everything was ok
 		$this->assertTrue($fixPermissionsResult);
-		$this->assertEquals($resultDirectoryPermissions, '0770');
+		$this->assertEquals('0770', $resultDirectoryPermissions);
 	}
 
 	/**
@@ -2777,13 +2783,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		Utility\GeneralUtility::rmdir($baseDirectory);
 		// Test if everything was ok
 		$this->assertTrue($fixPermissionsResult);
-		$this->assertEquals($resultBaseDirectoryPermissions, '0770');
-		$this->assertEquals($resultBaseFilePermissions, '0660');
-		$this->assertEquals($resultFooDirectoryPermissions, '0770');
-		$this->assertEquals($resultFooFilePermissions, '0660');
-		$this->assertEquals($resultBarDirectoryPermissions, '0770');
-		$this->assertEquals($resultBarFilePermissions, '0660');
-		$this->assertEquals($resultBarFile2Permissions, '0660');
+		$this->assertEquals('0770', $resultBaseDirectoryPermissions);
+		$this->assertEquals('0660', $resultBaseFilePermissions);
+		$this->assertEquals('0770', $resultFooDirectoryPermissions);
+		$this->assertEquals('0660', $resultFooFilePermissions);
+		$this->assertEquals('0770', $resultBarDirectoryPermissions);
+		$this->assertEquals('0660', $resultBarFilePermissions);
+		$this->assertEquals('0660', $resultBarFile2Permissions);
 	}
 
 	/**
@@ -2827,7 +2833,44 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		unlink(PATH_site . $filename);
 		// Test if everything was ok
 		$this->assertTrue($fixPermissionsResult);
-		$this->assertEquals($resultFilePermissions, '0660');
+		$this->assertEquals('0660', $resultFilePermissions);
+	}
+
+	/**
+	 * @test
+	 */
+	public function fixPermissionsSetsDefaultPermissionsToFile() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('fixPermissions() tests not available on Windows');
+		}
+		$filename = PATH_site . 'typo3temp/' . uniqid('test_');
+		Utility\GeneralUtility::writeFileToTypo3tempDir($filename, '42');
+		$this->testFilesToDelete[] = $filename;
+		chmod($filename, 482);
+		unset($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']);
+		$fixPermissionsResult = Utility\GeneralUtility::fixPermissions($filename);
+		clearstatcache();
+		$this->assertTrue($fixPermissionsResult);
+		$this->assertEquals('0644', substr(decoct(fileperms($filename)), 2));
+	}
+
+	/**
+	 * @test
+	 */
+	public function fixPermissionsSetsDefaultPermissionsToDirectory() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('fixPermissions() tests not available on Windows');
+		}
+		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
+		Utility\GeneralUtility::mkdir($directory);
+		chmod($directory, 1551);
+		unset($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']);
+		$fixPermissionsResult = Utility\GeneralUtility::fixPermissions($directory);
+		clearstatcache();
+		$resultDirectoryPermissions = substr(decoct(fileperms($directory)), 1);
+		Utility\GeneralUtility::rmdir($directory);
+		$this->assertTrue($fixPermissionsResult);
+		$this->assertEquals('0755', $resultDirectoryPermissions);
 	}
 
 	///////////////////////////////
