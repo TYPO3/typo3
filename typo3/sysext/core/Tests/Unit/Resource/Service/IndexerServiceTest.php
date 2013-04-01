@@ -105,10 +105,14 @@ class IndexerServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fixture->expects($this->any())->method('getRepository')->will($this->returnValue($repositoryMock));
 
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
-		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_INSERTquery')->with($this->anything(), $this->equalTo(array(
-			'crdate' => $GLOBALS['EXEC_TIME'],
-			'tstamp' => $GLOBALS['EXEC_TIME']
-		)));
+
+		$arrayConstraint = $this->logicalAnd(
+			$this->arrayHasKey('crdate'),
+			$this->arrayHasKey('tstamp'),
+			$this->contains($GLOBALS['EXEC_TIME'])
+		);
+
+		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_INSERTquery')->with($this->anything(), $arrayConstraint);
 
 		$mockedFile = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE);
 
