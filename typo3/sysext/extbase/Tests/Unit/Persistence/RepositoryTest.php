@@ -41,14 +41,19 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $mockIdentityMap;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
-	 */
-	protected $mockSession;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory
 	 */
 	protected $mockQueryFactory;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
+	 */
+	protected $mockBackend;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
+	 */
+	protected $mockSession;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
@@ -61,9 +66,9 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $mockQuery;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
 	 */
-	protected $mockBackend;
+	protected $querySettings;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
@@ -71,31 +76,22 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $mockQuerySettings;
 
 	public function setUp() {
-		$this->mockSession = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Session');
 		$this->mockIdentityMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\IdentityMap');
-		$this->mockQuery = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Query', array('equals', 'matching', 'execute', 'comparison', 'setLimit'), array(), '', FALSE);
+		$this->mockQueryFactory = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryFactory');
+		$this->mockQuery = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface');
 		$this->mockQuerySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
 		$this->mockQuery->expects($this->any())->method('getQuerySettings')->will($this->returnValue($this->mockQuerySettings));
-		$this->mockQueryFactory = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryFactory');
 		$this->mockQueryFactory->expects($this->any())->method('create')->will($this->returnValue($this->mockQuery));
-
-		$configuration = $this->getMock('\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface');
-		$this->mockBackend = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Backend', array('getIdentifierByObject', 'replaceObject'), array($configuration));
-		$this->mockBackend->injectIdentityMap($this->mockIdentityMap);
-		$this->mockBackend->injectQueryFactory($this->mockQueryFactory);
-		$this->mockBackend->expects($this->any())->method('replaceObject');
-
-		$this->mockPersistenceManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager', array('getIdentifierByObject'));
-		$this->mockPersistenceManager->_set('addedObjects', new \TYPO3\CMS\Extbase\Persistence\ObjectStorage);
-		$this->mockPersistenceManager->_set('removedObjects', new \TYPO3\CMS\Extbase\Persistence\ObjectStorage);
-		$this->mockPersistenceManager->injectQueryFactory($this->mockQueryFactory);
-		$this->mockPersistenceManager->injectBackend($this->mockBackend);
-		$this->mockPersistenceManager->injectSession($this->mockSession);
-		$this->mockPersistenceManager->setDefaultQuerySettings($this->mockQuerySettings);
-
+		$this->mockBackend = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\BackendInterface');
+		$this->mockSession = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Session');
+		$this->mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
 		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$this->repository = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Repository', array('dummy'), array($this->mockObjectManager));
+		$this->repository->injectIdentityMap($this->mockIdentityMap);
+		$this->repository->injectQueryFactory($this->mockQueryFactory);
 		$this->repository->injectPersistenceManager($this->mockPersistenceManager);
+		$this->repository->injectBackend($this->mockBackend);
+		$this->repository->injectSession($this->mockSession);
 	}
 
 	/**
@@ -110,7 +106,7 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function addActuallyAddsAnObjectToTheInternalObjectsArray() {
 		$someObject = new \stdClass();
-		$this->repository->_set('entityClassName', get_class($someObject));
+		$this->repository->_set('objectType', get_class($someObject));
 		$this->repository->add($someObject);
 		$this->assertTrue($this->repository->getAddedObjects()->contains($someObject));
 	}
@@ -122,7 +118,7 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$object1 = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractDomainObject');
 		$object2 = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractDomainObject');
 		$object3 = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractDomainObject');
-		$this->repository->_set('entityClassName', get_class($object1));
+		$this->repository->_set('objectType', get_class($object1));
 		$this->repository->add($object1);
 		$this->repository->add($object2);
 		$this->repository->add($object3);
@@ -139,7 +135,7 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$object1 = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractDomainObject');
 		$object2 = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractDomainObject');
 		$object3 = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractDomainObject');
-		$this->repository->_set('entityClassName', get_class($object1));
+		$this->repository->_set('objectType', get_class($object1));
 		$this->repository->add($object1);
 		$this->repository->add($object2);
 		$this->repository->add($object3);
@@ -161,7 +157,7 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$object = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractDomainObject');
 		// if the object is not currently add()ed, it is not new
 		$object->expects($this->once())->method('_isNew')->will($this->returnValue(FALSE));
-		$this->repository->_set('entityClassName', get_class($object));
+		$this->repository->_set('objectType', get_class($object));
 		$this->repository->remove($object);
 		$this->assertTrue($this->repository->getRemovedObjects()->contains($object));
 	}
@@ -189,41 +185,16 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function constructSetsObjectTypeFromClassName($repositoryClassName, $modelClassName) {
 		$mockClassName = 'MockRepository' . uniqid();
-		eval('class ' . $repositoryClassName . ' extends TYPO3\\CMS\\Extbase\\Persistence\\Repository {}');
-		$this->repository = new $repositoryClassName($this->mockObjectManager);
-		$this->repository->injectPersistenceManager($this->mockPersistenceManager);
-		$this->assertEquals($modelClassName, $this->repository->getEntityClassName());
-	}
-
-	/**
-	 * dataProvider for createQueryCallsQueryFactoryWithExpectedType
-	 *
-	 * @return array
-	 */
-	public function modelAndRepositoryNamespacedClassNames() {
-		return array(
-			array('VENDOR\\EXT\\Domain\\Repository', 'BlogRepository', 'VENDOR\\EXT\\Domain\\Model\\Blog'),
-			array('VENDOR\\EXT\\Domain\\Repository', '_PageRepository', 'VENDOR\\EXT\\Domain\\Model\\_Page'),
-			array('VENDOR\\Repository\\Domain\\Repository', 'SomeModelRepository', 'VENDOR\\Repository\\Domain\\Model\\SomeModel'),
-			array('VENDOR\\EXT\\Domain\\Repository', 'RepositoryRepository', 'VENDOR\\EXT\\Domain\\Model\\Repository'),
-			array('VENDOR\\Repository\\Domain\\Repository', 'RepositoryRepository', 'VENDOR\\Repository\\Domain\\Model\\Repository'),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider modelAndRepositoryNamespacedClassNames
-	 * @param string $namespace
-	 * @param string $repositoryClassName
-	 * @param string $modelClassName
-	 */
-	public function constructSetsObjectTypeFromNamespacedClassName($namespace, $repositoryClassName, $modelClassName) {
-		$mockClassName = 'MockRepository' . uniqid();
-		eval('namespace ' . $namespace . ';  class ' . $repositoryClassName . ' extends \\TYPO3\\CMS\\Extbase\\Persistence\\Repository {}');
-		$namespacedRepositoryClassName = '\\' . $namespace . '\\' . $repositoryClassName;
-		$this->repository = new $namespacedRepositoryClassName($this->mockObjectManager);
-		$this->repository->injectPersistenceManager($this->mockPersistenceManager);
-		$this->assertEquals($modelClassName, $this->repository->getEntityClassName());
+		eval('class ' . $mockClassName . ' extends TYPO3\\CMS\\Extbase\\Persistence\\Repository {
+			protected function getRepositoryClassName() {
+				return \'' . $repositoryClassName . '\';
+			}
+			public function _getObjectType() {
+				return $this->objectType;
+			}
+		}');
+		$this->repository = new $mockClassName($this->mockObjectManager);
+		$this->assertEquals($modelClassName, $this->repository->_getObjectType());
 	}
 
 	/**
@@ -231,7 +202,7 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function createQueryCallsQueryFactoryWithExpectedClassName() {
 		$this->mockQueryFactory->expects($this->once())->method('create')->with('ExpectedType');
-		$this->repository->_set('entityClassName', 'ExpectedType');
+		$this->repository->_set('objectType', 'ExpectedType');
 		$this->repository->createQuery();
 	}
 
@@ -239,13 +210,16 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function createQueryReturnsQueryWithUnmodifiedDefaultQuerySettings() {
-		$mockQuerySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
+		$mockQueryFactory = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryFactory');
 		$mockQuery = new \TYPO3\CMS\Extbase\Persistence\Generic\Query('foo');
-		$mockQuery->setQuerySettings($mockQuerySettings);
+		$mockDefaultQuerySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
+		$this->repository->injectQueryFactory($mockQueryFactory);
+		$this->repository->setDefaultQuerySettings($mockDefaultQuerySettings);
+		$mockQueryFactory->expects($this->once())->method('create')->will($this->returnValue($mockQuery));
 		$this->repository->createQuery();
 		$instanceQuerySettings = $mockQuery->getQuerySettings();
-		$this->assertEquals($this->mockQuerySettings, $instanceQuerySettings);
-		$this->assertNotSame($this->mockQuerySettings, $instanceQuerySettings);
+		$this->assertEquals($mockDefaultQuerySettings, $instanceQuerySettings);
+		$this->assertNotSame($mockDefaultQuerySettings, $instanceQuerySettings);
 	}
 
 	/**
@@ -263,7 +237,7 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function findByUidReturnsResultOfGetObjectByIdentifierCall() {
 		$fakeUid = '123';
 		$object = new \stdClass();
-		$this->repository->_set('entityClassName', 'someObjectType');
+		$this->repository->_set('objectType', 'someObjectType');
 		$this->mockIdentityMap->expects($this->once())->method('hasIdentifier')->with($fakeUid, 'someObjectType')->will($this->returnValue(TRUE));
 		$this->mockIdentityMap->expects($this->once())->method('getObjectByIdentifier')->with($fakeUid)->will($this->returnValue($object));
 		$expectedResult = $object;
@@ -282,11 +256,9 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function replaceReplacesReconstitutedEntityByNewObject() {
 		$existingObject = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface');
 		$newObject = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface');
-
-		$this->mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('123'));
-		$this->mockBackend->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('123'));
-
-		$this->repository->_set('entityClassName', get_class($newObject));
+		$this->mockPersistenceManager->expects($this->once())->method('getIdentifierByObject')->with($existingObject)->will($this->returnValue('123'));
+		$this->mockBackend->expects($this->once())->method('replaceObject')->with($existingObject, $newObject);
+		$this->repository->_set('objectType', get_class($newObject));
 		$this->repository->replace($existingObject, $newObject);
 	}
 
@@ -302,19 +274,15 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function replaceRemovesReconstitutedObjectWhichIsMarkedToBeRemoved() {
 		$existingObject = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface');
 		$newObject = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface');
-
-		$removedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$removedObjects = new \SplObjectStorage();
 		$removedObjects->attach($existingObject);
-
-		$this->mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('123'));
-		$this->mockBackend->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('123'));
-
-		$this->repository->_set('entityClassName', get_class($newObject));
-		$this->repository->_get('persistenceManager')->_set('removedObjects', $removedObjects);
+		$this->mockPersistenceManager->expects($this->once())->method('getIdentifierByObject')->with($existingObject)->will($this->returnValue('123'));
+		$this->mockBackend->expects($this->once())->method('replaceObject')->with($existingObject, $newObject);
+		$this->repository->_set('objectType', get_class($newObject));
+		$this->repository->_set('removedObjects', $removedObjects);
 		$this->repository->replace($existingObject, $newObject);
-
-		$this->assertFalse($this->repository->getRemovedObjects()->contains($existingObject));
-		$this->assertTrue($this->repository->getRemovedObjects()->contains($newObject));
+		$this->assertFalse($removedObjects->contains($existingObject));
+		$this->assertTrue($removedObjects->contains($newObject));
 	}
 
 	/**
@@ -328,14 +296,13 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function replaceAddsNewObjectToAddedObjects() {
 		$existingObject = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface');
 		$newObject = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface');
-
-		$addedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$addedObjects = new \SplObjectStorage();
 		$addedObjects->attach($existingObject);
-
-		$this->repository->_set('entityClassName', get_class($newObject));
-		$this->repository->_get('persistenceManager')->_set('addedObjects', $addedObjects);
+		$this->mockPersistenceManager->expects($this->once())->method('getIdentifierByObject')->with($existingObject)->will($this->returnValue(NULL));
+		$this->mockBackend->expects($this->never())->method('replaceObject');
+		$this->repository->_set('objectType', get_class($newObject));
+		$this->repository->_set('addedObjects', $addedObjects);
 		$this->repository->replace($existingObject, $newObject);
-
 		$this->assertFalse($addedObjects->contains($existingObject));
 		$this->assertTrue($addedObjects->contains($newObject));
 	}
@@ -345,7 +312,7 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @expectedException \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
 	 */
 	public function replaceChecksObjectType() {
-		$this->repository->_set('entityClassName', 'ExpectedObjectType');
+		$this->repository->_set('objectType', 'ExpectedObjectType');
 		$this->repository->replace(new \stdClass(), new \stdClass());
 	}
 
@@ -356,18 +323,12 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$existingObject = new \stdClass();
 		$modifiedObject = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface');
 		$modifiedObject->expects($this->once())->method('getUid')->will($this->returnValue('123'));
-
-		$mockPersistenceManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager', array('getObjectByIdentifier', 'findByUid', 'replace'));
-		$mockPersistenceManager->_set('addedObjects', new \TYPO3\CMS\Extbase\Persistence\ObjectStorage);
-		$mockPersistenceManager->_set('removedObjects', new \TYPO3\CMS\Extbase\Persistence\ObjectStorage);
-		$mockPersistenceManager->injectBackend($this->mockBackend);
-		$mockPersistenceManager->injectSession($this->mockSession);
-		$mockPersistenceManager->expects($this->once())->method('getObjectByIdentifier')->with('123')->will($this->returnValue($existingObject));
-		$mockPersistenceManager->expects($this->once())->method('replace')->with($existingObject, $modifiedObject);
-
-		$this->repository->injectPersistenceManager($mockPersistenceManager);
-		$this->repository->_set('entityClassName', get_class($modifiedObject));
-		$this->repository->update($modifiedObject);
+		/** @var \TYPO3\CMS\Extbase\Persistence\Repository|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$repository = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Repository', array('findByUid', 'replace'), array($this->mockObjectManager));
+		$repository->expects($this->once())->method('findByUid')->with('123')->will($this->returnValue($existingObject));
+		$repository->expects($this->once())->method('replace')->with($existingObject, $modifiedObject);
+		$repository->_set('objectType', get_class($modifiedObject));
+		$repository->update($modifiedObject);
 	}
 
 	/**
@@ -377,7 +338,7 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function updateRejectsUnknownObjects() {
 		$someObject = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface');
 		$someObject->expects($this->once())->method('getUid')->will($this->returnValue(NULL));
-		$this->repository->_set('entityClassName', get_class($someObject));
+		$this->repository->_set('objectType', get_class($someObject));
 		$this->repository->update($someObject);
 	}
 
@@ -386,7 +347,7 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @expectedException \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
 	 */
 	public function updateRejectsObjectsOfWrongType() {
-		$this->repository->_set('entityClassName', 'Foo');
+		$this->repository->_set('objectType', 'Foo');
 		$this->repository->update(new \stdClass());
 	}
 
@@ -410,7 +371,7 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockQueryResult->expects($this->once())->method('getFirst')->will($this->returnValue($object));
 		$this->mockQuery->expects($this->once())->method('equals')->with('foo', 'bar')->will($this->returnValue('matchCriteria'));
 		$this->mockQuery->expects($this->once())->method('matching')->with('matchCriteria')->will($this->returnValue($this->mockQuery));
-		$this->mockQuery->expects($this->any())->method('setLimit')->with(1)->will($this->returnValue($this->mockQuery));
+		$this->mockQuery->expects($this->once())->method('setLimit')->with(1)->will($this->returnValue($this->mockQuery));
 		$this->mockQuery->expects($this->once())->method('execute')->will($this->returnValue($mockQueryResult));
 		$this->assertSame($object, $this->repository->findOneByFoo('bar'));
 	}
@@ -440,7 +401,7 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @expectedException \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
 	 */
 	public function addChecksObjectType() {
-		$this->repository->_set('entityClassName', 'ExpectedObjectType');
+		$this->repository->_set('objectType', 'ExpectedObjectType');
 		$this->repository->add(new \stdClass());
 	}
 
@@ -449,7 +410,7 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @expectedException \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
 	 */
 	public function removeChecksObjectType() {
-		$this->repository->_set('entityClassName', 'ExpectedObjectType');
+		$this->repository->_set('objectType', 'ExpectedObjectType');
 		$this->repository->remove(new \stdClass());
 	}
 }

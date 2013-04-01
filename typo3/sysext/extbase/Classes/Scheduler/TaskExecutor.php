@@ -154,7 +154,7 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function shutdown() {
 		// shutdown
-		$persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
+		$persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
 		$persistenceManager->persistAll();
 		$reflectionService = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
 		$reflectionService->shutdown();
