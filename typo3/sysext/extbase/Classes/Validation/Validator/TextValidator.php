@@ -43,7 +43,11 @@ class TextValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
 	public function isValid($value) {
 		$this->errors = array();
 		if ($value !== filter_var($value, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES)) {
-			$this->addError('The given subject was not a valid text (e.g. contained XML tags).', 1221565786);
+			$this->addError(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					'validator.text.notvalid',
+					'extbase'
+				), 1221565786);
 			return FALSE;
 		}
 		return TRUE;

@@ -44,7 +44,11 @@ class StringValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVa
 	 */
 	public function isValid($value) {
 		if (!is_string($value)) {
-			$this->addError('A valid string is expected.', 1238108067);
+			$this->addError(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					'validator.string.notvalid',
+					'extbase'
+				), 1238108067);
 			return FALSE;
 		}
 		return TRUE;

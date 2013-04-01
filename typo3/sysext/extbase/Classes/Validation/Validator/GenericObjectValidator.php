@@ -122,7 +122,11 @@ class GenericObjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abs
 	 */
 	public function isValid($value) {
 		if (!is_object($value)) {
-			$this->addError('Value is no object.', 1241099148);
+			$this->addError(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					'validator.genericobject.noobject',
+					'extbase'
+				), 1241099148);
 			return FALSE;
 		}
 		$result = TRUE;

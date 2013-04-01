@@ -45,7 +45,11 @@ class NumberValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVa
 		if (is_numeric($value)) {
 			return TRUE;
 		}
-		$this->addError('The given subject was not a valid number.', 1221563685);
+		$this->addError(
+			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+				'validator.number.notvalid',
+				'extbase'
+			), 1221563685);
 		return FALSE;
 	}
 }

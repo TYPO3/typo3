@@ -45,16 +45,31 @@ class RegularExpressionValidator extends \TYPO3\CMS\Extbase\Validation\Validator
 	public function isValid($value) {
 		$this->errors = array();
 		if (!isset($this->options['regularExpression'])) {
-			$this->addError('The regular expression was empty.', 1221565132);
+			$this->addError(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					'validator.regularexpression.empty',
+					'extbase'
+				), 1221565132);
 			return FALSE;
 		}
 		$result = preg_match($this->options['regularExpression'], $value);
 		if ($result === 0) {
-			$this->addError('The given subject did not match the pattern.', 1221565130);
+			$this->addError(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					'validator.regularexpression.nomatch',
+					'extbase'
+				), 1221565130);
 			return FALSE;
 		}
 		if ($result === FALSE) {
-			$this->addError('The regular expression "%1$d" contained an error.', 1221565131, array($this->options['regularExpression']));
+			$this->addError(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					'validator.regularexpression.error',
+					'extbase',
+					array(
+						$this->options['regularExpression']
+					)
+				), 1221565131, array($this->options['regularExpression']));
 			return FALSE;
 		}
 		return TRUE;

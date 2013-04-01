@@ -45,7 +45,11 @@ class IntegerValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractV
 		if (filter_var($value, FILTER_VALIDATE_INT) !== FALSE) {
 			return TRUE;
 		}
-		$this->addError('The given subject was not a valid integer.', 1221560494);
+		$this->addError(
+			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+			'validator.integer.notvalid',
+			'extbase'
+			), 1221560494);
 		return FALSE;
 	}
 }
