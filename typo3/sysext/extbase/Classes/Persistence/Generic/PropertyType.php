@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2012 Extbase Team (http://forge.typo3.org/projects/typo3v4-mvc)
+ *  (c) 2010-2013 Extbase Team (http://forge.typo3.org/projects/typo3v4-mvc)
  *  Extbase is a backport of TYPO3 Flow. All credits go to the TYPO3 Flow team.
  *  All rights reserved
  *
@@ -231,48 +231,50 @@ class PropertyType {
 		switch (intval($type)) {
 			default:
 			case self::UNDEFINED:
-				return self::TYPENAME_UNDEFINED;
+				$name = self::TYPENAME_UNDEFINED;
 				break;
 			case self::STRING:
-				return self::TYPENAME_STRING;
+				$name = self::TYPENAME_STRING;
 				break;
 			case self::BINARY:
-				return self::TYPENAME_BINARY;
+				$name = self::TYPENAME_BINARY;
 				break;
 			case self::BOOLEAN:
-				return self::TYPENAME_BOOLEAN;
+				$name = self::TYPENAME_BOOLEAN;
 				break;
 			case self::LONG:
-				return self::TYPENAME_LONG;
+				$name = self::TYPENAME_LONG;
 				break;
 			case self::DOUBLE:
-				return self::TYPENAME_DOUBLE;
+				$name = self::TYPENAME_DOUBLE;
 				break;
 			case self::DECIMAL:
-				return self::TYPENAME_DECIMAL;
+				$name = self::TYPENAME_DECIMAL;
 				break;
 			case self::INTEGER:
-				return self::TYPENAME_INTEGER;
+				$name = self::TYPENAME_INTEGER;
 				break;
 			case self::DATE:
-				return self::TYPENAME_DATE;
+				$name = self::TYPENAME_DATE;
 				break;
 			case self::NAME:
-				return self::TYPENAME_NAME;
+				$name = self::TYPENAME_NAME;
 				break;
 			case self::PATH:
-				return self::TYPENAME_PATH;
+				$name = self::TYPENAME_PATH;
 				break;
 			case self::REFERENCE:
-				return self::TYPENAME_REFERENCE;
+				$name = self::TYPENAME_REFERENCE;
 				break;
 			case self::WEAKREFERENCE:
-				return self::TYPENAME_WEAKREFERENCE;
+				$name = self::TYPENAME_WEAKREFERENCE;
 				break;
 			case self::URI:
-				return self::TYPENAME_URI;
+				$name = self::TYPENAME_URI;
 				break;
 		}
+
+		return $name;
 	}
 
 	/**
@@ -285,48 +287,50 @@ class PropertyType {
 		switch ($name) {
 			default:
 			case self::TYPENAME_UNDEFINED:
-				return self::UNDEFINED;
+				$value = self::UNDEFINED;
 				break;
 			case self::TYPENAME_STRING:
-				return self::STRING;
+				$value = self::STRING;
 				break;
 			case self::TYPENAME_BINARY:
-				return self::BINARY;
+				$value = self::BINARY;
 				break;
 			case self::TYPENAME_LONG:
-				return self::LONG;
+				$value = self::LONG;
 				break;
 			case self::TYPENAME_DOUBLE:
-				return self::DOUBLE;
+				$value = self::DOUBLE;
 				break;
 			case self::TYPENAME_DECIMAL:
-				return self::DECIMAL;
+				$value = self::DECIMAL;
 				break;
 			case self::TYPENAME_INTEGER:
-				return self::INTEGER;
+				$value = self::INTEGER;
 				break;
 			case self::TYPENAME_DATE:
-				return self::DATE;
+				$value = self::DATE;
 				break;
 			case self::TYPENAME_BOOLEAN:
-				return self::BOOLEAN;
+				$value = self::BOOLEAN;
 				break;
 			case self::TYPENAME_NAME:
-				return self::NAME;
+				$value = self::NAME;
 				break;
 			case self::TYPENAME_PATH:
-				return self::PATH;
+				$value = self::PATH;
 				break;
 			case self::TYPENAME_REFERENCE:
-				return self::REFERENCE;
+				$value = self::REFERENCE;
 				break;
 			case self::TYPENAME_WEAKREFERENCE:
-				return self::WEAKREFERENCE;
+				$value = self::WEAKREFERENCE;
 				break;
 			case self::TYPENAME_URI:
-				return self::URI;
+				$value = self::URI;
 				break;
 		}
+
+		return $value;
 	}
 
 	/**
@@ -339,30 +343,32 @@ class PropertyType {
 	static public function valueFromType($type) {
 		switch (strtolower($type)) {
 			case 'string':
-				return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::STRING;
+				$value = \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::STRING;
 				break;
 			case 'boolean':
-				return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::BOOLEAN;
+				$value = \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::BOOLEAN;
 				break;
 			case 'integer':
-				return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::LONG;
+				$value = \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::LONG;
 				break;
 			case 'float':
 
 			case 'double':
-				return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::DOUBLE;
+				$value = \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::DOUBLE;
 				break;
 			case 'integer':
 
 			case 'int':
-				return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::INTEGER;
+				$value = \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::INTEGER;
 				break;
 			case 'datetime':
-				return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::DATE;
+				$value = \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::DATE;
 				break;
 			default:
-				return \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::UNDEFINED;
+				$value = \TYPO3\CMS\Extbase\Persistence\Generic\PropertyType::UNDEFINED;
 		}
+
+		return $value;
 	}
 }
 

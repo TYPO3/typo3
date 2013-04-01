@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Extbase\Service;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2012 Extbase Team (http://forge.typo3.org/projects/typo3v4-mvc)
+ *  (c) 2010-2013 Extbase Team (http://forge.typo3.org/projects/typo3v4-mvc)
  *  Extbase is a backport of TYPO3 Flow. All credits go to the TYPO3 Flow team.
  *  All rights reserved
  *
@@ -57,9 +57,9 @@ class FlexFormService implements \TYPO3\CMS\Core\SingletonInterface {
 					$settings[$valueKey] = $this->walkFlexFormNode($valueDefinition, $valuePointer);
 				} else {
 					$valueKeyParts = explode('.', $valueKey);
-					$currentNode =& $settings;
+					$currentNode = &$settings;
 					foreach ($valueKeyParts as $valueKeyPart) {
-						$currentNode =& $currentNode[$valueKeyPart];
+						$currentNode = &$currentNode[$valueKeyPart];
 					}
 					if (is_array($valueDefinition)) {
 						if (array_key_exists($valuePointer, $valueDefinition)) {
@@ -98,9 +98,9 @@ class FlexFormService implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 				if (strpos($nodeKey, '.')) {
 					$nodeKeyParts = explode('.', $nodeKey);
-					$currentNode =& $return;
+					$currentNode = &$return;
 					for ($i = 0; $i < count($nodeKeyParts) - 1; $i++) {
-						$currentNode =& $currentNode[$nodeKeyParts[$i]];
+						$currentNode = &$currentNode[$nodeKeyParts[$i]];
 					}
 					$newNode = array(next($nodeKeyParts) => $nodeValue);
 					$currentNode = $this->walkFlexFormNode($newNode, $valuePointer);
