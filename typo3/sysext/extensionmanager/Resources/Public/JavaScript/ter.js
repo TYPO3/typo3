@@ -118,24 +118,18 @@
 	}
 
 	function bindSearchFieldResetter() {
-		var $searchFieldWrapper = $('.typo3-extensionmanager-searchTerFieldWrapper');
-		var $searchField = $searchFieldWrapper.find('input[type="text"]');
-		var $resetter = $searchFieldWrapper.find('.t3-tceforms-input-clearer');
 
-		$searchFieldWrapper.mouseover(function() {
-			if ('' !== $searchField.val()) {
-				$resetter.show();
+		var $searchFields = $('.typo3-extensionmanager-searchTerForm input[type="text"]');
+		var searchResultShown = '' !== $searchFields.first().val();
+
+		$searchFields.clearable(
+			{
+				onClear: function() {
+					if (searchResultShown) {
+						$(this).parents('form').first().submit();
+					}
+				}
 			}
-		});
-
-		$searchFieldWrapper.mouseout(function() {
-			$resetter.hide();
-		});
-
-		$resetter.click(function() {
-			$searchField.val('');
-			$searchField.focus()
-		});
-		$resetter.hide();
+		);
 	}
 }(jQuery));
