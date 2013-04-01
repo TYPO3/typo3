@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
  ***************************************************************/
 
 /**
- * Testcase for class \TYPO3\CMS\Core\Configuration\ConfigurationManager
+ * Test case
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
@@ -45,8 +45,8 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setUp() {
 		$this->createFixtureWithMockedMethods(
 			array(
-				'getDefaultConfigurationFileResource',
-				'getLocalConfigurationFileResource',
+				'getDefaultConfigurationFileLocation',
+				'getLocalConfigurationFileLocation',
 			)
 		);
 	}
@@ -68,45 +68,46 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager',
 			$methods
 		);
-
 	}
 
-	/**
-	 * Tests concerning getDefaultConfiguration
-	 *
-	 */
 	/**
 	 * @test
 	 * @expectedException \RuntimeException
 	 */
 	public function getDefaultConfigurationExecutesDefinedDefaultConfigurationFile() {
 		$defaultConfigurationFile = PATH_site . 'typo3temp/' . uniqid('defaultConfiguration');
-		file_put_contents($defaultConfigurationFile, '<?php throw new \RuntimeException(\'foo\', 1310203814); ?>');
+		file_put_contents(
+			$defaultConfigurationFile,
+			'<?php throw new \RuntimeException(\'foo\', 1310203814); ?>'
+		);
 		$this->testFilesToDelete[] = $defaultConfigurationFile;
 
-		$this->fixture->expects($this->once())->method('getDefaultConfigurationFileResource')->will($this->returnValue($defaultConfigurationFile));
+		$this->fixture
+			->expects($this->once())
+			->method('getDefaultConfigurationFileLocation')
+			->will($this->returnValue($defaultConfigurationFile));
 		$this->fixture->getDefaultConfiguration();
 	}
 
-	/**
-	 * Tests concerning getLocalConfiguration
-	 */
 	/**
 	 * @test
 	 * @expectedException \RuntimeException
 	 */
 	public function getLocalConfigurationExecutesDefinedConfigurationFile() {
 		$configurationFile = PATH_site . 'typo3temp/' . uniqid('localConfiguration');
-		file_put_contents($configurationFile, '<?php throw new \RuntimeException(\'foo\', 1310203815); ?>');
+		file_put_contents(
+			$configurationFile,
+			'<?php throw new \RuntimeException(\'foo\', 1310203815); ?>'
+		);
 		$this->testFilesToDelete[] = $configurationFile;
 
-		$this->fixture->expects($this->once())->method('getLocalConfigurationFileResource')->will($this->returnValue($configurationFile));
+		$this->fixture
+			->expects($this->once())
+			->method('getLocalConfigurationFileLocation')
+			->will($this->returnValue($configurationFile));
 		$this->fixture->getLocalConfiguration();
 	}
 
-	/**
-	 * Tests concerning updateLocalConfiguration
-	 */
 	/**
 	 * @test
 	 */
@@ -125,10 +126,12 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'new' => 'new',
 		);
 
-		$this->createFixtureWithMockedMethods(array(
+		$this->createFixtureWithMockedMethods(
+			array(
 				'getLocalConfiguration',
 				'writeLocalConfiguration',
-			));
+			)
+		);
 		$this->fixture->expects($this->once())
 				->method('getLocalConfiguration')
 				->will($this->returnValue($currentLocalConfiguration));
@@ -140,15 +143,14 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tests concerning getDefaultConfigurationValueByPath
-	 */
-	/**
 	 * @test
 	 */
 	public function getDefaultConfigurationValueByPathReturnsCorrectValue() {
-		$this->createFixtureWithMockedMethods(array(
+		$this->createFixtureWithMockedMethods(
+			array(
 				'getDefaultConfiguration',
-			));
+			)
+		);
 		$this->fixture->expects($this->once())
 				->method('getDefaultConfiguration')
 				->will($this->returnValue(array(
@@ -160,15 +162,14 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tests concerning getLocalConfigurationValueByPath
-	 */
-	/**
 	 * @test
 	 */
 	public function getLocalConfigurationValueByPathReturnsCorrectValue() {
-		$this->createFixtureWithMockedMethods(array(
+		$this->createFixtureWithMockedMethods(
+			array(
 				'getLocalConfiguration',
-			));
+			)
+		);
 		$this->fixture->expects($this->once())
 				->method('getLocalConfiguration')
 				->will($this->returnValue(array(
@@ -180,16 +181,15 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tests concerning getConfigurationValueByPath
-	 */
-	/**
 	 * @test
 	 */
 	public function getConfigurationValueByPathReturnsCorrectValue() {
-		$this->createFixtureWithMockedMethods(array(
+		$this->createFixtureWithMockedMethods(
+			array(
 				'getDefaultConfiguration',
 				'getLocalConfiguration',
-			));
+			)
+		);
 		$this->fixture->expects($this->once())
 				->method('getDefaultConfiguration')
 				->will($this->returnValue(array(
@@ -206,9 +206,6 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame('valueOverride', $this->fixture->getConfigurationValueByPath('path'));
 	}
 
-	/**
-	 * Tests concerning setLocalConfigurationValueByPath
-	 */
 	/**
 	 * @test
 	 */
@@ -236,11 +233,13 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'toUpdate' => 'updated',
 		);
 
-		$this->createFixtureWithMockedMethods(array(
+		$this->createFixtureWithMockedMethods(
+			array(
 				'isValidLocalConfigurationPath',
 				'getLocalConfiguration',
 				'writeLocalConfiguration',
-			));
+			)
+		);
 		$this->fixture->expects($this->once())
 				->method('isValidLocalConfigurationPath')
 				->will($this->returnValue(TRUE));
@@ -255,9 +254,6 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tests concerning setLocalConfigurationValuesByPathValuePairs
-	 */
-	/**
 	 * @test
 	 */
 	public function setLocalConfigurationValuesByPathValuePairsSetsPathValuePairs() {
@@ -271,11 +267,13 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'new' => 'new',
 		);
 
-		$this->createFixtureWithMockedMethods(array(
+		$this->createFixtureWithMockedMethods(
+			array(
 				'isValidLocalConfigurationPath',
 				'getLocalConfiguration',
 				'writeLocalConfiguration',
-			));
+			)
+		);
 		$this->fixture->expects($this->any())
 				->method('isValidLocalConfigurationPath')
 				->will($this->returnValue(TRUE));
@@ -294,21 +292,112 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tests concerning writeLocalConfiguration
+	 * @test
 	 */
+	public function canWriteConfigurationReturnsFalseIfDirectoryIsNotWritable() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('Not available on Windows');
+		}
+		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('dummy'));
+
+		$directory = 'typo3temp/' . uniqid('test_');
+		$absoluteDirectory = PATH_site . $directory;
+		mkdir($absoluteDirectory);
+		chmod($absoluteDirectory, 0544);
+		clearstatcache();
+
+		$fixture->_set('pathTypo3Conf', $directory);
+
+		$result = $fixture->canWriteConfiguration();
+
+		chmod($absoluteDirectory, 0755);
+		rmdir($absoluteDirectory);
+
+		$this->assertFalse($result);
+	}
+
 	/**
 	 * @test
-	 * @expectedException \RuntimeException
 	 */
-	public function writeLocalConfigurationThrowsExceptionForInvalidFile() {
-		$configurationFile = 'typo3temp/' . uniqid('localConfiguration');
-		$this->fixture->expects($this->once())->method('getLocalConfigurationFileResource')->will($this->returnValue($configurationFile));
+	public function canWriteConfigurationReturnsFalseIfLocalConfigurationFileIsNotWritable() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('Not available on Windows');
+		}
+		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('dummy'));
 
-		$pairs = array(
-			'foo' => 42,
-			'bar' => 23
-		);
-		$this->fixture->writeLocalConfiguration($pairs);
+		$file = 'typo3temp/' . uniqid('test_');
+		$absoluteFile = PATH_site . $file;
+		touch($absoluteFile);
+		$this->testFilesToDelete[] = $absoluteFile;
+		chmod($absoluteFile, 0444);
+		clearstatcache();
+
+		$fixture->_set('localConfigurationFile', $file);
+
+		$result = $fixture->canWriteConfiguration();
+
+		chmod($absoluteFile, 0644);
+
+		$this->assertFalse($result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canWriteConfigurationReturnsFalseIfLocalconfFileIsNotWritable() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('Not available on Windows');
+		}
+		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('dummy'));
+
+		$file = 'typo3temp/' . uniqid('test_');
+		$absoluteFile = PATH_site . $file;
+		touch($absoluteFile);
+		$this->testFilesToDelete[] = $absoluteFile;
+		chmod($absoluteFile, 0444);
+		clearstatcache();
+
+		$fixture->_set('localconfFile', $file);
+
+		$result = $fixture->canWriteConfiguration();
+
+		chmod($absoluteFile, 0644);
+
+		$this->assertFalse($result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canWriteConfigurationReturnsTrueIfDirectoryAndFilesAreWritable() {
+		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('dummy'));
+
+		$directory = 'typo3temp/' . uniqid('test_');
+		$absoluteDirectory = PATH_site . $directory;
+		mkdir($absoluteDirectory);
+		$fixture->_set('pathTypo3Conf', $directory);
+
+		$file1 = 'typo3temp/' . uniqid('test_');
+		$absoluteFile1 = PATH_site . $file1;
+		touch($absoluteFile1);
+		$this->testFilesToDelete[] = $absoluteFile1;
+		$fixture->_set('localConfigurationFile', $file1);
+
+		$file2 = 'typo3temp/' . uniqid('test_');
+		$absoluteFile2 = PATH_site . $file2;
+		touch($absoluteFile2);
+		$this->testFilesToDelete[] = $absoluteFile2;
+		$fixture->_set('localconfFile', $file2);
+
+		clearstatcache();
+
+		$result = $fixture->canWriteConfiguration();
+
+		$this->assertTrue($result);
 	}
 
 	/**
@@ -328,7 +417,10 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		$this->testFilesToDelete[] = $configurationFile;
 
-		$this->fixture->expects($this->once())->method('getLocalConfigurationFileResource')->will($this->returnValue($configurationFile));
+		$this->fixture
+			->expects($this->any())
+			->method('getLocalConfigurationFileLocation')
+			->will($this->returnValue($configurationFile));
 
 		$pairs = array(
 			'foo' => 42,
@@ -347,8 +439,98 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tests concerning isValidLocalConfigurationPath
+	 * @test
+	 * @expectedException \RuntimeException
 	 */
+	public function createLocalConfigurationFromFactoryConfigurationThrowsExceptionIfFileExists() {
+		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('dummy'));
+
+		$file = 'typo3temp/' . uniqid('test_');
+		$absoluteFile = PATH_site . $file;
+		touch($absoluteFile);
+		$this->testFilesToDelete[] = $absoluteFile;
+		$fixture->_set('localConfigurationFile', $file);
+
+		$fixture->createLocalConfigurationFromFactoryConfiguration();
+	}
+
+	/**
+	 * @test
+	 */
+	public function createLocalConfigurationFromFactoryConfigurationWritesContentFromFactoryFile() {
+		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('writeLocalConfiguration'));
+		$fixture->_set('localConfigurationFile', 'typo3temp/' . uniqid('dummy_'));
+
+		$factoryConfigurationFile = 'typo3temp/' . uniqid('test_') . '.php';
+		$factoryConfigurationAbsoluteFile = PATH_site . $factoryConfigurationFile;
+		$uniqueContentString = uniqid('string_');
+		$validFactoryConfigurationFileContent =
+			'<?php' . LF .
+				'return array(' . LF .
+					$uniqueContentString . ' => foo,' . LF .
+				');' . LF .
+			'?>';
+		file_put_contents(
+			$factoryConfigurationAbsoluteFile,
+			$validFactoryConfigurationFileContent
+		);
+		$this->testFilesToDelete[] = $factoryConfigurationAbsoluteFile;
+
+		$fixture->_set('factoryConfigurationFile', $factoryConfigurationFile);
+
+		$fixture
+			->expects($this->once())
+			->method('writeLocalConfiguration')
+			->with($this->arrayHasKey($uniqueContentString));
+		$fixture->createLocalConfigurationFromFactoryConfiguration();
+	}
+
+	/**
+	 * @test
+	 */
+	public function createLocalConfigurationFromFactoryConfigurationMergesConfigurationWithAdditionalFactoryFile() {
+		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('writeLocalConfiguration'));
+		$fixture->_set('localConfigurationFile', 'typo3temp/' . uniqid('dummy_'));
+
+		$factoryConfigurationFile = 'typo3temp/' . uniqid('test_') . '.php';
+		$factoryConfigurationAbsoluteFile = PATH_site . $factoryConfigurationFile;
+		$validFactoryConfigurationFileContent =
+			'<?php' . LF .
+				'return array();' . LF .
+			'?>';
+		file_put_contents(
+			$factoryConfigurationAbsoluteFile,
+			$validFactoryConfigurationFileContent
+		);
+		$this->testFilesToDelete[] = $factoryConfigurationAbsoluteFile;
+		$fixture->_set('factoryConfigurationFile', $factoryConfigurationFile);
+
+		$additionalFactoryConfigurationFile = 'typo3temp/' . uniqid('test_') . '.php';
+		$additionalFactoryConfigurationAbsoluteFile = PATH_site . $additionalFactoryConfigurationFile;
+		$uniqueContentString = uniqid('string_');
+		$validAdditionalFactoryConfigurationFileContent =
+			'<?php' . LF .
+				'return array(' . LF .
+					$uniqueContentString . ' => foo,' . LF .
+				');' . LF .
+			'?>';
+		file_put_contents(
+			$additionalFactoryConfigurationAbsoluteFile,
+			$validAdditionalFactoryConfigurationFileContent
+		);
+		$this->testFilesToDelete[] = $additionalFactoryConfigurationAbsoluteFile;
+		$fixture->_set('additionalFactoryConfigurationFile', $additionalFactoryConfigurationFile);
+
+		$fixture
+			->expects($this->once())
+			->method('writeLocalConfiguration')
+			->with($this->arrayHasKey($uniqueContentString));
+		$fixture->createLocalConfigurationFromFactoryConfiguration();
+	}
+
 	/**
 	 * @test
 	 */

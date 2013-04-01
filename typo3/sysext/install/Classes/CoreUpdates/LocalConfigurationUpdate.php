@@ -68,6 +68,7 @@ class LocalConfigurationUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate
 		$result = FALSE;
 		try {
 			$localConfigurationContent = file(PATH_typo3conf . 'localconf.php');
+
 			// Line array for the three categories: localConfiguration, db settings, additionalConfiguration
 			$typo3ConfigurationVariables = array();
 			$typo3DatabaseVariables = array();
@@ -99,25 +100,25 @@ class LocalConfigurationUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate
 					$additionalConfiguration[] = $line;
 				}
 			}
+
 			// Build new TYPO3_CONF_VARS array
 			$TYPO3_CONF_VARS = NULL;
 			eval(implode(LF, $typo3ConfigurationVariables));
+
 			// Add db settings to array
 			$TYPO3_CONF_VARS['DB'] = $typo3DatabaseVariables;
 			$TYPO3_CONF_VARS = \TYPO3\CMS\Core\Utility\ArrayUtility::sortByKeyRecursive($TYPO3_CONF_VARS);
-			// Build new (empty) LocalConfiguration file if not exists as the function writeLocalConfiguration depends on it
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(
-				\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getLocalConfigurationFileResource(),
-				''
-			);
+
 			// Write out new LocalConfiguration file
 			\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->writeLocalConfiguration($TYPO3_CONF_VARS);
+
 			// Write out new AdditionalConfiguration file
 			if (sizeof($additionalConfiguration) > 0) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->writeAdditionalConfiguration($additionalConfiguration);
 			} else {
-				@unlink(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getAdditionalConfigurationFileResource());
+				@unlink(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getAdditionalConfigurationFileLocation());
 			}
+
 			rename(PATH_site . 'typo3conf/localconf.php', PATH_site . 'typo3conf/localconf.obsolete.php');
 			$result = TRUE;
 		} catch (\Exception $e) {
