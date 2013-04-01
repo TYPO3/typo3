@@ -25,12 +25,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Parser;
  ***************************************************************/
 
 /**
- * Test case
+ * Test case for \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
  */
 class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+	 * @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $typoScriptParser;
 
@@ -40,9 +40,8 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	protected function setUp() {
-		$this->typoScriptParser = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser', array('dummy'), array(), '', FALSE
-		);
+		$accessibleClassName = $this->buildAccessibleProxy('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+		$this->typoScriptParser = new $accessibleClassName();
 	}
 
 	/**
@@ -242,5 +241,4 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 }
-
 ?>
