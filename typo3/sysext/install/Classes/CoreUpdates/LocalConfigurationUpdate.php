@@ -76,12 +76,24 @@ class LocalConfigurationUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate
 				$line = trim($line);
 				$matches = array();
 				// Convert extList to array
-				if (preg_match('/^\\$TYPO3_CONF_VARS\\[\'EXT\'\\]\\[\'extList\'\\] *={1} *\'(.+)\';{1}/', $line, $matches) === 1) {
+				if (
+					preg_match('/^\\$TYPO3_CONF_VARS\\[\'EXT\'\\]\\[\'extList\'\\] *={1} *\'(.+)\';{1}/', $line, $matches) === 1
+					|| preg_match('/^\\$GLOBALS\\[\'TYPO3_CONF_VARS\'\\]\\[\'EXT\'\\]\\[\'extList\'\\] *={1} *\'(.+)\';{1}/', $line, $matches) === 1
+				) {
 					$extListAsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $matches[1], TRUE);
 					$typo3ConfigurationVariables[] = '$TYPO3_CONF_VARS[\'EXT\'][\'extListArray\'] = ' . var_export($extListAsArray, TRUE) . ';';
-				} elseif (preg_match('/^\\$TYPO3_CONF_VARS.+;{1}/', $line, $matches) === 1) {
+				} elseif (
+					preg_match('/^\\$TYPO3_CONF_VARS.+;{1}/', $line, $matches) === 1
+				) {
 					$typo3ConfigurationVariables[] = $matches[0];
-				} elseif (preg_match('/^\\$typo_db.+;{1}/', $line, $matches) === 1) {
+				} elseif (
+					preg_match('/^\\$GLOBALS\\[\'TYPO3_CONF_VARS\'\\].+;{1}/', $line, $matches) === 1
+				) {
+					$lineWithoutGlobals = str_replace('$GLOBALS[\'TYPO3_CONF_VARS\']', '$TYPO3_CONF_VARS', $matches[0]);
+					$typo3ConfigurationVariables[] = $lineWithoutGlobals;
+				} elseif (
+					preg_match('/^\\$typo_db.+;{1}/', $line, $matches) === 1
+				) {
 					eval($matches[0]);
 					if (isset($typo_db_host)) {
 						$typo3DatabaseVariables['host'] = $typo_db_host;
@@ -95,7 +107,9 @@ class LocalConfigurationUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate
 						$typo3DatabaseVariables['extTablesDefinitionScript'] = $typo_db_extTableDef_script;
 					}
 					unset($typo_db_host, $typo_db, $typo_db_username, $typo_db_password, $typo_db_extTableDef_script);
-				} elseif (strlen($line) > 0 && preg_match('/^\\/\\/.+|^#.+|^<\\?php$|^<\\?$|^\\?>$/', $line, $matches) === 0) {
+				} elseif (
+					strlen($line) > 0 && preg_match('/^\\/\\/.+|^#.+|^<\\?php$|^<\\?$|^\\?>$/', $line, $matches) === 0
+				) {
 					$additionalConfiguration[] = $line;
 				}
 			}
