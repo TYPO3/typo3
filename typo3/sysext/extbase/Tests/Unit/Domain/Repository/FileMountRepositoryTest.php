@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Domain\Repository;
+namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Repository;
 
 /***************************************************************
  * Copyright notice
