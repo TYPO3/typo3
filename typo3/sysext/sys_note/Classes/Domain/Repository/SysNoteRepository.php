@@ -40,7 +40,7 @@ class SysNoteRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	public function initializeObject() {
 		$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 		$querySettings->setRespectStoragePage(FALSE);
-		$this->persistenceManager->setDefaultQuerySettings($querySettings);
+		$this->setDefaultQuerySettings($querySettings);
 	}
 
 	/**

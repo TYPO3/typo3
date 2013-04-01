@@ -55,7 +55,7 @@ class NoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		if (empty($pids) || empty($GLOBALS['BE_USER']->user['uid'])) {
 			return '';
 		}
-		$author = $this->backendUserRepository->findByIdentifier($GLOBALS['BE_USER']->user['uid']);
+		$author = $this->backendUserRepository->findByUid($GLOBALS['BE_USER']->user['uid']);
 		$notes = $this->sysNoteRepository->findByPidsAndAuthor($pids, $author);
 		$this->view->assign('notes', $notes);
 	}
