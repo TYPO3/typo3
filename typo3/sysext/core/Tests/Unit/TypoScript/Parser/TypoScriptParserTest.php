@@ -252,18 +252,6 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * @param string $typoScript
-	 * @param array $expected
-	 * @dataProvider typoScriptIsParsedToArrayDataProvider
-	 * @test
-	 */
-	public function typoScriptIsStrictlyParsedToArray($typoScript, array $expected) {
-		$this->typoScriptParser->strict = TRUE;
-		$this->typoScriptParser->parse($typoScript);
-		$this->assertEquals($expected, $this->typoScriptParser->setup);
-	}
-
-	/**
 	 * @return array
 	 */
 	public function typoScriptIsParsedToArrayDataProvider() {
