@@ -1313,8 +1313,6 @@ class DatabaseConnection {
 	 * @todo Define visibility
 	 */
 	public function connectDB($host = TYPO3_db_host, $user = TYPO3_db_username, $password = TYPO3_db_password, $db = TYPO3_db) {
-		// If no db is given we throw immediately. This is a sign for a fresh (not configured)
-		// TYPO3 installation and is used in FE to redirect to 1-2-3 install tool
 		if (!$db) {
 			throw new \RuntimeException('TYPO3 Fatal Error: No database selected!', 1270853882);
 		}

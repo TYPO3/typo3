@@ -36,27 +36,42 @@ use TYPO3\CMS\Core\Utility;
  *
  * @author Helge Funk <helge.funk@e-net.info>
  */
-class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
+class ConfigurationManager {
 
 	/**
-	 * Path to default TYPO3_CONF_VARS file, relative to PATH_site
+	 * @var string Path to default TYPO3_CONF_VARS file, relative to PATH_site
 	 */
-	const DEFAULT_CONFIGURATION_FILE = 'typo3/sysext/core/Configuration/DefaultConfiguration.php';
+	protected $defaultConfigurationFile = 'typo3/sysext/core/Configuration/DefaultConfiguration.php';
 
 	/**
-	 * Path to local overload TYPO3_CONF_VARS file, relative to PATH_site
+	 * @var string Path to local overload TYPO3_CONF_VARS file, relative to PATH_site
 	 */
-	const LOCAL_CONFIGURATION_FILE = 'typo3conf/LocalConfiguration.php';
+	protected $localConfigurationFile = 'typo3conf/LocalConfiguration.php';
 
 	/**
-	 * Path to additional local file, relative to PATH_site
+	 * @var string Path to additional local file, relative to PATH_site
 	 */
-	const ADDITIONAL_CONFIGURATION_FILE = 'typo3conf/AdditionalConfiguration.php';
+	protected $additionalConfigurationFile = 'typo3conf/AdditionalConfiguration.php';
 
 	/**
-	 * Path to legacy localconf.php file, relative to PATH_site
+	 * @var string Path to factory configuration file used during installation as LocalConfiguration boilerplate
 	 */
-	const LOCALCONF_FILE = 'typo3conf/localconf.php';
+	protected $factoryConfigurationFile = 'typo3/sysext/core/Configuration/FactoryConfiguration.php';
+
+	/**
+	 * @var string Path to possible additional factory configuration file delivered by packages
+	 */
+	protected $additionalFactoryConfigurationFile = 'typo3conf/AdditionalFactoryConfiguration.php';
+
+	/**
+	 * @var string Path to legacy localconf.php file, relative to PATH_site
+	 */
+	protected $localconfFile = 'typo3conf/localconf.php';
+
+	/**
+	 * @var string Absolute path to typo3conf directory
+	 */
+	protected $pathTypo3Conf = PATH_typo3conf;
 
 	/**
 	 * Writing to these configuration pathes is always allowed,
@@ -77,18 +92,18 @@ class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	public function getDefaultConfiguration() {
-		return require $this->getDefaultConfigurationFileResource();
+		return require $this->getDefaultConfigurationFileLocation();
 	}
 
 	/**
-	 * Get the file resource of the default configuration file,
+	 * Get the file location of the default configuration file,
 	 * currently the path and filename.
 	 *
 	 * @return string
 	 * @access private
 	 */
-	public function getDefaultConfigurationFileResource() {
-		return PATH_site . self::DEFAULT_CONFIGURATION_FILE;
+	public function getDefaultConfigurationFileLocation() {
+		return PATH_site . $this->defaultConfigurationFile;
 	}
 
 	/**
@@ -97,29 +112,57 @@ class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array Content array of local configuration file
 	 */
 	public function getLocalConfiguration() {
-		return require $this->getLocalConfigurationFileResource();
+		return require $this->getLocalConfigurationFileLocation();
 	}
 
 	/**
-	 * Get the file resource of the local configuration file,
+	 * Get the file location of the local configuration file,
 	 * currently the path and filename.
 	 *
 	 * @return string
 	 * @access private
 	 */
-	public function getLocalConfigurationFileResource() {
-		return PATH_site . self::LOCAL_CONFIGURATION_FILE;
+	public function getLocalConfigurationFileLocation() {
+		return PATH_site . $this->localConfigurationFile;
 	}
 
 	/**
-	 * Get the file resource of the aditional configuration file,
+	 * Get the file location of the additional configuration file,
 	 * currently the path and filename.
 	 *
 	 * @return string
 	 * @access private
 	 */
-	public function getAdditionalConfigurationFileResource() {
-		return PATH_site . self::ADDITIONAL_CONFIGURATION_FILE;
+	public function getAdditionalConfigurationFileLocation() {
+		return PATH_site . $this->additionalConfigurationFile;
+	}
+
+	/**
+	 * Get absolute file location of factory configuration file
+	 *
+	 * @return string
+	 */
+	protected function getFactoryConfigurationFileLocation() {
+		return PATH_site . $this->factoryConfigurationFile;
+	}
+
+	/**
+	 * Get absolute file location of factory configuration file
+	 *
+	 * @return string
+	 */
+	protected function getAdditionalFactoryConfigurationFileLocation() {
+		return PATH_site . $this->additionalFactoryConfigurationFile;
+	}
+
+	/**
+	 * Get the file resource
+	 *
+	 * @return string
+	 * @deprecated since 6.1, will be removed if the compatibily layer for localconf.php is dropped
+	 */
+	public function getLocalconfFileLocation() {
+		return PATH_site . $this->localconfFile;
 	}
 
 	/**
@@ -129,7 +172,10 @@ class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function updateLocalConfiguration(array $configurationToMerge) {
-		$newLocalConfiguration = Utility\GeneralUtility::array_merge_recursive_overrule($this->getLocalConfiguration(), $configurationToMerge);
+		$newLocalConfiguration = Utility\GeneralUtility::array_merge_recursive_overrule(
+			$this->getLocalConfiguration(),
+			$configurationToMerge
+		);
 		$this->writeLocalConfiguration($newLocalConfiguration);
 	}
 
@@ -161,7 +207,12 @@ class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return mixed
 	 */
 	public function getConfigurationValueByPath($path) {
-		return Utility\ArrayUtility::getValueByPath(Utility\GeneralUtility::array_merge_recursive_overrule($this->getDefaultConfiguration(), $this->getLocalConfiguration()), $path);
+		return Utility\ArrayUtility::getValueByPath(
+			Utility\GeneralUtility::array_merge_recursive_overrule(
+				$this->getDefaultConfiguration(), $this->getLocalConfiguration()
+			),
+			$path
+		);
 	}
 
 	/**
@@ -198,17 +249,26 @@ class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Checks if the configuration can be written
+	 * Checks if the configuration can be written.
 	 *
 	 * @return boolean
 	 * @access private
 	 */
 	public function canWriteConfiguration() {
 		$result = TRUE;
-		if (!@is_writable(PATH_typo3conf)) {
+		if (!@is_writable($this->pathTypo3Conf)) {
 			$result = FALSE;
 		}
-		if (!@is_writable(($this->getLocalConfigurationFileResource())) && !@is_writable((PATH_site . self::LOCALCONF_FILE))) {
+		if (
+			file_exists($this->getLocalConfigurationFileLocation())
+			&& !@is_writable($this->getLocalConfigurationFileLocation())
+		) {
+			$result = FALSE;
+		}
+		if (
+			file_exists($this->getLocalconfFileLocation())
+			&& !@is_writable($this->getLocalconfFileLocation())
+		) {
 			$result = FALSE;
 		}
 		return $result;
@@ -218,27 +278,29 @@ class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Reads the configuration array and exports it to the global variable
 	 *
 	 * @access private
+	 * @throws \RuntimeException
+	 * @throws \UnexpectedValueException
 	 * @return void
 	 */
 	public function exportConfiguration() {
-		if (@is_file(($this->getLocalConfigurationFileResource()))) {
+		if (@is_file($this->getLocalConfigurationFileLocation())) {
 			$localConfiguration = $this->getLocalConfiguration();
 			if (is_array($localConfiguration)) {
 				$GLOBALS['TYPO3_CONF_VARS'] = Utility\GeneralUtility::array_merge_recursive_overrule($this->getDefaultConfiguration(), $localConfiguration);
 			} else {
 				throw new \UnexpectedValueException('LocalConfiguration invalid.', 1349272276);
 			}
-			if (@is_file((PATH_site . self::ADDITIONAL_CONFIGURATION_FILE))) {
-				require PATH_site . self::ADDITIONAL_CONFIGURATION_FILE;
+			if (@is_file($this->getAdditionalConfigurationFileLocation())) {
+				require $this->getAdditionalConfigurationFileLocation();
 			}
 			// @deprecated since 6.0: Simulate old 'extList' as comma separated list of 'extListArray'
 			$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = implode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray']);
-		} elseif (@is_file((PATH_site . self::LOCALCONF_FILE))) {
+		} elseif (@is_file($this->getLocalconfFileLocation())) {
 			$GLOBALS['TYPO3_CONF_VARS'] = $this->getDefaultConfiguration();
 			// Legacy localconf.php handling
 			// @deprecated: Can be removed if old localconf.php is not supported anymore
 			global $TYPO3_CONF_VARS, $typo_db, $typo_db_username, $typo_db_password, $typo_db_host, $typo_db_extTableDef_script;
-			require PATH_site . self::LOCALCONF_FILE;
+			require $this->getLocalconfFileLocation();
 			// If the localconf.php was not upgraded to LocalConfiguration.php, the default extListArray
 			// from EXT:core/Configuration/DefaultConfiguration.php is still set. In this case we just unset
 			// this key here, so \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray() falls back to use extList string
@@ -257,7 +319,10 @@ class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 			unset($GLOBALS['typo_db_host']);
 			unset($GLOBALS['typo_db_extTableDef_script']);
 		} else {
-			throw new \RuntimeException('Neither ' . self::LOCAL_CONFIGURATION_FILE . ' (recommended) nor ' . self::LOCALCONF_FILE . ' (obsolete) could be found!', 1349272337);
+			throw new \RuntimeException(
+				'Neither ' . $this->localConfigurationFile . ' (recommended) nor ' . $this->localconfFile . ' (obsolete) could be found!',
+				1349272337
+			);
 		}
 	}
 
@@ -270,14 +335,23 @@ class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @access private
 	 */
 	public function writeLocalConfiguration(array $configuration) {
-		$localConfigurationFile = $this->getLocalConfigurationFileResource();
-		if (!@is_file($localConfigurationFile) || !@is_writable($localConfigurationFile)) {
-			throw new \RuntimeException($localConfigurationFile . ' does not exist or is not writable.', 1346323822);
+		$localConfigurationFile = $this->getLocalConfigurationFileLocation();
+		if (!$this->canWriteConfiguration()) {
+			throw new \RuntimeException(
+				$localConfigurationFile . ' does is not writable.', 1346323822
+			);
 		}
 		$configuration = Utility\ArrayUtility::sortByKeyRecursive($configuration);
 		$result = Utility\GeneralUtility::writeFile(
 			$localConfigurationFile,
-			'<?php' . LF . 'return ' . Utility\ArrayUtility::arrayExport(Utility\ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($configuration)) . ';' . LF . '?>'
+			'<?php' . LF .
+				'return ' .
+					Utility\ArrayUtility::arrayExport(
+						Utility\ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($configuration)
+					) .
+				';' . LF .
+			'?>',
+			TRUE
 		);
 		return $result === FALSE ? FALSE : TRUE;
 	}
@@ -291,8 +365,39 @@ class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @access private
 	 */
 	public function writeAdditionalConfiguration(array $additionalConfigurationLines) {
-		$result = Utility\GeneralUtility::writeFile(PATH_site . self::ADDITIONAL_CONFIGURATION_FILE, '<?php' . LF . implode(LF, $additionalConfigurationLines) . LF . '?>');
+		$result = Utility\GeneralUtility::writeFile(
+			PATH_site . $this->additionalConfigurationFile,
+			'<?php' . LF .
+				implode(LF, $additionalConfigurationLines) . LF .
+			'?>'
+		);
 		return $result === FALSE ? FALSE : TRUE;
+	}
+
+	/**
+	 * Uses FactoryConfiguration file and a possible AdditionalFactoryConfiguration
+	 * file in typo3conf to create a basic LocalConfiguration.php. This is used
+	 * by the install tool in an early step.
+	 *
+	 * @return void
+	 * @access private
+	 */
+	public function createLocalConfigurationFromFactoryConfiguration() {
+		if (file_exists($this->getLocalConfigurationFileLocation())) {
+			throw new \RuntimeException(
+				'LocalConfiguration.php exists already', 1364836026
+			);
+		}
+		$localConfigurationArray = require $this->getFactoryConfigurationFileLocation();
+		$additionalFactoryConfigurationFileLocation = $this->getAdditionalFactoryConfigurationFileLocation();
+		if (file_exists($additionalFactoryConfigurationFileLocation)) {
+			$additionalFactoryConfigurationArray = require $additionalFactoryConfigurationFileLocation;
+			$localConfigurationArray = Utility\GeneralUtility::array_merge_recursive_overrule(
+				$localConfigurationArray,
+				$additionalFactoryConfigurationArray
+			);
+		}
+		$this->writeLocalConfiguration($localConfigurationArray);
 	}
 
 	/**

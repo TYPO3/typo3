@@ -1881,9 +1881,12 @@ tt_content.' . $key . $prefix . ' {
 	 *
 	 * @return boolean TRUE if at least one configuration file in typo3conf/ is writable
 	 * @internal
+	 * @deprecated since 6.1, will be removed in two versions
 	 */
 	static public function isLocalconfWritable() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->canWriteConfiguration();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')
+			->canWriteConfiguration();
 	}
 
 	/**

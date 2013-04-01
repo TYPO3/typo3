@@ -2451,9 +2451,10 @@ Connection: close
 	 *
 	 * @param string $file Filepath to write to
 	 * @param string $content Content to write
+	 * @param boolean $changePermissions If TRUE, permissions are forced to be set
 	 * @return boolean TRUE if the file was successfully opened and written to.
 	 */
-	static public function writeFile($file, $content) {
+	static public function writeFile($file, $content, $changePermissions = FALSE) {
 		if (!@is_file($file)) {
 			$changePermissions = TRUE;
 		}
@@ -2488,11 +2489,17 @@ Connection: close
 			}
 			if (self::isAllowedAbsPath($path)) {
 				if (@is_file($path)) {
+					$targetFilePermissions = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'])
+						? octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'])
+						: octdec('0644');
 					// "@" is there because file is not necessarily OWNED by the user
-					$result = @chmod($path, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']));
+					$result = @chmod($path, $targetFilePermissions);
 				} elseif (@is_dir($path)) {
+					$targetDirectoryPermissions = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'])
+						? octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'])
+						: octdec('0755');
 					// "@" is there because file is not necessarily OWNED by the user
-					$result = @chmod($path, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']));
+					$result = @chmod($path, $targetDirectoryPermissions);
 				}
 				// Set createGroup if not empty
 				if (
@@ -3654,7 +3661,11 @@ Connection: close
 	static public function unlink_tempfile($uploadedTempFileName) {
 		if ($uploadedTempFileName) {
 			$uploadedTempFileName = self::fixWindowsFilePath($uploadedTempFileName);
-			if (self::validPathStr($uploadedTempFileName) && self::isFirstPartOfStr($uploadedTempFileName, PATH_site . 'typo3temp/') && @is_file($uploadedTempFileName)) {
+			if (
+				self::validPathStr($uploadedTempFileName)
+				&& self::isFirstPartOfStr($uploadedTempFileName, PATH_site . 'typo3temp/')
+				&& @is_file($uploadedTempFileName)
+			) {
 				if (unlink($uploadedTempFileName)) {
 					return TRUE;
 				}
@@ -4072,7 +4083,10 @@ Connection: close
 			return self::$singletonInstances[$finalClassName];
 		}
 		// Return instance if it has been injected by addInstance()
-		if (isset(self::$nonSingletonInstances[$finalClassName]) && !empty(self::$nonSingletonInstances[$finalClassName])) {
+		if (
+			isset(self::$nonSingletonInstances[$finalClassName])
+			&& !empty(self::$nonSingletonInstances[$finalClassName])
+		) {
 			return array_shift(self::$nonSingletonInstances[$finalClassName]);
 		}
 		// Create new instance and call constructor with parameters

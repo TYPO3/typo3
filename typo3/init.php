@@ -56,6 +56,7 @@ require 'sysext/core/Classes/Core/Bootstrap.php';
 
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 	->baseSetup('typo3/')
+	->redirectToInstallToolIfLocalConfigurationFileDoesNotExist('../')
 	->startOutputBuffering()
 	->loadConfigurationAndInitialize()
 	->loadTypo3LoadedExtAndExtLocalconf(TRUE)
@@ -64,7 +65,6 @@ require 'sysext/core/Classes/Core/Bootstrap.php';
 	->checkLockedBackendAndRedirectOrDie()
 	->checkBackendIpOrDie()
 	->checkSslBackendAndRedirectIfNeeded()
-	->redirectToInstallToolIfDatabaseCredentialsAreMissing()
 	->checkValidBrowserOrDie()
 	->establishDatabaseConnection()
 	->loadExtensionTables(TRUE)
