@@ -76,10 +76,10 @@ class LocalConfigurationUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate
 				$line = trim($line);
 				$matches = array();
 				// Convert extList to array
-				if (preg_match('/^\\$TYPO3_CONF_VARS\\[\'EXT\'\\]\\[\'extList\'\\] *={1} *\'(.+)\';{1}/', $line, $matches) === 1) {
+				if (preg_match('/^\\$TYPO3_CONF_VARS\\[\'EXT\'\\]\\[\'extList\'\\] *={1} *\'(.+)\';{1}/', $line, $matches) === 1 || preg_match('/^\\$GLOBALS[\'TYPO3_CONF_VARS\']\\[\'EXT\'\\]\\[\'extList\'\\] *={1} *\'(.+)\';{1}/', $line, $matches) === 1) {
 					$extListAsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $matches[1], TRUE);
 					$typo3ConfigurationVariables[] = '$TYPO3_CONF_VARS[\'EXT\'][\'extListArray\'] = ' . var_export($extListAsArray, TRUE) . ';';
-				} elseif (preg_match('/^\\$TYPO3_CONF_VARS.+;{1}/', $line, $matches) === 1) {
+				} elseif (preg_match('/^\\$TYPO3_CONF_VARS.+;{1}/', $line, $matches) === 1 || preg_match('/^\\$GLOBALS[\'TYPO3_CONF_VARS\'].+;{1}/', $line, $matches) === 1) {
 					$typo3ConfigurationVariables[] = $matches[0];
 				} elseif (preg_match('/^\\$typo_db.+;{1}/', $line, $matches) === 1) {
 					eval($matches[0]);
