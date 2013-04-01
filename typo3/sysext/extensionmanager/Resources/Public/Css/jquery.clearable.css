@@ -1,0 +1,19 @@
+/*
+ * Styles for the "clearable" jquery plugin.
+ */
+
+.t3-clearable-wrapper {
+	position: relative;
+    display: inline-block;
+}
+
+.t3-clearable {
+	height: 17px;
+	padding-right: 15px;
+}
+
+.t3-clearable-wrapper .t3-tceforms-input-clearer {
+	position: absolute;
+	right: 3px;
+	top: 5px;
+}
