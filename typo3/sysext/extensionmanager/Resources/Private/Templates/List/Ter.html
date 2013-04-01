@@ -13,10 +13,7 @@
 	<div class="headerRow ui-helper-clearfix">
 		<div class="typo3-extensionmanager-headerRowLeft">
 			<f:form class="typo3-extensionmanager-searchTerForm" action="ter">
-				<div class="typo3-extensionmanager-searchTerFieldWrapper">
-					<f:form.textfield name="search" value="{search}"  placeholder="{f:translate(key:'searchTemplate.searchExtensions')}"/>
-					<span class="t3-icon t3-icon-actions t3-icon-actions-input t3-icon-input-clear t3-tceforms-input-clearer"></span>
-				</div>
+				<f:form.textfield name="search" value="{search}" />
 				<f:form.submit value="{f:translate(key:'searchTemplate.submitButton')}"/>
 			</f:form>
 		</div>
@@ -39,5 +36,3 @@
 	</f:if>
 
 </f:section>
-
-
