@@ -342,7 +342,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 			if (!empty($alt)) {
 				$alt = ' alt="' . $alt . '"';
 			}
-			$code .= '<div>' . '<textarea id="t3editor_' . $this->editorCounter . '" ' . 'name="' . $name . '" ' . 'class="' . $class . '" ' . $additionalParams . ' ' . $alt . '>' . $content . '</textarea></div>';
+			$code .= '<div>' . '<textarea id="t3editor_' . $this->editorCounter . '" ' . 'name="' . $name . '" ' . 'class="' . $class . '" ' . $additionalParams . ' ' . $alt . '>' . htmlspecialchars($content) . '</textarea></div>';
 			$checked = $GLOBALS['BE_USER']->uc['disableT3Editor'] ? 'checked="checked"' : '';
 			$code .= '<br /><br />' . '<input type="checkbox" ' . 'class="checkbox t3editor_disableEditor" ' . 'onclick="T3editor.toggleEditor(this);" ' . 'name="t3editor_disableEditor" ' . 'value="true" ' . 'id="t3editor_disableEditor_' . $this->editorCounter . '_checkbox" ' . $checked . ' />&nbsp;' . '<label for="t3editor_disableEditor_' . $this->editorCounter . '_checkbox">' . $GLOBALS['LANG']->getLL('deactivate') . '</label>' . '<br /><br />';
 			if (count($hiddenfields)) {
