@@ -400,7 +400,7 @@ class tx_t3editor implements t3lib_Singleton {
 				'class="' . $class . '" ' .
 				$additionalParams . ' ' .
 				$alt . '>' .
-				$content .
+				htmlspecialchars($content) .
 				'</textarea></div>';
 
 			$checked = $GLOBALS['BE_USER']->uc['disableT3Editor'] ? 'checked="checked"' : '';
