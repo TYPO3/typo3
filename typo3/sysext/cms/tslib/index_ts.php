@@ -51,7 +51,8 @@ if ($_COOKIE[\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookie
 }
 
 $TT->start();
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeTypo3DbGlobal(FALSE);
+
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeTypo3DbGlobal();
 // Hook to preprocess the current request:
 if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'])) {
 	foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'] as $hookFunction) {
@@ -70,17 +71,31 @@ if ($temp_extId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('eID')) {
 	}
 	die;
 }
-// Create $TSFE object (TSFE = TypoScript Front End)
-// Connecting to database
-/**
- * @var $TSFE \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
- */
-$TSFE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', $TYPO3_CONF_VARS, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('type'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('no_cache'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cHash'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('jumpurl'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('MP'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('RDCT'));
-if ($TYPO3_CONF_VARS['FE']['pageUnavailable_force'] && !\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $TYPO3_CONF_VARS['SYS']['devIPmask'])) {
+
+/** @var $TSFE \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
+$TSFE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+	'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
+	$TYPO3_CONF_VARS,
+	\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'),
+	\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('type'),
+	\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('no_cache'),
+	\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cHash'),
+	\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('jumpurl'),
+	\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('MP'),
+	\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('RDCT')
+);
+
+if ($TYPO3_CONF_VARS['FE']['pageUnavailable_force']
+	&& !\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP(
+		\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+		$TYPO3_CONF_VARS['SYS']['devIPmask'])
+) {
 	$TSFE->pageUnavailableAndExit('This page is temporarily unavailable.');
 }
+
 $TSFE->connectToDB();
 $TSFE->sendRedirect();
+
 // Output compression
 // Remove any output produced until now
 ob_clean();

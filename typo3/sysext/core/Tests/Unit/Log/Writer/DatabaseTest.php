@@ -32,13 +32,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
 class DatabaseTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Backup and restore of the $GLOBALS array.
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobalsArray = array();
-
-	/**
 	 * Mock object of t3lib_db
 	 *
 	 * @var PHPUnit_Framework_MockObject_MockObject
@@ -52,17 +45,7 @@ class DatabaseTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->backupGlobalsArray['TYPO3_DB'] = $GLOBALS['TYPO3_DB'];
 		$this->databaseStub = $this->setUpAndReturnDatabaseStub();
-	}
-
-	/**
-	 * Restore global database object.
-	 *
-	 * @return void
-	 */
-	protected function tearDown() {
-		$GLOBALS['TYPO3_DB'] = $this->backupGlobalsArray['TYPO3_DB'];
 	}
 
 	//////////////////////
