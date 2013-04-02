@@ -944,7 +944,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				// Add header marker for main template
 				$markers['header'] = 'Select database';
 				// There should be a database host connection at this point
-				if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
+				if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect()) {
 					// Get the subpart for the third step
 					$step3SubPart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###STEP3###');
 					// Get the subpart for the database options
@@ -1021,9 +1021,9 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				// Add header marker for main template
 				$markers['header'] = 'Import the Database Tables';
 				// There should be a database host connection at this point
-				if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
+				if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect()) {
 					// The selected database should be accessible
-					if ($GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db)) {
+					if ($GLOBALS['TYPO3_DB']->sql_select_db()) {
 						// Get the subpart for the fourth step
 						$step4SubPart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###STEP4###');
 						// Get the subpart for the database type options
@@ -1080,9 +1080,9 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				// Add header marker for main template
 				$markers['header'] = 'Congratulations!';
 				// There should be a database host connection at this point
-				if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
+				if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect()) {
 					// The selected database should be accessible
-					if ($GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db)) {
+					if ($GLOBALS['TYPO3_DB']->sql_select_db()) {
 						// The database should contain tables
 						if (count($whichTables)) {
 							// Get the subpart for the go step
@@ -2329,7 +2329,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 					</p>
 				', 2);
 			}
-			if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
+			if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect()) {
 				$this->message($ext, 'Connected to SQL database successfully', '
 					<dl id="t3-install-databaseconnected">
 						<dt>
@@ -2356,7 +2356,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 						</p>
 					', 3);
 					$this->config_array['no_database'] = 1;
-				} elseif (!$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db)) {
+				} elseif (!$GLOBALS['TYPO3_DB']->sql_select_db()) {
 					$this->message($ext, 'Database', '
 						<p>
 							\'' . htmlspecialchars(TYPO3_db) . '\' could not be selected as database!
@@ -2697,7 +2697,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 					$newDatabaseName = trim($this->INSTALL['Database']['NEW_DATABASE_NAME']);
 						// Hyphen is not allowed in unquoted database names (at least for MySQL databases)
 					if (!preg_match('/[^[:alnum:]_]/', $newDatabaseName)) {
-						if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
+						if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect()) {
 							if ($GLOBALS['TYPO3_DB']->admin_query('CREATE DATABASE ' . $newDatabaseName . ' CHARACTER SET utf8')) {
 								$this->INSTALL['Database']['typo_db'] = $newDatabaseName;
 								$this->messages[] = 'Database \'' . $newDatabaseName . '\' created';
@@ -2979,7 +2979,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	 */
 	public function getDatabaseList() {
 		$dbArr = array();
-		if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
+		if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect()) {
 			$dbArr = $GLOBALS['TYPO3_DB']->admin_get_dbs();
 		}
 		// remove some database names that MySQL uses internally from the list of choosable DB names

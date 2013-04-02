@@ -128,15 +128,6 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 			if ($errorLevel & $GLOBALS['TYPO3_CONF_VARS']['SYS']['syslogErrorReporting']) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($message, $logTitle, $severity);
 			}
-			// In case an error occurs before a database connection exists, try
-			// to connect to the DB to be able to write an entry to devlog/sys_log
-			if (is_object($GLOBALS['TYPO3_DB']) && empty($GLOBALS['TYPO3_DB']->link)) {
-				try {
-					$GLOBALS['TYPO3_DB']->connectDB();
-				} catch (\Exception $e) {
-
-				}
-			}
 			// Write error message to devlog extension(s),
 			// see: $TYPO3_CONF_VARS['SYS']['enable_errorDLOG']
 			if (TYPO3_ERROR_DLOG) {
@@ -148,7 +139,12 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 			}
 			// Write error message to sys_log table (ext: belog, Tools->Log)
 			if ($errorLevel & $GLOBALS['TYPO3_CONF_VARS']['SYS']['belogErrorReporting']) {
-				$this->writeLog($logTitle . ': ' . $message, $severity);
+				// Silently catch in case an error occurs before a database connection exists,
+				// but DatabaseConnection fails to connect.
+				try {
+					$this->writeLog($logTitle . ': ' . $message, $severity);
+				} catch (\Exception $e) {
+				}
 			}
 			// Add error message to the flashmessageQueue
 			if (defined('TYPO3_ERRORHANDLER_MODE') && TYPO3_ERRORHANDLER_MODE == 'debug') {
