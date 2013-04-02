@@ -32,13 +32,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
 class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Backup and restore of the $GLOBALS array.
-	 *
-	 * @var boolean
-	 */
-	protected $backupGlobalsArray = array();
-
-	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	private $databaseStub;
@@ -50,17 +43,7 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	protected function setUp() {
-		$this->backupGlobalsArray['TYPO3_DB'] = $GLOBALS['TYPO3_DB'];
 		$this->databaseStub = $this->setUpAndReturnDatabaseStub();
-	}
-
-	/**
-	 * Restore global database object.
-	 *
-	 * @return void
-	 */
-	protected function tearDown() {
-		$GLOBALS['TYPO3_DB'] = $this->backupGlobalsArray['TYPO3_DB'];
 	}
 
 	//////////////////////
@@ -72,8 +55,17 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private function setUpAndReturnDatabaseStub() {
+		$GLOBALS['TYPO3_DB']->connectDB();
 		$databaseLink = $GLOBALS['TYPO3_DB']->getDatabaseHandle();
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_PREPAREDquery'), array(), '', FALSE, FALSE);
+		$GLOBALS['TYPO3_DB'] = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
+			array('exec_PREPAREDquery'),
+			array(),
+			'',
+			FALSE,
+			FALSE
+		);
+		$GLOBALS['TYPO3_DB']->_set('isConnected', TRUE);
 		$GLOBALS['TYPO3_DB']->setDatabaseHandle($databaseLink);
 		return $GLOBALS['TYPO3_DB'];
 	}

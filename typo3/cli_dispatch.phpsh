@@ -48,7 +48,7 @@ require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
 	->loadConfigurationAndInitialize()
 	->loadTypo3LoadedExtAndExtLocalconf(TRUE)
 	->applyAdditionalConfigurationSettings()
-	->initializeTypo3DbGlobal(TRUE);
+	->initializeTypo3DbGlobal();
 
 \TYPO3\CMS\Core\Core\CliBootstrap::initializeCliKeyOrDie();
 

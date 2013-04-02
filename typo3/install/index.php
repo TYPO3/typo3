@@ -46,7 +46,7 @@ require '../sysext/install/Classes/InstallBootstrap.php';
 	->loadConfigurationAndInitialize()
 	->loadTypo3LoadedExtAndExtLocalconf(FALSE)
 	->applyAdditionalConfigurationSettings()
-	->initializeTypo3DbGlobal(FALSE)
+	->initializeTypo3DbGlobal()
 	->checkLockedBackendAndRedirectOrDie()
 	->checkBackendIpOrDie()
 	->checkSslBackendAndRedirectIfNeeded();

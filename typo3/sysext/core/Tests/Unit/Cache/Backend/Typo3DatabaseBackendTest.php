@@ -32,11 +32,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
 class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection Backup of original TYPO3_DB instance
-	 */
-	protected $typo3DbBackup;
-
-	/**
 	 * @var string Name of the testing data table
 	 */
 	protected $testingCacheTable;
@@ -50,7 +45,6 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Set up testcases
 	 */
 	public function setUp() {
-		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
 		$tablePrefix = 'cf_';
 		$this->testingCacheTable = $tablePrefix . 'Testing';
 		$this->testingTagsTable = $tablePrefix . 'Testing_tags';
@@ -101,7 +95,6 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	 */
 	public function tearDown() {
-		$GLOBALS['TYPO3_DB'] = $this->typo3DbBackup;
 		$GLOBALS['TYPO3_DB']->sql_query('DROP TABLE IF EXISTS ' . $this->testingCacheTable . ';');
 		$GLOBALS['TYPO3_DB']->sql_query('DROP TABLE IF EXISTS ' . $this->testingTagsTable . ';');
 	}

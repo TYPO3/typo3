@@ -35,11 +35,6 @@ namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
 class FrontendLoginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected $typo3DbBackup;
-
-	/**
 	 * @var \TYPO3\CMS\Felogin\Controller\FrontendLoginController|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $accessibleFixture;
@@ -63,7 +58,6 @@ class FrontendLoginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Set up
 	 */
 	public function setUp() {
-		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
 		$this->testTableName = 'sys_domain';
 		$this->testHostName = 'hostname.tld';
 		$this->testSitePath = '/';
@@ -77,7 +71,6 @@ class FrontendLoginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Tear down
 	 */
 	public function tearDown() {
-		$GLOBALS['TYPO3_DB'] = $this->typo3DbBackup;
 		$this->accessibleFixture = NULL;
 	}
 

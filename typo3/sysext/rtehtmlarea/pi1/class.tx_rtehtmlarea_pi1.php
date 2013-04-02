@@ -6,7 +6,6 @@
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('rtehtmlarea') . 'Classes/Controller/SpellCheckingController.php';
 if (TYPO3_MODE == 'FE') {
-	\TYPO3\CMS\Frontend\Utility\EidUtility::connectDB();
 	$spellChecker = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\Controller\\SpellCheckingController');
 	$spellChecker->main();
 }

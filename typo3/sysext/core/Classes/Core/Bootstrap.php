@@ -499,7 +499,8 @@ class Bootstrap {
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
 	protected function registerSwiftMailer() {
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'][] = 'TYPO3\\CMS\\Core\\Mail\\SwiftMailerAdapter';
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'][] =
+			'TYPO3\\CMS\\Core\\Mail\\SwiftMailerAdapter';
 		return $this;
 	}
 
@@ -678,13 +679,50 @@ class Bootstrap {
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	public function initializeTypo3DbGlobal($connect = TRUE) {
-		/** @var TYPO3_DB TYPO3\CMS\Core\Database\DatabaseConnection */
-		$GLOBALS['TYPO3_DB'] = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
-		$GLOBALS['TYPO3_DB']->debugOutput = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sqlDebug'];
-		if ($connect) {
-			$this->establishDatabaseConnection();
+	public function initializeTypo3DbGlobal() {
+		/** @var $databaseConnection \TYPO3\CMS\Core\Database\DatabaseConnection */
+		$databaseConnection = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
+		$databaseConnection->setDatabaseName(TYPO3_db);
+		$databaseConnection->setDatabaseUsername(TYPO3_db_username);
+		$databaseConnection->setDatabasePassword(TYPO3_db_password);
+
+		$databaseHost = TYPO3_db_host;
+		// Check if a port was specified
+		if (strpos(':', $databaseHost) > 0) {
+			list($databaseHost, $databasePort) = explode(':', $databaseHost);
+			$databaseConnection->setDatabasePort($databasePort);
 		}
+		$databaseConnection->setDatabaseHost($databaseHost);
+
+		$databaseConnection->debugOutput = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sqlDebug'];
+
+		if (
+			isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'])
+			&& !$GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect']
+		) {
+			$databaseConnection->setPersistentDatabaseConnection(TRUE);
+		}
+
+		$isDatabaseHostLocalHost = $databaseHost === 'localhost' || $databaseHost === '127.0.0.1' || $databaseHost === '::1';
+		if (
+			isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['dbClientCompress'])
+			&& $GLOBALS['TYPO3_CONF_VARS']['SYS']['dbClientCompress']
+			&& !$isDatabaseHostLocalHost
+		) {
+			$databaseConnection->setConnectionCompression(TRUE);
+		}
+
+		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'])) {
+			$commandsAfterConnect = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(
+				LF,
+				str_replace('\' . LF . \'', LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']),
+				TRUE
+			);
+			$databaseConnection->setInitializeCommandsAfterConnect($commandsAfterConnect);
+		}
+
+		$GLOBALS['TYPO3_DB'] = $databaseConnection;
+
 		return $this;
 	}
 
@@ -774,17 +812,6 @@ class Bootstrap {
 				die;
 			}
 		}
-		return $this;
-	}
-
-	/**
-	 * Establish connection to the database
-	 *
-	 * @return \TYPO3\CMS\Core\Core\Bootstrap
-	 * @internal This is not a public API method, do not use in own extensions
-	 */
-	public function establishDatabaseConnection() {
-		$GLOBALS['TYPO3_DB']->connectDB();
 		return $this;
 	}
 

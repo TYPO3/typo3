@@ -270,9 +270,9 @@ class SchemaMigrator {
 		$total = array();
 		$tempKeys = array();
 		$tempKeysPrefix = array();
-		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
+		$GLOBALS['TYPO3_DB']->sql_select_db();
 		echo $GLOBALS['TYPO3_DB']->sql_error();
-		$tables = $GLOBALS['TYPO3_DB']->admin_get_tables(TYPO3_db);
+		$tables = $GLOBALS['TYPO3_DB']->admin_get_tables();
 		foreach ($tables as $tableName => $tableStatus) {
 			// Fields
 			$fieldInformation = $GLOBALS['TYPO3_DB']->admin_get_fields($tableName);

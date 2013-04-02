@@ -158,8 +158,6 @@ class ShowImageController {
 		if ($this->alternativeTempPath && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['FE']['allowedTempPaths'], $this->alternativeTempPath)) {
 			$img->tempPath = $this->alternativeTempPath;
 		}
-		// Need to connect to database, because this is used (typo3temp_db_tracking, cached image dimensions).
-		$GLOBALS['TYPO3_DB']->connectDB();
 		if (strstr($this->width . $this->height, 'm')) {
 			$max = 'm';
 		} else {
