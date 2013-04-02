@@ -35,27 +35,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Service;
 class IndexerServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var Store backup of TYPO3_DB
-	 */
-	protected $dbBackup;
-
-	/**
-	 * Set up this test case
-	 */
-	public function setUp() {
-			// Store TYPO3_DB in local var, it is substituted with a mock in this test
-		$this->dbBackup = $GLOBALS['TYPO3_DB'];
-	}
-
-	/**
-	 * Tear down this test case
-	 */
-	public function tearDown() {
-			// Re constitute TYPO3_DB from backup
-		$GLOBALS['TYPO3_DB'] = $this->dbBackup;
-	}
-
-	/**
 	 * @test
 	 */
 	public function indexFileUpdatesFileProperties() {
