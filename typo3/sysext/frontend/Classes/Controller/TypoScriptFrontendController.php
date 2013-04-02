@@ -28,7 +28,8 @@ namespace TYPO3\CMS\Frontend\Controller;
  ***************************************************************/
 
 /**
- * Class for the built TypoScript based Front End
+ * Class for the built TypoScript based Front End. Instantiated in
+ * index_ts.php script as the global object TSFE
  * Main frontend class, instantiated in the index_ts.php script as the global object TSFE
  *
  * This class has a lot of functions and internal variable which are use from index_ts.php.
@@ -795,6 +796,8 @@ class TypoScriptFrontendController {
 	 * Connect to SQL database. May exit after outputting an error message
 	 * or some JavaScript redirecting to the install tool.
 	 *
+	 * @throws \RuntimeException
+	 * @throws \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException
 	 * @return void
 	 */
 	public function connectToDB() {
@@ -1830,7 +1833,13 @@ class TypoScriptFrontendController {
 	 * @todo Define visibility
 	 */
 	public function checkPageUnavailableHandler() {
-		if ($this->TYPO3_CONF_VARS['FE']['pageUnavailable_handling'] && !\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $this->TYPO3_CONF_VARS['SYS']['devIPmask'])) {
+		if (
+			$this->TYPO3_CONF_VARS['FE']['pageUnavailable_handling']
+			&& !\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP(
+				\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+				$this->TYPO3_CONF_VARS['SYS']['devIPmask']
+			)
+		) {
 			$checkPageUnavailableHandler = TRUE;
 		} else {
 			$checkPageUnavailableHandler = FALSE;

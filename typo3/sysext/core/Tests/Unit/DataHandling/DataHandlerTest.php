@@ -32,13 +32,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandler;
 class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * a backup of the global database
-	 *
-	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected $databaseBackup = NULL;
-
-	/**
 	 * @var array A backup of registered singleton instances
 	 */
 	protected $singletonInstances = array();
@@ -55,7 +48,6 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-		$this->databaseBackup = $GLOBALS['TYPO3_DB'];
 		$this->backEndUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
 		$this->fixture = new \TYPO3\CMS\Core\DataHandling\DataHandler();
 		$this->fixture->start(array(), '', $this->backEndUser);
@@ -63,8 +55,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function tearDown() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
-		$GLOBALS['TYPO3_DB'] = $this->databaseBackup;
-		unset($this->fixture->BE_USER, $this->fixture, $this->backEndUser, $this->databaseBackup);
+		unset($this->fixture->BE_USER, $this->fixture, $this->backEndUser);
 	}
 
 	//////////////////////////////////////

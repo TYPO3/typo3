@@ -73,11 +73,6 @@ abstract class AbstractExceptionHandler implements \TYPO3\CMS\Core\Error\Excepti
 		// caused by this. Therefor we cannot do any database operation,
 		// otherwise this will lead into recurring exceptions.
 		try {
-			// In case an error occurs before a database connection exists, try
-			// to connect to the DB to be able to write the devlog/sys_log entry
-			if (isset($GLOBALS['TYPO3_DB']) && is_object($GLOBALS['TYPO3_DB']) && empty($GLOBALS['TYPO3_DB']->link)) {
-				$GLOBALS['TYPO3_DB']->connectDB();
-			}
 			// Write error message to devlog
 			// see: $TYPO3_CONF_VARS['SYS']['enable_exceptionDLOG']
 			if (TYPO3_EXCEPTION_DLOG) {
