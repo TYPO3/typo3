@@ -357,16 +357,40 @@ class Check {
 	 */
 	protected function checkDisableFunctions() {
 		$disabledFunctions = trim(ini_get('disable_functions'));
-		if (strlen($disabledFunctions) > 0) {
+
+		// Filter "disable_functions"
+		$disabledFunctionsArray = $this->trimExplode(',', $disabledFunctions);
+
+		// Array with strings to find
+		$findStrings = array(
+			// Disabled by default on Ubuntu OS but this is okay since the Core does not use them
+			'pcntl_',
+		);
+		foreach ($disabledFunctionsArray as $key => $disabledFunction) {
+			foreach ($findStrings as $findString) {
+				if (strpos($disabledFunction, $findString) !== FALSE) {
+					unset($disabledFunctionsArray[$key]);
+				}
+			}
+		}
+
+		if (strlen($disabledFunctions) > 0 && count($disabledFunctionsArray) > 0) {
 			$status = new ErrorStatus();
 			$status->setTitle('Some PHP functions disabled');
 			$status->setMessage(
 				'disable_functions=' . implode(' ', explode(',', $disabledFunctions)) . '. These function(s)' .
-				'are disabled. If TYPO3 uses any of these there might be trouble. TYPO3 is designed to use the default' .
-				' set of PHP functions plus some common extensions. Possibly these functions are disabled' .
+				' are disabled. TYPO3 uses some of those, so there might be trouble. TYPO3 is designed to use the' .
+				' default set of PHP functions plus some common extensions. Possibly these functions are disabled' .
 				' due to security considerations and most likely the list would include a function like' .
 				' exec() which is used by TYPO3 at various places. Depending on which exact functions' .
 				' are disabled, some parts of the system may just break without further notice.'
+			);
+		} elseif (strlen($disabledFunctions) > 0 && count($disabledFunctionsArray) === 0) {
+			$status = new NoticeStatus();
+			$status->setTitle('Some PHP functions currently disabled but OK');
+			$status->setMessage(
+				'disable_functions=' . implode(' ', explode(',', $disabledFunctions)) . '. These function(s)' .
+				' are disabled. TYPO3 uses currently none of those, so you are good to go.'
 			);
 		} else {
 			$status  = new OkStatus();
