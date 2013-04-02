@@ -1,6 +1,5 @@
 <?php
 namespace TYPO3\CMS\Core\Core;
-use \TYPO3\CMS\Core\Utility;
 
 /***************************************************************
  *  Copyright notice
@@ -27,6 +26,8 @@ use \TYPO3\CMS\Core\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility;
 
 require 'SystemEnvironmentBuilder.php';
 

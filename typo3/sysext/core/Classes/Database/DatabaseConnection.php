@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Core\Database;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Contains the class "DatabaseConnection" containing functions for building SQL queries
  * and mysqli wrappers, thus providing a foundational API to all database
@@ -106,12 +107,12 @@ class DatabaseConnection {
 	public $default_charset = 'utf8';
 
 	/**
-	 * @var t3lib_DB_preProcessQueryHook[]
+	 * @var array<PostProcessQueryHookInterface>
 	 */
 	protected $preProcessHookObjects = array();
 
 	/**
-	 * @var t3lib_DB_postProcessQueryHook[]
+	 * @var array<PreProcessQueryHookInterface>
 	 */
 	protected $postProcessHookObjects = array();
 
@@ -127,15 +128,15 @@ class DatabaseConnection {
 	 * Also, having the table name together with the actual query execution allows us to direct the request to other databases.
 	 *
 	 **************************************/
+
 	/**
 	 * Creates and executes an INSERT SQL-statement for $table from the array with field/value pairs $fields_values.
 	 * Using this function specifically allows us to handle BLOB and CLOB fields depending on DB
 	 *
 	 * @param string $table Table name
 	 * @param array $fields_values Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
-	 * @param string/array $no_quote_fields See fullQuoteArray()
-	 * @return pointer MySQLi result object / DBAL object
-	 * @todo Define visibility
+	 * @param boolean $no_quote_fields See fullQuoteArray()
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
 		$res = $this->link->query($this->INSERTquery($table, $fields_values, $no_quote_fields));
@@ -143,6 +144,7 @@ class DatabaseConnection {
 			$this->debug('exec_INSERTquery');
 		}
 		foreach ($this->postProcessHookObjects as $hookObject) {
+			/** @var $hookObject PostProcessQueryHookInterface */
 			$hookObject->exec_INSERTquery_postProcessAction($table, $fields_values, $no_quote_fields, $this);
 		}
 		return $res;
@@ -154,8 +156,8 @@ class DatabaseConnection {
 	 * @param string $table Table name
 	 * @param array $fields Field names
 	 * @param array $rows Table rows. Each row should be an array with field values mapping to $fields
-	 * @param string/array $no_quote_fields See fullQuoteArray()
-	 * @return pointer MySQLi result object / DBAL object
+	 * @param boolean $no_quote_fields See fullQuoteArray()
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
 		$res = $this->link->query($this->INSERTmultipleRows($table, $fields, $rows, $no_quote_fields));
@@ -163,6 +165,7 @@ class DatabaseConnection {
 			$this->debug('exec_INSERTmultipleRows');
 		}
 		foreach ($this->postProcessHookObjects as $hookObject) {
+			/** @var $hookObject PostProcessQueryHookInterface */
 			$hookObject->exec_INSERTmultipleRows_postProcessAction($table, $fields, $rows, $no_quote_fields, $this);
 		}
 		return $res;
@@ -175,9 +178,8 @@ class DatabaseConnection {
 	 * @param string $table Database tablename
 	 * @param string $where WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
 	 * @param array $fields_values Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
-	 * @param string/array $no_quote_fields See fullQuoteArray()
-	 * @return pointer MySQLi result object / DBAL object
-	 * @todo Define visibility
+	 * @param boolean $no_quote_fields See fullQuoteArray()
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = FALSE) {
 		$res = $this->link->query($this->UPDATEquery($table, $where, $fields_values, $no_quote_fields));
@@ -185,6 +187,7 @@ class DatabaseConnection {
 			$this->debug('exec_UPDATEquery');
 		}
 		foreach ($this->postProcessHookObjects as $hookObject) {
+			/** @var $hookObject PostProcessQueryHookInterface */
 			$hookObject->exec_UPDATEquery_postProcessAction($table, $where, $fields_values, $no_quote_fields, $this);
 		}
 		return $res;
@@ -195,8 +198,7 @@ class DatabaseConnection {
 	 *
 	 * @param string $table Database tablename
 	 * @param string $where WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
-	 * @return pointer MySQLi result object / DBAL object
-	 * @todo Define visibility
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_DELETEquery($table, $where) {
 		$res = $this->link->query($this->DELETEquery($table, $where));
@@ -204,6 +206,7 @@ class DatabaseConnection {
 			$this->debug('exec_DELETEquery');
 		}
 		foreach ($this->postProcessHookObjects as $hookObject) {
+			/** @var $hookObject PostProcessQueryHookInterface */
 			$hookObject->exec_DELETEquery_postProcessAction($table, $where, $this);
 		}
 		return $res;
@@ -219,8 +222,7 @@ class DatabaseConnection {
 	 * @param string $groupBy Optional GROUP BY field(s), if none, supply blank string.
 	 * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
 	 * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
-	 * @return resource MySQLi result object / DBAL object
-	 * @todo Define visibility
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
 		$query = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
@@ -232,6 +234,7 @@ class DatabaseConnection {
 			$this->explain($query, $from_table, $res->num_rows);
 		}
 		foreach ($this->postProcessHookObjects as $hookObject) {
+			/** @var $hookObject PostProcessQueryHookInterface */
 			$hookObject->exec_SELECTquery_postProcessAction($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', $this);
 		}
 		return $res;
@@ -253,7 +256,6 @@ class DatabaseConnection {
 	 * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
 	 * @return resource MySQLi result object / DBAL object
 	 * @see exec_SELECTquery()
-	 * @todo Define visibility
 	 */
 	public function exec_SELECT_mm_query($select, $local_table, $mm_table, $foreign_table, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
 		if ($foreign_table == $local_table) {
@@ -275,7 +277,6 @@ class DatabaseConnection {
 	 * @param array $queryParts Query parts array
 	 * @return resource MySQLi select result object / DBAL object
 	 * @see exec_SELECTquery()
-	 * @todo Define visibility
 	 */
 	public function exec_SELECT_queryArray($queryParts) {
 		return $this->exec_SELECTquery($queryParts['SELECT'], $queryParts['FROM'], $queryParts['WHERE'], $queryParts['GROUPBY'], $queryParts['ORDERBY'], $queryParts['LIMIT']);
@@ -292,7 +293,6 @@ class DatabaseConnection {
 	 * @param string $limit See exec_SELECTquery()
 	 * @param string $uidIndexField If set, the result array will carry this field names value as index. Requires that field to be selected of course!
 	 * @return array|NULL Array of rows, or NULL in case of SQL error
-	 * @todo Define visibility
 	 */
 	public function exec_SELECTgetRows($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', $uidIndexField = '') {
 		$res = $this->exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
@@ -378,6 +378,7 @@ class DatabaseConnection {
 			$this->debug('exec_TRUNCATEquery');
 		}
 		foreach ($this->postProcessHookObjects as $hookObject) {
+			/** @var $hookObject PostProcessQueryHookInterface */
 			$hookObject->exec_TRUNCATEquery_postProcessAction($table, $this);
 		}
 		return $res;
@@ -393,9 +394,8 @@ class DatabaseConnection {
 	 *
 	 * @param string $table See exec_INSERTquery()
 	 * @param array $fields_values See exec_INSERTquery()
-	 * @param string/array $no_quote_fields See fullQuoteArray()
+	 * @param boolean $no_quote_fields See fullQuoteArray()
 	 * @return string Full SQL query for INSERT (unless $fields_values does not contain any elements in which case it will be FALSE)
-	 * @todo Define visibility
 	 */
 	public function INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this
@@ -421,8 +421,8 @@ class DatabaseConnection {
 	 *
 	 * @param string $table Table name
 	 * @param array $fields Field names
-	 * @param array	$rows Table rows. Each row should be an array with field values mapping to $fields
-	 * @param string/array $no_quote_fields See fullQuoteArray()
+	 * @param array $rows Table rows. Each row should be an array with field values mapping to $fields
+	 * @param boolean $no_quote_fields See fullQuoteArray()
 	 * @return string Full SQL query for INSERT (unless $rows does not contain any elements in which case it will be FALSE)
 	 */
 	public function INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
@@ -430,6 +430,7 @@ class DatabaseConnection {
 		// function (contrary to values in the arrays which may be insecure).
 		if (count($rows)) {
 			foreach ($this->preProcessHookObjects as $hookObject) {
+				/** @var $hookObject PreProcessQueryHookInterface */
 				$hookObject->INSERTmultipleRows_preProcessAction($table, $fields, $rows, $no_quote_fields, $this);
 			}
 			// Build query
@@ -452,18 +453,20 @@ class DatabaseConnection {
 	/**
 	 * Creates an UPDATE SQL-statement for $table where $where-clause (typ. 'uid=...') from the array with field/value pairs $fields_values.
 	 *
+	 *
 	 * @param string $table See exec_UPDATEquery()
 	 * @param string $where See exec_UPDATEquery()
 	 * @param array $fields_values See exec_UPDATEquery()
-	 * @param array $no_quote_fields See fullQuoteArray()
+	 * @param boolean $no_quote_fields
+	 * @throws \InvalidArgumentException
 	 * @return string Full SQL query for UPDATE
-	 * @todo Define visibility
 	 */
 	public function UPDATEquery($table, $where, $fields_values, $no_quote_fields = FALSE) {
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this
 		// function (contrary to values in the arrays which may be insecure).
 		if (is_string($where)) {
 			foreach ($this->preProcessHookObjects as $hookObject) {
+				/** @var $hookObject PreProcessQueryHookInterface */
 				$hookObject->UPDATEquery_preProcessAction($table, $where, $fields_values, $no_quote_fields, $this);
 			}
 			$fields = array();
@@ -491,11 +494,12 @@ class DatabaseConnection {
 	 * @param string $table See exec_DELETEquery()
 	 * @param string $where See exec_DELETEquery()
 	 * @return string Full SQL query for DELETE
-	 * @todo Define visibility
+	 * @throws \InvalidArgumentException
 	 */
 	public function DELETEquery($table, $where) {
 		if (is_string($where)) {
 			foreach ($this->preProcessHookObjects as $hookObject) {
+				/** @var $hookObject PreProcessQueryHookInterface */
 				$hookObject->DELETEquery_preProcessAction($table, $where, $this);
 			}
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
@@ -519,10 +523,10 @@ class DatabaseConnection {
 	 * @param string $orderBy See exec_SELECTquery()
 	 * @param string $limit See exec_SELECTquery()
 	 * @return string Full SQL query for SELECT
-	 * @todo Define visibility
 	 */
 	public function SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
 		foreach ($this->preProcessHookObjects as $hookObject) {
+			/** @var $hookObject PreProcessQueryHookInterface */
 			$hookObject->SELECTquery_preProcessAction($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit, $this);
 		}
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
@@ -569,6 +573,7 @@ class DatabaseConnection {
 	 */
 	public function TRUNCATEquery($table) {
 		foreach ($this->preProcessHookObjects as $hookObject) {
+			/** @var $hookObject PreProcessQueryHookInterface */
 			$hookObject->TRUNCATEquery_preProcessAction($table, $this);
 		}
 		// Table should be "SQL-injection-safe" when supplied to this function
@@ -593,6 +598,7 @@ class DatabaseConnection {
 	 * @param string $field Field name
 	 * @param string $value Value to find in list
 	 * @param string $table Table in which we are searching (for DBAL detection of quoteStr() method)
+	 * @throws \InvalidArgumentException
 	 * @return string WHERE clause for a query
 	 */
 	public function listQuery($field, $value, $table) {
@@ -612,7 +618,6 @@ class DatabaseConnection {
 	 * @param array $fields Array of fields
 	 * @param string $table Table in which we are searching (for DBAL detection of quoteStr() method)
 	 * @param string $constraint How multiple search words have to match ('AND' or 'OR')
-	 *
 	 * @return string WHERE clause for search
 	 */
 	public function searchQuery($searchWords, $fields, $table, $constraint = self::AND_Constraint) {
@@ -709,7 +714,6 @@ class DatabaseConnection {
 	 * @param boolean $allowNull Whether to allow NULL values
 	 * @return string Output string; Wrapped in single quotes and quotes in the string (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
 	 * @see quoteStr()
-	 * @todo Define visibility
 	 */
 	public function fullQuoteStr($str, $table, $allowNull = FALSE) {
 		if ($allowNull && $str === NULL) {
@@ -724,11 +728,10 @@ class DatabaseConnection {
 	 *
 	 * @param array $arr Array with values (either associative or non-associative array)
 	 * @param string $table Table name for which to quote
-	 * @param string/array $noQuote List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
+	 * @param boolean $noQuote List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
 	 * @param boolean $allowNull Whether to allow NULL values
 	 * @return array The input array with the values quoted
 	 * @see cleanIntArray()
-	 * @todo Define visibility
 	 */
 	public function fullQuoteArray($arr, $table, $noQuote = FALSE, $allowNull = FALSE) {
 		if (is_string($noQuote)) {
@@ -753,7 +756,6 @@ class DatabaseConnection {
 	 * @param string $table Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
 	 * @return string Output string; Quotes (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
 	 * @see quoteStr()
-	 * @todo Define visibility
 	 */
 	public function quoteStr($str, $table) {
 		return $this->link->real_escape_string($str);
@@ -766,7 +768,6 @@ class DatabaseConnection {
 	 * @param string $table Table name for which to escape string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
 	 * @return string Output string; % and _ will be escaped with \ (or otherwise based on DBAL handler)
 	 * @see quoteStr()
-	 * @todo Define visibility
 	 */
 	public function escapeStrForLike($str, $table) {
 		return addcslashes($str, '_%');
@@ -779,7 +780,6 @@ class DatabaseConnection {
 	 * @param array $arr Array with values
 	 * @return array The input array with all values passed through intval()
 	 * @see cleanIntList()
-	 * @todo Define visibility
 	 */
 	public function cleanIntArray($arr) {
 		foreach ($arr as $k => $v) {
@@ -795,7 +795,6 @@ class DatabaseConnection {
 	 * @param string $list List of comma-separated values which should be integers
 	 * @return string The input list but with every value passed through intval()
 	 * @see cleanIntArray()
-	 * @todo Define visibility
 	 */
 	public function cleanIntList($list) {
 		return implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $list));
@@ -809,7 +808,6 @@ class DatabaseConnection {
 	 * @param string $str eg. "ORDER BY title, uid
 	 * @return string eg. "title, uid
 	 * @see exec_SELECTquery(), stripGroupBy()
-	 * @todo Define visibility
 	 */
 	public function stripOrderBy($str) {
 		return preg_replace('/^(?:ORDER[[:space:]]*BY[[:space:]]*)+/i', '', trim($str));
@@ -823,7 +821,6 @@ class DatabaseConnection {
 	 * @param string $str eg. "GROUP BY title, uid
 	 * @return string eg. "title, uid
 	 * @see exec_SELECTquery(), stripOrderBy()
-	 * @todo Define visibility
 	 */
 	public function stripGroupBy($str) {
 		return preg_replace('/^(?:GROUP[[:space:]]*BY[[:space:]]*)+/i', '', trim($str));
@@ -835,7 +832,6 @@ class DatabaseConnection {
 	 *
 	 * @param string $str Input string
 	 * @return array
-	 * @todo Define visibility
 	 */
 	public function splitGroupOrderLimit($str) {
 		// Prepending a space to make sure "[[:space:]]+" will find a space there
@@ -903,8 +899,7 @@ class DatabaseConnection {
 	 * using exec_SELECTquery() and similar methods instead.
 	 *
 	 * @param string $query Query to execute
-	 * @return pointer MySQLi result oject / DBAL object
-	 * @todo Define visibility
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function sql_query($query) {
 		$res = $this->link->query($query);
@@ -918,7 +913,6 @@ class DatabaseConnection {
 	 * Returns the error status on the last query() execution
 	 *
 	 * @return string MySQLi error string.
-	 * @todo Define visibility
 	 */
 	public function sql_error() {
 		return $this->link->error;
@@ -928,7 +922,6 @@ class DatabaseConnection {
 	 * Returns the error number on the last query() execution
 	 *
 	 * @return integer MySQLi error number
-	 * @todo Define visibility
 	 */
 	public function sql_errno() {
 		return $this->link->errno;
@@ -937,9 +930,8 @@ class DatabaseConnection {
 	/**
 	 * Returns the number of selected rows.
 	 *
-	 * @param pointer $res MySQLi result object (of SELECT query) / DBAL object
+	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @return integer Number of resulting rows
-	 * @todo Define visibility
 	 */
 	public function sql_num_rows($res) {
 		if ($this->debug_check_recordset($res)) {
@@ -953,9 +945,8 @@ class DatabaseConnection {
 	 * Returns an associative array that corresponds to the fetched row, or FALSE if there are no more rows.
 	 * MySQLi fetch_assoc() wrapper function
 	 *
-	 * @param pointer $res MySQLi result object (of SELECT query) / DBAL object
-	 * @return array Associative array of result row.
-	 * @todo Define visibility
+	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @return array|boolean Associative array of result row.
 	 */
 	public function sql_fetch_assoc($res) {
 		if ($this->debug_check_recordset($res)) {
@@ -975,9 +966,8 @@ class DatabaseConnection {
 	 * The array contains the values in numerical indices.
 	 * MySQLi fetch_row() wrapper function
 	 *
-	 * @param pointer $res MySQLi result object (of SELECT query) / DBAL object
-	 * @return array Array with result rows.
-	 * @todo Define visibility
+	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
+	 * @return array|boolean Array with result rows.
 	 */
 	public function sql_fetch_row($res) {
 		if ($this->debug_check_recordset($res)) {
@@ -996,9 +986,8 @@ class DatabaseConnection {
 	 * Free result memory
 	 * free_result() wrapper function
 	 *
-	 * @param pointer $res MySQLi result object to free / DBAL object
+	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @return boolean Returns TRUE on success or FALSE on failure.
-	 * @todo Define visibility
 	 */
 	public function sql_free_result($res) {
 		if ($this->debug_check_recordset($res)) {
@@ -1012,7 +1001,6 @@ class DatabaseConnection {
 	 * Get the ID generated from the previous INSERT operation
 	 *
 	 * @return integer The uid of the last inserted record.
-	 * @todo Define visibility
 	 */
 	public function sql_insert_id() {
 		return $this->link->insert_id;
@@ -1022,7 +1010,6 @@ class DatabaseConnection {
 	 * Returns the number of rows affected by the last INSERT, UPDATE or DELETE query
 	 *
 	 * @return integer Number of rows affected by last query
-	 * @todo Define visibility
 	 */
 	public function sql_affected_rows() {
 		return $this->link->affected_rows;
@@ -1031,10 +1018,9 @@ class DatabaseConnection {
 	/**
 	 * Move internal result pointer
 	 *
-	 * @param pointer $res MySQLi result object (of SELECT query) / DBAL object
+	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @param integer $seek Seek result number.
 	 * @return boolean Returns TRUE on success or FALSE on failure.
-	 * @todo Define visibility
 	 */
 	public function sql_data_seek($res, $seek) {
 		if ($this->debug_check_recordset($res)) {
@@ -1048,10 +1034,9 @@ class DatabaseConnection {
 	 * Get the type of the specified field in a result
 	 * mysql_field_type() wrapper function
 	 *
-	 * @param resource $res MySQLi result object (of SELECT query) / DBAL object
+	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @param integer $pointer Field index.
 	 * @return string Returns the name of the specified field index, or FALSE on error
-	 * @todo Define visibility
 	 */
 	public function sql_field_type($res, $pointer) {
 		// mysql_field_type compatibility map
@@ -1093,8 +1078,8 @@ class DatabaseConnection {
 	 * @param string $TYPO3_db_host Database host IP/domain
 	 * @param string $TYPO3_db_username Username to connect with.
 	 * @param string $TYPO3_db_password Password to connect with.
-	 * @return resource Returns a positive MySQLi object on success, or FALSE on error.
-	 * @todo Define visibility
+	 * @return boolean|void
+	 * @throws \RuntimeException
 	 */
 	public function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password) {
 		// Check if MySQLi extension is loaded
@@ -1161,7 +1146,6 @@ class DatabaseConnection {
 	 *
 	 * @param string $TYPO3_db Database to connect to.
 	 * @return boolean Returns TRUE on success or FALSE on failure.
-	 * @todo Define visibility
 	 */
 	public function sql_select_db($TYPO3_db) {
 		$ret = $this->link->select_db($TYPO3_db);
@@ -1184,7 +1168,6 @@ class DatabaseConnection {
 	 * Use in Install Tool only!
 	 *
 	 * @return array Each entry represents a database name
-	 * @todo Define visibility
 	 */
 	public function admin_get_dbs() {
 		$dbArr = array();
@@ -1203,7 +1186,6 @@ class DatabaseConnection {
 	 * the _DEFAULT handler and then 2) add all tables *configured* to be managed by other handlers
 	 *
 	 * @return array Array with tablenames as key and arrays with status information as value
-	 * @todo Define visibility
 	 */
 	public function admin_get_tables() {
 		$whichTables = array();
@@ -1227,7 +1209,6 @@ class DatabaseConnection {
 	 *
 	 * @param string $tableName Table name
 	 * @return array Field information in an associative array with fieldname => field row
-	 * @todo Define visibility
 	 */
 	public function admin_get_fields($tableName) {
 		$output = array();
@@ -1245,7 +1226,6 @@ class DatabaseConnection {
 	 *
 	 * @param string $tableName Table name
 	 * @return array Key information in a numeric array
-	 * @todo Define visibility
 	 */
 	public function admin_get_keys($tableName) {
 		$output = array();
@@ -1268,7 +1248,6 @@ class DatabaseConnection {
 	 * Use in Install Tool only!
 	 *
 	 * @return array Array with Charset as key and an array of "Charset", "Description", "Default collation", "Maxlen" as values
-	 * @todo Define visibility
 	 */
 	public function admin_get_charsets() {
 		$output = array();
@@ -1287,7 +1266,6 @@ class DatabaseConnection {
 	 *
 	 * @param string $query Query to execute
 	 * @return resource Result pointer (MySQLi result object)
-	 * @todo Define visibility
 	 */
 	public function admin_query($query) {
 		$res = $this->link->query($query);
@@ -1309,8 +1287,9 @@ class DatabaseConnection {
 	 * @param string $user
 	 * @param string $password
 	 * @param string $db
-	 * @return 	void
-	 * @todo Define visibility
+	 * @throws \RuntimeException
+	 * @throws \UnexpectedValueException
+	 * @return void
 	 */
 	public function connectDB($host = TYPO3_db_host, $user = TYPO3_db_username, $password = TYPO3_db_password, $db = TYPO3_db) {
 		if (!$db) {
