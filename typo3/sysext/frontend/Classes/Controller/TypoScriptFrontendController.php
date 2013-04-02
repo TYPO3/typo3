@@ -26,8 +26,10 @@ namespace TYPO3\CMS\Frontend\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Class for the built TypoScript based Front End
+ * Class for the built TypoScript based Front End. Instantiated in
+ * index_ts.php script as the global object TSFE
  *
  * This class has a lot of functions and internal variable which are use from index_ts.php.
  * The class is instantiated as $GLOBALS['TSFE'] in index_ts.php.
@@ -35,11 +37,6 @@ namespace TYPO3\CMS\Frontend\Controller;
  *
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
- * Main frontend class, instantiated in the index_ts.php script as the global object TSFE
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -798,6 +795,8 @@ class TypoScriptFrontendController {
 	 * Connect to SQL database. May exit after outputting an error message
 	 * or some JavaScript redirecting to the install tool.
 	 *
+	 * @throws \RuntimeException
+	 * @throws \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException
 	 * @return void
 	 */
 	public function connectToDB() {

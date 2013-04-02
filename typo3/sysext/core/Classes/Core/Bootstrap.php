@@ -678,13 +678,34 @@ class Bootstrap {
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	public function initializeTypo3DbGlobal($connect = TRUE) {
-		/** @var TYPO3_DB TYPO3\CMS\Core\Database\DatabaseConnection */
-		$GLOBALS['TYPO3_DB'] = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
-		$GLOBALS['TYPO3_DB']->debugOutput = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sqlDebug'];
-		if ($connect) {
-			$this->establishDatabaseConnection();
+	public function initializeTypo3DbGlobal() {
+		/** @var $databaseConnection \TYPO3\CMS\Core\Database\DatabaseConnection */
+		$databaseConnection = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
+		$databaseConnection->setDatabaseName(TYPO3_db);
+		$databaseConnection->setDatabaseUsername(TYPO3_db_username);
+		$databaseConnection->setDatabasePassword(TYPO3_db_password);
+		if (strpos(':', TYPO3_db_host) > 0) {
+			list($databaseHost, $databasePort) = explode(':', TYPO3_db_host);
+			$databaseConnection->setDatabaseHost($databaseHost);
+			$databaseConnection->setDatabasePort($databasePort);
+		} else {
+			$databaseHost = TYPO3_db_host;
+			$databaseConnection->setDatabaseHost($databaseHost);
 		}
+
+		$databaseConnection->debugOutput = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sqlDebug'];
+
+		if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect']) {
+			$databaseConnection->setPersistentDatabaseConnection(TRUE);
+		}
+
+		$isDatabaseHostLocalHost = $databaseHost === 'localhost' || $databaseHost === '127.0.0.1';
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['dbClientCompress'] && !$isDatabaseHostLocalHost) {
+			$databaseConnection->setConnectionCompression(TRUE);
+		}
+
+		$GLOBALS['TYPO3_DB'] = $databaseConnection;
+
 		return $this;
 	}
 
@@ -774,17 +795,6 @@ class Bootstrap {
 				die;
 			}
 		}
-		return $this;
-	}
-
-	/**
-	 * Establish connection to the database
-	 *
-	 * @return \TYPO3\CMS\Core\Core\Bootstrap
-	 * @internal This is not a public API method, do not use in own extensions
-	 */
-	public function establishDatabaseConnection() {
-		$GLOBALS['TYPO3_DB']->connectDB();
 		return $this;
 	}
 
