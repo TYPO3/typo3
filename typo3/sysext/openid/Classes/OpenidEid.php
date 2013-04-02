@@ -43,7 +43,6 @@ class OpenidEid {
 		// the user.
 		$GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['FE_fetchUserIfNoSession'] = TRUE;
 		// Initialize Frontend user
-		\TYPO3\CMS\Frontend\Utility\EidUtility::connectDB();
 		\TYPO3\CMS\Frontend\Utility\EidUtility::initFeUser();
 		// Redirect to the original location in any case (authenticated or not)
 		@ob_end_clean();
