@@ -96,6 +96,47 @@ class DatabaseConnection {
 	public $explainOutput = 0;
 
 	/**
+	 * @var string Database host to connect to
+	 */
+	protected $databaseHost = '';
+
+	/**
+	 * @var integer Database port to connect to
+	 */
+	protected $databasePort = 3306;
+
+	/**
+	 * @var string Database name to connect to
+	 */
+	protected $databaseName = '';
+
+	/**
+	 * @var string Database user to connect with
+	 */
+	protected $databaseUsername = '';
+
+	/**
+	 * @var string Database password to connect with
+	 */
+	protected $databaseUserPassword = '';
+
+	/**
+	 * @var boolean TRUE if database connection should be persistent
+	 * @see http://php.net/manual/de/mysqli.persistconns.php
+	 */
+	protected $persistentDatabaseConnection = FALSE;
+
+	/**
+	 * @var boolean TRUE if connection between client and sql server is compressed
+	 */
+	protected $connectionCompression = FALSE;
+
+	/**
+	 * @var boolean TRUE if database connection is established
+	 */
+	protected $isConnected = FALSE;
+
+	/**
 	 * @var \mysqli $link Default database link object
 	 */
 	protected $link = NULL;
@@ -139,6 +180,9 @@ class DatabaseConnection {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
 		$res = $this->link->query($this->INSERTquery($table, $fields_values, $no_quote_fields));
 		if ($this->debugOutput) {
 			$this->debug('exec_INSERTquery');
@@ -160,6 +204,9 @@ class DatabaseConnection {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
 		$res = $this->link->query($this->INSERTmultipleRows($table, $fields, $rows, $no_quote_fields));
 		if ($this->debugOutput) {
 			$this->debug('exec_INSERTmultipleRows');
@@ -182,6 +229,9 @@ class DatabaseConnection {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = FALSE) {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
 		$res = $this->link->query($this->UPDATEquery($table, $where, $fields_values, $no_quote_fields));
 		if ($this->debugOutput) {
 			$this->debug('exec_UPDATEquery');
@@ -201,6 +251,9 @@ class DatabaseConnection {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_DELETEquery($table, $where) {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
 		$res = $this->link->query($this->DELETEquery($table, $where));
 		if ($this->debugOutput) {
 			$this->debug('exec_DELETEquery');
@@ -225,6 +278,9 @@ class DatabaseConnection {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
 		$query = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
 		$res = $this->link->query($query);
 		if ($this->debugOutput) {
@@ -373,6 +429,9 @@ class DatabaseConnection {
 	 * @return mixed Result from handler
 	 */
 	public function exec_TRUNCATEquery($table) {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
 		$res = $this->link->query($this->TRUNCATEquery($table));
 		if ($this->debugOutput) {
 			$this->debug('exec_TRUNCATEquery');
@@ -689,6 +748,9 @@ class DatabaseConnection {
 	 * @return resource MySQL result object / DBAL object
 	 */
 	public function exec_PREPAREDquery($query, array $queryComponents) {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
 		$res = $this->link->query($query);
 		if ($this->debugOutput) {
 			$this->debug('stmt_execute', $query);
@@ -716,6 +778,9 @@ class DatabaseConnection {
 	 * @see quoteStr()
 	 */
 	public function fullQuoteStr($str, $table, $allowNull = FALSE) {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
 		if ($allowNull && $str === NULL) {
 			return 'NULL';
 		}
@@ -728,7 +793,7 @@ class DatabaseConnection {
 	 *
 	 * @param array $arr Array with values (either associative or non-associative array)
 	 * @param string $table Table name for which to quote
-	 * @param boolean $noQuote List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
+	 * @param boolean|array $noQuote List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
 	 * @param boolean $allowNull Whether to allow NULL values
 	 * @return array The input array with the values quoted
 	 * @see cleanIntArray()
@@ -758,6 +823,9 @@ class DatabaseConnection {
 	 * @see quoteStr()
 	 */
 	public function quoteStr($str, $table) {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
 		return $this->link->real_escape_string($str);
 	}
 
@@ -902,6 +970,9 @@ class DatabaseConnection {
 	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function sql_query($query) {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
 		$res = $this->link->query($query);
 		if ($this->debugOutput) {
 			$this->debug('sql_query', $query);
@@ -1075,47 +1146,88 @@ class DatabaseConnection {
 	/**
 	 * Open a (persistent) connection to a MySQL server
 	 *
-	 * @param string $TYPO3_db_host Database host IP/domain
-	 * @param string $TYPO3_db_username Username to connect with.
-	 * @param string $TYPO3_db_password Password to connect with.
+	 * @param string $host Database host IP/domain[:port]
+	 * @param string $username Username to connect with.
+	 * @param string $password Password to connect with.
 	 * @return boolean|void
 	 * @throws \RuntimeException
 	 */
-	public function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password) {
-		// Check if MySQLi extension is loaded
+	public function sql_pconnect($host = NULL, $username = NULL, $password = NULL) {
+		if ($this->isConnected) {
+			return $this->link;
+		}
+
 		if (!extension_loaded('mysqli')) {
-			$message = 'Database Error: It seems that MySQLi support for PHP is not installed!';
-			throw new \RuntimeException($message, 1271492607);
+			throw new \RuntimeException(
+				'Database Error: PHP mysqli extension not loaded. This is a must have for TYPO3 CMS!',
+				1271492607
+			);
 		}
-		// Check for client compression
-		$isLocalhost = $TYPO3_db_host == 'localhost' || $TYPO3_db_host == '127.0.0.1';
+
+		if ($host) {
+			if (strpos(':', $host) > 0) {
+				list($databaseHost, $databasePort) = explode(':', $host);
+				$this->setDatabaseHost($databaseHost);
+				$this->setDatabasePort($databasePort);
+			} else {
+				$this->setDatabaseHost($host);
+			}
+		}
+		if ($username) {
+			$this->setDatabaseUsername($username);
+		}
+		if ($password) {
+			$this->setDatabasePassword($password);
+		}
+
+		$host = $this->persistentDatabaseConnection
+			? 'p:' . $this->databaseHost
+			: $this->databaseHost;
+
 		$this->link = mysqli_init();
-		$connected = FALSE;
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect']) {
-			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['dbClientCompress'] && !$isLocalhost) {
-				// use default-port to connect to MySQL
-				$connected = $this->link->real_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password, NULL, MYSQLI_CLIENT_COMPRESS);
-			} else {
-				$connected = $this->link->real_connect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
-			}
+		if ($this->connectionCompression) {
+			$connected = $this->link->real_connect(
+				$this->databaseHost,
+				$this->databaseUsername,
+				$this->databaseUserPassword,
+				NULL,
+				$this->databasePort,
+				NULL,
+				MYSQLI_CLIENT_COMPRESS
+			);
 		} else {
-			// prepend 'p:' to host to use a persistent connection
-			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['dbClientCompress'] && !$isLocalhost) {
-				// use default-port to connect to MySQL
-				$connected = $this->link->real_connect('p:' . $TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password, NULL, MYSQLI_CLIENT_COMPRESS);
-			} else {
-				$connected = $this->link->real_connect('p:' . $TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password);
-			}
+			$connected = $this->link->real_connect(
+				$this->databaseHost,
+				$this->databaseUsername,
+				$this->databaseUserPassword,
+				NULL,
+				$this->databasePort
+			);
 		}
-		$error_msg = $this->link->connect_error;
+
 		if (!$connected) {
-			$this->link = FALSE;
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not connect to MySQL server ' . $TYPO3_db_host . ' with user ' . $TYPO3_db_username . ': ' . $error_msg, 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_FATAL);
+			// @TODO: This should raise an exception. Would be useful especially to work during installation.
+			$error_msg = $this->link->connect_error;
+			$this->link = NULL;
+			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(
+				'Could not connect to MySQL server ' . $host . ' with user ' . $username . ': ' . $error_msg,
+				'Core',
+				\TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_FATAL
+			);
 		} else {
-			$setDBinit = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, str_replace('\' . LF . \'', LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']), TRUE);
+			$this->isConnected = TRUE;
+			$setDBinit = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(
+				LF,
+				str_replace('\' . LF . \'', LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']),
+				TRUE
+			);
 			foreach ($setDBinit as $v) {
 				if ($this->link->query($v) === FALSE) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not initialize DB connection with query "' . $v . '": ' . $this->sql_error(), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(
+						'Could not initialize DB connection with query "' . $v . '": ' . $this->sql_error(),
+						'Core',
+						\TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR
+					);
 				}
 			}
 			$this->setSqlMode();
@@ -1148,6 +1260,9 @@ class DatabaseConnection {
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
 	public function sql_select_db($TYPO3_db) {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
 		$ret = $this->link->select_db($TYPO3_db);
 		if (!$ret) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not select MySQL database ' . $TYPO3_db . ': ' . $this->sql_error(), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_FATAL);
@@ -1170,6 +1285,9 @@ class DatabaseConnection {
 	 * @return array Each entry represents a database name
 	 */
 	public function admin_get_dbs() {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
 		$dbArr = array();
 		$db_list = $this->link->query("SHOW DATABASES");
 		while ($row = $db_list->fetch_object()) {
@@ -1188,6 +1306,9 @@ class DatabaseConnection {
 	 * @return array Array with tablenames as key and arrays with status information as value
 	 */
 	public function admin_get_tables() {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
 		$whichTables = array();
 		$tables_result = $this->link->query('SHOW TABLE STATUS FROM `' . TYPO3_db . '`');
 		if ($tables_result !== FALSE) {
@@ -1211,6 +1332,9 @@ class DatabaseConnection {
 	 * @return array Field information in an associative array with fieldname => field row
 	 */
 	public function admin_get_fields($tableName) {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
 		$output = array();
 		$columns_res = $this->link->query('SHOW COLUMNS FROM `' . $tableName . '`');
 		while ($fieldRow = $columns_res->fetch_assoc()) {
@@ -1228,6 +1352,9 @@ class DatabaseConnection {
 	 * @return array Key information in a numeric array
 	 */
 	public function admin_get_keys($tableName) {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
 		$output = array();
 		$keyRes = $this->link->query('SHOW KEYS FROM `' . $tableName . '`');
 		while ($keyRow = $keyRes->fetch_assoc()) {
@@ -1250,6 +1377,9 @@ class DatabaseConnection {
 	 * @return array Array with Charset as key and an array of "Charset", "Description", "Default collation", "Maxlen" as values
 	 */
 	public function admin_get_charsets() {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
 		$output = array();
 		$columns_res = $this->link->query('SHOW CHARACTER SET');
 		if ($columns_res !== FALSE) {
@@ -1268,6 +1398,9 @@ class DatabaseConnection {
 	 * @return resource Result pointer (MySQLi result object)
 	 */
 	public function admin_query($query) {
+		if (!$this->isConnected) {
+			$this->connectDB();
+		}
 		$res = $this->link->query($query);
 		if ($this->debugOutput) {
 			$this->debug('admin_query', $query);
@@ -1277,31 +1410,139 @@ class DatabaseConnection {
 
 	/******************************
 	 *
-	 * Connecting service
+	 * Connect handling
 	 *
 	 ******************************/
+
+	/**
+	 * Set database host
+	 *
+	 * @param string $host
+	 */
+	public function setDatabaseHost($host = 'localhost') {
+		$this->disconnectIfConnected();
+		$this->databaseHost = $host;
+	}
+
+	/**
+	 * Set database port
+	 *
+	 * @param integer $port
+	 */
+	public function setDatabasePort($port = 3306) {
+		$this->disconnectIfConnected();
+		$this->databasePort = (int)$port;
+	}
+
+	/**
+	 * Set database name
+	 *
+	 * @param string $name
+	 */
+	public function setDatabaseName($name) {
+		$this->disconnectIfConnected();
+		$this->databaseName = $name;
+	}
+
+	/**
+	 * Set database username
+	 *
+	 * @param string $username
+	 */
+	public function setDatabaseUsername($username) {
+		$this->disconnectIfConnected();
+		$this->databaseUsername = $username;
+	}
+
+	/**
+	 * Set database password
+	 *
+	 * @param string $password
+	 */
+	public function setDatabasePassword($password) {
+		$this->disconnectIfConnected();
+		$this->databaseUserPassword = $password;
+	}
+
+	/**
+	 * Set persistent database connection
+	 *
+	 * @param boolean $persistentDatabaseConnection
+	 * @see http://php.net/manual/de/mysqli.persistconns.php
+	 */
+	public function setPersistentDatabaseConnection($persistentDatabaseConnection) {
+		$this->disconnectIfConnected();
+		$this->persistentDatabaseConnection = (bool)$persistentDatabaseConnection;
+	}
+
+	/**
+	 * Set connection compression. Might be an advantage, if SQL server is not on localhost
+	 *
+	 * @param bool $connectionCompression TRUE if connection should be compressed
+	 */
+	public function setConnectionCompression($connectionCompression) {
+		$this->disconnectIfConnected();
+		$this->connectionCompression = (bool)$connectionCompression;
+	}
+
 	/**
 	 * Connects to database for TYPO3 sites:
 	 *
-	 * @param string $host
-	 * @param string $user
-	 * @param string $password
-	 * @param string $db
+	 * @param string $host Database host IP/domain[:port]
+	 * @param string $username Username to connect with
+	 * @param string $password Password to connect with
+	 * @param string $db Database name to connect to
 	 * @throws \RuntimeException
 	 * @throws \UnexpectedValueException
+	 * @internal param string $user Username to connect with.
 	 * @return void
 	 */
-	public function connectDB($host = TYPO3_db_host, $user = TYPO3_db_username, $password = TYPO3_db_password, $db = TYPO3_db) {
-		if (!$db) {
-			throw new \RuntimeException('TYPO3 Fatal Error: No database selected!', 1270853882);
+	public function connectDB($host = NULL, $username = NULL, $password = NULL, $db = NULL) {
+		// Early return if connected already
+		if ($this->isConnected) {
+			return;
 		}
-		if ($this->sql_pconnect($host, $user, $password)) {
-			if (!$this->sql_select_db($db)) {
-				throw new \RuntimeException('TYPO3 Fatal Error: Cannot connect to the current database, "' . $db . '"!', 1270853883);
+
+		if (!$this->databaseName && !$db) {
+			throw new \RuntimeException(
+				'TYPO3 Fatal Error: No database selected!',
+				1270853882
+			);
+		}
+
+		if ($host) {
+			if (strpos(':', $host) > 0) {
+				list($databaseHost, $databasePort) = explode(':', $host);
+				$this->setDatabaseHost($databaseHost);
+				$this->setDatabasePort($databasePort);
+			} else {
+				$this->setDatabaseHost($host);
+			}
+		}
+		if ($username) {
+			$this->setDatabaseUsername($username);
+		}
+		if ($password) {
+			$this->setDatabasePassword($password);
+		}
+		if ($db) {
+			$this->setDatabaseName($db);
+		}
+
+		if ($this->sql_pconnect()) {
+			if (!$this->sql_select_db($this->databaseName)) {
+				throw new \RuntimeException(
+					'TYPO3 Fatal Error: Cannot connect to the current database, "' . $this->databaseName . '"!',
+					1270853883
+				);
 			}
 		} else {
-			throw new \RuntimeException('TYPO3 Fatal Error: The current username, password or host was not accepted when the connection to the database was attempted to be established!', 1270853884);
+			throw new \RuntimeException(
+				'TYPO3 Fatal Error: The current username, password or host was not accepted when the connection to the database was attempted to be established!',
+				1270853884
+			);
 		}
+
 		// Prepare user defined objects (if any) for hooks which extend query methods
 		$this->preProcessHookObjects = array();
 		$this->postProcessHookObjects = array();
@@ -1327,7 +1568,19 @@ class DatabaseConnection {
 	 * @return boolean
 	 */
 	public function isConnected() {
-		return is_object($this->link);
+		return $this->isConnected;
+	}
+
+	/**
+	 * Disconnect from database if connected
+	 *
+	 * @return void
+	 */
+	protected function disconnectIfConnected() {
+		if ($this->isConnected()) {
+			$this->link->close();
+			$this->isConnected = FALSE;
+		}
 	}
 
 	/**
@@ -1492,7 +1745,25 @@ class DatabaseConnection {
 		return FALSE;
 	}
 
+	/**
+	 * Serialize destructs current connection
+	 *
+	 * @return array All protected properties that should be saved
+	 */
+	public function __sleep() {
+		$this->disconnectIfConnected();
+		return array(
+			'debugOutput',
+			'explainOutput',
+			'databaseHost',
+			'databasePort',
+			'databaseName',
+			'databaseUsername',
+			'databaseUserPassword',
+			'persistentDatabaseConnection',
+			'connectionCompression',
+			'default_charset',
+		);
+	}
 }
-
-
 ?>
