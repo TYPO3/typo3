@@ -35,19 +35,6 @@ namespace TYPO3\CMS\Core\Tests\Integrity;
 class IntegrityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * This test fails if some test before either set
-	 * $backupGlobals to TRUE and did not add TYPO3_DB to
-	 * $backupGlobalsBlacklist, or if it mocked
-	 * TYPO3\CMS\Core\Database\DatabaseConnection and
-	 * did not reconstitute the existing connection.
-	 *
-	 * @test
-	 */
-	public function globalsTypo3DbDatabaseLinkIsAObject() {
-		$this->assertTrue(is_object($GLOBALS['TYPO3_DB']->getDatabaseHandle()));
-	}
-
-	/**
 	 * This test fails if some test before mocked or substituted
 	 * $GLOBALS['typo3CacheManager'] but did not reconstitute correctly.
 	 *
