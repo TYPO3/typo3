@@ -357,7 +357,23 @@ class Check {
 	 */
 	protected function checkDisableFunctions() {
 		$disabledFunctions = trim(ini_get('disable_functions'));
-		if (strlen($disabledFunctions) > 0) {
+
+		// Filter "disable_functions"
+		$disabledFunctionsArray = $this->trimExplode(',', $disabledFunctions);
+
+		// Array with strings to find
+		$findStrings = array(
+			'pcntl_', // Disabled by default on Ubuntu OS
+		);
+		foreach ($disabledFunctionsArray as $key => $disabledFunction) {
+			foreach ($findStrings as $findString) {
+				if (strpos($disabledFunction, $findString) !== FALSE) {
+					unset($disabledFunctionsArray[$key]);
+				}
+			}
+		}
+
+		if (strlen($disabledFunctions) > 0 && count($disabledFunctionsArray) > 0) {
 			$status = new ErrorStatus();
 			$status->setTitle('Some PHP functions disabled');
 			$status->setMessage(
