@@ -295,7 +295,9 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canWriteConfigurationReturnsFalseIfDirectoryIsNotWritable() {
-		if (TYPO3_OS == 'WIN') {
+		if (function_exists('posix_getegid') && posix_getegid() === 0) {
+			$this->markTestSkipped('Test skipped if run on linux as root');
+		} elseif (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('Not available on Windows');
 		}
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
@@ -321,7 +323,9 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canWriteConfigurationReturnsFalseIfLocalConfigurationFileIsNotWritable() {
-		if (TYPO3_OS == 'WIN') {
+		if (function_exists('posix_getegid') && posix_getegid() === 0) {
+			$this->markTestSkipped('Test skipped if run on linux as root');
+		} elseif (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('Not available on Windows');
 		}
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
@@ -347,7 +351,9 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canWriteConfigurationReturnsFalseIfLocalconfFileIsNotWritable() {
-		if (TYPO3_OS == 'WIN') {
+		if (function_exists('posix_getegid') && posix_getegid() === 0) {
+			$this->markTestSkipped('Test skipped if run on linux as root');
+		} elseif (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('Not available on Windows');
 		}
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
