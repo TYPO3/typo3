@@ -334,17 +334,19 @@ class Bootstrap {
 		}
 
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']) &&
-			$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] !== '-1' &&
-			preg_match('/SET NAMES [\'"]?utf8[\'"]?/i', $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']) === FALSE &&
-			TYPO3_enterInstallScript !== '1') {
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] !== '-1') {
 
-			// Only accept "SET NAMES utf8" for this setting, otherwise die with a nice error
-			die('This TYPO3 installation is using the $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'setDBinit\'] property with the following value:' . chr(10) .
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] . chr(10) . chr(10) .
-				'It looks like UTF-8 is not used for this connection.' . chr(10) . chr(10) .
-				'Everything other than UTF-8 is unsupported since TYPO3 4.7.' . chr(10) .
-				'The DB, its connection and TYPO3 should be migrated to UTF-8 therefore. Please check your setup.'
-			);
+			if (preg_match('/SET NAMES [\'"]?utf8[\'"]?/i', $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']) === 0 &&
+				TYPO3_enterInstallScript !== '1') {
+
+				// Only accept "SET NAMES utf8" for this setting, otherwise die with a nice error
+				die('This TYPO3 installation is using the $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'setDBinit\'] property with the following value:' . chr(10) .
+						$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] . chr(10) . chr(10) .
+						'It looks like UTF-8 is not used for this connection.' . chr(10) . chr(10) .
+						'Everything other than UTF-8 is unsupported since TYPO3 4.7.' . chr(10) .
+						'The DB, its connection and TYPO3 should be migrated to UTF-8 therefore. Please check your setup.'
+				);
+			}
 		} else {
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] = 'SET NAMES utf8;';
 		}
