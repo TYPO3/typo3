@@ -332,21 +332,27 @@ class Bootstrap {
 				unset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']);
 			}
 		}
-
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']) &&
-			$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] !== '-1' &&
-			preg_match('/SET NAMES [\'"]?utf8[\'"]?/i', $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']) === FALSE &&
-			TYPO3_enterInstallScript !== '1') {
-
-			// Only accept "SET NAMES utf8" for this setting, otherwise die with a nice error
-			die('This TYPO3 installation is using the $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'setDBinit\'] property with the following value:' . chr(10) .
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] . chr(10) . chr(10) .
-				'It looks like UTF-8 is not used for this connection.' . chr(10) . chr(10) .
-				'Everything other than UTF-8 is unsupported since TYPO3 4.7.' . chr(10) .
-				'The DB, its connection and TYPO3 should be migrated to UTF-8 therefore. Please check your setup.'
-			);
-		} else {
-			$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] = 'SET NAMES utf8;';
+		if (!isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'])) {
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] = '';
+		}
+		$setDBInit = $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'];
+		$regExprSetNames = '/SET +NAMES/i';
+		$match = preg_match($regExprSetNames, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']);
+		if (TYPO3_enterInstallScript === '1' || $setDBInit === '-1' || $match === FALSE) {
+			// there is no "SET NAMES" clause, add one
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] .= LF . 'SET NAMES utf8;';
+		} elseif ($match > 0) {
+			// we have a "SET NAMES" clause
+			$regExprSetNamesUtf8 = '/SET +NAMES +[\'"]?utf8[\'"]?/i';
+			$match = preg_match($regExprSetNamesUtf8, $setDBInit);
+			if ($match === FALSE) {
+				// Only accept "SET NAMES utf8" for this setting, otherwise die with a nice error
+				die('This TYPO3 installation is using the $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'setDBinit\'] property with the following value:' . chr(10) .
+					$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] . chr(10) . chr(10) .
+					'SET NAMES defaults to UTF-8 since TYPO3 4.7 and changing its value is not supported anymore.' . chr(10) . chr(10) .
+					'The DB, its connection and your TYPO3 CMS installation should be migrated to UTF-8. Please check your setup.'
+				);
+			}
 		}
 		return $this;
 	}
