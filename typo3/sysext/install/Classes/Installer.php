@@ -6014,7 +6014,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 			$this->template = @file_get_contents((PATH_site . $this->templateFilePath . 'Install.html'));
 		}
 		// Add prototype to javascript array for output
-		$this->javascript[] = '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename('../contrib/prototype/prototype.js') . '"></script>';
+		$this->javascript[] = '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename('../contrib/jquery/jquery-1.9.1.min.js') . '"></script>';
 		// Add JS functions for output
 		$this->javascript[] = '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename('../sysext/install/Resources/Public/Javascript/install.js') . '"></script>';
 		// Include the default stylesheets
@@ -6110,7 +6110,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	protected function outputErrorAndExit($content, $title = 'Install Tool error') {
 		// Define the stylesheet
 		$stylesheet = '<link rel="stylesheet" type="text/css" href="' . '../stylesheets/install/install.css" />';
-		$javascript = '<script type="text/javascript" src="' . '../contrib/prototype/prototype.js"></script>' . LF;
+		$javascript = '<script type="text/javascript" src="' . '../contrib/jquery/jquery-1.9.1.min.js"></script>' . LF;
 		$javascript .= '<script type="text/javascript" src="' . '../sysext/install/Resources/Public/Javascript/install.js"></script>';
 		// Get the template file
 		$template = @file_get_contents((PATH_site . '/typo3/templates/install.html'));
