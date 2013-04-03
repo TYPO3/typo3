@@ -108,5 +108,76 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->method('set');
 		$bootstrapInstance->loadCachedTca();
 	}
+
+	/**
+	 * @test
+	 */
+	public function checkUtf8DatabaseSettingsInitializesForceCharset() {
+
+		$bootstrapInstance = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\Core\\Bootstrap',
+			array('loadExtensionTables'),
+			array(),
+			'',
+			FALSE
+		);
+
+		unset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']);
+		$bootstrapInstance->_call('checkUtf8DatabaseSettingsOrDie');
+		$this->assertArrayNotHasKey('forceCharset', $GLOBALS['TYPO3_CONF_VARS']['BE']);
+
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] = 'utf-8';
+		$bootstrapInstance->_call('checkUtf8DatabaseSettingsOrDie');
+		$this->assertArrayNotHasKey('forceCharset', $GLOBALS['TYPO3_CONF_VARS']['BE']);
+
+		// we can not test this because at the moment since the script dies, exceptions would be better
+		/*$GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] = 'invalidValue';
+		$bootstrapInstance->_call('checkUtf8DatabaseSettingsOrDie');*/
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkUtf8DatabaseSettingsInitializesSetDBinit() {
+
+		$bootstrapInstance = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\Core\\Bootstrap',
+			array('loadExtensionTables'),
+			array(),
+			'',
+			FALSE
+		);
+
+		$defaultValue = LF . 'SET NAMES utf8;';
+
+		// non-existing setting gets initialized with the default value
+		unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']);
+		$bootstrapInstance->_call('checkUtf8DatabaseSettingsOrDie');
+		$this->assertEquals($defaultValue, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']);
+
+		// -1 value is overwritten with default value
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] = '-1';
+		$bootstrapInstance->_call('checkUtf8DatabaseSettingsOrDie');
+		$this->assertEquals($defaultValue, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']);
+
+		// string that does not contain "SET NAMES" is appendet
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] = 'someTotallyUselessStatement;';
+		$bootstrapInstance->_call('checkUtf8DatabaseSettingsOrDie');
+		$this->assertEquals('someTotallyUselessStatement;' . $defaultValue, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']);
+
+		// string that matches regex is not touched
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] = 'SET NAMES "utf8";';
+		$bootstrapInstance->_call('checkUtf8DatabaseSettingsOrDie');
+		$this->assertEquals('SET NAMES "utf8";', $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']);
+
+		// another string that matches regex is not touched
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] = 'myStupidString; SET NAMES "utf8"; myOtherStupidString;';
+		$bootstrapInstance->_call('checkUtf8DatabaseSettingsOrDie');
+		$this->assertEquals($GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'], 'myStupidString; SET NAMES "utf8"; myOtherStupidString;');
+
+		// we can not test this because at the moment since the script dies, exceptions would be better
+		/*$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] = 'SET NAMES "latin1";';
+		$bootstrapInstance->_call('checkUtf8DatabaseSettingsOrDie');*/
+	}
 }
 ?>
