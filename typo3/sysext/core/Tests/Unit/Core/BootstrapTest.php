@@ -108,5 +108,112 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->method('set');
 		$bootstrapInstance->loadCachedTca();
 	}
+
+	/**
+	 * @test
+	 * @return void
+	 */
+	public function checkUtf8DatabaseSettingsDoesNotSetForceCharsetIfItIsNotSet() {
+
+		$bootstrapInstance = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\Core\\Bootstrap',
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+
+		unset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']);
+		$bootstrapInstance->_call('checkUtf8DatabaseSettingsOrDie');
+		$this->assertArrayNotHasKey('forceCharset', $GLOBALS['TYPO3_CONF_VARS']['BE']);
+	}
+
+	/**
+	 * @test
+	 * @return void
+	 */
+	public function checkUtf8DatabaseSettingsRemovesForceCharsetIfSetToUtf8() {
+
+		$bootstrapInstance = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\Core\\Bootstrap',
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] = 'utf-8';
+		$bootstrapInstance->_call('checkUtf8DatabaseSettingsOrDie');
+		$this->assertArrayNotHasKey('forceCharset', $GLOBALS['TYPO3_CONF_VARS']['BE']);
+	}
+
+	/**
+	 * @test
+	 * @return void
+	 */
+	public function checkUtf8DatabaseSettingsInitializesNonexistingSetDbinitWithDefaultValue() {
+
+		$bootstrapInstance = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\Core\\Bootstrap',
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+
+		$defaultValue = LF . 'SET NAMES utf8;';
+		unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']);
+		$bootstrapInstance->_call('checkUtf8DatabaseSettingsOrDie');
+		$this->assertEquals($defaultValue, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']);
+	}
+
+	/**
+	 * @param $value
+	 * @param $expected
+	 * @test
+	 * @dataProvider checkUtf8DatabaseSettingsSetDbinitDataProvider
+	 * @return void
+	 */
+	public function checkUtf8DatabaseSettingsSetDbinit($value, $expected) {
+		$bootstrapInstance = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\Core\\Bootstrap',
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] = $value;
+		$bootstrapInstance->_call('checkUtf8DatabaseSettingsOrDie');
+		$this->assertEquals($expected, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']);
+	}
+
+	/**
+	 * @return array $value, $expected
+	 */
+	public function checkUtf8DatabaseSettingsSetDbinitDataProvider() {
+		return array(
+			'-1 is overridden with default value' => array(
+				'-1',
+				LF . 'SET NAMES utf8;',
+			),
+			'string without SET NAMES utf-8 is appended with default value' => array(
+				'string',
+				'string' . LF . 'SET NAMES utf8;',
+			),
+			'SET NAMES utf8 is not modified' => array(
+				'SET NAMES "utf8";',
+				'SET NAMES "utf8";',
+			),
+			'string with SET NAMES utf8 in the middle is not modified' => array(
+				'myUselessString; SET NAMES "utf8"; myOtherUselessString;',
+				'myUselessString; SET NAMES "utf8"; myOtherUselessString;',
+			),
+			'string with SET NAMES utf8 and collate is not modified' => array(
+				'SET NAMES "utf8 COLLATE utf8_unicode_ci;',
+				'SET NAMES "utf8 COLLATE utf8_unicode_ci;',
+			),
+		);
+	}
 }
 ?>
