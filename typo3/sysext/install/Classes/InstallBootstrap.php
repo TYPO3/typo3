@@ -98,7 +98,7 @@ class InstallBootstrap {
 		require_once PATH_site . 't3lib/class.t3lib_parsehtml.php';
 		// Define the stylesheet
 		$stylesheet = '<link rel="stylesheet" type="text/css" href="' . '../stylesheets/install/install.css" />';
-		$javascript = '<script type="text/javascript" src="' . '../contrib/prototype/prototype.js"></script>';
+		$javascript = '<script type="text/javascript" src="' . '../contrib/jquery/jquery-1.9.1.min.js"></script>';
 		$javascript .= '<script type="text/javascript" src="' . '../sysext/install/Resources/Public/Javascript/install.js"></script>';
 		// Get the template file
 		$template = @file_get_contents((PATH_site . 'typo3/templates/install.html'));
