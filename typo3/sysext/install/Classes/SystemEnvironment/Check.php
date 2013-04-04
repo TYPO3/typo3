@@ -1069,7 +1069,7 @@ class Check {
 	 */
 	protected function isWindowsOs() {
 		$windowsOs = FALSE;
-		if (stristr(PHP_OS, 'darwin') && stristr(PHP_OS, 'win')) {
+		if (!stristr(PHP_OS, 'darwin') && stristr(PHP_OS, 'win')) {
 			$windowsOs = TRUE;
 		}
 		return $windowsOs;
