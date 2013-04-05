@@ -67,3 +67,37 @@
 	text-indent: -200px;
 	overflow: hidden;
 }
+
+.currentVersionInfo {
+	padding: 0 0 20px 0;
+
+	td { padding: 4px 0; }
+	th { font-weight: normal; color: #8c8c8c; padding: 4px 20px 4px 0; }
+}
+
+.currentVersionInfo a {
+	text-decoration: underline;
+}
+
+span.ter-ext-state {
+	padding: 0 0 0 5px;
+	font-weight: bold;
+	text-transform: capitalize;
+}
+
+span.ter-ext-state-obsolete {
+	color: #8c8c8c;
+	font-weight: normal;
+}
+
+span.ter-ext-state-stable {
+	color: #3db900;
+}
+
+span.ter-ext-state-beta {
+	color: #f4bd00;
+}
+
+span.ter-ext-state-alpha {
+	color: #f14400;
+}
