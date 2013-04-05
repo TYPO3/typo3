@@ -710,7 +710,7 @@ class SC_alt_doc {
 										// Setting variables in TCEforms object:
 									$this->tceforms->hiddenFieldList = '';
 									$this->tceforms->globalShowHelp = $this->disHelp ? 0 : 1;
-									if (is_array($this->overrideVals[$table]))	{
+									if (is_array($this->overrideVals) && is_array($this->overrideVals[$table])) {
 										$this->tceforms->hiddenFieldListArr = array_keys($this->overrideVals[$table]);
 									}
 
