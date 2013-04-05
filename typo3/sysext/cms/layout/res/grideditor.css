@@ -4,17 +4,7 @@
 	position: relative;
 }
 
-body, html {
-	height: 100%;
-	width: 100%;
-}
-
-div.typo3-noDoc {
-	width: 98%;
-	height: 90%;
-	margin: 0;
-	padding: 5px;
-}
+body { padding: 10px; }
 
 table#outer_container td, table#editor td {
 	vertical-align: middle;
@@ -131,23 +121,6 @@ div.cell_container:hover {
 
 .cancel {
 	background-image: url(t3grid-layer-icon-close.png) !important;
-}
-* {
-	padding: 0;
-	margin: 0;
-	position: relative;
-}
-
-body, html {
-	height: 100%;
-	width: 100%;
-}
-
-div.typo3-noDoc {
-	width: 98%;
-	height: 90%;
-	margin: 0;
-	padding: 5px;
 }
 
 table#outer_container td, table#editor td {
