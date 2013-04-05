@@ -760,6 +760,21 @@ class t3lib_install {
 										$extraArr[$table][$theKey][$fieldN] = $fieldC;
 									} else {
 										$fieldC = trim($fieldC);
+
+										// Lowercase the field type to surround false-positive schema changes to be
+										// reported just because of different caseing of characters
+										// The regex does just trigger for the first word followed by round brackets
+										// that contain a length. It does not trigger for e.g. "PRIMARY KEY" because
+										// "PRIMARY KEY" is being returned from the DB in upper case.
+										$fieldC = preg_replace_callback(
+											'/^([a-zA-Z0-9]+\(.*\))(\s)(.*)/',
+											create_function(
+												'$matches',
+												'return strtolower($matches[1]) . $matches[2] . $matches[3];'
+											),
+											$fieldC
+										);
+
 										if ($ignoreNotNullWhenComparing) {
 											$fieldC = str_replace(' NOT NULL', '', $fieldC);
 											$FDcomp[$table][$theKey][$fieldN] = str_replace(' NOT NULL', '', $FDcomp[$table][$theKey][$fieldN]);
