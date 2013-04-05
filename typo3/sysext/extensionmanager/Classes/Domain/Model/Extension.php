@@ -142,6 +142,11 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $reviewState;
 
 	/**
+	 * @var integer
+	 */
+	protected $alldownloadcounter;
+
+	/**
 	 * @var string
 	 */
 	protected $serializedDependencies = '';
@@ -196,7 +201,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @param int $category
+	 * @param integer $category
 	 * @return void
 	 */
 	public function setCategory($category) {
@@ -518,7 +523,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @param int $integerVersion
+	 * @param integer $integerVersion
 	 * @return void
 	 */
 	public function setIntegerVersion($integerVersion) {
@@ -526,14 +531,14 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return int
+	 * @return integer
 	 */
 	public function getIntegerVersion() {
 		return $this->integerVersion;
 	}
 
 	/**
-	 * @param int $reviewState
+	 * @param integer $reviewState
 	 * @return void
 	 */
 	public function setReviewState($reviewState) {
@@ -541,14 +546,14 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return int
+	 * @return integer
 	 */
 	public function getReviewState() {
 		return $this->reviewState;
 	}
 
 	/**
-	 * @param int $position
+	 * @param integer $position
 	 * @return void
 	 */
 	public function setPosition($position) {
@@ -556,13 +561,26 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return int
+	 * @return integer
 	 */
 	public function getPosition() {
 		return $this->position;
 	}
 
-}
+	/**
+	 * @param integer $alldownloadcounter
+	 */
+	public function setAlldownloadcounter($alldownloadcounter) {
+		$this->alldownloadcounter = $alldownloadcounter;
+	}
 
+	/**
+	 * @return integer
+	 */
+	public function getAlldownloadcounter() {
+		return $this->alldownloadcounter;
+	}
+
+}
 
 ?>

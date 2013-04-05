@@ -99,6 +99,25 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	}
 
 	/**
+	 * Find the current version by extension key
+	 *
+	 * @param string $extensionKey
+	 * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+	 */
+	public function findOneByCurrentVersionByExtensionKey($extensionKey) {
+		$query = $this->createQuery();
+		$query->matching(
+			$query->logicalAnd(
+				$query->equals('extensionKey', $extensionKey),
+				$query->greaterThanOrEqual('reviewState', 0),
+				$query->equals('currentVersion', 1)
+			)
+		);
+		$query->setLimit(1);
+		return $query->execute()->getFirst();
+	}
+
+	/**
 	 * Find one extension by extension key and version
 	 *
 	 * @param string $extensionKey

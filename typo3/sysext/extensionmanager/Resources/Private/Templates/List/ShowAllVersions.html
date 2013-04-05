@@ -11,6 +11,53 @@
 </f:section>
 
 <f:section name="Content">
+	<f:if condition="{currentVersion}">
+		<p>{currentVersion.description}</p>
+
+		<table cellpadding="0" cellspacing="0" class="currentVersionInfo">
+			<tr class="ter-ext-single-info-key">
+				<th><f:translate key="extensionList.showAllVersions.extensionKey" /></th>
+				<td><strong>{currentVersion.extensionKey}</strong></td>
+			</tr>
+			<tr>
+				<th><f:translate key="extensionList.showAllVersions.version" /></th>
+				<td>
+					{currentVersion.version}
+					<span class="ter-ext-state ter-ext-state-{currentVersion.stateString}">{currentVersion.stateString}</span>
+				</td>
+			</tr>
+			<tr>
+				<th><f:translate key="extensionList.showAllVersions.lastUploaded" /></th>
+				<td>
+					<f:format.date>{currentVersion.lastUpdated}</f:format.date></td>
+			</tr>
+			<tr>
+				<th><f:translate key="extensionList.showAllVersions.downloads" /></th>
+				<td>
+					<f:format.number decimals="0">
+						{currentVersion.alldownloadcounter}
+					</f:format.number>
+				</td>
+			</tr>
+			<tr>
+				<th><f:translate key="extensionList.showAllVersions.category" /></th>
+				<td>{currentVersion.categoryString}</td>
+			</tr>
+			<tr class="ter-ext-single-info-manual">
+				<th><f:translate key="extensionList.showAllVersions.manual" /></th>
+				<td>
+					<a href="http://typo3.org/extension-manuals/{currentVersion.extensionKey}/current/" target="_top">
+						<f:translate key="readOnline" />
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<th><f:translate key="extensionList.showAllVersions.author" /></th>
+				<td>{currentVersion.authorName}</td>
+			</tr>
+		</table>
+	</f:if>
+
 	<f:be.widget.paginate objects="{extensions}" as="paginatedExtensions" configuration="{itemsPerPage: 15, maximumNumberOfLinks: 2}">
 		<table id="terVersionTable" class="typo3-extension-list">
 			<f:render partial="List/TerShowVersionsTable" arguments="{paginatedExtensions:paginatedExtensions}" />
