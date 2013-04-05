@@ -134,7 +134,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			if ($this->id && is_array($this->pageinfo) || $GLOBALS['BE_USER']->user['admin'] && !$this->id) {
 				if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
 					// View
-					$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($this->pageinfo['uid'], $this->doc->backPath, \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+					$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($this->pageinfo['uid'], $this->doc->backPath, \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 				}
 			}
 		}
@@ -844,8 +844,8 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 								<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($tempFolder) . '" />
 								<input type="hidden" name="file[upload][1][data]" value="1" /><br />
 
-								<input type="submit" name="_upload" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.submit', 1) . '" />
-								<input type="checkbox" name="overwriteExistingFiles" id="checkOverwriteExistingFiles" value="1" checked="checked" /> <label for="checkOverwriteExistingFiles">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:overwriteExistingFiles', 1) . '</label>
+								<input type="submit" name="_upload" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit', 1) . '" />
+								<input type="checkbox" name="overwriteExistingFiles" id="checkOverwriteExistingFiles" value="1" checked="checked" /> <label for="checkOverwriteExistingFiles">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:overwriteExistingFiles', 1) . '</label>
 						</td>
 					</tr>';
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('_upload')) {

@@ -36,7 +36,7 @@
  */
 $BACK_PATH = '';
 require 'init.php';
-$LANG->includeLLFile('EXT:lang/locallang_browse_links.xml');
+$LANG->includeLLFile('EXT:lang/locallang_browse_links.xlf');
 /*
  * @deprecated since 6.0, the classname SC_browse_links and this file is obsolete
  * and will be removed with 6.2. The class was renamed and is now located at:

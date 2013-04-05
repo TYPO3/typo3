@@ -38,7 +38,7 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-$LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xml');
+$LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xlf');
 $BE_USER->modAccess($MCONF, 1);
 \TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();
 /*

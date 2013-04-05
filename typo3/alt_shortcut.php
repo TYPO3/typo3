@@ -36,7 +36,7 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 require 'init.php';
-$LANG->includeLLFile('EXT:lang/locallang_misc.xml');
+$LANG->includeLLFile('EXT:lang/locallang_misc.xlf');
 /*
  * @deprecated since 6.0, the classname SC_alt_shortcut and this file is obsolete
  * and will be removed with 6.2. The class was renamed and is now located at:

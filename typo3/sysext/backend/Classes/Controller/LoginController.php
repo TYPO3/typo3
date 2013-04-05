@@ -162,7 +162,7 @@ class LoginController {
 		if ($preferredBrowserLanguage != 'default' && !$GLOBALS['BE_USER']->user['uid']) {
 			$GLOBALS['LANG']->init($preferredBrowserLanguage);
 		}
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_login.xml');
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_login.xlf');
 		// Setting the redirect URL to "backend.php" if no alternative input is given
 		$this->redirectToURL = $this->redirect_url ? $this->redirect_url : 'backend.php';
 		// Do a logout if the command is set

@@ -65,7 +65,7 @@ class ElementBrowserFramesetController {
 					close();
 				}
 		');
-		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:TYPO3_Element_Browser'));
+		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:TYPO3_Element_Browser'));
 		// URL for the inner main frame:
 		$url = $GLOBALS['BACK_PATH'] . 'browse_links.php?mode=' . rawurlencode($mode) . '&bparams=' . rawurlencode($bparams);
 		// Create the frameset for the window:

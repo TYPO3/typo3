@@ -34,7 +34,7 @@
  */
 $GLOBALS['BACK_PATH'] = '';
 require 'init.php';
-$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xml');
+$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
 /**
  * TypoScript parser extension class.
  *

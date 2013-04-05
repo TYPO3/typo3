@@ -2861,13 +2861,13 @@ function ' . $evalData . '(value) {
 								// Kasper's comment (kept for history): Maybe there is a better way to do this than store the HTML for the new element in rawurlencoded format - maybe it even breaks with certain charsets? But for now this works...
 								$this->additionalJS_post = $additionalJS_post_saved;
 								$this->additionalJS_submit = $additionalJS_submit_saved;
-								$new = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.new', 1);
+								$new = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.new', 1);
 								$newElementsLinks[] = '<a href="#" onclick="' . htmlspecialchars($onClickInsert) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($this->sL($nCfg['tx_templavoila']['title']), 30)) . '</a>';
 							}
 							// Reverting internal variables we don't want to change:
 							$this->requiredElements = $TEMP_requiredElements;
 							// Adding the sections:
-							$toggleAll = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.toggleall', 1);
+							$toggleAll = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.toggleall', 1);
 							$output .= '
 							<div class="t3-form-field-toggle-flexsection">
 								<a href="#" onclick="' . htmlspecialchars(('flexFormToggleSubs("' . $idTagPrefix . '"); return false;')) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-move-right', array('title' => $toggleAll)) . $toggleAll . '
@@ -2875,7 +2875,7 @@ function ' . $evalData . '(value) {
 							</div>
 
 							<div id="' . $idTagPrefix . '" class="t3-form-field-container-flexsection">' . implode('', $tRows) . '</div>';
-							$output .= $mayRestructureFlexforms ? '<div class="t3-form-field-add-flexsection"><strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.addnew', 1) . ':</strong> ' . implode(' | ', $newElementsLinks) . '</div>' : '';
+							$output .= $mayRestructureFlexforms ? '<div class="t3-form-field-add-flexsection"><strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.addnew', 1) . ':</strong> ' . implode(' | ', $newElementsLinks) . '</div>' : '';
 						} else {
 							// It is a container
 							$toggleIcon_open = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-move-down');
@@ -3080,7 +3080,7 @@ function ' . $evalData . '(value) {
 				$value = '';
 			}
 			if ($config['format.']['appendAge']) {
-				$value .= ' (' . \TYPO3\CMS\Backend\Utility\BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $itemValue), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')) . ')';
+				$value .= ' (' . \TYPO3\CMS\Backend\Utility\BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $itemValue), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')) . ')';
 			}
 			$itemValue = $value;
 			break;
@@ -4794,8 +4794,8 @@ function ' . $evalData . '(value) {
 		if ($GLOBALS['TYPO3_DB']->sql_error()) {
 			$msg = htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
 			$msg .= '<br />' . LF;
-			$msg .= $this->sL('LLL:EXT:lang/locallang_core.php:error.database_schema_mismatch');
-			$msgTitle = $this->sL('LLL:EXT:lang/locallang_core.php:error.database_schema_mismatch_title');
+			$msg .= $this->sL('LLL:EXT:lang/locallang_core.xlf:error.database_schema_mismatch');
+			$msgTitle = $this->sL('LLL:EXT:lang/locallang_core.xlf:error.database_schema_mismatch_title');
 			/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $msg, $msgTitle, \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR, TRUE);
 			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
@@ -4946,7 +4946,7 @@ function ' . $evalData . '(value) {
 	public function replaceTableWrap($arr, $rec, $table) {
 		// Make "new"-label
 		if (strstr($rec['uid'], 'NEW')) {
-			$newLabel = ' <span class="typo3-TCEforms-newToken">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.new', 1) . '</span>';
+			$newLabel = ' <span class="typo3-TCEforms-newToken">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.new', 1) . '</span>';
 			// \TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid Should not be used here because NEW records are not offline workspace versions...
 			$truePid = \TYPO3\CMS\Backend\Utility\BackendUtility::getTSconfig_pidValue($table, $rec['uid'], $rec['pid']);
 			$prec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $truePid, 'title');
@@ -4955,12 +4955,12 @@ function ' . $evalData . '(value) {
 			// Fetch translated title of the table
 			$tableTitle = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
 			if ($table === 'pages') {
-				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.createNewPage', TRUE);
+				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewPage', TRUE);
 				$pageTitle = sprintf($label, $tableTitle);
 			} else {
-				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.createNewRecord', TRUE);
+				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecord', TRUE);
 				if ($rec['pid'] == 0) {
-					$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.createNewRecordRootLevel', TRUE);
+					$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecordRootLevel', TRUE);
 				}
 				$pageTitle = sprintf($label, $tableTitle, $pageTitle);
 			}
@@ -4971,17 +4971,17 @@ function ' . $evalData . '(value) {
 			// Fetch translated title of the table
 			$tableTitle = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
 			if ($table === 'pages') {
-				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.editPage', TRUE);
+				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.editPage', TRUE);
 				// Just take the record title and prepend an edit label.
 				$pageTitle = sprintf($label, $tableTitle, $rLabel);
 			} else {
-				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.editRecord', TRUE);
+				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecord', TRUE);
 				$pageTitle = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $prec, TRUE, FALSE);
 				if ($rLabel === \TYPO3\CMS\Backend\Utility\BackendUtility::getNoRecordTitle(TRUE)) {
-					$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.editRecordNoTitle', TRUE);
+					$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordNoTitle', TRUE);
 				}
 				if ($rec['pid'] == 0) {
-					$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.editRecordRootLevel', TRUE);
+					$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordRootLevel', TRUE);
 				}
 				if ($rLabel !== \TYPO3\CMS\Backend\Utility\BackendUtility::getNoRecordTitle(TRUE)) {
 					// Just take the record title and prepend an edit label.
@@ -5410,8 +5410,8 @@ function ' . $evalData . '(value) {
 			TBE_EDITOR.prependFormFieldNamesCnt = ' . substr_count($this->prependFormFieldNames, '[') . ';
 			TBE_EDITOR.isPalettedoc = ' . ($this->isPalettedoc ? addslashes($this->isPalettedoc) : 'null') . ';
 			TBE_EDITOR.doSaveFieldName = "' . ($this->doSaveFieldName ? addslashes($this->doSaveFieldName) : '') . '";
-			TBE_EDITOR.labels.fieldsChanged = ' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.fieldsChanged')) . ';
-			TBE_EDITOR.labels.fieldsMissing = ' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.fieldsMissing')) . ';
+			TBE_EDITOR.labels.fieldsChanged = ' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.fieldsChanged')) . ';
+			TBE_EDITOR.labels.fieldsMissing = ' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.fieldsMissing')) . ';
 			TBE_EDITOR.labels.refresh_login = ' . $GLOBALS['LANG']->JScharCode($this->getLL('m_refresh_login')) . ';
 			TBE_EDITOR.labels.onChangeAlert = ' . $GLOBALS['LANG']->JScharCode($this->getLL('m_onChangeAlert')) . ';
 			evalFunc.USmode = ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0') . ';
@@ -5885,7 +5885,7 @@ function ' . $evalData . '(value) {
 	/**
 	 * Fetches language label for key
 	 *
-	 * @param string $str Language label reference, eg. 'LLL:EXT:lang/locallang_core.php:labels.blablabla'
+	 * @param string $str Language label reference, eg. 'LLL:EXT:lang/locallang_core.xlf:labels.blablabla'
 	 * @return string The value of the label, fetched for the current backend language.
 	 * @todo Define visibility
 	 */
@@ -5894,10 +5894,10 @@ function ' . $evalData . '(value) {
 	}
 
 	/**
-	 * Returns language label from locallang_core.php
+	 * Returns language label from locallang_core.xlf
 	 * Labels must be prefixed with either "l_" or "m_".
-	 * The prefix "l_" maps to the prefix "labels." inside locallang_core.php
-	 * The prefix "m_" maps to the prefix "mess." inside locallang_core.php
+	 * The prefix "l_" maps to the prefix "labels." inside locallang_core.xlf
+	 * The prefix "m_" maps to the prefix "mess." inside locallang_core.xlf
 	 *
 	 * @param string $str The label key
 	 * @return string The value of the label, fetched for the current backend language.
@@ -5907,10 +5907,10 @@ function ' . $evalData . '(value) {
 		$content = '';
 		switch (substr($str, 0, 2)) {
 		case 'l_':
-			$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.' . substr($str, 2));
+			$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.' . substr($str, 2));
 			break;
 		case 'm_':
-			$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.' . substr($str, 2));
+			$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.' . substr($str, 2));
 			break;
 		}
 		return $content;
@@ -6072,7 +6072,7 @@ function ' . $evalData . '(value) {
 	protected function getMergeBehaviourIcon($l10nMode) {
 		$icon = '';
 		if ($l10nMode === 'mergeIfNotBlank') {
-			$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-merge-localization', array('title' => $this->sL('LLL:EXT:lang/locallang_misc.xml:localizeMergeIfNotBlank')));
+			$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-merge-localization', array('title' => $this->sL('LLL:EXT:lang/locallang_misc.xlf:localizeMergeIfNotBlank')));
 		}
 		return $icon;
 	}

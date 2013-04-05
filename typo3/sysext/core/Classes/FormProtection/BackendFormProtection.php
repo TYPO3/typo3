@@ -122,7 +122,7 @@ class BackendFormProtection extends \TYPO3\CMS\Core\FormProtection\AbstractFormP
 	protected function createValidationErrorMessage() {
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 			'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:error.formProtection.tokenInvalid'),
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:error.formProtection.tokenInvalid'),
 			'',
 			\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
 			!(isset($GLOBALS['TYPO3_AJAX']) && $GLOBALS['TYPO3_AJAX'] === TRUE)

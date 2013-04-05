@@ -55,7 +55,7 @@ namespace TYPO3\CMS\Backend\Module;
  * 'web_info',
  * 'tx_cms_webinfo_page',
  * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'web_info/class.tx_cms_webinfo.php',
- * 'LLL:EXT:cms/locallang_tca.php:mod_tx_cms_webinfo_page'
+ * 'LLL:EXT:cms/locallang_tca.xlf:mod_tx_cms_webinfo_page'
  * );
  *
  * EXAMPLE: Two levels.

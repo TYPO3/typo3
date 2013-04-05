@@ -277,23 +277,23 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 						<fieldset class="fields">
 							<legend>General fields</legend>
 							<div class="row">
-								<label for="field_disable">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.disable') . '</label>
+								<label for="field_disable">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.disable') . '</label>
 								<input type="checkbox" id="field_disable" name="data[disable]" value="1" class="checkbox" ' . ($vars['disable'] == 1 ? ' checked="checked" ' : '') . ' />
 							</div>
 							<div class="row">
-								<label for="field_realname">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.name') . '</label>
+								<label for="field_realname">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.name') . '</label>
 								<input type="text" id="field_realname" name="data[realName]" value="' . htmlspecialchars($vars['realName']) . '" />
 							</div>
 							<div class="row">
-								<label for="field_username">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.username') . '</label>
+								<label for="field_username">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xlf:be_users.username') . '</label>
 								<input type="text" id="field_username" name="data[username]" value="' . htmlspecialchars($vars['username']) . '" />
 							</div>
 							<div class="row">
-								<label for="field_password">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.password') . '</label>
+								<label for="field_password">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xlf:be_users.password') . '</label>
 								<input type="password" id="field_password" name="data[password]" value="" />
 							</div>
 							<div class="row">
-								<label for="field_email">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.email') . '</label>
+								<label for="field_email">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.email') . '</label>
 								<input type="text" id="field_email" name="data[email]" value="' . htmlspecialchars($vars['email']) . '" />
 							</div>
 						</fieldset>
@@ -301,13 +301,13 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 							<legend>Configuration</legend>
 
 							<div class="row">
-								<label for="field_usergroup">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.usergroup') . '</label>
+								<label for="field_usergroup">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xlf:be_users.usergroup') . '</label>
 								<select id="field_usergroup" name="data[usergroup][]" multiple="multiple">
 									' . $this->getUsergroups($record, $vars) . '
 								</select>
 							</div>
 							<div class="row">
-								<label for="field_db_mountpoints">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.options_db_mounts') . '</label>
+								<label for="field_db_mountpoints">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xlf:be_users.options_db_mounts') . '</label>
 								' . $this->t3lib_TCEforms->dbFileIcons('data[db_mountpoints]', 'db', 'pages', $loadDB->itemArray, '', array('size' => 3)) . '
 							</div>
 							<div class="row">

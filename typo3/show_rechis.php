@@ -34,7 +34,7 @@
  */
 $BACK_PATH = '';
 require $BACK_PATH . 'init.php';
-$LANG->includeLLFile('EXT:lang/locallang_show_rechis.xml');
+$LANG->includeLLFile('EXT:lang/locallang_show_rechis.xlf');
 /*
  * @deprecated since 6.0, the classname SC_show_rechis and this file is obsolete
  * and will be removed with 6.2. The class was renamed and is now located at:

@@ -34,7 +34,7 @@
  */
 $BACK_PATH = '';
 require 'init.php';
-$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xml');
+$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
 \TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();
 /*
  * @deprecated since 6.0, the classname SC_wizard_rte and this file is obsolete

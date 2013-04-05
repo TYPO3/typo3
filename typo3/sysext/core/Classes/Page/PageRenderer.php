@@ -1378,13 +1378,13 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		// Add language labels for ExtDirect
 		if (TYPO3_MODE === 'FE') {
 			$this->addInlineLanguageLabelArray(array(
-				'extDirect_timeoutHeader' => $GLOBALS['TSFE']->sL('LLL:EXT:lang/locallang_misc.xml:extDirect_timeoutHeader'),
-				'extDirect_timeoutMessage' => $GLOBALS['TSFE']->sL('LLL:EXT:lang/locallang_misc.xml:extDirect_timeoutMessage')
+				'extDirect_timeoutHeader' => $GLOBALS['TSFE']->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutHeader'),
+				'extDirect_timeoutMessage' => $GLOBALS['TSFE']->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutMessage')
 			));
 		} else {
 			$this->addInlineLanguageLabelArray(array(
-				'extDirect_timeoutHeader' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:extDirect_timeoutHeader'),
-				'extDirect_timeoutMessage' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:extDirect_timeoutMessage')
+				'extDirect_timeoutHeader' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutHeader'),
+				'extDirect_timeoutMessage' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutMessage')
 			));
 		}
 		$token = ($api = '');

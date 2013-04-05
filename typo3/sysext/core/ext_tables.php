@@ -69,12 +69,12 @@ if (!\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('4.2')) {
 	// Merging in CMS doktypes
 	array_splice($GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'], 2, 0, array(
 		array(
-			'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.0',
+			'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.0',
 			'2',
 			'i/pages.gif'
 		),
 		array(
-			'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.3',
+			'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.3',
 			'5',
 			'i/pages_notinmenu.gif'
 		)
@@ -83,25 +83,25 @@ if (!\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('4.2')) {
 	$GLOBALS['TCA']['pages']['types'][1] = array(
 		// standard
 		'showitem' => 'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
 				starttime, endtime, fe_group, extendToSubpages,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
+			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.options,
 				TSconfig;;6;nowrap;4-4-4, storage_pid;;7, l18n_cfg, backend_layout;;8,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.extended,
 	'
 	);
 	// Add doktype 2 ("Advanced")
 	$GLOBALS['TCA']['pages']['types'][2] = array(
 		'showitem' => 'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata,
+			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.metadata,
 				abstract;;5;;3-3-3, keywords, description,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
+			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.files,
 				media,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
 				starttime, endtime, fe_login_mode, fe_group, extendToSubpages,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
+			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.options,
 				TSconfig;;6;nowrap;6-6-6, storage_pid;;7, l18n_cfg, module, content_from_pid, backend_layout;;8,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+			--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.extended,
 	'
 	);
 }
@@ -194,25 +194,25 @@ $GLOBALS['TBE_STYLES'] = array(
  * For information about using the CSH API in TYPO3 you should consult the
  * documentation found in "Inside TYPO3"
  */
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('pages', 'EXT:lang/locallang_csh_pages.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('pages', 'EXT:lang/locallang_csh_pages.xlf');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_users', 'EXT:lang/locallang_csh_be_users.xml');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_groups', 'EXT:lang/locallang_csh_be_groups.xml');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_filemounts', 'EXT:lang/locallang_csh_sysfilem.xml');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_language', 'EXT:lang/locallang_csh_syslang.xml');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_news', 'EXT:lang/locallang_csh_sysnews.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_groups', 'EXT:lang/locallang_csh_be_groups.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_filemounts', 'EXT:lang/locallang_csh_sysfilem.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_language', 'EXT:lang/locallang_csh_syslang.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_news', 'EXT:lang/locallang_csh_sysnews.xlf');
 // General Core
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_csh_corebe', 'EXT:lang/locallang_csh_corebe.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_csh_corebe', 'EXT:lang/locallang_csh_corebe.xlf');
 // Extension manager
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_tools_em', 'EXT:lang/locallang_csh_em.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_tools_em', 'EXT:lang/locallang_csh_em.xlf');
 // Web > Info
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_info', 'EXT:lang/locallang_csh_web_info.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_info', 'EXT:lang/locallang_csh_web_info.xlf');
 // Web > Func
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_func', 'EXT:lang/locallang_csh_web_func.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_func', 'EXT:lang/locallang_csh_web_func.xlf');
 // Labels for TYPO3 4.5 and greater.
 // These labels override the ones set above, while still falling back to the original labels
 // if no translation is available.
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:lang/locallang_csh_pages.xml'][] = 'EXT:lang/4.5/locallang_csh_pages.xml';
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:lang/locallang_csh_corebe.xml'][] = 'EXT:lang/4.5/locallang_csh_corebe.xml';
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:lang/locallang_csh_pages.xlf'][] = 'EXT:lang/4.5/locallang_csh_pages.xlf';
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:lang/locallang_csh_corebe.xlf'][] = 'EXT:lang/4.5/locallang_csh_corebe.xlf';
 
 
 /**

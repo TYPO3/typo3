@@ -1,7 +1,7 @@
 <?php
 return array(
 	'ctrl' => array(
-		'title' => 'LLL:EXT:lang/locallang_tca.xml:sys_news',
+		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_news',
 		'label' => 'title',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
@@ -25,7 +25,7 @@ return array(
 	),
 	'columns' => array(
 		'hidden' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.disable',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'check',
@@ -34,7 +34,7 @@ return array(
 		),
 		'starttime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.starttime',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
 			'config' => array(
 				'type' => 'input',
 				'size' => '13',
@@ -45,7 +45,7 @@ return array(
 		),
 		'endtime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.endtime',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
 			'config' => array(
 				'type' => 'input',
 				'size' => '13',
@@ -55,7 +55,7 @@ return array(
 			)
 		),
 		'title' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.title',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.title',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
@@ -64,7 +64,7 @@ return array(
 			)
 		),
 		'content' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.text',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.text',
 			'config' => array(
 				'type' => 'text',
 				'cols' => '48',
@@ -87,7 +87,7 @@ return array(
 	'types' => array(
 		'1' => array('showitem' => '
 			hidden, title, content;;9;richtext:rte_transform[flag=rte_enabled|mode=ts_css];3-3-3,
-			--div--;LLL:EXT:lang/locallang_tca.xml:sys_news.tabs.access, starttime, endtime')
+			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_news.tabs.access, starttime, endtime')
 	)
 );
 ?>
