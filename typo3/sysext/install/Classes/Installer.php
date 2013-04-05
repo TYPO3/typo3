@@ -305,7 +305,7 @@ class Installer {
 					1294587482);
 			}
 			// Load saltedpasswords if possible
-			$saltedpasswordsLoaderFile = $this->backPath . 'sysext/saltedpasswords/Classes/class.tx_saltedpasswords_autoloader.php';
+			$saltedpasswordsLoaderFile = $this->backPath . 'sysext/saltedpasswords/Classes/Autoloader.php';
 			if (@is_file($saltedpasswordsLoaderFile)) {
 				include $saltedpasswordsLoaderFile;
 			}
@@ -366,7 +366,7 @@ class Installer {
 			$this->outputErrorAndExit('Install Tool needs to write to typo3temp/. Make sure this directory is writeable by your webserver: ' . htmlspecialchars($this->typo3temp_path), 'Fatal error');
 		}
 		try {
-			$this->session = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_install_session');
+			$this->session = GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Session');
 		} catch (\Exception $exception) {
 			$this->outputErrorAndExit($exception->getMessage());
 		}
@@ -4294,11 +4294,11 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				if (!strcmp($actionParts[1], 'CURRENT_TABLES')) {
 					$tblFileContent = '';
 					foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $loadedExtConf) {
-						if (is_array($loadedExtConf) && $loadedExtConf['ext_tables.sql']) {
-							$extensionSqlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($loadedExtConf['ext_tables.sql']);
+						if ($loadedExtConf instanceof \TYPO3\CMS\Core\Compatibility\LoadedExtensionArrayElement && $loadedExtConf['ext_tables.sql']) {
+							$extensionSqlContent = GeneralUtility::getUrl($loadedExtConf['ext_tables.sql']);
 							$tblFileContent .= LF . LF . LF . LF . $extensionSqlContent;
 							foreach ($hookObjects as $hookObject) {
-								/** @var $hookObject Tx_Install_Interfaces_CheckTheDatabaseHook * */
+								/** @var $hookObject CheckTheDatabaseHookInterface * */
 								$appendableTableDefinitions = $hookObject->appendExtensionTableDefinitions($extKey, $loadedExtConf, $extensionSqlContent, $this->sqlHandler, $this);
 								if ($appendableTableDefinitions) {
 									$tblFileContent .= $appendableTableDefinitions;
@@ -4311,7 +4311,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 					$tblFileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($actionParts[1]);
 				}
 				foreach ($hookObjects as $hookObject) {
-					/** @var $hookObject Tx_Install_Interfaces_CheckTheDatabaseHook * */
+					/** @var $hookObject CheckTheDatabaseHookInterface * */
 					$appendableTableDefinitions = $hookObject->appendGlobalTableDefinitions($tblFileContent, $this->sqlHandler, $this);
 					if ($appendableTableDefinitions) {
 						$tblFileContent .= $appendableTableDefinitions;
@@ -4519,15 +4519,15 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 					if (!strcmp($actionParts[1], 'CURRENT_TABLES') || !strcmp($actionParts[1], 'CURRENT_TABLES+STATIC')) {
 						$tblFileContent = '';
 						foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $loadedExtConf) {
-							if (is_array($loadedExtConf) && $loadedExtConf['ext_tables.sql']) {
-								$tblFileContent .= LF . LF . LF . LF . \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($loadedExtConf['ext_tables.sql']);
+							if ($loadedExtConf instanceof \TYPO3\CMS\Core\Compatibility\LoadedExtensionArrayElement && $loadedExtConf['ext_tables.sql']) {
+								$tblFileContent .= LF . LF . LF . LF . GeneralUtility::getUrl($loadedExtConf['ext_tables.sql']);
 							}
 						}
 					}
 					if (!strcmp($actionParts[1], 'CURRENT_STATIC') || !strcmp($actionParts[1], 'CURRENT_TABLES+STATIC')) {
 						foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $loadedExtConf) {
-							if (is_array($loadedExtConf) && $loadedExtConf['ext_tables_static+adt.sql']) {
-								$tblFileContent .= LF . LF . LF . LF . \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($loadedExtConf['ext_tables_static+adt.sql']);
+							if ($loadedExtConf instanceof \TYPO3\CMS\Core\Compatibility\LoadedExtensionArrayElement && $loadedExtConf['ext_tables_static+adt.sql']) {
+								$tblFileContent .= LF . LF . LF . LF . GeneralUtility::getUrl($loadedExtConf['ext_tables_static+adt.sql']);
 							}
 						}
 					}
