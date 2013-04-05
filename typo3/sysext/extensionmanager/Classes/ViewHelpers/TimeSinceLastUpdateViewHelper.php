@@ -1,6 +1,7 @@
 <?php
 namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use \TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /*****************************************************************
  *  Copyright notice
@@ -38,6 +39,9 @@ class TimeSinceLastUpdateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	 * @return string
 	 */
 	public function render($lastUpdateTime) {
+
+		$timeLabels = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears');
+		return BackendUtility::calcAge(time() - $lastUpdateTime->getTimestamp(), $timeLabels);
 
 		$now = new \DateTime();
 		$timeSinceLastUpdate = $lastUpdateTime->diff($now, TRUE);
