@@ -29,19 +29,11 @@
 	float: right;
 }
 
+.ui-toolbar {
+	margin-bottom: 5px;
 
-// Search
-.contentWrapper {
-	@include linear-gradient(#ececec, rgb(255,255,255) 0, rgb(236,236,236) 36%);
-	padding: 15px;
-	border: 1px solid #adadad;
-
-	.ui-toolbar {
-		margin-bottom: 5px;
-
-		.dataTables_filter {
-			float: left;
-		}
+	.dataTables_filter {
+		float: left;
 	}
 }
 
@@ -126,7 +118,6 @@
 			background: none;
 			padding: 8px 10px;
 			vertical-align: middle;
-			border-bottom: 1px solid #fff;
 
 			&.stable {
 				@include stable;
