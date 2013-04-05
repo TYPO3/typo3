@@ -36,7 +36,7 @@
 $BACK_PATH = '';
 require 'init.php';
 // Include local language labels:
-$LANG->includeLLFile('EXT:lang/locallang_misc.xml');
+$LANG->includeLLFile('EXT:lang/locallang_misc.xlf');
 /**
  * Local extension of the page tree class
  *

@@ -304,7 +304,7 @@ return array(
 							100 = ITEM
 							100 {
 								name = history
-								label = LLL:EXT:lang/locallang_misc.xml:CM_history
+								label = LLL:EXT:lang/locallang_misc.xlf:CM_history
 								spriteIcon = actions-document-history-open
 								displayCondition = canShowHistory != 0
 								callbackAction = openHistoryPopUp
@@ -319,7 +319,7 @@ return array(
 							100 = ITEM
 							100 {
 								name = view
-								label = LLL:EXT:lang/locallang_core.xml:cm.view
+								label = LLL:EXT:lang/locallang_core.xlf:cm.view
 								spriteIcon = actions-document-view
 								displayCondition = canBeViewed != 0
 								callbackAction = viewPage
@@ -328,7 +328,7 @@ return array(
 							200 = ITEM
 							200 {
 								name = new
-								label = LLL:EXT:lang/locallang_core.xml:cm.new
+								label = LLL:EXT:lang/locallang_core.xlf:cm.new
 								spriteIcon = actions-page-new
 								displayCondition = canCreateNewPages != 0
 								callbackAction = newPageWizard
@@ -339,7 +339,7 @@ return array(
 							400 = ITEM
 							400 {
 								name = history
-								label = LLL:EXT:lang/locallang_misc.xml:CM_history
+								label = LLL:EXT:lang/locallang_misc.xlf:CM_history
 								spriteIcon = actions-document-history-open
 								displayCondition = canShowHistory != 0
 								callbackAction = openHistoryPopUp
@@ -354,7 +354,7 @@ return array(
 							100 = ITEM
 							100 {
 								name = view
-								label = LLL:EXT:lang/locallang_core.xml:cm.view
+								label = LLL:EXT:lang/locallang_core.xlf:cm.view
 								spriteIcon = actions-document-view
 								displayCondition = canBeViewed != 0
 								callbackAction = viewPage
@@ -365,7 +365,7 @@ return array(
 							300 = ITEM
 							300 {
 								name = disable
-								label = LLL:EXT:lang/locallang_common.xml:disable
+								label = LLL:EXT:lang/locallang_common.xlf:disable
 								spriteIcon = actions-edit-hide
 								displayCondition = getRecord|hidden = 0 && canBeDisabledAndEnabled != 0
 								callbackAction = disablePage
@@ -374,7 +374,7 @@ return array(
 							400 = ITEM
 							400 {
 								name = enable
-								label = LLL:EXT:lang/locallang_common.xml:enable
+								label = LLL:EXT:lang/locallang_common.xlf:enable
 								spriteIcon = actions-edit-unhide
 								displayCondition = getRecord|hidden = 1 && canBeDisabledAndEnabled != 0
 								callbackAction = enablePage
@@ -383,7 +383,7 @@ return array(
 							500 = ITEM
 							500 {
 								name = edit
-								label = LLL:EXT:lang/locallang_core.xml:cm.edit
+								label = LLL:EXT:lang/locallang_core.xlf:cm.edit
 								spriteIcon = actions-page-open
 								displayCondition = canBeEdited != 0
 								callbackAction = editPageProperties
@@ -392,7 +392,7 @@ return array(
 							600 = ITEM
 							600 {
 								name = info
-								label = LLL:EXT:lang/locallang_core.xml:cm.info
+								label = LLL:EXT:lang/locallang_core.xlf:cm.info
 								spriteIcon = actions-document-info
 								displayCondition = canShowInfo != 0
 								callbackAction = openInfoPopUp
@@ -401,7 +401,7 @@ return array(
 							700 = ITEM
 							700 {
 								name = history
-								label = LLL:EXT:lang/locallang_misc.xml:CM_history
+								label = LLL:EXT:lang/locallang_misc.xlf:CM_history
 								spriteIcon = actions-document-history-open
 								displayCondition = canShowHistory != 0
 								callbackAction = openHistoryPopUp
@@ -411,12 +411,12 @@ return array(
 
 							900 = SUBMENU
 							900 {
-								label = LLL:EXT:lang/locallang_core.xml:cm.copyPasteActions
+								label = LLL:EXT:lang/locallang_core.xlf:cm.copyPasteActions
 
 								100 = ITEM
 								100 {
 									name = new
-									label = LLL:EXT:lang/locallang_core.xml:cm.new
+									label = LLL:EXT:lang/locallang_core.xlf:cm.new
 									spriteIcon = actions-page-new
 									displayCondition = canCreateNewPages != 0
 									callbackAction = newPageWizard
@@ -427,7 +427,7 @@ return array(
 								300 = ITEM
 								300 {
 									name = cut
-									label = LLL:EXT:lang/locallang_core.xml:cm.cut
+									label = LLL:EXT:lang/locallang_core.xlf:cm.cut
 									spriteIcon = actions-edit-cut
 									displayCondition = isInCutMode = 0 && canBeCut != 0 && isMountPoint != 1
 									callbackAction = enableCutMode
@@ -436,7 +436,7 @@ return array(
 								400 = ITEM
 								400 {
 									name = cut
-									label = LLL:EXT:lang/locallang_core.xml:cm.cut
+									label = LLL:EXT:lang/locallang_core.xlf:cm.cut
 									spriteIcon = actions-edit-cut-release
 									displayCondition = isInCutMode = 1 && canBeCut != 0
 									callbackAction = disableCutMode
@@ -445,7 +445,7 @@ return array(
 								500 = ITEM
 								500 {
 									name = copy
-									label = LLL:EXT:lang/locallang_core.xml:cm.copy
+									label = LLL:EXT:lang/locallang_core.xlf:cm.copy
 									spriteIcon = actions-edit-copy
 									displayCondition = isInCopyMode = 0 && canBeCopied != 0
 									callbackAction = enableCopyMode
@@ -454,7 +454,7 @@ return array(
 								600 = ITEM
 								600 {
 									name = copy
-									label = LLL:EXT:lang/locallang_core.xml:cm.copy
+									label = LLL:EXT:lang/locallang_core.xlf:cm.copy
 									spriteIcon = actions-edit-copy-release
 									displayCondition = isInCopyMode = 1 && canBeCopied != 0
 									callbackAction = disableCopyMode
@@ -463,7 +463,7 @@ return array(
 								700 = ITEM
 								700 {
 									name = pasteInto
-									label = LLL:EXT:lang/locallang_core.xml:cm.pasteinto
+									label = LLL:EXT:lang/locallang_core.xlf:cm.pasteinto
 									spriteIcon = actions-document-paste-into
 									displayCondition = getContextInfo|inCopyMode = 1 || getContextInfo|inCutMode = 1 && canBePastedInto != 0
 									callbackAction = pasteIntoNode
@@ -472,7 +472,7 @@ return array(
 								800 = ITEM
 								800 {
 									name = pasteAfter
-									label = LLL:EXT:lang/locallang_core.xml:cm.pasteafter
+									label = LLL:EXT:lang/locallang_core.xlf:cm.pasteafter
 									spriteIcon = actions-document-paste-after
 									displayCondition = getContextInfo|inCopyMode = 1 || getContextInfo|inCutMode = 1 && canBePastedAfter != 0
 									callbackAction = pasteAfterNode
@@ -483,7 +483,7 @@ return array(
 								1000 = ITEM
 								1000 {
 									name = delete
-									label = LLL:EXT:lang/locallang_core.xml:cm.delete
+									label = LLL:EXT:lang/locallang_core.xlf:cm.delete
 									spriteIcon = actions-edit-delete
 									displayCondition = canBeRemoved != 0 && isMountPoint != 1
 									callbackAction = removeNode
@@ -492,12 +492,12 @@ return array(
 
 							1000 = SUBMENU
 							1000 {
-								label = LLL:EXT:lang/locallang_core.xml:cm.branchActions
+								label = LLL:EXT:lang/locallang_core.xlf:cm.branchActions
 
 								100 = ITEM
 								100 {
 									name = mountAsTreeroot
-									label = LLL:EXT:lang/locallang_core.xml:cm.tempMountPoint
+									label = LLL:EXT:lang/locallang_core.xlf:cm.tempMountPoint
 									spriteIcon = actions-system-extension-documentation
 									displayCondition = canBeTemporaryMountPoint != 0 && isMountPoint = 0
 									callbackAction = mountAsTreeRoot
@@ -508,7 +508,7 @@ return array(
 								300 = ITEM
 								300 {
 									name = expandBranch
-									label = LLL:EXT:lang/locallang_core.xml:cm.expandBranch
+									label = LLL:EXT:lang/locallang_core.xlf:cm.expandBranch
 									spriteIcon = actions-pagetree-expand
 									displayCondition =
 									callbackAction = expandBranch
@@ -517,7 +517,7 @@ return array(
 								400 = ITEM
 								400 {
 									name = collapseBranch
-									label = LLL:EXT:lang/locallang_core.xml:cm.collapseBranch
+									label = LLL:EXT:lang/locallang_core.xlf:cm.collapseBranch
 									spriteIcon = actions-pagetree-collapse
 									displayCondition =
 									callbackAction = collapseBranch

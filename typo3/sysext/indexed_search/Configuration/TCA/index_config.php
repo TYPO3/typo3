@@ -22,14 +22,14 @@ return array(
 	),
 	'columns' => array(
 		'hidden' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
 			'config' => array(
 				'type' => 'check',
 				'default' => '1'
 			)
 		),
 		'starttime' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
 			'config' => array(
 				'type' => 'input',
 				'size' => '8',

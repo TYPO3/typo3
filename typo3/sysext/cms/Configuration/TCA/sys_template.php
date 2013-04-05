@@ -4,8 +4,8 @@ return array(
 		'label' => 'title',
 		'tstamp' => 'tstamp',
 		'sortby' => 'sorting',
-		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
-		'title' => 'LLL:EXT:cms/locallang_tca.xml:sys_template',
+		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
+		'title' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template',
 		'versioningWS' => TRUE,
 		'origUid' => 't3_origuid',
 		'crdate' => 'crdate',
@@ -35,7 +35,7 @@ return array(
 	),
 	'columns' => array(
 		'title' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.title',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.title',
 			'config' => array(
 				'type' => 'input',
 				'size' => '25',
@@ -44,7 +44,7 @@ return array(
 			)
 		),
 		'hidden' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.disable',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'check',
@@ -52,7 +52,7 @@ return array(
 			)
 		),
 		'starttime' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.starttime',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'input',
@@ -63,7 +63,7 @@ return array(
 			)
 		),
 		'endtime' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.endtime',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'input',
@@ -77,13 +77,13 @@ return array(
 			)
 		),
 		'root' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.root',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.root',
 			'config' => array(
 				'type' => 'check'
 			)
 		),
 		'clear' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.clear',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.clear',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -94,7 +94,7 @@ return array(
 			)
 		),
 		'sitetitle' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.sitetitle',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.sitetitle',
 			'config' => array(
 				'type' => 'input',
 				'size' => '25',
@@ -102,7 +102,7 @@ return array(
 			)
 		),
 		'constants' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.constants',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.constants',
 			'config' => array(
 				'type' => 'text',
 				'cols' => '48',
@@ -113,7 +113,7 @@ return array(
 			'defaultExtras' => 'fixed-font : enable-tab'
 		),
 		'nextLevel' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.nextLevel',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.nextLevel',
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -131,7 +131,7 @@ return array(
 			)
 		),
 		'include_static_file' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.include_static_file',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.include_static_file',
 			'config' => array(
 				'type' => 'select',
 				'size' => 10,
@@ -141,7 +141,7 @@ return array(
 			)
 		),
 		'basedOn' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.basedOn',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.basedOn',
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -168,7 +168,7 @@ return array(
 					),
 					'add' => array(
 						'type' => 'script',
-						'title' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.basedOn_add',
+						'title' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.basedOn_add',
 						'icon' => 'add.gif',
 						'params' => array(
 							'table' => 'sys_template',
@@ -181,7 +181,7 @@ return array(
 			)
 		),
 		'includeStaticAfterBasedOn' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.includeStaticAfterBasedOn',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.includeStaticAfterBasedOn',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'check',
@@ -189,7 +189,7 @@ return array(
 			)
 		),
 		'config' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.config',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.config',
 			'config' => array(
 				'type' => 'text',
 				'rows' => 10,
@@ -209,7 +209,7 @@ return array(
 			'defaultExtras' => 'fixed-font : enable-tab'
 		),
 		'description' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.description',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.description',
 			'config' => array(
 				'type' => 'text',
 				'rows' => 5,
@@ -217,21 +217,21 @@ return array(
 			)
 		),
 		'static_file_mode' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.static_file_mode',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.static_file_mode',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('LLL:EXT:cms/locallang_tca.xml:sys_template.static_file_mode.0', '0'),
-					array('LLL:EXT:cms/locallang_tca.xml:sys_template.static_file_mode.1', '1'),
-					array('LLL:EXT:cms/locallang_tca.xml:sys_template.static_file_mode.2', '2'),
-					array('LLL:EXT:cms/locallang_tca.xml:sys_template.static_file_mode.3', '3')
+					array('LLL:EXT:cms/locallang_tca.xlf:sys_template.static_file_mode.0', '0'),
+					array('LLL:EXT:cms/locallang_tca.xlf:sys_template.static_file_mode.1', '1'),
+					array('LLL:EXT:cms/locallang_tca.xlf:sys_template.static_file_mode.2', '2'),
+					array('LLL:EXT:cms/locallang_tca.xlf:sys_template.static_file_mode.3', '3')
 				),
 				'default' => '0'
 			)
 		),
 		'tx_impexp_origuid' => array('config' => array('type' => 'passthrough')),
 		't3ver_label' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
@@ -242,9 +242,9 @@ return array(
 	'types' => array(
 		'1' => array('showitem' => '
 			hidden,title;;1;;2-2-2, sitetitle, constants;;;;3-3-3, config, description;;;;4-4-4,
-			--div--;LLL:EXT:cms/locallang_tca.xml:sys_template.tabs.options, clear, root, nextLevel,
-			--div--;LLL:EXT:cms/locallang_tca.xml:sys_template.tabs.include, includeStaticAfterBasedOn,6-6-6, include_static_file, basedOn, static_file_mode,
-			--div--;LLL:EXT:cms/locallang_tca.xml:sys_template.tabs.access, starttime, endtime')
+			--div--;LLL:EXT:cms/locallang_tca.xlf:sys_template.tabs.options, clear, root, nextLevel,
+			--div--;LLL:EXT:cms/locallang_tca.xlf:sys_template.tabs.include, includeStaticAfterBasedOn,6-6-6, include_static_file, basedOn, static_file_mode,
+			--div--;LLL:EXT:cms/locallang_tca.xlf:sys_template.tabs.access, starttime, endtime')
 	)
 );
 ?>

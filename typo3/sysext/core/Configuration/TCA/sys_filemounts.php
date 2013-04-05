@@ -4,8 +4,8 @@ return array(
 		'label' => 'title',
 		'tstamp' => 'tstamp',
 		'sortby' => 'sorting',
-		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.php:LGL.prependAtCopy',
-		'title' => 'LLL:EXT:lang/locallang_tca.php:sys_filemounts',
+		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
+		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_filemounts',
 		'adminOnly' => 1,
 		'rootLevel' => 1,
 		'delete' => 'deleted',
@@ -22,7 +22,7 @@ return array(
 	),
 	'columns' => array(
 		'title' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_filemounts.title',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.title',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -31,13 +31,13 @@ return array(
 			)
 		),
 		'hidden' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.disable',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
 			'config' => array(
 				'type' => 'check'
 			)
 		),
 		'base' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.baseStorage',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.baseStorage',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'sys_file_storage',
@@ -46,7 +46,7 @@ return array(
 			)
 		),
 		'path' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.folder',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.folder',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(),

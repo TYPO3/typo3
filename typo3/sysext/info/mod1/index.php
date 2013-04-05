@@ -36,7 +36,7 @@
 unset($MCONF);
 require 'conf.php';
 require $BACK_PATH . 'init.php';
-$LANG->includeLLFile('EXT:lang/locallang_mod_web_info.xml');
+$LANG->includeLLFile('EXT:lang/locallang_mod_web_info.xlf');
 $BE_USER->modAccess($MCONF, 1);
 /*
  * @deprecated since 6.0, the classname SC_mod_web_info_index and this file is obsolete

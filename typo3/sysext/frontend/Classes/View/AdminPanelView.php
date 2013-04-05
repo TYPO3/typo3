@@ -234,7 +234,7 @@ class AdminPanelView {
 	 * @return string HTML for the Admin Panel
 	 */
 	public function display() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_tsfe.php');
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_tsfe.xlf');
 		$moduleContent = '';
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top']) {
 			if ($this->isAdminModuleEnabled('preview')) {
@@ -646,11 +646,11 @@ class AdminPanelView {
 
 	/**
 	 * Returns the label for key, $key. If a translation for the language set in $GLOBALS['BE_USER']->uc['lang'] is found that is returned, otherwise the default value.
-	 * IF the global variable $LOCAL_LANG is NOT an array (yet) then this function loads the global $LOCAL_LANG array with the content of "sysext/lang/locallang_tsfe.php" so that the values therein can be used for labels in the Admin Panel
+	 * IF the global variable $LOCAL_LANG is NOT an array (yet) then this function loads the global $LOCAL_LANG array with the content of "sysext/lang/locallang_tsfe.xlf" so that the values therein can be used for labels in the Admin Panel
 	 *
 	 * FIXME The function should convert to $TSFE->renderCharset, not to UTF8!
 	 *
-	 * @param string $key Key for a label in the $LOCAL_LANG array of "sysext/lang/locallang_tsfe.php
+	 * @param string $key Key for a label in the $LOCAL_LANG array of "sysext/lang/locallang_tsfe.xlf
 	 * @return string The value for the $key
 	 */
 	public function extGetLL($key) {

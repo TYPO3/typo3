@@ -6,11 +6,11 @@ return array(
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'delete' => 'deleted',
-		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
+		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
 		'enablecolumns' => array(
 			'disabled' => 'hidden'
 		),
-		'title' => 'LLL:EXT:cms/locallang_tca.xml:fe_groups',
+		'title' => 'LLL:EXT:cms/locallang_tca.xlf:fe_groups',
 		'typeicon_classes' => array(
 			'default' => 'status-user-group-frontend'
 		),
@@ -23,7 +23,7 @@ return array(
 	),
 	'columns' => array(
 		'hidden' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.disable',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'check',
@@ -31,7 +31,7 @@ return array(
 			)
 		),
 		'title' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:fe_groups.title',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:fe_groups.title',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -41,7 +41,7 @@ return array(
 		),
 		'subgroup' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:fe_groups.subgroup',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:fe_groups.subgroup',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'fe_groups',
@@ -54,7 +54,7 @@ return array(
 		),
 		'lockToDomain' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:fe_groups.lockToDomain',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:fe_groups.lockToDomain',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -63,7 +63,7 @@ return array(
 			)
 		),
 		'description' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.description',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.description',
 			'config' => array(
 				'type' => 'text',
 				'rows' => 5,
@@ -94,8 +94,8 @@ return array(
 	'types' => array(
 		'0' => array('showitem' => '
 			hidden;;;;1-1-1,title;;;;2-2-2,description,subgroup;;;;3-3-3,
-			--div--;LLL:EXT:cms/locallang_tca.xml:fe_groups.tabs.options, lockToDomain;;;;1-1-1, TSconfig;;;;2-2-2,
-			--div--;LLL:EXT:cms/locallang_tca.xml:fe_groups.tabs.extended
+			--div--;LLL:EXT:cms/locallang_tca.xlf:fe_groups.tabs.options, lockToDomain;;;;1-1-1, TSconfig;;;;2-2-2,
+			--div--;LLL:EXT:cms/locallang_tca.xlf:fe_groups.tabs.extended
 		')
 	)
 );

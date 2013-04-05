@@ -5,7 +5,7 @@ return array(
 		'tstamp' => 'tstamp',
 		'default_sortby' => 'ORDER BY title',
 		'sortby' => 'sorting',
-		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.php:LGL.prependAtCopy',
+		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
 		'title' => 'LLL:EXT:sys_action/locallang_tca.xlf:sys_action',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
@@ -26,7 +26,7 @@ return array(
 	),
 	'columns' => array(
 		'title' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.title',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.title',
 			'config' => array(
 				'type' => 'input',
 				'size' => '25',
@@ -35,7 +35,7 @@ return array(
 			)
 		),
 		'description' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.description',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.description',
 			'config' => array(
 				'type' => 'text',
 				'rows' => 10,
@@ -49,7 +49,7 @@ return array(
 			)
 		),
 		'type' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.type',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.type',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
