@@ -86,25 +86,21 @@
 	margin-left: -2px;
 }
 
-.obsolete, .test, .experimental {
-	background-color: #a3a3a3;
-}
+.alpha { background-color: #f14400; }
+.beta { background-color: #f4bd00; }
+.stable { background-color: #3db900; }
+.experimental { background-color: #000; }
+.test { background-color: #000; }
+.obsolete { background-color: #8c8c8c; }
+.excludeFromUpdates { background-color: #000; }
 
-.stable {
-	background-color: #b7ff97 !important;
-}
-
-.alpha {
-	background-color: #ffb1e0 !important;
-}
-
-.beta {
-	background-color: #aaffcb !important;
-}
-
-.stable,
 .alpha,
-.beta {
+.beta,
+.stable,
+.experimental,
+.test,
+.obsolete,
+.excludeFromUpdates {
 	font-weight: bold;
 	color: #fff;
 }
