@@ -244,6 +244,30 @@
 			<trans-unit id="extensionList.showAllVersions.label" xml:space="preserve">
 				<source>Show all versions</source>
 			</trans-unit>
+			<trans-unit id="extensionList.showAllVersions.extensionKey" xml:space="preserve">
+				<source>Extension key</source>
+			</trans-unit>
+			<trans-unit id="extensionList.showAllVersions.version" xml:space="preserve">
+				<source>Version</source>
+			</trans-unit>
+			<trans-unit id="extensionList.showAllVersions.lastUploaded" xml:space="preserve">
+				<source>Last uploaded</source>
+			</trans-unit>
+			<trans-unit id="extensionList.showAllVersions.downloads" xml:space="preserve">
+				<source>Downloads</source>
+			</trans-unit>
+			<trans-unit id="extensionList.showAllVersions.category" xml:space="preserve">
+				<source>Category</source>
+			</trans-unit>
+			<trans-unit id="extensionList.showAllVersions.manual" xml:space="preserve">
+				<source>Manual</source>
+			</trans-unit>
+			<trans-unit id="extensionList.showAllVersions.author" xml:space="preserve">
+				<source>Author</source>
+			</trans-unit>
+			<trans-unit id="extensionList.showAllVersions.readOnline" xml:space="preserve">
+				<source>Read online</source>
+			</trans-unit>
 
 			<trans-unit id="extensionList.updateFromTer.label" xml:space="preserve">
 				<source>Retrieving Extension-List from TYPO3 Extension Repository (TER)</source>

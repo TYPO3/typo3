@@ -26,6 +26,11 @@ return array(
 				'size' => '30'
 			)
 		),
+		'alldownloadcounter' => array(
+			'config' => array(
+				'type' => 'passthrough'
+			)
+		),
 		'integer_version' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.integerversion',

@@ -142,6 +142,11 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $reviewState;
 
 	/**
+	 * @var integer
+	 */
+	protected $alldownloadcounter;
+
+	/**
 	 * @var string
 	 */
 	protected $serializedDependencies = '';
@@ -560,6 +565,20 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function getPosition() {
 		return $this->position;
+	}
+
+	/**
+	 * @param int $alldownloadcounter
+	 */
+	public function setAlldownloadcounter($alldownloadcounter) {
+		$this->alldownloadcounter = $alldownloadcounter;
+	}
+
+	/**
+	 * @return integer
+	 */
+	public function getAlldownloadcounter() {
+		return $this->alldownloadcounter;
 	}
 
 }
