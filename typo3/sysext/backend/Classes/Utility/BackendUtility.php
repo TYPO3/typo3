@@ -1811,17 +1811,15 @@ class BackendUtility {
 	 * @param string $table Table name, present in $GLOBALS['TCA']
 	 * @param string $col Field name
 	 * @param string $printAllWrap Wrap value - set function description
-	 * @return string
+	 * @return string or NULL if $col is not found in the TCA table
 	 */
 	static public function getItemLabel($table, $col, $printAllWrap = '') {
 		// Check if column exists
 		if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$col])) {
 			return $GLOBALS['TCA'][$table]['columns'][$col]['label'];
 		}
-		if ($printAllWrap) {
-			$parts = explode('|', $printAllWrap);
-			return $parts[0] . $col . $parts[1];
-		}
+
+		return NULL;
 	}
 
 	/**
