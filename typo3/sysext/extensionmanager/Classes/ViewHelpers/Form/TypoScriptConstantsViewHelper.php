@@ -88,14 +88,14 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		$this->tag->setTagName('input');
 		$this->tag->addAttribute('type', 'text');
 		$this->tag->addAttribute('name', $this->getName($configuration));
-		$this->tag->addAttribute('id', $configuration->getName());
+		$this->tag->addAttribute('id', 'em-' . $configuration->getName());
 		$doc = $this->getDocInstance();
 		$pageRenderer = $doc->getPageRenderer();
 		$pageRenderer->addCssFile('sysext/extensionmanager/Resources/Public/Contrib/Farbtastic/farbtastic.css');
 		$pageRenderer->addJsFile('sysext/extensionmanager/Resources/Public/Contrib/Farbtastic/farbtastic.js');
 		$pageRenderer->addJsInlineCode('colorpicker', '
 			jQuery(document).ready(function() {
-				jQuery(".colorPicker").farbtastic("#' . $configuration->getName() . '");
+				jQuery(".colorPicker").farbtastic("#em-' . $configuration->getName() . '");
 			});
 		');
 		if ($configuration->getValue() !== NULL) {
@@ -114,7 +114,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		$this->tag->setTagName('input');
 		$this->tag->addAttribute('type', 'text');
 		$this->tag->addAttribute('name', $this->getName($configuration));
-		$this->tag->addAttribute('id', $configuration->getName());
+		$this->tag->addAttribute('id', 'em-' . $configuration->getName());
 		$this->tag->addAttribute('class', 'offset');
 		if ($configuration->getValue() !== NULL) {
 			$this->tag->addAttribute('value', $configuration->getValue());
@@ -132,7 +132,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		$this->tag->setTagName('input');
 		$this->tag->addAttribute('type', 'text');
 		$this->tag->addAttribute('name', $this->getName($configuration));
-		$this->tag->addAttribute('id', $configuration->getName());
+		$this->tag->addAttribute('id', 'em-' . $configuration->getName());
 		$this->tag->addAttribute('class', 'wrap');
 		if ($configuration->getValue() !== NULL) {
 			$this->tag->addAttribute('value', $configuration->getValue());
@@ -148,7 +148,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	 */
 	protected function renderOptionSelect(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration) {
 		$this->tag->addAttribute('name', $this->getName($configuration));
-		$this->tag->addAttribute('id', $configuration->getName());
+		$this->tag->addAttribute('id', 'em-' . $configuration->getName());
 		$this->tag->setTagName('select');
 		$optionValueArray = $configuration->getGeneric();
 		$output = '';
@@ -174,7 +174,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		$this->tag->addAttribute('type', 'number');
 		$this->tag->addAttribute('min', '0');
 		$this->tag->addAttribute('name', $this->getName($configuration));
-		$this->tag->addAttribute('id', $configuration->getName());
+		$this->tag->addAttribute('id', 'em-' . $configuration->getName());
 		if ($configuration->getValue() !== NULL) {
 			$this->tag->addAttribute('value', $configuration->getValue());
 		}
@@ -191,7 +191,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		$this->tag->setTagName('input');
 		$this->tag->addAttribute('type', 'number');
 		$this->tag->addAttribute('name', $this->getName($configuration));
-		$this->tag->addAttribute('id', $configuration->getName());
+		$this->tag->addAttribute('id', 'em-' . $configuration->getName());
 		if ($configuration->getValue() !== NULL) {
 			$this->tag->addAttribute('value', $configuration->getValue());
 		}
@@ -208,7 +208,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		$this->tag->setTagName('input');
 		$this->tag->addAttribute('type', 'text');
 		$this->tag->addAttribute('name', $this->getName($configuration));
-		$this->tag->addAttribute('id', $configuration->getName());
+		$this->tag->addAttribute('id', 'em-' . $configuration->getName());
 		if ($configuration->getValue() !== NULL) {
 			$this->tag->addAttribute('value', $configuration->getValue());
 		}
@@ -236,7 +236,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		$this->tag->addAttribute('type', 'checkbox');
 		$this->tag->addAttribute('name', $this->getName($configuration));
 		$this->tag->addAttribute('value', 1);
-		$this->tag->addAttribute('id', $configuration->getName());
+		$this->tag->addAttribute('id', 'em-' . $configuration->getName());
 		if ($configuration->getValue() == 1) {
 			$this->tag->addAttribute('checked', 'checked');
 		}
