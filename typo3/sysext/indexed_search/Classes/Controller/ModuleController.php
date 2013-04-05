@@ -52,7 +52,7 @@ class ModuleController {
 	/**
 	 * document template object
 	 *
-	 * @var \TYPO3\CMS\Backend\Template\StandardDocumentTemplate
+	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 * @todo Define visibility
 	 */
 	public $doc;

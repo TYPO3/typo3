@@ -44,7 +44,7 @@ class NoDocumentsOpenController {
 	/**
 	 * Document template object
 	 *
-	 * @var \TYPO3\CMS\Backend\Template\MediumDocumentTemplate
+	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 * @todo Define visibility
 	 */
 	public $doc;
@@ -65,7 +65,7 @@ class NoDocumentsOpenController {
 	 */
 	public function init() {
 		// Start the template object:
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\MediumDocumentTemplate');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->bodyTagMargins['x'] = 5;
 		$this->doc->bodyTagMargins['y'] = 5;
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
