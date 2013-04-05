@@ -518,8 +518,8 @@ class DataHandlerHook {
 							$emailMessage = $languageObject->sL($emailMessage);
 						}
 					}
-					$emailSubject = \t3lib_parseHtml::substituteMarkerArray($emailSubject, $markers, '', TRUE, TRUE);
-					$emailMessage = \t3lib_parseHtml::substituteMarkerArray($emailMessage, $markers, '', TRUE, TRUE);
+					$emailSubject = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($emailSubject, $markers, '', TRUE, TRUE);
+					$emailMessage = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($emailMessage, $markers, '', TRUE, TRUE);
 					// Send an email to the recipient
 					\TYPO3\CMS\Core\Utility\GeneralUtility::plainMailEncoded($recipientData['email'], $emailSubject, $emailMessage, $emailHeaders);
 				}
