@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Core\Core;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use \TYPO3\CMS\Core\Utility;
+use TYPO3\CMS\Core\Utility;
 
 require 'SystemEnvironmentBuilder.php';
 
@@ -59,6 +59,11 @@ class Bootstrap {
 	protected $requestId;
 
 	/**
+	 * @var array
+	 */
+	protected $earlyInstances = array();
+
+	/**
 	 * Disable direct creation of this object.
 	 */
 	protected function __construct() {
@@ -79,10 +84,12 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	static public function getInstance() {
-		if (is_null(self::$instance)) {
-			self::$instance = new \TYPO3\CMS\Core\Core\Bootstrap();
+		if (is_null(static::$instance)) {
+			static::$instance = new static();
+			// Establish an alias for Flow/Package interoperability
+			class_alias(get_class(static::$instance), 'TYPO3\\Flow\\Core\\Bootstrap');
 		}
-		return self::$instance;
+		return static::$instance;
 	}
 
 	/**
@@ -130,8 +137,7 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function redirectToInstallToolIfLocalConfigurationFileDoesNotExist($pathUpToDocumentRoot = '') {
-		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
-		$configurationManager = Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager;
 		if (
 			!file_exists($configurationManager->getLocalConfigurationFileLocation())
 			&& !file_exists($configurationManager->getLocalconfFileLocation())
@@ -143,6 +149,44 @@ class Bootstrap {
 	}
 
 	/**
+	 * Registers the instance of the specified object for an early boot stage.
+	 * On finalizing the Object Manager initialization, all those instances will
+	 * be transferred to the Object Manager's registry.
+	 *
+	 * @param string $objectName Object name, as later used by the Object Manager
+	 * @param object $instance The instance to register
+	 * @return void
+	 * @api
+	 */
+	public function setEarlyInstance($objectName, $instance) {
+		$this->earlyInstances[$objectName] = $instance;
+	}
+
+	/**
+	 * Returns an instance which was registered earlier through setEarlyInstance()
+	 *
+	 * @param string $objectName Object name of the registered instance
+	 * @return object
+	 * @throws \TYPO3\CMS\Core\Exception
+	 * @api
+	 */
+	public function getEarlyInstance($objectName) {
+		if (!isset($this->earlyInstances[$objectName])) {
+			throw new \TYPO3\CMS\Core\Exception('Unknown early instance "' . $objectName . '"', 1365167380);
+		}
+		return $this->earlyInstances[$objectName];
+	}
+
+	/**
+	 * Returns all registered early instances indexed by object name
+	 *
+	 * @return array
+	 */
+	public function getEarlyInstances() {
+		return $this->earlyInstances;
+	}
+
+	/**
 	 * Includes LocalConfiguration.php and sets several
 	 * global settings depending on configuration.
 	 *
@@ -150,11 +194,14 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function loadConfigurationAndInitialize() {
-		$this->getInstance()
+		$this
+			->initializeClassLoader()
+			->initializeLocalConfiguration()
+			->initializePackageManagement()
 			->populateLocalConfiguration()
 			->registerExtDirectComponents()
 			->initializeCachingFramework()
-			->registerAutoloader()
+			->initializeClassAliasMapping()
 			->checkUtf8DatabaseSettingsOrDie()
 			->transferDeprecatedCurlSettings()
 			->setCacheHashOptions()
@@ -172,6 +219,60 @@ class Bootstrap {
 	}
 
 	/**
+	 * We need an early instance of the configuration manager.
+	 * Since makeInstance relies on the object configuration, we create it here with new instead.
+	 */
+	protected function initializeLocalConfiguration() {
+		try {
+			$configuarationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager();
+			$this->setEarlyInstance('TYPO3\CMS\Core\Configuration\ConfigurationManager', $configuarationManager);
+			$configuarationManager->exportConfiguration();
+		} catch (\Exception $e) {
+			die($e->getMessage());
+		}
+		return $this;
+	}
+
+	/**
+	 * Initializes the Class Loader
+	 */
+	protected function initializeClassLoader() {
+		$classLoader = new \TYPO3\CMS\Core\Core\ClassLoader();
+		$classLoader->setClassFileAutoloadRegistry((array) include __DIR__ . '/../../ext_autoload.php');
+		$classAliasMap = new \TYPO3\CMS\Core\Core\ClassAliasMap();
+		$classLoader->injectClassAliasMap($classAliasMap);
+		spl_autoload_register(array($classLoader, 'loadClass'), TRUE, TRUE);
+		$this->setEarlyInstance('TYPO3\CMS\Core\Core\ClassLoader', $classLoader);
+		$this->setEarlyInstance('TYPO3\CMS\Core\Core\ClassAliasMap', $classAliasMap);
+		return $this;
+	}
+
+	/**
+	 * Initializes the package system and loads the package configuration and settings
+	 * provided by the packages.
+	 */
+	protected function initializePackageManagement() {
+		$packageManager = new \TYPO3\CMS\Core\Package\PackageManager();
+		$this->setEarlyInstance('TYPO3\CMS\Core\Package\PackageManager', $packageManager);
+		$packageManager->injectClassLoader($this->getEarlyInstance('TYPO3\CMS\Core\Core\ClassLoader'));
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::setPackageManager($packageManager);
+		$packageManager->initialize($this, PATH_site);
+		$GLOBALS['TYPO3_LOADED_EXT'] = new \TYPO3\CMS\Core\Compatibility\LoadedExtensionsArray($packageManager);
+		return $this;
+	}
+
+	/**
+	 * Initializes the class alias mapping
+	 */
+	protected function initializeClassAliasMapping() {
+		$classesCache = $this->getEarlyInstance('TYPO3\CMS\Core\Cache\CacheManager')->getCache('cache_core');
+		$classAliasMap = $this->getEarlyInstance('TYPO3\CMS\Core\Core\ClassAliasMap');
+		$classAliasMap->injectClassAliasCache($classesCache);
+		$classAliasMap->initialize();
+		return $this;
+	}
+
+	/**
 	 * Load TYPO3_LOADED_EXT and ext_localconf
 	 *
 	 * @param boolean $allowCaching
@@ -180,7 +281,6 @@ class Bootstrap {
 	 */
 	public function loadTypo3LoadedExtAndExtLocalconf($allowCaching = TRUE) {
 		$this->getInstance()
-			->populateTypo3LoadedExtGlobal($allowCaching)
 			->loadAdditionalConfigurationFromExtensions($allowCaching);
 		return $this;
 	}
@@ -194,8 +294,8 @@ class Bootstrap {
 	 */
 	public function reloadTypo3LoadedExtAndClassLoaderAndExtLocalconf() {
 		$bootstrap = $this->getInstance();
-		$bootstrap->populateTypo3LoadedExtGlobal(FALSE);
-		\TYPO3\CMS\Core\Core\ClassLoader::loadClassLoaderCache();
+//		$bootstrap->populateTypo3LoadedExtGlobal(FALSE);
+//		\TYPO3\CMS\Core\Core\ClassLoader::loadClassLoaderCache();
 		$bootstrap->loadAdditionalConfigurationFromExtensions(FALSE);
 		return $this;
 	}
@@ -239,12 +339,6 @@ class Bootstrap {
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
 	protected function populateLocalConfiguration() {
-		try {
-			Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')
-				->exportConfiguration();
-		} catch (\Exception $e) {
-			die($e->getMessage());
-		}
 		define('TYPO3_db', $GLOBALS['TYPO3_CONF_VARS']['DB']['database']);
 		define('TYPO3_db_username', $GLOBALS['TYPO3_CONF_VARS']['DB']['username']);
 		define('TYPO3_db_password', $GLOBALS['TYPO3_CONF_VARS']['DB']['password']);
@@ -286,21 +380,9 @@ class Bootstrap {
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
 	protected function initializeCachingFramework() {
+		// @todo Please deuglify
 		\TYPO3\CMS\Core\Cache\Cache::initializeCachingFramework();
-		return $this;
-	}
-
-	/**
-	 * Register autoloader
-	 *
-	 * @return \TYPO3\CMS\Core\Core\Bootstrap
-	 */
-	protected function registerAutoloader() {
-		if (PHP_VERSION_ID < 50307) {
-			\TYPO3\CMS\Core\Compatibility\CompatbilityClassLoaderPhpBelow50307::registerAutoloader();
-		} else {
-			\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
-		}
+		$this->setEarlyInstance('TYPO3\CMS\Core\Cache\CacheManager', $GLOBALS['typo3CacheManager']);
 		return $this;
 	}
 
@@ -562,18 +644,6 @@ class Bootstrap {
 		define('TYPO3_REQUESTTYPE_AJAX', 8);
 		define('TYPO3_REQUESTTYPE_INSTALL', 16);
 		define('TYPO3_REQUESTTYPE', (TYPO3_MODE == 'FE' ? TYPO3_REQUESTTYPE_FE : 0) | (TYPO3_MODE == 'BE' ? TYPO3_REQUESTTYPE_BE : 0) | (defined('TYPO3_cliMode') && TYPO3_cliMode ? TYPO3_REQUESTTYPE_CLI : 0) | (defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript ? TYPO3_REQUESTTYPE_INSTALL : 0) | ($GLOBALS['TYPO3_AJAX'] ? TYPO3_REQUESTTYPE_AJAX : 0));
-		return $this;
-	}
-
-	/**
-	 * Set up $GLOBALS['TYPO3_LOADED_EXT'] array with basic information
-	 * about extensions.
-	 *
-	 * @param boolean $allowCaching
-	 * @return \TYPO3\CMS\Core\Core\Bootstrap
-	 */
-	protected function populateTypo3LoadedExtGlobal($allowCaching = TRUE) {
-		$GLOBALS['TYPO3_LOADED_EXT'] = Utility\ExtensionManagementUtility::loadTypo3LoadedExtensionInformation($allowCaching);
 		return $this;
 	}
 
@@ -996,11 +1066,11 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function shutdown() {
-		if (PHP_VERSION_ID < 50307) {
-			\TYPO3\CMS\Core\Compatibility\CompatbilityClassLoaderPhpBelow50307::unregisterAutoloader();
-		} else {
-			\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
-		}
+//		if (PHP_VERSION_ID < 50307) {
+//			\TYPO3\CMS\Core\Compatibility\CompatbilityClassLoaderPhpBelow50307::unregisterAutoloader();
+//		} else {
+//			\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
+//		}
 		return $this;
 	}
 
