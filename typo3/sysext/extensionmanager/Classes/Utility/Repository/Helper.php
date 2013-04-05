@@ -83,9 +83,12 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 		$repositoryRepository = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository');
 		$this->extensionRepository = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository');
 		$repository = $repositoryRepository->findByUid(1);
-		if (is_object($repository)) {
-			$this->setRepository($repository);
+
+		if(!is_object($repository)) {
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('The typo3.org extension repository was not found. Please import the main typo3.org extension repository in the install tool wizard.', 1365192900);
 		}
+		
+		$this->setRepository($repository);
 	}
 
 	/**
