@@ -52,7 +52,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @var array
 	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
+	protected $backupGlobalsBlacklist = array('TYPO3_DB', 'TYPO3_LOADED_EXT');
 
 	/**
 	 * Creates a mock object which allows for calling protected methods and access of protected properties.
