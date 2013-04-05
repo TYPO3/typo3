@@ -99,6 +99,7 @@ abstract class AbstractTask implements TaskInterface {
 	protected function getChecksumData() {
 		return array(
 			$this->getSourceFile()->getUid(),
+			$this->getSourceFile()->getSha1(),
 			$this->getType() . '.' . $this->getName(),
 			serialize($this->configuration)
 		);
