@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Install;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Package\Exception\PackageStatesUnavailableException;
+
 /**
  * Encapsulate install tool specific bootstrap methods.
  *
@@ -35,35 +38,33 @@ namespace TYPO3\CMS\Install;
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class InstallBootstrap {
+class InstallBootstrap extends \TYPO3\CMS\Core\Core\Bootstrap {
 
 	/**
 	 * During first install, typo3conf/LocalConfiguration.php does not
 	 * exist. It is created now based on factory configuration as a
 	 * first action in the install process.
 	 *
-	 * @return void
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	static public function createLocalConfigurationIfNotExists() {
-		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
-		$configurationManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+	public function createLocalConfigurationIfNotExists() {
+		$configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager;
 		if (
 			!file_exists($configurationManager->getLocalConfigurationFileLocation())
 			&& !file_exists($configurationManager->getLocalconfFileLocation())
 		) {
 			$configurationManager->createLocalConfigurationFromFactoryConfiguration();
 		}
+		return $this;
 	}
 
 	/**
 	 * Check ENABLE_INSTALL_TOOL and FIRST_INSTALL file in typo3conf
 	 * or exit the script if conditions to access the install tool are not met.
 	 *
-	 * @return void
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	static public function checkEnabledInstallToolOrDie() {
+	public function checkEnabledInstallToolOrDie() {
 		$quickstartFile = PATH_site . 'typo3conf/FIRST_INSTALL';
 		$enableInstallToolFile = PATH_site . 'typo3conf/ENABLE_INSTALL_TOOL';
 		// If typo3conf/FIRST_INSTALL is present and can be deleted, automatically create typo3conf/ENABLE_INSTALL_TOOL
@@ -85,8 +86,9 @@ class InstallBootstrap {
 			}
 		}
 		if (!is_file($enableInstallToolFile) || $removeInstallToolFileFailed) {
-			self::dieWithLockedInstallToolMessage();
+			$this->dieWithLockedInstallToolMessage();
 		}
+		return $this;
 	}
 
 	/**
@@ -94,7 +96,7 @@ class InstallBootstrap {
 	 *
 	 * @return void
 	 */
-	static protected function dieWithLockedInstallToolMessage() {
+	protected function dieWithLockedInstallToolMessage() {
 		require_once PATH_site . 't3lib/class.t3lib_parsehtml.php';
 		// Define the stylesheet
 		$stylesheet = '<link rel="stylesheet" type="text/css" href="' . '../stylesheets/install/install.css" />';
@@ -140,6 +142,30 @@ class InstallBootstrap {
 		echo $content;
 		die;
 	}
+
+	/**
+	 * The CMS Package Manager needs a PackageStates.php file. If it's not present because
+	 * of a update from a prior version the PackageManager will throw an Exception and
+	 * we will have to launch an intermediate package manager with just the required
+	 * packages in place.
+	 *
+	 * @return $this
+	 */
+	protected function initializePackageManagement() {
+		try {
+			parent::initializePackageManagement();
+		} catch (PackageStatesUnavailableException $exception) {
+			require_once __DIR__ . '/Package/PackageStatesUnavailablePackageManager.php';
+			$packageManager = new Package\PackageStatesUnavailablePackageManager($this->getEarlyInstance('TYPO3\CMS\Core\Configuration\ConfigurationManager'));
+			$this->setEarlyInstance('TYPO3\CMS\Core\Package\PackageManagerInterface', $packageManager);
+			$packageManager->injectClassLoader($this->getEarlyInstance('TYPO3\CMS\Core\Core\ClassLoader'));
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::setPackageManager($packageManager);
+			$packageManager->initialize($this, PATH_site);
+			$GLOBALS['TYPO3_LOADED_EXT'] = new \TYPO3\CMS\Core\Compatibility\LoadedExtensionsArray($packageManager);
+		}
+		return $this;
+	}
+
 
 }
 
