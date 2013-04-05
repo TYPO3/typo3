@@ -299,21 +299,6 @@
 			<trans-unit id="extensionList.updateFromTer.lastUpdate.noTimeOfLastUpdate" xml:space="preserve">
 				<source>No last update time known.</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateFromTer.lastUpdate.days.plural" xml:space="preserve">
-				<source> days</source>
-			</trans-unit>
-			<trans-unit id="extensionList.updateFromTer.lastUpdate.days.singular" xml:space="preserve">
-				<source> day</source>
-			</trans-unit>
-			<trans-unit id="extensionList.updateFromTer.lastUpdate.hours.plural" xml:space="preserve">
-				<source> hours</source>
-			</trans-unit>
-			<trans-unit id="extensionList.updateFromTer.lastUpdate.hours.singular" xml:space="preserve">
-				<source> hour</source>
-			</trans-unit>
-			<trans-unit id="extensionList.updateFromTer.lastUpdate.lessThanOneHour" xml:space="preserve">
-				<source>Less than one hour</source>
-			</trans-unit>
 
 			<trans-unit id="task.updateExtensionListTask.name" xml:space="preserve">
 				<source>Update extension list</source>

@@ -1,6 +1,5 @@
 <?php
 namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
-use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /*****************************************************************
  *  Copyright notice
@@ -38,34 +37,7 @@ class TimeSinceLastUpdateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	 * @return string
 	 */
 	public function render($lastUpdateTime) {
-
-		$now = new \DateTime();
-		$timeSinceLastUpdate = $lastUpdateTime->diff($now, TRUE);
-
-		$result = '';
-
-		if ($timeSinceLastUpdate->days > 1) {
-			$label = LocalizationUtility::translate('extensionList.updateFromTer.lastUpdate.days.plural', 'extensionmanager');
-			$result = $timeSinceLastUpdate->format('%a') . $label;
-
-		} elseif ($timeSinceLastUpdate->days === 1) {
-			$label = LocalizationUtility::translate('extensionList.updateFromTer.lastUpdate.days.singular', 'extensionmanager');
-			$result = '1' . $label;
-
-		} elseif ($timeSinceLastUpdate->h > 1) {
-			$label = LocalizationUtility::translate('extensionList.updateFromTer.lastUpdate.hours.plural', 'extensionmanager');
-			$result = $timeSinceLastUpdate->format('%h') . $label;
-
-		} elseif ($timeSinceLastUpdate->h === 1) {
-			$label = LocalizationUtility::translate('extensionList.updateFromTer.lastUpdate.hours.singular', 'extensionmanager');
-			$result = '1' . $label;
-
-		} else {
-			$label = LocalizationUtility::translate('extensionList.updateFromTer.lastUpdate.lessThanOneHour', 'extensionmanager');
-			$result = $label;
-		}
-
-		return $result;
+		return \TYPO3\CMS\Backend\Utility\BackendUtility::calcAge(time() - $lastUpdateTime->format('U'), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears'));
 	}
 }
 
