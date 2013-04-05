@@ -46,7 +46,7 @@
 
 	// Header
 	thead {
-		@include linear-gradient(#5b5b5b, #7f7f7f 10%, #5b5b5b 100%);
+		background-color: #666;
 
 		tr {
 			background: none !important;
@@ -102,13 +102,13 @@
 				td {
 					background: none;
 
-					&.stable {
-						@include stable;
-					}
-
-					&.beta {
-						@include beta;
-					}
+					&.alpha { @include alpha; }
+					&.beta { @include beta; }
+					&.stable { @include stable; }
+					&.experimental { @include experimental; }
+					&.test { @include test; }
+					&.obsolete { @include obsolete; }
+					&.excludeFromUpdates { @include excludeFromUpdates; }
 				}
 			}
 		}
@@ -119,13 +119,14 @@
 			padding: 8px 10px;
 			vertical-align: middle;
 
-			&.stable {
-				@include stable;
-			}
 
-			&.beta {
-				@include beta;
-			}
+			&.alpha { @include alpha; }
+			&.beta { @include beta; }
+			&.stable { @include stable; }
+			&.experimental { @include experimental; }
+			&.test { @include test; }
+			&.obsolete { @include obsolete; }
+			&.excludeFromUpdates { @include excludeFromUpdates; }
 
 			img {
 				vertical-align: middle;

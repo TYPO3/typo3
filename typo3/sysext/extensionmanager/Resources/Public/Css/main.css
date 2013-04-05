@@ -1595,21 +1595,34 @@ button.ui-button::-moz-focus-inner {
   padding: 3px 10px;
   margin-left: -2px; }
 
-.obsolete, .test, .experimental {
-  background-color: #a3a3a3; }
+.alpha {
+  background-color: #f14400; }
+
+.beta {
+  background-color: #f4bd00; }
 
 .stable {
-  background-color: #b7ff97 !important; }
+  background-color: #3db900; }
 
-.alpha {
-  background-color: #ffb1e0 !important; }
+.experimental {
+  background-color: #000; }
 
-.beta {
-  background-color: #aaffcb !important; }
+.test {
+  background-color: #000; }
 
-.stable,
+.obsolete {
+  background-color: #8c8c8c; }
+
+.excludeFromUpdates {
+  background-color: #000; }
+
 .alpha,
-.beta {
+.beta,
+.stable,
+.experimental,
+.test,
+.obsolete,
+.excludeFromUpdates {
   font-weight: bold;
   color: #fff; }
 
@@ -1687,13 +1700,7 @@ p {
 .typo3-extension-list {
   border-spacing: 0; }
   .typo3-extension-list thead {
-    background-color: #5b5b5b;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#7f7f7f 10%), to(#5b5b5b 100%));
-    background-image: -webkit-linear-gradient(top, #7f7f7f 10%, #5b5b5b 100%);
-    background-image: -moz-linear-gradient(top, #7f7f7f 10%, #5b5b5b 100%);
-    background-image: -ms-linear-gradient(top, #7f7f7f 10%, #5b5b5b 100%);
-    background-image: -o-linear-gradient(top, #7f7f7f 10%, #5b5b5b 100%);
-    background-image: linear-gradient(to bottom, #7f7f7f 10%, #5b5b5b 100%); }
+    background-color: #666; }
     .typo3-extension-list thead tr {
       background: none !important; }
       .typo3-extension-list thead tr:hover {
@@ -1720,42 +1727,38 @@ p {
     background: none; }
   .typo3-extension-list tr.odd:hover td, .typo3-extension-list tr.even:hover td {
     background: none; }
-    .typo3-extension-list tr.odd:hover td.stable, .typo3-extension-list tr.even:hover td.stable {
-      background-color: #87b374;
-      background-image: -webkit-gradient(linear, left top, left bottom, from(#87b374 0%), to(#5f8d4b 100%));
-      background-image: -webkit-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
-      background-image: -moz-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
-      background-image: -ms-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
-      background-image: -o-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
-      background-image: linear-gradient(to bottom, #87b374 0%, #5f8d4b 100%); }
+    .typo3-extension-list tr.odd:hover td.alpha, .typo3-extension-list tr.even:hover td.alpha {
+      background-color: #f14400; }
     .typo3-extension-list tr.odd:hover td.beta, .typo3-extension-list tr.even:hover td.beta {
-      background-color: #f39300;
-      background-image: -webkit-gradient(linear, left top, left bottom, from(#f39300 0%), to(#d15e00 100%));
-      background-image: -webkit-linear-gradient(top, #f39300 0%, #d15e00 100%);
-      background-image: -moz-linear-gradient(top, #f39300 0%, #d15e00 100%);
-      background-image: -ms-linear-gradient(top, #f39300 0%, #d15e00 100%);
-      background-image: -o-linear-gradient(top, #f39300 0%, #d15e00 100%);
-      background-image: linear-gradient(to bottom, #f39300 0%, #d15e00 100%); }
+      background-color: #f4bd00; }
+    .typo3-extension-list tr.odd:hover td.stable, .typo3-extension-list tr.even:hover td.stable {
+      background-color: #3db900; }
+    .typo3-extension-list tr.odd:hover td.experimental, .typo3-extension-list tr.even:hover td.experimental {
+      background-color: #000; }
+    .typo3-extension-list tr.odd:hover td.test, .typo3-extension-list tr.even:hover td.test {
+      background-color: #000; }
+    .typo3-extension-list tr.odd:hover td.obsolete, .typo3-extension-list tr.even:hover td.obsolete {
+      background-color: #8c8c8c; }
+    .typo3-extension-list tr.odd:hover td.excludeFromUpdates, .typo3-extension-list tr.even:hover td.excludeFromUpdates {
+      background-color: #000; }
   .typo3-extension-list tr td {
     background: none;
     padding: 8px 10px;
     vertical-align: middle; }
-    .typo3-extension-list tr td.stable {
-      background-color: #87b374;
-      background-image: -webkit-gradient(linear, left top, left bottom, from(#87b374 0%), to(#5f8d4b 100%));
-      background-image: -webkit-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
-      background-image: -moz-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
-      background-image: -ms-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
-      background-image: -o-linear-gradient(top, #87b374 0%, #5f8d4b 100%);
-      background-image: linear-gradient(to bottom, #87b374 0%, #5f8d4b 100%); }
+    .typo3-extension-list tr td.alpha {
+      background-color: #f14400; }
     .typo3-extension-list tr td.beta {
-      background-color: #f39300;
-      background-image: -webkit-gradient(linear, left top, left bottom, from(#f39300 0%), to(#d15e00 100%));
-      background-image: -webkit-linear-gradient(top, #f39300 0%, #d15e00 100%);
-      background-image: -moz-linear-gradient(top, #f39300 0%, #d15e00 100%);
-      background-image: -ms-linear-gradient(top, #f39300 0%, #d15e00 100%);
-      background-image: -o-linear-gradient(top, #f39300 0%, #d15e00 100%);
-      background-image: linear-gradient(to bottom, #f39300 0%, #d15e00 100%); }
+      background-color: #f4bd00; }
+    .typo3-extension-list tr td.stable {
+      background-color: #3db900; }
+    .typo3-extension-list tr td.experimental {
+      background-color: #000; }
+    .typo3-extension-list tr td.test {
+      background-color: #000; }
+    .typo3-extension-list tr td.obsolete {
+      background-color: #8c8c8c; }
+    .typo3-extension-list tr td.excludeFromUpdates {
+      background-color: #000; }
     .typo3-extension-list tr td img {
       vertical-align: middle;
       margin-right: 5px; }
