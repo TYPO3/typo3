@@ -871,8 +871,10 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 			</p>
 		';
 		// only get the number of tables if it is not the first two steps in the 123-installer
-		// (= no DB connection yet)
-		$whichTables = $this->step != 1 && $this->step != 2 ? $this->sqlHandler->getListOfTables() : array();
+		// (= no DB connection yet) or connect failed
+		$whichTables = $this->step != 1 && $this->step != 2 && $this->fatalError !== 1
+			? $this->sqlHandler->getListOfTables() : array();
+
 		$error_emptyDB = '
 			<p class="typo3-message message-error">
 				<strong>
