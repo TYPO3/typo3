@@ -32,6 +32,11 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
 interface StatusInterface {
 
 	/**
+	 * @return string The severity
+	 */
+	public function getSeverity();
+
+	/**
 	 * @return string The title
 	 */
 	public function getTitle();
