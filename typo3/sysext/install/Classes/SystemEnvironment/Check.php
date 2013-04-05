@@ -107,6 +107,7 @@ class Check {
 		$statusArray[] = $this->checkDocRoot();
 		$statusArray[] = $this->checkSqlSafeMode();
 		$statusArray[] = $this->checkOpenBaseDir();
+		$statusArray[] = $this->checkOpenSslInstalled();
 		$statusArray[] = $this->checkSuhosinLoaded();
 		$statusArray[] = $this->checkSuhosinRequestMaxVars();
 		$statusArray[] = $this->checkSuhosinPostMaxVars();
@@ -501,6 +502,36 @@ class Check {
 			$status = new OkStatus();
 			$status->setTitle('PHP open_basedir is off');
 		}
+		return $status;
+	}
+
+	/**
+	 * Check accessibility and functionality of OpenSSL
+	 */
+	protected function checkOpenSslInstalled() {
+		if (extension_loaded('openssl')) {
+			$testKey = @openssl_pkey_new();
+			if (is_resource($testKey)) {
+				openssl_free_key($testKey);
+				$status = new OkStatus();
+				$status->setTitle('OpenSSL installed properly');
+			} else {
+				$status = new ErrorStatus();
+				$status->setTitle('OpenSSL extension not working');
+				$status->setMessage(
+					'Something went wrong while trying to create a new private key. ' .
+					'Please check your OpenSSL integration to verify the extension is installed correctly.'
+				);
+			}
+		} else {
+			$status = new ErrorStatus();
+			$status->setTitle('OpenSSL extension not loaded');
+			$status->setMessage(
+				'OpenSSL is an extension to encrypt/decrypt data between requests. ' .
+				'TYPO3 CMS needs it to be able to store passwords encrypted to improve the security on database layer.'
+			);
+		}
+
 		return $status;
 	}
 
