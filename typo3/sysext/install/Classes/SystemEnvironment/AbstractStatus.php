@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class AbstractStatus implements StatusInterface {
+abstract class AbstractStatus implements StatusInterface {
 
 	/**
 	 * @var string Title
