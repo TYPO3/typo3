@@ -58,7 +58,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 				1 => $LANG->getLL('depth_1'),
 				2 => $LANG->getLL('depth_2'),
 				3 => $LANG->getLL('depth_3'),
-				999 => $LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_infi')
+				999 => $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
 			)
 		);
 	}
@@ -78,7 +78,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 		$dblist->script = 'index.php';
 		$dblist->showIcon = 0;
 		$dblist->setLMargin = 0;
-		$dblist->agePrefixes = $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears');
+		$dblist->agePrefixes = $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears');
 		$dblist->pI_showUser = 1;
 		// PAGES:
 		$this->pObj->MOD_SETTINGS['pages_levels'] = $this->pObj->MOD_SETTINGS['depth'];

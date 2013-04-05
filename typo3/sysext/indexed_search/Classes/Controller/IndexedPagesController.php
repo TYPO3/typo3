@@ -79,11 +79,11 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 		global $LANG;
 		return array(
 			'depth' => array(
-				0 => $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.depth_0'),
-				1 => $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.depth_1'),
-				2 => $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.depth_2'),
-				3 => $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.depth_3'),
-				999 => $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.depth_infi')
+				0 => $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
+				1 => $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
+				2 => $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
+				3 => $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
+				999 => $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
 			),
 			'type' => array(
 				0 => 'Overview',
@@ -338,7 +338,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			$arr = unserialize($row['cHashParams']);
 			if (!is_array($arr)) {
 				$arr = array(
-					'cHash' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.error', TRUE)
+					'cHash' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.error', TRUE)
 				);
 			}
 			$theCHash = $arr['cHash'];

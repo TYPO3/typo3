@@ -52,7 +52,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 				1 => $LANG->getLL('depth_1'),
 				2 => $LANG->getLL('depth_2'),
 				3 => $LANG->getLL('depth_3'),
-				999 => $LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_infi')
+				999 => $LANG->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
 			)
 		);
 		// Languages:
@@ -141,8 +141,8 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 			$info .= '<a href="#" onclick="' . htmlspecialchars(('top.loadEditId(' . intval($data['row']['uid']) . ',"&SET[language]=0"); return false;')) . '" title="' . $LANG->getLL('lang_renderl10n_editPage', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-open') . '</a>';
 			$info .= str_replace('###LANG_UID###', '0', $viewPageLink);
 			$info .= '&nbsp;';
-			$info .= $data['row']['l18n_cfg'] & 1 ? '<span title="' . $LANG->sL('LLL:EXT:cms/locallang_tca.php:pages.l18n_cfg.I.1', '1') . '">D</span>' : '&nbsp;';
-			$info .= \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) ? '<span title="' . $LANG->sL('LLL:EXT:cms/locallang_tca.php:pages.l18n_cfg.I.2', '1') . '">N</span>' : '&nbsp;';
+			$info .= $data['row']['l18n_cfg'] & 1 ? '<span title="' . $LANG->sL('LLL:EXT:cms/locallang_tca.xlf:pages.l18n_cfg.I.1', '1') . '">D</span>' : '&nbsp;';
+			$info .= \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) ? '<span title="' . $LANG->sL('LLL:EXT:cms/locallang_tca.xlf:pages.l18n_cfg.I.2', '1') . '">N</span>' : '&nbsp;';
 			// Put into cell:
 			$tCells[] = '<td class="' . $status . ' c-leftLine">' . $info . '</td>';
 			$tCells[] = '<td class="' . $status . '" title="' . $LANG->getLL('lang_renderl10n_CEcount', '1') . '" align="center">' . $this->getContentElementCount($data['row']['uid'], 0) . '</td>';

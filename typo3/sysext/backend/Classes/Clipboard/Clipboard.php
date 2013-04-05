@@ -272,8 +272,8 @@ class Clipboard {
 		$rmall_url = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('CB' => array('removeAll' => $this->current)));
 		// Copymode Selector menu
 		$copymode_url = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript();
-		$moveLabel = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:moveElements'));
-		$copyLabel = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:copyElements'));
+		$moveLabel = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:moveElements'));
+		$copyLabel = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:copyElements'));
 		$opt = array();
 		$opt[] = '<option style="padding-left: 20px; background-image: url(\'' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/clip_cut.gif', '', 1) . '\'); background-repeat: no-repeat;" value="" ' . ($this->currentMode() == 'copy' ? '' : 'selected="selected"') . '>' . $moveLabel . '</option>';
 		$opt[] = '<option style="padding-left: 20px; background-image: url(\'' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/clip_copy.gif', '', 1) . '\'); background-repeat: no-repeat;" value="1" ' . ($this->currentMode() == 'copy' ? 'selected="selected"' : '') . '>' . $copyLabel . '</option>';
@@ -293,7 +293,7 @@ class Clipboard {
 		if ($elCount) {
 			if ($GLOBALS['BE_USER']->jsConfirmation(4)) {
 				$js = '
-			if (confirm(' . $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.deleteClip'), $elCount)) . ')){
+			if (confirm(' . $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.deleteClip'), $elCount)) . ')){
 				window.location.href=\'' . $this->deleteUrl(0, ($this->fileMode ? 1 : 0)) . '&redirect=\'+top.rawurlencode(window.location.href);
 			}
 					';
@@ -307,7 +307,7 @@ class Clipboard {
 			<tr class="typo3-clipboard-head">
 				<td nowrap="nowrap">' . '<a href="' . htmlspecialchars($thumb_url) . '#clip_head">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/thumb_' . ($this->clipData['_setThumb'] ? 's' : 'n') . '.gif'), 'width="21" height="16"') . ' vspace="2" border="0" title="' . $this->clLabel('thumbmode_clip') . '" alt="" />' . '</a>' . '</td>
 				<td width="95%" nowrap="nowrap">' . $copymode_selector . ' ' . $selector_menu . '</td>
-				<td>' . '<a href="' . htmlspecialchars($rmall_url) . '#clip_head">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:buttons.clear', TRUE))) . '</a></td>
+				<td>' . '<a href="' . htmlspecialchars($rmall_url) . '#clip_head">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:buttons.clear', TRUE))) . '</a></td>
 			</tr>';
 		// Print header and content for the NORMAL tab:
 		$out[] = '
@@ -615,7 +615,7 @@ class Clipboard {
 	 */
 	public function confirmMsg($table, $rec, $type, $clElements) {
 		if ($GLOBALS['BE_USER']->jsConfirmation(2)) {
-			$labelKey = 'LLL:EXT:lang/locallang_core.php:mess.' . ($this->currentMode() == 'copy' ? 'copy' : 'move') . ($this->current == 'normal' ? '' : 'cb') . '_' . $type;
+			$labelKey = 'LLL:EXT:lang/locallang_core.xlf:mess.' . ($this->currentMode() == 'copy' ? 'copy' : 'move') . ($this->current == 'normal' ? '' : 'cb') . '_' . $type;
 			$msg = $GLOBALS['LANG']->sL($labelKey);
 			if ($table == '_FILE') {
 				$thisRecTitle = basename($rec);
@@ -643,7 +643,7 @@ class Clipboard {
 	}
 
 	/**
-	 * Clipboard label - getting from "EXT:lang/locallang_core.php:"
+	 * Clipboard label - getting from "EXT:lang/locallang_core.xlf:"
 	 *
 	 * @param string $key Label Key
 	 * @param string $Akey Alternative key to "labels
@@ -651,7 +651,7 @@ class Clipboard {
 	 * @todo Define visibility
 	 */
 	public function clLabel($key, $Akey = 'labels') {
-		return htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:' . $Akey . '.' . $key));
+		return htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:' . $Akey . '.' . $key));
 	}
 
 	/**

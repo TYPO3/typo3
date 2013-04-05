@@ -115,7 +115,7 @@
 					<f:if condition="{constraint.timeFrame} == 30">
 						<br />
 
-						<label for="tceforms-datetimefield-manualDateStart"><f:translate key="LLL:EXT:lang/locallang_common.xml:from" /></label>&nbsp;
+						<label for="tceforms-datetimefield-manualDateStart"><f:translate key="LLL:EXT:lang/locallang_common.xlf:from" /></label>&nbsp;
 						<f:form.textfield
 							property="manualDateStart"
 							value="{constraint.manualDateStart -> f:format.date(format:'{settings.dateFormat} {settings.timeFormat}')}"
@@ -130,7 +130,7 @@
 							&nbsp;
 						</span>
 
-						<label for="tceforms-datetimefield-manualDateStop"><f:translate key="LLL:EXT:lang/locallang_common.xml:to" /></label>&nbsp;
+						<label for="tceforms-datetimefield-manualDateStop"><f:translate key="LLL:EXT:lang/locallang_common.xlf:to" /></label>&nbsp;
 						<f:form.textfield
 							property="manualDateStop"
 							value="{constraint.manualDateStop -> f:format.date(format:'{settings.dateFormat} {settings.timeFormat}')}"

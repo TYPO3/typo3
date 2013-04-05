@@ -40,7 +40,7 @@ require $BACK_PATH . 'init.php';
 unset($MCONF);
 unset($MLANG);
 // Merging locallang files/arrays:
-$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
+$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
 $LOCAL_LANG_orig = $LOCAL_LANG;
 $LANG->includeLLFile('EXT:cms/layout/locallang_db_new_content_el.xml');
 $LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($LOCAL_LANG_orig, $LOCAL_LANG);

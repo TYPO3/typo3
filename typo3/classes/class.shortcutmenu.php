@@ -25,7 +25,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
-	$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
+	$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
 	// Needed to get the correct icons when reloading the menu after saving it
 	$loadModules = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
 	$loadModules->load($GLOBALS['TBE_MODULES']);

@@ -7,7 +7,7 @@ return array(
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'fe_cruser_id' => 'fe_cruser_id',
-		'title' => 'LLL:EXT:cms/locallang_tca.xml:fe_users',
+		'title' => 'LLL:EXT:cms/locallang_tca.xlf:fe_users',
 		'delete' => 'deleted',
 		'enablecolumns' => array(
 			'disabled' => 'disable',
@@ -29,7 +29,7 @@ return array(
 	),
 	'columns' => array(
 		'username' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:fe_users.username',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:fe_users.username',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -38,7 +38,7 @@ return array(
 			)
 		),
 		'password' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:fe_users.password',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:fe_users.password',
 			'config' => array(
 				'type' => 'input',
 				'size' => '10',
@@ -47,7 +47,7 @@ return array(
 			)
 		),
 		'usergroup' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:fe_users.usergroup',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:fe_users.usergroup',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'fe_groups',
@@ -59,7 +59,7 @@ return array(
 		),
 		'lockToDomain' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:fe_users.lockToDomain',
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:fe_users.lockToDomain',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -70,7 +70,7 @@ return array(
 		),
 		'name' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.name',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.name',
 			'config' => array(
 				'type' => 'input',
 				'size' => '40',
@@ -80,7 +80,7 @@ return array(
 		),
 		'first_name' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.first_name',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.first_name',
 			'config' => array(
 				'type' => 'input',
 				'size' => '25',
@@ -90,7 +90,7 @@ return array(
 		),
 		'middle_name' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.middle_name',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.middle_name',
 			'config' => array(
 				'type' => 'input',
 				'size' => '25',
@@ -100,7 +100,7 @@ return array(
 		),
 		'last_name' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.last_name',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.last_name',
 			'config' => array(
 				'type' => 'input',
 				'size' => '25',
@@ -110,7 +110,7 @@ return array(
 		),
 		'address' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.address',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.address',
 			'config' => array(
 				'type' => 'text',
 				'cols' => '20',
@@ -119,7 +119,7 @@ return array(
 		),
 		'telephone' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.phone',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.phone',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'trim',
@@ -129,7 +129,7 @@ return array(
 		),
 		'fax' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.fax',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fax',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -139,7 +139,7 @@ return array(
 		),
 		'email' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.email',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.email',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -149,7 +149,7 @@ return array(
 		),
 		'title' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.title_person',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.title_person',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -159,7 +159,7 @@ return array(
 		),
 		'zip' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.zip',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.zip',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'trim',
@@ -169,7 +169,7 @@ return array(
 		),
 		'city' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.city',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.city',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -179,7 +179,7 @@ return array(
 		),
 		'country' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.country',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.country',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -189,7 +189,7 @@ return array(
 		),
 		'www' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.www',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.www',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'trim',
@@ -199,7 +199,7 @@ return array(
 		),
 		'company' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.company',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.company',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'trim',
@@ -209,7 +209,7 @@ return array(
 		),
 		'image' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.image',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.image',
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'file',
@@ -224,14 +224,14 @@ return array(
 		),
 		'disable' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.disable',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
 			'config' => array(
 				'type' => 'check'
 			)
 		),
 		'starttime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.starttime',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
 			'config' => array(
 				'type' => 'input',
 				'size' => '13',
@@ -242,7 +242,7 @@ return array(
 		),
 		'endtime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.endtime',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
 			'config' => array(
 				'type' => 'input',
 				'size' => '13',
@@ -276,7 +276,7 @@ return array(
 		),
 		'lastlogin' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.lastlogin',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.lastlogin',
 			'config' => array(
 				'type' => 'input',
 				'readOnly' => '1',
@@ -289,10 +289,10 @@ return array(
 	'types' => array(
 		'0' => array('showitem' => '
 			disable,username;;;;1-1-1, password, usergroup, lastlogin;;;;1-1-1,
-			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.personelData, company;;1;;1-1-1, name;;2;;2-2-2, address, zip, city, country, telephone, fax, email, www, image;;;;2-2-2,
-			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.options, lockToDomain;;;;1-1-1, TSconfig;;;;2-2-2,
-			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.access, starttime, endtime,
-			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.extended
+			--div--;LLL:EXT:cms/locallang_tca.xlf:fe_users.tabs.personelData, company;;1;;1-1-1, name;;2;;2-2-2, address, zip, city, country, telephone, fax, email, www, image;;;;2-2-2,
+			--div--;LLL:EXT:cms/locallang_tca.xlf:fe_users.tabs.options, lockToDomain;;;;1-1-1, TSconfig;;;;2-2-2,
+			--div--;LLL:EXT:cms/locallang_tca.xlf:fe_users.tabs.access, starttime, endtime,
+			--div--;LLL:EXT:cms/locallang_tca.xlf:fe_users.tabs.extended
 
 		')
 	),

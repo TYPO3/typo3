@@ -102,7 +102,7 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 					$description = array();
 					// Is public?
 					if ($presetCfg['public']) {
-						$description[] = $GLOBALS['LANG']->getLL('task.public') . ': ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes');
+						$description[] = $GLOBALS['LANG']->getLL('task.public') . ': ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:yes');
 					}
 					// Owner
 					$description[] = $GLOBALS['LANG']->getLL('task.owner') . ': ' . ($presetCfg['user_uid'] === $GLOBALS['BE_USER']->user['uid'] ? $GLOBALS['LANG']->getLL('task.own') : '[' . htmlspecialchars($usernames[$presetCfg['user_uid']]['username']) . ']');

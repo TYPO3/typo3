@@ -7,14 +7,14 @@ return array(
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
-		'title' => 'LLL:EXT:cms/locallang_tca.xml:tt_content',
+		'title' => 'LLL:EXT:cms/locallang_tca.xlf:tt_content',
 		'delete' => 'deleted',
 		'versioningWS' => 2,
 		'versioning_followPages' => TRUE,
 		'origUid' => 't3_origuid',
 		'type' => 'CType',
 		'hideAtCopy' => TRUE,
-		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
+		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
 		'copyAfterDuplFields' => 'colPos,sys_language_uid',
 		'useColumnsForDefaultValues' => 'colPos,sys_language_uid',
 		'shadowColumnsForNewPlaceholders' => 'colPos',
@@ -79,7 +79,7 @@ return array(
 	),
 	'columns' => array(
 		'CType' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.type',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.type',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -189,7 +189,7 @@ return array(
 		),
 		'hidden' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -201,7 +201,7 @@ return array(
 		),
 		'starttime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.starttime',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
 			'config' => array(
 				'type' => 'input',
 				'size' => '13',
@@ -214,7 +214,7 @@ return array(
 		),
 		'endtime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.endtime',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
 			'config' => array(
 				'type' => 'input',
 				'size' => '13',
@@ -230,22 +230,22 @@ return array(
 		),
 		'fe_group' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.fe_group',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fe_group',
 			'config' => array(
 				'type' => 'select',
 				'size' => 5,
 				'maxitems' => 20,
 				'items' => array(
 					array(
-						'LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login',
+						'LLL:EXT:lang/locallang_general.xlf:LGL.hide_at_login',
 						-1
 					),
 					array(
-						'LLL:EXT:lang/locallang_general.xml:LGL.any_login',
+						'LLL:EXT:lang/locallang_general.xlf:LGL.any_login',
 						-2
 					),
 					array(
-						'LLL:EXT:lang/locallang_general.xml:LGL.usergroups',
+						'LLL:EXT:lang/locallang_general.xlf:LGL.usergroups',
 						'--div--'
 					)
 				),
@@ -256,18 +256,18 @@ return array(
 		),
 		'sys_language_uid' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(
 					array(
-						'LLL:EXT:lang/locallang_general.xml:LGL.allLanguages',
+						'LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages',
 						-1
 					),
 					array(
-						'LLL:EXT:lang/locallang_general.xml:LGL.default_value',
+						'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
 						0
 					)
 				)
@@ -276,7 +276,7 @@ return array(
 		'l18n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -291,12 +291,12 @@ return array(
 		),
 		'layout' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.layout',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.layout',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
 					array(
-						'LLL:EXT:lang/locallang_general.xml:LGL.default_value',
+						'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
 						'0'
 					),
 					array(
@@ -327,7 +327,7 @@ return array(
 						'1'
 					),
 					array(
-						'LLL:EXT:lang/locallang_general.xml:LGL.normal',
+						'LLL:EXT:lang/locallang_general.xlf:LGL.normal',
 						'0'
 					),
 					array(
@@ -370,7 +370,7 @@ return array(
 				'type' => 'select',
 				'items' => array(
 					array(
-						'LLL:EXT:lang/locallang_general.xml:LGL.default_value',
+						'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
 						''
 					),
 					array(
@@ -412,12 +412,12 @@ return array(
 		),
 		'header_layout' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.type',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.type',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
 					array(
-						'LLL:EXT:lang/locallang_general.xml:LGL.default_value',
+						'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
 						'0'
 					),
 					array(
@@ -450,7 +450,7 @@ return array(
 		),
 		'subheader' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.subheader',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.subheader',
 			'config' => array(
 				'type' => 'input',
 				'size' => '50',
@@ -461,7 +461,7 @@ return array(
 		'bodytext' => array(
 			'l10n_mode' => 'prefixLangTitle',
 			'l10n_cat' => 'text',
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.text',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.text',
 			'config' => array(
 				'type' => 'text',
 				'cols' => '48',
@@ -539,7 +539,7 @@ return array(
 				'type' => 'select',
 				'items' => array(
 					array(
-						'LLL:EXT:lang/locallang_general.xml:LGL.default_value',
+						'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
 						'0'
 					),
 					array(
@@ -565,7 +565,7 @@ return array(
 				'type' => 'select',
 				'items' => array(
 					array(
-						'LLL:EXT:lang/locallang_general.xml:LGL.default_value',
+						'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
 						'0'
 					),
 					array(
@@ -607,7 +607,7 @@ return array(
 				'type' => 'select',
 				'items' => array(
 					array(
-						'LLL:EXT:lang/locallang_general.xml:LGL.default_value',
+						'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
 						'0'
 					),
 					array(
@@ -701,7 +701,7 @@ return array(
 			)
 		),
 		'image' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.images',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.images',
 			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('image', array(
 				'appearance' => array(
 					'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
@@ -845,7 +845,7 @@ return array(
 				'type' => 'check',
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled'
+						'0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
 					)
 				)
 			)
@@ -889,7 +889,7 @@ return array(
 				'type' => 'check',
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled'
+						'0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
 					)
 				)
 			)
@@ -995,7 +995,7 @@ return array(
 				'type' => 'select',
 				'items' => array(
 					array(
-						'LLL:EXT:lang/locallang_general.xml:LGL.default_value',
+						'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
 						0
 					),
 					array(
@@ -1120,7 +1120,7 @@ return array(
 			)
 		),
 		'imagecaption' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.caption',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.caption',
 			'config' => array(
 				'type' => 'text',
 				'cols' => '30',
@@ -1135,7 +1135,7 @@ return array(
 				'type' => 'select',
 				'items' => array(
 					array(
-						'LLL:EXT:lang/locallang_general.xml:LGL.default_value',
+						'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
 						''
 					),
 					array(
@@ -1246,7 +1246,7 @@ return array(
 			)
 		),
 		'pages' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.startingpoint',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.startingpoint',
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -1264,7 +1264,7 @@ return array(
 		),
 		'recursive' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.recursive',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.recursive',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -1361,7 +1361,7 @@ return array(
 		),
 		'select_key' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.code',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.code',
 			'config' => array(
 				'type' => 'input',
 				'size' => '50',
@@ -1376,7 +1376,7 @@ return array(
 				'type' => 'select',
 				'items' => array(
 					array(
-						'LLL:EXT:lang/locallang_general.xml:LGL.default_value',
+						'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
 						'0'
 					),
 					array(
@@ -1504,7 +1504,7 @@ return array(
 				'type' => 'check',
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled'
+						'0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
 					)
 				)
 			)
@@ -1639,7 +1639,7 @@ return array(
 				'default' => 1,
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled'
+						'0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
 					)
 				)
 			)
@@ -1651,7 +1651,7 @@ return array(
 				'type' => 'check',
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled'
+						'0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
 					)
 				)
 			)
@@ -1722,7 +1722,7 @@ return array(
 				'type' => 'check',
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:lang/locallang_core.xml:labels.enabled'
+						'0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
 					)
 				)
 			)
@@ -1742,7 +1742,7 @@ return array(
 			)
 		),
 		't3ver_label' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',

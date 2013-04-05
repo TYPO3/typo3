@@ -17,7 +17,7 @@
 								<type>check</type>
 								<items type="array">
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:lang/locallang_core.xml:labels.enabled</numIndex>
+										<numIndex index="0">LLL:EXT:lang/locallang_core.xlf:labels.enabled</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
 								</items>
@@ -32,7 +32,7 @@
 								<type>check</type>
 								<items type="array">
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:lang/locallang_core.xml:labels.enabled</numIndex>
+										<numIndex index="0">LLL:EXT:lang/locallang_core.xlf:labels.enabled</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
 								</items>
@@ -47,7 +47,7 @@
 								<type>check</type>
 								<items type="array">
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:lang/locallang_core.xml:labels.enabled</numIndex>
+										<numIndex index="0">LLL:EXT:lang/locallang_core.xlf:labels.enabled</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
 								</items>
@@ -77,7 +77,7 @@
 
 					<recursive>
 						<TCEforms>
-							<label>LLL:EXT:lang/locallang_general.php:LGL.recursive</label>
+							<label>LLL:EXT:lang/locallang_general.xlf:LGL.recursive</label>
 							<config>
 								<type>select</type>
 								<items type="array">
@@ -190,7 +190,7 @@
 								<type>check</type>
 								<items type="array">
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:lang/locallang_core.xml:labels.enabled</numIndex>
+										<numIndex index="0">LLL:EXT:lang/locallang_core.xlf:labels.enabled</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
 								</items>
@@ -261,7 +261,7 @@
 								<type>check</type>
 								<items type="array">
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:lang/locallang_common.xml:disable</numIndex>
+										<numIndex index="0">LLL:EXT:lang/locallang_common.xlf:disable</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
 								</items>

@@ -24,7 +24,7 @@ $GLOBALS['TCA']['tt_content']['types']['mailform']['showitem'] = '
 	linkToTop;;;;3-3-3,
 	--div--;LLL:EXT:cms/locallang_ttc.xml:CType.I.8,
 	bodytext;LLL:EXT:cms/locallang_ttc.php:bodytext.ALT.mailform;;nowrap:wizards[forms];3-3-3,
-	--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+	--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
 	starttime,
 	endtime,
 	fe_group
