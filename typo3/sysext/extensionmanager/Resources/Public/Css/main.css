@@ -1520,10 +1520,15 @@ button.ui-button::-moz-focus-inner {
       border-bottom: 0;
       padding-top: 8px; }
 
-.contentWrapper .ui-widget-header {
+.ui-widget-header {
   background: none;
   border: none;
   font-weight: normal; }
+
+.dataTable {
+  border-right: 1px solid #a2aab8;
+  border-bottom: 1px solid #a2aab8;
+  border-left: 1px solid #a2aab8; }
 
 .dataTables_info {
   font-size: 10px;
@@ -1674,20 +1679,10 @@ p {
 .typo3-extensionmanager-headerRowRight {
   float: right; }
 
-.contentWrapper {
-  background-color: #ececec;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(white 0), to(#ececec 36%));
-  background-image: -webkit-linear-gradient(top, white 0, #ececec 36%);
-  background-image: -moz-linear-gradient(top, white 0, #ececec 36%);
-  background-image: -ms-linear-gradient(top, white 0, #ececec 36%);
-  background-image: -o-linear-gradient(top, white 0, #ececec 36%);
-  background-image: linear-gradient(to bottom, white 0, #ececec 36%);
-  padding: 15px;
-  border: 1px solid #adadad; }
-  .contentWrapper .ui-toolbar {
-    margin-bottom: 5px; }
-    .contentWrapper .ui-toolbar .dataTables_filter {
-      float: left; }
+.ui-toolbar {
+  margin-bottom: 5px; }
+  .ui-toolbar .dataTables_filter {
+    float: left; }
 
 .typo3-extension-list {
   border-spacing: 0; }
@@ -1744,8 +1739,7 @@ p {
   .typo3-extension-list tr td {
     background: none;
     padding: 8px 10px;
-    vertical-align: middle;
-    border-bottom: 1px solid #fff; }
+    vertical-align: middle; }
     .typo3-extension-list tr td.stable {
       background-color: #87b374;
       background-image: -webkit-gradient(linear, left top, left bottom, from(#87b374 0%), to(#5f8d4b 100%));
