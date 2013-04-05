@@ -5,7 +5,7 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012-2013 Thomas Maroschik <tmaroschik@dfau.de>
+ *  (c) 2012 Thomas Maroschik <tmaroschik@dfau.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -43,27 +43,6 @@ class CompatbilityClassLoaderPhpBelow50307 extends \TYPO3\CMS\Core\Core\ClassLoa
 	 * @var string
 	 */
 	static protected $className = __CLASS__;
-
-	/**
-	 * Installs TYPO3 autoloader, and loads the autoload registry for the core.
-	 *
-	 * @return boolean TRUE in case of success
-	 */
-	static public function registerAutoloader() {
-		return parent::registerAutoloader();
-	}
-
-	/**
-	 * Unload TYPO3 autoloader and write any additional classes
-	 * found during the script run to the cache file.
-	 *
-	 * This method is called during shutdown of the framework.
-	 *
-	 * @return boolean TRUE in case of success
-	 */
-	static public function unregisterAutoloader() {
-		return parent::unregisterAutoloader();
-	}
 
 	/**
 	 * Require the class file and rewrite non sysext files transparently

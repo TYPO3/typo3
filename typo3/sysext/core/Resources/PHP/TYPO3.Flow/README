@@ -1,0 +1,11 @@
+This folder contains the parts of TYPO3 Flow for the intermediary
+package management to work.
+
+The following has been changed:
+* TYPO3\Flow\Exception now extends TYPO3\CMS\Core\Exception
+* TYPO3\Flow\Package\PackageManager does not implement the PackageManagerInterface anymore, as it will be dropped in Flow anyway
+* TYPO3\Flow\Package\Package has magic sleep and wakeup methods
+
+It has been imported from this commmit hash:
+
+1f9fa1fc9bed7efea51994806f83fc91d6e4f2d6
