@@ -33,7 +33,7 @@ return array(
 	),
 	'columns' => array(
 		't3ver_label' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',

@@ -25,7 +25,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 require_once 'init.php';
-$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
+$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
 /*
  * @deprecated since 6.0, the classname TYPO3backend and this file is obsolete
  * and will be removed with 6.2. The class was renamed and is now located at:

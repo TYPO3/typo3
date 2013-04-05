@@ -186,8 +186,8 @@ class ElementInformationController {
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		// Starting the page by creating page header stuff:
-		$this->content .= $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.viewItem'));
-		$this->content .= '<h3 class="t3-row-header">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.viewItem') . '</h3>';
+		$this->content .= $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.viewItem'));
+		$this->content .= '<h3 class="t3-row-header">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.viewItem') . '</h3>';
 		$this->content .= $this->doc->spacer(5);
 	}
 
@@ -236,8 +236,8 @@ class ElementInformationController {
 		}
 		// If return Url is set, output link to go back:
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'))) {
-			$this->content = $this->doc->section('', ($returnLinkTag . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack', 1) . '</strong></a><br /><br />')) . $this->content;
-			$this->content .= $this->doc->section('', '<br />' . $returnLinkTag . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack', 1) . '</strong></a>');
+			$this->content = $this->doc->section('', ($returnLinkTag . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', 1) . '</strong></a><br /><br />')) . $this->content;
+			$this->content .= $this->doc->section('', '<br />' . $returnLinkTag . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', 1) . '</strong></a>');
 		}
 	}
 
@@ -255,9 +255,9 @@ class ElementInformationController {
 		$this->content .= $this->doc->section('', $code);
 		$tableRows = array();
 		$extraFields = array(
-			'crdate' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.creationDate', 1),
-			'cruser_id' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.creationUserId', 1),
-			'tstamp' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.timestamp', 1)
+			'crdate' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate', 1),
+			'cruser_id' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationUserId', 1),
+			'tstamp' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp', 1)
 		);
 		foreach ($extraFields as $name => $value) {
 			$rowValue = \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValueExtra($this->table, $name, $this->row[$name]);
@@ -304,17 +304,17 @@ class ElementInformationController {
 		$this->content .= $this->doc->section('', $tableCode);
 		// Add path and table information in the bottom:
 		$code = '';
-		$code .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.path') . ': ' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($this->pageinfo['_thePath'], -48) . '<br />';
-		$code .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.table') . ': ' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']) . ' (' . $this->table . ') - UID: ' . $this->uid . '<br />';
+		$code .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.path') . ': ' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($this->pageinfo['_thePath'], -48) . '<br />';
+		$code .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.table') . ': ' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']) . ' (' . $this->table . ') - UID: ' . $this->uid . '<br />';
 		$this->content .= $this->doc->section('', $code);
 		// References:
 		$references = $this->makeRef($this->table, $this->row['uid']);
 		if (!empty($references)) {
-			$this->content .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesToThisItem'), $references);
+			$this->content .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesToThisItem'), $references);
 		}
 		$referencesFrom = $this->makeRefFrom($this->table, $this->row['uid']);
 		if (!empty($referencesFrom)) {
-			$this->content .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesFromThisItem'), $referencesFrom);
+			$this->content .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesFromThisItem'), $referencesFrom);
 		}
 	}
 
@@ -328,7 +328,7 @@ class ElementInformationController {
 	 */
 	public function renderFileInfo($returnLinkTag) {
 		$fileExtension = $this->fileObject->getExtension();
-		$code = '<div class="fileInfoContainer">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($fileExtension) . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.file', TRUE) . ':</strong> ' . $this->fileObject->getName() . '&nbsp;&nbsp;' . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.filesize') . ':</strong> ' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($this->fileObject->getSize()) . '</div>
+		$code = '<div class="fileInfoContainer">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($fileExtension) . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.file', TRUE) . ':</strong> ' . $this->fileObject->getName() . '&nbsp;&nbsp;' . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.filesize') . ':</strong> ' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($this->fileObject->getSize()) . '</div>
 			';
 		$this->content .= $this->doc->section('', $code);
 		$this->content .= $this->doc->divider(2);
@@ -338,7 +338,7 @@ class ElementInformationController {
 			// @todo: find a way to make getimagesize part of the t3lib_file object
 			$imgInfo = @getimagesize($this->fileObject->getForLocalProcessing(FALSE));
 			$thumbUrl = $this->fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => '150m', 'height' => '150m'))->getPublicUrl(TRUE);
-			$code = '<div class="fileInfoContainer fileDimensions">' . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.dimensions') . ':</strong> ' . $imgInfo[0] . 'x' . $imgInfo[1] . ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.pixels') . '</div>';
+			$code = '<div class="fileInfoContainer fileDimensions">' . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.dimensions') . ':</strong> ' . $imgInfo[0] . 'x' . $imgInfo[1] . ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.pixels') . '</div>';
 			$code .= '<br />
 				<div align="center">' . $returnLinkTag . '<img src="' . $thumbUrl . '" alt="' . htmlspecialchars(trim($this->fileObject->getName())) . '" title="' . htmlspecialchars(trim($this->fileObject->getName())) . '" /></a></div>';
 			$this->content .= $this->doc->section('', $code);
@@ -385,7 +385,7 @@ class ElementInformationController {
 			$references = $this->makeRef('_FILE', $this->fileObject);
 
 			if (!empty($references)) {
-				$header = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesToThisItem');
+				$header = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesToThisItem');
 				$this->content .= $this->doc->section($header, $references);
 			}
 		}
@@ -466,7 +466,7 @@ class ElementInformationController {
 		// Compile information for title tag:
 		$infoData = array();
 		if (count($rows)) {
-			$infoData[] = '<tr class="t3-row-header">' . '<td>&nbsp;</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.table') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.title') . '</td>' . '<td>[uid]</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.field') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.flexpointer') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.softrefKey') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.sorting') . '</td>' . '</tr>';
+			$infoData[] = '<tr class="t3-row-header">' . '<td>&nbsp;</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.table') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.title') . '</td>' . '<td>[uid]</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.field') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.flexpointer') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.softrefKey') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.sorting') . '</td>' . '</tr>';
 		}
 		foreach ($rows as $row) {
 			if ($row['tablename'] === 'sys_file_reference') {
@@ -518,7 +518,7 @@ class ElementInformationController {
 		// Compile information for title tag:
 		$infoData = array();
 		if (count($rows)) {
-			$infoData[] = '<tr class="t3-row-header">' . '<td>&nbsp;</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.field') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.flexpointer') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.softrefKey') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.sorting') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refTable') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refUid') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refString') . '</td>' . '</tr>';
+			$infoData[] = '<tr class="t3-row-header">' . '<td>&nbsp;</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.field') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.flexpointer') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.softrefKey') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.sorting') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.refTable') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.refUid') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.refString') . '</td>' . '</tr>';
 		}
 		foreach ($rows as $row) {
 			$actions = $this->getRecordActions($row['ref_table'], $row['ref_uid']);

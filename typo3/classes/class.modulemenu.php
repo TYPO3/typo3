@@ -25,7 +25,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
-	$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
+	$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
 }
 /*
  * @deprecated since 6.0, the classname ModuleMenu and this file is obsolete

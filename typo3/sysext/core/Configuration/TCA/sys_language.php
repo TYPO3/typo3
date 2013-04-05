@@ -4,7 +4,7 @@ return array(
 		'label' => 'title',
 		'tstamp' => 'tstamp',
 		'default_sortby' => 'ORDER BY title',
-		'title' => 'LLL:EXT:lang/locallang_tca.php:sys_language',
+		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_language',
 		'adminOnly' => 1,
 		'rootLevel' => 1,
 		'enablecolumns' => array(
@@ -20,7 +20,7 @@ return array(
 	),
 	'columns' => array(
 		'title' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
 			'config' => array(
 				'type' => 'input',
 				'size' => '35',
@@ -29,7 +29,7 @@ return array(
 			)
 		),
 		'hidden' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'check',
@@ -38,7 +38,7 @@ return array(
 		),
 		'static_lang_isocode' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_tca.php:sys_language.isocode',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_language.isocode',
 			'displayCond' => 'EXT:static_info_tables:LOADED:true',
 			'config' => array(
 				'type' => 'select',
@@ -53,7 +53,7 @@ return array(
 			)
 		),
 		'flag' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.php:sys_language.flag',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_language.flag',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(

@@ -3,7 +3,7 @@ return array(
 	'ctrl' => array(
 		'label' => 'username',
 		'tstamp' => 'tstamp',
-		'title' => 'LLL:EXT:lang/locallang_tca.php:be_users',
+		'title' => 'LLL:EXT:lang/locallang_tca.xlf:be_users',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'delete' => 'deleted',
@@ -37,7 +37,7 @@ return array(
 	),
 	'columns' => array(
 		'username' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:be_users.username',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.username',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -46,7 +46,7 @@ return array(
 			)
 		),
 		'password' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:be_users.password',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.password',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -55,7 +55,7 @@ return array(
 			)
 		),
 		'usergroup' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:be_users.usergroup',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.usergroup',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'be_groups',
@@ -68,7 +68,7 @@ return array(
 					'_VERTICAL' => 1,
 					'edit' => array(
 						'type' => 'popup',
-						'title' => 'LLL:EXT:lang/locallang_tca.xml:be_users.usergroup_edit_title',
+						'title' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.usergroup_edit_title',
 						'script' => 'wizard_edit.php',
 						'popup_onlyOpenIfSelected' => 1,
 						'icon' => 'edit2.gif',
@@ -76,7 +76,7 @@ return array(
 					),
 					'add' => array(
 						'type' => 'script',
-						'title' => 'LLL:EXT:lang/locallang_tca.xml:be_users.usergroup_add_title',
+						'title' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.usergroup_add_title',
 						'icon' => 'add.gif',
 						'params' => array(
 							'table' => 'be_groups',
@@ -87,7 +87,7 @@ return array(
 					),
 					'list' => array(
 						'type' => 'script',
-						'title' => 'LLL:EXT:lang/locallang_tca.xml:be_users.usergroup_list_title',
+						'title' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.usergroup_list_title',
 						'icon' => 'list.gif',
 						'params' => array(
 							'table' => 'be_groups',
@@ -99,7 +99,7 @@ return array(
 			)
 		),
 		'lockToDomain' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:lockToDomain',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:lockToDomain',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -109,7 +109,7 @@ return array(
 			)
 		),
 		'db_mountpoints' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:be_users.options_db_mounts',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.options_db_mounts',
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -126,7 +126,7 @@ return array(
 			)
 		),
 		'file_mountpoints' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:be_users.options_file_mounts',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.options_file_mounts',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'sys_filemounts',
@@ -140,7 +140,7 @@ return array(
 					'_VERTICAL' => 1,
 					'edit' => array(
 						'type' => 'popup',
-						'title' => 'LLL:EXT:lang/locallang_tca.xml:file_mountpoints_edit_title',
+						'title' => 'LLL:EXT:lang/locallang_tca.xlf:file_mountpoints_edit_title',
 						'script' => 'wizard_edit.php',
 						'icon' => 'edit2.gif',
 						'popup_onlyOpenIfSelected' => 1,
@@ -148,7 +148,7 @@ return array(
 					),
 					'add' => array(
 						'type' => 'script',
-						'title' => 'LLL:EXT:lang/locallang_tca.xml:file_mountpoints_add_title',
+						'title' => 'LLL:EXT:lang/locallang_tca.xlf:file_mountpoints_add_title',
 						'icon' => 'add.gif',
 						'params' => array(
 							'table' => 'sys_filemounts',
@@ -159,7 +159,7 @@ return array(
 					),
 					'list' => array(
 						'type' => 'script',
-						'title' => 'LLL:EXT:lang/locallang_tca.xml:file_mountpoints_list_title',
+						'title' => 'LLL:EXT:lang/locallang_tca.xlf:file_mountpoints_list_title',
 						'icon' => 'list.gif',
 						'params' => array(
 							'table' => 'sys_filemounts',
@@ -171,7 +171,7 @@ return array(
 			)
 		),
 		'email' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.email',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.email',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -181,7 +181,7 @@ return array(
 			)
 		),
 		'realName' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.name',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.name',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -190,61 +190,61 @@ return array(
 			)
 		),
 		'disable' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.disable',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
 			'config' => array(
 				'type' => 'check'
 			)
 		),
 		'disableIPlock' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:be_users.disableIPlock',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.disableIPlock',
 			'config' => array(
 				'type' => 'check'
 			)
 		),
 		'admin' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:be_users.admin',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.admin',
 			'config' => array(
 				'type' => 'check',
 				'default' => '0'
 			)
 		),
 		'options' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:be_users.options',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.options',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
-					array('LLL:EXT:lang/locallang_tca.xml:be_users.options_db_mounts', 0),
-					array('LLL:EXT:lang/locallang_tca.xml:be_users.options_file_mounts', 0)
+					array('LLL:EXT:lang/locallang_tca.xlf:be_users.options_db_mounts', 0),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_users.options_file_mounts', 0)
 				),
 				'default' => '3'
 			)
 		),
 		'fileoper_perms' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:be_users.fileoper_perms',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.fileoper_perms',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
-					array('LLL:EXT:lang/locallang_tca.xml:be_users.fileoper_perms_general', 0),
-					array('LLL:EXT:lang/locallang_tca.xml:be_users.fileoper_perms_unzip', 0),
-					array('LLL:EXT:lang/locallang_tca.xml:be_users.fileoper_perms_diroper_perms', 0),
-					array('LLL:EXT:lang/locallang_tca.xml:be_users.fileoper_perms_diroper_perms_copy', 0),
-					array('LLL:EXT:lang/locallang_tca.xml:be_users.fileoper_perms_diroper_perms_delete', 0)
+					array('LLL:EXT:lang/locallang_tca.xlf:be_users.fileoper_perms_general', 0),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_users.fileoper_perms_unzip', 0),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_users.fileoper_perms_diroper_perms', 0),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_users.fileoper_perms_diroper_perms_copy', 0),
+					array('LLL:EXT:lang/locallang_tca.xlf:be_users.fileoper_perms_diroper_perms_delete', 0)
 				),
 				'default' => '0'
 			)
 		),
 		'workspace_perms' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:workspace_perms',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:workspace_perms',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
-					array('LLL:EXT:lang/locallang_tca.xml:workspace_perms_live', 0)
+					array('LLL:EXT:lang/locallang_tca.xlf:workspace_perms_live', 0)
 				),
 				'default' => 1
 			)
 		),
 		'starttime' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.starttime',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
 			'config' => array(
 				'type' => 'input',
 				'size' => '13',
@@ -254,7 +254,7 @@ return array(
 			)
 		),
 		'endtime' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.endtime',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
 			'config' => array(
 				'type' => 'input',
 				'size' => '13',
@@ -267,7 +267,7 @@ return array(
 			)
 		),
 		'lang' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:be_users.lang',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.lang',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -276,7 +276,7 @@ return array(
 			)
 		),
 		'userMods' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:userMods',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:userMods',
 			'config' => array(
 				'type' => 'select',
 				'special' => 'modListUser',
@@ -288,7 +288,7 @@ return array(
 			)
 		),
 		'allowed_languages' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:allowed_languages',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:allowed_languages',
 			'config' => array(
 				'type' => 'select',
 				'special' => 'languages',
@@ -297,7 +297,7 @@ return array(
 			)
 		),
 		'TSconfig' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:TSconfig',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:TSconfig',
 			'config' => array(
 				'type' => 'text',
 				'cols' => '40',
@@ -306,7 +306,7 @@ return array(
 					'_PADDING' => 4,
 					'0' => array(
 						'type' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tsconfig_help') ? 'popup' : '',
-						'title' => 'LLL:EXT:lang/locallang_tca.xml:TSconfig_title',
+						'title' => 'LLL:EXT:lang/locallang_tca.xlf:TSconfig_title',
 						'script' => 'wizard_tsconfig.php?mode=beuser',
 						'icon' => 'wizard_tsconfig.gif',
 						'JSopenParams' => 'height=500,width=780,status=0,menubar=0,scrollbars=1'
@@ -322,7 +322,7 @@ return array(
 			)
 		),
 		'lastlogin' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.lastlogin',
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.lastlogin',
 			'config' => array(
 				'type' => 'input',
 				'readOnly' => '1',
@@ -334,15 +334,15 @@ return array(
 	),
 	'types' => array(
 		'0' => array('showitem' => 'disable;;;;1-1-1, username;;;;2-2-2, password, usergroup;;;;3-3-3, admin;;;;1-1-1, realName;;;;3-3-3, email, lang, lastlogin;;;;1-1-1,
-			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.rights, userMods;;;;2-2-2, allowed_languages,
-			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.mounts_and_workspaces, workspace_perms;;;;1-1-1, db_mountpoints;;;;2-2-2, options, file_mountpoints;;;;3-3-3, fileoper_perms,
-			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.options, lockToDomain;;;;1-1-1, disableIPlock, TSconfig;;;;2-2-2,
-			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.access, starttime;;;;1-1-1,endtime,
-			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.extended'),
+			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.rights, userMods;;;;2-2-2, allowed_languages,
+			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.mounts_and_workspaces, workspace_perms;;;;1-1-1, db_mountpoints;;;;2-2-2, options, file_mountpoints;;;;3-3-3, fileoper_perms,
+			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.options, lockToDomain;;;;1-1-1, disableIPlock, TSconfig;;;;2-2-2,
+			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.access, starttime;;;;1-1-1,endtime,
+			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.extended'),
 		'1' => array('showitem' => 'disable;;;;1-1-1, username;;;;2-2-2, password, usergroup;;;;3-3-3, admin;;;;1-1-1, realName;;;;3-3-3, email, lang, lastlogin;;;;1-1-1,
-			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.options, disableIPlock;;;;1-1-1, TSconfig;;;;2-2-2, db_mountpoints;;;;3-3-3, options, file_mountpoints;;;;4-4-4,
-			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.access, starttime;;;;1-1-1,endtime,
-			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.extended')
+			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.options, disableIPlock;;;;1-1-1, TSconfig;;;;2-2-2, db_mountpoints;;;;3-3-3, options, file_mountpoints;;;;4-4-4,
+			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.access, starttime;;;;1-1-1,endtime,
+			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.extended')
 	)
 );
 ?>

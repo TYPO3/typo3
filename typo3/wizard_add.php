@@ -33,7 +33,7 @@
  */
 $BACK_PATH = '';
 require 'init.php';
-$LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
+$LANG->includeLLFile('EXT:lang/locallang_wizards.xlf');
 /*
  * @deprecated since 6.0, the classname SC_wizard_add and this file is obsolete
  * and will be removed with 6.2. The class was renamed and is now located at:

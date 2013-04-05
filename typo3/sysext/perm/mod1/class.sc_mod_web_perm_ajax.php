@@ -21,7 +21,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_web_perm.xml');
+$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_web_perm.xlf');
 /*
  * @deprecated since 6.0, the classname SC_mod_web_perm_ajax and this file is obsolete
  * and will be removed with 6.2. The class was renamed and is now located at:

@@ -114,14 +114,14 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 	 */
 	public function getNodeTypes() {
 		$map = array(
-			1 => 'LLL:EXT:lang/locallang_tca.php:doktype.I.0',
-			3 => 'LLL:EXT:cms/locallang_tca.php:pages.doktype.I.8',
-			4 => 'LLL:EXT:cms/locallang_tca.php:pages.doktype.I.2',
-			6 => 'LLL:EXT:cms/locallang_tca.php:pages.doktype.I.4',
-			7 => 'LLL:EXT:cms/locallang_tca.php:pages.doktype.I.5',
-			199 => 'LLL:EXT:cms/locallang_tca.php:pages.doktype.I.7',
-			254 => 'LLL:EXT:lang/locallang_tca.php:doktype.I.folder',
-			255 => 'LLL:EXT:lang/locallang_tca.php:doktype.I.2'
+			1 => 'LLL:EXT:lang/locallang_tca.xlf:doktype.I.0',
+			3 => 'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.8',
+			4 => 'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.2',
+			6 => 'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.4',
+			7 => 'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.5',
+			199 => 'LLL:EXT:cms/locallang_tca.xlf:pages.doktype.I.7',
+			254 => 'LLL:EXT:lang/locallang_tca.xlf:doktype.I.folder',
+			255 => 'LLL:EXT:lang/locallang_tca.xlf:doktype.I.2'
 		);
 		$doktypes = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.doktypesToShowInNewPageDragArea'));
 		$output = array();
@@ -166,7 +166,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 	 * @return void
 	 */
 	public function loadResources() {
-		$file = 'LLL:EXT:lang/locallang_core.xml:';
+		$file = 'LLL:EXT:lang/locallang_core.xlf:';
 		$indicators = $this->getIndicators();
 		$configuration = array(
 			'LLL' => array(

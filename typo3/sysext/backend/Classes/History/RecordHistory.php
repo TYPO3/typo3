@@ -415,7 +415,7 @@ class RecordHistory {
 			// remove first link
 			$singleLine[] = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::datetime($entry['tstamp']));
 			// add time
-			$singleLine[] = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $entry['tstamp'], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')));
+			$singleLine[] = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $entry['tstamp'], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')));
 			// add age
 			$singleLine[] = htmlspecialchars($userName);
 			// add user name
