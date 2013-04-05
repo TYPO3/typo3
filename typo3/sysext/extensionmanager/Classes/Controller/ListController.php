@@ -119,8 +119,16 @@ class ListController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCont
 	 * @param string $extensionKey
 	 */
 	public function showAllVersionsAction($extensionKey) {
+		$currentVersion = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extensionKey);
 		$extensions = $this->extensionRepository->findByExtensionKeyOrderedByVersion($extensionKey);
-		$this->view->assign('extensions', $extensions)->assign('extensionKey', $extensionKey);
+
+		$this->view->assignMultiple(
+			array(
+				'extensionKey' => $extensionKey,
+				'currentVersion' => $currentVersion,
+				'extensions' => $extensions
+			)
+		);
 	}
 }
 ?>
