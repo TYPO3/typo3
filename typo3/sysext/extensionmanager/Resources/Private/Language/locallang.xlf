@@ -325,7 +325,7 @@
 				<source>Error</source>
 			</trans-unit>
 			<trans-unit id="report.status.mainRepository.notFound.message" xml:space="preserve">
-				<source>The typo3.org extension repository was not found. Please import the main typo3.org extension repository in the install tool wizard.</source>
+				<source>The typo3.org extension repository was not found. Please go to the "Update Wizard" in the install tool and run the task "Add the default Extension Manager database tables".</source>
 			</trans-unit>
 			<trans-unit id="report.status.mainRepository.notUpToDate.value" xml:space="preserve">
 				<source>Extension list is not up to date!</source>
