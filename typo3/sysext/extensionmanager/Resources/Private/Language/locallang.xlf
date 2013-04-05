@@ -117,6 +117,9 @@
 			<trans-unit id="extensionList.header.extensionName" xml:space="preserve">
 				<source>Extension</source>
 			</trans-unit>
+			<trans-unit id="extensionList.header.version" xml:space="preserve">
+				<source>Version</source>
+			</trans-unit>
 			<trans-unit id="extensionList.header.extensionKey" xml:space="preserve">
 				<source>Key</source>
 			</trans-unit>
