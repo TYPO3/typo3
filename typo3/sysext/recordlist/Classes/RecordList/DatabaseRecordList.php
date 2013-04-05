@@ -836,6 +836,18 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 			default:
 				// Regular fields header:
 				$theData[$fCol] = '';
+
+				// Check if $fCol is really a field and get the label and remove the colons at the end
+				$sortLabel = \TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel($table, $fCol);
+				if ($sortLabel !== NULL) {
+					$sortLabel = $GLOBALS['LANG']->sL($sortLabel, TRUE);
+					$sortLabel = rtrim(trim($sortLabel), ':');
+				} else {
+					// No TCA field, only output the $fCol variable with square brackets []
+					$sortLabel = htmlspecialchars($fCol);
+					$sortLabel = '<i>[' . rtrim(trim($sortLabel), ':') . ']</i>';
+				}
+
 				if ($this->table && is_array($currentIdList)) {
 					// If the numeric clipboard pads are selected, show duplicate sorting link:
 					if ($this->clipNumPane()) {
@@ -848,11 +860,11 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 							$editIdList = '\'+editList(\'' . $table . '\',\'' . $editIdList . '\')+\'';
 						}
 						$params = '&edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . $fCol . '&disHelp=1';
-						$iTitle = sprintf($GLOBALS['LANG']->getLL('editThisColumn'), rtrim(trim($GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel($table, $fCol))), ':'));
+						$iTitle = sprintf($GLOBALS['LANG']->getLL('editThisColumn'), $sortLabel);
 						$theData[$fCol] .= '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . htmlspecialchars($iTitle) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 					}
 				}
-				$theData[$fCol] .= $this->addSortLink($GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel($table, $fCol, '<i>[|]</i>')), $fCol, $table);
+				$theData[$fCol] .= $this->addSortLink($sortLabel, $fCol, $table);
 				break;
 			}
 		}
