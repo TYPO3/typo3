@@ -6,11 +6,12 @@
 	<f:be.buttons.icon uri="{f:uri.action(action:'index',controller:'List',additionalParams:{search:extensionKey})}" icon="actions-view-go-back" title="{f:translate(key:'extConfTemplate.backToList')}" />
 </f:section>
 
+<f:section name="module-headline">
+	<h2><f:translate key="updateScript.headline" arguments="{0: extensionKey}" /></h2>
+</f:section>
+
 <f:section name="Content">
 	<div id="typo3-extension-configuration-forms">
-		<h2>
-			<f:translate key="updateScript.headline" arguments="{0: extensionKey}" />
-		</h2>
 		<div class="update-script">
 			<f:if condition="{updateScriptResult}">
 				<f:then>
