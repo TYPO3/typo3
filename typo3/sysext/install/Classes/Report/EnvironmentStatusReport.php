@@ -46,16 +46,14 @@ class EnvironmentStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterf
 			'ERROR' => array(),
 			'WARNING' => array(),
 			'OK' => array(),
-			'INFO' => array(),
+			'INFORMATION' => array(),
 			'NOTICE' => array(),
 		);
 
+		/** @var $statusObject \TYPO3\CMS\Install\SystemEnvironment\AbstractStatus */
 		foreach ($statusObjects as $statusObject) {
-			$className = get_class($statusObject);
-			// Uppercase last part of class name, without last 6 chars:
-			// TYPO3\CMS\Install\SystemEnvironment\ErrorStatus -> ERROR
-			$severityIdentifier = strtoupper(substr(array_pop(explode('\\', $className)), 0, -6));
-			if (!is_array($reportStatusTypes[$severityIdentifier])) {
+			$severityIdentifier = strtoupper($statusObject->getSeverity());
+			if (empty($severityIdentifier) || !is_array($reportStatusTypes[$severityIdentifier])) {
 				throw new \TYPO3\CMS\Install\Exception('Unknown reports severity type', 1362602560);
 			}
 			$reportStatusTypes[$severityIdentifier][] = $statusObject;
@@ -66,6 +64,10 @@ class EnvironmentStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterf
 			$value = count($statusObjects);
 			if ($value > 0) {
 				$pathToXliff = 'LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf';
+				// Map information type to abbreviation which is used in \TYPO3\CMS\Reports\Status class
+				if ($type === 'INFORMATION') {
+					$type = 'INFO';
+				}
 				$message = $GLOBALS['LANG']->sL($pathToXliff . ':environment.status.message.' . strtolower($type));
 				$severity = constant('\TYPO3\CMS\Reports\Status::' . $type);
 				$statusArray[] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
