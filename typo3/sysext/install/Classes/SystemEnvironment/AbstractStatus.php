@@ -32,14 +32,26 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
 class AbstractStatus implements StatusInterface {
 
 	/**
+	 * @var string Severity
+	 */
+	protected $severity = '';
+
+	/**
 	 * @var string Title
 	 */
-	protected $title;
+	protected $title = '';
 
 	/**
 	 * @var string Status message
 	 */
-	protected $message;
+	protected $message = '';
+
+	/**
+	 * @return string The severity
+	 */
+	public function getSeverity() {
+		return $this->severity;
+	}
 
 	/**
 	 * @return string The title
