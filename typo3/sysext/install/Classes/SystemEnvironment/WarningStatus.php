@@ -31,5 +31,10 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  */
 class WarningStatus extends AbstractStatus implements StatusInterface {
 
+	/**
+	 * @var string The severity
+	 */
+	protected $severity = 'warning';
+
 }
 ?>

@@ -1328,30 +1328,22 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 		$statusObjects = $statusCheck->getStatus();
 
 		$orderedStatus = array(
-			'ErrorStatus' => array(),
-			'WarningStatus' => array(),
-			'OkStatus' => array(),
-			'InfoStatus' => array(),
-			'NoticeStatus' => array(),
+			'error' => array(),
+			'warning' => array(),
+			'ok' => array(),
+			'info' => array(),
+			'notice' => array(),
 		);
 
+		/** @var $statusObject \TYPO3\CMS\Install\SystemEnvironment\AbstractStatus */
 		foreach ($statusObjects as $statusObject) {
-			$className = get_class($statusObject);
-			// Last part of class name
-			$severityIdentifier = array_pop(explode('\\', $className));
-			if (!is_array($orderedStatus[$severityIdentifier])) {
+			$severityIdentifier = $statusObject->getSeverity();
+
+			if (empty($severityIdentifier) || !is_array($orderedStatus[$severityIdentifier])) {
 				throw new \TYPO3\CMS\Install\Exception('Unknown status severity type', 1362602559);
 			}
 			$orderedStatus[$severityIdentifier][] = $statusObject;
 		}
-
-		$severityToCssClass = array(
-			'ErrorStatus' => 'error',
-			'WarningStatus' => 'warning',
-			'OkStatus' => 'ok',
-			'InfoStatus' => 'information',
-			'NoticeStatus' => 'notice',
-		);
 
 		$messageHtmlBoilerPlate =
 			'<div class="typo3-message message-%1s" >' .
@@ -1367,12 +1359,10 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 		foreach ($orderedStatus as $severity) {
 			foreach ($severity as $status) {
 				/** @var $status \TYPO3\CMS\Install\SystemEnvironment\AbstractStatus */
-				$className = get_class($status);
-				// Last part of class name
-				$severityIdentifier = array_pop(explode('\\', $className));
+				$severityIdentifier = $status->getSeverity();
 				$html .= sprintf(
 					$messageHtmlBoilerPlate,
-					$severityToCssClass[$severityIdentifier],
+					$severityIdentifier,
 					$status->getTitle(),
 					$status->getMessage()
 				);
