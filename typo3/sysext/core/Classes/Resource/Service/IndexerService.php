@@ -90,15 +90,17 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->emitPreFileIndexSignal($fileObject, $fileInfo);
 		// @todo: this should be done via services in the future
 		// @todo: this should take remote services into account
-		if ($fileInfo['type'] == $fileObject::FILETYPE_IMAGE && !$fileInfo['width']) {
+		if (count($fileInfo) > 0 && $fileInfo['type'] == $fileObject::FILETYPE_IMAGE && !$fileInfo['width']) {
 			$rawFileLocation = $fileObject->getForLocalProcessing(FALSE);
 			list($fileInfo['width'], $fileInfo['height']) = getimagesize($rawFileLocation);
 		}
 		// If the file is already indexed, then the file information will
 		// be updated on the existing record
-		if ($fileObject->isIndexed()) {
+		if ($fileObject->isIndexed() && count($fileInfo) > 0) {
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_file', sprintf('uid = %d', $fileObject->getUid()), $fileInfo);
-		} else {
+			// clear cache for file objects
+			$GLOBALS['typo3CacheManager']->flushCachesByTag('sys_file_' . $fileObject->getUid());
+		} elseif (!$fileObject->isIndexed()) {
 			// Check if a file has been moved outside of FAL -- we have some
 			// orphaned index record in this case we could update
 			$otherFiles = $this->getRepository()->findBySha1Hash($fileInfo['sha1']);
@@ -228,6 +230,23 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		// signal after the file information is fetched
 		$this->emitPostGatherFileInformationSignal($file, $fileInfo, $gatherDefaultInformation);
+		// for already indexed files we only need things which changed
+		if ($file->isIndexed()) {
+			$currentData = array(
+				'creation_date' => $file->getCreationTime(),
+				'modification_date' => $file->getModificationTime(),
+				'size' => $file->getSize(),
+				'identifier' => $file->getIdentifier(),
+				'storage' => $file->getStorage()->getUid(),
+				'name' => $file->getName(),
+				'sha1' => $file->getSha1(),
+				'type' => $file->getType(),
+				'mime_type' => $file->getMimeType(),
+				'extension' => $file->getExtension()
+			);
+			$changes = array_diff($fileInfo, $currentData);
+			$fileInfo = new \ArrayObject($changes);
+		}
 		return $fileInfo->getArrayCopy();
 	}
 
