@@ -92,25 +92,21 @@
 	margin-left: -2px;
 }
 
-.obsolete, .test, .experimental {
-	background-color: #a3a3a3;
-}
+.alpha { @include alpha; }
+.beta { @include beta; }
+.stable { @include stable; }
+.experimental { @include experimental; }
+.test { @include test; }
+.obsolete { @include obsolete; }
+.excludeFromUpdates { @include excludeFromUpdates; }
 
-.stable {
-	background-color: #b7ff97 !important;
-}
-
-.alpha {
-	background-color: #ffb1e0 !important;
-}
-
-.beta {
-	background-color: #aaffcb !important;
-}
-
-.stable,
 .alpha,
-.beta {
+.beta,
+.stable,
+.experimental,
+.test,
+.obsolete,
+.excludeFromUpdates {
 	font-weight: bold;
 	color: #fff;
 }
