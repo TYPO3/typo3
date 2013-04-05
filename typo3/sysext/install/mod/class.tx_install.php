@@ -30,28 +30,29 @@
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author 	Ingmar Schlecht <ingmar@typo3.org>
  */
+$installExtensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install');
 // include session handling
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'mod/class.tx_install_session.php';
+require_once $installExtensionPath . 'mod/class.tx_install_session.php';
 // include update classes
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/CharsetDefaultsUpdate.php';
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/CompatVersionUpdate.php';
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/CscSplitUpdate.php';
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/NotInMenuUpdate.php';
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/MergeAdvancedUpdate.php';
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/InstallSysExtsUpdate.php';
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/ImagecolsUpdate.php';
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/T3skinUpdate.php';
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/CompressionLevelUpdate.php';
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/MigrateWorkspacesUpdate.php';
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/FlagsFromSpriteUpdate.php';
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/AddFlexFormsToAclUpdate.php';
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/ImagelinkUpdate.php';
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/MediaFlexformUpdate.php';
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/CoreUpdates/LocalConfigurationUpdate.php';
+require_once $installExtensionPath . 'Classes/CoreUpdates/CharsetDefaultsUpdate.php';
+require_once $installExtensionPath . 'Classes/CoreUpdates/CompatVersionUpdate.php';
+require_once $installExtensionPath . 'Classes/CoreUpdates/CscSplitUpdate.php';
+require_once $installExtensionPath . 'Classes/CoreUpdates/NotInMenuUpdate.php';
+require_once $installExtensionPath . 'Classes/CoreUpdates/MergeAdvancedUpdate.php';
+require_once $installExtensionPath . 'Classes/CoreUpdates/InstallSysExtsUpdate.php';
+require_once $installExtensionPath . 'Classes/CoreUpdates/ImagecolsUpdate.php';
+require_once $installExtensionPath . 'Classes/CoreUpdates/T3skinUpdate.php';
+require_once $installExtensionPath . 'Classes/CoreUpdates/CompressionLevelUpdate.php';
+require_once $installExtensionPath . 'Classes/CoreUpdates/MigrateWorkspacesUpdate.php';
+require_once $installExtensionPath . 'Classes/CoreUpdates/FlagsFromSpriteUpdate.php';
+require_once $installExtensionPath . 'Classes/CoreUpdates/AddFlexFormsToAclUpdate.php';
+require_once $installExtensionPath . 'Classes/CoreUpdates/ImagelinkUpdate.php';
+require_once $installExtensionPath . 'Classes/CoreUpdates/MediaFlexformUpdate.php';
+require_once $installExtensionPath . 'Classes/CoreUpdates/LocalConfigurationUpdate.php';
 /*
  * @deprecated since 6.0, the classname tx_install and this file is obsolete
  * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/install/Classes/Installer.php
  */
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/Installer.php';
+require_once $installExtensionPath . 'Classes/Installer.php';
 ?>
