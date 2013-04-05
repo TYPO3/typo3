@@ -1809,8 +1809,8 @@ class BackendUtility {
 	 *
 	 * @param string $table Table name, present in $GLOBALS['TCA']
 	 * @param string $col Field name
-	 * @param string $printAllWrap Wrap value - set function description
-	 * @return string
+	 * @param string $printAllWrap Wrap value - set function description - this parameter is deprecated since TYPO3 6.2 and is removed two versions later. This paramater is a conceptual failure, as the content can then never be HSCed afterwards (which is how the method is used all the time), and then the code would be HSCed twice.
+	 * @return string or NULL if $col is not found in the TCA table
 	 */
 	static public function getItemLabel($table, $col, $printAllWrap = '') {
 		// Load full TCA for $table
@@ -1820,9 +1820,12 @@ class BackendUtility {
 			return $GLOBALS['TCA'][$table]['columns'][$col]['label'];
 		}
 		if ($printAllWrap) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('The third parameter of getItemLabel() is deprecated with TYPO3 CMS 6.2 and will be removed two versions later.');
 			$parts = explode('|', $printAllWrap);
 			return $parts[0] . $col . $parts[1];
 		}
+
+		return NULL;
 	}
 
 	/**
