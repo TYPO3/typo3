@@ -5640,6 +5640,9 @@ class ContentObjectRenderer {
 				} catch (\RuntimeException $e) {
 					// Element wasn't found
 					$link_paramA[0] = NULL;
+				} catch (\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException $e) {
+					// Resource was not found
+					return $linktxt;
 				}
 			}
 			// Link parameter value
