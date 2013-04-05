@@ -38,14 +38,24 @@ class LocalizationUtility {
 	/**
 	 * Local Language content
 	 *
-	 * @var string
+	 * @var array
 	 */
 	static protected $LOCAL_LANG = array();
 
 	/**
+	 * Contains those LL keys, which have been set to (empty) in TypoScript.
+	 * This is necessary, as we cannot distinguish between a nonexisting
+	 * translation and a label that has been cleared by TS.
+	 * In both cases ['key'][0]['target'] is "".
+	 *
+	 * @var array
+	 */
+	static protected $LOCAL_LANG_UNSET = array();
+
+	/**
 	 * Local Language content charset for individual labels (overriding)
 	 *
-	 * @var string
+	 * @var array
 	 */
 	static protected $LOCAL_LANG_charset = array();
 
@@ -83,7 +93,9 @@ class LocalizationUtility {
 		} else {
 			self::initializeLocalization($extensionName);
 			// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
-			if (!empty(self::$LOCAL_LANG[$extensionName][self::$languageKey][$key][0]['target'])) {
+			if (!empty(self::$LOCAL_LANG[$extensionName][self::$languageKey][$key][0]['target'])
+				|| isset(self::$LOCAL_LANG_UNSET[$extensionName][self::$languageKey][$key])
+			) {
 				// Local language translation for key exists
 				$value = self::$LOCAL_LANG[$extensionName][self::$languageKey][$key][0]['target'];
 				if (!empty(self::$LOCAL_LANG_charset[$extensionName][self::$languageKey][$key])) {
@@ -92,7 +104,9 @@ class LocalizationUtility {
 			} elseif (count(self::$alternativeLanguageKeys)) {
 				$languages = array_reverse(self::$alternativeLanguageKeys);
 				foreach ($languages as $language) {
-					if (!empty(self::$LOCAL_LANG[$extensionName][$language][$key][0]['target'])) {
+					if (!empty(self::$LOCAL_LANG[$extensionName][$language][$key][0]['target'])
+						|| isset(self::$LOCAL_LANG_UNSET[$extensionName][$language][$key])
+					) {
 						// Alternative language translation for key exists
 						$value = self::$LOCAL_LANG[$extensionName][$language][$key][0]['target'];
 						if (!empty(self::$LOCAL_LANG_charset[$extensionName][$language][$key])) {
@@ -102,7 +116,9 @@ class LocalizationUtility {
 					}
 				}
 			}
-			if ($value === NULL && !empty(self::$LOCAL_LANG[$extensionName]['default'][$key][0]['target'])) {
+			if ($value === NULL && (!empty(self::$LOCAL_LANG[$extensionName]['default'][$key][0]['target'])
+				|| isset(self::$LOCAL_LANG_UNSET[$extensionName]['default'][$key]))
+			) {
 				// Default language translation for key exists
 				// No charset conversion because default is English and thereby ASCII
 				$value = self::$LOCAL_LANG[$extensionName]['default'][$key][0]['target'];
@@ -209,6 +225,7 @@ class LocalizationUtility {
 		if (!is_array($frameworkConfiguration['_LOCAL_LANG'])) {
 			return;
 		}
+		self::$LOCAL_LANG_UNSET[$extensionName] = array();
 		foreach ($frameworkConfiguration['_LOCAL_LANG'] as $languageKey => $labels) {
 			if (!(is_array($labels) && isset(self::$LOCAL_LANG[$extensionName][$languageKey]))) {
 				continue;
@@ -216,6 +233,9 @@ class LocalizationUtility {
 			foreach ($labels as $labelKey => $labelValue) {
 				if (is_string($labelValue)) {
 					self::$LOCAL_LANG[$extensionName][$languageKey][$labelKey][0]['target'] = $labelValue;
+					if ($labelValue === '') {
+						self::$LOCAL_LANG_UNSET[$extensionName][$languageKey][$labelKey] = '';
+					}
 					if (is_object($GLOBALS['LANG'])) {
 						self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = $GLOBALS['LANG']->csConvObj->charSetArray[$languageKey];
 					} else {
@@ -225,6 +245,9 @@ class LocalizationUtility {
 					$labelValue = self::flattenTypoScriptLabelArray($labelValue, $labelKey);
 					foreach ($labelValue as $key => $value) {
 						self::$LOCAL_LANG[$extensionName][$languageKey][$key][0]['target'] = $value;
+						if ($value === '') {
+							self::$LOCAL_LANG_UNSET[$extensionName][$languageKey][$key] = '';
+						}
 					}
 				}
 			}

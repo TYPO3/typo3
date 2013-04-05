@@ -369,6 +369,35 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$result = $this->localization->_getStatic('LOCAL_LANG');
 		$this->assertEquals($expected, $result['extensionKey'][$languageKey]);
 	}
+
+	/**
+	 * @return void
+	 * @test
+	 */
+	public function clearLabelWithTypoScript() {
+		$this->localization->_setStatic('LOCAL_LANG', $this->LOCAL_LANG);
+		$this->localization->_setStatic('languageKey', 'dk');
+
+		$typoScriptLocalLang = array(
+			'_LOCAL_LANG' => array(
+				'dk' => array(
+					'key1' => '',
+				)
+			)
+		);
+
+		$configurationType = \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
+
+		$configurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('getConfiguration'));
+		$configurationManager->expects($this->at(0))->method('getConfiguration')->with($configurationType, 'extensionKey', NULL)->will($this->returnValue($typoScriptLocalLang));
+
+		$this->localization->staticExpects($this->atLeastOnce())->method('getConfigurationManager')->will($this->returnValue($configurationManager));
+
+		$this->localization->_call('loadTypoScriptLabels', 'extensionKey');
+		$result = $this->localization->translate('key1', 'extensionKey');
+		$this->assertNotNull($result);
+		$this->assertEquals('', $result);
+	}
 }
 
 ?>
