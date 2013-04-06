@@ -49,14 +49,16 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver {
 	 * Makes sure the Path given as parameter is valid
 	 *
 	 * @param string $filePath The file path (including the file name!)
-	 * @return void
+	 * @return string
 	 * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidPathException
 	 */
-	protected function checkFilePath($filePath) {
+	protected function canonicalizeAndCheckFilePath($filePath) {
+		$filePath = \TYPO3\CMS\Core\Utility\PathUtility::getCanonicalPath($filePath);
 		// filePath must be valid
 		if (!$this->isPathValid($filePath)) {
 			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidPathException('File ' . $filePath . ' is not valid (".." and "//" is not allowed in path).', 1320286857);
 		}
+		return $filePath;
 	}
 }
 

@@ -708,6 +708,7 @@ class ResourceStorage {
 	 * @return FileInterface
 	 */
 	public function addFile($localFilePath, Folder $targetFolder, $fileName = '', $conflictMode = 'changeName') {
+		$localFilePath = PathUtility::getCanonicalPath($localFilePath);
 		// TODO check permissions (write on target, upload, ...)
 		if (!file_exists($localFilePath)) {
 			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
