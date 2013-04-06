@@ -35,16 +35,9 @@ class ConfigurationController extends \TYPO3\CMS\Extensionmanager\Controller\Abs
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository
+	 * @inject
 	 */
 	protected $configurationItemRepository;
-
-	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository $configurationItemRepository
-	 * @return void
-	 */
-	public function injectConfigurationItemRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository $configurationItemRepository) {
-		$this->configurationItemRepository = $configurationItemRepository;
-	}
 
 	/**
 	 * Show the extension configuration form. The whole form field handling is done
