@@ -26,6 +26,10 @@ namespace TYPO3\CMS\Core\Utility\File;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 /**
  * Contains class with basic file management functions
  *
@@ -134,13 +138,13 @@ class BasicFileUtility {
 	 * @todo Define visibility
 	 */
 	public function init($mounts, $f_ext) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction('All methods in this class should not be used anymore since TYPO3 6.0. Please use corresponding TYPO3\\CMS\\Core\\Resource\\ResourceStorage (fetched via BE_USERS->getFileStorages()), as all functions should be found there (in a cleaner manner).');
-		$this->f_ext['webspace']['allow'] = \TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList(strtolower($f_ext['webspace']['allow']));
-		$this->f_ext['webspace']['deny'] = \TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList(strtolower($f_ext['webspace']['deny']));
-		$this->f_ext['ftpspace']['allow'] = \TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList(strtolower($f_ext['ftpspace']['allow']));
-		$this->f_ext['ftpspace']['deny'] = \TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList(strtolower($f_ext['ftpspace']['deny']));
+		GeneralUtility::logDeprecatedFunction('All methods in this class should not be used anymore since TYPO3 6.0. Please use corresponding TYPO3\\CMS\\Core\\Resource\\ResourceStorage (fetched via BE_USERS->getFileStorages()), as all functions should be found there (in a cleaner manner).');
+		$this->f_ext['webspace']['allow'] = GeneralUtility::uniqueList(strtolower($f_ext['webspace']['allow']));
+		$this->f_ext['webspace']['deny'] = GeneralUtility::uniqueList(strtolower($f_ext['webspace']['deny']));
+		$this->f_ext['ftpspace']['allow'] = GeneralUtility::uniqueList(strtolower($f_ext['ftpspace']['allow']));
+		$this->f_ext['ftpspace']['deny'] = GeneralUtility::uniqueList(strtolower($f_ext['ftpspace']['deny']));
 		$this->mounts = $mounts;
-		$this->webPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_DOCUMENT_ROOT');
+		$this->webPath = GeneralUtility::getIndpEnv('TYPO3_DOCUMENT_ROOT');
 		$this->isInit = 1;
 		$this->maxInputNameLen = $GLOBALS['TYPO3_CONF_VARS']['SYS']['maxFileNameLength'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['maxFileNameLength'] : $this->maxInputNameLen;
 	}
@@ -170,7 +174,7 @@ class BasicFileUtility {
 	public function getTotalFileInfo($wholePath) {
 		// @todo: deprecate this function, and replace its use in the storage/mounts
 		$theuser = getmyuid();
-		$info = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($wholePath);
+		$info = GeneralUtility::split_fileref($wholePath);
 		$info['tstamp'] = @filemtime($wholePath);
 		$info['size'] = @filesize($wholePath);
 		$info['type'] = @filetype($wholePath);
@@ -194,11 +198,11 @@ class BasicFileUtility {
 			$ik = strtolower($iconkey);
 			if ($ik) {
 				// If the extension is found amongst the allowed types, we return TRUE immediately
-				if ($this->f_ext[$type]['allow'] == '*' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->f_ext[$type]['allow'], $ik)) {
+				if ($this->f_ext[$type]['allow'] == '*' || GeneralUtility::inList($this->f_ext[$type]['allow'], $ik)) {
 					return TRUE;
 				}
 				// If the extension is found amongst the denied types, we return FALSE immediately
-				if ($this->f_ext[$type]['deny'] == '*' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->f_ext[$type]['deny'], $ik)) {
+				if ($this->f_ext[$type]['deny'] == '*' || GeneralUtility::inList($this->f_ext[$type]['deny'], $ik)) {
 					return FALSE;
 				}
 				// If no match we return TRUE
@@ -246,7 +250,7 @@ class BasicFileUtility {
 			$testPath = $this->slashPath($path);
 			$testPathWeb = $this->slashPath($this->webPath);
 			if ($testPathWeb && $testPath) {
-				return \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($testPath, $testPathWeb);
+				return GeneralUtility::isFirstPartOfStr($testPath, $testPathWeb);
 			}
 		}
 		return TRUE;
@@ -263,7 +267,7 @@ class BasicFileUtility {
 	 * @todo Define visibility
 	 */
 	public function checkIfAllowed($ext, $theDest, $filename = '') {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::verifyFilenameAgainstDenyPattern($filename) && $this->is_allowed($ext, ($this->is_webpath($theDest) ? 'webspace' : 'ftpspace'));
+		return GeneralUtility::verifyFilenameAgainstDenyPattern($filename) && $this->is_allowed($ext, ($this->is_webpath($theDest) ? 'webspace' : 'ftpspace'));
 	}
 
 	/**
@@ -288,7 +292,7 @@ class BasicFileUtility {
 	public function is_directory($theDir) {
 		// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
 		if ($this->isPathValid($theDir)) {
-			$theDir = $this->cleanDirectoryName($theDir);
+			$theDir = PathUtility::cleanDirectoryName($theDir);
 			if (@is_dir($theDir)) {
 				return $theDir;
 			}
@@ -306,7 +310,7 @@ class BasicFileUtility {
 	 */
 	public function isPathValid($theFile) {
 		// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($theFile);
+		return GeneralUtility::validPathStr($theFile);
 	}
 
 	/**
@@ -325,7 +329,7 @@ class BasicFileUtility {
 		// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
 		$theDest = $this->is_directory($theDest);
 		// $theDest is cleaned up
-		$origFileInfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($theFile);
+		$origFileInfo = GeneralUtility::split_fileref($theFile);
 		// Fetches info about path, name, extension of $theFile
 		if ($theDest) {
 			if ($this->getUniqueNamePrefix) {
@@ -377,7 +381,7 @@ class BasicFileUtility {
 		// @todo: deprecate this function, now done in the Storage object
 		if ($thePath && $this->isPathValid($thePath) && is_array($this->mounts)) {
 			foreach ($this->mounts as $k => $val) {
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($thePath, $val['path'])) {
+				if (GeneralUtility::isFirstPartOfStr($thePath, $val['path'])) {
 					return $k;
 				}
 			}
@@ -394,7 +398,7 @@ class BasicFileUtility {
 		// @todo: where and when to use this function?
 		if (is_array($this->mounts)) {
 			foreach ($this->mounts as $k => $val) {
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($val['path'], PATH_site . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'])) {
+				if (GeneralUtility::isFirstPartOfStr($val['path'], PATH_site . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'])) {
 					return $k;
 				}
 			}
@@ -445,15 +449,15 @@ class BasicFileUtility {
 	 *
 	 *********************/
 	/**
-	 * Removes all dots, slashes and spaces after a path...
+	 * Removes all dots, slashes and spaces after a path
 	 *
-	 * @param 	string		Input string
-	 * @return 	string		Output string
-	 * @todo Define visibility
+	 * @param string $theDir Input string
+	 * @return string Output string
+	 * @deprecated since 6.1, will be removed in two versions, use \TYPO3\CMS\Core\Utility\PathUtility::cleanDirectoryName() instead
 	 */
 	public function cleanDirectoryName($theDir) {
-		// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
-		return preg_replace('/[\\/\\. ]*$/', '', $this->rmDoubleSlash($theDir));
+		GeneralUtility::logDeprecatedFunction();
+		return PathUtility::cleanDirectoryName($theDir);
 	}
 
 	/**
@@ -508,7 +512,7 @@ class BasicFileUtility {
 					$this->csConvObj = $GLOBALS['LANG']->csConvObj;
 				} else {
 					// The object may not exist yet, so we need to create it now. Happens in the Install Tool for example.
-					$this->csConvObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+					$this->csConvObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
 				}
 			}
 			// Define character set
