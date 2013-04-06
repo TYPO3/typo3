@@ -8,6 +8,7 @@
 return array(
 	'BE' => array(
 		'installToolPassword' => 'bacb98acf97e0b6112b1d1b650b84971',
+		'loginSecurityLevel' => 'rsa'
 	),
 	'DB' => array(
 		'extTablesDefinitionScript' => 'extTables.php',
@@ -49,7 +50,15 @@ return array(
 			'reports',
 			'felogin',
 			'form',
+			'rsaauth',
+			'saltedpasswords'
 		),
+		'extConf' => array(
+			'saltedpasswords' => 'a:2:{s:3:"FE.";a:2:{s:7:"enabled";s:1:"1";s:21:"saltedPWHashingMethod";s:28:"tx_saltedpasswords_salts_md5";}s:3:"BE.";a:2:{s:7:"enabled";s:1:"1";s:21:"saltedPWHashingMethod";s:28:"tx_saltedpasswords_salts_md5";}}'
+		)
+	),
+	'FE' => array(
+		'loginSecurityLevel' => 'rsa'
 	),
 	'SYS' => array(
 		'sitename' => 'New TYPO3 site',
