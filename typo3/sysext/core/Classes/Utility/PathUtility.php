@@ -193,6 +193,80 @@ class PathUtility {
 		setlocale(LC_CTYPE, $currentLocale);
 		return $pathinfo;
 	}
+
+
+	/*********************
+	 *
+	 * Cleaning functions
+	 *
+	 *********************/
+	/**
+	 * Removes all dots, slashes and spaces after a path...
+	 *
+	 * @param string $theDir Input string
+	 * @return string Output string
+	 * @see cleanDirectoryNameAndFile()
+	 */
+	static public function cleanDirectoryName($theDir) {
+		// @todo: should probably go into some Utility-class?
+		$theDirParts = explode('/', $theDir);
+		$theDirPartsCount = count($theDirParts);
+
+		for ($partCount = 0; $partCount < $theDirPartsCount; $partCount++) {
+			if ($theDirParts[$partCount] === '.') {
+				// . in path: remove element
+				array_splice($theDirParts, $partCount, 1);
+				$partCount--;
+				$theDirPartsCount--;
+			}
+			if (($partCount > 0) && ($theDirParts[$partCount] === '')) {
+				// double-slashes in path: remove element
+				// but first part may be empty (absolute path)
+				array_splice($theDirParts, $partCount, 1);
+				$partCount--;
+				$theDirPartsCount--;
+			} elseif ($theDirParts[$partCount] === '..') {
+				if ($partCount > 0) {
+					// /../ in path: remove this and previous element
+					array_splice($theDirParts, $partCount-1, 2);
+					$partCount -= 2;
+					$theDirPartsCount -= 2;
+				} else {
+					// illegal path / security-check
+					// can't go higher than upper dir
+					// @todo: simply remove this part and continue?
+					array_splice($theDirParts, $partCount, 1);
+					$partCount--;
+					$theDirPartsCount--;
+				}
+			}
+		}
+		$theDir = implode('/', $theDirParts);
+		return preg_replace('/[\\/\\. ]*$/', '', $theDir);
+	}
+
+	/**
+	 * Clean path with a filename
+	 *
+	 * Behaves similar to realpath() but doesn't check if path/file exists
+	 *
+	 * @param string $theDirAndFile Input string
+	 * @return string Output string
+	 * @see cleanDirectoryName()
+	 */
+	static public function cleanDirectoryNameAndFile($theDirAndFile) {
+		// @todo: should probably go into some Utility-class?
+		$pos = strrpos($theDirAndFile, '/');
+		if ($pos === FALSE) {
+			// no directory-name included
+			return $theDirAndFile;
+		} else {
+			$theDir = substr($theDirAndFile, 0, $pos);
+			$theFile = substr($theDirAndFile, $pos+1);
+			$theDir = self::cleanDirectoryName($theDir);
+			return $theDir . '/' . $theFile;
+		}
+	}
 }
 
 

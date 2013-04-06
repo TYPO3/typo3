@@ -444,13 +444,12 @@ class BasicFileUtility {
 	/**
 	 * Removes all dots, slashes and spaces after a path...
 	 *
-	 * @param 	string		Input string
-	 * @return 	string		Output string
-	 * @todo Define visibility
+	 * @param string $theDir Input string
+	 * @return string Output string
+	 * @deprecated since 6.1, will be removed in two versions, use \TYPO3\CMS\Core\Utility\PathUtility::cleanDirectoryName() instead
 	 */
 	public function cleanDirectoryName($theDir) {
-		// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
-		return preg_replace('/[\\/\\. ]*$/', '', $this->rmDoubleSlash($theDir));
+		return \TYPO3\CMS\Core\Utility\PathUtility::cleanDirectoryName($theDir);
 	}
 
 	/**
