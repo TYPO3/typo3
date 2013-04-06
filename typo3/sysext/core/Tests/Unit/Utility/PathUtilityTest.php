@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\PathUtility
@@ -197,6 +198,121 @@ class PathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array('/var/www//', '/', '/var/www/'),
 			array('/var/www/', '/', '/var/www/'),
 			array('/var/www', '/', '/var/www/')
+		);
+	}
+
+	/**
+	 * Data provider for getCanonicalPathCorrectlyCleansPath
+	 *
+	 * @return array
+	 */
+	public function getCanonicalPathCorrectlyCleansPathDataProvider() {
+		return array(
+			'removes single-dot-elements' => array(
+				'abc/./def/././ghi',
+				'abc/def/ghi'
+			),
+			'removes ./ at beginning' => array(
+				'./abc/def/ghi',
+				'abc/def/ghi'
+			),
+			'removes double-slashes' => array(
+				'abc//def/ghi',
+				'abc/def/ghi'
+			),
+			'removes double-slashes from front, but keeps absolute path' => array(
+				'//abc/def/ghi',
+				'/abc/def/ghi'
+			),
+			'makes double-dot-elements go one level higher, test #1' => array(
+				'abc/def/ghi/../..',
+				'abc'
+			),
+			'makes double-dot-elements go one level higher, test #2' => array(
+				'abc/def/ghi/../123/456/..',
+				'abc/def/123'
+			),
+			'makes double-dot-elements go one level higher, test #3' => array(
+				'abc/../../def/ghi',
+				'../def/ghi'
+			),
+			'makes double-dot-elements go one level higher, test #4' => array(
+				'abc/def/ghi//../123/456/..',
+				'abc/def/123'
+			),
+			'truncates slash at the end' => array(
+				'abc/def/ghi/',
+				'abc/def/ghi'
+			),
+			'keeps slash in front of absolute paths' => array(
+				'/abc/def/ghi',
+				'/abc/def/ghi'
+			),
+			'keeps slash in front of absolute paths even if double-dot-elements want to go higher' => array(
+				'/abc/../../def/ghi',
+				'/def/ghi'
+			),
+			'works with EXT-syntax-paths' => array(
+				'EXT:abc/def/ghi/',
+				'EXT:abc/def/ghi'
+			),
+			'truncates ending slash with space' => array(
+				'abc/def/ ',
+				'abc/def'
+			),
+			'truncates ending space' => array(
+				'abc/def ',
+				'abc/def'
+			),
+			'truncates ending dot' => array(
+				'abc/def/.',
+				'abc/def'
+			),
+			'does not truncates ending dot if part of name' => array(
+				'abc/def.',
+				'abc/def.'
+			),
+			'protocol is not removed' => array(
+				'vfs://def/../text.txt',
+				'vfs://text.txt'
+			),
+			'works with filenames' => array(
+				'/def/../text.txt',
+				'/text.txt'
+			),
+			'absolute windwos path' => array(
+				'C:\def\..\..\test.txt',
+				'C:/test.txt'
+			),
+			'double slashaes' => array(
+				'abc//def',
+				'abc/def'
+			),
+			'multiple slashes' => array(
+				'abc///////def',
+				'abc/def'
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getCanonicalPathCorrectlyCleansPathDataProvider
+	 */
+	public function getCanonicalPathCorrectlyCleansPath($inputName, $expectedResult) {
+		$className = uniqid('PathUtilityFixture');
+		eval("
+			namespace TYPO3\\CMS\\Core\\Utility;
+			class $className extends \\TYPO3\\CMS\\Core\\Utility\\PathUtility {
+				static public function isWindows() {
+					return TRUE;
+				}
+			}
+		");
+		$className = '\\TYPO3\\CMS\\Core\\Utility\\' . $className;
+		$this->assertEquals(
+			$expectedResult,
+			$className::getCanonicalPath($inputName)
 		);
 	}
 

@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Core\Utility\File;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Contains class with basic file management functions
@@ -134,7 +135,7 @@ class BasicFileUtility {
 	 * @deprecated All methods in this class should not be used anymore since TYPO3 6.0. Please use corresponding TYPO3\\CMS\\Core\\Resource\\ResourceStorage (fetched via BE_USERS->getFileStorages()), as all functions should be found there (in a cleaner manner).
 	 */
 	public function init($mounts, $f_ext) {
-		GeneralUtility::logDeprecatedFunction();
+		GeneralUtility::logDeprecatedFunction('All methods in this class should not be used anymore since TYPO3 6.0. Please use corresponding TYPO3\\CMS\\Core\\Resource\\ResourceStorage (fetched via BE_USERS->getFileStorages()), as all functions should be found there (in a cleaner manner).');
 		$this->f_ext['webspace']['allow'] = GeneralUtility::uniqueList(strtolower($f_ext['webspace']['allow']));
 		$this->f_ext['webspace']['deny'] = GeneralUtility::uniqueList(strtolower($f_ext['webspace']['deny']));
 		$this->f_ext['ftpspace']['allow'] = GeneralUtility::uniqueList(strtolower($f_ext['ftpspace']['allow']));
@@ -289,7 +290,7 @@ class BasicFileUtility {
 	public function is_directory($theDir) {
 		// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
 		if ($this->isPathValid($theDir)) {
-			$theDir = $this->cleanDirectoryName($theDir);
+			$theDir = PathUtility::getCanonicalPath($theDir);
 			if (@is_dir($theDir)) {
 				return $theDir;
 			}
@@ -446,15 +447,15 @@ class BasicFileUtility {
 	 *
 	 *********************/
 	/**
-	 * Removes all dots, slashes and spaces after a path...
+	 * Removes all dots, slashes and spaces after a path
 	 *
-	 * @param 	string		Input string
-	 * @return 	string		Output string
-	 * @todo Define visibility
+	 * @param string $theDir Input string
+	 * @return string Output string
+	 * @deprecated since 6.1, will be removed in two versions, use \TYPO3\CMS\Core\Utility\PathUtility::getCanonicalPath() instead
 	 */
 	public function cleanDirectoryName($theDir) {
-		// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
-		return preg_replace('/[\\/\\. ]*$/', '', $this->rmDoubleSlash($theDir));
+		GeneralUtility::logDeprecatedFunction();
+		return PathUtility::getCanonicalPath($theDir);
 	}
 
 	/**

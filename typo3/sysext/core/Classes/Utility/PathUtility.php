@@ -129,7 +129,6 @@ class PathUtility {
 		return rtrim($path, $separator) . $separator;
 	}
 
-
 	/**
 	 * Returns trailing name component of path
 	 * Since basename() is locale dependent we need to access
@@ -193,6 +192,106 @@ class PathUtility {
 		setlocale(LC_CTYPE, $currentLocale);
 		return $pathinfo;
 	}
+
+	/**
+	 * Checks if the $path is absolute or relative (detecting either '/' or 'x:/' as first part of string) and returns TRUE if so.
+	 *
+	 * @param string $path File path to evaluate
+	 * @return boolean
+	 */
+	static public function isAbsolutePath($path) {
+		// On Windows also a path starting with a drive letter is absolute: X:/
+		if (static::isWindows() && substr($path, 1, 2) === ':/') {
+			return TRUE;
+		}
+		// Path starting with a / is always absolute, on every system
+		return substr($path, 0, 1) === '/';
+	}
+
+
+	/*********************
+	 *
+	 * Cleaning methods
+	 *
+	 *********************/
+	/**
+	 * Resolves all dots, slashes and removes spaces after or before a path...
+	 *
+	 * @param string $path Input string
+	 * @return string Canonical path, always without trailing slash
+	 */
+	static public function getCanonicalPath($path) {
+		// Replace backslashes with slashes to work with Windows paths if given
+		$path = trim(str_replace('\\', '/', $path));
+
+		// TODO: do we really need this? Probably only in testing context for vfs?
+		$protocol = '';
+		if (strpos($path, '://') !== FALSE) {
+			list($protocol, $path) = explode('://', $path);
+			$protocol .= '://';
+		}
+
+		$absolutePathPrefix = '';
+		if (static::isAbsolutePath($path)) {
+			if (static::isWindows() && substr($path, 1, 2) === ':/') {
+				$absolutePathPrefix = substr($path, 0, 3);
+				$path = substr($path, 3);
+			} else {
+				$path = ltrim($path, '/');
+				$absolutePathPrefix = '/';
+			}
+		}
+
+		$theDirParts = explode('/', $path);
+		$theDirPartsCount = count($theDirParts);
+		for ($partCount = 0; $partCount < $theDirPartsCount; $partCount++) {
+			// double-slashes in path: remove element
+			if ($theDirParts[$partCount] === '') {
+				array_splice($theDirParts, $partCount, 1);
+				$partCount--;
+				$theDirPartsCount--;
+			}
+			// "." in path: remove element
+			if ($theDirParts[$partCount] === '.') {
+				array_splice($theDirParts, $partCount, 1);
+				$partCount--;
+				$theDirPartsCount--;
+			}
+			// ".." in path:
+			if ($theDirParts[$partCount] === '..') {
+				if ($partCount >= 1) {
+					// Rremove this and previous element
+					array_splice($theDirParts, $partCount - 1, 2);
+					$partCount -= 2;
+					$theDirPartsCount -= 2;
+				} elseif ($absolutePathPrefix) {
+					// can't go higher than root dir
+					// simply remove this part and continue
+					array_splice($theDirParts, $partCount, 1);
+					$partCount--;
+					$theDirPartsCount--;
+				}
+			}
+		}
+
+		return $protocol . $absolutePathPrefix . implode('/', $theDirParts);
+	}
+
+	/*********************
+	 *
+	 * Helper methods
+	 *
+	 *********************/
+
+	/**
+	 * Wrapper method to be able to test windows path transformation on other systems
+	 *
+	 * @return bool
+	 */
+	static protected function isWindows() {
+		return TYPO3_OS === 'WIN';
+	}
+
 }
 
 
