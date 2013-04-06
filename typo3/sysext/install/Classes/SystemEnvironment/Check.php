@@ -80,6 +80,16 @@ class Check {
 	);
 
 	/**
+	 * @var array<string>
+	 *
+	 * NO_BACKSLASH_ESCAPES This mode disables the use of the backslash character as an escape character,
+	 *                      but we depend on this for escaping.
+	 * STRICT_ALL_TABLES    If a value has not the datatype that is expected by the column,
+	 * 						mysql will throw an error in this mode.
+	 */
+	protected $incompatibleSqlModes = array('NO_BACKSLASH_ESCAPES','STRICT_ALL_TABLES');
+
+	/**
 	 * Get all status information as array with status objects
 	 *
 	 * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
@@ -106,6 +116,7 @@ class Check {
 		$statusArray[] = $this->checkSuhosinExecutorIncludeWhitelistContainsPhar();
 		$statusArray[] = $this->checkSuhosinExecutorIncludeWhitelistContainsVfs();
 		$statusArray[] = $this->checkSomePhpOpcodeCacheIsLoaded();
+		$statusArray[] = $this->checkInvalidSqlModes();
 		$statusArray[] = $this->checkReflectionDocComment();
 		$statusArray[] = $this->checkWindowsApacheThreadStackSize();
 		foreach ($this->requiredPhpExtensions as $extension) {
@@ -197,6 +208,65 @@ class Check {
 			$status->setTitle('Maximum file upload size is higher or equal to 10MB');
 		}
 		return $status;
+	}
+
+	/**
+	 * Check if any SQL mode is set witch is not compatible with TYPO3
+	 *
+	 * @return Status\StatusInterface
+	 */
+	public function checkInvalidSqlModes() {
+		try {
+			$this->loadExtLocalconfDatabase();
+
+			$sqlModes = $this->getSqlModes();
+		} catch (\RuntimeException $exception) {
+			$status = new Status\WarningStatus();
+			$status->setTitle('Can\'t check SQL modes!');
+			$status->setMessage(
+				'There is a problem with your database connection.
+				Error message: ' .
+				$exception->getMessage()
+			);
+
+			return $status;
+		}
+
+		$detectedIncompatibleSqlModes = array_intersect($this->incompatibleSqlModes, $sqlModes);
+
+		if (count($detectedIncompatibleSqlModes)) {
+			$status = new Status\ErrorStatus();
+			$status->setTitle('Incompatible SQL modes found!');
+			$status->setMessage(
+				'There have been incompatible SQL modes detected.' .
+				' The mode "' . implode('" and "', $detectedIncompatibleSqlModes) . '"' .
+				' is not compatible with TYPO3 CMS.' .
+				' You have to change that setting in your MySQL environment' .
+				' or in $TYPO3_CONF_VARS[\'SYS\'][\'setDBinit\']'
+			);
+		} else {
+			$status = new Status\OkStatus();
+			$status->setTitle('No incompatible SQL modes found.');
+		}
+
+		return $status;
+	}
+
+	/**
+	 * Returns an array with the current sql mode settings
+	 *
+	 * @return array Contains all configured SQL modes for the current database connection
+	 */
+	public function getSqlModes() {
+		$sqlModes = array();
+		$resource = $GLOBALS['TYPO3_DB']->sql_query('SELECT @@SESSION.sql_mode;');
+		if ($resource !== FALSE) {
+			$result = $GLOBALS['TYPO3_DB']->sql_fetch_row($resource);
+			if (isset($result[0])) {
+				$sqlModes = explode(',', $result[0]);
+			}
+		}
+		return $sqlModes;
 	}
 
 	/**
@@ -1131,6 +1201,22 @@ class Check {
 			$bytes *= 1024;
 		}
 		return $bytes;
+	}
+
+	/**
+	 * Some actions like the database analyzer and the upgrade wizards need additional
+	 * bootstrap actions performed.
+	 *
+	 * Those actions can potentially fatal if some old extension is loaded that triggers
+	 * a fatal in ext_localconf or ext_tables code! Use only if really needed.
+	 *
+	 * @return void
+	 */
+	protected function loadExtLocalconfDatabase() {
+		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
+			->loadTypo3LoadedExtAndExtLocalconf(FALSE)
+			->applyAdditionalConfigurationSettings()
+			->initializeTypo3DbGlobal();
 	}
 }
 ?>
