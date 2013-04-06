@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Core\Resource\Driver;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class AbstractHierarchicalFilesystemDriver
@@ -35,29 +36,21 @@ namespace TYPO3\CMS\Core\Resource\Driver;
 abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver {
 
 	/**
-	 * Wrapper for \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr()
-	 *
-	 * @param string $theFile Filepath to evaluate
-	 * @return boolean TRUE if no '/', '..' or '\' is in the $theFile
-	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr()
-	 */
-	protected function isPathValid($theFile) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($theFile);
-	}
-
-	/**
 	 * Makes sure the Path given as parameter is valid
 	 *
 	 * @param string $filePath The file path (including the file name!)
-	 * @return void
 	 * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidPathException
+	 * @return string
 	 */
-	protected function checkFilePath($filePath) {
+	protected function checkAndCleanFilePath($filePath) {
+		$filePath = PathUtility::cleanDirectoryNameAndFile($filePath);
 		// filePath must be valid
-		if (!$this->isPathValid($filePath)) {
+		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($filePath)) {
 			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidPathException('File ' . $filePath . ' is not valid (".." and "//" is not allowed in path).', 1320286857);
 		}
+		return $filePath;
 	}
+
 }
 
 ?>

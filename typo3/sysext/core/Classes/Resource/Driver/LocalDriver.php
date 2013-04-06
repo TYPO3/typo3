@@ -221,7 +221,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 */
 	public function getFileInfoByIdentifier($fileIdentifier) {
 		// Makes sure the Path given as parameter is valid
-		$this->checkFilePath($fileIdentifier);
+		$fileIdentifier = $this->checkAndCleanFilePath($fileIdentifier);
 		$dirPath = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(
 			PathUtility::dirname($fileIdentifier)
 		);
