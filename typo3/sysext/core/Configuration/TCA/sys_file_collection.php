@@ -21,6 +21,7 @@ return array(
 			'static' => 'apps-clipboard-images',
 			'folder' => 'apps-filetree-folder-media'
 		),
+		'requestUpdate' => 'storage',
 		'enablecolumns' => array(
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',
