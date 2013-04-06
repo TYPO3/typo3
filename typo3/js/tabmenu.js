@@ -1,5 +1,8 @@
 /***************************************************************
  *
+ * deprecated since TYPO3 6.1, will be removed two versions later
+ * instead, use the RequireJS module to include tab menus
+ *
  *  javascript functions regarding the "dyntabmenu"
  *  used throughout the TYPO3 backend
  *
