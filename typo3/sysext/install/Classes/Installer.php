@@ -305,7 +305,7 @@ class Installer {
 					1294587482);
 			}
 			// Load saltedpasswords if possible
-			$saltedpasswordsLoaderFile = $this->backPath . 'sysext/saltedpasswords/classes/class.tx_saltedpasswords_autoloader.php';
+			$saltedpasswordsLoaderFile = $this->backPath . 'sysext/saltedpasswords/Classes/class.tx_saltedpasswords_autoloader.php';
 			if (@is_file($saltedpasswordsLoaderFile)) {
 				include $saltedpasswordsLoaderFile;
 			}
