@@ -452,8 +452,64 @@ class BasicFileUtility {
 	 * @todo Define visibility
 	 */
 	public function cleanDirectoryName($theDir) {
-		// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
-		return preg_replace('/[\\/\\. ]*$/', '', $this->rmDoubleSlash($theDir));
+		// @todo: should probably go into some Utility-class?
+		$theDirParts = explode('/', $theDir);
+		$theDirPartsCount = count($theDirParts);
+
+		for ($partCount = 0; $partCount < $theDirPartsCount; $partCount++) {
+			if ($theDirParts[$partCount] === '.') {
+				// . in path: remove element
+				array_splice($theDirParts, $partCount, 1);
+				$partCount--;
+				$theDirPartsCount--;
+			}
+			if (($partCount > 0) && ($theDirParts[$partCount] === '')) {
+				// double-slashes in path: remove element
+				// but first part may be empty (absolute path)
+				array_splice($theDirParts, $partCount, 1);
+				$partCount--;
+				$theDirPartsCount--;
+			} elseif ($theDirParts[$partCount] === '..') {
+				if ($partCount > 0) {
+					// /../ in path: remove this and previous element
+					array_splice($theDirParts, $partCount-1, 2);
+					$partCount -= 2;
+					$theDirPartsCount -= 2;
+				} else {
+					// illegal path / security-check
+					// can't go higher than upper dir
+					// @todo: simply remove this part and continue?
+					array_splice($theDirParts, $partCount, 1);
+					$partCount--;
+					$theDirPartsCount--;
+				}
+			}
+		}
+		$theDir = implode('/', $theDirParts);
+		return preg_replace('/[\\/\\. ]*$/', '', $theDir);
+	}
+
+	/**
+	 * Clean path with a filename
+	 *
+	 * Behaves similar to realpath() but doesn't check if path/file exists
+	 *
+	 * @param 	string		Input string
+	 * @return 	string		Output string
+	 * @todo Define visibility
+	 */
+	public function cleanDirectoryNameAndFile($theDirAndFile) {
+		// @todo: should probably go into some Utility-class?
+		$pos = strrpos($theDirAndFile, '/');
+		if ($pos === FALSE) {
+			// no directory-name included
+			return $theDirAndFile;
+		} else {
+			$theDir = substr($theDirAndFile, 0, $pos);
+			$theFile = substr($theDirAndFile, $pos+1);
+			$theDir = $this->cleanDirectoryName($theDir);
+			return $theDir . '/' . $theFile;
+		}
 	}
 
 	/**

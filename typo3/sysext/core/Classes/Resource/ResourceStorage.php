@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Core\Resource;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -151,6 +152,12 @@ class ResourceStorage {
 	 */
 	protected $signalSlotDispatcher;
 
+
+	/**
+	* @var $basicFileUtility \TYPO3\CMS\Core\Utility\File\BasicFileUtility
+	*/
+	protected $basicFileUtility;
+
 	/**
 	 * Capability for being browsable by (backend) users
 	 */
@@ -210,6 +217,7 @@ class ResourceStorage {
 		// TODO do not set the "public" capability if no public URIs can be generated
 		$this->processConfiguration();
 		$this->resetFileAndFolderNameFiltersToDefault();
+		$this->basicFileUtility = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\BasicFileUtility');
 	}
 
 	/**
@@ -711,6 +719,7 @@ class ResourceStorage {
 	 * @return FileInterface
 	 */
 	public function addFile($localFilePath, Folder $targetFolder, $fileName = '', $conflictMode = 'changeName') {
+		$localFilePath = $this->basicFileUtility->cleanDirectoryName($localFilePath);
 		// TODO check permissions (write on target, upload, ...)
 		if (!file_exists($localFilePath)) {
 			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
@@ -800,6 +809,7 @@ class ResourceStorage {
 	 * @return FileInterface
 	 */
 	public function getFile($identifier) {
+		$identifier = $this->basicFileUtility->cleanDirectoryNameAndFile($identifier);
 		return $this->driver->getFile($identifier);
 	}
 
@@ -894,6 +904,7 @@ class ResourceStorage {
 	 */
 	public function hasFile($identifier) {
 		// @todo: access check?
+		$identifier = $this->basicFileUtility->cleanDirectoryNameAndFile($identifier);
 		return $this->driver->fileExists($identifier);
 	}
 
