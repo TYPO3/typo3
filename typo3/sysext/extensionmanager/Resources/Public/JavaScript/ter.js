@@ -23,6 +23,9 @@
 			"bPaginate":false,
 			"bFilter":false,
 			"fnDrawCallback":bindDownload,
+			"aaSorting": [
+				[2, 'asc']
+			],
 			'aoColumns': [
 				{ 'bSortable': false },
 				null,
