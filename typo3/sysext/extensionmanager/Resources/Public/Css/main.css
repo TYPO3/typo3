@@ -1779,6 +1779,26 @@ p {
   float: left;
   margin: 10px 0 0; }
 
+.uploadForm {
+  background-color: #ededed;
+  border-top: 1px solid #cdcdcd;
+  border-bottom: 1px solid #cdcdcd;
+  padding: 12px;
+  margin-bottom: 24px; }
+  .uploadForm form .control-group {
+    clear: both;
+    margin-bottom: 5px; }
+  .uploadForm form label {
+    float: left;
+    height: 20px;
+    padding: 4px 0;
+    line-height: 20px;
+    width: 90px; }
+  .uploadForm form .control {
+    min-height: 20px;
+    padding: 4px 0;
+    margin-left: 110px; }
+
 #terTableWrapper {
   position: relative; }
   #terTableWrapper .splash-receivedata {
