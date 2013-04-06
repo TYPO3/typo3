@@ -2200,7 +2200,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 			}
 		} else {
-			if ($inlineSettings) {
+			// no extJS loaded, but still inline settings
+			if ($inlineSettings !== '') {
+				// make sure the global TYPO3 is available
+				$inlineSettings = 'var TYPO3 = TYPO3 || {};' . CRLF . $inlineSettings;
 				$out .= $this->inlineJavascriptWrap[0] . $inlineSettings . $this->inlineJavascriptWrap[1];
 			}
 		}
