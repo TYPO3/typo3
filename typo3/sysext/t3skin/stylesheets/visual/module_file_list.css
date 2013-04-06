@@ -40,3 +40,45 @@ table#typo3-filelist tr td div.typo3-clipCtrl,
 table#typo3-filelist tr td div.typo3-editCtrl {
 	text-align: center;
 }
+
+
+body {
+	-webkit-transition:border 0.2s ease;
+	-moz-transition:border 0.2s ease;
+	-ms-transition:border 0.2s ease;
+	-o-transition:border 0.2s ease;
+	transition:border 0.2s ease;
+}
+.dropInProgess body {
+	border:10px solid #73ab61;
+	margin-bottom:20px !important;
+	-webkit-transition:border 0.2s ease;
+	-moz-transition:border 0.2s ease;
+	-ms-transition:border 0.2s ease;
+	-o-transition:border 0.2s ease;
+	transition:border 0.2s ease;
+}
+
+.DragUpload-DropZone.t3-dropzone {
+	position: absolute;
+	width:0;
+	display:none;
+	height:0;
+	z-index:9999;
+}
+
+.dropInProgess .DragUpload-DropZone.t3-dropzone {
+	width:40%;
+	height:auto;
+	top:10px;
+	left:30%;
+	border:1px solid #73ab61;
+	background:#c8d9c3;
+	padding:8px;
+	display:block;
+	box-shadow:0px 0px 10px 0px #888888;
+}
+
+.DragUpload-DropZone.t3-dropzone.t3-dropzone-dropReceiveOK {
+	background-color: #73ab61;
+}
