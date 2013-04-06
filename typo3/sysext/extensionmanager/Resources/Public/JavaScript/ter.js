@@ -22,8 +22,15 @@
 			"bInfo":false,
 			"bPaginate":false,
 			"bFilter":false,
-			"bSort": false,
-			"fnDrawCallback":bindDownload
+			"fnDrawCallback":bindDownload,
+			'aoColumns': [
+				{ 'bSortable': false },
+				null,
+				{ 'sType': 'version' },
+				null,
+				null,
+				null
+			]
 		});
 
 		$('#terSearchTable').dataTable({
