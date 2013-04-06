@@ -146,7 +146,8 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $languageKey Valid language key
 	 * @param string $charset Rendering charset
 	 * @return \TYPO3\CMS\Core\Localization\LanguageStore This instance to allow method chaining
-	 * @throws t3lib_l10n_exception_InvalidParser|t3lib_l10n_exception_FileNotFound
+	 * @throws \TYPO3\CMS\Core\Localization\Exception\InvalidParserException
+	 * @throws \TYPO3\CMS\Core\Localization\Exception\FileNotFoundException
 	 */
 	public function setConfiguration($fileReference, $languageKey, $charset) {
 		$this->configuration[$fileReference] = array(
