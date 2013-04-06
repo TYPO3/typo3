@@ -22,8 +22,15 @@
 			"bInfo":false,
 			"bPaginate":false,
 			"bFilter":false,
-			"bSort": false,
-			"fnDrawCallback":bindDownload
+			"fnDrawCallback":bindDownload,
+			'aoColumns': [
+				{ 'bSortable': false },
+				null,
+				{ 'sType': 'version' },
+				null,
+				null,
+				null
+			]
 		});
 
 		$('#terSearchTable').dataTable({
@@ -43,6 +50,52 @@
 		bindDownload();
 		bindSearchFieldResetter();
 	});
+
+	$.fn.dataTableExt.oSort['version-asc'] = function(a, b) {
+		var result = compare(a,b);
+		result = result * -1;
+		return result;
+	};
+
+	$.fn.dataTableExt.oSort['version-desc'] = function(a, b) {
+		var result = compare(a,b);
+		return result;
+	};
+
+	function compare(a, b) {
+		if (a === b) {
+			return 0;
+		}
+
+		var a_components = a.split(".");
+		var b_components = b.split(".");
+
+		var len = Math.min(a_components.length, b_components.length);
+
+		// loop while the components are equal
+		for (var i = 0; i < len; i++) {
+			// A bigger than B
+			if (parseInt(a_components[i]) > parseInt(b_components[i])) {
+				return 1;
+			}
+
+			// B bigger than A
+			if (parseInt(a_components[i]) < parseInt(b_components[i])) {
+				return -1;
+			}
+		}
+
+		// If one's a prefix of the other, the longer one is greater.
+		if (a_components.length > b_components.length) {
+			return 1;
+		}
+
+		if (a_components.length < b_components.length) {
+			return -1;
+		}
+		// Otherwise they are the same.
+		return 0;
+	}
 
 	function bindDownload() {
 		var installButtons = $('.downloadFromTer form.download input[type=submit]');
