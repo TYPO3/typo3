@@ -49,7 +49,9 @@ return array(
 			'reports',
 			'felogin',
 			'form',
-		),
+			'rsaauth',
+			'saltedpasswords'
+		)
 	),
 	'SYS' => array(
 		'sitename' => 'New TYPO3 site',

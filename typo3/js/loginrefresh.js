@@ -117,11 +117,6 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 					name: "userident",
 					id: "userident",
 					value: ""
-				}, {
-					inputType: "hidden",
-					name: "challenge",
-					id: "challenge",
-					value: ''
 				}
 			],
 			keys:({
@@ -269,21 +264,13 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 		Ext.TaskMgr.stop(this.loadingTask);
 	},
 
-	submitForm: function(challenge) {
+	submitForm: function() {
 		var form = Ext.getCmp("loginform").getForm();
 		var fields = form.getValues();
 		if (fields.p_field === "") {
 			Ext.Msg.alert(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_emptyPassword);
 		} else {
-			if (TS.securityLevel === "superchallenged") {
-				fields.p_field = MD5(fields.p_field);
-			}
-			if (TS.securityLevel === "superchallenged" || TS.securityLevel === "challenged") {
-				fields.challenge = challenge;
-				fields.userident = MD5(fields.username + ":" + fields.p_field + ":" + challenge);
-			} else {
-				fields.userident = fields.p_field;
-			}
+			fields.userident = fields.p_field;
 			fields.p_field =  "";
 			form.setValues(fields);
 
@@ -316,26 +303,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 	},
 
 	triggerSubmitForm: function() {
-		if (TS.securityLevel === 'superchallenged' || TS.securityLevel === 'challenged') {
-			Ext.Ajax.request({
-				url: 'ajax.php',
-				params: {
-					'ajaxID': 'BackendLogin::getChallenge',
-					'skipSessionUpdate': 1
-				},
-				method: 'GET',
-				success: function(response) {
-					var result = Ext.util.JSON.decode(response.responseText);
-					if (result.challenge) {
-						Ext.getCmp('challenge').value = result.challenge;
-						TYPO3.loginRefresh.submitForm(result.challenge);
-					}
-				},
-				scope: this
-			});
-		} else {
-			this.submitForm();
-		}
+		this.submitForm();
 	}
 });
 

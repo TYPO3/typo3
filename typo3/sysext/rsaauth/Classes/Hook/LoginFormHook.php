@@ -61,7 +61,7 @@ class LoginFormHook {
 	}
 
 	/**
-	 * Provides form code for the superchallenged authentication.
+	 * Provides form javascript code for the rsa authentication.
 	 *
 	 * @param array $params Parameters to the script
 	 * @param \TYPO3\CMS\Backend\Controller\LoginController $pObj Calling object

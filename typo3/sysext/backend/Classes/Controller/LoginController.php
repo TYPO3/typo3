@@ -117,12 +117,11 @@ class LoginController {
 	 */
 	public $addFields_hidden = '';
 
-	// sets the level of security. *'normal' = clear-text. 'challenged' = hashed
-	// password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 	/**
+	 * Sets the level of security. *'normal' = clear-text. 'rsa' = rsa authentication. user-defined in conf vars
 	 * @todo Define visibility
 	 */
-	public $loginSecurityLevel = 'superchallenged';
+	public $loginSecurityLevel = '';
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
@@ -154,6 +153,10 @@ class LoginController {
 		// Sets the level of security from conf vars
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) {
 			$this->loginSecurityLevel = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'];
+		} elseif (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth')) {
+			$this->loginSecurityLevel = 'rsa';
+		} else {
+			$this->loginSecurityLevel = 'normal';
 		}
 		// Try to get the preferred browser language
 		$preferredBrowserLanguage = $GLOBALS['LANG']->csConvObj->getPreferredClientLanguage(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
@@ -588,10 +591,9 @@ class LoginController {
 	 */
 	public function startForm() {
 		$output = '';
-		// The form defaults to 'no login'. This prevents plain
-		// text logins to the Backend. The 'sv' extension changes the form to
-		// use superchallenged method and rsaauth extension makes rsa authetication.
-		$form = '<form action="index.php" method="post" name="loginform" ' . 'onsubmit="alert(\'No authentication methods available. Please, ' . 'contact your TYPO3 administrator.\');return false">';
+		// The form defaults to 'normal' as saltedpasswords needs unencrypted login information.
+		// If rsaauth extension is loaded transfer is encrypted with rsa authentication.
+		$form = '<form action="index.php" method="post" name="loginform" onsubmit="document.loginform.userident.value=document.loginform.p_field.value;document.loginform.p_field.value=\'\';return true;">';
 		// Call hooks. If they do not return anything, we fail to login
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'] as $function) {

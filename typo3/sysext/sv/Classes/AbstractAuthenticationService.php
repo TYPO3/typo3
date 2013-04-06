@@ -117,14 +117,8 @@ class AbstractAuthenticationService extends \TYPO3\CMS\Core\Service\AbstractServ
 	 */
 	public function compareUident(array $user, array $loginData, $passwordCompareStrategy = '') {
 		if ($this->authInfo['loginType'] === 'BE') {
-			// Challenge is only stored in session during BE login with the superchallenged login type.
-			// In the frontend context the challenge is never stored in the session.
-			if ($passwordCompareStrategy !== 'superchallenged') {
-				$this->pObj->challengeStoredInCookie = FALSE;
-			}
-			// The TYPO3 standard login service relies on $passwordCompareStrategy being set
-			// to 'superchallenged' because of the password in the database is stored as md5 hash
-			$passwordCompareStrategy = 'superchallenged';
+			// TODO: This might can be removed as we aren't supporting superchallenged passwords anymore
+			$this->pObj->challengeStoredInCookie = FALSE;
 		}
 		return $this->pObj->compareUident($user, $loginData, $passwordCompareStrategy);
 	}

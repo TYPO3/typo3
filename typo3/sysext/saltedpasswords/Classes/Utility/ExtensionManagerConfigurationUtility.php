@@ -145,7 +145,7 @@ your TYPO3 installation and the usability of the backend.';
 		$this->init();
 		$extConf = $this->extConf['BE'];
 		// The backend is called over SSL
-		$SSL = ($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] > 0 ? TRUE : FALSE) && $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] != 'superchallenged';
+		$SSL = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] > 0 ? TRUE : FALSE;
 		$rsaAuthLoaded = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth');
 		if ($extConf['enabled']) {
 			// SSL configured?
@@ -153,21 +153,13 @@ your TYPO3 installation and the usability of the backend.';
 				$this->setErrorLevel('ok');
 				$problems[] = 'The backend is configured to use SaltedPasswords over SSL.';
 			} elseif ($rsaAuthLoaded) {
-				if (trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) === 'rsa') {
-					if ($this->isRsaAuthBackendAvailable()) {
-						$this->setErrorLevel('ok');
-						$problems[] = 'The backend is configured to use SaltedPasswords with RSA authentication.';
-					} else {
-						// This means that login would fail because rsaauth is not working properly
-						$this->setErrorLevel('error');
-						$problems[] = '<strong>Using the extension "rsaauth" is not possible, as no encryption backend ' . 'is available. Please install and configure the PHP extension "openssl". ' . 'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
-					}
+				if ($this->isRsaAuthBackendAvailable()) {
+					$this->setErrorLevel('ok');
+					$problems[] = 'The backend is configured to use SaltedPasswords with RSA authentication.';
 				} else {
-					// This means that we are not using saltedpasswords
+					// This means that login would fail because rsaauth is not working properly
 					$this->setErrorLevel('error');
-					$problems[] = 'The "rsaauth" extension is installed, but TYPO3 is not configured to use it during login.
-						Use the Install Tool to set the Login Security Level for the backend to "rsa"
-						($TYPO3_CONF_VARS[\'BE\'][\'loginSecurityLevel\'])';
+					$problems[] = '<strong>Using the extension "rsaauth" is not possible, as no encryption backend ' . 'is available. Please install and configure the PHP extension "openssl". ' . 'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
 				}
 			} else {
 				// This means that we are not using saltedpasswords

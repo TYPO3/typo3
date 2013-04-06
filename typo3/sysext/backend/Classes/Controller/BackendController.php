@@ -458,11 +458,13 @@ class BackendController {
 		if ($GLOBALS['BE_USER']->uc['noMenuMode'] === 'icons') {
 			$menuFrameName = 'topmenuFrame';
 		}
-		// Determine security level from conf vars and default to super challenged
+		// Determine security level from conf vars or rsaauth extension installation or fallback to normal
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) {
 			$this->loginSecurityLevel = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'];
+		} elseif (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth')) {
+			$this->loginSecurityLevel = 'rsa';
 		} else {
-			$this->loginSecurityLevel = 'superchallenged';
+			$this->loginSecurityLevel = 'normal';
 		}
 		$t3Configuration = array(
 			'siteUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'),

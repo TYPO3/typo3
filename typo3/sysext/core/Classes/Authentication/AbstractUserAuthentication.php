@@ -131,13 +131,15 @@ abstract class AbstractUserAuthentication {
 	public $formfield_status = '';
 
 	/**
-	 * Sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username.
-	 * from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
+	 * Sets the level of security. *'normal' = clear-text. 'rsa' = rsa authentification.
+	 * For frontend:
+	 * 'challenged' = hashed password/username from form in $formfield_uident.
+	 * 'superchallenged' = hashed password hashed again with username.
 	 *
 	 * @var string
 	 * @deprecated since 4.7 will be removed in 6.1
 	 */
-	public $security_level = 'normal';
+	public $security_level = '';
 
 	// Server session lifetime. If > 0: session-timeout in seconds. If FALSE or
 	// <0: no timeout. If string: The string is a fieldname from the usertable
@@ -364,7 +366,11 @@ abstract class AbstractUserAuthentication {
 			// Notice: cannot use TYPO3_MODE here because BE user can be logged in and operate inside FE!
 			$this->security_level = trim($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel']);
 			if (!$this->security_level) {
-				$this->security_level = 'normal';
+				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth')) {
+					$this->security_level = 'rsa';
+				} else {
+					$this->security_level = 'normal';
+				}
 			}
 		}
 		// Enable dev logging if set
@@ -1342,31 +1348,22 @@ abstract class AbstractUserAuthentication {
 		$OK = FALSE;
 		$passwordCompareStrategy = $passwordCompareStrategy ? $passwordCompareStrategy : $this->security_level;
 		switch ($passwordCompareStrategy) {
-		case 'superchallenged':
-
-		case 'challenged':
-			// Check challenge stored in cookie:
-			if ($this->challengeStoredInCookie) {
-				session_start();
-				if ($_SESSION['login_challenge'] !== $loginData['chalvalue']) {
-					if ($this->writeDevLog) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('PHP Session stored challenge "' . $_SESSION['login_challenge'] . '" and submitted challenge "' . $loginData['chalvalue'] . '" did not match, so authentication failed!', 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', 2);
+			case 'superchallenged':
+			case 'challenged':
+				if ($this->loginType === 'FE') {
+					if ((string) $loginData[('uident_' . $passwordCompareStrategy)] === (string) md5(($user[$this->username_column] . ':' . $user[$this->userident_column] . ':' . $loginData['chalvalue']))) {
+						$OK = TRUE;
 					}
-					$this->logoff();
-					return FALSE;
 				}
-			}
-			if ((string) $loginData[('uident_' . $passwordCompareStrategy)] === (string) md5(($user[$this->username_column] . ':' . $user[$this->userident_column] . ':' . $loginData['chalvalue']))) {
-				$OK = TRUE;
-			}
-			break;
-		default:
-			// normal
-			if ((string) $loginData['uident_text'] === (string) $user[$this->userident_column]) {
-				$OK = TRUE;
-			}
-			break;
+				break;
+			default:
+				// normal
+				if ((string) $loginData['uident_text'] === (string) $user[$this->userident_column]) {
+					$OK = TRUE;
+				}
+				break;
 		}
+
 		return $OK;
 	}
 

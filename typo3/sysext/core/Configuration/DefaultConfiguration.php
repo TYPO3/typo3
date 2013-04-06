@@ -238,9 +238,28 @@ return array(
 			't3editor',
 			'felogin',
 			'feedit',
-			'recycler'
+			'recycler',
+			'rsaauth',
+			'saltedpasswords'
 		),
-		'extConf' => array()
+		'extConf' => array(
+			'saltedpasswords' => serialize(array(
+				'BE' => array(
+					'enabled' => 1,
+					'saltedPWHashingMethod' => 'tx_saltedpasswords_salts_phpass',
+					'forceSalted' => 0,
+					'onlyAuthService' => 0,
+					'updatePasswd' => 1
+				),
+				'FE' => array(
+					'enabled' => 1,
+					'saltedPWHashingMethod' => 'tx_saltedpasswords_salts_phpass',
+					'forceSalted' => 0,
+					'onlyAuthService' => 0,
+					'updatePasswd' => 1
+				)
+			))
+		)
 	),
 	'BE' => array(
 		// Backend Configuration.
@@ -273,7 +292,7 @@ return array(
 		'lockHashKeyWords' => 'useragent',				// Keyword list (Strings comma separated). Currently only "useragent"; If set, then the BE user session is locked to the value of HTTP_USER_AGENT. This lowers the risk of session hi-jacking. However in some cases (like during development) you might need to switch the user agent while keeping the session. In this case you can disable that feature (e.g. with a blank string).
 		'cookieDomain' => '',							// Same as <a href="#SYS-cookieDomain">$TYPO3_CONF_VARS['SYS']['cookieDomain']</a> but only for BE cookies. If empty, $TYPO3_CONF_VARS['SYS']['cookieDomain'] value will be used.
 		'cookieName' => 'be_typo_user',					// String: Set the name for the cookie used for the back-end user session
-		'loginSecurityLevel' => '',						// String: Keywords that determines the security level of login to the backend. "normal" means the password from the login form is sent in clear-text, "challenged" means the password is not sent but hashed with some other values, "superchallenged" (default) means the password is first hashed before being hashed with the challenge values again (means the password is stored as a hashed string in the database also), "rsa" uses RSA password encryption (only if the rsaauth extension is installed). DO NOT CHANGE this value manually; without an alternative authentication service it will only prevent logins in TYPO3 since the "superchallenged" method is hardcoded in the default authentication system.
+		'loginSecurityLevel' => 'rsa',					// String: Keywords that determines the security level of login to the backend. "normal" means the password from the login form is sent in clear-text, "rsa" uses RSA password encryption (only if the rsaauth extension is installed). DO NOT CHANGE this value manually; without an alternative authentication service it will only prevent logins in TYPO3.
 		'showRefreshLoginPopup' => FALSE,				// Boolean: If set, the Ajax relogin will show a real popup window for relogin after the count down. Some auth services need this as they add custom validation to the login form. If it's not set, the Ajax relogin will show an inline relogin window.
 		'adminOnly' => 0,								// <p>Integer (-1, 0, 1, 2)</p><dl><dt>-1</dt><dd>total shutdown for maintenance purposes</dd><dt>0</dt><dd>normal operation, everyone can login (default)</dd><dt>1</dt><dd>only admins can login</dd><dt>2</dt><dd>only admins and regular CLI users can login</dd></dl>
 		'disable_exec_function' => FALSE,				// Boolean: Don't use exec() function (except for ImageMagick which is disabled by <a href="#GFX-im">[GFX][im]</a>=0). If set, all fileoperations are done by the default PHP-functions. This is nescessary under Windows! On Unix the system commands by exec() can be used, unless this is disabled.
@@ -613,7 +632,7 @@ return array(
 		'addRootLineFields' => '',		// Comma-list of fields from the 'pages'-table. These fields are added to the select query for fields in the rootline.
 		'checkFeUserPid' => TRUE,		// Boolean: If set, the pid of fe_user logins must be sent in the form as the field 'pid' and then the user must be located in the pid. If you unset this, you should change the fe_users.username eval-flag 'uniqueInPid' to 'unique' in $TCA. This will do: $TCA['fe_users']['columns']['username']['config']['eval']= 'nospace,lower,required,unique';
 		'lockIP' => 2,		// Integer (0-4). If >0, fe_users are locked to (a part of) their REMOTE_ADDR IP for their session. Enhances security but may throw off users that may change IP during their session (in which case you can lower it to 2 or 3). The integer indicates how many parts of the IP address to include in the check. Reducing to 1-3 means that only first, second or third part of the IP address is used. 4 is the FULL IP address and recommended. 0 (zero) disables checking of course.
-		'loginSecurityLevel' => '',		// See description for <a href="#BE-loginSecurityLevel">[BE][loginSecurityLevel]</a>. Default state for frontend is "normal". Alternative authentication services can implement higher levels if preferred. For example, "rsa" level uses RSA password encryption (only if the rsaauth extension is installed)
+		'loginSecurityLevel' => 'rsa',		// See description for <a href="#BE-loginSecurityLevel">[BE][loginSecurityLevel]</a>. Default state for frontend is "normal". Alternative authentication services can implement higher levels if preferred. For example, "rsa" level uses RSA password encryption (only if the rsaauth extension is installed)
 		'lifetime' => 0,		// Integer: positive. If >0, the cookie of FE users will have a lifetime of the number of seconds this value indicates. Otherwise it will be a session cookie (deleted when browser is shut down). Setting this value to 604800 will result in automatic login of FE users during a whole week, 86400 will keep the FE users logged in for a day.
 		'sessionDataLifetime' => 86400,		// Integer: positive. If >0, the session data will timeout and be removed after the number of seconds given (86400 seconds represents 24 hours).
 		'permalogin' => 0,		// <p>Integer:</p><dl><dt>-1</dt><dd>Permanent login for FE users disabled.</dd><dt>0</dt><dd>By default permalogin is disabled for FE users but can be enabled by a form control in the login form.</dd><dt>1</dt><dd>Permanent login is by default enabled but can be disabled by a form control in the login form.</dd><dt>2</dt><dd>Permanent login is forced to be enabled.// In any case, permanent login is only possible if <a href="#FE-lifetime">[FE][lifetime]</a> lifetime is > 0.</dd></dl>

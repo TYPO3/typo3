@@ -50,26 +50,32 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 		$isProcessed = TRUE;
 		// Processing data according to the state it was submitted in.
 		switch ($passwordTransmissionStrategy) {
-		case 'normal':
-			$loginData['uident_text'] = $loginData['uident'];
-			break;
-		case 'challenged':
-			$loginData['uident_text'] = '';
-			$loginData['uident_challenged'] = $loginData['uident'];
-			$loginData['uident_superchallenged'] = '';
-			break;
-		case 'superchallenged':
-			$loginData['uident_text'] = '';
-			$loginData['uident_challenged'] = '';
-			$loginData['uident_superchallenged'] = $loginData['uident'];
-			break;
-		default:
-			$isProcessed = FALSE;
+			case 'normal':
+				$loginData['uident_text'] = $loginData['uident'];
+				break;
+			case 'challenged':
+				if ($this->authInfo['loginType'] === 'FE') {
+					$loginData['uident_text'] = '';
+					$loginData['uident_challenged'] = $loginData['uident'];
+					$loginData['uident_superchallenged'] = '';
+				}
+				break;
+			case 'superchallenged':
+				if ($this->authInfo['loginType'] === 'FE') {
+					$loginData['uident_text'] = '';
+					$loginData['uident_challenged'] = '';
+					$loginData['uident_superchallenged'] = $loginData['uident'];
+				}
+				break;
+			default:
+				$isProcessed = FALSE;
 		}
 		if (!empty($loginData['uident_text'])) {
-			$loginData['uident_challenged'] = (string) md5(($loginData['uname'] . ':' . $loginData['uident_text'] . ':' . $loginData['chalvalue']));
-			$loginData['uident_superchallenged'] = (string) md5(($loginData['uname'] . ':' . md5($loginData['uident_text']) . ':' . $loginData['chalvalue']));
-			$this->processOriginalPasswordValue($loginData);
+			if ($this->authInfo['loginType'] === 'FE') {
+				$loginData['uident_challenged'] = (string) md5(($loginData['uname'] . ':' . $loginData['uident_text'] . ':' . $loginData['chalvalue']));
+				$loginData['uident_superchallenged'] = (string) md5(($loginData['uname'] . ':' . md5($loginData['uident_text']) . ':' . $loginData['chalvalue']));
+				$this->processOriginalPasswordValue($loginData);
+			}
 			$isProcessed = TRUE;
 		}
 		return $isProcessed;
@@ -85,10 +91,12 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 * @deprecated will be removed with 6.1
 	 */
 	protected function processOriginalPasswordValue(&$loginData) {
-		if ($this->authInfo['security_level'] === 'superchallenged') {
-			$loginData['uident'] = $loginData['uident_superchallenged'];
-		} elseif ($this->authInfo['security_level'] === 'challenged') {
-			$loginData['uident'] = $loginData['uident_challenged'];
+		if ($this->authInfo['loginType'] === 'FE') {
+			if ($this->authInfo['security_level'] === 'superchallenged') {
+				$loginData['uident'] = $loginData['uident_superchallenged'];
+			} elseif ($this->authInfo['security_level'] === 'challenged') {
+				$loginData['uident'] = $loginData['uident_challenged'];
+			}
 		}
 	}
 

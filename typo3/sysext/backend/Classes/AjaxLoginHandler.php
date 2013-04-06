@@ -147,6 +147,7 @@ class AjaxLoginHandler {
 	 * @param array $parameters Parameters (not used)
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $parent The calling parent AJAX object
 	 * @return void
+	 * @deprecated since 6.1 will be removed in 7.0
 	 */
 	public function getChallenge(array $parameters, \TYPO3\CMS\Core\Http\AjaxRequestHandler $parent) {
 		session_start();
@@ -157,6 +158,5 @@ class AjaxLoginHandler {
 	}
 
 }
-
 
 ?>

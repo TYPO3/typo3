@@ -59,7 +59,7 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			'Backend login with securityLevel "normal"' => array(
 				'BE',
 				'normal',
-				'superchallenged',
+				'normal',
 				array(
 					'status' => 'login',
 					'uname' => 'admin',
@@ -69,31 +69,9 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 				array(
 					'status' => 'login',
 					'uname' => 'admin',
-					'uident' => '651219fccfbe0c9004c7196515d780ce',
+					'uident' => 'password',
 					'chalvalue' => NULL,
 					'uident_text' => 'password',
-					'uident_challenged' => '458203772635d38f05ca9e62d8237974',
-					'uident_superchallenged' => '651219fccfbe0c9004c7196515d780ce'
-				)
-			),
-			'Backend login with securityLevel "superchallenged"' => array(
-				'BE',
-				'superchallenged',
-				'superchallenged',
-				array(
-					'status' => 'login',
-					'uname' => 'admin',
-					'uident' => '651219fccfbe0c9004c7196515d780ce',
-					'chalvalue' => NULL
-				),
-				array(
-					'status' => 'login',
-					'uname' => 'admin',
-					'uident' => '651219fccfbe0c9004c7196515d780ce',
-					'chalvalue' => NULL,
-					'uident_text' => '',
-					'uident_challenged' => '',
-					'uident_superchallenged' => '651219fccfbe0c9004c7196515d780ce'
 				)
 			),
 			'Frontend login with securityLevel "normal"' => array(
@@ -135,7 +113,27 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 					'uident_challenged' => '458203772635d38f05ca9e62d8237974',
 					'uident_superchallenged' => ''
 				)
-			)
+			),
+			'Frontend login with securityLevel "superchallenged"' => array(
+				'FE',
+				'superchallenged',
+				'superchallenged',
+				array(
+					'status' => 'login',
+					'uname' => 'admin',
+					'uident' => '651219fccfbe0c9004c7196515d780ce',
+					'chalvalue' => NULL
+				),
+				array(
+					'status' => 'login',
+					'uname' => 'admin',
+					'uident' => '651219fccfbe0c9004c7196515d780ce',
+					'chalvalue' => NULL,
+					'uident_text' => '',
+					'uident_challenged' => '',
+					'uident_superchallenged' => '651219fccfbe0c9004c7196515d780ce'
+				)
+			),
 		);
 	}
 

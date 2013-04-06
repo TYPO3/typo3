@@ -336,17 +336,10 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @todo Define visibility
 	 */
 	public function start() {
-		$securityLevel = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']);
-		$standardSecurityLevels = array('normal', 'challenged', 'superchallenged');
-		// The TYPO3 standard login service relies on $this->security_level being set
-		// to 'superchallenged' because of the password in the database is stored as md5 hash.
-		// @deprecated since 4.7
-		// These lines are here for compatibility purpose only, can be removed in 6.1.
-		// @see tx_sv_auth::processLoginData()
-		if (!empty($securityLevel) && !in_array($securityLevel, $standardSecurityLevels)) {
-			$this->security_level = $securityLevel;
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('rsaauth')) {
+			$this->security_level = 'rsa';
 		} else {
-			$this->security_level = 'superchallenged';
+			$this->security_level = 'normal';
 		}
 		parent::start();
 	}
