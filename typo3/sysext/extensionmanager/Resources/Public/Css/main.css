@@ -1561,20 +1561,21 @@ button.ui-button::-moz-focus-inner {
   padding: 10px; }
 
 #typo3-extension-configuration-forms {
-  margin: 20px;
+  min-width: 400px;
   max-width: 900px; }
-
-#typo3-extension-configuration-forms h3 {
-  margin-bottom: 0;
-  margin-top: 15px; }
+  #typo3-extension-configuration-forms .category {
+    background-repeat: repeat-x;
+    background-color: #fff;
+    border: 1px solid #adadad;
+    padding: 15px; }
+  #typo3-extension-configuration-forms .group {
+    margin-bottom: 30px; }
+    #typo3-extension-configuration-forms .group label {
+      display: block;
+      padding-bottom: 10px; }
 
 #typo3-extension-configuration-forms #typo3-docheader-row2 .back {
   float: right; }
-
-#typo3-extension-configuration-forms .category {
-  background-repeat: repeat-x;
-  border: 1px solid #adadad;
-  padding: 15px; }
 
 #typo3-extension-configuration-forms input.submit {
   margin-top: 10px; }
