@@ -446,7 +446,7 @@ class AbstractMenuContentObject {
 						// Get sub-pages:
 						$res = $this->parent_cObj->exec_getQuery('pages', array('pidInList' => $id, 'orderBy' => $altSortField));
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-							$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
+							$GLOBALS['TSFE']->sys_page->versionOL('pages', $row, TRUE);
 							if (is_array($row)) {
 								// Keep mount point?
 								$mount_info = $this->sys_page->getMountPointInfo($row['uid'], $row);
@@ -586,7 +586,7 @@ class AbstractMenuContentObject {
 						'max' => $limit
 					));
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-						$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
+						$GLOBALS['TSFE']->sys_page->versionOL('pages', $row, TRUE);
 						if (is_array($row)) {
 							$temp[$row['uid']] = $this->sys_page->getPageOverlay($row);
 						}
@@ -660,7 +660,7 @@ class AbstractMenuContentObject {
 						}
 						$res = $this->parent_cObj->exec_getQuery('pages', array('pidInList' => '0', 'uidInList' => $id_list, 'where' => '(' . implode(' OR ', $keyWordsWhereArr) . ')' . $extraWhere, 'orderBy' => $altSortFieldValue ? $altSortFieldValue : $sortField . ' desc', 'max' => $limit));
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-							$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
+							$GLOBALS['TSFE']->sys_page->versionOL('pages', $row, TRUE);
 							if (is_array($row)) {
 								$temp[$row['uid']] = $this->sys_page->getPageOverlay($row);
 							}
