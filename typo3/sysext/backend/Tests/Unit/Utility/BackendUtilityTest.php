@@ -46,6 +46,95 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	///////////////////////////////////////
+	// Tests concerning calcAge
+	///////////////////////////////////////
+	/**
+	 * Data provider for calcAge function
+	 *
+	 * @return array
+	 */
+	public function calcAgeDataProvider() {
+		return array(
+			'Single year' => array(
+				'seconds' => 60 * 60 * 24 * 365,
+				'expectedLabel' => '1 year'
+			),
+			'Plural years' => array(
+				'seconds' => 60 * 60 * 24 * 365 * 2,
+				'expectedLabel' => '2 yrs'
+			),
+			'Single negative year' => array(
+				'seconds' => 60 * 60 * 24 * 365 * -1,
+				'expectedLabel' => '-1 year'
+			),
+			'Plural negative years' => array(
+				'seconds' => 60 * 60 * 24 * 365 * 2 * -1,
+				'expectedLabel' => '-2 yrs'
+			),
+			'Single day' => array(
+				'seconds' => 60 * 60 * 24,
+				'expectedLabel' => '1 day'
+			),
+			'Plural days' => array(
+				'seconds' => 60 * 60 * 24 * 2,
+				'expectedLabel' => '2 days'
+			),
+			'Single negative day' => array(
+				'seconds' => 60 * 60 * 24 * -1,
+				'expectedLabel' => '-1 day'
+			),
+			'Plural negative days' => array(
+				'seconds' => 60 * 60 * 24 * 2 * -1,
+				'expectedLabel' => '-2 days'
+			),
+			'Single hour' => array(
+				'seconds' => 60 * 60,
+				'expectedLabel' => '1 hour'
+			),
+			'Plural hours' => array(
+				'seconds' => 60 * 60 * 2,
+				'expectedLabel' => '2 hrs'
+			),
+			'Single negative hour' => array(
+				'seconds' => 60 * 60 * -1,
+				'expectedLabel' => '-1 hour'
+			),
+			'Plural negative hours' => array(
+				'seconds' => 60 * 60 * 2 * -1,
+				'expectedLabel' => '-2 hrs'
+			),
+			'Single minute' => array(
+				'seconds' => 60,
+				'expectedLabel' => '1 min'
+			),
+			'Plural minutes' => array(
+				'seconds' => 60 * 2,
+				'expectedLabel' => '2 min'
+			),
+			'Single negative minute' => array(
+				'seconds' => 60 * -1,
+				'expectedLabel' => '-1 min'
+			),
+			'Plural negative minutes' => array(
+				'seconds' => 60 * 2 * -1,
+				'expectedLabel' => '-2 min'
+			),
+			'Zero seconds' => array(
+				'seconds' => 0,
+				'expectedLabel' => '0 min'
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider calcAgeDataProvider
+	 */
+	public function calcAgeReturnsExpectedValues($seconds, $expectedLabel) {
+		$this->assertSame($expectedLabel, $this->fixture->calcAge($seconds));
+	}
+
+	///////////////////////////////////////
 	// Tests concerning getProcessedValue
 	///////////////////////////////////////
 	/**
