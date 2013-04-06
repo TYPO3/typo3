@@ -14,6 +14,9 @@ http://wiki.typo3.org/TYPO3_6.1
 Compatibility
 ===============================================================================
 
+During 6.1 development phase the 10.000th core merge was done.
+Inspiring people to share - special thanks to all contributors!
+
 -------------------------------------------------------------------------------
 System environment
 -------------------------------------------------------------------------------
