@@ -149,6 +149,12 @@ class ResourceStorage {
 	 */
 	protected $signalSlotDispatcher;
 
+
+	/**
+	* @var \TYPO3\CMS\Core\Utility\File\BasicFileUtility
+	*/
+	protected $basicFileUtility;
+
 	/**
 	 * Capability for being browsable by (backend) users
 	 */
@@ -208,6 +214,7 @@ class ResourceStorage {
 		// TODO do not set the "public" capability if no public URIs can be generated
 		$this->processConfiguration();
 		$this->resetFileAndFolderNameFiltersToDefault();
+		$this->basicFileUtility = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\BasicFileUtility');
 	}
 
 	/**
@@ -709,6 +716,7 @@ class ResourceStorage {
 	 * @return FileInterface
 	 */
 	public function addFile($localFilePath, Folder $targetFolder, $fileName = '', $conflictMode = 'changeName') {
+		$localFilePath = PathUtility::cleanDirectoryName($localFilePath);
 		// TODO check permissions (write on target, upload, ...)
 		if (!file_exists($localFilePath)) {
 			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
