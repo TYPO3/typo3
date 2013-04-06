@@ -116,6 +116,11 @@ class DatabaseConnection {
 	 */
 	protected $postProcessHookObjects = array();
 
+	/**
+	 * @var array
+	 */
+	protected $incompatibleSqlModes = array('NO_BACKSLASH_ESCAPES','STRICT_TRANS_TABLES');
+
 	/************************************
 	 *
 	 * Query execution
@@ -1118,27 +1123,55 @@ class DatabaseConnection {
 					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not initialize DB connection with query "' . $v . '": ' . $this->sql_error(), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 				}
 			}
-			$this->setSqlMode();
+			$this->setSqlModes();
 		}
 		return $this->link;
 	}
 
 	/**
-	 * Fixes the SQL mode by unsetting NO_BACKSLASH_ESCAPES if found.
+	 * Fixes the SQL mode by unsetting unsupported modes if found.
 	 *
 	 * @return void
 	 */
-	protected function setSqlMode() {
-		$resource = $this->sql_query('SELECT @@SESSION.sql_mode;');
-		if (is_resource($resource)) {
-			$result = $this->sql_fetch_row($resource);
-			if (isset($result[0]) && $result[0] && strpos($result[0], 'NO_BACKSLASH_ESCAPES') !== FALSE) {
-				$modes = array_diff(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $result[0]), array('NO_BACKSLASH_ESCAPES'));
-				$query = 'SET sql_mode=\'' . $this->link->real_escape_string(implode(',', $modes)) . '\';';
-				$success = $this->sql_query($query);
-				\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('NO_BACKSLASH_ESCAPES could not be removed from SQL mode: ' . $this->sql_error(), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+	protected function setSqlModes() {
+		$detectedIncompatibleSqlModes = array();
+		$sqlModes = $this->getSqlModes();
+
+		foreach($this->incompatibleSqlModes as $incompatibleSqlMode) {
+			if(in_array($incompatibleSqlMode, $sqlModes)) {
+				$detectedIncompatibleSqlModes[] = $incompatibleSqlMode;
+					// remove the value form the array
+				$sqlModes = array_diff($sqlModes, array($incompatibleSqlMode));
 			}
 		}
+
+			// set the sql_mode setting if an incompatible mode has been found
+		if(count($detectedIncompatibleSqlModes) > 0) {
+			$query = 'SET sql_mode=\'' . $this->link->real_escape_string(implode(',', $sqlModes)) . '\';';
+			$success = $this->sql_query($query);
+			if($success === FALSE) {
+				\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('There is an incompatible SQL mode ('.implode(', ', $detectedIncompatibleSqlModes).') that could not be removed: ' . $this->sql_error(), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+			} else {
+				\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('There is an incompatible SQL mode ('.implode(', ', $detectedIncompatibleSqlModes).') that has been removed for the MySQL Session. You should remove that setting in your MySQL environment or in $TYPO3_CONF_VARS["SYS"]["setDBinit"].', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_INFO);
+			}
+		}
+	}
+
+	/**
+	 * Returns an array with the current sql mode settings
+	 *
+	 * @return array
+	 */
+	public function getSqlModes() {
+		$sqlModes = array();
+		$resource = $this->sql_query('SELECT @@SESSION.sql_mode;');
+		if ($resource !== FALSE) {
+			$result = $this->sql_fetch_row($resource);
+			if (isset($result[0])) {
+				$sqlModes = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $result[0]);
+			}
+		}
+		return $sqlModes;
 	}
 
 	/**
