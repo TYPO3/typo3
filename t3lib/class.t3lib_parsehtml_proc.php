@@ -52,7 +52,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	var $relPath = ''; // Relative path
 	var $relBackPath = ''; // Relative back-path
 	public $tsConfig = array(); // Current Page TSConfig
-	var $procOptions = ''; // Set to the TSconfig options coming from Page TSconfig
+	var $procOptions = array(); // Set to the TSconfig options coming from Page TSconfig
 
 		// Internal, dynamic
 	var $TS_transform_db_safecounter = 100; // Run-away brake for recursive calls.
@@ -162,7 +162,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 			// Init:
 		$this->tsConfig = $thisConfig;
-		$this->procOptions = $thisConfig['proc.'];
+		$this->procOptions = (array) $thisConfig['proc.'];
 		$this->preserveTags = strtoupper(implode(',', t3lib_div::trimExplode(',', $this->procOptions['preserveTags'])));
 
 			// dynamic configuration of blockElementList
