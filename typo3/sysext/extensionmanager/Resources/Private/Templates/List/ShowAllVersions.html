@@ -58,11 +58,9 @@
 		</table>
 	</f:if>
 
-	<f:be.widget.paginate objects="{extensions}" as="paginatedExtensions" configuration="{itemsPerPage: 15, maximumNumberOfLinks: 2}">
-		<table id="terVersionTable" class="typo3-extension-list">
-			<f:render partial="List/TerShowVersionsTable" arguments="{paginatedExtensions:paginatedExtensions}" />
-		</table>
-	</f:be.widget.paginate>
+	<table id="terVersionTable" class="typo3-extension-list">
+		<f:render partial="List/TerShowVersionsTable" arguments="{extensions: extensions}" />
+	</table>
 </f:section>
 
 
