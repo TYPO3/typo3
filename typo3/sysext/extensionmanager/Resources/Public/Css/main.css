@@ -1596,25 +1596,25 @@ button.ui-button::-moz-focus-inner {
   margin-left: -2px; }
 
 .alpha {
-  background-color: #f14400; }
+  color: #f14400; }
 
 .beta {
-  background-color: #f4bd00; }
+  color: #f4bd00; }
 
 .stable {
-  background-color: #3db900; }
+  color: #3db900; }
 
 .experimental {
-  background-color: #000; }
+  color: #000; }
 
 .test {
-  background-color: #000; }
+  color: #000; }
 
 .obsolete {
-  background-color: #8c8c8c; }
+  color: #8c8c8c; }
 
 .excludeFromUpdates {
-  background-color: #000; }
+  color: #000; }
 
 .alpha,
 .beta,
@@ -1728,37 +1728,39 @@ p {
   .typo3-extension-list tr.odd:hover td, .typo3-extension-list tr.even:hover td {
     background: none; }
     .typo3-extension-list tr.odd:hover td.alpha, .typo3-extension-list tr.even:hover td.alpha {
-      background-color: #f14400; }
+      color: #f14400; }
     .typo3-extension-list tr.odd:hover td.beta, .typo3-extension-list tr.even:hover td.beta {
-      background-color: #f4bd00; }
+      color: #f4bd00; }
     .typo3-extension-list tr.odd:hover td.stable, .typo3-extension-list tr.even:hover td.stable {
-      background-color: #3db900; }
+      color: #3db900; }
     .typo3-extension-list tr.odd:hover td.experimental, .typo3-extension-list tr.even:hover td.experimental {
-      background-color: #000; }
+      color: #000; }
     .typo3-extension-list tr.odd:hover td.test, .typo3-extension-list tr.even:hover td.test {
-      background-color: #000; }
+      color: #000; }
     .typo3-extension-list tr.odd:hover td.obsolete, .typo3-extension-list tr.even:hover td.obsolete {
-      background-color: #8c8c8c; }
+      color: #8c8c8c; }
     .typo3-extension-list tr.odd:hover td.excludeFromUpdates, .typo3-extension-list tr.even:hover td.excludeFromUpdates {
-      background-color: #000; }
+      color: #000; }
   .typo3-extension-list tr td {
     background: none;
     padding: 8px 10px;
     vertical-align: middle; }
+    .typo3-extension-list tr td.state {
+      width: 70px; }
     .typo3-extension-list tr td.alpha {
-      background-color: #f14400; }
+      color: #f14400; }
     .typo3-extension-list tr td.beta {
-      background-color: #f4bd00; }
+      color: #f4bd00; }
     .typo3-extension-list tr td.stable {
-      background-color: #3db900; }
+      color: #3db900; }
     .typo3-extension-list tr td.experimental {
-      background-color: #000; }
+      color: #000; }
     .typo3-extension-list tr td.test {
-      background-color: #000; }
+      color: #000; }
     .typo3-extension-list tr td.obsolete {
-      background-color: #8c8c8c; }
+      color: #8c8c8c; }
     .typo3-extension-list tr td.excludeFromUpdates {
-      background-color: #000; }
+      color: #000; }
     .typo3-extension-list tr td img {
       vertical-align: middle;
       margin-right: 5px; }
