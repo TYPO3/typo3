@@ -25,7 +25,7 @@
 			<f:be.menus.actionMenu>
 				<f:be.menus.actionMenuItem label="{f:translate(key: 'manageExtensions')}" controller="List" action="index" />
 				<f:be.menus.actionMenuItem label="{f:translate(key: 'getExtensions')}" controller="List" action="ter" />
-				<f:if condition="{0: actionName} == {0: 'showAllVersions'}">
+				<f:if condition="{actionName} == 'showAllVersions'">
 					<f:be.menus.actionMenuItem label="{f:translate(key: 'showAllVersions')} {extensionKey}" controller="List" action="showAllVersions" />
 				</f:if>
 			</f:be.menus.actionMenu>
