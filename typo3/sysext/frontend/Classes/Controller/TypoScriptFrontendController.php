@@ -2469,7 +2469,12 @@ class TypoScriptFrontendController {
 		$GLOBALS['TT']->push('Get Compressed TC array');
 		if (!$this->TCAloaded) {
 			// Create hash string for storage / retrieval of cached content:
-			$tempHash = md5('tables.php:' . filemtime((TYPO3_extTableDef_script ? PATH_typo3conf . TYPO3_extTableDef_script : PATH_t3lib . 'stddb/tables.php')) . (TYPO3_extTableDef_script ? filemtime(PATH_typo3conf . TYPO3_extTableDef_script) : ''));
+			$extTableDef = PATH_typo3conf . TYPO3_extTableDef_script;
+			$tempHash = md5(
+				'tables.php:'
+				. (filemtime(is_file($extTableDef) ? $extTableDef : PATH_t3lib . 'stddb/tables.php'))
+				. (is_file($extTableDef) ? filemtime($extTableDef) : '')
+			);
 			list($GLOBALS['TCA'], $this->TCAcachedExtras) = unserialize($this->sys_page->getHash($tempHash));
 			// If no result, create it:
 			if (!is_array($GLOBALS['TCA'])) {
