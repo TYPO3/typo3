@@ -207,6 +207,12 @@ class FileListController {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:filelist/Resources/Private/Templates/file_list.html');
 		$this->doc->getPageRenderer()->loadPrototype();
+		$this->doc->getPageRenderer()->loadJQuery();
+		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
+		$this->doc->getPageRenderer()->addInlineLanguagelabelFile(
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
+			'file_upload'
+		);
 		// There there was access to this file path, continue, make the list
 		if ($this->folderObject) {
 
@@ -301,8 +307,7 @@ class FileListController {
 			$docHeaderButtons = array_merge($this->getButtons(), $buttons);
 			// Build the <body> for the module
 			// Create output
-			$pageContent = '';
-			$pageContent .= '<form action="' . htmlspecialchars($this->filelist->listURL()) . '" method="post" name="dblistForm">';
+			$pageContent = '<form action="' . htmlspecialchars($this->filelist->listURL()) . '" method="post" name="dblistForm">';
 			$pageContent .= $this->filelist->HTMLcode;
 			$pageContent .= '<input type="hidden" name="cmd" /></form>';
 			// Making listing options:
@@ -338,7 +343,8 @@ class FileListController {
 			$markerArray = array(
 				'CSH' => $docHeaderButtons['csh'],
 				'FUNC_MENU' => \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
-				'CONTENT' => ($this->errorMessage ? $this->errorMessage->render() : '') . $pageContent
+				'CONTENT' => ($this->errorMessage ? $this->errorMessage->render() : '') . $pageContent,
+				'FOLDER_IDENTIFIER' => $this->folderObject->getCombinedIdentifier()
 			);
 			$this->content = $this->doc->moduleBody(array(), $docHeaderButtons, array_merge($markerArray, $otherMarkers));
 			// Renders the module page
