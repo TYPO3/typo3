@@ -229,10 +229,25 @@ class ConfigurationView {
 				$success = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_typo3conf . TYPO3_extTableDef_script, $extTables);
 				if ($success) {
 					// show flash message
-					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', '', sprintf($GLOBALS['LANG']->getLL('writeMessage', TRUE), TYPO3_extTableDef_script, '<br />', '<strong>' . nl2br($changedLine) . '</strong>'), \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						'',
+						sprintf(
+							$GLOBALS['LANG']->getLL('writeMessage', TRUE),
+							TYPO3_extTableDef_script,
+							'<br />',
+							'<strong>' . nl2br(htmlspecialchars($changedLine)) . '</strong>'
+						),
+						\TYPO3\CMS\Core\Messaging\FlashMessage::OK
+					);
 				} else {
 					// Error: show flash message
-					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', '', sprintf($GLOBALS['LANG']->getLL('writeMessageFailed', TRUE), TYPO3_extTableDef_script), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						'',
+						sprintf($GLOBALS['LANG']->getLL('writeMessageFailed', TRUE), TYPO3_extTableDef_script),
+						\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+					);
 				}
 				$this->content .= $flashMessage->render();
 			}
