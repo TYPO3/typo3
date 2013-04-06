@@ -6,7 +6,7 @@
 		$('.t3-icon-edit-upload').parent().not('.transformed').on('click', function(event) {
 			event.preventDefault();
 			$(this).addClass('transformed');
-			$('.uploadForm').show();
+			$('.uploadForm').slideDown();
 			$.ajax({
 				url: $(this).attr('href'),
 				dataType: 'html',

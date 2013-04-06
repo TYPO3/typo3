@@ -11,11 +11,15 @@
 </f:section>
 
 <f:section name="Content">
+	<div class="uploadForm" style="display: none;">
+		<span class="spinner"></span>
+		<f:translate key="extensionList.loading"/>
+	</div>
+
 	<div class="headerRow ui-helper-clearfix">
 		<div class="typo3-extensionmanager-headerRowLeft">
 		</div>
 		<div class="typo3-extensionmanager-headerRowRight">
-			<div class="uploadForm" style="display:none;"><f:translate key="extensionList.loading"/><span class="spinner"></span></div>
 		</div>
 	</div>
 	<table id="typo3-extension-list" class="typo3-extension-list">
