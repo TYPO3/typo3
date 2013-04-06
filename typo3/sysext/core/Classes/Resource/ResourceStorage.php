@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Core\Resource;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -711,6 +712,9 @@ class ResourceStorage {
 	 * @return FileInterface
 	 */
 	public function addFile($localFilePath, Folder $targetFolder, $fileName = '', $conflictMode = 'changeName') {
+		/** @var $basicFileUtility \TYPO3\CMS\Core\Utility\File\BasicFileUtility */
+		$basicFileUtility = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\BasicFileUtility');
+		$localFilePath = $basicFileUtility->cleanDirectoryName($localFilePath);
 		// TODO check permissions (write on target, upload, ...)
 		if (!file_exists($localFilePath)) {
 			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
