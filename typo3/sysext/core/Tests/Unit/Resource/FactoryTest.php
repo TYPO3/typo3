@@ -50,7 +50,7 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-		$this->fixture = new \TYPO3\CMS\Core\Resource\ResourceFactory();
+		$this->fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', array('dummy'));
 	}
 
 	protected function tearDown() {
@@ -91,6 +91,45 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver', $obj);
 	}
 
+	/***********************************
+	 *  File Handling
+	 ***********************************/
+
+	public function directoryDataProviderValidFolderValues() {
+		return array(
+			'relative path' => array('fileadmin'),
+			'path with PATH_site' => array(PATH_site . 'fileadmin')
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider directoryDataProviderValidFolderValues
+	 */
+	public function retrieveFileOrFolderObjectReturnsFolderIfPathIsGiven($source) {
+		$storage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('getFile', 'getFolder'), array(), '', FALSE);
+		$storage->expects($this->once())
+			->method('getFolder')
+			->with('fileadmin');
+		$this->fixture->_set('storageInstances', array(0 => $storage));
+		$this->fixture->retrieveFileOrFolderObject($source);
+	}
+
+	/**
+	 * @test
+	 */
+	public function retrieveFileOrFolderObjectReturnsFileIfPathIsGiven() {
+		$filename = 'typo3temp/4711.txt';
+		$storage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('getFile', 'getFolder'), array(), '', FALSE);
+		$storage->expects($this->once())
+			->method('getFile')
+			->with($filename);
+		$this->fixture->_set('storageInstances', array(0 => $storage));
+		// Create and prepare test file
+		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filename, '42');
+		$this->filesCreated[] = PATH_site . $filename;
+		$this->fixture->retrieveFileOrFolderObject($filename);
+	}
 }
 
 ?>
