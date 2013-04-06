@@ -1403,7 +1403,7 @@ class BackendUtility {
 	static public function calcAge($seconds, $labels = ' min| hrs| days| yrs| min| hour| day| year') {
 		$labelArr = explode('|', $labels);
 		$absSeconds = abs($seconds);
-		$sign = $seconds > 0 ? 1 : -1;
+		$sign = $seconds >= 0 ? 1 : -1;
 		if ($seconds < 3600) {
 			$val = round($absSeconds / 60);
 			$seconds = $sign * $val . ($val == 1 ? $labelArr[4] : $labelArr[0]);
