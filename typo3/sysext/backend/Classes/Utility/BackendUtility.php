@@ -1403,14 +1403,14 @@ class BackendUtility {
 	static public function calcAge($seconds, $labels = ' min| hrs| days| yrs| min| hour| day| year') {
 		$labelArr = explode('|', $labels);
 		$absSeconds = abs($seconds);
-		$sign = $seconds > 0 ? 1 : -1;
-		if ($seconds < 3600) {
+		$sign = $seconds < 0 ? -1 : 1;
+		if ($absSeconds < 3600) {
 			$val = round($absSeconds / 60);
 			$seconds = $sign * $val . ($val == 1 ? $labelArr[4] : $labelArr[0]);
-		} elseif ($seconds < 24 * 3600) {
+		} elseif ($absSeconds < 24 * 3600) {
 			$val = round($absSeconds / 3600);
 			$seconds = $sign * $val . ($val == 1 ? $labelArr[5] : $labelArr[1]);
-		} elseif ($seconds < 365 * 24 * 3600) {
+		} elseif ($absSeconds < 365 * 24 * 3600) {
 			$val = round($absSeconds / (24 * 3600));
 			$seconds = $sign * $val . ($val == 1 ? $labelArr[6] : $labelArr[2]);
 		} else {
