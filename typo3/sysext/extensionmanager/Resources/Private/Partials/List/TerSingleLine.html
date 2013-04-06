@@ -4,14 +4,20 @@
 	<em:downloadExtension extension="{extension}" />
 </td>
 <td>
-	{extension.title}
+	<f:link.action action="showAllVersions" arguments="{extensionKey: extension.extensionKey}">
+		{extension.title}
+	</f:link.action>
 	<em:showExtensionVersions extension="{extension}" />
 </td>
 <td>
-	{extension.extensionKey}
+	<f:link.action action="showAllVersions" arguments="{extensionKey: extension.extensionKey}">
+		{extension.extensionKey}
+	</f:link.action>
 </td>
 <td>
-	{extension.version}
+	<f:link.action action="showAllVersions" arguments="{extensionKey: extension.extensionKey}">
+		{extension.version}
+	</f:link.action>
 	<em:showExtensionVersions extension="{extension}" />
 </td>
 <td title="{extension.description}">
