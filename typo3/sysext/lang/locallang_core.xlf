@@ -436,6 +436,12 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_upload.php.files" xml:space="preserve">
 				<source>files</source>
 			</trans-unit>
+			<trans-unit id="file_upload.dropzonehint" xml:space="preserve">
+				<source>drop your files here!</source>
+			</trans-unit>
+			<trans-unit id="file_upload.upload-in-progress" xml:space="preserve">
+				<source>file-upload in progress...</source>
+			</trans-unit>
 			<trans-unit id="file_upload.php.number_of_files" xml:space="preserve">
 				<source>Number of files:</source>
 			</trans-unit>

@@ -40,3 +40,18 @@ table#typo3-filelist tr td div.typo3-clipCtrl,
 table#typo3-filelist tr td div.typo3-editCtrl {
 	text-align: center;
 }
+
+.DragUpload-DropZone.t3-dropzone {
+	text-align:center;
+	padding:20px;
+	font-size:20px;
+	background-color: #c8d9c3;
+	display:none;
+}
+
+.dropInProgess .DragUpload-DropZone.t3-dropzone {
+	display:block;
+}
+.DragUpload-DropZone.t3-dropzone.t3-dropzone-dropReceiveOK {
+	background-color: #73ab61;
+}

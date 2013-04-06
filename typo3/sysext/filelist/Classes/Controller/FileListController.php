@@ -207,6 +207,8 @@ class FileListController {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/file_list.html');
 		$this->doc->getPageRenderer()->loadPrototype();
+		$this->doc->getPageRenderer()->loadJQuery();
+		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
 		// There there was access to this file path, continue, make the list
 		if ($this->folderObject) {
 
@@ -301,7 +303,12 @@ class FileListController {
 			$docHeaderButtons = array_merge($this->getButtons(), $buttons);
 			// Build the <body> for the module
 			// Create output
-			$pageContent = '';
+			$pageContent = sprintf(
+				'<div class="DragUpload-DropZone t3-dropzone" data-target-folder="%s" data-msg-drop-here="%s" data-msg-uploading="%s"></div>',
+				$this->folderObject->getCombinedIdentifier(),
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.dropzonehint', TRUE),
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.upload-in-progress', TRUE)
+			);
 			$pageContent .= '<form action="' . htmlspecialchars($this->filelist->listURL()) . '" method="post" name="dblistForm">';
 			$pageContent .= $this->filelist->HTMLcode;
 			$pageContent .= '<input type="hidden" name="cmd" /></form>';
