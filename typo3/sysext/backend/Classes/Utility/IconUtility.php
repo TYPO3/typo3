@@ -122,8 +122,11 @@ class IconUtility {
 	 * @param boolean $shaded If set, the icon will be grayed/shaded
 	 * @return string <img>-tag
 	 * @see getIcon()
+	 * @deprecated since TYPO3 6.1, should not be used anymore as only sprite icons are used since TYPO3 4.4
 	 */
 	static public function getIconImage($table, $row = array(), $backPath, $params = '', $shaded = FALSE) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+
 		$str = '<img' . self::skinImg($backPath, self::getIcon($table, $row, $shaded), 'width="18" height="16"') . (trim($params) ? ' ' . trim($params) : '');
 		if (!stristr($str, 'alt="')) {
 			$str .= ' alt=""';
