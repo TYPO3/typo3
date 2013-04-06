@@ -1190,6 +1190,8 @@ tt_content.uploads {
 		# get from path (backwards compatibility, contains strings like "fileadmin/user_uploads/")
 		folders.field = select_key
 
+		sorting.field = filelink_sorting
+
 		# render the files
 		renderObj = COA
 		renderObj {
@@ -1204,9 +1206,10 @@ tt_content.uploads {
 					typolink {
 						parameter.data = file:current:originalUid // file:current:uid
 						parameter.wrap = file:|
-						target < lib.parseTarget
-						target =
-						target.override = {$styles.content.uploads.target}
+						fileTarget < lib.parseTarget
+						fileTarget =
+						fileTarget.override = {$styles.content.uploads.target}
+						fileTarget.override.override.field = target
 						removePrependedNumbers = 1
 
 						/*

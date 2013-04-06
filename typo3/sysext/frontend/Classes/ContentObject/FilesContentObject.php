@@ -137,6 +137,20 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 		$content = '';
 		// optionSplit applied to conf to allow differnt settings per file
 		$splitConf = $GLOBALS['TSFE']->tmpl->splitConfArray($conf, count($fileObjects));
+		// Enable sorting for multiple fileObjects
+		$sortingProperty = '';
+		if ($conf['sorting'] || $conf['sorting.']) {
+			$sortingProperty = $this->stdWrapValue('sorting', $conf);
+		}
+		if ($sortingProperty !== '' && count($fileObjects) > 1) {
+			usort($fileObjects, function(\TYPO3\CMS\Core\Resource\FileInterface $a, \TYPO3\CMS\Core\Resource\FileInterface $b) use($sortingProperty) {
+				if ($a->hasProperty($sortingProperty) && $b->hasProperty($sortingProperty)) {
+					return strnatcasecmp($a->getProperty($sortingProperty), $b->getProperty($sortingProperty));
+				} else {
+					return 0;
+				}
+			});
+		}
 		foreach ($fileObjects as $key => $fileObject) {
 			$this->cObj->setCurrentFile($fileObject);
 			$content .= $this->cObj->cObjGetSingle($splitConf[$key]['renderObj'], $splitConf[$key]['renderObj.']);
