@@ -45,6 +45,8 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		'user' => 'renderUserFunction',
 		'small' => 'renderSmallTextField',
 		'string' => 'renderTextField',
+		'input' => 'renderTextField',  // only for backwards compatibility, many extensions depend on that
+		'default' => 'renderTextField' // only for backwards compatibility, many extensions depend on that
 	);
 
 	public $tagName = 'input';
