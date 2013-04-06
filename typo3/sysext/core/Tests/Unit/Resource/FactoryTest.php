@@ -55,7 +55,7 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-		$this->fixture = new \TYPO3\CMS\Core\Resource\ResourceFactory();
+		$this->fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', array('dummy'));
 	}
 
 	public function tearDown() {
@@ -115,18 +115,28 @@ class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider directoryDataProviderValidFolderValues
 	 */
 	public function retrieveFileOrFolderObjectReturnsFolderIfPathIsGiven($source) {
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\Folder', $this->fixture->retrieveFileOrFolderObject($source), 'No Folder Object can be retrieved');
+		$storage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('getFile', 'getFolder'), array(), '', FALSE);
+		$storage->expects($this->once())
+			->method('getFolder')
+			->with('fileadmin');
+		$this->fixture->_set('storageInstances', array(0 => $storage));
+		$this->fixture->retrieveFileOrFolderObject($source);
 	}
 
 	/**
 	 * @test
 	 */
 	public function retrieveFileOrFolderObjectReturnsFileIfPathIsGiven() {
+		$filename = 'typo3temp/4711.txt';
+		$storage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('getFile', 'getFolder'), array(), '', FALSE);
+		$storage->expects($this->once())
+			->method('getFile')
+			->with($filename);
+		$this->fixture->_set('storageInstances', array(0 => $storage));
 		// Create and prepare test file
-		$filename = 'typo3temp/' . uniqid('test_') . '.txt';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filename, '42');
 		$this->filesCreated[] = PATH_site . $filename;
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\File', $this->fixture->retrieveFileOrFolderObject($filename), 'No File Object can be retrieved');
+		$this->fixture->retrieveFileOrFolderObject($filename);
 	}
 }
 
