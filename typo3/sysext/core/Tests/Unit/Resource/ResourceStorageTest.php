@@ -688,6 +688,99 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 
 		$this->assertSame(\TYPO3\CMS\Core\Resource\FolderInterface::ROLE_PROCESSING, $role);
 	}
+
+	/**
+	 * Data provider for fetchFolderListFromDriverReturnsFolderWithoutProcessedFolder function
+	 */
+	public function fetchFolderListFromDriverReturnsFolderWithoutProcessedFolderDataProvider() {
+		return array(
+			'Empty folderList returned' => array(
+				'path' => '/',
+				'processingFolder' => '_processed_',
+				'folderList' => array(),
+				'expectedItems' => array()
+			),
+			'Empty _processed_ folder' => array(
+				'path' => '/',
+				'processingFolder' => '',
+				'folderList' => array(
+					'_processed_' => array(),
+					'_temp_' => array(),
+					'user_upload' => array()
+				),
+				'expectedItems' => array(
+					'user_upload' => array(),
+					'_temp_' => array()
+				)
+			),
+			'_processed_ folder not in folder list' => array(
+				'path' => '/',
+				'processingFolder' => '_processed_',
+				'folderList' => array(
+					'_temp_' => array()
+				),
+				'expectedItems' => array(
+					'_temp_' => array()
+				)
+			),
+			'_processed_ folder on root level' => array(
+				'path' => '/',
+				'processingFolder' => '_processed_',
+				'folderList' => array(
+					'_processed_' => array(),
+					'_temp_' => array(),
+					'user_upload' => array()
+				),
+				'expectedItems' => array(
+					'user_upload' => array(),
+					'_temp_' => array()
+				)
+			),
+			'_processed_ folder on second level' => array(
+				'path' => 'Public/',
+				'processingFolder' => 'Public/_processed_',
+				'folderList' => array(
+					'_processed_' => array(),
+					'_temp_' => array(),
+					'user_upload' => array()
+				),
+				'expectedItems' => array(
+					'user_upload' => array(),
+					'_temp_' => array()
+				)
+			),
+			'_processed_ folder on third level' => array(
+				'path' => 'Public/Files/',
+				'processingFolder' => 'Public/Files/_processed_',
+				'folderList' => array(
+					'_processed_' => array(),
+					'_temp_' => array(),
+					'user_upload' => array()
+				),
+				'expectedItems' => array(
+					'user_upload' => array(),
+					'_temp_' => array()
+				)
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider fetchFolderListFromDriverReturnsFolderWithoutProcessedFolderDataProvider
+	 */
+	public function fetchFolderListFromDriverReturnsFolderWithoutProcessedFolder($path, $processingFolder, $folderList, $expectedItems) {
+		$driverMock = $this->createDriverMock(array(), NULL, array('getFolderList', 'folderExists'));
+		$driverMock->expects($this->once())->method('getFolderList')->will($this->returnValue($folderList));
+		if (!empty($expectedItems)) {
+			// This function is called only if there were any folders retrieved
+			$driverMock->expects($this->once())->method('folderExists')->will($this->returnValue(TRUE));
+		}
+
+		$this->prepareFixture(array(), FALSE, $driverMock, array('processingfolder' => $processingFolder));
+
+		$this->assertSame($expectedItems, $this->fixture->fetchFolderListFromDriver($path));
+	}
 }
 
 ?>
