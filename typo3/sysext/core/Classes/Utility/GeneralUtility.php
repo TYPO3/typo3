@@ -3787,6 +3787,8 @@ Connection: close
 			// Is test (typo3_src deprecated as ov TYPO3 6.0):
 			$validatedPrefix = PATH_site . 'typo3_src/tests/';
 			$location = $validatedPrefix;
+		} elseif (self::isFirstPartOfStr($fileRef, PATH_typo3conf . 'l10n/')) {
+			$validatedPrefix = PATH_typo3conf . 'l10n/';
 		} else {
 			$validatedPrefix = '';
 		}
