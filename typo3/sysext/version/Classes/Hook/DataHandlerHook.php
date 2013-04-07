@@ -481,7 +481,6 @@ class DataHandlerHook {
 				}
 				// send an email to each individual user, to ensure the
 				// multilanguage version of the email
-				$emailHeaders = $emailConfig['additionalHeaders'];
 				$emailRecipients = array();
 				// an array of language objects that are needed
 				// for emails with different languages
@@ -521,7 +520,18 @@ class DataHandlerHook {
 					$emailSubject = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($emailSubject, $markers, '', TRUE, TRUE);
 					$emailMessage = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($emailMessage, $markers, '', TRUE, TRUE);
 					// Send an email to the recipient
-					\TYPO3\CMS\Core\Utility\GeneralUtility::plainMailEncoded($recipientData['email'], $emailSubject, $emailMessage, $emailHeaders);
+					/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
+					$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+					if (!empty($recipientData['realName'])) {
+						$recipient = array($recipientData['email'] => $recipientData['realName']);
+					} else {
+						$recipient = $recipientData['email'];
+					}
+					$mail->setTo($recipient)
+						->setSubject($emailSubject)
+						->setFrom(\TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom())
+						->setBody($emailMessage);
+					$mail->send();
 				}
 				$emailRecipients = implode(',', $emailRecipients);
 				$tcemainObj->newlog2('Notification email for stage change was sent to "' . $emailRecipients . '"', $table, $id);
