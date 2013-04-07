@@ -118,7 +118,14 @@ class HttpUtility {
 	 * @see http://www.php.net/parse_url
 	 */
 	static public function buildUrl(array $urlParts) {
-		return (isset($urlParts['scheme']) ? $urlParts['scheme'] . '://' : '') . (isset($urlParts['user']) ? $urlParts['user'] . (isset($urlParts['pass']) ? ':' . $urlParts['pass'] : '') . '@' : '') . (isset($urlParts['host']) ? $urlParts['host'] : '') . (isset($urlParts['path']) ? $urlParts['path'] : '') . (isset($urlParts['query']) ? '?' . $urlParts['query'] : '') . (isset($urlParts['fragment']) ? '#' . $urlParts['fragment'] : '');
+		return (isset($urlParts['scheme']) ? $urlParts['scheme'] . '://' : '') .
+			(isset($urlParts['user']) ? $urlParts['user'] .
+			(isset($urlParts['pass']) ? ':' . $urlParts['pass'] : '') . '@' : '') .
+			(isset($urlParts['host']) ? $urlParts['host'] : '') .
+			(isset($urlParts['port']) ? ':' . $urlParts['port'] : '') .
+			(isset($urlParts['path']) ? $urlParts['path'] : '') .
+			(isset($urlParts['query']) ? '?' . $urlParts['query'] : '') .
+			(isset($urlParts['fragment']) ? '#' . $urlParts['fragment'] : '');
 	}
 
 }
