@@ -57,6 +57,7 @@ $TYPO3_CONF_VARS = array(
 		'TTFLocaleConv' => '',					// String: Enter locale conversion string used to recode input to TrueType functions. Eg. 'cp1250..UTF-8'. Deprecated from ver. 3.6.0 of TYPO3. Set up <a href="#BE-forceCharset">[BE][forceCharset]</a> as strings are automatically converted from database charset to UTF-8.
 		'TTFdpi' => 72,							// Integer: Enter how many dpi the FreeType module uses. Freetype1 should be set to 72. Freetype2 should be set to 96 (otherwise fonts are rendered way bigger than FreeType1). This works as a global scaling factor for Freetype.
 		'png_truecolor' => FALSE,				// Boolean: If set PNGs will get created as truecolor PNGs. If you use GDlib2 you can create truecolor images if they look not well currently. Note that this results in an increased image size. JPEGs get always created in truecolor now (GDlib2 required)
+		'colorspace' => 'RGB', // String: Specifiy the colorspace to use. Some ImageMagick versions (like 6.7.0 and above) use the sRGB colorspace, so all images are darker then the original. <br />Possible Values: CMY, CMYK, Grey, HCL, HSB, HSL, HWB, Lab, LCH, LMS, Log, Luv, OHTA, Rec601Luma, Rec601YCbCr, Rec709Luma, Rec709YCbCr, RGB, sRGB, Transparent, XYZ, YCbCr, YCC, YIQ, YCbCr, YUV
 	),
 	'SYS' => array(			// System related concerning both frontend and backend.
 		'sitename' => 'TYPO3',					// Name of the base-site. This title shows up in the root of the tree structure if you're an 'admin' backend user.
