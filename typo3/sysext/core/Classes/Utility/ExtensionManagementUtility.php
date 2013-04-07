@@ -2118,7 +2118,7 @@ tt_content.' . $key . $prefix . ' {
 		// Update the category registry
 		$result = \TYPO3\CMS\Core\Category\CategoryRegistry::getInstance()->add($extensionKey, $tableName, $fieldName);
 		if ($result === FALSE) {
-			$message = 't3lib_categoryRegistry: no category registered for table "%s". Double check if there is a TCA configured';
+			$message = '\TYPO3\CMS\Core\Category\CategoryRegistry: no category registered for table "%s". Double check if there is a TCA configured';
 			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog(sprintf($message, $tableName), 'Core', 2);
 		}
 		// Makes sure to add more TCA to an existing structure
