@@ -31,6 +31,7 @@ namespace TYPO3\CMS\Core\Mail;
  * Hook subscriber for using Swift Mailer with \TYPO3\CMS\Core\Utility\MailUtility
  *
  * @author Jigal van Hemert <jigal@xs4all.nl>
+ * @deprecated since 6.1, will be removed two versions later - will be removed together with \TYPO3\CMS\Core\Utility\MailUtility::mail()
  */
 class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface {
 

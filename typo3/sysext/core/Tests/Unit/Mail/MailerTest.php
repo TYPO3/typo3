@@ -51,6 +51,9 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TYPO3_CONF_VARS']['MAIL'] = $this->globalMailSettings;
 	}
 
+	//////////////////////////
+	// Tests concerning TYPO3\CMS\Core\Mail\Mailer
+	//////////////////////////
 	/**
 	 * @test
 	 */

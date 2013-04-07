@@ -6585,41 +6585,63 @@ class ContentObjectRenderer {
 	}
 
 	/**
-	 * Sending a notification email using $GLOBALS['TSFE']->plainMailEncoded()
+	 * Sends a notification email
 	 *
-	 * @param string $msg The message content. If blank, no email is sent.
+	 * @param string $message The message content. If blank, no email is sent.
 	 * @param string $recipients Comma list of recipient email addresses
 	 * @param string $cc Email address of recipient of an extra mail. The same mail will be sent ONCE more; not using a CC header but sending twice.
-	 * @param string $email_from "From" email address
-	 * @param string $email_fromName Optional "From" name
+	 * @param string $senderAddress "From" email address
+	 * @param string $senderName Optional "From" name
 	 * @param string $replyTo Optional "Reply-To" header email address.
 	 * @return boolean Returns TRUE if sent
-	 * @todo Define visibility
 	 */
-	public function sendNotifyEmail($msg, $recipients, $cc, $email_from, $email_fromName = '', $replyTo = '') {
-		// Sends order emails:
-		$headers = array();
-		if ($email_from) {
-			$headers[] = 'From: ' . $email_fromName . ' <' . $email_from . '>';
+	public function sendNotifyEmail($message, $recipients, $cc, $senderAddress, $senderName = '', $replyTo = '') {
+		$result = FALSE;
+		/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
+		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+		$senderName = trim($senderName);
+		$senderAddress = trim($senderAddress);
+		if ($senderName !== '' && $senderAddress !== '') {
+			$sender = array($senderAddress => $senderName);
+		} elseif ($senderAddress !== '') {
+			$sender = array($senderAddress);
+		} else {
+			$sender = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
 		}
-		if ($replyTo) {
-			$headers[] = 'Reply-To: ' . $replyTo;
+		$mail->setFrom($sender);
+		$parsedReplyTo = \TYPO3\CMS\Core\Utility\MailUtility::parseAddresses($replyTo);
+		if (count($parsedReplyTo) > 0) {
+			$mail->setReplyTo($parsedReplyTo);
 		}
-		$recipients = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $recipients, 1));
-		$emailContent = trim($msg);
-		if ($emailContent) {
+		$message = trim($message);
+		if ($message !== '') {
 			// First line is subject
-			$parts = explode(LF, $emailContent, 2);
-			$subject = trim($parts[0]);
-			$plain_message = trim($parts[1]);
-			if ($recipients) {
-				$GLOBALS['TSFE']->plainMailEncoded($recipients, $subject, $plain_message, implode(LF, $headers));
+			$messageParts = explode(LF, $message, 2);
+			$subject = trim($messageParts[0]);
+			$plainMessage = trim($messageParts[1]);
+			$parsedRecipients = \TYPO3\CMS\Core\Utility\MailUtility::parseAddresses($recipients);
+			if (count($parsedRecipients) > 0) {
+				$mail->setTo($parsedRecipients)
+					->setSubject($subject)
+					->setBody($plainMessage);
+				$mail->send();
 			}
-			if ($cc) {
-				$GLOBALS['TSFE']->plainMailEncoded($cc, $subject, $plain_message, implode(LF, $headers));
+			$parsedCc = \TYPO3\CMS\Core\Utility\MailUtility::parseAddresses($cc);
+			if (count($parsedCc) > 0) {
+				/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
+				$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+				if (count($parsedReplyTo) > 0) {
+					$mail->setReplyTo($parsedReplyTo);
+				}
+				$mail->setFrom($sender)
+					->setTo($parsedCc)
+					->setSubject($subject)
+					->setBody($plainMessage);
+				$mail->send();
 			}
-			return TRUE;
+			$result = TRUE;
 		}
+		return $result;
 	}
 
 	/**
