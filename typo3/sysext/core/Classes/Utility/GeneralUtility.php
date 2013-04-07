@@ -4380,10 +4380,12 @@ Connection: close
 	 * @param string $headers Headers, separated by LF
 	 * @param string $encoding Encoding type: "base64", "quoted-printable", "8bit". Default value is "quoted-printable".
 	 * @param string $charset Charset used in encoding-headers (only if $encoding is set to a valid value which produces such a header)
-	 * @param boolean $dontEncodeHeader If set, the header content will not be encoded.
+	 * @param boolean $dontEncodeHeader If set, the header content will not be encoded
 	 * @return boolean TRUE if mail was accepted for delivery, FALSE otherwise
+	 * @deprecated since 6.1, will be removed two versions later - Use \TYPO3\CMS\Core\Mail\Mailer instead
 	 */
 	static public function plainMailEncoded($email, $subject, $message, $headers = '', $encoding = 'quoted-printable', $charset = '', $dontEncodeHeader = FALSE) {
+		GeneralUtility::logDeprecatedFunction();
 		if (!$charset) {
 			$charset = 'utf-8';
 		}

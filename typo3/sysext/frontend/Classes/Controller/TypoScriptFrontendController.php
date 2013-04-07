@@ -4492,8 +4492,10 @@ if (version == "n3") {
 	 * @return void
 	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::plainMailEncoded()
 	 * @todo Define visibility
+	 * @deprecated since 6.1, will be removed two versions later - Use \TYPO3\CMS\Core\Mail\Mailer instead
 	 */
 	public function plainMailEncoded($email, $subject, $message, $headers = '') {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		// '76', 'all', ''
 		$urlmode = $this->config['config']['notification_email_urlmode'];
 		if ($urlmode) {

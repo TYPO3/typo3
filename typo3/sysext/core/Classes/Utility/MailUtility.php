@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class to handle mail specific functionality
  *
@@ -46,8 +49,10 @@ class MailUtility {
 	 * @return boolean Indicates whether the mail has been sent or not
 	 * @see PHP function mail() []
 	 * @link http://www.php.net/manual/en/function.mail.php
+	 * @deprecated since 6.1, will be removed two versions later - Use \TYPO3\CMS\Core\Mail\Mailer instead
 	 */
 	static public function mail($to, $subject, $messageBody, $additionalHeaders = NULL, $additionalParameters = NULL) {
+		GeneralUtility::logDeprecatedFunction();
 		$success = TRUE;
 		// If the mail does not have a From: header, fall back to the default in TYPO3_CONF_VARS.
 		if (!preg_match('/^From:/im', $additionalHeaders) && $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']) {
@@ -216,7 +221,37 @@ class MailUtility {
 		return implode($newlineChar, $lines);
 	}
 
+	/**
+	 * Parses mailbox headers and turns them into an array.
+	 *
+	 * Mailbox headers are a comma separated list of 'name <email@example.org>' combinations
+	 * or plain email addresses (or a mix of these).
+	 * The resulting array has key-value pairs where the key is either a number
+	 * (no display name in the mailbox header) and the value is the email address,
+	 * or the key is the email address and the value is the display name.
+	 *
+	 * @param string $rawAddresses Comma separated list of email addresses (optionally with display name)
+	 * @return array Parsed list of addresses.
+	 */
+	static public function parseAddresses($rawAddresses = '') {
+		/** @var $addressParser \TYPO3\CMS\Core\Mail\Rfc822AddressesParser */
+		$addressParser = GeneralUtility::makeInstance(
+				'TYPO3\\CMS\\Core\\Mail\\Rfc822AddressesParser',
+				$rawAddresses
+		);
+		$addresses = $addressParser->parseAddressList();
+		$addressList = array();
+		foreach ($addresses as $address) {
+			if ($address->personal) {
+				// item with name found ( name <email@example.org> )
+				$addressList[$address->mailbox . '@' . $address->host] = $address->personal;
+			} else {
+				// item without name found ( email@example.org )
+				$addressList[] = $address->mailbox . '@' . $address->host;
+			}
+		}
+		return $addressList;
+	}
 }
-
 
 ?>
