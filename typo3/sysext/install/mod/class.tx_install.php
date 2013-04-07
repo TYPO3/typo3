@@ -4659,6 +4659,10 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						The tool \'convert\' is used to read the image and write
 						a temporary JPG-file
 					</p>
+					<p>
+						In case the images appear remarkably darker than the reference images,
+						try to set [TYPO3_CONF_VARS][GFX][colorspace] = sRGB.
+					</p>
 				');
 
 				if ($imActive) {
