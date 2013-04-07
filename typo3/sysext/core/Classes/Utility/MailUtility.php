@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Core\Utility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  * Copyright notice
@@ -30,6 +31,7 @@ namespace TYPO3\CMS\Core\Utility;
  * Class to handle mail specific functionality
  *
  * @author Tolleiv Nietsch <nietsch@aoemedia.de>
+ * @deprecated since 6.1, will be removed two versions later - Use \TYPO3\CMS\Core\Mail\Mailer instead
  */
 class MailUtility {
 
@@ -48,6 +50,7 @@ class MailUtility {
 	 * @link http://www.php.net/manual/en/function.mail.php
 	 */
 	static public function mail($to, $subject, $messageBody, $additionalHeaders = NULL, $additionalParameters = NULL) {
+		GeneralUtility::logDeprecatedFunction();
 		$success = TRUE;
 		// If the mail does not have a From: header, fall back to the default in TYPO3_CONF_VARS.
 		if (!preg_match('/^From:/im', $additionalHeaders) && $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']) {
