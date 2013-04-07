@@ -1997,8 +1997,8 @@ This is a dump of the failures:
 				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				$from = t3lib_utility_Mail::getSystemFrom();
-				/** @var $mail t3lib_mail_Message */
-				$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+				/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
+				$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 				$mail->setTo($email)->setFrom($from)->setSubject($subject)->setBody($email_body);
 				$mail->send();
 				// Logout written to log

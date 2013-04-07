@@ -1942,7 +1942,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 		case 'get_form':
 			$out = '
 					<p id="checkMailForm">
-						You can check the t3lib_mail functionality by entering your email
+						You can check the TYPO3\CMS\Core\Mail\Mailer functionality by entering your email
 						address here and press the button. You should then
 						receive a testmail from "typo3installtool@example.org".
 					</p>
