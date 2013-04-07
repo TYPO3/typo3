@@ -9,6 +9,13 @@
 			$('.typo3-extension-manager').mask();
 		});
 
+		// IE 8 needs extra 'change' event on form
+		if ($.browser.msie) {
+			$('form.onClickMaskExtensionManager').bind("change", function () {
+				$('.typo3-extension-manager').mask();
+			});
+		}
+
 		$('.dataTables_wrapper .dataTables_filter input').clearable({
 			onClear: function() {
 				datatable.fnFilter('');
