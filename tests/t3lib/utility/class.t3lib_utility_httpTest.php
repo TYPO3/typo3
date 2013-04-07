@@ -51,7 +51,7 @@ class t3lib_utility_HttpTest extends tx_phpunit_testcase {
 	 */
 	public function isUrlBuiltCorrectlyDataProvider() {
 		return array(
-			'rebuild url withouth scheme' => array(
+			'rebuild url without scheme' => array(
 				parse_url('typo3.org/path/index.php'),
 				'typo3.org/path/index.php',
 			),
@@ -60,8 +60,8 @@ class t3lib_utility_HttpTest extends tx_phpunit_testcase {
 				'http://typo3.org/path/index.php',
 			),
 			'rebuild url with all properties' => array(
-				parse_url('http://editor:secret@typo3.org/path/index.php?query=data#fragment'),
-				'http://editor:secret@typo3.org/path/index.php?query=data#fragment',
+				parse_url('http://editor:secret@typo3.org:8080/path/index.php?query=data#fragment'),
+				'http://editor:secret@typo3.org:8080/path/index.php?query=data#fragment'
 			),
 			'url without username, but password' => array(
 				array(

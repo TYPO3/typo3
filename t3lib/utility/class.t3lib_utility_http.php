@@ -128,7 +128,9 @@ class t3lib_utility_Http {
 	public static function buildUrl(array $urlParts) {
 		return (isset($urlParts['scheme']) ? $urlParts['scheme'] . '://' : '')
 			. (isset($urlParts['user']) ? $urlParts['user'] . (isset($urlParts['pass']) ? ':' . $urlParts['pass'] : '') . '@' : '')
-			. (isset($urlParts['host']) ? $urlParts['host'] : '') . (isset($urlParts['path']) ? $urlParts['path'] : '')
+			. (isset($urlParts['host']) ? $urlParts['host'] : '')
+			. (isset($urlParts['port']) ? ':' . $urlParts['port'] : '')
+			. (isset($urlParts['path']) ? $urlParts['path'] : '')
 			. (isset($urlParts['query']) ? '?' . $urlParts['query'] : '') . (isset($urlParts['fragment']) ? '#' . $urlParts['fragment'] : '');
 	}
 }
