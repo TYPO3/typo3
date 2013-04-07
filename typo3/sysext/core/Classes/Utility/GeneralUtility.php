@@ -4381,60 +4381,50 @@ Connection: close
 	 * @param string $headers Headers, separated by LF
 	 * @param string $encoding Encoding type: "base64", "quoted-printable", "8bit". Default value is "quoted-printable".
 	 * @param string $charset Charset used in encoding-headers (only if $encoding is set to a valid value which produces such a header)
-	 * @param boolean $dontEncodeHeader If set, the header content will not be encoded.
+	 * @param boolean $dontEncodeHeader If set, the header content will not be encoded - deprecated since 6.1, will be removed two versions later; automatically encoded by SwiftMailer
 	 * @return boolean TRUE if mail was accepted for delivery, FALSE otherwise
 	 */
 	static public function plainMailEncoded($email, $subject, $message, $headers = '', $encoding = 'quoted-printable', $charset = '', $dontEncodeHeader = FALSE) {
+		$mailer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\Mailer');
+		/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
+		$mail = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+		$headerSet = $mail->getHeaders();
+
 		if (!$charset) {
 			$charset = 'utf-8';
 		}
-		$email = self::normalizeMailAddress($email);
-		if (!$dontEncodeHeader) {
-			// Mail headers must be ASCII, therefore we convert the whole header to either base64 or quoted_printable
-			$newHeaders = array();
-			// Split the header in lines and convert each line separately
-			foreach (explode(LF, $headers) as $line) {
-				// Field tags must not be encoded
-				$parts = explode(': ', $line, 2);
-				if (count($parts) == 2) {
-					if (0 == strcasecmp($parts[0], 'from')) {
-						$parts[1] = self::normalizeMailAddress($parts[1]);
-					}
-					$parts[1] = self::encodeHeader($parts[1], $encoding, $charset);
-					$newHeaders[] = implode(': ', $parts);
+		$headerSet->setCharset($charset);
+		// Split the header in lines inject each line separately
+		foreach (explode(LF, $headers) as $line) {
+			// Field tags must not be encoded
+			$parts = explode(': ', $line, 2);
+			if (count($parts) == 2) {
+				if (0 == strcasecmp($parts[0], 'from')) {
+					$mail->setFrom($parts[1]);
 				} else {
-					// Should never happen - is such a mail header valid? Anyway, just add the unchanged line...
-					$newHeaders[] = $line;
+					$headerSet->addTextHeader($parts[0], $parts[1]);
 				}
+			} else {
+				// Should never happen
 			}
-			$headers = implode(LF, $newHeaders);
-			unset($newHeaders);
-			// Email address must not be encoded, but it could be appended by a name which should be so (e.g. "Kasper Skårhøj <kasperYYYY@typo3.com>")
-			$email = self::encodeHeader($email, $encoding, $charset);
-			$subject = self::encodeHeader($subject, $encoding, $charset);
 		}
 		switch ((string) $encoding) {
 		case 'base64':
-			$headers = trim($headers) . LF . 'Mime-Version: 1.0' . LF . 'Content-Type: text/plain; charset="' . $charset . '"' . LF . 'Content-Transfer-Encoding: base64';
-			// Adding LF because I think MS outlook 2002 wants it... may be removed later again.
-			$message = trim(chunk_split(base64_encode(($message . LF)))) . LF;
+			$mail->setEncoder(new Swift_Mime_ContentEncoder_Base64ContentEncoder());
 			break;
 		case '8bit':
-			$headers = trim($headers) . LF . 'Mime-Version: 1.0' . LF . 'Content-Type: text/plain; charset=' . $charset . LF . 'Content-Transfer-Encoding: 8bit';
+			$mail->setEncoder(new Swift_Mime_ContentEncoder_RawContentEncoder());
 			break;
 		case 'quoted-printable':
-
 		default:
-			$headers = trim($headers) . LF . 'Mime-Version: 1.0' . LF . 'Content-Type: text/plain; charset=' . $charset . LF . 'Content-Transfer-Encoding: quoted-printable';
-			$message = self::quoted_printable($message);
+			$mail->setEncoder(new Swift_Mime_ContentEncoder_QpContentEncoder());
 			break;
 		}
-		// Headers must be separated by CRLF according to RFC 2822, not just LF.
-		// But many servers (Gmail, for example) behave incorrectly and want only LF.
-		// So we stick to LF in all cases.
-		// Make sure no empty lines are there.
-		$headers = trim(implode(LF, self::trimExplode(LF, $headers, TRUE)));
-		return \TYPO3\CMS\Core\Utility\MailUtility::mail($email, $subject, $message, $headers);
+
+		$mail->setTo($email)->setSubject($subject)->setBody($message);
+		$numberOfRecpientsOkay = $mail->send();
+
+		return $numberOfRecpientsOkay > 0;
 	}
 
 	/**
