@@ -209,6 +209,47 @@ class t3lib_stdGraphic {
 	);
 
 	/**
+	 * defines the RGB colorspace to use
+	 *
+	 * @var string
+	 */
+	protected $colorspace = 'RGB';
+
+	/**
+	 * colorspace names allowed
+	 *
+	 * @var array
+	 */
+	protected $allowedColorSpaceNames = array(
+		'CMY',
+		'CMYK',
+		'Grey',
+		'HCL',
+		'HSB',
+		'HSL',
+		'HWB',
+		'Lab',
+		'LCH',
+		'LMS',
+		'Log',
+		'Luv',
+		'OHTA',
+		'Rec601Luma',
+		'Rec601YCbCr',
+		'Rec709Luma',
+		'Rec709YCbCr',
+		'RGB',
+		'sRGB',
+		'Transparent',
+		'XYZ',
+		'YCbCr',
+		'YCC',
+		'YIQ',
+		'YCbCr',
+		'YUV'
+	);
+
+	/**
 	 * Charset conversion object:
 	 *
 	 * @var t3lib_cs
@@ -235,18 +276,20 @@ class t3lib_stdGraphic {
 		if (function_exists('imagecreatefromgif') && function_exists('imagegif')) {
 			$this->gdlibExtensions .= ',gif';
 		}
-		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['png_truecolor']) {
-			$this->png_truecolor = true;
+		if ($gfxConf['png_truecolor']) {
+			$this->png_truecolor = TRUE;
+		}
+		if ($gfxConf['colorspace'] && in_array($gfxConf['colorspace'], $this->allowedColorSpaceNames, TRUE)) {
+			$this->colorspace = $gfxConf['colorspace'];
 		}
 		if ($gfxConf['im']) {
 			if (!$gfxConf['im_version_5']) {
 				t3lib_div::deprecationLog('The option $TYPO3_CONF_VARS[\'GFX\'][\'im_version_5\'] is not set, ImageMagic 4 is assumed. This is deprecated since TYPO3 4.5, support will be removed in TYPO3 4.6. Make sure to upgrade to ImageMagick version 6 or GraphichsMagick.');
-				$this->im_version_4 = true;
+				$this->im_version_4 = TRUE;
 			} elseif ($gfxConf['im_version_5'] === 'im5') {
 				t3lib_div::deprecationLog('The option $TYPO3_CONF_VARS[\'GFX\'][\'im_version_5\'] is set to \'im5\'. This is deprecated since TYPO3 4.5, support will be removed in TYPO3 4.6. Make sure to upgrade to ImageMagick version 6 or GraphichsMagick.');
 			}
 		}
-
 			// When GIFBUILDER gets used in truecolor mode
 			// No colors parameter if we generate truecolor images.
 		if ($this->png_truecolor) {
@@ -255,7 +298,7 @@ class t3lib_stdGraphic {
 
 			// Setting default JPG parameters:
 		$this->jpegQuality = t3lib_div::intInRange($gfxConf['jpg_quality'], 10, 100, 75);
-		$this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace RGB -sharpen 50 -quality ' . $this->jpegQuality;
+		$this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -sharpen 50 -quality ' . $this->jpegQuality;
 
 		if ($gfxConf['im_combine_filename']) {
 			$this->combineScript = $gfxConf['im_combine_filename'];
@@ -294,7 +337,7 @@ class t3lib_stdGraphic {
 				// - therefore must be disabled in order not to perform sharpen, blurring and such.
 			$this->NO_IM_EFFECTS = 1;
 
-			$this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace RGB -quality ' . $this->jpegQuality;
+			$this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . $this->jpegQuality;
 		}
 			// ... but if 'im_v5effects' is set, don't care about 'im_no_effects'
 		if ($gfxConf['im_v5effects']) {
@@ -302,7 +345,7 @@ class t3lib_stdGraphic {
 			$this->V5_EFFECTS = 1;
 
 			if ($gfxConf['im_v5effects'] > 0) {
-				$this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace RGB -quality ' . intval($gfxConf['jpg_quality']) . $this->v5_sharpen(10);
+				$this->cmds['jpg'] = $this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . intval($gfxConf['jpg_quality']) . $this->v5_sharpen(10);
 			}
 		}
 
