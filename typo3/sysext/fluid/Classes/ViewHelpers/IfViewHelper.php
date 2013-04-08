@@ -29,10 +29,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * - Object Accessor
  * - Array
  * - a ViewHelper
- * Note: Strings at XX/YY are NOT allowed, however, for the time being,
- * a string comparison can be achieved with comparing arrays (see example
- * below).
- * ::
+ * - a String
  *
  *   <f:if condition="{rank} > 100">
  *     Will be shown if rank is > 100
@@ -43,7 +40,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *   <f:if condition="{rank} == {k:bar()}">
  *     Checks if rank is equal to the result of the ViewHelper "k:bar"
  *   </f:if>
- *   <f:if condition="{0: foo.bar} == {0: 'stringToCompare'}">
+ *   <f:if condition="{foo.bar} == 'stringToCompare'">
  *     Will result true if {foo.bar}'s represented value equals 'stringToCompare'.
  *   </f:if>
  *
