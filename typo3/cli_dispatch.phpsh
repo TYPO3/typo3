@@ -88,7 +88,7 @@ if (stristr(PHP_OS,'win') && !stristr(PHP_OS,'darwin')) {
 
 	// Resolve path
 if ($relativePath) {
-	$workingDirectory = $_SERVER['PWD'] ? $_SERVER['PWD'] : getcwd();
+	$workingDirectory = isset($_SERVER['PWD']) ? $_SERVER['PWD'] : getcwd();
 	if ($workingDirectory) {
 		$temp_PATH_thisScript =
 			$workingDirectory.'/'.preg_replace('/\.\//','',$temp_PATH_thisScript);
