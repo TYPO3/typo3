@@ -582,7 +582,11 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	public function exec_INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
 		if ((string) $this->handlerCfg[$this->lastHandlerKey]['type'] === 'native') {
-			return parent::exec_INSERTmultipleRows($table, $fields, $rows, $no_quote_fields);
+			$this->lastHandlerKey = $this->handler_getFromTableList($table);
+			mysql_query(
+				parent::INSERTmultipleRows($table, $fields, $rows, $no_quote_fields),
+				$this->handlerInstance[$this->lastHandlerKey]['link']
+			);
 		}
 
 		foreach ($rows as $row) {
