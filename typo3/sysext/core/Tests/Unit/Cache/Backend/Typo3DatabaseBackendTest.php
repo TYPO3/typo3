@@ -25,11 +25,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  ***************************************************************/
 
 /**
- * Testcase for the DB cache backend
+ * Test case
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Enable backup of global and system variables
