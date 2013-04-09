@@ -421,6 +421,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
 		switch ($hType) {
 		case 'native':
+			if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
+				$this->connectDB();
+			}
 			$this->lastQuery = $this->INSERTquery($table, $fields_values, $no_quote_fields);
 			if (is_string($this->lastQuery)) {
 				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
@@ -543,6 +546,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	public function exec_INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
 		if ((string) $this->handlerCfg[$this->lastHandlerKey]['type'] === 'native') {
 			$this->lastHandlerKey = $this->handler_getFromTableList($table);
+			if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
+				$this->connectDB();
+			}
 			mysql_query(
 				parent::INSERTmultipleRows($table, $fields, $rows, $no_quote_fields),
 				$this->handlerInstance[$this->lastHandlerKey]['link']
@@ -593,6 +599,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
 		switch ($hType) {
 		case 'native':
+			if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
+				$this->connectDB();
+			}
 			$this->lastQuery = $this->UPDATEquery($table, $where, $fields_values, $no_quote_fields);
 			if (is_string($this->lastQuery)) {
 				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
@@ -674,6 +683,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
 		switch ($hType) {
 		case 'native':
+			if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
+				$this->connectDB();
+			}
 			$this->lastQuery = $this->DELETEquery($table, $where);
 			$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
 			break;
@@ -737,6 +749,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
 		switch ($hType) {
 		case 'native':
+			if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
+				$this->connectDB();
+			}
 			if (count($remappedParameters) > 0) {
 				list($select_fields, $from_table, $where_clause, $groupBy, $orderBy) = $this->compileSelectParameters($remappedParameters);
 			}
@@ -827,6 +842,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
 		switch ($hType) {
 		case 'native':
+			if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
+				$this->connectDB();
+			}
 			$this->lastQuery = $this->TRUNCATEquery($table);
 			$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
 			break;
@@ -1413,6 +1431,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		$precompiledParts['ORIG_tableName'] = $components['ORIG_tableName'];
 		switch ($hType) {
 		case 'native':
+			if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
+				$this->connectDB();
+			}
 			$query = parent::SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
 			$precompiledParts['queryParts'] = explode($parameterWrap, $query);
 			break;
@@ -1841,6 +1862,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		switch ((string) $this->handlerCfg[$this->lastHandlerKey]['type']) {
 		case 'native':
 			if ($this->handlerInstance[$this->lastHandlerKey]['link']) {
+				if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
+					$this->connectDB();
+				}
 				$str = mysql_real_escape_string($str, $this->handlerInstance[$this->lastHandlerKey]['link']);
 			} else {
 				// link may be null when unit testing DBAL
@@ -2423,18 +2447,22 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * This is typically done by the scripts "init.php" in the backend or "index_ts.php" in the frontend (tslib_fe->connectToDB())
 	 * You wouldn't need to use this at any time - let TYPO3 core handle this.
 	 *
-	 * @param 	string		Database host IP/domain
-	 * @param 	string		Username to connect with.
-	 * @param 	string		Password to connect with.
+	 * @param string $host Deprecated since 6.1, will be removed in two versions. Database host IP/domain[:port]
+	 * @param string $username Deprecated since 6.1, will be removed in two versions. Username to connect with.
+	 * @param string $password Deprecated since 6.1, will be removed in two versions. Password to connect with.
 	 * @return 	mixed		Returns handler connection value
 	 * @see handler_init()
 	 */
-	public function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password) {
+	public function sql_pconnect($host = NULL, $username = NULL, $password = NULL) {
+		if ($host || $username || $password) {
+			$this->handleDeprecatedConnectArguments($host, $username, $password);
+		}
+
 		// Overriding the _DEFAULT handler configuration of username, password, localhost and database name:
-		$this->handlerCfg['_DEFAULT']['config']['username'] = $TYPO3_db_username;
-		$this->handlerCfg['_DEFAULT']['config']['password'] = $TYPO3_db_password;
-		$this->handlerCfg['_DEFAULT']['config']['host'] = $TYPO3_db_host;
-		$this->handlerCfg['_DEFAULT']['config']['database'] = TYPO3_db;
+		$this->handlerCfg['_DEFAULT']['config']['username'] = $this->databaseUsername;
+		$this->handlerCfg['_DEFAULT']['config']['password'] = $this->databaseUserPassword;
+		$this->handlerCfg['_DEFAULT']['config']['host'] = $this->databaseHost . ':' . $this->databasePort;
+		$this->handlerCfg['_DEFAULT']['config']['database'] = $this->databaseName;
 		// Initializing and output value:
 		$sqlResult = $this->handler_init('_DEFAULT');
 		return $sqlResult;
@@ -2446,7 +2474,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @param 	string		Database to connect to.
 	 * @return 	boolean		Always returns TRUE; function is obsolete, database selection is made in handler_init() function!
 	 */
-	public function sql_select_db($TYPO3_db) {
+	public function sql_select_db($TYPO3_db = '') {
 		return TRUE;
 	}
 
@@ -2870,6 +2898,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					// For default, set ->link (see \TYPO3\CMS\Core\Database\DatabaseConnection)
 					if ($handlerKey == '_DEFAULT') {
 						$this->link = $link;
+						$this->isConnected = TRUE;
 					}
 					// Select database as well:
 					if (mysql_select_db($cfgArray['config']['database'], $link)) {
