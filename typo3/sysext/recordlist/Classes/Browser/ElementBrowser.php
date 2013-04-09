@@ -594,11 +594,13 @@ class ElementBrowser {
 							cur_params = cur_params.replace(/\\bid\\=.*?(\\&|$)/, "");
 						}
 						input = input + " " + cur_target + " " + cur_class + " " + cur_title + " " + cur_params;
+						input = input.replace(/^\s+|\s+$/g, "");
 						if(field.value && field.className.search(/textarea/) != -1) {
 							field.value += "\\n" + input;
 						} else {
 							field.value = input;
 						}
+						field.onchange();
 						' . $update . '
 					}
 				}
