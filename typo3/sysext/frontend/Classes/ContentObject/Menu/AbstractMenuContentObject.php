@@ -1694,7 +1694,7 @@ class AbstractMenuContentObject {
 		$conf = array(
 			'parameter' => is_array($overrideArray) && $overrideArray['uid'] ? $overrideArray['uid'] : $page['uid']
 		);
-		if ($typeOverride && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($typeOverride)) {
+		if ($typeOverride === 0 || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($typeOverride)) {
 			$conf['parameter'] .= ',' . $typeOverride;
 		}
 		if ($addParams) {
