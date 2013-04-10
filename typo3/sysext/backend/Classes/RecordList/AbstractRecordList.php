@@ -154,8 +154,8 @@ abstract class AbstractRecordList {
 	 */
 	public $languageIconTitles = array();
 
-	// TranslateTools object
 	/**
+	 * @var \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider
 	 * @todo Define visibility
 	 */
 	public $translateTools;
