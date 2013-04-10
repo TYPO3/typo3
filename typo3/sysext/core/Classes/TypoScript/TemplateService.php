@@ -1422,7 +1422,7 @@ class TemplateService {
 		$LD['target'] = trim($page['target']) ? trim($page['target']) : $oTarget;
 		// typeNum
 		$typeNum = $this->setup[$LD['target'] . '.']['typeNum'];
-		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($typeOverride) && intval($GLOBALS['TSFE']->config['config']['forceTypeValue'])) {
+		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($typeOverride) && isset($GLOBALS['TSFE']->config['config']['forceTypeValue'])) {
 			$typeOverride = intval($GLOBALS['TSFE']->config['config']['forceTypeValue']);
 		}
 		if (strcmp($typeOverride, '')) {
