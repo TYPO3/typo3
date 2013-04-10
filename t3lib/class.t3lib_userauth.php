@@ -1426,7 +1426,7 @@ abstract class t3lib_userAuth {
 	function fetchUserRecord($dbUser, $username, $extraWhere = '') {
 		$user = FALSE;
 
-		$usernameClause = $username ? ($dbUser['username_column'] . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($username, $dbUser['table'])) : '';
+		$usernameClause = $username ? ($dbUser['username_column'] . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($username, $dbUser['table'])) : '1=1';
 
 		if ($username || $extraWhere) {
 
