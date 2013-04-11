@@ -129,7 +129,6 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 * This can also be used to generate previews of hidden pages, start/endtimes, usergroups and those other settings from the Admin Panel - just not implemented yet.
 	 *
 	 * @return 	array		Preview configuration array from sys_preview record.
-	 * @previouslyknownas TSFE->ADMCMD_preview
 	 */
 	public function getPreviewConfiguration() {
 		$inputCode = $this->getPreviewInputCode();
@@ -216,7 +215,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Set preview keyword, eg:
-	 * $previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$this->compilePreviewKeyword('id='.$pageId.'&L='.$language.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$this->workspace, $GLOBALS['BE_USER']->user['uid'], 120);
+	 * $previewUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.$this->compilePreviewKeyword('id='.$pageId.'&L='.$language.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$this->workspace, $GLOBALS['BE_USER']->user['uid'], 120);
 	 *
 	 * todo for sys_preview:
 	 * - Add a comment which can be shown to previewer in frontend in some way (plus maybe ability to write back, take other action?)

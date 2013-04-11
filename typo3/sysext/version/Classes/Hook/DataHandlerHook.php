@@ -264,8 +264,8 @@ class DataHandlerHook {
 	}
 
 	/**
-	 * hook for t3lib_TCEmain::moveRecord that cares about moving records that
-	 * are *not* in the live workspace
+	 * Hook for \TYPO3\CMS\Core\DataHandling\DataHandler::moveRecord that cares about
+	 * moving records that are *not* in the live workspace
 	 *
 	 * @param string $table the table of the record
 	 * @param integer $id the ID of the record
@@ -333,7 +333,7 @@ class DataHandlerHook {
 	/**
 	 * Send an email notification to users in workspace
 	 *
-	 * @param array $stat Workspace access array (from t3lib_userauthgroup::checkWorkspace())
+	 * @param array $stat Workspace access array from \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::checkWorkspace()
 	 * @param integer $stageId New Stage number: 0 = editing, 1= just ready for review, 10 = ready for publication, -1 = rejected!
 	 * @param string $table Table name of element (or list of element names if $id is zero)
 	 * @param integer $id Record uid of element (if zero, then $table is used as reference to element(s) alone)
@@ -738,7 +738,7 @@ class DataHandlerHook {
 										// In case of swapping and the offline record has a state
 										// (like 2 or 4 for deleting or move-pointer) we set the
 										// current workspace ID so the record is not deselected
-										// in the interface by t3lib_BEfunc::versioningPlaceholderClause()
+										// in the interface by \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause()
 										$swapVersion['t3ver_wsid'] = 0;
 										if ($swapIntoWS) {
 											if ($t3ver_state['swapVersion'] > 0) {
@@ -1125,7 +1125,7 @@ class DataHandlerHook {
 			while (FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))) {
 				$pageIdList[] = $row[0];
 				// Find ws version
-				// Note: cannot use t3lib_BEfunc::getRecordWSOL()
+				// Note: cannot use \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL()
 				// here because it does not accept workspace id!
 				$rec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $row[0]);
 				\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('pages', $rec, $workspaceId);
@@ -1262,7 +1262,7 @@ class DataHandlerHook {
 	 * Gets an instance of the command map helper.
 	 *
 	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain TCEmain object
-	 * @param array $commandMap The command map as submitted to t3lib_TCEmain
+	 * @param array $commandMap The command map as submitted to \TYPO3\CMS\Core\DataHandling\DataHandler
 	 * @return \TYPO3\CMS\Version\DataHandler\CommandMap
 	 */
 	public function getCommandMap(\TYPO3\CMS\Core\DataHandling\DataHandler $tceMain, array $commandMap) {

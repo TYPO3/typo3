@@ -27,8 +27,9 @@ namespace TYPO3\CMS\Version\Hook;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Implements a hook for t3lib_iconworks
+ * Implements a hook for \TYPO3\CMS\Backend\Utility\IconUtility
  */
 class IconUtilityHook {
 

@@ -26,8 +26,10 @@ namespace TYPO3\CMS\Version\DataHandler;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Handles the t3lib_TCEmain command map and is only used in combination with t3lib_TCEmain.
+ * Handles the \TYPO3\CMS\Core\DataHandling\DataHandler command map and is
+ * only used in combination with \TYPO3\CMS\Core\DataHandling\DataHandler
  */
 class CommandMap {
 
@@ -786,7 +788,7 @@ class CommandMap {
 	/**
 	 * Transforms dependent elements to use the liveId as array key.
 	 *
-	 * @param array $elements Depedent elements, each of type t3lib_utility_Dependency_Element
+	 * @param $elements array<\TYPO3\CMS\Version\Dependency\ElementEntity>
 	 * @return array
 	 */
 	protected function transformDependentElementsToUseLiveId(array $elements) {
