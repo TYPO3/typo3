@@ -546,6 +546,20 @@ abstract class AbstractFile implements FileInterface {
 		return $this->getStorage()->getFileForLocalProcessing($this, $writable);
 	}
 
+	/**
+	 * Determines whether current identifier is part of the
+	 * identifier of the processing folder and this obviously
+	 * a ProcessedFile.
+	 *
+	 * @return boolean
+	 */
+	public function hasProcessingFolderIdentifier() {
+		return (
+			!empty($this->storage) && !empty($this->identifier)
+			&& strpos($this->identifier, $this->storage->getProcessingFolder()->getIdentifier()) === 0
+		);
+	}
+
 	/***********************
 	 * INDEX RELATED METHODS
 	 ***********************/
