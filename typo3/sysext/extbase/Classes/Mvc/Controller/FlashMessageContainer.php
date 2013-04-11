@@ -56,15 +56,15 @@ class FlashMessageContainer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Add another flash message.
 	 * Severity can be specified and must be one of
-	 * t3lib_FlashMessage::NOTICE,
-	 * t3lib_FlashMessage::INFO,
-	 * t3lib_FlashMessage::OK,
-	 * t3lib_FlashMessage::WARNING,
-	 * t3lib_FlashMessage::ERROR
+	 * \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE,
+	 * \TYPO3\CMS\Core\Messaging\FlashMessage::INFO,
+	 * \TYPO3\CMS\Core\Messaging\FlashMessage::OK,
+	 * \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING,
+	 * \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
 	 *
 	 * @param string $message
 	 * @param string $title optional message title
-	 * @param integer $severity optional severity code. One of the t3lib_FlashMessage constants
+	 * @param integer $severity optional severity code. One of the \TYPO3\CMS\Core\Messaging\FlashMessage constants
 	 * @throws \InvalidArgumentException
 	 * @return void
 	 * @api
@@ -72,7 +72,8 @@ class FlashMessageContainer implements \TYPO3\CMS\Core\SingletonInterface {
 	public function add($message, $title = '', $severity = \TYPO3\CMS\Core\Messaging\FlashMessage::OK) {
 		if (!is_string($message)) {
 			throw new \InvalidArgumentException(
-				'The flash message must be string, ' . gettype($message) . ' given.', 1243258395
+				'The flash message must be string, ' . gettype($message) . ' given.',
+				1243258395
 			);
 		}
 		/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
@@ -85,7 +86,7 @@ class FlashMessageContainer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Get all flash messages currently available.
 	 *
-	 * @return array<t3lib_FlashMessage> An array of flash messages
+	 * @return array<\TYPO3\CMS\Core\Messaging\FlashMessage> An array of flash messages
 	 * @api
 	 */
 	public function getAllMessages() {
@@ -105,8 +106,7 @@ class FlashMessageContainer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Get all flash messages currently available. And removes them from the session.
 	 *
-	 * @return array<t3lib_FlashMessage> An array of flash messages
-	 * @see t3lib_FlashMessage
+	 * @return array<\TYPO3\CMS\Core\Messaging\FlashMessage> An array of flash messages
 	 * @api
 	 */
 	public function getAllMessagesAndFlush() {

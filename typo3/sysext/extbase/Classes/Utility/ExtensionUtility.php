@@ -160,7 +160,8 @@ tt_content.' . $pluginSignature . ' {
 	}
 
 	/**
-	 * This method is called from t3lib_loadModules::checkMod and it replaces old conf.php.
+	 * This method is called from \TYPO3\CMS\Backend\Module\ModuleLoader::checkMod
+	 * and it replaces old conf.php.
 	 *
 	 * @param string $moduleSignature The module name
 	 * @param string $modulePath Absolute path to module (not used by Extbase currently)

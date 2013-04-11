@@ -27,8 +27,9 @@ namespace TYPO3\CMS\Extbase\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * The array functions from the good old t3lib_div plus new code.
+ * The array functions from good old GeneralUtility plus new code.
  *
  * @api
  */

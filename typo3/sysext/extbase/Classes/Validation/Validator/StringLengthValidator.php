@@ -52,7 +52,7 @@ class StringLengthValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abst
 		if (is_object($value) && !method_exists($value, '__toString')) {
 			throw new \TYPO3\CMS\Extbase\Validation\Exception\InvalidSubjectException('The given object could not be converted to a string.', 1238110957);
 		}
-		// TODO Use t3lib_cs::strlen() instead; How do we get the charset?
+		// TODO Use \TYPO3\CMS\Core\Charset\CharsetConverter::strlen() instead; How do we get the charset?
 		$stringLength = strlen($value);
 		$isValid = TRUE;
 		if (isset($this->options['minimum']) && $stringLength < $this->options['minimum']) {

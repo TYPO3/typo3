@@ -33,9 +33,7 @@ namespace TYPO3\CMS\Extbase\Configuration;
 class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager {
 
 	/**
-	 * t3lib_queryGenerator is needed to recursively fetch a page tree
-	 *
-	 * @var \TYPO3\CMS\Core\Database\QueryGenerator
+	 * @var \TYPO3\CMS\Core\Database\QueryGenerator Needed to recursively fetch a page tree
 	 */
 	protected $queryGenerator;
 

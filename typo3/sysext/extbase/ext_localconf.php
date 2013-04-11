@@ -2,12 +2,11 @@
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
+
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extbase') . 'Classes/Mvc/Dispatcher.php';
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extbase') . 'Classes/Utility/ExtensionUtility.php';
+
 // Register caches if not already done in localconf.php or a previously loaded extension.
-// We do not set frontend and backend: The cache manager uses t3lib_Cache\Frontend\VariableFrontend
-// and t3lib_cache_backend_DbBackend by default if not set otherwise.
-// This default is perfectly fine for our reflection and object cache.
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_reflection'])) {
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_reflection'] = array();
 }
