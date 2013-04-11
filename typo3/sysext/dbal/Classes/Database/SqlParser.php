@@ -203,7 +203,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 
 	/**
 	 * Add slashes function used for compiling queries
-	 * This method overrides the method from t3lib_sqlparser because
+	 * This method overrides the method from \TYPO3\CMS\Core\Database\SqlParser because
 	 * the input string is already properly escaped.
 	 *
 	 * @param 	string		Input string
@@ -445,7 +445,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	 *
 	 * @param array $featureIndex A feature index as produced by parseFieldDef()
 	 * @return boolean
-	 * @see t3lib_sqlparser::parseFieldDef()
+	 * @see \TYPO3\CMS\Core\Database\SqlParser::parseFieldDef()
 	 */
 	public function checkEmptyDefaultValue($featureIndex) {
 		if (is_array($featureIndex['DEFAULT']['value'])) {
@@ -471,7 +471,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	 *
 	 * @param array WHERE clause configuration
 	 * @return string WHERE clause as string.
-	 * @see 	t3lib_sqlparser::parseWhereClause()
+	 * @see \TYPO3\CMS\Core\Database\SqlParser::parseWhereClause()
 	 */
 	public function compileWhereClause($clauseArray, $functionMapping = TRUE) {
 		switch ((string) $GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
