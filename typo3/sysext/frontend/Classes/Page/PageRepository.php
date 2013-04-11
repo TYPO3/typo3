@@ -330,8 +330,18 @@ class PageRepository {
 		}
 		// Create output:
 		if (is_array($pageInput)) {
-			// If the input was an array, simply overlay the newfound array and return...
-			return is_array($row) ? array_merge($pageInput, $row) : $pageInput;
+			if (is_array($row)) {
+				// Overwrite the original field with the overlay
+				foreach ($row as $fN => $fV) {
+					if ($fN !== 'uid' && $fN !== 'pid') {
+						if ($this->shouldFieldBeOverlaid('pages_language_overlay', $fN, $row[$fN])) {
+							$pageInput[$fN] = $row[$fN];
+						}
+					}
+				}
+			}
+
+			return $pageInput;
 		} else {
 			// Always an array in return
 			return is_array($row) ? $row : array();
@@ -384,10 +394,7 @@ class PageRepository {
 								}
 								foreach ($row as $fN => $fV) {
 									if ($fN != 'uid' && $fN != 'pid' && isset($olrow[$fN])) {
-										if (
-											$GLOBALS['TCA'][$table]['columns'][$fN]['l10n_mode'] != 'exclude'
-											&& ($GLOBALS['TCA'][$table]['columns'][$fN]['l10n_mode'] != 'mergeIfNotBlank' || strcmp(trim($olrow[$fN]), ''))
-										) {
+										if ($this->shouldFieldBeOverlaid($table, $fN, $olrow[$fN])) {
 											$row[$fN] = $olrow[$fN];
 										}
 									} elseif ($fN == 'uid') {
@@ -1191,6 +1198,36 @@ class PageRepository {
 		return $ws['_ACCESS'] != '';
 	}
 
+	/**
+	 * Returns true if a given record field needs to be overlaid
+	 *
+	 * @param string $table TCA tablename
+	 * @param string $field TCA fieldname
+	 * @param mixed $value current value of the field
+	 * @return boolean
+	 */
+	public function shouldFieldBeOverlaid($table, $field, $value) {
+		$l10n_mode = $GLOBALS['TCA'][$table]['columns'][$field]['l10n_mode'];
+
+		if($l10n_mode === 'exclude') {
+			return FALSE;
+		} elseif ($l10n_mode === 'mergeIfNotBlank') {
+			$checkValue = $value;
+
+			// 0 values are considered blank when coming from a group field
+			if (empty($value)) {
+				if ($GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'group') {
+					$checkValue = '';
+				}
+			}
+
+			if(trim($checkValue) === '') {
+				return FALSE;
+			}
+		}
+
+		return TRUE;
+	}
 }
 
 
