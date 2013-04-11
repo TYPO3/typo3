@@ -53,7 +53,6 @@ class CshViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewH
 	 * @param boolean $iconOnly If set, the full text will never be shown (only icon)
 	 * @param string $styleAttributes Additional style-attribute content for wrapping table (full text mode only)
 	 * @return string the rendered CSH icon
-	 * @see t3lib_BEfunc::cshItem
 	 */
 	public function render($table = NULL, $field = '', $iconOnly = FALSE, $styleAttributes = '') {
 		if ($table === NULL) {
