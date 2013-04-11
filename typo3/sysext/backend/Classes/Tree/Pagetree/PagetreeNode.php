@@ -215,7 +215,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	 * @return boolean
 	 */
 	public function canBeDisabledAndEnabled() {
-		return $this->canEdit($this->record);
+		return $this->canEdit($this->record) && $GLOBALS['BE_USER']->checkLanguageAccess(0);
 	}
 
 	/**
@@ -233,7 +233,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	 * @return boolean
 	 */
 	public function canBeEdited() {
-		return $this->canEdit($this->record);
+		return $this->canEdit($this->record) && $GLOBALS['BE_USER']->checkLanguageAccess(0);
 	}
 
 	/**
