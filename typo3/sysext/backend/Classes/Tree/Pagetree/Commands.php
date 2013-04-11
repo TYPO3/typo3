@@ -120,8 +120,12 @@ class Commands {
 	 * @return void
 	 */
 	static public function updateNodeLabel(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node, $updatedLabel) {
-		$data['pages'][$node->getWorkspaceId()][$node->getTextSourceField()] = $updatedLabel;
-		self::processTceCmdAndDataMap(array(), $data);
+		if ($GLOBALS['BE_USER']->checkLanguageAccess(0)) {
+			$data['pages'][$node->getWorkspaceId()][$node->getTextSourceField()] = $updatedLabel;
+			self::processTceCmdAndDataMap(array(), $data);
+		} else {
+			throw new \RuntimeException(implode(chr(10), array('Editing title of page id \'' . $node->getWorkspaceId() .  '\' failed. Editing default language is not allowed.')), 1365513336);
+		}
 	}
 
 	/**
