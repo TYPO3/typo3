@@ -196,7 +196,12 @@ class ProcessedFile extends AbstractFile {
 		// Update some related properties
 		$this->identifier = $addedFile->getIdentifier();
 		$this->originalFileSha1 = $this->originalFile->getSha1();
-		$this->updateProperties($addedFile->getProperties());
+		// The added file is a FileInterface object with own uid
+		// We have to unset uid otherwise the processed file couldn't be stored in database
+		// Other non-used fields were removed before database progress
+		$updateProperties = $addedFile->getProperties();
+		unset($updateProperties['uid']);
+		$this->updateProperties($updateProperties);
 		$this->deleted = FALSE;
 		$this->updated = TRUE;
 	}
