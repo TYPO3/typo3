@@ -119,6 +119,78 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		)));
 	}
 
+	/////////////////////////////////////////
+	// Tests concerning shouldFieldBeOverlaid
+	/////////////////////////////////////////
+	/**
+	 * @test
+	 * @dataProvider getShouldFieldBeOverlaidData
+	 */
+	public function shouldFieldBeOverlaid($field, $table, $value, $expected, $comment = '') {
+		$GLOBALS['TCA']['fake_table']['columns'] = array(
+			'exclude' => array(
+				'l10n_mode' => 'exclude',
+				'config' => array('type' => 'input'),
+			),
+			'mergeIfNotBlank' => array(
+				'l10n_mode' => 'mergeIfNotBlank',
+				'config' => array('type' => 'input'),
+			),
+			'mergeIfNotBlank_group' => array(
+				'l10n_mode' => 'mergeIfNotBlank',
+				'config' => array('type' => 'group'),
+			),
+			'default' => array(
+				// no l10n_mode set
+				'config' => array('type' => 'input'),
+			),
+			'noCopy' => array(
+				'l10n_mode' => 'noCopy',
+				'config' => array('type' => 'input'),
+			),
+			'prefixLangTitle' => array(
+				'l10n_mode' => 'prefixLangTitle',
+				'config' => array('type' => 'input'),
+			),
+		);
+
+		$reflectedMethod = new \ReflectionMethod($this->pageSelectObject, 'shouldFieldBeOverlaid');
+		$reflectedMethod->setAccessible(true);
+		$result = $reflectedMethod->invoke($this->pageSelectObject, $table, $field, $value);
+
+		$this->assertSame($expected, $result, $comment);
+		unset($GLOBALS['TCA']['fake_table']);
+	}
+
+	/**
+	 * Data provider for shouldFieldBeOverlaid
+	 */
+	public function getShouldFieldBeOverlaidData() {
+		return array(
+			array('default',               'fake_table', 'foobar', TRUE,  'default is to merge non-empty string'),
+			array('default',               'fake_table', '',       TRUE,  'default is to merge empty string'),
+
+			array('exclude',               'fake_table', '',       FALSE, 'exclude field with empty string'),
+			array('exclude',               'fake_table', 'foobar', FALSE, 'exclude field with non-empty string'),
+
+			array('mergeIfNotBlank',       'fake_table', '',       FALSE, 'mergeIfNotBlank is not merged with empty string'),
+			array('mergeIfNotBlank',       'fake_table', 0,        TRUE,  'mergeIfNotBlank is merged with 0'),
+			array('mergeIfNotBlank',       'fake_table', '0',      TRUE,  'mergeIfNotBlank is merged with "0"'),
+			array('mergeIfNotBlank',       'fake_table', 'foobar', TRUE,  'mergeIfNotBlank is merged with non-empty string'),
+
+			array('mergeIfNotBlank_group', 'fake_table', '',       FALSE, 'mergeIfNotBlank on group is not merged empty string'),
+			array('mergeIfNotBlank_group', 'fake_table', 0,        FALSE, 'mergeIfNotBlank on group is not merged with 0'),
+			array('mergeIfNotBlank_group', 'fake_table', '0',      FALSE, 'mergeIfNotBlank on group is not merged with "0"'),
+			array('mergeIfNotBlank_group', 'fake_table', 'foobar', TRUE,  'mergeIfNotBlank on group is merged with non-empty string'),
+
+			array('noCopy',                'fake_table', 'foobar', TRUE,  'noCopy is merged with non-empty string'),
+			array('noCopy',                'fake_table', '',       TRUE,  'noCopy is merged with empty string'),
+
+			array('prefixLangTitle',       'fake_table', 'foobar', TRUE,  'prefixLangTitle is merged with non-empty string'),
+			array('prefixLangTitle',       'fake_table', '',       TRUE,  'prefixLangTitle is merged with empty string'),
+		);
+	}
+
 }
 
 ?>
