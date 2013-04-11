@@ -5162,6 +5162,11 @@ class ContentObjectRenderer {
 					$processingConfiguration['minHeight'] = isset($fileArray['minH.']) ? intval($this->stdWrap($fileArray['minH'], $fileArray['minH.'])) : intval($fileArray['minH']);
 					$processingConfiguration['noScale'] = isset($fileArray['noScale.']) ? $this->stdWrap($fileArray['noScale'], $fileArray['noScale.']) : $fileArray['noScale'];
 					$processingConfiguration['additionalParameters'] = isset($fileArray['params.']) ? $this->stdWrap($fileArray['params'], $fileArray['params.']) : $fileArray['params'];
+					// Possibility to cancel/force profile extraction
+					// see $TYPO3_CONF_VARS['GFX']['im_stripProfileCommand']
+					if (isset($fileArray['stripProfile'])) {
+						$processingConfiguration['stripProfile'] = $fileArray['stripProfile'];
+					}
 					// Check if we can handle this type of file for editing
 					if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
 						$maskArray = $fileArray['m.'];
@@ -5221,25 +5226,6 @@ class ContentObjectRenderer {
 			}
 		}
 		return $imageResource;
-	}
-
-	/**
-	 * Modifies the parameters for ImageMagick for stripping of profile information.
-	 *
-	 * @param string $parameters The parameters to be modified (if required)
-	 * @param array $configuration The TypoScript configuration of [IMAGE].file
-	 * @return string The modified parameters
-	 */
-	protected function modifyImageMagickStripProfileParameters($parameters, array $configuration) {
-		// Strips profile information of image to save some space:
-		if (isset($configuration['stripProfile'])) {
-			if ($configuration['stripProfile']) {
-				$parameters = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_stripProfileCommand'] . $parameters;
-			} else {
-				$parameters .= '###SkipStripProfile###';
-			}
-		}
-		return $parameters;
 	}
 
 	/***********************************************
