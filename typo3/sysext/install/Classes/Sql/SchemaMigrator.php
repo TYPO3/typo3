@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Install\Sql;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Verify TYPO3 DB table structure. Mainly used in install tool
  * compare wizard and extension manager.
@@ -693,7 +694,7 @@ class SchemaMigrator {
 	 * Returns list of tables in the database
 	 *
 	 * @return array List of tables.
-	 * @see t3lib_db::admin_get_tables()
+	 * @see \TYPO3\CMS\Core\Database\DatabaseConnection::admin_get_tables()
 	 */
 	public function getListOfTables() {
 		$whichTables = $GLOBALS['TYPO3_DB']->admin_get_tables(TYPO3_db);

@@ -367,7 +367,6 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 * @param string $details This is the default, raw error message in english
 	 * @param array $data Array with special information that may go into $details by "%s" marks / sprintf() when the log is shown
 	 * @return void
-	 * @see 	class.t3lib_beuserauth.php
 	 * @todo Define visibility
 	 */
 	public function writeLog($action, $error, $details_nr, $details, $data) {

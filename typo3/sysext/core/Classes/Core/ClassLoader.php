@@ -417,8 +417,8 @@ class ClassLoader {
 	/**
 	 * Lowercase all keys of the class registry.
 	 *
-	 * Use the multi byte safe version of strtolower from t3lib_div,
-	 * so array_change_key_case() can not be used
+	 * Use the multi byte safe version of strtolower from
+	 * GeneralUtility, so array_change_key_case() can not be used
 	 *
 	 * @param array $registry Given registry entries
 	 * @return array with lower cased keys

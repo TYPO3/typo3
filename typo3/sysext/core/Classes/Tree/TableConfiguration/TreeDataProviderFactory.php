@@ -27,7 +27,8 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Builds a t3lib_tree_Tca_DatabaseTreeDataProvider object based on some TCA configuration
+ * Builds a \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider
+ * object based on some TCA configuration
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
  */
@@ -94,10 +95,10 @@ class TreeDataProviderFactory {
 				$dataProvider->setNonSelectableLevelList('');
 			}
 			if (isset($treeConfiguration['childrenField'])) {
-				$dataProvider->setLookupMode(\t3lib_tree_tca_DatabaseTreeDataProvider::MODE_CHILDREN);
+				$dataProvider->setLookupMode(\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::MODE_CHILDREN);
 				$dataProvider->setLookupField($treeConfiguration['childrenField']);
 			} elseif (isset($treeConfiguration['parentField'])) {
-				$dataProvider->setLookupMode(\t3lib_tree_tca_DatabaseTreeDataProvider::MODE_PARENT);
+				$dataProvider->setLookupMode(\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::MODE_PARENT);
 				$dataProvider->setLookupField($treeConfiguration['parentField']);
 			} else {
 				throw new \InvalidArgumentException('TCA Tree configuration is invalid: neither "childrenField" nor "parentField" is set', 1288215889);

@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
  ***************************************************************/
 
 /**
- * Testcase for class t3lib_cacheHeash
+ * Testcase
  *
  * @author 2012 Tolleiv Nietsch <typo3@tolleiv.de>
  */

@@ -125,7 +125,6 @@ class TypoScriptTemplateInfoHook {
 				// Update template ?
 				$POST = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
 				if ($POST['submit']) {
-					require_once PATH_t3lib . 'class.t3lib_tcemain.php';
 					// Set the data to be saved
 					$recData = array();
 					if (is_array($POST['data'])) {

@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Core\TypoScript;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * TSParser extension class to t3lib_TStemplate
+ * TSParser extension class to TemplateService
  * Contains functions for the TS module in TYPO3 backend
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>

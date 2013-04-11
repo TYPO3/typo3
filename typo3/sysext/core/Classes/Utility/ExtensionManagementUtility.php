@@ -753,7 +753,8 @@ class ExtensionManagementUtility {
 	}
 
 	/**
-	 * This method is called from t3lib_loadModules::checkMod and it replaces old conf.php.
+	 * This method is called from \TYPO3\CMS\Backend\Module\ModuleLoader::checkMod
+	 * and it replaces old conf.php.
 	 *
 	 * The original function for is called
 	 * Tx_Extbase_Utility_Extension::configureModule, the refered function can
@@ -889,7 +890,7 @@ class ExtensionManagementUtility {
 	 * @param string $MM_key Menu array key - default is "function
 	 * @param string $WS Workspace conditions. Blank means all workspaces, any other string can be a comma list of "online", "offline" and "custom
 	 * @return void
-	 * @see t3lib_SCbase::mergeExternalItems()
+	 * @see \TYPO3\CMS\Backend\Module\BaseScriptClass::mergeExternalItems()
 	 */
 	static public function insertModuleFunction($modname, $className, $classPath, $title, $MM_key = 'function', $WS = '') {
 		$GLOBALS['TBE_MODULES_EXT'][$modname]['MOD_MENU'][$MM_key][$className] = array(

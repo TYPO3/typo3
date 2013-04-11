@@ -195,7 +195,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 			throw new \TYPO3\CMS\Core\Cache\Exception('No cache frontend has been set yet via setCache().', 1207149215);
 		}
 		if (!is_string($data)) {
-			throw new \t3lib_cache_Exception_InvalidData('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1207149231);
+			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1207149231);
 		}
 		$tags[] = '%MEMCACHEBE%' . $this->cacheIdentifier;
 		$expiration = $lifetime !== NULL ? $lifetime : $this->defaultLifetime;

@@ -108,9 +108,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	public $adminPanel = NULL;
 
 	/**
-	 * Class for frontend editing.
-	 *
-	 * @var 	t3lib_frontendedit
+	 * @var \TYPO3\CMS\Core\FrontendEditing\FrontendEditingController
 	 */
 	public $frontendEdit = NULL;
 
@@ -196,7 +194,6 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	 * Used in the frontend.
 	 *
 	 * @return boolean Returns TRUE if access is OK
-	 * @see 	typo3/init.php, t3lib_beuserauth::backendCheckLogin()
 	 */
 	public function checkBackendAccessSettingsFromInitPhp() {
 		// Check Hardcoded lock on BE
@@ -215,7 +212,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 				return FALSE;
 			}
 		}
-		// Finally a check from t3lib_beuserauth::backendCheckLogin()
+		// Finally a check from \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::backendCheckLogin()
 		if ($this->isUserAllowedToLogin()) {
 			return TRUE;
 		} else {

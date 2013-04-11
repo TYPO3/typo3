@@ -24,9 +24,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * TCE gateway (TYPO3 Core Engine) for database handling
- * This script is a gateway for POST forms to class.t3lib_TCEmain that manipulates all information in the database!!
+ * This script is a gateway for POST forms to \TYPO3\CMS\Core\DataHandling\DataHandler
+ * that manipulates all information in the database!!
  * For syntax and API information, see the document 'TYPO3 Core APIs'
  *
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
@@ -34,12 +36,14 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 require 'init.php';
+
 /*
  * @deprecated since 6.0, the classname SC_tce_db and this file is obsolete
  * and will be removed with 6.2. The class was renamed and is now located at:
  * typo3/sysext/backend/Classes/Controller/SimpleDataHandlerController.php
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/Controller/SimpleDataHandlerController.php';
+
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\SimpleDataHandlerController');
 $SOBE->init();
@@ -47,7 +51,7 @@ $SOBE->init();
 foreach ($SOBE->include_once as $INC_FILE) {
 	include_once $INC_FILE;
 }
-$formprotection = t3lib_formprotection_Factory::get();
+$formprotection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
 if ($formprotection->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formToken'), 'tceAction')) {
 	$SOBE->initClipboard();
 	$SOBE->main();

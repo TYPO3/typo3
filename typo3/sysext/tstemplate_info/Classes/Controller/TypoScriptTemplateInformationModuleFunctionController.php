@@ -134,7 +134,8 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 	}
 
 	/**
-	 * Create an instance of t3lib_tsparser_ext in $GLOBALS['tmpl'] and looks for the first (visible) template
+	 * Create an instance of \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService in
+	 * $GLOBALS['tmpl'] and looks for the first (visible) template
 	 * record. If $template_uid was given and greater than zero, this record will be checked.
 	 *
 	 * @param integer $pageId The uid of the current page

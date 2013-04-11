@@ -26,8 +26,10 @@ namespace TYPO3\CMS\Frontend\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Class for the built TypoScript based Front End
+ * Main frontend class, instantiated in the index_ts.php script as the global object TSFE
  *
  * This class has a lot of functions and internal variable which are use from index_ts.php.
  * The class is instantiated as $GLOBALS['TSFE'] in index_ts.php.
@@ -35,11 +37,6 @@ namespace TYPO3\CMS\Frontend\Controller;
  *
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
- * Main frontend class, instantiated in the index_ts.php script as the global object TSFE
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -730,17 +727,17 @@ class TypoScriptFrontendController {
 	protected $pageRenderer;
 
 	/**
-	 * the page cache object, use this to save pages to the cache and to
+	 * The page cache object, use this to save pages to the cache and to
 	 * retrieve them again
 	 *
-	 * @var t3lib_cache_AbstractBackend
+	 * @var \TYPO3\CMS\Cache\Backend\AbstractBackend
 	 */
 	protected $pageCache;
 
 	protected $pageCacheTags = array();
 
 	/**
-	 * @var t3lib_cacheHash	The cHash Service class used for cHash related functionality
+	 * @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator The cHash Service class used for cHash related functionality
 	 */
 	protected $cacheHash;
 
@@ -1067,8 +1064,8 @@ class TypoScriptFrontendController {
 			$GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] = microtime(TRUE);
 			$GLOBALS['TT']->push('Back End user initialized', '');
 			// TODO: validate the comment below: is this necessary? if so,
-			// formfield_status should be set to "" in t3lib_tsfeBeUserAuth
-			// which is a subclass of t3lib_beUserAuth
+			// formfield_status should be set to "" in \TYPO3\CMS\Backend\FrontendBackendUserAuthentication
+			// which is a subclass of \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
 			// ----
 			// the value this->formfield_status is set to empty in order to
 			// disable login-attempts to the backend account through this script
@@ -1351,9 +1348,9 @@ class TypoScriptFrontendController {
 		if ($this->page['url_scheme'] > 0) {
 			$newUrl = '';
 			$requestUrlScheme = parse_url(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), PHP_URL_SCHEME);
-			if ((int) $this->page['url_scheme'] === \t3lib_utility_http::SCHEME_HTTP && $requestUrlScheme == 'https') {
+			if ((int) $this->page['url_scheme'] === \TYPO3\CMS\Core\Utility\HttpUtility::SCHEME_HTTP && $requestUrlScheme == 'https') {
 				$newUrl = 'http://' . substr(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), 8);
-			} elseif ((int) $this->page['url_scheme'] === \t3lib_utility_http::SCHEME_HTTPS && $requestUrlScheme == 'http') {
+			} elseif ((int) $this->page['url_scheme'] === \TYPO3\CMS\Core\Utility\HttpUtility::SCHEME_HTTPS && $requestUrlScheme == 'http') {
 				$newUrl = 'https://' . substr(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), 7);
 			}
 			if ($newUrl !== '') {
@@ -1362,7 +1359,7 @@ class TypoScriptFrontendController {
 				} else {
 					$headerCode = \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_301;
 				}
-				\t3lib_utility_http::redirect($newUrl, $headerCode);
+				\TYPO3\CMS\Core\Utility\HttpUtility::redirect($newUrl, $headerCode);
 			}
 		}
 		// Set no_cache if set
@@ -1844,7 +1841,7 @@ class TypoScriptFrontendController {
 	/**
 	 * Page unavailable handler. Acts a wrapper for the pageErrorHandler method.
 	 *
-	 * @param mixed $code Which type of handling; If a true PHP-boolean or TRUE then a ->t3lib_message_ErrorPageMessage is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
+	 * @param mixed $code Which type of handling; If a true PHP-boolean or TRUE then a \TYPO3\CMS\Core\Messaging\ErrorpageMessage is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
 	 * @param string $header If set, this is passed directly to the PHP function, header()
 	 * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
 	 * @return void (The function exits!)
@@ -1857,7 +1854,7 @@ class TypoScriptFrontendController {
 	/**
 	 * Page not found handler. Acts a wrapper for the pageErrorHandler method.
 	 *
-	 * @param mixed $code Which type of handling; If a true PHP-boolean or TRUE then a ->t3lib_message_ErrorPageMessage is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
+	 * @param mixed $code Which type of handling; If a true PHP-boolean or TRUE then a \TYPO3\CMS\Core\Messaging\ErrorpageMessage is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
 	 * @param string $header If set, this is passed directly to the PHP function, header()
 	 * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
 	 * @return void (The function exits!)
@@ -1871,7 +1868,7 @@ class TypoScriptFrontendController {
 	 * Generic error page handler.
 	 * Exits.
 	 *
-	 * @param mixed $code Which type of handling; If a true PHP-boolean or TRUE then a ->t3lib_message_ErrorPageMessage is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
+	 * @param mixed $code Which type of handling; If a true PHP-boolean or TRUE then a \TYPO3\CMS\Core\Messaging\ErrorpageMessage is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
 	 * @param string $header If set, this is passed directly to the PHP function, header()
 	 * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
 	 * @return void (The function exits!)
@@ -3231,7 +3228,8 @@ class TypoScriptFrontendController {
 	 * @todo Define visibility
 	 */
 	public function generatePage_preProcessing() {
-		// Same codeline as in getFromCache(). But $this->all has been changed by t3lib_TStemplate::start() in the meantime, so this must be called again!
+		// Same codeline as in getFromCache(). But $this->all has been changed by
+		// \TYPO3\CMS\Core\TypoScript\TemplateService::start() in the meantime, so this must be called again!
 		$this->newHash = $this->getHash();
 		// For cache management informational purposes.
 		$this->config['hash_base'] = $this->hash_base;
@@ -3239,7 +3237,7 @@ class TypoScriptFrontendController {
 			// Here we put some temporary stuff in the cache in order to let the first hit generate the page. The temporary cache will expire after a few seconds (typ. 30) or will be cleared by the rendered page, which will also clear and rewrite the cache.
 			$this->tempPageCacheContent();
 		}
-		// Setting cache_timeout_default. May be overridden by PHP include scritps.
+		// Setting cache_timeout_default. May be overridden by PHP include scripts.
 		$this->cacheTimeOutDefault = intval($this->config['config']['cache_period']);
 		// Page is generated
 		$this->no_cacheBeforePageGen = $this->no_cache;
@@ -4094,7 +4092,6 @@ if (version == "n3") {
 	 * @param string $typoScriptProperty Deprecated object or property
 	 * @param string $explanation Message or additional information
 	 * @return void
-	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(), t3lib_timeTrack::setTSlogMessage()
 	 * @todo Define visibility
 	 */
 	public function logDeprecatedTyposcript($typoScriptProperty, $explanation = '') {
@@ -4631,7 +4628,7 @@ if (version == "n3") {
 	 * @param string $str String to convert charset for
 	 * @param string $from Optional "from" charset.
 	 * @return string Output string, converted if needed.
-	 * @see t3lib_cs
+	 * @see \TYPO3\CMS\Core\Charset\CharsetConverter
 	 * @todo Define visibility
 	 */
 	public function csConv($str, $from = '') {
@@ -4760,7 +4757,7 @@ if (version == "n3") {
 	 */
 	protected function getSysDomainCache() {
 		$entryIdentifier = 'core-database-sys_domain-complete';
-		/** @var $runtimeCache t3lib_cache_frontend_AbstractFrontend */
+		/** @var $runtimeCache \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend */
 		$runtimeCache = $GLOBALS['typo3CacheManager']->getCache('cache_runtime');
 
 		$sysDomainData = array();

@@ -26,17 +26,18 @@ namespace TYPO3\CMS\Backend\Form\Element;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Interface for classes which hook into t3lib_TCEforms_inline.
+ * Interface for classes which hook into \TYPO3\CMS\Backend\Form\Element\InlineElement
  *
  * @author Oliver Hader <oh@inpublica.de>
  */
-interface InlineElementHookInterface
-{
+interface InlineElementHookInterface {
+
 	/**
 	 * Initializes this hook object.
 	 *
-	 * @param \TYPO3\CMS\Backend\Form\Element\InlineElement $parentObject The calling t3lib_TCEforms_inline object.
+	 * @param \TYPO3\CMS\Backend\Form\Element\InlineElement $parentObject
 	 * @return void
 	 */
 	public function init(&$parentObject);

@@ -76,8 +76,8 @@ class BackendLayoutView {
 	public function getColPosListItemsParsed($id) {
 		$tsConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($id, 'TCEFORM.tt_content.colPos');
 		$tcaConfig = $GLOBALS['TCA']['tt_content']['columns']['colPos']['config'];
-		/** @var $tceForms t3lib_TCEForms */
-		$tceForms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TCEForms');
+		/** @var $tceForms \TYPO3\CMS\Backend\Form\FormEngine */
+		$tceForms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
 		$tcaItems = $tcaConfig['items'];
 		$tcaItems = $tceForms->addItems($tcaItems, $tsConfig['properties']['addItems.']);
 		if (isset($tcaConfig['itemsProcFunc']) && $tcaConfig['itemsProcFunc']) {

@@ -220,7 +220,6 @@ class FrontendEditPanel {
 	 * @param string $confirm Text string with confirmation message; If set a confirm box will be displayed before carrying out the action (if Yes is pressed)
 	 * @param integer $nPid "New pid" - for new records
 	 * @return string A <a> tag wrapped string.
-	 * @see editPanel(), editIcons(), t3lib_tsfeBeUserAuth::extEditAction()
 	 */
 	protected function editPanelLinkWrap($string, $formName, $cmd, $currentRecord = '', $confirm = '', $nPid = '') {
 		// Editing forms on page only supported in Live workspace (because of incomplete implementation)

@@ -1394,7 +1394,6 @@ abstract class AbstractUserAuthentication {
 	 * @param integer $recuid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
 	 * @param integer $recpid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
 	 * @return void
-	 * @see t3lib_beUserAuth::writelog()
 	 * @todo Define visibility
 	 */
 	public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename, $recuid, $recpid) {
@@ -1438,7 +1437,7 @@ abstract class AbstractUserAuthentication {
 	 *
 	 * @param string $name The username to look up.
 	 * @return void
-	 * @see 	t3lib_userAuth::setBeUserByUid()
+	 * @see \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::setBeUserByUid()
 	 * @internal
 	 * @todo Define visibility
 	 */
@@ -1469,7 +1468,7 @@ abstract class AbstractUserAuthentication {
 	 *
 	 * @param string $name The username to look up.
 	 * @return array user record or FALSE
-	 * @see 	t3lib_userAuth::getUserByUid()
+	 * @see \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::getUserByUid()
 	 * @internal
 	 * @todo Define visibility
 	 */

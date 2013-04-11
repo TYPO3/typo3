@@ -55,8 +55,8 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	protected $loginData = array();
 
 	/**
-	 * Additional authentication information provided by t3lib_userAuth. We use
-	 * it to decide what database table contains user records.
+	 * Additional authentication information provided by \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication.
+	 * We use it to decide what database table contains user records.
 	 */
 	protected $authenticationInformation = array();
 
@@ -69,14 +69,14 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * OpenID response object. It is initialized when OpenID provider returns
 	 * with success/failure response to us.
 	 *
-	 * @var 	Auth_OpenID_ConsumerResponse
+	 * @var \Auth_OpenID_ConsumerResponse
 	 */
 	protected $openIDResponse = NULL;
 
 	/**
 	 * A reference to the calling object
 	 *
-	 * @var 	t3lib_userAuth
+	 * @var \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication
 	 */
 	protected $parentObject;
 
@@ -126,11 +126,11 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	/**
 	 * Initializes authentication for this service.
 	 *
-	 * @param 	string			$subType: Subtype for authentication (either "getUserFE" or "getUserBE")
-	 * @param 	array			$loginData: Login data submitted by user and preprocessed by t3lib/class.t3lib_userauth.php
-	 * @param 	array			$authenticationInformation: Additional TYPO3 information for authentication services (unused here)
-	 * @param 	t3lib_userAuth	$parentObject: Calling object
-	 * @return 	void
+	 * @param string $subType: Subtype for authentication (either "getUserFE" or "getUserBE")
+	 * @param array $loginData: Login data submitted by user and preprocessed by AbstractUserAuthentication
+	 * @param array $authenticationInformation: Additional TYPO3 information for authentication services (unused here)
+	 * @param \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication $parentObject Calling object
+	 * @return void
 	 */
 	public function initAuth($subType, array $loginData, array $authenticationInformation, \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication &$parentObject) {
 		// Store login and authetication data
@@ -148,8 +148,8 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	}
 
 	/**
-	 * This function returns the user record back to the t3lib_userAuth. it does not
-	 * mean that user is authenticated, it means only that user is found. This
+	 * This function returns the user record back to the \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication.
+	 * It does not mean that user is authenticated, it means only that user is found. This
 	 * function makes sure that user cannot be authenticated by any other service
 	 * if user tries to use OpenID to authenticate.
 	 *
@@ -194,9 +194,8 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	/**
 	 * Authenticates user using OpenID.
 	 *
-	 * @param 	array		$userRecord	User record
-	 * @return 	int		Code that shows if user is really authenticated.
-	 * @see 	t3lib_userAuth::checkAuthentication()
+	 * @param  array $userRecord	User record
+	 * @return int Code that shows if user is really authenticated.
 	 */
 	public function authUser(array $userRecord) {
 		$result = 100;

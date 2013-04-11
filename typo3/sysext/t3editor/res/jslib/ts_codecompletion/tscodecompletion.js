@@ -105,7 +105,7 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 	 * loads the array of registered codecompletion plugins
 	 * to register a plugin you have to add an array to the localconf
 	 * $TYPO3_CONF_VARS['EXTCONF']['t3editor']['plugins'][] = array(
-	 * 	'extpath' => t3lib_div::getIndpEnv('TYPO3_SITE_URL').t3lib_extMgm::siteRelPath($_EXTKEY),
+	 * 	'extpath' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($_EXTKEY),
 	 * 	'classpath' => 'js/my_plugin.js',
 	 * 	'classname'=> 'MyPlugin'
 	 * );

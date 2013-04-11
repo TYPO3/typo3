@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Backend\Sprite;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Interface all handlers in t3lib_spritemanager have to implement.
+ * Interface all handlers in SpriteManager have to implement.
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
  */

@@ -44,9 +44,7 @@ class FrontendEditingController {
 	public $TSFE_EDIT;
 
 	/**
-	 * TCEmain object.
-	 *
-	 * @var t3lib_tcemain
+	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	protected $tce;
 
@@ -568,7 +566,7 @@ class FrontendEditingController {
 	}
 
 	/**
-	 * Initializes t3lib_TCEmain since it is used on modification actions.
+	 * Initializes \TYPO3\CMS\Core\DataHandling\DataHandler since it is used on modification actions.
 	 *
 	 * @return void
 	 */

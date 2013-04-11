@@ -357,7 +357,7 @@ class ColorpickerController {
 		if (!$this->imageError) {
 			if ($this->pickerImage) {
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('coords_x')) {
-					$this->colorValue = '#' . $this->getIndex(\t3lib_stdgraphic::imageCreateFromFile($this->pickerImage), \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('coords_x'), \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('coords_y'));
+					$this->colorValue = '#' . $this->getIndex(\TYPO3\CMS\Core\Imaging\GraphicalFunctions::imageCreateFromFile($this->pickerImage), \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('coords_x'), \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('coords_y'));
 				}
 				$pickerFormImage = '
 				<p class="c-head">' . $GLOBALS['LANG']->getLL('colorpicker_fromImage', 1) . '</p>
@@ -376,7 +376,7 @@ class ColorpickerController {
 	 * Gets the HTML (Hex) Color Code for the selected pixel of an image
 	 * This method handles the correct imageResource no matter what format
 	 *
-	 * @param pointer $im Valid ImageResource returned by t3lib_stdgraphic::imageCreateFromFile
+	 * @param pointer $im Valid ImageResource returned by \TYPO3\CMS\Core\Imaging\GraphicalFunctions::imageCreateFromFile
 	 * @param integer $x X-Coordinate of the pixel that should be checked
 	 * @param integer $y Y-Coordinate of the pixel that should be checked
 	 * @return string HEX RGB value for color

@@ -329,7 +329,7 @@ class SuggestDefaultReceiver {
 	}
 
 	/**
-	 * Return the icon for a record - just a wrapper for two functions from t3lib_iconWorks
+	 * Return the icon for a record - just a wrapper for two functions from \TYPO3\CMS\Backend\Utility\IconUtility
 	 *
 	 * @param array $row The record to get the icon for
 	 * @return string The path to the icon

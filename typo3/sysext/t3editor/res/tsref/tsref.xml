@@ -293,7 +293,7 @@ This will by default add "&MP=2-207" to all links pointing to pages 36,37 and 48
 		<property name="MP_mapRootPoints" type="string">
 			<description><![CDATA[list of PIDs/string
       Defines a list of ID numbers from which the MP-vars are automatically calculated for the branch.
-The result is used just like MP_defaults are used to find MP-vars if none has been specified prior to the call to t3lib_tstemplate::linkData().
+The result is used just like MP_defaults are used to find MP-vars if none has been specified prior to the call to \TYPO3\CMS\Core\TypoScript\TemplateService::linkData().
 You can specify "root" as a special keyword in the list of IDs and that will create a map-tree for the whole site (but this may be VERY processing intensive if there are many pages!).
 The order of IDs specified may have a significance; Any ID in a branch which is processed already (by a previous ID root point) will not be processed again.]]></description>
 			<default><![CDATA[
@@ -758,7 +758,7 @@ Please take note that this tag is required for XHTML compliant output, so you sh
 		</property>
 		<property name="noScaleUp" type="boolean">
 			<description><![CDATA[Normally images are scaled to the size specified via TypoScript. This also forces small images to be scaled to a larger size. This is not always a good thing.
-If this property is set, images are not allowed to be scaled up in size. This parameter clears the $this->mayScaleUp var of the class t3lib_stdgraphics (often "gifbuilder").]]></description>
+If this property is set, images are not allowed to be scaled up in size. This parameter clears the $this->mayScaleUp var of the class \TYPO3\CMS\Core\Imaging\GraphicalFunctions (often "gifbuilder").]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -801,7 +801,7 @@ is set in localconf.php.]]></description>
 		</property>
 		<property name="pageRendererTemplateFile" type="string">
 			<description><![CDATA[
-			Sets the template for page renderer class (t3lib_PageRenderer).
+			Sets the template for page renderer class (\TYPO3\CMS\Core\Page\PageRenderer).
 
 Example:
 
@@ -884,7 +884,7 @@ Note: TYPO3 comes with a built-in concatenation handler, but you can also regist
 
 Example:
 
-$GLOBALS['TYPO3_CONF_VARS']['FE']['jsConcatenateHandler'] = t3lib_extMgm::extPath($_EXTKEY) . 'Classes/class.tx_myext_jsConcatenateHandler.php:tx_myext_jsConcatenateHandler->concatenateJs';]]></description>
+$GLOBALS['TYPO3_CONF_VARS']['FE']['jsConcatenateHandler'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/class.tx_myext_jsConcatenateHandler.php:tx_myext_jsConcatenateHandler->concatenateJs';]]></description>
 			<default><![CDATA[false]]></default>
 		</property>
 		<property name="concatenateCss" type="boolean">
@@ -898,7 +898,7 @@ Note: TYPO3 comes with a built-in concatenation handler, but you can also regist
 
 Example:
 
-$GLOBALS['TYPO3_CONF_VARS']['FE']['cssConcatenateHandler'] = t3lib_extMgm::extPath($_EXTKEY) . 'Classes/class.tx_myext_cssConcatenateHandler.php:tx_myext_cssConcatenateHandler->concatenateCss';]]></description>
+$GLOBALS['TYPO3_CONF_VARS']['FE']['cssConcatenateHandler'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/class.tx_myext_cssConcatenateHandler.php:tx_myext_cssConcatenateHandler->concatenateCss';]]></description>
 			<default><![CDATA[false]]></default>
 		</property>
 		<property name="renderCharset" type="string">
@@ -1151,7 +1151,7 @@ What it does NOT do (yet) according to XHTML specs.:
 - ampersands (and entities in general I think) MUST be converted to an entity reference! (&amps;). This may mean further conversion of non-tag content before output to page. May be related to the charset issue as a whole.
 - Minimized values not allowed: Must do this: selected="selected"
 
-Please see the class t3lib_parsehtml for details.
+Please see the class \TYPO3\CMS\Core\Html\HtmlParser for details.
 You can enable this function by the following values:
 
 all = the content is always processed before it may be stored in cache.
@@ -2418,7 +2418,7 @@ Example:
   10.splitRendering.10 {
     value = 200-380 , 65, 66
     fontSize = 50
-    fontFile =  t3lib/fonts/nimbus.ttf
+    fontFile =  typo3/sysext/core/Resources/Private/Font/nimbus.ttf
     xSpaceBefore = 30
   }
   10.splitRendering.20 = highlightWord
@@ -2463,7 +2463,7 @@ Example:
   10.splitRendering.10 {
     value = 200-380 , 65, 66
     fontSize = 50
-    fontFile =  t3lib/fonts/nimbus.ttf
+    fontFile =  typo3/sysext/core/Resources/Private/Font/nimbus.ttf
     xSpaceBefore = 30
   }
   10.splitRendering.20 = highlightWord
@@ -3038,7 +3038,7 @@ Basically this shows that
 
 - the fields "header_layout", "bodytext" and "image" are mapped to non-existing fields in the page-record
 
-- a new field, "sectionIndex_uid" is introduced in the page-record which is detected by the function t3lib_tstemplate->linkData(). If this field is present in a pagerecord, the linkData()-function will prepend a hash-mark and the number of the field.
+- a new field, "sectionIndex_uid" is introduced in the page-record which is detected by the function \TYPO3\CMS\Core\TypoScript\TemplateService->linkData(). If this field is present in a pagerecord, the linkData()-function will prepend a hash-mark and the number of the field.
 
 NOTE:
 
@@ -4861,8 +4861,8 @@ Is the value "global" then true nesting in relation to other tags marked for "gl
 		</property>
 		<property name="prefixLocalAnchors" type="integer">
 			<description><![CDATA[If the first char is a "#" character (anchor of fx. <a> tags) this will prefix either a relative or absolute path.
-If the value is "1" you will get the absolute path (t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'))
-If the value is "2" you will get the relative path (stripping of t3lib_div::getIndpEnv('TYPO3_SITE_URL'))
+If the value is "1" you will get the absolute path (\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'))
+If the value is "2" you will get the relative path (stripping of \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))
 
 Example:
 
@@ -7929,7 +7929,7 @@ If set, a clear gif is not used by rather a <div> tag with a style-attribute set
 This formatting is useful if the locale is set in advance in the CONFIG-object. See this.
 
 Properties:
-.charset  : Can be set to the charset of the output string if you need to convert it to renderCharset. Default is to take the intelligently guessed charset from t3lib_cs.]]></description>
+.charset  : Can be set to the charset of the output string if you need to convert it to renderCharset. Default is to take the intelligently guessed charset from \TYPO3\CMS\Core\Charset\CharsetConverter.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>

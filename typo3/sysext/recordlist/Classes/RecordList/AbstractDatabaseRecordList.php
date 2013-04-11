@@ -920,12 +920,13 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	}
 
 	/**
-	 * Creates an instance of t3lib_pageTree which will select a page tree to $depth and return the object. In that object we will find the ids of the tree.
+	 * Creates an instance of \TYPO3\CMS\Backend\Tree\View\PageTreeView which will select a page
+	 * tree to $depth and return the object. In that object we will find the ids of the tree.
 	 *
 	 * @param integer $id Page id.
 	 * @param integer $depth Depth to go down.
 	 * @param string $perms_clause Select clause
-	 * @return object t3lib_pageTree instance with created list of ids.
+	 * @return \TYPO3\CMS\Backend\Tree\View\PageTreeView instance with created list of ids.
 	 * @todo Define visibility
 	 */
 	public function getTreeObject($id, $depth, $perms_clause) {

@@ -525,8 +525,6 @@ class FormEngine {
 	public $additionalJS_delete = array();
 
 	/**
-	 * Instance of t3lib_tceforms_inline
-	 *
 	 * @var \TYPO3\CMS\Backend\Form\Element\InlineElement
 	 * @todo Define visibility
 	 */
@@ -593,11 +591,11 @@ class FormEngine {
 			'group' => array('size', 'autoSizeMax', 'max_size', 'show_thumbs', 'maxitems', 'minitems', 'disable_controls', 'readOnly'),
 			'inline' => array('appearance', 'behaviour', 'foreign_label', 'foreign_selector', 'foreign_unique', 'maxitems', 'minitems', 'size', 'autoSizeMax', 'symmetric_label', 'readOnly')
 		);
-		// Create instance of t3lib_TCEforms_inline only if this a non-IRRE-AJAX call:
+		// Create instance of \TYPO3\CMS\Backend\Form\Element\InlineElement only if this a non-IRRE-AJAX call:
 		if (!isset($GLOBALS['ajaxID']) || strpos($GLOBALS['ajaxID'], 'TYPO3\\CMS\\Backend\\Form\\Element\\InlineElement::') !== 0) {
 			$this->inline = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\InlineElement');
 		}
-		// Create instance of t3lib_TCEforms_suggest only if this a non-Suggest-AJAX call:
+		// Create instance of \TYPO3\CMS\Backend\Form\Element\SuggestElement only if this a non-Suggest-AJAX call:
 		if (!isset($GLOBALS['ajaxID']) || strpos($GLOBALS['ajaxID'], 'TYPO3\\CMS\\Backend\\Form\\Element\\SuggestElement::') !== 0) {
 			$this->suggest = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\SuggestElement');
 		}
@@ -676,7 +674,9 @@ class FormEngine {
 
 	/**
 	 * Based on the $table and $row of content, this displays the complete TCEform for the record.
-	 * The input-$row is required to be preprocessed if necessary by eg. the t3lib_transferdata class. For instance the RTE content should be transformed through this class first.
+	 * The input-$row is required to be preprocessed if necessary by eg.
+	 * the \TYPO3\CMS\Backend\Form\DataPreprocessor class. For instance the RTE content
+	 * should be transformed through this class first.
 	 *
 	 * @param string $table The table name
 	 * @param array $row The record from the table for which to render a field.
@@ -1322,7 +1322,7 @@ class FormEngine {
 				}
 				break;
 			default:
-				// Pair hook to the one in t3lib_TCEmain::checkValue_input_Eval()
+				// Pair hook to the one in \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_input_Eval()
 				$evalObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
 				if (is_object($evalObj) && method_exists($evalObj, 'deevaluateFieldValue')) {
 					$_params = array(
@@ -1550,7 +1550,7 @@ function ' . $evalData . '(value) {
 						$this->registerRequiredProperty('field', $table . '_' . $row['uid'] . '_' . $field, $PA['itemFormElName']);
 						break;
 					default:
-						// Pair hook to the one in t3lib_TCEmain::checkValue_input_Eval() and t3lib_TCEmain::checkValue_text_Eval()
+						// Pair hook to the one in \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_input_Eval() and \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_text_Eval()
 						$evalObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
 						if (is_object($evalObj) && method_exists($evalObj, 'deevaluateFieldValue')) {
 							$_params = array(

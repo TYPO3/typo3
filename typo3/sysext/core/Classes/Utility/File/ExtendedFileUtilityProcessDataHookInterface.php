@@ -38,7 +38,7 @@ interface ExtendedFileUtilityProcessDataHookInterface {
 	 * @param string $action The action
 	 * @param array $cmdArr The parameter sent to the action handler
 	 * @param array $result The results of all calls to the action handler
-	 * @param \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $parentObject Parent t3lib_extFileFunctions object
+	 * @param \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $parentObject Parent object
 	 * @return void
 	 */
 	public function processData_postProcessAction($action, array $cmdArr, array $result, \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $parentObject);

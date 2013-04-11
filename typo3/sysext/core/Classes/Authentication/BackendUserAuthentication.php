@@ -1216,12 +1216,12 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 
 	/**
 	 * Initializes a lot of stuff like the access-lists, database-mountpoints and filemountpoints
-	 * This method is called by ->backendCheckLogin() (from extending class t3lib_beuserauth) if the backend user login has verified OK.
+	 * This method is called by ->backendCheckLogin() (from extending \TYPO3\CMS\Core\Authentication\BackendUserAuthentication) if the backend user login has verified OK.
 	 * Generally this is required initialization of a backend user.
 	 *
 	 * @return void
 	 * @access private
-	 * @see t3lib_TSparser
+	 * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
 	 * @todo Define visibility
 	 */
 	public function fetchGroupData() {
@@ -2281,7 +2281,6 @@ This is a dump of the failures:
 		}
 		// Saving if updated.
 		if ($U) {
-			// Method from the t3lib_userauth class.
 			$this->writeUC();
 		}
 	}

@@ -104,7 +104,7 @@ class ValueSlider {
 			elementType: "' . $elementType . '"
 		});
 		';
-		/** @var $pageRenderer t3lib_pageRenderer */
+		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = $GLOBALS['SOBE']->doc->getPageRenderer();
 		$pageRenderer->addExtOnReadyCode($js);
 		return $contents;

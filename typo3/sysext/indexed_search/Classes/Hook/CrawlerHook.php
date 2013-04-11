@@ -704,7 +704,7 @@ class CrawlerHook {
 	 *
 	 * @param 	string		TCEmain command
 	 * @param 	string		Table name
-	 * @param 	string		Record ID. If new record its a string pointing to index inside t3lib_tcemain::substNEWwithIDs
+	 * @param 	string		Record ID. If new record its a string pointing to index inside \TYPO3\CMS\Core\DataHandling\DataHandler::substNEWwithIDs
 	 * @param 	mixed		Target value (ignored)
 	 * @param 	object		Reference to tcemain calling object
 	 * @return 	void
@@ -722,7 +722,7 @@ class CrawlerHook {
 	 *
 	 * @param 	string		Status "new" or "update
 	 * @param 	string		Table name
-	 * @param 	string		Record ID. If new record its a string pointing to index inside t3lib_tcemain::substNEWwithIDs
+	 * @param 	string		Record ID. If new record its a string pointing to index inside \TYPO3\CMS\Core\DataHandling\DataHandler::substNEWwithIDs
 	 * @param 	array		Field array of updated fields in the operation
 	 * @param 	object		Reference to tcemain calling object
 	 * @return 	void

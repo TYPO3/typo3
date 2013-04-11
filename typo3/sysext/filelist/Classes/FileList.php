@@ -316,9 +316,6 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			// Adds the code of files/dirs
 			$out = '';
 			$titleCol = 'file';
-			// @todo: fix this: go up one level with FAL
-			// $upLevelDir = dirname(substr($files['files'][0]['path'], 0, -1)) . '/';
-			// $levelUp = $GLOBALS['SOBE']->basicFF->checkPathAgainstMounts($upLevelDir) ? $this->linkWrapDir(t3lib_iconWorks::getSpriteIcon('actions-view-go-up', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.upOneLevel', TRUE))), $upLevelDir) : '';
 			// Cleaning rowlist for duplicates and place the $titleCol as the first column always!
 			$rowlist = \TYPO3\CMS\Core\Utility\GeneralUtility::rmFromList($titleCol, $rowlist);
 			$rowlist = \TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList($rowlist);

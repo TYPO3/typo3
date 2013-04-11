@@ -198,7 +198,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 			if (!$GLOBALS['SOBE']->modTSconfig['properties']['noCreateRecordsLink']) {
 				$buttons['new_record'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpExt(\'' . $this->backPath . 'db_new.php?id=' . $this->id . '\');')) . '" title="' . $GLOBALS['LANG']->getLL('newRecordGeneral', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . '</a>';
 			}
-			// If edit permissions are set (see class.t3lib_userauthgroup.php)
+			// If edit permissions are set, see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
 			if ($localCalcPerms & 2 && !empty($this->id)) {
 				// Edit
 				$params = '&edit[pages][' . $this->pageRow['uid'] . ']=edit';

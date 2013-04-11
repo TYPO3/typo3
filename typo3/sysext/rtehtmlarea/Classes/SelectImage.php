@@ -73,12 +73,10 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 
 	protected $imgObj;
 
-	// Instance object of t3lib_stdGraphic
 	/**
 	 * Initialisation
 	 *
-	 * @return 	void
-	 * @todo Define visibility
+	 * @return void
 	 */
 	public function init() {
 		$this->initVariables();
@@ -150,7 +148,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	}
 
 	/**
-	 * Initialize hook objects implementing interface t3lib_browseLinksHook
+	 * Initialize hook objects implementing the hook interface
 	 *
 	 * @return 	void
 	 */

@@ -182,4 +182,4 @@ STEP2: Build your cleaner class:
 STEP3: Develop your tool to do something...
 - You should now be able to see your tool appear in the list of tools and you should see output from it when you choose it.
 - Make sure to study the bundled tools from EXT:lowlevel/clmods/. Try to deliver the same high quality of documentation and coding style from there. In particular how the constructor is used to set help-message information.
-- Also, take a look at t3lib_cli which is the very base class - you can use the functions in there in your script.
+- Also, take a look at \TYPO3\CMS\Backend\Clipboard\Clipboard which is the very base class - you can use the functions in there in your script.

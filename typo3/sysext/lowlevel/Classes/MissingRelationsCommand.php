@@ -78,7 +78,8 @@ Reports missing relations';
 
 	/**
 	 * Find relations pointing to non-existing records
-	 * Fix methods: API in t3lib_refindex that allows to change the value of a reference (or remove it) [Only for managed relations!]
+	 * Fix methods: API in \TYPO3\CMS\Core\Database\ReferenceIndex that allows to
+	 * change the value of a reference (or remove it) [Only for managed relations!]
 	 *
 	 * @return array
 	 * @todo Define visibility

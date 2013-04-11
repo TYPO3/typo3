@@ -266,7 +266,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, default lifetime is used. "0" means unlimited lifetime.
 	 * @return void
 	 * @throws \InvalidArgumentException if identifier is not valid
-	 * @throws \t3lib_cache_Exception_InvalidData if data is not a string
+	 * @throws \TYPO3\CMS\Core\Cache\Exception\InvalidDataException if data is not a string
 	 * @api
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
@@ -274,7 +274,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 			throw new \InvalidArgumentException('The specified identifier is of type "' . gettype($entryIdentifier) . '" but a string is expected.', 1279470252);
 		}
 		if (!is_string($data)) {
-			throw new \t3lib_cache_Exception_InvalidData('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1279469941);
+			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1279469941);
 		}
 		$lifetime = $lifetime === NULL ? $this->defaultLifetime : $lifetime;
 		if (!is_integer($lifetime)) {
