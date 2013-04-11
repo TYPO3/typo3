@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Backend\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Contains class for icon generation in the backend
  * This library has functions that returns - and if necessary creates - the icon for an element in TYPO3
@@ -39,7 +40,7 @@ namespace TYPO3\CMS\Backend\Utility;
  * Notes:
  * These functions are strongly related to the interface of TYPO3.
  * The class is included in eg. init.php
- * ALL functions called without making a class instance, eg. "t3lib_iconWorks::getIconImage()"
+ * Static class, functions called without making a class instance.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -483,7 +484,8 @@ class IconUtility {
 	/**
 	 * The necessity of using this function for combining two images if GD is version 2 is that
 	 * GD2 cannot manage to combine two indexed-color images without totally spoiling everything.
-	 * In class.t3lib_stdgraphic this was solved by combining the images onto a first created true color image
+	 * In class \TYPO3\CMS\Core\Imaging\GraphicalFunctions this was solved by combining the images
+	 * onto a first created true color image.
 	 * However it has turned out that this method will not work if the indexed png-files contains transparency.
 	 * So I had to turn my attention to ImageMagick - my 'enemy of death'.
 	 * And so it happend - ImageMagick is now used to combine my two indexed-color images with transparency. And that works.
@@ -502,7 +504,7 @@ class IconUtility {
 	 * @param integer $sourceHeight Source height
 	 * @return void
 	 * @access private
-	 * @see t3lib_stdGraphic::imagecopyresized()
+	 * @see \TYPO3\CMS\Core\Imaging\GraphicalFunctions::imagecopyresized()
 	 */
 	static public function imagecopyresized(&$destinationImage, $sourceImage, $destinationX, $destinationY, $sourceX, $sourceY, $destinationWidth, $destinationHeight, $sourceWidth, $sourceHeight) {
 		imagecopyresized($destinationImage, $sourceImage, $destinationX, $destinationY, $sourceX, $sourceY, $destinationWidth, $destinationHeight, $sourceWidth, $sourceHeight);
@@ -554,13 +556,13 @@ class IconUtility {
 	 * There are three ways to use this API:
 	 *
 	 * 1) for any given TCA record
-	 *	$spriteIconHtml = t3lib_iconWorks::getSpriteIconForRecord('pages', $row);
+	 *	$spriteIconHtml = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $row);
 	 *
 	 * 2) for any given file
-	 *	$spriteIconHtml = t3lib_iconWorks::getSpriteIconForFile('myimage.png');
+	 *	$spriteIconHtml = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('myimage.png');
 	 *
 	 * 3) for any other icon you know the name
-	 *	$spriteIconHtml = t3lib_iconWorks::getSpriteIcon('actions-document-open');
+	 *	$spriteIconHtml = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open');
 	 *
 	 **********************************************/
 	/**
@@ -624,7 +626,7 @@ class IconUtility {
 	 * usually called from getSpriteIconForFile or ExtJs Provider
 	 *
 	 * @param string $fileExtension FileExtension can be jpg, gif etc, but also be 'mount' or 'folder', but can also be a full path which will be resolved then
-	 * @return string The string of the CSS class, see t3lib_iconworks::$fileSpriteIconNames
+	 * @return string The string of the CSS class, see \TYPO3\CMS\Backend\Utility\IconUtility::$fileSpriteIconNames
 	 * @access private
 	 */
 	static public function mapFileExtensionToSpriteIconClass($fileExtension) {
@@ -636,7 +638,7 @@ class IconUtility {
 	 * usually called from mapFileExtensionToSpriteIconClass and tceforms
 	 *
 	 * @param string $fileExtension FileExtension can be jpg, gif etc, but also be 'mount' or 'folder', but can also be a full path which will be resolved then
-	 * @return string The string of the CSS class, see t3lib_iconworks::$fileSpriteIconNames
+	 * @return string The string of the CSS class, see \TYPO3\CMS\Backend\Utility\IconUtility::$fileSpriteIconNames
 	 * @access private
 	 */
 	static public function mapFileExtensionToSpriteIconName($fileExtension) {

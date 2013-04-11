@@ -133,7 +133,7 @@ if (
 }
 
 // Populate available languages
-/** @var $locales t3lib_l10n_locales */
+/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
 $locales = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
 $languageItems = $locales->getLanguages();
 unset($languageItems['default']);

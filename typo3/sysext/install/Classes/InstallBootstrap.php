@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Install;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
+ *
  ***************************************************************/
 /**
  * Encapsulate install tool specific bootstrap methods.
@@ -95,7 +96,7 @@ class InstallBootstrap {
 	 * @return void
 	 */
 	static protected function dieWithLockedInstallToolMessage() {
-		require_once PATH_site . 't3lib/class.t3lib_parsehtml.php';
+		require_once PATH_site . 'typo3/sysext/core/Classes/Html/HtmlParser.php';
 		// Define the stylesheet
 		$stylesheet = '<link rel="stylesheet" type="text/css" href="' . '../stylesheets/install/install.css" />';
 		$javascript = '<script type="text/javascript" src="' . '../contrib/prototype/prototype.js"></script>';

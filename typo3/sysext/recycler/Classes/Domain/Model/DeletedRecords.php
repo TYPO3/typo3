@@ -309,7 +309,6 @@ class DeletedRecords {
 	 * @return 	boolean
 	 */
 	public function undeleteData($recordsArray, $recursive = FALSE) {
-		require_once PATH_t3lib . 'class.t3lib_tcemain.php';
 		$result = FALSE;
 		$depth = 999;
 		$recordsArray = json_decode($recordsArray);

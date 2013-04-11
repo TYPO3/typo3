@@ -545,7 +545,7 @@ class DataPreprocessor {
 	 * @param array $pParams Various parameters to pass-through
 	 * @return array Modified $dataPart array.
 	 * @access private
-	 * @see t3lib_TCEmain::checkValue_flex_procInData(), renderRecord_flexProc_procInData_travDS()
+	 * @see \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_flex_procInData(), renderRecord_flexProc_procInData_travDS()
 	 * @todo Define visibility
 	 */
 	public function renderRecord_flexProc_procInData($dataPart, $dataStructArray, $pParams) {
@@ -569,7 +569,7 @@ class DataPreprocessor {
 	 * @param array $DSelements Data structure
 	 * @param array $pParams Various parameters pass-through.
 	 * @return void
-	 * @see renderRecord_flexProc_procInData(), t3lib_TCEmain::checkValue_flex_procInData_travDS()
+	 * @see \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_flex_procInData(), renderRecord_flexProc_procInData_travDS()
 	 * @todo Define visibility
 	 */
 	public function renderRecord_flexProc_procInData_travDS(&$dataValues, $DSelements, $pParams) {
@@ -798,7 +798,7 @@ class DataPreprocessor {
 	 * @param array $elements The array of original elements - basically the field value exploded by ",
 	 * @param array $fieldConfig Field configuration from TCA
 	 * @param array $row The data array, currently. Used to set the "local_uid" for selecting MM relation records.
-	 * @param string $table Current table name. passed on to t3lib_loadDBGroup
+	 * @param string $table Current table name. passed on to \TYPO3\CMS\Core\Database\RelationHandler
 	 * @return array An array with ids of the records from the input elements array.
 	 * @access private
 	 * @todo Define visibility

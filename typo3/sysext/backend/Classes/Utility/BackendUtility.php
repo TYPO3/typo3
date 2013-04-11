@@ -562,8 +562,8 @@ class BackendUtility {
 	 *
 	 * Since TYPO3 4.5 the flagIcon is not returned as a filename in "gfx/flags/*" anymore,
 	 * but as a string <flags-xx>. The calling party should call
-	 * t3lib_iconWorks::getSpriteIcon(<flags-xx>) to get an HTML which will represent
-	 * the flag of this language.
+	 * \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(<flags-xx>) to get an HTML
+	 * which will represent the flag of this language.
 	 *
 	 * @return array Array with languages (title, uid, flagIcon)
 	 */
@@ -717,9 +717,10 @@ class BackendUtility {
 	 * If no "type" field is configured in the "ctrl"-section of the $GLOBALS['TCA'] for the table, zero is used.
 	 * If zero is not an index in the "types" section of $GLOBALS['TCA'] for the table, then the $fieldValue returned will default to 1 (no matter if that is an index or not)
 	 *
-	 * Note: This method is very similar to t3lib_TCEforms::getRTypeNum(), however, it has two differences:
+	 * Note: This method is very similar to \TYPO3\CMS\Backend\Form\FormEngine::getRTypeNum(),
+	 * however, it has two differences:
 	 * 1) The method in TCEForms also takes care of localization (which is difficult to do here as the whole infrastructure for language overlays is only in TCEforms).
-	 * 2) The $rec array looks different in TCEForms, as in there it's not the raw record but the t3lib_transferdata version of it, which changes e.g. how "select"
+	 * 2) The $rec array looks different in TCEForms, as in there it's not the raw record but the \TYPO3\CMS\Backend\Form\DataPreprocessor version of it, which changes e.g. how "select"
 	 * and "group" field values are stored, which makes different processing of the "foreign pointer field" type field variant necessary.
 	 *
 	 * @param string $table Table name present in TCA
@@ -836,7 +837,7 @@ class BackendUtility {
 	 * @param boolean $WSOL Boolean; If set, workspace overlay is applied to records. This is correct behaviour for all presentation and export, but NOT if you want a TRUE reflection of how things are in the live workspace.
 	 * @param integer $newRecordPidValue SPECIAL CASES: Use this, if the DataStructure may come from a parent record and the INPUT row doesn't have a uid yet (hence, the pid cannot be looked up). Then it is necessary to supply a PID value to search recursively in for the DS (used from TCEmain)
 	 * @return mixed If array, the data structure was found and returned as an array. Otherwise (string) it is an error message.
-	 * @see t3lib_TCEforms::getSingleField_typeFlex()
+	 * @see \TYPO3\CMS\Backend\Form\FormEngine::getSingleField_typeFlex()
 	 */
 	static public function getFlexFormDS($conf, $row, $table, $fieldName = '', $WSOL = TRUE, $newRecordPidValue = 0) {
 		// Get pointer field etc from TCA-config:
@@ -1088,13 +1089,12 @@ class BackendUtility {
 	 *******************************************/
 	/**
 	 * Returns the Page TSconfig for page with id, $id
-	 * Requires class "t3lib_TSparser"
 	 *
 	 * @param $id integer Page uid for which to create Page TSconfig
 	 * @param $rootLine array If $rootLine is an array, that is used as rootline, otherwise rootline is just calculated
 	 * @param boolean $returnPartArray If $returnPartArray is set, then the array with accumulated Page TSconfig is returned non-parsed. Otherwise the output will be parsed by the TypoScript parser.
 	 * @return array Page TSconfig
-	 * @see t3lib_TSparser
+	 * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
 	 */
 	static public function getPagesTSconfig($id, $rootLine = '', $returnPartArray = 0) {
 		$id = intval($id);
@@ -1116,7 +1116,7 @@ class BackendUtility {
 		// Parsing the page TS-Config (or getting from cache)
 		$pageTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['TSconfigConditions']) {
-			/* @var $parseObj t3lib_TSparser_TSconfig */
+			/* @var $parseObj \TYPO3\CMS\Backend\Configuration\TsConfigParser */
 			$parseObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TsConfigParser');
 			$res = $parseObj->parseTSconfig($pageTS, 'PAGES', $id, $rootLine);
 			if ($res) {
@@ -2903,7 +2903,6 @@ class BackendUtility {
 	 * @param integer $pid Record pid
 	 * @return void
 	 * @internal
-	 * @see t3lib_transferData::lockRecord(), alt_doc.php, db_layout.php, db_list.php, wizard_rte.php
 	 */
 	static public function lockRecords($table = '', $uid = 0, $pid = 0) {
 		if (isset($GLOBALS['BE_USER']->user['uid'])) {
@@ -2976,7 +2975,6 @@ class BackendUtility {
 	 * @param string $prefix Prefix string for the key "*foreign_table_where" from $fieldValue array
 	 * @return string Part of query
 	 * @internal
-	 * @see t3lib_transferData::renderRecord(), t3lib_TCEforms::foreignTable()
 	 */
 	static public function exec_foreign_table_where_query($fieldValue, $field = '', $TSconfig = array(), $prefix = '') {
 		$foreign_table = $fieldValue['config'][$prefix . 'foreign_table'];
@@ -3052,7 +3050,6 @@ class BackendUtility {
 	 * @param string $table Table name present in TCA
 	 * @param array $row Row from table
 	 * @return array
-	 * @see t3lib_transferData::renderRecord(), t3lib_TCEforms::setTSconfig(), SC_wizard_list::main(), SC_wizard_add::main()
 	 */
 	static public function getTCEFORM_TSconfig($table, $row) {
 		self::fixVersioningPid($table, $row);
@@ -3103,7 +3100,7 @@ class BackendUtility {
 	 * @param integer $pid Record pid, could be negative then pointing to a record from same table whose pid to find and return.
 	 * @return integer
 	 * @internal
-	 * @see t3lib_TCEmain::copyRecord(), getTSCpid()
+	 * @see \TYPO3\CMS\Core\DataHandling\DataHandler::copyRecord(), getTSCpid()
 	 */
 	static public function getTSconfig_pidValue($table, $uid, $pid) {
 		// If pid is an integer this takes precedence in our lookup.
@@ -3145,7 +3142,7 @@ class BackendUtility {
 	 * @param integer $pid Record pid
 	 * @return integer
 	 * @internal
-	 * @see t3lib_TCEforms::getTSCpid()
+	 * @see \TYPO3\CMS\Backend\Form\FormEngine::getTSCpid()
 	 */
 	static public function getPidForModTSconfig($table, $uid, $pid) {
 		$retVal = $table == 'pages' && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($uid) ? $uid : $pid;
@@ -3160,7 +3157,7 @@ class BackendUtility {
 	 * @param integer $pid Record pid
 	 * @return array Array of two integers; first is the REAL PID of a record and if its a new record negative values are resolved to the true PID, second value is the PID value for TSconfig (uid if table is pages, otherwise the pid)
 	 * @internal
-	 * @see t3lib_TCEmain::setHistory(), t3lib_TCEmain::process_datamap()
+	 * @see \TYPO3\CMS\Core\DataHandling\DataHandler::setHistory(), \TYPO3\CMS\Core\DataHandling\DataHandler::process_datamap()
 	 */
 	static public function getTSCpid($table, $uid, $pid) {
 		// If pid is negative (referring to another record) the pid of the other record is fetched and returned.
@@ -3282,7 +3279,9 @@ class BackendUtility {
 			// Set the object string to blank by default:
 			$GLOBALS['T3_VAR']['softRefParser'][$spKey] = '';
 			// Now, try to create parser object:
-			$objRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey] ? $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey] : $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'][$spKey];
+			$objRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey]
+				? $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey]
+				: $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'][$spKey];
 			if ($objRef) {
 				$softRefParserObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($objRef, '');
 				if (is_object($softRefParserObj)) {

@@ -46,7 +46,7 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setUp() {
 		$GLOBALS['BE_USER'] = $this->getMock(
-			't3lib_beUserAuth',
+			'TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication',
 			array('getSessionData', 'setAndSaveSessionData')
 		);
 		$GLOBALS['BE_USER']->user['uid'] = 1;

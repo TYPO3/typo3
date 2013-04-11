@@ -27,7 +27,8 @@ namespace TYPO3\CMS\Backend\Form;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Interface for classes which hook into t3lib_TCEforms and do additional dbFileIcons processing
+ * Interface for classes which hook into \TYPO3\CMS\Backend\Form\FormEngine
+ * and do additional dbFileIcons processing
  *
  * @author Andy Grunwald <andreas.grunwald@wmdb.de>
  */
@@ -42,9 +43,9 @@ interface DatabaseFileIconsHookInterface
 	 * @param array $icons Defined icons next to the selector box.
 	 * @param string $rightbox Thumbnail view of images. Only filled if there are other types as images. This images will be shown right next to the selectorbox.
 	 * @param string $fName Form element name
-	 * @param array $uidList The array of item-uids. Have a look at t3lib_TCEforms::dbFileIcons parameter "$itemArray
-	 * @param array $additionalParams Array with additional parameters which are be available at method call. Includes $mode, $allowed, $itemArray, $onFocus, $table, $field, $uid. For more information have a look at PHPDoc-Comment of t3lib_TCEforms::dbFileIcons
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $parentObject Parent t3lib_TCEforms object
+	 * @param array $uidList The array of item-uids. Have a look at \TYPO3\CMS\Backend\Form\FormEngine::dbFileIcons parameter "$itemArray
+	 * @param array $additionalParams Array with additional parameters which are be available at method call. Includes $mode, $allowed, $itemArray, $onFocus, $table, $field, $uid. For more information have a look at PHPDoc-Comment of \TYPO3\CMS\Backend\Form\FormEngine::dbFileIcons
+	 * @param \TYPO3\CMS\Backend\Form\FormEngine $parentObject Parent object
 	 * @return void
 	 */
 	public function dbFileIcons_postProcess(array &$params, &$selector, &$thumbnails, array &$icons, &$rightbox, &$fName, array &$uidList, array $additionalParams, \TYPO3\CMS\Backend\Form\FormEngine $parentObject);

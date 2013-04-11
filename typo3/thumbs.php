@@ -24,14 +24,17 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Generates a thumbnail and returns an image stream, either GIF/PNG or JPG
  *
  * @author René Fritz <r.fritz@colorcube.de>
  */
+
 // Set error reporting
 error_reporting(E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED));
 require 'init.php';
+
 // include thumbs script
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/View/ThumbnailView.php';
 // Make instance:

@@ -253,7 +253,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 * substituted by '_'
 	 * Trailing dots are removed
 	 *
-	 * previously in t3lib_basicFileFunctions::cleanFileName()
+	 * Previously in \TYPO3\CMS\Core\Utility\File\BasicFileUtility::cleanFileName()
 	 *
 	 * @param string $fileName Input string, typically the body of a fileName
 	 * @param string $charset Charset of the a fileName (defaults to current charset; depending on context)

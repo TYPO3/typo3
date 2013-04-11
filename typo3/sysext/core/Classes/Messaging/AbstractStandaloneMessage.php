@@ -60,7 +60,7 @@ abstract class AbstractStandaloneMessage extends \TYPO3\CMS\Core\Messaging\Abstr
 	 *
 	 * @param string $message Message
 	 * @param string $title Title
-	 * @param integer $severity Severity, see class constants of t3lib_message_AbstractMessage
+	 * @param integer $severity Severity, see class constants of AbstractMessage
 	 */
 	public function __construct($message = '', $title = '', $severity = \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR) {
 		if (!empty($message)) {

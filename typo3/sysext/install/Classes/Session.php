@@ -367,8 +367,8 @@ class Session {
 	 * Writes the session data in a proper context that is not affected by the APC bug:
 	 * http://pecl.php.net/bugs/bug.php?id=16721.
 	 *
-	 * This behaviour was introduced in #17511, where self::write() made use of t3lib_div
-	 * which due to the APC bug throws a "Fatal error: Class 't3lib_div' not found"
+	 * This behaviour was introduced in #17511, where self::write() made use of GeneralUtility
+	 * which due to the APC bug throws a "Fatal error: Class 'GeneralUtility' not found"
 	 * (and the session data is not saved). Calling session_write_close() at this point
 	 * seems to be the most easy solution, according to PHP author.
 	 *

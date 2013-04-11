@@ -37,7 +37,8 @@ namespace TYPO3\CMS\Core\TypoScript;
  * Template object that is responsible for generating the TypoScript template based on template records.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @see 	t3lib_tsparser, t3lib_matchcondition_abstract
+ * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
+ * @see \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher
  */
 class TemplateService {
 
@@ -851,7 +852,7 @@ class TemplateService {
 	 * Depends on $this->config and $this->constants to be set prior to this! (done by processTemplate/runThroughTemplates)
 	 *
 	 * @return void
-	 * @see t3lib_TSparser, start()
+	 * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser, start()
 	 * @todo Define visibility
 	 */
 	public function generateConfig() {
@@ -979,7 +980,7 @@ class TemplateService {
 	 * if needed.
 	 *
 	 * @return void
-	 * @see t3lib_TSparser, generateConfig()
+	 * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser, generateConfig()
 	 */
 	public function processIncludes() {
 		$files = array();
@@ -1326,7 +1327,7 @@ class TemplateService {
 
 	/**
 	 * Takes a TypoScript array as input and returns an array which contains all integer properties found which had a value (not only properties). The output array will be sorted numerically.
-	 * Call it like t3lib_TStemplate::sortedKeyList()
+	 * Call it like \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList()
 	 *
 	 * @param array $setupArr TypoScript array with numerical array in
 	 * @param boolean $acceptOnlyProperties If set, then a value is not required - the properties alone will be enough.

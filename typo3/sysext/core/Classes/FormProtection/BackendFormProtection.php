@@ -24,9 +24,8 @@ namespace TYPO3\CMS\Core\FormProtection;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Class t3lib_formprotection_BackendFormProtection.
- *
  * This class provides protection against cross-site request forgery (XSRF/CSRF)
  * for forms in the BE.
  *
@@ -37,7 +36,7 @@ namespace TYPO3\CMS\Core\FormProtection;
  * matter; you only need it to get the form token for verifying it.
  *
  * <pre>
- * $formToken = t3lib_formprotection_Factory::get()
+ * $formToken = TYPO3\CMS\Core\FormProtection\BackendFormProtectionFactory::get()
  * ->generateToken(
  * 'BE user setup', 'edit'
  * );
@@ -54,7 +53,7 @@ namespace TYPO3\CMS\Core\FormProtection;
  * For editing a tt_content record, the call could look like this:
  *
  * <pre>
- * $formToken = t3lib_formprotection_Factory::get()
+ * $formToken = \TYPO3\CMS\Core\FormProtection\BackendFormProtectionFactory::get()
  * ->getFormProtection()->generateToken(
  * 'tt_content', 'edit', $uid
  * );
@@ -65,7 +64,7 @@ namespace TYPO3\CMS\Core\FormProtection;
  * that the form token is valid like this:
  *
  * <pre>
- * if ($dataHasBeenSubmitted && t3lib_formprotection_Factory::get()
+ * if ($dataHasBeenSubmitted && TYPO3\CMS\Core\FormProtection\BackendFormProtectionFactory::get()
  * ->validateToken(
  * \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('formToken'),
  * 'BE user setup', 'edit

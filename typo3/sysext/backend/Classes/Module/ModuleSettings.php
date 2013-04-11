@@ -26,15 +26,11 @@ namespace TYPO3\CMS\Backend;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Manage storing and restoring of $GLOBALS['SOBE']->MOD_SETTINGS settings.
  * Provides a presets box for BE modules.
  *
- * inspired by t3lib_fullsearch
- *
- * @author René Fritz <r.fritz@colorcube.de>
- */
-/**
  * usage inside of scbase class
  *
  * ....
@@ -49,7 +45,7 @@ namespace TYPO3\CMS\Backend;
  *
  * function main() {
  * reStore settings
- * $store = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_modSettings');
+ * $store = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\ModuleSettings');
  * $store->init('tx_dam_select');
  * $store->setStoreList('tx_dam_select');
  * $store->processStoreControl();
@@ -71,10 +67,6 @@ namespace TYPO3\CMS\Backend;
  * 'another id' => ...
  *
  * ) );
- */
-/**
- * Manage storing and restoring of $GLOBALS['SOBE']->MOD_SETTINGS settings.
- * Provides a presets box for BE modules.
  *
  * @author René Fritz <r.fritz@colorcube.de>
  */

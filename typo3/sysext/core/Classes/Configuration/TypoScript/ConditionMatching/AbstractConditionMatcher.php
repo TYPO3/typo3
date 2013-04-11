@@ -595,7 +595,7 @@ abstract class AbstractConditionMatcher {
 	 *
 	 * @param string $string The condition to match against its criterias.
 	 * @return boolean Whether the condition matched
-	 * @see t3lib_tsparser::parse()
+	 * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::parse()
 	 */
 	abstract protected function evaluateCondition($string);
 

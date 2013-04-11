@@ -26,11 +26,7 @@ namespace TYPO3\CMS\Core\Locking;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Class for providing locking features in TYPO3
- *
- * @author Michael Stucki <michael@typo3.org>
- */
+
 /**
  * TYPO3 locking class
  * This class provides an abstract layer to various locking features for TYPO3
@@ -39,7 +35,6 @@ namespace TYPO3\CMS\Core\Locking;
  * This is especially useful if two clients are requesting the same website short after each other. While the request of client 1 triggers building and caching of the website, client 2 will be waiting at this lock.
  *
  * @author Michael Stucki <michael@typo3.org>
- * @see 	class.t3lib_tstemplate.php, class.tslib_fe.php
  */
 class Locker {
 

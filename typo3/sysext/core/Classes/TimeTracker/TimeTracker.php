@@ -26,22 +26,13 @@ namespace TYPO3\CMS\Core\TimeTracker;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains class with time tracking functions
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * Frontend Timetracking functions
  *
  * Is used to register how much time is used with operations in TypoScript
- * Used by index_ts
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @see t3lib_tsfeBeUserAuth, tslib_fe, tslib_cObj, TSpagegen
  */
 class TimeTracker {
 
@@ -280,7 +271,6 @@ class TimeTracker {
 	 * Print TypoScript parsing log
 	 *
 	 * @return string HTML table with the information about parsing times.
-	 * @see t3lib_tsfeBeUserAuth::extGetCategory_tsdebug()
 	 */
 	public function printTSlog() {
 		// Calculate times and keys for the tsStackLog

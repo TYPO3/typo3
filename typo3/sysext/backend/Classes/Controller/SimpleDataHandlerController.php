@@ -28,7 +28,9 @@ namespace TYPO3\CMS\Backend\Controller;
  ***************************************************************/
 
 /**
- * Script Class, creating object of t3lib_TCEmain and sending the posted data to the object.
+ * Script Class, creating object of \TYPO3\CMS\Core\DataHandling\DataHandler and
+ * sending the posted data to the object.
+ *
  * Used by many smaller forms/links in TYPO3, including the QuickEdit module.
  * Is not used by alt_doc.php though (main form rendering script) - that uses the same class (TCEmain) but makes its own initialization (to save the redirect request).
  * For all other cases than alt_doc.php it is recommended to use this script for submitting your editing forms - but the best solution in any case would probably be to link your application to alt_doc.php, that will give you easy form-rendering as well.

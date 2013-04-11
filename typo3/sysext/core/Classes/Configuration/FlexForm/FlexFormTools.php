@@ -303,7 +303,7 @@ class FlexFormTools {
 	}
 
 	/**
-	 * Call back function for t3lib_flexformtools class
+	 * Call back function for \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools class
 	 * Basically just setting the value in a new array (thus cleaning because only values that are valid are visited!)
 	 *
 	 * @param array $dsArr Data structure for the current value

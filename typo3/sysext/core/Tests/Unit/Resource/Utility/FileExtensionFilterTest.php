@@ -50,7 +50,7 @@ class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $parameters;
 
 	/**
-	 * @var t3lib_TCEmain|PHPUnit_Framework_MockObject_MockObject
+	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler|PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $tceMainMock;
 

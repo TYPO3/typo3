@@ -31,10 +31,10 @@ namespace TYPO3\CMS\Core\Localization;
  *
  * Defining backend system languages
  * When adding new keys, remember to:
- * - Add character encoding for lang. key in t3lib/class.t3lib_cs.php
+ * - Add character encoding for lang. key in \TYPO3\CMS\Core\Charset\CharsetConverter
  * (default for new languages is "utf-8")
- * - Add mappings for language in t3lib/class.t3lib_cs.php (TYPO3/ISO,
- * language/script, script/charset)
+ * - Add mappings for language in \TYPO3\CMS\Core\Charset\CharsetConverter
+ * (TYPO3/ISO, language/script, script/charset)
  * - Update 'setup' extension labels (sysext/setup/mod/locallang.xlf)
  * That's it!
  *

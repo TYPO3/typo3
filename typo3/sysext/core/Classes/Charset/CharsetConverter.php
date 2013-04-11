@@ -1786,7 +1786,7 @@ class CharsetConverter {
 	 * @param string $string
 	 * @param string $case
 	 * @return string
-	 * @see t3lib_cs::conv_case()
+	 * @see \TYPO3\CMS\Core\Charset\CharsetConverter::conv_case()
 	 */
 	public function convCaseFirst($charset, $string, $case) {
 		$firstChar = $this->substr($charset, $string, 0, 1);

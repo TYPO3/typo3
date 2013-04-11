@@ -26,20 +26,17 @@ namespace TYPO3\CMS\Frontend\Imaging;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
+ * GIFBUILDER
+ *
  * Generating gif/png-files from TypoScript
  * Used by the menu-objects and imgResource in TypoScript.
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
- * GIFBUILDER extension class.
  * This class allows for advanced rendering of images with various layers of images, text and graphical primitives.
  * The concept is known from TypoScript as "GIFBUILDER" where you can define a "numerical array" (TypoScript term as well) of "GIFBUILDER OBJECTS" (like "TEXT", "IMAGE", etc.) and they will be rendered onto an image one by one.
  * The name "GIFBUILDER" comes from the time where GIF was the only file format supported. PNG is just as well to create today (configured with TYPO3_CONF_VARS[GFX])
- * Not all instances of this class is truely building gif/png files by layers; You may also see the class instantiated for the purpose of using the scaling functions in the parent class, t3lib_stdGraphic.
+ * Not all instances of this class is truely building gif/png files by layers; You may also see the class instantiated for the purpose of using the scaling functions in the parent class.
  *
  * Here is an example of how to use this class (from tslib_content.php, function getImgResource):
  *
@@ -550,7 +547,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 		}
 		$conf['fontFile'] = $this->checkFile($conf['fontFile']);
 		if (!$conf['fontFile']) {
-			$conf['fontFile'] = 't3lib/fonts/nimbus.ttf';
+			$conf['fontFile'] = 'typo3/sysext/core/Resources/Private/Font/nimbus.ttf';
 		}
 		if (!$conf['iterations']) {
 			$conf['iterations'] = 1;
@@ -673,7 +670,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * @param string $file The resource value.
 	 * @return string Returns the relative filepath
 	 * @access private
-	 * @see t3lib_TStemplate::getFileName()
+	 * @see \TYPO3\CMS\Core\TypoScript\TemplateService::getFileName()
 	 * @todo Define visibility
 	 */
 	public function checkFile($file) {

@@ -70,7 +70,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 	 * @param array $tableRow The record data
 	 * @param array $tableConf Additional configuration options
 	 * @return array Modified FlexForm DS
-	 * @see t3lib_TCEforms::getSingleField_typeFlex()
+	 * @see \TYPO3\CMS\Backend\Form\FormEngine::getSingleField_typeFlex()
 	 */
 	public function modifyFlexFormDS(array $dataStructure, $table, $tableField, array $tableRow, array $tableConf) {
 		$singleSheet = !isset($dataStructure['sheets']) || !is_array($dataStructure['sheets']);
@@ -153,7 +153,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 	 * @param array $sheetConf Sheet configuration
 	 * @param array $nonExcludeFields Non-exclude-fields for this sheet
 	 * @return array Modified sheet
-	 * @see t3lib_TCEforms_flex::modifyFlexFormDS()
+	 * @see \TYPO3\CMS\Backend\Form\FlexFormsHelper::modifyFlexFormDS()
 	 */
 	public function modifySingleFlexFormSheet(array $sheet, $table, $tableField, array $tableRow, array $sheetConf, array $nonExcludeFields) {
 		if (empty($sheet) || empty($table) || empty($tableField) || empty($tableRow)) {
@@ -242,7 +242,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 	 * @param string $tableField The field name
 	 * @param string $extIdent The extension identifier
 	 * @return array All non_exclude_fields from FlexForms
-	 * @see t3lib_TCEforms::getSingleField_typeFlex()
+	 * @see \TYPO3\CMS\Backend\Form\FormEngine::getSingleField_typeFlex()
 	 */
 	protected function getFlexFormNonExcludeFields($table, $tableField, $extIdent) {
 		if (empty($GLOBALS['BE_USER']->groupData['non_exclude_fields']) || empty($table) || empty($tableField) || empty($extIdent)) {

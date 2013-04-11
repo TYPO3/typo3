@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 require_once 'Fixtures/FormProtectionTesting.php';
 
 /**
- * Testcase for the t3lib_formprotection_Factory class.
+ * Testcase
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @author Ernesto Baschny <ernst@cron-it.de>

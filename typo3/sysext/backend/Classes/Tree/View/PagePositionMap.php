@@ -123,7 +123,8 @@ class PagePositionMap {
 	 **************************************/
 	/**
 	 * Creates a "position tree" based on the page tree.
-	 * Notice: A class, "localPageTree" must exist and probably it is an extension class of the t3lib_pageTree class. See "db_new.php" in the core for an example.
+	 * Notice: A class, "localPageTree" must exist and probably it is an extension class of the
+	 * \TYPO3\CMS\Backend\Tree\View\PageTreeView class. See "db_new.php" in the core for an example.
 	 *
 	 * @param integer $id Current page id
 	 * @param array $pageinfo Current page record.

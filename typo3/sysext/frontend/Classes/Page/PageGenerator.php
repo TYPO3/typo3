@@ -253,7 +253,6 @@ class PageGenerator {
 	 * @return void
 	 */
 	static public function renderContentWithHeader($pageContent) {
-		// get instance of t3lib_PageRenderer
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 		if ($GLOBALS['TSFE']->config['config']['moveJsFromHeaderToFooter']) {

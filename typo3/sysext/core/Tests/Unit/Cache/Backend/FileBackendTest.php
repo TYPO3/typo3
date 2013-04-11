@@ -50,7 +50,7 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException \t3lib_cache_Exception
+	 * @expectedException \TYPO3\CMS\Core\Cache\Exception
 	 */
 	public function setCacheDirectoryThrowsExceptionOnNonWritableDirectory() {
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
@@ -79,7 +79,7 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function aDedicatedCacheDirectoryIsUsedForCodeCaches() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_PhpFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\PhpFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('SomeCache'));
 
 		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
@@ -91,7 +91,7 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException t3lib_cache_exception_InvalidData
+	 * @expectedException \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
 	 */
 	public function setThrowsExceptionIfDataIsNotAString() {
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);

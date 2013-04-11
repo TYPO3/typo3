@@ -50,7 +50,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 *
 	 * @param string $string The condition to match against its criterias.
 	 * @return boolean Whether the condition matched
-	 * @see t3lib_tsparser::parse()
+	 * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::parse()
 	 */
 	protected function evaluateCondition($string) {
 		list($key, $value) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $string, FALSE, 2);

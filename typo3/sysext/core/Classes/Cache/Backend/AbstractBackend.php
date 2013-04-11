@@ -53,7 +53,7 @@ abstract class AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\BackendI
 	 * The current application context
 	 *
 	 * TYPO3 v4 note: This variable is currently unused in v4 context and set to
-	 * "production" always by t3lib_cache. It is only kept to stay in sync with
+	 * "production" always. It is only kept to stay in sync with
 	 * FLOW3 code.
 	 *
 	 * @var string

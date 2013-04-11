@@ -387,7 +387,7 @@ class Installer {
 			if ($this->redirect_url) {
 				\TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->redirect_url);
 			}
-			$this->formProtection = \t3lib_formProtection_Factory::get('TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection');
+			$this->formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection');
 			$this->formProtection->injectInstallTool($this);
 		} else {
 			$this->loginForm();

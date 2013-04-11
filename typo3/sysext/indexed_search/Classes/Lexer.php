@@ -71,7 +71,7 @@ class Lexer {
 	);
 
 	/**
-	 * Constructor: Initializes the charset class, t3lib_cs
+	 * Constructor: Initializes the charset class
 	 *
 	 * @return 	void
 	 * @todo Define visibility

@@ -52,7 +52,7 @@ class GeneralUtility {
 	 * Singleton instances returned by makeInstance, using the class names as
 	 * array keys
 	 *
-	 * @var array<t3lib_Singleton>
+	 * @var array<\TYPO3\CMS\Core\SingletonInterface>
 	 */
 	static protected $singletonInstances = array();
 
@@ -4224,7 +4224,7 @@ Connection: close
 	 * Warning: This is a helper method for unit tests. Do not call this directly in production code!
 	 *
 	 * @see makeInstance
-	 * @throws \InvalidArgumentException if class extends t3lib_Singleton
+	 * @throws \InvalidArgumentException if class extends \TYPO3\CMS\Core\SingletonInterface
 	 * @param string $className
 	 * @param object $instance
 	 * @return void
@@ -4776,7 +4776,7 @@ Connection: close
 		if (stripos($log, 'file') !== FALSE) {
 			// In case lock is acquired before autoloader was defined:
 			if (class_exists('TYPO3\\CMS\\Core\\Locking\\Locker') === FALSE) {
-				require_once PATH_t3lib . 'class.t3lib_lock.php';
+				require_once ExtensionManagementUtility::extPath('core') . 'Classes/Locking/Locker.php';
 			}
 			// Write a longer message to the deprecation log
 			$destination = self::getDeprecationLogFileName();

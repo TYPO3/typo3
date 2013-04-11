@@ -2626,9 +2626,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Returns instance of t3lib_Compressor
+	 * Returns instance of \TYPO3\CMS\Core\Resource\ResourceCompressor
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\ResourceCompressor Instance of t3lib_Compressor
+	 * @return \TYPO3\CMS\Core\Resource\ResourceCompressor
 	 */
 	protected function getCompressor() {
 		if ($this->compressor === NULL) {

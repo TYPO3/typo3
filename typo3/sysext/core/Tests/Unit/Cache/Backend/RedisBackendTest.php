@@ -163,7 +163,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test Functional
-	 * @expectedException t3lib_cache_Exception_InvalidData
+	 * @expectedException \TYPO3\CMS\Core\Cache\Exception\InvalidDataException
 	 */
 	public function setThrowsExceptionIfDataIsNotAString() {
 		$this->setUpBackend();

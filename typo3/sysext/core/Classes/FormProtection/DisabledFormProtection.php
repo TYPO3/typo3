@@ -23,9 +23,8 @@ namespace TYPO3\CMS\Core\FormProtection;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Class t3lib_formprotection_DisabledFormProtection.
- *
  * This class is a dummy implementation of the form protection,
  * which is used when no authentication is used.
  *

@@ -26,11 +26,13 @@ namespace TYPO3\CMS\Core\Resource\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Service class for implementing the user filemounts,
- * used for BE_USER (t3lib_beUserAuth) and TCEforms hooks
+ * used for BE_USER (\TYPO3\CMS\Core\Authentication\BackendUserAuthentication)
+ * and TCEforms hooks
  *
- * Note: This is now also used by sys_file_category table (fieldname "folder")! (Ingmar Schlecht, 19 November 2011)
+ * Note: This is now also used by sys_file_category table (fieldname "folder")!
  *
  * @author Benjamin Mack <benni@typo3.org>
  */
@@ -42,7 +44,7 @@ class UserFileMountService {
 	 * of a selected mount
 	 *
 	 * @param array $PA the array with additional configuration options.
-	 * @param t3lib_tceforms $tceformsObj the TCEforms parent object
+	 * @param \TYPO3\CMS\Backend\Form\FormEngine $tceformsObj Parent object
 	 * @return string The HTML code for the TCEform field
 	 */
 	public function renderTceformsSelectDropdown(&$PA, &$tceformsObj) {

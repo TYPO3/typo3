@@ -48,7 +48,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	protected $recordsPageLimit = 50;
 
 	/**
-	 * @var t3lib_pageRenderer
+	 * @var \TYPO3\CMS\Core\Page\PageRenderer
 	 */
 	protected $pageRenderer;
 
@@ -229,7 +229,6 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 		);
 		// SAVE button
 		$buttons['save'] = '';
-		//<input type="image" class="c-inputButton" name="submit" value="Update"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/savedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', 1) . '" />';
 		return $buttons;
 	}
 

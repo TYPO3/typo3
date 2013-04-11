@@ -43,11 +43,11 @@ abstract class AbstractExtdirectContextMenu extends \TYPO3\CMS\Backend\ContextMe
 	 * Note: This method should be overriden to fit your specific needs.
 	 *
 	 * The informations should contain the basic informations of a
-	 * t3lib_tree_Node for further processing. Also the classname (property type)
-	 * of the node should be given, because we need this information
-	 * to create the ndoe.
+	 * \TYPO3\CMS\Backend\Tree\TreeNode for further processing. Also the classname
+	 * (property type) of the node should be given, because we need this information
+	 * to create the node.
 	 *
-	 * @param stdClass $nodeData
+	 * @param \stdClass $nodeData
 	 * @return array
 	 */
 	public function getActionsForNodeArray($nodeData) {

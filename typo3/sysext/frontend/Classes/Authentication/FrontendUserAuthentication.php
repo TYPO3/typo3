@@ -164,7 +164,7 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 	 * Starts a user session
 	 *
 	 * @return void
-	 * @see t3lib_userAuth::start()
+	 * @see \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::start()
 	 * @todo Define visibility
 	 */
 	public function start() {
@@ -218,7 +218,7 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 	 * Returns an info array with Login/Logout data submitted by a form or params
 	 *
 	 * @return array
-	 * @see t3lib_userAuth::getLoginFormData()
+	 * @see \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::getLoginFormData()
 	 * @todo Define visibility
 	 */
 	public function getLoginFormData() {

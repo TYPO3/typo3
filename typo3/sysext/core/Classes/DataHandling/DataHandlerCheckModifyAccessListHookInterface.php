@@ -26,12 +26,14 @@ namespace TYPO3\CMS\Core\DataHandling;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Interface for hook in t3lib_TCEmain::checkModifyAccessList
+ * Interface for hook in \TYPO3\CMS\Core\DataHandling\DataHandler::checkModifyAccessList
  *
  * @author Oliver Hader <oliver@typo3.org>
  */
 interface DataHandlerCheckModifyAccessListHookInterface {
+
 	/**
 	 * Hook that determines whether a user has access to modify a table.
 	 *
