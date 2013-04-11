@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Backend\RecordList;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Library with a single function addElement that returns table
  * rows based on some input.
@@ -156,7 +157,7 @@ abstract class AbstractRecordList {
 	public $translateTools;
 
 	/**
-	 * Constructor for t3lib_recordList
+	 * Constructor
 	 */
 	public function __construct() {
 		if (isset($GLOBALS['BE_USER']->uc['titleLen']) && $GLOBALS['BE_USER']->uc['titleLen'] > 0) {
@@ -420,7 +421,7 @@ abstract class AbstractRecordList {
 	}
 
 	/**
-	 * Gets an instance of t3lib_transl8tools.
+	 * Gets an instance of TranslationConfigurationProvider
 	 *
 	 * @return \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider
 	 */

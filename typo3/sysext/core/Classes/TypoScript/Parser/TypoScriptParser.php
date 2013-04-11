@@ -26,18 +26,11 @@ namespace TYPO3\CMS\Core\TypoScript\Parser;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains the TypoScript parser class
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * The TypoScript parser
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @see t3lib_tstemplate, \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig(), t3lib_beUserAuth::fetchGroupData(), t3lib_TStemplate::generateConfig()
  */
 class TypoScriptParser {
 
@@ -214,7 +207,7 @@ class TypoScriptParser {
 	 */
 	public $highLightBlockStyles_basecolor = '#cccccc';
 
-	//Instance of parentObject, used by t3lib_tsparser_ext
+	//Instance of parentObject, used by \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
 	public $parentObject;
 
 	/**
@@ -695,7 +688,7 @@ class TypoScriptParser {
 
 	/**
 	 * Checks the input string (un-parsed TypoScript) for include-commands ("<INCLUDE_TYPOSCRIPT: ....")
-	 * Use: t3lib_TSparser::checkIncludeLines()
+	 * Use: \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines()
 	 *
 	 * @param string $string Unparsed TypoScript
 	 * @param integer $cycle_counter Counter for detecting endless loops
@@ -840,7 +833,8 @@ class TypoScriptParser {
 		$skipNextLineIfEmpty = FALSE;
 		$openingCommentedIncludeStatement = NULL;
 		foreach ($lines as $line) {
-			// t3lib_TSparser::checkIncludeLines inserts an additional empty line, remove this again
+			// \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines inserts
+			// an additional empty line, remove this again
 			if ($skipNextLineIfEmpty) {
 				if (trim($line) == '') {
 					continue;
@@ -898,7 +892,8 @@ class TypoScriptParser {
 					$fileName = NULL;
 					$inIncludePart = FALSE;
 					$openingCommentedIncludeStatement = NULL;
-					// t3lib_TSparser::checkIncludeLines inserts an additional empty line, remove this again
+					// \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines inserts
+					// an additional empty line, remove this again
 					$skipNextLineIfEmpty = TRUE;
 				} else {
 					// If this is not a ending commented include statement this line goes into the file content

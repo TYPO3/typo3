@@ -613,7 +613,7 @@ class GraphicalFunctions {
 	 * @param integer $srcHeight Source height
 	 * @return void
 	 * @access private
-	 * @see t3lib_iconWorks::imagecopyresized()
+	 * @see \TYPO3\CMS\Backend\Utility\IconUtility::imagecopyresized()
 	 * @todo Define visibility
 	 */
 	public function imagecopyresized(&$dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight) {
@@ -2011,7 +2011,7 @@ class GraphicalFunctions {
 	/**
 	 * Checks if the $fontFile is already at an absolute path and if not, prepends the correct path.
 	 * Use PATH_site unless we are in the backend.
-	 * Call it by t3lib_stdGraphic::prependAbsolutePath()
+	 * Call it by \TYPO3\CMS\Core\Imaging\GraphicalFunctions::prependAbsolutePath()
 	 *
 	 * @param string $fontFile The font file
 	 * @return string The font file with absolute path.

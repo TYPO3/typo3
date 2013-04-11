@@ -26,18 +26,20 @@ namespace TYPO3\CMS\Frontend\Page;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Interface for classes which hook into pageSelect and do additional getPage processing
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 interface PageRepositoryGetPageHookInterface {
+
 	/**
 	 * Modifies the DB params
 	 *
 	 * @param integer $uid The page ID
 	 * @param boolean $disableGroupAccessCheck If set, the check for group access is disabled. VERY rarely used
-	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $parentObject Parent t3lib_pageSelect object
+	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $parentObject Parent object
 	 * @return void
 	 */
 	public function getPage_preProcess(&$uid, &$disableGroupAccessCheck, \TYPO3\CMS\Frontend\Page\PageRepository $parentObject);

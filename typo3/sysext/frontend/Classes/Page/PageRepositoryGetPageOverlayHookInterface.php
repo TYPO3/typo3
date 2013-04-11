@@ -26,12 +26,14 @@ namespace TYPO3\CMS\Frontend\Page;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * interface for classes which hook into t3lib_pageSelect
+ * Interface for classes which hook into \TYPO3\CMS\Frontend\Page\PageRepository
  *
  * @author Tolleiv Nietsch <nietsch@aoemedia.de>
  */
 interface PageRepositoryGetPageOverlayHookInterface {
+
 	/**
 	 * enables to preprocess the pageoverlay
 	 *

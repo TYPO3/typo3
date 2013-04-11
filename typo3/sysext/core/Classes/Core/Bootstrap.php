@@ -672,7 +672,7 @@ class Bootstrap {
 	}
 
 	/**
-	 * Initialize t3lib_db in $GLOBALS and connect if requested
+	 * Initialize database connection in $GLOBALS and connect if requested
 	 *
 	 * @param boolean $connect Whether db should be connected
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
@@ -912,7 +912,7 @@ class Bootstrap {
 			$backendUser->dontSetCookie = TRUE;
 		}
 		// The global must be available very early, because methods below
-		// might triger code which relies on it. See: #45625
+		// might trigger code which relies on it. See: #45625
 		$GLOBALS['BE_USER'] = $backendUser;
 		$backendUser->start();
 		$backendUser->checkCLIuser();

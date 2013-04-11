@@ -25,14 +25,10 @@ namespace TYPO3\CMS\Core\DataHandling;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Contains the TYPO3 Core Engine
  *
- * Revised for TYPO3 3.9 October 2005 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
  * This is the TYPO3 Core Engine class for manipulation of the database
  * This class is used by eg. the tce_db.php script which provides an the interface for POST forms to this class.
  *
@@ -488,8 +484,8 @@ class DataHandler {
 	protected $version_remapMMForVersionSwap_reg;
 
 	/**
-	 * The outer most instance of t3lib_TCEmain
-	 * (t3lib_TCEmain instantiates itself on versioning and localization)
+	 * The outer most instance of \TYPO3\CMS\Core\DataHandling\DataHandler:
+	 * This object instantiates itself on versioning and localization ...
 	 *
 	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
@@ -697,7 +693,7 @@ class DataHandler {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'] as $classData) {
 					$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classData);
 					if (!$hookObject instanceof \TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface) {
-						throw new \UnexpectedValueException('$hookObject must implement interface t3lib_TCEmain_checkModifyAccessListHook', 1251892472);
+						throw new \UnexpectedValueException('$hookObject must implement interface \\TYPO3\\CMS\\Core\\DataHandling\\DataHandlerCheckModifyAccessListHookInterface', 1251892472);
 					}
 					$this->checkModifyAccessListHookObjects[] = $hookObject;
 				}
@@ -2356,7 +2352,7 @@ class DataHandler {
 	 * @param integer $id Record id, used for look-up of MM relations (local_uid)
 	 * @param string $status Status string ('update' or 'new')
 	 * @param string $type The type, either 'select', 'group' or 'inline'
-	 * @param string $currentTable Table name, needs to be passed to t3lib_loadDBGroup
+	 * @param string $currentTable Table name, needs to be passed to \TYPO3\CMS\Core\Database\RelationHandler
 	 * @param string $currentField field name, needs to be set for writing to sys_history
 	 * @return array Modified value array
 	 * @todo Define visibility
@@ -2419,14 +2415,14 @@ class DataHandler {
 	/**
 	 * Starts the processing the input data for flexforms. This will traverse all sheets / languages and for each it will traverse the sub-structure.
 	 * See checkValue_flex_procInData_travDS() for more details.
-	 * WARNING: Currently, it traverses based on the actual _data_ array and NOT the _structure_. This means that values for non-valid fields, lKey/vKey/sKeys will be accepted! For traversal of data with a call back function you should rather use class.t3lib_flexformtools.php
+	 * WARNING: Currently, it traverses based on the actual _data_ array and NOT the _structure_. This means that values for non-valid fields, lKey/vKey/sKeys will be accepted! For traversal of data with a call back function you should rather use \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools
 	 *
 	 * @param array $dataPart The 'data' part of the INPUT flexform data
 	 * @param array $dataPart_current The 'data' part of the CURRENT flexform data
 	 * @param array $uploadedFiles The uploaded files for the 'data' part of the INPUT flexform data
 	 * @param array $dataStructArray Data structure for the form (might be sheets or not). Only values in the data array which has a configuration in the data structure will be processed.
 	 * @param array $pParams A set of parameters to pass through for the calling of the evaluation functions
-	 * @param string $callBackFunc Optional call back function, see checkValue_flex_procInData_travDS()  DEPRICATED, use class.t3lib_flexformtools.php instead for traversal!
+	 * @param string $callBackFunc Optional call back function, see checkValue_flex_procInData_travDS()  DEPRICATED, use \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools instead for traversal!
 	 * @return array The modified 'data' part.
 	 * @see checkValue_flex_procInData_travDS()
 	 * @todo Define visibility
@@ -2574,7 +2570,7 @@ class DataHandler {
 	 * @param array $tcaFieldConf TCA field config
 	 * @param integer $id Record id
 	 * @param string $status Status string ('update' or 'new')
-	 * @param string $table Table name, needs to be passed to t3lib_loadDBGroup
+	 * @param string $table Table name, needs to be passed to \TYPO3\CMS\Core\Database\RelationHandler
 	 * @param string $field The current field the values are modified for
 	 * @param array $additionalData Additional data to be forwarded to sub-processors
 	 * @return string Modified values
@@ -2583,7 +2579,7 @@ class DataHandler {
 		$newValue = '';
 		$foreignTable = $tcaFieldConf['foreign_table'];
 		$valueArray = $this->applyFiltersToValues($tcaFieldConf, $valueArray);
-		// Fetch the related child records by using t3lib_loadDBGroup:
+		// Fetch the related child records using \TYPO3\CMS\Core\Database\RelationHandler
 		/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
 		$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 		$dbAnalysis->start(implode(',', $valueArray), $foreignTable, '', 0, $table, $tcaFieldConf);
@@ -3139,7 +3135,7 @@ class DataHandler {
 			if ($language > 0 && $localizationMode == 'keep') {
 				$value = $inlineSubType == 'field' ? 0 : '';
 			} else {
-				// Fetch the related child records by using t3lib_loadDBGroup:
+				// Fetch the related child records using \TYPO3\CMS\Core\Database\RelationHandler
 				/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
 				$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 				$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
@@ -3315,7 +3311,7 @@ class DataHandler {
 								clearstatcache();
 								// Register this:
 								$this->RTEmagic_copyIndex[$rec['tablename']][$rec['recuid']][$rec['field']][$rec['ref_string']] = substr($copyDestName, strlen(PATH_site));
-								// Check and update the record using the t3lib_refindex class:
+								// Check and update the record using \TYPO3\CMS\Core\Database\ReferenceIndex
 								if (@is_file($copyDestName)) {
 									$sysRefObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
 									$error = $sysRefObj->setReferenceValue($rec['hash'], substr($copyDestName, strlen(PATH_site)), FALSE, TRUE);
@@ -6801,7 +6797,6 @@ class DataHandler {
 	 * @param integer $event_pid The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
 	 * @param string $NEWid NEW id for new records
 	 * @return integer Log entry UID
-	 * @see 	class.t3lib_beuserauth.php
 	 * @todo Define visibility
 	 */
 	public function log($table, $recuid, $action, $recpid, $error, $details, $details_nr = -1, $data = array(), $event_pid = -1, $NEWid = '') {
@@ -6965,8 +6960,8 @@ class DataHandler {
 	}
 
 	/**
-	 * Gets the outer most instance of t3lib_TCEmain.
-	 * Since t3lib_TCEmain can create nested objects of itself,
+	 * Gets the outer most instance of \TYPO3\CMS\Core\DataHandling\DataHandler
+	 * Since \TYPO3\CMS\Core\DataHandling\DataHandler can create nested objects of itself,
 	 * this method helps to determine the first (= outer most) one.
 	 *
 	 * @return \TYPO3\CMS\Core\DataHandling\DataHandler
@@ -6985,8 +6980,8 @@ class DataHandler {
 	}
 
 	/**
-	 * Determines whether the this object is the outer most instance of t3lib_TCEmain.
-	 * Since t3lib_TCEmain can create nested objects of itself,
+	 * Determines whether the this object is the outer most instance of itself
+	 * Since DataHandler can create nested objects of itself,
 	 * this method helps to determine the first (= outer most) one.
 	 *
 	 * @return boolean

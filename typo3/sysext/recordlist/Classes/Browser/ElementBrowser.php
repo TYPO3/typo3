@@ -204,7 +204,7 @@ class ElementBrowser {
 	protected $hookObjects = array();
 
 	/**
-	 * object for t3lib_basicFileFunctions
+	 * @var \TYPO3\CMS\Core\Utility\File\BasicFileUtility
 	 */
 	public $fileProcessor;
 

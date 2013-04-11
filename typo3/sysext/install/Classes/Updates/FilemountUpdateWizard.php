@@ -41,7 +41,7 @@ class FilemountUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	protected $title = 'Migrate existing filemounts to be file abstraction layer compatible.';
 
 	/**
-	 * @var t3lib_db
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	protected $db;
 

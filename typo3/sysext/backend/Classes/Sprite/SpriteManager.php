@@ -149,7 +149,7 @@ class SpriteManager {
 
 	/**
 	 * API for extensions to register new sprite images which can be used with
-	 * t3lib_iconWorks::getSpriteIcon('extensions-$extKey-iconName');
+	 * \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-$extKey-iconName');
 	 *
 	 * @param array $icons Icons to be registered, $iconname => $iconFile, $iconFile must be relative to PATH_site
 	 * @param string $extKey Extension key

@@ -74,7 +74,7 @@ class AdminPanelView {
 		$GLOBALS['TSFE']->displayEditIcons = $this->extGetFeAdminValue('edit', 'displayIcons');
 		$GLOBALS['TSFE']->displayFieldEditIcons = $this->extGetFeAdminValue('edit', 'displayFieldIcons');
 		if ($this->extGetFeAdminValue('tsdebug', 'displayQueries')) {
-			// do not override if the value is already set in t3lib_db
+			// Do not override if the value is already set in \TYPO3\CMS\Core\Database\DatabaseConnection
 			if ($GLOBALS['TYPO3_DB']->explainOutput == 0) {
 				// Enable execution of EXPLAIN SELECT queries
 				$GLOBALS['TYPO3_DB']->explainOutput = 3;

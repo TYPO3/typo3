@@ -89,9 +89,6 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 		$this->sObj = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sObj');
 		$this->edit = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('edit');
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('clear_all_cache')) {
-			$this->include_once[] = PATH_t3lib . 'class.t3lib_tcemain.php';
-		}
 	}
 
 	/**

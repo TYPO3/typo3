@@ -654,7 +654,7 @@ class DatabaseConnection {
 	 * @param string $groupBy See exec_SELECTquery()
 	 * @param string $orderBy See exec_SELECTquery()
 	 * @param string $limit See exec_SELECTquery()
-	 * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. All values are treated as t3lib_db_PreparedStatement::PARAM_AUTOTYPE.
+	 * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. All values are treated as \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_AUTOTYPE.
 	 * @return \TYPO3\CMS\Core\Database\PreparedStatement Prepared statement
 	 */
 	public function prepare_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', array $input_parameters = array()) {
@@ -673,7 +673,7 @@ class DatabaseConnection {
 	 * Creates a SELECT prepared SQL statement based on input query parts array
 	 *
 	 * @param array $queryParts Query parts array
-	 * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. All values are treated as t3lib_db_PreparedStatement::PARAM_AUTOTYPE.
+	 * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. All values are treated as \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_AUTOTYPE.
 	 * @return \TYPO3\CMS\Core\Database\PreparedStatement Prepared statement
 	 */
 	public function prepare_SELECTqueryArray(array $queryParts, array $input_parameters = array()) {
@@ -682,7 +682,7 @@ class DatabaseConnection {
 
 	/**
 	 * Executes a prepared query.
-	 * This method may only be called by t3lib_db_PreparedStatement.
+	 * This method may only be called by \TYPO3\CMS\Core\Database\PreparedStatement
 	 *
 	 * @param string $query The query to execute
 	 * @param array $queryComponents The components of the query to execute

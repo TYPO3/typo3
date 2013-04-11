@@ -27,8 +27,8 @@ namespace TYPO3\CMS\Core\Database;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Interface for classes which hook into t3lib_DB and do additional processing
- * after a query has been executed.
+ * Interface for classes which hook into \TYPO3\CMS\Core\Database\DatabaseConnection
+ * and do additional processing after a query has been executed.
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  */

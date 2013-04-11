@@ -30,7 +30,9 @@ namespace TYPO3\CMS\Rtehtmlarea\Controller;
  */
 class SpellCheckingController {
 
-	// Instance of t3lib_cs
+	/**
+	 * @var \TYPO3\CMS\Core\Charset\CharsetConverter
+	 */
 	protected $csConvObj;
 
 	// The extension key

@@ -21,8 +21,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once PATH_t3lib . 'class.t3lib_svbase.php';
+
+// @TODO: Find out if we still need those requires
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') . 'Classes/Service/AbstractService.php';
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid', 'sv1/class.tx_openid_store.php');
+
 /*
  * @deprecated since 6.0, the classname tx_openid_sv1 and this file is obsolete
  * and will be removed with 6.2. The class was renamed and is now located at:

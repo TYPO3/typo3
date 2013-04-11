@@ -24,12 +24,16 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+// @TODO: Find out if we still need this require
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') . 'Classes/Service/AbstractService.php';
+
 /**
  * Service base class for 'User authentication'.
  *
  * @author René Fritz <r.fritz@colorcube.de>
  */
-require_once PATH_t3lib . 'class.t3lib_svbase.php';
+
 /*
  * @deprecated since 6.0, the classname tx_sv_authbase and this file is obsolete
  * and will be removed with 6.2. The class was renamed and is now located at:

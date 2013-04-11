@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree\Pagetree;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for class t3lib_tree_pagetree_DataProvider.
+ * Testcase
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  * @author Oliver Klee <typo3-coding@oliverklee.de>

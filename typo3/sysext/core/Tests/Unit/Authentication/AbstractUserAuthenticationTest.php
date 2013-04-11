@@ -144,7 +144,7 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * @dataProvider processLoginDataProvider
 	 */
 	public function processLoginReturnsCorrectData($loginType, $passwordSubmissionStrategy, $passwordCompareStrategy, $originalData, $processedData) {
-		/** @var $mock t3lib_userauth */
+		/** @var $mock \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication */
 		$mock = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', array('_dummy'));
 		$mock->security_level = $passwordCompareStrategy;
 		$mock->loginType = $loginType;

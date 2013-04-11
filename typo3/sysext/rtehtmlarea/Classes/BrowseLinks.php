@@ -167,7 +167,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	}
 
 	/**
-	 * Initialize hook objects implementing interface t3lib_browseLinksHook
+	 * Initialize hook objects implementing the interface
 	 *
 	 * @param 	string		$hookKey: the hook key
 	 * @return 	void

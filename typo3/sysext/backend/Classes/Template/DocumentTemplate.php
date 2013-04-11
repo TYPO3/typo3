@@ -141,7 +141,7 @@ class DocumentTemplate {
 	 */
 	public $form_rowsToStylewidth = 9.58;
 
-	// Compensation for large documents (used in class.t3lib_tceforms.php)
+	// Compensation for large documents (used in \TYPO3\CMS\Backend\Form\FormEngine)
 	/**
 	 * @todo Define visibility
 	 */
@@ -582,7 +582,7 @@ class DocumentTemplate {
 			$mMN = '';
 		}
 		$onClick = 'top.ShortcutManager.createShortcut(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark')) . ', ' . '\'' . $backPath . '\', ' . '\'' . rawurlencode($modName) . '\', ' . '\'' . rawurlencode(($pathInfo['path'] . '?' . $storeUrl)) . $mMN . '\'' . ');return false;';
-		$sIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', TRUE) . '">' . \t3lib_iconworks::getSpriteIcon('actions-system-shortcut-new') . '</a>';
+		$sIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-shortcut-new') . '</a>';
 		return $sIcon;
 	}
 

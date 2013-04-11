@@ -60,7 +60,7 @@ class TreeNodeCollection extends \ArrayObject {
 	/**
 	 * Compares a node with another one
 	 *
-	 * @see t3lib_tree_Node::compareTo
+	 * @see \TYPO3\CMS\Backend\Tree\TreeNode::compareTo
 	 * @return void
 	 * @noapi
 	 */

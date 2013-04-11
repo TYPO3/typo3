@@ -40,7 +40,7 @@ $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class ext_TSparser extends t3lib_tsparser_ext {
+class ext_TSparser extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService {
 
 	/**
 	 * Pass through of incoming value for link.

@@ -173,7 +173,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 						lineCounter += 5;
 					});
 				';
-				/** @var t3lib_pageRenderer * */
+				/** @var \TYPO3\CMS\Core\Page\PageRenderer */
 				$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
 				$pageRenderer->loadExtJS();
 				$pageRenderer->addExtOnReadyCode($extCode);

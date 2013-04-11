@@ -788,7 +788,7 @@ class PageRepository {
 	 * Can be used to retrieved a cached value
 	 * Can be used from your frontend plugins if you like. It is also used to
 	 * store the parsed TypoScript template structures. You can call it directly
-	 * like t3lib_pageSelect::getHash()
+	 * like \TYPO3\CMS\Frontend\Page\PageRepository::getHash()
 	 *
 	 * @param string $hash The hash-string which was used to store the data value
 	 * @param integer The expiration time (not used anymore)
@@ -810,7 +810,7 @@ class PageRepository {
 	/**
 	 * Stores a string value in the cache_hash cache identified by $hash.
 	 * Can be used from your frontend plugins if you like. You can call it
-	 * directly like t3lib_pageSelect::storeHash()
+	 * directly like \TYPO3\CMS\Frontend\Page\PageRepository::storeHash()
 	 *
 	 * @param string $hash 32 bit hash string (eg. a md5 hash of a serialized array identifying the data being stored)
 	 * @param string $data The data string. If you want to store an array, then just serialize it first.

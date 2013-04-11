@@ -23,9 +23,8 @@ namespace TYPO3\CMS\Core\FormProtection;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Class t3lib_formprotection_Factory.
- *
  * This class creates and manages instances of the various form protection
  * classes.
  *
@@ -34,13 +33,13 @@ namespace TYPO3\CMS\Core\FormProtection;
  * Usage for the back-end form protection:
  *
  * <pre>
- * $formProtection = t3lib_formprotection_Factory::get();
+ * $formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
  * </pre>
  *
  * Usage for the install tool form protection:
  *
  * <pre>
- * $formProtection = t3lib_formprotection_Factory::get();
+ * $formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
  * $formProtection->injectInstallTool($this);
  * </pre>
  *
@@ -53,7 +52,7 @@ class FormProtectionFactory {
 	/**
 	 * created instances of form protections using the type as array key
 	 *
-	 * @var array<t3lib_formProtectionAbstract>
+	 * @var array<AbstracFormtProtection>
 	 */
 	static protected $instances = array();
 

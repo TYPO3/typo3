@@ -39,11 +39,13 @@ class SuggestElement {
 
 	public $cssClass = 'typo3-TCEforms-suggest';
 
-	// Reference to t3lib_tceforms
+	/**
+	 * @var \TYPO3\CMS\Backend\Form\FormEngine
+	 */
 	public $TCEformsObj;
 
 	/**
-	 * Initialize an instance of t3lib_TCEforms_suggest
+	 * Initialize an instance of SuggestElement
 	 *
 	 * @param \TYPO3\CMS\Backend\Form\FormEngine $tceForms Reference to an TCEforms instance
 	 * @return void

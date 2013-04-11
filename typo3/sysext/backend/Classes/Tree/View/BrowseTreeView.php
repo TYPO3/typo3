@@ -26,20 +26,12 @@ namespace TYPO3\CMS\Backend\Tree\View;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Generate a page-tree, browsable.
  *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor René Fritz <r.fritz@colorcube.de>
- */
-/**
- * Extension class for the t3lib_treeView class, specially made for browsing pages
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @coauthor René Fritz <r.fritz@colorcube.de>
- * @see t3lib_treeView, t3lib_pageTree
  */
 class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 
@@ -81,7 +73,7 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 
 	/**
 	 * Creates title attribute content for pages.
-	 * Uses API function in t3lib_BEfunc which will retrieve lots of useful information for pages.
+	 * Uses API function in \TYPO3\CMS\Backend\Utility\BackendUtility which will retrieve lots of useful information for pages.
 	 *
 	 * @param array $row The table row.
 	 * @return string
@@ -123,7 +115,6 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @todo Define visibility
 	 */
 	public function getTitleStr($row, $titleLen = 30) {
-		// Get the basic title from the parent implementation in t3lib_treeview
 		$title = parent::getTitleStr($row, $titleLen);
 		if (isset($row['is_siteroot']) && $row['is_siteroot'] != 0 && $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showDomainNameWithTitle')) {
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('domainName,sorting', 'sys_domain', 'pid=' . $GLOBALS['TYPO3_DB']->quoteStr(($row['uid'] . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_domain') . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('sys_domain')), 'sys_domain'), '', 'sorting', 1);

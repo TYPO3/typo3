@@ -136,7 +136,7 @@ class RelationHandler {
 	 */
 	public $currentTable;
 
-	// If a record should be undeleted (so do not use the $useDeleteClause on t3lib_BEfunc)
+	// If a record should be undeleted (so do not use the $useDeleteClause on \TYPO3\CMS\Backend\Utility\BackendUtility)
 	/**
 	 * @todo Define visibility
 	 */
@@ -872,7 +872,6 @@ class RelationHandler {
 	 * Prepare items from itemArray to be transferred to the TCEforms interface (as a comma list)
 	 *
 	 * @return string
-	 * @see t3lib_transferdata::renderRecord()
 	 * @todo Define visibility
 	 */
 	public function readyForInterface() {
@@ -916,7 +915,7 @@ class RelationHandler {
 	 *
 	 * @param string $table Table name
 	 * @param integer $id Record UID
-	 * @return array Information concerning modifications delivered by t3lib_refindex::updateRefIndexTable()
+	 * @return array Information concerning modifications delivered by \TYPO3\CMS\Core\Database\ReferenceIndex::updateRefIndexTable()
 	 * @todo Define visibility
 	 */
 	public function updateRefIndex($table, $id) {

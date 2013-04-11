@@ -244,7 +244,7 @@ class LockerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (!is_file($file)) {
 			$this->markTestSkipped('releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory() skipped: Test file could not be created');
 		}
-		// Create t3lib_lock instance, set lockfile to invalid path
+		// Create instance, set lockfile to invalid path
 		$instance = new \TYPO3\CMS\Core\Locking\Locker(999999999, $lockMethod);
 		$instance->setEnableLogging(FALSE);
 		$t3libLockReflection = new \ReflectionClass('TYPO3\\CMS\\Core\\Locking\\Locker');

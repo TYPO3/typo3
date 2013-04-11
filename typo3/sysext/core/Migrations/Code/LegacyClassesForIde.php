@@ -1479,11 +1479,6 @@ class tx_dbal_tsparserext extends \TYPO3\CMS\Dbal\ExtensionManager\MessageDispla
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_dbal_em extends \TYPO3\CMS\Dbal\Hooks\ExtensionManagerHooks {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class tx_dbal_installtool extends \TYPO3\CMS\Dbal\Hooks\InstallToolHooks {}
 
 /**

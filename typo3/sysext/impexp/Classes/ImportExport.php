@@ -2575,7 +2575,7 @@ class ImportExport {
 					}
 				}
 			}
-			$pInfo['preCode'] = $preCode . \t3lib_iconworks::getSpriteIconForRecord($table, (array) $this->dat['records'][($table . ':' . $uid)]['data'], array('title' => htmlspecialchars(($table . ':' . $uid))));
+			$pInfo['preCode'] = $preCode . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, (array) $this->dat['records'][($table . ':' . $uid)]['data'], array('title' => htmlspecialchars(($table . ':' . $uid))));
 			$pInfo['title'] = htmlspecialchars($record['title']);
 			// View page:
 			if ($table === 'pages') {

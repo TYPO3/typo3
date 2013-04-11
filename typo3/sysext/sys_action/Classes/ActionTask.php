@@ -368,7 +368,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'be_users', 'cruser_id=' . $GLOBALS['BE_USER']->user['uid'] . ' AND createdByAction=' . intval($action['uid']) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('be_users'), '', 'username');
 		// Render the user records
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$icon = \t3lib_iconworks::getSpriteIconForRecord('be_users', $row, array('title' => 'uid=' . $row['uid']));
+			$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('be_users', $row, array('title' => 'uid=' . $row['uid']));
 			$line = $icon . $this->action_linkUserName($row['username'], $row['realName'], $action['uid'], $row['uid']);
 			// Selected user
 			if ($row['uid'] == $selectedUser) {
@@ -664,7 +664,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 				'description' => \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($el['table'], $dbAnalysis->results[$el['table']][$el['id']]),
 				'descriptionHtml' => $description,
 				'link' => $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '&edit[' . $el['table'] . '][' . $el['id'] . ']=edit',
-				'icon' => \t3lib_iconworks::getSpriteIconForRecord($el['table'], $dbAnalysis->results[$el['table']][$el['id']], array('title' => htmlspecialchars($path)))
+				'icon' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($el['table'], $dbAnalysis->results[$el['table']][$el['id']], array('title' => htmlspecialchars($path)))
 			);
 		}
 		// Render the record list

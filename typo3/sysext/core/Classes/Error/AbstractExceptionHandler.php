@@ -127,8 +127,8 @@ abstract class AbstractExceptionHandler implements \TYPO3\CMS\Core\Error\Excepti
 	}
 
 	/**
-	 * Sends the HTTP Status 500 code, if $exception is *not* a t3lib_error_http_StatusException
-	 * and headers are not sent, yet.
+	 * Sends the HTTP Status 500 code, if $exception is *not* a
+	 * TYPO3\\CMS\\Core\\Error\\Http\\StatusException and headers are not sent, yet.
 	 *
 	 * @param Exception $exception
 	 * @return void

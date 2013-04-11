@@ -78,7 +78,7 @@ class ClientUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	//////////////////////////////////////////////////////////
-	// Tests concerning t3lib_utility_Client::getBrowserInfo
+	// Tests concerning getBrowserInfo
 	//////////////////////////////////////////////////////////
 	/**
 	 * @test

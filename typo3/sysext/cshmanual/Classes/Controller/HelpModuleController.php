@@ -694,7 +694,8 @@ class HelpModuleController {
 
 	/**
 	 * Substituting glossary words in the CSH
-	 * (This is a call-back function from "class local_t3lib_parsehtml extends t3lib_parsehtml", see top of this script)
+	 * This is a call-back function from "class local_t3lib_parsehtml
+	 * extends \TYPO3\CMS\Core\Html\HtmlParser", see top of this script
 	 *
 	 * @param string $code Input HTML string
 	 * @return string HTML with substituted words in.

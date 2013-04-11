@@ -419,7 +419,7 @@ class ReferenceIndex {
 	 * @param string $structurePath Path of value in DS structure
 	 * @param object $pObj Object reference to caller
 	 * @return void
-	 * @see t3lib_TCEmain::checkValue_flex_procInData_travDS()
+	 * @see \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_flex_procInData_travDS()
 	 * @todo Define visibility
 	 */
 	public function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, $pObj) {
