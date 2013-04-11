@@ -333,8 +333,17 @@ class PageRepository {
 		}
 		// Create output:
 		if (is_array($pageInput)) {
-			// If the input was an array, simply overlay the newfound array and return...
-			return is_array($row) ? array_merge($pageInput, $row) : $pageInput;
+			if (is_array($row)) {
+				// Overwrite the original field with the overlay
+				foreach ($row as $fieldName => $fieldValue) {
+					if ($fieldName !== 'uid' && $fieldName !== 'pid') {
+						if ($this->shouldFieldBeOverlaid('pages_language_overlay', $fieldName, $fieldValue)) {
+							$pageInput[$fieldName] = $fieldValue;
+						}
+					}
+				}
+			}
+			return $pageInput;
 		} else {
 			// Always an array in return
 			return is_array($row) ? $row : array();
@@ -387,10 +396,7 @@ class PageRepository {
 								}
 								foreach ($row as $fN => $fV) {
 									if ($fN != 'uid' && $fN != 'pid' && isset($olrow[$fN])) {
-										if (
-											$GLOBALS['TCA'][$table]['columns'][$fN]['l10n_mode'] != 'exclude'
-											&& ($GLOBALS['TCA'][$table]['columns'][$fN]['l10n_mode'] != 'mergeIfNotBlank' || strcmp(trim($olrow[$fN]), ''))
-										) {
+										if ($this->shouldFieldBeOverlaid($table, $fN, $olrow[$fN])) {
 											$row[$fN] = $olrow[$fN];
 										}
 									} elseif ($fN == 'uid') {
@@ -1211,6 +1217,38 @@ class PageRepository {
 		return $ws['_ACCESS'] != '';
 	}
 
+	/**
+	 * Determine if a field needs an overlay
+	 *
+	 * @param string $table TCA tablename
+	 * @param string $field TCA fieldname
+	 * @param mixed $value Current value of the field
+	 * @return boolean Returns TRUE if a given record field needs to be overlaid
+	 */
+	protected function shouldFieldBeOverlaid($table, $field, $value) {
+		$l10n_mode = isset($GLOBALS['TCA'][$table]['columns'][$field]['l10n_mode'])
+			? $GLOBALS['TCA'][$table]['columns'][$field]['l10n_mode']
+			: '';
+
+		$shouldFieldBeOverlaid = TRUE;
+
+		if ($l10n_mode === 'exclude') {
+			$shouldFieldBeOverlaid = FALSE;
+		} elseif ($l10n_mode === 'mergeIfNotBlank') {
+			$checkValue = $value;
+
+			// 0 values are considered blank when coming from a group field
+			if (empty($value) && $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'group') {
+				$checkValue = '';
+			}
+
+			if (trim($checkValue) === '') {
+				$shouldFieldBeOverlaid = FALSE;
+			}
+		}
+
+		return $shouldFieldBeOverlaid;
+	}
 }
 
 
