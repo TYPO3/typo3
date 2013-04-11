@@ -37,7 +37,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $typo3DbBackup;
 
 	/**
-	 * @var \TYPO3\CMS\Frontend\Page\PageRepository
+	 * @var \TYPO3\CMS\Frontend\Page\PageRepository|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $pageSelectObject;
 
@@ -47,7 +47,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setUp() {
 		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_SELECTquery', 'sql_fetch_assoc', 'sql_free_result'));
-		$this->pageSelectObject = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('getMultipleGroupsWhereClause'));
+		$this->pageSelectObject = $this->getAccessibleMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('getMultipleGroupsWhereClause'));
 		$this->pageSelectObject->expects($this->any())->method('getMultipleGroupsWhereClause')->will($this->returnValue(' AND 1=1'));
 	}
 
@@ -56,6 +56,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function tearDown() {
 		$GLOBALS['TYPO3_DB'] = $this->typo3DbBackup;
+		unset($this->pageSelectObject);
 	}
 
 	/**
@@ -120,9 +121,68 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		)));
 	}
 
+	/////////////////////////////////////////
+	// Tests concerning shouldFieldBeOverlaid
+	/////////////////////////////////////////
+	/**
+	 * @test
+	 * @dataProvider getShouldFieldBeOverlaidData
+	 */
+	public function shouldFieldBeOverlaid($field, $table, $value, $expected, $comment = '') {
+		$GLOBALS['TCA']['fake_table']['columns'] = array(
+			'exclude' => array('config' => array('type' => 'input')),
+			'mergeIfNotBlank' => array('config' => array('type' => 'input')),
+			'mergeIfNotBlank_group' => array('config' => array('type' => 'group')),
+			'default' => array('config' => array('type' => 'input')),
+			'noCopy' => array('config' => array('type' => 'input')),
+			'prefixLangTitle' => array('config' => array('type' => 'input')),
+		);
+		$GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode']['exclude'] = 'exclude';
+		$GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode']['mergeIfNotBlank'] = 'mergeIfNotBlank';
+		$GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode']['mergeIfNotBlank_group'] = 'mergeIfNotBlank';
+		// No l10n_mode for field 'default'
+		$GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode']['noCopy'] = 'noCopy';
+		$GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode']['prefixLangTitle'] = 'prefixLangTitle';
+
+		$result = $this->pageSelectObject->_call('shouldFieldBeOverlaid', $table, $field, $value);
+		unset($GLOBALS['TCA']['fake_table']);
+		unset($GLOBALS['TSFE']->TCAcachedExtras[$table]);
+
+		$this->assertSame($expected, $result, $comment);
+	}
+
+	/**
+	 * Data provider for shouldFieldBeOverlaid
+	 */
+	public function getShouldFieldBeOverlaidData() {
+		return array(
+			array('default',               'fake_table', 'foobar', TRUE,  'default is to merge non-empty string'),
+			array('default',               'fake_table', '',       TRUE,  'default is to merge empty string'),
+
+			array('exclude',               'fake_table', '',       FALSE, 'exclude field with empty string'),
+			array('exclude',               'fake_table', 'foobar', FALSE, 'exclude field with non-empty string'),
+
+			array('mergeIfNotBlank',       'fake_table', '',       FALSE, 'mergeIfNotBlank is not merged with empty string'),
+			array('mergeIfNotBlank',       'fake_table', 0,        TRUE,  'mergeIfNotBlank is merged with 0'),
+			array('mergeIfNotBlank',       'fake_table', '0',      TRUE,  'mergeIfNotBlank is merged with "0"'),
+			array('mergeIfNotBlank',       'fake_table', 'foobar', TRUE,  'mergeIfNotBlank is merged with non-empty string'),
+
+			array('mergeIfNotBlank_group', 'fake_table', '',       FALSE, 'mergeIfNotBlank on group is not merged empty string'),
+			array('mergeIfNotBlank_group', 'fake_table', 0,        FALSE, 'mergeIfNotBlank on group is not merged with 0'),
+			array('mergeIfNotBlank_group', 'fake_table', '0',      FALSE, 'mergeIfNotBlank on group is not merged with "0"'),
+			array('mergeIfNotBlank_group', 'fake_table', 'foobar', TRUE,  'mergeIfNotBlank on group is merged with non-empty string'),
+
+			array('noCopy',                'fake_table', 'foobar', TRUE,  'noCopy is merged with non-empty string'),
+			array('noCopy',                'fake_table', '',       TRUE,  'noCopy is merged with empty string'),
+
+			array('prefixLangTitle',       'fake_table', 'foobar', TRUE,  'prefixLangTitle is merged with non-empty string'),
+			array('prefixLangTitle',       'fake_table', '',       TRUE,  'prefixLangTitle is merged with empty string'),
+		);
+	}
+
 	////////////////////////////////
-// Tests concerning workspaces
-////////////////////////////////
+	// Tests concerning workspaces
+	////////////////////////////////
 
 	/**
 	 * @test
