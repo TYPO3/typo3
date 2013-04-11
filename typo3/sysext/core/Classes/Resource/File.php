@@ -158,6 +158,9 @@ class File extends AbstractFile {
 		if ($this->indexed !== NULL) {
 			return;
 		}
+		if ($this->hasProcessingFolderIdentifier()) {
+			return;
+		}
 		/** @var $repo FileRepository */
 		$repo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 		$indexRecord = $repo->getFileIndexRecord($this);
