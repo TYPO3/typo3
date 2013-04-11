@@ -510,7 +510,6 @@ class GridDataService {
 	 * Gets all available system languages.
 	 *
 	 * @return array
-	 * @see \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider::getSystemLanguages
 	 */
 	public function getSystemLanguages() {
 		if (!isset($this->systemLanguages)) {

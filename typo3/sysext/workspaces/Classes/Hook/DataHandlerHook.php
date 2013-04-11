@@ -124,8 +124,6 @@ class DataHandlerHook {
 	}
 
 	/**
-	 * Gets a new instance of t3lib_TCEmain.
-	 *
 	 * @return \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	protected function getTceMain() {
