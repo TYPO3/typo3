@@ -215,7 +215,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	 * @return boolean
 	 */
 	public function canBeDisabledAndEnabled() {
-		return $this->canEdit($this->record);
+		return $this->canEdit($this->record) && $GLOBALS['BE_USER']->checkLanguageAccess(0);
 	}
 
 	/**
@@ -224,7 +224,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	 * @return boolean
 	 */
 	public function canBeCut() {
-		return $this->canEdit($this->record) && intval($this->record['t3ver_state']) !== 2;
+		return $this->canEdit($this->record) && intval($this->record['t3ver_state']) !== 2 && $GLOBALS['BE_USER']->checkLanguageAccess(0);
 	}
 
 	/**
@@ -233,7 +233,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	 * @return boolean
 	 */
 	public function canBeEdited() {
-		return $this->canEdit($this->record);
+		return $this->canEdit($this->record) && $GLOBALS['BE_USER']->checkLanguageAccess(0);
 	}
 
 	/**
@@ -242,7 +242,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	 * @return boolean
 	 */
 	public function canBeCopied() {
-		return $this->canCreate($this->record) && intval($this->record['t3ver_state']) !== 2;
+		return $this->canCreate($this->record) && intval($this->record['t3ver_state']) !== 2 && $GLOBALS['BE_USER']->checkLanguageAccess(0);
 	}
 
 	/**
@@ -251,7 +251,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	 * @return boolean
 	 */
 	public function canCreateNewPages() {
-		return $this->canCreate($this->record);
+		return $this->canCreate($this->record) && $GLOBALS['BE_USER']->checkLanguageAccess(0);
 	}
 
 	/**
@@ -260,7 +260,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	 * @return boolean
 	 */
 	public function canBeRemoved() {
-		return $this->canRemove($this->record) && intval($this->record['t3ver_state']) !== 2;
+		return $this->canRemove($this->record) && intval($this->record['t3ver_state']) !== 2 && $GLOBALS['BE_USER']->checkLanguageAccess(0);
 	}
 
 	/**
@@ -269,7 +269,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	 * @return boolean
 	 */
 	public function canBePastedInto() {
-		return $this->canCreate($this->record) && intval($this->record['t3ver_state']) !== 2;
+		return $this->canCreate($this->record) && intval($this->record['t3ver_state']) !== 2 && $GLOBALS['BE_USER']->checkLanguageAccess(0);
 	}
 
 	/**
@@ -278,7 +278,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	 * @return boolean
 	 */
 	public function canBePastedAfter() {
-		return $this->canCreate($this->record) && intval($this->record['t3ver_state']) !== 2;
+		return $this->canCreate($this->record) && intval($this->record['t3ver_state']) !== 2 && $GLOBALS['BE_USER']->checkLanguageAccess(0);
 	}
 
 	/**
@@ -287,7 +287,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	 * @return boolean
 	 */
 	public function canShowHistory() {
-		return TRUE;
+		return $GLOBALS['BE_USER']->checkLanguageAccess(0);
 	}
 
 	/**
