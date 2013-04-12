@@ -42,7 +42,7 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
 
 	/**
 	 * The type of file collection
-	 * (see t3lib_collection_RecordCollectionRepository::TYPE constants)
+	 * (see \TYPO3\CMS\Core\Collection\RecordCollectionRepository::TYPE constants)
 	 *
 	 * @var string
 	 */
@@ -131,7 +131,7 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
 	}
 
 	/**
-	 * Similar to method in t3lib_collection_AbstractRecordCollection,
+	 * Similar to method in \TYPO3\CMS\Core\Collection\AbstractRecordCollection,
 	 * but without 'table_name' => $this->getItemTableName()
 	 *
 	 * @return array
@@ -165,7 +165,7 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
 	}
 
 	/**
-	 * Similar to method in t3lib_collection_AbstractRecordCollection,
+	 * Similar to method in \TYPO3\CMS\Core\Collection\AbstractRecordCollection,
 	 * but without $this->itemTableName= $array['table_name'],
 	 * but with $this->storageItemsFieldContent = $array[self::$storageItemsField];
 	 *

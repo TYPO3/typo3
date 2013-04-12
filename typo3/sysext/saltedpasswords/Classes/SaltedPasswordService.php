@@ -259,9 +259,7 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 *
 	 * @param string $message Message to output
 	 * @return void
-	 * @see 	sprintf()
-	 * @see 	t3lib::divLog()
-	 * @see 	\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog()
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog()
 	 * @todo Define visibility
 	 */
 	public function writeLogMessage($message) {

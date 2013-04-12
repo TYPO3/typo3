@@ -104,7 +104,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * - GMP or BCMATH PHP extensions are installed and functional
 	 * - set_include_path() PHP function is available
 	 *
-	 * @return 	boolean		TRUE if service is available
+	 * @return boolean TRUE if service is available
 	 */
 	public function init() {
 		$available = FALSE;
@@ -153,7 +153,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * function makes sure that user cannot be authenticated by any other service
 	 * if user tries to use OpenID to authenticate.
 	 *
-	 * @return 	mixed		User record (content of fe_users/be_users as appropriate for the current mode)
+	 * @return mixed User record (content of fe_users/be_users as appropriate for the current mode)
 	 */
 	public function getUser() {
 		$userRecord = NULL;
@@ -194,8 +194,8 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	/**
 	 * Authenticates user using OpenID.
 	 *
-	 * @param  array $userRecord	User record
-	 * @return int Code that shows if user is really authenticated.
+	 * @param array $userRecord	User record
+	 * @return integer Code that shows if user is really authenticated.
 	 */
 	public function authUser(array $userRecord) {
 		$result = 100;
@@ -234,7 +234,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	/**
 	 * Includes necessary files for the PHP OpenID library
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	protected function includePHPOpenIDLibrary() {
 		if (!self::$openIDLibrariesIncluded) {
@@ -274,8 +274,8 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	/**
 	 * Gets user record for the user with the OpenID provided by the user
 	 *
-	 * @param 	string		$openIDIdentifier	OpenID identifier to search for
-	 * @return 	array		Database fields from the table that corresponds to the current login mode (FE/BE)
+	 * @param string $openIDIdentifier	OpenID identifier to search for
+	 * @return array Database fields from the table that corresponds to the current login mode (FE/BE)
 	 */
 	protected function getUserRecord($openIDIdentifier) {
 		$record = NULL;
@@ -300,7 +300,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * is almost identical to the example from the PHP OpenID library.
 	 *
 	 * @todo use DB (or the caching framework) instead of the filesystem to store OpenID data
-	 * @return 	Auth_OpenID_Consumer		Consumer instance
+	 * @return Auth_OpenID_Consumer Consumer instance
 	 */
 	protected function getOpenIDConsumer() {
 		$openIDStore = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Openid\\OpenidStore');
@@ -321,7 +321,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * This function does not return on success. If it returns, it means something
 	 * went totally wrong with OpenID.
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	protected function sendOpenIDRequest() {
 		$this->includePHPOpenIDLibrary();
@@ -377,7 +377,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * the OpenID server, the user will be sent to this URL to complete
 	 * authentication process with the current site. We send it to our script.
 	 *
-	 * @return 	string		Return URL
+	 * @return string Return URL
 	 */
 	protected function getReturnURL() {
 		if ($this->authenticationInformation['loginType'] == 'FE') {
@@ -537,12 +537,10 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * This function accepts variable number of arguments and can format
 	 * parameters. The syntax is the same as for sprintf()
 	 *
-	 * @param 	string		$message	Message to output
+	 * @param string $message Message to output
 	 * @return 	void
-	 * @see 	sprintf()
-	 * @see 	t3lib::divLog()
-	 * @see 	\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog()
-	 * @see 	t3lib_timeTrack::setTSlogMessage()
+	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::sysLog()
+	 * @see \TYPO3\CMS\Core\TimeTracker\TimeTracker::setTSlogMessage()
 	 */
 	protected function writeLog($message) {
 		if (func_num_args() > 1) {
@@ -561,6 +559,5 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	}
 
 }
-
 
 ?>

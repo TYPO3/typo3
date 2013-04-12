@@ -55,8 +55,8 @@ class ContentRepository {
 				$bodytext = $row['bodytext'];
 			}
 
-			/** @var $typoScriptParser t3lib_tsparser */
-			$typoScriptParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_tsparser');
+			/** @var $typoScriptParser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
+			$typoScriptParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 			$typoScriptParser->parse($bodytext);
 			/** @var $record \TYPO3\CMS\Form\Domain\Model\Content */
 			$record = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Domain\\Model\\Content');

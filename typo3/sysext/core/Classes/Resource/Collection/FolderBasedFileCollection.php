@@ -101,7 +101,7 @@ class FolderBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\Abst
 	}
 
 	/**
-	 * Similar to method in t3lib_collection_AbstractRecordCollection,
+	 * Similar to method in \TYPO3\CMS\Core\Collection\AbstractRecordCollection,
 	 * but without $this->itemTableName= $array['table_name'],
 	 * but with $this->storageItemsFieldContent = $array[self::$storageItemsField];
 	 *

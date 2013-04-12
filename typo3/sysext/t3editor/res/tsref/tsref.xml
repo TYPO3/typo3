@@ -573,11 +573,6 @@ config.htmlTag_setParams =  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-U
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="incT3Lib_htmlmail " type="boolean">
-			<description><![CDATA[Include t3lib/class.t3lib_htmlmail.php]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="includeLibrary" type="string">
 			<description><![CDATA[This includes a phpfile.]]></description>
 			<default><![CDATA[

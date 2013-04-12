@@ -83,7 +83,7 @@ class PostProcessor {
 	}
 
 	/**
-	 * Wrapper method for t3lib_TStemplate::sortedKeyList
+	 * Wrapper method for \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList
 	 * (makes unit testing possible)
 	 *
 	 * @return array

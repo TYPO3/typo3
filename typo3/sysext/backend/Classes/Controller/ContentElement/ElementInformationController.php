@@ -335,7 +335,7 @@ class ElementInformationController {
 		// If the file was an image...
 		// @todo: add this check in the domain model, or in the processing folder
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
-			// @todo: find a way to make getimagesize part of the t3lib_file object
+			// @todo: find a way to make getimagesize part of the \TYPO3\CMS\Core\Resource\File object
 			$imgInfo = @getimagesize($this->fileObject->getForLocalProcessing(FALSE));
 			$thumbUrl = $this->fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => '150m', 'height' => '150m'))->getPublicUrl(TRUE);
 			$code = '<div class="fileInfoContainer fileDimensions">' . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.dimensions') . ':</strong> ' . $imgInfo[0] . 'x' . $imgInfo[1] . ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.pixels') . '</div>';

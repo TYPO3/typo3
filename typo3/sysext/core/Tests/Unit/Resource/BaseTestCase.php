@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  ***************************************************************/
 
 /**
- * Basic test case for the t3lib_file tests
+ * Basic test case for the \TYPO3\CMS\Core\Resource\File tests
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
