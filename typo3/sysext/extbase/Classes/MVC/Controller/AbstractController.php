@@ -310,6 +310,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 			->reset()
 			->setTargetPageUid($pageUid)
 			->setCreateAbsoluteUri(TRUE)
+			->setAbsoluteUriScheme(t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https' : NULL)
 			->uriFor($actionName, $arguments, $controllerName, $extensionName);
 		$this->redirectToUri($uri, $delay, $statusCode);
 	}
