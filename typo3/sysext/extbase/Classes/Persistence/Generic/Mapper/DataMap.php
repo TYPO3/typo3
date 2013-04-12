@@ -154,7 +154,7 @@ class DataMap {
 	/**
 	 * Sets the name of the class the colum map represents
 	 *
-	 * @param $className
+	 * @param string $className
 	 * @return void
 	 */
 	public function setClassName($className) {
@@ -173,7 +173,7 @@ class DataMap {
 	/**
 	 * Sets the name of the table the colum map represents
 	 *
-	 * @param $tableName
+	 * @param string $tableName
 	 * @return void
 	 */
 	public function setTableName($tableName) {
