@@ -4230,7 +4230,7 @@ class ContentObjectRenderer {
 							}
 							$check = basename($theFile) . ':' . filemtime($theFile) . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 							$md5sum = '&md5sum=' . md5($check);
-							$icon = 't3lib/thumbs.php?file=' . rawurlencode(('../' . $theFile)) . $thumbSize . $md5sum;
+							$icon = 'typo3/thumbs.php?file=' . rawurlencode(('../' . $theFile)) . $thumbSize . $md5sum;
 						} else {
 							$icon = TYPO3_mainDir . 'gfx/fileicons/notfound_thumb.gif';
 						}
