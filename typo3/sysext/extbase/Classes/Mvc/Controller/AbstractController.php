@@ -318,7 +318,11 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 		if ($controllerName === NULL) {
 			$controllerName = $this->request->getControllerName();
 		}
-		$uri = $this->uriBuilder->reset()->setTargetPageUid($pageUid)->setCreateAbsoluteUri(TRUE)->uriFor($actionName, $arguments, $controllerName, $extensionName);
+		$this->uriBuilder->reset()->setTargetPageUid($pageUid)->setCreateAbsoluteUri(TRUE);
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL')) {
+			$this->uriBuilder->setAbsoluteUriScheme('https');
+		}
+		$uri = $this->uriBuilder->uriFor($actionName, $arguments, $controllerName, $extensionName);
 		$this->redirectToUri($uri, $delay, $statusCode);
 	}
 
