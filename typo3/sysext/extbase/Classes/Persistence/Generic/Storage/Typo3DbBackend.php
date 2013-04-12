@@ -1007,6 +1007,9 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 					$sql['additionalWhereClause'][] = $tableName . '.pid = 0';
 				}
 			} else {
+				if (empty($storagePageIds)) {
+					throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException('Missing storage page ids.', 1365779762);
+				}
 				$sql['additionalWhereClause'][] = $tableName . '.pid IN (' . implode(', ', $storagePageIds) . ')';
 			}
 		}
