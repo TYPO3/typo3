@@ -2619,12 +2619,26 @@ class TypoScriptFrontendController {
 	}
 
 	/**
+	 * Handle data submission
+	 *
+	 * @return void
+	 */
+	public function handleDataSubmission() {
+		// Check Submission of data.
+		// This is done at this point, because we need the config values
+		switch ($this->checkDataSubmission()) {
+		case 'email':
+			$this->sendFormmail();
+			break;
+		}
+	}
+
+	/**
 	 * Checks if any email-submissions
 	 *
 	 * @return string "email" if a formmail has been sent, "" if none.
-	 * @todo Define visibility
 	 */
-	public function checkDataSubmission() {
+	protected function checkDataSubmission() {
 		$ret = '';
 		$formtype_mail = isset($_POST['formtype_mail']) || isset($_POST['formtype_mail_x']);
 		if ($formtype_mail) {
@@ -2690,12 +2704,11 @@ class TypoScriptFrontendController {
 	 * Sends the emails from the formmail content object.
 	 *
 	 * @return void
-	 * @access private
 	 * @see checkDataSubmission()
-	 * @todo Define visibility
 	 */
-	public function sendFormmail() {
-		$formmail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_formmail');
+	protected function sendFormmail() {
+		/** @var $formmail \TYPO3\CMS\Frontend\Controller\DataSubmissionController */
+		$formmail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\DataSubmissionController');
 		$EMAIL_VARS = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
 		$locationData = $EMAIL_VARS['locationData'];
 		unset($EMAIL_VARS['locationData']);
