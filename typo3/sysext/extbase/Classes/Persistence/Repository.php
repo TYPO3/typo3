@@ -407,11 +407,14 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		} elseif (substr($methodName, 0, 9) === 'findOneBy' && strlen($methodName) > 10) {
 			$propertyName = strtolower(substr(substr($methodName, 9), 0, 1) ) . substr(substr($methodName, 9), 1);
 			$query = $this->createQuery();
-			$object = $query->matching($query->equals($propertyName, $arguments[0]))
-				->setLimit(1)
-				->execute()
-				->getFirst();
-			return $object;
+
+			$result = $query->matching($query->equals($propertyName, $arguments[0]))->setLimit(1)->execute();
+			if ($result instanceof Tx_Extbase_Persistence_QueryResultInterface) {
+				return $result->getFirst();
+			} elseif (is_array($result)) {
+				return isset($result[0]) ? $result[0] : NULL;
+			}
+
 		} elseif (substr($methodName, 0, 7) === 'countBy' && strlen($methodName) > 8) {
 			$propertyName = strtolower(substr(substr($methodName, 7), 0, 1) ) . substr(substr($methodName, 7), 1);
 			$query = $this->createQuery();
