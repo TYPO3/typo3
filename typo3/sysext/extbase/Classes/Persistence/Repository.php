@@ -396,17 +396,17 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 */
 	public function __call($methodName, $arguments) {
 		if (substr($methodName, 0, 6) === 'findBy' && strlen($methodName) > 7) {
-			$propertyName = strtolower(substr(substr($methodName, 6), 0, 1)) . substr(substr($methodName, 6), 1);
+			$propertyName = lcfirst(substr($methodName, 6));
 			$query = $this->createQuery();
 			$result = $query->matching($query->equals($propertyName, $arguments[0]))->execute();
 			return $result;
 		} elseif (substr($methodName, 0, 9) === 'findOneBy' && strlen($methodName) > 10) {
-			$propertyName = strtolower(substr(substr($methodName, 9), 0, 1)) . substr(substr($methodName, 9), 1);
+			$propertyName = lcfirst(substr($methodName, 9));
 			$query = $this->createQuery();
 			$object = $query->matching($query->equals($propertyName, $arguments[0]))->setLimit(1)->execute()->getFirst();
 			return $object;
 		} elseif (substr($methodName, 0, 7) === 'countBy' && strlen($methodName) > 8) {
-			$propertyName = strtolower(substr(substr($methodName, 7), 0, 1)) . substr(substr($methodName, 7), 1);
+			$propertyName = lcfirst(substr($methodName, 7));
 			$query = $this->createQuery();
 			$result = $query->matching($query->equals($propertyName, $arguments[0]))->execute()->count();
 			return $result;
