@@ -146,7 +146,11 @@ class tx_form_System_Postprocessor_Mail {
 			$fromName = '"' . $fromName . '"';
 		}
 
-		$from = array($fromEmail => $fromName);
+		if (!empty($fromName)) {
+			$from = array($fromEmail => $fromName);
+		} else {
+			$from = $fromEmail;
+		}
 
 		$this->mailMessage->setFrom($from);
 	}
