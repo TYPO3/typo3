@@ -55,7 +55,7 @@ class RecordCollectionRepository {
 	 * Finds a record collection by uid.
 	 *
 	 * @param integer $uid The uid to be looked up
-	 * @return NULL|t3lib_collection_AbstractRecordCollection
+	 * @return NULL|\TYPO3\CMS\Core\Collection\AbstractRecordCollection
 	 */
 	public function findByUid($uid) {
 		$result = NULL;
@@ -69,7 +69,7 @@ class RecordCollectionRepository {
 	/**
 	 * Finds all record collections.
 	 *
-	 * @return NULL|t3lib_collection_AbstractRecordCollection[]
+	 * @return NULL|\TYPO3\CMS\Core\Collection\AbstractRecordCollection[]
 	 */
 	public function findAll() {
 		return $this->queryMultipleRecords();
@@ -79,7 +79,7 @@ class RecordCollectionRepository {
 	 * Finds record collections by table name.
 	 *
 	 * @param string $tableName Name of the table to be looked up
-	 * @return t3lib_collection_AbstractRecordCollection[]
+	 * @return \TYPO3\CMS\Core\Collection\AbstractRecordCollection[]
 	 */
 	public function findByTableName($tableName) {
 		$conditions = array(
@@ -92,7 +92,7 @@ class RecordCollectionRepository {
 	 * Finds record collection by type.
 	 *
 	 * @param string $type Type to be looked up
-	 * @return NULL|t3lib_collection_AbstractRecordCollection[]
+	 * @return NULL|\TYPO3\CMS\Core\Collection\AbstractRecordCollection[]
 	 */
 	public function findByType($type) {
 		$conditions = array(
@@ -106,7 +106,7 @@ class RecordCollectionRepository {
 	 *
 	 * @param string $type Type to be looked up
 	 * @param string $tableName Name of the table to be looked up
-	 * @return NULL|t3lib_collection_AbstractRecordCollection[]
+	 * @return NULL|\TYPO3\CMS\Core\Collection\AbstractRecordCollection[]
 	 */
 	public function findByTypeAndTableName($type, $tableName) {
 		$conditions = array(
@@ -130,7 +130,7 @@ class RecordCollectionRepository {
 	 * Queries for multiple records for the given conditions.
 	 *
 	 * @param array $conditions Conditions concatenated with AND for query
-	 * @return NULL|t3lib_collection_AbstractRecordCollection[]
+	 * @return NULL|\TYPO3\CMS\Core\Collection\AbstractRecordCollection[]
 	 */
 	protected function queryMultipleRecords(array $conditions = array()) {
 		$result = NULL;
@@ -167,7 +167,7 @@ class RecordCollectionRepository {
 	 * Creates multiple record collection domain objects.
 	 *
 	 * @param array $data Array of multiple database records to be reconstituted
-	 * @return t3lib_collection_AbstractRecordCollection[]
+	 * @return \TYPO3\CMS\Core\Collection\AbstractRecordCollection[]
 	 */
 	protected function createMultipleDomainObjects(array $data) {
 		$collections = array();

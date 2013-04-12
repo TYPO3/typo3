@@ -1052,7 +1052,7 @@ class BackendUtility {
 	/**
 	 * Stores the string value $data in the 'cache_hash' cache with the
 	 * hash key, $hash, and visual/symbolic identification, $ident
-	 * IDENTICAL to the function by same name found in t3lib_page:
+	 * IDENTICAL to the function by same name found in \TYPO3\CMS\Frontend\Page\PageRepository
 	 *
 	 * @param string $hash 32 bit hash string (eg. a md5 hash of a serialized array identifying the data being stored)
 	 * @param string $data The data string. If you want to store an array, then just serialize it first.
@@ -1067,7 +1067,7 @@ class BackendUtility {
 	 * Returns string value stored for the hash string in the cache "cache_hash"
 	 * Can be used to retrieved a cached value
 	 *
-	 * IDENTICAL to the function by same name found in t3lib_page
+	 * IDENTICAL to the function by same name found in \TYPO3\CMS\Frontend\Page\PageRepository
 	 *
 	 * @param string $hash The hash-string which was used to store the data value
 	 * @param integer $expTime Variabele is not used in the function
@@ -3452,7 +3452,7 @@ class BackendUtility {
 	 * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid" and "t3ver_wsid" is nice and will save you a DB query.
 	 * @param boolean $ignoreWorkspaceMatch Ignore workspace match
 	 * @return void (Passed by ref). If the record had its pid corrected to the online versions pid, then "_ORIG_pid" is set to the original pid value (-1 of course). The field "_ORIG_pid" is used by various other functions to detect if a record was in fact in a versionized branch.
-	 * @see t3lib_page::fixVersioningPid()
+	 * @see \TYPO3\CMS\Frontend\Page\PageRepository::fixVersioningPid()
 	 */
 	static public function fixVersioningPid($table, &$rr, $ignoreWorkspaceMatch = FALSE) {
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version')) {
@@ -3569,7 +3569,7 @@ class BackendUtility {
 	 * @param string $table Table name
 	 * @param array $row Row (passed by reference) - must be online record!
 	 * @return boolean TRUE if overlay is made.
-	 * @see t3lib_page::movePlhOl()
+	 * @see \TYPO3\CMS\Frontend\Page\PageRepository::movePlhOl()
 	 */
 	static public function movePlhOL($table, &$row) {
 		// Only for WS ver 2... (moving)

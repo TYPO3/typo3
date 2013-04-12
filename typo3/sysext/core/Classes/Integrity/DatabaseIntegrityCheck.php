@@ -38,7 +38,7 @@ namespace TYPO3\CMS\Core\Integrity;
 /**
  * This class holds functions used by the TYPO3 backend to check the integrity of the database (The DBint module, 'lowlevel' extension)
  *
- * Depends on: Depends on loaddbgroup from t3lib/
+ * Depends on: Depends on \TYPO3\CMS\Core\Database\RelationHandler
  *
  * @todo Need to really extend this class when the tcemain library has been updated and the whole API is better defined. There are some known bugs in this library. Further it would be nice with a facility to not only analyze but also clean up!
  * @see SC_mod_tools_dbint_index::func_relations(), SC_mod_tools_dbint_index::func_records()

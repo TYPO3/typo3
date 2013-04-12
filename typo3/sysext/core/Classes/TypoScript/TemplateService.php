@@ -384,7 +384,6 @@ class TemplateService {
 	 * because this will make a new portion of data in currentPageData string.
 	 *
 	 * @return array Returns the unmatched array $currentPageData if found cached in "cache_pagesection". Otherwise FALSE is returned which means that the array must be generated and stored in the cache
-	 * @see start(), tslib_fe::getFromCache()
 	 */
 	public function getCurrentPageData() {
 		return $GLOBALS['typo3CacheManager']->getCache('cache_pagesection')->get(intval($GLOBALS['TSFE']->id) . '_' . \TYPO3\CMS\Core\Utility\GeneralUtility::md5int($GLOBALS['TSFE']->MP));
@@ -395,7 +394,6 @@ class TemplateService {
 	 *
 	 * @param array $cc An array with three keys, "all", "rowSum" and "rootLine" - all coming from the "currentPageData" array
 	 * @return array The input array but with a new key added, "match" which contains the items from the "all" key which when passed to tslib_matchCondition returned TRUE.
-	 * @see t3lib_matchCondition, tslib_fe::getFromCache()
 	 * @todo Define visibility
 	 */
 	public function matching($cc) {

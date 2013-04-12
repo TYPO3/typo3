@@ -99,7 +99,7 @@ class MailUtility {
 	/**
 	 * Gets a valid "from" for mail messages (email and name).
 	 *
-	 * Ready to be passed to $mail->setFrom() (t3lib_mail)
+	 * Ready to be passed to $mail->setFrom()
 	 *
 	 * @return array key=Valid email address which can be used as sender, value=Valid name which can be used as a sender. NULL if no address is configured
 	 */
@@ -139,7 +139,7 @@ class MailUtility {
 	 * no-reply@php_uname('n') ->
 	 * no-reply@example.com
 	 *
-	 * Ready to be passed to $mail->setFrom() (t3lib_mail)
+	 * Ready to be passed to $mail->setFrom()
 	 *
 	 * @return string An email address
 	 */

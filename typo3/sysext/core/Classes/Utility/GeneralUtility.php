@@ -1066,7 +1066,6 @@ class GeneralUtility {
 	 *
 	 * @param string $address Address to adjust
 	 * @return string Adjusted address
-	 * @see 	t3lib_::isBrokenEmailEnvironment()
 	 */
 	static public function normalizeMailAddress($address) {
 		if (self::isBrokenEmailEnvironment() && FALSE !== ($pos1 = strrpos($address, '<'))) {

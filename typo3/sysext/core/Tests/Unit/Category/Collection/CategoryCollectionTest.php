@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Category\Collection;
  ***************************************************************/
 
 /**
- * Test case for t3lib_category_CategoryCollection
+ * Test case for \TYPO3\CMS\Core\Category\Collection\CategoryCollection
  *
  * @author Fabien Udriot <fabien.udriot@typo3.org>
  */

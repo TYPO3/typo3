@@ -28,11 +28,11 @@ namespace TYPO3\CMS\Filelist;
  ***************************************************************/
 
 /**
- * Extension class for the t3lib_filetree class, needed for drag and drop and ajax functionality
+ * Class for drag and drop and ajax functionality
  *
  * @author Sebastian Kurfürst <sebastian@garbage-group.de>
  * @author Benjamin Mack <bmack@xnos.org>
- * @see class t3lib_browseTree
+ * @see class \TYPO3\CMS\Backend\Tree\View\BrowseTreeView
  */
 class FileListFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 

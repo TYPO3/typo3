@@ -115,8 +115,7 @@ class DatabaseUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Dump table content
 	 * Is DBAL compliant, but the dump format is written as MySQL standard.
 	 * If the INSERT statements should be imported in a DBMS using other
-	 * quoting than MySQL they must first be translated. t3lib_sqlengine
-	 * can parse these queries correctly and translate them somehow.
+	 * quoting than MySQL they must first be translated.
 	 *
 	 * @param string $table Table name
 	 * @param array $fieldStructure Field structure

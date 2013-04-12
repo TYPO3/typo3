@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 require_once __DIR__ . DIRECTORY_SEPARATOR . '../Fixtures/ProcessorFixture.php';
 
 /**
- * Testcase for t3lib_log_processor_Abstract
+ * Testcase for \TYPO3\CMS\Core\Log\Processor\Abstract
  *
  * @author Steffen Müller <typo3@t3node.com>
  */

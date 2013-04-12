@@ -386,7 +386,7 @@ abstract class AbstractFile implements FileInterface {
 
 	/**
 	 * Sets the storage this file is located in. This is only meant for
-	 * t3lib/file/-internal usage; don't use it to move files.
+	 * \TYPO3\CMS\Core\Resource-internal usage; don't use it to move files.
 	 *
 	 * @internal Should only be used by other parts of the File API (e.g. drivers after moving a file)
 	 * @param integer|ResourceStorage $storage
