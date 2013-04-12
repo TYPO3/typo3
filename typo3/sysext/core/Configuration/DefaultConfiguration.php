@@ -702,16 +702,16 @@ return array(
 		// Here you can more or less freely define additional configuration for scripts in TYPO3. Of course the features supported depends on the script. See documentation "Inside TYPO3" for examples. Keys in the array are the relative path of a script (for output scripts it should be the "script ID" as found in a comment in the HTML header ) and values can then be anything that scripts wants to define for itself. The key "GLOBAL" is reserved.
 		'GLOBAL' => array(
 			'softRefParser' => array(
-				'substitute' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
-				'notify' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
-				'images' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
-				'typolink' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
-				'typolink_tag' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
-				'TSconfig' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
-				'TStemplate' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
-				'ext_fileref' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
-				'email' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc',
-				'url' => 't3lib/class.t3lib_softrefproc.php:&t3lib_softrefproc'
+				'substitute' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
+				'notify' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
+				'images' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
+				'typolink' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
+				'typolink_tag' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
+				'TSconfig' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
+				'TStemplate' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
+				'ext_fileref' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
+				'email' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
+				'url' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
 			),
 			'softRefParser_GL' => array(),
 			// Global soft reference parsers
