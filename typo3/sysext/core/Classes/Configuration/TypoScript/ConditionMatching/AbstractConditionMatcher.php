@@ -405,8 +405,8 @@ abstract class AbstractConditionMatcher {
 		case 'userFunc':
 			$values = preg_split('/\\(|\\)/', $value);
 			$funcName = trim($values[0]);
-			$funcValue = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $values[1]);
-			if (function_exists($funcName) && call_user_func($funcName, $funcValue[0])) {
+			$funcValues = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $values[1]);
+			if (function_exists($funcName) && call_user_func_array($funcName, $funcValues)) {
 				return TRUE;
 			}
 			break;
