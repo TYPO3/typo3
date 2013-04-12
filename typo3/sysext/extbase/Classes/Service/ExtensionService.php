@@ -46,6 +46,12 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $configurationManager;
 
 	/**
+	 * Cache of result for getTargetPidByPlugin()
+	 * @var array
+	 */
+	protected $targetPidPluginCache = array();
+
+	/**
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
@@ -160,11 +166,15 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
 		if ($frameworkConfiguration['view']['defaultPid'] === 'auto') {
-			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('pid', 'tt_content', 'list_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($pluginSignature, 'tt_content') . ' AND CType="list"' . $GLOBALS['TSFE']->sys_page->enableFields('tt_content') . ' AND sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid, '', '', 2);
-			if (count($pages) > 1) {
-				throw new \TYPO3\CMS\Extbase\Exception('There is more than one "' . $pluginSignature . '" plugin in the current page tree. Please remove one plugin or set the TypoScript configuration "plugin.tx_' . $pluginSignature . '.view.defaultPid" to a fixed page id', 1280773643);
+			if (!array_key_exists($pluginSignature, $this->targetPidPluginCache)) {
+				$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('pid', 'tt_content', 'list_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($pluginSignature, 'tt_content') . ' AND CType="list"' . $GLOBALS['TSFE']->sys_page->enableFields('tt_content') . ' AND sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid, '', '', 2);
+				if (count($pages) > 1) {
+					throw new \TYPO3\CMS\Extbase\Exception('There is more than one "' . $pluginSignature . '" plugin in the current page tree. Please remove one plugin or set the TypoScript configuration "plugin.tx_' . $pluginSignature . '.view.defaultPid" to a fixed page id', 1280773643);
+				}
+				$this->targetPidPluginCache[$pluginSignature] = count($pages) > 0 ? $pages[0]['pid'] : NULL;
 			}
-			return count($pages) > 0 ? $pages[0]['pid'] : NULL;
+			return $this->targetPidPluginCache[$pluginSignature];
+
 		}
 		return (integer) $frameworkConfiguration['view']['defaultPid'];
 	}
