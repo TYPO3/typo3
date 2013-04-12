@@ -247,7 +247,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @param DataMap $dataMap
-	 * @param $tableName
+	 * @param string $tableName
 	 * @return DataMap
 	 */
 	protected function addMetaDataColumnNames(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap $dataMap, $tableName) {

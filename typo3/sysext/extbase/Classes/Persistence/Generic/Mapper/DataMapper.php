@@ -358,7 +358,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
-	 * @param $propertyName
+	 * @param string $propertyName
 	 * @return array|NULL
 	 */
 	protected function getEmptyRelationValue(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName) {
@@ -455,7 +455,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Returns the given result as property value of the specified property type.
 	 *
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
-	 * @param $propertyName
+	 * @param string $propertyName
 	 * @param mixed $result The result
 	 * @return mixed
 	 */

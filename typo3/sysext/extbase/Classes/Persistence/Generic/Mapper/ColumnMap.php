@@ -184,21 +184,21 @@ class ColumnMap {
 	}
 
 	/**
-	 * @param $typeOfRelation
+	 * @param string $typeOfRelation
 	 */
 	public function setTypeOfRelation($typeOfRelation) {
 		$this->typeOfRelation = $typeOfRelation;
 	}
 
 	/**
-	 * @return int
+	 * @return string
 	 */
 	public function getTypeOfRelation() {
 		return $this->typeOfRelation;
 	}
 
 	/**
-	 * @param $propertyName
+	 * @param string $propertyName
 	 */
 	public function setPropertyName($propertyName) {
 		$this->propertyName = $propertyName;
@@ -212,7 +212,7 @@ class ColumnMap {
 	}
 
 	/**
-	 * @param $columnName
+	 * @param string $columnName
 	 */
 	public function setColumnName($columnName) {
 		$this->columnName = $columnName;
@@ -226,7 +226,7 @@ class ColumnMap {
 	}
 
 	/**
-	 * @param $childTableName
+	 * @param string $childTableName
 	 */
 	public function setChildTableName($childTableName) {
 		$this->childTableName = $childTableName;
@@ -240,7 +240,7 @@ class ColumnMap {
 	}
 
 	/**
-	 * @param $childTableWhereStatement
+	 * @param string $childTableWhereStatement
 	 */
 	public function setChildTableWhereStatement($childTableWhereStatement) {
 		$this->childTableWhereStatement = $childTableWhereStatement;
@@ -254,7 +254,7 @@ class ColumnMap {
 	}
 
 	/**
-	 * @param $childSortByFieldName
+	 * @param string $childSortByFieldName
 	 */
 	public function setChildSortByFieldName($childSortByFieldName) {
 		$this->childSortByFieldName = $childSortByFieldName;
@@ -268,7 +268,7 @@ class ColumnMap {
 	}
 
 	/**
-	 * @param $relationTableName
+	 * @param string $relationTableName
 	 */
 	public function setRelationTableName($relationTableName) {
 		$this->relationTableName = $relationTableName;
@@ -282,7 +282,7 @@ class ColumnMap {
 	}
 
 	/**
-	 * @param $relationTablePageIdColumnName
+	 * @param string $relationTablePageIdColumnName
 	 */
 	public function setRelationTablePageIdColumnName($relationTablePageIdColumnName) {
 		$this->relationTablePageIdColumnName = $relationTablePageIdColumnName;
@@ -324,7 +324,7 @@ class ColumnMap {
 	}
 
 	/**
-	 * @param $relationTableWhereStatement
+	 * @param string $relationTableWhereStatement
 	 */
 	public function setRelationTableWhereStatement($relationTableWhereStatement) {
 		$this->relationTableWhereStatement = $relationTableWhereStatement;
@@ -338,7 +338,7 @@ class ColumnMap {
 	}
 
 	/**
-	 * @param $parentKeyFieldName
+	 * @param string $parentKeyFieldName
 	 */
 	public function setParentKeyFieldName($parentKeyFieldName) {
 		$this->parentKeyFieldName = $parentKeyFieldName;
@@ -352,7 +352,7 @@ class ColumnMap {
 	}
 
 	/**
-	 * @param $parentTableFieldName
+	 * @param string $parentTableFieldName
 	 */
 	public function setParentTableFieldName($parentTableFieldName) {
 		$this->parentTableFieldName = $parentTableFieldName;
@@ -366,7 +366,7 @@ class ColumnMap {
 	}
 
 	/**
-	 * @param $childKeyFieldName
+	 * @param string $childKeyFieldName
 	 */
 	public function setChildKeyFieldName($childKeyFieldName) {
 		$this->childKeyFieldName = $childKeyFieldName;
