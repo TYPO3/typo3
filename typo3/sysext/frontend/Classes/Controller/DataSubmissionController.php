@@ -137,7 +137,7 @@ class DataSubmissionController {
 				$autoRespondChecksum = $valueList['auto_respond_checksum'];
 				$correctHmacChecksum = Utility\GeneralUtility::hmac($this->autoRespondMessage);
 				if ($autoRespondChecksum !== $correctHmacChecksum) {
-					Utility\GeneralUtility::sysLog('Possible misuse of t3lib_formmail auto respond method. Subject: ' . $valueList['subject'], 'Core', Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+					Utility\GeneralUtility::sysLog('Possible misuse of DataSubmissionController auto respond method. Subject: ' . $valueList['subject'], 'Core', Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 					return;
 				} else {
 					$this->autoRespondMessage = $this->sanitizeHeaderString($this->autoRespondMessage);
@@ -173,10 +173,10 @@ class DataSubmissionController {
 					continue;
 				}
 				if (!is_uploaded_file($_FILES[$variableName]['tmp_name'])) {
-					Utility\GeneralUtility::sysLog('Possible abuse of t3lib_formmail: temporary file "' . $_FILES[$variableName]['tmp_name'] . '" ("' . $_FILES[$variableName]['name'] . '") was not an uploaded file.', 'Core', Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+					Utility\GeneralUtility::sysLog('Possible abuse of DataSubmissionController: temporary file "' . $_FILES[$variableName]['tmp_name'] . '" ("' . $_FILES[$variableName]['name'] . '") was not an uploaded file.', 'Core', Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 				}
 				if ($_FILES[$variableName]['tmp_name']['error'] !== UPLOAD_ERR_OK) {
-					Utility\GeneralUtility::sysLog('Error in uploaded file in t3lib_formmail: temporary file "' . $_FILES[$variableName]['tmp_name'] . '" ("' . $_FILES[$variableName]['name'] . '") Error code: ' . $_FILES[$variableName]['tmp_name']['error'], 'Core', Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+					Utility\GeneralUtility::sysLog('Error in uploaded file in DataSubmissionController: temporary file "' . $_FILES[$variableName]['tmp_name'] . '" ("' . $_FILES[$variableName]['name'] . '") Error code: ' . $_FILES[$variableName]['tmp_name']['error'], 'Core', Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 				}
 				$theFile = Utility\GeneralUtility::upload_to_tempfile($_FILES[$variableName]['tmp_name']);
 				$theName = $_FILES[$variableName]['name'];
@@ -201,9 +201,9 @@ class DataSubmissionController {
 			// is not worth the trouble
 			// Log dirty header lines
 			if ($this->dirtyHeaders) {
-				Utility\GeneralUtility::sysLog('Possible misuse of t3lib_formmail: see TYPO3 devLog', 'Core', Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+				Utility\GeneralUtility::sysLog('Possible misuse of DataSubmissionController: see TYPO3 devLog', 'Core', Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']) {
-					Utility\GeneralUtility::devLog('t3lib_formmail: ' . Utility\GeneralUtility::arrayToLogString($this->dirtyHeaders, '', 200), 'Core', 3);
+					Utility\GeneralUtility::devLog('DataSubmissionController: ' . Utility\GeneralUtility::arrayToLogString($this->dirtyHeaders, '', 200), 'Core', 3);
 				}
 			}
 		}

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,14 +25,11 @@
  ***************************************************************/
 
 /**
- * Testcase for t3lib_formmail
- *
- * This legacy test will be removed if t3lib_formmail is removed
+ * Test case
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- *
  */
-class t3lib_formmailTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class DataSubmissionControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	///////////////////////////////
 	// tests concerning __destruct
@@ -41,7 +40,7 @@ class t3lib_formmailTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function invalidFileReferences() {
 		return array(
-			'not within PATH_site' => array('/tmp/TYPO3-Formmail-Test'),
+			'not within PATH_site' => array('/tmp/TYPO3-DataSubmissionControllerTest'),
 			'does not start with upload_temp_' => array(PATH_site . 'typo3temp/foo'),
 			'directory traversal' => array(PATH_site . 'typo3temp/../typo3temp/upload_temp_foo'),
 		);
@@ -66,9 +65,8 @@ class t3lib_formmailTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('destructorDoesNotRemoveFilesNotWithinTypo3TempDirectory() skipped: Test file could not be created');
 		}
 
-			// Create t3lib_formmail instance, inject invalid file
-		$instance = new t3lib_formmail(999999999, $lockMethod);
-		$t3libLockReflection = new ReflectionClass('t3lib_formmail');
+		$instance = new \TYPO3\CMS\Frontend\Controller\DataSubmissionController(999999999, $lockMethod);
+		$t3libLockReflection = new \ReflectionClass('TYPO3\\CMS\\Frontend\\Controller\\DataSubmissionController');
 		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('temporaryFiles');
 		$t3libLockReflectionResourceProperty->setAccessible(TRUE);
 		$t3libLockReflectionResourceProperty->setValue($instance, array($file));
