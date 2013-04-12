@@ -403,8 +403,14 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 		} elseif (substr($methodName, 0, 9) === 'findOneBy' && strlen($methodName) > 10) {
 			$propertyName = lcfirst(substr($methodName, 9));
 			$query = $this->createQuery();
-			$object = $query->matching($query->equals($propertyName, $arguments[0]))->setLimit(1)->execute()->getFirst();
-			return $object;
+
+			$result = $query->matching($query->equals($propertyName, $arguments[0]))->setLimit(1)->execute();
+			if ($result instanceof \TYPO3\CMS\Extbase\Persistence\QueryResultInterface) {
+				return $result->getFirst();
+			} elseif (is_array($result)) {
+				return isset($result[0]) ? $result[0] : NULL;
+			}
+
 		} elseif (substr($methodName, 0, 7) === 'countBy' && strlen($methodName) > 8) {
 			$propertyName = lcfirst(substr($methodName, 7));
 			$query = $this->createQuery();
