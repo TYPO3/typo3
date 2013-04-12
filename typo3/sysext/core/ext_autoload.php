@@ -3,7 +3,6 @@
 // This file was generated on 2012-06-22 14:48
 $t3libClasses = array(
 	't3lib_ajax' => PATH_t3lib . 'class.t3lib_ajax.php',
-	't3lib_formmail' => PATH_t3lib . 'class.t3lib_formmail.php',
 	't3lib_install' => PATH_t3lib . 'class.t3lib_install.php',
 	't3lib_readmail' => PATH_t3lib . 'class.t3lib_readmail.php',
 	't3lib_syntaxhl' => PATH_t3lib . 'class.t3lib_syntaxhl.php',
