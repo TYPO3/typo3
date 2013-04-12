@@ -3070,7 +3070,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	 */
 	public function checkTrueTypeSupport() {
 		$im = @imagecreate(300, 50);
-		$imagecolorallocate($im, 255, 255, 55);
+		imagecolorallocate($im, 255, 255, 55);
 		$text_color = imagecolorallocate($im, 233, 14, 91);
 		@imagettftext(
 			$im,
