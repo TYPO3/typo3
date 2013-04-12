@@ -108,10 +108,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 */
 	public function __construct(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
-		$frameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
-			$this->referenceIndex = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
-		}
+		$this->referenceIndex = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
 		$this->deletedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
