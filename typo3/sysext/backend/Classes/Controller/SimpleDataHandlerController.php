@@ -184,7 +184,9 @@ class SimpleDataHandlerController {
 			$this->tce->process_datamap();
 			$this->tce->process_cmdmap();
 			// Clearing cache:
-			$this->tce->clear_cacheCmd($this->cacheCmd);
+			if (!empty($this->cacheCmd)) {
+				$this->tce->clear_cacheCmd($this->cacheCmd);
+			}
 			// Update page tree?
 			if ($this->uPT && (isset($this->data['pages']) || isset($this->cmd['pages']))) {
 				\TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal('updatePageTree');
