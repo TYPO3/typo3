@@ -397,7 +397,7 @@ final class t3lib_iconWorks {
 		if (preg_match('/(.*)_i(\....)$/', $srcBasename, $matches)) {
 			$temp_path = dirname(PATH_thisScript) . '/';
 			if (!@is_file($temp_path . $backPath . $src)) {
-				$srcOrg = preg_replace('/_i' . preg_quote($matches[2]) . '$/', $matches[2], $src);
+				$srcOrg = preg_replace('/_i' . preg_quote($matches[2], '/') . '$/', $matches[2], $src);
 				$src = self::makeIcon($backPath . $srcOrg, 'disabled', 0, FALSE, $temp_path . $backPath . $srcOrg, $srcBasename);
 			}
 		}

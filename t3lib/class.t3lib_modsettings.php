@@ -245,7 +245,7 @@ class t3lib_modSettings {
 		global $SOBE;
 
 		$prefix = $prefix ? $prefix : $this->prefix;
-
+		$prefix = preg_quote($prefix, '/');
 		foreach ($SOBE->MOD_SETTINGS as $key => $value) {
 			if (preg_match('/^' . $prefix . '/', $key)) {
 				$this->storeList[$key] = $key;

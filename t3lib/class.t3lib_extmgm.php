@@ -312,8 +312,8 @@ final class t3lib_extMgm {
 						$positionArray = t3lib_div::trimExplode(':', $position);
 						if ($positionArray[0] == 'replace') {
 							foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
-								if (preg_match('/\b' . $palette . '\b/', $typeDetails['showitem']) > 0
-										&& preg_match('/\b' . $positionArray[1] . '\b/', $paletteDetails['showitem']) > 0) {
+								if (preg_match('/\b' . preg_quote($palette, '/') . '\b/', $typeDetails['showitem']) > 0
+										&& preg_match('/\b' . preg_quote($positionArray[1], '/') . '\b/', $paletteDetails['showitem']) > 0) {
 									self::addFieldsToPalette($table, $palette, $str, $position);
 										// save that palette in case other types use it
 									$palettesChanged[] = $palette;
@@ -327,8 +327,8 @@ final class t3lib_extMgm {
 								$fieldExists = TRUE;
 							} else {
 								foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
-									if (preg_match('/\b' . $palette . '\b/', $typeDetails['showitem']) > 0
-									&& preg_match('/\b' . $positionArray[1] . '\b/', $paletteDetails['showitem']) > 0) {
+									if (preg_match('/\b' . preg_quote($palette, '/') . '\b/', $typeDetails['showitem']) > 0
+									&& preg_match('/\b' . preg_quote($positionArray[1], '/') . '\b/', $paletteDetails['showitem']) > 0) {
 										$position = $positionArray[0] . ':--palette--;;' . $palette;
 									}
 								}
@@ -339,7 +339,7 @@ final class t3lib_extMgm {
 							$fieldExists = TRUE;
 						} else if(is_array($GLOBALS['TCA'][$table]['palettes'])) {
 							foreach ($GLOBALS['TCA'][$table]['palettes'] as $palette => $paletteDetails) {
-								if (preg_match('/\b' . $palette . '\b/', $typeDetails['showitem']) > 0
+								if (preg_match('/\b' . preg_quote($palette, '/') . '\b/', $typeDetails['showitem']) > 0
 								&& strpos($paletteDetails['showitem'], $str) !== FALSE) {
 									$fieldExists = TRUE;
 								}
