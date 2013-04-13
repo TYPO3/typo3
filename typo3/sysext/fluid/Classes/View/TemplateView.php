@@ -208,7 +208,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		$paths = $this->expandGenericPathPattern($this->templatePathAndFilenamePattern, FALSE, FALSE);
 		foreach ($paths as &$templatePathAndFilename) {
 			$templatePathAndFilename = str_replace('@action', $actionName, $templatePathAndFilename);
-			if (file_exists($templatePathAndFilename)) {
+			if (is_file($templatePathAndFilename)) {
 				return $templatePathAndFilename;
 			}
 		}
@@ -269,7 +269,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		$layoutName = ucfirst($layoutName);
 		foreach ($paths as &$layoutPathAndFilename) {
 			$layoutPathAndFilename = str_replace('@layout', $layoutName, $layoutPathAndFilename);
-			if (file_exists($layoutPathAndFilename)) {
+			if (is_file($layoutPathAndFilename)) {
 				return $layoutPathAndFilename;
 			}
 		}
@@ -316,7 +316,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		$paths = $this->expandGenericPathPattern($this->partialPathAndFilenamePattern, TRUE, TRUE);
 		foreach ($paths as &$partialPathAndFilename) {
 			$partialPathAndFilename = str_replace('@partial', $partialName, $partialPathAndFilename);
-			if (file_exists($partialPathAndFilename)) {
+			if (is_file($partialPathAndFilename)) {
 				return $partialPathAndFilename;
 			}
 		}
