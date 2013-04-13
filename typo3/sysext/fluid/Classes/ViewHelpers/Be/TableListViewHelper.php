@@ -92,7 +92,7 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 		$dblist->alternateBgColors = $alternateBackgroundColors;
 		$dblist->clickMenuEnabled = $enableClickMenu;
 		if ($storagePid === NULL) {
-			$frameworkConfiguration = $this->configurationManager->getConfiguration(\Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+			$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 			$storagePid = $frameworkConfiguration['persistence']['storagePid'];
 		}
 		$dblist->start($storagePid, $tableName, (integer) \t3lib_div::_GP('pointer'), $filter, $levels, $recordsPerPage);
