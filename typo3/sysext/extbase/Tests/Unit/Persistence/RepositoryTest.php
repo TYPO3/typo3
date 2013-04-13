@@ -426,6 +426,34 @@ class Tx_Extbase_Tests_Unit_Persistence_RepositoryTest extends Tx_Extbase_Tests_
 	/**
 	 * @test
 	 */
+	public function magicCallMethodReturnsFirstArrayKeyInFindOneBySomethingIfQueryReturnsRawResult() {
+		$queryResultArray = array(
+			0 => array(
+				'foo' => 'bar',
+			),
+		);
+		$this->mockQuery->expects($this->once())->method('equals')->with('foo', 'bar')->will($this->returnValue('matchCriteria'));
+		$this->mockQuery->expects($this->once())->method('matching')->with('matchCriteria')->will($this->returnValue($this->mockQuery));
+		$this->mockQuery->expects($this->once())->method('setLimit')->with(1)->will($this->returnValue($this->mockQuery));
+		$this->mockQuery->expects($this->once())->method('execute')->will($this->returnValue($queryResultArray));
+		$this->assertSame(array('foo' => 'bar'), $this->repository->findOneByFoo('bar'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function magicCallMethodReturnsNullInFindOneBySomethingIfQueryReturnsEmptyRawResult() {
+		$queryResultArray = array();
+		$this->mockQuery->expects($this->once())->method('equals')->with('foo', 'bar')->will($this->returnValue('matchCriteria'));
+		$this->mockQuery->expects($this->once())->method('matching')->with('matchCriteria')->will($this->returnValue($this->mockQuery));
+		$this->mockQuery->expects($this->once())->method('setLimit')->with(1)->will($this->returnValue($this->mockQuery));
+		$this->mockQuery->expects($this->once())->method('execute')->will($this->returnValue($queryResultArray));
+		$this->assertNull($this->repository->findOneByFoo('bar'));
+	}
+
+	/**
+	 * @test
+	 */
 	public function magicCallMethodAcceptsCountBySomethingCallsAndExecutesAQueryWithThatCriteria() {
 		$mockQueryResult = $this->getMock('Tx_Extbase_Persistence_QueryResultInterface');
 		$mockQueryResult->expects($this->once())->method('count')->will($this->returnValue(2));
