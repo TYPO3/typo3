@@ -90,7 +90,6 @@ class BootstrapTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$cliRequestHandler->injectObjectManager($this->objectManager);
 		$cliRequestHandler->injectRequestBuilder($this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Cli\RequestBuilder'));
 		$cliRequestHandler->injectDispatcher($this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Dispatcher'));
-		$cliRequestHandler->injectFlashMessageContainer($this->objectManager->get('TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer'));
 
 		/** @var $cliResponse \TYPO3\CMS\Extbase\Mvc\Cli\Response */
 		$cliResponse = $this->getMock('TYPO3\CMS\Extbase\Mvc\Cli\Response', array('send'));

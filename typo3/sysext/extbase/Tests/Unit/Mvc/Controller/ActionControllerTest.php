@@ -478,15 +478,17 @@ class ActionControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function defaultErrorActionSetsArgumentMappingResultsErrorsInRequest() {
 		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array(), array(), '', FALSE);
-		$mockFlashMessageContainer = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FlashMessageContainer', array(), array(), '', FALSE);
 		$mockError = $this->getMock('TYPO3\\CMS\\Extbase\\Error\\Error', array('getMessage'), array(), '', FALSE);
 		$mockArgumentsMappingResults = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\MappingResults', array('getErrors', 'getWarnings'), array(), '', FALSE);
 		$mockArgumentsMappingResults->expects($this->atLeastOnce())->method('getErrors')->will($this->returnValue(array($mockError)));
 		$mockArgumentsMappingResults->expects($this->any())->method('getWarnings')->will($this->returnValue(array()));
-		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('pushFlashMessage', 'clearCacheOnError'), array(), '', FALSE);
+		/** @var $mockController \TYPO3\CMS\Extbase\Mvc\Controller\ActionController|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$mockController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController', array('clearCacheOnError'), array(), '', FALSE);
+		$controllerContext = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext', array('getFlashMessageQueue'));
+		$controllerContext->expects($this->any())->method('getFlashMessageQueue')->will($this->returnValue(new \TYPO3\CMS\Core\Messaging\FlashMessageQueue('foo')));
 		$this->enableDeprecatedPropertyMapperInController($mockController);
+		$mockController->_set('controllerContext', $controllerContext);
 		$mockController->_set('request', $mockRequest);
-		$mockController->_set('flashMessageContainer', $mockFlashMessageContainer);
 		$mockController->_set('argumentsMappingResults', $mockArgumentsMappingResults);
 		$mockRequest->expects($this->once())->method('setErrors')->with(array($mockError));
 		$mockController->_call('errorAction');

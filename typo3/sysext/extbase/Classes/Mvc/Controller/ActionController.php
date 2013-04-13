@@ -447,7 +447,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
 			$errorFlashMessage = $this->getErrorFlashMessage();
 			if ($errorFlashMessage !== FALSE) {
-				$this->flashMessageContainer->add($errorFlashMessage, '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$this->controllerContext->getFlashMessageQueue()->addMessage(new \TYPO3\CMS\Core\Messaging\FlashMessage($errorFlashMessage, '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR));
 			}
 			$referringRequest = $this->request->getReferringRequest();
 			if ($referringRequest !== NULL) {
@@ -468,7 +468,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 			$this->request->setErrors($this->argumentsMappingResults->getErrors());
 			$errorFlashMessage = $this->getErrorFlashMessage();
 			if ($errorFlashMessage !== FALSE) {
-				$this->flashMessageContainer->add($errorFlashMessage, '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$this->controllerContext->getFlashMessageQueue()->addMessage(new \TYPO3\CMS\Core\Messaging\FlashMessage($errorFlashMessage, '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR));
 			}
 			$referrer = $this->request->getInternalArgument('__referrer');
 			if ($referrer !== NULL) {

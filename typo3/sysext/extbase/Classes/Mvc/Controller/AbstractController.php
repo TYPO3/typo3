@@ -119,8 +119,14 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	protected $controllerContext;
 
 	/**
-	 * The flash messages. Use $this->flashMessageContainer->add(...) to add a new Flash message.
-	 *
+	 * @return ControllerContext
+	 * @api
+	 */
+	public function getControllerContext() {
+		return $this->controllerContext;
+	}
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer
 	 * @api
 	 */
@@ -260,6 +266,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	 * @api
 	 */
 	protected function buildControllerContext() {
+		/** @var $controllerContext \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext */
 		$controllerContext = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext');
 		$controllerContext->setRequest($this->request);
 		$controllerContext->setResponse($this->response);
@@ -270,6 +277,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 			$controllerContext->setArgumentsMappingResults($this->argumentsMappingResults);
 		}
 		$controllerContext->setUriBuilder($this->uriBuilder);
+
 		$controllerContext->setFlashMessageContainer($this->flashMessageContainer);
 		return $controllerContext;
 	}
