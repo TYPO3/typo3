@@ -340,7 +340,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		// debug($sql,-2);
 		$result = $this->databaseHandle->sql_query($sql);
 		$this->checkSqlErrors($sql);
-		$rows = $this->getRowsFromResult($query->getSource(), $result);
+		$rows = $this->getRowsFromResult($result);
 		$this->databaseHandle->sql_free_result($result);
 		// Get language uid from querySettings.
 		// Ensure the backend handling is not broken (fallback to Get parameter 'L' if needed)
@@ -384,7 +384,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			$this->replacePlaceholders($statement, $parameters, current($statementParts['tables']));
 			$result = $this->databaseHandle->sql_query($statement);
 			$this->checkSqlErrors($statement);
-			$rows = $this->getRowsFromResult($query->getSource(), $result);
+			$rows = $this->getRowsFromResult($result);
 			$count = current(current($rows));
 		}
 		$this->databaseHandle->sql_free_result($result);
@@ -1138,11 +1138,10 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	/**
 	 * Transforms a Resource from a database query to an array of rows.
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source The source (selector od join)
 	 * @param resource $result The result
 	 * @return array The result as an array of rows (tuples)
 	 */
-	protected function getRowsFromResult(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source, $result) {
+	protected function getRowsFromResult($result) {
 		$rows = array();
 		while ($row = $this->databaseHandle->sql_fetch_assoc($result)) {
 			if (is_array($row)) {
