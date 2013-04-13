@@ -152,7 +152,7 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 	);
 
 	public function setUp() {
-		$this->localization = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Utility\\LocalizationUtility', array('dummy'));
+		$this->localization = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Utility\\LocalizationUtility', array('getConfigurationManager'));
 	}
 
 	public function tearDown() {
@@ -262,7 +262,27 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 							'key1' => array(
 								array(
 									'source' => 'English label for key1',
-									'target' => 'Dansk label for key1',
+									'target' => 'Dansk label for key1 extensionKey',
+								)
+							),
+							'key2' => array(
+								array(
+									'source' => 'English label for key2',
+								)
+							),
+							'key3.subkey1' => array(
+								array(
+									'source' => 'English label for key3',
+								)
+							),
+						),
+					),
+					'extensionKey1' => array(
+						'dk' => array(
+							'key1' => array(
+								array(
+									'source' => 'English label for key1',
+									'target' => 'Dansk label for key1 extensionKey1',
 								)
 							),
 							'key2' => array(
@@ -279,15 +299,17 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 					),
 				),
 				'typoscript LOCAL_LANG' => array(
-					'dk' => array(
-						'key1' => 'key1 value from TS',
-						'key3' => array(
-							'subkey1' => 'key3.subkey1 value from TS',
-							// this key doesn't exist in xml files
-							'subkey2' => array(
-								'subsubkey' => 'key3.subkey2.subsubkey value from TS'
+					'_LOCAL_LANG' => array(
+						'dk' => array(
+							'key1' => 'key1 value from TS extensionKey',
+							'key3' => array(
+								'subkey1' => 'key3.subkey1 value from TS extensionKey',
+								// this key doesn't exist in xml files
+								'subkey2' => array(
+									'subsubkey' => 'key3.subkey2.subsubkey value from TS extensionKey'
+								)
 							)
-						),
+						)
 					)
 				),
 				'language key' => 'dk',
@@ -295,7 +317,7 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 					'key1' => array(
 						array(
 							'source' => 'English label for key1',
-							'target' => 'key1 value from TS',
+							'target' => 'key1 value from TS extensionKey',
 						)
 					),
 					'key2' => array(
@@ -306,12 +328,12 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 					'key3.subkey1' => array(
 						array(
 							'source' => 'English label for key3',
-							'target' => 'key3.subkey1 value from TS',
+							'target' => 'key3.subkey1 value from TS extensionKey',
 						)
 					),
 					'key3.subkey2.subsubkey' => array(
 						array(
-							'target' => 'key3.subkey2.subsubkey value from TS',
+							'target' => 'key3.subkey2.subsubkey value from TS extensionKey',
 						)
 					),
 				),
@@ -320,27 +342,32 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 	}
 
 	/**
+	 * Tests whether labels from xml are overwritten by TypoScript labels
+	 *
 	 * @param array $LOCAL_LANG
-	 * @param array $typoscriptLocalLang
+	 * @param array $typoScriptLocalLang
 	 * @param string $languageKey
 	 * @param array $expected
 	 * @return void
 	 * @dataProvider loadTypoScriptLabelsProvider
 	 * @test
 	 */
-	public function loadTypoScriptLabels(array $LOCAL_LANG, array $typoscriptLocalLang, $languageKey, array $expected) {
+	public function loadTypoScriptLabels(array $LOCAL_LANG, array $typoScriptLocalLang, $languageKey, array $expected) {
+
+		$configurationType = \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
+
+		$configurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager', array('getConfiguration'));
+		$configurationManager->expects($this->at(0))->method('getConfiguration')->with($configurationType, 'extensionKey', NULL)->will($this->returnValue($typoScriptLocalLang));
+
+		$this->localization->staticExpects($this->atLeastOnce())->method('getConfigurationManager')->will($this->returnValue($configurationManager));
+
+		// translations loaded from xml files
 		$this->localization->_setStatic('LOCAL_LANG', $LOCAL_LANG);
 		$this->localization->_setStatic('languageKey', $languageKey);
 
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
-		$frameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		$frameworkConfiguration['_LOCAL_LANG'] = $typoscriptLocalLang;
-		$configurationManager->setConfiguration($frameworkConfiguration);
-
 		$this->localization->_call('loadTypoScriptLabels', 'extensionKey');
 		$result = $this->localization->_getStatic('LOCAL_LANG');
-		$this->assertSame($expected, $result['extensionKey'][$languageKey]);
+		$this->assertEquals($expected, $result['extensionKey'][$languageKey]);
 	}
 }
 
