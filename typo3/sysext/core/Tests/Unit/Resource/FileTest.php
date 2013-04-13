@@ -317,7 +317,7 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function readFailsIfFileIsClosed() {
 		$this->markTestSkipped();
-		$this->setExpectedException('\RuntimeException', '', 1299863431);
+		$this->setExpectedException('\\RuntimeException', '', 1299863431);
 		$fixture = $this->prepareFixture();
 		$mockFileHandle = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileHandle', array(), array(), '', FALSE);
 		$mockDriver = $this->getMockForAbstractClass('t3lib_file_driver_Abstract');
@@ -349,7 +349,7 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function writeFailsIfFileIsClosed() {
 		$this->markTestSkipped();
-		$this->setExpectedException('\RuntimeException', '', 1299863432);
+		$this->setExpectedException('\\RuntimeException', '', 1299863432);
 		$fixture = $this->prepareFixture();
 		$mockFileHandle = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileHandle', array(), array(), '', FALSE);
 		$mockDriver = $this->getMockForAbstractClass('t3lib_file_driver_Abstract');
