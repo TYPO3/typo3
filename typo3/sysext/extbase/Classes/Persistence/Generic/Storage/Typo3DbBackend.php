@@ -632,10 +632,15 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		if ($input instanceof \DateTime) {
 			return $input->format('U');
 		} elseif (is_object($input)) {
-			if ($input instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
-				return $input->getUid();
+			if ($input instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
+				$realInput = $input->_loadRealInstance();
 			} else {
-				throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException('An object of class "' . get_class($input) . '" could not be converted to a plain value.', 1274799934);
+				$realInput = $input;
+			}
+			if ($realInput instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
+				return $realInput->getUid();
+			} else {
+				throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException('An object of class "' . get_class($realInput) . '" could not be converted to a plain value.', 1274799934);
 			}
 		} elseif (is_bool($input)) {
 			return $input === TRUE ? 1 : 0;

@@ -483,6 +483,130 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockTypo3DbBackend->_set('pageRepository', $pageRepositoryMock);
 		$this->assertSame(array($comparisonRow), $mockTypo3DbBackend->_call('doLanguageAndWorkspaceOverlay', $sourceMock, array($row), $languageUid, $workspaceUid));
 	}
+
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException
+	 */
+	public function getPlainValueThrowsExceptionIfInputIsArray() {
+		$mockTypo3DbBackend = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend',
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+		$mockTypo3DbBackend->_call('getPlainValue', array());
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPlainValueReturnsTimestampIfDateTimeObjectIsGiven() {
+		$mockTypo3DbBackend = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend',
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+		$input = new \DateTime('@1365866253');
+		$this->assertSame('1365866253', $mockTypo3DbBackend->_call('getPlainValue', $input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPlainValueReturnsIntegerOneIfValueIsBooleanTrue() {
+		$mockTypo3DbBackend = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend',
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+		$this->assertSame(1, $mockTypo3DbBackend->_call('getPlainValue', TRUE));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPlainValueReturnsIntegerZeroIfValueIsBooleanFalse() {
+		$mockTypo3DbBackend = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend',
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+		$this->assertSame(0, $mockTypo3DbBackend->_call('getPlainValue', FALSE));
+	}
+
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException
+	 */
+	public function getPlainValueCallsGetRealInstanceOnInputIfInputIsInstanceOfLazyLoadingProxy() {
+		$mockTypo3DbBackend = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend',
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+		$input = $this->getMock(
+			'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\LazyLoadingProxy',
+			array(),
+			array(),
+			'',
+			FALSE
+		);
+		$input
+			->expects($this->once())
+			->method('_loadRealInstance');
+		$mockTypo3DbBackend->_call('getPlainValue', $input);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPlainValueCallsGetUidOnDomainObjectInterfaceInput() {
+		$mockTypo3DbBackend = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend',
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+		$input = $this->getMock(
+			'TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface',
+			array(),
+			array(),
+			'',
+			FALSE
+		);
+		$input
+			->expects($this->once())
+			->method('getUid')
+			->will($this->returnValue(23));
+		$this->assertSame(23, $mockTypo3DbBackend->_call('getPlainValue', $input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getPlainValueReturnsSimpleType() {
+		$mockTypo3DbBackend = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Storage\\Typo3DbBackend',
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+		$value = uniqid('foo_');
+		$this->assertSame($value, $mockTypo3DbBackend->_call('getPlainValue', $value));
+	}
+
 }
 
 ?>
