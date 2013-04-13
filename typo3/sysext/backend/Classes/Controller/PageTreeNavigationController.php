@@ -268,7 +268,7 @@ class PageTreeNavigationController {
 	 */
 	protected function getWorkspaceInfo() {
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces') && ($GLOBALS['BE_USER']->workspace !== 0 || $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.onlineWorkspaceInfo'))) {
-			$wsTitle = htmlspecialchars(\tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace));
+			$wsTitle = htmlspecialchars(\TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($GLOBALS['BE_USER']->workspace));
 			$workspaceInfo = '
 				<div class="bgColor4 workspace-info">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-workspace', array(
 				'title' => $wsTitle,
