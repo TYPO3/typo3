@@ -401,5 +401,31 @@ class Tx_Extbase_Tests_Unit_Utility_LocalizationTest extends Tx_Extbase_Tests_Un
 		$result = $this->localization->_getStatic('LOCAL_LANG');
 		$this->assertSame($expected, $result['extensionKey'][$languageKey]);
 	}
+
+	/**
+	 * @return void
+	 * @test
+	 */
+	public function clearLabelWithTypoScript() {
+		$this->localization->_setStatic('LOCAL_LANG', $this->LOCAL_LANG);
+		$this->localization->_setStatic('languageKey', 'dk');
+
+		$typoScriptLocalLang = array(
+			'dk' => array(
+				'key1' => '',
+			)
+		);
+
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
+		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$frameworkConfiguration['_LOCAL_LANG'] = $typoScriptLocalLang;
+		$configurationManager->setConfiguration($frameworkConfiguration);
+
+		$this->localization->_call('loadTypoScriptLabels', 'extensionKey');
+		$result = $this->localization->translate('key1', 'extensionKey');
+		$this->assertNotNull($result);
+		$this->assertEquals('', $result);
+	}
 }
 ?>
