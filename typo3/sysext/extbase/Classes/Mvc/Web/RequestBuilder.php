@@ -90,6 +90,11 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $extensionService;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
+	 */
+	protected $environmentService;
+
+	/**
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 */
 	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
@@ -112,6 +117,14 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService) {
 		$this->extensionService = $extensionService;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+	 * @return void
+	 */
+	public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService) {
+		$this->environmentService = $environmentService;
 	}
 
 	/**
@@ -169,7 +182,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		$request->setControllerActionName($actionName);
 		$request->setRequestUri(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseUri(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
-		$request->setMethod(isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : NULL);
+		$request->setMethod($this->environmentService->getServerRequestMethod());
 		if (is_string($parameters['format']) && strlen($parameters['format'])) {
 			$request->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));
 		} else {
@@ -217,7 +230,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	 * If no action is specified, the defaultActionName will be returned.
 	 * If that's not available or the specified action is not defined in the current plugin, an exception is thrown.
 	 *
-	 * @param $controllerName
+	 * @param string $controllerName
 	 * @param array $parameters
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception

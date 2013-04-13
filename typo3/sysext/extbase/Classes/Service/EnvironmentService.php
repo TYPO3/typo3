@@ -49,6 +49,13 @@ class EnvironmentService {
 	public function isEnvironmentInBackendMode() {
 		return (defined('TYPO3_MODE') && TYPO3_MODE === 'BE') ?: FALSE;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getServerRequestMethod() {
+		return isset($_SERVER['REQUEST_METHOD']) && is_string($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
+	}
 }
 
 ?>

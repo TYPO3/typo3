@@ -35,7 +35,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $requestBuilder;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockConfigurationManager;
 
@@ -45,17 +45,22 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $configuration;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockObjectManager;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService
+	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockExtensionService;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Request
+	 * @var \TYPO3\CMS\Extbase\Service\EnvironmentService|\PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $mockEnvironmentService;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Request|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockRequest;
 
@@ -83,6 +88,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
 		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$this->mockExtensionService = $this->getMock('TYPO3\\CMS\\Extbase\\Service\\ExtensionService');
+		$this->mockEnvironmentService = $this->getMock('TYPO3\\CMS\\Extbase\\Service\\EnvironmentService', array('getServerRequestMethod'));
 	}
 
 	/**
@@ -96,6 +102,8 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$pluginNamespace = 'tx_' . strtolower(($this->configuration['extensionName'] . '_' . $this->configuration['pluginName']));
 		$this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue($pluginNamespace));
 		$this->requestBuilder->injectExtensionService($this->mockExtensionService);
+		$this->mockEnvironmentService->expects($this->any())->method('getServerRequestMethod')->will($this->returnValue('GET'));
+		$this->requestBuilder->injectEnvironmentService($this->mockEnvironmentService);
 	}
 
 	/**
@@ -168,8 +176,10 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function buildSetsRequestMethod() {
 		$this->injectDependencies();
-		$_SERVER['REQUEST_METHOD'] = 'SomeRequestMethod';
 		$expectedMethod = 'SomeRequestMethod';
+		$mockEnvironmentService = $this->getMock('TYPO3\\CMS\\Extbase\\Service\\EnvironmentService', array('getServerRequestMethod'));
+		$mockEnvironmentService->expects($this->once())->method('getServerRequestMethod')->will($this->returnValue($expectedMethod));
+		$this->requestBuilder->injectEnvironmentService($mockEnvironmentService);
 		$this->mockRequest->expects($this->once())->method('setMethod')->with($expectedMethod);
 		$this->requestBuilder->build();
 	}
