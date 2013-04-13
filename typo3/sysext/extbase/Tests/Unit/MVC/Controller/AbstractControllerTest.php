@@ -118,6 +118,7 @@ class Tx_Extbase_Tests_Unit_MVC_Controller_AbstractControllerTest extends Tx_Ext
 		$mockUriBuilder->expects($this->once())->method('reset')->will($this->returnValue($mockUriBuilder));
 		$mockUriBuilder->expects($this->once())->method('setTargetPageUid')->with(123)->will($this->returnValue($mockUriBuilder));
 		$mockUriBuilder->expects($this->once())->method('setCreateAbsoluteUri')->with(TRUE)->will($this->returnValue($mockUriBuilder));
+		$mockUriBuilder->expects($this->once())->method('setAbsoluteUriScheme')->with(NULL)->will($this->returnValue($mockUriBuilder));
 		$mockUriBuilder->expects($this->once())->method('uriFor')->with('theActionName', $arguments, 'TheControllerName', 'TheExtensionName')->will($this->returnValue('the uri'));
 
 		$controller = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_AbstractController'), array('redirectToUri'), array(), '', FALSE);
