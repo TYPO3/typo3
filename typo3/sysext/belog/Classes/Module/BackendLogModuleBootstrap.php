@@ -65,7 +65,7 @@ class BackendLogModuleBootstrap {
 		$configuration = array(
 			'extensionName' => 'Belog',
 			'pluginName' => 'system_BelogLog',
-			'vendorName' => 'TYPO3\CMS',
+			'vendorName' => 'TYPO3\\CMS',
 		);
 		// Yeah, this is ugly. But currently, there is no other direct way
 		// in extbase to force a specific controller in backend mode.
