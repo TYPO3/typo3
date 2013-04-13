@@ -55,14 +55,21 @@ class LanguageCacheClearer {
 	}
 
 	/**
-	 * Flush the l10n cache
+	 * Flush the l10n cache if the clear cache command "all" or "temp_cached" is given.
 	 *
+	 * @param array $parameters Parameters as defined in DataHandler
 	 * @return void
 	 */
-	public function clearCache() {
-		if (isset($GLOBALS['BE_USER'])) {
+	public function clearCache(array $parameters) {
+		$isValidCall = (
+			!empty($parameters['cacheCmd'])
+			&& \TYPO3\CMS\Core\Utility\GeneralUtility::inList('all,temp_cached', empty($parameters['cacheCmd']))
+		);
+
+		if (isset($GLOBALS['BE_USER']) && $isValidCall) {
 			$GLOBALS['BE_USER']->writelog(3, 1, 0, 0, '[lang]: User %s has cleared the language cache', array($GLOBALS['BE_USER']->user['username']));
 		}
+
 		$this->cacheInstance->flush();
 	}
 
