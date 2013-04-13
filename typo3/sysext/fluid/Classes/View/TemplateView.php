@@ -203,7 +203,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 			// These tokens are replaced by the Backporter for the graceful fallback in version 4.
 			$fallbackPath = str_replace('@action', lcfirst($actionName), $templatePathAndFilename);
 			$templatePathAndFilename = str_replace('@action', $actionName, $templatePathAndFilename);
-			if (file_exists($templatePathAndFilename)) {
+			if (is_file($templatePathAndFilename)) {
 				// additional check for deprecated template filename for case insensitive file systems (Windows)
 				$realFileName = basename(realpath($templatePathAndFilename));
 				if ($realFileName !== ucfirst($realFileName)) {
@@ -275,7 +275,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 			// These tokens are replaced by the Backporter for the graceful fallback in version 4.
 			$fallbackPath = str_replace('@layout', lcfirst($layoutName), $layoutPathAndFilename);
 			$layoutPathAndFilename = str_replace('@layout', $layoutName, $layoutPathAndFilename);
-			if (file_exists($layoutPathAndFilename)) {
+			if (is_file($layoutPathAndFilename)) {
 				return $layoutPathAndFilename;
 			} elseif (file_exists($fallbackPath)) {
 				t3lib_div::deprecationLog('the layout filename "' . $fallbackPath . '" is lowercase. This is deprecated since TYPO3 4.6. Please rename the layout to "' . basename($layoutPathAndFilename) . '"');
@@ -325,7 +325,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 		$paths = $this->expandGenericPathPattern($this->partialPathAndFilenamePattern, TRUE, TRUE);
 		foreach ($paths as &$partialPathAndFilename) {
 			$partialPathAndFilename = str_replace('@partial', $partialName, $partialPathAndFilename);
-			if (file_exists($partialPathAndFilename)) {
+			if (is_file($partialPathAndFilename)) {
 				return $partialPathAndFilename;
 			}
 		}
