@@ -395,6 +395,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			if ($propertyValue instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
 				if ($object->_isNew() || $propertyValue->_isDirty()) {
 					$this->persistObjectStorage($propertyValue, $object, $propertyName, $row);
+					$propertyValue->_memorizeCleanState();
 				}
 				foreach ($propertyValue as $containedObject) {
 					if ($containedObject instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
