@@ -1146,9 +1146,6 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		$rows = array();
 		while ($row = $this->databaseHandle->sql_fetch_assoc($result)) {
 			if (is_array($row)) {
-				// TODO Check if this is necessary, maybe the last line is enough
-				$arrayKeys = range(0, count($row));
-				array_fill_keys($arrayKeys, $row);
 				$rows[] = $row;
 			}
 		}
