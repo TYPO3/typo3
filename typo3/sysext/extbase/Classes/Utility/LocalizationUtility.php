@@ -194,7 +194,7 @@ class LocalizationUtility {
 	}
 
 	/**
-	 * Overwrites labels that are set via typoscript.
+	 * Overwrites labels that are set via TypoScript.
 	 * TS locallang labels have to be configured like:
 	 * plugin.tx_myextension._LOCAL_LANG.languageKey.key = value
 	 *
@@ -203,10 +203,9 @@ class LocalizationUtility {
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	protected function loadTypoScriptLabels($extensionName) {
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
-		$frameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+	static protected function loadTypoScriptLabels($extensionName) {
+		$configurationManager = static::getConfigurationManager();
+		$frameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName);
 		if (!is_array($frameworkConfiguration['_LOCAL_LANG'])) {
 			return;
 		}
@@ -274,6 +273,17 @@ class LocalizationUtility {
 			$convertedValue = $GLOBALS['LANG']->csConvObj->conv($value, $GLOBALS['LANG']->csConvObj->parse_charset($charset), $GLOBALS['LANG']->charSet, 1);
 			return $convertedValue !== NULL ? $convertedValue : $value;
 		}
+	}
+
+	/**
+	 * Returns instance of the configuration manager
+	 *
+	 * @return \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 */
+	static protected function getConfigurationManager() {
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		return $configurationManager;
 	}
 }
 
