@@ -155,6 +155,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 		}
 
 		$isNumericSearchFilter = (is_numeric($searchFilter) && $searchFilter > 0);
+		$searchFilterQuoted = preg_quote($searchFilter, '/');
 		$nodeId = intval($node->getId());
 		foreach ($records as $record) {
 			$record = t3lib_tree_pagetree_Commands::getNodeRecord($record['uid']);
@@ -200,7 +201,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 					if ($isNumericSearchFilter && intval($rootlineElement['uid']) === intval($searchFilter)) {
 						$text = str_replace('$1', $refNode->getText(), $replacement);
 					} else {
-						$text = preg_replace('/(' . $searchFilter . ')/i', $replacement, $refNode->getText());
+						$text = preg_replace('/(' . $searchFilterQuoted . ')/i', $replacement, $refNode->getText());
 					}
 
 					$refNode->setText(
