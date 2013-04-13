@@ -750,7 +750,7 @@ class Clipboard {
 					} else {
 						try {
 							\TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($v);
-						} catch (\RuntimeException $e) {
+						} catch (\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException $e) {
 							// The file has been deleted in the meantime, so just remove it silently
 							unset($this->clipData[$this->current]['el'][$k]);
 						}
