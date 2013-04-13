@@ -63,7 +63,7 @@ class LanguageCacheClearer {
 	public function clearCache(array $parameters) {
 		$isValidCall = (
 			!empty($parameters['cacheCmd'])
-			&& \TYPO3\CMS\Core\Utility\GeneralUtility::inList('all,temp_cached', empty($parameters['cacheCmd']))
+			&& \TYPO3\CMS\Core\Utility\GeneralUtility::inList('all,temp_cached', $parameters['cacheCmd'])
 		);
 
 		if (isset($GLOBALS['BE_USER']) && $isValidCall) {
