@@ -163,7 +163,8 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 		$request->setControllerActionName($actionName);
 		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-		$request->setMethod((isset($_SERVER['REQUEST_METHOD'])) ? $_SERVER['REQUEST_METHOD'] : NULL);
+		$request->setMethod(isset($_SERVER['REQUEST_METHOD']) && is_string($_SERVER['REQUEST_METHOD']) ?
+			$_SERVER['REQUEST_METHOD'] : 'GET');
 
 		if (is_string($parameters['format']) && (strlen($parameters['format']))) {
 			$request->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));

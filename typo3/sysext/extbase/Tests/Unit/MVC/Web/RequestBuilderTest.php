@@ -315,5 +315,27 @@ class Tx_Extbase_Tests_Unit_MVC_Web_RequestBuilderTest extends Tx_Extbase_Tests_
 		$actualResult = $this->requestBuilder->_get('allowedControllerActions');
 		$this->assertEquals($expectedResult, $actualResult);
 	}
+
+	/**
+	 * @test
+	 */
+	public function buildSetsRequestMode() {
+		$this->injectDependencies();
+		$expectedMethod = 'SomeRequestMethod';
+		$_SERVER['REQUEST_METHOD'] = $expectedMethod;
+		$this->mockRequest->expects($this->once())->method('setMethod')->with($expectedMethod);
+		$this->requestBuilder->build();
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildSetsRequestModeReturnsGETIfNoMethodIsGiven() {
+		$this->injectDependencies();
+		$expectedMethod = '';
+		$_SERVER['REQUEST_METHOD'] = $expectedMethod;
+		$this->mockRequest->expects($this->once())->method('setMethod')->with($expectedMethod)->will($this->returnValue(array('GET')));
+		$this->requestBuilder->build();
+	}
 }
 ?>
