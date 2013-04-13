@@ -272,7 +272,7 @@ class Tx_Fluid_View_StandaloneView extends Tx_Fluid_View_AbstractTemplateView {
 		$possibleLayoutPaths[] = t3lib_div::fixWindowsFilePath($layoutRootPath . '/' . $layoutName);
 		$found = FALSE;
 		foreach($possibleLayoutPaths as $layoutPathAndFilename) {
-			if (file_exists($layoutPathAndFilename)) {
+			if (is_file($layoutPathAndFilename)) {
 				$found = TRUE;
 			    break;
 			}
@@ -302,7 +302,7 @@ class Tx_Fluid_View_StandaloneView extends Tx_Fluid_View_AbstractTemplateView {
 		$possiblePartialPaths[] = t3lib_div::fixWindowsFilePath($partialRootPath . '/' . $partialName);
 		$found = FALSE;
 		foreach($possiblePartialPaths as $partialPathAndFilename) {
-			if (file_exists($partialPathAndFilename)) {
+			if (is_file($partialPathAndFilename)) {
 				$found = TRUE;
 			    break;
 			}

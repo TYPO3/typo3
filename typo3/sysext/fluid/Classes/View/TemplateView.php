@@ -182,7 +182,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 				// These tokens are replaced by the Backporter for the graceful fallback in version 4.
 				$fallbackPath = str_replace('@action', $actionName, $templatePathAndFilename);
 				$templatePathAndFilename = str_replace('@action', ucfirst($actionName), $templatePathAndFilename);
-				if (file_exists($templatePathAndFilename)) {
+				if (is_file($templatePathAndFilename)) {
 					$found = TRUE;
 					// additional check for deprecated template filename for case insensitive file systems (Windows)
 					$realFileName = basename(realpath($templatePathAndFilename));
@@ -190,7 +190,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 						t3lib_div::deprecationLog('the template filename "' . t3lib_div::fixWindowsFilePath(realpath($templatePathAndFilename)) . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "' . basename($templatePathAndFilename) . '"');
 					}
 					break;
-				} elseif (file_exists($fallbackPath)) {
+				} elseif (is_file($fallbackPath)) {
 					t3lib_div::deprecationLog('the template filename "' . $fallbackPath . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "' . basename($templatePathAndFilename) . '"');
 					$found = TRUE;
 					$templatePathAndFilename = $fallbackPath;
@@ -230,7 +230,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 			$found = FALSE;
 			foreach ($paths as &$layoutPathAndFilename) {
 				$layoutPathAndFilename = str_replace('@layout', $layoutName, $layoutPathAndFilename);
-				if (file_exists($layoutPathAndFilename)) {
+				if (is_file($layoutPathAndFilename)) {
 					$found = TRUE;
 					break;
 				}
@@ -261,7 +261,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 		$found = FALSE;
 		foreach ($paths as &$partialPathAndFilename) {
 			$partialPathAndFilename = str_replace('@partial', $partialName, $partialPathAndFilename);
-			if (file_exists($partialPathAndFilename)) {
+			if (is_file($partialPathAndFilename)) {
 				$found = TRUE;
 				break;
 			}
