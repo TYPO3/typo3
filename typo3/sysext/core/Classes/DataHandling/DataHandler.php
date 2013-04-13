@@ -1007,6 +1007,20 @@ class DataHandler {
 							if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 								$fieldArray['t3ver_stage'] = 0;
 							}
+
+							// Clear fields when type changed
+							if ($GLOBALS['TCA'][$table]['ctrl']['clearFieldsOnListTypeChange'] && $GLOBALS['TCA'][$table]['ctrl']['type']) {
+								if (isset($fieldArray[$GLOBALS['TCA'][$table]['ctrl']['type']])) {
+									$fieldsToBeCleared = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['clearFieldsOnListTypeChange'], TRUE);
+									foreach ($fieldsToBeCleared as $field) {
+										// Only handle fields which are not changed within the same request
+										if (!isset($fieldArray[$field])) {
+											$fieldArray[$field] = '';
+										}
+									}
+								}
+							}
+
 							// Hook: processDatamap_postProcessFieldArray
 							foreach ($hookObjectsArr as $hookObj) {
 								if (method_exists($hookObj, 'processDatamap_postProcessFieldArray')) {
