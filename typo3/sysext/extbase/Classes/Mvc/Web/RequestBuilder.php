@@ -169,7 +169,8 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		$request->setControllerActionName($actionName);
 		$request->setRequestUri(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseUri(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
-		$request->setMethod(isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : NULL);
+		$request->setMethod(isset($_SERVER['REQUEST_METHOD']) && is_string($_SERVER['REQUEST_METHOD']) ?
+			$_SERVER['REQUEST_METHOD'] : 'GET');
 		if (is_string($parameters['format']) && strlen($parameters['format'])) {
 			$request->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));
 		} else {

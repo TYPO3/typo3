@@ -757,6 +757,28 @@ class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$result = $requestBuilder->_call('untangleFilesArray', $convolutedFiles);
 		$this->assertSame($untangledFiles, $result);
 	}
+
+	/**
+	 * @test
+	 */
+	public function buildSetsRequestMode() {
+		$this->injectDependencies();
+		$expectedMethod = 'SomeRequestMethod';
+		$_SERVER['REQUEST_METHOD'] = $expectedMethod;
+		$this->mockRequest->expects($this->once())->method('setMethod')->with($expectedMethod);
+		$this->requestBuilder->build();
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildSetsRequestModeReturnsGETIfNoMethodIsGiven() {
+		$this->injectDependencies();
+		$expectedMethod = '';
+		$_SERVER['REQUEST_METHOD'] = $expectedMethod;
+		$this->mockRequest->expects($this->once())->method('setMethod')->with($expectedMethod)->will($this->returnValue(array('GET')));
+		$this->requestBuilder->build();
+	}
 }
 
 ?>
