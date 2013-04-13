@@ -34,7 +34,7 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 unset($MCONF);
-require 'conf.php';
+require __DIR__ . '/conf.php';
 require $BACK_PATH . 'init.php';
 // Unset MCONF/MLANG since all we wanted was back path etc. for this particular script.
 unset($MCONF);

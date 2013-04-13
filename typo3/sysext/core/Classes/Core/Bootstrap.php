@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Core\Core;
 
 use \TYPO3\CMS\Core\Utility;
 
-require 'SystemEnvironmentBuilder.php';
+require_once __DIR__ . '/SystemEnvironmentBuilder.php';
 
 /**
  * This class encapsulates bootstrap related methods.
@@ -489,7 +489,7 @@ class Bootstrap {
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
 	protected function registerGlobalDebugFunctions() {
-		require_once('GlobalDebugFunctions.php');
+		require_once __DIR__ . '/GlobalDebugFunctions.php';
 		return $this;
 	}
 

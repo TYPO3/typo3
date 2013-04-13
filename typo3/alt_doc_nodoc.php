@@ -34,7 +34,7 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require 'init.php';
+require __DIR__ . '/init.php';
 $LANG->includeLLFile('EXT:lang/locallang_alt_doc.xml');
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('opendocs') . 'class.tx_opendocs.php';
 /*

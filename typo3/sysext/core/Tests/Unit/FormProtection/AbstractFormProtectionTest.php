@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once 'Fixtures/FormProtectionTesting.php';
+require_once __DIR__ . '/Fixtures/FormProtectionTesting.php';
 
 /**
  * Testcase

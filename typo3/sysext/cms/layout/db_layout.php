@@ -35,10 +35,10 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 unset($MCONF);
-require 'conf.php';
+require __DIR__ . '/conf.php';
 require $BACK_PATH . 'init.php';
 $LANG->includeLLFile('EXT:cms/layout/locallang.xml');
-require_once 'class.tx_cms_layout.php';
+require_once __DIR__ . '/class.tx_cms_layout.php';
 $BE_USER->modAccess($MCONF, 1);
 // Will open up records locked by current user. It's assumed that the locking should end if this script is hit.
 \TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();

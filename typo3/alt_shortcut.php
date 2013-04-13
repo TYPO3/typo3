@@ -35,7 +35,7 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require 'init.php';
+require __DIR__ . '/init.php';
 $LANG->includeLLFile('EXT:lang/locallang_misc.xlf');
 /*
  * @deprecated since 6.0, the classname SC_alt_shortcut and this file is obsolete

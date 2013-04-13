@@ -33,11 +33,11 @@
 define('TYPO3_MODE', 'BE');
 define('TYPO3_enterInstallScript', '1');
 
-require '../sysext/core/Classes/Core/Bootstrap.php';
+require_once __DIR__ . '/../sysext/core/Classes/Core/Bootstrap.php';
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 	->baseSetup('typo3/install/');
 
-require '../sysext/install/Classes/InstallBootstrap.php';
+require_once __DIR__ . '/../sysext/install/Classes/InstallBootstrap.php';
 \TYPO3\CMS\Install\InstallBootstrap::checkEnabledInstallToolOrDie();
 \TYPO3\CMS\Install\InstallBootstrap::createLocalConfigurationIfNotExists();
 

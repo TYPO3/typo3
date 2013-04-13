@@ -34,7 +34,7 @@
  * @author Kasper Skårhøj <typo3@typo3.com>
  */
 $GLOBALS['BACK_PATH'] = '';
-require 'init.php';
+require __DIR__ . '/init.php';
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
 /*
  * @deprecated since 6.0, the classname SC_wizard_colorpicker and this file is obsolete

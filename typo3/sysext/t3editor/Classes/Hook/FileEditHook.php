@@ -114,7 +114,7 @@ class FileEditHook {
 	public function save($parameters, $pObj) {
 		$savingsuccess = FALSE;
 		if ($parameters['type'] == $this->ajaxSaveType) {
-			require_once 'init.php';
+			require $GLOBALS['BACK_PATH'] . 'init.php';
 			$tceFile = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\FileController');
 			$tceFile->processAjaxRequest(array(), $parameters['ajaxObj']);
 			$result = $parameters['ajaxObj']->getContent('result');

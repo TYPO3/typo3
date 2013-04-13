@@ -34,7 +34,7 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 define('TYPO3_PROCEED_IF_NO_USER', 1);
-require 'init.php';
+require __DIR__ . '/init.php';
 /*
  * @deprecated since 6.0, the classname SC_login_frameset and this file is obsolete
  * and will be removed with 6.2. The class was renamed and is now located at:

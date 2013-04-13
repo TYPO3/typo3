@@ -33,7 +33,7 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 $BACK_PATH = '';
-require_once 'init.php';
+require __DIR__ . '/init.php';
 /*
  * @deprecated since 6.0, the classname SC_alt_db_navframe and this file is obsolete
  * and will be removed with 6.2. The class was renamed and is now located at:

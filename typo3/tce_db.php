@@ -35,7 +35,7 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require 'init.php';
+require __DIR__ . '/init.php';
 
 /*
  * @deprecated since 6.0, the classname SC_tce_db and this file is obsolete

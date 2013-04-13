@@ -33,7 +33,7 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 define('TYPO3_PROCEED_IF_NO_USER', 1);
-require 'init.php';
+require __DIR__ . '/init.php';
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/Controller/LoginController.php';
 // Make instance:
 /**

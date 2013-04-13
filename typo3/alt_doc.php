@@ -34,7 +34,7 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require_once 'init.php';
+require __DIR__ . '/init.php';
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_alt_doc.xml');
 \TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();
 /*

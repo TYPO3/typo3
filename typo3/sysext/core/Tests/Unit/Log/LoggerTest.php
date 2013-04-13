@@ -25,8 +25,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once 'Fixtures/WriterFixture.php';
-require_once 'Fixtures/WriterFailing.php';
+require_once __DIR__ . '/Fixtures/WriterFixture.php';
+require_once __DIR__ . '/Fixtures/WriterFailing.php';
 
 /**
  * Testcase for \TYPO3\CMS\Core\Log\Logger.

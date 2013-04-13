@@ -35,7 +35,7 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require_once 'init.php';
+require_once __DIR__ . '/init.php';
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\FileController');
 $SOBE->init();

@@ -38,9 +38,9 @@ namespace TYPO3\CMS\Backend\Module;
  *
  * TYPICAL 'HEADER' OF A BACKEND MODULE:
  * unset($MCONF);
- * require ('conf.php');
- * require ($BACK_PATH.'init.php');
- * require ($BACK_PATH.'template.php');
+ * require __DIR__ . '/conf.php';
+ * require $BACK_PATH . 'init.php';
+ * require $BACK_PATH . 'template.php';
  * $GLOBALS['LANG']->includeLLFile('EXT:prototype/locallang.php');
  * $GLOBALS['BE_USER']->modAccess($MCONF,1);
  *

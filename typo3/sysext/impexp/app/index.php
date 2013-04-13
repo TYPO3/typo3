@@ -61,8 +61,8 @@
  * external_ref[tables][]=table/_ALL
  */
 unset($MCONF);
-require 'conf.php';
-require_once $BACK_PATH . 'init.php';
+require __DIR__ . '/conf.php';
+require $BACK_PATH . 'init.php';
 $LANG->includeLLFile('EXT:impexp/app/locallang.xlf');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('impexp', 1);
 /*

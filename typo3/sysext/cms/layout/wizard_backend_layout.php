@@ -27,7 +27,7 @@
 /**
  * Grid wizard
  */
-require_once 'conf.php';
+require __DIR__ . '/conf.php';
 require $BACK_PATH . 'init.php';
 $LANG->includeLLFile('EXT:lang/locallang_wizards.xlf');
 /*

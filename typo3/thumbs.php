@@ -33,7 +33,7 @@
 
 // Set error reporting
 error_reporting(E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED));
-require 'init.php';
+require __DIR__ . '/init.php';
 
 // include thumbs script
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/View/ThumbnailView.php';

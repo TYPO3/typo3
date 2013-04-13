@@ -25,7 +25,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 $GLOBALS['BACK_PATH'] = '';
-require_once 'init.php';
+require __DIR__ . '/init.php';
 /**
  * Extension of transfer data class
  *

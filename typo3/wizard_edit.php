@@ -32,7 +32,7 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 $BACK_PATH = '';
-require 'init.php';
+require __DIR__ . '/init.php';
 $LANG->includeLLFile('EXT:lang/locallang_wizards.xlf');
 /*
  * @deprecated since 6.0, the classname SC_wizard_edit and this file is obsolete

@@ -4825,7 +4825,7 @@ Connection: close
 			// thrown early during bootstrap, if the autoloader is
 			// not instantiated yet. This can happen for example if
 			// ext_localconf triggers a deprecation.
-		require_once 'DebugUtility.php';
+		require_once __DIR__ . '/DebugUtility.php';
 
 		$trail = debug_backtrace();
 		if ($trail[1]['type']) {

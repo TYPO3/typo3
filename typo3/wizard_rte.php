@@ -33,7 +33,7 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 $BACK_PATH = '';
-require 'init.php';
+require __DIR__ . '/init.php';
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
 \TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();
 /*
