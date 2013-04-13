@@ -200,9 +200,60 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSetDataProvider() {
 		return array(
-			'Arguments to be excluded in the beginning' => array(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'), array('M', 'id'), 'mod.php?foo=bar'),
-			'Arguments to be excluded in the end' => array(array('foo' => 'bar', 'id' => 'pageId', 'M' => 'moduleKey'), array('M', 'id'), 'mod.php?foo=bar'),
-			'Arguments in nested array to be excluded' => array(array('tx_foo' => array('bar' => 'baz'), 'id' => 'pageId', 'M' => 'moduleKey'), array('id', 'tx_foo[bar]'), 'mod.php?M=moduleKey'),
+			'Arguments to be excluded in the beginning' => array(
+				array(
+					'M' => 'moduleKey',
+					'id' => 'pageId',
+					'foo' => 'bar'
+				),
+				array(
+					'M',
+					'id'
+				),
+				'mod.php?foo=bar'
+			),
+			'Arguments to be excluded in the end' => array(
+				array(
+					'foo' => 'bar',
+					'id' => 'pageId',
+					'M' => 'moduleKey'
+				),
+				array(
+					'M',
+					'id'
+				),
+				'mod.php?foo=bar'
+			),
+			'Arguments in nested array to be excluded' => array(
+				array(
+					'tx_foo' => array(
+						'bar' => 'baz'
+					),
+					'id' => 'pageId',
+					'M' => 'moduleKey'
+				),
+				array(
+					'id',
+					'tx_foo[bar]'
+				),
+				'mod.php?M=moduleKey'
+			),
+			'Arguments in multidimensional array to be excluded' => array(
+				array(
+					'tx_foo' => array(
+						'bar' => array(
+							'baz' => 'bay'
+						)
+					),
+					'id' => 'pageId',
+					'M' => 'moduleKey'
+				),
+				array(
+					'id',
+					'tx_foo[bar][baz]'
+				),
+				'mod.php?M=moduleKey'
+			),
 		);
 	}
 
