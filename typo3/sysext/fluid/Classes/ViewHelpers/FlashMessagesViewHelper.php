@@ -126,7 +126,7 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
 	/**
 	 * Renders the flash messages as unordered list
 	 *
-	 * @param array $flashMessages array<t3lib_FlashMessage>
+	 * @param array $flashMessages array<\TYPO3\CMS\Core\Messaging\FlashMessage>
 	 * @return string
 	 */
 	protected function renderUl(array $flashMessages) {
@@ -142,10 +142,10 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
 		return $this->tag->render();
 	}
 
-	/*
+	/**
 	 * Renders the flash messages as nested divs
 	 *
-	 * @param array $flashMessages array<t3lib_FlashMessage>
+	 * @param array $flashMessages array<\TYPO3\CMS\Core\Messaging\FlashMessage>
 	 * @return string
 	 */
 	protected function renderDiv(array $flashMessages) {
