@@ -468,11 +468,11 @@ class TSpagegen {
 		}
 
 			// Including CSS files
-		if (is_array($GLOBALS['TSFE']->tmpl->setup['plugin.'])) {
+		if (is_array($GLOBALS['TSFE']->tmpl->setup['plugin.']) && empty($GLOBALS['TSFE']->config['config']['removeDefaultCss'])) {
 			$temp_styleLines = array ();
 			foreach ($GLOBALS['TSFE']->tmpl->setup['plugin.'] as $key => $iCSScode) {
 				if (is_array($iCSScode)) {
-					if ($iCSScode['_CSS_DEFAULT_STYLE'] && empty($GLOBALS['TSFE']->config['config']['removeDefaultCss'])) {
+					if ($iCSScode['_CSS_DEFAULT_STYLE']) {
 						$temp_styleLines[] = '/* default styles for extension "' . substr($key, 0, - 1) . '" */' . LF . $iCSScode['_CSS_DEFAULT_STYLE'];
 					}
 					if ($iCSScode['_CSS_PAGE_STYLE']) {
