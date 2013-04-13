@@ -55,14 +55,20 @@ class tx_lang_clearcache {
 	}
 
 	/**
-	 * Flush the l10n cache
+	 * Flush the l10n cache if the clear cache command "all" or "temp_cached" is given.
 	 *
 	 * @return void
 	 */
 	public function clearCache() {
-		if (isset($GLOBALS['BE_USER'])) {
+		$isValidCall = (
+			!empty($parameters['cacheCmd'])
+			&& t3lib_div::inList('all,temp_cached', empty($parameters['cacheCmd']))
+		);
+
+		if (isset($GLOBALS['BE_USER']) && $isValidCall) {
 			$GLOBALS['BE_USER']->writelog(3, 1, 0, 0, '[lang]: User %s has cleared the language cache', array($GLOBALS['BE_USER']->user['username']));
 		}
+
 		$this->cacheInstance->flush();
 	}
 
