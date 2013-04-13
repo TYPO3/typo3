@@ -393,6 +393,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			if ($propertyValue instanceof Tx_Extbase_Persistence_ObjectStorage) {
 				if ($object->_isNew() || $propertyValue->_isDirty()) {
 					$this->persistObjectStorage($propertyValue, $object, $propertyName, $row);
+					$propertyValue->_memorizeCleanState();
 				}
 				foreach ($propertyValue as $containedObject) {
 					if ($containedObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
