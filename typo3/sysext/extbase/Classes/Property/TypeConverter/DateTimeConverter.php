@@ -23,33 +23,44 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 /**
  * Converter which transforms from different input formats into DateTime objects.
  *
- * Source can be either a string or an array.
- * The date string is expected to be formatted according to DEFAULT_DATE_FORMAT
- * But the default date format can be overridden in the initialize*Action() method like this:
- * $this->arguments['<argumentName>']
- * ->getPropertyMappingConfiguration()
- * ->forProperty('<propertyName>') // this line can be skipped in order to specify the format for all properties
- * ->setTypeConverterOption('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT, '<dateFormat>');
+ * Source can be either a string or an array. The date string is expected to be formatted
+ * according to DEFAULT_DATE_FORMAT.
  *
- * If the source is of type array, it is possible to override the format in the source:
- * array(
- * 'date' => '<dateString>',
- * 'dateFormat' => '<dateFormat>'
- * );
+ * But the default date format can be overridden in the initialize*Action() method like this::
  *
- * By using an array as source you can also override time and timezone of the created DateTime object:
- * array(
- * 'date' => '<dateString>',
- * 'hour' => '<hour>', // integer
- * 'minute' => '<minute>', // integer
- * 'seconds' => '<seconds>', // integer
- * 'timezone' => '<timezone>', // string, see http://www.php.net/manual/timezones.php
- * );
+ *  $this->arguments['<argumentName>']
+ *    ->getPropertyMappingConfiguration()
+ *    ->forProperty('<propertyName>') // this line can be skipped in order to specify the format for all properties
+ *    ->setTypeConverterOption('TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT, '<dateFormat>');
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * If the source is of type array, it is possible to override the format in the source::
+ *
+ *  array(
+ *   'date' => '<dateString>',
+ *   'dateFormat' => '<dateFormat>'
+ *  );
+ *
+ * By using an array as source you can also override time and timezone of the created DateTime object::
+ *
+ *  array(
+ *   'date' => '<dateString>',
+ *   'hour' => '<hour>', // integer
+ *   'minute' => '<minute>', // integer
+ *   'seconds' => '<seconds>', // integer
+ *   'timezone' => '<timezone>', // string, see http://www.php.net/manual/timezones.php
+ *  );
+ *
+ * As an alternative to providing the date as string, you might supply day, month and year as array items each::
+ *
+ *  array(
+ *   'day' => '<day>', // integer
+ *   'month' => '<month>', // integer
+ *   'year' => '<year>', // integer
+ *  );
+ *
  * @api
  */
-class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter implements \TYPO3\CMS\Core\SingletonInterface {
+class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter {
 
 	/**
 	 * @var string
@@ -58,9 +69,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 
 	/**
 	 * The default date format is "YYYY-MM-DDT##:##:##+##:##", for example "2005-08-15T15:52:01+00:00"
-	 * according to the W3C standard
-	 *
-	 * @see http://www.w3.org/TR/NOTE-datetime.html
+	 * according to the W3C standard @see http://www.w3.org/TR/NOTE-datetime.html
 	 *
 	 * @var string
 	 */
@@ -69,7 +78,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	/**
 	 * @var array<string>
 	 */
-	protected $sourceTypes = array('string', 'integer','array');
+	protected $sourceTypes = array('string', 'integer', 'array');
 
 	/**
 	 * @var string
@@ -86,7 +95,6 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	 *
 	 * @param string $source
 	 * @param string $targetType
-	 *
 	 * @return boolean
 	 */
 	public function canConvertFrom($source, $targetType) {
@@ -105,11 +113,10 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	/**
 	 * Converts $source to a \DateTime using the configured dateFormat
 	 *
-	 * @param string|integer|array $source the string to be converted to a DateTime object
+	 * @param string|integer|array $source the string to be converted to a \DateTime object
 	 * @param string $targetType must be "DateTime"
 	 * @param array $convertedChildProperties not used currently
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-	 *
 	 * @return \DateTime
 	 * @throws \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
 	 */
@@ -139,7 +146,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 		if ($dateAsString === '') {
 			return NULL;
 		}
-		if (ctype_digit($dateAsString) && (!is_array($source) || !isset($source['dateFormat'])) && $configuration === NULL) {
+		if (ctype_digit($dateAsString) && $configuration === NULL && (!is_array($source) || !isset($source['dateFormat']))) {
 			$dateFormat = 'U';
 		}
 		if (is_array($source) && isset($source['timezone']) && strlen($source['timezone']) !== 0) {
@@ -153,10 +160,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 			$date = $targetType::createFromFormat($dateFormat, $dateAsString);
 		}
 		if ($date === FALSE) {
-			return new \TYPO3\CMS\Extbase\Error\Error('The date "%s" was not recognized (for format "%s").', 1307719788, array(
-				$dateAsString,
-				$dateFormat
-			));
+			return new \TYPO3\CMS\Extbase\Validation\Error('The date "%s" was not recognized (for format "%s").', 1307719788, array($dateAsString, $dateFormat));
 		}
 		if (is_array($source)) {
 			$this->overrideTimeIfSpecified($date, $source);
@@ -166,15 +170,13 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 
 	/**
 	 * Returns whether date information (day, month, year) are present as keys in $source.
-	 *
-	 * @param array $source
-	 *
-	 * @return boolean
+	 * @param $source
+	 * @return bool
 	 */
 	protected function isDatePartKeysProvided(array $source) {
-		return isset($source['day']) && ctype_digit((string)$source['day'])
-			&& isset($source['month']) && ctype_digit((string)$source['month'])
-			&& isset($source['year']) && ctype_digit((string)$source['year']);
+		return isset($source['day']) && ctype_digit($source['day'])
+			&& isset($source['month']) && ctype_digit($source['month'])
+			&& isset($source['year']) && ctype_digit($source['year']);
 	}
 
 	/**
@@ -182,7 +184,6 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	 * If no format is specified in the mapping configuration DEFAULT_DATE_FORMAT is used.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-	 *
 	 * @return string
 	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
 	 */
@@ -204,19 +205,17 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	 *
 	 * @param \DateTime $date
 	 * @param array $source
-	 *
 	 * @return void
 	 */
 	protected function overrideTimeIfSpecified(\DateTime $date, array $source) {
 		if (!isset($source['hour']) && !isset($source['minute']) && !isset($source['second'])) {
 			return;
 		}
-
 		$hour = isset($source['hour']) ? (integer)$source['hour'] : 0;
 		$minute = isset($source['minute']) ? (integer)$source['minute'] : 0;
 		$second = isset($source['second']) ? (integer)$source['second'] : 0;
 		$date->setTime($hour, $minute, $second);
 	}
-}
 
+}
 ?>

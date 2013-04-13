@@ -22,8 +22,6 @@ namespace TYPO3\CMS\Extbase\Property;
  *                                                                        */
 /**
  * This builder creates the default configuration for Property Mapping, if no configuration has been passed to the Property Mapper.
- *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class PropertyMappingConfigurationBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 
@@ -34,14 +32,16 @@ class PropertyMappingConfigurationBuilder implements \TYPO3\CMS\Core\SingletonIn
 	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
 	 */
 	public function build($type = 'TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfiguration') {
+		/** @var $configuration \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration */
 		$configuration = new $type();
+
 		$configuration->setTypeConverterOptions('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', array(
 			\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE,
 			\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED => TRUE
 		));
 		$configuration->allowAllProperties();
+
 		return $configuration;
 	}
 }
-
 ?>

@@ -35,7 +35,16 @@ interface PropertyMappingConfigurationInterface {
 	 * @return boolean
 	 * @api
 	 */
-	public function shouldMap($propertyName);
+	public function shouldSkip($propertyName);
+
+	/**
+	 * Whether unknown (unconfigured) properties should be skipped during
+	 * mapping, instead if causing an error.
+	 *
+	 * @return boolean
+	 * @api
+	 */
+	public function shouldSkipUnknownProperties();
 
 	/**
 	 * Returns the sub-configuration for the passed $propertyName. Must ALWAYS return a valid configuration object!

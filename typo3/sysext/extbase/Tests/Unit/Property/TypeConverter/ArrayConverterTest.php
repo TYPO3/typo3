@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 /**
  * Testcase for the Array converter
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class ArrayConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
@@ -38,7 +37,6 @@ class ArrayConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function checkMetadata() {
 		$this->assertEquals(array('array'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
@@ -48,12 +46,10 @@ class ArrayConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFromDoesNotModifyTheSourceArray() {
 		$sourceArray = array('Foo' => 'Bar', 'Baz');
 		$this->assertEquals($sourceArray, $this->converter->convertFrom($sourceArray, 'array'));
 	}
 }
-
 ?>

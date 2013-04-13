@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 /**
  * Testcase for the Integer converter
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @covers \TYPO3\CMS\Extbase\Property\TypeConverter\IntegerConverter<extended>
  */
 class IntegerConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
@@ -39,7 +38,6 @@ class IntegerConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function checkMetadata() {
 		$this->assertEquals(array('integer', 'string'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
@@ -49,7 +47,6 @@ class IntegerConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function convertFromShouldCastTheStringToInteger() {
 		$this->assertSame(15, $this->converter->convertFrom('15', 'integer'));
@@ -57,7 +54,6 @@ class IntegerConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFromDoesNotModifyIntegers() {
 		$source = 123;
@@ -66,7 +62,20 @@ class IntegerConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function convertFromReturnsNullIfEmptyStringSpecified() {
+		$this->assertNull($this->converter->convertFrom('', 'integer'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric() {
+		$this->assertInstanceOf('TYPO3\CMS\Extbase\Error\Error', $this->converter->convertFrom('not numeric', 'integer'));
+	}
+
+	/**
+	 * @test
 	 */
 	public function canConvertFromShouldReturnTrueForANumericStringSource() {
 		$this->assertTrue($this->converter->canConvertFrom('15', 'integer'));
@@ -74,7 +83,6 @@ class IntegerConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function canConvertFromShouldReturnTrueForAnIntegerSource() {
 		$this->assertTrue($this->converter->canConvertFrom(123, 'integer'));
@@ -82,11 +90,23 @@ class IntegerConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function canConvertFromShouldReturnTrueForAnEmptyValue() {
+		$this->assertTrue($this->converter->canConvertFrom('', 'integer'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function canConvertFromShouldReturnTrueForANullValue() {
+		$this->assertTrue($this->converter->canConvertFrom(NULL, 'integer'));
+	}
+
+	/**
+	 * @test
 	 */
 	public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray() {
 		$this->assertEquals(array(), $this->converter->getSourceChildPropertiesToBeConverted('myString'));
 	}
 }
-
 ?>

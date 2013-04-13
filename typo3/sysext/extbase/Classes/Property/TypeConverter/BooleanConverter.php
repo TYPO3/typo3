@@ -23,10 +23,9 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 /**
  * Converter which transforms simple types to a boolean, by simply casting it.
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class BooleanConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter implements \TYPO3\CMS\Core\SingletonInterface {
+class BooleanConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter {
 
 	/**
 	 * @var array<string>
@@ -57,5 +56,4 @@ class BooleanConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstrac
 		return (boolean) $source;
 	}
 }
-
 ?>

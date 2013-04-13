@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Fixture;
+namespace TYPO3\CMS\Extbase\Utility\Exception;
 
 /*                                                                        *
- * This script belongs to the Extbase framework.                            *
+ * This script belongs to the Extbase framework                           *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License as published by the *
@@ -20,42 +20,12 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
- * A dummy class with setters for testing data mapping
+ * An Invalid Type Exception
  *
  */
-class ClassWithSetters {
+class InvalidTypeException extends \TYPO3\CMS\Extbase\Exception {
 
-	/**
-	 * @var mixed
-	 */
-	public $property1;
-
-	/**
-	 * @var mixed
-	 */
-	protected $property2;
-
-	/**
-	 * @var mixed
-	 */
-	public $property3;
-
-	/**
-	 * @var mixed
-	 */
-	public $property4;
-
-	public function setProperty3($value) {
-		$this->property3 = $value;
-	}
-
-	protected function setProperty4($value) {
-		$this->property4 = $value;
-	}
-
-	public function getProperty2() {
-		return $this->property2;
-	}
 }
 ?>

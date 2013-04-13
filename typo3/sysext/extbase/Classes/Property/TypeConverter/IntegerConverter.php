@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 /**
  * Converter which transforms a simple type to an integer, by simply casting it.
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
 class IntegerConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter implements \TYPO3\CMS\Core\SingletonInterface {
@@ -46,16 +45,21 @@ class IntegerConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstrac
 	/**
 	 * Actually convert from $source to $targetType, in fact a noop here.
 	 *
-	 * @param integer $source
+	 * @param integer|string $source
 	 * @param string $targetType
 	 * @param array $convertedChildProperties
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-	 * @return integer
+	 * @return integer|\TYPO3\CMS\Extbase\Error\Error
 	 * @api
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
-		return (integer) $source;
+		if ($source === NULL || strlen($source) === 0) {
+			return NULL;
+		}
+		if (!is_numeric($source)) {
+			return new \TYPO3\CMS\Extbase\Error\Error('"%s" is no integer.', 1332933658, array($source));
+		}
+		return (integer)$source;
 	}
 }
-
 ?>

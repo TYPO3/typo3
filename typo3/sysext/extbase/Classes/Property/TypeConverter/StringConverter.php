@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
 /**
  * Converter which transforms simple types to a string.
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
 class StringConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter implements \TYPO3\CMS\Core\SingletonInterface {
@@ -31,7 +30,7 @@ class StringConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstract
 	/**
 	 * @var array<string>
 	 */
-	protected $sourceTypes = array('string');
+	protected $sourceTypes = array('string', 'integer');
 
 	/**
 	 * @var string
@@ -55,7 +54,7 @@ class StringConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstract
 	 * @api
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
-		return $source;
+		return (string) $source;
 	}
 }
 

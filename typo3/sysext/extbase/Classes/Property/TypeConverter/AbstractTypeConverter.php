@@ -28,7 +28,6 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  * - set $priority
  * - implement convertFrom()
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
 abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\TypeConverterInterface, \TYPO3\CMS\Core\SingletonInterface {
@@ -94,6 +93,19 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
 	}
 
 	/**
+	 * Returns the $originalTargetType unchanged in this implementation.
+	 *
+	 * @param mixed $source the source data
+	 * @param string $originalTargetType the type we originally want to convert to
+	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
+	 * @return string
+	 * @api
+	 */
+	public function getTargetTypeForSource($source, $originalTargetType, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
+		return $originalTargetType;
+	}
+
+	/**
 	 * Return the priority of this TypeConverter. TypeConverters with a high priority are chosen before low priority.
 	 *
 	 * @return integer
@@ -118,7 +130,7 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
 	/**
 	 * Returns an empty list of sub property names
 	 *
-	 * @param mixed $source (unused)
+	 * @param mixed $source
 	 * @return array<string>
 	 * @api
 	 */
@@ -138,5 +150,4 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
 	public function getTypeOfChildProperty($targetType, $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration) {
 	}
 }
-
 ?>

@@ -20,6 +20,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
+require_once (__DIR__ . '/../../Fixture/ClassWithSetters.php');
+
 /**
  * Testcase for the Property Mapper
  *
@@ -32,6 +35,9 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 	 */
 	protected $propertyMappingConfiguration;
 
+	/**
+	 * Initialization
+	 */
 	public function setUp() {
 		$this->propertyMappingConfiguration = new \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration();
 	}
@@ -82,48 +88,44 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 		$this->propertyMappingConfiguration->allowAllPropertiesExcept('someSourceProperty', 'someOtherProperty');
 		$this->assertFalse($this->propertyMappingConfiguration->shouldMap('someSourceProperty'));
 		$this->assertFalse($this->propertyMappingConfiguration->shouldMap('someOtherProperty'));
+
 		$this->assertTrue($this->propertyMappingConfiguration->shouldMap('someOtherPropertyWhichHasNotBeenConfigured'));
 	}
 
 	/**
-	 * DataProvider for typeConfiguration tests
-	 * @return array
+	 * @test
+	 * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldSkip
 	 */
-	public function provideTypeConverterSettings () {
-		return array(
-			// kept for historical reasons, this test was the initial one
-			'dummy data' => array(
-				'someConverter',
-				'someConverter',
-				array('k1' => 'v1', 'k2' => 'v2')
-			),
-			'typeConverterName oldschool' => array(
-				'Tx_Extbase_Property_TypeConverter_DateTimeConverter',
-				'TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter',
-				array('k1' => 'v1', 'k2' => 'v2')
-			),
-			'typeConverterName namespaced' => array(
-				'TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter',
-				'TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter',
-				array('k1' => 'v1', 'k2' => 'v2')
-			)
-		);
+	public function shouldSkipReturnsFalseByDefault() {
+		$this->assertFalse($this->propertyMappingConfiguration->shouldSkip('someSourceProperty'));
+		$this->assertFalse($this->propertyMappingConfiguration->shouldSkip('someOtherSourceProperty'));
 	}
 
 	/**
-	 * @dataProvider provideTypeConverterSettings
 	 * @test
+	 * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldSkip
 	 */
-	public function setTypeConverterOptionsCanBeRetrievedAgain($converterName, $converterClass, $values) {
-		$this->propertyMappingConfiguration->setTypeConverterOptions($converterName, $values);
-		$this->assertEquals($values['k1'], $this->propertyMappingConfiguration->getConfigurationValue($converterClass, 'k1'));
-		$this->assertEquals($values['k2'], $this->propertyMappingConfiguration->getConfigurationValue($converterClass, 'k2'));
+	public function shouldSkipReturnsTrueIfConfigured() {
+		$this->propertyMappingConfiguration->skipProperties('someSourceProperty', 'someOtherSourceProperty');
+		$this->assertTrue($this->propertyMappingConfiguration->shouldSkip('someSourceProperty'));
+		$this->assertTrue($this->propertyMappingConfiguration->shouldSkip('someOtherSourceProperty'));
 	}
 
 	/**
 	 * @test
 	 */
-	public function inexistentTypeConverterOptionsReturnNull() {
+	public function setTypeConverterOptionsCanBeRetrievedAgain() {
+		$mockTypeConverterClass = $this->getMockClass('TYPO3\CMS\Extbase\Property\TypeConverterInterface');
+
+		$this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, array('k1' => 'v1', 'k2' => 'v2'));
+		$this->assertEquals('v1', $this->propertyMappingConfiguration->getConfigurationValue($mockTypeConverterClass, 'k1'));
+		$this->assertEquals('v2', $this->propertyMappingConfiguration->getConfigurationValue($mockTypeConverterClass, 'k2'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function nonexistentTypeConverterOptionsReturnNull() {
 		$this->assertNull($this->propertyMappingConfiguration->getConfigurationValue('foo', 'bar'));
 	}
 
@@ -131,20 +133,24 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 	 * @test
 	 */
 	public function setTypeConverterOptionsShouldOverrideAlreadySetOptions() {
-		$this->propertyMappingConfiguration->setTypeConverterOptions('someConverter', array('k1' => 'v1', 'k2' => 'v2'));
-		$this->propertyMappingConfiguration->setTypeConverterOptions('someConverter', array('k3' => 'v3'));
-		$this->assertEquals('v3', $this->propertyMappingConfiguration->getConfigurationValue('someConverter', 'k3'));
-		$this->assertNull($this->propertyMappingConfiguration->getConfigurationValue('someConverter', 'k2'));
+		$mockTypeConverterClass = $this->getMockClass('TYPO3\CMS\Extbase\Property\TypeConverterInterface');
+		$this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, array('k1' => 'v1', 'k2' => 'v2'));
+		$this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, array('k3' => 'v3'));
+
+		$this->assertEquals('v3', $this->propertyMappingConfiguration->getConfigurationValue($mockTypeConverterClass, 'k3'));
+		$this->assertNull($this->propertyMappingConfiguration->getConfigurationValue($mockTypeConverterClass, 'k2'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function setTypeConverterOptionShouldOverrideAlreadySetOptions() {
-		$this->propertyMappingConfiguration->setTypeConverterOptions('someConverter', array('k1' => 'v1', 'k2' => 'v2'));
-		$this->propertyMappingConfiguration->setTypeConverterOption('someConverter', 'k1', 'v3');
-		$this->assertEquals('v3', $this->propertyMappingConfiguration->getConfigurationValue('someConverter', 'k1'));
-		$this->assertEquals('v2', $this->propertyMappingConfiguration->getConfigurationValue('someConverter', 'k2'));
+		$mockTypeConverterClass = $this->getMockClass('TYPO3\CMS\Extbase\Property\TypeConverterInterface');
+		$this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, array('k1' => 'v1', 'k2' => 'v2'));
+		$this->propertyMappingConfiguration->setTypeConverterOption($mockTypeConverterClass, 'k1', 'v3');
+
+		$this->assertEquals('v3', $this->propertyMappingConfiguration->getConfigurationValue($mockTypeConverterClass, 'k1'));
+		$this->assertEquals('v2', $this->propertyMappingConfiguration->getConfigurationValue($mockTypeConverterClass, 'k2'));
 	}
 
 	/**
@@ -169,6 +175,7 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 	protected function buildChildConfigurationForSingleProperty() {
 		$childConfiguration = $this->propertyMappingConfiguration->forProperty('key1.key2');
 		$childConfiguration->setTypeConverterOption('someConverter', 'foo', 'specialChildConverter');
+
 		return $childConfiguration;
 	}
 
@@ -182,13 +189,62 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 	}
 
 	/**
+	 * @return array Signature: $methodToTestForFluentInterface [, $argumentsForMethod = array() ]
+	 */
+	public function fluentInterfaceMethodsDataProvider() {
+		$mockTypeConverterClass = $this->getMockClass('TYPO3\CMS\Extbase\Property\TypeConverterInterface');
+
+		return array(
+			array('allowAllProperties'),
+			array('allowProperties'),
+			array('allowAllPropertiesExcept'),
+			array('setMapping', array('k1', 'k1a')),
+			array('setTypeConverterOptions', array($mockTypeConverterClass, array('k1' => 'v1', 'k2' => 'v2'))),
+			array('setTypeConverterOption', array($mockTypeConverterClass, 'k1', 'v3')),
+			array('setTypeConverter', array($this->getMock('TYPO3\CMS\Extbase\Property\TypeConverterInterface'))),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider fluentInterfaceMethodsDataProvider
+	 */
+	public function respectiveMethodsProvideFluentInterface($methodToTestForFluentInterface, array $argumentsForMethod = array()) {
+		$actualResult = call_user_func_array(array($this->propertyMappingConfiguration, $methodToTestForFluentInterface), $argumentsForMethod);
+		$this->assertSame($this->propertyMappingConfiguration, $actualResult);
+	}
+
+	/**
 	 * @test
 	 */
-	public function shouldMapAllowsArbitraryPropertiesWhenConfiguredWithAsterisk() {
-		$this->propertyMappingConfiguration->forProperty('items.*')->setTypeConverterOptions('someConverter', array('k1' => 'v1'));
-		$configuration = $this->propertyMappingConfiguration->forProperty('items');
-		$this->assertTrue($configuration->shouldMap(uniqid()));
-	}
-}
+	public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithGetConfigurationFor() {
+			// using stdClass so that class_parents() in getTypeConvertersWithParentClasses() is happy
+		$this->propertyMappingConfiguration->forProperty('items.*')->setTypeConverterOptions('stdClass', array('k1' => 'v1'));
 
+		$configuration = $this->propertyMappingConfiguration->getConfigurationFor('items')->getConfigurationFor('6');
+		$this->assertSame('v1', $configuration->getConfigurationValue('stdClass', 'k1'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithForProperty() {
+			// using stdClass so that class_parents() in getTypeConvertersWithParentClasses() is happy
+		$this->propertyMappingConfiguration->forProperty('items.*.foo')->setTypeConverterOptions('stdClass', array('k1' => 'v1'));
+
+		$configuration = $this->propertyMappingConfiguration->forProperty('items.6.foo');
+		$this->assertSame('v1', $configuration->getConfigurationValue('stdClass', 'k1'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithShouldMap() {
+		$this->propertyMappingConfiguration->forProperty('items.*')->setTypeConverterOptions('stdClass', array('k1' => 'v1'));
+
+		$configuration = $this->propertyMappingConfiguration->forProperty('items');
+		$this->assertTrue($configuration->shouldMap(6));
+	}
+
+}
 ?>

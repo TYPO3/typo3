@@ -20,10 +20,12 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
+require_once (__DIR__ . '/../../Fixture/ClassWithSetters.php');
+
 /**
  * Testcase for the Property Mapper
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder
  */
 class PropertyMappingConfigurationBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
@@ -39,12 +41,12 @@ class PropertyMappingConfigurationBuilderTest extends \TYPO3\CMS\Extbase\Tests\U
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getTargetPropertyNameShouldReturnTheUnmodifiedPropertyNameWithoutConfiguration() {
 		$defaultConfiguration = $this->propertyMappingConfigurationBuilder->build();
 		$this->assertTrue($defaultConfiguration->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
 		$this->assertTrue($defaultConfiguration->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
+
 		$this->assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
 		$this->assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
 	}

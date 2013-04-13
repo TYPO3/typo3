@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 /**
  * Testcase for the String converter
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @covers \TYPO3\CMS\Extbase\Property\TypeConverter\StringConverter<extended>
  */
 class StringConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
@@ -39,17 +38,15 @@ class StringConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function checkMetadata() {
-		$this->assertEquals(array('string'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+		$this->assertEquals(array('string', 'integer'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
 		$this->assertEquals('string', $this->converter->getSupportedTargetType(), 'Target type does not match');
 		$this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
 	}
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function convertFromShouldReturnSourceString() {
 		$this->assertEquals('myString', $this->converter->convertFrom('myString', 'string'));
@@ -57,7 +54,6 @@ class StringConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function canConvertFromShouldReturnTrue() {
 		$this->assertTrue($this->converter->canConvertFrom('myString', 'string'));
@@ -65,11 +61,9 @@ class StringConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray() {
 		$this->assertEquals(array(), $this->converter->getSourceChildPropertiesToBeConverted('myString'));
 	}
 }
-
 ?>

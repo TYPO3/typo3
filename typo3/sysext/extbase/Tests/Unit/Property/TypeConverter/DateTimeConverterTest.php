@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 /**
  * Testcase for the DateTime converter
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @covers \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter<extended>
  */
 class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
@@ -39,7 +38,6 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function checkMetadata() {
 		$this->assertEquals(array('string', 'integer', 'array'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
@@ -47,12 +45,11 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
 	}
 
-	/**
-	 * String to DateTime testcases  *
-	 */
+
+	/** String to DateTime testcases  **/
+
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function canConvertFromReturnsFalseIfTargetTypeIsNotDateTime() {
 		$this->assertFalse($this->converter->canConvertFrom('Foo', 'SomeOtherType'));
@@ -60,7 +57,6 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function canConvertFromReturnsTrueIfSourceTypeIsAString() {
 		$this->assertTrue($this->converter->canConvertFrom('Foo', 'DateTime'));
@@ -68,7 +64,6 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function canConvertFromReturnsTrueIfSourceTypeIsAnEmptyString() {
 		$this->assertTrue($this->converter->canConvertFrom('', 'DateTime'));
@@ -76,7 +71,6 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFromReturnsErrorIfGivenStringCantBeConverted() {
 		$error = $this->converter->convertFrom('1980-12-13', 'DateTime');
@@ -85,7 +79,6 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFromProperlyConvertsStringWithDefaultDateFormat() {
 		$expectedResult = '1980-12-13T20:15:07+01:23';
@@ -96,12 +89,16 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFromUsesDefaultDateFormatIfItIsNotConfigured() {
 		$expectedResult = '1980-12-13T20:15:07+01:23';
-		$mockMappingConfiguration = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfigurationInterface');
-		$mockMappingConfiguration->expects($this->atLeastOnce())->method('getConfigurationValue')->with('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT)->will($this->returnValue(NULL));
+		$mockMappingConfiguration = $this->getMock('TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface');
+		$mockMappingConfiguration
+				->expects($this->atLeastOnce())
+				->method('getConfigurationValue')
+				->with('TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT)
+				->will($this->returnValue(NULL));
+
 		$date = $this->converter->convertFrom($expectedResult, 'DateTime', array(), $mockMappingConfiguration);
 		$actualResult = $date->format(\TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::DEFAULT_DATE_FORMAT);
 		$this->assertSame($expectedResult, $actualResult);
@@ -118,7 +115,6 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @return array
 	 * @see convertFromStringTests()
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFromStringDataProvider() {
 		return array(
@@ -139,12 +135,15 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @param boolean $isValid TRUE if the conversion is expected to be successful, otherwise FALSE
 	 * @test
 	 * @dataProvider convertFromStringDataProvider
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFromStringTests($source, $dateFormat, $isValid) {
 		if ($dateFormat !== NULL) {
-			$mockMappingConfiguration = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfigurationInterface');
-			$mockMappingConfiguration->expects($this->atLeastOnce())->method('getConfigurationValue')->with('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT)->will($this->returnValue($dateFormat));
+			$mockMappingConfiguration = $this->getMock('TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface');
+			$mockMappingConfiguration
+					->expects($this->atLeastOnce())
+					->method('getConfigurationValue')
+					->with('TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT)
+					->will($this->returnValue($dateFormat));
 		} else {
 			$mockMappingConfiguration = NULL;
 		}
@@ -154,6 +153,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			return;
 		}
 		$this->assertInstanceOf('DateTime', $date);
+
 		if ($dateFormat === NULL) {
 			$dateFormat = \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::DEFAULT_DATE_FORMAT;
 		}
@@ -184,9 +184,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	}
 
-	/**
-	 * Array to DateTime testcases  *
-	 */
+	/** Array to DateTime testcases  **/
 
 	/**
 	 * @test
@@ -202,7 +200,6 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function canConvertFromReturnsTrueIfSourceTypeIsAnArray() {
 		$this->assertTrue($this->converter->canConvertFrom(array(), 'DateTime'));
@@ -210,7 +207,6 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFromReturnsErrorIfGivenArrayCantBeConverted() {
 		$error = $this->converter->convertFrom(array('date' => '1980-12-13'), 'DateTime');
@@ -220,7 +216,6 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 * @expectedException \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFromThrowsExceptionIfGivenArrayDoesNotSpecifyTheDate() {
 		$this->converter->convertFrom(array('hour' => '12', 'minute' => '30'), 'DateTime');
@@ -228,7 +223,6 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFromProperlyConvertsArrayWithDefaultDateFormat() {
 		$expectedResult = '1980-12-13T20:15:07+01:23';
@@ -263,7 +257,23 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function convertFromProperlyConvertsArrayWithDateAsArray() {
+		$source = array('day' => '13', 'month' => '10', 'year' => '2010');
+		$mappingConfiguration = new \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration();
+		$mappingConfiguration->setTypeConverterOption(
+				'TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter',
+				\TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+				'Y-m-d'
+		);
+
+		$date = $this->converter->convertFrom($source, 'DateTime', array(), $mappingConfiguration);
+		$actualResult = $date->format('Y-m-d');
+		$this->assertSame('2010-10-13', $actualResult);
+	}
+
+	/**
+	 * @test
 	 */
 	public function convertFromAllowsToOverrideTheTime() {
 		$source = array(
@@ -271,7 +281,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'dateFormat' => 'Y-m-d',
 			'hour' => '12',
 			'minute' => '30',
-			'second' => '59'
+			'second' => '59',
 		);
 		$date = $this->converter->convertFrom($source, 'DateTime');
 		$this->assertSame('2011-06-16', $date->format('Y-m-d'));
@@ -282,13 +292,12 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFromAllowsToOverrideTheTimezone() {
 		$source = array(
 			'date' => '2011-06-16 12:30:59',
 			'dateFormat' => 'Y-m-d H:i:s',
-			'timezone' => 'Atlantic/Reykjavik'
+			'timezone' => 'Atlantic/Reykjavik',
 		);
 		$date = $this->converter->convertFrom($source, 'DateTime');
 		$this->assertSame('2011-06-16', $date->format('Y-m-d'));
@@ -301,13 +310,12 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 * @expectedException \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFromThrowsExceptionIfSpecifiedTimezoneIsInvalid() {
 		$source = array(
 			'date' => '2011-06-16',
 			'dateFormat' => 'Y-m-d',
-			'timezone' => 'Invalid/Timezone'
+			'timezone' => 'Invalid/Timezone',
 		);
 		$this->converter->convertFrom($source, 'DateTime');
 	}
@@ -315,7 +323,6 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 * @expectedException \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function convertFromArrayThrowsExceptionForEmptyArray() {
 		$this->converter->convertFrom(array(), 'DateTime', array(), NULL);
@@ -323,7 +330,6 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function convertFromArrayReturnsNullForEmptyDate() {
 		$this->assertNull($this->converter->convertFrom(array('date' => ''), 'DateTime', array(), NULL));
@@ -332,7 +338,6 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @return array
 	 * @see convertFromArrayTests()
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFromArrayDataProvider() {
 		return array(
@@ -354,28 +359,52 @@ class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @param boolean $isValid TRUE if the conversion is expected to be successful, otherwise FALSE
 	 * @test
 	 * @dataProvider convertFromArrayDataProvider
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFromArrayTests(array $source, $isValid) {
 		$dateFormat = isset($source['dateFormat']) && strlen($source['dateFormat']) > 0 ? $source['dateFormat'] : NULL;
 		if ($dateFormat !== NULL) {
-			$mockMappingConfiguration = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfigurationInterface');
-			$mockMappingConfiguration->expects($this->atLeastOnce())->method('getConfigurationValue')->with('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT)->will($this->returnValue($dateFormat));
+			$mockMappingConfiguration = $this->getMock('TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface');
+			$mockMappingConfiguration
+					->expects($this->atLeastOnce())
+					->method('getConfigurationValue')
+					->with('TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT)
+					->will($this->returnValue($dateFormat));
 		} else {
 			$mockMappingConfiguration = NULL;
 		}
 		$date = $this->converter->convertFrom($source, 'DateTime', array(), $mockMappingConfiguration);
+
 		if ($isValid !== TRUE) {
 			$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Error\\Error', $date);
 			return;
 		}
+
 		$this->assertInstanceOf('DateTime', $date);
 		if ($dateFormat === NULL) {
 			$dateFormat = \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::DEFAULT_DATE_FORMAT;
 		}
-		$dateAsString = isset($source['date']) ? $source['date'] : '';
-		$this->assertSame(strval($dateAsString), $date->format($dateFormat));
+		$dateAsString = isset($source['date']) ? strval($source['date']) : '';
+		$this->assertSame($dateAsString, $date->format($dateFormat));
 	}
-}
 
+	/**
+	 * @test
+	 */
+	public function convertFromSupportsDateTimeSubClasses() {
+		$className = 'DateTimeSubClass' . md5(uniqid(mt_rand(), TRUE));
+		eval('
+			class ' . $className . ' extends \\DateTime {
+				public static function createFromFormat($format, $time, $timezone = NULL) {
+					return new ' . $className . '();
+				}
+				public function foo() { return "Bar"; }
+			}
+		');
+		$date = $this->converter->convertFrom('2005-08-15T15:52:01+00:00', $className);
+
+		$this->assertInstanceOf($className, $date);
+		$this->assertSame('Bar', $date->foo());
+	}
+
+}
 ?>

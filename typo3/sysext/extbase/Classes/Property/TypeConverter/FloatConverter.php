@@ -21,17 +21,18 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 /**
- * Converter which transforms a simple type to a float, by simply casting it.
+ * Converter which transforms a simple type to a float.
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * This is basically done by simply casting it.
+ *
  * @api
  */
-class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter implements \TYPO3\CMS\Core\SingletonInterface {
+class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter {
 
 	/**
 	 * @var array<string>
 	 */
-	protected $sourceTypes = array('string');
+	protected $sourceTypes = array('float', 'integer', 'string');
 
 	/**
 	 * @var string
@@ -46,16 +47,23 @@ class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
 	/**
 	 * Actually convert from $source to $targetType, by doing a typecast.
 	 *
-	 * @param string $source
+	 * @param mixed $source
 	 * @param string $targetType
 	 * @param array $convertedChildProperties
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-	 * @return float
+	 * @return float|\TYPO3\CMS\Extbase\Error\Error
 	 * @api
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
-		return (double) $source;
+		if ($source === NULL || strlen($source) === 0) {
+			return NULL;
+		}
+		// We won't backport the full flavored locale parsing of floats from Flow here
+
+		if (!is_numeric($source)) {
+			return new \TYPO3\CMS\Extbase\Error\Error('"%s" cannot be converted to a float value.', 1332934124, array($source));
+		}
+		return (float) $source;
 	}
 }
-
 ?>

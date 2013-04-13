@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 /**
  * Testcase for the Float converter
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @covers \TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter<extended>
  */
 class FloatConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
@@ -39,17 +38,15 @@ class FloatConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function checkMetadata() {
-		$this->assertEquals(array('string'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+		$this->assertEquals(array('float', 'integer', 'string'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
 		$this->assertEquals('float', $this->converter->getSupportedTargetType(), 'Target type does not match');
 		$this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
 	}
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function convertFromShouldCastTheStringToFloat() {
 		$this->assertSame(1.5, $this->converter->convertFrom('1.5', 'float'));
@@ -57,7 +54,27 @@ class FloatConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function convertFromReturnsNullIfEmptyStringSpecified() {
+		$this->assertNull($this->converter->convertFrom('', 'float'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertFromShouldAcceptIntegers() {
+		$this->assertSame((float)123, $this->converter->convertFrom(123, 'float'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric() {
+		$this->assertInstanceOf('TYPO3\CMS\Extbase\Error\Error', $this->converter->convertFrom('not numeric', 'float'));
+	}
+
+	/**
+	 * @test
 	 */
 	public function canConvertFromShouldReturnTrue() {
 		$this->assertTrue($this->converter->canConvertFrom('1.5', 'float'));
@@ -65,11 +82,23 @@ class FloatConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function canConvertFromShouldReturnTrueForAnEmptyValue() {
+		$this->assertTrue($this->converter->canConvertFrom('', 'integer'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function canConvertFromShouldReturnTrueForANullValue() {
+		$this->assertTrue($this->converter->canConvertFrom(NULL, 'integer'));
+	}
+
+	/**
+	 * @test
 	 */
 	public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray() {
 		$this->assertEquals(array(), $this->converter->getSourceChildPropertiesToBeConverted('myString'));
 	}
 }
-
 ?>

@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 /**
  * Testcase for the Boolean converter
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class BooleanConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
@@ -38,7 +37,6 @@ class BooleanConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function checkMetadata() {
 		$this->assertEquals(array('boolean', 'string'), $this->converter->getSupportedSourceTypes(), 'Source types do not match');
@@ -48,7 +46,6 @@ class BooleanConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFromDoesNotModifyTheBooleanSource() {
 		$source = TRUE;
@@ -57,7 +54,6 @@ class BooleanConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFromCastsSourceStringToBoolean() {
 		$source = 'true';
@@ -66,12 +62,10 @@ class BooleanConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFromCastsNumericSourceStringToBoolean() {
 		$source = '1';
 		$this->assertSame(TRUE, $this->converter->convertFrom($source, 'boolean'));
 	}
 }
-
 ?>
