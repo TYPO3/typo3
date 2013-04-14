@@ -393,7 +393,11 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			}
 			$columnMap = $dataMap->getColumnMap($propertyName);
 			if ($propertyValue instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
-				if ($object->_isNew() || $propertyValue->_isDirty()) {
+				$cleanProperty = $object->_getCleanProperty($propertyName);
+				// objectstorage needs to be persisted if the object is new, the objectstorge is dirty, meaning it has
+				// been changed after initial build, or a empty objectstorge is present and the cleanstate objectstorage
+				// has childelements, meaning all elements should been removed from the objectstorage
+				if ($object->_isNew() || $propertyValue->_isDirty() || ($propertyValue->count() == 0 && $cleanProperty && $cleanProperty->count() > 0)) {
 					$this->persistObjectStorage($propertyValue, $object, $propertyName, $row);
 					$propertyValue->_memorizeCleanState();
 				}
