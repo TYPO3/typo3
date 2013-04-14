@@ -1,21 +1,4 @@
 config.tx_extbase {
-	objects {
-		TYPO3\CMS\Extbase\Persistence\QueryInterface {
-			className = TYPO3\CMS\Extbase\Persistence\Generic\Query
-		}
-		TYPO3\CMS\Extbase\Persistence\QueryResultInterface {
-			className = TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
-		}
-		TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface {
-			className = TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-		}
-		TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface {
-			className = TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend
-		}
-		TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface {
-			className = TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings
-		}
-	}
 	mvc {
 		requestHandlers {
 			TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler = TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler
