@@ -688,7 +688,7 @@ class Bootstrap {
 
 		$databaseHost = TYPO3_db_host;
 		// Check if a port was specified
-		if (strpos(':', $databaseHost) > 0) {
+		if (strpos($databaseHost, ':') > 0) {
 			list($databaseHost, $databasePort) = explode(':', $databaseHost);
 			$databaseConnection->setDatabasePort($databasePort);
 		}
