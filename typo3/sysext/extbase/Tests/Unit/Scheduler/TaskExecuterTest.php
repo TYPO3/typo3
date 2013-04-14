@@ -1,7 +1,7 @@
 <?php
 namespace TYPO3\CMS\Extbase\Tests\Unit\Scheduler;
 
-require_once (__DIR__ . '/Fixtures/MockACommandController.php');
+require_once __DIR__ . '/Fixtures/MockACommandController.php';
 
 /***************************************************************
  *  Copyright notice

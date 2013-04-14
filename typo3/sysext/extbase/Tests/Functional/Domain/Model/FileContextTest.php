@@ -46,10 +46,10 @@ class FileContextTest extends \Tx_Extbase_Tests_Functional_BaseTestCase {
 	protected function setUp() {
 		$this->markTestIncomplete('Functional tests do not work yet.');
 		parent::setUp();
-		$this->importDataSet(dirname(__FILE__) . '/Fixture/data_sys_file_storage.xml');
-		$this->importDataSet(dirname(__FILE__) . '/Fixture/data_sys_file.xml');
-		$this->importDataSet(dirname(__FILE__) . '/Fixture/data_sys_file_reference.xml');
-		$this->importDataSet(dirname(__FILE__) . '/Fixture/data_sys_file_collection.xml');
+		$this->importDataSet(__DIR__ . '/Fixture/data_sys_file_storage.xml');
+		$this->importDataSet(__DIR__ . '/Fixture/data_sys_file.xml');
+		$this->importDataSet(__DIR__ . '/Fixture/data_sys_file_reference.xml');
+		$this->importDataSet(__DIR__ . '/Fixture/data_sys_file_collection.xml');
 		/** @var $configurationBuilder \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder */
 		$configurationBuilder = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfigurationBuilder');
 		$this->propertyMapperConfiguration = $configurationBuilder->build('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\MvcPropertyMappingConfiguration');

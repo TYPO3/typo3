@@ -1,9 +1,9 @@
 <?php
 namespace TYPO3\CMS\Extbase\Tests\Unit\Scheduler;
 
-require_once (__DIR__ . '/Fixtures/MockACommandController.php');
-require_once (__DIR__ . '/Fixtures/MockBCommandController.php');
-require_once (__DIR__ . '/Fixtures/MockCCommandController.php');
+require_once __DIR__ . '/Fixtures/MockACommandController.php';
+require_once __DIR__ . '/Fixtures/MockBCommandController.php';
+require_once __DIR__ . '/Fixtures/MockCCommandController.php';
 
 /***************************************************************
  *  Copyright notice
