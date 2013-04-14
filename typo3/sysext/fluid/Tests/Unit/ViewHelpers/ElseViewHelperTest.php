@@ -10,7 +10,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-require_once dirname(__FILE__) . '/ViewHelperBaseTestcase.php';
+require_once(__DIR__ . '/ViewHelperBaseTestcase.php');
 
 /**
  * Testcase for ElseViewHelper

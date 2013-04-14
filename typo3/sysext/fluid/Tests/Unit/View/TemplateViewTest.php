@@ -10,8 +10,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-include_once dirname(__FILE__) . '/Fixtures/TransparentSyntaxTreeNode.php';
-include_once dirname(__FILE__) . '/Fixtures/TemplateViewFixture.php';
+include_once(__DIR__ . '/Fixtures/TransparentSyntaxTreeNode.php');
+include_once(__DIR__ . '/Fixtures/TemplateViewFixture.php');
+
 /**
  * Testcase for the TemplateView
  */
