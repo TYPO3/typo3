@@ -1613,7 +1613,7 @@ class DatabaseConnection {
 			'called without arguments. Use the setters instead.'
 		);
 		if ($host) {
-			if (strpos(':', $host) > 0) {
+			if (strpos($host, ':') > 0) {
 				list($databaseHost, $databasePort) = explode(':', $host);
 				$this->setDatabaseHost($databaseHost);
 				$this->setDatabasePort($databasePort);
