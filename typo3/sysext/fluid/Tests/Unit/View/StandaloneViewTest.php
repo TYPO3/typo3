@@ -224,14 +224,6 @@ class StandaloneViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 */
-	public function constructorInjectsFlashMessageContainerToControllerContext() {
-		$this->mockControllerContext->expects($this->once())->method('setFlashMessageContainer')->with($this->mockFlashMessageContainer);
-		new \TYPO3\CMS\Fluid\View\StandaloneView();
-	}
-
-	/**
-	 * @test
 	 * @expectedException \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
 	 */
 	public function renderThrowsExceptionIfTemplateIsNotSpecified() {

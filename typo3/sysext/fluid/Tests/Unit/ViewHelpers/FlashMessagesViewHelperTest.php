@@ -19,14 +19,9 @@ require_once(__DIR__ . '/ViewHelperBaseTestcase.php');
 class FlashMessagesViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\ViewHelpers\FlashMessagesViewHelper
+	 * @var \TYPO3\CMS\Fluid\ViewHelpers\FlashMessagesViewHelper| \PHPUnit_Framework_MockObject_MockObject |\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $viewHelper;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer
-	 */
-	protected $mockFlashMessageContainer;
 
 	/**
 	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder
@@ -39,9 +34,8 @@ class FlashMessagesViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelper
 	 * @return void
 	 */
 	public function setUp() {
-		$this->mockFlashMessageContainer = $this->getMock('\TYPO3\\CMS\\Extbase\\Mvc\\Controller\\FlashMessageContainer');
 		$mockControllerContext = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext', array(), array(), '', FALSE);
-		$mockControllerContext->expects($this->any())->method('getFlashMessageContainer')->will($this->returnValue($this->mockFlashMessageContainer));
+		$mockControllerContext->expects($this->any())->method('getFlashMessageQueue')->will($this->returnValue(new \TYPO3\CMS\Core\Messaging\FlashMessageQueue('foo')));
 
 		$this->mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
 		$this->viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\FlashMessagesViewHelper', array('dummy'));

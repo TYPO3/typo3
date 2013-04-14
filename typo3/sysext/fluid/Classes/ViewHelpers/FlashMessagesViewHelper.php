@@ -106,7 +106,7 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
 	 * @api
 	 */
 	public function render($renderMode = self::RENDER_MODE_UL) {
-		$flashMessages = $this->controllerContext->getFlashMessageContainer()->getAllMessagesAndFlush();
+		$flashMessages = $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 		if ($flashMessages === NULL || count($flashMessages) === 0) {
 			return '';
 		}
