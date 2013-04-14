@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Be;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-require_once dirname(__FILE__) . '/../ViewHelperBaseTestcase.php';
+require_once __DIR__ . '/../ViewHelperBaseTestcase.php';
 
 /**
  * Testcase for be.security.ifHasRole view helper
