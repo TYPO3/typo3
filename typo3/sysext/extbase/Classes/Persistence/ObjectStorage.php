@@ -306,7 +306,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\E
 	/**
 	 * Dummy method to avoid unserialization.
 	 *
-	 * @param $serialized
+	 * @param string $serialized
 	 * @throws \RuntimeException
 	 * @return void
 	 */

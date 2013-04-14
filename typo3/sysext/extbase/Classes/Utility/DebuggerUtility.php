@@ -202,7 +202,7 @@ class DebuggerUtility {
 	/**
 	 * Checks if a given object was already rendered.
 	 *
-	 * @param $object
+	 * @param object $object
 	 * @return bool TRUE if the given object was already rendered
 	 */
 	static protected function isAlreadyRendered($object) {
@@ -212,10 +212,10 @@ class DebuggerUtility {
 	/**
 	 * Renders the header of a given object/collection. It is usually the class name along with some flags.
 	 *
-	 * @param $object
-	 * @param $level
-	 * @param $plainText
-	 * @param $ansiColors
+	 * @param object $object
+	 * @param integer $level
+	 * @param boolean $plainText
+	 * @param boolean $ansiColors
 	 * @return string The rendered header with tags
 	 */
 	static protected function renderHeader($object, $level, $plainText, $ansiColors) {
@@ -296,10 +296,10 @@ class DebuggerUtility {
 	}
 
 	/**
-	 * @param $object
-	 * @param $level
-	 * @param $plainText
-	 * @param $ansiColors
+	 * @param object $object
+	 * @param integer $level
+	 * @param boolean $plainText
+	 * @param boolean $ansiColors
 	 * @return string The rendered body content of the Object(Storage)
 	 */
 	static protected function renderContent($object, $level, $plainText, $ansiColors) {

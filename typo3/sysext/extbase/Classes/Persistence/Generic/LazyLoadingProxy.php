@@ -195,7 +195,7 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 	/**
 	 * Returns the next position of the storage array
 	 *
-	 * @return mixed
+	 * @return void
 	 */
 	public function next() {
 		$realInstance = $this->_loadRealInstance();

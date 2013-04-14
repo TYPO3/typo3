@@ -65,6 +65,7 @@ class ClassInfoCache {
 	 * Gets the cache for the id
 	 *
 	 * @param string $id
+	 * @return mixed
 	 */
 	public function get($id) {
 		if (!isset($this->level1Cache[$id])) {
@@ -76,8 +77,8 @@ class ClassInfoCache {
 	/**
 	 * sets the cache for the id
 	 *
-	 * @param $id
-	 * @param $value
+	 * @param string $id
+	 * @param mixed $value
 	 */
 	public function set($id, $value) {
 		$this->level1Cache[$id] = $value;

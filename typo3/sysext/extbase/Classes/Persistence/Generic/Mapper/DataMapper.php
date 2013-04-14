@@ -111,7 +111,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Injects the Reflection Service
 	 *
-	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService
+	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
 	 * @return void
 	 */
 	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
@@ -121,7 +121,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Injects the DataMap Factory
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
 	 * @return void
 	 */
 	public function injectDataMapFactory(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory) {
@@ -323,7 +323,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The object instance this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
-	 * @param bool $enableLazyLoading A flag indication if the related objects should be lazy loaded
+	 * @param boolean $enableLazyLoading A flag indication if the related objects should be lazy loaded
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface The result
 	 */
 	public function fetchRelated(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = TRUE) {
@@ -552,8 +552,8 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Returns the column name for a given property name of the specified class.
 	 *
-	 * @param string $className
 	 * @param string $propertyName
+	 * @param string $className
 	 * @return string The column name
 	 */
 	public function convertPropertyNameToColumnName($propertyName, $className = NULL) {

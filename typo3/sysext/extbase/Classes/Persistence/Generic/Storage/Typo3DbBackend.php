@@ -395,7 +395,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * Parses the query and returns the SQL statement parts.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query The query
-	 * @param array $parameters
+	 * @param array &$parameters
 	 * @return array The SQL statement parts
 	 */
 	public function parseQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query, array &$parameters) {
@@ -757,10 +757,10 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	}
 
 	/**
-	 * @param $className
-	 * @param $tableName
-	 * @param $propertyPath
-	 * @param array $sql
+	 * @param string &$className
+	 * @param string &$tableName
+	 * @param array &$propertyPath
+	 * @param array &$sql
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidRelationConfigurationException
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\MissingColumnMapException
@@ -861,12 +861,11 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * Replace query placeholders in a query part by the given
 	 * parameters.
 	 *
-	 * @param string $sqlString The query part with placeholders
+	 * @param string &$sqlString The query part with placeholders
 	 * @param array $parameters The parameters
 	 * @param string $tableName
 	 *
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
-	 * @return string The query part with replaced placeholders
 	 */
 	protected function replacePlaceholders(&$sqlString, array $parameters, $tableName = 'foo') {
 		// TODO profile this method again
@@ -899,7 +898,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The TYPO3 CMS specific query settings
 	 * @param string $tableName The table name to add the additional where clause for
-	 * @param string $sql
+	 * @param string &$sql
 	 * @return void
 	 */
 	protected function addAdditionalWhereClause(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings, $tableName, &$sql) {
@@ -1028,8 +1027,8 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				if (isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
 					&& $querySettings->getSysLanguageUid() > 0
 				) {
-					$additionalWhereClause .= ' OR (' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0' .
-						' AND ' . $tableName . '.uid NOT IN (' . 'SELECT ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] .
+					$additionalWhereClause .= ' OR (' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] .
+						' =0 AND ' . $tableName . '.uid NOT IN (SELECT ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] .
 						' FROM ' . $tableName .
 						' WHERE ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] . '>0' .
 						' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '>0';

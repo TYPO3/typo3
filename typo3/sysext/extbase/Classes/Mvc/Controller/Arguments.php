@@ -249,7 +249,7 @@ class Arguments extends \ArrayObject {
 	 * If an argument with the specified name or short name does not exist, an empty
 	 * string is returned.
 	 *
-	 * @param string argument name
+	 * @param string $argumentName argument name
 	 * @return string long argument name or empty string
 	 */
 	protected function translateToLongArgumentName($argumentName) {

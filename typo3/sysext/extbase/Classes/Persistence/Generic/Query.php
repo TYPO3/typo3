@@ -593,7 +593,6 @@ class Query implements \TYPO3\CMS\Extbase\Persistence\QueryInterface {
 	 * It matches if the multivalued property contains no values or is NULL.
 	 *
 	 * @param string $propertyName The name of the multivalued property to compare against
-	 * @return boolean
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a single-valued property
 	 * @api

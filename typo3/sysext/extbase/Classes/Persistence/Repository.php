@@ -123,7 +123,6 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	}
 
 	/**
-	 *
 	 * Injects the Persistence Session
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session $session The persistence session

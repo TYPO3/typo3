@@ -126,6 +126,8 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 
 	// Delegation to the ObjectStorage methods below
 	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $storage
+	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::addAll
 	 */
 	public function addAll($storage) {
@@ -134,6 +136,9 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	}
 
 	/**
+	 * @param object $object The object to add.
+	 * @param mixed $data The data to associate with the object.
+	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::attach
 	 */
 	public function attach($object, $data = NULL) {
@@ -142,6 +147,9 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	}
 
 	/**
+	 * @param object $object The object to look for.
+	 * @return boolean
+	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::contains
 	 */
 	public function contains($object) {
@@ -171,6 +179,8 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	}
 
 	/**
+	 * @return object The object at the current iterator position.
+	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::current
 	 */
 	public function current() {
@@ -179,6 +189,8 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	}
 
 	/**
+	 * @param object $object The object to remove.
+	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::detach
 	 */
 	public function detach($object) {
@@ -187,6 +199,8 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	}
 
 	/**
+	 * @return string The index corresponding to the position of the iterator.
+	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::key
 	 */
 	public function key() {
@@ -203,6 +217,9 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	}
 
 	/**
+	 * @param object $object The object to look for.
+	 * @return boolean
+	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetExists
 	 */
 	public function offsetExists($object) {
@@ -211,6 +228,9 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	}
 
 	/**
+	 * @param object $object The object to look for.
+	 * @return mixed
+	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetGet
 	 */
 	public function offsetGet($object) {
@@ -219,6 +239,9 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	}
 
 	/**
+	 * @param object $object The object to add.
+	 * @param mixed $info The data to associate with the object.
+	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetSet
 	 */
 	public function offsetSet($object, $info) {
@@ -227,6 +250,9 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	}
 
 	/**
+	 * @param object $object The object to remove.
+	 * @return void
+	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::offsetUnset
 	 */
 	public function offsetUnset($object) {
@@ -235,6 +261,9 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	}
 
 	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $storage The storage containing the elements to remove.
+	 * @return void
+	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::removeAll
 	 */
 	public function removeAll($storage) {
@@ -251,6 +280,8 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	}
 
 	/**
+	 * @return boolean
+	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::valid
 	 */
 	public function valid() {
@@ -259,6 +290,8 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	}
 
 	/**
+	 * @return array
+	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::toArray
 	 */
 	public function toArray() {

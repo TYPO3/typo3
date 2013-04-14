@@ -87,7 +87,7 @@ class ObjectAccess {
 	 * @param mixed $subject Object or array to get the property from
 	 * @param string $propertyName name of the property to retrieve
 	 * @param boolean $forceDirectAccess directly access property using reflection(!)
-	 * @param boolean $propertyExists (by reference) will be set to TRUE if the specified property exists and is gettable
+	 * @param boolean &$propertyExists (by reference) will be set to TRUE if the specified property exists and is gettable
 	 *
 	 * @throws Exception\PropertyNotAccessibleException
 	 * @return mixed Value of the property
@@ -184,7 +184,7 @@ class ObjectAccess {
 	 * on it without checking if it existed.
 	 * - else, return FALSE
 	 *
-	 * @param mixed $subject The target object or array
+	 * @param mixed &$subject The target object or array
 	 * @param string $propertyName Name of the property to set
 	 * @param mixed $propertyValue Value of the property
 	 * @param boolean $forceDirectAccess directly access property using reflection(!)

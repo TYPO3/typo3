@@ -490,7 +490,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 * display no flash message at all on errors. Override this to customize
 	 * the flash message in your action controller.
 	 *
-	 * @return string|boolean The flash message or FALSE if no flash message should be set
+	 * @return string The flash message or FALSE if no flash message should be set
 	 * @api
 	 */
 	protected function getErrorFlashMessage() {

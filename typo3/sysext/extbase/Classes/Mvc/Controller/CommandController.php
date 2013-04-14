@@ -224,7 +224,7 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 * @see http://www.php.net/sprintf
 	 * @param string $text Text to output
 	 * @param array $arguments Optional arguments to use for sprintf
-	 * @return string
+	 * @return void
 	 */
 	protected function output($text, array $arguments = array()) {
 		if ($arguments !== array()) {

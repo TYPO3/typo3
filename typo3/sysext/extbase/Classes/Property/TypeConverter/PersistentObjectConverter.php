@@ -209,7 +209,7 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	 *
 	 * @param array $source
 	 * @param string $targetType
-	 * @param array $convertedChildProperties
+	 * @param array &$convertedChildProperties
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
 	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
 	 * @return object

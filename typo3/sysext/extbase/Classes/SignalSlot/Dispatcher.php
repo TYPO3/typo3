@@ -62,13 +62,14 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Since this dispatches is used very early when the ObjectManager
 	 * is not fully initialized (especially concerning caching framework),
 	 * this is the only way.
+	 *
+	 * @return void
 	 */
 	public function initializeObject() {
-		if ($this->isInitialized) {
-			return;
+		if (!$this->isInitialized) {
+			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+			$this->isInitialized = TRUE;
 		}
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$this->isInitialized = TRUE;
 	}
 
 	/**

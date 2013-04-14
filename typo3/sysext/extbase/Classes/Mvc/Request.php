@@ -316,7 +316,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 *
 	 * Note that the action name must start with a lower case letter and is case sensitive.
 	 *
-	 * @param string $actionName: Name of the action to execute by the controller
+	 * @param string $actionName Name of the action to execute by the controller
 	 *
 	 * @return void
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException if the action name is not valid

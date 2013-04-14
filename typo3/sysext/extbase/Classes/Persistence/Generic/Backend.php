@@ -143,7 +143,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	/**
 	 * Injects the Reflection Service
 	 *
-	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService
+	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
 	 * @return void
 	 */
 	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
@@ -449,7 +449,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objectStorage The object storage to be persisted.
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object. One of the properties holds the object storage.
 	 * @param string $propertyName The name of the property holding the object storage.
-	 * @param array $row The row array of the parent object to be persisted. It's passed by reference and gets filled with either a comma separated list of uids (csv) or the number of contained objects.
+	 * @param array &$row The row array of the parent object to be persisted. It's passed by reference and gets filled with either a comma separated list of uids (csv) or the number of contained objects.
 	 * @return void
 	 */
 	protected function persistObjectStorage(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objectStorage, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, array &$row) {
@@ -579,8 +579,8 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
 		if ($parentColumnMap->getTypeOfRelation() !== \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
 			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException(
-				'Parent column relation type is ' . $parentColumnMap->getTypeOfRelation()
-				. ' but should be ' . \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY,
+				'Parent column relation type is ' . $parentColumnMap->getTypeOfRelation() .
+				' but should be ' . \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY,
 				1345368105
 			);
 		}
@@ -880,7 +880,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * Adds common databse fields to a row
 	 *
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
-	 * @param array $row
+	 * @param array &$row
 	 * @return void
 	 */
 	protected function addCommonFieldsToRow(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, array &$row) {
@@ -898,7 +898,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * Adjustes the common date fields of the given row to the current time
 	 *
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
-	 * @param array $row The row to be updated
+	 * @param array &$row The row to be updated
 	 * @return void
 	 */
 	protected function addCommonDateFieldsToRow(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, array &$row) {
@@ -931,7 +931,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * Deletes an object
 	 *
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to be removed from the storage
-	 * @param bool $markAsDeleted Wether to just flag the row deleted (default) or really delete it
+	 * @param boolean $markAsDeleted Wether to just flag the row deleted (default) or really delete it
 	 * @return void
 	 */
 	protected function removeEntity(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, $markAsDeleted = TRUE) {

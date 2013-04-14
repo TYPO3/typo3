@@ -68,7 +68,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 	/**
 	 * Render additional information fields within the scheduler backend.
 	 *
-	 * @param array $taskInfo Array information of task to return
+	 * @param array &$taskInfo Array information of task to return
 	 * @param mixed $task \TYPO3\CMS\Scheduler\Task\AbstractTask or tx_scheduler_Execution instance
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the calling object (BE module of the Scheduler)
 	 * @return array Additional fields
@@ -94,7 +94,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 	/**
 	 * Validates additional selected fields
 	 *
-	 * @param array $submittedData
+	 * @param array &$submittedData
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule
 	 * @return boolean
 	 */

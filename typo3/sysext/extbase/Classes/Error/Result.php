@@ -278,7 +278,7 @@ class Result {
 	 * Flatten a tree of Result objects, based on a certain property.
 	 *
 	 * @param string $propertyName
-	 * @param array $result
+	 * @param array &$result
 	 * @param array $level
 	 * @return void
 	 */

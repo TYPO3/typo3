@@ -137,7 +137,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param mixed $source the source data to map. MUST be a simple type, NO object allowed!
 	 * @param string $targetType The type of the target; can be either a class name or a simple type.
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration Configuration for the property mapping.
-	 * @param array $currentPropertyPath The property path currently being mapped; used for knowing the context in case an exception is thrown.
+	 * @param array &$currentPropertyPath The property path currently being mapped; used for knowing the context in case an exception is thrown.
 	 * @throws Exception\TypeConverterException
 	 * @return mixed an instance of $targetType
 	 */

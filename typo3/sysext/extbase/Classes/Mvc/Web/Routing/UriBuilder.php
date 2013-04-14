@@ -688,8 +688,8 @@ class UriBuilder {
 	 *
 	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject $object
 	 * @return array
+	 * @todo Refactore this into convertDomainObjectsToIdentityArrays()
 	 */
-	// TODO Refactore this into convertDomainObjectsToIdentityArrays()
 	public function convertTransientObjectToArray(\TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject $object) {
 		$result = array();
 		foreach ($object->_getProperties() as $propertyName => $propertyValue) {

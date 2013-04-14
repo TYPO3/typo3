@@ -135,8 +135,9 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param array $propertyNames Names of the properties to map.
 	 * @param mixed $source Source containing the properties to map to the target object. Must either be an array, ArrayObject or any other object.
 	 * @param object $target The target object
-	 * @param \TYPO3\CMS\Extbase\Validation\Validator\ObjectValidatorInterface $targetObjectValidator A validator used for validating the target object
 	 * @param array $optionalPropertyNames Names of optional properties. If a property is specified here and it doesn't exist in the source, no error is issued.
+	 * @param \TYPO3\CMS\Extbase\Validation\Validator\ObjectValidatorInterface $targetObjectValidator A validator used for validating the target object
+	 *
 	 * @return boolean TRUE if the mapped properties are valid, otherwise FALSE
 	 * @see getMappingResults()
 	 * @see map()
@@ -164,7 +165,7 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Add errors to the mapping result from an object validator (property errors).
 	 *
-	 * @param array Array of \TYPO3\CMS\Extbase\Validation\PropertyError
+	 * @param array $errors Array of \TYPO3\CMS\Extbase\Validation\PropertyError
 	 * @return void
 	 */
 	protected function addErrorsFromObjectValidator($errors) {

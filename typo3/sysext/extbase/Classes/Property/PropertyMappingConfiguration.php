@@ -155,7 +155,7 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	 *
 	 * Example: allowProperties('title', 'content', 'author')
 	 *
-	 * @return void
+	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
 	 * @api
 	 */
 	public function allowProperties() {

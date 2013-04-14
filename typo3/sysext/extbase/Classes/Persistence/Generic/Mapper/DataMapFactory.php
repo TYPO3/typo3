@@ -179,7 +179,6 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			$columnMap = $this->setFieldEvaluations($columnMap, $columnDefinition['config']);
 			$dataMap->addColumnMap($columnMap);
 		}
-		// debug($dataMap);
 		return $dataMap;
 	}
 

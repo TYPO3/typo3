@@ -286,7 +286,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Parses $rawValidatorOptions not containing quoted option values.
 	 * $rawValidatorOptions will be an empty string afterwards (pass by ref!).
 	 *
-	 * @param string &$rawValidatorOptions
+	 * @param string $rawValidatorOptions
 	 * @return array An array of optionName/optionValue pairs
 	 */
 	protected function parseValidatorOptions($rawValidatorOptions) {

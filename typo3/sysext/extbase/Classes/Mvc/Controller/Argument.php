@@ -225,7 +225,7 @@ class Argument {
 	/**
 	 * Injects the Persistence Manager
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
+	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
 	 * @return void
 	 */
 	public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager) {
@@ -385,7 +385,7 @@ class Argument {
 	/**
 	 * Create and set a validator chain
 	 *
-	 * @param array Object names of the validators
+	 * @param array $objectNames Object names of the validators
 	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument Returns $this (used for fluent interface)
 	 * @api
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
@@ -426,8 +426,8 @@ class Argument {
 	/**
 	 * Sets the value of this argument.
 	 *
-	 * @param mixed $rawValue: The value of this argument
-	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument $this
+	 * @param mixed $rawValue The value of this argument
+	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException if the argument is not a valid object of type $dataType
 	 */
 	public function setValue($rawValue) {

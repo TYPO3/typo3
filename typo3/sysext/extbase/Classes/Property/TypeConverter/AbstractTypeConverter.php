@@ -131,7 +131,7 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
 	 * Returns an empty list of sub property names
 	 *
 	 * @param mixed $source
-	 * @return array<string>
+	 * @return array
 	 * @api
 	 */
 	public function getSourceChildPropertiesToBeConverted($source) {
@@ -144,10 +144,10 @@ abstract class AbstractTypeConverter implements \TYPO3\CMS\Extbase\Property\Type
 	 * @param string $targetType
 	 * @param string $propertyName
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-	 * @return string
 	 * @api
 	 */
 	public function getTypeOfChildProperty($targetType, $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration) {
 	}
 }
+
 ?>
