@@ -219,13 +219,8 @@ class NewContentElementController {
 					$key = count($menuItems) - 1;
 				} else {
 					$content = '';
-					// Radio button:
-					$oC = 'document.editForm.defValues.value=unescape(\'' . rawurlencode($wInfo['params']) . '\');goToalt_doc();' . (!$this->onClickEvent ? 'window.location.hash=\'#sel2\';' : '');
-					$content .= $this->elementWrapper['wizardPart'][0] . '<input type="radio" name="tempB" value="' . htmlspecialchars($k) . '" onclick="' . htmlspecialchars($oC) . '" />' . $this->elementWrapper['wizardPart'][1];
 					// Onclick action for icon/title:
-					$aOnClick = 'document.getElementsByName(\'tempB\')[' . $cc . '].checked=1;' . $oC . 'return false;';
-					// Icon:
-					$iInfo = @getimagesize($wInfo['icon']);
+					$aOnClick = "document.editForm.defValues.value=unescape('".rawurlencode($wInfo['params'])."');goToalt_doc();".(!$this->onClickEvent?"window.location.hash='#sel2';":'');
 					$content .= $this->elementWrapper['wizardPart'][0] . '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
 						<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, $wInfo['icon'], '') . ' alt="" /></a>' . $this->elementWrapper['wizardPart'][1];
 					// Title + description:
