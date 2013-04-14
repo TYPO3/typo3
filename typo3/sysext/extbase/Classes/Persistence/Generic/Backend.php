@@ -480,9 +480,13 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 				$this->attachObjectToParentObject($object, $parentObject, $propertyName, $sortingPosition);
 				// if a new object is inserted, all objects after this need to have their sorting updated
 				$updateSortingOfFollowing = TRUE;
+			} elseif ($cleanProperty === NULL || $cleanProperty->getPosition($object) === NULL) {
+				// if parent object is new then it doesn't have cleanProperty yet; before attaching object it's clean position is null
+				$this->attachObjectToParentObject($object, $parentObject, $propertyName, $sortingPosition);
+				// if a relation is dirty (speaking the same object is removed and added again at a different position), all objects after this needs to be updated the sorting
+				$updateSortingOfFollowing = TRUE;
 			} elseif ($objectStorage->isRelationDirty($object) || $cleanProperty->getPosition($object) !== $objectStorage->getPosition($object)) {
 				$this->updateRelationOfObjectToParentObject($object, $parentObject, $propertyName, $sortingPosition);
-				// if a relation is dirty (speaking the same object is removed an added again at a different position), all objects after this needs to be updated the sorting
 				$updateSortingOfFollowing = TRUE;
 			} elseif ($updateSortingOfFollowing) {
 				if ($sortingPosition > $objectStorage->getPosition($object)) {
