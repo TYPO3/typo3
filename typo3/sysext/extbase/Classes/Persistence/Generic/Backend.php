@@ -411,7 +411,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 				}
 				$queue[] = $propertyValue;
 			} elseif ($object->_isNew() || $object->_isDirty($propertyName)) {
-				$row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue);
+				$row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue, $columnMap);
 			}
 		}
 		if (count($row) > 0) {
@@ -864,11 +864,21 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * Returns a plain value, i.e. objects are flattened out if possible.
 	 *
 	 * @param mixed $input
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap
 	 * @return mixed
 	 */
-	protected function getPlainValue($input) {
+	protected function getPlainValue($input, $columnMap = NULL) {
 		if ($input instanceof \DateTime) {
-			return $input->format('U');
+			if (!is_null($columnMap) && !is_null($columnMap->getDateTimeStorageFormat())) {
+				if ($columnMap->getDateTimeStorageFormat() == 'datetime') {
+					return $input->format('Y-m-d H:i:s');
+				}
+				if ($columnMap->getDateTimeStorageFormat() == 'date') {
+					return $input->format('Y-m-d');
+				}
+			} else {
+				return $input->format('U');
+			}
 		} elseif ($input instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
 			return $input->getUid();
 		} elseif (is_bool($input)) {
