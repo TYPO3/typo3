@@ -82,5 +82,19 @@ class BackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$fixture->_call('insertRelationInRelationtable', $domainObject, $domainObject, '');
 	}
 
+	/**
+	 * @test
+	 */
+	public function getPlainValueReturnsCorrectDateTimeFormat() {
+		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Backend', array('dummy'), array(), '', FALSE);
+		$columnMap = new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap('column_name', 'propertyName');
+		$columnMap->setDateTimeStorageFormat('datetime');
+		$datetimeAsString = '2013-04-15 09:30:00';
+		$input = new \DateTime($datetimeAsString);
+		$this->assertEquals('2013-04-15 09:30:00', $fixture->_call('getPlainValue', $input, $columnMap));
+		$columnMap->setDateTimeStorageFormat('date');
+		$this->assertEquals('2013-04-15', $fixture->_call('getPlainValue', $input, $columnMap));
+	}
+
 }
 ?>
