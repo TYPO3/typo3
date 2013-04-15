@@ -270,11 +270,21 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 			$amountOfRootlineElements = count($rootline);
 			for ($i = 0; $i < $amountOfRootlineElements; ++$i) {
 				$rootlineElement = $rootline[$i];
-				if (intval($rootlineElement['pid']) === $nodeId || intval($rootlineElement['uid']) === $nodeId) {
+				$isInWebMount = $GLOBALS['BE_USER']->isInWebMount($rootlineElement['uid']);
+				if (!$isInWebMount
+					|| (intval($rootlineElement['uid']) === intval($mountPoints[0])
+						&& intval($rootlineElement['uid']) !== intval($isInWebMount))
+				) {
+					continue;
+				}
+				if (intval($rootlineElement['pid']) === $nodeId
+					|| intval($rootlineElement['uid']) === $nodeId
+					|| (intval($rootlineElement['uid']) === intval($isInWebMount)
+						&& in_array(intval($rootlineElement['uid']), $mountPoints, TRUE))
+				) {
 					$inFilteredRootline = TRUE;
 				}
-
-				if (!$inFilteredRootline) {
+				if (!$inFilteredRootline || intval($rootlineElement['uid']) === intval($mountPoint)) {
 					continue;
 				}
 
