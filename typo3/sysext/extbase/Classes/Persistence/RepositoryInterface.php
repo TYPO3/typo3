@@ -53,38 +53,12 @@ interface RepositoryInterface {
 	public function remove($object);
 
 	/**
-	 * Replaces an object by another.
-	 *
-	 * @param object $existingObject The existing object
-	 * @param object $newObject The new object
-	 * @return void
-	 * @api
-	 */
-	public function replace($existingObject, $newObject);
-
-	/**
 	 * Replaces an existing object with the same identifier by the given object
 	 *
 	 * @param object $modifiedObject The modified object
 	 * @api
 	 */
 	public function update($modifiedObject);
-
-	/**
-	 * Returns all objects of this repository add()ed but not yet persisted to
-	 * the storage layer.
-	 *
-	 * @return array An array of objects
-	 */
-	public function getAddedObjects();
-
-	/**
-	 * Returns an array with objects remove()d from the repository that
-	 * had been persisted to the storage layer before.
-	 *
-	 * @return array
-	 */
-	public function getRemovedObjects();
 
 	/**
 	 * Returns all objects of this repository.
@@ -119,6 +93,15 @@ interface RepositoryInterface {
 	 * @api
 	 */
 	public function findByUid($uid);
+
+	/**
+	 * Finds an object matching the given identifier.
+	 *
+	 * @param mixed $identifier The identifier of the object to find
+	 * @return object The matching object if found, otherwise NULL
+	 * @api
+	 */
+	public function findByIdentifier($identifier);
 
 	/**
 	 * Sets the property names to order the result by per default.

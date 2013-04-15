@@ -35,26 +35,48 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface, \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
+	 * @var array
+	 */
+	protected $newObjects = array();
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+	 */
+	protected $changedObjects;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+	 */
+	protected $addedObjects;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+	 */
+	protected $removedObjects;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface
+	 */
+	protected $queryFactory;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend
 	 */
 	protected $backend;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
 	 */
-	protected $session;
+	protected $persistenceSession;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 * Create new instance
 	 */
-	protected $objectManager;
-
-	/**
-	 * This is an array of registered repository class names.
-	 *
-	 * @var array
-	 */
-	protected $repositoryClassNames = array();
+	public function __construct() {
+		$this->addedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->removedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->changedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+	}
 
 	/**
 	 * Injects the Persistence Backend
@@ -67,33 +89,33 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	}
 
 	/**
+	 * Injects a QueryFactory instance
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory
+	 * @return void
+	 */
+	public function injectQueryFactory(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory) {
+		$this->queryFactory = $queryFactory;
+	}
+
+	/**
 	 * Injects the Persistence Session
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session $session The persistence session
 	 * @return void
 	 */
-	public function injectSession(\TYPO3\CMS\Extbase\Persistence\Generic\Session $session) {
-		$this->session = $session;
-	}
-
-	/**
-	 * Injects the object manager
-	 *
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
+	public function injectPersistenceSession(\TYPO3\CMS\Extbase\Persistence\Generic\Session $session) {
+		$this->persistenceSession = $session;
 	}
 
 	/**
 	 * Registers a repository
 	 *
 	 * @param string $className The class name of the repository to be reigistered
+	 * @deprecated since 6.1, will be remove two versions later
 	 * @return void
 	 */
 	public function registerRepositoryClassName($className) {
-		$this->repositoryClassNames[] = $className;
 	}
 
 	/**
@@ -131,7 +153,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	 * @api
 	 */
 	public function getIdentifierByObject($object) {
-		return $this->backend->getIdentifierByObject($object);
+		return $this->persistenceSession->getIdentifierByObject($object);
 	}
 
 	/**
@@ -145,7 +167,14 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	 * @api
 	 */
 	public function getObjectByIdentifier($identifier, $objectType = NULL, $useLazyLoading = FALSE) {
-		return $this->backend->getObjectByIdentifier($identifier, $objectType);
+		if (isset($this->newObjects[$identifier])) {
+			return $this->newObjects[$identifier];
+		}
+		if ($this->persistenceSession->hasIdentifier($identifier, $objectType)) {
+			return $this->persistenceSession->getObjectByIdentifier($identifier, $objectType);
+		} else {
+			return $this->backend->getObjectByIdentifier($identifier, $objectType);
+		}
 	}
 
 	/**
@@ -156,34 +185,28 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	 * @api
 	 */
 	public function persistAll() {
-		$aggregateRootObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$removedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		// fetch and inspect objects from all known repositories
-		foreach ($this->repositoryClassNames as $repositoryClassName) {
-			$repository = $this->objectManager->get($repositoryClassName);
-			$aggregateRootObjects->addAll($repository->getAddedObjects());
-			$removedObjects->addAll($repository->getRemovedObjects());
-		}
-		foreach ($this->session->getReconstitutedObjects() as $reconstitutedObject) {
-			$className = get_class($reconstitutedObject);
-			$delimiter = strpos($className, '_') !== FALSE ? '_' : '\\';
-			$possibleRepositoryClassName = str_replace($delimiter . 'Model' . $delimiter, $delimiter . 'Repository' . $delimiter, $className) . 'Repository';
-			if (class_exists($possibleRepositoryClassName)) {
-				$aggregateRootObjects->attach($reconstitutedObject);
-			}
-		}
 		// hand in only aggregate roots, leaving handling of subobjects to
 		// the underlying storage layer
-		$this->backend->setAggregateRootObjects($aggregateRootObjects);
-		$this->backend->setDeletedObjects($removedObjects);
+		// reconstituted entities must be fetched from the session and checked
+		// for changes by the underlying backend as well!
+		$this->backend->setAggregateRootObjects($this->addedObjects);
+		$this->backend->setChangedEntities($this->changedObjects);
+		$this->backend->setDeletedEntities($this->removedObjects);
 		$this->backend->commit();
-		// this needs to unregister more than just those, as at least some of
-		// the subobjects are supposed to go away as well...
-		// OTOH those do no harm, changes to the unused ones should not happen,
-		// so all they do is eat some memory.
-		foreach ($removedObjects as $removedObject) {
-			$this->session->unregisterReconstitutedObject($removedObject);
-		}
+
+		$this->addedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->removedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->changedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+	}
+
+	/**
+	 * Return a query object for the given type.
+	 *
+	 * @param string $type
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+	 */
+	public function createQueryForType($type) {
+		return $this->queryFactory->create($type);
 	}
 
 	/**
@@ -191,11 +214,11 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	 *
 	 * @param object $object The object to add
 	 * @return void
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
 	 * @api
 	 */
 	public function add($object) {
-		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
+		$this->addedObjects->attach($object);
+		$this->removedObjects->detach($object);
 	}
 
 	/**
@@ -203,11 +226,14 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	 *
 	 * @param object $object The object to remove
 	 * @return void
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
 	 * @api
 	 */
 	public function remove($object) {
-		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
+		if ($this->addedObjects->contains($object)) {
+			$this->addedObjects->detach($object);
+		} else {
+			$this->removedObjects->attach($object);
+		}
 	}
 
 	/**
@@ -215,12 +241,14 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	 *
 	 * @param object $object The modified object
 	 * @return void
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
 	 * @api
 	 */
 	public function update($object) {
-		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
+		if ($this->isNewObject($object)) {
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException('The object of type "' . get_class($object) . '" given to update must be persisted already, but is new.', 1249479819);
+		}
+		$this->changedObjects->attach($object);
 	}
 
 	/**
@@ -239,11 +267,9 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	 * Initializes the persistence manager, called by Extbase.
 	 *
 	 * @return void
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
-	 * @api
 	 */
-	public function initialize() {
-		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
+	public function initializeObject() {
+		$this->backend->setPersistenceManager($this);
 	}
 
 	/**
@@ -256,18 +282,39 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	 * @return void
 	 */
 	public function clearState() {
-		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
+		$this->newObjects = array();
+		$this->addedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->removedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->changedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->persistenceSession->destroy();
 	}
 
 	/**
 	 * Checks if the given object has ever been persisted.
 	 *
 	 * @param object $object The object to check
-	 * @return boolean TRUE if the object is new, FALSE if the object exists in the repository
+	 * @return boolean TRUE if the object is new, FALSE if the object exists in the persistence session
 	 * @api
 	 */
 	public function isNewObject($object) {
-		return $this->backend->isNewObject($object);
+		return ($this->persistenceSession->hasObject($object) === FALSE);
+	}
+
+	/**
+	 * Registers an object which has been created or cloned during this request.
+	 *
+	 * A "new" object does not necessarily
+	 * have to be known by any repository or be persisted in the end.
+	 *
+	 * Objects registered with this method must be known to the getObjectByIdentifier()
+	 * method.
+	 *
+	 * @param object $object The new object to register
+	 * @return void
+	 */
+	public function registerNewObject($object) {
+		$identifier = $this->getIdentifierByObject($object);
+		$this->newObjects[$identifier] = $object;
 	}
 
 	/**
@@ -299,16 +346,19 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 	}
 
 	/**
-	 * Return a query object for the given type.
+	 * Tear down the persistence
 	 *
-	 * @param string $type
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
-	 * @api
+	 * This method is called in functional tests to reset the storage between tests.
+	 * The implementation is optional and depends on the underlying persistence backend.
+	 *
+	 * @return void
 	 */
-	public function createQueryForType($type) {
-		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
+	public function tearDown() {
+		if (method_exists($this->backend, 'tearDown')) {
+			$this->backend->tearDown();
+		}
 	}
+
 }
 
 ?>

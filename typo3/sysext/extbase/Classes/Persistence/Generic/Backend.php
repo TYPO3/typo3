@@ -39,6 +39,11 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	protected $session;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
+	 */
+	protected $persistenceManager;
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
 	protected $aggregateRootObjects;
@@ -46,22 +51,22 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
-	protected $visitedDuringPersistence;
+	protected $deletedEntities;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */
-	protected $identityMap;
+	protected $changedEntities;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+	 */
+	protected $visitedDuringPersistence;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
 	 */
 	protected $reflectionService;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface
-	 */
-	protected $queryFactory;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory
@@ -96,11 +101,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	protected $signalSlotDispatcher;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
-	 */
-	protected $deletedObjects;
-
-	/**
 	 * Constructs the backend
 	 *
 	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
@@ -109,7 +109,9 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	public function __construct(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 		$this->referenceIndex = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
-		$this->deletedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->aggregateRootObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->deletedEntities = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->changedEntities = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
 	/**
@@ -139,16 +141,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	}
 
 	/**
-	 * Injects the identity map
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap $identityMap
-	 * @return void
-	 */
-	public function injectIdentityMap(\TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap $identityMap) {
-		$this->identityMap = $identityMap;
-	}
-
-	/**
 	 * Injects the Reflection Service
 	 *
 	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService
@@ -156,16 +148,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 */
 	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
 		$this->reflectionService = $reflectionService;
-	}
-
-	/**
-	 * Injects the QueryFactory
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory
-	 * @return void
-	 */
-	public function injectQueryFactory(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory) {
-		$this->queryFactory = $queryFactory;
 	}
 
 	/**
@@ -183,6 +165,13 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 */
 	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
 		$this->signalSlotDispatcher = $signalSlotDispatcher;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
+	 */
+	public function setPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager) {
+		$this->persistenceManager = $persistenceManager;
 	}
 
 	/**
@@ -210,15 +199,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 */
 	public function getQomFactory() {
 		return $this->qomFactory;
-	}
-
-	/**
-	 * Returns the current identityMap
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap
-	 */
-	public function getIdentityMap() {
-		return $this->identityMap;
 	}
 
 	/**
@@ -266,8 +246,8 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 				return NULL;
 			}
 		}
-		if ($this->identityMap->hasObject($object)) {
-			return $this->identityMap->getIdentifierByObject($object);
+		if ($this->session->hasObject($object)) {
+			return $this->session->getIdentifierByObject($object);
 		} else {
 			return NULL;
 		}
@@ -282,10 +262,10 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @return object The object for the identifier if it is known, or NULL
 	 */
 	public function getObjectByIdentifier($identifier, $className) {
-		if ($this->identityMap->hasIdentifier($identifier, $className)) {
-			return $this->identityMap->getObjectByIdentifier($identifier, $className);
+		if ($this->session->hasIdentifier($identifier, $className)) {
+			return $this->session->getObjectByIdentifier($identifier, $className);
 		} else {
-			$query = $this->queryFactory->create($className);
+			$query = $this->persistenceManager->createQueryForType($className);
 			$query->getQuerySettings()->setRespectStoragePage(FALSE);
 			return $query->matching($query->equals('uid', $identifier))->execute()->getFirst();
 		}
@@ -316,14 +296,10 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @param object $newObject The new object
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
 	 * @return void
+	 * @deprecated since 6.1, will be removed two versions later
 	 */
 	public function replaceObject($existingObject, $newObject) {
-		$existingUid = $this->getIdentifierByObject($existingObject);
-		if ($existingUid === NULL) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException('The given object is unknown to this persistence backend.', 1238070163);
-		}
-		$this->identityMap->unregisterObject($existingObject);
-		$this->identityMap->registerObject($newObject, $existingUid);
+		$this->session->replaceReconstitutedEntity($existingObject, $newObject);
 	}
 
 	/**
@@ -337,13 +313,23 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	}
 
 	/**
-	 * Sets the deleted objects
+	 * Sets the changed objects
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities
 	 * @return void
 	 */
-	public function setDeletedObjects(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects) {
-		$this->deletedObjects = $objects;
+	public function setChangedEntities(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities) {
+		$this->changedEntities = $entities;
+	}
+
+	/**
+	 * Sets the deleted objects
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities
+	 * @return void
+	 */
+	public function setDeletedEntities(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities) {
+		$this->deletedEntities = $entities;
 	}
 
 	/**
@@ -357,6 +343,17 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	}
 
 	/**
+	 * Sets the deleted objects
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects
+	 * @return void
+	 * @deprecated since 6.1, will be removed two versions later
+	 */
+	public function setDeletedObjects(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects) {
+		$this->setDeletedEntities($objects);
+	}
+
+	/**
 	 * Traverse and persist all aggregate roots and their object graph.
 	 *
 	 * @return void
@@ -364,12 +361,10 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	protected function persistObjects() {
 		$this->visitedDuringPersistence = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		foreach ($this->aggregateRootObjects as $object) {
-			if (!$this->identityMap->hasObject($object)) {
-				$this->insertObject($object);
-			}
+			$this->persistObject($object, NULL);
 		}
-		foreach ($this->aggregateRootObjects as $object) {
-			$this->persistObject($object);
+		foreach ($this->changedEntities as $object) {
+			$this->persistObject($object, NULL);
 		}
 	}
 
@@ -464,7 +459,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		foreach ($this->getRemovedChildObjects($parentObject, $propertyName) as $removedObject) {
 			$this->detachObjectFromParentObject($removedObject, $parentObject, $propertyName);
 			if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY && $propertyMetaData['cascade'] === 'remove') {
-				$this->removeObject($removedObject);
+				$this->removeEntity($removedObject);
 			}
 		}
 
@@ -669,7 +664,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $uid);
 		}
-		$this->identityMap->registerObject($object, $uid);
+		$this->session->registerObject($object, $uid);
 	}
 
 	/**
@@ -922,11 +917,14 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @return void
 	 */
 	protected function processDeletedObjects() {
-		foreach ($this->deletedObjects as $object) {
-			$this->removeObject($object);
-			$this->identityMap->unregisterObject($object);
+		foreach ($this->deletedEntities as $entity) {
+			if ($this->session->hasObject($entity)) {
+				$this->removeEntity($entity);
+				$this->session->unregisterReconstitutedEntity($entity);
+				$this->session->unregisterObject($entity);
+			}
 		}
-		$this->deletedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->deletedEntities = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
 	/**
@@ -936,7 +934,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @param bool $markAsDeleted Wether to just flag the row deleted (default) or really delete it
 	 * @return void
 	 */
-	protected function removeObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, $markAsDeleted = TRUE) {
+	protected function removeEntity(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, $markAsDeleted = TRUE) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$tableName = $dataMap->getTableName();
 		if ($markAsDeleted === TRUE && $dataMap->getDeletedFlagColumnName() !== NULL) {
@@ -977,10 +975,10 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			if ($propertyMetaData['cascade'] === 'remove') {
 				if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
 					foreach ($propertyValue as $containedObject) {
-						$this->removeObject($containedObject);
+						$this->removeEntity($containedObject);
 					}
 				} elseif ($propertyValue instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
-					$this->removeObject($propertyValue);
+					$this->removeEntity($propertyValue);
 				}
 			}
 		}

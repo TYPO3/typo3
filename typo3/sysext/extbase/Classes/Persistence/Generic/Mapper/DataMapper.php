@@ -207,7 +207,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->identityMap->registerObject($object, $row['uid']);
 			$this->thawProperties($object, $row);
 			$object->_memorizeCleanState();
-			$this->persistenceSession->registerReconstitutedObject($object);
+			$this->persistenceSession->registerReconstitutedEntity($object);
 		}
 		return $object;
 	}

@@ -33,6 +33,14 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 interface BackendInterface {
 
 	/**
+	 * Set a PersistenceManager instance.
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
+	 * @return void
+	 */
+	public function setPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager);
+
+	/**
 	 * Sets the aggregate root objects
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects
@@ -41,12 +49,21 @@ interface BackendInterface {
 	public function setAggregateRootObjects(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects);
 
 	/**
-	 * Sets the deleted objects
+	 * Sets the deleted entities
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities
+	 * @return void
+	 * @api
+	 */
+	public function setDeletedEntities(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities);
+
+	/**
+	 * Sets the changed objects
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities
 	 * @return void
 	 */
-	public function setDeletedObjects(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects);
+	public function setChangedEntities(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $entities);
 
 	/**
 	 * Commits the current persistence session
@@ -54,6 +71,8 @@ interface BackendInterface {
 	 * @return void
 	 */
 	public function commit();
+
+	// TODO refactor towards being closer to the Flow backend interface again
 
 	/**
 	 * Returns the (internal) identifier for the object, if it is known to the
@@ -82,22 +101,6 @@ interface BackendInterface {
 	 */
 	public function isNewObject($object);
 
-	/**
-	 * Replaces the given object by the second object.
-	 *
-	 * This method will unregister the existing object at the identity map and
-	 * register the new object instead. The existing object must therefore
-	 * already be registered at the identity map which is the case for all
-	 * reconstituted objects.
-	 *
-	 * The new object will be identified by the uuid which formerly belonged
-	 * to the existing object. The existing object looses its uuid.
-	 *
-	 * @param object $existingObject The existing object
-	 * @param object $newObject The new object
-	 * @return void
-	 */
-	public function replaceObject($existingObject, $newObject);
 }
 
 ?>

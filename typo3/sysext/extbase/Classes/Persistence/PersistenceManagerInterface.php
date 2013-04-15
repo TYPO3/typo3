@@ -42,6 +42,27 @@ interface PersistenceManagerInterface {
 	public function persistAll();
 
 	/**
+	 * Clears the in-memory state of the persistence.
+	 *
+	 * Managed instances become detached, any fetches will
+	 * return data directly from the persistence "backend".
+	 *
+	 * @return void
+	 */
+	public function clearState();
+
+	/**
+	 * Checks if the given object has ever been persisted.
+	 *
+	 * @param object $object The object to check
+	 * @return boolean TRUE if the object is new, FALSE if the object exists in the repository
+	 * @api
+	 */
+	public function isNewObject($object);
+
+	// TODO realign with Flow PersistenceManager again
+
+	/**
 	 * Returns the (internal) identifier for the object, if it is known to the
 	 * backend. Otherwise NULL is returned.
 	 *
@@ -132,33 +153,6 @@ interface PersistenceManagerInterface {
 	 * @api
 	 */
 	public function injectSettings(array $settings);
-
-	/**
-	 * Initializes the persistence manager, called by Extbase.
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initialize();
-
-	/**
-	 * Clears the in-memory state of the persistence.
-	 *
-	 * Managed instances become detached, any fetches will
-	 * return data directly from the persistence "backend".
-	 *
-	 * @return void
-	 */
-	public function clearState();
-
-	/**
-	 * Checks if the given object has ever been persisted.
-	 *
-	 * @param object $object The object to check
-	 * @return boolean TRUE if the object is new, FALSE if the object exists in the repository
-	 * @api
-	 */
-	public function isNewObject($object);
 
 	/**
 	 * Converts the given object into an array containing the identity of the domain object.
