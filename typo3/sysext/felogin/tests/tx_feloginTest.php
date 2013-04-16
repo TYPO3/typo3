@@ -346,6 +346,9 @@ class tx_feloginTest extends tx_phpunit_testcase {
 					'special2' => array(
 						'foo' => 'bar',
 					),
+					'tx_felogin_pi1' => array(
+						'forgot' => 1,
+					),
 				),
 				'all',
 				'&special1=23&special2[foo]=bar',
