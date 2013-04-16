@@ -869,7 +869,8 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 			$getVars['no_cache'],
 			$getVars['logintype'],
 			$getVars['redirect_url'],
-			$getVars['cHash']
+			$getVars['cHash'],
+			$getVars[$this->prefixId]
 		);
 		if ($this->conf['preserveGETvars'] === 'all') {
 			$preserveQueryParts = $getVars;
