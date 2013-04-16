@@ -309,6 +309,9 @@ class FrontendLoginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'special2' => array(
 						'foo' => 'bar',
 					),
+					'tx_felogin_pi1' => array(
+						'forgot' => 1,
+					),
 				),
 				'all',
 				'&special1=23&special2[foo]=bar',
