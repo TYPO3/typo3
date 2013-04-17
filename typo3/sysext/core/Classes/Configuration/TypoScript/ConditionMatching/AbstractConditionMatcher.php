@@ -415,15 +415,52 @@ abstract class AbstractConditionMatcher {
 				}
 				break;
 			case 'userFunc':
-				$values = preg_split('/\\(|\\)/', $value);
-				$funcName = trim($values[0]);
-				$funcValues = GeneralUtility::trimExplode(',', $values[1]);
+				$matches = array();
+				preg_match_all('/^\s*([^\(\s]+)\s*(?:\((.*)\))?\s*$/', $value, $matches);
+				$funcName = $matches[1][0];
+				$funcValues = $matches[2][0] ? $this->parseUserFuncArguments($matches[2][0]) : array();
 				if (function_exists($funcName) && call_user_func_array($funcName, $funcValues)) {
 					return TRUE;
 				}
 				break;
 		}
 		return NULL;
+	}
+
+	/**
+	 * Parses arguments to the userFunc.
+	 *
+	 * @param string $arguments
+	 * @return array
+	 */
+	protected function parseUserFuncArguments($arguments) {
+		$result = array();
+		$arguments = trim($arguments);
+		while ($arguments) {
+			if ($arguments{0} == ',') {
+				$result[] = '';
+				$arguments = substr($arguments, 1);
+			} else {
+				$pos = strcspn($arguments, ',\'"');
+				if ($pos == 0) {
+					// We hit a quote of some kind
+					$quote = $arguments{0};
+					$segment = preg_replace('/^(.*?[^\\\])' . $quote . '.*$/', '\1', substr($arguments, 1));
+					$segment = str_replace('\\' . $quote, $quote, $segment);
+					$result[] = $segment;
+					$offset = strpos($arguments, ',', strlen($segment) + 2);
+					if ($offset === FALSE) {
+						$offset = strlen($arguments);
+					}
+					$arguments = substr($arguments, $offset);
+				} else {
+					$result[] = trim(substr($arguments, 0, $pos));
+					$arguments = substr($arguments, $pos + 1);
+				}
+			}
+			$arguments = trim($arguments);
+		};
+		return $result;
 	}
 
 	/**
