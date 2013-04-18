@@ -6888,14 +6888,16 @@ class ContentObjectRenderer {
 	public function DBgetDelete($table, $uid, $doExec = FALSE) {
 		if (intval($uid)) {
 			if ($GLOBALS['TCA'][$table]['ctrl']['delete']) {
+				$updateFields = array();
+				$updateFields[$GLOBALS['TCA'][$table]['ctrl']['delete']] = 1;
+				if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
+					$updateFields[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
+				}
+
 				if ($doExec) {
-					return $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($uid), array(
-						$GLOBALS['TCA'][$table]['ctrl']['delete'] => 1
-					));
+					return $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($uid), $updateFields);
 				} else {
-					return $GLOBALS['TYPO3_DB']->UPDATEquery($table, 'uid=' . intval($uid), array(
-						$GLOBALS['TCA'][$table]['ctrl']['delete'] => 1
-					));
+					return $GLOBALS['TYPO3_DB']->UPDATEquery($table, 'uid=' . intval($uid), $updateFields);
 				}
 			} else {
 				if ($doExec) {
