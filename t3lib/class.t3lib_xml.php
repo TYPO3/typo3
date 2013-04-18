@@ -179,7 +179,7 @@ class t3lib_xml {
 	 * Takes a SQL result for $table and traverses it, adding rows
 	 *
 	 * @param string $table Tablename
-	 * @param pointer $res SQL resource pointer, should be reset
+	 * @param boolean|\mysqli_result|object $res MySQLi result object / DBAL object
 	 * @return void
 	 */
 	public function renderRecords($table, $res) {

@@ -315,7 +315,7 @@ class DatabaseConnection {
 	 * @param string $groupBy Optional GROUP BY field(s), if none, supply blank string.
 	 * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
 	 * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
-	 * @return resource MySQLi result object / DBAL object
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 * @see exec_SELECTquery()
 	 */
 	public function exec_SELECT_mm_query($select, $local_table, $mm_table, $foreign_table, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
@@ -336,7 +336,7 @@ class DatabaseConnection {
 	 * Executes a select based on input query parts array
 	 *
 	 * @param array $queryParts Query parts array
-	 * @return resource MySQLi select result object / DBAL object
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 * @see exec_SELECTquery()
 	 */
 	public function exec_SELECT_queryArray($queryParts) {
@@ -750,7 +750,7 @@ class DatabaseConnection {
 	 *
 	 * @param string $query The query to execute
 	 * @param array $queryComponents The components of the query to execute
-	 * @return resource MySQL result object / DBAL object
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_PREPAREDquery($query, array $queryComponents) {
 		if (!$this->isConnected) {
@@ -1392,7 +1392,7 @@ class DatabaseConnection {
 	 * mysqli() wrapper function, used by the Install Tool and EM for all queries regarding management of the database!
 	 *
 	 * @param string $query Query to execute
-	 * @return resource Result pointer (MySQLi result object)
+	 * @return boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function admin_query($query) {
 		if (!$this->isConnected) {
@@ -1666,7 +1666,7 @@ class DatabaseConnection {
 	/**
 	 * Checks if record set is valid and writes debugging information into devLog if not.
 	 *
-	 * @param resource|boolean $res MySQLi result object
+	 * @param boolean|\mysqli_result|object MySQLi result object / DBAL object
 	 * @return boolean TRUE if the  record set is valid, FALSE otherwise
 	 * @todo Define visibility
 	 */
@@ -1674,7 +1674,7 @@ class DatabaseConnection {
 		if ($res !== FALSE) {
 			return TRUE;
 		}
-		$msg = 'Invalid database result resource detected';
+		$msg = 'Invalid database result detected';
 		$trace = debug_backtrace();
 		array_shift($trace);
 		$cnt = count($trace);
@@ -1738,7 +1738,7 @@ class DatabaseConnection {
 		$explain_tables = array();
 		$explain_output = array();
 		$res = $this->sql_query('EXPLAIN ' . $query, $this->link);
-		if (is_resource($res)) {
+		if (is_a($res, '\\mysqli_result')) {
 			while ($tempRow = $this->sql_fetch_assoc($res)) {
 				$explain_output[] = $tempRow;
 				$explain_tables[] = $tempRow['table'];
@@ -1758,7 +1758,7 @@ class DatabaseConnection {
 				$isTable = $this->sql_num_rows($tableRes);
 				if ($isTable) {
 					$res = $this->sql_query('SHOW INDEX FROM ' . $table, $this->link);
-					if (is_resource($res)) {
+					if (is_a($res, '\\mysqli_result')) {
 						while ($tempRow = $this->sql_fetch_assoc($res)) {
 							$indices_output[] = $tempRow;
 						}

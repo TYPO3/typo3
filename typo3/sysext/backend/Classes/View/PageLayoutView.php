@@ -1556,7 +1556,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	/**
 	 * Traverse the result pointer given, adding each record to array and setting some internal values at the same time.
 	 *
-	 * @param resource $result SQL result pointer for select query.
+	 * @param boolean|\mysqli_result|object $result MySQLi result object / DBAL object
 	 * @param string $table Table name defaulting to tt_content
 	 * @return array The selected rows returned in this array.
 	 * @todo Define visibility

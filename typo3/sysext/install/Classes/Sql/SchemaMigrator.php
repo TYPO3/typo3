@@ -677,7 +677,7 @@ class SchemaMigrator {
 					$res = $GLOBALS['TYPO3_DB']->admin_query($string);
 					if ($res === FALSE) {
 						$result[$key] = $GLOBALS['TYPO3_DB']->sql_error();
-					} elseif (is_resource($res)) {
+					} elseif (is_resource($res) || is_a($res, '\\mysqli_result')) {
 						$GLOBALS['TYPO3_DB']->sql_free_result($res);
 					}
 				}
