@@ -175,7 +175,8 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			// if (in_array($propertyName, $classPropertyNames)) { // TODO Enable check for property existance
 			$columnMap = $this->createColumnMap($columnName, $propertyName);
 			$propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
-			$columnMap = $this->setRelations($columnMap, $columnDefinition['config'], $propertyMetaData);
+			$columnMap = $this->setType($columnMap, $columnDefinition['config']);
+			$columnMap = $this->setRelations($columnMap, $columnDefinition['config'], $propertyMetaData, $dataMap);
 			$columnMap = $this->setFieldEvaluations($columnMap, $columnDefinition['config']);
 			$dataMap->addColumnMap($columnMap);
 		}
@@ -295,6 +296,33 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap
+	 * @param array $columnConfiguration
+	 * @return ColumnMap
+	 */
+	protected function setType(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap, $columnConfiguration) {
+		switch (strtoupper($columnConfiguration['type'])) {
+			case \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::TYPE_SELECT:
+				$columnMap->setType(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::TYPE_SELECT);
+				break;
+			case \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::TYPE_GROUP:
+				$columnMap->setType(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::TYPE_GROUP);
+				break;
+			case \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::TYPE_INLINE:
+				$columnMap->setType(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::TYPE_INLINE);
+				break;
+		}
+
+		switch (strtoupper($columnConfiguration['internal_type'])) {
+			case \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::INTERNAL_TYPE_DB:
+				$columnMap->setInternalType(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::INTERNAL_TYPE_DB);
+				break;
+		}
+
+		return $columnMap;
+	}
+
+	/**
 	 * This method tries to determine the type of type of relation to other tables and sets it based on
 	 * the $TCA column configuration
 	 *
@@ -314,10 +342,23 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			} else {
 				$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_NONE);
 			}
-
 		} else {
 			$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_NONE);
 		}
+
+		if ($columnMap->getTypeOfRelation() !== \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_NONE) {
+			// @todo: this check is the same as in DataMapper->getType, use a service or utility later
+			if (!empty($propertyMetaData['elementType'])) {
+				$type = $propertyMetaData['elementType'];
+			} elseif (!empty($propertyMetaData['type'])) {
+				$type = $propertyMetaData['type'];
+			} else {
+				throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException('Could not determine the child object type.', 1251315967);
+			}
+
+			$columnMap->setChildClassName($type);
+		}
+
 		return $columnMap;
 	}
 
@@ -414,6 +455,17 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				$columnMap->setChildKeyFieldName('uid_foreign');
 				$columnMap->setChildSortByFieldName('sorting');
 			}
+			if ($columnMap->getType() === ColumnMap::TYPE_GROUP && $columnMap->getInternalType() === ColumnMap::INTERNAL_TYPE_DB) {
+				if ($columnMap->getChildTableName() === NULL) {
+					$allTables = $this->getAllDefinedTables();
+					$allowedTables = (!isset($columnConfiguration['allowed']) || $columnConfiguration['allowed'] === '*') ?
+						$allTables :
+						array_intersect_assoc($allTables, explode(',', trim($columnConfiguration['allowed'], ',')));
+
+					$relations = $this->findRelatedObject($allowedTables, $columnConfiguration['MM']);
+					$columnMap->setChildTableName(implode(',', array_keys($relations)));
+				}
+			}
 		} else {
 			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedRelationException('The given information to build a many-to-many-relation was not sufficient. Check your TCA definitions. mm-relations with IRRE must have at least a defined "MM" or "foreign_selector".', 1268817963);
 		}
@@ -421,6 +473,26 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			$columnMap->setRelationTablePageIdColumnName('pid');
 		}
 		return $columnMap;
+	}
+
+	/**
+	 * @param array $tables
+	 * @param string $mmTable
+	 *
+	 * @return array
+	 */
+	public function findRelatedObject($tables = array(), $mmTable) {
+		$relatedObject = array();
+
+		foreach ($tables as $table) {
+			foreach ($this->getColumnsDefinition($table) as $columnName => $column) {
+				if (isset($column['config']['MM']) && $column['config']['MM'] === $mmTable) {
+					$relatedObject[$table][] = $columnName;
+				}
+			}
+		}
+
+		return $relatedObject;
 	}
 
 	/**
@@ -435,6 +507,12 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		return $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\ColumnMap', $columnName, $propertyName);
 	}
 
+	/**
+	 * @return array
+	 */
+	public function getAllDefinedTables() {
+		return isset($GLOBALS['TCA']) ? array_keys($GLOBALS['TCA']) : array();
+	}
 }
 
 ?>

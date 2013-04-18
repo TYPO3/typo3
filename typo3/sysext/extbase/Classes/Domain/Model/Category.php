@@ -52,6 +52,11 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $parent = NULL;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\MultipleReferenceProxy
+	 */
+	protected $items;
+
+	/**
 	 * Gets the title.
 	 *
 	 * @return string the title, might be empty

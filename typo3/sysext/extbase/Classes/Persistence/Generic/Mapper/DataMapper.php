@@ -374,22 +374,46 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
 	 */
 	protected function getNonEmptyRelationValue(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue) {
-		$query = $this->getPreparedQuery($parentObject, $propertyName, $fieldValue);
-		return $query->execute();
+		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
+
+		if (trim($columnMap->getChildClassName(), '\\') === 'TYPO3\CMS\Extbase\Persistence\Generic\MultipleReferenceProxy') {
+			/** @var $multipleReferenceProxy \TYPO3\CMS\Extbase\Persistence\Generic\MultipleReferenceProxy */
+			$multipleReferenceProxy = $this->objectManager->get('TYPO3\CMS\Extbase\Persistence\Generic\MultipleReferenceProxy');
+
+			/** @var $relationData \TYPO3\CMS\Extbase\Persistence\ObjectStorage */
+			$relationData = $this->objectManager->get('TYPO3\CMS\Extbase\Persistence\ObjectStorage');
+
+			$childTableNames = explode(',', $columnMap->getChildTableName());
+			foreach ($childTableNames as $childTableName) {
+				$realColumnMap = clone $columnMap;
+				$realColumnMap->setChildTableName($childTableName);
+				$realColumnMap->setChildClassName($multipleReferenceProxy->resolveClassNameByParentClassNameAndTableName(get_class($parentObject), $childTableName));
+				$query = $this->getPreparedQuery($parentObject, $realColumnMap, $propertyName, $fieldValue);
+				foreach ($query->execute() as $singleResult) {
+					$relationData->attach($singleResult);
+				}
+			}
+
+		} else {
+			$query = $this->getPreparedQuery($parentObject, $columnMap, $propertyName, $fieldValue);
+			$relationData = $query->execute();
+		}
+
+		return $relationData;
 	}
 
 	/**
 	 * Builds and returns the prepared query, ready to be executed.
 	 *
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap
 	 * @param string $propertyName
 	 * @param string $fieldValue
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 */
-	protected function getPreparedQuery(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
-		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
-		$type = $this->getType(get_class($parentObject), $propertyName);
-		$query = $this->queryFactory->create($type);
+	protected function getPreparedQuery(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap, $propertyName, $fieldValue = '') {
+
+		$query = $this->queryFactory->create($columnMap->getChildClassName());
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 		if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
@@ -397,7 +421,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 				$query->setOrderings(array($columnMap->getChildSortByFieldName() => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING));
 			}
 		} elseif ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-			$query->setSource($this->getSource($parentObject, $propertyName));
+			$query->setSource($this->getSource($parentObject, $columnMap, $propertyName));
 			if ($columnMap->getChildSortByFieldName() !== NULL) {
 				$query->setOrderings(array($columnMap->getChildSortByFieldName() => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING));
 			}
@@ -438,14 +462,13 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Builds and returns the source to build a join for a m:n relation.
 	 *
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap
 	 * @param string $propertyName
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source
 	 */
-	protected function getSource(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName) {
-		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
+	protected function getSource(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap, $propertyName) {
 		$left = $this->qomFactory->selector(NULL, $columnMap->getRelationTableName());
-		$childClassName = $this->getType(get_class($parentObject), $propertyName);
-		$right = $this->qomFactory->selector($childClassName, $columnMap->getChildTableName());
+		$right = $this->qomFactory->selector($columnMap->getChildClassName(), $columnMap->getChildTableName());
 		$joinCondition = $this->qomFactory->equiJoinCondition($columnMap->getRelationTableName(), $columnMap->getChildKeyFieldName(), $columnMap->getChildTableName(), 'uid');
 		$source = $this->qomFactory->join($left, $right, \TYPO3\CMS\Extbase\Persistence\Generic\Query::JCR_JOIN_TYPE_INNER, $joinCondition);
 		return $source;
