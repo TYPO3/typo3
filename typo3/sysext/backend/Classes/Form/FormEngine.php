@@ -441,13 +441,6 @@ class FormEngine {
 	 */
 	public $palFieldTemplate = '';
 
-	// INTERNAL, working memory
-	// Set to the fields NOT to display, if any.
-	/**
-	 * @todo Define visibility
-	 */
-	public $excludeElements = '';
-
 	// During rendering of forms this will keep track of which palettes has already been rendered (so they are not rendered twice by mistake)
 	/**
 	 * @todo Define visibility
@@ -665,7 +658,7 @@ class FormEngine {
 				$itemList = $GLOBALS['TCA'][$table]['types'][$typeNum]['showitem'];
 				if ($itemList) {
 					$fields = GeneralUtility::trimExplode(',', $itemList, TRUE);
-					$excludeElements = ($this->excludeElements = $this->getExcludeElements($table, $row, $typeNum));
+					$excludeElements = $this->getExcludeElements($table, $row, $typeNum);
 					foreach ($fields as $fieldInfo) {
 						$parts = explode(';', $fieldInfo);
 						$theField = trim($parts[0]);
@@ -737,7 +730,7 @@ class FormEngine {
 						$fields = $this->rearrange($fields);
 					}
 					// Get excluded fields, added fiels and put it together:
-					$excludeElements = ($this->excludeElements = $this->getExcludeElements($table, $row, $typeNum));
+					$excludeElements = $this->getExcludeElements($table, $row, $typeNum);
 					$fields = $this->mergeFieldsWithAddedFields($fields, $this->getFieldsToAdd($table, $row, $typeNum), $table);
 					// If TCEforms will render a tab menu in the next step, push the name to the tab stack:
 					$tabIdentString = '';
@@ -3478,9 +3471,7 @@ function ' . $evalData . '(value) {
 	public function loadPaletteElements($table, $row, $palette, $itemList = '') {
 		$parts = array();
 		// Getting excludeElements, if any.
-		if (!is_array($this->excludeElements)) {
-			$this->excludeElements = $this->getExcludeElements($table, $row, $this->getRTypeNum($table, $row));
-		}
+		$excludeElements = $this->getExcludeElements($table, $row, $this->getRTypeNum($table, $row));
 		// Load the palette TCEform elements
 		if ($GLOBALS['TCA'][$table] && (is_array($GLOBALS['TCA'][$table]['palettes'][$palette]) || $itemList)) {
 			$itemList = $itemList ? $itemList : $GLOBALS['TCA'][$table]['palettes'][$palette]['showitem'];
@@ -3491,7 +3482,7 @@ function ' . $evalData . '(value) {
 					$theField = $fieldParts[0];
 					if ($theField === '--linebreak--') {
 						$parts[]['NAME'] = '--linebreak--';
-					} elseif (!in_array($theField, $this->excludeElements) && $GLOBALS['TCA'][$table]['columns'][$theField]) {
+					} elseif (!in_array($theField, $excludeElements) && $GLOBALS['TCA'][$table]['columns'][$theField]) {
 						$this->palFieldArr[$palette][] = $theField;
 						$elem = $this->getSingleField($table, $theField, $row, $fieldParts[1], 1, '', $fieldParts[2]);
 						if (is_array($elem)) {
