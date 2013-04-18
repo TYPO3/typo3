@@ -33,6 +33,18 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 class ColumnMap {
 
 	/**
+	 * Constants reflecting the TCA type
+	 */
+	const TYPE_SELECT = 'SELECT';
+	const TYPE_GROUP = 'GROUP';
+	const TYPE_INLINE = 'INLINE';
+
+	/**
+	 * Constants reflecting the TCA internal type
+	 */
+	const INTERNAL_TYPE_DB = 'DB';
+
+	/**
 	 * Constants reflecting the type of relation
 	 */
 	const RELATION_NONE = 'RELATION_NONE';
@@ -69,6 +81,44 @@ class ColumnMap {
 	 * @var string
 	 */
 	protected $columnName;
+
+	/**
+	 * @var string
+	 */
+	protected $type;
+
+	/**
+	 * @var string
+	 */
+	protected $internalType;
+
+	/**
+	 * @param string $type
+	 */
+	public function setType($type) {
+		$this->type = $type;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getType() {
+		return $this->type;
+	}
+
+	/**
+	 * @param string $internalType
+	 */
+	public function setInternalType($internalType) {
+		$this->internalType = $internalType;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getInternalType() {
+		return $this->internalType;
+	}
 
 	/**
 	 * The type of relation
@@ -391,6 +441,20 @@ class ColumnMap {
 	 */
 	public function getDateTimeStorageFormat() {
 		return $this->dateTimeStorageFormat;
+	}
+
+	/**
+	 * @param string $childClassName
+	 */
+	public function setChildClassName($childClassName) {
+		$this->childClassName = $childClassName;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getChildClassName() {
+		return $this->childClassName;
 	}
 }
 

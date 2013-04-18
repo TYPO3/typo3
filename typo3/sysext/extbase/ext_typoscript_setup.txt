@@ -89,6 +89,11 @@ config.tx_extbase {
 				}
 			}
 		}
+		multipleReferenceProxy {
+			TYPO3\CMS\Extbase\Domain\Model\Category {
+				sys_category = TYPO3\CMS\Extbase\Domain\Model\Category
+			}
+		}
 	}
 	features {
 		 # this enables/disables the reworked property mapper (see http://forge.typo3.org/projects/typo3v4-mvc/wiki/PropertyMapper_rework)
