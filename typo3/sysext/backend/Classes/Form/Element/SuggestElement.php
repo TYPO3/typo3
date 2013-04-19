@@ -230,7 +230,7 @@ class SuggestElement {
 			for ($i = 0; $i < $maxItems; $i++) {
 				$row = $resultRows[$rowsSort[$i]];
 				$rowId = $row['table'] . '-' . $row['uid'] . '-' . $table . '-' . $uid . '-' . $field;
-				$listItems[] = '<li' . ($row['class'] != '' ? ' class="' . $row['class'] . '"' : '') . ' id="' . $rowId . '" style="' . $row['style'] . '">' . $row['text'] . '</li>';
+				$listItems[] = '<li' . ($row['class'] != '' ? ' class="' . $row['class'] . '"' : '') . ' id="' . $rowId . '"' . ($row['style'] != '' ? ' style="' . $row['style'] . '"' : '') . '>' . $row['sprite'] . $row['text'] . '</li>';
 			}
 		}
 		if (count($listItems) > 0) {
