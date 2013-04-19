@@ -170,6 +170,7 @@ class SuggestDefaultReceiver {
 					continue;
 				}
 				$iconPath = $this->getIcon($row);
+				$spriteIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($this->table, $row);
 				$uid = $row['t3ver_oid'] > 0 ? $row['t3ver_oid'] : $row['uid'];
 				$path = $this->getRecordPath($row, $uid);
 				if (strlen($path) > 30) {
@@ -187,7 +188,8 @@ class SuggestDefaultReceiver {
 					'uid' => $uid,
 					'icon' => $iconPath,
 					'style' => 'background-image:url(' . $iconPath . ');',
-					'class' => isset($this->config['cssClass']) ? $this->config['cssClass'] : ''
+					'class' => isset($this->config['cssClass']) ? $this->config['cssClass'] : '',
+					'sprite' => $spriteIcon
 				);
 				$rows[$this->table . '_' . $uid] = $this->renderRecord($row, $entry);
 			}
