@@ -847,34 +847,34 @@ class browse_links {
 		}
 
 			// Initializing the target value (RTE)
-		$this->setTarget = ($this->curUrlArray['target'] != '-') ? rawurlencode($this->curUrlArray['target']) : '';
+		$this->setTarget = ($this->curUrlArray['target'] != '-') ? $this->curUrlArray['target'] : '';
 		if ($this->thisConfig['defaultLinkTarget'] && !isset($this->curUrlArray['target']))	{
 			$this->setTarget=$this->thisConfig['defaultLinkTarget'];
 		}
 
 			// Initializing the class value (RTE)
-		$this->setClass = ($this->curUrlArray['class'] != '-') ? rawurlencode($this->curUrlArray['class']) : '';
+		$this->setClass = ($this->curUrlArray['class'] != '-') ? $this->curUrlArray['class'] : '';
 
 			// Initializing the title value (RTE)
 
-		$this->setTitle = ($this->curUrlArray['title'] != '-') ? rawurlencode($this->curUrlArray['title']) : '';
+		$this->setTitle = ($this->curUrlArray['title'] != '-') ? $this->curUrlArray['title'] : '';
 			// Initializing the params value
-		$this->setParams = ($this->curUrlArray['params'] != '-') ? rawurlencode($this->curUrlArray['params']) : '';
+		$this->setParams = ($this->curUrlArray['params'] != '-') ? $this->curUrlArray['params'] : '';
 
 			// BEGIN accumulation of header JavaScript:
 		$JScode = '
 				// This JavaScript is primarily for RTE/Link. jumpToUrl is used in the other cases as well...
-			var add_href="'.($this->curUrlArray['href']?'&curUrl[href]='.rawurlencode($this->curUrlArray['href']):'').'";
-			var add_target="'.($this->setTarget?'&curUrl[target]='.rawurlencode($this->setTarget):'').'";
-			var add_class="'.($this->setClass ? '&curUrl[class]='.rawurlencode($this->setClass) : '').'";
-			var add_title="'.($this->setTitle?'&curUrl[title]='.rawurlencode($this->setTitle):'').'";
-			var add_params="'.($this->bparams?'&bparams='.rawurlencode($this->bparams):'').'";
+			var add_href=' . t3lib_div::quoteJSvalue(($this->curUrlArray['href'] ? '&curUrl[href]=' . rawurlencode($this->curUrlArray['href']) : '')) . ';
+			var add_target=' . t3lib_div::quoteJSvalue(($this->setTarget ? '&curUrl[target]=' . rawurlencode($this->setTarget) : '')) . ';
+			var add_class=' . t3lib_div::quoteJSvalue(($this->setClass ? '&curUrl[class]=' . rawurlencode($this->setClass) : '')) . ';
+			var add_title=' . t3lib_div::quoteJSvalue(($this->setTitle ? '&curUrl[title]=' . rawurlencode($this->setTitle) : '')) . ';
+			var add_params=' . t3lib_div::quoteJSvalue(($this->bparams ? '&bparams=' . rawurlencode($this->bparams) : '')) . ';
 
-			var cur_href="' . ($this->curUrlArray['href'] ? rawurlencode($this->curUrlArray['href']) : '') . '";
-			var cur_target="'.($this->setTarget?$this->setTarget:'').'";
-			var cur_class = "' . ($this->setClass ? $this->setClass : '') . '";
-			var cur_title="'.($this->setTitle?$this->setTitle:'').'";
-			var cur_params="' . ($this->setParams ? $this->setParams : '') . '";
+			var cur_href=' . t3lib_div::quoteJSvalue(($this->curUrlArray['href'] ? rawurlencode($this->curUrlArray['href']) : '')) . ';
+			var cur_target=' . t3lib_div::quoteJSvalue(($this->setTarget ? t3lib_div::quoteJSvalue($this->setTarget) : '')) . ';
+			var cur_class=' . t3lib_div::quoteJSvalue(($this->setClass ? $this->setClass : '')) . ';
+			var cur_title=' . t3lib_div::quoteJSvalue(($this->setTitle ? $this->setTitle : '')) . ';
+			var cur_params=' . t3lib_div::quoteJSvalue(($this->setParams ? $this->setParams : '')) . ';
 
 			function browse_links_setTarget(target)	{	//
 				cur_target=target;
