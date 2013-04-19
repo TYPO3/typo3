@@ -1483,6 +1483,7 @@ class tslib_menu {
 		);
 
 		$hasSubPages = FALSE;
+		$bannedUids = $this->getBannedUids();
 		foreach ($recs as $theRec) {
 				// no valid subpage if the document type is excluded from the menu
 			if (t3lib_div::inList($this->doktypeExcludeList, $theRec['doktype'])) {
@@ -1507,7 +1508,10 @@ class tslib_menu {
 			if ($GLOBALS['TSFE']->sys_language_uid && $hideIfNotTranslated && !$theRec['_PAGES_OVERLAY']) {
 				continue;
 			}
-
+				// no valid subpage if the subpage is banned by excludeUidList
+			if (in_array($theRec['uid'], $bannedUids)) {
+				continue;
+			}
 			$hasSubPages = TRUE;
 			break;
 		}
