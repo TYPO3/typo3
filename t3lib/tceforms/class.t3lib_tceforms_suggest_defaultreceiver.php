@@ -183,7 +183,9 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 					continue;
 				}
 
-				$iconPath = $this->getIcon($row);
+				$spriteIcon = t3lib_iconWorks::getSpriteIconForRecord(
+					$this->table, $row, array('style' => 'margin: 0 4px 0 -20px; padding: 0;')
+				);
 				$uid = ($row['t3ver_oid'] > 0 ? $row['t3ver_oid'] : $row['uid']);
 
 				$path = $this->getRecordPath($row, $uid);
@@ -204,9 +206,9 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 					'label' => $label,
 					'path' => $path,
 					'uid' => $uid,
-					'icon' => $iconPath,
-					'style' => 'background-image:url(' . $iconPath . ');',
-					'class' => (isset($this->config['cssClass']) ? $this->config['cssClass'] : ''),
+					'style' => '',
+					'class' => isset($this->config['cssClass']) ? $this->config['cssClass'] : '',
+					'sprite' => $spriteIcon
 				);
 
 				$rows[$this->table . '_' . $uid] = $this->renderRecord($row, $entry);
