@@ -6357,21 +6357,11 @@ class DataHandler {
 	 *
 	 * @param string $table Table name
 	 * @return array Array of fieldnames
-	 * @todo Define visibility
+	 * @deprecated since 6.1, will be removed in two versions, use \TYPO3\CMS\Version\Hook\DataHandlerHook::getUniqueFields() instead
 	 */
 	public function getUniqueFields($table) {
-		$listArr = array();
-		if ($GLOBALS['TCA'][$table]['columns']) {
-			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $configArr) {
-				if ($configArr['config']['type'] === 'input') {
-					$evalCodesArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $configArr['config']['eval'], 1);
-					if (in_array('uniqueInPid', $evalCodesArray) || in_array('unique', $evalCodesArray)) {
-						$listArr[] = $field;
-					}
-				}
-			}
-		}
-		return $listArr;
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		return \TYPO3\CMS\Version\Hook\DataHandlerHook::getUniqueFields($table);
 	}
 
 	/**
