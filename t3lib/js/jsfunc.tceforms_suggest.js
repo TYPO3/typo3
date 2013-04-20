@@ -97,11 +97,27 @@ TCEForms.Suggest = Class.create({
 			var rec_field = arr[4];
 
 			var formEl = 'data[' + rec_table + '][' + rec_uid + '][' + rec_field + ']';
-			var label = (item.firstChild.textContent ? item.firstChild.textContent : item.firstChild.innerText)
+			var suggestLabelNode = Element.select(this.escapeObjectId(item.id), '.suggest-label')[0];
+			var label = (suggestLabelNode.textContent ? suggestLabelNode.textContent : suggestLabelNode.innerText)
 			setFormValueFromBrowseWin(formEl, ins_table + '_' + ins_uid, label);
 			TBE_EDITOR.fieldChanged(rec_table, rec_uid, rec_field, formEl);
 
 			$(this.suggestField).value = this.defaultValue;
 		}
+	},
+
+	/**
+	 * Escapes object identifiers of e.g. Flexform CSS IDs
+	 *
+	 * @param string objectId
+	 * @return string
+	 */
+	escapeObjectId: function(objectId) {
+		var escapedObjectId;
+		escapedObjectId = objectId.replace(/:/g, '\\:');
+		escapedObjectId = objectId.replace(/\./g, '\\.');
+		escapedObjectId = objectId.replace(/\[/g, '\\[');
+		escapedObjectId = objectId.replace(/\]/g, '\\]');
+		return escapedObjectId;
 	}
 });
