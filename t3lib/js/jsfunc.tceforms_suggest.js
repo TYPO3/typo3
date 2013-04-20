@@ -95,7 +95,7 @@ TCEForms.Suggest = Class.create({
 			var rec_field = arr[4];
 
 			var formEl = 'data[' + rec_table + '][' + rec_uid + '][' + rec_field + ']';
-			var label = (item.firstChild.textContent ? item.firstChild.textContent : item.firstChild.innerText)
+			var label = ($(item).select('.suggest-label')[0].textContent ? $(item).select('.suggest-label')[0].textContent : $(item).select('.suggest-label')[0].innerText)
 			setFormValueFromBrowseWin(formEl, ins_table + '_' + ins_uid, label);
 			TBE_EDITOR.fieldChanged(rec_table, rec_uid, rec_field, formEl);
 
