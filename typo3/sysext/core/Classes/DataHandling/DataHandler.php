@@ -6353,28 +6353,6 @@ class DataHandler {
 	}
 
 	/**
-	 * Returns all fieldnames from a table which have the unique evaluation type set.
-	 *
-	 * @param string $table Table name
-	 * @return array Array of fieldnames
-	 * @todo Define visibility
-	 */
-	public function getUniqueFields($table) {
-		$listArr = array();
-		if ($GLOBALS['TCA'][$table]['columns']) {
-			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $configArr) {
-				if ($configArr['config']['type'] === 'input') {
-					$evalCodesArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $configArr['config']['eval'], 1);
-					if (in_array('uniqueInPid', $evalCodesArray) || in_array('unique', $evalCodesArray)) {
-						$listArr[] = $field;
-					}
-				}
-			}
-		}
-		return $listArr;
-	}
-
-	/**
 	 * Returns TRUE if the TCA/columns field type is a DB reference field
 	 *
 	 * @param array $conf Config array for TCA/columns field
