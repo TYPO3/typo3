@@ -96,6 +96,12 @@ TCEForms.Suggest = Class.create({
 
 			var formEl = 'data[' + rec_table + '][' + rec_uid + '][' + rec_field + ']';
 			var label = (item.firstChild.textContent ? item.firstChild.textContent : item.firstChild.innerText)
+			// skip an empty span if needed/possible (for example if a sprite was used)
+			// charcode 160 is a non-breaking space
+			if (((label == "") || (label == " ") || (label == String.fromCharCode(160))) && (item.childNodes.length > 1)) {
+				var nodeToUse = item.childNodes[1];
+				label = (nodeToUse.textContent ? nodeToUse.textContent : nodeToUse.innerText);
+			}
 			setFormValueFromBrowseWin(formEl, ins_table + '_' + ins_uid, label);
 			TBE_EDITOR.fieldChanged(rec_table, rec_uid, rec_field, formEl);
 
