@@ -155,7 +155,20 @@ class SuggestElement {
 		}
 		$wizardConfig = $fieldConfig['wizards']['suggest'];
 		if (isset($fieldConfig['allowed'])) {
-			$queryTables = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldConfig['allowed']);
+			if ($fieldConfig['allowed'] === '*') {
+				foreach ($GLOBALS['TCA'] as $table => $tableConfig) {
+					if (!isset($tableConfig['ctrl']['hideTable']) || empty($tableConfig['ctrl']['hideTable'])) {
+						if (!isset($tableConfig['ctrl']['adminOnly']) || empty($tableConfig['ctrl']['adminOnly']) || $GLOBALS['BE_USER']->isAdmin()) {
+							if (!isset($tableConfig['ctrl']['rootLevel']) || empty($tableConfig['ctrl']['rootLevel']) || $GLOBALS['BE_USER']->isAdmin()) {
+								array_push($queryTables, $table);
+							}
+						}
+					}
+				}
+				unset($table, $tableConfig);
+			} else {
+				$queryTables = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldConfig['allowed']);
+			}
 		} elseif (isset($fieldConfig['foreign_table'])) {
 			$queryTables = array($fieldConfig['foreign_table']);
 			$foreign_table_where = $fieldConfig['foreign_table_where'];
