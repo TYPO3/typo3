@@ -128,6 +128,17 @@ groups and verify there is now not a bigger number ob objects fetched from
 persistence. To rebuild the previous behavior, revert the TypoScript change of
 https://review.typo3.org/#/c/17879 in your extension.
 
+* Object persistence behavior changed from implicit to explicit save
+
+Previously, every change to a database driven object got persisted
+automatically at the end of a controller action with a call to persistAll().
+In order to improve performannce and to further narrow the behavior from TYPO3
+Extbase to TYPO3 Flow, this implicit saving has been removed.
+This means that a changed object only gets persisted, if the according
+repository update function gets called for the object.
+As an extension author, please ensure proper usage of the update function
+calls and do not rely on implicit saving anymore.
+
 -------------------------------------------------------------------------------
 Fluid
 -------------------------------------------------------------------------------
