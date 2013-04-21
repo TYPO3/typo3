@@ -1413,7 +1413,8 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				return false;
 			}
 		}
-		return true;
+		event.stopEvent();
+		return false;
 	},
 	/*
 	 * Handler for BACKSPACE and DELETE keys
