@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Core\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Several functions related to naming and convertions of names
+ * Several functions related to naming and conversions of names
  * such as translation between Repository and Model names or
  * exploding an objectControllerName into pieces
  *
