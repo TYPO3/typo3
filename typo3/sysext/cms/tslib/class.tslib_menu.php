@@ -1609,7 +1609,7 @@ class tslib_menu {
 		$conf = array(
 			'parameter' => is_array($overrideArray) && $overrideArray['uid'] ? $overrideArray['uid'] : $page['uid'],
 		);
-		if ($typeOverride && t3lib_utility_Math::canBeInterpretedAsInteger($typeOverride)) {
+		if ($typeOverride === 0 || t3lib_utility_Math::canBeInterpretedAsInteger($typeOverride)) {
 			$conf['parameter'] .= ',' . $typeOverride;
 		}
 		if ($addParams) {
