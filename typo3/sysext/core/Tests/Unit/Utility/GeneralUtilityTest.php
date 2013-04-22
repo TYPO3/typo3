@@ -3161,6 +3161,24 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	///////////////////////////////
+	// Tests concerning rmdir
+	///////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function rmdirRemovesDeadLink() {
+		if (TYPO3_OS === 'WIN') {
+			$this->markTestSkipped('Test not available on Windows OS.');
+		}
+		$notExistingFile = PATH_site . 'typo3temp/' . uniqid('notExists_');
+		$symlinkName = PATH_site . 'typo3temp/' . uniqid('link_');
+		symlink($notExistingFile, $symlinkName);
+		Utility\GeneralUtility::rmdir($symlinkName, TRUE);
+		$this->assertFalse(is_link($symlinkName));
+	}
+
+	///////////////////////////////
 	// Tests concerning unQuoteFilenames
 	///////////////////////////////
 	/**

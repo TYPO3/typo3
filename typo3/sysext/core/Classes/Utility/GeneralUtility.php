@@ -2676,7 +2676,7 @@ Connection: close
 		$path = preg_replace('|/$|', '', $path);
 		if (file_exists($path)) {
 			$OK = TRUE;
-			if (is_dir($path)) {
+			if (!is_link($path) && is_dir($path)) {
 				if ($removeNonEmpty == TRUE && ($handle = opendir($path))) {
 					while ($OK && FALSE !== ($file = readdir($handle))) {
 						if ($file == '.' || $file == '..') {
@@ -2694,6 +2694,8 @@ Connection: close
 				$OK = unlink($path);
 			}
 			clearstatcache();
+		} elseif (is_link($path)) {
+			$OK = unlink($path);
 		}
 		return $OK;
 	}
