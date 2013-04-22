@@ -255,7 +255,6 @@ class Bootstrap {
 			isset($GLOBALS['TYPO3_CONF_VARS']['DB']['extTablesDefinitionScript'])
 			? $GLOBALS['TYPO3_CONF_VARS']['DB']['extTablesDefinitionScript']
 			: 'extTables.php');
-		unset($GLOBALS['TYPO3_CONF_VARS']['DB']);
 		define('TYPO3_user_agent', 'User-Agent: ' . $GLOBALS['TYPO3_CONF_VARS']['HTTP']['userAgent']);
 		return $this;
 	}
@@ -690,8 +689,10 @@ class Bootstrap {
 		$databaseConnection->setDatabasePassword(TYPO3_db_password);
 
 		$databaseHost = TYPO3_db_host;
-		// Check if a port was specified
-		if (strpos($databaseHost, ':') > 0) {
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['DB']['port'])) {
+			$databaseConnection->setDatabasePort($GLOBALS['TYPO3_CONF_VARS']['DB']['port']);
+		} elseif (strpos($databaseHost, ':') > 0) {
+			// @TODO: Find a way to handle this case in the install tool and drop this
 			list($databaseHost, $databasePort) = explode(':', $databaseHost);
 			$databaseConnection->setDatabasePort($databasePort);
 		}

@@ -38,6 +38,13 @@ changes -- all extension code using the API should run as before.
 "mysqli" is now a hard requirement in the PHP environment and must be loaded
 for TYPO3 to run.
 
+* Separated database host and port setting
+
+As a side effect of the switch to mysqli, the database settings in
+TYPO3_CONF_VARS DB now accept a new "port" setting. This setting must be used
+if the database host is a ipv6 address and the port is different from the
+default port 3306, otherwise the backwards compatible logic could fail.
+
 -------------------------------------------------------------------------------
 Deprecated and removed components
 -------------------------------------------------------------------------------
