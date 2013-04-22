@@ -1100,16 +1100,37 @@ class ElementBrowser {
 		$content = $this->doc->startPage('TBE record selector');
 		// Init variable:
 		$pArr = explode('|', $this->bparams);
+		$tables = $pArr[3];
 		// Making the browsable pagetree:
 		$pagetree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TBE_PageTree');
 		$pagetree->thisScript = $this->thisScript;
-		$pagetree->ext_pArrPages = !strcmp($pArr[3], 'pages') ? 1 : 0;
+		$pagetree->ext_pArrPages = !strcmp($tables, 'pages') ? 1 : 0;
 		$pagetree->ext_showNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
 		$pagetree->ext_showPageId = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
+
+		$withTree = TRUE;
+		if (($tables !== '') && ($tables !== '*')) {
+			$tablesArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tables, TRUE);
+			$onlyRootLevel = TRUE;
+			foreach ($tablesArr as $currentTable) {
+				$tableTca = $GLOBALS['TCA'][$currentTable];
+				if (isset($tableTca)) {
+					if (!isset($tableTca['ctrl']['rootLevel']) || (intval($tableTca['ctrl']['rootLevel']) != 1)) {
+						$onlyRootLevel = FALSE;
+					}
+				}
+			}
+			if ($onlyRootLevel) {
+				$withTree = FALSE;
+				// page to work on will be root
+				$this->expandPage = 0;
+			}
+		}
+
 		$pagetree->addField('nav_title');
 		$tree = $pagetree->getBrowsableTree();
 		// Making the list of elements, if applicable:
-		$cElements = $this->TBE_expandPage($pArr[3]);
+		$cElements = $this->TBE_expandPage($tables);
 		// Putting the things together, side by side:
 		$content .= '
 
@@ -1117,9 +1138,11 @@ class ElementBrowser {
 				Wrapper table for page tree / record list:
 			-->
 			<table border="0" cellpadding="0" cellspacing="0" id="typo3-EBrecords">
-				<tr>
-					<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('pageTree') . ':')) . $tree . '</td>
-					<td class="c-wCell" valign="top">' . $cElements . '</td>
+				<tr>';
+		if ($withTree) {
+			$content .= '<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('pageTree') . ':')) . $tree . '</td>';
+		}
+		$content .= '<td class="c-wCell" valign="top">' . $cElements . '</td>
 				</tr>
 			</table>
 			';
