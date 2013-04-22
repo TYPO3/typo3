@@ -2676,7 +2676,7 @@ Connection: close
 		$path = preg_replace('|/$|', '', $path);
 		if (file_exists($path)) {
 			$OK = TRUE;
-			if (is_dir($path)) {
+			if (!is_link($path) && is_dir($path)) {
 				if ($removeNonEmpty == TRUE && ($handle = opendir($path))) {
 					while ($OK && FALSE !== ($file = readdir($handle))) {
 						if ($file == '.' || $file == '..') {
@@ -2687,12 +2687,15 @@ Connection: close
 					closedir($handle);
 				}
 				if ($OK) {
-					$OK = rmdir($path);
+					$OK = @rmdir($path);
 				}
 			} else {
-				// If $dirname is a file, simply remove it
+				// If $path is a file, simply remove it
 				$OK = unlink($path);
 			}
+			clearstatcache();
+		} elseif (is_link($path)) {
+			$OK = unlink($path);
 			clearstatcache();
 		}
 		return $OK;
