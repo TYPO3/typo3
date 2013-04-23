@@ -1,6 +1,98 @@
 ChangeLog for Fluid
 ===================
 
+Changes for 6.1.0
+=================
+
+[!!!][FEATURE] Allow Fluid arrays only in ViewHelper arguments
+--------------------------------------------------------------
+
+This change greatly enhances the JavaScript compatibility of Fluid.
+
+Fluid Arrays are a subset of the JavaScript object syntax, making it
+hard to work with them in mixed HTML/JavaScript documents. For example
+before this change, the following JavaScript Object was parsed by Fluid::
+
+	var uris = {
+	  endPoint1: '{f:uri.action(.)}',
+	  endPoint2: '{f:uri.action(.)}',
+	};
+
+Before this change, the above snippet resulted in the following template,
+as the generated array was casted to a string:
+
+	var uris = Array
+
+With this change, Fluid only parses arrays which are used inside
+ViewHelper arguments, such that an array inside normal text is not
+converted anymore.
+
+Breaking Change
+===============
+
+This change is only breaking in very rare cases where one relied on
+the inner contents of the ViewHelper being an array, f.e. if one used
+the debug ViewHelper as follows::
+
+	<f:debug>{key1: 'value1', key2: 'value2'}</f:debug>
+
+. or if anybody wrote custom ViewHelpers which use this convention.
+
+Relying on that would be very fragile anyways, as the insertion of a
+single space character before the opening curly bracket or after the
+closing one would cast the array back to a string.
+
+ViewHelpers which were written like this should be re-written to take
+the array as ViewHelper argument::
+
+	<f:debug value="{key1: 'value1', key2: 'value2'}" />
+
+Full Changes for 6.1.0
+======================
+
+[BUGFIX] Fluid must not use legacy flash message handling
+[BUGFIX] Don't use folders as templates, partials and layouts
+[TASK] Use __DIR__ instead of dirname(__FILE__)
+[TASK] Add namespaing to ConfigurationManagerInterface
+[TASK] Remove further t3lib mentions
+[TASK] Update t3lib mentions
+[TASK] Adjust Comments to describe string comparison
+[CLEANUP] Drop incomplete tests
+[BUGFIX] Add needed setting to handle file_references correctly
+[BUGFIX] Add needed setting to handle file_references correctly
+[TASK] Remove not maintained md5 in ext_emconf
+[BUGFIX] Incomplete mock reset in StandaloneViewTest
+[BUGFIX] FormViewHelper creates inline styling
+[BUGFIX] PHP 5.4 E_STRICT warning in HtmlViewHelper
+[TASK] Cleanup fluid
+[FEATURE] Adjustable decimals for view helper format.currency
+[TASK] Update examples in ValidationResults ViewHelper
+[TASK] Sync TYPO3 CMS Fluid with Flow Fluid 1.1 (part3)
+[TASK] Sync CMS Fluid with Flow Fluid 1.1 (part2)
+[TASK] Add test for GroupedForViewHelper to support DateTime Objects
+[TASK] Replace ObjectManager create with get
+[BUGFIX] Apply arguments to the default string
+[TASK] Clean up Unit tests in fluid
+[FEATURE] Complete the Property Mapper whitelist change for fluid
+[BUGFIX] Follow-up typo to #45316
+[TASK] Sync CMS Fluid with Flow Fluid 1.1 (part1)
+[FEATURE] Support literal strings in boolean arguments
+[TASK] Add dataproviders for 2 tests in DateViewHelperTest
+[BUGFIX] Skip a SelectViewHelperTest on Mac
+[BUGFIX] Unit test fails with broken timezone
+[BUGFIX] Wrong numbers in BE paginage widget
+[BUGFIX] Remove superfluous newline
+[BUGFIX] Date ViewHelper not using configured Timezones
+[BUGFIX] Fix typo and improve backup of system settings
+[FEATURE] Introduce prepend option for Select ViewHelper
+[BUGFIX] Remove PHP Error caused by setlocale call
+[BUGFIX] Incomplete locale backup in unit test
+[BUGFIX] selectViewHelper sorting should respect locales
+Revert "[TASK] Adjust failing test"
+[TASK] Adjust failing test
+[BUGFIX] Image viewhelper clears $GLOBALS['TSFE'] in backend context
+[TASK] Update version to 6.1.0-dev
+
 Changes for 1.4.0:
 ==================
 included in TYPO3 4.6.0
