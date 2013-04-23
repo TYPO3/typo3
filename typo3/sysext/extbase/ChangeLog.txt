@@ -1,6 +1,198 @@
 ChangeLog for Extbase
 =====================
 
+Changes for 6.1.0
+=================
+
+!!! Introduce explicit saving of modified domain objects
+--------------------------------------------------------
+
+In conjunction with the new property mapper the persistence layer
+saves modified domain objects that failed validation and/or mapping.
+
+This bugfix aligns the behavior of the persistence layer with Flow
+and introduces explicit saving of modified domain objects.
+
+Modified objects now need to be passed through their repository
+update method in order to be scheduled for saving by the persistence
+managers persistAll method.
+
+
+!!! Enable rewritten PropertyMapper as default
+----------------------------------------------
+
+After solving the missing security features and bugfixes
+the rewritten PropertyMapper is now ready to be used in
+production environments.
+
+
+!!! Remove support for TCA setting 'foreign_selector'
+-----------------------------------------------------
+
+The TCA setting 'foreign_selector' is a UI feature which can be
+configured for field in a relation table, when this table
+is editable using the IRRE feature. Then a selector box
+is rendered making it possible to select records from a child
+table.
+
+In this scenario the relation table itself may contain other
+editable fields, which should be represented by a domain model.
+
+The latter is currently not possible with Extbase because
+'foreign_selector' triggers the DataMapper to resolve a
+many to many relation to the child table.
+
+Solution is to remove this behaviour and let the DataMapper
+resolve the one to many relation to the relation table.
+
+
+!!! Remove forced STI settings from extbase configuration
+---------------------------------------------------------
+
+The tx_extbase_type setting for fe_users and fe_groups was introduced
+as a demonstration of Single Table Inheritance handled in extbase.
+The forced setting brings more problems then doing good in real live
+scenarios though.
+
+So the typoscript is dropped, but TCA and sql kept for backwards
+compatibility reasons.
+
+Before 6.1 only fe_users with tx_extbase_type
+Tx_Extbase_Domain_Model_FrontendUser and
+fe_groups with Tx_Extbase_Domain_Model_FrontendUserGroup
+are returned. Since 6.1 all fe_users and fe_groups are
+returned if you don't set the TypoScript setting on your own.
+
+
+Full Changes for 6.1.0
+======================
+
+[TASK] Update changelog and version to 6.1.0
+[TASK] Cleanup Extbase for 6.1 release
+[BUGFIX] Backend support for native DateTime
+[BUGFIX] Scheduler throws fatal error while saving an Extbase Task
+[!!!][BUGFIX] Introduce explicit saving of modified domain objects
+[BUGFIX] Extbase must not use legacy flash message handling
+[BUGFIX] Persist an empty unmodified objectstorage
+[BUGFIX] Remove ObjectMapper part from TS-Template
+[BUGFIX] Validation with invalid validator caused unrelated errors
+[BUGFIX] Fix attaching objects to a existing objectstorage
+[BUGFIX] Improve description of registerModule()
+[TASK] Cleanup require and require_once
+[BUGFIX] Mark objectstorage clean after saving
+[TASK] UriBuilder can handle multidim arrays in exludes params
+[TASK] Detect inject methods more strictly
+[BUGFIX] Clearing label through TS doesn't work
+[TASK] Typo3DbBackend, getRowsFromResult(): Drop source-argument
+[BUGFIX] Call RequestHandlerResolver also for CLI requests
+[BUGFIX] Only throw tooDirty if uid part of cleanProperties
+[TASK] Typo3DbBackend: Drop non-functional code
+[BUGFIX] getPlainValue for @lazy objects
+[TASK] Backport Flow property mapper
+[BUGFIX] Localization ignores extensionName argument for TypoScript labels
+[TASK] Provide .gitignore and ignore code coverage report folder
+[BUGFIX] Added handling for array in findOneByXXX result
+[BUGFIX] RequestBuilder must not call $request->setMethod with NULL
+[TASK] Fix typehints in docblocks of Mapper
+[TASK] Optimize persisting a dirty objectStorage
+[BUGFIX] Prevent call of updateReferenceIndex on unknown object
+[TASK] Simplify propertyName-creation
+[BUGFIX] Prevent building empty IN () query by throwing exception
+[TASK] Add caching layer for getTargetPidByPlugin
+[BUGFIX] Redirect-method in abstractController does not work with SSL
+[BUGFIX] Translation of extbase-core
+[BUGFIX] RespectStoragePage does not respect rootLevel
+[TASK] Disable functional tests
+[TASK] Update t3lib mentions
+[BUGFIX] Property Mapper chokes on already-converted objects
+[BUGFIX] Fix namespace in FileMountRepositoryTest
+[TASK] Update copyright year to 2013
+Revert "[TASK] Make current persistence replaceable"
+[BUGFIX] Native DateTime values cannot be mapped from storage
+Revert "[BUGFIX] Native DateTime values cannot be mapped from storage"
+[BUGFIX] Native DateTime values cannot be mapped from storage
+[BUGFIX] FlashMessageContainer uses static flashMessageQueue
+[TASK] Remove not maintained md5 in ext_emconf
+[TASK] Table Mapping for File Model
+[BUGFIX] TypoScript configuration not available in backend
+[FEATURE] Use EnvironmentService to detect TYPO3_MODE in several places
+[TASK] Rename methods in EnvironmentService
+[BUGFIX] Fix wrong parenthesis in Typo3DbBackend
+[FEATURE] Introduce methods to detect TYPO3_MODE properly
+[TASK] Streamline creation of column maps
+[FEATURE] Providing Core Resource FileReference functionality
+[TASK] Remove obsolete doc comment check in reports module
+[!!!][FEATURE] Enable rewritten PropertyMapper as default
+[!!!][BUGFIX] Remove support for TCA setting 'foreign_selector'
+[BUGFIX] TypeConverter can handle oldschool classnames
+[SECURITY] SQL Injection Possibility in Extbase
+[BUGFIX] Prevent Extbase warnings accessing ObjectStorages with strings
+[BUGFIX] BooleanValidator skips Validation with missing compare param
+[BUGFIX] Prevent PHP errors with missing ColumnMap object
+[BUGFIX] Fix tests for old property mapper
+[FEATURE] Introducing a BooleanValidator.
+[FEATURE] TCA refactoring
+[BUGFIX] Old property mapper shouldn't map other domain objects
+[BUGFIX] Fix tests throwing errors in MapperTest
+[BUGFIX] ReflectionService rejects classSchema for custom models
+Revert "[BUGFIX] Prevent sql errors with missing ColumnMap"
+Revert "[TASK] Remove loadTCA calls"
+[BUGFIX] Add foreign_match_fields support for one-to-x relations
+[FEATURE] Make use of the ClassNamingUtility class
+[BUGFIX] Respect wildcard in PropertyConfiguration shouldMap()
+[BUGFIX] Followup to issue #45323
+[TASK] Replace ObjectManager create with get
+[TASK] Sync objectmananger get and create with Flow
+[TASK] Clean up Unit tests in extbase
+[!!!][TASK] Remove forced STI settings from extbase configuration
+[FEATURE] (MVC): Whitelist-based Property Mapping Configuration
+[TASK] Decouple BE module runner and Bootstrap
+[TASK] Improve Test
+[TASK] Add FileReference table mapping in extbase configuration
+[TASK] Provide unit test for Mvc/Response
+[TASK] Improve code coverage of Mvc/Request
+[FEATURE] Allow different overriding of object mapping per plugin
+[TASK] Remove loadTCA calls
+[BUGFIX] Alphanumeric validator fails with broken PCRE
+[BUGFIX] RepositoryTest raises warning
+[BUGFIX] ConfigurationManager must use namespaced FrontendSimulator
+[TASK] Provide Unit Test for Scheduler/Task
+[BUGFIX] Ordering without grouping is incompatible with non-MySQL DBMS
+[TASK] Provide Unit Test for Scheduler/TaskExecuter
+Revert "[FEATURE] Allow different overriding of object mapping per plugin"
+[TASK] Improve code coverage of Scheduler/FieldProvider
+[TASK] Increase code coverage of FrontendConfigurationManager
+[TASK] Increase code coverage of Service/TypeHandlingService
+[TASK] Increase code coverage of SignalSlot/Dispatcher
+[TASK] Provide Unit Test for Error/Message
+[FEATURE] Provide UnitTest.xml with code coverage generation
+[TASK] Rename property, getter and setters of File Model
+[FEATURE] Add userGroups to backendUser model
+[FEATURE] Add filemount property to backend users
+[BUGFIX] Remove newline after ?> in AbstractController
+[BUGFIX] Avoid clearing the page cache too often
+[BUGFIX] Correct indention of class comment
+[BUGFIX] Suppress debug output of debugger in unit tests
+[BUGFIX] Fix failing tests in ActionControllerTest
+Revert "[FEATURE] Introduce beforeCallActionMethod signal"
+[FEATURE] Introduce beforeCallActionMethod signal
+[FEATURE] Introduce beforeCallActionMethod signal
+[BUGFIX] Prevent sql errors with missing ColumnMap
+[BUGFIX] DebuggerUtility does not rewind instances of Iterator
+[BUGFIX] Make AlphanumericValidator work with umlauts
+[BUGFIX] Use interface in PersistenceManager::injectQueryFactory
+[BUGFIX] Use interface in Mapper::injectQueryFactory
+[CLEANUP] Remove newlines after closing php tag
+[FEATURE] Allow different overriding of object mapping per plugin
+[TASK] Make current persistence replaceable
+[BUGFIX] Deprecated functions used in on fresh 6.0 final
+[CLEANUP] Remove all @author annotations
+[CLEANUP] Replace wrong/old file copyright comments
+[FEATURE] Recursive starting point/storage pid via TypoScript
+[BUGFIX] MM_match_fields is ignored when persisting MM relations
+[TASK] Update ChangeLog.txt for 6.0
+[TASK] Update version to 6.1.0-dev
+
 Changes for 6.0.0
 =================
 
