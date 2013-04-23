@@ -3939,7 +3939,9 @@ function ' . $evalData . '(value) {
 						if (!$wConf['notNewRecords'] || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($row['uid'])) {
 							// Setting &P array contents:
 							$params = array();
-							$params['fieldConfig'] = $fieldConfig;
+							if ($wid != 'RTE') {
+								$params['fieldConfig'] = $fieldConfig;
+							}
 							$params['params'] = $wConf['params'];
 							$params['exampleImg'] = $wConf['exampleImg'];
 							$params['table'] = $table;
