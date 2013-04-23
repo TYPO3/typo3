@@ -3935,7 +3935,10 @@ function ' . $evalData . '(value) {
 						if (!$wConf['notNewRecords'] || MathUtility::canBeInterpretedAsInteger($row['uid'])) {
 							// Setting &P array contents:
 							$params = array();
-							$params['fieldConfig'] = $fieldConfig;
+							// Including the full fieldConfig from TCA may produce too long an URL
+							if ($wid != 'RTE') {
+								$params['fieldConfig'] = $fieldConfig;
+							}
 							$params['params'] = $wConf['params'];
 							$params['exampleImg'] = $wConf['exampleImg'];
 							$params['table'] = $table;
