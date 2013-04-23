@@ -49,6 +49,9 @@
 		<testsuite name="EXT:indexed_search tests">
 			<directory>../../../../typo3/sysext/indexed_search/Tests/Unit/</directory>
 		</testsuite>
+		<testsuite name="EXT:install tests">
+			<directory>../../../../typo3/sysext/install/Tests/Unit/</directory>
+		</testsuite>
 		<testsuite name="EXT:lang tests">
 			<directory>../../../../typo3/sysext/lang/Tests/Unit/</directory>
 		</testsuite>
