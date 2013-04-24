@@ -40,7 +40,7 @@ Pagetree
 }
 
 #typo3-pagetree .x-tree-node .x-tree-selected {
-	background-color: #f8f8f8;
+	background-color: #fff;
 }
 
 #typo3-pagetree .x-tree-node .x-tree-selected.x-tree-node-over {
