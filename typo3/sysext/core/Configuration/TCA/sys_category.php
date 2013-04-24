@@ -10,6 +10,7 @@ return array(
 		'default_sortby' => 'ORDER BY title ASC',
 		'dividers2tabs' => TRUE,
 		'versioningWS' => 2,
+		'rootLevel' => -1,
 		'versioning_followPages' => TRUE,
 		'origUid' => 't3_origuid',
 		'languageField' => 'sys_language_uid',
