@@ -6357,7 +6357,7 @@ class DataHandler {
 	 *
 	 * @param string $table Table name
 	 * @return array Array of fieldnames
-	 * @todo Define visibility
+	 * @deprecated since 6.1, will be removed in two versions, use \TYPO3\CMS\Version\Hook\DataHandlerHook::getUniqueFields() instead
 	 */
 	public function getUniqueFields($table) {
 		$listArr = array();
