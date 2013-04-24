@@ -29,22 +29,22 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Controller class for the 'recycler' extension. Handles the AJAX Requests
  *
- * @author 		Julian Kleinhans <typo3@kj187.de>
- * @author 	Erik Frister <erik_frister@otq-solutions.com>
+ * @author Julian Kleinhans <typo3@kj187.de>
+ * @author Erik Frister <erik_frister@otq-solutions.com>
  */
 class RecyclerAjaxController {
 
 	/**
 	 * Stores the content for the ajax output
 	 *
-	 * @var 	string
+	 * @var string
 	 */
 	protected $content;
 
 	/**
 	 * Command to be processed
 	 *
-	 * @var 	string
+	 * @var string
 	 */
 	protected $command;
 
@@ -53,7 +53,7 @@ class RecyclerAjaxController {
 	 * Example: Json format
 	 * [ ["pages",1],["pages",2],["tt_content",34] ]
 	 *
-	 * @var 	string
+	 * @var string
 	 */
 	protected $data;
 
@@ -90,12 +90,11 @@ class RecyclerAjaxController {
 	 * @return void
 	 */
 	protected function createContent() {
-		$str = '';
 		switch ($this->command) {
 			case 'getDeletedRecords':
 				$table = GeneralUtility::_GP('table') ? GeneralUtility::_GP('table') : GeneralUtility::_GP('tableDefault');
-				$limit = GeneralUtility::_GP('limit') ? (int) GeneralUtility::_GP('limit') : (int) GeneralUtility::_GP('pagingSizeDefault');
-				$start = GeneralUtility::_GP('start') ? (int) GeneralUtility::_GP('start') : 0;
+				$limit = GeneralUtility::_GP('limit') ? (int)GeneralUtility::_GP('limit') : (int)GeneralUtility::_GP('pagingSizeDefault');
+				$start = GeneralUtility::_GP('start') ? (int)GeneralUtility::_GP('start') : 0;
 				$filter = GeneralUtility::_GP('filterTxt') ? GeneralUtility::_GP('filterTxt') : '';
 				$startUid = GeneralUtility::_GP('startUid') ? GeneralUtility::_GP('startUid') : '';
 				$depth = GeneralUtility::_GP('depth') ? GeneralUtility::_GP('depth') : '';
@@ -149,9 +148,9 @@ class RecyclerAjaxController {
 	/**
 	 * Sets data in the session of the current backend user.
 	 *
-	 * @param 	string		$identifier: The identifier to be used to set the data
-	 * @param 	string		$data: The data to be stored in the session
-	 * @return 	void
+	 * @param string $identifier: The identifier to be used to set the data
+	 * @param string $data: The data to be stored in the session
+	 * @return void
 	 */
 	protected function setDataInSession($identifier, $data) {
 		$GLOBALS['BE_USER']->uc['tx_recycler'][$identifier] = $data;
@@ -159,6 +158,5 @@ class RecyclerAjaxController {
 	}
 
 }
-
 
 ?>

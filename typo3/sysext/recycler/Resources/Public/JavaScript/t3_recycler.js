@@ -25,9 +25,9 @@
  * ExtJS for the 'recycler' extension.
  * Contains the Recycler functions
  *
- * @author	Julian Kleinhans <typo3@kj187.de>
- * @author  Erik Frister <erik_frister@otq-solutions.com>
- * @author  Steffen Kamper <steffen@typo3.org>
+ * @author Julian Kleinhans <typo3@kj187.de>
+ * @author Erik Frister <erik_frister@otq-solutions.com>
+ * @author Steffen Kamper <steffen@typo3.org>
  */
 
 Ext.ns('Recycler');

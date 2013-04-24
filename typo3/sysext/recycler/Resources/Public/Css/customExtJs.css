@@ -28,21 +28,21 @@ dl.recycler-table-list-entry-details dt {
 }
 
 button.delete {
-	background-image: url('../icons/delete.gif');
+	background-image: url('../Icons/delete.gif');
 }
 
 button.undelete {
-	background-image: url('../icons/arrow_rotate_anticlockwise.png');
+	background-image: url('../Icons/arrow_rotate_anticlockwise.png');
 }
 
 button.backup {
-	background-image: url('../icons/database_save.png');
+	background-image: url('../Icons/database_save.png');
 }
 
 button.filter_refresh {
-	background-image: url('../icons/filter_refresh.png');
+	background-image: url('../Icons/filter_refresh.png');
 }
 
 button.filter_clear {
-	background-image: url('../icons/filter_clear.png');
+	background-image: url('../Icons/filter_clear.png');
 }
