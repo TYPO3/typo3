@@ -121,7 +121,9 @@ class ProductionExceptionHandler extends \TYPO3\CMS\Core\Error\AbstractException
 		if ($this->discloseExceptionInformation($exception)) {
 			// Exception has an error code given
 			if ($exception->getCode() > 0) {
-				$moreInformationLink = '<p>More information regarding this error might be available <a href="' . TYPO3_URL_EXCEPTION . $exception->getCode() . '" target="_blank">online</a>.</p>';
+				$moreInformationLink = '<p>More information regarding this error might be available <a href="'
+					. TYPO3_URL_EXCEPTION . rawurlencode($exception->getCode())
+					. '" target="_blank">online</a>.</p>';
 			} else {
 				$moreInformationLink = '';
 			}
