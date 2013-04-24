@@ -11,8 +11,8 @@ td.t3-page-column,
 td.t3-page-lang-column {
 	min-width: 150px;
 	max-width: 300px;
-	border-left: 12px solid #F8F8F8;
-	border-right: 12px solid #F8F8F8;
+	border-left: 12px solid #fff;
+	border-right: 12px solid #fff;
 }
 
 .t3-page-colHeader {
@@ -114,5 +114,4 @@ td.t3-gridCell div.t3-page-ce {
 }
 td.t3-page-column.t3-gridCell .t3-page-colHeader {
 	padding-top: 36px;
-	background: #F8F8F8;
 }
