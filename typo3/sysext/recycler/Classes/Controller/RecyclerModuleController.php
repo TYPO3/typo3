@@ -27,15 +27,8 @@ namespace TYPO3\CMS\Recycler\Controller;
 // This checks permissions and exits if the users has no permission for entry.
 /**
  * Module 'Recycler' for the 'recycler' extension.
- *
- * @author 	Julian Kleinhans <typo3@kj187.de>
  */
-class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
-
-	/**
-	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 */
-	public $doc;
+class RecyclerModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	protected $relativePath;
 
@@ -48,29 +41,24 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	protected $recordsPageLimit = 50;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Page\PageRenderer
-	 */
-	protected $pageRenderer;
-
-	/**
 	 * Initializes the Module
 	 *
 	 * @return 	void
 	 */
-	public function initialize() {
-		parent::init();
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('recycler') . 'mod1/mod_template.html');
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->setExtDirectStateProvider();
-		$this->pageRenderer = $this->doc->getPageRenderer();
-		$this->relativePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('recycler');
+	public function initializeAction() {
+
+		// Add state provider
+		#$this->doc->setExtDirectStateProvider();
+		$GLOBALS['TBE_TEMPLATE']->setExtDirectStateProvider();
+
 		$this->pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		$this->isAccessibleForCurrentUser = $this->id && is_array($this->pageRecord) || !$this->id && $this->isCurrentUserAdmin();
+
 		//don't access in workspace
 		if ($GLOBALS['BE_USER']->workspace !== 0) {
 			$this->isAccessibleForCurrentUser = FALSE;
 		}
+
 		//read configuration
 		$modTS = $GLOBALS['BE_USER']->getTSConfig('mod.recycler');
 		if ($this->isCurrentUserAdmin()) {
@@ -78,6 +66,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 		} else {
 			$this->allowDelete = $modTS['properties']['allowDelete'] == '1';
 		}
+
 		if (isset($modTS['properties']['recordsPageLimit']) && intval($modTS['properties']['recordsPageLimit']) > 0) {
 			$this->recordsPageLimit = intval($modTS['properties']['recordsPageLimit']);
 		}
@@ -86,33 +75,46 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	/**
 	 * Renders the content of the module.
 	 *
-	 * @return 	void
+	 * @return void
 	 */
-	public function render() {
-		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
-		$this->content .= $this->doc->section('', $GLOBALS['LANG']->getLL('description'));
-		if ($this->isAccessibleForCurrentUser) {
-			$this->loadHeaderData();
-			// div container for renderTo
-			$this->content .= '<div id="recyclerContent"></div>';
-		} else {
-			// If no access or if ID == zero
-			$this->content .= $this->doc->spacer(10);
+	public function indexAction() {
+		if (!$this->isAccessibleForCurrentUser) {
+			$this->forward('noAccess');
 		}
+
+		// Load Ext JS:
+#		$this->pageRenderer->enableExtJSQuickTips();
+
+		// Integrate dynamic JavaScript such as configuration or lables:
+#		$this->pageRenderer->addInlineSettingArray('Recycler', $this->getJavaScriptConfiguration());
+#		$this->pageRenderer->addInlineLanguageLabelArray($this->getJavaScriptLabels());
+
+		// Load Recycler JavaScript:
+		// Load Plugins
+#		$uxPath = $this->doc->backpath . '../t3lib/js/extjs/ux/';
+#		$this->pageRenderer->addJsFile($uxPath . 'Ext.grid.RowExpander.js');
+#		$this->pageRenderer->addJsFile($uxPath . 'Ext.app.SearchField.js');
+#		$this->pageRenderer->addJsFile($uxPath . 'Ext.ux.FitToParent.js');
+		// Load main script
+
+#		$this->pageRecord
+#		// Renders the module page
+#		$content = $this->doc->render($GLOBALS['LANG']->getLL('title'), $content);
+#		$this->content = NULL;
+#		$this->doc = NULL;
+#		echo $content;
+
+		# <f:translate key="backendUserAdministration">Backend User Administration</f:translate>
+		$this->view->assign('title', $GLOBALS['LANG']->getLL('title'));
+		$this->view->assign('content', $this->content);
+		$this->view->assign('description', $GLOBALS['LANG']->getLL('description'));
 	}
 
 	/**
-	 * Flushes the rendered content to browser.
-	 *
-	 * @return 	void
+	 * Render view for users without access
 	 */
-	public function flush() {
-		$content = $this->doc->moduleBody($this->pageRecord, $this->getDocHeaderButtons(), $this->getTemplateMarkers());
-		// Renders the module page
-		$content = $this->doc->render($GLOBALS['LANG']->getLL('title'), $content);
-		$this->content = NULL;
-		$this->doc = NULL;
-		echo $content;
+	public function noAccessAction() {
+
 	}
 
 	/**
@@ -122,30 +124,6 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	 */
 	protected function isCurrentUserAdmin() {
 		return (bool) $GLOBALS['BE_USER']->user['admin'];
-	}
-
-	/**
-	 * Loads data in the HTML head section (e.g. JavaScript or stylesheet information).
-	 *
-	 * @return 	void
-	 */
-	protected function loadHeaderData() {
-		// Load CSS Stylesheets:
-		$this->pageRenderer->addCssFile($this->relativePath . 'res/css/customExtJs.css');
-		// Load Ext JS:
-		$this->pageRenderer->loadExtJS();
-		$this->pageRenderer->enableExtJSQuickTips();
-		// Integrate dynamic JavaScript such as configuration or lables:
-		$this->pageRenderer->addInlineSettingArray('Recycler', $this->getJavaScriptConfiguration());
-		$this->pageRenderer->addInlineLanguageLabelArray($this->getJavaScriptLabels());
-		// Load Recycler JavaScript:
-		// Load Plugins
-		$uxPath = $this->doc->backpath . '../t3lib/js/extjs/ux/';
-		$this->pageRenderer->addJsFile($uxPath . 'Ext.grid.RowExpander.js');
-		$this->pageRenderer->addJsFile($uxPath . 'Ext.app.SearchField.js');
-		$this->pageRenderer->addJsFile($uxPath . 'Ext.ux.FitToParent.js');
-		// Load main script
-		$this->pageRenderer->addJsFile($this->relativePath . 'res/js/t3_recycler.js');
 	}
 
 	/**
@@ -214,58 +192,6 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 			}
 		}
 		return $extraction;
-	}
-
-	/**
-	 * Gets the buttons that shall be rendered in the docHeader.
-	 *
-	 * @return 	array		Available buttons for the docHeader
-	 */
-	protected function getDocHeaderButtons() {
-		$buttons = array(
-			'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']),
-			'shortcut' => $this->getShortcutButton(),
-			'save' => ''
-		);
-		// SAVE button
-		$buttons['save'] = '';
-		return $buttons;
-	}
-
-	/**
-	 * Gets the button to set a new shortcut in the backend (if current user is allowed to).
-	 *
-	 * @return 	string		HTML representation of the shortcut button
-	 */
-	protected function getShortcutButton() {
-		$result = '';
-		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-			$result = $this->doc->makeShortcutIcon('', 'function', $this->MCONF['name']);
-		}
-		return $result;
-	}
-
-	/**
-	 * Gets the filled markers that are used in the HTML template.
-	 *
-	 * @return 	array		The filled marker array
-	 */
-	protected function getTemplateMarkers() {
-		$markers = array(
-			'FUNC_MENU' => $this->getFunctionMenu(),
-			'CONTENT' => $this->content,
-			'TITLE' => $GLOBALS['LANG']->getLL('title')
-		);
-		return $markers;
-	}
-
-	/**
-	 * Gets the function menu selector for this backend module.
-	 *
-	 * @return 	string		The HTML representation of the function menu selector
-	 */
-	protected function getFunctionMenu() {
-		return \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
 	}
 
 	/**

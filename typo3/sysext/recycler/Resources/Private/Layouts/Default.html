@@ -1,0 +1,41 @@
+<f:be.container
+		loadExtJs="1"
+		addCssFile="{f:uri.resource(path:'Css/customExtJs.css')}"
+>
+
+	<script type="text/javascript" src="../t3lib/js/extjs/ux/Ext.grid.RowExpander.js"></script>
+	<script type="text/javascript" src="../t3lib/js/extjs/ux/Ext.app.SearchField.js"></script>
+	<script type="text/javascript" src="../t3lib/js/extjs/ux/Ext.ux.FitToParent.js"></script>
+	<script type="text/javascript" src="sysext/recycler/Resources/Public/JavaScript/t3_recycler.js"></script>
+
+	<div class="typo3-fullDoc">
+		<div id="typo3-docheader">
+			<div class="typo3-docheader-functions">
+				<div class="left">
+					<f:be.buttons.csh />
+				</div>
+				<div class="right">
+				</div>
+			</div>
+
+			<div class="typo3-docheader-buttons">
+				<div class="left">
+					<f:render section="iconButtons" />
+				</div>
+				<div class="right">
+					<f:be.buttons.shortcut />
+				</div>
+			</div>
+		</div>
+
+		<div id="typo3-docbody">
+			<div id="typo3-inner-docbody">
+				<h2><f:translate key="title" /></h2>
+
+				<f:flashMessages renderMode="div" />
+
+				<f:render section="content" />
+			</div>
+		</div>
+	</div>
+</f:be.container>
