@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Recycler\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 
@@ -66,20 +67,6 @@ class DeletedRecords {
 	 */
 	public $title;
 
-	/**
-	 * Database Connection
-	 *
-	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected $databaseConnection;
-
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->databaseConnection = $GLOBALS['TYPO3_DB'];
-	}
-
 	/************************************************************
 	 * GET DATA FUNCTIONS
 	 *
@@ -100,17 +87,17 @@ class DeletedRecords {
 		// set the limit
 		$this->limit = trim($limit);
 		if ($table) {
-			if (array_key_exists($table, $GLOBALS['TCA'])) {
+			if (in_array($table, RecyclerUtility::getModifyableTables())) {
 				$this->table[] = $table;
 				$this->setData($id, $table, $depth, $GLOBALS['TCA'][$table]['ctrl'], $filter);
 			}
 		} else {
 			foreach ($GLOBALS['TCA'] as $tableKey => $tableValue) {
 				// only go into this table if the limit allows it
-				if ($this->limit != '') {
+				if ($this->limit !== '') {
 					$parts = GeneralUtility::trimExplode(',', $this->limit);
 					// abort loop if LIMIT 0,0
-					if ($parts[0] == 0 && $parts[1] == 0) {
+					if ((int)$parts[0] === 0 && (int)$parts[1] === 0) {
 						break;
 					}
 				}
@@ -149,111 +136,113 @@ class DeletedRecords {
 	 * @param string $filter Filter text
 	 * @return void
 	 */
-	protected function setData($id = 0, $table, $depth, $tcaCtrl, $filter) {
+	protected function setData($id, $table, $depth, $tcaCtrl, $filter) {
 		$id = (int)$id;
-		if (array_key_exists('delete', $tcaCtrl)) {
-			// find the 'deleted' field for this table
-			$deletedField = RecyclerUtility::getDeletedField($table);
-			// create the filter WHERE-clause
-			$filterWhere = '';
-			if (trim($filter) != '') {
-				$filterWhere = ' AND (' . (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($filter) ? 'uid = ' . $filter . ' OR pid = ' . $filter . ' OR ' : '') . $tcaCtrl['label'] . ' LIKE "%' . $this->escapeValueForLike($filter, $table) . '%"' . ')';
-			}
+		if (!array_key_exists('delete', $tcaCtrl)) {
+			return;
+		}
+		$db = $this->getDatabaseConnection();
+		// find the 'deleted' field for this table
+		$deletedField = RecyclerUtility::getDeletedField($table);
+		// create the filter WHERE-clause
+		$filterWhere = '';
+		if (trim($filter) != '') {
+			$filterWhere = ' AND (' . (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($filter) ? 'uid = ' . $filter . ' OR pid = ' . $filter . ' OR ' : '') . $tcaCtrl['label'] . ' LIKE "%' . $this->escapeValueForLike($filter, $table) . '%"' . ')';
+		}
 
-			// get the limit
-			if ($this->limit != '') {
-				// count the number of deleted records for this pid
-				$deletedCount = $this->databaseConnection->exec_SELECTcountRows('uid', $table, $deletedField . '<>0 AND pid = ' . $id . $filterWhere);
-				// split the limit
-				$parts = GeneralUtility::trimExplode(',', $this->limit);
-				$offset = $parts[0];
-				$rowCount = $parts[1];
-				// subtract the number of deleted records from the limit's offset
-				$result = $offset - $deletedCount;
-				// if the result is >= 0
-				if ($result >= 0) {
-					// store the new offset in the limit and go into the next depth
-					$offset = $result;
-					$this->limit = implode(',', array($offset, $rowCount));
-					// do NOT query this depth; limit also does not need to be set, we set it anyways
-					$allowQuery = FALSE;
-					$allowDepth = TRUE;
-					$limit = '';
+		// get the limit
+		if (!empty($this->limit)) {
+			// count the number of deleted records for this pid
+			$deletedCount = $db->exec_SELECTcountRows('uid', $table, $deletedField . '<>0 AND pid = ' . $id . $filterWhere);
+			// split the limit
+			$parts = GeneralUtility::trimExplode(',', $this->limit);
+			$offset = $parts[0];
+			$rowCount = $parts[1];
+			// subtract the number of deleted records from the limit's offset
+			$result = $offset - $deletedCount;
+			// if the result is >= 0
+			if ($result >= 0) {
+				// store the new offset in the limit and go into the next depth
+				$offset = $result;
+				$this->limit = implode(',', array($offset, $rowCount));
+				// do NOT query this depth; limit also does not need to be set, we set it anyways
+				$allowQuery = FALSE;
+				$allowDepth = TRUE;
+				$limit = '';
+			} else {
+				// the offset for the temporary limit has to remain like the original offset
+				// in case the original offset was just crossed by the amount of deleted records
+				if ($offset !== 0) {
+					$tempOffset = $offset;
 				} else {
-					// the offset for the temporary limit has to remain like the original offset
-					// in case the original offset was just crossed by the amount of deleted records
-					if ($offset != 0) {
-						$tempOffset = $offset;
+					$tempOffset = 0;
+				}
+				// set the offset in the limit to 0
+				$newOffset = 0;
+				// convert to negative result to the positive equivalent
+				$absResult = abs($result);
+				// if the result now is > limit's row count
+				if ($absResult > $rowCount) {
+					// use the limit's row count as the temporary limit
+					$limit = implode(',', array($tempOffset, $rowCount));
+					// set the limit's row count to 0
+					$this->limit = implode(',', array($newOffset, 0));
+					// do not go into new depth
+					$allowDepth = FALSE;
+				} else {
+					// if the result now is <= limit's row count
+					// use the result as the temporary limit
+					$limit = implode(',', array($tempOffset, $absResult));
+					// subtract the result from the row count
+					$newCount = $rowCount - $absResult;
+					// store the new result in the limit's row count
+					$this->limit = implode(',', array($newOffset, $newCount));
+					// if the new row count is > 0
+					if ($newCount > 0) {
+						// go into new depth
+						$allowDepth = TRUE;
 					} else {
-						$tempOffset = 0;
-					}
-					// set the offset in the limit to 0
-					$newOffset = 0;
-					// convert to negative result to the positive equivalent
-					$absResult = abs($result);
-					// if the result now is > limit's row count
-					if ($absResult > $rowCount) {
-						// use the limit's row count as the temporary limit
-						$limit = implode(',', array($tempOffset, $rowCount));
-						// set the limit's row count to 0
-						$this->limit = implode(',', array($newOffset, 0));
+						// if the new row count is <= 0 (only =0 makes sense though)
 						// do not go into new depth
 						$allowDepth = FALSE;
-					} else {
-						// if the result now is <= limit's row count
-						// use the result as the temporary limit
-						$limit = implode(',', array($tempOffset, $absResult));
-						// subtract the result from the row count
-						$newCount = $rowCount - $absResult;
-						// store the new result in the limit's row count
-						$this->limit = implode(',', array($newOffset, $newCount));
-						// if the new row count is > 0
-						if ($newCount > 0) {
-							// go into new depth
-							$allowDepth = TRUE;
-						} else {
-							// if the new row count is <= 0 (only =0 makes sense though)
-							// do not go into new depth
-							$allowDepth = FALSE;
-						}
 					}
-					// allow query for this depth
-					$allowQuery = TRUE;
 				}
-			} else {
-				$limit = '';
-				$allowDepth = TRUE;
+				// allow query for this depth
 				$allowQuery = TRUE;
 			}
-			// query for actual deleted records
-			if ($allowQuery) {
-				$recordsToCheck = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField($table, $deletedField, '1', ' AND pid = ' . $id . $filterWhere, '', '', $limit, FALSE);
-				if ($recordsToCheck) {
-					$this->checkRecordAccess($table, $recordsToCheck);
-				}
+		} else {
+			$limit = '';
+			$allowDepth = TRUE;
+			$allowQuery = TRUE;
+		}
+		// query for actual deleted records
+		if ($allowQuery) {
+			$recordsToCheck = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField($table, $deletedField, '1', ' AND pid = ' . $id . $filterWhere, '', '', $limit, FALSE);
+			if ($recordsToCheck) {
+				$this->checkRecordAccess($table, $recordsToCheck);
 			}
-			// go into depth
-			if ($allowDepth && $depth >= 1) {
-				// check recursively for elements beneath this page
-				$resPages = $this->databaseConnection->exec_SELECTquery('uid', 'pages', 'pid=' . $id, '', 'sorting');
-				if ($resPages) {
-					while ($rowPages = $this->databaseConnection->sql_fetch_assoc($resPages)) {
-						$this->setData($rowPages['uid'], $table, $depth - 1, $tcaCtrl, $filter);
-						// some records might have been added, check if we still have the limit for further queries
-						if ('' != $this->limit) {
-							$parts = GeneralUtility::trimExplode(',', $this->limit);
-							// abort loop if LIMIT 0,0
-							if ($parts[0] == 0 && $parts[1] == 0) {
-								break;
-							}
+		}
+		// go into depth
+		if ($allowDepth && $depth >= 1) {
+			// check recursively for elements beneath this page
+			$resPages = $db->exec_SELECTquery('uid', 'pages', 'pid=' . $id, '', 'sorting');
+			if ($resPages) {
+				while ($rowPages = $db->sql_fetch_assoc($resPages)) {
+					$this->setData($rowPages['uid'], $table, $depth - 1, $tcaCtrl, $filter);
+					// some records might have been added, check if we still have the limit for further queries
+					if (!empty($this->limit)) {
+						$parts = GeneralUtility::trimExplode(',', $this->limit);
+						// abort loop if LIMIT 0,0
+						if ((int)$parts[0] === 0 && (int)$parts[1] === 0) {
+							break;
 						}
 					}
-					$this->databaseConnection->sql_free_result($resPages);
 				}
+				$db->sql_free_result($resPages);
 			}
-			$this->label[$table] = $tcaCtrl['label'];
-			$this->title[$table] = $tcaCtrl['title'];
 		}
+		$this->label[$table] = $tcaCtrl['label'];
+		$this->title[$table] = $tcaCtrl['title'];
 	}
 
 	/**
@@ -264,7 +253,7 @@ class DeletedRecords {
 	 * @return void
 	 */
 	protected function checkRecordAccess($table, array $rows) {
-		foreach ($rows as $key => $row) {
+		foreach ($rows as $row) {
 			if (RecyclerUtility::checkAccess($table, $row)) {
 				$this->setDeletedRows($table, $row);
 			}
@@ -280,7 +269,8 @@ class DeletedRecords {
 	 * @return string The escaped value to be used for like conditions
 	 */
 	protected function escapeValueForLike($value, $tableName) {
-		return $this->databaseConnection->escapeStrForLike($this->databaseConnection->quoteStr($value, $tableName), $tableName);
+		$db = $this->getDatabaseConnection();
+		return $db->escapeStrForLike($db->quoteStr($value, $tableName), $tableName);
 	}
 
 	/************************************************************
@@ -293,13 +283,14 @@ class DeletedRecords {
 	 * @return bool
 	 */
 	public function deleteData($recordsArray) {
-		$recordsArray = json_decode($recordsArray);
 		if (is_array($recordsArray)) {
-			$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+			/** @var $tce DataHandler **/
+			$tce = GeneralUtility::makeInstance(DataHandler::class);
 			$tce->start('', '');
 			$tce->disableDeleteClause();
-			foreach ($recordsArray as $key => $record) {
-				$tce->deleteEl($record[0], $record[1], TRUE, TRUE);
+			foreach ($recordsArray as $record) {
+				list($table, $uid) = explode(':', $record);
+				$tce->deleteEl($table, (int)$uid, TRUE, TRUE);
 			}
 			return TRUE;
 		}
@@ -320,26 +311,26 @@ class DeletedRecords {
 	public function undeleteData($recordsArray, $recursive = FALSE) {
 		$result = FALSE;
 		$depth = 999;
-		$recordsArray = json_decode($recordsArray);
 		if (is_array($recordsArray)) {
 			$this->deletedRows = array();
 			$cmd = array();
-			foreach ($recordsArray as $key => $row) {
-				$cmd[$row[0]][$row[1]]['undelete'] = 1;
-				if ($row[0] == 'pages' && $recursive == TRUE) {
-					$this->loadData($row[1], '', $depth, '');
+			foreach ($recordsArray as $record) {
+				list($table, $uid) = explode(':', $record);
+				$cmd[$table][$uid]['undelete'] = 1;
+				if ($table === 'pages' && $recursive) {
+					$this->loadData($uid, '', $depth, '');
 					$childRecords = $this->getDeletedRows();
 					if (count($childRecords) > 0) {
-						foreach ($childRecords as $table => $childRows) {
-							foreach ($childRows as $childKey => $childRow) {
-								$cmd[$table][$childRow['uid']]['undelete'] = 1;
+						foreach ($childRecords as $childTable => $childRows) {
+							foreach ($childRows as $childRow) {
+								$cmd[$childTable][$childRow['uid']]['undelete'] = 1;
 							}
 						}
 					}
 				}
 			}
 			if ($cmd) {
-				$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+				$tce = GeneralUtility::makeInstance(DataHandler::class);
 				$tce->start(array(), $cmd);
 				$tce->process_cmdmap();
 				$result = TRUE;
@@ -383,4 +374,12 @@ class DeletedRecords {
 		return $this->table;
 	}
 
+	/**
+	 * Returns an instance of DatabaseConnection
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
 }

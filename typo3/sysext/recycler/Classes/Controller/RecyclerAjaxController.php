@@ -14,7 +14,14 @@ namespace TYPO3\CMS\Recycler\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Recycler\Domain\Model\Tables;
+use TYPO3\CMS\Recycler\Domain\Model\DeletedRecords;
+use TYPO3\CMS\Recycler\Controller\DeletedRecordsController;
 
 /**
  * Controller class for the 'recycler' extension. Handles the AJAX Requests
@@ -25,133 +32,149 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class RecyclerAjaxController {
 
 	/**
-	 * Stores the content for the ajax output
+	 * The local configuration array
 	 *
-	 * @var string
+	 * @var array
 	 */
-	protected $content;
+	protected $conf = array();
 
 	/**
-	 * Command to be processed
-	 *
-	 * @var string
+	 * The constructor of this class
 	 */
-	protected $command;
-
-	/**
-	 * Stores relevant data from extJS
-	 * Example: Json format
-	 * [ ["pages",1],["pages",2],["tt_content",34] ]
-	 *
-	 * @var string
-	 */
-	protected $data;
-
-	/**
-	 * Initialize method
-	 *
-	 * @return void
-	 */
-	public function init() {
-		$this->mapCommand();
-		$this->getContent();
+	public function __construct() {
+		// Configuration, variable assignment
+		$this->conf['action'] = GeneralUtility::_GP('action');
+		$this->conf['table'] = GeneralUtility::_GP('table') ? GeneralUtility::_GP('table') : '';
+		$this->conf['limit'] = GeneralUtility::_GP('limit') ? (int)GeneralUtility::_GP('limit') : 25;
+		$this->conf['start'] = GeneralUtility::_GP('start') ? (int)GeneralUtility::_GP('limit') : 0;
+		$this->conf['filterTxt'] = GeneralUtility::_GP('filterTxt') ? GeneralUtility::_GP('filterTxt') : '';
+		$this->conf['startUid'] = GeneralUtility::_GP('startUid') ? (int)GeneralUtility::_GP('startUid') : 0;
+		$this->conf['depth'] = GeneralUtility::_GP('depth') ? (int)GeneralUtility::_GP('depth') : 0;
+		$this->conf['records'] = GeneralUtility::_GP('records') ? GeneralUtility::_GP('records') : NULL;
+		$this->conf['recursive'] = GeneralUtility::_GP('recursive') ? (bool)(int)GeneralUtility::_GP('recursive') : FALSE;
 	}
 
 	/**
-	 * Maps the command to the correct Model and View
+	 * The main dispatcher function. Collect data and prepare HTML output.
 	 *
+	 * @param array $params array of parameters from the AJAX interface, currently unused
+	 * @param AjaxRequestHandler $ajaxObj object of type AjaxRequestHandler
 	 * @return void
 	 */
-	public function mapCommand() {
-		$this->command = GeneralUtility::_GP('cmd');
-		$this->data = GeneralUtility::_GP('data');
-		// check params
-		if (!is_string($this->command)) {
-			// @TODO make devlog output
-			return;
-		}
-		// Create content
-		$this->createContent();
-	}
+	public function dispatch($params = array(), AjaxRequestHandler $ajaxObj = NULL) {
+		$extPath = ExtensionManagementUtility::extPath('recycler');
+		$view = GeneralUtility::makeInstance(StandaloneView::class);
+		$view->setPartialRootPaths(array('default' => $extPath . 'Resources/Private/Partials'));
 
-	/**
-	 * Creates the content
-	 *
-	 * @return void
-	 */
-	protected function createContent() {
-		switch ($this->command) {
-			case 'getDeletedRecords':
-				$table = GeneralUtility::_GP('table') ? GeneralUtility::_GP('table') : GeneralUtility::_GP('tableDefault');
-				$limit = GeneralUtility::_GP('limit') ? (int)GeneralUtility::_GP('limit') : (int)GeneralUtility::_GP('pagingSizeDefault');
-				$start = GeneralUtility::_GP('start') ? (int)GeneralUtility::_GP('start') : 0;
-				$filter = GeneralUtility::_GP('filterTxt') ? GeneralUtility::_GP('filterTxt') : '';
-				$startUid = GeneralUtility::_GP('startUid') ? GeneralUtility::_GP('startUid') : '';
-				$depth = GeneralUtility::_GP('depth') ? GeneralUtility::_GP('depth') : '';
-				$this->setDataInSession('tableSelection', $table);
-				/* @var $model \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
-				$model = GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Domain\Model\DeletedRecords::class);
-				$model->loadData($startUid, $table, $depth, $start . ',' . $limit, $filter);
-				$deletedRowsArray = $model->getDeletedRows();
-				$model = GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Domain\Model\DeletedRecords::class);
-				$totalDeleted = $model->getTotalCount($startUid, $table, $depth, $filter);
-				// load view
-				/* @var $view \TYPO3\CMS\Recycler\Controller\DeletedRecordsController */
-				$view = GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Controller\DeletedRecordsController::class);
-				$str = $view->transform($deletedRowsArray, $totalDeleted);
-				break;
-			case 'doDelete':
-				$str = FALSE;
-				/* @var $model \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
-				$model = GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Domain\Model\DeletedRecords::class);
-				if ($model->deleteData($this->data)) {
-					$str = TRUE;
-				}
-				break;
-			case 'doUndelete':
-				$str = FALSE;
-				$recursive = GeneralUtility::_GP('recursive');
-				/* @var $model \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
-				$model = GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Domain\Model\DeletedRecords::class);
-				if ($model->undeleteData($this->data, $recursive)) {
-					$str = TRUE;
-				}
-				break;
+		$content = '';
+		// Determine the scripts to execute
+		switch ($this->conf['action']) {
 			case 'getTables':
-				$depth = GeneralUtility::_GP('depth') ? GeneralUtility::_GP('depth') : 0;
-				$startUid = GeneralUtility::_GP('startUid') ? GeneralUtility::_GP('startUid') : '';
-				$this->setDataInSession('depthSelection', $depth);
-				/* @var $model \TYPO3\CMS\Recycler\Domain\Model\Tables */
-				$model = GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Domain\Model\Tables::class);
-				$str = $model->getTables('json', TRUE, $startUid, $depth);
-				break;
-			default:
-				$str = 'No command was recognized.';
-		}
-		$this->content = $str;
-	}
+				$this->setDataInSession('depthSelection', $this->conf['depth']);
 
-	/**
-	 * Returns the content that was created in the mapCommand method
-	 *
-	 * @return string
-	 */
-	public function getContent() {
-		echo $this->content;
+				/* @var $model Tables */
+				$model = GeneralUtility::makeInstance(Tables::class);
+				$content = $model->getTables($this->conf['startUid'], $this->conf['depth']);
+				break;
+			case 'getDeletedRecords':
+				$this->setDataInSession('tableSelection', $this->conf['table']);
+				$this->setDataInSession('depthSelection', $this->conf['depth']);
+				$this->setDataInSession('resultLimit', $this->conf['limit']);
+
+				/* @var $model DeletedRecords */
+				$model = GeneralUtility::makeInstance(DeletedRecords::class);
+				$model->loadData($this->conf['startUid'], $this->conf['table'], $this->conf['depth'], $this->conf['start'] . ',' . $this->conf['limit'], $this->conf['filterTxt']);
+				$deletedRowsArray = $model->getDeletedRows();
+
+				/* @var $model DeletedRecords */
+				$model = GeneralUtility::makeInstance(DeletedRecords::class);
+				$totalDeleted = $model->getTotalCount($this->conf['startUid'], $this->conf['table'], $this->conf['depth'], $this->conf['filter']);
+
+				/* @var $view DeletedRecordsController */
+				$controller = GeneralUtility::makeInstance(DeletedRecordsController::class);
+				$recordsArray = $controller->transform($deletedRowsArray, $totalDeleted);
+
+				$modTS = $this->getBackendUser()->getTSConfig('mod.recycler');
+				$allowDelete = (bool)$this->getBackendUser()->user['admin'] ? TRUE : (bool)$modTS['properties']['allowDelete'];
+
+				$view->setTemplatePathAndFilename($extPath . 'Resources/Private/Templates/Ajax/RecordsTable.html');
+				$view->assign('records', $recordsArray['rows']);
+				$view->assign('allowDelete', $allowDelete);
+				$view->assign('total', $recordsArray['total']);
+				$content = json_encode(array(
+					'rows' => $view->render(),
+					'totalItems' => $recordsArray['total']
+				));
+				break;
+			case 'undoRecords':
+				if (empty($this->conf['records']) || !is_array($this->conf['records'])) {
+					$content = json_encode(array(
+						'success' => FALSE,
+						'message' => LocalizationUtility::translate('flashmessage.delete.norecordsselected', 'recycler')
+					));
+					break;
+				}
+
+				/* @var $model DeletedRecords */
+				$model = GeneralUtility::makeInstance(DeletedRecords::class);
+				$success = $model->undeleteData($this->conf['records'], $this->conf['recursive']);
+				$affectedRecords = count($this->conf['records']);
+				$messageKey = 'flashmessage.undo.' . ($success ? 'success' : 'failure') . '.' . ($affectedRecords === 1 ? 'singular' : 'plural');
+				$content = json_encode(array(
+					'success' => TRUE,
+					'message' => sprintf(LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords)
+				));
+				break;
+			case 'deleteRecords':
+				if (empty($this->conf['records']) || !is_array($this->conf['records'])) {
+					$content = json_encode(array(
+						'success' => FALSE,
+						'message' => LocalizationUtility::translate('flashmessage.delete.norecordsselected', 'recycler')
+					));
+					break;
+				}
+
+				/* @var $model DeletedRecords */
+				$model = GeneralUtility::makeInstance(DeletedRecords::class);
+				$success = $model->deleteData($this->conf['records']);
+				$affectedRecords = count($this->conf['records']);
+				$messageKey = 'flashmessage.delete.' . ($success ? 'success' : 'failure') . '.' . ($affectedRecords === 1 ? 'singular' : 'plural');
+				$content = json_encode(array(
+					'success' => TRUE,
+					'message' => sprintf(LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords)
+				));
+				break;
+		}
+		$ajaxObj->addContent($this->conf['table'] . '_' . $this->conf['start'], $content);
 	}
 
 	/**
 	 * Sets data in the session of the current backend user.
 	 *
-	 * @param string $identifier: The identifier to be used to set the data
-	 * @param string $data: The data to be stored in the session
+	 * @param string $identifier The identifier to be used to set the data
+	 * @param string $data The data to be stored in the session
 	 * @return void
 	 */
 	protected function setDataInSession($identifier, $data) {
-		/* @var $beUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
-		$beUser = $GLOBALS['BE_USER'];
+		$beUser = $this->getBackendUser();
 		$beUser->uc['tx_recycler'][$identifier] = $data;
 		$beUser->writeUC();
+	}
+
+	/**
+	 * Returns the BackendUser
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }

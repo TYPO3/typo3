@@ -38,8 +38,7 @@ class RecyclerUtility {
 	 * @return bool Returns TRUE is the user has access, or FALSE if not
 	 */
 	static public function checkAccess($table, $row) {
-		/* @var $backendUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
-		$backendUser = $GLOBALS['BE_USER'];
+		$backendUser = static::getBackendUser();
 
 		// Checking if the user has permissions? (Only working as a precaution, because the final permission check is always down in TCE. But it's good to notify the user on beforehand...)
 		// First, resetting flags.
@@ -47,7 +46,7 @@ class RecyclerUtility {
 		$calcPRec = $row;
 		BackendUtility::fixVersioningPid($table, $calcPRec);
 		if (is_array($calcPRec)) {
-			if ($table == 'pages') {
+			if ($table === 'pages') {
 				// If pages:
 				$calculatedPermissions = $backendUser->calcPerms($calcPRec);
 				$hasAccess = $calculatedPermissions & 2 ? TRUE : FALSE;
@@ -79,24 +78,27 @@ class RecyclerUtility {
 	 * @return mixed Path of record (string) OR array with short/long title if $fullTitleLimit is set.
 	 */
 	static public function getRecordPath($uid, $clause = '', $titleLimit = 1000, $fullTitleLimit = 0) {
-		/* @var $databaseConnection \TYPO3\CMS\Core\Database\DatabaseConnection */
-		$databaseConnection = $GLOBALS['TYPO3_DB'];
-
-		$loopCheck = 100;
+		$uid = (int)$uid;
 		$output = ($fullOutput = '/');
-		while ($uid != 0 && $loopCheck > 0) {
+		if ($uid === 0) {
+			return $output;
+		}
+		$databaseConnection = static::getDatabaseConnection();
+		$clause = trim($clause) !== '' ? ' AND ' . $clause : '';
+		$loopCheck = 100;
+		while ($loopCheck > 0) {
 			$loopCheck--;
-			$res = $databaseConnection->exec_SELECTquery('uid,pid,title,deleted,t3ver_oid,t3ver_wsid', 'pages', 'uid=' . (int)$uid . (trim($clause) !== '' ? ' AND ' . $clause : ''));
-			if (is_resource($res)) {
+			$res = $databaseConnection->exec_SELECTquery('uid,pid,title,deleted,t3ver_oid,t3ver_wsid', 'pages', 'uid=' . $uid . $clause);
+			if ($res !== FALSE) {
 				$row = $databaseConnection->sql_fetch_assoc($res);
 				$databaseConnection->sql_free_result($res);
 				BackendUtility::workspaceOL('pages', $row);
 				if (is_array($row)) {
 					BackendUtility::fixVersioningPid('pages', $row);
-					$uid = $row['pid'];
+					$uid = (int)$row['pid'];
 					$output = '/' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $titleLimit)) . $output;
 					if ($row['deleted']) {
-						$output = '<span class="deletedPath">' . $output . '</span>';
+						$output = '<span class="text-danger">' . $output . '</span>';
 					}
 					if ($fullTitleLimit) {
 						$fullOutput = '/' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $fullTitleLimit)) . $fullOutput;
@@ -149,7 +151,8 @@ class RecyclerUtility {
 	 * @return string The current backend charset
 	 */
 	static public function getCurrentCharset() {
-		return $GLOBALS['LANG']->csConvObj->parse_charset($GLOBALS['LANG']->charSet);
+		$lang = static::getLanguageService();
+		return $lang->csConvObj->parse_charset($lang->charSet);
 	}
 
 	/**
@@ -169,9 +172,48 @@ class RecyclerUtility {
 	 */
 	static public function getUtf8String($string) {
 		if (self::isNotUtf8Charset()) {
-			$string = $GLOBALS['LANG']->csConvObj->utf8_encode($string, self::getCurrentCharset());
+			$string = static::getLanguageService()->csConvObj->utf8_encode($string, self::getCurrentCharset());
 		}
 		return $string;
+	}
+
+	/**
+	 * Returns an instance of DatabaseConnection
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	static protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * Returns the BackendUser
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	static protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * Returns an instance of LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	static protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * Returns the modifyable tables of the current user
+	 */
+	static public function getModifyableTables() {
+		if ((bool)$GLOBALS['BE_USER']->user['admin']) {
+			$tables = array_keys($GLOBALS['TCA']);
+		} else {
+			$tables = explode(',', $GLOBALS['BE_USER']->groupData['tables_modify']);
+		}
+		return $tables;
 	}
 
 }

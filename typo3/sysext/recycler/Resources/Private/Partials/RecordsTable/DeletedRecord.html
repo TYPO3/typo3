@@ -1,0 +1,50 @@
+<tr data-uid="{record.uid}" data-table="{record.table}" data-recordtitle="{record.title}">
+	<td>
+		<div class="btn-group">
+			<div class="btn-group btn-checkbox-holder">
+				<input type="checkbox" class="smallCheckboxes btn-checkbox">
+				<span class="btn">
+					<span class="t3-icon fa"></span>
+				</span>
+			</div>
+			<a class="btn" data-action="expand" data-toggle="collapse" data-target="#{record.table}_{record.uid}">
+				<f:be.buttons.icon icon="apps-pagetree-collapse" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.expand')}" />
+			</a>
+			<a class="btn" data-action="undo">
+				<f:be.buttons.icon icon="actions-edit-undo" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.undo')}" />
+			</a>
+			<f:if condition="{allowDelete}">
+				<a class="btn" data-action="delete">
+					<f:be.buttons.icon icon="actions-edit-delete" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.delete')}" />
+				</a>
+			</f:if>
+		</div>
+	</td>
+	<td>{record.tableTitle}</td>
+	<td><f:format.html>{record.icon}</f:format.html> {record.title}</td>
+	<td>{record.tstamp}</td>
+	<td>{record.uid}</td>
+	<td>{record.pageTitle} ({record.pid})</td>
+</tr>
+<tr class="collapse" id="{record.table}_{record.uid}">
+	<td colspan="6">
+		<table class="table">
+			<thead>
+				<tr>
+					<th><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.table" /></th>
+					<th><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.crdate" /></th>
+					<th><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.owner" /></th>
+					<th><f:translate key="LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:table.header.path" /></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{record.table}</td>
+					<td>{record.crdate}</td>
+					<td>{record.owner} ({record.owner_uid})</td>
+					<td><f:format.html>{record.path}</f:format.html></td>
+				</tr>
+			</tbody>
+		</table>
+	</td>
+</tr>

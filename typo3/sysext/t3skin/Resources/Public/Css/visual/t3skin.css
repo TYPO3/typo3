@@ -8808,6 +8808,9 @@ fieldset[disabled] .table .btn.btn-primary.active {
   position: relative;
   display: inline-block;
 }
+.table .btn-checkbox-holder.btn-group {
+  float: none;
+}
 .table .btn-checkbox-holder .btn-checkbox {
   position: absolute;
   top: 0;

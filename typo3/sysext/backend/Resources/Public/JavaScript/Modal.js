@@ -89,7 +89,7 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/FlashMessages'],
 			Modal.currentModal.trigger('modal-dismiss');
 		});
 
-		if (content instanceof $) {
+		if (typeof content === 'object') {
 			Modal.currentModal.find('.modal-body').append(content);
 		} else {
 			// we need html, check if we have to wrap content in <p>

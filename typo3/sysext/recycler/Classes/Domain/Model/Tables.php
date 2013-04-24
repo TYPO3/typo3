@@ -24,42 +24,21 @@ use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 class Tables {
 
 	/**
-	 * @var \TYPO3\CMS\Lang\LanguageService
-	 */
-	protected $languageService;
-
-	/**
-	 * Database Connection
-	 *
-	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected $databaseConnection;
-
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->languageService = $GLOBALS['LANG'];
-		$this->databaseConnection = $GLOBALS['TYPO3_DB'];
-	}
-
-	/**
 	 * Get tables for menu example
 	 *
-	 * @param string $format Return format (example: json) - currently unused
-	 * @param bool $withAllOption FALSE: no, TRUE: return tables with a "all" option
 	 * @param int $startUid UID from selected page
 	 * @param int $depth How many levels recursive
 	 * @return string The tables to be displayed
 	 */
-	public function getTables($format, $withAllOption = TRUE, $startUid, $depth = 0) {
+	public function getTables($startUid, $depth = 0) {
 		$deletedRecordsTotal = 0;
+		$lang = $this->getLanguageService();
 		$tables = array();
-		foreach ($GLOBALS['TCA'] as $tableName => $_) {
+		foreach (RecyclerUtility::getModifyableTables() as $tableName) {
 			$deletedField = RecyclerUtility::getDeletedField($tableName);
 			if ($deletedField) {
 				// Determine whether the table has deleted records:
-				$deletedCount = $this->databaseConnection->exec_SELECTcountRows('uid', $tableName, $deletedField . '<>0');
+				$deletedCount = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', $tableName, $deletedField . '<>0');
 				if ($deletedCount) {
 					/* @var $deletedDataObject \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
 					$deletedDataObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Recycler\Domain\Model\DeletedRecords::class);
@@ -70,8 +49,7 @@ class Tables {
 							$tables[] = array(
 								$tableName,
 								$deletedRecordsInTable,
-								$tableName,
-								RecyclerUtility::getUtf8String($this->languageService->sL($GLOBALS['TCA'][$tableName]['ctrl']['title']))
+								RecyclerUtility::getUtf8String($lang->sL($GLOBALS['TCA'][$tableName]['ctrl']['title']))
 							);
 						}
 					}
@@ -79,16 +57,31 @@ class Tables {
 			}
 		}
 		$jsonArray = $tables;
-		if ($withAllOption) {
-			array_unshift($jsonArray, array(
-				'',
-				$deletedRecordsTotal,
-				'',
-				$this->languageService->sL('LLL:EXT:recycler/mod1/locallang.xlf:label_alltables')
-			));
-		}
+		array_unshift($jsonArray, array(
+			'',
+			$deletedRecordsTotal,
+			$lang->sL('LLL:EXT:recycler/mod1/locallang.xlf:label_alltables')
+		));
 		$output = json_encode($jsonArray);
 		return $output;
+	}
+
+	/**
+	 * Returns an instance of DatabaseConnection
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * Returns an instance of LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }

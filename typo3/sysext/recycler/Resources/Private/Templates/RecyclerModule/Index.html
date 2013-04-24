@@ -1,0 +1,51 @@
+<f:layout name="Default" />
+
+<f:section name="iconButtons">
+	<a data-action="reload"><f:be.buttons.icon icon="actions-system-refresh" title="{f:translate(key:'button.reload')}" /></a>
+</f:section>
+
+<f:section name="content">
+	<div id="recycler-index">
+		<form id="recycler-form" class="form-inline">
+			<div class="input-group">
+				<input type="text" name="search-text" class="form-control">
+				<span class="input-group-btn">
+					<button type="submit" class="btn btn-default disabled"><span class="t3-icon fa fa-search"></span></button>
+				</span>
+			</div>
+			<select name="depth" class="form-control">
+				<option value="0"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_0" /></option>
+				<option value="1"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_1" /></option>
+				<option value="2"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_2" /></option>
+				<option value="3"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_3" /></option>
+				<option value="4"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_4" /></option>
+				<option value="999"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_infi" /></option>
+			</select>
+			<select name="pages" class="form-control"></select>
+		</form>
+		<div class="table-fit">
+			<table class="table table-hover" id="itemsInRecycler">
+				<thead>
+					<tr>
+						<th><f:translate key="table.header.actions" /></th>
+						<th><f:translate key="table.header.table" /></th>
+						<th><f:translate key="table.header.record" /></th>
+						<th><f:translate key="table.header.tstamp" /></th>
+						<th><f:translate key="table.header.uid" /></th>
+						<th><f:translate key="table.header.pid" /></th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div class="text-right">
+			<button class="btn btn-success disabled" data-action="massundo"><f:translate key="button.undo" /></button>
+			<f:if condition="{allowDelete}">
+				<button class="btn btn-danger disabled" data-action="massdelete"><f:translate key="button.delete" /></button>
+			</f:if>
+		</div>
+		<nav>
+		</nav>
+	</div>
+</f:section>

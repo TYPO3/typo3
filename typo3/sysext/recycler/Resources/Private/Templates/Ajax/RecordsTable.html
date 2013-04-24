@@ -1,0 +1,9 @@
+<f:for each="{records}" as="record">
+	<f:render
+		partial="RecordsTable/DeletedRecord"
+		arguments="{
+			record: '{record}',
+			allowDelete: '{allowDelete}'
+		}"
+	/>
+</f:for>

@@ -2,26 +2,18 @@
 defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
-	// Add module
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'web_txrecyclerM1',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/'
-	);
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+		'TYPO3.CMS.' . $_EXTKEY,
 		'web',
-		'txrecyclerM1',
+		'Recycler',
 		'',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/',
 		array(
-			'script' => '_DISPATCH',
+			'RecyclerModule' => 'index',
+		),
+		array(
 			'access' => 'user,group',
-			'name' => 'web_txrecyclerM1',
-			'labels' => array(
-				'tabs_images' => array(
-					'tab' => '../Resources/Public/Icons/module-recycler.png',
-				),
-				'll_ref' => 'LLL:EXT:recycler/mod1/locallang_mod.xlf',
-			),
+			'icon' => 'EXT:recycler/Resources/Public/Icons/module-recycler.png',
+			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf',
 		)
 	);
 }
