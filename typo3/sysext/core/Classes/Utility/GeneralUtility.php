@@ -3786,6 +3786,13 @@ Connection: close
 			// Is test (typo3_src deprecated as ov TYPO3 6.0):
 			$validatedPrefix = PATH_site . 'typo3_src/tests/';
 			$location = $validatedPrefix;
+		} elseif (self::isFirstPartOfStr($fileRef, PATH_site . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'])) {
+			// Is fileadmin:
+			$fileInfo = self::split_fileref($fileRef);
+			if (substr($fileInfo['file'], 0, strlen($language) + 1) === $language . '.') {
+				return $fileRef;
+			}
+			return $fileInfo['path'] . $language . '.' . $fileInfo['file'];
 		} else {
 			$validatedPrefix = '';
 		}
