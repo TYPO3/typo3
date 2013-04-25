@@ -361,6 +361,9 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	protected function persistObjects() {
 		$this->visitedDuringPersistence = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		foreach ($this->aggregateRootObjects as $object) {
+			if ($object->_isNew()) {
+				$this->insertObject($object);
+			}
 			$this->persistObject($object, NULL);
 		}
 		foreach ($this->changedEntities as $object) {
