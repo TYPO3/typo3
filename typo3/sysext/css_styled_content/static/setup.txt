@@ -934,7 +934,16 @@ tt_content.image.20 {
 				}
 			}
 			allStdWrap {
-				wrap = <div class="csc-textpic-imagewrap"> | </div>
+				dataWrap = <div class="csc-textpic-imagewrap"> | </div>
+				dataWrap {
+					override = <div class="csc-textpic-imagewrap" data-csc-images="{register:imageCount}" data-csc-cols="{field:imagecols}"> | </div>
+					override {
+						if {
+							value = html5
+							equals.data = TSFE:config|config|doctype
+						}
+					}
+				}
 				innerWrap.cObject = CASE
 				innerWrap.cObject {
 					key.field = imageorient
@@ -968,7 +977,18 @@ tt_content.image.20 {
 		noCaption {
 			# Multiple images and no caption at all
 			fallbackRendering < tt_content.image.20.rendering.singleNoCaption.fallbackRendering.10
-			allStdWrap.wrap = <div class="csc-textpic-imagewrap"> | </div>
+			allStdWrap {
+				dataWrap = <div class="csc-textpic-imagewrap"> | </div>
+				dataWrap {
+					override = <div class="csc-textpic-imagewrap" data-csc-images="{register:imageCount}" data-csc-cols="{field:imagecols}"> | </div>
+					override {
+						if {
+							value = html5
+							equals.data = TSFE:config|config|doctype
+						}
+					}
+				}
+			}
 			singleStdWrap {
 				wrap = <div class="csc-textpic-image###CLASSES###"> | </div>
 				wrap {
@@ -1045,9 +1065,9 @@ tt_content.image.20 {
 			# Just one image without a caption
 			fallbackRendering < tt_content.image.20.rendering.singleNoCaption.fallbackRendering.10
 			allStdWrap {
-				wrap = <div class="csc-textpic-imagewrap"><table>###CAPTION###<tbody> | </tbody></table></div>
-				wrap {
-					override = <figure class="csc-textpic-imagewrap"> | ###CAPTION###</figure>
+				dataWrap = <div class="csc-textpic-imagewrap"><table>###CAPTION###<tbody> | </tbody></table></div>
+				dataWrap {
+					override = <figure class="csc-textpic-imagewrap" data-csc-images="{register:imageCount}" data-csc-cols="{field:imagecols}"> | ###CAPTION###</figure>
 					override {
 						if {
 							value = html5
