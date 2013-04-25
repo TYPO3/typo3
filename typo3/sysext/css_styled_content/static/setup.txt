@@ -357,6 +357,9 @@ lib.stdheader {
 			override = <header class="csc-header csc-header-n{cObj:parentRecordNumber}">|</header>
 			override {
 				if {
+					isTrue {
+						field = date
+					}
 					value = html5
 					equals.data = TSFE:config|config|doctype
 				}
