@@ -401,7 +401,7 @@ class tx_cms_layout extends recordList {
 					}
 
 					// Traverse any selected elements and render their display code:
-					foreach ($rowArr as $rKey => $row) {
+					foreach ((array) $rowArr as $rKey => $row) {
 
 						if (is_array($row) && (int) $row['t3ver_state'] != 2) {
 							$singleElementHTML = '';
