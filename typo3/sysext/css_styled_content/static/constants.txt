@@ -70,7 +70,7 @@ styles.content.imgtext {
     # cat=content/cImage/i3; type=int+; label= Image border, padding: Padding left and right to the image, around the border.
   borderSpace = 0
     # cat=content/cImage/i4; type=string; label= Image border CSS-selector: If you want your border to apply elsewhere, change this setting. E.g. to apply to the whole image+caption, use 'DIV.csc-textpic-border DIV.csc-textpic-imagewrap .csc-textpic-image'.
-  borderSelector = DIV.{$styles.content.imgtext.borderClass} DIV.csc-textpic-imagewrap IMG
+  borderSelector = div.{$styles.content.imgtext.borderClass} div.csc-textpic-imagewrap img
     # cat=content/cImage/i5; type=string; label= Image border class: The name of the CSS class for creating image borders
   borderClass = csc-textpic-border
     # cat=content/cImage/i5; type=boolean; label= Image row separation: Whether images should be rendered/wrapped in separated rows, e.g. inside a DIV.csc-textpic-imagerow element
