@@ -1159,6 +1159,16 @@ tt_content.bullets {
 			2.wrap = <li class="even">|</li>
 		}
 		dataWrap = <ul class="csc-bulletlist csc-bulletlist-{field:layout}">|</ul>
+		dataWrap {
+			override = <ol class="csc-bulletlist csc-bulletlist-{field:layout}">|</ol>
+			override {
+				if {
+					value = 1
+					equals.field = layout
+				}
+			}
+		}
+
 	 	editIcons = tt_content: bodytext, [layout]
 	 	editIcons.beforeLastTag = 1
 	 	editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.php:eIcon.bullets
