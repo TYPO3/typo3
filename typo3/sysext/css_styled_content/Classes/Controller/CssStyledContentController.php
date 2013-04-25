@@ -148,20 +148,16 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			reset($rows);
 			// Find number of columns to render:
 			$cols = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(
-				$this->cObj->data['cols'] ? $this->cObj->data['cols'] : count(explode($delimiter, current($rows))),
+				$this->cObj->data['cols'] ? $this->cObj->data['cols'] : count(str_getcsv(current($rows), $delimiter, $quotedInput)),
 				0,
 				100
 			);
 			// Traverse rows (rendering the table here)
 			$rCount = count($rows);
 			foreach ($rows as $k => $v) {
-				$cells = explode($delimiter, $v);
+				$cells = str_getcsv($v, $delimiter, $quotedInput);
 				$newCells = array();
 				for ($a = 0; $a < $cols; $a++) {
-					// Remove quotes if needed
-					if ($quotedInput && substr($cells[$a], 0, 1) == $quotedInput && substr($cells[$a], -1, 1) == $quotedInput) {
-						$cells[$a] = substr($cells[$a], 1, -1);
-					}
 					if (!strcmp(trim($cells[$a]), '')) {
 						$cells[$a] = '&nbsp;';
 					}
