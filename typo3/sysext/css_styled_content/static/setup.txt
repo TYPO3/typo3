@@ -223,17 +223,6 @@ lib.stdheader {
 		prefixComment = 2 | Header date:
 	}
 
-	# HTML5 <hgroup> open
-	7 = TEXT
-	7 {
-		value = <hgroup>
-		fieldRequired = subheader
-		if {
-			value = html5
-			equals.data = TSFE:config|config|doctype
-		}
-	}
-
 	# This CASE cObject renders the header content:
 	# currentValue is set to the header data, possibly wrapped in link-tags.
 	10 = CASE
@@ -297,12 +286,6 @@ lib.stdheader {
 			value = html5
 			equals.data = TSFE:config|config|doctype
 		}
-	}
-
-	# HTML5 <hgroup> close
-	30 < lib.stdheader.7
-	30 {
-		value = </hgroup>
 	}
 
 	# HTML5 Date
