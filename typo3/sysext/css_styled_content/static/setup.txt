@@ -424,17 +424,6 @@ tt_content.stdWrap {
 					div {
 						value = <div
 					}
-
-					menu < .default
-					menu {
-						override = <nav id="c{field:uid}"
-						override {
-							if {
-								value = html5
-								equals.data = TSFE:config|config|doctype
-							}
-						}
-					}
 				}
 				insertData = 1
 			}
@@ -477,26 +466,7 @@ tt_content.stdWrap {
 
 			30 = TEXT
 			30 {
-				cObject = CASE
-				cObject {
-					key.field = CType
-
-					default = TEXT
-					default {
-						value = >|</div>
-					}
-
-					menu < .default
-					menu {
-						override = >|</nav>
-						override {
-							if {
-								value = html5
-								equals.data = TSFE:config|config|doctype
-							}
-						}
-					}
-				}
+				value = >|</div>
 			}
 		}
 
