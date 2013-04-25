@@ -2284,7 +2284,7 @@ class GraphicalFunctions {
 					}
 					$offsetX = intval(($data[0] - $data['origW']) * ($data['cropH'] + 100) / 200);
 					$offsetY = intval(($data[1] - $data['origH']) * ($data['cropV'] + 100) / 200);
-					$params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . ' ';
+					$params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . '! ';
 				}
 				$command = $this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
 				$cropscale = $data['crs'] ? 'crs-V' . $data['cropV'] . 'H' . $data['cropH'] : '';
