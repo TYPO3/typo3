@@ -2083,24 +2083,24 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	.csc-header-alignment-left { text-align: left; }
 
 	/* Clear floats after csc-textpic and after csc-textpic-imagerow */
-	DIV.csc-textpic, DIV.csc-textpic DIV.csc-textpic-imagerow, UL.csc-uploads LI { overflow: hidden; }
+	div.csc-textpic, div.csc-textpic div.csc-textpic-imagerow, ul.csc-uploads li { overflow: hidden; }
 
 	/* Set padding for tables */
-	DIV.csc-textpic .csc-textpic-imagewrap table { border-collapse: collapse; border-spacing: 0; }
-	DIV.csc-textpic .csc-textpic-imagewrap table tr td { padding: 0; vertical-align: top; }
+	div.csc-textpic .csc-textpic-imagewrap table { border-collapse: collapse; border-spacing: 0; }
+	div.csc-textpic .csc-textpic-imagewrap table tr td { padding: 0; vertical-align: top; }
 
 	/* Settings for figure and figcaption (HTML5) */
-	DIV.csc-textpic .csc-textpic-imagewrap FIGURE, DIV.csc-textpic FIGURE.csc-textpic-imagewrap { margin: 0; display: table; }
+	div.csc-textpic .csc-textpic-imagewrap figure, div.csc-textpic figure.csc-textpic-imagewrap { margin: 0; display: table; }
 
 	/* Captions */
-	FIGCAPTION.csc-textpic-caption { display: table-caption; }
+	figcaption.csc-textpic-caption { display: table-caption; }
 	.csc-textpic-caption { text-align: left; caption-side: bottom; }
-	DIV.csc-textpic-caption-c .csc-textpic-caption, .csc-textpic-imagewrap .csc-textpic-caption-c { text-align: center; }
-	DIV.csc-textpic-caption-r .csc-textpic-caption, .csc-textpic-imagewrap .csc-textpic-caption-r { text-align: right; }
-	DIV.csc-textpic-caption-l .csc-textpic-caption, .csc-textpic-imagewrap .csc-textpic-caption-l { text-align: left; }
+	div.csc-textpic-caption-c .csc-textpic-caption, .csc-textpic-imagewrap .csc-textpic-caption-c { text-align: center; }
+	div.csc-textpic-caption-r .csc-textpic-caption, .csc-textpic-imagewrap .csc-textpic-caption-r { text-align: right; }
+	div.csc-textpic-caption-l .csc-textpic-caption, .csc-textpic-imagewrap .csc-textpic-caption-l { text-align: left; }
 
 	/* Float the columns */
-	DIV.csc-textpic DIV.csc-textpic-imagecolumn { float: left; }
+	div.csc-textpic div.csc-textpic-imagecolumn { float: left; }
 
 	/* Border just around the image */
 	{$styles.content.imgtext.borderSelector} {
@@ -2108,54 +2108,54 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 		padding: {$styles.content.imgtext.borderSpace}px {$styles.content.imgtext.borderSpace}px;
 	}
 
-	DIV.csc-textpic .csc-textpic-imagewrap IMG { border: none; display: block; }
+	div.csc-textpic .csc-textpic-imagewrap img { border: none; display: block; }
 
 	/* Space below each image (also in-between rows) */
-	DIV.csc-textpic .csc-textpic-imagewrap .csc-textpic-image { margin-bottom: {$styles.content.imgtext.rowSpace}px; }
-	DIV.csc-textpic .csc-textpic-imagewrap .csc-textpic-imagerow-last .csc-textpic-image { margin-bottom: 0; }
+	div.csc-textpic .csc-textpic-imagewrap .csc-textpic-image { margin-bottom: {$styles.content.imgtext.rowSpace}px; }
+	div.csc-textpic .csc-textpic-imagewrap .csc-textpic-imagerow-last .csc-textpic-image { margin-bottom: 0; }
 
 	/* colSpace around image columns, except for last column */
-	DIV.csc-textpic-imagecolumn, TD.csc-textpic-imagecolumn .csc-textpic-image { margin-right: {$styles.content.imgtext.colSpace}px; }
-	DIV.csc-textpic-imagecolumn.csc-textpic-lastcol, TD.csc-textpic-imagecolumn.csc-textpic-lastcol .csc-textpic-image { margin-right: 0; }
+	div.csc-textpic-imagecolumn, td.csc-textpic-imagecolumn .csc-textpic-image { margin-right: {$styles.content.imgtext.colSpace}px; }
+	div.csc-textpic-imagecolumn.csc-textpic-lastcol, td.csc-textpic-imagecolumn.csc-textpic-lastcol .csc-textpic-image { margin-right: 0; }
 
 	/* Add margin from image-block to text (in case of "Text w/ images") */
-	DIV.csc-textpic-intext-left .csc-textpic-imagewrap,
-	DIV.csc-textpic-intext-left-nowrap .csc-textpic-imagewrap {
+	div.csc-textpic-intext-left .csc-textpic-imagewrap,
+	div.csc-textpic-intext-left-nowrap .csc-textpic-imagewrap {
 		margin-right: {$styles.content.imgtext.textMargin}px;
 	}
-	DIV.csc-textpic-intext-right .csc-textpic-imagewrap,
-	DIV.csc-textpic-intext-right-nowrap .csc-textpic-imagewrap {
+	div.csc-textpic-intext-right .csc-textpic-imagewrap,
+	div.csc-textpic-intext-right-nowrap .csc-textpic-imagewrap {
 		margin-left: {$styles.content.imgtext.textMargin}px;
 	}
 
 	/* Positioning of images: */
 
 	/* Center (above or below) */
-	DIV.csc-textpic-center .csc-textpic-imagewrap, DIV.csc-textpic-center FIGURE.csc-textpic-imagewrap { overflow: hidden; }
-	DIV.csc-textpic-center .csc-textpic-center-outer { position: relative; float: right; right: 50%; }
-	DIV.csc-textpic-center .csc-textpic-center-inner { position: relative; float: right; right: -50%; }
+	div.csc-textpic-center .csc-textpic-imagewrap, div.csc-textpic-center figure.csc-textpic-imagewrap { overflow: hidden; }
+	div.csc-textpic-center .csc-textpic-center-outer { position: relative; float: right; right: 50%; }
+	div.csc-textpic-center .csc-textpic-center-inner { position: relative; float: right; right: -50%; }
 
 	/* Right (above or below) */
-	DIV.csc-textpic-right .csc-textpic-imagewrap { float: right; }
-	DIV.csc-textpic-right DIV.csc-textpic-text { clear: right; }
+	div.csc-textpic-right .csc-textpic-imagewrap { float: right; }
+	div.csc-textpic-right div.csc-textpic-text { clear: right; }
 
 	/* Left (above or below) */
-	DIV.csc-textpic-left .csc-textpic-imagewrap { float: left; }
-	DIV.csc-textpic-left DIV.csc-textpic-text { clear: left; }
+	div.csc-textpic-left .csc-textpic-imagewrap { float: left; }
+	div.csc-textpic-left div.csc-textpic-text { clear: left; }
 
 	/* Left (in text) */
-	DIV.csc-textpic-intext-left .csc-textpic-imagewrap { float: left; }
+	div.csc-textpic-intext-left .csc-textpic-imagewrap { float: left; }
 
 	/* Right (in text) */
-	DIV.csc-textpic-intext-right .csc-textpic-imagewrap { float: right; }
+	div.csc-textpic-intext-right .csc-textpic-imagewrap { float: right; }
 
 	/* Right (in text, no wrap around) */
-	DIV.csc-textpic-intext-right-nowrap .csc-textpic-imagewrap { float: right; }
+	div.csc-textpic-intext-right-nowrap .csc-textpic-imagewrap { float: right; }
 
 	/* Left (in text, no wrap around) */
-	DIV.csc-textpic-intext-left-nowrap .csc-textpic-imagewrap { float: left; }
+	div.csc-textpic-intext-left-nowrap .csc-textpic-imagewrap { float: left; }
 
-	DIV.csc-textpic DIV.csc-textpic-imagerow-last, DIV.csc-textpic DIV.csc-textpic-imagerow-none DIV.csc-textpic-last { margin-bottom: 0; }
+	div.csc-textpic div.csc-textpic-imagerow-last, div.csc-textpic div.csc-textpic-imagerow-none div.csc-textpic-last { margin-bottom: 0; }
 
 	/* Browser fixes: */
 
@@ -2163,20 +2163,20 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	.csc-textpic-intext-left ol, .csc-textpic-intext-left ul { padding-left: 40px; overflow: auto; }
 
 	/* File Links */
-	UL.csc-uploads { padding: 0; }
-	UL.csc-uploads LI { list-style: none outside none; margin: 1em 0; }
-	UL.csc-uploads IMG { float: left; padding-right: 1em; vertical-align: top; }
-	UL.csc-uploads SPAN { display: block; }
-	UL.csc-uploads SPAN.csc-uploads-fileName { text-decoration: underline; }
+	ul.csc-uploads { padding: 0; }
+	ul.csc-uploads li { list-style: none outside none; margin: 1em 0; }
+	ul.csc-uploads img { float: left; padding-right: 1em; vertical-align: top; }
+	ul.csc-uploads span { display: block; }
+	ul.csc-uploads span.csc-uploads-fileName { text-decoration: underline; }
 
 	/* Table background colors: */
 
-	TABLE.contenttable-color-1 { background-color: {$styles.content.table.backgroundColor.1}; }
-	TABLE.contenttable-color-2 { background-color: {$styles.content.table.backgroundColor.2}; }
-	TABLE.contenttable-color-240 { background-color: {$styles.content.table.backgroundColor.240}; }
-	TABLE.contenttable-color-241 { background-color: {$styles.content.table.backgroundColor.241}; }
-	TABLE.contenttable-color-242 { background-color: {$styles.content.table.backgroundColor.242}; }
-	TABLE.contenttable-color-243 { background-color: {$styles.content.table.backgroundColor.243}; }
-	TABLE.contenttable-color-244 { background-color: {$styles.content.table.backgroundColor.244}; }
+	table.contenttable-color-1 { background-color: {$styles.content.table.backgroundColor.1}; }
+	table.contenttable-color-2 { background-color: {$styles.content.table.backgroundColor.2}; }
+	table.contenttable-color-240 { background-color: {$styles.content.table.backgroundColor.240}; }
+	table.contenttable-color-241 { background-color: {$styles.content.table.backgroundColor.241}; }
+	table.contenttable-color-242 { background-color: {$styles.content.table.backgroundColor.242}; }
+	table.contenttable-color-243 { background-color: {$styles.content.table.backgroundColor.243}; }
+	table.contenttable-color-244 { background-color: {$styles.content.table.backgroundColor.244}; }
 )
 
