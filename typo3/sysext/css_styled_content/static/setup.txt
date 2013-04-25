@@ -522,7 +522,7 @@ tt_content.stdWrap {
 					userFunc = tx_cssstyledcontent_pi1->renderSpace
 					space = before
 					constant = {$content.spaceBefore}
-					stdWrap {
+					classStdWrap {
 						wrap = csc-space-before-|
 					}
 				}
@@ -543,7 +543,7 @@ tt_content.stdWrap {
 				10 {
 					space = after
 					constant = {$content.spaceAfter}
-					stdWrap {
+					classStdWrap {
 						wrap = csc-space-after-|
 					}
 				}
