@@ -57,6 +57,22 @@ plugin.tx_indexedsearch {
 		targetPid.data = TSFE:id
 	}
 
+	# page browser of results
+	pageBrowser {
+
+		# page browser with real hyperlinks
+		makePointerLinksWithHref = 0
+		makePointerLinksWithHref {
+			ATagParams = class="tx-indexedsearch-pointerLink"
+		}
+
+		# page browser with form and submit button
+		makePointerLinksWithForm = 0
+		makePointerLinksWithForm {
+			submit_params = class="tx-indexedsearch-pointerButton"
+		}
+	}
+
 	result_link_target =
 /*
 	flagRendering = CASE

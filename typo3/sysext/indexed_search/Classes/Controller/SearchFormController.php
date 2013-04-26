@@ -138,6 +138,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public $iconFileNameCache = array();
 
+	// a small cache used for building the browse links
+	protected $pointerSelectorCache;
+
 	// Storage of icons....
 	/**
 	 * @todo Define visibility
@@ -1768,12 +1771,71 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @param 	string		String to wrap in <a> tag
 	 * @param 	integer		Pointer value
 	 * @param 	string		List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
-	 * @return 	string		Input string wrapped in <a> tag with onclick event attribute set.
+	 * @return 	string		Input string wrapped in <a> tag with onclick event attribute set (default) or a normal hyperlink (pageBrowser.makePointerLinksWithHref) or a submit button within a form (pageBrowser.makePointerLinksWithForm).
 	 * @todo Define visibility
 	 */
 	public function makePointerSelector_link($str, $p, $freeIndexUid) {
-		$onclick = 'document.getElementById(\'' . $this->prefixId . '_pointer\').value=\'' . $p . '\';' . 'document.getElementById(\'' . $this->prefixId . '_freeIndexUid\').value=\'' . rawurlencode($freeIndexUid) . '\';' . 'document.getElementById(\'' . $this->prefixId . '\').submit();return false;';
-		return '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . $str . '</a>';
+		$pointerSelector = '';
+		if ($this->conf['pageBrowser.']['makePointerLinksWithHref']) {
+
+			// pointerSelector is a normal hyperlink (no JavaScript required)
+			if (!$this->pointerSelectorCache) {
+				$this->pointerSelectorCache = array();
+				// create pointerSelectorCache only once, which need to be transferred as GET parameters of the URL
+				$this->pointerSelectorCache = $this->piVars;
+				unset($this->pointerSelectorCache['submit_button']);
+				unset($this->pointerSelectorCache['pointer']);
+				unset($this->pointerSelectorCache['_freeIndexUid']);
+				// only use non-default values
+				foreach ($this->pointerSelectorCache as $var => $val) {
+					if (
+						(is_array($this->optValues[$var]) && $this->piVars[$var] == (string) array_shift(array_keys($this->optValues[$var]))) ||
+						(isset($this->conf['_DEFAULT_PI_VARS.'][$var]) && $this->conf['_DEFAULT_PI_VARS'][$var] == $val)
+					) {
+						unset($this->pointerSelectorCache[$var]);
+					}
+				}
+			}
+			$this->pointerSelectorCache['pointer'] = $p;
+			$this->pointerSelectorCache['_freeIndexUid'] = $freeIndexUid;
+			$linkArray = array (
+				'parameter' => $GLOBALS['TSFE']->id,
+				'additionalParams' => \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl($this->prefixId, $this->pointerSelectorCache)
+			);
+			$linkArray = array_merge((array) $this->conf['pageBrowser.']['makePointerLinksWithHref.'], $linkArray);
+			$pointerSelector = $this->cObj->typolink($str, $linkArray);
+		} elseif ($this->conf['pageBrowser.']['makePointerLinksWithForm']) {
+
+			// pointerSelector is a submit button of a pointer form (no JavaScript required; URL will stay "clean" after submission)
+			if (!$this->pointerSelectorCache) {
+				$this->pointerSelectorCache = array(
+					'hiddenInputs' => '',
+					'currentUrl' => ''
+				);
+				foreach ($this->piVars as $key => $value) {
+					if ($key != 'pointer' && $key != '_freeIndexUid') {
+						$this->pointerSelectorCache['hiddenInputs'] .= '<input type="hidden" name="' . $this->prefixId . '[' . $key . ']" value="' . $value . '" />';
+					}
+				}
+				$this->pointerSelectorCache['currentUrl'] = $this->cObj->getTypoLink_URL($GLOBALS['TSFE']->id, array(), '_self');
+			}
+			$hiddenPointerForm = $this->pointerSelectorCache['hiddenInputs'] .
+				'<input type="hidden" name="' . $this->prefixId . '[pointer]" value="' . $p . '" />' .
+				'<input type="hidden" name="' . $this->prefixId . '[_freeIndexUid]" value="' . $freeIndexUid . '" />';
+			$pointerSelector =
+				'<form method="post" class="tx-indexedsearch-browseresults-form" action="' . $this->pointerSelectorCache['currentUrl'] . '">' .
+					'<div class="hiddenPointerForm">' . $hiddenPointerForm . '</div>' .
+					'<input type="submit" value="' . $str . '" title="' . $str . '"' .
+						($this->conf['pageBrowser.']['makePointerLinksWithForm.']['submit_params'] ? ' ' . $this->conf['pageBrowser.']['makePointerLinksWithForm.']['submit_params'] : '') .
+					' />' .
+				'</form>';
+		} else {
+
+			// pointerSelector is a JavaScript onclick event (the default way)
+			$onclick = 'document.getElementById(\'' . $this->prefixId . '_pointer\').value=\'' . $p . '\';' . 'document.getElementById(\'' . $this->prefixId . '_freeIndexUid\').value=\'' . rawurlencode($freeIndexUid) . '\';' . 'document.getElementById(\'' . $this->prefixId . '\').submit();return false;';
+			$pointerSelector = '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . $str . '</a>';
+		}
+		return $pointerSelector;
 	}
 
 	/**
