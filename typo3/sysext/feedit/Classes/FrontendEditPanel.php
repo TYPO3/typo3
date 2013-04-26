@@ -69,7 +69,7 @@ class FrontendEditPanel {
 	 */
 	public function editPanel($content, array $conf, $currentRecord = '', array $dataArr = array(), $table = '', $allow = '', $newUID = 0, array $hiddenFields = array()) {
 		// Special content is about to be shown, so the cache must be disabled.
-		$GLOBALS['TSFE']->set_no_cache();
+		$GLOBALS['TSFE']->set_no_cache('Frontend edit panel is shown', TRUE);
 		$formName = 'TSFE_EDIT_FORM_' . substr($GLOBALS['TSFE']->uniqueHash(), 0, 4);
 		$formTag = '<form name="' . $formName . '" id ="' . $formName . '" action="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" onsubmit="return TBE_EDITOR.checkSubmit(1);" style="margin: 0 0 0 0;">';
 		$sortField = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
@@ -185,7 +185,7 @@ class FrontendEditPanel {
 	 */
 	public function editIcons($content, $params, array $conf = array(), $currentRecord = '', array $dataArr = array(), $addUrlParamStr = '', $table, $editUid, $fieldList) {
 			// Special content is about to be shown, so the cache must be disabled.
-		$GLOBALS['TSFE']->set_no_cache();
+		$GLOBALS['TSFE']->set_no_cache('Display frontend edit icons', TRUE);
 		$style = $conf['styleAttribute'] ? ' style="' . htmlspecialchars($conf['styleAttribute']) . '"' : '';
 		$iconTitle = $this->cObj->stdWrap($conf['iconTitle'], $conf['iconTitle.']);
 		$iconImg = $conf['iconImg'] ? $conf['iconImg'] : '<img  ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(TYPO3_mainDir, 'gfx/edit_fe.gif', 'width="11" height="12" border="0" align="top" ') . ' title="' . \TYPO3\CMS\Core\Utility\GeneralUtility::deHSCentities(htmlspecialchars($iconTitle)) . '"' . $style . ' class="frontEndEditIcons" alt="" />';
