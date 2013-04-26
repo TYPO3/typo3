@@ -18,7 +18,7 @@
  */
 
 /**
- * new clickmenu code to make an AJAX call and render the 
+ * new clickmenu code to make an AJAX call and render the
  * AJAX result in a layer next to the mouse cursor
  */
 var Clickmenu = {
@@ -54,8 +54,8 @@ var Clickmenu = {
 	 *
  	 * @param	params	parameters added to the URL
 	 * @return	nothing
-	 */ 
-	callURL: function(params) {	
+	 */
+	callURL: function(params) {
 		if (this.ajax && Ajax.getTransport()) { // run with AJAX
 			params += '&ajax=1';
 			var call = new Ajax.Request(this.clickURL, {
@@ -225,11 +225,6 @@ Event.observe(document, 'mousemove', Clickmenu.calcMousePosEvent.bindAsEventList
 // @deprecated: Deprecated functions since 4.2, here for compatibility, remove in 4.4+
 // ## BEGIN ##
 
-// Still used in Core: \TYPO3\CMS\Backend\Template\DocumentTemplate::wrapClickMenuOnIcon()
-function showClickmenu(table, uid, listFr, enDisItems, backPath, addParams) {
-	Clickmenu.show(table, uid, listFr, enDisItems, backPath, addParams);
-}
-
 // Still used in Core: typo3/alt_clickmenu.php::linkItem()
 function showClickmenu_raw(url) {
 	var parts = url.split('?');
@@ -254,7 +249,7 @@ function hideSpecific(level) {
 	if (level === 0 || level === 1) {
 		Clickmenu.hide('contentMenu'+level);
 	}
-} 
+}
 function showHideSelectorBoxes(action) {
 	toggleSelectorBoxes(action);
 }
