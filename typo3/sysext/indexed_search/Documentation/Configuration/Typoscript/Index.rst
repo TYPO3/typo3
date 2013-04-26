@@ -347,6 +347,22 @@ whatis\_stdWrap
    Description
          Parse input through the stdWrap function
 
+.. _resultlist-stdWrap:
+
+resultlist\_stdWrap
+"""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         resultlist\_stdWrap
+
+   Data type
+         :ref:`stdWrap <t3tsref:stdwrap>`
+
+   Description
+         Parse the result list through the stdWrap function
+
 
 [tsref:plugin.tx\_indexedsearch]
 
