@@ -757,9 +757,11 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 					}
 					if (!trim($sectionName)) {
 						$sectionTitleLinked = $this->pi_getLL('unnamedSection', '', 1) . ':';
-					} else {
+					} elseif ($this->conf['linkSectionTitles']) {
 						$onclick = 'document.' . $this->prefixId . '[\'' . $this->prefixId . '[_sections]\'].value=\'' . $theRLid . '\';document.' . $this->prefixId . '.submit();return false;';
 						$sectionTitleLinked = '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . htmlspecialchars($sectionName) . ':</a>';
+					} else {
+						$sectionTitleLinked = htmlspecialchars($sectionName);
 					}
 					$this->resultSections[$id] = array($sectionName, count($resultRows));
 					// Add content header:
