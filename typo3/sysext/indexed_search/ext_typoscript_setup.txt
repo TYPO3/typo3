@@ -57,6 +57,20 @@ plugin.tx_indexedsearch {
 		targetPid.data = TSFE:id
 	}
 
+	# various crop/offset settings for single result items
+	results {
+		titleCropAfter = 50
+		titleCropSignifier = ...
+		summaryCropAfter = 180
+		summaryCropSignifier =
+		hrefInSummaryCropAfter = 60
+		hrefInSummaryCropSignifier = ...
+		markupSW_summaryMax = 300
+		markupSW_postPreLgd = 60
+		markupSW_postPreLgd_offset = 5
+		markupSW_divider = ...
+		markupSW_divider.noTrimWrap = | | |
+	}
 	result_link_target =
 /*
 	flagRendering = CASE
