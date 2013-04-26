@@ -104,8 +104,12 @@ class tslib_AdminPanel {
 			$this->ext_forcePreview = true;
 		}
 
-		if ($GLOBALS['TSFE']->forceTemplateParsing || $GLOBALS['TSFE']->displayEditIcons || $GLOBALS['TSFE']->displayFieldEditIcons) {
-			$GLOBALS['TSFE']->set_no_cache();
+ 		if ($GLOBALS['TSFE']->forceTemplateParsing) {
+			$GLOBALS['TSFE']->set_no_cache('Admin Panel: Force template parsing', TRUE);
+		} elseif ($GLOBALS['TSFE']->displayEditIcons) {
+			$GLOBALS['TSFE']->set_no_cache('Admin Panel: Display edit icons', TRUE);
+		} elseif ($GLOBALS['TSFE']->displayFieldEditIcons) {
+			$GLOBALS['TSFE']->set_no_cache('Admin Panel: Display field edit icons', TRUE);
 		}
 	}
 
@@ -184,7 +188,7 @@ class tslib_AdminPanel {
 		$GLOBALS['TT']->LR = $this->extGetFeAdminValue('tsdebug', 'LR');
 
 		if ($this->extGetFeAdminValue('cache', 'noCache')) {
-			$GLOBALS['TSFE']->set_no_cache();
+			$GLOBALS['TSFE']->set_no_cache('Admin Panel: No Caching', TRUE);
 		}
 
 			// Hook for post processing the frontend admin configuration. Added with TYPO3 4.2, so naming is now incorrect but preserves compatibility.
