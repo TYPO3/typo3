@@ -1664,7 +1664,11 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			// Else the page:
 			// Prepare search words for markup in content:
 			if ($this->conf['forwardSearchWordsInResultLink']) {
-				$markUpSwParams = array('no_cache' => 1);
+				if ($this->conf['forwardSearchWordsInResultLink.']['no_cache']) {
+					$markUpSwParams = array('no_cache' => 1);
+				} else {
+					$markUpSwParams = array();
+				}
 				foreach ($this->sWArr as $d) {
 					$markUpSwParams['sword_list'][] = $d['sword'];
 				}
