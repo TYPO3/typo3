@@ -767,21 +767,27 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 						// Add content header:
 						$content .= $this->makeSectionHeader($id, $sectionTitleLinked, count($resultRows));
 						// Render result rows:
+						$resultlist = '';
 						foreach ($resultRows as $row) {
-							$content .= $this->printResultRow($row);
+							$resultlist .= $this->printResultRow($row);
 						}
+						$content .= $this->cObj->stdWrap($resultlist, $this->conf['resultlist_stdWrap.']);
 					}
 					break;
 				default:
 					// flat:
+					$resultlist = '';
 					foreach ($resultRows as $row) {
-						$content .= $this->printResultRow($row);
+						$resultlist .= $this->printResultRow($row);
 					}
+					$content .= $this->cObj->stdWrap($resultlist, $this->conf['resultlist_stdWrap.']);
 			}
 		} else {
+			$resultlist = '';
 			foreach ($resultRows as $row) {
-				$content .= $this->printResultRow($row);
+				$resultlist .= $this->printResultRow($row);
 			}
+			$content .= $this->cObj->stdWrap($resultlist, $this->conf['resultlist_stdWrap.']);
 		}
 		return '<div' . $this->pi_classParam('res') . '>' . $content . '</div>';
 	}

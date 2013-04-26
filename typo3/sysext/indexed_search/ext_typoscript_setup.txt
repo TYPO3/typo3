@@ -47,6 +47,8 @@ plugin.tx_indexedsearch {
 	}
 	path_stdWrap {
 	}
+	resultlist_stdWrap {
+	}
 	search {
 		rootPidList =
 		page_links = 10
