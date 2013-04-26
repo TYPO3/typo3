@@ -241,6 +241,38 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			$this->piVars['sword'] = trim($this->piVars['sword_prev']) . ' ' . $this->piVars['sword'];
 		}
 		$this->piVars['results'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->piVars['results'], 1, 100000, $this->defaultResultNumber);
+		// Make sure that some cropping and markup constants used later are defined
+		if (!is_array($this->conf['results.'])) {
+			$this->conf['results.'] = array();
+		}
+		$this->conf['results.']['summaryCropAfter'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(
+			$this->cObj->stdWrap($this->conf['results.']['summaryCropAfter'], $this->conf['results.']['summaryCropAfter.']),
+			10, 5000, 180
+		);
+		$this->conf['results.']['summaryCropSignifier'] = $this->cObj->stdWrap($this->conf['results.']['summaryCropSignifier'], $this->conf['results.']['summaryCropSignifier.']);
+		$this->conf['results.']['titleCropAfter'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(
+			$this->cObj->stdWrap($this->conf['results.']['titleCropAfter'], $this->conf['results.']['titleCropAfter.']),
+			10, 500, 50
+		);
+		$this->conf['results.']['titleCropSignifier'] = $this->cObj->stdWrap($this->conf['results.']['titleCropSignifier'], $this->conf['results.']['titleCropSignifier.']);
+		$this->conf['results.']['markupSW_summaryMax'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(
+			$this->cObj->stdWrap($this->conf['results.']['markupSW_summaryMax'], $this->conf['results.']['markupSW_summaryMax.']),
+			10, 5000, 300
+		);
+		$this->conf['results.']['markupSW_postPreLgd'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(
+			$this->cObj->stdWrap($this->conf['results.']['markupSW_postPreLgd'], $this->conf['results.']['markupSW_postPreLgd.']),
+			1, 500, 60
+		);
+		$this->conf['results.']['markupSW_postPreLgd_offset'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(
+			$this->cObj->stdWrap($this->conf['results.']['markupSW_postPreLgd_offset'], $this->conf['results.']['markupSW_postPreLgd_offset.']),
+			1, 50, 5
+		);
+		$this->conf['results.']['markupSW_divider'] = $this->cObj->stdWrap($this->conf['results.']['markupSW_divider'], $this->conf['results.']['markupSW_divider.']);
+		$this->conf['results.']['hrefInSummaryCropAfter'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(
+			$this->cObj->stdWrap($this->conf['results.']['hrefInSummaryCropAfter'], $this->conf['results.']['hrefInSummaryCropAfter.']),
+			10, 400, 60
+		);
+		$this->conf['results.']['hrefInSummaryCropSignifier'] = $this->cObj->stdWrap($this->conf['results.']['hrefInSummaryCropSignifier'], $this->conf['results.']['hrefInSummaryCropSignifier.']);
 		// Selector-box values defined here:
 		$this->optValues = array(
 			'type' => array(
@@ -1678,7 +1710,11 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$tmplContent['result_number'] = $this->conf['show.']['resultNumber'] ? $row['result_number'] . ': ' : '&nbsp;';
 		$tmplContent['icon'] = $this->makeItemTypeIcon($row['item_type'], '', $specRowConf);
 		$tmplContent['rating'] = $this->makeRating($row);
-		$tmplContent['description'] = $this->makeDescription($row, $this->piVars['extResume'] && !$headerOnly ? 0 : 1);
+		$tmplContent['description'] = $this->makeDescription(
+			$row,
+			$this->piVars['extResume'] && !$headerOnly ? 0 : 1,
+			$this->conf['results.']['summaryCropAfter']
+		);
 		$tmplContent = $this->makeInfo($row, $tmplContent);
 		$tmplContent['access'] = $this->makeAccessIndication($row['page_id']);
 		$tmplContent['language'] = $this->makeLanguageIndication($row);
@@ -1888,14 +1924,14 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				if ($res) {
 					if ($ftdrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 						// Cut HTTP references after some length
-						$content = preg_replace('/(http:\\/\\/[^ ]{60})([^ ]+)/i', '$1...', $ftdrow['fulltextdata']);
+						$content = preg_replace('/(http:\\/\\/[^ ]{' . $this->conf['results.']['hrefInSummaryCropAfter'] . '})([^ ]+)/i', '$1' . $this->conf['results.']['hrefInSummaryCropSignifier'], $ftdrow['fulltextdata']);
 						$markedSW = $this->markupSWpartsOfString($content);
 					}
 					$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				}
 			}
 			if (!trim($markedSW)) {
-				$outputStr = $GLOBALS['TSFE']->csConvObj->crop('utf-8', $row['item_description'], $lgd);
+				$outputStr = $GLOBALS['TSFE']->csConvObj->crop('utf-8', $row['item_description'], $lgd, $this->conf['results.']['summaryCropSignifier']);
 				$outputStr = htmlspecialchars($outputStr);
 			}
 			$output = $this->utf8_to_currentCharset($outputStr ? $outputStr : $markedSW);
@@ -1925,10 +1961,10 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		// Split and combine:
 		$parts = preg_split('/' . $regExString . '/i', ' ' . $str . ' ', 20000, PREG_SPLIT_DELIM_CAPTURE);
 		// Constants:
-		$summaryMax = 300;
-		$postPreLgd = 60;
-		$postPreLgd_offset = 5;
-		$divider = ' ... ';
+		$summaryMax = $this->conf['results.']['markupSW_summaryMax'];
+		$postPreLgd = $this->conf['results.']['markupSW_postPreLgd'];
+		$postPreLgd_offset = $this->conf['results.']['markupSW_postPreLgd_offset'];
+		$divider = $this->conf['results.']['markupSW_divider'];
 		$occurencies = (count($parts) - 1) / 2;
 		if ($occurencies) {
 			$postPreLgd = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($summaryMax / $occurencies, $postPreLgd, $summaryMax / 2);
@@ -1993,7 +2029,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				$add = ', ' . $this->pi_getLL('word_page') . ' ' . $pp[0];
 			}
 		}
-		$outputString = $GLOBALS['TSFE']->csConvObj->crop('utf-8', $row['item_title'], 50, '...');
+		$outputString = $GLOBALS['TSFE']->csConvObj->crop('utf-8', $row['item_title'], $this->conf['results.']['titleCropAfter'], $this->conf['results.']['titleCropSignifier']);
 		return $this->utf8_to_currentCharset($outputString) . $add;
 	}
 
