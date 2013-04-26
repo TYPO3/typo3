@@ -79,6 +79,7 @@ plugin.tx_indexedsearch {
 	}
 */
 	forwardSearchWordsInResultLink = 0
+	forwardSearchWordsInResultLink.no_cache = 1
 
 	# Setting default values for piVars (please see the source code for the form-field names which you can preset values for here)
 	_DEFAULT_PI_VARS {
