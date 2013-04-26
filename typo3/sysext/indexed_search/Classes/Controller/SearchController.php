@@ -428,13 +428,14 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		} else {
 			// Else the page:
 			// Prepare search words for markup in content:
-			if ($this->settings['forwardSearchWordsInResultLink']) {
-				$markUpSwParams = array('no_cache' => 1);
+			$markUpSwParams = array();
+			if ($this->settings['forwardSearchWordsInResultLink']['_typoScriptNodeValue']) {
+				if ($this->settings['forwardSearchWordsInResultLink']['no_cache']) {
+					$markUpSwParams = array('no_cache' => 1);
+				}
 				foreach ($this->searchWords as $d) {
 					$markUpSwParams['sword_list'][] = $d['sword'];
 				}
-			} else {
-				$markUpSwParams = array();
 			}
 			$title = $this->linkPage($row['data_page_id'], $title, $row, $markUpSwParams);
 		}
