@@ -957,9 +957,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @return array Associative array for each column (colPos)
 	 */
 	protected function getContentRecordsPerColumn($table, $id, array $columns, $additionalWhereClause = '') {
-		$contentRecordsPerColumn = array();
-
 		$columns = array_map('intval', $columns);
+		$contentRecordsPerColumn = array_fill_keys($columns, array());
+
 		$queryParts = $this->makeQueryArray('tt_content', $id, 'AND colPos IN (' . implode(',', $columns) . ')' . $additionalWhereClause);
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
 		// Traverse any selected elements and render their display code:
