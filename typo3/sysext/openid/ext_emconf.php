@@ -27,10 +27,10 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 0,
 	'lockType' => 'system',
 	'author_company' => 'TYPO3 core team',
-	'version' => '6.0.0',
+	'version' => '6.1.0',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '6.0.0-0.0.0'
+			'typo3' => '6.1.0-6.1.99',
 		),
 		'conflicts' => array(
 			'naw_openid' => '',

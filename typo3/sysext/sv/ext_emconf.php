@@ -27,11 +27,11 @@ $EM_CONF[$_EXTKEY] = array(
 	'author' => 'Rene Fritz',
 	'author_email' => 'r.fritz@colorcube.de',
 	'author_company' => 'Colorcube',
-	'version' => '6.0.0',
+	'version' => '6.1.0',
 	'_md5_values_when_last_written' => '',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '6.0.0-0.0.0'
+			'typo3' => '6.1.0-6.1.99',
 		),
 		'conflicts' => array(),
 		'suggests' => array()
