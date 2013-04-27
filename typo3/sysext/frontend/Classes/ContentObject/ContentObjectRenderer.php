@@ -1335,7 +1335,7 @@ class ContentObjectRenderer {
 			} else {
 				$params = isset($conf['params.']) ? ' ' . $this->stdWrap($conf['params'], $conf['params.']) : '';
 			}
-			$theValue = '<img src="' . htmlspecialchars($source) . '" width="' . $info[0] . '" height="' . $info[1] . '"' . $this->getBorderAttr(' border="' . intval($conf['border']) . '"') . $params . $altParam . (!empty($GLOBALS['TSFE']->xhtmlDoctype) ? ' /' : '') . '>';
+			$theValue = '<img src="' . htmlspecialchars($source) . '" width="' . $info[0] . '" height="' . $info[1] . '"' . $this->getBorderAttr(' border="' . intval($conf['border']) . '"') . $params . $altParam . '></img>';
 			$linkWrap = isset($conf['linkWrap.']) ? $this->stdWrap($conf['linkWrap'], $conf['linkWrap.']) : $conf['linkWrap'];
 			if ($linkWrap) {
 				$theValue = $this->linkWrap($theValue, $linkWrap);
@@ -1477,7 +1477,7 @@ class ContentObjectRenderer {
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('jpg,gif,jpeg,png', $fileinfo['fileext'])) {
 				$imgFile = $incFile;
 				$imgInfo = @getImageSize($imgFile);
-				return '<img src="' . $GLOBALS['TSFE']->absRefPrefix . $imgFile . '" width="' . $imgInfo[0] . '" height="' . $imgInfo[1] . '"' . $this->getBorderAttr(' border="0"') . ' ' . $addParams . ' />';
+				return '<img src="' . $GLOBALS['TSFE']->absRefPrefix . $imgFile . '" width="' . $imgInfo[0] . '" height="' . $imgInfo[1] . '"' . $this->getBorderAttr(' border="0"') . ' ' . $addParams . ' ></img>';
 			} elseif (filesize($incFile) < 1024 * 1024) {
 				return $GLOBALS['TSFE']->tmpl->fileContent($incFile);
 			}
@@ -4172,14 +4172,14 @@ class ContentObjectRenderer {
 						} else {
 							$icon = TYPO3_mainDir . 'gfx/fileicons/notfound_thumb.gif';
 						}
-						$icon = '<img src="' . htmlspecialchars(($GLOBALS['TSFE']->absRefPrefix . $icon)) . '"' . $this->getBorderAttr(' border="0"') . '' . $this->getAltParam($conf) . ' />';
+						$icon = '<img src="' . htmlspecialchars(($GLOBALS['TSFE']->absRefPrefix . $icon)) . '"' . $this->getBorderAttr(' border="0"') . '' . $this->getAltParam($conf) . ' ></img>';
 					}
 				} else {
 					$conf['icon.']['widthAttribute'] = isset($conf['icon.']['widthAttribute.']) ? $this->stdWrap($conf['icon.']['widthAttribute'], $conf['icon.']['widthAttribute.']) : $conf['icon.']['widthAttribute'];
 					$iconWidth = !empty($conf['icon.']['widthAttribute']) ? $conf['icon.']['widthAttribute'] : 18;
 					$conf['icon.']['heightAttribute'] = isset($conf['icon.']['heightAttribute.']) ? $this->stdWrap($conf['icon.']['heightAttribute'], $conf['icon.']['heightAttribute.']) : $conf['icon.']['heightAttribute'];
 					$iconHeight = !empty($conf['icon.']['heightAttribute']) ? $conf['icon.']['heightAttribute'] : 16;
-					$icon = '<img src="' . htmlspecialchars(($GLOBALS['TSFE']->absRefPrefix . $icon)) . '" width="' . $iconWidth . '" height="' . $iconHeight . '"' . $this->getBorderAttr(' border="0"') . $this->getAltParam($conf) . ' />';
+					$icon = '<img src="' . htmlspecialchars(($GLOBALS['TSFE']->absRefPrefix . $icon)) . '" width="' . $iconWidth . '" height="' . $iconHeight . '"' . $this->getBorderAttr(' border="0"') . $this->getAltParam($conf) . ' ></img>';
 				}
 				if ($conf['icon_link'] && !$conf['combinedLink']) {
 					$icon = $this->wrap($icon, $theLinkWrap);
@@ -6366,14 +6366,14 @@ class ContentObjectRenderer {
 				if ($useDivTag) {
 					$content = '<div class="content-spacer spacer-before" style="height:' . $wrapBefore . 'px;"></div>' . $content;
 				} else {
-					$content = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $wrapBefore . '"' . $this->getBorderAttr(' border="0"') . ' class="spacer-gif" alt="" title="" /><br />' . $content;
+					$content = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $wrapBefore . '"' . $this->getBorderAttr(' border="0"') . ' class="spacer-gif" alt="" title="" ></img><br />' . $content;
 				}
 			}
 			if ($wrapAfter) {
 				if ($useDivTag) {
 					$content .= '<div class="content-spacer spacer-after" style="height:' . $wrapAfter . 'px;"></div>';
 				} else {
-					$content .= '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $wrapAfter . '"' . $this->getBorderAttr(' border="0"') . ' class="spacer-gif" alt="" title="" /><br />';
+					$content .= '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $wrapAfter . '"' . $this->getBorderAttr(' border="0"') . ' class="spacer-gif" alt="" title="" ></img><br />';
 				}
 			}
 		}
