@@ -5719,23 +5719,23 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 						fObj = formObj[fName];
 					}
 
-						// clear field before adding value, if configured so (maxitems==1)
-					if (typeof TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin[fName] != "undefined") {
-						clearSettings = TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin[fName];
-						setFormValueManipulate(fName, "Remove");
-
-							// Clear the upload field
-						var filesContainer = document.getElementById(clearSettings.itemFormElID_file);
-						if(filesContainer) {
-							filesContainer.innerHTML = filesContainer.innerHTML;
-						}
-
-							// update len after removing value
-						len = fObj.length;
-					}
-
 					if (isMultiple || isList) {
 						if (!isMultiple) {
+								// clear field before adding value, if configured so (maxitems==1)
+							if (typeof TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin[fName] != "undefined") {
+								clearSettings = TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin[fName];
+								setFormValueManipulate(fName, "Remove");
+
+									// Clear the upload field
+								var filesContainer = document.getElementById(clearSettings.itemFormElID_file);
+								if(filesContainer) {
+									filesContainer.innerHTML = filesContainer.innerHTML;
+								}
+
+								// update len after removing value
+								len = fObj.length;
+							}
+
 								// If multiple values are not allowed, clear anything that is in the control already
 							fObj.options.length = 0;
 							fObj.length = 0; // Note: this is dangerous! "length" on the object is a reserved JS attribute!
