@@ -9,6 +9,7 @@ env:
 branches:
   only:
     - TYPO3_6-0
+    - TYPO3_6-1
     - master
 
 services:
