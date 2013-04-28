@@ -684,8 +684,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				$this->internal['results_at_a_time'] = $this->piVars['results'];
 				$this->internal['maxPages'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['search.']['page_links'], 1, 100, 10);
 				$addString = $resData['count'] && $this->piVars['group'] == 'sections' && $freeIndexUid <= 0 ? ' ' . sprintf($this->pi_getLL((count($this->resultSections) > 1 ? 'inNsections' : 'inNsection')), count($this->resultSections)) : '';
-				$browseBox1 = $this->pi_list_browseresults(1, $addString, $this->printResultSectionLinks(), $freeIndexUid);
-				$browseBox2 = $this->pi_list_browseresults(0, '', '', $freeIndexUid);
+				$addPart = $this->printResultSectionLinks();
+				$browseBox1 = ($this->conf['pageBrowser.']['showTopBrowser']) ? $this->pi_list_browseresults(1, $addString, $addPart, $freeIndexUid) : '';
+				$browseBox2 = ($this->conf['pageBrowser.']['showBottomBrowser']) ? $this->pi_list_browseresults(0, $addString, $addPart, $freeIndexUid) : '';
 			}
 			// Browsing nav, bottom.
 			if ($resData['count']) {
@@ -1570,61 +1571,99 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns a results browser
 	 *
-	 * @param 	boolean		Show result count
+	 * @param 	boolean		If set, the top browse box is rendered (containing the result count by default). If not, the bottom browse box is rendered
 	 * @param 	string		String appended to "displaying results..." notice.
 	 * @param 	string		String appended after section "displaying results...
 	 * @param 	string		List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
 	 * @return 	string		HTML output
 	 * @todo Define visibility
 	 */
-	public function pi_list_browseresults($showResultCount = 1, $addString = '', $addPart = '', $freeIndexUid = -1) {
+	public function pi_list_browseresults($renderTopBrowseBox = 1, $addString = '', $addPart = '', $freeIndexUid = -1) {
 		// Initializing variables:
 		$pointer = $this->piVars['pointer'];
 		$count = $this->internal['res_count'];
 		$results_at_a_time = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->internal['results_at_a_time'], 1, 1000);
 		$maxPages = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->internal['maxPages'], 1, 100);
 		$pageCount = ceil($count / $results_at_a_time);
-		$sTables = '';
+		// init BROWSE_BOX_[TOP|BOTTOM] template with fallback, if not set
+		$markerArray = $subpartArray = array();
+		if ($renderTopBrowseBox) {
+			$browseBoxTemplate = trim($this->cObj->getSubpart($this->templateCode, '###BROWSE_BOX_TOP###'));
+			if ($browseBoxTemplate == '') {
+				$browseBoxTemplate = '<div class="tx-indexedsearch-browsebox"><p>###RESULTCOUNT### ###ADDSTRING###</p>###ADDPART###<!-- ###BROWSE_LINKS### -->###PREVIOUS### ###PAGES### ###NEXT###<!-- ###BROWSE_LINKS### --></div>';
+			}
+		} else {
+			$browseBoxTemplate = trim($this->cObj->getSubpart($this->templateCode, '###BROWSE_BOX_BOTTOM###'));
+			if ($browseBoxTemplate == '') {
+				$browseBoxTemplate = '<div class="tx-indexedsearch-browsebox"><!-- ###BROWSE_LINKS### -->###PREVIOUS### ###PAGES### ###NEXT###<!-- ###BROWSE_LINKS### --></div>';
+			}
+		}
+		$browseLinksTemplate = $this->cObj->getSubpart($browseBoxTemplate, '###BROWSE_LINKS###');
 		if ($pageCount > 1) {
 			// only show the result browser if more than one page is needed
 			$pointer = intval($pointer);
-			$links = array();
 			// Make browse-table/links:
 			if ($pointer > 0) {
 				// all pages after the 1st one
-				$links[] = '<li>' . $this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_prev', '< Previous', TRUE), ($pointer - 1), $freeIndexUid) . '</li>';
+				$markerArray['###PREVIOUS###'] = $this->cObj->stdWrap(
+					$this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_prev', '< Previous', TRUE), ($pointer - 1), $freeIndexUid),
+					$this->conf['pageBrowser.']['previous_stdWrap.']
+				);
+			} else {
+				$markerArray['###PREVIOUS###'] = '';
 			}
+			$markerArray['###PAGES###'] = '';
 			for ($a = 0; $a < $pageCount; $a++) {
 				$min = max(0, $pointer + 1 - ceil($maxPages / 2));
 				$max = $min + $maxPages;
 				if ($max > $pageCount) {
 					$min = $min - ($max - $pageCount);
 				}
+				$linkText = $this->cObj->stdWrap(($a + 1), $this->conf['pageBrowser.']['pageLinks_stdWrap.']);
 				if ($a >= $min && $a < $max) {
 					if ($a == $pointer) {
-						$links[] = '<li' . $this->pi_classParam('browselist-currentPage') . '><strong>' . $this->makePointerSelector_link(trim(($this->pi_getLL('pi_list_browseresults_page', 'Page', 1) . ' ' . ($a + 1))), $a, $freeIndexUid) . '</strong></li>';
+						// current page
+						$markerArray['###PAGES###'] .= $this->cObj->stdWrap(
+							$this->conf['pageBrowser.']['doNotLinkCurrent'] ? $linkText : $this->makePointerSelector_link($linkText, $a, $freeIndexUid),
+							$this->conf['pageBrowser.']['current_stdWrap.']
+						);
 					} else {
-						$links[] = '<li>' . $this->makePointerSelector_link(trim(($this->pi_getLL('pi_list_browseresults_page', 'Page', TRUE) . ' ' . ($a + 1))), $a, $freeIndexUid) . '</li>';
+						$markerArray['###PAGES###'] .= $this->cObj->stdWrap(
+							$this->makePointerSelector_link($linkText, $a, $freeIndexUid),
+							$this->conf['pageBrowser.']['pages_stdWrap.']
+						);
 					}
 				}
 			}
 			if ($pointer + 1 < $pageCount) {
-				$links[] = '<li>' . $this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_next', 'Next >', TRUE), ($pointer + 1), $freeIndexUid) . '</li>';
+				$markerArray['###NEXT###'] = $this->cObj->stdWrap(
+					$this->makePointerSelector_link($this->pi_getLL('pi_list_browseresults_next', 'Next >', TRUE), ($pointer + 1), $freeIndexUid),
+					$this->conf['pageBrowser.']['next_stdWrap.']
+				);
+			} else {
+				$markerArray['###NEXT###'] = '';
 			}
+			$subpartArray['###BROWSE_LINKS###'] = $this->cObj->stdWrap(
+				$this->cObj->substituteMarkerArrayCached($browseLinksTemplate, $markerArray, array(), array()),
+				$this->conf['pageBrowser.']['general_stdWrap.']
+			);
+		} else {
+			$subpartArray['###BROWSE_LINKS###'] = '';
 		}
 		$pR1 = $pointer * $results_at_a_time + 1;
 		$pR2 = $pointer * $results_at_a_time + $results_at_a_time;
-		if (is_array($links)) {
-			$addPart .= '
-		<ul class="browsebox">
-			' . implode('', $links) . '
-		</ul>';
-		}
 		$label = $this->pi_getLL('pi_list_browseresults_display', 'Displaying results ###TAG_BEGIN###%s to %s###TAG_END### out of ###TAG_BEGIN###%s###TAG_END###');
 		$label = str_replace('###TAG_BEGIN###', '<strong>', $label);
 		$label = str_replace('###TAG_END###', '</strong>', $label);
-		$sTables = '<div' . $this->pi_classParam('browsebox') . '>' . ($showResultCount ? '<p>' . sprintf($label, $pR1, min(array($this->internal['res_count'], $pR2)), $this->internal['res_count']) . $addString . '</p>' : '') . $addPart . '</div>';
-		return $sTables;
+		$markerArray['###RESULTCOUNT###'] = sprintf(
+			$label,
+			$pR1,
+			min(array($this->internal['res_count'], $pR2)),
+			$this->internal['res_count']
+		);
+		$markerArray['###ADDSTRING###'] = $addString;
+		$markerArray['###ADDPART###'] = $addPart;
+		return $this->cObj->substituteMarkerArrayCached($browseBoxTemplate, $markerArray, $subpartArray, array());
 	}
 
 	/***********************************
