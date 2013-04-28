@@ -9,3 +9,10 @@ if (TYPO3_MODE === 'FE' && !isset($_REQUEST['eID'])) {
 		'languageAndWorkspaceOverlay'
 	);
 }
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
+	'frontend',
+	'setup',
+	'config.extTarget = _top'
+	. LF . 'config.uniqueLinkVars = 1'
+);

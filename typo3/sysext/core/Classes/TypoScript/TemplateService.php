@@ -120,27 +120,10 @@ class TemplateService {
 	 */
 	public $loaded = 0;
 
-	// Default TypoScript Setup code
 	/**
-	 * @todo Define visibility
+	 * @var array Contains TypoScript setup part after parsing
 	 */
-	public $setup = array(
-		'styles.' => array(
-			'insertContent' => 'CONTENT',
-			'insertContent.' => array(
-				'table' => 'tt_content',
-				'select.' => array(
-					'orderBy' => 'sorting',
-					'where' => 'colPos=0',
-					'languageField' => 'sys_language_uid'
-				)
-			)
-		),
-		'config.' => array(
-			'extTarget' => '_top',
-			'uniqueLinkVars' => 1
-		)
-	);
+	public $setup = array();
 
 	/**
 	 * @todo Define visibility
