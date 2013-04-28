@@ -96,7 +96,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 									$temp_valueArray = array();
 									$valueArrayLabel = isset($singleKey_valueArray['label.']) ? $this->cObj->stdWrap($singleKey_valueArray['label'], $singleKey_valueArray['label.']) : $singleKey_valueArray['label'];
 									list($temp_valueArray[0]) = explode('=', $valueArrayLabel);
-									$selected = isset($singleKeyArray['selected.']) ? $this->cObj->stdWrap($singleKeyArray['selected'], $singleKeyArray['selected.']) : $singleKeyArray['selected'];
+									$selected = isset($singleKey_valueArray['selected.']) ? $this->cObj->stdWrap($singleKey_valueArray['selected'], $singleKey_valueArray['selected.']) : $singleKey_valueArray['selected'];
 									if ($selected) {
 										$temp_valueArray[0] = '*' . $temp_valueArray[0];
 									}
