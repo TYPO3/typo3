@@ -52,7 +52,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * </output>
  *
  * @api
- * @deprecated since Fluid 1.4.0, will be removed with Fluid 6.1.
+ * @deprecated since Fluid 1.4.0, will be removed two versions after Fluid 6.1.
  */
 class ErrorsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
