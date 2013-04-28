@@ -108,6 +108,16 @@ class ElementConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				NULL,
 				TRUE,
 			),
+			'Field value comparison against multi-value field' => array(
+				'FIELD:content:BIT:1',
+				array(
+					'content' => array(
+						array('Content A', ''),
+					),
+				),
+				NULL,
+				TRUE
+			),
 			'Field value comparison for required value is false for different value' => array(
 				'FIELD:foo:REQ:FALSE',
 				array('foo' => 'bar'),
@@ -119,6 +129,16 @@ class ElementConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array('foo' => 'bar'),
 				NULL,
 				TRUE,
+			),
+			'Field value comparison against multi-value field' => array(
+				'FIELD:content:!BIT:2',
+				array(
+					'content' => array(
+						array('Content A', ''),
+					),
+				),
+				NULL,
+				TRUE
 			),
 			'Field value in range' => array(
 				'FIELD:uid:-:3-42',

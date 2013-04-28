@@ -238,6 +238,13 @@ class ElementConditionMatcher {
 					$result = !$result;
 				}
 				break;
+			case 'BIT':
+			case '!BIT':
+				$result = (intval($fieldValue) & $operand) ? TRUE : FALSE;
+				if ($operator{0} === '!') {
+					$result = !$result;
+				}
+				break;
 		}
 		return $result;
 	}
