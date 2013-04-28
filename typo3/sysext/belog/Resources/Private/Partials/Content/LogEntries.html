@@ -206,7 +206,7 @@
 
 							<td valign="top">
 								<belog:formatDetails logEntry="{logItem}" />
-								<belog:historyEntry uid="{logItem.uid}" />
+								<belog:historyEntry uid="{logItem.uid}" isInPageContext="{constraint.isInPageContext}" />
 								<f:if condition="{logItem.detailsNumber} > 0">
 									(msg#{logItem.type}.{logItem.action}.{logItem.detailsNumber})
 								</f:if>

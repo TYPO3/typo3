@@ -43,9 +43,10 @@ class HistoryEntryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	 * Get system history record
 	 *
 	 * @param integer $uid Uid of the log entry
+	 * @param boolean $isInPageContext If the ViewHelper is called in page context
 	 * @return string Formatted history entry if one exists, else empty string
 	 */
-	public function render($uid) {
+	public function render($uid, $isInPageContext) {
 		/** @var $historyEntry \TYPO3\CMS\Belog\Domain\Model\HistoryEntry */
 		$historyEntry = $this->historyEntryRepository->findOneBySysLogUid($uid);
 		if (!$historyEntry instanceof \TYPO3\CMS\Belog\Domain\Model\HistoryEntry) {
@@ -60,6 +61,10 @@ class HistoryEntryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 			'title' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('showHistory', $this->controllerContext->getRequest()->getControllerExtensionName())
 		));
 		$historyHref = 'show_rechis.php?sh_uid=' . $historyEntry->getUid() . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
+		if ($isInPageContext) {
+			$historyHref = '../../../' . $historyHref;
+		}
+
 		$historyLink = '<a href="' . htmlspecialchars($historyHref) . '">' . $historyIcon . '</a>';
 		return $historyLabel . '&nbsp;' . $historyLink;
 	}
