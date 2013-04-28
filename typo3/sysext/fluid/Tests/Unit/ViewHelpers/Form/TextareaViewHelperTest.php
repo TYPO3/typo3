@@ -96,6 +96,27 @@ class TextareaViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
+
+	/**
+	 * @test
+	 */
+	public function renderAddsPlaceholder() {
+		$mockTagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
+		$mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('placeholder', 'SomePlaceholder');
+		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('name', 'NameOfTextarea');
+		$mockTagBuilder->expects($this->once())->method('render');
+		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+
+		$arguments = array(
+			'name' => 'NameOfTextarea',
+			'placeholder' => 'SomePlaceholder'
+		);
+		$this->viewHelper->setArguments($arguments);
+
+		$this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());
+		$this->viewHelper->initialize();
+		$this->viewHelper->render();
+	}
 }
 
 ?>

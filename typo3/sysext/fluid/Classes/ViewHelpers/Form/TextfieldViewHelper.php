@@ -44,6 +44,7 @@ class TextfieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractForm
 		$this->registerTagAttribute('maxlength', 'int', 'The maxlength attribute of the input field (will not be validated)');
 		$this->registerTagAttribute('readonly', 'string', 'The readonly attribute of the input field');
 		$this->registerTagAttribute('size', 'int', 'The size of the input field');
+		$this->registerTagAttribute('placeholder', 'string', 'The placeholder of the textfield');
 		$this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error');
 		$this->registerUniversalTagAttributes();
 	}
