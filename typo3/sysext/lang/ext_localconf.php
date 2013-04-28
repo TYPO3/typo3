@@ -18,4 +18,12 @@ if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['cache']['clear_menu']) && 
 }
 // Register Ajax call
 $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['lang::clearCache'] = 'TYPO3\CMS\Lang\LanguageCacheClearer->clearCache';
+
+// Register extension list update task
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Lang\\Task\\UpdateLanguagesTask'] = array(
+	'extension' => $_EXTKEY,
+	'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:task.updateLanguagesTask.name',
+	'description' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:task.updateLanguagesTask.description',
+	'additionalFields' => '',
+);
 ?>

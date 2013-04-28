@@ -63,7 +63,12 @@
 			<trans-unit id="flashmessage.canceled" xml:space="preserve">
 				<source>The process has been canceled.</source>
 			</trans-unit>
-
+			<trans-unit id="task.updateLanguagesTask.name" xml:space="preserve">
+				<source>Update language translations</source>
+			</trans-unit>
+			<trans-unit id="task.updateLanguagesTask.description" xml:space="preserve">
+				<source>Update the translation of installed extensions.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
