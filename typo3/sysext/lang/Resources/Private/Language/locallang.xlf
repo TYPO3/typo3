@@ -63,7 +63,6 @@
 			<trans-unit id="flashmessage.canceled" xml:space="preserve">
 				<source>The process has been canceled.</source>
 			</trans-unit>
-
 		</body>
 	</file>
 </xliff>
