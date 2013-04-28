@@ -2009,17 +2009,19 @@ class Indexer {
 	public function submitWords($wordList, $phash) {
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_rel')) {
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('index_rel', 'phash=' . intval($phash));
+			$fields = array('phash', 'wid', 'count', 'first', 'freq', 'flags');
+			$rows = array();
 			foreach ($wordList as $val) {
-				$insertFields = array(
-					'phash' => $phash,
-					'wid' => $val['hash'],
-					'count' => $val['count'],
-					'first' => $val['first'],
-					'freq' => $this->freqMap($val['count'] / $this->wordcount),
-					'flags' => $val['cmp'] & $this->flagBitMask
+				$rows[] = array(
+					$phash,
+					$val['hash'],
+					$val['count'],
+					$val['first'],
+					$this->freqMap($val['count'] / $this->wordcount),
+					($val['cmp'] & $this->flagBitMask),
 				);
-				$GLOBALS['TYPO3_DB']->exec_INSERTquery('index_rel', $insertFields);
 			}
+			$GLOBALS['TYPO3_DB']->exec_INSERTmultipleRows('index_rel', $fields, $rows);
 		}
 	}
 
