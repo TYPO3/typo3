@@ -1949,7 +1949,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		}
 		$regExString = '(' . implode('|', $swForReg) . ')';
 		// Split and combine:
-		$parts = preg_split('/' . $regExString . '/i', ' ' . $str . ' ', 20000, PREG_SPLIT_DELIM_CAPTURE);
+		$parts = preg_split('/' . $regExString . '/ui', ' ' . $str . ' ', 20000, PREG_SPLIT_DELIM_CAPTURE);
 		// Constants:
 		$summaryMax = 300;
 		$postPreLgd = 60;
