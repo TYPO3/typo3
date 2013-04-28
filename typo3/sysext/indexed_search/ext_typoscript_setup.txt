@@ -56,6 +56,31 @@ plugin.tx_indexedsearch {
 		exactCount = 0
 		targetPid.data = TSFE:id
 	}
+	pageBrowser {
+		showTopBrowser = 1
+		showBottomBrowser = 1
+		doNotLinkCurrent = 0
+		general_stdWrap {
+			wrap = <ul class="browsebox">|</ul>
+		}
+		previous_stdWrap {
+			wrap = <li>|</li>
+		}
+		next_stdWrap {
+			wrap = <li>|</li>
+		}
+		pages_stdWrap {
+			wrap = <li>|</li>
+		}
+		current_stdWrap {
+			wrap = <li class="tx-indexedsearch-browselist-currentPage"><strong>|</strong></li>
+		}
+		pageLinks_stdWrap {
+			preCObject = TEXT
+			preCObject.data = LLL:EXT:indexed_search/pi/locallang.xml:pi_list_browseresults_page
+			preCObject.noTrimWrap = || |
+		}
+	}
 
 	result_link_target =
 /*
