@@ -2353,15 +2353,17 @@ class ContentObjectRenderer {
 		// Padding on the right side is PHP-default
 		$padType = STR_PAD_RIGHT;
 		if (!empty($conf['strPad.']['length'])) {
-			$length = intval($conf['strPad.']['length']);
+			$length = isset($conf['strPad.']['length.']) ? $this->stdWrap($conf['strPad.']['length'], $conf['strPad.']['length.']) : $conf['strPad.']['length'];
+			$length = intval($length);
 		}
 		if (!empty($conf['strPad.']['padWith'])) {
-			$padWith = $conf['strPad.']['padWith'];
+			$padWith = isset($conf['strPad.']['padWith.']) ? $this->stdWrap($conf['strPad.']['padWith'], $conf['strPad.']['padWith.']) : $conf['strPad.']['padWith'];
 		}
 		if (!empty($conf['strPad.']['type'])) {
-			if (strtolower($conf['strPad.']['type']) === 'left') {
+			$type = isset($conf['strPad.']['type.']) ? $this->stdWrap($conf['strPad.']['type'], $conf['strPad.']['type.']) : $conf['strPad.']['type'];
+			if (strtolower($type) === 'left') {
 				$padType = STR_PAD_LEFT;
-			} elseif (strtolower($conf['strPad.']['type']) === 'both') {
+			} elseif (strtolower($type) === 'both') {
 				$padType = STR_PAD_BOTH;
 			}
 		}

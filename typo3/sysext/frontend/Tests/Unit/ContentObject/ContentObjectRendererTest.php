@@ -843,7 +843,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				),
 				'__Alien___',
 			),
-			'pad string with padWith _ and type both and length 6' => array(
+			'pad string with padWith ___ and type both and length 6' => array(
 				'Alien',
 				array(
 					'length' => '6',
@@ -851,6 +851,44 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'type' => 'both',
 				),
 				'Alien_',
+			),
+			'pad string with padWith _ and type both and length 12, using stdWrap for length' => array(
+				'Alien',
+				array(
+					'length' => '1',
+					'length.' => array(
+						'wrap' => '|2',
+					),
+					'padWith' => '_',
+					'type' => 'both',
+				),
+				'___Alien____',
+			),
+			'pad string with padWith _ and type both and length 12, using stdWrap for padWidth' => array(
+				'Alien',
+				array(
+					'length' => '12',
+					'padWith' => '_',
+					'padWith.' => array(
+						'wrap' => '-|=',
+					),
+					'type' => 'both',
+				),
+				'-_=Alien-_=-',
+			),
+			'pad string with padWith _ and type both and length 12, using stdWrap for type' => array(
+				'Alien',
+				array(
+					'length' => '12',
+					'padWith' => '_',
+					'type' => 'both',
+					// make type become "left"
+					'type.' => array(
+						'substring' => '2,1',
+						'wrap' => 'lef|',
+					),
+				),
+				'_______Alien',
 			),
 		);
 	}
