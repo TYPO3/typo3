@@ -108,6 +108,24 @@ class ElementConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				NULL,
 				TRUE,
 			),
+			'Field value comparison of 1 against multi-value field of 5 returns true' => array(
+				'FIELD:content:BIT:1',
+				array('content' => '5'),
+				NULL,
+				TRUE
+			),
+			'Field value comparison of 2 against multi-value field of 5 returns false' => array(
+				'FIELD:content:BIT:2',
+				array('content' => '5'),
+				NULL,
+				FALSE
+			),
+			'Field value of 5 negated comparison against multi-value field of 5 returns false' => array(
+				'FIELD:content:!BIT:5',
+				array('content' => '5'),
+				NULL,
+				FALSE
+			),
 			'Field value comparison for required value is false for different value' => array(
 				'FIELD:foo:REQ:FALSE',
 				array('foo' => 'bar'),
