@@ -67,6 +67,9 @@ returned if you don't set the TypoScript setting on your own.
 Full Changes for 6.1.0
 ======================
 
+[BUGFIX] Don't respect sys_language in Backends getObjectByIdentifier
+[BUGFIX] Fix persisting new objects
+[BUGFIX] Fix failing unit tests
 [TASK] Update changelog and version to 6.1.0
 [TASK] Cleanup Extbase for 6.1 release
 [BUGFIX] Backend support for native DateTime
