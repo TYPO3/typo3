@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 /**
  * Contract for an object validator
  *
- * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
+ * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
  */
 interface ObjectValidatorInterface extends \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {
 

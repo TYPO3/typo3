@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Extbase\Property;
 /**
  * The Mapping Results
  *
- * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
+ * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
  */
 class MappingResults {
 
