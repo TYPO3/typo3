@@ -195,8 +195,8 @@ class Check {
 			$status->setTitle('Maximum upload filesize too small');
 			$status->setMessage(
 				'upload_max_filesize=' . ini_get('upload_max_filesize') .
-				' By default TYPO3 supports uploading, copying and moving' .
-				' files of sizes up to 10MB (You can alter the TYPO3 defaults' .
+				'. By default TYPO3 supports uploading, copying and moving' .
+				' files of sizes up to 10MB (you can alter the TYPO3 defaults' .
 				' by the config option TYPO3_CONF_VARS[BE][maxFileSize]).' .
 				' Your current value is below this, so at this point, PHP sets' .
 				' the limits for uploaded filesizes and not TYPO3.'
