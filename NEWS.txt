@@ -2,67 +2,25 @@ This document is a part of the TYPO3 project. TYPO3 is an open source web
 content management system released under the GNU GPL. TYPO3 is copyright
 (c) 1999-2012 by Kasper Skaarhoj.
 
-This document contains information about TYPO3 version 6.1 has been released
-on April 30th 2013.
+This document contains information about TYPO3 version 6.2 has been released
+on MONTH-NAME XXth 2013.
 
 An up-to-date version of this document also containing links to further in
 depth information can be found here:
 
-http://wiki.typo3.org/TYPO3_6.1
+http://wiki.typo3.org/TYPO3_6.2
 
 ===============================================================================
 Compatibility
 ===============================================================================
 
-During 6.1 development phase the 10.000th core merge was done.
-Inspiring people to share - special thanks to all contributors!
-
 -------------------------------------------------------------------------------
 System environment
 -------------------------------------------------------------------------------
 
-* Switch from mysql to mysqli PHP database extension
-
-The main database connection class (formerly known as TYPO3_DB) now uses
-"mysqli" instead of the old "mysql" extension. mysqli was introduced with
-PHP 5.0 and ships with all supported PHP versions by default. The original
-extension "mysql" is deprecated with the upcoming PHP 5.5 version, is only
-optimized for MySQL 4.1.3 or earlier, and lacks support for some newer
-features of MySQL Server.
-
-As TYPO3 CMS requires MySQL 5+ for some versions now, it is only natural to
-exchange the mysql library as well. As the mysql calls are encapsulated
-entirely in the main database connection class, there are only slight API
-changes -- all extension code using the API should run as before.
-
-"mysqli" is now a hard requirement in the PHP environment and must be loaded
-for TYPO3 to run.
-
-* Separated database host and port setting
-
-As a side effect of the switch to mysqli, the database settings in
-TYPO3_CONF_VARS DB now accept a new "port" setting. This setting must be used
-if the database host is a ipv6 address and the port is different from the
-default port 3306, otherwise the backwards compatible logic could fail.
-
 -------------------------------------------------------------------------------
 Deprecated and removed components
 -------------------------------------------------------------------------------
-
-* Removed extension statictemplates
-
-Static templates is an extension that delivers ready to use frontend templates
-like the "Green" template. The extension is outdated for years and currently
-unmaintained. It is removed from the core in the hope that it finds an
-interested new maintainer who can develop it further. If it still was in use
-for the given instance, an ugrade wizard is in place to fetch it from the
-online extension repository.
-Some frontend HMENU types are removed together with this extension as they use
-javascript files included in statictemplates. Namely GMENU_LAYERS, TMENU_LAYERS
-and GMENU_FOLDOUT are not delivered with the core anymore. If those TypoScript
-HMENU types are still used, the extension statictemplates should be fetched
-and installed from the TYPO3 extension repository as they are delivered
-together with the extension.
 
 ===============================================================================
 Changes and Improvements
@@ -71,23 +29,6 @@ Changes and Improvements
 -------------------------------------------------------------------------------
 General
 -------------------------------------------------------------------------------
-
-* Improved TCA load mechanism
-
-The initialization of the central $GLOBAL['TCA'] array was refactored,
-accelerated and simplified. Frontend code can now rely on a fully loaded array
-including columns and the requirement to call loadTca() in ext_tables.php if
-manipulating TCA is gone.
-Extension authors should catch up with this evolvment: Definition of new TCA
-tables should be moved to the extensions Configuration/TCA/ directory, every
-table must be declared in an own file "tablename.php". The file must return the
-full TCA definition of the specific table, with ctrl and columns sections
-merged together, without the former dynamicConfigFile definition. The
-declaration of TCA for new tables can be dropped from ext_tables.php, the
-bootstrap will find and execute any new table definitions in Configuration/TCA
-automatically if the extension author sticks to the convention. Examples of
-correct registration can be found in sys_note and extensionmanager and other
-system extensions.
 
 -------------------------------------------------------------------------------
 Backend
@@ -101,80 +42,6 @@ Administration / Customization
 Extbase
 -------------------------------------------------------------------------------
 
-* Enabled rewritten property mapper as default mapper
-
-Property mapping is the process to create method parameters or objects from
-incoming form or ajax data. With TYPO3 CMS version 4.6 a new property mapper
-was included as a backport from FLOW. It is much better configurable
-and can for example handle complex mapping tasks like creating a DateTime
-object from different given string formats. The FLOW documentation at
-http://docs.typo3.org/flow/TYPO3FlowDocumentation/TheDefinitiveGuide/ section
-PropertyMapping can be used as basic feature reference.
-This mapper is now enabled by default deprecating the old mapper one. extbase
-extensions might have minor issues with the new default if not coded in a clean
-way. While it is better to fix those issues, a quick fix is to swich back
-to the old mapper with a TypoScript setting:
-plugin.tx_extname.features.rewrittenPropertyMapper = 0
-
-* Removed forced single table inheritance of frontend users and groups
-
-Single table inheritance in extbase is used to stuff similar objects into a
-table, but still create different objects from it, depending on the value of
-column record_type of a specific row.
-With versions prior to 6.1, this was done for fe_users and fe_groups table. As
-a result, a frontend user object was only created from a row in persistence, if
-the record type was set to TYPO3\CMS\Extbase\Domain\Model\FrontendUser.
-Single table inheritance for fe_users and fe_groups was meant as a show case
-of the functionality in early extbase days, but didn't fit the current use
-cases anymore and was removed with 6.1.
-This change might affect backwards compatibility for your extensions, if they
-rely on single table inheritance of frontend users or groups. In seldom cases,
-this could lead to more objects being constituted from persistence in your
-repository calls than before. So keep a look at your frontend user object and
-groups and verify there is now not a bigger number ob objects fetched from
-persistence. To rebuild the previous behavior, revert the TypoScript change of
-https://review.typo3.org/#/c/17879 in your extension.
-
-* Object persistence behaviour changed from implicit to explicit save
-
-Previously, every change to a database driven object got persisted
-automatically at the end of a controller action with a call to persistAll().
-In order to improve performannce and to further narrow the behavior from TYPO3
-Extbase to TYPO3 Flow, this implicit saving has been removed.
-This means that a changed object only gets persisted, if the according
-repository update function gets called for the object.
-As an extension author, please ensure proper usage of the update function
-calls and do not rely on implicit saving anymore.
-
 -------------------------------------------------------------------------------
 Fluid
 -------------------------------------------------------------------------------
-
-* Removed inline styling of f:form viewhelper hidden div
-
-The f:form view helper renders several hidden input fields. Those are
-encapsulated in a <div>. In versions prior to 6.1, this div had an inline style
-attribute 'sytle="display: none"'. This was removed in 6.1 for accessibility
-reasons. While this change won't have any effects on most systems, this is a
-potentially breaking change if javascript DOM manipulation is done. The new
-optional viewhelper parameter "hiddenFieldClassName" was introduced and can be
-used to match this div.
-
-* Allow Fluid arrays only in ViewHelper arguments
-
-Fluid arrays are a subset of the JavaScript object syntax, making it hard to
-work with them in mixed HTML/JavaScript documents. For example the following
-JavaScript Object was parsed by Fluid:
-var uris = {
-	endPoint1: '{f:uri.action(.)}',
-	endPoint2: '{f:uri.action(.)}',
-};
-With 6.1, Fluid now only parses arrays which are used inside ViewHelper
-arguments, such that an array inside normal text is not converted anymore.
-This change is only breaking in very rare cases where one relied on the inner
-contents of the ViewHelper being an array, eg. if one used the debug
-ViewHelper as follows:
-	<f:debug>{key1: 'value1', key2: 'value2'}</f:debug>
-ViewHelpers which were written like this should be re-written to take the array
-as ViewHelper argument:
-	<f:debug value="{key1: 'value1', key2: 'value2'}" />
