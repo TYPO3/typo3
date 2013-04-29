@@ -120,6 +120,12 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public $domain_records = array();
 
+	// Select clauses for individual words
+	/**
+	 * @todo Define visibility
+	 */
+	public $wSelClauses = array();
+
 	// Domain records (?)
 	/**
 	 * @todo Define visibility
@@ -913,6 +919,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$wildcard_left = $mode & self::WILDCARD_LEFT ? '%' : '';
 		$wildcard_right = $mode & self::WILDCARD_RIGHT ? '%' : '';
 		$wSel = 'IW.baseword LIKE \'' . $wildcard_left . $GLOBALS['TYPO3_DB']->quoteStr($sWord, 'index_words') . $wildcard_right . '\'';
+		$this->wSelClauses[] = $wSel;
 		$res = $this->execPHashListQuery($wSel, ' AND is_stopword=0');
 		return $res;
 	}
@@ -926,6 +933,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public function searchDistinct($sWord) {
 		$wSel = 'IW.wid=' . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($sWord);
+		$this->wSelClauses[] = $wSel;
 		$res = $this->execPHashListQuery($wSel, ' AND is_stopword=0');
 		return $res;
 	}
@@ -941,6 +949,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ISEC.phash', 'index_section ISEC, index_fulltext IFT', 'IFT.fulltextdata LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($sSentence, 'index_fulltext') . '%\' AND
 				ISEC.phash = IFT.phash
 			' . $this->sectionTableWhere(), 'ISEC.phash');
+		$this->wSelClauses[] = '1=1';
 		return $res;
 	}
 
@@ -953,6 +962,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public function searchMetaphone($sWord) {
 		$wSel = 'IW.metaphone=' . $sWord;
+		$this->wSelClauses[] = $wSel;
 		$res = $this->execPHashListQuery($wSel, ' AND is_stopword=0');
 	}
 
@@ -1146,14 +1156,26 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				$orderBy = 'order_val' . $this->isDescending();
 				break;
 			}
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ISEC.*, IP.*, ' . $grsel, 'index_words IW,
-							index_rel IR,
-							index_section ISEC,
-							index_phash IP' . $page_join, 'IP.phash IN (' . $list . ') ' . $this->mediaTypeWhere() . ' ' . $this->languageWhere() . $freeIndexUidClause . '
-							AND IW.wid=IR.wid
-							AND ISEC.phash = IR.phash
-							AND IP.phash = IR.phash
-							AND ' . $page_where, 'IP.phash,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2 ,ISEC.page_id,ISEC.uniqid,IP.phash_grouping,IP.data_filename ,IP.data_page_id ,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,IP.cHashParams,IP.externalUrl,IP.recordUid,IP.freeIndexUid,IP.freeIndexSetId', $orderBy);
+
+			// So, words are imploded into an OR statement (no "sentence search" should be done here - may deselect results)
+			$wordSel = '(' . implode(' OR ', $this->wSelClauses) . ') AND ';
+
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'ISEC.*, IP.*, ' . $grsel,
+				'index_words IW,
+					index_rel IR,
+					index_section ISEC,
+					index_phash IP' . $page_join,
+				$wordSel .
+				'IP.phash IN (' . $list . ') ' .
+					$this->mediaTypeWhere() . ' ' . $this->languageWhere() . $freeIndexUidClause . '
+					AND IW.wid=IR.wid
+					AND ISEC.phash = IR.phash
+					AND IP.phash = IR.phash
+					AND ' . $page_where,
+				'IP.phash,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2 ,ISEC.page_id,ISEC.uniqid,IP.phash_grouping,IP.data_filename ,IP.data_page_id ,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,IP.cHashParams,IP.externalUrl,IP.recordUid,IP.freeIndexUid,IP.freeIndexSetId',
+				$orderBy
+			);
 		} else {
 			// Otherwise, if sorting are done with the pages table or other fields, there is no need for joining with the rel/word tables:
 			$orderBy = '';
