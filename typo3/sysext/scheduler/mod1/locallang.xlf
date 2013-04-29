@@ -189,17 +189,8 @@
 			<trans-unit id="msg.maynotEditRunningTask" xml:space="preserve">
 				<source>A running task may not be edited.</source>
 			</trans-unit>
-			<trans-unit id="msg.maynotDisableRunningTask" xml:space="preserve">
-				<source>A running task may not be disabled.</source>
-			</trans-unit>
 			<trans-unit id="msg.maynotStopNonRunningTask" xml:space="preserve">
 				<source>The task is not running. There are no executions to unmark.</source>
-			</trans-unit>
-			<trans-unit id="msg.maynotEnableEnabledTask" xml:space="preserve">
-				<source>The task is enabled. There is no need to enable it.</source>
-			</trans-unit>
-			<trans-unit id="msg.maynotDisableDisabledTask" xml:space="preserve">
-				<source>The task is disabled. There is no need to disable it.</source>
 			</trans-unit>
 			<trans-unit id="msg.noEmail" xml:space="preserve">
 				<source>Please enter an email address.</source>
@@ -284,12 +275,6 @@
 			</trans-unit>
 			<trans-unit id="msg.stopSuccess" xml:space="preserve">
 				<source>The task was successfully marked as non-running.</source>
-			</trans-unit>
-			<trans-unit id="msg.enableSuccess" xml:space="preserve">
-				<source>The task was successfully marked as enabled.</source>
-			</trans-unit>
-			<trans-unit id="msg.disableSuccess" xml:space="preserve">
-				<source>The task was successfully marked as disabled.</source>
 			</trans-unit>
 			<trans-unit id="msg.taskNotFound" xml:space="preserve">
 				<source>The requested task (UID: %d) was not found.</source>
