@@ -119,7 +119,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 		$validatorClassName = $this->resolveValidatorObjectName($validatorName);
 		$validator = $this->objectManager->get($validatorClassName, $validatorOptions);
 		if (method_exists($validator, 'setOptions')) {
-			// @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
+			// @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
 			$validator->setOptions($validatorOptions);
 		}
 		return $validator;

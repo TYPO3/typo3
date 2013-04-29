@@ -388,7 +388,7 @@ class Argument {
 	 * @param array $objectNames Object names of the validators
 	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument Returns $this (used for fluent interface)
 	 * @api
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
+	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
 	 */
 	public function setNewValidatorConjunction(array $objectNames) {
 		if ($this->validator === NULL) {
@@ -417,7 +417,7 @@ class Argument {
 	 * Get the origin of the argument value. This is only meaningful after argument mapping.
 	 *
 	 * @return integer one of the ORIGIN_* constants
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
+	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
 	 */
 	public function getOrigin() {
 		return $this->origin;
@@ -468,7 +468,7 @@ class Argument {
 	 * @param mixed $value The value of an argument
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException
 	 * @return mixed
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
+	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
 	 */
 	protected function transformValue($value) {
 		if (!class_exists($this->dataType)) {
@@ -528,7 +528,7 @@ class Argument {
 	 * Checks if this argument has a value set.
 	 *
 	 * @return boolean TRUE if a value was set, otherwise FALSE
-	 * @deprecated since Extbase 1.4.0, will be removed with Extbase 6.1
+	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
 	 */
 	public function isValue() {
 		return $this->value !== NULL;

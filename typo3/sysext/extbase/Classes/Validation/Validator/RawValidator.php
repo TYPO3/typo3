@@ -37,7 +37,7 @@ class RawValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorI
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @return boolean TRUE
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
+	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
 	 */
 	public function isValid($value) {
 		return TRUE;
@@ -48,7 +48,7 @@ class RawValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorI
 	 *
 	 * @param array $options Not used
 	 * @return void
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
+	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
 	 */
 	public function setOptions(array $options) {
 	}
@@ -57,7 +57,7 @@ class RawValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorI
 	 * Returns an array of errors which occurred during the last isValid() call.
 	 *
 	 * @return array An array of error messages or an empty array if no errors occurred.
-	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.1
+	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
 	 */
 	public function getErrors() {
 		return array();
