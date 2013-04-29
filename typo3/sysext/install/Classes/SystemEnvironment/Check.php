@@ -1039,7 +1039,7 @@ class Check {
 	protected function checkGdLibFreeTypeSupport() {
 		if (function_exists('imagettftext')) {
 			$status = new OkStatus();
-			$status->setTitle('PHP GD library has freettype font support');
+			$status->setTitle('PHP GD library has freetype font support');
 			$status->setMessage(
 				'There is a difference between the font size setting the GD' .
 				' library should be feeded with. If installation is completed' .
