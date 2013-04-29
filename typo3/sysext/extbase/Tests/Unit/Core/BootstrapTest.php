@@ -94,8 +94,12 @@ class BootstrapTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		/** @var $cliResponse \TYPO3\CMS\Extbase\Mvc\Cli\Response */
 		$cliResponse = $this->getMock('TYPO3\CMS\Extbase\Mvc\Cli\Response', array('send'));
 
+		/** @var $reflectionServiceMock \TYPO3\CMS\Extbase\Reflection\ReflectionService */
+		$reflectionServiceMock = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService', array(), array(), '', FALSE);
+
 		/** @var $bootstrap \TYPO3\CMS\Extbase\Core\Bootstrap |\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$bootstrap = $this->getAccessibleMock('TYPO3\CMS\Extbase\Core\Bootstrap', array('isInCliMode'));
+		$bootstrap = $this->getAccessibleMock('TYPO3\CMS\Extbase\Core\Bootstrap', array('isInCliMode', 'initializeReflection'));
+		$bootstrap->_set('reflectionService', $reflectionServiceMock);
 		$bootstrap->expects($this->once())->method('isInCliMode')->will($this->returnValue(TRUE));
 
 		$requestHandlerResolver->expects($this->once())->method('resolveRequestHandler')->will($this->returnValue($cliRequestHandler));
