@@ -77,6 +77,7 @@ class tx_indexedsearch extends tslib_pibase {
 	var $cache_rl = array();		// Caching of root line data
 	var $fe_groups_required = array();	// Required fe_groups memberships for display of a result.
 	var $domain_records = array();		// Domain records (?)
+	var $wSelClauses = array();         // Select clauses for individual words
 	var $resultSections = array();		// Page tree sections for search result.
 	var $external_parsers = array();	// External parser objects
 	var $iconFileNameCache = array();	// Storage of icons....
@@ -907,6 +908,7 @@ class tx_indexedsearch extends tslib_pibase {
 		$wildcard_right = ($mode & self::WILDCARD_RIGHT) ? '%' : '';
 
 		$wSel = 'IW.baseword LIKE \'' . $wildcard_left.$GLOBALS['TYPO3_DB']->quoteStr($sWord, 'index_words') . $wildcard_right . '\'';
+		$this->wSelClauses[] = $wSel;
 		$res = $this->execPHashListQuery($wSel,' AND is_stopword=0');
 		return $res;
 	}
@@ -920,6 +922,7 @@ class tx_indexedsearch extends tslib_pibase {
 	function searchDistinct($sWord) {
 		$wSel = 'IW.wid=' . tx_indexedsearch_util::md5inthash($sWord);
 		$res = $this->execPHashListQuery($wSel, ' AND is_stopword=0');
+		$this->wSelClauses[] = $wSel;
 		return $res;
 	}
 
@@ -938,6 +941,7 @@ class tx_indexedsearch extends tslib_pibase {
 			' . $this->sectionTableWhere(),
 			'ISEC.phash'
 		);
+		$this->wSelClauses[] = '1=1';
 		return $res;
 	}
 
@@ -949,6 +953,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 */
 	function searchMetaphone($sWord) {
 		$wSel = 'IW.metaphone=' . $sWord;
+		$this->wSelClauses[] = $wSel;
 		$res = $this->execPHashListQuery($wSel, ' AND is_stopword=0');
 	}
 
@@ -1134,6 +1139,8 @@ class tx_indexedsearch extends tslib_pibase {
 					$orderBy = 'order_val'.$this->isDescending();
 				break;
 			}
+			// So, words are imploded into an OR statement (no "sentence search" should be done here - may deselect results)
+			$wordSel = '(' . implode(' OR ', $this->wSelClauses) . ') AND ';
 
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 						'ISEC.*, IP.*, '
@@ -1143,6 +1150,7 @@ class tx_indexedsearch extends tslib_pibase {
 							index_section ISEC,
 							index_phash IP'.
 							$page_join,
+							$wordSel .
 							'IP.phash IN ('.$list.') '.
 							$this->mediaTypeWhere().' '.
 							$this->languageWhere().
