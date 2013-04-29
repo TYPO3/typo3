@@ -234,11 +234,13 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * enable fields are taken into account, regardless of the enableFieldsToBeIgnored setting.
 	 *
 	 * @param boolean $ignoreEnableFields
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface (fluent interface)
 	 * @see setEnableFieldsToBeIgnored()
 	 * @api
 	 */
 	public function setIgnoreEnableFields($ignoreEnableFields) {
 		$this->ignoreEnableFields = $ignoreEnableFields;
+		return $this;
 	}
 
 	/**
@@ -260,12 +262,13 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * by this column. This setting is only taken into account if $this->ignoreEnableFields = TRUE.
 	 *
 	 * @param array $enableFieldsToBeIgnored
-	 * @return void
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface (fluent interface)
 	 * @see setIgnoreEnableFields()
 	 * @api
 	 */
 	public function setEnableFieldsToBeIgnored($enableFieldsToBeIgnored) {
 		$this->enableFieldsToBeIgnored = $enableFieldsToBeIgnored;
+		return $this;
 	}
 
 	/**
@@ -283,11 +286,12 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	 * Sets the flag if the query should return objects that are deleted.
 	 *
 	 * @param boolean $includeDeleted
-	 * @return void
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface (fluent interface)
 	 * @api
 	 */
 	public function setIncludeDeleted($includeDeleted) {
 		$this->includeDeleted = $includeDeleted;
+		return $this;
 	}
 
 	/**
