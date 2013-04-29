@@ -209,14 +209,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				$this->stopTask();
 				$content .= $this->listTasks();
 				break;
-			case 'enable':
-				$this->enableTask();
-				$content .= $this->listTasks();
-				break;
-			case 'disable':
-				$this->disableTask();
-				$content .= $this->listTasks();
-				break;
 			case 'list':
 
 			default:
@@ -533,57 +525,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			} else {
 				// The task is not running, nothing to unmark
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.maynotStopNonRunningTask'), \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
-			}
-		} catch (\Exception $e) {
-			// The task was not found, for some reason
-			$this->addMessage(sprintf($GLOBALS['LANG']->getLL('msg.taskNotFound'), $this->submittedData['uid']), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-		}
-	}
-
-	/**
-	 * Activates the task
-	 *
-	 * @return void
-	 */
-	protected function enableTask() {
-		try {
-			// Try to fetch the task and activate it
-			$task = $this->scheduler->fetchTask($this->submittedData['uid']);
-			if ($task->isDisabled()) {
-				$task->setDisabled(FALSE);
-				if (!$task->getExecution()->getMultiple()) {
-					$task->setExecutionTime(time());
-				}
-				$task->save();
-				$this->addMessage($GLOBALS['LANG']->getLL('msg.enableSuccess'));
-			} else {
-				// The task is enable, nothing to enable
-				$this->addMessage($GLOBALS['LANG']->getLL('msg.maynotEnableEnabledTask'), \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
-			}
-		} catch (\Exception $e) {
-			// The task was not found, for some reason
-			$this->addMessage(sprintf($GLOBALS['LANG']->getLL('msg.taskNotFound'), $this->submittedData['uid']), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-		}
-	}
-
-	/**
-	 * Disables the task
-	 *
-	 * @return void
-	 */
-	protected function disableTask() {
-		try {
-			// Try to fetch the task and disable it
-			$task = $this->scheduler->fetchTask($this->submittedData['uid']);
-			if ($task->isExecutionRunning()) {
-				$this->addMessage($GLOBALS['LANG']->getLL('msg.maynotDisableRunningTask'), \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
-			} elseif (!$task->isDisabled()) {
-				$task->setDisabled(TRUE);
-				$task->save();
-				$this->addMessage($GLOBALS['LANG']->getLL('msg.disableSuccess'));
-			} else {
-				// The task is disabled, nothing to disable
-				$this->addMessage($GLOBALS['LANG']->getLL('msg.maynotDisableDisabledTask'), \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 			}
 		} catch (\Exception $e) {
 			// The task was not found, for some reason
@@ -945,7 +886,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				'0' => array(
 					'tr' => array('<tr class="t3-row-header">', '</tr>'),
 					'defCol' => array('<td>', '</td>'),
-					'1' => array('<td style="width: 56px;">', '</td>'),
+					'1' => array('<td style="width: 36px;">', '</td>'),
 					'3' => array('<td colspan="2">', '</td>')
 				),
 				'defRow' => array(
@@ -987,8 +928,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				$editAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:edit', TRUE) . '" class="icon">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 				$deleteAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.delete') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:delete', TRUE) . '" class="icon">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
 				$stopAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.stop') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop', TRUE) . '" class="icon"><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler') . '/res/gfx/stop.png')) . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop') . '" /></a>';
-				$enableAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=enable&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:activate', TRUE) . '" class="icon">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-unhide') . '</a>';
-				$disableAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=disable&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:deactivate', TRUE) . '" class="icon">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-hide') . '</a>';
 				// Define some default values
 				$lastExecution = '-';
 				$isRunning = FALSE;
@@ -1080,9 +1019,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					if ($schedulerRecord['disable'] == 1 && !$isRunning) {
 						$tableLayout[$tr] = $disabledTaskRow;
 						$executionStatus = 'disabled';
-						$actions .= $enableAction;
-					} elseif (!$isRunning) {
-						$actions .= $disableAction;
 					}
 					// Check if the last run failed
 					$failureOutput = '';
@@ -1460,7 +1396,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			'reload' => '',
 			'shortcut' => $this->getShortcutButton()
 		);
-		if (empty($this->CMD) || $this->CMD == 'list' || $this->CMD == 'delete' || $this->CMD == 'enable' || $this->CMD == 'disable') {
+		if (empty($this->CMD) || $this->CMD == 'list' || $this->CMD == 'delete') {
 			$buttons['reload'] = '<a href="' . $GLOBALS['MCONF']['_'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.reload', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-refresh') . '</a>';
 			if ($this->MOD_SETTINGS['function'] === 'scheduler' && count(self::getRegisteredClasses())) {
 				$link = $GLOBALS['MCONF']['_'] . '&CMD=add';
