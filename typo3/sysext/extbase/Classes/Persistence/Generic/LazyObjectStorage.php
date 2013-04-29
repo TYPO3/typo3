@@ -120,8 +120,17 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 				parent::attach($object);
 			}
 			$this->_memorizeCleanState();
-			$this->parentObject->_memorizeCleanState($this->propertyName);
+			if (!$this->isStorageAlreadyMemorizedInParentCleanState()) {
+				$this->parentObject->_memorizeCleanState($this->propertyName);
+			}
 		}
+	}
+
+	/**
+	 * @return bool
+	 */
+	protected function isStorageAlreadyMemorizedInParentCleanState() {
+		return $this->parentObject->_getCleanProperty($this->propertyName) === $this;
 	}
 
 	// Delegation to the ObjectStorage methods below
@@ -297,6 +306,15 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	public function toArray() {
 		$this->initialize();
 		return parent::toArray();
+	}
+
+	/**
+	 * @param mixed $object
+	 * @return integer|NULL
+	 */
+	public function getPosition($object) {
+		$this->initialize();
+		return parent::getPosition($object);
 	}
 }
 
