@@ -596,6 +596,10 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			if ($parentTableFieldName !== NULL) {
 				$row[$parentTableFieldName] = $parentDataMap->getTableName();
 			}
+			$relationTableMatchFields = $parentColumnMap->getRelationTableMatchFields();
+			if (is_array($relationTableMatchFields) && count($relationTableMatchFields) > 0) {
+				$row = array_merge($relationTableMatchFields, $row);
+			}
 		}
 		$childSortByFieldName = $parentColumnMap->getChildSortByFieldName();
 		if (!empty($childSortByFieldName)) {
