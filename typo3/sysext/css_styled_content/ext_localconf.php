@@ -40,6 +40,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version']['tx_c
 // Register ourselves as "content rendering template" (providing the hooks of "static template 43" = content (default) )
 $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'] = array(
 	'cssstyledcontent/static/',
+	'cssstyledcontent/static/v6.1/',
 	'cssstyledcontent/static/v6.0/',
 	'cssstyledcontent/static/v4.7/',
 	'cssstyledcontent/static/v4.6/',
