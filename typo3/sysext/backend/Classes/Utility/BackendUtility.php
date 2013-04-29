@@ -2329,18 +2329,14 @@ class BackendUtility {
 	}
 
 	/**
-	 * Returns CSH help text (description), if configured for.
-	 * $GLOBALS['TCA_DESCR'] must be loaded prior to this function and $GLOBALS['BE_USER'] must have "edit_showFieldHelp" set to "text",
-	 * otherwise nothing is returned.
+	 * Returns CSH help text
 	 *
 	 * @param string $table Table name
 	 * @param string $field Field name
 	 * @return string HTML content for help text
-	 * @depreacted since 6.0, will be removed two versions later
+	 * @see wrapInHelp()
 	 */
 	static public function helpText($table, $field) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-
 		$helpTextArray = self::helpTextArray($table, $field);
 		$output = '';
 		$arrow = '';
