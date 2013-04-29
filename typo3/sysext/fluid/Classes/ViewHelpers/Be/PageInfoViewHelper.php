@@ -52,12 +52,12 @@ class Tx_Fluid_ViewHelpers_Be_PageInfoViewHelper extends Tx_Fluid_ViewHelpers_Be
 			$alttext = t3lib_BEfunc::getRecordIconAltText($pageRecord, 'pages');
 			$iconImg = t3lib_iconWorks::getSpriteIconForRecord('pages', $pageRecord, array('title' => htmlspecialchars($alttext)));
 				// Make Icon:
-			$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
+			$theIcon = $doc->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
 		} else {	// On root-level of page tree
 				// Make Icon
 			$iconImg = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/_icon_website.gif') . ' alt="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '" />';
 			if($BE_USER->user['admin']) {
-				$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', 0);
+				$theIcon = $doc->wrapClickMenuOnIcon($iconImg, 'pages', 0);
 			} else {
 				$theIcon = $iconImg;
 			}
