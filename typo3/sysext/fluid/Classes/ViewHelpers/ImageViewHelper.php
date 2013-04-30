@@ -148,9 +148,6 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 		if (empty($this->arguments['alt'])) {
 			$this->tag->addAttribute('alt', '');
 		}
-		if (empty($this->arguments['title']) && !empty($this->arguments['alt'])) {
-			$this->tag->addAttribute('title', $this->arguments['alt']);
-		}
 		return $this->tag->render();
 	}
 
