@@ -79,6 +79,16 @@ class tslib_pibase {
 		'currentTable' => '',		// Current table
 	);
 
+	/**
+	 * Contains those LL keys, which have been set to (empty) in TypoScript.
+	 * This is necessary, as we cannot distinguish between a nonexisting
+	 * translation and a label that has been cleared by TS.
+	 * In both cases ['key'][0]['target'] is "".
+	 *
+	 * @var array
+	 */
+	protected $LOCAL_LANG_UNSET = array();
+
 	var $LOCAL_LANG = Array();		// Local Language content
 	var $LOCAL_LANG_charset = Array();	// Local Language content charset for individual labels (overriding)
 	var $LOCAL_LANG_loaded = 0;		// Flag that tells if the locallang file has been fetch (or tried to be fetched) already.
@@ -894,7 +904,9 @@ class tslib_pibase {
 	 */
 	public function pi_getLL($key, $alternativeLabel = '', $hsc = FALSE) {
 		$word = NULL;
-		if (!empty($this->LOCAL_LANG[$this->LLkey][$key][0]['target'])) {
+		if (!empty($this->LOCAL_LANG[$this->LLkey][$key][0]['target'])
+			|| isset($this->LOCAL_LANG_UNSET[$this->LLkey][$key])
+		) {
 
 				// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
 			if (isset($this->LOCAL_LANG_charset[$this->LLkey][$key])) {
@@ -909,7 +921,9 @@ class tslib_pibase {
 			$alternativeLanguageKeys = t3lib_div::trimExplode(',', $this->altLLkey, TRUE);
 			$alternativeLanguageKeys = array_reverse($alternativeLanguageKeys);
 			foreach ($alternativeLanguageKeys as $languageKey) {
-				if (!empty($this->LOCAL_LANG[$languageKey][$key][0]['target'])) {
+				if (!empty($this->LOCAL_LANG[$languageKey][$key][0]['target'])
+					|| isset($this->LOCAL_LANG_UNSET[$languageKey][$key])
+				) {
 						// alternative language translation for key exists
 					$word = $this->LOCAL_LANG[$languageKey][$key][0]['target'];
 						// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
@@ -924,8 +938,9 @@ class tslib_pibase {
 			}
 		}
 		if ($word === NULL) {
-			if (!empty($this->LOCAL_LANG['default'][$key][0]['target'])) {
-
+			if (!empty($this->LOCAL_LANG['default'][$key][0]['target'])
+				|| isset($this->LOCAL_LANG_UNSET['default'][$key])
+			) {
 					// Get default translation (without charset conversion, english)
 				$word = $this->LOCAL_LANG['default'][$key][0]['target'];
 			} else {
@@ -968,16 +983,21 @@ class tslib_pibase {
 			}
 
 				// Overlaying labels from TypoScript (including fictitious language keys for non-system languages!):
-			$confLL = $this->conf['_LOCAL_LANG.'];
-			if (is_array($confLL)) {
-				foreach ($confLL as $languageKey => $languageArray) {
-						// Don't process label if the langue is not loaded
+			if (isset($this->conf['_LOCAL_LANG.'])) {
+				// Clear the "unset memory"
+				$this->LOCAL_LANG_UNSET = array();
+				foreach ($this->conf['_LOCAL_LANG.'] as $languageKey => $languageArray) {
+						// Remove the dot after the language key
 					$languageKey = substr($languageKey,0,-1);
+						// Don't process label if the language is not loaded
 					if (is_array($languageArray) && is_array($this->LOCAL_LANG[$languageKey])) {
 							// Remove the dot after the language key
 						foreach ($languageArray as $labelKey => $labelValue) {
 							if (!is_array($labelValue))	{
 								$this->LOCAL_LANG[$languageKey][$labelKey][0]['target'] = $labelValue;
+								if ($labelValue === '') {
+									$this->LOCAL_LANG_UNSET[$languageKey][$labelKey] = '';
+								}
 								$this->LOCAL_LANG_charset[$languageKey][$labelKey] = 'utf-8';
 							}
 						}
