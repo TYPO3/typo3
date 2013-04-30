@@ -2018,7 +2018,7 @@ class Indexer {
 	 */
 	public function freqMap($freq) {
 		$mapFactor = $this->freqMax * 100 * $this->freqRange;
-		if ($freq < 1) {
+		if ($freq <= 1) {
 			$newFreq = $freq * $mapFactor;
 			$newFreq = $newFreq > $this->freqRange ? $this->freqRange : $newFreq;
 		} else {
