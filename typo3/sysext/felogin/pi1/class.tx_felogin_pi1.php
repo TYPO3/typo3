@@ -846,7 +846,8 @@ class tx_felogin_pi1 extends tslib_pibase {
 			$getVars['no_cache'],
 			$getVars['logintype'],
 			$getVars['redirect_url'],
-			$getVars['cHash']
+			$getVars['cHash'],
+			$getVars[$this->prefixId]
 		);
 		if ($this->conf['preserveGETvars'] === 'all') {
 			$preserveQueryParts = $getVars;
