@@ -216,7 +216,9 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		$dirPath = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(
 			PathUtility::dirname($fileIdentifier)
 		);
-		if ($dirPath !== '' && $dirPath !== '/') {
+		if ($dirPath === '' || $dirPath === '.') {
+			$dirPath = '/';
+		} elseif ($dirPath !== '/') {
 			$dirPath = '/' . trim($dirPath, '/') . '/';
 		}
 		$absoluteFilePath = $this->absoluteBasePath . ltrim($fileIdentifier, '/');
