@@ -50,7 +50,7 @@ class SessionStorage extends \TYPO3\CMS\Rsaauth\Storage\AbstractStorage {
 	 * Obtains key from the session
 	 *
 	 * @return string The key or NULL
-	 * @see tx_rsaauth_abstract_storage::get()
+	 * @see \TYPO3\CMS\Rsaauth\Storage\AbstractStorage::get()
 	 */
 	public function get() {
 		return isset($_SESSION['tx_rsaauth_key']) ? $_SESSION['tx_rsaauth_key'] : NULL;
@@ -60,7 +60,7 @@ class SessionStorage extends \TYPO3\CMS\Rsaauth\Storage\AbstractStorage {
 	 * Puts key to the session
 	 *
 	 * @param string $key The key
-	 * @see tx_rsaauth_abstract_storage::put()
+	 * @see \TYPO3\CMS\Rsaauth\Storage\AbstractStorage::put()
 	 */
 	public function put($key) {
 		$_SESSION['tx_rsaauth_key'] = $key;

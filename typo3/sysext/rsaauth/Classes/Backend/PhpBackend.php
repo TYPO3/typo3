@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Rsaauth\Backend;
  ***************************************************************/
 /**
  * This class contains a PHP OpenSSL backend for the TYPO3 RSA authentication
- * service. See class tx_rsaauth_abstract_backend for the information on using
+ * service. See class \TYPO3\CMS\Rsaauth\Backend\AbstractBackend for the information on using
  * backends.
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
@@ -36,7 +36,7 @@ class PhpBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 	 * Creates a new public/private key pair using PHP OpenSSL extension.
 	 *
 	 * @return \TYPO3\CMS\Rsaauth\Keypair A new key pair or NULL in case of error
-	 * @see tx_rsaauth_abstract_backend::createNewKeyPair()
+	 * @see \TYPO3\CMS\Rsaauth\Backend\AbstractBackend::createNewKeyPair()
 	 */
 	public function createNewKeyPair() {
 		$result = NULL;
@@ -71,7 +71,7 @@ class PhpBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 	 * @param string $privateKey The private key (obtained from a call to createNewKeyPair())
 	 * @param string $data Data to decrypt (base64-encoded)
 	 * @return string Decrypted data or NULL in case of a error
-	 * @see tx_rsaauth_abstract_backend::decrypt()
+	 * @see \TYPO3\CMS\Rsaauth\Backend\AbstractBackend::decrypt()
 	 */
 	public function decrypt($privateKey, $data) {
 		$result = '';
@@ -86,7 +86,7 @@ class PhpBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 	 * PHP OpenSSl extension is installed and functional.
 	 *
 	 * @return void
-	 * @see tx_rsaauth_abstract_backend::isAvailable()
+	 * @see \TYPO3\CMS\Rsaauth\Backend\AbstractBackend::isAvailable()
 	 */
 	public function isAvailable() {
 		$result = FALSE;

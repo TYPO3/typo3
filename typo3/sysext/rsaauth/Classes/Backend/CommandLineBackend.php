@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Rsaauth\Backend;
 /**
  * This class contains a OpenSSL backend for the TYPO3 RSA authentication
  * service. It uses shell version of OpenSSL to perform tasks. See class
- * tx_rsaauth_abstract_backend for the information on using backends.
+ * \TYPO3\CMS\Rsaauth\Backend\AbstractBackend for the information on using backends.
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
  */
@@ -66,7 +66,7 @@ class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 
 	/**
 	 * @return \TYPO3\CMS\Rsaauth\Keypair A new key pair or NULL in case of error
-	 * @see tx_rsaauth_abstract_backend::createNewKeyPair()
+	 * @see \TYPO3\CMS\Rsaauth\Backend\AbstractBackend::createNewKeyPair()
 	 */
 	public function createNewKeyPair() {
 		$result = NULL;
@@ -103,7 +103,7 @@ class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 	 * @param string $privateKey The private key (obtained from a call to createNewKeyPair())
 	 * @param string $data Data to decrypt (base64-encoded)
 	 * @return string Decrypted data or NULL in case of a error
-	 * @see tx_rsaauth_abstract_backend::decrypt()
+	 * @see \TYPO3\CMS\Rsaauth\Backend\AbstractBackend::decrypt()
 	 */
 	public function decrypt($privateKey, $data) {
 		// Key must be put to the file
@@ -127,7 +127,7 @@ class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 	 * executed successfully.
 	 *
 	 * @return void
-	 * @see tx_rsaauth_abstract_backend::isAvailable()
+	 * @see \TYPO3\CMS\Rsaauth\Backend\AbstractBackend::isAvailable()
 	 */
 	public function isAvailable() {
 		$result = FALSE;
