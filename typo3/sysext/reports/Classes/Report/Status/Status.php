@@ -79,7 +79,7 @@ class Status implements \TYPO3\CMS\Reports\ReportInterface {
 	/**
 	 * Runs through all status providers and returns all statuses collected.
 	 *
-	 * @return array An array of tx_reports_reports_status_Status objects
+	 * @return array An array of \TYPO3\CMS\Reports\Status objects
 	 */
 	public function getSystemStatus() {
 		$status = array();
@@ -96,7 +96,7 @@ class Status implements \TYPO3\CMS\Reports\ReportInterface {
 	/**
 	 * Determines the highest severity from the given statuses.
 	 *
-	 * @param array $statusCollection An array of tx_reports_reports_status_Status objects.
+	 * @param array $statusCollection An array of \TYPO3\CMS\Reports\Status objects.
 	 * @return integer The highest severity found from the statuses.
 	 */
 	public function getHighestSeverity(array $statusCollection) {

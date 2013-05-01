@@ -34,7 +34,6 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	 * Returns the status for this report
 	 *
 	 * @return array List of statuses
-	 * @see typo3/sysext/reports/interfaces/tx_reports_StatusProvider::getStatus()
 	 */
 	public function getStatus() {
 		$statuses = array(

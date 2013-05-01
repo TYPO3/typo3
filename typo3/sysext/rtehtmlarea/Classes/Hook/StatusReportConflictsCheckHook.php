@@ -31,7 +31,7 @@ class StatusReportConflictsCheckHook implements \TYPO3\CMS\Reports\StatusProvide
 	/**
 	 * Compiles a collection of system status checks as a status report.
 	 *
-	 * @see typo3/sysext/reports/interfaces/tx_reports_StatusProvider::getStatus()
+	 * @return array List of statuses
 	 */
 	public function getStatus() {
 		$reports = array(
@@ -43,7 +43,7 @@ class StatusReportConflictsCheckHook implements \TYPO3\CMS\Reports\StatusProvide
 	/**
 	 * Check whether any conflicting extension has been installed
 	 *
-	 * @return 	tx_reports_reports_status_Status
+	 * @return \TYPO3\CMS\Reports\Status
 	 */
 	protected function checkIfNoConflictingExtensionIsInstalled() {
 		$title = $GLOBALS['LANG']->sL('LLL:EXT:rtehtmlarea/hooks/statusreport/locallang.xml:title');
