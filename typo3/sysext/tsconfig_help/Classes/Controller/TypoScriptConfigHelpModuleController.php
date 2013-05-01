@@ -78,7 +78,7 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 		// Draw the header.
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->setModuleTemplate('templates/tsconfig_help.html');
+		$this->doc->setModuleTemplate('EXT:tsconfig_help/Resources/Private/Templates/tsconfig_help.html');
 		if ($access || $GLOBALS['BE_USER']->user['admin']) {
 			$this->doc->form = '<form action="" method="post">';
 			// JavaScript

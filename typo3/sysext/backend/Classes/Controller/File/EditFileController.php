@@ -106,7 +106,7 @@ class EditFileController {
 		// Setting template object
 		// ***************************
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-		$this->doc->setModuleTemplate('templates/file_edit.html');
+		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/file_edit.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			function backToList() {	//

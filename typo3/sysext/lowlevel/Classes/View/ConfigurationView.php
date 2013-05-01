@@ -79,7 +79,7 @@ class ConfigurationView {
 		$this->menuConfig();
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->setModuleTemplate('templates/config.html');
+		$this->doc->setModuleTemplate('EXT:lowlevel/Resources/Private/Templates/config.html');
 		// JavaScript
 		$this->doc->JScode = '
 		<script language="javascript" type="text/javascript">

@@ -81,7 +81,6 @@ class PageTreeNavigationController {
 	 */
 	public $setTempDBmount;
 
-	// A static HTML template, usually in templates/alt_db_navframe.html
 	/**
 	 * @todo Define visibility
 	 */
@@ -144,7 +143,7 @@ class PageTreeNavigationController {
 		// Create template object:
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->setModuleTemplate('templates/alt_db_navframe.html');
+		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/alt_db_navframe.html');
 		$this->doc->showFlashMessages = FALSE;
 		// Get HTML-Template
 		// Adding javascript code for AJAX (prototype), drag&drop and the pagetree as well as the click menu code

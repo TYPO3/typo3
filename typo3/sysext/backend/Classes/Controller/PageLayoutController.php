@@ -414,7 +414,7 @@ class PageLayoutController {
 			// Start document template object:
 			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
-			$this->doc->setModuleTemplate('templates/db_layout.html');
+			$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_layout.html');
 			// JavaScript:
 			$this->doc->JScode = '<script type="text/javascript" ' . 'src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($GLOBALS['BACK_PATH'] . '../t3lib/jsfunc.updateform.js')) . '">' . '</script>';
 			$this->doc->JScode .= $this->doc->wrapScriptTags('
@@ -551,7 +551,7 @@ class PageLayoutController {
 			// If no access or id value, create empty document:
 			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
-			$this->doc->setModuleTemplate('templates/db_layout.html');
+			$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_layout.html');
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 				if (top.fsMod) top.fsMod.recentIds["web"] = ' . intval($this->id) . ';
 			');
@@ -596,7 +596,7 @@ class PageLayoutController {
 	 */
 	public function renderQuickEdit() {
 		// Alternative template
-		$this->doc->setModuleTemplate('templates/db_layout_quickedit.html');
+		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_layout_quickedit.html');
 		// Alternative form tag; Quick Edit submits its content to tce_db.php.
 		$this->doc->form = '<form action="' . htmlspecialchars(($GLOBALS['BACK_PATH'] . 'tce_db.php?&prErr=1&uPT=1')) . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
 		// Setting up the context sensitive menu:

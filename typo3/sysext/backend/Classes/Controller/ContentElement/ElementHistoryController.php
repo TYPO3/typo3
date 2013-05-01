@@ -59,7 +59,7 @@ class ElementHistoryController {
 		// Create internal template object:
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->setModuleTemplate('templates/show_rechis.html');
+		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/show_rechis.html');
 		// Start the page header:
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
 	}

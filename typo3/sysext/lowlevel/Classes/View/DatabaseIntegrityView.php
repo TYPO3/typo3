@@ -81,7 +81,7 @@ class DatabaseIntegrityView {
 		$this->menuConfig();
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->setModuleTemplate('templates/dbint.html');
+		$this->doc->setModuleTemplate('EXT:lowlevel/Resources/Private/Templates/dbint.html');
 		$this->doc->form = '<form action="" method="post" name="' . $this->formName . '">';
 		// JavaScript
 		$this->doc->JScode = '
