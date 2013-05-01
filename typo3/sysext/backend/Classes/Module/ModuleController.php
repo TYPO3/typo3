@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Backend\Module;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Class with utility functions for module menu
  *
@@ -53,7 +54,7 @@ class ModuleController {
 
 	/**
 	 * This method creates the module menu if necessary
-	 * afterwards you only need an instance of Typo3_ModuleStorage
+	 * afterwards you only need an instance of \TYPO3\CMS\Backend\Module\ModuleStorage
 	 * to get the menu
 	 *
 	 * @return void

@@ -336,7 +336,7 @@ class PageTreeNavigationController {
 	 * Called by typo3/ajax.php
 	 *
 	 * @param array $params Additional parameters (not used here)
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj The TYPO3AJAX object of this request
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj The AjaxRequestHandler object of this request
 	 * @return void
 	 */
 	public function ajaxExpandCollapse($params, $ajaxObj) {

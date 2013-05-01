@@ -39,7 +39,7 @@ class ExtDirectRouter {
 	 * Dispatches the incoming calls to methods about the ExtDirect API.
 	 *
 	 * @param aray $ajaxParams Ajax parameters
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj typo3ajax instance
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Ajax object
 	 * @return void
 	 */
 	public function route($ajaxParams, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj) {
