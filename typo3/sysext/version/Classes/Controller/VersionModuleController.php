@@ -152,7 +152,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 		// Draw the header.
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->setModuleTemplate('templates/version.html');
+		$this->doc->setModuleTemplate('EXT:version/Resources/Private/Templates/version.html');
 		// Add styles
 		$this->doc->inDocStylesArray[$GLOBALS['MCONF']['name']] = '
 .version-diff-1 { background-color: green; }
