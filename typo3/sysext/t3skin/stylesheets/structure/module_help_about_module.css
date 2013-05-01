@@ -23,7 +23,7 @@ table#typo3-aboutmodules tr.c-mainitem td {
 }
 
 table#typo3-aboutmodules tr.c-mainitem td img {
-	vertical-align: bottom;
+	vertical-align: middle;
 }
 
 table#typo3-aboutmodules tr.c-subitem-row td {

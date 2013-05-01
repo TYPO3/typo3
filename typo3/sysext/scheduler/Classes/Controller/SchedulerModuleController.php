@@ -133,7 +133,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$this->doc->getPageRenderer()->addInlineSetting('scheduler', 'runningIcon', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler') . 'res/gfx/status_running.png');
 			// Prepare main content
 			$this->content = $this->doc->header($GLOBALS['LANG']->getLL('function.' . $this->MOD_SETTINGS['function']));
-			$this->content .= $this->doc->spacer(5);
 			$this->content .= $this->getModuleContent();
 		} else {
 			// If no access, only display the module's title
@@ -341,13 +340,15 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		}
 		/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, '', $severity);
+
 		$content .= '<div class="info-block">';
-		$content .= '<h3>' . $GLOBALS['LANG']->getLL('hdg.lastRun') . '</h3>';
+		$content .= '<h2>' . $GLOBALS['LANG']->getLL('hdg.lastRun') . '</h2>';
 		$content .= $flashMessage->render();
 		$content .= '</div>';
+
 		// Check CLI user
 		$content .= '<div class="info-block">';
-		$content .= '<h3>' . $GLOBALS['LANG']->getLL('hdg.schedulerUser') . '</h3>';
+		$content .= '<h2>' . $GLOBALS['LANG']->getLL('hdg.schedulerUser') . '</h2>';
 		$content .= '<p>' . $GLOBALS['LANG']->getLL('msg.schedulerUser') . '</p>';
 		$checkUser = $this->checkSchedulerUser();
 		if ($checkUser == -1) {
@@ -363,6 +364,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		}
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, '', $severity);
 		$content .= $flashMessage->render() . '</div>';
+
 		// Check if CLI script is executable or not
 		$script = PATH_typo3 . 'cli_dispatch.phpsh';
 		$isExecutable = FALSE;
@@ -374,7 +376,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$isExecutable = is_executable($script);
 		}
 		$content .= '<div class="info-block">';
-		$content .= '<h3>' . $GLOBALS['LANG']->getLL('hdg.cliScript') . '</h3>';
+		$content .= '<h2>' . $GLOBALS['LANG']->getLL('hdg.cliScript') . '</h2>';
 		$content .= '<p>' . sprintf($GLOBALS['LANG']->getLL('msg.cliScript'), $script) . '</p>';
 		if ($isExecutable) {
 			$message = $GLOBALS['LANG']->getLL('msg.cliScriptExecutable');
@@ -450,7 +452,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' T (e';
 		$now = date($dateFormat) . ', GMT ' . date('P') . ')';
 		// Display the help text
-		$serverTime = '<h4>' . $GLOBALS['LANG']->getLL('label.serverTime') . '</h4>';
+		$serverTime = '<h3>' . $GLOBALS['LANG']->getLL('label.serverTime') . '</h3>';
 		$serverTime .= '<p>' . $GLOBALS['LANG']->getLL('msg.serverTimeHelp') . '</p>';
 		$serverTime .= '<p>' . sprintf($GLOBALS['LANG']->getLL('msg.serverTime'), $now) . '</p>';
 		return $serverTime;
@@ -1081,7 +1083,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		// Also display information about the usage of server time
 		if ($numRows > 0) {
 			$content .= $this->doc->spacer(20);
-			$content .= '<h4>' . $GLOBALS['LANG']->getLL('status.legend') . '</h4>
+			$content .= '<h3>' . $GLOBALS['LANG']->getLL('status.legend') . '</h3>
 			<ul>
 				<li><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler'), 'res/gfx/status_failure.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.failure')) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.failure')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.failure') . '</li>
 				<li><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler'), 'res/gfx/status_late.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.late')) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.late')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.late') . '</li>
@@ -1089,7 +1091,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				<li><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler'), 'res/gfx/status_scheduled.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.scheduled')) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.scheduled')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.scheduled') . '</li>
 				<li><img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler'), 'res/gfx/status_disabled.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.disabled')) . '" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.disabled')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.disabled') . '</li>
 			</ul>';
-			$content .= $this->doc->spacer(10);
 			$content .= $this->displayServerTime();
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);

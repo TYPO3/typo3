@@ -955,7 +955,7 @@ class DocumentTemplate {
 		$str = '
 
 	<!-- MAIN Header in page top -->
-	<h2>' . htmlspecialchars($text) . '</h2>
+	<h1>' . htmlspecialchars($text) . '</h1>
 ';
 		return $this->sectionEnd() . $str;
 	}
@@ -1036,7 +1036,7 @@ class DocumentTemplate {
 	 * @todo Define visibility
 	 */
 	public function sectionHeader($label, $sH = FALSE, $addAttrib = '') {
-		$tag = $sH ? 'h3' : 'h4';
+		$tag = $sH ? 'h2' : 'h3';
 		if ($addAttrib && substr($addAttrib, 0, 1) !== ' ') {
 			$addAttrib = ' ' . $addAttrib;
 		}

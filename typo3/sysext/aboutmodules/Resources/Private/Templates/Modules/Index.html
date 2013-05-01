@@ -9,9 +9,9 @@
 
 	{warningMessages -> f:format.raw()}
 
-	<h3>
+	<p>
 		<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:introtext2" />
-	</h3>
+	</p>
 
 	<table border="0" cellpadding="0" cellspacing="0" id="typo3-aboutmodules">
 		<tbody>
@@ -20,10 +20,10 @@
 					<td colspan="3">
 						<f:if condition="{mainModules.subModules -> f:count()} > 0">
 							<f:then>
-								<h3><f:image src="{mainModule.icon}" alt="" /> {mainModule.label}</h3>
+								<h2><f:image src="{mainModule.icon}" alt="" /> {mainModule.label}</h2>
 							</f:then>
 							<f:else>
-								<h3>
+								<h2>
 									<a href="#" onclick="top.goToModule('{mainModule.name}'); return false;">
 										<f:image src="{mainModule.icon}" alt="" />
 									</a>
@@ -31,7 +31,7 @@
 									<a href="#" onclick="top.goToModule('{mainModule.name}'); return false;">
 										{mainModule.label}
 									</a>
-								</h3>
+								</h2>
 							</f:else>
 						</f:if>
 					</td>
