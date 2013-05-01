@@ -74,8 +74,8 @@ class ContentElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElemen
 
 	/**
 	 * Return the value data of the content object
-	 * Calls tslib_cObj->cObjGetSingle which renders
-	 * configuration into html string
+	 * Calls \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->cObjGetSingle
+	 * which renders configuration into html string
 	 *
 	 * @return string
 	 */

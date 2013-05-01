@@ -113,7 +113,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $queryString Query-parameters: "&xxx=yyy&zzz=uuu
 	 * @return array Array with key/value pairs of query-parameters WITHOUT a certain list of
-	 * @see tslib_fe::makeCacheHash(), tslib_cObj::typoLink()
+	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::makeCacheHash(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink()
 	 */
 	public function getRelevantParameters($queryString) {
 		$parameters = $this->splitQueryStringToArray($queryString);

@@ -79,13 +79,13 @@ class MediaWizardProvider implements \TYPO3\CMS\Frontend\MediaWizard\MediaWizard
 
 	/***********************************************
 	 *
-	 * Implementation of tslib_mediaWizardProvider
+	 * Implementation of MediaWizardProviderInterface
 	 *
 	 ***********************************************/
 	/**
 	 * @param string $url
 	 * @return boolean
-	 * @see tslib_mediaWizardProvider::canHandle
+	 * @see MediaWizardProviderInterface::canHandle
 	 */
 	public function canHandle($url) {
 		return $this->getMethod($url) !== NULL;
@@ -94,7 +94,7 @@ class MediaWizardProvider implements \TYPO3\CMS\Frontend\MediaWizard\MediaWizard
 	/**
 	 * @param string $url URL to rewrite
 	 * @return string The rewritten URL
-	 * @see tslib_mediaWizardProvider::rewriteUrl
+	 * @see MediaWizardProviderInterface::rewriteUrl
 	 */
 	public function rewriteUrl($url) {
 		$method = $this->getMethod($url);

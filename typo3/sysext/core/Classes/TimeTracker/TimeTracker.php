@@ -149,7 +149,7 @@ class TimeTracker {
 	 * @param string $tslabel Label string for the entry, eg. TypoScript property name
 	 * @param string $value Additional value(?)
 	 * @return void
-	 * @see tslib_cObj::cObjGetSingle(), pull()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle(), pull()
 	 */
 	public function push($tslabel, $value = '') {
 		array_push($this->tsStack[$this->tsStackPointer], $tslabel);
@@ -172,7 +172,7 @@ class TimeTracker {
 	 *
 	 * @param string $content The content string generated within the push/pull part.
 	 * @return void
-	 * @see tslib_cObj::cObjGetSingle(), push()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle(), push()
 	 */
 	public function pull($content = '') {
 		$k = end($this->currentHashPointer);
@@ -189,7 +189,7 @@ class TimeTracker {
 	 * @param string $content The message string
 	 * @param integer $num Message type: 0: information, 1: message, 2: warning, 3: error
 	 * @return void
-	 * @see tslib_cObj::CONTENT()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::CONTENT()
 	 */
 	public function setTSlogMessage($content, $num = 0) {
 		end($this->currentHashPointer);
@@ -221,7 +221,7 @@ class TimeTracker {
 	 * Increases the stack pointer
 	 *
 	 * @return void
-	 * @see decStackPointer(), TSpagegen::renderContent(), tslib_cObj::cObjGetSingle()
+	 * @see decStackPointer(), TSpagegen::renderContent(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
 	 */
 	public function incStackPointer() {
 		$this->tsStackPointer++;
@@ -232,7 +232,7 @@ class TimeTracker {
 	 * Decreases the stack pointer
 	 *
 	 * @return void
-	 * @see incStackPointer(), TSpagegen::renderContent(), tslib_cObj::cObjGetSingle()
+	 * @see incStackPointer(), TSpagegen::renderContent(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
 	 */
 	public function decStackPointer() {
 		unset($this->tsStack[$this->tsStackPointer]);

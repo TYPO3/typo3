@@ -632,7 +632,7 @@ return array(
 			// array('IPmaskList_1','fe_group uid'), array('IPmaskList_2','fe_group uid')
 		),
 		'get_url_id_token' => '#get_URL_ID_TOK#',		// This is the token, which is substituted in the output code in order to keep a GET-based session going. Normally the GET-session-id is 5 chars ('&amp;ftu=') + hash_length (norm. 10)
-		'content_doktypes' => '1,2,5,7',		// List of pages.doktype values which can contain content (so shortcut pages and external url pages are excluded, but all pages below doktype 199 should be included. doktype=6 is not either (backend users only...). For doktypes going into menus see class.tslib_menu.php, line 494 (search for 'doktype'))
+		'content_doktypes' => '1,2,5,7',		// List of pages.doktype values which can contain content (so shortcut pages and external url pages are excluded, but all pages below doktype 199 should be included. doktype=6 is not either (backend users only...).
 		'enable_mount_pids' => TRUE,		// Boolean: If set to "1", the mount_pid feature allowing 'symlinks' in the page tree (for frontend operation) is allowed.
 		'pageOverlayFields' => 'uid,title,subtitle,nav_title,media,keywords,description,abstract,author,author_email,url,urltype,shortcut,shortcut_mode',		// List of fields from the table "pages_language_overlay" which should be overlaid on page records. See t3lib_page::getPageOverlay()
 		'hidePagesIfNotTranslatedByDefault' => FALSE,		// Boolean: If TRUE, pages that has no translation will be hidden by default. Basically this will inverse the effect of the page localization setting "Hide page if no translation for current language exists" to "Show page even if no translation exists"
