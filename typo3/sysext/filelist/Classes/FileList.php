@@ -771,7 +771,10 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'] as $classData) {
 				$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classData);
 				if (!$hookObject instanceof \TYPO3\CMS\Filelist\FileListEditIconHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface fileList_editIconHook', 1235225797);
+					throw new \UnexpectedValueException(
+						'$hookObject must implement interface \\TYPO3\\CMS\\Filelist\\FileListEditIconHookInterface',
+						1235225797
+					);
 				}
 				$hookObject->manipulateEditIcons($cells, $this);
 			}
