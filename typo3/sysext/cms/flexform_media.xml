@@ -83,7 +83,7 @@
 										<numIndex index="1">embed</numIndex>
 									</numIndex>
 								</items>
-								<itemsProcFunc>tx_cms_mediaItems->customMediaRenderTypes</itemsProcFunc>
+								<itemsProcFunc>TYPO3\CMS\Frontend\Hooks\MediaItemHooks->customMediaRenderTypes</itemsProcFunc>
 							</config>
 						</TCEforms>
 					</mmRenderType>
@@ -147,7 +147,7 @@
 														<numIndex index="1">defaultVolume</numIndex>
 													</numIndex>
 												</items>
-												<itemsProcFunc>tx_cms_mediaItems->customMediaParams</itemsProcFunc>
+												<itemsProcFunc>TYPO3\CMS\Frontend\Hooks\MediaItemHooks->customMediaParams</itemsProcFunc>
 											</config>
 										</TCEforms>
 									</mmParamName>

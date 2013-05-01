@@ -2137,7 +2137,7 @@ class Indexer {
 
 	/**************************
 	 *
-	 * tslib_fe hooks:
+	 * \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController hooks:
 	 *
 	 **************************/
 	/**

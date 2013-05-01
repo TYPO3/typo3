@@ -26,16 +26,16 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Interface for classes which hook into tslib_content and do additional
  * initialization processing.
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-interface ContentObjectPostInitHookInterface
-{
+interface ContentObjectPostInitHookInterface {
 	/**
-	 * Hook for post processing the initialization of tslib_cObj
+	 * Hook for post processing the initialization of ContentObjectRenderer
 	 *
 	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parentObject Parent content object
 	 */

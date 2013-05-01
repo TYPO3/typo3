@@ -37,9 +37,7 @@ namespace TYPO3\CMS\Feedit;
 class FrontendEditPanel {
 
 	/**
-	 * Local instance of tslib_cObj.
-	 *
-	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer Local instance of ContentObjectRenderer
 	 */
 	protected $cObj;
 

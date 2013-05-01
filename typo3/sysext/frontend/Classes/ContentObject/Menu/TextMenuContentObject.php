@@ -39,7 +39,7 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 	 * Sets the result for the new "normal state" in $this->result
 	 *
 	 * @return void
-	 * @see tslib_menu::procesItemStates()
+	 * @see AbstractMenuContentObject::procesItemStates()
 	 * @todo Define visibility
 	 */
 	public function generate() {
@@ -57,14 +57,14 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 	/**
 	 * Traverses the ->result array of menu items configuration (made by ->generate()) and renders each item.
 	 * During the execution of this function many internal methods prefixed "extProc_" from this class is called and many of these are for now dummy functions. But they can be used for processing as they are used by the TMENU_LAYERS
-	 * An instance of tslib_cObj is also made and for each menu item rendered it is loaded with the record for that page so that any stdWrap properties that applies will have the current menu items record available.
+	 * An instance of ContentObjectRenderer is also made and for each menu item rendered it is loaded with the record for that page so that any stdWrap properties that applies will have the current menu items record available.
 	 *
 	 * @return string The HTML for the menu (returns result through $this->extProc_finish(); )
 	 * @todo Define visibility
 	 */
 	public function writeMenu() {
 		if (is_array($this->result) && count($this->result)) {
-			// Create new tslib_cObj for our use
+			// Create new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer for our use
 			$this->WMcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 			$this->WMresult = '';
 			$this->INPfixMD5 = substr(md5(microtime() . 'tmenu'), 0, 4);
@@ -270,7 +270,7 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 	 *
 	 * @return void
 	 * @access private
-	 * @see writeMenu(), tslib_tmenu_layers::extProc_init()
+	 * @see writeMenu()
 	 * @todo Define visibility
 	 */
 	public function extProc_init() {
@@ -283,7 +283,7 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 	 * @param integer Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return void
 	 * @access private
-	 * @see writeMenu(), tslib_tmenu_layers::extProc_RO()
+	 * @see writeMenu()
 	 * @todo Define visibility
 	 */
 	public function extProc_RO($key) {
@@ -296,7 +296,7 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 	 * @param integer Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return void
 	 * @access private
-	 * @see writeMenu(), tslib_tmenu_layers::extProc_beforeLinking()
+	 * @see writeMenu()
 	 * @todo Define visibility
 	 */
 	public function extProc_beforeLinking($key) {
@@ -310,7 +310,7 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 	 * @param integer Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return void
 	 * @access private
-	 * @see writeMenu(), tslib_tmenu_layers::extProc_afterLinking()
+	 * @see writeMenu()
 	 * @todo Define visibility
 	 */
 	public function extProc_afterLinking($key) {
@@ -329,7 +329,7 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 	 * @param integer $key Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return string The modified version of $item, going back into $this->I['theItem']
 	 * @access private
-	 * @see writeMenu(), tslib_tmenu_layers::extProc_beforeAllWrap()
+	 * @see writeMenu()
 	 * @todo Define visibility
 	 */
 	public function extProc_beforeAllWrap($item, $key) {
@@ -341,7 +341,7 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 	 *
 	 * @return string The total menu content should be returned by this function
 	 * @access private
-	 * @see writeMenu(), tslib_tmenu_layers::extProc_finish()
+	 * @see writeMenu()
 	 * @todo Define visibility
 	 */
 	public function extProc_finish() {
