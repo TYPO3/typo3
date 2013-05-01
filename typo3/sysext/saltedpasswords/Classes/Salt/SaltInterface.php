@@ -27,17 +27,13 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains interface "tx_saltedpasswords_salts" to be used in
- * classes that provide salted hashing.
- */
+
 /**
  * Interface with public methods needed to be implemented
  * in a salting hashing class.
  *
  * @author Marcus Krause <marcus#exp2009@t3sec.info>
  * @author Steffen Ritter <info@rs-websystems.de>
- * @since 2009-09-06
  */
 interface SaltInterface {
 	/**

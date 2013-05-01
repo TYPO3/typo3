@@ -26,10 +26,7 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains class "tx_saltedpasswords_salts_blowfish"
- * that provides Blowfish salted hashing.
- */
+
 /**
  * Class that implements Blowfish salted hashing based on PHP's
  * crypt() function.
@@ -38,7 +35,6 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  * on every system.
  *
  * @author Marcus Krause <marcus#exp2009@t3sec.info>
- * @since 2009-09-06
  */
 class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 
@@ -97,7 +93,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	/**
 	 * Method applies settings (prefix, hash count) to a salt.
 	 *
-	 * Overwrites {@link tx_saltedpasswords_salts_md5::applySettingsToSalt()}
+	 * Overwrites {@link Md5Salt::applySettingsToSalt()}
 	 * with Blowfish specifics.
 	 *
 	 * @param string $salt A salt to apply setting to
@@ -178,7 +174,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	/**
 	 * Returns length of a Blowfish salt in bytes.
 	 *
-	 * Overwrites {@link tx_saltedpasswords_salts_md5::getSaltLength()}
+	 * Overwrites {@link Md5Salt::getSaltLength()}
 	 * with Blowfish specifics.
 	 *
 	 * @return integer Length of a Blowfish salt in bytes
@@ -190,7 +186,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	/**
 	 * Returns setting string of Blowfish salted hashes.
 	 *
-	 * Overwrites {@link tx_saltedpasswords_salts_md5::getSetting()}
+	 * Overwrites {@link Md5Salt::getSetting()}
 	 * with Blowfish specifics.
 	 *
 	 * @return string Setting string of Blowfish salted hashes
@@ -223,7 +219,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	/**
 	 * Method determines if a given string is a valid salt.
 	 *
-	 * Overwrites {@link tx_saltedpasswords_salts_md5::isValidSalt()} with
+	 * Overwrites {@link Md5Salt::isValidSalt()} with
 	 * Blowfish specifics.
 	 *
 	 * @param string $salt String to check

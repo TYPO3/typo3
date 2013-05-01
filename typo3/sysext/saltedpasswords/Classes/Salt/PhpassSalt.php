@@ -26,24 +26,19 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains class "tx_saltedpasswords_salts_phpass"
- * that provides PHPass salted hashing.
- *
- * Derived from Drupal CMS
- * original license: GNU General Public License (GPL)
- *
- * @see http://drupal.org/node/29706/
- * @see http://www.openwall.com/phpass/
- */
+
 /**
  * Class that implements PHPass salted hashing based on Drupal's
  * modified Openwall implementation.
  *
+ * Derived from Drupal CMS
+ * original license: GNU General Public License (GPL)
+ *
  * PHPass should work on every system.
  *
  * @author Marcus Krause <marcus#exp2009@t3sec.info>
- * @since 2009-09-06
+ * @see http://drupal.org/node/29706/
+ * @see http://www.openwall.com/phpass/
  */
 class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface {
 
@@ -107,7 +102,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	/**
 	 * Method applies settings (prefix, hash count) to a salt.
 	 *
-	 * Overwrites {@link tx_saltedpasswords_salts_md5::applySettingsToSalt()}
+	 * Overwrites {@link Md5Salt::applySettingsToSalt()}
 	 * with Blowfish specifics.
 	 *
 	 * @param string $salt A salt to apply setting to
