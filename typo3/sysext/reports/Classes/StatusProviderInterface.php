@@ -26,16 +26,18 @@ namespace TYPO3\CMS\Reports;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Interface for classes which provide a status report entry.
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
 interface StatusProviderInterface {
+
 	/**
 	 * Returns the staus of an extension or (sub)system
 	 *
-	 * @return array An array of tx_reports_reports_status_Status objects
+	 * @return array An array of \TYPO3\CMS\Reports\Status objects
 	 */
 	public function getStatus();
 

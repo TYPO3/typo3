@@ -130,8 +130,7 @@ namespace TYPO3\CMS\Backend\Module;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @see \TYPO3\CMS\Backend\Module\BaseScriptClass
- * @see tx_funcwizards_webfunc::init()
- * @see tx_funcwizards_webfunc
+ * @see \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController
  * @see tx_wizardsortpages_webfunc_2
  */
 abstract class AbstractFunctionModule {
@@ -175,7 +174,7 @@ abstract class AbstractFunctionModule {
 	 * This is a little hard to explain, so see it in action; it used in the extension 'func_wizards' in order to provide yet a layer of interfacing with the backend module.
 	 * The extension 'func_wizards' has this description: 'Adds the 'Wizards' item to the function menu in Web>Func. This is just a framework for wizard extensions.' - so as you can see it is designed to allow further connectivity - 'level 2'
 	 *
-	 * @see handleExternalFunctionValue(), tx_funcwizards_webfunc
+	 * @see handleExternalFunctionValue(), \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController
 	 * @todo Define visibility
 	 */
 	public $function_key = '';
@@ -208,7 +207,7 @@ abstract class AbstractFunctionModule {
 	 * If $this->function_key is set (which means there are two levels of object connectivity) then $this->extClassConf is loaded with the TBE_MODULES_EXT configuration for that sub-sub-module
 	 *
 	 * @return void
-	 * @see $function_key, tx_funcwizards_webfunc::init()
+	 * @see $function_key, \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController::init()
 	 * @todo Define visibility
 	 */
 	public function handleExternalFunctionValue() {

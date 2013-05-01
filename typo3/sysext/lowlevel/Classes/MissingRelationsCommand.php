@@ -26,12 +26,7 @@ namespace TYPO3\CMS\Lowlevel;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Cleaner module: Missing relations
- * User function called from tx_lowlevel_cleaner_core configured in ext_localconf.php
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * Looking for missing relations.
  *

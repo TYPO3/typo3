@@ -442,7 +442,7 @@ class DataHandler {
 	 */
 	public $updateRefIndexStack = array();
 
-	// tells, that this TCEmain was called from tx_impext - this variable is set by tx_impexp
+	// tells, that this TCEmain was called from \TYPO3\CMS\Impext\ImportExport - this variable is set by \TYPO3\CMS\Impext\ImportExport
 	/**
 	 * @todo Define visibility
 	 */

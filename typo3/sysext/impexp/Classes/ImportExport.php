@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Impexp;
  * EXAMPLE for using the impexp-class for exporting stuff:
  *
  * Create and initialize:
- * $this->export = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_impexp');
+ * $this->export = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Impexp\\ImportExport');
  * $this->export->init();
  * Set which tables relations we will allow:
  * $this->export->relOnlyTables[]="tt_news";	// exclusively includes. See comment in the class

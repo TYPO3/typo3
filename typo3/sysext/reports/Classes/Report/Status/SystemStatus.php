@@ -34,7 +34,6 @@ class SystemStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	 * Determines the Install Tool's status, mainly concerning its protection.
 	 *
 	 * @return array List of statuses
-	 * @see typo3/sysext/reports/interfaces/tx_reports_StatusProvider::getStatus()
 	 */
 	public function getStatus() {
 		$this->executeAdminCommand();
