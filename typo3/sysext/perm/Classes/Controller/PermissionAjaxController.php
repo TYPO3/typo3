@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Perm\Controller;
 /**
  * This class extends the permissions module in the TYPO3 Backend to provide
  * convenient methods of editing of page permissions (including page ownership
- * (user and group)) via new TYPO3AJAX facility
+ * (user and group)) via new AjaxRequestHandler facility
  *
  * @author Andreas Kundoch <typo3@mehrwert.de>
  * @license GPL
@@ -81,7 +81,7 @@ class PermissionAjaxController {
 	 * The main dispatcher function. Collect data and prepare HTML output.
 	 *
 	 * @param array $params array of parameters from the AJAX interface, currently unused
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj object of type TYPO3AJAX
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj object of type AjaxRequestHandler
 	 * @return void
 	 */
 	public function dispatch($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {

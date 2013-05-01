@@ -50,7 +50,7 @@ class ExtDirectApi {
 
 	/**
 	 * Parses the ExtDirect configuration array "$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']"
-	 * and feeds the given typo3ajax instance with the resulting information. The get parameter
+	 * and feeds the given typo3 ajax instance with the resulting information. The get parameter
 	 * "namespace" will be used to filter the configuration.
 	 *
 	 * This method makes usage of the reflection mechanism to fetch the methods inside the
@@ -59,7 +59,7 @@ class ExtDirectApi {
 	 * performance.
 	 *
 	 * @param array $ajaxParams Ajax parameters
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj typo3ajax instance
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Ajax object
 	 * @return void
 	 */
 	public function getAPI($ajaxParams, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj) {

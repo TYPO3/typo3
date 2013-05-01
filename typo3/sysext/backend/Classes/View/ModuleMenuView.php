@@ -51,6 +51,9 @@ class ModuleMenuView {
 	 * Constructor, initializes several variables
 	 */
 	public function __construct() {
+		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
+			$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
+		}
 		$this->backPath = '';
 		$this->linkModules = TRUE;
 		// Loads the backend modules available for the logged in user.
@@ -150,7 +153,7 @@ class ModuleMenuView {
 	 * saves the menu's toggle state in the backend user's uc
 	 *
 	 * @param array $params Array of parameters from the AJAX interface, currently unused
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type TYPO3AJAX
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
 	 * @return void
 	 */
 	public function saveMenuState($params, $ajaxObj) {

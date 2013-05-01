@@ -45,7 +45,7 @@ class CodeCompletion {
 	 * (called by typo3/ajax.php)
 	 *
 	 * @param array $params Additional parameters (not used here)
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj The TYPO3AJAX object of this request
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj The AjaxRequestHandler object of this request
 	 * @return void
 	 * @author Oliver Hader <oliver@typo3.org>
 	 */

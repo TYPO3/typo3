@@ -35,7 +35,7 @@ class TaskStatus {
 	 * Saves the section toggle state of tasks in the backend user's uc
 	 *
 	 * @param array $params Array of parameters from the AJAX interface, currently unused
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type TYPO3AJAX
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
 	 * @return void
 	 */
 	public function saveCollapseState(array $params, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj) {
@@ -50,7 +50,7 @@ class TaskStatus {
 	 * Saves the sorting order of tasks in the backend user's uc
 	 *
 	 * @param array $params Array of parameters from the AJAX interface, currently unused
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type TYPO3AJAX
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
 	 * @return void
 	 */
 	public function saveSortingState(array $params, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj) {

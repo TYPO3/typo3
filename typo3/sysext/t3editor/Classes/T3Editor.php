@@ -397,7 +397,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 * });
 	 *
 	 * @param array $params Parameters (not used yet)
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler ajaxObj AjaxObject to handle response
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj AjaxRequestHandler to handle response
 	 */
 	public function ajaxSaveCode($params, $ajaxObj) {
 		// cancel if its not an Ajax request
@@ -424,7 +424,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 * (called by typo3/ajax.php)
 	 *
 	 * @param array $params additional parameters (not used here)
-	 * @param TYPO3AJAX	&$ajaxObj: the TYPO3AJAX object of this request
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj The AjaxRequestHandler object of this request
 	 * @return void
 	 * @author Oliver Hader <oliver@typo3.org>
 	 */
@@ -439,6 +439,5 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
 
 ?>
