@@ -37,12 +37,12 @@ class StorageFactory {
 	 *
 	 * @var string
 	 */
-	static protected $preferredStorage = 'EXT:rsaauth/sv1/storage/class.tx_rsaauth_split_storage.php:TYPO3\\CMS\\Rsaauth\\Storage\\SplitStorage';
+	static protected $preferredStorage = 'TYPO3\\CMS\\Rsaauth\\Storage\\SplitStorage';
 
 	/**
 	 * An instance of the storage. This member is set in the getStorage() function.
 	 * It will not be an abstract storage as shown below but a real class, which is
-	 * derieved from the tx_rsaauth_abstract_storage.
+	 * derieved from the \TYPO3\CMS\Rsaauth\Storage\AbstractStorage.
 	 *
 	 * <!-- Please, keep the variable type! It helps IDEs to provide autocomple! -->
 	 *
@@ -52,8 +52,8 @@ class StorageFactory {
 
 	/**
 	 * Obtains a storage. This function will return a non-abstract class, which
-	 * is derieved from the tx_rsaauth_abstract_storage. Applications should
-	 * not use anoy methods that are not declared in the tx_rsaauth_abstract_storage.
+	 * is derieved from \TYPO3\CMS\Rsaauth\Storage\AbstractStorage. Applications should
+	 * not use anoy methods that are not declared in the \TYPO3\CMS\Rsaauth\Storage\AbstractStorage.
 	 *
 	 * @return \TYPO3\CMS\Rsaauth\Storage\AbstractStorage A storage
 	 */

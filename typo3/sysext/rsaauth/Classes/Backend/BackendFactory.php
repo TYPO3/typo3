@@ -38,8 +38,8 @@ class BackendFactory {
 	 * @var array
 	 */
 	static protected $availableBackends = array(
-		'EXT:rsaauth/sv1/backends/class.tx_rsaauth_php_backend.php:TYPO3\\CMS\\Rsaauth\\Backend\\PhpBackend',
-		'EXT:rsaauth/sv1/backends/class.tx_rsaauth_cmdline_backend.php:TYPO3\\CMS\\Rsaauth\\Backend\\CommandLineBackend'
+		'TYPO3\\CMS\\Rsaauth\\Backend\\PhpBackend',
+		'TYPO3\\CMS\\Rsaauth\\Backend\\CommandLineBackend'
 	);
 
 	/**
@@ -53,7 +53,7 @@ class BackendFactory {
 	/**
 	 * A selected backend. This member is set in the getBackend() function. It
 	 * will not be an abstract backend as shown below but a real class, which is
-	 * derieved from the tx_rsaauth_abstract_backend.
+	 * derieved from the \TYPO3\CMS\Rsaauth\Backend\AbstractBackend.
 	 *
 	 * <!-- Please, keep the variable type! It helps IDEs to provide autocomple! -->
 	 *
@@ -63,8 +63,8 @@ class BackendFactory {
 
 	/**
 	 * Obtains a backend. This function will return a non-abstract class, which
-	 * is derieved from the tx_rsaauth_abstract_backend. Applications should
-	 * not use any methods that are not declared in the tx_rsaauth_abstract_backend.
+	 * is derieved from the \TYPO3\CMS\Rsaauth\Backend\AbstractBackend. Applications should
+	 * not use any methods that are not declared in the \TYPO3\CMS\Rsaauth\Backend\AbstractBackend.
 	 *
 	 * @return \TYPO3\CMS\Rsaauth\Backend\AbstractBackend A backend
 	 */
