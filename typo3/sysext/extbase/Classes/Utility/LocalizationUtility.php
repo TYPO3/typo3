@@ -138,7 +138,7 @@ class LocalizationUtility {
 	 * @param string $key The language key including the path to a custom locallang file ("LLL:path:key").
 	 * @return string The value from LOCAL_LANG or NULL if no translation was found.
 	 * @see language::sL()
-	 * @see tslib_fe::sL()
+	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::sL()
 	 */
 	static protected function translateFileReference($key) {
 		if (TYPO3_MODE === 'FE') {
