@@ -26,12 +26,7 @@ namespace TYPO3\CMS\Lowlevel;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Cleaner module: RTE magicc images
- * User function called from tx_lowlevel_cleaner_core configured in ext_localconf.php
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * Looking for RTE images integrity
  *
@@ -174,7 +169,7 @@ Reports problems with RTE images';
 							if ($c == 0) {
 								echo '	Keeping file ' . $fileName . ' for record ' . $recordID . LF;
 							} else {
-								// CODE below is adapted from "class.tx_impexp.php" where there is support for duplication of RTE images:
+								// CODE below is adapted from \TYPO3\CMS\Impexp\ImportExport where there is support for duplication of RTE images:
 								echo '	Copying file ' . basename($fileName) . ' for record ' . $recordID . ' ';
 								// Initialize; Get directory prefix for file and set the original name:
 								$dirPrefix = dirname($fileName) . '/';

@@ -34,7 +34,6 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	 * Determines the Install Tool's status, mainly concerning its protection.
 	 *
 	 * @return array List of statuses
-	 * @see typo3/sysext/reports/interfaces/tx_reports_StatusProvider::getStatus()
 	 */
 	public function getStatus() {
 		$this->executeAdminCommand();
@@ -53,7 +52,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	/**
 	 * Checks whether a an BE user account named admin with default password exists.
 	 *
-	 * @return \TYPO3\CMS\Reports\Status An tx_reports_reports_status_Status object representing whether a default admin account exists
+	 * @return \TYPO3\CMS\Reports\Status An object representing whether a default admin account exists
 	 */
 	protected function getAdminAccountStatus() {
 		$value = $GLOBALS['LANG']->getLL('status_ok');
@@ -93,7 +92,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	/**
 	 * Checks whether the encryption key is empty.
 	 *
-	 * @return \TYPO3\CMS\Reports\Status An tx_reports_reports_status_Status object representing whether the encryption key is empty or not
+	 * @return \TYPO3\CMS\Reports\Status An object representing whether the encryption key is empty or not
 	 */
 	protected function getEncryptionKeyStatus() {
 		$value = $GLOBALS['LANG']->getLL('status_ok');
@@ -111,7 +110,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	/**
 	 * Checks if fileDenyPattern was changed which is dangerous on Apache
 	 *
-	 * @return \TYPO3\CMS\Reports\Status An tx_reports_reports_status_Status object representing whether the file deny pattern has changed
+	 * @return \TYPO3\CMS\Reports\Status An object representing whether the file deny pattern has changed
 	 */
 	protected function getFileDenyPatternStatus() {
 		$value = $GLOBALS['LANG']->getLL('status_ok');
@@ -133,7 +132,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	 * Checks if fileDenyPattern allows to upload .htaccess files which is
 	 * dangerous on Apache.
 	 *
-	 * @return \TYPO3\CMS\Reports\Status An tx_reports_reports_status_Status object representing whether it's possible to upload .htaccess files
+	 * @return \TYPO3\CMS\Reports\Status An object representing whether it's possible to upload .htaccess files
 	 */
 	protected function getHtaccessUploadStatus() {
 		$value = $GLOBALS['LANG']->getLL('status_ok');
@@ -178,7 +177,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	/**
 	 * Checks whether the Install Tool password is set to its default value.
 	 *
-	 * @return \TYPO3\CMS\Reports\Status An tx_reports_reports_status_Status object representing the security of the install tool password
+	 * @return \TYPO3\CMS\Reports\Status An object representing the security of the install tool password
 	 */
 	protected function getInstallToolPasswordStatus() {
 		$value = $GLOBALS['LANG']->getLL('status_ok');
@@ -196,7 +195,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	/**
 	 * Checks whether the Install Tool password is set to its default value.
 	 *
-	 * @return \TYPO3\CMS\Reports\Status An tx_reports_reports_status_Status object representing the security of the saltedpassswords extension
+	 * @return \TYPO3\CMS\Reports\Status An object representing the security of the saltedpassswords extension
 	 */
 	protected function getSaltedPasswordsStatus() {
 		$value = $GLOBALS['LANG']->getLL('status_ok');
@@ -241,7 +240,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	/**
 	 * Checks for the existance of the ENABLE_INSTALL_TOOL file.
 	 *
-	 * @return \TYPO3\CMS\Reports\Status An tx_reports_reports_status_Status object representing whether ENABLE_INSTALL_TOOL exists
+	 * @return \TYPO3\CMS\Reports\Status An object representing whether ENABLE_INSTALL_TOOL exists
 	 */
 	protected function getInstallToolProtectionStatus() {
 		$enableInstallToolFile = PATH_site . 'typo3conf/ENABLE_INSTALL_TOOL';

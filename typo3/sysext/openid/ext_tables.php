@@ -32,7 +32,7 @@ $GLOBALS['TYPO3_USER_SETTINGS']['columns']['tx_openid_openid'] = array(
 	'table' => 'be_users',
 	'label' => 'LLL:EXT:openid/locallang_db.xml:_MOD_user_setup.tx_openid_openid',
 	'csh' => 'tx_openid_openid',
-	'userFunc' => 'EXT:openid/class.tx_openid_mod_setup.php:TYPO3\\CMS\\Openid\\OpenidModuleSetup->renderOpenID',
+	'userFunc' => 'TYPO3\\CMS\\Openid\\OpenidModuleSetup->renderOpenID',
 	'access' => 'TYPO3\\CMS\\Openid\\OpenidModuleSetup'
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToUserSettings('tx_openid_openid', 'after:password2');
