@@ -107,7 +107,7 @@ class CropViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 
 	/**
 	 * Sets the global variables $GLOBALS['TSFE']->csConvObj and $GLOBALS['TSFE']->renderCharset in Backend mode
-	 * This somewhat hacky work around is currently needed because the crop() and cropHTML() functions of tslib_cObj rely on those variables to be set
+	 * This somewhat hacky work around is currently needed because the crop() and cropHTML() functions of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer rely on those variables to be set
 	 *
 	 * @return void
 	 */

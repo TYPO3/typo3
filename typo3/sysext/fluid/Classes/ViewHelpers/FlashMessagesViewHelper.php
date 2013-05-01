@@ -100,7 +100,7 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
 	 * Note: This disables the current page cache in order to prevent FlashMessage output
 	 * from being cached.
 	 *
-	 * @see tslib_fe::no_cache
+	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::no_cache
 	 * @param string $renderMode one of the RENDER_MODE_* constants
 	 * @return string rendered Flash Messages, if there are any.
 	 * @api

@@ -156,7 +156,7 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 
 	/**
 	 * Prepares $GLOBALS['TSFE'] for Backend mode
-	 * This somewhat hacky work around is currently needed because the getImgResource() function of tslib_cObj relies on those variables to be set
+	 * This somewhat hacky work around is currently needed because the getImgResource() function of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer relies on those variables to be set
 	 *
 	 * @return void
 	 */
