@@ -42,7 +42,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $previewKey = 'ADMCMD_prev';
 
 	/**
-	 * instance of the tslib_fe object
+	 * instance of the \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController object
 	 *
 	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
 	 */
@@ -60,7 +60,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 * right now, this hook is called at the end of "$TSFE->connectToDB"
 	 *
 	 * @param $params (not needed right now)
-	 * @param $pObj the instance of the tslib_fe object
+	 * @param $pObj the instance of the \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController object
 	 * @return void
 	 */
 	public function checkForPreview($params, &$pObj) {
@@ -87,7 +87,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 * the BE user of the preview configuration gets initialized
 	 *
 	 * @param $params holding the BE_USER object
-	 * @param $pObj the instance of the tslib_fe object
+	 * @param $pObj the instance of the \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController object
 	 * @return void
 	 */
 	public function initializePreviewUser(&$params, &$pObj) {
