@@ -24,15 +24,14 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\CronCommand;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Test case for class "tx_scheduler_CronCmd_Normalize"
+ * Test case
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Create a subclass of tx_scheduler_CronCmd_Normalize with
-	 * protected methods made public
+	 * Create a subclass with protected methods made public
 	 *
 	 * @return string Name of the accessible proxy class
 	 */

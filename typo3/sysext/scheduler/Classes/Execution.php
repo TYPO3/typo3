@@ -72,7 +72,7 @@ class Execution {
 	 * See explanations in method setIsNewSingleExecution()
 	 *
 	 * @var 	boolean		$isNewSingleExecution
-	 * @see 	tx_scheduler_Execution::setIsNewSingleExecution()
+	 * @see \TYPO3\CMS\Scheduler\Execution::setIsNewSingleExecution()
 	 */
 	protected $isNewSingleExecution = FALSE;
 
@@ -185,7 +185,7 @@ class Execution {
 	 *
 	 * @param boolean $isNewSingleExecution Is newly created single execution?
 	 * @return 	void
-	 * @see tx_scheduler_Execution::getNextExecution()
+	 * @see \TYPO3\CMS\Scheduler\Execution::getNextExecution()
 	 */
 	public function setIsNewSingleExecution($isNewSingleExecution) {
 		$this->isNewSingleExecution = $isNewSingleExecution;

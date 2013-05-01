@@ -59,7 +59,7 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI && basename(PATH_thisScript) == 'c
 		// Loop as long as there are tasks
 		do {
 			// Try getting the next task and execute it
-			// If there are no more tasks to execute, an exception is thrown by tx_scheduler::fetchTask()
+			// If there are no more tasks to execute, an exception is thrown by \TYPO3\CMS\Scheduler\Scheduler::fetchTask()
 			try {
 				/** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask */
 				$task = $scheduler->fetchTask();

@@ -23,8 +23,9 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\Task;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for class "tx_scheduler_CachingFrameworkGarbageCollection"
+ * Test case
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
