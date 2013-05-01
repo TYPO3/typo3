@@ -205,7 +205,7 @@ class FileListController {
 		// Initialize the template object
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->setModuleTemplate('templates/file_list.html');
+		$this->doc->setModuleTemplate('EXT:filelist/Resources/Private/Templates/file_list.html');
 		$this->doc->getPageRenderer()->loadPrototype();
 		// There there was access to this file path, continue, make the list
 		if ($this->folderObject) {

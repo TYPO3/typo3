@@ -128,7 +128,7 @@ class NewContentElementController {
 		// Starting the document template object:
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->setModuleTemplate('templates/db_new_content_el.html');
+		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_new_content_el.html');
 		$this->doc->JScode = '';
 		$this->doc->form = '<form action="" name="editForm"><input type="hidden" name="defValues" value="" />';
 		// Setting up the context sensitive menu:

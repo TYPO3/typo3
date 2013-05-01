@@ -174,7 +174,7 @@ class NewRecordController {
 		// Create instance of template class for output
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->setModuleTemplate('templates/db_new.html');
+		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_new.html');
 		$this->doc->JScode = '';
 		// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
