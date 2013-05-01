@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 /**
  * Rendering of tables for content positioning
  *
- * @see tslib_cObj::CTABLE()
+ * @see ContentObjectRenderer::CTABLE()
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class TableRenderer {
@@ -148,7 +148,7 @@ class TableRenderer {
 	 * @param string $offset List of offset parameters; x,y
 	 * @param string $cMargins List of margin parameters; left, top, right, bottom
 	 * @return string The content strings wrapped in a <table> as the parameters defined
-	 * @see tslib_cObj::CTABLE()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::CTABLE()
 	 * @todo Define visibility
 	 */
 	public function start($offset, $cMargins) {

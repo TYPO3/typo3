@@ -62,7 +62,7 @@ class ProcessedFile extends AbstractFile {
 	const CONTEXT_IMAGEPREVIEW = 'Image.Preview';
 	/**
 	 * Standard processing context for the frontend, that was previously
-	 * in tslib_cObj::getImgResource which only takes cropping, masking and scaling
+	 * in \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource which only takes cropping, masking and scaling
 	 * into account
 	 */
 	const CONTEXT_IMAGECROPSCALEMASK = 'Image.CropScaleMask';

@@ -39,7 +39,7 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 	 * Calls makeImageMap() to generate the image map image-file
 	 *
 	 * @return void
-	 * @see tslib_menu::procesItemStates(), makeImageMap()
+	 * @see AbstractMenuContentObject::procesItemStates(), makeImageMap()
 	 * @todo Define visibility
 	 */
 	public function generate() {

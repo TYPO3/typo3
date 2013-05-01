@@ -126,12 +126,12 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * Initialization of the GIFBUILDER objects, in particular TEXT and IMAGE. This includes finding the bounding box, setting dimensions and offset values before the actual rendering is started.
 	 * Modifies the ->setup, ->objBB internal arrays
 	 * Should be called after the ->init() function which initializes the parent class functions/variables in general.
-	 * The class tslib_gmenu also uses gifbuilder and here there is an interesting use since the function findLargestDims() from that class calls the init() and start() functions to find the total dimensions before starting the rendering of the images.
+	 * The class \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject also uses gifbuilder and here there is an interesting use since the function findLargestDims() from that class calls the init() and start() functions to find the total dimensions before starting the rendering of the images.
 	 *
 	 * @param array $conf TypoScript properties for the GIFBUILDER session. Stored internally in the variable ->setup
-	 * @param array $data The current data record from tslib_cObj. Stored internally in the variable ->data
+	 * @param array $data The current data record from \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer. Stored internally in the variable ->data
 	 * @return void
-	 * @see tslib_cObj::getImgResource(), tslib_gmenu::makeGifs(), tslib_gmenu::findLargestDims()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource(), \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::makeGifs(), \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::findLargestDims()
 	 * @todo Define visibility
 	 */
 	public function start($conf, $data) {
@@ -646,13 +646,13 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	}
 
 	/**
-	 * Returns an "imgResource" creating an instance of the tslib_cObj class and calling tslib_cObj::getImgResource
+	 * Returns an "imgResource" creating an instance of the ContentObjectRenderer class and calling ContentObjectRenderer::getImgResource
 	 *
 	 * @param string $file Filename value OR the string "GIFBUILDER", see documentation in TSref for the "datatype" called "imgResource
 	 * @param array $fileArray TypoScript properties passed to the function. Either GIFBUILDER properties or imgResource properties, depending on the value of $file (whether that is "GIFBUILDER" or a file reference)
 	 * @return array Returns an array with file information if an image was returned. Otherwise FALSE.
 	 * @access private
-	 * @see tslib_cObj::getImgResource()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
 	 * @todo Define visibility
 	 */
 	public function getResource($file, $fileArray) {
