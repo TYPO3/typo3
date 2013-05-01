@@ -23,11 +23,12 @@ namespace TYPO3\CMS\Scheduler\Example;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Class "tx_scheduler_SleepTask" provides a task that sleeps for some time
+ * Provides a task that sleeps for some time
  * This is useful for testing parallel executions
  *
- * @author 		François Suter <francois@typo3.org>
+ * @author François Suter <francois@typo3.org>
  */
 class SleepTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

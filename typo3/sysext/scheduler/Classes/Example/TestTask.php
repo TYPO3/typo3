@@ -24,9 +24,9 @@ namespace TYPO3\CMS\Scheduler\Example;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Class "tx_scheduler_TestTask" provides testing procedures
+ * Provides testing procedures
  *
- * @author 		Markus Friedrich <markus.friedrich@dkd.de>
+ * @author Markus Friedrich <markus.friedrich@dkd.de>
  */
 class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
