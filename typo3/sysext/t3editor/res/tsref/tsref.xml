@@ -2963,7 +2963,7 @@ NOTE: Don't set this if you're working with a menu with sectionIndex! In that ca
 You're free to manipulate or add to this array as you like. Just remember to return the array again!
 
 Note:
-.parentObj property is hardcoded to be a reference to the calling tslib_menu object. Here you'll find eg. ->id to be the uid of the menu item generating a submenu and such.
+.parentObj property is hardcoded to be a reference to the calling AbstractMenuContentObject object. Here you'll find eg. ->id to be the uid of the menu item generating a submenu and such.
 
 Presetting element state
 You can override element states like SPC, IFSUB, ACT, CUR or USR by setting the key ITEM_STATE in the page records. See cObject HMENU/special=userdefined for more information.]]></description>

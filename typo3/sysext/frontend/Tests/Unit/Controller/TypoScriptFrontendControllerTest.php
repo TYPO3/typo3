@@ -67,7 +67,7 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	}
 
 	/**
-	 * Setup a tslib_fe object only for testing the header and footer
+	 * Setup a \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController object only for testing the header and footer
 	 * replacement during USER_INT rendering
 	 *
 	 * @return \PHPUnit_Framework_MockObject_MockObject

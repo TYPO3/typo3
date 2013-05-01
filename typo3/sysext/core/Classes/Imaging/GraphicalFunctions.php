@@ -2244,7 +2244,7 @@ class GraphicalFunctions {
 	 * @param array $options An array with options passed to getImageScale (see this function).
 	 * @param boolean $mustCreate If set, then another image than the input imagefile MUST be returned. Otherwise you can risk that the input image is good enough regarding messures etc and is of course not rendered to a new, temporary file in typo3temp/. But this option will force it to.
 	 * @return array [0]/[1] is w/h, [2] is file extension and [3] is the filename.
-	 * @see getImageScale(), typo3/show_item.php, fileList_ext::renderImage(), tslib_cObj::getImgResource(), SC_tslib_showpic::show(), maskImageOntoImage(), copyImageOntoImage(), scale()
+	 * @see getImageScale(), typo3/show_item.php, fileList_ext::renderImage(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource(), SC_tslib_showpic::show(), maskImageOntoImage(), copyImageOntoImage(), scale()
 	 * @todo Define visibility
 	 */
 	public function imageMagickConvert($imagefile, $newExt = '', $w = '', $h = '', $params = '', $frame = '', $options = array(), $mustCreate = FALSE) {
@@ -2352,7 +2352,7 @@ class GraphicalFunctions {
 	 *
 	 * @param string $imageFile The image filepath
 	 * @return array Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
-	 * @see imageMagickConvert(), tslib_cObj::getImgResource()
+	 * @see imageMagickConvert(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
 	 * @todo Define visibility
 	 */
 	public function getImageDimensions($imageFile) {

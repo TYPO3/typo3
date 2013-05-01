@@ -951,7 +951,7 @@ class GeneralUtility {
 	 * @param string $string Input string, eg "123 + 456 / 789 - 4
 	 * @param string $operators Operators to split by, typically "/+-*
 	 * @return array Array with operators and operands separated.
-	 * @see tslib_cObj::calc(), \TYPO3\CMS\Frontend\Imaging\GifBuilder::calcOffset()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::calc(), \TYPO3\CMS\Frontend\Imaging\GifBuilder::calcOffset()
 	 */
 	static public function splitCalc($string, $operators) {
 		$res = array();

@@ -26,8 +26,9 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * interface for classes which hook into tslib_menu
+ * interface for classes which hook into AbstractMenuContentObject
  *
  * @author Tolleiv Nietsch <nietsch@aoemedia.de>
  */

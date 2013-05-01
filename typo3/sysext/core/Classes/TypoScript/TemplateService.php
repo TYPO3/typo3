@@ -332,7 +332,7 @@ class TemplateService {
 	 * MUST be called directly after creating a new template-object
 	 *
 	 * @return void
-	 * @see tslib_fe::initTemplate()
+	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::initTemplate()
 	 * @todo Define visibility
 	 */
 	public function init() {
@@ -418,7 +418,7 @@ class TemplateService {
 	 *
 	 * @param array $theRootLine The rootline of the current page (going ALL the way to tree root)
 	 * @return void
-	 * @see tslib_fe::getConfigArray()
+	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getConfigArray()
 	 * @todo Define visibility
 	 */
 	public function start($theRootLine) {
@@ -1106,7 +1106,7 @@ class TemplateService {
 	 * @param array $conf A TypoScript array
 	 * @param integer $splitCount The number of items for which to generated individual TypoScript arrays
 	 * @return array The individualized TypoScript array.
-	 * @see tslib_cObj::IMGTEXT(), tslib_menu::procesItemStates()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::IMGTEXT(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::procesItemStates()
 	 * @todo Define visibility
 	 */
 	public function splitConfArray($conf, $splitCount) {
@@ -1246,7 +1246,7 @@ class TemplateService {
 	 * @param boolean $noTitle If set, then only the site title is outputted (from $this->setup['sitetitle'])
 	 * @param boolean $showTitleFirst If set, then "sitetitle" and $title is swapped
 	 * @return string The page title on the form "[sitetitle]: [input-title]". Not htmlspecialchar()'ed.
-	 * @see tslib_fe::tempPageCacheContent(), TSpagegen::renderContentWithHeader()
+	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::tempPageCacheContent(), TSpagegen::renderContentWithHeader()
 	 * @todo Define visibility
 	 */
 	public function printTitle($pageTitle, $noTitle = FALSE, $showTitleFirst = FALSE) {
@@ -1279,7 +1279,7 @@ class TemplateService {
 	 *
 	 * @param string $fName Absolute filepath to record
 	 * @return string The content returned
-	 * @see tslib_cObj::fileResource(), tslib_cObj::MULTIMEDIA(), \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::fileResource(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::MULTIMEDIA(), \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()
 	 * @todo Define visibility
 	 */
 	public function fileContent($fName) {
@@ -1290,12 +1290,12 @@ class TemplateService {
 	}
 
 	/**
-	 * Ordinary "wrapping" function. Used in the tslib_menu class and extension classes instead of the similar function in tslib_cObj
+	 * Ordinary "wrapping" function. Used in the AbstractMenuContentObject class and extension classes instead of the similar function in ContentObjectRenderer
 	 *
 	 * @param string $content The content to wrap
 	 * @param string $wrap The wrap value, eg. "<strong> | </strong>
 	 * @return string Wrapped input string
-	 * @see tslib_menu, tslib_cObj::wrap()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::wrap()
 	 * @todo Define visibility
 	 */
 	public function wrap($content, $wrap) {
@@ -1312,7 +1312,7 @@ class TemplateService {
 	 *
 	 * @param string $url Input string
 	 * @return string Output string, free of "?" in the end, if any such character.
-	 * @see linkData(), tslib_frameset::frameParams()
+	 * @see linkData(), \TYPO3\CMS\Frontend\Page\FramesetRenderer::frameParams()
 	 * @todo Define visibility
 	 */
 	public function removeQueryString($url) {
@@ -1330,7 +1330,7 @@ class TemplateService {
 	 * @param array $setupArr TypoScript array with numerical array in
 	 * @param boolean $acceptOnlyProperties If set, then a value is not required - the properties alone will be enough.
 	 * @return array An array with all integer properties listed in numeric order.
-	 * @see tslib_cObj::cObjGet(), \TYPO3\CMS\Frontend\Imaging\GifBuilder, tslib_imgmenu::makeImageMap()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGet(), \TYPO3\CMS\Frontend\Imaging\GifBuilder, \TYPO3\CMS\Frontend\ContentObject\Menu\ImageMenuContentObject::makeImageMap()
 	 */
 	static public function sortedKeyList($setupArr, $acceptOnlyProperties = FALSE) {
 		$keyArr = array();
@@ -1383,7 +1383,7 @@ class TemplateService {
 	 * @param string $typeOverride If you set this value to something else than a blank string, then the typeNumber used in the link will be forced to this value. Normally the typeNum is based on the target set OR on $GLOBALS['TSFE']->config['config']['forceTypeValue'] if found.
 	 * @param string $targetDomain The target Doamin, if any was detected in typolink
 	 * @return array Contains keys like "totalURL", "url", "sectionIndex", "linkVars", "no_cache", "type", "target" of which "totalURL" is normally the value you would use while the other keys contains various parts that was used to construct "totalURL
-	 * @see tslib_frameset::frameParams(), tslib_cObj::typoLink(), tslib_cObj::SEARCHRESULT(), TSpagegen::pagegenInit(), tslib_menu::link()
+	 * @see \TYPO3\CMS\Frontend\Page\FramesetRenderer::frameParams(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::SEARCHRESULT(), TSpagegen::pagegenInit(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::link()
 	 * @todo Define visibility
 	 */
 	public function linkData($page, $oTarget, $no_cache, $script, $overrideArray = NULL, $addParams = '', $typeOverride = '', $targetDomain = '') {

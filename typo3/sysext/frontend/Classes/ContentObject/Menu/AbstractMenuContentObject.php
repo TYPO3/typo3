@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  *
  * Base class. The HMENU content object uses this (or more precisely one of the extension classes).
  * Amoung others the class generates an array of menuitems. Thereafter functions from the subclasses are called.
- * The class is ALWAYS used through extension classes (like tslib_gmenu or tslib_tmenu which are classics) and
+ * The class is ALWAYS used through extension classes (like GraphicalMenuContentObject or TextMenuContentObject which are classics) and
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -223,7 +223,7 @@ class AbstractMenuContentObject {
 	 * @param integer $menuNumber Menu number; 1,2,3. Should probably be '1'
 	 * @param string $objSuffix Submenu Object suffix. This offers submenus a way to use alternative configuration for specific positions in the menu; By default "1 = TMENU" would use "1." for the TMENU configuration, but if this string is set to eg. "a" then "1a." would be used for configuration instead (while "1 = " is still used for the overall object definition of "TMENU")
 	 * @return boolean Returns TRUE on success
-	 * @see tslib_cObj::HMENU()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::HMENU()
 	 * @todo Define visibility
 	 */
 	public function start(&$tmpl, &$sys_page, $id, $conf, $menuNumber, $objSuffix = '') {
@@ -1266,7 +1266,7 @@ class AbstractMenuContentObject {
 		}
 		// Override URL if using "External URL" as doktype with a valid e-mail address:
 		if ($this->menuArr[$key]['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK && $this->menuArr[$key]['urltype'] == 3 && \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($this->menuArr[$key]['url'])) {
-			// Create mailto-link using tslib_cObj::typolink (concerning spamProtectEmailAddresses):
+			// Create mailto-link using \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink (concerning spamProtectEmailAddresses):
 			$LD['totalURL'] = $this->parent_cObj->typoLink_URL(array('parameter' => $this->menuArr[$key]['url']));
 			$LD['target'] = '';
 		}

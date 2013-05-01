@@ -42,7 +42,7 @@ class MediaWizardProviderManager {
 	/**
 	 * Allows extensions to register themselves as media wizard providers
 	 *
-	 * @param string $className A class implementing tslib_mediaWizardProvider
+	 * @param string $className A class implementing MediaWizardProviderInterface
 	 * @return void
 	 */
 	static public function registerMediaWizardProvider($className) {

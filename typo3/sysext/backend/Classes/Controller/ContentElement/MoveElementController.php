@@ -185,7 +185,7 @@ class MoveElementController {
 					// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
 					// SHARED page-TSconfig settings.
 					$modTSconfig_SHARED = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->page_id, 'mod.SHARED');
-					$colPosArray = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:cms/classes/class.tx_cms_backendlayout.php:TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $this->page_id, $this);
+					$colPosArray = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $this->page_id, $this);
 					foreach ($colPosArray as $colPos) {
 						$colPosList .= $colPosList != '' ? ',' . $colPos[1] : $colPos[1];
 					}
