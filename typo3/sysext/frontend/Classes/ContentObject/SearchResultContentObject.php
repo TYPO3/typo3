@@ -455,7 +455,7 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	 * @param string $endClause Some extra conditions that the search must match.
 	 * @return boolean Returns TRUE no matter what - sweet isn't it!
 	 * @access private
-	 * @see 	tslib_cObj::SEARCHRESULT()
+	 * @see ContentObjectRenderer::SEARCHRESULT()
 	 * @todo Define visibility
 	 */
 	public function build_search_query($endClause) {

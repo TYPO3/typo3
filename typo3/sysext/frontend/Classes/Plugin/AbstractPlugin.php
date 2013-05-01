@@ -288,7 +288,7 @@ class AbstractPlugin {
 	 * @param string $target Target value to use. Affects the &type-value of the URL, defaults to current.
 	 * @param array $urlParameters Additional URL parameters to set (key/value pairs)
 	 * @return string The input string wrapped in <a> tags with the URL and target set.
-	 * @see pi_getPageLink(), tslib_cObj::getTypoLink()
+	 * @see pi_getPageLink(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTypoLink()
 	 * @todo Define visibility
 	 */
 	public function pi_linkToPage($str, $id, $target = '', $urlParameters = array()) {
@@ -304,7 +304,7 @@ class AbstractPlugin {
 	 * @param boolean $cache If $cache is set (0/1), the page is asked to be cached by a &cHash value (unless the current plugin using this class is a USER_INT). Otherwise the no_cache-parameter will be a part of the link.
 	 * @param integer $altPageId Alternative page ID for the link. (By default this function links to the SAME page!)
 	 * @return string The input string wrapped in <a> tags
-	 * @see pi_linkTP_keepPIvars(), tslib_cObj::typoLink()
+	 * @see pi_linkTP_keepPIvars(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink()
 	 * @todo Define visibility
 	 */
 	public function pi_linkTP($str, $urlParameters = array(), $cache = 0, $altPageId = 0) {
@@ -788,7 +788,7 @@ class AbstractPlugin {
 	 * @param string $label A label to show with the panel.
 	 * @param array $conf TypoScript parameters to pass along to the EDITPANEL content Object that gets rendered. The property "allow" WILL get overridden/set though.
 	 * @return string Returns FALSE/blank if no BE User login and of course if the panel is not shown for other reasons. Otherwise the HTML for the panel (a table).
-	 * @see tslib_cObj::EDITPANEL()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::EDITPANEL()
 	 * @todo Define visibility
 	 */
 	public function pi_getEditPanel($row = '', $tablename = '', $label = '', $conf = array()) {
@@ -822,7 +822,7 @@ class AbstractPlugin {
 
 	/**
 	 * Adds edit-icons to the input content.
-	 * tslib_cObj::editIcons used for rendering
+	 * ContentObjectRenderer::editIcons used for rendering
 	 *
 	 * @param string $content HTML content to add icons to. The icons will be put right after the last content part in the string (that means before the ending series of HTML tags)
 	 * @param string $fields The list of fields to edit when the icon is clicked.
@@ -831,7 +831,7 @@ class AbstractPlugin {
 	 * @param string $tablename Table name
 	 * @param array $oConf Conf array
 	 * @return string The processed content
-	 * @see tslib_cObj::editIcons()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::editIcons()
 	 * @todo Define visibility
 	 */
 	public function pi_getEditIcon($content, $fields, $title = '', $row = '', $tablename = '', $oConf = array()) {
@@ -1170,13 +1170,13 @@ class AbstractPlugin {
 	}
 
 	/**
-	 * Will process the input string with the parseFunc function from tslib_cObj based on configuration set in "lib.parseFunc_RTE" in the current TypoScript template.
+	 * Will process the input string with the parseFunc function from ContentObjectRenderer based on configuration set in "lib.parseFunc_RTE" in the current TypoScript template.
 	 * This is useful for rendering of content in RTE fields where the transformation mode is set to "ts_css" or so.
 	 * Notice that this requires the use of "css_styled_content" to work right.
 	 *
 	 * @param string $str The input text string to process
 	 * @return string The processed string
-	 * @see tslib_cObj::parseFunc()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::parseFunc()
 	 * @todo Define visibility
 	 */
 	public function pi_RTEcssText($str) {

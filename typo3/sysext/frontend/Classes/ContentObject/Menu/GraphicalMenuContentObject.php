@@ -39,7 +39,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * Calls makeGifs() for all "normal" items and if configured for, also the "rollover" items.
 	 *
 	 * @return void
-	 * @see tslib_menu::procesItemStates(), makeGifs()
+	 * @see AbstractMenuContentObject::procesItemStates(), makeGifs()
 	 * @todo Define visibility
 	 */
 	public function generate() {
@@ -374,7 +374,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 */
 	public function writeMenu() {
 		if (is_array($this->menuArr) && is_array($this->result) && count($this->result) && is_array($this->result['NO'])) {
-			// Create new tslib_cObj for our use
+			// Create new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer for our use
 			$this->WMcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 			$this->WMresult = '';
 			$this->INPfixMD5 = substr(md5(microtime() . $this->GMENU_fixKey), 0, 4);
@@ -480,7 +480,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 *
 	 * @return void
 	 * @access private
-	 * @see writeMenu(), tslib_gmenu_layers::extProc_init()
+	 * @see writeMenu()
 	 * @todo Define visibility
 	 */
 	public function extProc_init() {
@@ -493,7 +493,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * @param integer Pointer to $this->menuArr[$key] where the current menu element record is found OR $this->result['RO'][$key] where the configuration for that elements RO version is found!
 	 * @return void
 	 * @access private
-	 * @see writeMenu(), tslib_gmenu_layers::extProc_RO()
+	 * @see writeMenu()
 	 * @todo Define visibility
 	 */
 	public function extProc_RO($key) {
@@ -506,7 +506,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * @param integer Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return void
 	 * @access private
-	 * @see writeMenu(), tslib_gmenu_layers::extProc_beforeLinking()
+	 * @see writeMenu()
 	 * @todo Define visibility
 	 */
 	public function extProc_beforeLinking($key) {
@@ -521,7 +521,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * @param integer Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return void
 	 * @access private
-	 * @see writeMenu(), tslib_gmenu_layers::extProc_afterLinking(), tslib_menu::subMenu()
+	 * @see writeMenu(), AbstractMenuContentObject::subMenu()
 	 * @todo Define visibility
 	 */
 	public function extProc_afterLinking($key) {
@@ -540,7 +540,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * @param integer Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return string The modified version of $item, going back into $this->I['theItem']
 	 * @access private
-	 * @see writeMenu(), tslib_gmenu_layers::extProc_beforeAllWrap()
+	 * @see writeMenu()
 	 * @todo Define visibility
 	 */
 	public function extProc_beforeAllWrap($item, $key) {
@@ -552,7 +552,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 *
 	 * @return string The total menu content should be returned by this function
 	 * @access private
-	 * @see writeMenu(), tslib_gmenu_layers::extProc_finish()
+	 * @see writeMenu()
 	 * @todo Define visibility
 	 */
 	public function extProc_finish() {

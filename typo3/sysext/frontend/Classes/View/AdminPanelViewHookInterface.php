@@ -26,8 +26,9 @@ namespace TYPO3\CMS\Frontend\View;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Interface for classes which hook into tslib_adminpanel
+ * Interface for classes which hook into AdminPanelView
  *
  * @author Georg Ringer <typo3@ringerge.org>
  */

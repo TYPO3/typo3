@@ -24,7 +24,7 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Hooks for tslib_fe (TSFE).
+ * Hooks for \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController (TSFE).
  *
  * @author 		Oliver Hader <oliver@typo3.org>
  */

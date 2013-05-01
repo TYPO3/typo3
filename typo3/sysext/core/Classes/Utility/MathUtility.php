@@ -152,7 +152,7 @@ class MathUtility {
 	 *
 	 * @param string $string Input string, eg "(123 + 456) / 789 - 4
 	 * @return integer Calculated value. Or error string.
-	 * @see calculateWithPriorityToAdditionAndSubtraction(), tslib_cObj::stdWrap()
+	 * @see calculateWithPriorityToAdditionAndSubtraction(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::stdWrap()
 	 */
 	static public function calculateWithParentheses($string) {
 		$securC = 100;

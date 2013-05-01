@@ -101,9 +101,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	public $extAdmEnabled = FALSE;
 
 	/**
-	 * Instance of the admin panel
-	 *
-	 * @var 	tslib_AdminPanel
+	 * @var TYPO3\\CMS\\Frontend\\View\\AdminPanelView Instance of admin panel
 	 */
 	public $adminPanel = NULL;
 

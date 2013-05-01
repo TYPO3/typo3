@@ -120,7 +120,7 @@ class EidUtility {
 	/**
 	 * Creating a single static cached instance of TSFE to use with this class.
 	 *
-	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController New instance of tslib_fe
+	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController New instance of \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
 	 */
 	static private function getTSFE() {
 		// Cached instance
