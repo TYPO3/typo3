@@ -26,16 +26,12 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains class "tx_saltedpasswords_salts_factory"
- * that provides a salted hashing method factory.
- */
+
 /**
  * Class that implements Blowfish salted hashing based on PHP's
  * crypt() function.
  *
  * @author Marcus Krause <marcus#exp2009@t3sec.info>
- * @since 2009-09-06
  */
 class SaltFactory {
 
@@ -51,13 +47,13 @@ class SaltFactory {
 	 * Obtains a salting hashing method instance.
 	 *
 	 * This function will return an instance of a class that implements
-	 * tx_saltedpasswords_abstract_salts.
+	 * \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt
 	 *
 	 * Use parameter NULL to reset the factory!
 	 *
 	 * @param string $saltedHash (optional) Salted hashed password to determine the type of used method from or NULL to reset the factory
 	 * @param string $mode (optional) The TYPO3 mode (FE or BE) saltedpasswords shall be used for
-	 * @return tx_saltedpasswords_abstract_salts	an instance of salting hashing method object
+	 * @return \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt An instance of salting hashing method object
 	 */
 	static public function getSaltingInstance($saltedHash = '', $mode = TYPO3_MODE) {
 		// Creating new instance when
@@ -107,8 +103,8 @@ class SaltFactory {
 	/**
 	 * Method sets a custom salting hashing method class.
 	 *
-	 * @param string $resource Object resource to use (e.g. 'EXT:saltedpasswords/classes/salts/class.tx_saltedpasswords_salts_blowfish.php:tx_saltedpasswords_salts_blowfish')
-	 * @return tx_saltedpasswords_abstract_salts	an instance of salting hashing method object
+	 * @param string $resource Object resource to use (e.g. 'TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt')
+	 * @return \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt An instance of salting hashing method object
 	 */
 	static public function setPreferredHashingMethod($resource) {
 		self::$instance = NULL;

@@ -27,16 +27,12 @@ namespace TYPO3\CMS\Saltedpasswords\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains class "tx_saltedpasswords_div"
- * that provides various helper functions.
- */
+
 /**
  * General library class.
  *
  * @author Marcus Krause <marcus#exp2009@t3sec.info>
  * @author Steffen Ritter <info@rs-websystems.de>
- * @since 2009-06-14
  */
 class SaltedPasswordsUtility {
 
