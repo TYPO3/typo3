@@ -70,7 +70,7 @@ class Helper extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	}
 
 	/**
-	 * Callback for tx_form_System_Request::has.
+	 * Callback for \TYPO3\CMS\Form\Request::has()
 	 *
 	 * Checks whether a value for $key has been stored.
 	 *
