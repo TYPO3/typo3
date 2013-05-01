@@ -31,8 +31,9 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\Factory;
  * @author Stefan Neufeind <info@speedpartner.de>
  */
 class TypoScriptFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+
 	/**
-	 * @var tx_form_Domain_Factory_Typoscript
+	 * @var TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory
 	 */
 	protected $fixture;
 
