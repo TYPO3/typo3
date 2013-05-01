@@ -77,7 +77,7 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			}
 			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
-			$this->doc->setModuleTemplate('templates/info.html');
+			$this->doc->setModuleTemplate('EXT:info/Resources/Private/Templates/info.html');
 			$this->doc->tableLayout = array(
 				'0' => array(
 					'0' => array('<td valign="top"><strong>', '</strong></td>'),

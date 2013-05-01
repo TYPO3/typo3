@@ -111,7 +111,7 @@ class MoveElementController {
 		// Starting the document template object:
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->setModuleTemplate('templates/move_el.html');
+		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/move_el.html');
 		$this->doc->JScode = '';
 		// Starting document content (header):
 		$this->content = '';
