@@ -37,7 +37,6 @@ class ExtbaseRequirementsCheckUtility implements \TYPO3\CMS\Reports\StatusProvid
 	/**
 	 * Compiles a collection of system status checks as a status report.
 	 *
-	 * @see typo3/sysext/reports/interfaces/tx_reports_StatusProvider::getStatus()
 	 * @return array
 	 */
 	public function getStatus() {
