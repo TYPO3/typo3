@@ -64,6 +64,12 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	 * @param \TYPO3\CMS\Backend\Controller\BackendController $backendReference TYPO3 backend object reference
 	 */
 	public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL) {
+		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
+			$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
+			// Needed to get the correct icons when reloading the menu after saving it
+			$loadModules = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+			$loadModules->load($GLOBALS['TBE_MODULES']);
+		}
 		$this->backendReference = $backendReference;
 		$this->shortcuts = array();
 		// By default, 5 groups are set
