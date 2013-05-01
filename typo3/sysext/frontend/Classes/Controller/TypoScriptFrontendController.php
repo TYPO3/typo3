@@ -562,13 +562,13 @@ class TypoScriptFrontendController {
 	 */
 	public $recordRegister = array();
 
-	// This is set to the [table]:[uid] of the latest record rendered. Note that class tslib_cObj has an equal value, but that is pointing to the record delivered in the $data-array of the tslib_cObj instance, if the cObjects CONTENT or RECORD created that instance
+	// This is set to the [table]:[uid] of the latest record rendered. Note that class ContentObjectRenderer has an equal value, but that is pointing to the record delivered in the $data-array of the ContentObjectRenderer instance, if the cObjects CONTENT or RECORD created that instance
 	/**
 	 * @todo Define visibility
 	 */
 	public $currentRecord = '';
 
-	// Used by class tslib_menu to keep track of access-keys.
+	// Used by class \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject to keep track of access-keys.
 	/**
 	 * @todo Define visibility
 	 */
@@ -580,7 +580,7 @@ class TypoScriptFrontendController {
 	 */
 	public $imagesOnPage = array();
 
-	// Is set in tslib_cObj->cImage() function to the info-array of the most recent rendered image. The information is used in tslib_cObj->IMGTEXT
+	// Is set in ContentObjectRenderer->cImage() function to the info-array of the most recent rendered image. The information is used in ContentObjectRenderer->IMGTEXT
 	/**
 	 * @todo Define visibility
 	 */
@@ -1610,7 +1610,7 @@ class TypoScriptFrontendController {
 	 * @param array $row The page record to evaluate (needs fields: hidden, starttime, endtime, fe_group)
 	 * @param boolean $bypassGroupCheck Bypass group-check
 	 * @return boolean TRUE, if record is viewable.
-	 * @see tslib_cObj::getTreeList(), checkPagerecordForIncludeSection()
+	 * @see TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer::getTreeList(), checkPagerecordForIncludeSection()
 	 * @todo Define visibility
 	 */
 	public function checkEnableFields($row, $bypassGroupCheck = FALSE) {
@@ -1645,7 +1645,7 @@ class TypoScriptFrontendController {
 	 * @param array $row The page record to evaluate (needs fields: extendToSubpages + hidden, starttime, endtime, fe_group)
 	 * @return boolean Returns TRUE if either extendToSubpages is not checked or if the enableFields does not disable the page record.
 	 * @access private
-	 * @see checkEnableFields(), tslib_cObj::getTreeList(), checkRootlineForIncludeSection()
+	 * @see checkEnableFields(), TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer::getTreeList(), checkRootlineForIncludeSection()
 	 * @todo Define visibility
 	 */
 	public function checkPagerecordForIncludeSection($row) {
@@ -2104,7 +2104,7 @@ class TypoScriptFrontendController {
 	 * This function should be called to check the _existence_ of "&cHash" whenever a plugin generating cachable output is using extra GET variables. If there _is_ a cHash value the validation of it automatically takes place in makeCacheHash() (see above)
 	 *
 	 * @return void
-	 * @see makeCacheHash(), tslib_pibase::pi_cHashCheck()
+	 * @see makeCacheHash(), \TYPO3\CMS\Frontend\Plugin\AbstractPlugin::pi_cHashCheck()
 	 * @todo Define visibility
 	 */
 	public function reqCHash() {
@@ -3160,7 +3160,7 @@ class TypoScriptFrontendController {
 	 * Setting the SYS_LASTCHANGED value in the pagerecord: This value will thus be set to the highest tstamp of records rendered on the page. This includes all records with no regard to hidden records, userprotection and so on.
 	 *
 	 * @return void
-	 * @see tslib_cObj::lastChanged()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::lastChanged()
 	 * @todo Define visibility
 	 */
 	public function setSysLastChanged() {
@@ -3443,7 +3443,7 @@ class TypoScriptFrontendController {
 					$GLOBALS['TT']->push('Include ' . $INTiS_config[$INTiS_key]['file'], '');
 					$incContent = '';
 					$INTiS_cObj = unserialize($INTiS_config[$INTiS_key]['cObj']);
-					/* @var $INTiS_cObj tslib_cObj */
+					/* @var $INTiS_cObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
 					$INTiS_cObj->INT_include = 1;
 					switch ($INTiS_config[$INTiS_key]['type']) {
 					case 'COA':
@@ -3758,7 +3758,7 @@ if (version == "n3") {
 	 * Determines if any EXTincScripts should be included
 	 *
 	 * @return boolean TRUE, if external php scripts should be included (set by PHP_SCRIPT_EXT cObjects)
-	 * @see tslib_cObj::PHP_SCRIPT
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::PHP_SCRIPT
 	 * @deprecated since 6.0, will be removed two versions later
 	 * @todo Define visibility
 	 */
@@ -4042,7 +4042,7 @@ if (version == "n3") {
 	 *
 	 * @param string $incFile Relative path to php file
 	 * @return boolean Returns TRUE if $GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude'] is not set OR if the file requested for inclusion is found in one of the allowed paths.
-	 * @see tslib_menu::includeMakeMenu()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::includeMakeMenu()
 	 * @todo Define visibility
 	 */
 	public function checkFileInclude($incFile) {
@@ -4050,7 +4050,7 @@ if (version == "n3") {
 	}
 
 	/**
-	 * Creates an instance of tslib_cObj in $this->cObj
+	 * Creates an instance of ContentObjectRenderer in $this->cObj
 	 * This instance is used to start the rendering of the TypoScript template structure
 	 *
 	 * @return void
@@ -4314,7 +4314,7 @@ if (version == "n3") {
 	 * @param string $key is the key in the array, for num-key let the value be empty. Note reserved keys 'openPic' and 'mouseOver'
 	 * @param string $content is the content if you want any
 	 * @return void
-	 * @see tslib_gmenu::writeMenu(), tslib_cObj::imageLinkWrap()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::writeMenu(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::imageLinkWrap()
 	 * @todo Define visibility
 	 */
 	public function setJS($key, $content = '') {
@@ -4733,7 +4733,7 @@ if (version == "n3") {
 	 * config.cache.42 = tt_news:15,tt_address:16
 	 *
 	 * @return array Array of 'tablename:pid' pairs. There is at least a current page id in the array
-	 * @see tslib_fe::calculatePageCacheTimeout()
+	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::calculatePageCacheTimeout()
 	 */
 	protected function getCurrentPageCacheConfiguration() {
 		$result = array('tt_content:' . $this->id);
@@ -4752,7 +4752,7 @@ if (version == "n3") {
 	 * @param string $tableDef Table definition (format tablename:pid)
 	 * @param integer $now "Now" time value
 	 * @return integer Value of the next start/stop time or PHP_INT_MAX if not found
-	 * @see tslib_fe::calculatePageCacheTimeout()
+	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::calculatePageCacheTimeout()
 	 */
 	protected function getFirstTimeValueForRecord($tableDef, $now) {
 		$result = PHP_INT_MAX;

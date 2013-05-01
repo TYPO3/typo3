@@ -70,7 +70,7 @@ class FrontendContentAdapterService {
 	 * backwards compatibility for some file fields which have switched to using
 	 * the new File API instead of the old uploads/ folder for storing files.
 	 *
-	 * This method is called by the render() method of tslib_content_Content.
+	 * This method is called by the render() method of \TYPO3\CMS\Frontend\ContentObject\ContentContentObject
 	 *
 	 * @param array $row typically an array, but can also be null (in extensions or e.g. FLUID viewhelpers)
 	 * @param string $table the database table where the record is from

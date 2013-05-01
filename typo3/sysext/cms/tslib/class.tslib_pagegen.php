@@ -9,7 +9,7 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('fronte
  * Class for fetching record relations for the frontend.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @see tslib_cObj::RECORDS()
+ * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::RECORDS()
  * @deprecated since 6.1 will be removed in 6.3
  */
 class FE_loadDBGroup extends \TYPO3\CMS\Core\Database\RelationHandler {

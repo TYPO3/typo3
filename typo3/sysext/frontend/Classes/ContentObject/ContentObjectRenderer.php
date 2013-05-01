@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * GNU General Public License for more details.
  *
  * This copyright notice MUST APPEAR in all copies of the script!
+ *
  ***************************************************************/
 /**
  * This class contains all main TypoScript features.
@@ -32,7 +33,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * Is the backbone of TypoScript Template rendering.
  *
  * There are lots of functions you can use from your include-scripts.
- * The class "tslib_cObj" is normally instantiated and referred to as "cObj".
+ * The class is normally instantiated and referred to as "cObj".
  * When you call your own PHP-code typically through a USER or USER_INT cObject then it is this class that instantiates the object and calls the main method. Before it does so it will set (if you are using classes) a reference to itself in the internal variable "cObj" of the object. Thus you can access all functions and data from this class by $this->cObj->... from within you classes written to be USER or USER_INT content objects.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
@@ -400,7 +401,7 @@ class ContentObjectRenderer {
 	 */
 	public $parentRecordNumber = 0;
 
-	// If the tslib_cObj was started from CONTENT, RECORD or SEARCHRESULT cObject's this array has two keys, 'data' and 'currentRecord' which indicates the record and data for the parent cObj.
+	// If the ContentObjectRender was started from CONTENT, RECORD or SEARCHRESULT cObject's this array has two keys, 'data' and 'currentRecord' which indicates the record and data for the parent cObj.
 	/**
 	 * @todo Define visibility
 	 */
@@ -472,7 +473,7 @@ class ContentObjectRenderer {
 	protected $getImgResourceHookObjects;
 
 	/**
-	 * @var array with members of tslib_content_abstract
+	 * @var array with members of AbstractContentObject
 	 */
 	protected $contentObjects = array();
 
@@ -496,13 +497,13 @@ class ContentObjectRenderer {
 	/**
 	 * Indicates that object type is USER.
 	 *
-	 * @see tslib_cObjh::$userObjectType
+	 * @see ContentObjectRender::$userObjectType
 	 */
 	const OBJECTTYPE_USER_INT = 1;
 	/**
 	 * Indicates that object type is USER.
 	 *
-	 * @see tslib_cObjh::$userObjectType
+	 * @see ContentObjectRender::$userObjectType
 	 */
 	const OBJECTTYPE_USER = 2;
 	/**
@@ -564,9 +565,9 @@ class ContentObjectRenderer {
 	 *
 	 * Resets the references to the TypoScript Content Object implementation
 	 * objects of tslib_content_*. Otherwise they would still point to the
-	 * original tslib_cObj instance's tslib_content_* instances, they in return
-	 * would back-reference to the original tslib_cObj instance instead of the
-	 * newly cloned tslib_cObj instance.
+	 * original ContentObjectRender instance's tslib_content_* instances, they in return
+	 * would back-reference to the original ContentObjectRender instance instead of the
+	 * newly cloned ContentObjectRender instance.
 	 *
 	 * @see http://bugs.typo3.org/view.php?id=16568
 	 */
@@ -621,7 +622,7 @@ class ContentObjectRenderer {
 
 	/**
 	 * Sets the internal variable parentRecord with information about current record.
-	 * If the tslib_cObj was started from CONTENT, RECORD or SEARCHRESULT cObject's this array has two keys, 'data' and 'currentRecord' which indicates the record and data for the parent cObj.
+	 * If the ContentObjectRender was started from CONTENT, RECORD or SEARCHRESULT cObject's this array has two keys, 'data' and 'currentRecord' which indicates the record and data for the parent cObj.
 	 *
 	 * @param array $data The record array
 	 * @param string $currentRecord This is set to the [table]:[uid] of the record delivered in the $data-array, if the cObjects CONTENT or RECORD is in operation. Note that $GLOBALS['TSFE']->currentRecord is set to an equal value but always indicating the latest record rendered.
@@ -769,7 +770,7 @@ class ContentObjectRenderer {
 	 * Returns a new content object of type $name.
 	 *
 	 * @param string $name
-	 * @return tslib_content_abstract
+	 * @return AbstractContentObject
 	 */
 	public function getContentObject($name) {
 		$classMapping = array(
@@ -1494,7 +1495,7 @@ class ContentObjectRenderer {
 	 *
 	 * @param integer $tstamp Unix timestamp (number of seconds since 1970)
 	 * @return void
-	 * @see tslib_fe::setSysLastChanged()
+	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::setSysLastChanged()
 	 * @todo Define visibility
 	 */
 	public function lastChanged($tstamp) {
@@ -4362,13 +4363,13 @@ class ContentObjectRenderer {
 	}
 
 	/**
-	 * This explodes a comma-list into an array where the values are parsed through tslib_cObj::calc() and intval() (so you are sure to have integers in the output array)
+	 * This explodes a comma-list into an array where the values are parsed through ContentObjectRender::calc() and intval() (so you are sure to have integers in the output array)
 	 * Used to split and calculate min and max values for GMENUs.
 	 *
 	 * @param string $delim Delimited to explode by
 	 * @param string $string The string with parts in (where each part is evaluated by ->calc())
 	 * @return array And array with evaluated values.
-	 * @see calc(), tslib_gmenu::makeGifs()
+	 * @see calc(), \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::makeGifs()
 	 * @todo Define visibility
 	 */
 	public function calcIntExplode($delim, $string) {
@@ -5600,7 +5601,7 @@ class ContentObjectRenderer {
 	 * @param string $linktxt The string (text) to link
 	 * @param array $conf TypoScript configuration (see link below)
 	 * @return string A link-wrapped string.
-	 * @see stdWrap(), tslib_pibase::pi_linkTP()
+	 * @see stdWrap(), \TYPO3\CMS\Frontend\Plugin\AbstractPlugin::pi_linkTP()
 	 * @todo Define visibility
 	 */
 	public function typoLink($linktxt, $conf) {
@@ -7160,7 +7161,7 @@ class ContentObjectRenderer {
 	 * @param array $prevId_array array of IDs from previous recursions. In order to prevent infinite loops with mount pages.
 	 * @param integer $recursionLevel Internal: Zero for the first recursion, incremented for each recursive call.
 	 * @return string Returns the list with a comma in the end (if any pages selected and not if $id is negative and $id is added itself) - which means the input page id can comfortably be appended to the output string if you need it to.
-	 * @see tslib_fe::checkEnableFields(), tslib_fe::checkPagerecordForIncludeSection()
+	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::checkEnableFields(), \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::checkPagerecordForIncludeSection()
 	 */
 	public function getTreeList($id, $depth, $begin = 0, $dontCheckEnableFields = FALSE, $addSelectFields = '', $moreWhereClauses = '', array $prevId_array = array(), $recursionLevel = 0) {
 		// Init vars:

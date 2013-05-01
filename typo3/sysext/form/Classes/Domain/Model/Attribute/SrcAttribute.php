@@ -41,7 +41,7 @@ class SrcAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttrib
 	 * graphical submit button.
 	 *
 	 * @return string Attribute value
-	 * @see tslib_cObj::getImgResource()
+	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
 	 */
 	public function getValue() {
 		$attribute = $this->localCobj->IMG_RESOURCE($this->value);

@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  */
 interface ContentObjectGetDataHookInterface {
 	/**
-	 * Extends the getData()-Method of tslib_cObj to process more/other commands
+	 * Extends the getData()-Method of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer to process more/other commands
 	 *
 	 * @param string $getDataString Full content of getData-request e.g. "TSFE:id // field:title // field:uid
 	 * @param array $fields Current field-array
