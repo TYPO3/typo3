@@ -28,10 +28,10 @@ namespace TYPO3\CMS\Extbase\Configuration;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * A configuration manager following the strategy pattern (GoF315). It hides the concrete
+ * A configuration manager following the strategy pattern (GoF315). It hides the specific
  * implementation of the configuration manager and provides an unified acccess point.
  *
- * Use the shutdown() method to drop the concrete implementation.
+ * Use the shutdown() method to drop the specific implementation.
  */
 class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface {
 
@@ -43,7 +43,7 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager
 	 */
-	protected $concreteConfigurationManager;
+	protected $specificConfigurationManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
@@ -72,17 +72,17 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 	 * @return void
 	 */
 	public function initializeObject() {
-		$this->initializeConcreteConfigurationManager();
+		$this->initializeSpecificConfigurationManager();
 	}
 
 	/**
 	 * @return void
 	 */
-	protected function initializeConcreteConfigurationManager() {
+	protected function initializeSpecificConfigurationManager() {
 		if ($this->environmentService->isEnvironmentInFrontendMode()) {
-			$this->concreteConfigurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\FrontendConfigurationManager');
+			$this->specificConfigurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\FrontendConfigurationManager');
 		} else {
-			$this->concreteConfigurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\BackendConfigurationManager');
+			$this->specificConfigurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\BackendConfigurationManager');
 		}
 	}
 
@@ -91,14 +91,14 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 	 * @return void
 	 */
 	public function setContentObject(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject = NULL) {
-		$this->concreteConfigurationManager->setContentObject($contentObject);
+		$this->specificConfigurationManager->setContentObject($contentObject);
 	}
 
 	/**
 	 * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	public function getContentObject() {
-		return $this->concreteConfigurationManager->getContentObject();
+		return $this->specificConfigurationManager->getContentObject();
 	}
 
 	/**
@@ -109,7 +109,7 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 	 * @return void
 	 */
 	public function setConfiguration(array $configuration = array()) {
-		$this->concreteConfigurationManager->setConfiguration($configuration);
+		$this->specificConfigurationManager->setConfiguration($configuration);
 	}
 
 	/**
@@ -132,12 +132,12 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 	public function getConfiguration($configurationType, $extensionName = NULL, $pluginName = NULL) {
 		switch ($configurationType) {
 			case self::CONFIGURATION_TYPE_SETTINGS:
-				$configuration = $this->concreteConfigurationManager->getConfiguration($extensionName, $pluginName);
+				$configuration = $this->specificConfigurationManager->getConfiguration($extensionName, $pluginName);
 				return $configuration['settings'];
 			case self::CONFIGURATION_TYPE_FRAMEWORK:
-				return $this->concreteConfigurationManager->getConfiguration($extensionName, $pluginName);
+				return $this->specificConfigurationManager->getConfiguration($extensionName, $pluginName);
 			case self::CONFIGURATION_TYPE_FULL_TYPOSCRIPT:
-				return $this->concreteConfigurationManager->getTypoScriptSetup();
+				return $this->specificConfigurationManager->getTypoScriptSetup();
 			default:
 				throw new \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException('Invalid configuration type "' . $configurationType . '"', 1206031879);
 		}
@@ -157,6 +157,28 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 		$configuration = $this->getConfiguration(self::CONFIGURATION_TYPE_FRAMEWORK);
 		return (boolean) (isset($configuration['features'][$featureName]) && $configuration['features'][$featureName]);
 	}
+
+	/**
+	 * Magic __get() method implementation.
+	 * Currently used for fiting compatibility layer to access old property $concreteConfigurationManager.
+	 *
+	 * @param string $name
+	 * @return NULL|\TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager
+	 * @deprecated since Extbase 6.2.0; will be removed two versions later
+	 */
+	public function __get($name) {
+		if ($name === 'concreteConfigurationManager') {
+			$dBT = debug_backtrace();
+			$className = isset($dBT[1]['class']) ? $dBT[1]['class'] : FALSE;
+			if (is_subclass_of($className, __CLASS__)) {
+				\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+				return $this->specificConfigurationManager;
+			} else {
+				trigger_error(sprintf('Cannot access protected property %s::$%s', __CLASS__, $name), E_USER_ERROR);
+			}
+		}
+	}
+
 }
 
 ?>
