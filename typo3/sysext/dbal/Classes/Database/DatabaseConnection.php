@@ -2444,7 +2444,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 
 	/**
 	 * Opening the _DEFAULT connection handler to the database.
-	 * This is typically done by the scripts "init.php" in the backend or "index_ts.php" in the frontend (tslib_fe->connectToDB())
+	 * This is typically done by the scripts "init.php" in the backend or "index_ts.php" in the frontend (\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->connectToDB())
 	 * You wouldn't need to use this at any time - let TYPO3 core handle this.
 	 *
 	 * @param string $host Deprecated since 6.1, will be removed in two versions. Database host IP/domain[:port]
