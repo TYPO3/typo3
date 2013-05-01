@@ -2398,7 +2398,7 @@ class InlineElement {
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = clone $GLOBALS['SOBE']->doc->getPageRenderer();
 		$pageRenderer->setCharSet($GLOBALS['LANG']->charSet);
-		$pageRenderer->setTemplateFile(TYPO3_mainDir . 'templates/helper_javascript_css.html');
+		$pageRenderer->setTemplateFile('EXT:backend/Resources/Private/Templates/helper_javascript_css.html');
 		$javaScriptAndStyleSheets = $pageRenderer->render();
 		return $javaScriptAndStyleSheets;
 	}

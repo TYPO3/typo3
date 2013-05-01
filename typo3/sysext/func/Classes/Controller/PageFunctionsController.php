@@ -74,7 +74,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 		);
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $BACK_PATH;
-		$this->doc->setModuleTemplate('templates/func.html');
+		$this->doc->setModuleTemplate('EXT:func/Resources/Private/Templates/func.html');
 		// Main
 		if ($this->id && $access) {
 			// JavaScript

@@ -230,7 +230,7 @@ class RecordList {
 		// Start document template object:
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->setModuleTemplate('templates/db_list.html');
+		$this->doc->setModuleTemplate('EXT:recordlist/Resources/Private/Templates/db_list.html');
 		// Loading current page record and checking access:
 		$this->pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;

@@ -113,7 +113,7 @@ class CreateFolderController {
 		$this->title = $icon . htmlspecialchars($this->folderObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->folderObject->getIdentifier());
 		// Setting template object
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-		$this->doc->setModuleTemplate('templates/file_newfolder.html');
+		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/file_newfolder.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			var path = "' . $this->target . '";
