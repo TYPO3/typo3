@@ -274,6 +274,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 			}
 			$validationResult = $this->arguments->getValidationResults();
 			if (!$validationResult->hasErrors()) {
+				$this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeCallActionMethod', array('controllerName' => get_class($this), 'actionMethodName' => $this->actionMethodName, 'preparedArguments' => $preparedArguments));
 				$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
 			} else {
 				$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
