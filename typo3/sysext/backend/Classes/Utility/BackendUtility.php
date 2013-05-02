@@ -443,24 +443,33 @@ class BackendUtility {
 	 * @return array Array of arrays with excludeFields (fieldname, table:fieldname) from all TCA entries and from FlexForms (fieldname, table:extkey;sheetname;fieldname)
 	 */
 	static public function getExcludeFields() {
+		$finalExcludeArray = array();
+
 		// All TCA keys
-		$theExcludeArray = array();
-		$tc_keys = array_keys($GLOBALS['TCA']);
-		foreach ($tc_keys as $table) {
+		$tableNamesFromTca = array_keys($GLOBALS['TCA']);
+		// Fetch translations for table names
+		foreach ($tableNamesFromTca as $table) {
 			// Load table
 			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
+			$tableNamesFromTca[$table] = $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['ctrl']['title']);
+		}
+		// Sort by translations
+		asort($tableNamesFromTca);
+		foreach ($tableNamesFromTca as $table => $translatedTable) {
+			$excludeArrayTable = array();
+
 			// All field names configured and not restricted to admins
 			if (is_array($GLOBALS['TCA'][$table]['columns'])
 					&& empty($GLOBALS['TCA'][$table]['ctrl']['adminOnly'])
 					&& (empty($GLOBALS['TCA'][$table]['ctrl']['rootLevel']) || !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction']))
 			) {
-				$f_keys = array_keys($GLOBALS['TCA'][$table]['columns']);
-				foreach ($f_keys as $field) {
+				$fieldKeys = array_keys($GLOBALS['TCA'][$table]['columns']);
+				foreach ($fieldKeys as $field) {
 					if ($GLOBALS['TCA'][$table]['columns'][$field]['exclude']) {
-						// Get human readable names of fields and table
-						$Fname = $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['ctrl']['title']) . ': ' . $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['columns'][$field]['label']);
+						// Get human readable names of fields
+						$translatedField = $GLOBALS['LANG']->sl($GLOBALS['TCA'][$table]['columns'][$field]['label']);
 						// Add entry
-						$theExcludeArray[] = array($Fname, $table . ':' . $field);
+						$excludeArrayTable[] = array($translatedTable . ': ' . $translatedField, $table . ':' . $field);
 					}
 				}
 			}
@@ -487,15 +496,19 @@ class BackendUtility {
 							}
 							$fieldLabel = !empty($field['TCEforms']['label']) ? $GLOBALS['LANG']->sl($field['TCEforms']['label']) : $fieldName;
 							$fieldIdent = $table . ':' . $tableField . ';' . $extIdent . ';' . $sheetName . ';' . $fieldName;
-							$theExcludeArray[] = array(trim(($labelPrefix . ' ' . $extTitle), ': ') . ': ' . $fieldLabel, $fieldIdent);
+							$excludeArrayTable[] = array(trim(($labelPrefix . ' ' . $extTitle), ': ') . ': ' . $fieldLabel, $fieldIdent);
 						}
 					}
 				}
 			}
+			// Sort fields by the translated value
+			if (count($excludeArrayTable) > 0) {
+				usort($excludeArrayTable, array('TYPO3\\CMS\\Backend\\Form\\FlexFormsHelper', 'compareArraysByFirstValue'));
+				$finalExcludeArray = array_merge($finalExcludeArray, $excludeArrayTable);
+			}
 		}
-		// Sort fields by label
-		usort($theExcludeArray, array('TYPO3\\CMS\\Backend\\Form\\FlexFormsHelper', 'compareArraysByFirstValue'));
-		return $theExcludeArray;
+
+		return $finalExcludeArray;
 	}
 
 	/**
