@@ -21,17 +21,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 // This checks permissions and exits if the users has no permission for entry.
 $BE_USER->modAccess($MCONF, TRUE);
-/*
- * @deprecated since 6.0, the classname tx_install_mod1 and this file is obsolete
- * and will be removed with 6.2. The class was renamed and is now located at:
- * typo3/sysext/install/Classes/Controller/InstallToolModuleController.php
- */
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Classes/Controller/InstallToolModuleController.php';
-/**
- * @var $SOBE \TYPO3\CMS\Install\Controller\InstallToolModuleController
- */
+/** @var $SOBE \TYPO3\CMS\Install\Controller\InstallToolModuleController */
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Controller\\InstallToolModuleController');
 $SOBE->init();
 $SOBE->main();

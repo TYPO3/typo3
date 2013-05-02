@@ -89,7 +89,7 @@ class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$this->init();
-		// Function below copied from sysext/install/updates/class.tx_coreupdates_imagelink.php
+		// Function below copied from \TYPO3\CMS\Install\CoreUpdates\ImagelinkUpdate
 		$tables = array(
 			'tt_content' => array(
 				'image' => array(
