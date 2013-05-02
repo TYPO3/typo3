@@ -24,6 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Crawler hook for indexed search. Works with the "crawler" extension
  *
@@ -34,16 +35,4 @@ if (!is_object($GLOBALS['LANG'])) {
 	$GLOBALS['LANG'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
 	$GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
 }
-/*
- * @deprecated since 6.0, the classname tx_indexedsearch_crawler and this file is obsolete
- * and will be removed with 6.2. The class was renamed and is now located at:
- * typo3/sysext/indexed_search/Classes/Hook/CrawlerHook.php
- */
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('indexed_search') . 'Classes/Hook/CrawlerHook.php';
-/*
- * @deprecated since 6.0, the classname tx_indexedsearch_files and this file is obsolete
- * and will be removed with 6.2. The class was renamed and is now located at:
- * typo3/sysext/indexed_search/Classes/Hook/CrawlerFilesHook.php
- */
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('indexed_search') . 'Classes/Hook/CrawlerFilesHook.php';
 ?>

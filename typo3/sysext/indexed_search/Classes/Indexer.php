@@ -476,12 +476,10 @@ class Indexer {
 			$this->initializeExternalParsers();
 		}
 		// Initialize lexer (class that deconstructs the text into words):
-		// Example configuration (localconf.php) for this hook: $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] = 'EXT:indexed_search/class.lexer.php:&tx_indexedsearch_lexer';
-		$lexerObjRef = $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] ? $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] : 'EXT:indexed_search/class.lexer.php:&tx_indexedsearch_lexer';
+		$lexerObjRef = $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] ? $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] : 'TYPO3\\CMS\\IndexedSearch\\Lexer';
 		$this->lexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($lexerObjRef);
 		$this->lexerObj->debug = $this->indexerConfig['debugMode'];
 		// Initialize metaphone hook:
-		// Example configuration (localconf.php) for this hook: $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone'] = 'EXT:indexed_search/class.doublemetaphone.php:&user_DoubleMetaPhone';
 		// Make sure that the hook is loaded _after_ indexed_search as this may overwrite the hook depending on the configuration.
 		if ($this->enableMetaphoneSearch && $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone']) {
 			$this->metaphoneObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone']);
@@ -802,7 +800,7 @@ class Indexer {
 								'conf' => $this->conf
 							);
 							unset($params['conf']['content']);
-							$crawler->addQueueEntry_callBack(0, $params, 'EXT:indexed_search/class.crawler.php:&TYPO3\\CMS\\IndexedSearch\\Controller\\SearchFormController_files', $this->conf['id']);
+							$crawler->addQueueEntry_callBack(0, $params, '&TYPO3\\CMS\\IndexedSearch\\Controller\\SearchFormController_files', $this->conf['id']);
 							$this->log_setTSlogMessage('media "' . $params['document'] . '" added to "crawler" queue.', 1);
 						} else {
 							$this->indexRegularDocument($linkInfo['href'], FALSE, $linkSource, $ext);
@@ -814,7 +812,7 @@ class Indexer {
 								'conf' => $this->conf
 							);
 							unset($params['conf']['content']);
-							$crawler->addQueueEntry_callBack(0, $params, 'EXT:indexed_search/class.crawler.php:&TYPO3\\CMS\\IndexedSearch\\Controller\\SearchFormController_files', $this->conf['id']);
+							$crawler->addQueueEntry_callBack(0, $params, '&TYPO3\\CMS\\IndexedSearch\\Controller\\SearchFormController_files', $this->conf['id']);
 							$this->log_setTSlogMessage('media "' . $params['document'] . '" added to "crawler" queue.', 1);
 						} else {
 							$this->indexRegularDocument($linkSource);

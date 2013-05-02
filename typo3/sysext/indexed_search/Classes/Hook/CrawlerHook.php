@@ -52,7 +52,7 @@ class CrawlerHook {
 	/**
 	 * @todo Define visibility
 	 */
-	public $callBack = 'EXT:indexed_search/class.crawler.php:&TYPO3\\CMS\\IndexedSearch\\Controller\\SearchFormController_crawler';
+	public $callBack = '&TYPO3\\CMS\\IndexedSearch\\Controller\\SearchFormController_crawler';
 
 	// The object reference to this class.
 	/**
