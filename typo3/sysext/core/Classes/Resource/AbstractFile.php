@@ -37,6 +37,14 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 abstract class AbstractFile implements FileInterface {
 
 	/**
+	 * File indexing status. True, if the file is indexed in the database;
+	 * NULL is the default value, this means that the index status is unknown
+	 *
+	 * @var boolean
+	 */
+	protected $indexed = NULL;
+
+	/**
 	 * Various file properties
 	 *
 	 * Note that all properties, which only the persisted (indexed) files have are stored in this
@@ -557,6 +565,17 @@ abstract class AbstractFile implements FileInterface {
 	 * @param array $properties
 	 */
 	abstract public function updateProperties(array $properties);
+
+	/**
+	 * Tells whether to index a file or not.
+	 * If yes, the file will be persisted into sys_file.
+	 *
+	 * @param boolean $index
+	 * @return void
+	 */
+	public function index($index = TRUE) {
+		$this->indexed = $index;
+	}
 
 }
 
