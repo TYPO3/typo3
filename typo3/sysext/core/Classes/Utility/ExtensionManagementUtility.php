@@ -1538,11 +1538,6 @@ tt_content.' . $key . $prefix . ' {
 		// scope but to use $GLOBALS['TYPO3_CONF_VARS'] instead.
 		// Nevertheless we define it here as global for backwards compatibility.
 		global $TYPO3_CONF_VARS;
-		// These globals for internal use only. Manipulating them directly is highly discouraged!
-		// We set them here as global for backwards compatibility, but this will change in
-		// future versions.
-		// @deprecated since 6.0 Will be removed in two versions.
-		global $T3_SERVICES, $T3_VAR;
 		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $_EXTKEY => $extensionInformation) {
 			if (is_array($extensionInformation) && $extensionInformation['ext_localconf.php']) {
 				// $_EXTKEY and $_EXTCONF are available in ext_localconf.php
@@ -1836,48 +1831,6 @@ tt_content.' . $key . $prefix . ' {
 	}
 
 	/**
-	 * Loading extensions configured in $GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray']
-	 *
-	 * Usages of this function can be seen in bootstrap
-	 * Extensions are always detected in the order local - global - system.
-	 *
-	 * @return array Extension Array
-	 * @internal
-	 * @deprecated since 6.0, will be removed in two versions
-	 */
-	static public function typo3_loadExtensions() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return self::loadTypo3LoadedExtensionInformation(TRUE);
-	}
-
-	/**
-	 * Returns the section headers for the compiled cache-files.
-	 *
-	 * @param string $key Is the extension key
-	 * @param string $file Is the filename (only informative for comment)
-	 * @return string
-	 * @internal
-	 * @deprecated since 6.0, will be removed in two versions
-	 */
-	static public function _makeIncludeHeader($key, $file) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return '';
-	}
-
-	/**
-	 * Returns TRUE if both the localconf and tables cache file exists
-	 * (with $cacheFilePrefix) and if they are not empty
-	 *
-	 * @param $cacheFilePrefix string Prefix of the cache file to check
-	 * @return boolean
-	 * @deprecated since 6.0, will be removed in two versions
-	 */
-	static public function isCacheFilesAvailable($cacheFilePrefix) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return FALSE;
-	}
-
-	/**
 	 * Returns TRUE if configuration files in typo3conf/ are writable
 	 *
 	 * @return boolean TRUE if at least one configuration file in typo3conf/ is writable
@@ -1888,50 +1841,6 @@ tt_content.' . $key . $prefix . ' {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')
 			->canWriteConfiguration();
-	}
-
-	/**
-	 * Returns an error string if typo3conf/ or cache-files with $cacheFilePrefix are NOT writable
-	 * Returns FALSE if no problem.
-	 *
-	 * @param string $cacheFilePrefix Prefix of the cache file to check
-	 * @return string
-	 * @internal
-	 * @deprecated since 6.0, will be removed in two versions
-	 */
-	static public function cannotCacheFilesWritable($cacheFilePrefix) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return '';
-	}
-
-	/**
-	 * Returns an array with the two cache-files (0=>localconf, 1=>tables)
-	 * from typo3conf/ if they (both) exist. Otherwise FALSE.
-	 * Evaluation relies on $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE']
-	 *
-	 * @param string $cacheFilePrefix Cache file prefix to be used (optional)
-	 * @return array
-	 * @internal
-	 * @deprecated since 6.0, will be removed in versions
-	 */
-	static public function currentCacheFiles($cacheFilePrefix = NULL) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return array();
-	}
-
-	/**
-	 * Compiles/Creates the two cache-files in typo3conf/ based on $cacheFilePrefix
-	 * Returns a array with the key "_CACHEFILE" set to the $cacheFilePrefix value
-	 *
-	 * @param array $extensions Extension information array
-	 * @param string $cacheFilePrefix Prefix for the cache files
-	 * @return array
-	 * @internal
-	 * @deprecated since 6.0, will be removed in two versions
-	 */
-	static public function writeCacheFiles($extensions, $cacheFilePrefix) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return array();
 	}
 
 	/**
@@ -1956,62 +1865,6 @@ tt_content.' . $key . $prefix . ' {
 	}
 
 	/**
-	 * Gets the behaviour for caching ext_tables.php and ext_localconf.php files
-	 * (see $GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'] setting in the install tool).
-	 *
-	 * @param boolean $usePlainValue Whether to use the value as it is without modifications
-	 * @return integer
-	 * @deprecated since 6.0, will be removed two versions later
-	 */
-	static public function getExtensionCacheBehaviour($usePlainValue = FALSE) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return 1;
-	}
-
-	/**
-	 * Gets the prefix used for the ext_tables.php and ext_localconf.php cached files.
-	 *
-	 * @return string
-	 * @deprecated since 6.0, will be removed two versions later
-	 */
-	static public function getCacheFilePrefix() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-	}
-
-	/**
-	 * Gets the list of enabled extensions
-	 *
-	 * @return string
-	 * @deprecated since 6.0, will be removed two versions later
-	 */
-	static public function getEnabledExtensionList() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return implode(',', self::getLoadedExtensionListArray());
-	}
-
-	/**
-	 * Gets the list of required extensions.
-	 *
-	 * @return string
-	 * @deprecated since 6.0, will be removed two versions later
-	 */
-	static public function getRequiredExtensionList() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return implode(',', self::getRequiredExtensionListArray());
-	}
-
-	/**
-	 * Get list of extensions to be ignored (not to be loaded).
-	 *
-	 * @return string
-	 * @deprecated since 6.0, will be removed two versions later
-	 */
-	static public function getIgnoredExtensionList() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return '';
-	}
-
-	/**
 	 * Gets an array of loaded extension keys
 	 *
 	 * @return array Loaded extensions
@@ -2022,7 +1875,7 @@ tt_content.' . $key . $prefix . ' {
 			$loadedExtensions = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'];
 		} else {
 			// Fallback handling if extlist is still a string and not an array
-			// @deprecated since 6.0, will be removed in 6.2
+			// @deprecated since 6.0, will be removed in 6.2 ... check upgrade process before removal!
 			$loadedExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']);
 		}
 		// Add required extensions
