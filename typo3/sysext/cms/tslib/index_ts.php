@@ -133,7 +133,7 @@ $TSFE->determineId();
 // Now, if there is a backend user logged in and he has NO access to this page, then re-evaluate the id shown!
 if ($TSFE->isBackendUserLoggedIn() && (!$BE_USER->extPageReadAccess($TSFE->page) || \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ADMCMD_noBeUser'))) {
 	// \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ADMCMD_noBeUser') is placed here because
-	// Tx_Version_PreviewHook might need to know if a backend user is logged in!
+	// \TYPO3\CMS\Version\Hook\PreviewHook might need to know if a backend user is logged in!
 	// Remove user
 	unset($BE_USER);
 	$TSFE->beUserLogin = 0;
