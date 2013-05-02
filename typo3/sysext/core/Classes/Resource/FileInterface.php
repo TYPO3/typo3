@@ -160,6 +160,15 @@ interface FileInterface extends ResourceInterface {
 	public function isIndexed();
 
 	/**
+	 * Tells whether to index a file or not.
+	 * If yes, the file will be persisted into sys_file.
+	 *
+	 * @param boolean $index
+	 * @return void
+	 */
+	public function index($index = TRUE);
+
+	/**
 	 * Returns a path to a local version of this file to process it locally (e.g. with some system tool).
 	 * If the file is normally located on a remote storages, this creates a local copy.
 	 * If the file is already on the local system, this only makes a new copy if $writable is set to TRUE.

@@ -34,14 +34,6 @@ namespace TYPO3\CMS\Core\Resource;
 class File extends AbstractFile {
 
 	/**
-	 * File indexing status. True, if the file is indexed in the database;
-	 * NULL is the default value, this means that the index status is unknown
-	 *
-	 * @var boolean
-	 */
-	protected $indexed = NULL;
-
-	/**
 	 * Set to TRUE while this file is being indexed - used to prevent some endless loops
 	 *
 	 * @var boolean
