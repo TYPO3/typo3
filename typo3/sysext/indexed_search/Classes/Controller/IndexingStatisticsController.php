@@ -23,15 +23,11 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Module extension (addition to function menu) 'Indexed search statistics' for the 'indexed_search' extension.
  *
- * @author 	Dimitri Ebert <dimitri.ebert@dkd.de>
- */
-/**
- * Module extension (addition to function menu) 'Indexed search statistics' for the 'indexed_search' extension.
- *
- * @author 	Dimitri Ebert <dimitri.ebert@dkd.de>
+ * @author Dimitri Ebert <dimitri.ebert@dkd.de>
  */
 class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 
