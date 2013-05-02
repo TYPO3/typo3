@@ -60,7 +60,7 @@ class ExternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 	 *
 	 * @param string $url The URL to check
 	 * @param array $softRefEntry The soft reference entry which builds the context of that URL
-	 * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance of tx_linkvalidator_Processor
+	 * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance
 	 * @return boolean TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
