@@ -118,7 +118,7 @@ abstract class AbstractHandler {
 	 * Creates a new instance of the integrity service for the
 	 * given set of affected elements.
 	 *
-	 * @param Tx_Workspaces_Domain_Model_CombinedRecord[] $affectedElements
+	 * @param \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord[] $affectedElements
 	 * @return \TYPO3\CMS\Workspaces\Service\IntegrityService
 	 * @see getAffectedElements
 	 */

@@ -22,11 +22,30 @@ if (TYPO3_MODE == 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 			'navigationComponentId' => 'typo3-pagetree'
 		)
 	);
+
 	// register ExtDirect
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Workspaces.ExtDirect', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/ExtDirect/Server.php:TYPO3\\CMS\\Workspaces\\ExtDirect\\ExtDirectServer', 'web_WorkspacesWorkspaces', 'user,group');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Workspaces.ExtDirectActions', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/ExtDirect/ActionHandler.php:TYPO3\\CMS\\Workspaces\\ExtDirect\\ActionHandler', 'web_WorkspacesWorkspaces', 'user,group');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Workspaces.ExtDirectMassActions', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/ExtDirect/MassActionHandler.php:TYPO3\\CMS\\Workspaces\\ExtDirect\\MassActionHandler', 'web_WorkspacesWorkspaces', 'user,group');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Ajax.ExtDirect.ToolbarMenu', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/ExtDirect/ToolbarMenu.php:TYPO3\\CMS\\Workspaces\\ExtDirect\\ToolbarMenu');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent(
+		'TYPO3.Workspaces.ExtDirect',
+		'TYPO3\\CMS\\Workspaces\\ExtDirect\\ExtDirectServer',
+		'web_WorkspacesWorkspaces',
+		'user,group'
+	);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent(
+		'TYPO3.Workspaces.ExtDirectActions',
+		'TYPO3\\CMS\\Workspaces\\ExtDirect\\ActionHandler',
+		'web_WorkspacesWorkspaces',
+		'user,group'
+	);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent(
+		'TYPO3.Workspaces.ExtDirectMassActions',
+		'TYPO3\\CMS\\Workspaces\\ExtDirect\\MassActionHandler',
+		'web_WorkspacesWorkspaces',
+		'user,group'
+	);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerExtDirectComponent(
+		'TYPO3.Ajax.ExtDirect.ToolbarMenu',
+		'TYPO3\\CMS\\Workspaces\\ExtDirect\\ToolbarMenu'
+	);
 }
 
 // todo move icons to Core sprite or keep them here and remove the todo note ;)

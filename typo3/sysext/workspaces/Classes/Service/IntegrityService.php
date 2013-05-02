@@ -68,7 +68,7 @@ class IntegrityService {
 	);
 
 	/**
-	 * @var Tx_Workspaces_Domain_Model_CombinedRecord[]
+	 * @var \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord[]
 	 */
 	protected $affectedElements;
 
@@ -91,7 +91,7 @@ class IntegrityService {
 	/**
 	 * Sets the affected elements.
 	 *
-	 * @param Tx_Workspaces_Domain_Model_CombinedRecord[] $affectedElements
+	 * @param \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord[] $affectedElements
 	 * @return void
 	 */
 	public function setAffectedElements(array $affectedElements) {

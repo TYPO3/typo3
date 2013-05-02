@@ -191,7 +191,7 @@ class GridDataService {
 				}
 			}
 			// Suggested slot method:
-			// methodName(Tx_Workspaces_Service_GridData $gridData, array &$dataArray, array $versions)
+			// methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array &$dataArray, array $versions)
 			$this->emitSignal(self::SIGNAL_GenerateDataArray_BeforeCaching, $this->dataArray, $versions);
 			// Enrich elements after everything has been processed:
 			foreach ($this->dataArray as &$element) {
@@ -204,7 +204,7 @@ class GridDataService {
 			$this->setDataArrayIntoCache($versions, $filterTxt);
 		}
 		// Suggested slot method:
-		// methodName(Tx_Workspaces_Service_GridData $gridData, array &$dataArray, array $versions)
+		// methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array &$dataArray, array $versions)
 		$this->emitSignal(self::SIGNAL_GenerateDataArray_PostProcesss, $this->dataArray, $versions);
 		$this->sortDataArray();
 	}
@@ -223,7 +223,7 @@ class GridDataService {
 			$dataArrayPart[] = $this->dataArray[$i];
 		}
 		// Suggested slot method:
-		// methodName(Tx_Workspaces_Service_GridData $gridData, array &$dataArray, $start, $limit)
+		// methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array &$dataArray, $start, $limit)
 		$this->emitSignal(self::SIGNAL_GetDataArray_PostProcesss, $this->dataArray, $start, $limit);
 		return $dataArrayPart;
 	}
@@ -328,7 +328,7 @@ class GridDataService {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Try to sort "' . $this->sort . '" in "TYPO3\\CMS\\Workspaces\\Service\\GridDataService::sortDataArray" but $this->dataArray is empty! This might be the Bug #26422 which could not reproduced yet.', 3);
 		}
 		// Suggested slot method:
-		// methodName(Tx_Workspaces_Service_GridData $gridData, array &$dataArray, $sortColumn, $sortDirection)
+		// methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array &$dataArray, $sortColumn, $sortDirection)
 		$this->emitSignal(self::SIGNAL_SortDataArray_PostProcesss, $this->dataArray, $this->sort, $this->sortDir);
 	}
 
