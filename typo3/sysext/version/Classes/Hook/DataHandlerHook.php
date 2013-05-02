@@ -459,7 +459,7 @@ class DataHandlerHook {
 				);
 				// add marker for preview links if workspace extension is loaded
 				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
-					$this->workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_Workspaces_Service_Workspaces');
+					$this->workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
 					// only generate the link if the marker is in the template - prevents database from getting to much entries
 					if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($emailConfig['message'], 'LLL:')) {
 						$tempEmailMessage = $GLOBALS['LANG']->sL($emailConfig['message']);
@@ -862,7 +862,7 @@ class DataHandlerHook {
 											$theLogId = $tcemainObj->log($table, $swapWith, 2, $propArr['pid'], 0, $label, 10, array($propArr['header'], $table . ':' . $swapWith), $propArr['event_pid']);
 											$tcemainObj->setHistory($table, $swapWith, $theLogId);
 
-											$stageId = -20; // Tx_Workspaces_Service_Stages::STAGE_PUBLISH_EXECUTE_ID;
+											$stageId = -20; // \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_EXECUTE_ID;
 											if ($notificationEmailInfo) {
 												$notificationEmailInfoKey = $wsAccess['uid'] . ':' . $stageId . ':' . $comment;
 												$this->notificationEmailInfo[$notificationEmailInfoKey]['shared'] = array($wsAccess, $stageId, $comment);
