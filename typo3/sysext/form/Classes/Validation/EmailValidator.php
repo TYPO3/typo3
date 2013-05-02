@@ -22,6 +22,13 @@ namespace TYPO3\CMS\Form\Validation;
 class EmailValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 
 	/**
+	 * Constant for localisation
+	 *
+	 * @var string
+	 */
+	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_email';
+
+	/**
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return bool

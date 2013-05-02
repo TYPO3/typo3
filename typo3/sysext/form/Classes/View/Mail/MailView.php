@@ -22,6 +22,13 @@ namespace TYPO3\CMS\Form\View\Mail;
 class MailView {
 
 	/**
+	 * Constant for localisation
+	 *
+	 * @var string
+	 */
+	const LOCALISATION_OBJECT_NAME = 'tx_form_view_mail';
+
+	/**
 	 * The mail message
 	 *
 	 * @var \TYPO3\CMS\Core\Mail\MailMessage
@@ -127,7 +134,7 @@ class MailView {
 	 * @return string The local language message label
 	 */
 	protected function getLocalLanguageLabel($type) {
-		$label = strtolower(get_class($this)) . '.' . $type;
+		$label = self::LOCALISATION_OBJECT_NAME . '.' . $type;
 		$message = $this->localizationHandler->getLocalLanguageLabel($label);
 		return $message;
 	}

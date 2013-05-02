@@ -23,6 +23,13 @@ namespace TYPO3\CMS\Form\Validation;
 class FileMinimumSizeValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator implements \TYPO3\CMS\Form\Validation\ValidatorInterface {
 
 	/**
+	 * Constant for localisation
+	 *
+	 * @var string
+	 */
+	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_fileminimumsize';
+
+	/**
 	 * Minimum value
 	 *
 	 * @var mixed
