@@ -392,7 +392,38 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame($expectedExtension, $fixture->getExtension());
 	}
 
+	/**
+	 * @test
+	 */
+	public function indexablePropertyIsByDefaultTrue() {
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array());
+		$this->assertAttributeEquals(TRUE, 'indexable', $fixture);
+	}
 
+	/**
+	 * @test
+	 */
+	public function indexablePropertyCanBeSetAndGet() {
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array());
+		foreach (array(FALSE, TRUE) as $value) {
+			$fixture->setIndexable($value);
+			$this->assertSame($value, $fixture->getIndexable());
+		}
+	}
+
+	/**
+	 * @test
+	 */
+	public function methodLoadIndexRecordReturnsNullIfIndexableEqualsFalse() {
+		$method = new \ReflectionMethod(
+			'TYPO3\CMS\Core\Resource\File', 'loadIndexRecord'
+		);
+		$method->setAccessible(TRUE);
+
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array());
+		$fixture->setIndexable(FALSE);
+		$this->assertNull($method->invoke($fixture));
+	}
 }
 
 ?>
