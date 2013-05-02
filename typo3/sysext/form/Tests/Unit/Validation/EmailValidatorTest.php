@@ -25,11 +25,12 @@ namespace TYPO3\CMS\Form\Tests\Unit\Validation;
 ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Form\Validation\EmailValidator.
+ * Test case
  *
  * @author Andreas Lappe <a.lappe@kuehlhaus.com>
  */
 class EmailValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+
 	/**
 	 * @var \TYPO3\CMS\Form\Tests\Unit\Validation\Helper
 	 */
@@ -51,16 +52,16 @@ class EmailValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	public function validEmailProvider() {
 		return array(
-			'a@b.de'               => array('a@b.de'),
-			'somebody@localhost'   => array('somebody@localhost'),
+			'a@b.de' => array('a@b.de'),
 			'somebody@mymac.local' => array('somebody@mymac.local')
 		);
 	}
 
 	public function invalidEmailProvider() {
 		return array(
-			'myemail@'           => array('myemail@'),
-			'myemail'            => array('myemail'),
+			'myemail@' => array('myemail@'),
+			'myemail' => array('myemail'),
+			'somebody@localhost' => array('somebody@localhost'),
 		);
 	}
 
