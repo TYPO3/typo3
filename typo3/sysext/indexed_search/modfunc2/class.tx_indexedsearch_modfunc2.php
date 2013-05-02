@@ -1,8 +1,10 @@
 <?php
-/*
- * @deprecated since 6.0, the classname tx_indexedsearch_modfunc2 and this file is obsolete
- * and will be removed with 6.2. The class was renamed and is now located at:
- * typo3/sysext/indexed_search/Classes/Controller/IndexingStatisticsController.php
+/**
+ * This file is empty by intention: At the moment, it is still needed by
+ * TYPO3\CMS\Backend\Module\AbstractFunctionModule and registered as 'path'
+ * in ext_tables.php insertModuleFunction(). See init() method of AbstractFunctionModule
+ * to improve this.
+ *
+ * As real class TYPO3\CMS\IndexedSearch\Controller\IndexingStatisticsController is called.
  */
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('indexed_search') . 'Classes/Controller/IndexingStatisticsController.php';
 ?>
