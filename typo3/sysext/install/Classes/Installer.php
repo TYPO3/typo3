@@ -290,9 +290,13 @@ class Installer {
 			$this->step = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('step'));
 		}
 
-		// Let DBAL decide whether to load itself
-		$dbalAutoloader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Dbal\\Autoloader');
-		$dbalAutoloader->execute($this);
+		// Let DBAL decide whether to load itself - manual require since ext:dbal is not always loaded
+		$dbalLoaderFile = $this->backPath . 'sysext/dbal/Classes/Autoloader.php';
+		if (@is_file($dbalLoaderFile)) {
+			require_once $dbalLoaderFile;
+			$dbalAutoloader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Dbal\\Autoloader');
+			$dbalAutoloader->execute($this);
+		}
 
 		if ($this->mode === '123') {
 			// Check for mandatory PHP modules
