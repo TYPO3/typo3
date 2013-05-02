@@ -62,8 +62,6 @@ class LocalPreviewHelper {
 
 			// Merge custom configuration with default configuration
 		$configuration = array_merge(array('width' => 64, 'height' => 64), $task->getConfiguration());
-		$configuration['width'] = Utility\MathUtility::forceIntegerInRange($configuration['width'], 1, 1000);
-		$configuration['height'] = Utility\MathUtility::forceIntegerInRange($configuration['height'], 1, 1000);
 
 		$originalFileName = $sourceFile->getForLocalProcessing(FALSE);
 
