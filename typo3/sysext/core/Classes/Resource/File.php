@@ -37,9 +37,17 @@ class File extends AbstractFile {
 	 * File indexing status. True, if the file is indexed in the database;
 	 * NULL is the default value, this means that the index status is unknown
 	 *
-	 * @var boolean
+	 * @var boolean|NULL
 	 */
 	protected $indexed = NULL;
+
+	/**
+	 * Tells whether to index a file or not.
+	 * If yes, the file will be persisted into sys_file.
+	 *
+	 * @var boolean
+	 */
+	protected $isIndexable = TRUE;
 
 	/**
 	 * Set to TRUE while this file is being indexed - used to prevent some endless loops
@@ -155,7 +163,7 @@ class File extends AbstractFile {
 	 * @return void
 	 */
 	protected function loadIndexRecord($indexIfNotIndexed = TRUE) {
-		if ($this->indexed !== NULL) {
+		if ($this->indexed !== NULL || !$this->isIndexable) {
 			return;
 		}
 		/** @var $repo FileRepository */
@@ -319,6 +327,20 @@ class File extends AbstractFile {
 		return $array;
 	}
 
+
+	/**
+	 * @return boolean
+	 */
+	public function getIsIndexable() {
+		return $this->isIndexable;
+	}
+
+	/**
+	 * @param boolean $isIndexable
+	 */
+	public function setIsIndexable($isIndexable) {
+		$this->isIndexable = $isIndexable;
+	}
 }
 
 
