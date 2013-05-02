@@ -22,6 +22,18 @@ namespace TYPO3\CMS\Form\Validation;
 class DigitValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 
 	/**
+	 * @var \TYPO3\CMS\Form\Filter\DigitFilter
+	 */
+	protected $filter;
+
+	/**
+	 * Constant for localisation
+	 *
+	 * @var string
+	 */
+	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_digit';
+
+	/**
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean

@@ -247,7 +247,7 @@ abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\Validator
 	 * @return string The local language message label
 	 */
 	protected function getLocalLanguageLabel($type) {
-		$label = strtolower(get_class($this)) . '.' . $type;
+		$label = self::LOCALISATION_OBJECT_NAME . '.' . $type;
 		$message = $this->localizationHandler->getLocalLanguageLabel($label);
 		return $message;
 	}

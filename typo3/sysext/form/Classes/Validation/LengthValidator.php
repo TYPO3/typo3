@@ -22,6 +22,13 @@ namespace TYPO3\CMS\Form\Validation;
 class LengthValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 
 	/**
+	 * Constant for localisation
+	 *
+	 * @var string
+	 */
+	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_length';
+
+	/**
 	 * Minimum value
 	 *
 	 * @var mixed
@@ -108,7 +115,7 @@ class LengthValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * @see \TYPO3\CMS\Form\Validation\AbstractValidator::_getLocalLanguageLabel()
 	 */
 	protected function getLocalLanguageLabel($type) {
-		$label = strtolower(get_class($this)) . '.' . $type;
+		$label = self::LOCALISATION_OBJECT_NAME . '.' . $type;
 		$messages[] = $this->localizationHandler->getLocalLanguageLabel($label);
 		if ($this->maximum !== NULL) {
 			$messages[] = $this->localizationHandler->getLocalLanguageLabel($label . '2');

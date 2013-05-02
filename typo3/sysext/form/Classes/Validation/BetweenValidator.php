@@ -23,6 +23,13 @@ namespace TYPO3\CMS\Form\Validation;
 class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator implements \TYPO3\CMS\Form\Validation\ValidatorInterface {
 
 	/**
+	 * Constant for localisation
+	 *
+	 * @var string
+	 */
+	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_between';
+
+	/**
 	 * Minimum value
 	 *
 	 * @var mixed
@@ -121,7 +128,7 @@ class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator impl
 	 * @see \TYPO3\CMS\Form\Validation\AbstractValidator::_getLocalLanguageLabel()
 	 */
 	protected function getLocalLanguageLabel($type) {
-		$label = strtolower(get_class($this)) . '.' . $type;
+		$label = self::LOCALISATION_OBJECT_NAME . '.' . $type;
 		$messages[] = $this->localizationHandler->getLocalLanguageLabel($label);
 		if ($this->inclusive) {
 			$messages[] = $this->localizationHandler->getLocalLanguageLabel($label . '2');

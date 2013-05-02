@@ -22,6 +22,13 @@ namespace TYPO3\CMS\Form\Validation;
 class AlphanumericValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 
 	/**
+	 * Constant for localisation
+	 *
+	 * @var string
+	 */
+	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_alphanumeric';
+
+	/**
 	 * Allow white space in the submitted value
 	 *
 	 * @var boolean
@@ -82,7 +89,7 @@ class AlphanumericValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator
 	 * @see \TYPO3\CMS\Form\Validation\AbstractValidator::_getLocalLanguageLabel()
 	 */
 	protected function getLocalLanguageLabel() {
-		$label = strtolower(get_class($this)) . '.message';
+		$label = self::LOCALISATION_OBJECT_NAME . '.message';
 		$messages[] = $this->localizationHandler->getLocalLanguageLabel($label);
 		if ($this->allowWhiteSpace) {
 			$messages[] = $this->localizationHandler->getLocalLanguageLabel($label . '2');
