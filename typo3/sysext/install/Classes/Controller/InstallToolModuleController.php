@@ -91,7 +91,7 @@ class InstallToolModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptCl
 		$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\ErrorpageMessage');
 		$message->setTitle($GLOBALS['LANG']->sL('LLL:EXT:install/mod/locallang_mod.xlf:confirmUnlockInstallToolTitle'));
 		$message->setSeverity(\TYPO3\CMS\Core\Messaging\ErrorpageMessage::WARNING);
-		$message->setHtmlTemplate('/typo3/templates/install.html');
+		$message->setHtmlTemplate('/typo3/sysext/install/Resources/Private/Templates/Notice.html');
 		$content = $GLOBALS['LANG']->sL('LLL:EXT:install/mod/locallang_mod.xlf:confirmUnlockInstallToolMessage') . '<button type="submit">' . $GLOBALS['LANG']->sL('LLL:EXT:install/mod/locallang_mod.xlf:confirmUnlockInstallToolButton') . '<span class="t3-install-form-button-icon-positive">&nbsp;</span></button>';
 		$messageMarkers = array();
 		$messageMarkers['###CONTENT###'] = $content;
