@@ -390,7 +390,7 @@ if (TYPO3_MODE == 'BE' || TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER'])) {
 	// extJS theme
 	$TBE_STYLES['extJS']['theme'] = $temp_eP . 'extjs/xtheme-t3skin.css';
 	// Adding HTML template for login screen
-	$TBE_STYLES['htmlTemplates']['templates/login.html'] = 'sysext/t3skin/templates/login.html';
+	$TBE_STYLES['htmlTemplates']['EXT:backend/Resources/Private/Templates/login.html'] = 'sysext/t3skin/templates/login.html';
 	$GLOBALS['TBE_STYLES']['stylesheets']['admPanel'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('t3skin') . 'stylesheets/standalone/admin_panel.css';
 	foreach ($flagNames as $flagName) {
 		\TYPO3\CMS\Backend\Sprite\SpriteManager::addIconSprite(array(
