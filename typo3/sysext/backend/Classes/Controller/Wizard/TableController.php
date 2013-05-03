@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Script Class for rendering the Table Wizard
  *
@@ -117,15 +119,15 @@ class TableController {
 	 */
 	public function init() {
 		// GPvars:
-		$this->P = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('P');
-		$this->TABLECFG = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('TABLE');
+		$this->P = GeneralUtility::_GP('P');
+		$this->TABLECFG = GeneralUtility::_GP('TABLE');
 		// Setting options:
 		$this->xmlStorage = $this->P['params']['xmlOutput'];
 		$this->numNewRows = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->P['params']['numNewRows'], 1, 50, 5);
 		// Textareas or input fields:
 		$this->inputStyle = isset($this->TABLECFG['textFields']) ? $this->TABLECFG['textFields'] : 1;
 		// Document template object:
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/wizard_table.html');
 		$this->doc->JScode = $this->doc->wrapScriptTags('
@@ -134,7 +136,7 @@ class TableController {
 			}
 		');
 		// Setting form tag:
-		list($rUri) = explode('#', \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
+		list($rUri) = explode('#', GeneralUtility::getIndpEnv('REQUEST_URI'));
 		$this->doc->form = '<form action="' . htmlspecialchars($rUri) . '" method="post" name="wizardForm">';
 		$this->tableParsing_delimiter = '|';
 		$this->tableParsing_quote = '';
@@ -193,7 +195,7 @@ class TableController {
 			// CSH Buttons
 			$buttons['csh_buttons'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_table_wiz_buttons', $GLOBALS['BACK_PATH'], '');
 			// Close
-			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(unescape(\'' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl($this->P['returnUrl'])) . '\')); return false;')) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE))) . '</a>';
+			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(unescape(\'' . rawurlencode(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl'])) . '\')); return false;')) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE))) . '</a>';
 			// Save
 			$buttons['save'] = '<input type="image" class="c-inputButton" name="savedok"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/savedok.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', 1) . '" />';
 			// Save & Close
@@ -241,7 +243,7 @@ class TableController {
 	 */
 	public function getConfigCode($row) {
 		// Get delimiter settings
-		$flexForm = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($row['pi_flexform']);
+		$flexForm = GeneralUtility::xml2array($row['pi_flexform']);
 		if (is_array($flexForm)) {
 			$this->tableParsing_quote = $flexForm['data']['s_parsing']['lDEF']['tableparsing_quote']['vDEF'] ? chr(intval($flexForm['data']['s_parsing']['lDEF']['tableparsing_quote']['vDEF'])) : '';
 			$this->tableParsing_delimiter = $flexForm['data']['s_parsing']['lDEF']['tableparsing_delimiter']['vDEF'] ? chr(intval($flexForm['data']['s_parsing']['lDEF']['tableparsing_delimiter']['vDEF'])) : '|';
@@ -253,7 +255,7 @@ class TableController {
 			// Convert to string (either line based or XML):
 			if ($this->xmlStorage) {
 				// Convert the input array to XML:
-				$bodyText = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($this->TABLECFG['c'], 'T3TableWizard');
+				$bodyText = GeneralUtility::array2xml_cs($this->TABLECFG['c'], 'T3TableWizard');
 				// Setting cfgArr directly from the input:
 				$cfgArr = $this->TABLECFG['c'];
 			} else {
@@ -265,7 +267,7 @@ class TableController {
 			// If a save button has been pressed, then save the new field content:
 			if ($_POST['savedok_x'] || $_POST['saveandclosedok_x']) {
 				// Make TCEmain object:
-				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+				$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 				$tce->stripslashes_values = 0;
 				// Put content into the data array:
 				$data = array();
@@ -275,13 +277,13 @@ class TableController {
 				$tce->process_datamap();
 				// If the save/close button was pressed, then redirect the screen:
 				if ($_POST['saveandclosedok_x']) {
-					\TYPO3\CMS\Core\Utility\HttpUtility::redirect(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
+					\TYPO3\CMS\Core\Utility\HttpUtility::redirect(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
 				}
 			}
 		} else {
 			// If nothing has been submitted, load the $bodyText variable from the selected database row:
 			if ($this->xmlStorage) {
-				$cfgArr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($row[$this->P['field']]);
+				$cfgArr = GeneralUtility::xml2array($row[$this->P['field']]);
 			} else {
 				// Regular linebased table configuration:
 				$cfgArr = $this->cfgString2CfgArray($row[$this->P['field']], $row[$this->colsFieldName]);
@@ -315,7 +317,7 @@ class TableController {
 						$cells[] = '<input type="text"' . $this->doc->formWidth(20) . ' name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']" value="' . htmlspecialchars($cellContent) . '" />';
 					} else {
 						$cellContent = preg_replace('/<br[ ]?[\\/]?>/i', LF, $cellContent);
-						$cells[] = '<textarea ' . $this->doc->formWidth(20) . ' rows="5" name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($cellContent) . '</textarea>';
+						$cells[] = '<textarea ' . $this->doc->formWidth(20) . ' rows="5" name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']">' . GeneralUtility::formatForTextarea($cellContent) . '</textarea>';
 					}
 					// Increment counter:
 					$a++;
@@ -457,66 +459,66 @@ class TableController {
 		if ($cmd && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($kk)) {
 			if (substr($cmd, 0, 4) == 'row_') {
 				switch ($cmd) {
-				case 'row_remove':
-					unset($this->TABLECFG['c'][$kk]);
-					break;
-				case 'row_add':
-					for ($a = 1; $a <= $this->numNewRows; $a++) {
-						// Checking if set: The point is that any new row inbetween existing rows
-						// will be TRUE after one row is added while if rows are added in the bottom
-						// of the table there will be no existing rows to stop the addition of new rows
-						// which means it will add up to $this->numNewRows rows then.
-						if (!isset($this->TABLECFG['c'][($kk + $a)])) {
-							$this->TABLECFG['c'][$kk + $a] = array();
-						} else {
-							break;
+					case 'row_remove':
+						unset($this->TABLECFG['c'][$kk]);
+						break;
+					case 'row_add':
+						for ($a = 1; $a <= $this->numNewRows; $a++) {
+							// Checking if set: The point is that any new row inbetween existing rows
+							// will be TRUE after one row is added while if rows are added in the bottom
+							// of the table there will be no existing rows to stop the addition of new rows
+							// which means it will add up to $this->numNewRows rows then.
+							if (!isset($this->TABLECFG['c'][($kk + $a)])) {
+								$this->TABLECFG['c'][$kk + $a] = array();
+							} else {
+								break;
+							}
 						}
-					}
-					break;
-				case 'row_top':
-					$this->TABLECFG['c'][1] = $this->TABLECFG['c'][$kk];
-					unset($this->TABLECFG['c'][$kk]);
-					break;
-				case 'row_bottom':
-					$this->TABLECFG['c'][10000000] = $this->TABLECFG['c'][$kk];
-					unset($this->TABLECFG['c'][$kk]);
-					break;
-				case 'row_up':
-					$this->TABLECFG['c'][$kk - 3] = $this->TABLECFG['c'][$kk];
-					unset($this->TABLECFG['c'][$kk]);
-					break;
-				case 'row_down':
-					$this->TABLECFG['c'][$kk + 3] = $this->TABLECFG['c'][$kk];
-					unset($this->TABLECFG['c'][$kk]);
-					break;
+						break;
+					case 'row_top':
+						$this->TABLECFG['c'][1] = $this->TABLECFG['c'][$kk];
+						unset($this->TABLECFG['c'][$kk]);
+						break;
+					case 'row_bottom':
+						$this->TABLECFG['c'][10000000] = $this->TABLECFG['c'][$kk];
+						unset($this->TABLECFG['c'][$kk]);
+						break;
+					case 'row_up':
+						$this->TABLECFG['c'][$kk - 3] = $this->TABLECFG['c'][$kk];
+						unset($this->TABLECFG['c'][$kk]);
+						break;
+					case 'row_down':
+						$this->TABLECFG['c'][$kk + 3] = $this->TABLECFG['c'][$kk];
+						unset($this->TABLECFG['c'][$kk]);
+						break;
 				}
 				ksort($this->TABLECFG['c']);
 			}
 			if (substr($cmd, 0, 4) == 'col_') {
 				foreach ($this->TABLECFG['c'] as $cAK => $value) {
 					switch ($cmd) {
-					case 'col_remove':
-						unset($this->TABLECFG['c'][$cAK][$kk]);
-						break;
-					case 'col_add':
-						$this->TABLECFG['c'][$cAK][$kk + 1] = '';
-						break;
-					case 'col_start':
-						$this->TABLECFG['c'][$cAK][1] = $this->TABLECFG['c'][$cAK][$kk];
-						unset($this->TABLECFG['c'][$cAK][$kk]);
-						break;
-					case 'col_end':
-						$this->TABLECFG['c'][$cAK][1000000] = $this->TABLECFG['c'][$cAK][$kk];
-						unset($this->TABLECFG['c'][$cAK][$kk]);
-						break;
-					case 'col_left':
-						$this->TABLECFG['c'][$cAK][$kk - 3] = $this->TABLECFG['c'][$cAK][$kk];
-						unset($this->TABLECFG['c'][$cAK][$kk]);
-						break;
-					case 'col_right':
-						$this->TABLECFG['c'][$cAK][$kk + 3] = $this->TABLECFG['c'][$cAK][$kk];
-						unset($this->TABLECFG['c'][$cAK][$kk]);
-						break;
+						case 'col_remove':
+							unset($this->TABLECFG['c'][$cAK][$kk]);
+							break;
+						case 'col_add':
+							$this->TABLECFG['c'][$cAK][$kk + 1] = '';
+							break;
+						case 'col_start':
+							$this->TABLECFG['c'][$cAK][1] = $this->TABLECFG['c'][$cAK][$kk];
+							unset($this->TABLECFG['c'][$cAK][$kk]);
+							break;
+						case 'col_end':
+							$this->TABLECFG['c'][$cAK][1000000] = $this->TABLECFG['c'][$cAK][$kk];
+							unset($this->TABLECFG['c'][$cAK][$kk]);
+							break;
+						case 'col_left':
+							$this->TABLECFG['c'][$cAK][$kk - 3] = $this->TABLECFG['c'][$cAK][$kk];
+							unset($this->TABLECFG['c'][$cAK][$kk]);
+							break;
+						case 'col_right':
+							$this->TABLECFG['c'][$cAK][$kk + 3] = $this->TABLECFG['c'][$cAK][$kk];
+							unset($this->TABLECFG['c'][$cAK][$kk]);
+							break;
 					}
 					ksort($this->TABLECFG['c'][$cAK]);
 				}
@@ -591,6 +593,5 @@ class TableController {
 	}
 
 }
-
 
 ?>

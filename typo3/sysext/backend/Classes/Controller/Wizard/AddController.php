@@ -161,30 +161,30 @@ class AddController {
 						$curValueOfFlexform = $flexToolObj->getArrayValueByPath($this->P['flexFormPath'], $currentFlexFormData);
 						$insertValue = '';
 						switch ((string) $this->P['params']['setValue']) {
-						case 'set':
-							$insertValue = $addEl;
-							break;
-						case 'prepend':
-							$insertValue = $curValueOfFlexform . ',' . $addEl;
-							break;
-						case 'append':
-							$insertValue = $addEl . ',' . $curValueOfFlexform;
-							break;
+							case 'set':
+								$insertValue = $addEl;
+								break;
+							case 'prepend':
+								$insertValue = $curValueOfFlexform . ',' . $addEl;
+								break;
+							case 'append':
+								$insertValue = $addEl . ',' . $curValueOfFlexform;
+								break;
 						}
 						$insertValue = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $insertValue, 1));
 						$data[$this->P['table']][$this->P['uid']][$this->P['field']] = array();
 						$flexToolObj->setArrayValueByPath($this->P['flexFormPath'], $data[$this->P['table']][$this->P['uid']][$this->P['field']], $insertValue);
 					} else {
 						switch ((string) $this->P['params']['setValue']) {
-						case 'set':
-							$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl;
-							break;
-						case 'prepend':
-							$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $current[$this->P['field']] . ',' . $addEl;
-							break;
-						case 'append':
-							$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl . ',' . $current[$this->P['field']];
-							break;
+							case 'set':
+								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl;
+								break;
+							case 'prepend':
+								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $current[$this->P['field']] . ',' . $addEl;
+								break;
+							case 'append':
+								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl . ',' . $current[$this->P['field']];
+								break;
 						}
 						$data[$this->P['table']][$this->P['uid']][$this->P['field']] = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $data[$this->P['table']][$this->P['uid']][$this->P['field']], 1));
 					}
@@ -204,6 +204,5 @@ class AddController {
 	}
 
 }
-
 
 ?>

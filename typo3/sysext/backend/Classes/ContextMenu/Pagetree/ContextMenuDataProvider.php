@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Backend\ContextMenu\Pagetree;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Context Menu Data Provider for the Page Tree
  *
@@ -95,6 +96,5 @@ class ContextMenuDataProvider extends \TYPO3\CMS\Backend\ContextMenu\AbstractCon
 	}
 
 }
-
 
 ?>

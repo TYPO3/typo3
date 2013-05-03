@@ -27,23 +27,13 @@ namespace TYPO3\CMS\Backend\Controller\File;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Gateway for TCE (TYPO3 Core Engine) file-handling through POST forms.
  * This script serves as the fileadministration part of the TYPO3 Core Engine.
  * Basically it includes two libraries which are used to manipulate files on the server.
  * Before TYPO3 4.3, it was located in typo3/tce_file.php and redirected back to a
  * $redirectURL. Since 4.3 this class is also used for accessing via AJAX
- *
- *
- * For syntax and API information, see the document 'TYPO3 Core APIs'
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- * Revised for TYPO3 4.3 Mar/2009 by Benjamin Mack
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
- * Script Class, handling the calling of methods in the file admin classes.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -153,7 +143,7 @@ class FileController {
 	 * actual return value
 	 *
 	 * @param array $params Always empty.
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj The Ajax object used to return content and set content types
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj The AjaxRequestHandler object used to return content and set content types
 	 * @return void
 	 */
 	public function processAjaxRequest(array $params, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj) {
@@ -172,6 +162,5 @@ class FileController {
 	}
 
 }
-
 
 ?>
