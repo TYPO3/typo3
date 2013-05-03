@@ -2667,7 +2667,7 @@ function ' . $evalData . '(value) {
 						}
 						$displayConditionResult = TRUE;
 						if ($dataStruct['ROOT']['TCEforms']['displayCond']) {
-							$displayConditionResult = $elementConditionMatcher->match($dataStruct['ROOT']['TCEforms']['displayCond'], $fakeRow, 'vDef');
+							$displayConditionResult = $elementConditionMatcher->match($dataStruct['ROOT']['TCEforms']['displayCond'], $fakeRow, 'vDEF');
 						}
 						// If sheets displayCond leads to false
 						if (!$skipCondition && !$displayConditionResult) {
