@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Backend\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class for rendering the TYPO3 backend version 4.2+
  *
@@ -83,9 +85,9 @@ class BackendController {
 		// Set debug flag for BE development only
 		$this->debug = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) === 1;
 		// Initializes the backend modules structure for use later.
-		$this->moduleLoader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
+		$this->moduleLoader = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
 		$this->moduleLoader->load($GLOBALS['TBE_MODULES']);
-		$this->moduleMenu = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\ModuleMenuView');
+		$this->moduleMenu = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\ModuleMenuView');
 		$this->pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
 		$this->pageRenderer->loadScriptaculous('builder,effects,controls,dragdrop');
 		$this->pageRenderer->loadExtJS();
@@ -143,7 +145,7 @@ class BackendController {
 			'liveSearch' => '\\TYPO3\\CMS\\Backend\\Toolbar\\LiveSearchToolbarItem'
 		);
 		foreach ($coreToolbarItems as $toolbarItemName => $toolbarItemClassName) {
-			$toolbarItem = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($toolbarItemClassName, $this);
+			$toolbarItem = GeneralUtility::makeInstance($toolbarItemClassName, $this);
 			if (!$toolbarItem instanceof \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface) {
 				throw new \UnexpectedValueException('$toolbarItem "' . $toolbarItemName . '" must implement interface TYPO3\\CMS\\Backend\\Toolbar\\ToolbarItemHookInterface', 1195126772);
 			}
@@ -163,7 +165,7 @@ class BackendController {
 	public function render() {
 		$this->executeHook('renderPreProcess');
 		// Prepare the scaffolding, at this point extension may still add javascript and css
-		$logo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\LogoView');
+		$logo = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\LogoView');
 		$logo->setLogo('gfx/typo3logo_mini.png');
 		// Create backend scaffolding
 		$backendScaffolding = '
@@ -244,21 +246,21 @@ class BackendController {
 				$absoluteComponentPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($info['extKey']) . $componentDirectory;
 				$relativeComponentPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($info['extKey']) . $componentDirectory;
 			}
-			$cssFiles = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($absoluteComponentPath . 'css/', 'css');
+			$cssFiles = GeneralUtility::getFilesInDir($absoluteComponentPath . 'css/', 'css');
 			if (file_exists($absoluteComponentPath . 'css/loadorder.txt')) {
 				// Don't allow inclusion outside directory
-				$loadOrder = str_replace('../', '', \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($absoluteComponentPath . 'css/loadorder.txt'));
-				$cssFilesOrdered = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $loadOrder, TRUE);
+				$loadOrder = str_replace('../', '', GeneralUtility::getUrl($absoluteComponentPath . 'css/loadorder.txt'));
+				$cssFilesOrdered = GeneralUtility::trimExplode(LF, $loadOrder, TRUE);
 				$cssFiles = array_merge($cssFilesOrdered, $cssFiles);
 			}
 			foreach ($cssFiles as $cssFile) {
 				$this->pageRenderer->addCssFile($relativeComponentPath . 'css/' . $cssFile);
 			}
-			$jsFiles = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($absoluteComponentPath . 'javascript/', 'js');
+			$jsFiles = GeneralUtility::getFilesInDir($absoluteComponentPath . 'javascript/', 'js');
 			if (file_exists($absoluteComponentPath . 'javascript/loadorder.txt')) {
 				// Don't allow inclusion outside directory
-				$loadOrder = str_replace('../', '', \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($absoluteComponentPath . 'javascript/loadorder.txt'));
-				$jsFilesOrdered = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $loadOrder, TRUE);
+				$loadOrder = str_replace('../', '', GeneralUtility::getUrl($absoluteComponentPath . 'javascript/loadorder.txt'));
+				$jsFilesOrdered = GeneralUtility::trimExplode(LF, $loadOrder, TRUE);
 				$jsFiles = array_merge($jsFilesOrdered, $jsFiles);
 			}
 			foreach ($jsFiles as $jsFile) {
@@ -338,7 +340,7 @@ class BackendController {
 		$filePath = 'typo3temp/locallang-BE-' . sha1($code) . '.js';
 		if (!file_exists((PATH_site . $filePath))) {
 			// writeFileToTypo3tempDir() returns NULL on success (please double-read!)
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filePath, $code) !== NULL) {
+			if (GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filePath, $code) !== NULL) {
 				throw new \RuntimeException('LocalLangFile could not be written to ' . $filePath, 1295193026);
 			}
 		}
@@ -447,7 +449,7 @@ class BackendController {
 	 * @return void
 	 */
 	protected function generateJavascript() {
-		$pathTYPO3 = \TYPO3\CMS\Core\Utility\GeneralUtility::dirname(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/';
+		$pathTYPO3 = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/';
 		// If another page module was specified, replace the default Page module with the new one
 		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
 		$pageModule = \TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
@@ -465,11 +467,11 @@ class BackendController {
 			$this->loginSecurityLevel = 'superchallenged';
 		}
 		$t3Configuration = array(
-			'siteUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'),
+			'siteUrl' => GeneralUtility::getIndpEnv('TYPO3_SITE_URL'),
 			'PATH_typo3' => $pathTYPO3,
 			'PATH_typo3_enc' => rawurlencode($pathTYPO3),
 			'username' => htmlspecialchars($GLOBALS['BE_USER']->user['username']),
-			'uniqueID' => \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(uniqid('')),
+			'uniqueID' => GeneralUtility::shortMD5(uniqid('')),
 			'securityLevel' => $this->loginSecurityLevel,
 			'TYPO3_mainDir' => TYPO3_mainDir,
 			'pageModule' => $pageModule,
@@ -542,7 +544,7 @@ class BackendController {
 			return;
 		}
 		// EDIT page:
-		$editId = preg_replace('/[^[:alnum:]_]/', '', \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('edit'));
+		$editId = preg_replace('/[^[:alnum:]_]/', '', GeneralUtility::_GET('edit'));
 		$editRecord = '';
 		if ($editId) {
 			// Looking up the page to edit, checking permissions:
@@ -584,7 +586,7 @@ class BackendController {
 	 * @return void
 	 */
 	protected function setStartupModule() {
-		$startModule = preg_replace('/[^[:alnum:]_]/', '', \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('module'));
+		$startModule = preg_replace('/[^[:alnum:]_]/', '', GeneralUtility::_GET('module'));
 		if (!$startModule) {
 			if ($GLOBALS['BE_USER']->uc['startModule']) {
 				$startModule = $GLOBALS['BE_USER']->uc['startModule'];
@@ -592,11 +594,11 @@ class BackendController {
 				$startModule = 'user_task';
 			}
 		}
-		$moduleParameters = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('modParams');
+		$moduleParameters = GeneralUtility::_GET('modParams');
 		if ($startModule) {
 			return '
 					// start in module:
-				top.startInModule = [\'' . $startModule . '\', ' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($moduleParameters) . '];
+				top.startInModule = [\'' . $startModule . '\', ' . GeneralUtility::quoteJSvalue($moduleParameters) . '];
 			';
 		} else {
 			return '';
@@ -626,7 +628,7 @@ class BackendController {
 	public function addJavascriptFile($javascriptFile) {
 		$jsFileAdded = FALSE;
 		//TODO add more checks if neccessary
-		if (file_exists(\TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath(PATH_typo3 . $javascriptFile))) {
+		if (file_exists(GeneralUtility::resolveBackPath(PATH_typo3 . $javascriptFile))) {
 			$this->jsFiles[] = $javascriptFile;
 			$jsFileAdded = TRUE;
 		}
@@ -670,7 +672,7 @@ class BackendController {
 	 * @return void
 	 */
 	public function addToolbarItem($toolbarItemName, $toolbarItemClassName) {
-		$toolbarItem = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($toolbarItemClassName, $this);
+		$toolbarItem = GeneralUtility::makeInstance($toolbarItemClassName, $this);
 		if (!$toolbarItem instanceof \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface) {
 			throw new \UnexpectedValueException('$toolbarItem "' . $toolbarItemName . '" must implement interface TYPO3\\CMS\\Backend\\Toolbar\\ToolbarItemHookInterface', 1195125501);
 		}
@@ -697,12 +699,11 @@ class BackendController {
 		$options = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php'];
 		if (isset($options[$identifier]) && is_array($options[$identifier])) {
 			foreach ($options[$identifier] as $hookFunction) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hookFunction, $hookConfiguration, $this);
+				GeneralUtility::callUserFunction($hookFunction, $hookConfiguration, $this);
 			}
 		}
 	}
 
 }
-
 
 ?>

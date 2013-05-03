@@ -214,5 +214,4 @@ class FileSystemNavigationFrameController {
 
 }
 
-
 ?>

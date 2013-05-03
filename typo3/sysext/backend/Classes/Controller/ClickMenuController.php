@@ -223,5 +223,4 @@ class ClickMenuController {
 
 }
 
-
 ?>
