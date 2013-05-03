@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  *
  * @api
  */
-class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter implements \TYPO3\CMS\Core\SingletonInterface {
+class PersistentObjectConverter extends ObjectConverter {
 
 	/**
 	 * @var integer
@@ -45,11 +45,6 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	 * @var integer
 	 */
 	const CONFIGURATION_CREATION_ALLOWED = 2;
-
-	/**
-	 * @var integer
-	 */
-	const CONFIGURATION_TARGET_TYPE = 3;
 
 	/**
 	 * @var array
@@ -67,43 +62,10 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	protected $priority = 1;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 */
-	protected $objectManager;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
+	 * @inject
 	 */
 	protected $persistenceManager;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-	 */
-	protected $reflectionService;
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
-	 * @return void
-	 */
-	public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager) {
-		$this->persistenceManager = $persistenceManager;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
-	 * @return void
-	 */
-	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
-		$this->reflectionService = $reflectionService;
-	}
 
 	/**
 	 * We can only convert if the $targetType is either tagged with entity or value object.
@@ -129,10 +91,7 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 		if (isset($source['__identity'])) {
 			unset($source['__identity']);
 		}
-		if (isset($source['__type'])) {
-			unset($source['__type']);
-		}
-		return $source;
+		return parent::getSourceChildPropertiesToBeConverted($source);
 	}
 
 	/**
@@ -141,8 +100,8 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	 * @param string $targetType
 	 * @param string $propertyName
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
 	 * @return string
+	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
 	 */
 	public function getTypeOfChildProperty($targetType, $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration) {
 		$configuredTargetType = $configuration->getConfigurationFor($propertyName)->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', self::CONFIGURATION_TARGET_TYPE);
@@ -166,8 +125,8 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	 * @param array $convertedChildProperties
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
 	 * @throws \InvalidArgumentException
-	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
 	 * @return object the target type
+	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
 		if (is_array($source)) {
@@ -211,8 +170,8 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	 * @param string $targetType
 	 * @param array &$convertedChildProperties
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
 	 * @return object
+	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
 	 */
 	protected function handleArrayData(array $source, $targetType, array &$convertedChildProperties, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
 		if (isset($source['__identity'])) {
@@ -240,7 +199,7 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	 * @return object
 	 */
 	protected function fetchObjectFromPersistence($identity, $targetType) {
-		if (is_numeric($identity)) {
+		if (ctype_digit((string)$identity)) {
 			$object = $this->persistenceManager->getObjectByIdentifier($identity, $targetType);
 		} else {
 			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException('The identity property "' . $identity . '" is no UID.', 1297931020);
@@ -253,35 +212,6 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 		return $object;
 	}
 
-	/**
-	 * Builds a new instance of $objectType with the given $possibleConstructorArgumentValues. If
-	 * constructor argument values are missing from the given array the method
-	 * looks for a default value in the constructor signature. Furthermore, the constructor arguments are removed from $possibleConstructorArgumentValues
-	 *
-	 * @param array &$possibleConstructorArgumentValues
-	 * @param string $objectType
-	 * @return object The created instance
-	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException if a required constructor argument is missing
-	 */
-	protected function buildObject(array &$possibleConstructorArgumentValues, $objectType) {
-		try {
-			$constructorSignature = $this->reflectionService->getMethodParameters($objectType, '__construct');
-		} catch (\ReflectionException $reflectionException) {
-			$constructorSignature = array();
-		}
-		$constructorArguments = array();
-		foreach ($constructorSignature as $constructorArgumentName => $constructorArgumentInformation) {
-			if (array_key_exists($constructorArgumentName, $possibleConstructorArgumentValues)) {
-				$constructorArguments[] = $possibleConstructorArgumentValues[$constructorArgumentName];
-				unset($possibleConstructorArgumentValues[$constructorArgumentName]);
-			} elseif ($constructorArgumentInformation['optional'] === TRUE) {
-				$constructorArguments[] = $constructorArgumentInformation['defaultValue'];
-			} else {
-				throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Missing constructor argument "' . $constructorArgumentName . '" for object of type "' . $objectType . '".', 1268734872);
-			}
-		}
-		return call_user_func_array(array($this->objectManager, 'get'), array_merge(array($objectType), $constructorArguments));
-	}
 }
 
 ?>

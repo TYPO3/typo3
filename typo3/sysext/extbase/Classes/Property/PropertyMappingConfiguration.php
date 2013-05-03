@@ -236,7 +236,7 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 			return $this->subConfigurationForProperty[self::PROPERTY_PATH_PLACEHOLDER];
 		}
 
-		return new \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration();
+		return new PropertyMappingConfiguration();
 	}
 
 	/**
