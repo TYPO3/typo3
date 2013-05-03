@@ -184,7 +184,7 @@ class LoginController {
 	public function main() {
 		// Initialize template object:
 		$GLOBALS['TBE_TEMPLATE']->bodyTagAdditions = ' onload="startUp();"';
-		$GLOBALS['TBE_TEMPLATE']->moduleTemplate = $GLOBALS['TBE_TEMPLATE']->getHtmlTemplate('templates/login.html');
+		$GLOBALS['TBE_TEMPLATE']->moduleTemplate = $GLOBALS['TBE_TEMPLATE']->getHtmlTemplate('EXT:backend/Resources/Private/Templates/login.html');
 		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadExtJS();
 		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadPrototype();
 		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadScriptaculous();
