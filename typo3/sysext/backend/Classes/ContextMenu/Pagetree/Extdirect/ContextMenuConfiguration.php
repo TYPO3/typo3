@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Backend\ContextMenu\Pagetree\Extdirect;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Context Menu of the Page Tree
  *
@@ -64,6 +65,5 @@ class ContextMenuConfiguration extends \TYPO3\CMS\Backend\ContextMenu\Extdirect\
 	}
 
 }
-
 
 ?>

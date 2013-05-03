@@ -102,9 +102,8 @@ class EditFileController {
 		// Setting the title and the icon
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-filetree-root');
 		$this->title = $icon . htmlspecialchars($this->fileObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->fileObject->getIdentifier());
-		// ***************************
+
 		// Setting template object
-		// ***************************
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/file_edit.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
@@ -123,7 +122,6 @@ class EditFileController {
 	 * @todo Define visibility
 	 */
 	public function main() {
-		//TODO: change locallang*.php to locallang*.xml
 		$docHeaderButtons = $this->getButtons();
 		$this->content = $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.pagetitle'));
 		// Hook	before compiling the output
@@ -228,6 +226,5 @@ class EditFileController {
 	}
 
 }
-
 
 ?>
