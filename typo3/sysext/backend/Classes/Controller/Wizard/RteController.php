@@ -271,5 +271,4 @@ class RteController {
 
 }
 
-
 ?>

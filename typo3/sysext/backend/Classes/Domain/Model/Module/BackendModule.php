@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Backend\Domain\Model\Module;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Model for menu entries
  *
@@ -243,6 +244,5 @@ class BackendModule {
 	}
 
 }
-
 
 ?>

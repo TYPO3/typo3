@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Script Class for adding new items to a group/select field. Performs proper redirection as needed.
  *
@@ -93,8 +95,8 @@ class AddController {
 	 */
 	public function init() {
 		// Init GPvars:
-		$this->P = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('P');
-		$this->returnEditConf = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnEditConf');
+		$this->P = GeneralUtility::_GP('P');
+		$this->returnEditConf = GeneralUtility::_GP('returnEditConf');
 		// Get this record
 		$origRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($this->P['table'], $this->P['uid']);
 		// Set table:
@@ -109,7 +111,7 @@ class AddController {
 		}
 		// Return if new record as parent (not possibly/allowed)
 		if (!strcmp($this->pid, '')) {
-			\TYPO3\CMS\Core\Utility\HttpUtility::redirect(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
+			\TYPO3\CMS\Core\Utility\HttpUtility::redirect(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
 		}
 		// Else proceed:
 		// If a new id has returned from a newly created record...
@@ -142,13 +144,13 @@ class AddController {
 		if ($this->returnEditConf) {
 			if ($this->processDataFlag) {
 				// Preparing the data of the parent record...:
-				$trData = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
+				$trData = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
 				// 'new'
 				$trData->fetchRecord($this->P['table'], $this->P['uid'], '');
 				$current = reset($trData->regTableItems_data);
 				// If that record was found (should absolutely be...), then init TCEmain and set, prepend or append the record
 				if (is_array($current)) {
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+					$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 					$tce->stripslashes_values = 0;
 					$data = array();
 					$addEl = $this->table . '_' . $this->id;
@@ -156,37 +158,37 @@ class AddController {
 					// If the field is a flexform field, work with the XML structure instead:
 					if ($this->P['flexFormPath']) {
 						// Current value of flexform path:
-						$currentFlexFormData = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($current[$this->P['field']]);
-						$flexToolObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+						$currentFlexFormData = GeneralUtility::xml2array($current[$this->P['field']]);
+						$flexToolObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
 						$curValueOfFlexform = $flexToolObj->getArrayValueByPath($this->P['flexFormPath'], $currentFlexFormData);
 						$insertValue = '';
 						switch ((string) $this->P['params']['setValue']) {
-						case 'set':
-							$insertValue = $addEl;
-							break;
-						case 'prepend':
-							$insertValue = $curValueOfFlexform . ',' . $addEl;
-							break;
-						case 'append':
-							$insertValue = $addEl . ',' . $curValueOfFlexform;
-							break;
+							case 'set':
+								$insertValue = $addEl;
+								break;
+							case 'prepend':
+								$insertValue = $curValueOfFlexform . ',' . $addEl;
+								break;
+							case 'append':
+								$insertValue = $addEl . ',' . $curValueOfFlexform;
+								break;
 						}
-						$insertValue = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $insertValue, 1));
+						$insertValue = implode(',', GeneralUtility::trimExplode(',', $insertValue, 1));
 						$data[$this->P['table']][$this->P['uid']][$this->P['field']] = array();
 						$flexToolObj->setArrayValueByPath($this->P['flexFormPath'], $data[$this->P['table']][$this->P['uid']][$this->P['field']], $insertValue);
 					} else {
 						switch ((string) $this->P['params']['setValue']) {
-						case 'set':
-							$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl;
-							break;
-						case 'prepend':
-							$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $current[$this->P['field']] . ',' . $addEl;
-							break;
-						case 'append':
-							$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl . ',' . $current[$this->P['field']];
-							break;
+							case 'set':
+								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl;
+								break;
+							case 'prepend':
+								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $current[$this->P['field']] . ',' . $addEl;
+								break;
+							case 'append':
+								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl . ',' . $current[$this->P['field']];
+								break;
 						}
-						$data[$this->P['table']][$this->P['uid']][$this->P['field']] = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $data[$this->P['table']][$this->P['uid']][$this->P['field']], 1));
+						$data[$this->P['table']][$this->P['uid']][$this->P['field']] = implode(',', GeneralUtility::trimExplode(',', $data[$this->P['table']][$this->P['uid']][$this->P['field']], 1));
 					}
 					// Submit the data:
 					$tce->start($data, array());
@@ -194,16 +196,15 @@ class AddController {
 				}
 			}
 			// Return to the parent alt_doc.php record editing session:
-			\TYPO3\CMS\Core\Utility\HttpUtility::redirect(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
+			\TYPO3\CMS\Core\Utility\HttpUtility::redirect(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
 		} else {
 			// Redirecting to alt_doc.php with instructions to create a new record
 			// AND when closing to return back with information about that records ID etc.
-			$redirectUrl = 'alt_doc.php?returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '&returnEditConf=1&edit[' . $this->P['params']['table'] . '][' . $this->pid . ']=new';
+			$redirectUrl = 'alt_doc.php?returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '&returnEditConf=1&edit[' . $this->P['params']['table'] . '][' . $this->pid . ']=new';
 			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
 		}
 	}
 
 }
-
 
 ?>

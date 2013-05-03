@@ -31,11 +31,10 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
  * Script Class for showing the history module of TYPO3s backend
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @see class.show_rechis.inc
+ * @see \TYPO3\CMS\Backend\History\RecordHistory
  */
 class ElementHistoryController {
 
-	// Internal:
 	/**
 	 * @todo Define visibility
 	 */
@@ -117,6 +116,5 @@ class ElementHistoryController {
 	}
 
 }
-
 
 ?>

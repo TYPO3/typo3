@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Backend\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Script class for 'db_new'
  *
@@ -62,7 +64,7 @@ class NewRecordController {
 	/**
 	 * Determines, whether "Select Position" for new page should be shown
 	 *
-	 * @var bool $newPagesSelectPosition
+	 * @var boolean $newPagesSelectPosition
 	 */
 	protected $newPagesSelectPosition = TRUE;
 
@@ -168,11 +170,11 @@ class NewRecordController {
 		}
 		// Setting GPvars:
 		// The page id to operate from
-		$this->id = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
-		$this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
-		$this->pagesOnly = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pagesOnly');
+		$this->id = intval(GeneralUtility::_GP('id'));
+		$this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
+		$this->pagesOnly = GeneralUtility::_GP('pagesOnly');
 		// Create instance of template class for output
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_new.html');
 		$this->doc->JScode = '';
@@ -223,12 +225,12 @@ class NewRecordController {
 		if ($this->pageinfo['uid'] || $GLOBALS['BE_USER']->isAdmin()) {
 			// Acquiring TSconfig for this module/current page:
 			$this->web_list_modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
-			$this->allowedNewTables = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->web_list_modTSconfig['properties']['allowedNewTables'], 1);
-			$this->deniedNewTables = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->web_list_modTSconfig['properties']['deniedNewTables'], 1);
+			$this->allowedNewTables = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig['properties']['allowedNewTables'], 1);
+			$this->deniedNewTables = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig['properties']['deniedNewTables'], 1);
 			// Acquiring TSconfig for this module/parent page:
 			$this->web_list_modTSconfig_pid = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pageinfo['pid'], 'mod.web_list');
-			$this->allowedNewTables_pid = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->web_list_modTSconfig_pid['properties']['allowedNewTables'], 1);
-			$this->deniedNewTables_pid = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->web_list_modTSconfig_pid['properties']['deniedNewTables'], 1);
+			$this->allowedNewTables_pid = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig_pid['properties']['allowedNewTables'], 1);
+			$this->deniedNewTables_pid = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig_pid['properties']['deniedNewTables'], 1);
 			// More init:
 			if (!$this->showNewRecLink('pages')) {
 				$this->newPagesInto = 0;
@@ -244,7 +246,7 @@ class NewRecordController {
 				$iconImgTag = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-pagetree-root', array('title' => htmlspecialchars($this->pageinfo['_thePath'])));
 				$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 			}
-			$this->code = '<span class="typo3-moduleHeader">' . $this->doc->wrapClickMenuOnIcon($iconImgTag, 'pages', $this->pageinfo['uid']) . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($title, 45)) . '</span><br />';
+			$this->code = '<span class="typo3-moduleHeader">' . $this->doc->wrapClickMenuOnIcon($iconImgTag, 'pages', $this->pageinfo['uid']) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, 45)) . '</span><br />';
 			$this->R_URI = $this->returnUrl;
 			// GENERATE the HTML-output depending on mode (pagesOnly is the page wizard)
 			// Regular new element:
@@ -284,7 +286,7 @@ class NewRecordController {
 		if (!$this->pagesOnly) {
 			// New page
 			if ($this->showNewRecLink('pages')) {
-				$buttons['new_page'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('pagesOnly' => '1'))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:newPage', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-new') . '</a>';
+				$buttons['new_page'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('pagesOnly' => '1'))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:newPage', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-new') . '</a>';
 			}
 			// CSH
 			$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'new_regular', $GLOBALS['BACK_PATH'], '', TRUE);
@@ -316,8 +318,8 @@ class NewRecordController {
 			$this->code .= '
 				<h3>' . htmlspecialchars($GLOBALS['LANG']->getLL('selectPosition')) . ':</h3>
 			';
-			$positionMap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PagePositionMap');
-			/** @var \TYPO3\CMS\Backend\Tree\View\PagePositionMap $positionMap */
+			$positionMap = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PagePositionMap');
+			/** @var $positionMap \TYPO3\CMS\Backend\Tree\View\PagePositionMap */
 			$this->code .= $positionMap->positionTree($this->id, $this->pageinfo, $this->perms_clause, $this->R_URI);
 		} else {
 			// No pages yet, no need to prompt for position, redirect to page creation.
@@ -377,7 +379,7 @@ class NewRecordController {
 		// New pages at selection position
 		if ($this->newPagesSelectPosition) {
 			// Link to page-wizard:
-			$newPageLinks[] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('pagesOnly' => 1))) . '">' . $pageIcon . htmlspecialchars($GLOBALS['LANG']->getLL('pageSelectPosition')) . '</a>';
+			$newPageLinks[] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('pagesOnly' => 1))) . '">' . $pageIcon . htmlspecialchars($GLOBALS['LANG']->getLL('pageSelectPosition')) . '</a>';
 		}
 		// Assemble all new page links
 		$numPageLinks = count($newPageLinks);
@@ -426,7 +428,7 @@ class NewRecordController {
 							// If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's wizard instead:
 							$overrideExt = $this->web_list_modTSconfig['properties']['newContentWiz.']['overrideWithExtension'];
 							$pathToWizard = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($overrideExt) ? \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($overrideExt) . 'mod1/db_new_content_el.php' : 'sysext/cms/layout/db_new_content_el.php';
-							$href = $pathToWizard . '?id=' . $this->id . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
+							$href = $pathToWizard . '?id=' . $this->id . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
 							$rowContent .= '<br />' . $secondLevel . $newLink . '<br />' . $secondLevelLast . '<a href="' . htmlspecialchars($href) . '">' . $newContentIcon . htmlspecialchars($GLOBALS['LANG']->getLL('clickForWizard')) . '</a>';
 							// Half-line added:
 							$rowContent .= '<br />' . $halfLine;
@@ -493,7 +495,7 @@ class NewRecordController {
 		}
 		// User sort
 		if (isset($pageTS['mod.']['wizards.']['newRecord.']['order'])) {
-			$this->newRecordSortList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pageTS['mod.']['wizards.']['newRecord.']['order'], TRUE);
+			$this->newRecordSortList = GeneralUtility::trimExplode(',', $pageTS['mod.']['wizards.']['newRecord.']['order'], TRUE);
 		}
 		uksort($this->tRows, array($this, 'sortNewRecordsByConfig'));
 		// Compile table row:
@@ -616,7 +618,7 @@ class NewRecordController {
 			$allowedTableList = $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
 		}
 		// If all tables or the table is listed as a allowed type, return TRUE
-		if (strstr($allowedTableList, '*') || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($allowedTableList, $checkTable)) {
+		if (strstr($allowedTableList, '*') || GeneralUtility::inList($allowedTableList, $checkTable)) {
 			return TRUE;
 		}
 	}
@@ -649,6 +651,5 @@ class NewRecordController {
 	}
 
 }
-
 
 ?>

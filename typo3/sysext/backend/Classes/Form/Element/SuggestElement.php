@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Backend\Form\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * TCEforms wizard for rendering an AJAX selector for records
  *
@@ -93,10 +96,10 @@ class SuggestElement {
 		}
 		$minChars = $minChars > 0 ? $minChars : 2;
 		// Replace "-" with ucwords for the JS object name
-		$jsObj = str_replace(' ', '', ucwords(str_replace('-', ' ', \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($suggestId))));
+		$jsObj = str_replace(' ', '', ucwords(str_replace('-', ' ', GeneralUtility::strtolower($suggestId))));
 		$this->TCEformsObj->additionalJS_post[] = '
 			var ' . $jsObj . ' = new TCEForms.Suggest("' . $fieldname . '", "' . $table . '", "' . $field . '", "' . $row['uid'] . '", ' . $row['pid'] . ', ' . $minChars . ');
-			' . $jsObj . '.defaultValue = "' . \TYPO3\CMS\Core\Utility\GeneralUtility::slashJS($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord')) . '";
+			' . $jsObj . '.defaultValue = "' . GeneralUtility::slashJS($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord')) . '";
 		';
 		return $selector;
 	}
@@ -110,11 +113,11 @@ class SuggestElement {
 	 */
 	public function processAjaxRequest($params, &$ajaxObj) {
 		// Get parameters from $_GET/$_POST
-		$search = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('value');
-		$table = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('table');
-		$field = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('field');
-		$uid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('uid');
-		$pageId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pid');
+		$search = GeneralUtility::_GP('value');
+		$table = GeneralUtility::_GP('table');
+		$field = GeneralUtility::_GP('field');
+		$uid = GeneralUtility::_GP('uid');
+		$pageId = GeneralUtility::_GP('pid');
 		// If the $uid is numeric, we have an already existing element, so get the
 		// TSconfig of the page itself or the element container (for non-page elements)
 		// otherwise it's a new element, so use given id of parent page (i.e., don't modify it here)
@@ -135,7 +138,7 @@ class SuggestElement {
 			if (is_array($row) && count($row) > 0) {
 				$flexfieldTCAConfig = $GLOBALS['TCA'][$table]['columns'][$parts[0]]['config'];
 				$flexformDSArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($flexfieldTCAConfig, $row, $table);
-				$flexformDSArray = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveAllSheetsInDS($flexformDSArray);
+				$flexformDSArray = GeneralUtility::resolveAllSheetsInDS($flexformDSArray);
 				$flexformElement = $parts[count($parts) - 2];
 				$continue = TRUE;
 				foreach ($flexformDSArray as $sheet) {
@@ -155,7 +158,7 @@ class SuggestElement {
 		}
 		$wizardConfig = $fieldConfig['wizards']['suggest'];
 		if (isset($fieldConfig['allowed'])) {
-			$queryTables = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldConfig['allowed']);
+			$queryTables = GeneralUtility::trimExplode(',', $fieldConfig['allowed']);
 		} elseif (isset($fieldConfig['foreign_table'])) {
 			$queryTables = array($fieldConfig['foreign_table']);
 			$foreign_table_where = $fieldConfig['foreign_table_where'];
@@ -172,23 +175,23 @@ class SuggestElement {
 			}
 			$config = (array) $wizardConfig['default'];
 			if (is_array($wizardConfig[$queryTable])) {
-				$config = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($config, $wizardConfig[$queryTable]);
+				$config = GeneralUtility::array_merge_recursive_overrule($config, $wizardConfig[$queryTable]);
 			}
 			// merge the configurations of different "levels" to get the working configuration for this table and
 			// field (i.e., go from the most general to the most special configuration)
 			if (is_array($TSconfig['TCEFORM.']['suggest.']['default.'])) {
-				$config = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($config, $TSconfig['TCEFORM.']['suggest.']['default.']);
+				$config = GeneralUtility::array_merge_recursive_overrule($config, $TSconfig['TCEFORM.']['suggest.']['default.']);
 			}
 			if (is_array($TSconfig['TCEFORM.']['suggest.'][$queryTable . '.'])) {
-				$config = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($config, $TSconfig['TCEFORM.']['suggest.'][$queryTable . '.']);
+				$config = GeneralUtility::array_merge_recursive_overrule($config, $TSconfig['TCEFORM.']['suggest.'][$queryTable . '.']);
 			}
 			// use $table instead of $queryTable here because we overlay a config
 			// for the input-field here, not for the queried table
 			if (is_array($TSconfig['TCEFORM.'][$table . '.'][$field . '.']['suggest.']['default.'])) {
-				$config = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($config, $TSconfig['TCEFORM.'][$table . '.'][$field . '.']['suggest.']['default.']);
+				$config = GeneralUtility::array_merge_recursive_overrule($config, $TSconfig['TCEFORM.'][$table . '.'][$field . '.']['suggest.']['default.']);
 			}
 			if (is_array($TSconfig['TCEFORM.'][$table . '.'][$field . '.']['suggest.'][$queryTable . '.'])) {
-				$config = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($config, $TSconfig['TCEFORM.'][$table . '.'][$field . '.']['suggest.'][$queryTable . '.']);
+				$config = GeneralUtility::array_merge_recursive_overrule($config, $TSconfig['TCEFORM.'][$table . '.'][$field . '.']['suggest.'][$queryTable . '.']);
 			}
 			//process addWhere
 			if (!isset($config['addWhere']) && $foreign_table_where) {
@@ -205,13 +208,13 @@ class SuggestElement {
 			if (!class_exists($receiverClassName)) {
 				$receiverClassName = 'TYPO3\\CMS\\Backend\\Form\\Element\\SuggestDefaultReceiver';
 			}
-			$receiverObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($receiverClassName, $queryTable, $config);
+			$receiverObj = GeneralUtility::makeInstance($receiverClassName, $queryTable, $config);
 			$params = array('value' => $search);
 			$rows = $receiverObj->queryTable($params);
 			if (empty($rows)) {
 				continue;
 			}
-			$resultRows = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($resultRows, $rows);
+			$resultRows = GeneralUtility::array_merge($resultRows, $rows);
 			unset($rows);
 		}
 		$listItems = array();

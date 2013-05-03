@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Backend\ContextMenu;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Abstract Context Menu Data Provider
  *
@@ -211,6 +212,5 @@ abstract class AbstractContextMenuDataProvider {
 	}
 
 }
-
 
 ?>
