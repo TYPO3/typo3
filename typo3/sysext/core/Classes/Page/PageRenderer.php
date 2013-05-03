@@ -508,7 +508,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function reset() {
-		$this->templateFile = TYPO3_mainDir . 'templates/template_page_backend.html';
+		$this->templateFile = 'EXT:core/Resources/Private/Templates/PageRenderer.html';
 		$this->jsFiles = array();
 		$this->jsFooterFiles = array();
 		$this->jsInline = array();
