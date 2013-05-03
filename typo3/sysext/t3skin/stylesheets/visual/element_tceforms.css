@@ -105,9 +105,8 @@ table.typo3-TCEforms span.typo3-TCEforms-recHeader {
 	font-weight: bold;
 }
 
-table.typo3-TCEforms div.typo3-dyntabmenu-tabs,
 table.typo3-TCEforms tr.typo3-TCEforms-recHeaderRow td {
-	background: #f8f8f8;
+	background: #fff;
 }
 
 table.typo3-TCEforms tr.typo3-TCEforms-recHeaderRow td {
