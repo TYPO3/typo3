@@ -199,7 +199,8 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 				$buttons['new_record'] = '<a href="#" onclick="' . htmlspecialchars(('return jumpExt(\'' . $this->backPath . 'db_new.php?id=' . $this->id . '\');')) . '" title="' . $GLOBALS['LANG']->getLL('newRecordGeneral', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . '</a>';
 			}
 			// If edit permissions are set, see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-			if ($localCalcPerms & 2 && !empty($this->id)) {
+			if ($localCalcPerms & 2 && !empty($this->id) && $GLOBALS['BE_USER']->checkLa
+nguageAccess(0)) {
 				// Edit
 				$params = '&edit[pages][' . $this->pageRow['uid'] . ']=edit';
 				$buttons['edit'] = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('editPage', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-open') . '</a>';
