@@ -1480,16 +1480,28 @@ class BackendUtility {
 			foreach ($referenceUids as $referenceUid) {
 				$fileReferenceObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($referenceUid['uid']);
 				$fileObject = $fileReferenceObject->getOriginalFile();
+				$fileAlternative = htmlspecialchars($fileReferenceObject->getAlternative());
+				$fileTitle = htmlspecialchars($fileReferenceObject->getTitle());
+				if ($fileTitle === '') {
+					$fileTitle = htmlspecialchars($fileReferenceObject->getName());
+				}
+
 				// Web image
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileReferenceObject->getExtension())) {
 					$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array(
 						'width' => $sizeParts[0],
 						'height' => $sizeParts[1]
 					))->getPublicUrl(TRUE);
-					$imgTag = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($fileReferenceObject->getName()) . '" />';
+					$imgTag = '<img src="' . $imageUrl . '" alt="' . $fileAlternative . '" title="' . $fileTitle . '" />';
 				} else {
 					// Icon
-					$imgTag = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile(strtolower($fileObject->getExtension()), array('title' => $fileObject->getName()));
+					$imgTag = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile(
+						strtolower($fileObject->getExtension()),
+						array(
+							'title' => $fileTitle,
+							'alt' => $fileAlternative
+						)
+					);
 				}
 				if ($linkInfoPopup) {
 					$onClick = 'top.launchView(\'_FILE\',\'' . $fileObject->getUid() . '\',\'' . $backPath . '\'); return false;';
@@ -1512,6 +1524,12 @@ class BackendUtility {
 					$fileName = trim($uploaddir . '/' . $theFile, '/');
 					$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileName);
 					$fileExtension = $fileObject->getExtension();
+					$fileAlternative = htmlspecialchars($fileObject->getAlternative());
+					$fileTitle = htmlspecialchars($fileObject->getTitle());
+					if ($fileTitle === '') {
+						$fileTitle = htmlspecialchars($fileObject->getName());
+					}
+
 					if ($fileExtension == 'ttf' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
 						$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array(
 							'width' => $sizeParts[0],
@@ -1523,7 +1541,7 @@ class BackendUtility {
 							$thumbData .= $flashMessage->render();
 							continue;
 						}
-						$image = '<img src="' . htmlspecialchars($imageUrl) . '" hspace="2" border="0" title="' . htmlspecialchars($fileObject->getName()) . '"' . $tparams . ' alt="" />';
+						$image = '<img src="' . htmlspecialchars($imageUrl) . '" hspace="2" border="0" title="' . $fileTitle . '"' . $tparams . ' alt="' . $fileAlternative . '" />';
 						if ($linkInfoPopup) {
 							$onClick = 'top.launchView(\'_FILE\', \'' . $fileName . '\',\'\',\'' . $backPath . '\');return false;';
 							$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $image . '</a> ';
@@ -1532,7 +1550,13 @@ class BackendUtility {
 						}
 					} else {
 						// Gets the icon
-						$fileIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($fileExtension, array('title' => $fileObject->getName()));
+						$fileIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile(
+							$fileExtension,
+							array(
+								'title' => $fileTitle,
+								'alt' => $fileAlternative
+							)
+						);
 						if ($linkInfoPopup) {
 							$onClick = 'top.launchView(\'_FILE\', \'' . $fileName . '\',\'\',\'' . $backPath . '\'); return false;';
 							$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $fileIcon . '</a> ';
