@@ -612,7 +612,7 @@ class FormEngine {
 				$this->hookObjectsSingleField[] = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
 			}
 		}
-		$this->templateFile = 'templates/tceforms.html';
+		$this->templateFile = 'sysext/backend/Resources/Private/Templates/FormEngine.html';
 	}
 
 	/**
