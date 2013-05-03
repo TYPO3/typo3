@@ -92,7 +92,7 @@ class ExtensionListUtility implements \SplObserver {
 	 *
 	 * @var array
 	 */
-	static protected $fieldIndicesNoQuote = array(2, 3, 4, 10, 12, 13, 14, 15);
+	static protected $fieldIndicesNoQuote = array(2, 3, 4, 10, 12, 13, 14);
 
 	/**
 	 * Keeps repository UID.
