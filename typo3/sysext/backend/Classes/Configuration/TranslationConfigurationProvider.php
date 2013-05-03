@@ -26,11 +26,10 @@ namespace TYPO3\CMS\Backend\Configuration;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains translation tools
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+
 /**
  * Contains translation tools
  *
@@ -43,7 +42,7 @@ class TranslationConfigurationProvider {
 	 *
 	 * Since TYPO3 4.5 the flagIcon is not returned as a filename in "gfx/flags/*" anymore,
 	 * but as a string <flags-xx>. The calling party should call
-	 * \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(<flags-xx>) to get an HTML
+	 * IconUtility::getSpriteIcon(<flags-xx>) to get an HTML
 	 * which will represent the flag of this language.
 	 *
 	 * @param integer $page_id Page id (only used to get TSconfig configuration setting flag and label for default language)
@@ -52,7 +51,7 @@ class TranslationConfigurationProvider {
 	 * @todo Define visibility
 	 */
 	public function getSystemLanguages($page_id = 0, $backPath = '') {
-		$modSharedTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($page_id, 'mod.SHARED');
+		$modSharedTSconfig = BackendUtility::getModTSconfig($page_id, 'mod.SHARED');
 		$languageIconTitles = array();
 		// fallback "old iconstyles"
 		if (preg_match('/\\.gif$/', $modSharedTSconfig['properties']['defaultLanguageFlag'])) {
@@ -76,13 +75,13 @@ class TranslationConfigurationProvider {
 		foreach ($sys_languages as $row) {
 			$languageIconTitles[$row['uid']] = $row;
 			if ($row['static_lang_isocode'] && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
-				$staticLangRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
+				$staticLangRow = BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
 				if ($staticLangRow['lg_iso_2']) {
 					$languageIconTitles[$row['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];
 				}
 			}
 			if (strlen($row['flag'])) {
-				$languageIconTitles[$row['uid']]['flagIcon'] = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconName('sys_language', $row);
+				$languageIconTitles[$row['uid']]['flagIcon'] = IconUtility::mapRecordTypeToSpriteIconName('sys_language', $row);
 			}
 		}
 		return $languageIconTitles;
@@ -103,7 +102,7 @@ class TranslationConfigurationProvider {
 	public function translationInfo($table, $uid, $sys_language_uid = 0, $row = NULL, $selFieldList = '') {
 		if ($GLOBALS['TCA'][$table] && $uid) {
 			if ($row === NULL) {
-				$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $uid);
+				$row = BackendUtility::getRecordWSOL($table, $uid);
 			}
 			if (is_array($row)) {
 				$trTable = $this->getTranslationTable($table);
@@ -111,7 +110,7 @@ class TranslationConfigurationProvider {
 					if ($trTable !== $table || $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] <= 0) {
 						if ($trTable !== $table || $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] == 0) {
 							// Look for translations of this record, index by language field value:
-							$translationsTemp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selFieldList ? $selFieldList : 'uid,' . $GLOBALS['TCA'][$trTable]['ctrl']['languageField'], $trTable, $GLOBALS['TCA'][$trTable]['ctrl']['transOrigPointerField'] . '=' . intval($uid) . ' AND pid=' . intval(($table === 'pages' ? $row['uid'] : $row['pid'])) . ' AND ' . $GLOBALS['TCA'][$trTable]['ctrl']['languageField'] . (!$sys_language_uid ? '>0' : '=' . intval($sys_language_uid)) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($trTable) . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause($trTable));
+							$translationsTemp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selFieldList ? $selFieldList : 'uid,' . $GLOBALS['TCA'][$trTable]['ctrl']['languageField'], $trTable, $GLOBALS['TCA'][$trTable]['ctrl']['transOrigPointerField'] . '=' . intval($uid) . ' AND pid=' . intval(($table === 'pages' ? $row['uid'] : $row['pid'])) . ' AND ' . $GLOBALS['TCA'][$trTable]['ctrl']['languageField'] . (!$sys_language_uid ? '>0' : '=' . intval($sys_language_uid)) . BackendUtility::deleteClause($trTable) . BackendUtility::versioningPlaceholderClause($trTable));
 							$translations = array();
 							$translations_errors = array();
 							foreach ($translationsTemp as $r) {
@@ -184,6 +183,5 @@ class TranslationConfigurationProvider {
 	}
 
 }
-
 
 ?>

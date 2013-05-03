@@ -26,6 +26,12 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * Page Tree and Context Menu Commands
  *
@@ -161,7 +167,7 @@ class Commands {
 		$targetId = intval($targetId);
 
 		// Use page TsConfig as default page initialization
-		$pageTs = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pid);
+		$pageTs = BackendUtility::getPagesTSconfig($pid);
 		if (array_key_exists('TCAdefaults.', $pageTs) && array_key_exists('pages.', $pageTs['TCAdefaults.'])) {
 			$data['pages'][$placeholder] = $pageTs['TCAdefaults.']['pages.'];
 		} else {
@@ -198,10 +204,10 @@ class Commands {
 	 */
 	static protected function processTceCmdAndDataMap(array $cmd, array $data = array()) {
 		/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		$tce->start($data, $cmd);
-		$tce->copyTree = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($GLOBALS['BE_USER']->uc['copyLevels'], 0, 100);
+		$tce->copyTree = MathUtility::forceIntegerInRange($GLOBALS['BE_USER']->uc['copyLevels'], 0, 100);
 		if (count($cmd)) {
 			$tce->process_cmdmap();
 			$returnValues = $tce->copyMappingArray_merged;
@@ -246,7 +252,7 @@ class Commands {
 		if (self::$useNavTitle === NULL) {
 			self::$useNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
 		}
-		$rootline = array_reverse(\TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($uid));
+		$rootline = array_reverse(BackendUtility::BEgetRootLine($uid));
 		array_shift($rootline);
 		$path = array();
 		foreach ($rootline as $rootlineElement) {
@@ -268,7 +274,7 @@ class Commands {
 	 * @return array
 	 */
 	static public function getNodeRecord($nodeId, $unsetMovePointers = TRUE) {
-		$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $nodeId, '*', '', TRUE, $unsetMovePointers);
+		$record = BackendUtility::getRecordWSOL('pages', $nodeId, '*', '', TRUE, $unsetMovePointers);
 		return $record;
 	}
 
@@ -279,7 +285,7 @@ class Commands {
 	 * @return string
 	 */
 	static public function getDomainName($uid) {
-		$whereClause = 'pid=' . intval($uid) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_domain') . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('sys_domain');
+		$whereClause = 'pid=' . intval($uid) . BackendUtility::deleteClause('sys_domain') . BackendUtility::BEenableFields('sys_domain');
 		$domain = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('domainName', 'sys_domain', $whereClause, '', 'sorting');
 		return is_array($domain) ? htmlspecialchars($domain['domainName']) : '';
 	}
@@ -300,7 +306,7 @@ class Commands {
 			self::$titleLength = intval($GLOBALS['BE_USER']->uc['titleLen']);
 		}
 		/** @var $subNode \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-		$subNode = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode');
+		$subNode = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode');
 		$subNode->setRecord($record);
 		$subNode->setCls($record['_CSSCLASS']);
 		$subNode->setType('pages');
@@ -319,18 +325,18 @@ class Commands {
 		} else {
 			$visibleText = $text;
 		}
-		$visibleText = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($visibleText, self::$titleLength);
+		$visibleText = GeneralUtility::fixed_lgd_cs($visibleText, self::$titleLength);
 		$suffix = '';
 		if (self::$addDomainName) {
 			$domain = self::getDomainName($record['uid']);
 			$suffix = $domain !== '' ? ' [' . $domain . ']' : '';
 		}
-		$qtip = str_replace(' - ', '<br />', htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::titleAttribForPages($record, '', FALSE)));
+		$qtip = str_replace(' - ', '<br />', htmlspecialchars(BackendUtility::titleAttribForPages($record, '', FALSE)));
 		$prefix = '';
-		$lockInfo = \TYPO3\CMS\Backend\Utility\BackendUtility::isRecordLocked('pages', $record['uid']);
+		$lockInfo = BackendUtility::isRecordLocked('pages', $record['uid']);
 		if (is_array($lockInfo)) {
 			$qtip .= '<br />' . htmlspecialchars($lockInfo['msg']);
-			$prefix .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-warning-in-use', array(
+			$prefix .= IconUtility::getSpriteIcon('status-warning-in-use', array(
 				'class' => 'typo3-pagetree-status'
 			));
 		}
@@ -340,7 +346,7 @@ class Commands {
 			$_params = array('pages', $record['uid']);
 			$fakeThis = NULL;
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
-				$stat .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $fakeThis);
+				$stat .= GeneralUtility::callUserFunction($_funcRef, $_params, $fakeThis);
 			}
 		}
 		$prefix .= htmlspecialchars(self::$addIdAsPrefix ? '[' . $record['uid'] . '] ' : '');
@@ -348,9 +354,9 @@ class Commands {
 		$subNode->setText(htmlspecialchars($visibleText), $field, $prefix, htmlspecialchars($suffix) . $stat);
 		$subNode->setQTip($qtip);
 		if ($record['uid'] !== 0) {
-			$spriteIconCode = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $record);
+			$spriteIconCode = IconUtility::getSpriteIconForRecord('pages', $record);
 		} else {
-			$spriteIconCode = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-pagetree-root');
+			$spriteIconCode = IconUtility::getSpriteIcon('apps-pagetree-root');
 		}
 		$subNode->setSpriteIconCode($spriteIconCode);
 		if (!$subNode->canCreateNewPages() || intval($record['t3ver_state']) === 2) {

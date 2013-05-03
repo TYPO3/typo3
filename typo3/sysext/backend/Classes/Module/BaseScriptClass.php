@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Backend\Module;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Parent class for 'ScriptClasses' in backend modules.
  *
@@ -50,7 +53,7 @@ namespace TYPO3\CMS\Backend\Module;
  * MAIN FUNCTION - HERE YOU CREATE THE MODULE CONTENT IN $this->content
  * function main() {
  * TYPICALLY THE INTERNAL VAR, $this->doc is instantiated like this:
- * $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+ * $this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
  * TYPICALLY THE INTERNAL VAR, $this->backPath is set like this:
  * $this->backPath = $this->doc->backPath = $GLOBALS['BACK_PATH'];
  * ... AND OF COURSE A LOT OF OTHER THINGS GOES ON - LIKE PUTTING CONTENT INTO $this->content
@@ -63,7 +66,7 @@ namespace TYPO3\CMS\Backend\Module;
  * }
  *
  * MAKE INSTANCE OF THE SCRIPT CLASS AND CALL init()
- * $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('SC_mod_prototype');
+ * $SOBE = GeneralUtility::makeInstance('SC_mod_prototype');
  * $SOBE->init();
  *
  * AFTER INIT THE INTERNAL ARRAY ->include_once MAY HOLD FILENAMES TO INCLUDE
@@ -143,7 +146,7 @@ class BaseScriptClass {
 	 * If type is 'ses' then the data is stored as session-lasting data. This means that it'll be wiped out the next time the user logs in.
 	 * Can be set from extension classes of this class before the init() function is called.
 	 *
-	 * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
+	 * @see menuConfig(), BackendUtility::getModuleData()
 	 * @todo Define visibility
 	 */
 	public $modMenu_type = '';
@@ -152,7 +155,7 @@ class BaseScriptClass {
 	 * dontValidateList can be used to list variables that should not be checked if their value is found in the MOD_MENU array. Used for dynamically generated menus.
 	 * Can be set from extension classes of this class before the init() function is called.
 	 *
-	 * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
+	 * @see menuConfig(), BackendUtility::getModuleData()
 	 * @todo Define visibility
 	 */
 	public $modMenu_dontValidateList = '';
@@ -161,7 +164,7 @@ class BaseScriptClass {
 	 * List of default values from $MOD_MENU to set in the output array (only if the values from MOD_MENU are not arrays)
 	 * Can be set from extension classes of this class before the init() function is called.
 	 *
-	 * @see menuConfig(), \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
+	 * @see menuConfig(), BackendUtility::getModuleData()
 	 * @todo Define visibility
 	 */
 	public $modMenu_setDefaultList = '';
@@ -217,8 +220,8 @@ class BaseScriptClass {
 		if (!$this->MCONF['name']) {
 			$this->MCONF = $GLOBALS['MCONF'];
 		}
-		$this->id = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
-		$this->CMD = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('CMD');
+		$this->id = intval(GeneralUtility::_GP('id'));
+		$this->CMD = GeneralUtility::_GP('CMD');
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		$this->menuConfig();
 		$this->handleExternalFunctionValue();
@@ -226,19 +229,19 @@ class BaseScriptClass {
 
 	/**
 	 * Initializes the internal MOD_MENU array setting and unsetting items based on various conditions. It also merges in external menu items from the global array TBE_MODULES_EXT (see mergeExternalItems())
-	 * Then MOD_SETTINGS array is cleaned up (see \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()) so it contains only valid values. It's also updated with any SET[] values submitted.
+	 * Then MOD_SETTINGS array is cleaned up (see BackendUtility::getModuleData()) so it contains only valid values. It's also updated with any SET[] values submitted.
 	 * Also loads the modTSconfig internal variable.
 	 *
 	 * @return void
-	 * @see init(), $MOD_MENU, $MOD_SETTINGS, \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(), mergeExternalItems()
+	 * @see init(), $MOD_MENU, $MOD_SETTINGS, BackendUtility::getModuleData(), mergeExternalItems()
 	 * @todo Define visibility
 	 */
 	public function menuConfig() {
 		// Page/be_user TSconfig settings and blinding of menu-items
-		$this->modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
+		$this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
 		$this->MOD_MENU['function'] = $this->mergeExternalItems($this->MCONF['name'], 'function', $this->MOD_MENU['function']);
-		$this->MOD_MENU['function'] = \TYPO3\CMS\Backend\Utility\BackendUtility::unsetMenuItems($this->modTSconfig['properties'], $this->MOD_MENU['function'], 'menu.function');
-		$this->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+		$this->MOD_MENU['function'] = BackendUtility::unsetMenuItems($this->modTSconfig['properties'], $this->MOD_MENU['function'], 'menu.function');
+		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
 	}
 
 	/**
@@ -256,7 +259,7 @@ class BaseScriptClass {
 		$mergeArray = $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
 		if (is_array($mergeArray)) {
 			foreach ($mergeArray as $k => $v) {
-				if (((string) $v['ws'] === '' || $GLOBALS['BE_USER']->workspace === 0 && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($v['ws'], 'online')) || $GLOBALS['BE_USER']->workspace === -1 && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($v['ws'], 'offline') || $GLOBALS['BE_USER']->workspace > 0 && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($v['ws'], 'custom')) {
+				if (((string) $v['ws'] === '' || $GLOBALS['BE_USER']->workspace === 0 && GeneralUtility::inList($v['ws'], 'online')) || $GLOBALS['BE_USER']->workspace === -1 && GeneralUtility::inList($v['ws'], 'offline') || $GLOBALS['BE_USER']->workspace > 0 && GeneralUtility::inList($v['ws'], 'custom')) {
 					$menuArr[$k] = $GLOBALS['LANG']->sL($v['title']);
 				}
 			}
@@ -310,10 +313,10 @@ class BaseScriptClass {
 	 */
 	public function checkExtObj() {
 		if (is_array($this->extClassConf) && $this->extClassConf['name']) {
-			$this->extObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($this->extClassConf['name']);
+			$this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
 			$this->extObj->init($this, $this->extClassConf);
 			// Re-write:
-			$this->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+			$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
 		}
 	}
 

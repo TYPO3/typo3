@@ -26,24 +26,24 @@ namespace TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Matching TypoScript conditions for backend disposal.
  *
  * Used with the TypoScript parser.
  * Matches browserinfo, IPnumbers for use with templates
  *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher {
 
 	/**
 	 * Constructor for this class
-	 *
-	 * @return void
 	 */
-	public function __construct() {
-
-	}
+	public function __construct() {}
 
 	/**
 	 * Evaluates a TypoScript condition given as input, eg. "[browser=net][...(other conditions)...]"
@@ -53,54 +53,54 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::parse()
 	 */
 	protected function evaluateCondition($string) {
-		list($key, $value) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $string, FALSE, 2);
+		list($key, $value) = GeneralUtility::trimExplode('=', $string, FALSE, 2);
 		$result = parent::evaluateConditionCommon($key, $value);
 		if (is_bool($result)) {
 			return $result;
 		} else {
 			switch ($key) {
-			case 'usergroup':
-				$groupList = $this->getGroupList();
-				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
-				foreach ($values as $test) {
-					if ($test == '*' || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($groupList, $test)) {
-						return TRUE;
-					}
-				}
-				break;
-			case 'adminUser':
-				if ($this->isUserLoggedIn()) {
-					$result = !((bool) $value xor $this->isAdminUser());
-					return $result;
-				}
-				break;
-			case 'treeLevel':
-				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
-				$treeLevel = count($this->rootline) - 1;
-				// If a new page is being edited or saved the treeLevel is higher by one:
-				if ($this->isNewPageWithPageId($this->pageId)) {
-					$treeLevel++;
-				}
-				foreach ($values as $test) {
-					if ($test == $treeLevel) {
-						return TRUE;
-					}
-				}
-				break;
-			case 'PIDupinRootline':
-
-			case 'PIDinRootline':
-				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
-				if ($key == 'PIDinRootline' || !in_array($this->pageId, $values) || $this->isNewPageWithPageId($this->pageId)) {
+				case 'usergroup':
+					$groupList = $this->getGroupList();
+					$values = GeneralUtility::trimExplode(',', $value, TRUE);
 					foreach ($values as $test) {
-						foreach ($this->rootline as $rl_dat) {
-							if ($rl_dat['uid'] == $test) {
-								return TRUE;
+						if ($test == '*' || GeneralUtility::inList($groupList, $test)) {
+							return TRUE;
+						}
+					}
+					break;
+				case 'adminUser':
+					if ($this->isUserLoggedIn()) {
+						$result = !((bool) $value xor $this->isAdminUser());
+						return $result;
+					}
+					break;
+				case 'treeLevel':
+					$values = GeneralUtility::trimExplode(',', $value, TRUE);
+					$treeLevel = count($this->rootline) - 1;
+					// If a new page is being edited or saved the treeLevel is higher by one:
+					if ($this->isNewPageWithPageId($this->pageId)) {
+						$treeLevel++;
+					}
+					foreach ($values as $test) {
+						if ($test == $treeLevel) {
+							return TRUE;
+						}
+					}
+					break;
+				case 'PIDupinRootline':
+
+				case 'PIDinRootline':
+					$values = GeneralUtility::trimExplode(',', $value, TRUE);
+					if ($key == 'PIDinRootline' || !in_array($this->pageId, $values) || $this->isNewPageWithPageId($this->pageId)) {
+						foreach ($values as $test) {
+							foreach ($this->rootline as $rl_dat) {
+								if ($rl_dat['uid'] == $test) {
+									return TRUE;
+								}
 							}
 						}
 					}
-				}
-				break;
+					break;
 			}
 		}
 		return FALSE;
@@ -139,10 +139,10 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 */
 	protected function determinePageId() {
 		$pageId = 0;
-		$editStatement = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('edit');
-		$commandStatement = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd');
+		$editStatement = GeneralUtility::_GP('edit');
+		$commandStatement = GeneralUtility::_GP('cmd');
 		// Determine id from module that was called with an id:
-		if ($id = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'))) {
+		if ($id = intval(GeneralUtility::_GP('id'))) {
 			$pageId = $id;
 		} elseif (is_array($editStatement)) {
 			list($table, $uidAndAction) = each($editStatement);
@@ -172,7 +172,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 */
 	protected function getPage() {
 		$pageId = isset($this->pageId) ? $this->pageId : $this->determinePageId();
-		return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pageId);
+		return BackendUtility::getRecord('pages', $pageId);
 	}
 
 	/**
@@ -190,7 +190,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 			if (($ignoreTable || $table === 'pages') && $id >= 0) {
 				$pageId = $id;
 			} else {
-				$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, abs($id), '*', '', FALSE);
+				$record = BackendUtility::getRecordWSOL($table, abs($id), '*', '', FALSE);
 				$pageId = $record['pid'];
 			}
 		}
@@ -222,7 +222,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 				foreach ($elementsData as $element) {
 					if ($element['cmd'] == 'new' && $element['table'] == 'pages') {
 						if ($element['pid'] < 0) {
-							$pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', abs($element['pid']), 'pid');
+							$pageRecord = BackendUtility::getRecord('pages', abs($element['pid']), 'pid');
 							$element['pid'] = $pageRecord['pid'];
 						}
 						if ($element['pid'] == $pageId) {
@@ -242,7 +242,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 */
 	protected function determineRootline() {
 		$pageId = isset($this->pageId) ? $this->pageId : $this->determinePageId();
-		$rootline = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($pageId, '', TRUE);
+		$rootline = BackendUtility::BEgetRootLine($pageId, '', TRUE);
 		return $rootline;
 	}
 
@@ -295,6 +295,5 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	}
 
 }
-
 
 ?>

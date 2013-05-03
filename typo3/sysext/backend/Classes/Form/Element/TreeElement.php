@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Backend\Form\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * TCEforms wizard for rendering an AJAX selector for records
  *
@@ -85,8 +88,8 @@ class TreeElement {
 		$treeDataProvider->setSelectedList(implode(',', $selectedNodes));
 		$treeDataProvider->setItemWhiteList($allowedUids);
 		$treeDataProvider->initializeTreeData();
-		$treeRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\ExtJsArrayTreeRenderer');
-		$tree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\TableConfigurationTree');
+		$treeRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\ExtJsArrayTreeRenderer');
+		$tree = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\TableConfigurationTree');
 		$tree->setDataProvider($treeDataProvider);
 		$tree->setNodeRenderer($treeRenderer);
 		$treeData = $tree->render();
@@ -137,7 +140,7 @@ class TreeElement {
 		}
 		// Create a JavaScript code line which will ask the user to save/update the form due to changing the element.
 		// This is used for eg. "type" fields and others configured with "requestUpdate"
-		if ($GLOBALS['TCA'][$table]['ctrl']['type'] && !strcmp($field, $GLOBALS['TCA'][$table]['ctrl']['type']) || $GLOBALS['TCA'][$table]['ctrl']['requestUpdate'] && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'], $field)) {
+		if ($GLOBALS['TCA'][$table]['ctrl']['type'] && !strcmp($field, $GLOBALS['TCA'][$table]['ctrl']['type']) || $GLOBALS['TCA'][$table]['ctrl']['requestUpdate'] && GeneralUtility::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'], $field)) {
 			if ($GLOBALS['BE_USER']->jsConfirmation(1)) {
 				$onChange .= 'if (confirm(TBE_EDITOR.labels.onChangeAlert) && ' . 'TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
 			} else {

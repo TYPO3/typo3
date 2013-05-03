@@ -27,6 +27,11 @@ namespace TYPO3\CMS\Backend\History;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class for the record history display script (show_rechis.php)
  *
@@ -233,7 +238,7 @@ class RecordHistory {
 		}
 		// Writes the data:
 		if ($cmdmapArray) {
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$tce->stripslashes_values = 0;
 			$tce->debug = 0;
 			$tce->dontProcessTransformations = 1;
@@ -268,7 +273,7 @@ class RecordHistory {
 		// Removing fields:
 		$data = $this->removeFilefields($rollbackData[0], $data);
 		// Writes the data:
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		$tce->debug = 0;
 		$tce->dontProcessTransformations = 1;
@@ -367,7 +372,7 @@ class RecordHistory {
 				$content .= $this->linkPage($GLOBALS['LANG']->getLL('elementHistory_link', 1), array('element' => 'pages:' . $pid['pid']));
 			}
 		}
-		$content .= '<form name="settings" action="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) . '" method="post"><table>' . $displayCode . '</table></form>';
+		$content .= '<form name="settings" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) . '" method="post"><table>' . $displayCode . '</table></form>';
 		return $GLOBALS['SOBE']->doc->section($GLOBALS['LANG']->getLL('settings', 1), $content, FALSE, TRUE, FALSE, FALSE);
 	}
 
@@ -389,7 +394,7 @@ class RecordHistory {
 				<td>' . $GLOBALS['LANG']->getLL('differences', 1) . '</td>
 				<td>&nbsp;</td>
 			</tr>';
-		$be_user_array = \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames();
+		$be_user_array = BackendUtility::getUserNames();
 		// Traverse changelog array:
 		if (!$this->changeLog) {
 			return 0;
@@ -410,12 +415,12 @@ class RecordHistory {
 			// Build up single line
 			$singleLine = array();
 			// Diff link
-			$image = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-forward', array('title' => $GLOBALS['LANG']->getLL('sumUpChanges', TRUE)));
+			$image = IconUtility::getSpriteIcon('actions-view-go-forward', array('title' => $GLOBALS['LANG']->getLL('sumUpChanges', TRUE)));
 			$singleLine[] = '<span>' . $this->linkPage($image, array('diff' => $sysLogUid)) . '</span>';
 			// remove first link
-			$singleLine[] = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::datetime($entry['tstamp']));
+			$singleLine[] = htmlspecialchars(BackendUtility::datetime($entry['tstamp']));
 			// add time
-			$singleLine[] = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $entry['tstamp'], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')));
+			$singleLine[] = htmlspecialchars(BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $entry['tstamp'], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')));
 			// add age
 			$singleLine[] = htmlspecialchars($userName);
 			// add user name
@@ -431,7 +436,7 @@ class RecordHistory {
 					// Re-write field names with labels
 					$tmpFieldList = explode(',', $entry['fieldlist']);
 					foreach ($tmpFieldList as $key => $value) {
-						$tmp = str_replace(':', '', $GLOBALS['LANG']->sl(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel($entry['tablename'], $value), 1));
+						$tmp = str_replace(':', '', $GLOBALS['LANG']->sl(BackendUtility::getItemLabel($entry['tablename'], $value), 1));
 						if ($tmp) {
 							$tmpFieldList[$key] = $tmp;
 						} else {
@@ -449,9 +454,9 @@ class RecordHistory {
 			// Show link to mark/unmark state
 			if (!$entry['action']) {
 				if ($entry['snapshot']) {
-					$image = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg('', 'gfx/unmarkstate.gif') . ' align="top" alt="' . $GLOBALS['LANG']->getLL('unmarkState', 1) . '" title="' . $GLOBALS['LANG']->getLL('unmarkState', 1) . '" />';
+					$image = '<img' . IconUtility::skinImg('', 'gfx/unmarkstate.gif') . ' align="top" alt="' . $GLOBALS['LANG']->getLL('unmarkState', 1) . '" title="' . $GLOBALS['LANG']->getLL('unmarkState', 1) . '" />';
 				} else {
-					$image = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg('', 'gfx/markstate.gif') . ' align="top" alt="' . $GLOBALS['LANG']->getLL('markState', 1) . '" title="' . $GLOBALS['LANG']->getLL('markState', 1) . '" />';
+					$image = '<img' . IconUtility::skinImg('', 'gfx/markstate.gif') . ' align="top" alt="' . $GLOBALS['LANG']->getLL('markState', 1) . '" title="' . $GLOBALS['LANG']->getLL('markState', 1) . '" />';
 				}
 				$singleLine[] = $this->linkPage($image, array('highlight' => $entry['uid']));
 			} else {
@@ -472,10 +477,10 @@ class RecordHistory {
 				' . implode('', $lines) . '
 			</table>';
 		if ($this->lastSyslogId) {
-			$theCode .= '<br />' . $this->linkPage(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-move-to-bottom', array('title' => $GLOBALS['LANG']->getLL('fullView', TRUE))), array('diff' => ''));
+			$theCode .= '<br />' . $this->linkPage(IconUtility::getSpriteIcon('actions-move-to-bottom', array('title' => $GLOBALS['LANG']->getLL('fullView', TRUE))), array('diff' => ''));
 		}
 		// Add message about the difference view.
-		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('differenceMsg'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+		$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('differenceMsg'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 		$theCode .= '<br /><br />' . $flashMessage->render() . '<br />';
 		// Add the whole content as a module section:
 		return $GLOBALS['SOBE']->doc->section($GLOBALS['LANG']->getLL('changes'), $theCode, FALSE, TRUE);
@@ -538,16 +543,16 @@ class RecordHistory {
 	public function renderDiff($entry, $table, $rollbackUid = 0) {
 		$lines = array();
 		if (is_array($entry['newRecord'])) {
-			$t3lib_diff_Obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
+			$t3lib_diff_Obj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
 			$fieldsToDisplay = array_keys($entry['newRecord']);
 			foreach ($fieldsToDisplay as $fN) {
 				if (is_array($GLOBALS['TCA'][$table]['columns'][$fN]) && $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] != 'passthrough') {
 					// Create diff-result:
-					$diffres = $t3lib_diff_Obj->makeDiffDisplay(\TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($table, $fN, $entry['oldRecord'][$fN], 0, 1), \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($table, $fN, $entry['newRecord'][$fN], 0, 1));
+					$diffres = $t3lib_diff_Obj->makeDiffDisplay(BackendUtility::getProcessedValue($table, $fN, $entry['oldRecord'][$fN], 0, 1), BackendUtility::getProcessedValue($table, $fN, $entry['newRecord'][$fN], 0, 1));
 					$lines[] = '
 						<tr class="bgColor4">
 						' . ($rollbackUid ? '<td style="width:33px">' . $this->createRollbackLink(($table . ':' . $rollbackUid . ':' . $fN), $GLOBALS['LANG']->getLL('revertField', 1), 2) . '</td>' : '') . '
-							<td style="width:90px"><em>' . $GLOBALS['LANG']->sl(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel($table, $fN), 1) . '</em></td>
+							<td style="width:90px"><em>' . $GLOBALS['LANG']->sl(BackendUtility::getItemLabel($table, $fN), 1) . '</em></td>
 							<td style="width:300px">' . nl2br($diffres) . '</td>
 						</tr>';
 				}
@@ -759,7 +764,7 @@ class RecordHistory {
 		$out = $table . ':' . $uid;
 		if ($labelField = $GLOBALS['TCA'][$table]['ctrl']['label']) {
 			$record = $this->getRecord($table, $uid);
-			$out .= ' (' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $record, TRUE) . ')';
+			$out .= ' (' . BackendUtility::getRecordTitle($table, $record, TRUE) . ')';
 		}
 		return $out;
 	}
@@ -774,7 +779,7 @@ class RecordHistory {
 	 * @todo Define visibility
 	 */
 	public function createRollbackLink($key, $alt = '', $type = 0) {
-		return $this->linkPage('<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg('', ('gfx/revert_' . $type . '.gif'), 'width="33" height="33"') . ' alt="' . $alt . '" title="' . $alt . '" align="middle" />', array('rollbackFields' => $key));
+		return $this->linkPage('<img ' . IconUtility::skinImg('', ('gfx/revert_' . $type . '.gif'), 'width="33" height="33"') . ' alt="' . $alt . '" title="' . $alt . '" align="middle" />', array('rollbackFields' => $key));
 	}
 
 	/**
@@ -796,7 +801,7 @@ class RecordHistory {
 		// Mergin overriding values:
 		$params = array_merge($params, $inparams);
 		// Make the link:
-		$link = 'show_rechis.php?' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $params) . ($anchor ? '#' . $anchor : '');
+		$link = 'show_rechis.php?' . GeneralUtility::implodeArrayForUrl('', $params) . ($anchor ? '#' . $anchor : '');
 		return '<a href="' . htmlspecialchars($link) . '"' . ($title ? ' title="' . $title . '"' : '') . '>' . $str . '</a>';
 	}
 
@@ -830,7 +835,7 @@ class RecordHistory {
 	 */
 	public function resolveElement($table, $uid) {
 		if (isset($GLOBALS['TCA'][$table])) {
-			if ($workspaceVersion = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $table, $uid, 'uid')) {
+			if ($workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $table, $uid, 'uid')) {
 				$uid = $workspaceVersion['uid'];
 			}
 		}
@@ -871,7 +876,7 @@ class RecordHistory {
 		}
 
 		if (!isset($this->pageAccessCache[$pageId])) {
-			$this->pageAccessCache[$pageId] = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess(
+			$this->pageAccessCache[$pageId] = BackendUtility::readPageAccess(
 				$pageId, $this->getBackendUser()->getPagePermsClause(1)
 			);
 		}
@@ -898,7 +903,7 @@ class RecordHistory {
 	 */
 	protected function getRecord($table, $uid) {
 		if (!isset($this->recordCache[$table][$uid])) {
-			$this->recordCache[$table][$uid] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid, '*', '', FALSE);
+			$this->recordCache[$table][$uid] = BackendUtility::getRecord($table, $uid, '*', '', FALSE);
 		}
 		return $this->recordCache[$table][$uid];
 	}
@@ -921,7 +926,7 @@ class RecordHistory {
 	 * @return array|string|integer
 	 */
 	protected function getArgument($name) {
-		$value = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($name);
+		$value = GeneralUtility::_GP($name);
 
 		switch ($name) {
 			case 'element':
@@ -936,7 +941,7 @@ class RecordHistory {
 				}
 				break;
 			case 'returnUrl':
-				$value = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl($value);
+				$value = GeneralUtility::sanitizeLocalUrl($value);
 				break;
 			case 'diff':
 			case 'highlight':

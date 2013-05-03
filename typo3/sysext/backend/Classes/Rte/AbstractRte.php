@@ -26,11 +26,9 @@ namespace TYPO3\CMS\Backend\Rte;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * RTE API parent class.
- *
- * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * RTE base class: Delivers browser-detection, TCEforms binding and transformation routines for the "rte" extension, registering it with the RTE API in TYPO3 3.6.0
  * See "rte" extension for usage.
@@ -100,7 +98,7 @@ class AbstractRte {
 		// Create item:
 		$item = '
 			' . $this->triggerField($PA['itemFormElName']) . '
-			<textarea name="' . htmlspecialchars($PA['itemFormElName']) . '"' . $pObj->formWidthText('48', 'off') . ' rows="20" wrap="off" style="background-color: #99eebb;">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($value) . '</textarea>';
+			<textarea name="' . htmlspecialchars($PA['itemFormElName']) . '"' . $pObj->formWidthText('48', 'off') . ' rows="20" wrap="off" style="background-color: #99eebb;">' . GeneralUtility::formatForTextarea($value) . '</textarea>';
 		// Return form item:
 		return $item;
 	}
@@ -129,7 +127,7 @@ class AbstractRte {
 			// There must be a mode set for transformation
 			if ($p['mode']) {
 				// Initialize transformation:
-				$parseHTML = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\RteHtmlParser');
+				$parseHTML = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\RteHtmlParser');
 				$parseHTML->init($table . ':' . $field, $pid);
 				$parseHTML->setRelPath($RTErelPath);
 				// Perform transformation:

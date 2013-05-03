@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Backend\Form\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * TCEforms wizard for rendering an AJAX selector for records
  *
@@ -49,8 +52,8 @@ class ValueSlider {
 		$value = $params['row'][$field];
 		// If Slider is used in a flexform
 		if (!empty($params['flexFormPath'])) {
-			$flexFormTools = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
-			$flexFormValue = $flexFormTools->getArrayValueByPath($params['flexFormPath'], \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($value));
+			$flexFormTools = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+			$flexFormValue = $flexFormTools->getArrayValueByPath($params['flexFormPath'], GeneralUtility::xml2array($value));
 			if ($flexFormValue !== NULL) {
 				$value = $flexFormValue;
 			}
@@ -69,7 +72,7 @@ class ValueSlider {
 		$width = intval($params['wConf']['width']) ? intval($params['wConf']['width']) : 400;
 		$type = 'null';
 		if (isset($params['fieldConfig']['eval'])) {
-			$eval = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $params['fieldConfig']['eval'], TRUE);
+			$eval = GeneralUtility::trimExplode(',', $params['fieldConfig']['eval'], TRUE);
 			if (in_array('time', $eval)) {
 				$type = 'time';
 				$value = (int) $value;

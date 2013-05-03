@@ -27,23 +27,15 @@ namespace TYPO3\CMS\Backend\Controller\File;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Gateway for TCE (TYPO3 Core Engine) file-handling through POST forms.
  * This script serves as the fileadministration part of the TYPO3 Core Engine.
  * Basically it includes two libraries which are used to manipulate files on the server.
  * Before TYPO3 4.3, it was located in typo3/tce_file.php and redirected back to a
  * $redirectURL. Since 4.3 this class is also used for accessing via AJAX
- *
- *
- * For syntax and API information, see the document 'TYPO3 Core APIs'
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- * Revised for TYPO3 4.3 Mar/2009 by Benjamin Mack
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
- * Script Class, handling the calling of methods in the file admin classes.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -80,11 +72,11 @@ class FileController {
 	 */
 	public function init() {
 		// Set the GPvars from outside
-		$this->file = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('file');
-		$this->CB = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('CB');
-		$this->overwriteExistingFiles = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('overwriteExistingFiles');
-		$this->vC = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('vC');
-		$this->redirect = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('redirect'));
+		$this->file = GeneralUtility::_GP('file');
+		$this->CB = GeneralUtility::_GP('CB');
+		$this->overwriteExistingFiles = GeneralUtility::_GP('overwriteExistingFiles');
+		$this->vC = GeneralUtility::_GP('vC');
+		$this->redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
 		$this->initClipboard();
 	}
 
@@ -95,7 +87,7 @@ class FileController {
 	 */
 	public function initClipboard() {
 		if (is_array($this->CB)) {
-			$clipObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+			$clipObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
 			$clipObj->initializeClipboard();
 			if ($this->CB['paste']) {
 				$clipObj->setCurrentPad($this->CB['pad']);
@@ -116,13 +108,13 @@ class FileController {
 	 */
 	public function main() {
 		// Initializing:
-		$this->fileProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
+		$this->fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
 		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 		$this->fileProcessor->init_actionPerms($GLOBALS['BE_USER']->getFileoperationPermissions());
 		$this->fileProcessor->dontCheckForUnique = $this->overwriteExistingFiles ? 1 : 0;
 		// Checking referrer / executing:
-		$refInfo = parse_url(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_REFERER'));
-		$httpHost = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
+		$refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
+		$httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
 		if ($httpHost != $refInfo['host'] && $this->vC != $GLOBALS['BE_USER']->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer'] && $GLOBALS['CLIENT']['BROWSER'] != 'flash') {
 			$this->fileProcessor->writeLog(0, 2, 1, 'Referrer host "%s" and server host "%s" did not match!', array($refInfo['host'], $httpHost));
 		} else {
@@ -153,7 +145,7 @@ class FileController {
 	 * actual return value
 	 *
 	 * @param array $params Always empty.
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj The Ajax object used to return content and set content types
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj The AjaxRequestHandler object used to return content and set content types
 	 * @return void
 	 */
 	public function processAjaxRequest(array $params, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj) {
@@ -172,6 +164,5 @@ class FileController {
 	}
 
 }
-
 
 ?>
