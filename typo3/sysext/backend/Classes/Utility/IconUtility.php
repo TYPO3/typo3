@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Backend\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Contains class for icon generation in the backend
  * This library has functions that returns - and if necessary creates - the icon for an element in TYPO3
@@ -126,7 +128,7 @@ class IconUtility {
 	 * @deprecated since TYPO3 6.1 will be removed in 7.0, should not be used anymore as only sprite icons are used since TYPO3 4.4
 	 */
 	static public function getIconImage($table, $row = array(), $backPath, $params = '', $shaded = FALSE) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		GeneralUtility::logDeprecatedFunction();
 
 		$str = '<img' . self::skinImg($backPath, self::getIcon($table, $row, $shaded), 'width="18" height="16"') . (trim($params) ? ' ' . trim($params) : '');
 		if (!stristr($str, 'alt="')) {
@@ -379,7 +381,7 @@ class IconUtility {
 	 * @access private
 	 */
 	static public function makeIcon($iconfile, $mode, $user, $protectSection, $absFile, $iconFileName_stateTagged) {
-		$iconFileName = 'icon_' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(($iconfile . '|' . $mode . '|-' . $user . '|' . $protectSection)) . '_' . $iconFileName_stateTagged . '.' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] ? 'png' : 'gif');
+		$iconFileName = 'icon_' . GeneralUtility::shortMD5(($iconfile . '|' . $mode . '|-' . $user . '|' . $protectSection)) . '_' . $iconFileName_stateTagged . '.' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] ? 'png' : 'gif');
 		$mainpath = '../typo3temp/' . $iconFileName;
 		$path = PATH_site . 'typo3temp/' . $iconFileName;
 		if (file_exists(PATH_typo3 . 'icons/' . $iconFileName)) {
@@ -469,7 +471,7 @@ class IconUtility {
 					}
 					// Create the image as file, destroy GD image and return:
 					@self::imagemake($im, $path);
-					\TYPO3\CMS\Core\Utility\GeneralUtility::gif_compress($path, 'IM');
+					GeneralUtility::gif_compress($path, 'IM');
 					ImageDestroy($im);
 					return $mainpath;
 				} else {
@@ -511,15 +513,15 @@ class IconUtility {
 	}
 
 	/**
-	 * Create new image pointer from input file (either gif/png, in case the wrong format it is converted by \TYPO3\CMS\Core\Utility\GeneralUtility::read_png_gif())
+	 * Create new image pointer from input file (either gif/png, in case the wrong format it is converted by GeneralUtility::read_png_gif())
 	 *
 	 * @param string $file Absolute filename of the image file from which to start the icon creation.
 	 * @return mixed If success, image pointer, otherwise "-1
 	 * @access private
-	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::read_png_gif
+	 * @see GeneralUtility::read_png_gif
 	 */
 	static public function imagecreatefrom($file) {
-		$file = \TYPO3\CMS\Core\Utility\GeneralUtility::read_png_gif($file, $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']);
+		$file = GeneralUtility::read_png_gif($file, $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']);
 		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) {
 			return $file ? imagecreatefrompng($file) : -1;
 		} else {
@@ -542,7 +544,7 @@ class IconUtility {
 			@ImageGif($im, $path);
 		}
 		if (@is_file($path)) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($path);
+			GeneralUtility::fixPermissions($path);
 		}
 	}
 
@@ -646,8 +648,8 @@ class IconUtility {
 		// then it is checked whether it is a valid directory
 		if (strpos($fileExtension, '.') !== FALSE || strpos($fileExtension, '/') !== FALSE) {
 			// Check if it is a directory
-			$filePath = dirname(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_FILENAME')) . '/' . $GLOBALS['BACK_PATH'] . $fileExtension;
-			$path = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($filePath);
+			$filePath = dirname(GeneralUtility::getIndpEnv('SCRIPT_FILENAME')) . '/' . $GLOBALS['BACK_PATH'] . $fileExtension;
+			$path = GeneralUtility::resolveBackPath($filePath);
 			if (is_dir($path) || substr($fileExtension, -1) === '/' || substr($fileExtension, -1) === '\\') {
 				$fileExtension = 'folder';
 			} else {
@@ -777,7 +779,7 @@ class IconUtility {
 				}
 				if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['userFunc'])) {
 					$parameters = array('row' => $row);
-					$recordType[6] = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['userFunc'], $parameters, $ref);
+					$recordType[6] = GeneralUtility::callUserFunction($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['userFunc'], $parameters, $ref);
 				}
 			} else {
 				foreach ($recordType as &$type) {
@@ -879,7 +881,7 @@ class IconUtility {
 		// The status array should be passed as a reference and in order to be modified within the hook
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'] as $classRef) {
-				$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+				$hookObject = GeneralUtility::getUserObj($classRef);
 				if (method_exists($hookObject, 'overrideIconOverlay')) {
 					$hookObject->overrideIconOverlay($table, $row, $status);
 				}

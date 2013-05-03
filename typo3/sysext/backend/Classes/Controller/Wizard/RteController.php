@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Script Class for rendering the full screen RTE display
  *
@@ -76,13 +78,13 @@ class RteController {
 	 */
 	public function init() {
 		// Setting GPvars:
-		$this->P = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('P');
-		$this->popView = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('popView');
-		$this->R_URI = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('popView' => ''));
+		$this->P = GeneralUtility::_GP('P');
+		$this->popView = GeneralUtility::_GP('popView');
+		$this->R_URI = GeneralUtility::linkThisScript(array('popView' => ''));
 		// "Module name":
 		$this->MCONF['name'] = 'xMOD_wizard_rte.php';
 		// Starting the document template object:
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/wizard_rte.html');
 		// Need to NOT have the page wrapped in DIV since if we do that we destroy
@@ -121,7 +123,7 @@ class RteController {
 				' . ($this->popView ? \TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($rawRec['pid'], '', \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($rawRec['pid'])) : '') . '
 			');
 			// Initialize TCeforms - for rendering the field:
-			$tceforms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
+			$tceforms = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
 			// Init...
 			$tceforms->initDefaultBEMode();
 			// SPECIAL: Disables all wizards - we are NOT going to need them.
@@ -135,7 +137,7 @@ class RteController {
 				$RTEobj->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border:solid 0px;';
 			}
 			// Fetching content of record:
-			$trData = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
+			$trData = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
 			$trData->lockRecords = 1;
 			$trData->fetchRecord($this->P['table'], $this->P['uid'], '');
 			// Getting the processed record content out:
@@ -209,7 +211,7 @@ class RteController {
 			'undo' => ''
 		);
 		if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'], $this->P['uid'])) {
-			$closeUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']);
+			$closeUrl = GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']);
 			// Getting settings for the undo button:
 			$undoButton = 0;
 			$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->P['table'], 'sys_history') . ' AND recuid=' . intval($this->P['uid']), '', 'tstamp DESC', '1');
@@ -270,6 +272,5 @@ class RteController {
 	}
 
 }
-
 
 ?>

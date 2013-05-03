@@ -26,11 +26,7 @@ namespace TYPO3\CMS\Backend\Configuration;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains translation tools
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * Contains translation tools
  *
@@ -184,6 +180,5 @@ class TranslationConfigurationProvider {
 	}
 
 }
-
 
 ?>

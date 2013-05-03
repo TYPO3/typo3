@@ -26,6 +26,10 @@ namespace TYPO3\CMS\Backend\Form\Element;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * The Inline-Relational-Record-Editing (IRRE) functions as part of the TCEforms.
  *
@@ -149,7 +153,7 @@ class InlineElement {
 			$tceformsInlineHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook'];
 			if (is_array($tceformsInlineHook)) {
 				foreach ($tceformsInlineHook as $classData) {
-					$processObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classData);
+					$processObject = GeneralUtility::getUserObj($classData);
 					if (!$processObject instanceof \TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface) {
 						throw new \UnexpectedValueException('$processObject must implement interface TYPO3\\CMS\\Backend\\Form\\Element\\InlineElementHookInterface', 1202072000);
 					}
@@ -185,8 +189,8 @@ class InlineElement {
 		if (\TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($table)) {
 			$language = intval($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
 		}
-		$minitems = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($config['minitems'], 0);
-		$maxitems = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($config['maxitems'], 0);
+		$minitems = MathUtility::forceIntegerInRange($config['minitems'], 0);
+		$maxitems = MathUtility::forceIntegerInRange($config['maxitems'], 0);
 		if (!$maxitems) {
 			$maxitems = 100000;
 		}
@@ -197,7 +201,7 @@ class InlineElement {
 		if (!isset($this->inlineFirstPid)) {
 			// If this record is not new, try to fetch the inlineView states
 			// @TODO: Add checking/cleaning for unused tables, records, etc. to save space in uc-field
-			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($row['uid'])) {
+			if (MathUtility::canBeInterpretedAsInteger($row['uid'])) {
 				$inlineView = unserialize($GLOBALS['BE_USER']->uc['inlineView']);
 				$this->inlineView = $inlineView[$table][$row['uid']];
 			}
@@ -240,7 +244,7 @@ class InlineElement {
 			),
 			'context' => array(
 				'config' => $config,
-				'hmac' => \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(serialize($config)),
+				'hmac' => GeneralUtility::hmac(serialize($config)),
 			),
 		);
 		// Set a hint for nested IRRE and tab elements:
@@ -325,7 +329,7 @@ class InlineElement {
 					'nameForm' => $nameForm,
 					'config' => $config
 				);
-				$item .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($customControlConfig, $parameters, $this);
+				$item .= GeneralUtility::callUserFunction($customControlConfig, $parameters, $this);
 			}
 			$item .= '</div>';
 		}
@@ -373,7 +377,7 @@ class InlineElement {
 		// e.g. data[<curTable>][<curId>][<curField>] => data-<pid>-<parentTable>-<parentId>-<parentField>-<curTable>-<curId>-<curField>
 		$this->inlineData['map'][$this->inlineNames['form']] = $this->inlineNames['object'];
 		// Set this variable if we handle a brand new unsaved record:
-		$isNewRecord = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($rec['uid']) ? FALSE : TRUE;
+		$isNewRecord = MathUtility::canBeInterpretedAsInteger($rec['uid']) ? FALSE : TRUE;
 		// Set this variable if the record is virtual and only show with header and not editable fields:
 		$isVirtualRecord = isset($rec['__virtual']) && $rec['__virtual'];
 		// If there is a selector field, normalize it:
@@ -408,7 +412,7 @@ class InlineElement {
 				$fields = $this->renderMainFields($foreign_table, $rec, $overruleTypesArray);
 				$fields = $this->wrapFormsSection($fields);
 				// Replace returnUrl in Wizard-Code, if this is an AJAX call
-				$ajaxArguments = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ajax');
+				$ajaxArguments = GeneralUtility::_GP('ajax');
 				if (isset($ajaxArguments[2]) && trim($ajaxArguments[2]) != '') {
 					$fields = str_replace('P[returnUrl]=%2F' . rawurlencode(TYPO3_mainDir) . 'ajax.php', 'P[returnUrl]=' . rawurlencode($ajaxArguments[2]), $fields);
 				}
@@ -448,7 +452,7 @@ class InlineElement {
 			if (isset($rec['hidden']) && intval($rec['hidden'])) {
 				$class .= ' t3-form-field-container-inline-hidden';
 			}
-			$out = '<div class="t3-form-field-record-inline" id="' . $objectId . '_fields" data-expandSingle="' . ($config['appearance']['expandSingle'] ? 1 : 0) . '" data-returnURL="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '">' . $fields . $combination . '</div>';
+			$out = '<div class="t3-form-field-record-inline" id="' . $objectId . '_fields" data-expandSingle="' . ($config['appearance']['expandSingle'] ? 1 : 0) . '" data-returnURL="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '">' . $fields . $combination . '</div>';
 			$header = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-irre-' . ($class != '' ? 'collapsed' : 'expanded'));
 			$header .= $this->renderForeignRecordHeader($parentUid, $foreign_table, $rec, $config, $isVirtualRecord);
 			$out = '<div class="t3-form-field-header-inline" id="' . $objectId . '_header">' . $header . '</div>' . $out;
@@ -521,7 +525,7 @@ class InlineElement {
 			);
 			// callUserFunction requires a third parameter, but we don't want to give $this as reference!
 			$null = NULL;
-			\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($GLOBALS['TCA'][$foreign_table]['ctrl']['label_userFunc'], $params, $null);
+			GeneralUtility::callUserFunction($GLOBALS['TCA'][$foreign_table]['ctrl']['label_userFunc'], $params, $null);
 			$recTitle = $params['title'];
 		} elseif ($hasForeignLabel || $hasSymmetricLabel) {
 			$titleCol = $hasForeignLabel ? $config['foreign_label'] : $config['symmetric_label'];
@@ -531,8 +535,8 @@ class InlineElement {
 				$recTitle = \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValueExtra($foreign_table, $titleCol, $rec[$titleCol], 0, 0, FALSE);
 			} else {
 				// $recTitle could be something like: "tx_table_123|...",
-				$valueParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $rec[$titleCol]);
-				$itemParts = \TYPO3\CMS\Core\Utility\GeneralUtility::revExplode('_', $valueParts[0], 2);
+				$valueParts = GeneralUtility::trimExplode('|', $rec[$titleCol]);
+				$itemParts = GeneralUtility::revExplode('_', $valueParts[0], 2);
 				$recTemp = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($itemParts[0], $itemParts[1]);
 				$recTitle = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($itemParts[0], $recTemp, FALSE);
 			}
@@ -546,7 +550,7 @@ class InlineElement {
 		// Renders a thumbnail for the header
 		if (!empty($config['appearance']['headerThumbnail']['field'])) {
 			$fieldValue = $rec[$config['appearance']['headerThumbnail']['field']];
-			$firstElement = array_shift(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldValue));
+			$firstElement = array_shift(GeneralUtility::trimExplode(',', $fieldValue));
 			$fileUid = array_pop(\TYPO3\CMS\Backend\Utility\BackendUtility::splitTable_Uid($firstElement));
 			if (!empty($fileUid)) {
 				$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($fileUid);
@@ -706,7 +710,7 @@ class InlineElement {
 			$comboConfig = $GLOBALS['TCA'][$foreign_table]['columns'][$foreign_selector]['config'];
 			$comboRecord = array();
 			// If record does already exist, load it:
-			if ($rec[$foreign_selector] && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($rec[$foreign_selector])) {
+			if ($rec[$foreign_selector] && MathUtility::canBeInterpretedAsInteger($rec[$foreign_selector])) {
 				$comboRecord = $this->getRecord($this->inlineFirstPid, $comboConfig['foreign_table'], $rec[$foreign_selector]);
 				$isNewRecord = FALSE;
 			} else {
@@ -790,7 +794,7 @@ class InlineElement {
 			// Put together the selector box:
 			$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="' . htmlspecialchars($config['itemListStyle']) . '"' : ' style="' . $this->fObj->defaultMultipleSelectorStyle . '"';
 			$size = intval($conf['size']);
-			$size = $conf['autoSizeMax'] ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(count($selItems) + 1, \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($size, 1), $conf['autoSizeMax']) : $size;
+			$size = $conf['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($selItems) + 1, MathUtility::forceIntegerInRange($size, 1), $conf['autoSizeMax']) : $size;
 			$onChange = 'return inline.importNewRecord(\'' . $this->inlineNames['object'] . self::Structure_Separator . $conf['foreign_table'] . '\')';
 			$item = '
 				<select id="' . $this->inlineNames['object'] . self::Structure_Separator . $conf['foreign_table'] . '_selector"' . $this->fObj->insertDefStyle('select') . ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($onChange) . '"' . $PA['onFocus'] . $selector_itemListStyle . ($conf['foreign_unique'] ? ' isunique="isunique"' : '') . '>
@@ -920,7 +924,7 @@ class InlineElement {
 	 * @return void
 	 */
 	public function processAjaxRequest($params, $ajaxObj) {
-		$ajaxArguments = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ajax');
+		$ajaxArguments = GeneralUtility::_GP('ajax');
 		$ajaxIdParts = explode('::', $GLOBALS['ajaxID'], 2);
 		if (isset($ajaxArguments) && is_array($ajaxArguments) && count($ajaxArguments)) {
 			$ajaxMethod = $ajaxIdParts[1];
@@ -965,7 +969,7 @@ class InlineElement {
 		$current = &$this->inlineStructure['stable'][$level];
 		$context = json_decode($ajaxArguments['context'], TRUE);
 
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::hmac(serialize($context['config'])) !== $context['hmac']) {
+		if (GeneralUtility::hmac(serialize($context['config'])) !== $context['hmac']) {
 			return;
 		}
 
@@ -998,12 +1002,12 @@ class InlineElement {
 		// Setting virtual document name
 		$GLOBALS['SOBE']->MCONF['name'] = 'xMOD_alt_doc.php';
 		// CLEANSE SETTINGS
-		$GLOBALS['SOBE']->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($GLOBALS['SOBE']->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $GLOBALS['SOBE']->MCONF['name']);
+		$GLOBALS['SOBE']->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($GLOBALS['SOBE']->MOD_MENU, GeneralUtility::_GP('SET'), $GLOBALS['SOBE']->MCONF['name']);
 		// Create an instance of the document template object
-		$GLOBALS['SOBE']->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$GLOBALS['SOBE']->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$GLOBALS['SOBE']->doc->backPath = $GLOBALS['BACK_PATH'];
 		// Initialize TCEforms (rendering the forms)
-		$GLOBALS['SOBE']->tceforms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
+		$GLOBALS['SOBE']->tceforms = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
 		$GLOBALS['SOBE']->tceforms->inline = $this;
 		$GLOBALS['SOBE']->tceforms->RTEcounter = intval(array_shift($ajaxArguments));
 		$GLOBALS['SOBE']->tceforms->initDefaultBEMode();
@@ -1013,7 +1017,7 @@ class InlineElement {
 		$GLOBALS['SOBE']->tceforms->enableTabMenu = TRUE;
 		// Clipboard is initialized:
 		// Start clipboard
-		$GLOBALS['SOBE']->tceforms->clipObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+		$GLOBALS['SOBE']->tceforms->clipObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
 		// Initialize - reads the clipboard content from the user session
 		$GLOBALS['SOBE']->tceforms->clipObj->initializeClipboard();
 	}
@@ -1082,7 +1086,7 @@ class InlineElement {
 		// Put the current level also to the dynNestedStack of TCEforms:
 		$this->fObj->pushToDynNestedStack('inline', $this->inlineNames['object']);
 		// Dynamically create a new record using \TYPO3\CMS\Backend\Form\DataPreprocessor
-		if (!$foreignUid || !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($foreignUid) || $config['foreign_selector']) {
+		if (!$foreignUid || !MathUtility::canBeInterpretedAsInteger($foreignUid) || $config['foreign_selector']) {
 			$record = $this->getNewRecord($this->inlineFirstPid, $current['table']);
 			// Set language of new child record to the language of the parent record:
 			if ($config['localizationMode'] == 'select') {
@@ -1154,7 +1158,7 @@ class InlineElement {
 	 */
 	protected function synchronizeLocalizeRecords($domObjectId, $type) {
 		$jsonArray = FALSE;
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('localize,synchronize', $type) || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($type)) {
+		if (GeneralUtility::inList('localize,synchronize', $type) || MathUtility::canBeInterpretedAsInteger($type)) {
 			// The current level:
 			$current = $this->inlineStructure['unstable'];
 			// The parent level:
@@ -1163,7 +1167,7 @@ class InlineElement {
 			$cmd = array();
 			$cmd[$parent['table']][$parent['uid']]['inlineLocalizeSynchronize'] = $parent['field'] . ',' . $type;
 			/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$tce->stripslashes_values = FALSE;
 			$tce->start(array(), $cmd);
 			$tce->process_cmdmap();
@@ -1292,11 +1296,11 @@ class InlineElement {
 		// The top parent table - this table embeds the current table
 		$top = $this->getStructureLevel(0);
 		// Only do some action if the top record and the current record were saved before
-		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($top['uid'])) {
+		if (MathUtility::canBeInterpretedAsInteger($top['uid'])) {
 			$inlineView = (array) unserialize($GLOBALS['BE_USER']->uc['inlineView']);
 			$inlineViewCurrent = &$inlineView[$top['table']][$top['uid']];
-			$expandUids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $expand);
-			$collapseUids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $collapse);
+			$expandUids = GeneralUtility::trimExplode(',', $expand);
+			$collapseUids = GeneralUtility::trimExplode(',', $collapse);
 			// Set records to be expanded
 			foreach ($expandUids as $uid) {
 				$inlineViewCurrent[$current['table']][] = $uid;
@@ -1399,7 +1403,7 @@ class InlineElement {
 	 * @return array An array with uids
 	 */
 	protected function getRelatedRecordsUidArray($itemList) {
-		$itemArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $itemList, 1);
+		$itemArray = GeneralUtility::trimExplode(',', $itemList, 1);
 		// Perform modification of the selected items array:
 		foreach ($itemArray as $key => &$value) {
 			$parts = explode('|', $value, 2);
@@ -1473,14 +1477,14 @@ class InlineElement {
 			$selItems = $this->fObj->addSelectOptionsToItemArray($this->fObj->initItemArray($PA['fieldConf']), $PA['fieldConf'], $this->fObj->setTSconfig($table, $row), $field);
 			// Possibly filter some items:
 			$keepItemsFunc = create_function('$value', 'return $value[1];');
-			$selItems = \TYPO3\CMS\Core\Utility\GeneralUtility::keepItemsInArray($selItems, $PA['fieldTSConfig']['keepItems'], $keepItemsFunc);
+			$selItems = GeneralUtility::keepItemsInArray($selItems, $PA['fieldTSConfig']['keepItems'], $keepItemsFunc);
 			// Possibly add some items:
 			$selItems = $this->fObj->addItems($selItems, $PA['fieldTSConfig']['addItems.']);
 			if (isset($config['itemsProcFunc']) && $config['itemsProcFunc']) {
 				$selItems = $this->fObj->procItems($selItems, $PA['fieldTSConfig']['itemsProcFunc.'], $config, $table, $row, $field);
 			}
 			// Possibly remove some items:
-			$removeItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $PA['fieldTSConfig']['removeItems'], 1);
+			$removeItems = GeneralUtility::trimExplode(',', $PA['fieldTSConfig']['removeItems'], 1);
 			foreach ($selItems as $tk => $p) {
 				// Checking languages and authMode:
 				$languageDeny = $tcaTableCtrl['languageField'] && !strcmp($tcaTableCtrl['languageField'], $field) && !$GLOBALS['BE_USER']->checkLanguageAccess($p[1]);
@@ -1492,7 +1496,7 @@ class InlineElement {
 				}
 				// Removing doktypes with no access:
 				if (($table === 'pages' || $table === 'pages_language_overlay') && $field === 'doktype') {
-					if (!($GLOBALS['BE_USER']->isAdmin() || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['BE_USER']->groupData['pagetypes_select'], $p[1]))) {
+					if (!($GLOBALS['BE_USER']->isAdmin() || GeneralUtility::inList($GLOBALS['BE_USER']->groupData['pagetypes_select'], $p[1]))) {
 						unset($selItems[$tk]);
 					}
 				}
@@ -1521,7 +1525,7 @@ class InlineElement {
 					$value = $rec[$conf['foreign_unique']];
 					// Split the value and extract the table and uid:
 					if ($splitValue) {
-						$valueParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $value);
+						$valueParts = GeneralUtility::trimExplode('|', $value);
 						$itemParts = explode('_', $valueParts[0]);
 						$value = array(
 							'uid' => array_pop($itemParts),
@@ -1546,9 +1550,9 @@ class InlineElement {
 	protected function getNewRecordPid($table, $parentPid = NULL) {
 		$newRecordPid = $this->inlineFirstPid;
 		$pageTS = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($parentPid, TRUE);
-		if (isset($pageTS['TCAdefaults.'][$table . '.']['pid']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($pageTS['TCAdefaults.'][$table . '.']['pid'])) {
+		if (isset($pageTS['TCAdefaults.'][$table . '.']['pid']) && MathUtility::canBeInterpretedAsInteger($pageTS['TCAdefaults.'][$table . '.']['pid'])) {
 			$newRecordPid = $pageTS['TCAdefaults.'][$table . '.']['pid'];
-		} elseif (isset($parentPid) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($parentPid)) {
+		} elseif (isset($parentPid) && MathUtility::canBeInterpretedAsInteger($parentPid)) {
 			$newRecordPid = $parentPid;
 		}
 		return $newRecordPid;
@@ -1574,7 +1578,7 @@ class InlineElement {
 				$uid = $workspaceVersion['uid'];
 			}
 		}
-		$trData = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
+		$trData = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
 		$trData->addRawData = TRUE;
 		$trData->lockRecords = 1;
 		$trData->disableRTE = $GLOBALS['SOBE']->MOD_SETTINGS['disableRTE'];
@@ -1816,7 +1820,7 @@ class InlineElement {
 
 					// Extract FlexForm from field part (if any)
 					if (strpos($unstable['field'], self::FlexForm_Substitute) !== FALSE) {
-						$fieldParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(self::FlexForm_Substitute, $unstable['field']);
+						$fieldParts = GeneralUtility::trimExplode(self::FlexForm_Substitute, $unstable['field']);
 						$unstable['field'] = array_shift($fieldParts);
 						// FlexForm parts start with data:
 						if (count($fieldParts) > 0 && $fieldParts[0] === 'data') {
@@ -1907,7 +1911,7 @@ class InlineElement {
 		// If the command is to create a NEW record...:
 		if ($cmd == 'new') {
 			// If the pid is numerical, check if it's possible to write to this page:
-			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->inlineFirstPid)) {
+			if (MathUtility::canBeInterpretedAsInteger($this->inlineFirstPid)) {
 				$calcPRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $this->inlineFirstPid);
 				if (!is_array($calcPRec)) {
 					return FALSE;
@@ -2195,7 +2199,7 @@ class InlineElement {
 			$PA = array();
 			$PA['fieldConf'] = $GLOBALS['TCA'][$foreign_table]['columns'][$field];
 			if ($PA['fieldConf'] && $conf['foreign_selector_fieldTcaOverride']) {
-				$PA['fieldConf'] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($PA['fieldConf'], $conf['foreign_selector_fieldTcaOverride']);
+				$PA['fieldConf'] = GeneralUtility::array_merge_recursive_overrule($PA['fieldConf'], $conf['foreign_selector_fieldTcaOverride']);
 			}
 			$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
 			// Using "form_type" locally in this script
@@ -2367,7 +2371,7 @@ class InlineElement {
 		$headDataRaw = $this->fObj->JStop() . $this->getJavaScriptAndStyleSheetsOfPageRenderer();
 		if ($headDataRaw) {
 			// Create instance of the HTML parser:
-			$parseObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
+			$parseObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 			// Removes script wraps:
 			$headDataRaw = str_replace(array('/*<![CDATA[*/', '/*]]>*/'), '', $headDataRaw);
 			// Removes leading spaces of a multiline string:
@@ -2435,7 +2439,7 @@ class InlineElement {
 		$prefix = preg_quote($this->fObj->prependFormFieldNames, '#');
 
 		if (preg_match('#^' . $prefix . '(?:\[[^]]+\]){3}(\[data\](?:\[[^]]+\]){4,})$#', $formElementName, $matches)) {
-			$flexFormParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(
+			$flexFormParts = GeneralUtility::trimExplode(
 				'][',
 				trim($matches[1], '[]')
 			);

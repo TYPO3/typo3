@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Page Tree and Context Menu Commands
  *
@@ -198,7 +201,7 @@ class Commands {
 	 */
 	static protected function processTceCmdAndDataMap(array $cmd, array $data = array()) {
 		/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		$tce->start($data, $cmd);
 		$tce->copyTree = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($GLOBALS['BE_USER']->uc['copyLevels'], 0, 100);
@@ -300,7 +303,7 @@ class Commands {
 			self::$titleLength = intval($GLOBALS['BE_USER']->uc['titleLen']);
 		}
 		/** @var $subNode \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-		$subNode = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode');
+		$subNode = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode');
 		$subNode->setRecord($record);
 		$subNode->setCls($record['_CSSCLASS']);
 		$subNode->setType('pages');
@@ -319,7 +322,7 @@ class Commands {
 		} else {
 			$visibleText = $text;
 		}
-		$visibleText = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($visibleText, self::$titleLength);
+		$visibleText = GeneralUtility::fixed_lgd_cs($visibleText, self::$titleLength);
 		$suffix = '';
 		if (self::$addDomainName) {
 			$domain = self::getDomainName($record['uid']);
@@ -340,7 +343,7 @@ class Commands {
 			$_params = array('pages', $record['uid']);
 			$fakeThis = NULL;
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
-				$stat .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $fakeThis);
+				$stat .= GeneralUtility::callUserFunction($_funcRef, $_params, $fakeThis);
 			}
 		}
 		$prefix .= htmlspecialchars(self::$addIdAsPrefix ? '[' . $record['uid'] . '] ' : '');

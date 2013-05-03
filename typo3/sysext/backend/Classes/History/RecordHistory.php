@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Backend\History;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class for the record history display script (show_rechis.php)
  *
@@ -233,7 +236,7 @@ class RecordHistory {
 		}
 		// Writes the data:
 		if ($cmdmapArray) {
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$tce->stripslashes_values = 0;
 			$tce->debug = 0;
 			$tce->dontProcessTransformations = 1;
@@ -268,7 +271,7 @@ class RecordHistory {
 		// Removing fields:
 		$data = $this->removeFilefields($rollbackData[0], $data);
 		// Writes the data:
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		$tce->debug = 0;
 		$tce->dontProcessTransformations = 1;
@@ -367,7 +370,7 @@ class RecordHistory {
 				$content .= $this->linkPage($GLOBALS['LANG']->getLL('elementHistory_link', 1), array('element' => 'pages:' . $pid['pid']));
 			}
 		}
-		$content .= '<form name="settings" action="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) . '" method="post"><table>' . $displayCode . '</table></form>';
+		$content .= '<form name="settings" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) . '" method="post"><table>' . $displayCode . '</table></form>';
 		return $GLOBALS['SOBE']->doc->section($GLOBALS['LANG']->getLL('settings', 1), $content, FALSE, TRUE, FALSE, FALSE);
 	}
 
@@ -475,7 +478,7 @@ class RecordHistory {
 			$theCode .= '<br />' . $this->linkPage(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-move-to-bottom', array('title' => $GLOBALS['LANG']->getLL('fullView', TRUE))), array('diff' => ''));
 		}
 		// Add message about the difference view.
-		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('differenceMsg'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+		$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('differenceMsg'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 		$theCode .= '<br /><br />' . $flashMessage->render() . '<br />';
 		// Add the whole content as a module section:
 		return $GLOBALS['SOBE']->doc->section($GLOBALS['LANG']->getLL('changes'), $theCode, FALSE, TRUE);
@@ -538,7 +541,7 @@ class RecordHistory {
 	public function renderDiff($entry, $table, $rollbackUid = 0) {
 		$lines = array();
 		if (is_array($entry['newRecord'])) {
-			$t3lib_diff_Obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
+			$t3lib_diff_Obj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\DiffUtility');
 			$fieldsToDisplay = array_keys($entry['newRecord']);
 			foreach ($fieldsToDisplay as $fN) {
 				if (is_array($GLOBALS['TCA'][$table]['columns'][$fN]) && $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] != 'passthrough') {
@@ -796,7 +799,7 @@ class RecordHistory {
 		// Mergin overriding values:
 		$params = array_merge($params, $inparams);
 		// Make the link:
-		$link = 'show_rechis.php?' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $params) . ($anchor ? '#' . $anchor : '');
+		$link = 'show_rechis.php?' . GeneralUtility::implodeArrayForUrl('', $params) . ($anchor ? '#' . $anchor : '');
 		return '<a href="' . htmlspecialchars($link) . '"' . ($title ? ' title="' . $title . '"' : '') . '>' . $str . '</a>';
 	}
 
@@ -921,7 +924,7 @@ class RecordHistory {
 	 * @return array|string|integer
 	 */
 	protected function getArgument($name) {
-		$value = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($name);
+		$value = GeneralUtility::_GP($name);
 
 		switch ($name) {
 			case 'element':
@@ -936,7 +939,7 @@ class RecordHistory {
 				}
 				break;
 			case 'returnUrl':
-				$value = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl($value);
+				$value = GeneralUtility::sanitizeLocalUrl($value);
 				break;
 			case 'diff':
 			case 'highlight':

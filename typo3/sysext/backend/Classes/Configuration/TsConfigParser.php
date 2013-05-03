@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Backend\Configuration;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * A TS-Config parsing class which performs condition evaluation
  *
@@ -35,7 +36,7 @@ namespace TYPO3\CMS\Backend\Configuration;
 class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser {
 
 	/**
-	 * @var 	array
+	 * @var array
 	 */
 	protected $rootLine = array();
 
@@ -53,7 +54,7 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser 
 		$this->id = $id;
 		$this->rootLine = $rootLine;
 		$hash = md5($type . ':' . $TStext);
-		$cachedContent = \TYPO3\CMS\Backend\Utility\BackendUtility::getHash($hash, 0);
+		$cachedContent = \TYPO3\CMS\Backend\Utility\BackendUtility::getHash($hash);
 		if ($cachedContent) {
 			$storedData = unserialize($cachedContent);
 			$storedMD5 = substr($cachedContent, -strlen($hash));
@@ -67,7 +68,7 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser 
 				);
 			} else {
 				$shash = md5($checkMD5 . $hash);
-				$cachedSpec = \TYPO3\CMS\Backend\Utility\BackendUtility::getHash($shash, 0);
+				$cachedSpec = \TYPO3\CMS\Backend\Utility\BackendUtility::getHash($shash);
 				if ($cachedSpec) {
 					$storedData = unserialize($cachedSpec);
 					$res = array(

@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Backend\Tree\View;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Generate a folder tree,
  * specially made for browsing folders in the File module
@@ -161,7 +163,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @return integer The "uid" field value.
 	 */
 	public function getId(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::md5Int($folderObject->getCombinedIdentifier());
+		return GeneralUtility::md5Int($folderObject->getCombinedIdentifier());
 	}
 
 	/**
@@ -252,7 +254,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 			/** @var $rootLevelFolder \TYPO3\CMS\Core\Resource\Folder */
 			$rootLevelFolder = $rootLevelFolderInfo['folder'];
 			$rootLevelFolderName = $rootLevelFolderInfo['name'];
-			$folderHashSpecUID = \TYPO3\CMS\Core\Utility\GeneralUtility::md5int($rootLevelFolder->getCombinedIdentifier());
+			$folderHashSpecUID = GeneralUtility::md5int($rootLevelFolder->getCombinedIdentifier());
 			$this->specUIDmap[$folderHashSpecUID] = $rootLevelFolder->getCombinedIdentifier();
 			// Hash key
 			$storageHashNumber = $this->getShortHashNumberForStorage($storageObject, $rootLevelFolder);
@@ -338,7 +340,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 			// Get the key for this space
 			end($this->tree);
 			$treeKey = key($this->tree);
-			$specUID = \TYPO3\CMS\Core\Utility\GeneralUtility::md5int($subFolder->getCombinedIdentifier());
+			$specUID = GeneralUtility::md5int($subFolder->getCombinedIdentifier());
 			$this->specUIDmap[$specUID] = $subFolder->getCombinedIdentifier();
 			$row = array(
 				'uid' => $specUID,
@@ -438,7 +440,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 			$classAttr = $treeItem['row']['_CSSCLASS'];
 			$folderIdentifier = $folderObject->getCombinedIdentifier();
 			// this is set if the AJAX request has just opened this folder (via the PM command)
-			$isExpandedFolderIdentifier = $expandedFolderHash == \TYPO3\CMS\Core\Utility\GeneralUtility::md5int($folderIdentifier);
+			$isExpandedFolderIdentifier = $expandedFolderHash == GeneralUtility::md5int($folderIdentifier);
 			$idAttr = htmlspecialchars($this->domIdPrefix . $this->getId($folderObject) . '_' . $treeItem['bank']);
 			$itemHTML = '';
 			// If this item is the start of a new level,
@@ -512,9 +514,9 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @deprecated since TYPO3 6.0, as the folder objects do the counting automatically
 	 */
 	public function getCount($file) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		GeneralUtility::logDeprecatedFunction();
 		// This generates the directory tree
-		$dirs = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($file);
+		$dirs = GeneralUtility::get_dirs($file);
 		$c = 0;
 		if (is_array($dirs)) {
 			$c = count($dirs);
@@ -579,12 +581,12 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 				$fileMounts = $storage->getFileMounts();
 				if (count($fileMounts)) {
 					foreach ($fileMounts as $fileMount) {
-						$nkey = hexdec(substr(\TYPO3\CMS\Core\Utility\GeneralUtility::md5int($fileMount['folder']->getCombinedIdentifier()), 0, 4));
+						$nkey = hexdec(substr(GeneralUtility::md5int($fileMount['folder']->getCombinedIdentifier()), 0, 4));
 						$this->storageHashNumbers[$storageUid . $fileMount['folder']->getCombinedIdentifier()] = $nkey;
 					}
 				} else {
 					$folder = $storage->getRootLevelFolder();
-					$nkey = hexdec(substr(\TYPO3\CMS\Core\Utility\GeneralUtility::md5int($folder->getCombinedIdentifier()), 0, 4));
+					$nkey = hexdec(substr(GeneralUtility::md5int($folder->getCombinedIdentifier()), 0, 4));
 					$this->storageHashNumbers[$storageUid . $folder->getCombinedIdentifier()] = $nkey;
 				}
 			}
@@ -613,7 +615,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 */
 	protected function evaluateExpandCollapseParameter($PM = NULL) {
 		if ($PM === NULL) {
-			$PM = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('PM');
+			$PM = GeneralUtility::_GP('PM');
 			// IE takes anchor as parameter
 			if (($PMpos = strpos($PM, '#')) !== FALSE) {
 				$PM = substr($PM, 0, $PMpos);
@@ -622,7 +624,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		// Take the first three parameters
 		list($mountKey, $doExpand, $folderIdentifier) = explode('_', $PM, 3);
 		// In case the folder identifier contains "_", we just need to get the fourth/last parameter
-		list($folderIdentifier, $treeName) = \TYPO3\CMS\Core\Utility\GeneralUtility::revExplode('_', $folderIdentifier, 2);
+		list($folderIdentifier, $treeName) = GeneralUtility::revExplode('_', $folderIdentifier, 2);
 		return array(
 			$mountKey,
 			$doExpand,
@@ -644,7 +646,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		$parts = array(
 			$mountKey !== NULL ? $mountKey : $this->bank,
 			$doExpand == 1 ? 1 : 0,
-			$folderObject !== NULL ? \TYPO3\CMS\Core\Utility\GeneralUtility::md5int($folderObject->getCombinedIdentifier()) : '',
+			$folderObject !== NULL ? GeneralUtility::md5int($folderObject->getCombinedIdentifier()) : '',
 			$treeName !== NULL ? $treeName : $this->treeName
 		);
 		return implode('_', $parts);

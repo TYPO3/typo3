@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Backend\Tree\View;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Contains class for creating a position map.
  *
@@ -137,7 +140,7 @@ class PagePositionMap {
 		$code = '';
 		// Make page tree object:
 		/** @var $t3lib_pageTree localPageTree */
-		$t3lib_pageTree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('localPageTree');
+		$t3lib_pageTree = GeneralUtility::makeInstance('localPageTree');
 		$t3lib_pageTree->init(' AND ' . $perms_clause);
 		$t3lib_pageTree->addField('pid');
 		// Initialize variables:
@@ -190,7 +193,7 @@ class PagePositionMap {
 				$code .= '<span class="nobr">' . $this->insertQuadLines($dat['blankLineCode']) . '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $dat['row']['pid'], 3)) . '" onmouseover="' . htmlspecialchars(('changeImg(\'mImg' . $cc . '\',0);')) . '" onmouseout="' . htmlspecialchars(('changeImg(\'mImg' . $cc . '\',1);')) . '">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImg' . $cc . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' . '</a></span><br />';
 			}
 			// The line with the icon and title:
-			$t_code = '<span class="nobr">' . $dat['HTML'] . $this->linkPageTitle($this->boldTitle(htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($dat['row']['title'], $GLOBALS['BE_USER']->uc['titleLen'])), $dat, $id), $dat['row']) . '</span><br />';
+			$t_code = '<span class="nobr">' . $dat['HTML'] . $this->linkPageTitle($this->boldTitle(htmlspecialchars(GeneralUtility::fixed_lgd_cs($dat['row']['title'], $GLOBALS['BE_USER']->uc['titleLen'])), $dat, $id), $dat['row']) . '</span><br />';
 			$code .= $t_code;
 		}
 		// If the current page was the last in the tree:
@@ -341,7 +344,7 @@ class PagePositionMap {
 	 * @todo Define visibility
 	 */
 	public function insertQuadLines($codes, $allBlank = FALSE) {
-		$codeA = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $codes . ',line', 1);
+		$codeA = GeneralUtility::trimExplode(',', $codes . ',line', 1);
 		$lines = array();
 		foreach ($codeA as $code) {
 			if ($code == 'blank' || $allBlank) {
@@ -372,7 +375,7 @@ class PagePositionMap {
 	public function printContentElementColumns($pid, $moveUid, $colPosList, $showHidden, $R_URI) {
 		$this->R_URI = $R_URI;
 		$this->moveUid = $moveUid;
-		$colPosArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $colPosList, 1);
+		$colPosArray = GeneralUtility::trimExplode(',', $colPosList, 1);
 		$lines = array();
 		foreach ($colPosArray as $kk => $vv) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_content', 'pid=' . intval($pid) . ($showHidden ? '' : \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('tt_content')) . ' AND colPos=' . intval($vv) . (strcmp($this->cur_sys_language, '') ? ' AND sys_language_uid=' . intval($this->cur_sys_language) : '') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content') . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tt_content'), '', 'sorting');
@@ -403,7 +406,7 @@ class PagePositionMap {
 		$row1 = '';
 		$row2 = '';
 		$count = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(count($colPosArray), 1);
-		$backendLayout = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getSelectedBackendLayout', $pid, $this);
+		$backendLayout = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getSelectedBackendLayout', $pid, $this);
 		if (isset($backendLayout['__config']['backend_layout.'])) {
 			$table = '<div class="t3-gridContainer"><table border="0" cellspacing="0" cellpadding="0" id="typo3-ttContentList">';
 			$colCount = intval($backendLayout['__config']['backend_layout.']['colCount']);
@@ -413,7 +416,7 @@ class PagePositionMap {
 				$table .= '<col style="width:' . 100 / $colCount . '%"></col>';
 			}
 			$table .= '</colgroup>';
-			$tcaItems = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $pid, $this);
+			$tcaItems = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $pid, $this);
 			// Cycle through rows
 			for ($row = 1; $row <= $rowCount; $row++) {
 				$rowConfig = $backendLayout['__config']['backend_layout.']['rows.'][$row . '.'];
@@ -569,7 +572,7 @@ class PagePositionMap {
 	 * @todo Define visibility
 	 */
 	public function wrapRecordTitle($str, $row) {
-		return '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('uid' => intval($row['uid']), 'moveUid' => ''))) . '">' . $str . '</a>';
+		return '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('uid' => intval($row['uid']), 'moveUid' => ''))) . '">' . $str . '</a>';
 	}
 
 }

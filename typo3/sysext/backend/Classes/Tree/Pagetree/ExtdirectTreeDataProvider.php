@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Data Provider of the Page Tree
  *
@@ -47,7 +50,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 	 */
 	protected function initDataProvider() {
 		/** @var $dataProvider \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider */
-		$dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\DataProvider');
+		$dataProvider = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\DataProvider');
 		$this->setDataProvider($dataProvider);
 	}
 
@@ -72,7 +75,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 	public function getNextTreeLevel($nodeId, $nodeData) {
 		$this->initDataProvider();
 		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
+		$node = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
 		if ($nodeId === 'root') {
 			$nodeCollection = $this->dataProvider->getTreeMounts();
 		} else {
@@ -94,7 +97,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 			return array();
 		}
 		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
+		$node = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
 		$this->initDataProvider();
 		if ($nodeId === 'root') {
 			$nodeCollection = $this->dataProvider->getTreeMounts($searchFilter);
@@ -123,9 +126,9 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 			254 => 'LLL:EXT:lang/locallang_tca.xlf:doktype.I.folder',
 			255 => 'LLL:EXT:lang/locallang_tca.xlf:doktype.I.2'
 		);
-		$doktypes = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.doktypesToShowInNewPageDragArea'));
+		$doktypes = GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.doktypesToShowInNewPageDragArea'));
 		$output = array();
-		$allowedDoktypes = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->groupData['pagetypes_select']);
+		$allowedDoktypes = GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->groupData['pagetypes_select']);
 		$isAdmin = $GLOBALS['BE_USER']->isAdmin();
 		foreach ($doktypes as $doktype) {
 			if (!$isAdmin && !in_array($doktype, $allowedDoktypes)) {
@@ -151,7 +154,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 	 */
 	public function getIndicators() {
 		/** @var $indicatorProvider \TYPO3\CMS\Backend\Tree\Pagetree\Indicator */
-		$indicatorProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\Indicator');
+		$indicatorProvider = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\Indicator');
 		$indicatorHtmlArr = $indicatorProvider->getAllIndicators();
 		$indicator = array(
 			'html' => implode(' ', $indicatorHtmlArr),
