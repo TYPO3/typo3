@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Backend\Tree;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Tree Node
  *
@@ -211,10 +214,10 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
 	public function dataFromArray($data) {
 		$this->setId($data['id']);
 		if (isset($data['parentNode']) && $data['parentNode'] !== '') {
-			$this->setParentNode(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($data['parentNode']['serializeClassName'], $data['parentNode']));
+			$this->setParentNode(GeneralUtility::makeInstance($data['parentNode']['serializeClassName'], $data['parentNode']));
 		}
 		if (isset($data['childNodes']) && $data['childNodes'] !== '') {
-			$this->setChildNodes(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($data['childNodes']['serializeClassName'], $data['childNodes']));
+			$this->setChildNodes(GeneralUtility::makeInstance($data['childNodes']['serializeClassName'], $data['childNodes']));
 		}
 	}
 

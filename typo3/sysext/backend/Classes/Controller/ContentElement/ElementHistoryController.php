@@ -27,15 +27,16 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Script Class for showing the history module of TYPO3s backend
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @see class.show_rechis.inc
+ * @see \TYPO3\CMS\Backend\History\RecordHistory
  */
 class ElementHistoryController {
 
-	// Internal:
 	/**
 	 * @todo Define visibility
 	 */
@@ -57,7 +58,7 @@ class ElementHistoryController {
 	 */
 	public function init() {
 		// Create internal template object:
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/show_rechis.html');
 		// Start the page header:
@@ -72,7 +73,7 @@ class ElementHistoryController {
 	 */
 	public function main() {
 		// Start history object
-		$historyObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\History\\RecordHistory');
+		$historyObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\History\\RecordHistory');
 		// Get content:
 		$this->content .= $historyObj->main();
 		// Setting up the buttons and markers for docheader
@@ -109,7 +110,7 @@ class ElementHistoryController {
 		// CSH
 		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'history_log', $GLOBALS['BACK_PATH'], '', TRUE);
 		// Start history object
-		$historyObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\History\\RecordHistory');
+		$historyObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\History\\RecordHistory');
 		if ($historyObj->returnUrl) {
 			$buttons['back'] = '<a href="' . htmlspecialchars($historyObj->returnUrl) . '" class="typo3-goBack">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
 		}
@@ -117,6 +118,5 @@ class ElementHistoryController {
 	}
 
 }
-
 
 ?>

@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Backend\User\ExtDirect;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * ExtDirect DataProvider for BE User Settings
  *
@@ -112,7 +115,7 @@ class BackendUserSettingsDataProvider {
 		if (!isset($list)) {
 			$list = $value;
 		} else {
-			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($list, $value)) {
+			if (!GeneralUtility::inList($list, $value)) {
 				$list .= ',' . $value;
 			}
 		}
@@ -129,9 +132,9 @@ class BackendUserSettingsDataProvider {
 	 */
 	public function removeFromList($key, $value) {
 		$list = $this->get($key);
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($list, $value)) {
-			$list = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $list, TRUE);
-			$list = \TYPO3\CMS\Core\Utility\GeneralUtility::removeArrayEntryByValue($list, $value);
+		if (GeneralUtility::inList($list, $value)) {
+			$list = GeneralUtility::trimExplode(',', $list, TRUE);
+			$list = GeneralUtility::removeArrayEntryByValue($list, $value);
 			$this->set($key, implode(',', $list));
 		}
 	}
@@ -143,7 +146,7 @@ class BackendUserSettingsDataProvider {
 	 * @return mixed $array value of the settings
 	 */
 	protected function getFromDottedNotation($key) {
-		$subkeys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $key);
+		$subkeys = GeneralUtility::trimExplode('.', $key);
 		$array = &$GLOBALS['BE_USER']->uc;
 		foreach ($subkeys as $subkey) {
 			$array = &$array[$subkey];
@@ -159,7 +162,7 @@ class BackendUserSettingsDataProvider {
 	 * @return void
 	 */
 	protected function setFromDottedNotation($key, $value) {
-		$subkeys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $key, TRUE);
+		$subkeys = GeneralUtility::trimExplode('.', $key, TRUE);
 		$lastKey = $subkeys[count($subkeys) - 1];
 		$array = &$GLOBALS['BE_USER']->uc;
 		foreach ($subkeys as $subkey) {
@@ -178,7 +181,7 @@ class BackendUserSettingsDataProvider {
 	 * @return void
 	 */
 	protected function getLastKeyFromDottedNotation($key) {
-		$subkeys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $key, TRUE);
+		$subkeys = GeneralUtility::trimExplode('.', $key, TRUE);
 		return $subkeys[count($subkeys) - 1];
 	}
 

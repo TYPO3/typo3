@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Backend\Controller\File;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Script Class for display up to 10 upload fields
  *
@@ -84,10 +87,10 @@ class FileUploadController {
 	 */
 	public function init() {
 		// Initialize GPvars:
-		$this->target = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('target');
-		$this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
+		$this->target = GeneralUtility::_GP('target');
+		$this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
 		if (!$this->returnUrl) {
-			$this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('file_list') . '&id=' . rawurlencode($this->target);
+			$this->returnUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . BackendUtility::getModuleUrl('file_list') . '&id=' . rawurlencode($this->target);
 		}
 		// Create the folder object
 		if ($this->target) {
@@ -103,7 +106,7 @@ class FileUploadController {
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-filetree-root');
 		$this->title = $icon . htmlspecialchars($this->folderObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->folderObject->getIdentifier());
 		// Setting template object
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/file_upload.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->form = '<form action="tce_file.php" method="post" name="editform" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
@@ -122,11 +125,11 @@ class FileUploadController {
 		$pageContent = $this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle')) . $this->doc->section('', $form);
 		// Header Buttons
 		$docHeaderButtons = array(
-			'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'file_upload', $GLOBALS['BACK_PATH'])
+			'csh' => BackendUtility::cshItem('xMOD_csh_corebe', 'file_upload', $GLOBALS['BACK_PATH'])
 		);
 		$markerArray = array(
 			'CSH' => $docHeaderButtons['csh'],
-			'FUNC_MENU' => \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
+			'FUNC_MENU' => BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
 			'CONTENT' => $pageContent,
 			'PATH' => $this->title
 		);
@@ -184,6 +187,5 @@ class FileUploadController {
 	}
 
 }
-
 
 ?>

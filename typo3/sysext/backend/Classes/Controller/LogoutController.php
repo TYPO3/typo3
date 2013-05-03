@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Backend\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Script Class for logging a user out.
  * Does not display any content, just calls the logout-function for the current user and then makes a redirect.
@@ -46,12 +48,11 @@ class LogoutController {
 		$GLOBALS['BE_USER']->writelog(255, 2, 0, 1, 'User %s logged out from TYPO3 Backend', array($GLOBALS['BE_USER']->user['username']));
 		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->removeSessionTokenFromRegistry();
 		$GLOBALS['BE_USER']->logoff();
-		$redirect = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('redirect'));
+		$redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
 		$redirectUrl = $redirect ? $redirect : 'index.php';
 		\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
 	}
 
 }
-
 
 ?>

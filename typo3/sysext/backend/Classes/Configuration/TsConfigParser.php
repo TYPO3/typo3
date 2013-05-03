@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Backend\Configuration;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * A TS-Config parsing class which performs condition evaluation
  *
@@ -35,7 +38,7 @@ namespace TYPO3\CMS\Backend\Configuration;
 class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser {
 
 	/**
-	 * @var 	array
+	 * @var array
 	 */
 	protected $rootLine = array();
 
@@ -53,7 +56,7 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser 
 		$this->id = $id;
 		$this->rootLine = $rootLine;
 		$hash = md5($type . ':' . $TStext);
-		$cachedContent = \TYPO3\CMS\Backend\Utility\BackendUtility::getHash($hash, 0);
+		$cachedContent = BackendUtility::getHash($hash);
 		if ($cachedContent) {
 			$storedData = unserialize($cachedContent);
 			$storedMD5 = substr($cachedContent, -strlen($hash));
@@ -67,7 +70,7 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser 
 				);
 			} else {
 				$shash = md5($checkMD5 . $hash);
-				$cachedSpec = \TYPO3\CMS\Backend\Utility\BackendUtility::getHash($shash, 0);
+				$cachedSpec = BackendUtility::getHash($shash);
 				if ($cachedSpec) {
 					$storedData = unserialize($cachedSpec);
 					$res = array(
@@ -77,7 +80,7 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser 
 				} else {
 					$storeData = $this->parseWithConditions($TStext);
 					$serData = serialize($storeData);
-					\TYPO3\CMS\Backend\Utility\BackendUtility::storeHash($shash, $serData, $type . '_TSconfig');
+					BackendUtility::storeHash($shash, $serData, $type . '_TSconfig');
 					$res = array(
 						'TSconfig' => $storeData['TSconfig'],
 						'cached' => 0
@@ -88,7 +91,7 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser 
 			$storeData = $this->parseWithConditions($TStext);
 			$serData = serialize($storeData);
 			$md5 = md5($serData);
-			\TYPO3\CMS\Backend\Utility\BackendUtility::storeHash($hash, $serData . $md5, $type . '_TSconfig');
+			BackendUtility::storeHash($hash, $serData . $md5, $type . '_TSconfig');
 			$res = array(
 				'TSconfig' => $storeData['TSconfig'],
 				'cached' => 0
