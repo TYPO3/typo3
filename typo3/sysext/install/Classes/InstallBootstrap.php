@@ -102,7 +102,7 @@ class InstallBootstrap {
 		$javascript = '<script type="text/javascript" src="' . '../contrib/prototype/prototype.js"></script>';
 		$javascript .= '<script type="text/javascript" src="' . '../sysext/install/Resources/Public/Javascript/install.js"></script>';
 		// Get the template file
-		$template = @file_get_contents((PATH_site . 'typo3/templates/install.html'));
+		$template = @file_get_contents(PATH_site . 'typo3/sysext/install/Resources/Private/Templates/Notice.html');
 		// Define the markers content
 		$markers = array(
 			'styleSheet' => $stylesheet,
