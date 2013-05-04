@@ -1549,16 +1549,22 @@ class ResourceStorage {
 	 */
 	public function fetchFolderListFromDriver($path, $start = 0, $numberOfItems = 0, array $folderFilterCallbacks = array(), $recursive = FALSE) {
 		$items = $this->driver->getFolderList($path, $start, $numberOfItems, $folderFilterCallbacks, $recursive);
-		// Exclude the _processed_ folder, so it won't get indexed etc
-		$processingFolder = $this->getProcessingFolder();
-		if ($processingFolder && $path == '/') {
-			$processedFolderIdentifier = $this->processingFolder->getIdentifier();
-			$processedFolderIdentifier = trim($processedFolderIdentifier, '/');
-			if (isset($items[$processedFolderIdentifier])) {
-				unset($items[$processedFolderIdentifier]);
+		if (!empty($items)) {
+			// Exclude the _processed_ folder, so it won't get indexed etc
+			// The processed folder might be any sub folder in storage
+			$processingFolder = $this->getProcessingFolder();
+			if ($processingFolder) {
+				$processedFolderIdentifier = $this->processingFolder->getIdentifier();
+				$processedFolderIdentifier = trim($processedFolderIdentifier, '/');
+				$processedFolderIdentifierParts = explode('/', $processedFolderIdentifier);
+				$processedFolderName = array_pop($processedFolderIdentifierParts);
+				$processedFolderParent = implode('/', $processedFolderIdentifierParts);
+				if ($processedFolderParent === trim($path, '/') && isset($items[$processedFolderName])) {
+					unset($items[$processedFolderName]);
+				}
 			}
+			uksort($items, 'strnatcasecmp');
 		}
-		uksort($items, 'strnatcasecmp');
 		return $items;
 	}
 
