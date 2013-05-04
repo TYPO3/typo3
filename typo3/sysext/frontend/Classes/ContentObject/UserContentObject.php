@@ -51,8 +51,16 @@ class UserContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 			// Come here only if we are not called from $TSFE->INTincScript_process()!
 			$this->cObj->setUserObjectType(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::OBJECTTYPE_USER);
 		}
-		$this->cObj->includeLibs($conf);
-		$tempContent = $this->cObj->callUserFunction($conf['userFunc'], $conf, '');
+		try {
+			$this->cObj->includeLibs($conf);
+			$tempContent = $this->cObj->callUserFunction($conf['userFunc'], $conf, '');
+		} catch (\Exception $e) {
+			$message = 'Exception: ' . $e->getMessage();
+			$message .= ' in ' . $e->getFile();
+			$message .= ' on line ' . $e->getLine() . '.';
+			$message .= ' Catched ';
+			trigger_error($message, E_USER_ERROR);
+		}
 		if ($this->cObj->doConvertToUserIntObject) {
 			$this->cObj->doConvertToUserIntObject = FALSE;
 			$content = $this->cObj->USER($conf, 'INT');
@@ -67,6 +75,5 @@ class UserContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 	}
 
 }
-
 
 ?>
