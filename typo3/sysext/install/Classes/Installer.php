@@ -1361,7 +1361,8 @@ REMOTE_ADDR was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' (' . Gener
 			'</div>' .
 			'<p></p>';
 
-		$html = '<h3>System environment check</h3>';
+		$title = '<h3>System environment check</h3>';
+		$html = '';
 		foreach ($orderedStatus as $severity) {
 			foreach ($severity as $status) {
 				/** @var $status \TYPO3\CMS\Install\SystemEnvironment\AbstractStatus */
@@ -1374,8 +1375,37 @@ REMOTE_ADDR was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' (' . Gener
 				);
 			}
 		}
+		$html = $title .
+					'<button class="right" id="toggle-environment" type="submit">Switch to other view<span class="t3-install-form-button-icon-toggleview">&nbsp;</span></button>
+					<div id="environment-advanced">'. $html . '</div>
+					<div id="environment-simple" style="display:none">' . $this->generatePlainTextCheck($orderedStatus) . '</div>';
 
 		$this->output($this->outputWrapper($html));
+	}
+
+	/**
+	 * Get a plain text view
+	 *
+	 * @param array $orderedStatus
+	 * @return string
+	 */
+	protected function generatePlainTextCheck(array $orderedStatus) {
+		$length = 70;
+		$content = '';
+		foreach ($orderedStatus as $severityIdentifier=>$severity) {
+			if (GeneralUtility::inList('info,notice,warning,error', $severityIdentifier)) {
+				$missingLength = $length - strlen($severityIdentifier) - 7;
+				$content .= '===== ' . strtoupper($severityIdentifier) . ' ' . str_repeat('=', $missingLength) . LF;
+				foreach ($severity as $status) {
+					/** @var $status \TYPO3\CMS\Install\SystemEnvironment\AbstractStatus */
+					$content .= $status->getTitle() . LF . wordwrap($status->getMessage(), $length, LF) . LF . str_repeat('-', $length) . LF;
+				}
+				$content .= LF;
+			}
+		}
+
+		$content = '<textarea cols="40" rows="50">' . htmlspecialchars(trim($content)) . '</textarea>';
+		return $content;
 	}
 
 	/**

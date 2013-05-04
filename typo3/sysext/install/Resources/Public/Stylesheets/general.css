@@ -194,6 +194,10 @@ button span.t3-install-form-button-icon-positive {
 	background-image: url('../../../../../gfx/ok.png');
 }
 
+button span.t3-install-form-button-icon-toggleview {
+	background-image: url('../Images/clipboard.png');
+}
+
 .t3-install-hidden {
 	display: none;
 }
