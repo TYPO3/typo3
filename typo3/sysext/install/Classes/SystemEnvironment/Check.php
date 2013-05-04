@@ -224,7 +224,7 @@ class Check {
 				', post_max_size=' . ini_get('post_max_size') .
 				' You have defined a maximum size for file uploads which' .
 				' exceeds the allowed size for POST requests. Therefore the' .
-				' file uploads can not be larger than ' . ini_get('post_max_size')
+				' file uploads can not be larger than ' . ini_get('post_max_size') . '.'
 			);
 		} else {
 			$status = new OkStatus();
@@ -584,7 +584,7 @@ class Check {
 			$status->setTitle('Suhosin not loaded');
 			$status->setMessage(
 				'If enabling suhosin, suhosin.request.max_vars' .
-				' should be set to at least ' . $recommendedRequestMaxVars
+				' should be set to at least ' . $recommendedRequestMaxVars . '.'
 			);
 		}
 		return $status;
@@ -606,7 +606,7 @@ class Check {
 					'suhosin.post.max_vars=' . $currentPostMaxVars . '. This setting' .
 					' can lead to lost information if submitting big forms in TYPO3 CMS like' .
 					' it is done in the install tool. It is heavily recommended to raise this' .
-					' to at least ' . $recommendedPostMaxVars
+					' to at least ' . $recommendedPostMaxVars. '.'
 				);
 			} else {
 				$status = new OkStatus();
@@ -617,7 +617,7 @@ class Check {
 			$status->setTitle('Suhosin not loaded');
 			$status->setMessage(
 				'If enabling suhosin, suhosin.post.max_vars' .
-				' should be set to at least ' . $recommendedPostMaxVars
+				' should be set to at least ' . $recommendedPostMaxVars . '.'
 			);
 		}
 		return $status;
@@ -639,7 +639,7 @@ class Check {
 					'suhosin.get.max_value_length=' . $currentGetMaxValueLength . '. This setting' .
 					' can lead to lost information if submitting big forms in TYPO3 CMS like' .
 					' it is done in the install tool. It is heavily recommended to raise this' .
-					' to at least ' . $recommendedGetMaxValueLength
+					' to at least ' . $recommendedGetMaxValueLength . '.'
 				);
 			} else {
 				$status = new OkStatus();
@@ -670,7 +670,7 @@ class Check {
 				$status->setMessage(
 					'suhosin.executor.include.whitelist= ' . implode(' ', $currentWhiteListArray) . '. phar' .
 					' is currently not a hard requirement of TYPO3 CMS but is nice to have and a possible requirement' .
-					' in future versions. A useful setting is "suhosin.executor.include.whitelist = phar vfs"'
+					' in future versions. A useful setting is "suhosin.executor.include.whitelist = phar vfs".'
 				);
 			} else {
 				$status = new OkStatus();
@@ -680,7 +680,7 @@ class Check {
 			$status = new InfoStatus();
 			$status->setTitle('Suhosin not loaded');
 			$status->setMessage(
-				'If enabling suhosin, a useful setting is "suhosin.executor.include.whitelist = phar vfs"'
+				'If enabling suhosin, a useful setting is "suhosin.executor.include.whitelist = phar vfs".'
 			);
 		}
 		return $status;
@@ -701,7 +701,7 @@ class Check {
 					'suhosin.executor.include.whitelist= ' . implode(' ', $currentWhiteListArray) . '. vfs' .
 					' is currently not a hard requirement of TYPO3 CMS but tons of unit tests rely on it.' .
 					' Furthermore, vfs is likely a base for an additional compatibilyt layer in the future.' .
-					' A useful setting is "suhosin.executor.include.whitelist = phar vfs"'
+					' A useful setting is "suhosin.executor.include.whitelist = phar vfs".'
 				);
 			} else {
 				$status = new OkStatus();
@@ -711,7 +711,7 @@ class Check {
 			$status = new InfoStatus();
 			$status->setTitle('Suhosin not loaded');
 			$status->setMessage(
-				'If enabling suhosin, a useful setting is "suhosin.executor.include.whitelist = phar vfs"'
+				'If enabling suhosin, a useful setting is "suhosin.executor.include.whitelist = phar vfs".'
 			);
 		}
 		return $status;
@@ -899,7 +899,7 @@ class Check {
 					'sendmail_path = ' . ini_get('sendmail_path') . '.' .
 					' This setting is crucial for TYPO3\'s use of the mail() function. The' .
 					' current value looks fine. The mail system can be tested in the' .
-					' install tool if the installation is completed'
+					' install tool if the installation is completed.'
 				);
 			}
 		}
@@ -923,7 +923,7 @@ class Check {
 				$status->setTitle('PHP GD library true color support broken');
 				$status->setMessage(
 					'GD is loaded, but calling a imagecreatetruecolor returned an error.' .
-					' This must be fixed, TYPO3 CMS won\'t work well otherwise'
+					' This must be fixed, TYPO3 CMS won\'t work well otherwise.'
 				);
 			}
 		} else {
@@ -957,7 +957,7 @@ class Check {
 				$status->setTitle('PHP GD library gif support broken');
 				$status->setMessage(
 					'GD is loaded, but calling a gif related message gives errors.' .
-					' This must be fixed, TYPO3 CMS won\'t work well otherwise'
+					' This must be fixed, TYPO3 CMS won\'t work well otherwise.'
 				);
 			}
 		} else {
@@ -1043,7 +1043,7 @@ class Check {
 			$status->setMessage(
 				'There is a difference between the font size setting the GD' .
 				' library should be feeded with. If installation is completed' .
-				' a test in the install tool helps to find out the value you need'
+				' a test in the install tool helps to find out the value you need.'
 			);
 		} else {
 			$status = new ErrorStatus();
