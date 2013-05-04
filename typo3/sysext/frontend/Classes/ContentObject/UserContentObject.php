@@ -51,8 +51,24 @@ class UserContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 			// Come here only if we are not called from $TSFE->INTincScript_process()!
 			$this->cObj->setUserObjectType(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::OBJECTTYPE_USER);
 		}
-		$this->cObj->includeLibs($conf);
-		$tempContent = $this->cObj->callUserFunction($conf['userFunc'], $conf, '');
+		try {
+			$this->cObj->includeLibs($conf);
+			$tempContent = $this->cObj->callUserFunction($conf['userFunc'], $conf, '');
+		} catch (\Exception $e) {
+			// Write error message to TSlog (admin panel)
+			$GLOBALS['TT']->setTSlogMessage('userFunc with exception: ' . $e->getMessage(), 3);
+			$tempContent = '<div class="typo3-exception typo3-user-exception">';
+			$tempContent .= '<strong>Exception: ' . htmlspecialchars($e->getMessage()) . '</strong>';
+			$tempContent .= '<br />';
+			$tempContent .= '<em>Code: </em>' . htmlspecialchars($e->getCode());
+			$tempContent .= '<br />';
+			$tempContent .= '<em>File: </em>' . htmlspecialchars($e->getFile());
+			$tempContent .= '<br />';
+			$tempContent .= '<em>Line: </em>' . htmlspecialchars($e->getLine());
+			$tempContent .= '<br />';
+			$tempContent .= '<em>userFunc: </em>' . htmlspecialchars($conf['userFunc']);
+			$tempContent .= '</div>';
+		}
 		if ($this->cObj->doConvertToUserIntObject) {
 			$this->cObj->doConvertToUserIntObject = FALSE;
 			$content = $this->cObj->USER($conf, 'INT');
