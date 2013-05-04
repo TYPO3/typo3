@@ -372,7 +372,7 @@ class Installer {
 			$this->outputErrorAndExit('Install Tool needs to write to typo3temp/. Make sure this directory is writeable by your webserver: ' . htmlspecialchars($this->typo3temp_path), 'Fatal error');
 		}
 		try {
-			$this->session = GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Session');
+			$this->session = GeneralUtility::makeInstance('tx_install_session');
 		} catch (\Exception $exception) {
 			$this->outputErrorAndExit($exception->getMessage());
 		}
@@ -4289,7 +4289,7 @@ REMOTE_ADDR was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' (' . Gener
 				$this->includeTCA();
 				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['checkTheDatabase'])) {
 					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['checkTheDatabase'] as $classData) {
-						/** @var $hookObject \TYPO3\CMS\Install\CheckTheDatabaseHookInterface */
+						/** @var $hookObject Tx_Install_Interfaces_CheckTheDatabaseHook * */
 						$hookObject = GeneralUtility::getUserObj($classData);
 						if (!$hookObject instanceof \TYPO3\CMS\Install\CheckTheDatabaseHookInterface) {
 							throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Install\\CheckTheDatabaseHookInterface', 1315554770);
@@ -4304,7 +4304,7 @@ REMOTE_ADDR was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' (' . Gener
 							$extensionSqlContent = GeneralUtility::getUrl($loadedExtConf['ext_tables.sql']);
 							$tblFileContent .= LF . LF . LF . LF . $extensionSqlContent;
 							foreach ($hookObjects as $hookObject) {
-								/** @var $hookObject \TYPO3\CMS\Install\CheckTheDatabaseHookInterface */
+								/** @var $hookObject Tx_Install_Interfaces_CheckTheDatabaseHook * */
 								$appendableTableDefinitions = $hookObject->appendExtensionTableDefinitions($extKey, $loadedExtConf, $extensionSqlContent, $this->sqlHandler, $this);
 								if ($appendableTableDefinitions) {
 									$tblFileContent .= $appendableTableDefinitions;
@@ -4317,7 +4317,7 @@ REMOTE_ADDR was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' (' . Gener
 					$tblFileContent = GeneralUtility::getUrl($actionParts[1]);
 				}
 				foreach ($hookObjects as $hookObject) {
-					/** @var $hookObject \TYPO3\CMS\Install\CheckTheDatabaseHookInterface */
+					/** @var $hookObject Tx_Install_Interfaces_CheckTheDatabaseHook * */
 					$appendableTableDefinitions = $hookObject->appendGlobalTableDefinitions($tblFileContent, $this->sqlHandler, $this);
 					if ($appendableTableDefinitions) {
 						$tblFileContent .= $appendableTableDefinitions;
