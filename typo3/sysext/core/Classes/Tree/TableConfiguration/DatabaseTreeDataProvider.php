@@ -58,7 +58,7 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\A
 	/**
 	 * @var integer
 	 */
-	protected $lookupMode = \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::MODE_CHILDREN;
+	protected $lookupMode = self::MODE_CHILDREN;
 
 	/**
 	 * @var string
