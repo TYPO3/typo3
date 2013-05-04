@@ -26,6 +26,8 @@ namespace TYPO3\CMS\Backend\Form;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 /**
  * Class ElementConditionMatcher implements the TCA 'displayCond' option.
  * The display condition is a colon separated string which describes
@@ -169,9 +171,9 @@ class ElementConditionMatcher {
 		list($extensionKey, $operator, $operand) = explode(':', $condition, 3);
 		if ($operator === 'LOADED') {
 			if (strtoupper($operand) === 'TRUE') {
-				$result = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey);
+				$result = ExtensionManagementUtility::isLoaded($extensionKey);
 			} elseif (strtoupper($operand) === 'FALSE') {
-				$result = !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey);
+				$result = !ExtensionManagementUtility::isLoaded($extensionKey);
 			}
 		}
 		return $result;

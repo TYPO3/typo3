@@ -26,13 +26,12 @@ namespace TYPO3\CMS\Backend\View;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Generates a thumbnail and returns an image stream, either GIF/PNG or JPG
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj	<kasperYYYY@typo3.com>
- */
+
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * Class for generating a thumbnail from the input parameters given to the script
  *
@@ -110,20 +109,20 @@ class ThumbnailView {
 	public function init() {
 		// Setting GPvars:
 		// Only needed for MD5 sum calculation of backwards-compatibility uploads/ files thumbnails.
-		$size = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('size');
-		$filePathOrCombinedFileIdentifier = rawurldecode(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('file'));
-		$md5sum = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('md5sum');
+		$size = GeneralUtility::_GP('size');
+		$filePathOrCombinedFileIdentifier = rawurldecode(GeneralUtility::_GP('file'));
+		$md5sum = GeneralUtility::_GP('md5sum');
 		// Image extension list is set:
 		// valid extensions. OBS: No spaces in the list, all lowercase...
 		$this->imageList = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
 		// Check if we got a combined file identifier of the form storageUid:fileIdentifer.
 		// We need to distinguish it from absolute Windows paths by cbecking for an integer as first part.
-		$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $filePathOrCombinedFileIdentifier);
+		$parts = GeneralUtility::trimExplode(':', $filePathOrCombinedFileIdentifier);
 		// Best case: we get a sys_file UID
-		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($filePathOrCombinedFileIdentifier)) {
-			/** @var \TYPO3\CMS\Core\Resource\File $filePathOrCombinedFileIdentifier */
-			$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($filePathOrCombinedFileIdentifier);
-		} elseif (count($parts) <= 1 || !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($parts[0])) {
+		if (MathUtility::canBeInterpretedAsInteger($filePathOrCombinedFileIdentifier)) {
+			/** @var File $filePathOrCombinedFileIdentifier */
+			$fileObject = ResourceFactory::getInstance()->getFileObject($filePathOrCombinedFileIdentifier);
+		} elseif (count($parts) <= 1 || !MathUtility::canBeInterpretedAsInteger($parts[0])) {
 			// TODO: Historically, the input parameter could also be an absolute path. This should be supported again to stay compatible.
 			// We assume the FilePath to be a relative file path (as in backwards compatibility mode)
 			$relativeFilePath = $filePathOrCombinedFileIdentifier;
@@ -136,7 +135,7 @@ class ThumbnailView {
 			$relativeFilePath = ltrim($relativeFilePath, '/');
 			$mTime = 0;
 			// Checking for backpath and double slashes + the thumbnail can be made from files which are in the PATH_site OR the lockRootPath only!
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath(PATH_site . $relativeFilePath)) {
+			if (GeneralUtility::isAllowedAbsPath(PATH_site . $relativeFilePath)) {
 				$mTime = filemtime(PATH_site . $relativeFilePath);
 			}
 			if (strstr($relativeFilePath, '../') !== FALSE) {
@@ -149,7 +148,7 @@ class ThumbnailView {
 				if (preg_match('/(.*)\\.([^\\.]*$)/', $relativeFilePath, $reg)) {
 					$ext = strtolower($reg[2]);
 					$ext = $ext == 'jpeg' ? 'jpg' : $ext;
-					if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->imageList, $ext)) {
+					if (!GeneralUtility::inList($this->imageList, $ext)) {
 						$this->errorGif('Not imagefile!', $ext, basename($relativeFilePath));
 					}
 				} else {
@@ -163,7 +162,7 @@ class ThumbnailView {
 			if ($mTime) {
 				// Always use the absolute path for this check!
 				$check = basename($relativeFilePath) . ':' . $mTime . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-				$md5_real = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($check);
+				$md5_real = GeneralUtility::shortMD5($check);
 				if (!strcmp($md5_real, $md5sum)) {
 					$OK = TRUE;
 				}
@@ -174,7 +173,7 @@ class ThumbnailView {
 			$OK = FALSE;
 		}
 		if (empty($fileObject)) {
-			$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier($combinedIdentifier);
+			$fileObject = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier($combinedIdentifier);
 		}
 		if (empty($OK)) {
 			$OK = $fileObject !== NULL && $fileObject->checkActionPermission('read') && $fileObject->calculateChecksum() == $md5sum;
@@ -204,7 +203,7 @@ class ThumbnailView {
 			if ($this->image->getExtension() == 'ttf') {
 				// Make font preview... (will not return)
 				$this->fontGif($this->image);
-			} elseif ($this->image->getType() != \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE && !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $this->image->getExtension())) {
+			} elseif ($this->image->getType() != File::FILETYPE_IMAGE && !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $this->image->getExtension())) {
 				$this->errorGif('Not imagefile!', 'No ext!', $this->image->getName());
 			}
 			// ... so we passed the extension test meaning that we are going to make a thumbnail here:
@@ -218,7 +217,7 @@ class ThumbnailView {
 			// explodes the input size (and if no "x" is found this will add size again so it is the same for both dimensions)
 			$sizeParts = explode('x', $this->size . 'x' . $this->size);
 			// Cleaning it up, only two parameters now.
-			$sizeParts = array(\TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($sizeParts[0], 1, 1000), \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($sizeParts[1], 1, 1000));
+			$sizeParts = array(MathUtility::forceIntegerInRange($sizeParts[0], 1, 1000), MathUtility::forceIntegerInRange($sizeParts[1], 1, 1000));
 			// Imploding the cleaned size-value back to the internal variable
 			$this->size = implode('x', $sizeParts);
 			// Getting max value
@@ -227,7 +226,7 @@ class ThumbnailView {
 			$outpath = PATH_site . $this->outdir;
 			// Should be - ? 'png' : 'gif' - , but doesn't work (ImageMagick prob.?)
 			// René: png work for me
-			$thmMode = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails_png'], 0);
+			$thmMode = MathUtility::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails_png'], 0);
 			$outext = $this->image->getExtension() != 'jpg' || $thmMode & 2 ? ($thmMode & 1 ? 'png' : 'gif') : 'jpg';
 			$outfile = 'tmb_' . substr(md5(($this->image->getName() . $this->mtime . $this->size)), 0, 10) . '.' . $outext;
 			$this->output = $outpath . $outfile;
@@ -235,12 +234,12 @@ class ThumbnailView {
 				// If thumbnail does not exist, we generate it
 				if (!file_exists($this->output)) {
 					$parameters = '-sample ' . $this->size . ' ' . $this->wrapFileName($this->image->getForLocalProcessing(FALSE)) . '[0] ' . $this->wrapFileName($this->output);
-					$cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::imageMagickCommand('convert', $parameters);
+					$cmd = GeneralUtility::imageMagickCommand('convert', $parameters);
 					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
 					if (!file_exists($this->output)) {
 						$this->errorGif('No thumb', 'generated!', $this->image->getName());
 					} else {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($this->output);
+						GeneralUtility::fixPermissions($this->output);
 					}
 				}
 				// The thumbnail is read and output to the browser
@@ -348,11 +347,11 @@ class ThumbnailView {
 		imagestring($im, 1, 0, 47, '18', $col);
 		imagestring($im, 1, 0, 68, '24', $col);
 		// Print with ttf-font the test string
-		imagettftext($im, \TYPO3\CMS\Core\Utility\GeneralUtility::freetypeDpiComp(10), 0, $x, 8, $col, $font, $string);
-		imagettftext($im, \TYPO3\CMS\Core\Utility\GeneralUtility::freetypeDpiComp(12), 0, $x, 21, $col, $font, $string);
-		imagettftext($im, \TYPO3\CMS\Core\Utility\GeneralUtility::freetypeDpiComp(14), 0, $x, 36, $col, $font, $string);
-		imagettftext($im, \TYPO3\CMS\Core\Utility\GeneralUtility::freetypeDpiComp(18), 0, $x, 53, $col, $font, $string);
-		imagettftext($im, \TYPO3\CMS\Core\Utility\GeneralUtility::freetypeDpiComp(24), 0, $x, 74, $col, $font, $string);
+		imagettftext($im, GeneralUtility::freetypeDpiComp(10), 0, $x, 8, $col, $font, $string);
+		imagettftext($im, GeneralUtility::freetypeDpiComp(12), 0, $x, 21, $col, $font, $string);
+		imagettftext($im, GeneralUtility::freetypeDpiComp(14), 0, $x, 36, $col, $font, $string);
+		imagettftext($im, GeneralUtility::freetypeDpiComp(18), 0, $x, 53, $col, $font, $string);
+		imagettftext($im, GeneralUtility::freetypeDpiComp(24), 0, $x, 74, $col, $font, $string);
 		// Output PNG or GIF based on $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']
 		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) {
 			header('Content-type: image/png');

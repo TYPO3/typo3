@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Backend\Controller\File;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Script Class for the create-new script; Displays a form for creating up to 10 folders or one new text file
  *
@@ -95,9 +98,9 @@ class CreateFolderController {
 	 */
 	public function init() {
 		// Initialize GPvars:
-		$this->number = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('number');
-		$this->target = ($combinedIdentifier = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('target'));
-		$this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
+		$this->number = GeneralUtility::_GP('number');
+		$this->target = ($combinedIdentifier = GeneralUtility::_GP('target'));
+		$this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
 		// create the folder object
 		if ($combinedIdentifier) {
 			$this->folderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
@@ -112,7 +115,7 @@ class CreateFolderController {
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-filetree-root');
 		$this->title = $icon . htmlspecialchars($this->folderObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->folderObject->getIdentifier());
 		// Setting template object
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/file_newfolder.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->JScode = $this->doc->wrapScriptTags('
@@ -182,7 +185,7 @@ class CreateFolderController {
 			</div>
 			';
 		// CSH:
-		$code .= \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder', $GLOBALS['BACK_PATH'], '<br />');
+		$code .= BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder', $GLOBALS['BACK_PATH'], '<br />');
 		$pageContent .= $code;
 		// Add spacer:
 		$pageContent .= $this->doc->spacer(10);
@@ -191,7 +194,7 @@ class CreateFolderController {
 		$pageContent .= '</form><form action="tce_file.php" method="post" name="editform2">';
 		// Create a list of allowed file extensions with the nice format "*.jpg, *.gif" etc.
 		$fileExtList = array();
-		$textfileExt = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], TRUE);
+		$textfileExt = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], TRUE);
 		foreach ($textfileExt as $fileExt) {
 			if (!preg_match(('/' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] . '/i'), ('.' . $fileExt))) {
 				$fileExtList[] = '*.' . $fileExt;
@@ -214,7 +217,7 @@ class CreateFolderController {
 			</div>
 			';
 		// CSH:
-		$code .= \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile', $GLOBALS['BACK_PATH'], '<br />');
+		$code .= BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile', $GLOBALS['BACK_PATH'], '<br />');
 		$pageContent .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile'), $code);
 		$pageContent .= $this->doc->sectionEnd();
 		$pageContent .= '</form>';
@@ -222,7 +225,7 @@ class CreateFolderController {
 		// Add the HTML as a section:
 		$markerArray = array(
 			'CSH' => $docHeaderButtons['csh'],
-			'FUNC_MENU' => \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
+			'FUNC_MENU' => BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
 			'CONTENT' => $pageContent,
 			'PATH' => $this->title
 		);
@@ -242,6 +245,5 @@ class CreateFolderController {
 	}
 
 }
-
 
 ?>

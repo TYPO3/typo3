@@ -26,6 +26,10 @@ namespace TYPO3\CMS\Backend\View\PageLayout\ExtDirect;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * Commands for the Page module
  *
@@ -48,20 +52,20 @@ class ExtdirectPageCommands {
 		$afterElementUid = -1;
 		$targetColumn = 0;
 		$targetPage = 0;
-		list($_, $table, $uid) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('-', $sourceElement);
-		if ($table === 'tt_content' && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($uid)) {
+		list($_, $table, $uid) = GeneralUtility::trimExplode('-', $sourceElement);
+		if ($table === 'tt_content' && MathUtility::canBeInterpretedAsInteger($uid)) {
 			$moveElementUid = intval($uid);
 		}
-		list($_, $table, $uid) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('-', $destinationElement);
-		if ($table === 'tt_content' && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($uid)) {
+		list($_, $table, $uid) = GeneralUtility::trimExplode('-', $destinationElement);
+		if ($table === 'tt_content' && MathUtility::canBeInterpretedAsInteger($uid)) {
 			$afterElementUid = intval($uid);
 		} else {
 			// it's dropped in an empty column
 			$afterElementUid = -1;
 		}
-		list($prefix, $column, $prefix2, $page, $_) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('-', $destinationColumn);
-		if ($prefix === 'colpos' && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($column) &&
-				$prefix2 === 'page' && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($page)
+		list($prefix, $column, $prefix2, $page, $_) = GeneralUtility::trimExplode('-', $destinationColumn);
+		if ($prefix === 'colpos' && MathUtility::canBeInterpretedAsInteger($column) &&
+				$prefix2 === 'page' && MathUtility::canBeInterpretedAsInteger($page)
 		) {
 			$targetColumn = intval($column);
 			$targetPage = intval($page);
@@ -75,7 +79,7 @@ class ExtdirectPageCommands {
 
 		$action['data']['tt_content'][$moveElementUid]['colPos'] = $targetColumn;
 
-		\TYPO3\CMS\Core\Utility\GeneralUtility::devLog(
+		GeneralUtility::devLog(
 			'Dragdrop',
 			'core',
 			-1,
@@ -87,7 +91,7 @@ class ExtdirectPageCommands {
 			)
 		);
 		/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		$tce->start($action['data'], $action['cmd']);
 		$tce->process_datamap();

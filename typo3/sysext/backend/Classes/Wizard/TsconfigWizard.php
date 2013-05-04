@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Backend\Wizard;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Script Class for rendering the TSconfig/TypoScript property browser.
  *
@@ -90,11 +93,11 @@ class TsconfigWizard {
 		// Check if the tsconfig_help extension is loaded - which is mandatory for this wizard to work.
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tsconfig_help', 1);
 		// Init GPvars:
-		$this->P = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('P');
-		$this->mode = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('mode');
-		$this->show = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('show');
-		$this->objString = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('objString');
-		$this->onlyProperty = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('onlyProperty');
+		$this->P = GeneralUtility::_GP('P');
+		$this->mode = GeneralUtility::_GP('mode');
+		$this->show = GeneralUtility::_GP('show');
+		$this->objString = GeneralUtility::_GP('objString');
+		$this->onlyProperty = GeneralUtility::_GP('onlyProperty');
 		// Preparing some JavaScript code:
 		if (!$this->areFieldChangeFunctionsValid()) {
 			$this->P['fieldChangeFunc'] = array();
@@ -106,7 +109,7 @@ class TsconfigWizard {
 			window.opener.' . $v;
 		}
 		// Init the document table object:
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->form = '<form action="" name="editform">';
 		// Adding Styles (should go into stylesheet?)
@@ -217,7 +220,7 @@ class TsconfigWizard {
 	 * @return	[type]		...
 	 */
 			function jump(show, objString) {
-				window.location.href = "' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('show' => '', 'objString' => '')) . '&show="+show+"&objString="+objString;
+				window.location.href = "' . GeneralUtility::linkThisScript(array('show' => '', 'objString' => '')) . '&show="+show+"&objString="+objString;
 			}
 		');
 		// Start the page:
@@ -280,7 +283,7 @@ class TsconfigWizard {
 			// Title:
 			$obj_string = strtr($this->objString, '()', '[]');
 			// Title and description:
-			$out .= '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('show' => ''))) . '" class="typo3-goBack">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . htmlspecialchars($obj_string) . '</a><br />';
+			$out .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('show' => ''))) . '" class="typo3-goBack">' . IconUtility::getSpriteIcon('actions-view-go-back') . htmlspecialchars($obj_string) . '</a><br />';
 			if ($rec['title']) {
 				$out .= '<strong>' . htmlspecialchars($rec['title']) . ': </strong>';
 			}
@@ -303,7 +306,7 @@ class TsconfigWizard {
 			}
 		}
 		// SECTION: Showing property tree:
-		$tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('ext_TSparser');
+		$tmpl = GeneralUtility::makeInstance('ext_TSparser');
 		// Do not log time-performance information
 		$tmpl->tt_track = 0;
 		$tmpl->fixedLgd = 0;
@@ -348,8 +351,8 @@ class TsconfigWizard {
 			$rec['obj_string'] = $this->revertFromSpecialChars($rec['obj_string']);
 			$p = explode(';', $rec['obj_string']);
 			foreach ($p as $v) {
-				$p2 = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $v, 1);
-				$subp = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', $p2[1], 1);
+				$p2 = GeneralUtility::trimExplode(':', $v, 1);
+				$subp = GeneralUtility::trimExplode('/', $p2[1], 1);
 				foreach ($subp as $v2) {
 					$this->setObj($objTree, explode('.', $p2[0] . '.' . $v2), array($rec, $v2));
 				}
@@ -469,7 +472,7 @@ class TsconfigWizard {
 			// Traverse the content of "rows":
 			foreach ($table['rows'] as $i => $row) {
 				// Linking:
-				$lP = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $row['property'], 1);
+				$lP = GeneralUtility::trimExplode(LF, $row['property'], 1);
 				$lP2 = array();
 				foreach ($lP as $k => $lStr) {
 					$lP2[$k] = $this->linkProperty($lStr, $lStr, $objString, $row['datatype']);
@@ -481,12 +484,12 @@ class TsconfigWizard {
 				$reg = array();
 				preg_match('/->[[:alnum:]_]*/', $dataType, $reg);
 				if ($reg[0] && is_array($objTree[$reg[0]])) {
-					$dataType = str_replace($reg[0], '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('show' => $objTree[$reg[0]][0]['uid'], 'objString' => ($objString . '.' . $lP[0])))) . '">' . htmlspecialchars($reg[0]) . '</a>', $dataType);
+					$dataType = str_replace($reg[0], '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('show' => $objTree[$reg[0]][0]['uid'], 'objString' => ($objString . '.' . $lP[0])))) . '">' . htmlspecialchars($reg[0]) . '</a>', $dataType);
 				}
 				// stdWrap
 				if (!strstr($dataType, '->stdWrap') && strstr(strip_tags($dataType), 'stdWrap')) {
 					// Potential problem can be that "stdWrap" is substituted inside another A-tag. So maybe we should even check if there is already a <A>-tag present and if so, not make a substitution?
-					$dataType = str_replace('stdWrap', '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('show' => $objTree['->stdWrap'][0]['uid'], 'objString' => ($objString . '.' . $lP[0])))) . '">stdWrap</a>', $dataType);
+					$dataType = str_replace('stdWrap', '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('show' => $objTree['->stdWrap'][0]['uid'], 'objString' => ($objString . '.' . $lP[0])))) . '">stdWrap</a>', $dataType);
 				}
 				$lines[] = '
 					<tr class="t3-row ' . ($i % 2 ? 't3-row-even' : 't3-row-odd') . '">
@@ -530,7 +533,7 @@ class TsconfigWizard {
 		// Adding mixer features; The plus icon:
 		if (!$this->onlyProperty) {
 			$aOnClick = 'document.editform.mixer.value=unescape(\'  ' . rawurlencode(($propertyName . '=' . $propertyVal)) . '\')+\'\\n\'+document.editform.mixer.value; return false;';
-			$out .= '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-add', array('title' => $GLOBALS['LANG']->getLL('tsprop_addToList', TRUE))) . '</a>';
+			$out .= '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . IconUtility::getSpriteIcon('actions-edit-add', array('title' => $GLOBALS['LANG']->getLL('tsprop_addToList', TRUE))) . '</a>';
 			$propertyName = $prefix . '.' . $propertyName;
 		}
 		// Wrap string:
@@ -547,7 +550,7 @@ class TsconfigWizard {
 	 * @return boolean Whether the submitted field change functions are valid
 	 */
 	protected function areFieldChangeFunctionsValid() {
-		return isset($this->P['fieldChangeFunc']) && is_array($this->P['fieldChangeFunc']) && isset($this->P['fieldChangeFuncHash']) && $this->P['fieldChangeFuncHash'] === \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(serialize($this->P['fieldChangeFunc']));
+		return isset($this->P['fieldChangeFunc']) && is_array($this->P['fieldChangeFunc']) && isset($this->P['fieldChangeFuncHash']) && $this->P['fieldChangeFuncHash'] === GeneralUtility::hmac(serialize($this->P['fieldChangeFunc']));
 	}
 
 }

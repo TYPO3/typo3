@@ -27,13 +27,15 @@ namespace TYPO3\CMS\Backend\Module;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This document provides a class that loads the modules for the TYPO3 interface.
  *
  * Load Backend Interface modules
  *
  * Typically instantiated like this:
- * $this->loadModules = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Module\ModuleLoader');
+ * $this->loadModules = GeneralUtility::makeInstance('TYPO3\CMS\Backend\Module\ModuleLoader');
  * $this->loadModules->load($TBE_MODULES);
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
@@ -266,7 +268,7 @@ class ModuleLoader {
 						// Initializing search for alternative icon:
 						// Alternative icon key (might have an alternative set in $TBE_STYLES['skinImg']
 						$altIconKey = 'MOD:' . $name . '/' . $MLANG['default']['tabs_images']['tab'];
-						$altIconAbsPath = is_array($GLOBALS['TBE_STYLES']['skinImg'][$altIconKey]) ? \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath(PATH_typo3 . $GLOBALS['TBE_STYLES']['skinImg'][$altIconKey][0]) : '';
+						$altIconAbsPath = is_array($GLOBALS['TBE_STYLES']['skinImg'][$altIconKey]) ? GeneralUtility::resolveBackPath(PATH_typo3 . $GLOBALS['TBE_STYLES']['skinImg'][$altIconKey][0]) : '';
 						// Setting icon, either default or alternative:
 						if ($altIconAbsPath && @is_file($altIconAbsPath)) {
 							$MLANG['default']['tabs_images']['tab'] = $this->getRelativePath(PATH_typo3, $altIconAbsPath);
@@ -385,7 +387,7 @@ class ModuleLoader {
 			$status = TRUE;
 			if ($MCONF['workspaces']) {
 				$status = FALSE;
-				if ($this->BE_USER->workspace === 0 && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($MCONF['workspaces'], 'online') || $this->BE_USER->workspace === -1 && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($MCONF['workspaces'], 'offline') || $this->BE_USER->workspace > 0 && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($MCONF['workspaces'], 'custom')) {
+				if ($this->BE_USER->workspace === 0 && GeneralUtility::inList($MCONF['workspaces'], 'online') || $this->BE_USER->workspace === -1 && GeneralUtility::inList($MCONF['workspaces'], 'offline') || $this->BE_USER->workspace > 0 && GeneralUtility::inList($MCONF['workspaces'], 'custom')) {
 					$status = TRUE;
 				}
 			} elseif ($this->BE_USER->workspace === -99) {
@@ -413,7 +415,7 @@ class ModuleLoader {
 				$mod = $this->cleanName($mod);
 				if ($mod) {
 					if ($subs) {
-						$subsArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $subs);
+						$subsArr = GeneralUtility::trimExplode(',', $subs);
 						foreach ($subsArr as $subMod) {
 							$subMod = $this->cleanName($subMod);
 							if ($subMod) {
@@ -471,7 +473,7 @@ class ModuleLoader {
 		for ($i = 0; $i < $slashes; $i++) {
 			$destDir = '../' . $destDir;
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($destDir);
+		return GeneralUtility::resolveBackPath($destDir);
 	}
 
 }

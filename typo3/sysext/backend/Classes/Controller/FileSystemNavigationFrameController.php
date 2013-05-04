@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Backend\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Main script class for rendering of the folder tree
  *
@@ -81,11 +84,11 @@ class FileSystemNavigationFrameController {
 		// Setting backPath
 		$this->backPath = $GLOBALS['BACK_PATH'];
 		// Setting GPvars:
-		$this->currentSubScript = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('currentSubScript');
-		$this->cMR = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cMR');
+		$this->currentSubScript = GeneralUtility::_GP('currentSubScript');
+		$this->cMR = GeneralUtility::_GP('cMR');
 		// Create folder tree object:
 		/** @var $foldertree \TYPO3\CMS\Filelist\FileListFolderTree */
-		$this->foldertree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Filelist\\FileListFolderTree');
+		$this->foldertree = GeneralUtility::makeInstance('TYPO3\\CMS\\Filelist\\FileListFolderTree');
 		$this->foldertree->ext_IconMode = $GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.disableIconLinkToContextmenu');
 		$this->foldertree->thisScript = 'alt_file_navframe.php';
 	}
@@ -100,7 +103,7 @@ class FileSystemNavigationFrameController {
 		// Setting highlight mode:
 		$this->doHighlight = !$GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.disableTitleHighlight');
 		// Create template object:
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/alt_file_navframe.html');
 		$this->doc->showFlashMessages = FALSE;
@@ -149,7 +152,7 @@ class FileSystemNavigationFrameController {
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		$markers = array(
-			'IMG_RESET' => '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/close_gray.gif', ' width="16" height="16"') . ' id="treeFilterReset" alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.resetFilter') . '" ' . 'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.resetFilter') . '" />',
+			'IMG_RESET' => '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/close_gray.gif', ' width="16" height="16"') . ' id="treeFilterReset" alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.resetFilter') . '" ' . 'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.resetFilter') . '" />',
 			'CONTENT' => $this->content
 		);
 		$subparts = array();
@@ -183,7 +186,7 @@ class FileSystemNavigationFrameController {
 			'refresh' => ''
 		);
 		// Refresh
-		$buttons['refresh'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-refresh') . '</a>';
+		$buttons['refresh'] = '<a href="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '">' . IconUtility::getSpriteIcon('actions-system-refresh') . '</a>';
 		// CSH
 		$buttons['csh'] = str_replace('typo3-csh-inline', 'typo3-csh-inline show-right', \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'filetree', $GLOBALS['BACK_PATH']));
 		return $buttons;
@@ -213,6 +216,5 @@ class FileSystemNavigationFrameController {
 	}
 
 }
-
 
 ?>

@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Backend\Form;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Contains FlexForm manipulation methods as part of the TCEforms
  *
@@ -79,7 +82,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 		// Get extension identifier (uses second pointer field if it's value is not empty,
 		// "list" or "*", else it must be a plugin and first one will be used)
 		$pointerFields = !empty($tableConf['config']['ds_pointerField']) ? $tableConf['config']['ds_pointerField'] : 'list_type,CType';
-		$pointerFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pointerFields);
+		$pointerFields = GeneralUtility::trimExplode(',', $pointerFields);
 		$flexformIdentifier = !empty($tableRow[$pointerFields[0]]) ? $tableRow[$pointerFields[0]] : '';
 		if (!empty($tableRow[$pointerFields[1]]) && $tableRow[$pointerFields[1]] != 'list' && $tableRow[$pointerFields[1]] != '*') {
 			$flexformIdentifier = $tableRow[$pointerFields[1]];
@@ -90,12 +93,12 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 		// Get field configuration from page TSConfig
 		$TSconfig = $this->setTSconfig($table, $tableRow);
 		if (!empty($TSconfig[$tableField][($flexformIdentifier . '.')])) {
-			$sheetConf = \TYPO3\CMS\Core\Utility\GeneralUtility::removeDotsFromTS($TSconfig[$tableField][$flexformIdentifier . '.']);
+			$sheetConf = GeneralUtility::removeDotsFromTS($TSconfig[$tableField][$flexformIdentifier . '.']);
 		}
 		// Get non-exclude-fields from group access lists
 		$nonExcludeFields = $this->getFlexFormNonExcludeFields($table, $tableField, $flexformIdentifier);
 		// Load complete DS, including external file references
-		$dataStructure = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveAllSheetsInDS($dataStructure);
+		$dataStructure = GeneralUtility::resolveAllSheetsInDS($dataStructure);
 		// Modify language handling in meta configuration
 		if (isset($sheetConf['langDisable'])) {
 			$metaConf['langDisable'] = $sheetConf['langDisable'];
@@ -176,8 +179,8 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 				continue;
 			}
 			$fieldConf = $sheetConf[$fieldName];
-			$removeItems = !empty($fieldConf['removeItems']) ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldConf['removeItems'], TRUE) : array();
-			$keepItems = !empty($fieldConf['keepItems']) ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldConf['keepItems'], TRUE) : array();
+			$removeItems = !empty($fieldConf['removeItems']) ? GeneralUtility::trimExplode(',', $fieldConf['removeItems'], TRUE) : array();
+			$keepItems = !empty($fieldConf['keepItems']) ? GeneralUtility::trimExplode(',', $fieldConf['keepItems'], TRUE) : array();
 			$renameItems = !empty($fieldConf['altLabels']) && is_array($fieldConf['altLabels']) ? $fieldConf['altLabels'] : array();
 			$addItems = !empty($fieldConf['addItems']) && is_array($fieldConf['addItems']) ? $fieldConf['addItems'] : array();
 			unset($fieldConf['removeItems']);
@@ -186,7 +189,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 			unset($fieldConf['addItems']);
 			// Manipulate field
 			if (!empty($field['TCEforms']) && is_array($field['TCEforms'])) {
-				$sheet[$fieldName]['TCEforms'] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($field['TCEforms'], $fieldConf);
+				$sheet[$fieldName]['TCEforms'] = GeneralUtility::array_merge_recursive_overrule($field['TCEforms'], $fieldConf);
 			}
 			// Manipulate only select fields, other field types will stop here
 			if (empty($field['TCEforms']['config']['type']) || $field['TCEforms']['config']['type'] != 'select') {
@@ -196,7 +199,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 			$selItems = $this->addSelectOptionsToItemArray($this->initItemArray($field['TCEforms']), $field['TCEforms'], $this->setTSconfig($table, $tableRow), $tableField);
 			// Possibly filter some items
 			$keepItemsFunc = create_function('$value', 'return $value[1];');
-			$selItems = \TYPO3\CMS\Core\Utility\GeneralUtility::keepItemsInArray($selItems, $keepItems, $keepItemsFunc);
+			$selItems = GeneralUtility::keepItemsInArray($selItems, $keepItems, $keepItemsFunc);
 			// Possibly add some items
 			$selItems = $this->addItems($selItems, $addItems);
 			// Process items by a user function
@@ -248,7 +251,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 		if (empty($GLOBALS['BE_USER']->groupData['non_exclude_fields']) || empty($table) || empty($tableField) || empty($extIdent)) {
 			return array();
 		}
-		$accessListFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->groupData['non_exclude_fields']);
+		$accessListFields = GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->groupData['non_exclude_fields']);
 		$identPrefix = $table . ':' . $tableField . ';' . $extIdent . ';';
 		$nonExcludeFields = array();
 		// Collect only FlexForm fields

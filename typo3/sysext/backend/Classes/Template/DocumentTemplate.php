@@ -27,6 +27,13 @@ namespace TYPO3\CMS\Backend\Template;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * TYPO3 Backend Template Class
  *
@@ -331,7 +338,7 @@ class DocumentTemplate {
 		// Initializes the page rendering object:
 		$this->getPageRenderer();
 		// Setting default scriptID:
-		if (($temp_M = (string) \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('M')) && $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M]) {
+		if (($temp_M = (string) GeneralUtility::_GET('M')) && $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M]) {
 			$this->scriptID = preg_replace('/^.*\\/(sysext|ext)\\//', 'ext/', $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M] . 'index.php');
 		} else {
 			$this->scriptID = preg_replace('/^.*\\/(sysext|ext)\\//', 'ext/', substr(PATH_thisScript, strlen(PATH_site)));
@@ -346,7 +353,7 @@ class DocumentTemplate {
 			// Make copy
 			$ovr = $GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID];
 			// merge styles.
-			$GLOBALS['TBE_STYLES'] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($GLOBALS['TBE_STYLES'], $ovr);
+			$GLOBALS['TBE_STYLES'] = GeneralUtility::array_merge_recursive_overrule($GLOBALS['TBE_STYLES'], $ovr);
 			// Have to unset - otherwise the second instantiation will do it again!
 			unset($GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID]);
 		}
@@ -405,7 +412,8 @@ class DocumentTemplate {
 	 */
 	public function getPageRenderer() {
 		if (!isset($this->pageRenderer)) {
-			$this->pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
+			$this->pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
+			$this->pageRenderer->setTemplateFile(TYPO3_mainDir . 'templates/template_page_backend.html');
 			$this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
 			$this->pageRenderer->enableConcatenateFiles();
 			$this->pageRenderer->enableCompressCss();
@@ -452,7 +460,7 @@ class DocumentTemplate {
 	 * @todo Define visibility
 	 */
 	public function wrapClickMenuOnIcon($str, $table, $uid = 0, $listFr = TRUE, $addParams = '', $enDisItems = '', $returnOnClick = FALSE) {
-		$backPath = rawurlencode($this->backPath) . '|' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(($this->backPath . '|' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']));
+		$backPath = rawurlencode($this->backPath) . '|' . GeneralUtility::shortMD5(($this->backPath . '|' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']));
 		$onClick = 'showClickmenu("' . $table . '","' . ($uid !== 0 ? $uid : '') . '","' . strval($listFr) . '","' . str_replace('+', '%2B', $enDisItems) . '","' . str_replace('&', '&amp;', addcslashes($backPath, '"')) . '","' . str_replace('&', '&amp;', addcslashes($addParams, '"')) . '");return false;';
 		return $returnOnClick ? $onClick : '<a href="#" onclick="' . htmlspecialchars($onClick) . '" oncontextmenu="' . htmlspecialchars($onClick) . '">' . $str . '</a>';
 	}
@@ -471,12 +479,12 @@ class DocumentTemplate {
 	 */
 	public function viewPageIcon($id, $backPath, $addParams = 'hspace="3"') {
 		// If access to Web>List for user, then link to that module.
-		$str = \TYPO3\CMS\Backend\Utility\BackendUtility::getListViewLink(array(
+		$str = BackendUtility::getListViewLink(array(
 			'id' => $id,
-			'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')
+			'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
 		), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList'));
 		// Make link to view page
-		$str .= '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($id, $backPath, \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($id))) . '">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($backPath, 'gfx/zoom.gif', 'width="12" height="12"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', 1) . '"' . ($addParams ? ' ' . trim($addParams) : '') . ' hspace="3" alt="" />' . '</a>';
+		$str .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($id, $backPath, BackendUtility::BEgetRootLine($id))) . '">' . '<img' . IconUtility::skinImg($backPath, 'gfx/zoom.gif', 'width="12" height="12"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', 1) . '"' . ($addParams ? ' ' . trim($addParams) : '') . ' hspace="3" alt="" />' . '</a>';
 		return $str;
 	}
 
@@ -491,8 +499,8 @@ class DocumentTemplate {
 	 * @todo Define visibility
 	 */
 	public function issueCommand($params, $redirectUrl = '') {
-		$redirectUrl = $redirectUrl ? $redirectUrl : \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI');
-		$commandUrl = $this->backPath . 'tce_db.php?' . $params . '&redirect=' . ($redirectUrl == -1 ? '\'+T3_THIS_LOCATION+\'' : rawurlencode($redirectUrl)) . '&vC=' . rawurlencode($GLOBALS['BE_USER']->veriCode()) . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction') . '&prErr=1&uPT=1';
+		$redirectUrl = $redirectUrl ? $redirectUrl : GeneralUtility::getIndpEnv('REQUEST_URI');
+		$commandUrl = $this->backPath . 'tce_db.php?' . $params . '&redirect=' . ($redirectUrl == -1 ? '\'+T3_THIS_LOCATION+\'' : rawurlencode($redirectUrl)) . '&vC=' . rawurlencode($GLOBALS['BE_USER']->veriCode()) . BackendUtility::getUrlToken('tceAction') . '&prErr=1&uPT=1';
 		return $commandUrl;
 	}
 
@@ -505,7 +513,7 @@ class DocumentTemplate {
 	 * @todo Define visibility
 	 */
 	public function isCMlayers() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		GeneralUtility::logDeprecatedFunction();
 		return !$GLOBALS['BE_USER']->uc['disableCMlayers'] && $GLOBALS['CLIENT']['FORMSTYLE'] && !($GLOBALS['CLIENT']['SYSTEM'] == 'mac' && $GLOBALS['CLIENT']['BROWSER'] == 'Opera');
 	}
 
@@ -526,17 +534,17 @@ class DocumentTemplate {
 	public function getHeader($table, $row, $path, $noViewPageIcon = FALSE, $tWrap = array('', '')) {
 		$viewPage = '';
 		if (is_array($row) && $row['uid']) {
-			$iconImgTag = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row, array('title' => htmlspecialchars($path)));
-			$title = strip_tags(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $row));
+			$iconImgTag = IconUtility::getSpriteIconForRecord($table, $row, array('title' => htmlspecialchars($path)));
+			$title = strip_tags(BackendUtility::getRecordTitle($table, $row));
 			$viewPage = $noViewPageIcon ? '' : $this->viewPageIcon($row['uid'], $this->backPath, '');
 			if ($table == 'pages') {
-				$path .= ' - ' . \TYPO3\CMS\Backend\Utility\BackendUtility::titleAttribForPages($row, '', 0);
+				$path .= ' - ' . BackendUtility::titleAttribForPages($row, '', 0);
 			}
 		} else {
-			$iconImgTag = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-pagetree-page-domain', array('title' => htmlspecialchars($path)));
+			$iconImgTag = IconUtility::getSpriteIcon('apps-pagetree-page-domain', array('title' => htmlspecialchars($path)));
 			$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 		}
-		return '<span class="typo3-moduleHeader">' . $this->wrapClickMenuOnIcon($iconImgTag, $table, $row['uid']) . $viewPage . $tWrap[0] . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($title, 45)) . $tWrap[1] . '</span>';
+		return '<span class="typo3-moduleHeader">' . $this->wrapClickMenuOnIcon($iconImgTag, $table, $row['uid']) . $viewPage . $tWrap[0] . htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, 45)) . $tWrap[1] . '</span>';
 	}
 
 	/**
@@ -550,9 +558,9 @@ class DocumentTemplate {
 	 * @todo Define visibility
 	 */
 	public function getFileheader($title, $path, $iconfile) {
-		$fileInfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($title);
-		$title = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($fileInfo['path'], -35)) . '<strong>' . htmlspecialchars($fileInfo['file']) . '</strong>';
-		return '<span class="typo3-moduleHeader"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, $iconfile, 'width="18" height="16"') . ' title="' . htmlspecialchars($path) . '" alt="" />' . $title . '</span>';
+		$fileInfo = GeneralUtility::split_fileref($title);
+		$title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileInfo['path'], -35)) . '<strong>' . htmlspecialchars($fileInfo['file']) . '</strong>';
+		return '<span class="typo3-moduleHeader"><img' . IconUtility::skinImg($this->backPath, $iconfile, 'width="18" height="16"') . ' title="' . htmlspecialchars($path) . '" alt="" />' . $title . '</span>';
 	}
 
 	/**
@@ -568,7 +576,7 @@ class DocumentTemplate {
 	public function makeShortcutIcon($gvList, $setList, $modName, $motherModName = '') {
 		$backPath = $this->backPath;
 		$storeUrl = $this->makeShortcutUrl($gvList, $setList);
-		$pathInfo = parse_url(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
+		$pathInfo = parse_url(GeneralUtility::getIndpEnv('REQUEST_URI'));
 		// Add the module identifier automatically if typo3/mod.php is used:
 		if (preg_match('/typo3\\/mod\\.php$/', $pathInfo['path']) && isset($GLOBALS['TBE_MODULES']['_PATHS'][$modName])) {
 			$storeUrl = '&M=' . $modName . $storeUrl;
@@ -581,7 +589,7 @@ class DocumentTemplate {
 			$mMN = '';
 		}
 		$onClick = 'top.ShortcutManager.createShortcut(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark')) . ', ' . '\'' . $backPath . '\', ' . '\'' . rawurlencode($modName) . '\', ' . '\'' . rawurlencode(($pathInfo['path'] . '?' . $storeUrl)) . $mMN . '\'' . ');return false;';
-		$sIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-shortcut-new') . '</a>';
+		$sIcon = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-shortcut-new') . '</a>';
 		return $sIcon;
 	}
 
@@ -597,9 +605,9 @@ class DocumentTemplate {
 	 * @todo Define visibility
 	 */
 	public function makeShortcutUrl($gvList, $setList) {
-		$GET = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
-		$storeArray = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::compileSelectedGetVarsFromArray($gvList, $GET), array('SET' => \TYPO3\CMS\Core\Utility\GeneralUtility::compileSelectedGetVarsFromArray($setList, (array) $GLOBALS['SOBE']->MOD_SETTINGS)));
-		$storeUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $storeArray);
+		$GET = GeneralUtility::_GET();
+		$storeArray = array_merge(GeneralUtility::compileSelectedGetVarsFromArray($gvList, $GET), array('SET' => GeneralUtility::compileSelectedGetVarsFromArray($setList, (array) $GLOBALS['SOBE']->MOD_SETTINGS)));
+		$storeUrl = GeneralUtility::implodeArrayForUrl('', $storeArray);
 		return $storeUrl;
 	}
 
@@ -661,14 +669,14 @@ class DocumentTemplate {
 	 * @todo Define visibility
 	 */
 	public function redirectUrls($thisLocation = '') {
-		$thisLocation = $thisLocation ? $thisLocation : \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array(
+		$thisLocation = $thisLocation ? $thisLocation : GeneralUtility::linkThisScript(array(
 			'CB' => '',
 			'SET' => '',
 			'cmd' => '',
 			'popViewId' => ''
 		));
 		$out = '
-	var T3_RETURN_URL = \'' . str_replace('%20', '', rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl')))) . '\';
+	var T3_RETURN_URL = \'' . str_replace('%20', '', rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl')))) . '\';
 	var T3_THIS_LOCATION = \'' . str_replace('%20', '', rawurlencode($thisLocation)) . '\';
 		';
 		return $out;
@@ -705,8 +713,8 @@ class DocumentTemplate {
 	 */
 	public function parseTime() {
 		if ($this->parseTimeFlag && $GLOBALS['BE_USER']->isAdmin()) {
-			return '<p>(ParseTime: ' . (\TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $GLOBALS['PARSETIME_START']) . ' ms</p>
-					<p>REQUEST_URI-length: ' . strlen(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . ')</p>';
+			return '<p>(ParseTime: ' . (GeneralUtility::milliseconds() - $GLOBALS['PARSETIME_START']) . ' ms</p>
+					<p>REQUEST_URI-length: ' . strlen(GeneralUtility::getIndpEnv('REQUEST_URI')) . ')</p>';
 		}
 	}
 
@@ -745,14 +753,14 @@ class DocumentTemplate {
 					'title' => &$title
 				);
 				foreach ($preStartPageHook as $hookFunction) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
+					GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
 				}
 			}
 		}
 		$this->pageRenderer->backPath = $this->backPath;
 		// alternative template for Header and Footer
 		if ($this->pageHeaderFooterTemplateFile) {
-			$file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->pageHeaderFooterTemplateFile, TRUE);
+			$file = GeneralUtility::getFileAbsFileName($this->pageHeaderFooterTemplateFile, TRUE);
 			if ($file) {
 				$this->pageRenderer->setTemplateFile($file);
 			}
@@ -804,7 +812,7 @@ class DocumentTemplate {
 			$this->loadCshJavascript();
 		}
 		// Get the browser info
-		$browserInfo = \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT'));
+		$browserInfo = \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo(GeneralUtility::getIndpEnv('HTTP_USER_AGENT'));
 		// Set the XML prologue
 		$xmlPrologue = '<?xml version="1.0" encoding="' . $this->charset . '"?>';
 		// Set the XML stylesheet
@@ -875,16 +883,16 @@ class DocumentTemplate {
 					'pageRenderer' => &$this->pageRenderer
 				);
 				foreach ($preHeaderRenderHook as $hookFunction) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
+					GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
 				}
 			}
 		}
 		// Construct page header.
-		$str = $this->pageRenderer->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_HEADER);
+		$str = $this->pageRenderer->render(PageRenderer::PART_HEADER);
 		$this->JScodeLibArray = array();
 		$this->JScode = ($this->extJScode = '');
 		$this->JScodeArray = array();
-		$this->endOfPageJsBlock = $this->pageRenderer->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
+		$this->endOfPageJsBlock = $this->pageRenderer->render(PageRenderer::PART_FOOTER);
 		if ($this->docType == 'xhtml_frames') {
 			return $str;
 		} else {
@@ -905,7 +913,7 @@ class DocumentTemplate {
 	 * @todo Define visibility
 	 */
 	public function endPage() {
-		$str = $this->sectionEnd() . $this->postCode . $this->endPageJS() . $this->wrapScriptTags(\TYPO3\CMS\Backend\Utility\BackendUtility::getUpdateSignalCode()) . $this->parseTime() . ($this->form ? '
+		$str = $this->sectionEnd() . $this->postCode . $this->endPageJS() . $this->wrapScriptTags(BackendUtility::getUpdateSignalCode()) . $this->parseTime() . ($this->form ? '
 </form>' : '');
 		// If something is in buffer like debug, put it to end of page
 		if (ob_get_contents()) {
@@ -922,7 +930,7 @@ class DocumentTemplate {
 		}
 		// Logging: Can't find better place to put it:
 		if (TYPO3_DLOG) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('END of BACKEND session', 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate', 0, array('_FLUSH' => TRUE));
+			GeneralUtility::devLog('END of BACKEND session', 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate', 0, array('_FLUSH' => TRUE));
 		}
 		return $str;
 	}
@@ -1180,11 +1188,11 @@ class DocumentTemplate {
 	public function addStyleSheetDirectory($path) {
 		// Calculation needed, when TYPO3 source is used via a symlink
 		// absolute path to the stylesheets
-		$filePath = dirname(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_FILENAME')) . '/' . $GLOBALS['BACK_PATH'] . $path;
+		$filePath = dirname(GeneralUtility::getIndpEnv('SCRIPT_FILENAME')) . '/' . $GLOBALS['BACK_PATH'] . $path;
 		// Clean the path
-		$resolvedPath = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($filePath);
+		$resolvedPath = GeneralUtility::resolveBackPath($filePath);
 		// Read all files in directory and sort them alphabetically
-		$files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($resolvedPath, 'css', FALSE, 1);
+		$files = GeneralUtility::getFilesInDir($resolvedPath, 'css', FALSE, 1);
 		foreach ($files as $file) {
 			$this->pageRenderer->addCssFile($GLOBALS['BACK_PATH'] . $path . $file, 'stylesheet', 'all');
 		}
@@ -1236,12 +1244,12 @@ class DocumentTemplate {
 					// for EXT:myskin/stylesheets/ syntax
 					if (substr($stylesheetDir, 0, 4) === 'EXT:') {
 						list($extKey, $path) = explode('/', substr($stylesheetDir, 4), 2);
-						if (strcmp($extKey, '') && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extKey) && strcmp($path, '')) {
-							$stylesheetDirectories[] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extKey) . $path;
+						if (strcmp($extKey, '') && ExtensionManagementUtility::isLoaded($extKey) && strcmp($path, '')) {
+							$stylesheetDirectories[] = ExtensionManagementUtility::extRelPath($extKey) . $path;
 						}
 					} else {
 						// For relative paths
-						$stylesheetDirectories[] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($skinExtKey) . $stylesheetDir;
+						$stylesheetDirectories[] = ExtensionManagementUtility::extRelPath($skinExtKey) . $stylesheetDir;
 					}
 				}
 			}
@@ -1259,7 +1267,7 @@ class DocumentTemplate {
 	 * @deprecated since TYPO3 6.0, remove in 6.2. The charset is utf-8 all the time for the backend now
 	 */
 	public function initCharset() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		GeneralUtility::logDeprecatedFunction();
 		// Return meta tag:
 		return '<meta http-equiv="Content-Type" content="text/html; charset=' . $this->charset . '" />';
 	}
@@ -1323,7 +1331,7 @@ class DocumentTemplate {
 			break;
 		}
 		if ($icon) {
-			return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($icon);
+			return IconUtility::getSpriteIcon($icon);
 		}
 	}
 
@@ -1562,7 +1570,7 @@ class DocumentTemplate {
 		// Setting prefs for drag & drop
 		$this->JScodeArray['dragdrop'] = '
 			DragDrop.changeURL = "' . $this->backPath . 'alt_clickmenu.php";
-			DragDrop.backPath  = "' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(('' . '|' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) . '";
+			DragDrop.backPath  = "' . GeneralUtility::shortMD5(('' . '|' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) . '";
 			DragDrop.table     = "' . $table . '";
 		';
 	}
@@ -1599,14 +1607,14 @@ class DocumentTemplate {
 			if (!is_array($mainParams)) {
 				$mainParams = array('id' => $mainParams);
 			}
-			$mainParams = \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $mainParams);
+			$mainParams = GeneralUtility::implodeArrayForUrl('', $mainParams);
 			if (!$script) {
 				$script = basename(PATH_thisScript);
 			}
 			$menuDef = array();
 			foreach ($menuItems as $value => $label) {
 				$menuDef[$value]['isActive'] = !strcmp($currentValue, $value);
-				$menuDef[$value]['label'] = \TYPO3\CMS\Core\Utility\GeneralUtility::deHSCentities(htmlspecialchars($label));
+				$menuDef[$value]['label'] = GeneralUtility::deHSCentities(htmlspecialchars($label));
 				$menuDef[$value]['url'] = $script . '?' . $mainParams . $addparams . '&' . $elementName . '=' . $value;
 			}
 			$content = $this->getTabMenuRaw($menuDef);
@@ -1782,7 +1790,7 @@ class DocumentTemplate {
 	 * @todo Define visibility
 	 */
 	public function getDynTabMenuId($identString) {
-		$id = 'DTM-' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($identString);
+		$id = 'DTM-' . GeneralUtility::shortMD5($identString);
 		return $id;
 	}
 
@@ -1796,10 +1804,10 @@ class DocumentTemplate {
 	 */
 	public function getVersionSelector($id, $noAction = FALSE) {
 		if (
-				\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') &&
-				!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')
+				ExtensionManagementUtility::isLoaded('version') &&
+				!ExtensionManagementUtility::isLoaded('workspaces')
 		) {
-			$versionGuiObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\View\\VersionView');
+			$versionGuiObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\View\\VersionView');
 			return $versionGuiObj->getVersionSelector($id, $noAction);
 		}
 	}
@@ -1818,16 +1826,16 @@ class DocumentTemplate {
 		if ($GLOBALS['TBE_STYLES']['htmlTemplates'][$filename]) {
 			$filename = $GLOBALS['TBE_STYLES']['htmlTemplates'][$filename];
 		}
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($filename, 'EXT:')) {
-			$filename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($filename, TRUE, TRUE);
-		} elseif (!\TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath($filename)) {
-			$filename = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($this->backPath . $filename);
-		} elseif (!\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($filename)) {
+		if (GeneralUtility::isFirstPartOfStr($filename, 'EXT:')) {
+			$filename = GeneralUtility::getFileAbsFileName($filename, TRUE, TRUE);
+		} elseif (!GeneralUtility::isAbsPath($filename)) {
+			$filename = GeneralUtility::resolveBackPath($this->backPath . $filename);
+		} elseif (!GeneralUtility::isAllowedAbsPath($filename)) {
 			$filename = '';
 		}
 		$htmlTemplate = '';
 		if ($filename !== '') {
-			$htmlTemplate = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($filename);
+			$htmlTemplate = GeneralUtility::getUrl($filename);
 		}
 		return $htmlTemplate;
 	}
@@ -1857,7 +1865,7 @@ class DocumentTemplate {
 	 */
 	public function moduleBody($pageRecord = array(), $buttons = array(), $markerArray = array(), $subpartArray = array()) {
 		// Get the HTML template for the module
-		$moduleBody = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($this->moduleTemplate, '###FULLDOC###');
+		$moduleBody = HtmlParser::getSubpart($this->moduleTemplate, '###FULLDOC###');
 		// Add CSS
 		$this->inDocStylesArray[] = 'html { overflow: hidden; }';
 		// Get the page path for the docheader
@@ -1870,12 +1878,12 @@ class DocumentTemplate {
 		$markerArray = array_merge($markerArray, $docHeaderButtons);
 		// replacing subparts
 		foreach ($subpartArray as $marker => $content) {
-			$moduleBody = \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart($moduleBody, $marker, $content);
+			$moduleBody = HtmlParser::substituteSubpart($moduleBody, $marker, $content);
 		}
 		// adding flash messages
 		if ($this->showFlashMessages) {
 			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-			$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+			$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
 			/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 			$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 			$flashMessages = $defaultFlashMessageQueue->renderFlashMessages();
@@ -1898,11 +1906,11 @@ class DocumentTemplate {
 				'parentObject' => &$this
 			);
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['moduleBodyPostProcess'] as $funcRef) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($funcRef, $params, $this);
+				GeneralUtility::callUserFunction($funcRef, $params, $this);
 			}
 		}
 		// Replacing all markers with the finished markers and return the HTML content
-		return \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($moduleBody, $markerArray, '###|###');
+		return HtmlParser::substituteMarkerArray($moduleBody, $markerArray, '###|###');
 	}
 
 	/**
@@ -1917,20 +1925,20 @@ class DocumentTemplate {
 		$floats = array('left', 'right');
 		foreach ($floats as $key) {
 			// Get the template for each float
-			$buttonTemplate = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($this->moduleTemplate, '###BUTTON_GROUPS_' . strtoupper($key) . '###');
+			$buttonTemplate = HtmlParser::getSubpart($this->moduleTemplate, '###BUTTON_GROUPS_' . strtoupper($key) . '###');
 			// Fill the button markers in this float
-			$buttonTemplate = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($buttonTemplate, $buttons, '###|###', TRUE);
+			$buttonTemplate = HtmlParser::substituteMarkerArray($buttonTemplate, $buttons, '###|###', TRUE);
 			// getting the wrap for each group
-			$buttonWrap = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($this->moduleTemplate, '###BUTTON_GROUP_WRAP###');
+			$buttonWrap = HtmlParser::getSubpart($this->moduleTemplate, '###BUTTON_GROUP_WRAP###');
 			// looping through the groups (max 6) and remove the empty groups
 			for ($groupNumber = 1; $groupNumber < 6; $groupNumber++) {
 				$buttonMarker = '###BUTTON_GROUP' . $groupNumber . '###';
-				$buttonGroup = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($buttonTemplate, $buttonMarker);
+				$buttonGroup = HtmlParser::getSubpart($buttonTemplate, $buttonMarker);
 				if (trim($buttonGroup)) {
 					if ($buttonWrap) {
-						$buttonGroup = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarker($buttonWrap, '###BUTTONS###', $buttonGroup);
+						$buttonGroup = HtmlParser::substituteMarker($buttonWrap, '###BUTTONS###', $buttonGroup);
 					}
-					$buttonTemplate = \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart($buttonTemplate, $buttonMarker, trim($buttonGroup));
+					$buttonTemplate = HtmlParser::substituteSubpart($buttonTemplate, $buttonMarker, trim($buttonGroup));
 				}
 			}
 			// Replace the marker with the template and remove all line breaks (for IE compat)
@@ -1944,7 +1952,7 @@ class DocumentTemplate {
 				'pObj' => &$this
 			);
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['docHeaderButtonsHook'] as $funcRef) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($funcRef, $params, $this);
+				GeneralUtility::callUserFunction($funcRef, $params, $this);
 			}
 		}
 		return $markers;
@@ -1972,7 +1980,7 @@ class DocumentTemplate {
 		$pagePath = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.path', 1) . ': <span class="typo3-docheader-pagePath">';
 		// crop the title to title limit (or 50, if not defined)
 		$cropLength = empty($GLOBALS['BE_USER']->uc['titleLen']) ? 50 : $GLOBALS['BE_USER']->uc['titleLen'];
-		$croppedTitle = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($title, -$cropLength);
+		$croppedTitle = GeneralUtility::fixed_lgd_cs($title, -$cropLength);
 		if ($croppedTitle !== $title) {
 			$pagePath .= '<abbr title="' . htmlspecialchars($title) . '">' . htmlspecialchars($croppedTitle) . '</abbr>';
 		} else {
@@ -1992,16 +2000,16 @@ class DocumentTemplate {
 		// Add icon with clickmenu, etc:
 		// If there IS a real page
 		if (is_array($pageRecord) && $pageRecord['uid']) {
-			$alttext = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordIconAltText($pageRecord, 'pages');
-			$iconImg = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $pageRecord, array('title' => $alttext));
+			$alttext = BackendUtility::getRecordIconAltText($pageRecord, 'pages');
+			$iconImg = IconUtility::getSpriteIconForRecord('pages', $pageRecord, array('title' => $alttext));
 			// Make Icon:
 			$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
 			$uid = $pageRecord['uid'];
-			$title = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pageRecord);
+			$title = BackendUtility::getRecordTitle('pages', $pageRecord);
 		} else {
 			// On root-level of page tree
 			// Make Icon
-			$iconImg = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-pagetree-root', array('title' => htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])));
+			$iconImg = IconUtility::getSpriteIcon('apps-pagetree-root', array('title' => htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])));
 			if ($GLOBALS['BE_USER']->user['admin']) {
 				$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', 0);
 			} else {
@@ -2029,7 +2037,7 @@ class DocumentTemplate {
 		$collapsedStyle = ($collapsedClass = '');
 		if ($hasSave) {
 			/** @var $settings \TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider */
-			$settings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\User\\ExtDirect\\BackendUserSettingsDataProvider');
+			$settings = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\User\\ExtDirect\\BackendUserSettingsDataProvider');
 			$value = $settings->get($saveStatePointer . '.' . $id);
 			if ($value) {
 				$collapsedStyle = ' style="display: none"';
@@ -2083,7 +2091,7 @@ class DocumentTemplate {
 	* @return string
 	*/
 	protected function getBackendFavicon() {
-		return \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/favicon.ico', '', 1);
+		return IconUtility::skinImg($this->backPath, 'gfx/favicon.ico', '', 1);
 	}
 }
 
