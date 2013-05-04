@@ -27,6 +27,10 @@ namespace TYPO3\CMS\Backend\Tree\View;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Base class for creating a browsable array/page/folder tree in HTML
  *
@@ -359,7 +363,7 @@ abstract class AbstractTreeView {
 	 * @todo Define visibility
 	 */
 	public function addField($field, $noCheck = 0) {
-		if ($noCheck || is_array($GLOBALS['TCA'][$this->table]['columns'][$field]) || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->defaultList, $field)) {
+		if ($noCheck || is_array($GLOBALS['TCA'][$this->table]['columns'][$field]) || GeneralUtility::inList($this->defaultList, $field)) {
 			$this->fieldArray[] = $field;
 		}
 	}
@@ -407,7 +411,7 @@ abstract class AbstractTreeView {
 			$this->ids = $curIds;
 			// Set PM icon for root of mount:
 			$cmd = $this->bank . '_' . ($isOpen ? '0_' : '1_') . $uid . '_' . $this->treeName;
-			$icon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . ($isOpen ? 'minus' : 'plus') . 'only.gif'), 'width="18" height="16"') . ' alt="" />';
+			$icon = '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/' . ($isOpen ? 'minus' : 'plus') . 'only.gif'), 'width="18" height="16"') . ' alt="" />';
 			$firstHtml = $this->PM_ATagWrap($icon, $cmd);
 			// Preparing rootRec for the mount
 			if ($uid) {
@@ -426,7 +430,7 @@ abstract class AbstractTreeView {
 				// If the mount is expanded, go down:
 				if ($isOpen) {
 					// Set depth:
-					$depthD = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/ol/blank.gif', 'width="18" height="16"') . ' alt="" />';
+					$depthD = '<img' . IconUtility::skinImg($this->backPath, 'gfx/ol/blank.gif', 'width="18" height="16"') . ' alt="" />';
 					if ($this->addSelfId) {
 						$this->ids[] = $uid;
 					}
@@ -497,7 +501,7 @@ abstract class AbstractTreeView {
 	public function PMicon($row, $a, $c, $nextCount, $exp) {
 		$PM = $nextCount ? ($exp ? 'minus' : 'plus') : 'join';
 		$BTM = $a == $c ? 'bottom' : '';
-		$icon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' alt="" />';
+		$icon = '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' alt="" />';
 		if ($nextCount) {
 			$cmd = $this->bank . '_' . ($exp ? '0_' : '1_') . $row['uid'] . '_' . $this->treeName;
 			$bMark = $this->bank . '_' . $row['uid'];
@@ -580,7 +584,7 @@ abstract class AbstractTreeView {
 	 */
 	public function wrapStop($str, $row) {
 		if ($row['php_tree_stop']) {
-			$str .= '<span class="typo3-red"><a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('setTempDBmount' => $row['uid']))) . '" class="typo3-red">+</a> </span>';
+			$str .= '<span class="typo3-red"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => $row['uid']))) . '" class="typo3-red">+</a> </span>';
 		}
 		return $str;
 	}
@@ -619,7 +623,7 @@ abstract class AbstractTreeView {
 		// (If an plus/minus icon has been clicked, the PM GET var is sent and we
 		// must update the stored positions in the tree):
 		// 0: mount key, 1: set/clear boolean, 2: item ID (cannot contain "_"), 3: treeName
-		$PM = explode('_', \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('PM'));
+		$PM = explode('_', GeneralUtility::_GP('PM'));
 		if (count($PM) == 4 && $PM[3] == $this->treeName) {
 			if (isset($this->MOUNTS[$PM[0]])) {
 				// set
@@ -660,7 +664,7 @@ abstract class AbstractTreeView {
 	 * @todo Define visibility
 	 */
 	public function getRootIcon($rec) {
-		return $this->wrapIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-pagetree-root'), $rec);
+		return $this->wrapIcon(IconUtility::getSpriteIcon('apps-pagetree-root'), $rec);
 	}
 
 	/**
@@ -673,9 +677,9 @@ abstract class AbstractTreeView {
 	 */
 	public function getIcon($row) {
 		if ($this->iconPath && $this->iconName) {
-			$icon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg('', ($this->iconPath . $this->iconName), 'width="18" height="16"') . ' alt=""' . ($this->showDefaultTitleAttribute ? ' title="UID: ' . $row['uid'] . '"' : '') . ' />';
+			$icon = '<img' . IconUtility::skinImg('', ($this->iconPath . $this->iconName), 'width="18" height="16"') . ' alt=""' . ($this->showDefaultTitleAttribute ? ' title="UID: ' . $row['uid'] . '"' : '') . ' />';
 		} else {
-			$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($this->table, $row, array(
+			$icon = IconUtility::getSpriteIconForRecord($this->table, $row, array(
 				'title' => $this->showDefaultTitleAttribute ? 'UID: ' . $row['uid'] : $this->getTitleAttrib($row),
 				'class' => 'c-recIcon'
 			));
@@ -694,9 +698,9 @@ abstract class AbstractTreeView {
 	 */
 	public function getTitleStr($row, $titleLen = 30) {
 		if ($this->ext_showNavTitle && strlen(trim($row['nav_title'])) > 0) {
-			$title = '<span title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xlf:title', 1) . ' ' . htmlspecialchars(trim($row['title'])) . '">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['nav_title'], $titleLen)) . '</span>';
+			$title = '<span title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xlf:title', 1) . ' ' . htmlspecialchars(trim($row['title'])) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['nav_title'], $titleLen)) . '</span>';
 		} else {
-			$title = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['title'], $titleLen));
+			$title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $titleLen));
 			if (strlen(trim($row['nav_title'])) > 0) {
 				$title = '<span title="' . $GLOBALS['LANG']->sL('LLL:EXT:cms/locallang_tca.xlf:pages.nav_title', 1) . ' ' . htmlspecialchars(trim($row['nav_title'])) . '">' . $title . '</span>';
 			}
@@ -789,7 +793,7 @@ abstract class AbstractTreeView {
 			$this->ids_hierarchy[$depth][] = $row['uid'];
 			$this->orig_ids_hierarchy[$depth][] = $row['_ORIG_uid'] ? $row['_ORIG_uid'] : $row['uid'];
 			// Make a recursive call to the next level
-			$HTML_depthData = $depthData . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . $LN . '.gif'), 'width="18" height="16"') . ' alt="" />';
+			$HTML_depthData = $depthData . '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/' . $LN . '.gif'), 'width="18" height="16"') . ' alt="" />';
 			if ($depth > 1 && $this->expandNext($newID) && !$row['php_tree_stop']) {
 				$nextCount = $this->getTree($newID, $depth - 1, $this->makeHTML ? $HTML_depthData : '', $blankLineCode . ',' . $LN, $row['_SUBCSSCLASS']);
 				if (count($this->buffer_idH)) {
@@ -841,7 +845,7 @@ abstract class AbstractTreeView {
 			$res = $this->getDataInit($uid);
 			return $this->getDataCount($res);
 		} else {
-			return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $this->table, $this->parentField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($this->table) . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause($this->table) . $this->clause);
+			return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $this->table, $this->parentField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table) . BackendUtility::deleteClause($this->table) . BackendUtility::versioningPlaceholderClause($this->table) . $this->clause);
 		}
 	}
 
@@ -869,7 +873,7 @@ abstract class AbstractTreeView {
 		if (is_array($this->data)) {
 			return $this->dataLookup[$uid];
 		} else {
-			return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($this->table, $uid);
+			return BackendUtility::getRecordWSOL($this->table, $uid);
 		}
 	}
 
@@ -893,7 +897,7 @@ abstract class AbstractTreeView {
 			}
 			return $parentId;
 		} else {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $this->fieldArray), $this->table, $this->parentField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($parentId, $this->table) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($this->table) . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause($this->table) . $this->clause, '', $this->orderByFields);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $this->fieldArray), $this->table, $this->parentField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($parentId, $this->table) . BackendUtility::deleteClause($this->table) . BackendUtility::versioningPlaceholderClause($this->table) . $this->clause, '', $this->orderByFields);
 			return $res;
 		}
 	}
@@ -940,14 +944,14 @@ abstract class AbstractTreeView {
 			return $row;
 		} else {
 			while ($row = @$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL($this->table, $row, $this->BE_USER->workspace, TRUE);
+				BackendUtility::workspaceOL($this->table, $row, $this->BE_USER->workspace, TRUE);
 				if (is_array($row)) {
 					break;
 				}
 			}
 			// Passing on default <td> class for subelements:
 			if (is_array($row) && $subCSSclass !== '') {
-				if ($this->table === 'pages' && $this->highlightPagesWithVersions && !isset($row['_CSSCLASS']) && count(\TYPO3\CMS\Backend\Utility\BackendUtility::countVersionsOfRecordsOnPage($this->BE_USER->workspace, $row['uid']))) {
+				if ($this->table === 'pages' && $this->highlightPagesWithVersions && !isset($row['_CSSCLASS']) && count(BackendUtility::countVersionsOfRecordsOnPage($this->BE_USER->workspace, $row['uid']))) {
 					$row['_CSSCLASS'] = 'ver-versions';
 				}
 				if (!isset($row['_CSSCLASS'])) {

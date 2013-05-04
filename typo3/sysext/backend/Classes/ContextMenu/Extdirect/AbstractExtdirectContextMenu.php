@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Backend\ContextMenu\Extdirect;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Abstract Context Menu for ExtDirect
  *
@@ -73,6 +74,5 @@ abstract class AbstractExtdirectContextMenu extends \TYPO3\CMS\Backend\ContextMe
 	}
 
 }
-
 
 ?>

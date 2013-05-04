@@ -27,6 +27,10 @@ namespace TYPO3\CMS\Backend\Controller\File;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Script Class for rendering the file editing screen
  *
@@ -87,8 +91,8 @@ class EditFileController {
 	 */
 	public function init() {
 		// Setting target, which must be a file reference to a file within the mounts.
-		$this->target = ($this->origTarget = ($fileIdentifier = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('target')));
-		$this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
+		$this->target = ($this->origTarget = ($fileIdentifier = GeneralUtility::_GP('target')));
+		$this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
 		// create the file object
 		if ($fileIdentifier) {
 			$this->fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileIdentifier);
@@ -100,12 +104,11 @@ class EditFileController {
 			throw new \RuntimeException($title . ': ' . $message, 1294586841);
 		}
 		// Setting the title and the icon
-		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-filetree-root');
+		$icon = IconUtility::getSpriteIcon('apps-filetree-root');
 		$this->title = $icon . htmlspecialchars($this->fileObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->fileObject->getIdentifier());
-		// ***************************
+
 		// Setting template object
-		// ***************************
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/file_edit.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->JScode = $this->doc->wrapScriptTags('
@@ -123,7 +126,6 @@ class EditFileController {
 	 * @todo Define visibility
 	 */
 	public function main() {
-		//TODO: change locallang*.php to locallang*.xml
 		$docHeaderButtons = $this->getButtons();
 		$this->content = $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.pagetitle'));
 		// Hook	before compiling the output
@@ -135,7 +137,7 @@ class EditFileController {
 					'target' => &$this->target
 				);
 				foreach ($preOutputProcessingHook as $hookFunction) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
+					GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
 				}
 			}
 		}
@@ -143,7 +145,7 @@ class EditFileController {
 		$pageContent .= $this->doc->spacer(2);
 		$code = '';
 		$extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
-		if ($extList && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($extList, $this->fileObject->getExtension())) {
+		if ($extList && GeneralUtility::inList($extList, $this->fileObject->getExtension())) {
 			// Read file content to edit:
 			$fileContent = $this->fileObject->getContents();
 			// Making the formfields
@@ -151,7 +153,7 @@ class EditFileController {
 			// Edit textarea:
 			$code .= '
 				<div id="c-edit">
-					<textarea rows="30" name="file[editfile][0][data]" wrap="off"' . $this->doc->formWidthText(48, 'width:98%;height:80%', 'off') . ' class="fixed-font enable-tab">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($fileContent) . '</textarea>
+					<textarea rows="30" name="file[editfile][0][data]" wrap="off"' . $this->doc->formWidthText(48, 'width:98%;height:80%', 'off') . ' class="fixed-font enable-tab">' . GeneralUtility::formatForTextarea($fileContent) . '</textarea>
 					<input type="hidden" name="file[editfile][0][target]" value="' . $this->fileObject->getUid() . '" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($hValue) . '" />
 				</div>
@@ -178,14 +180,14 @@ class EditFileController {
 					'target' => &$this->target
 				);
 				foreach ($postOutputProcessingHook as $hookFunction) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
+					GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
 				}
 			}
 		}
 		// Add the HTML as a section:
 		$markerArray = array(
 			'CSH' => $docHeaderButtons['csh'],
-			'FUNC_MENU' => \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
+			'FUNC_MENU' => BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
 			'BUTTONS' => $docHeaderButtons,
 			'PATH' => $this->title,
 			'CONTENT' => $pageContent
@@ -214,20 +216,19 @@ class EditFileController {
 	public function getButtons() {
 		$buttons = array();
 		// CSH button
-		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'file_edit', $GLOBALS['BACK_PATH'], '', TRUE);
+		$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_edit', $GLOBALS['BACK_PATH'], '', TRUE);
 		// Save button
-		$theIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save');
+		$theIcon = IconUtility::getSpriteIcon('actions-document-save');
 		$buttons['SAVE'] = '<a href="#" onclick="document.editform.submit();" title="' . $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.submit', TRUE)) . '">' . $theIcon . '</a>';
 		// Save and Close button
-		$theIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save-close');
+		$theIcon = IconUtility::getSpriteIcon('actions-document-save-close');
 		$buttons['SAVE_CLOSE'] = '<a href="#" onclick="document.editform.redirect.value=\'' . htmlspecialchars($this->returnUrl) . '\'; document.editform.submit();" title="' . $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.saveAndClose', TRUE)) . '">' . $theIcon . '</a>';
 		// Cancel button
-		$theIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close');
+		$theIcon = IconUtility::getSpriteIcon('actions-document-close');
 		$buttons['CANCEL'] = '<a href="#" onclick="backToList(); return false;" title="' . $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE)) . '">' . $theIcon . '</a>';
 		return $buttons;
 	}
 
 }
-
 
 ?>

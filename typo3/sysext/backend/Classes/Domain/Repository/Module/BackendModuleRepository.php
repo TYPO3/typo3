@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Backend\Domain\Repository\Module;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Repository for backend module menu
  *
@@ -81,6 +82,5 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
 
 ?>

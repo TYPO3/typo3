@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Backend\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Script Class for the Context Sensitive Menu in TYPO3 (rendered in top frame, normally writing content dynamically to list frames).
  *
@@ -88,14 +90,14 @@ class ClickMenuController {
 	 */
 	public function init() {
 		// Setting GPvars:
-		$this->backPath = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('backPath');
-		$this->item = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('item');
-		$this->reloadListFrame = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('reloadListFrame');
+		$this->backPath = GeneralUtility::_GP('backPath');
+		$this->item = GeneralUtility::_GP('item');
+		$this->reloadListFrame = GeneralUtility::_GP('reloadListFrame');
 		// Setting pseudo module name
 		$this->MCONF['name'] = 'xMOD_alt_clickmenu.php';
 		// Takes the backPath as a parameter BUT since we are worried about someone forging a backPath (XSS security hole) we will check with sent md5 hash:
 		$inputBP = explode('|', $this->backPath);
-		if (count($inputBP) == 2 && $inputBP[1] == \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($inputBP[0] . '|' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
+		if (count($inputBP) == 2 && $inputBP[1] == GeneralUtility::shortMD5($inputBP[0] . '|' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
 			$this->backPath = $inputBP[0];
 		} else {
 			$this->backPath = $GLOBALS['BACK_PATH'];
@@ -107,7 +109,7 @@ class ClickMenuController {
 		if (is_array($this->extClassArray)) {
 			foreach ($this->extClassArray as $extClassConf) {
 				if (isset($extClassConf['path'])) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+					GeneralUtility::deprecationLog(
 						'$GLOBALS[\'TBE_MODULES_EXT\'][\'xMOD_alt_clickmenu\'][\'extendCMclasses\'][\'path\'] option is not needed anymore. The autoloader takes care of loading the class.'
 					);
 					$this->include_once[] = $extClassConf['path'];
@@ -116,7 +118,7 @@ class ClickMenuController {
 		}
 		// Initialize template object
 		if (!$this->ajax) {
-			$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+			$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		}
 		// Setting mode for display and background image in the top frame
@@ -178,20 +180,20 @@ class ClickMenuController {
 	 * @todo Define visibility
 	 */
 	public function main() {
-		$this->ajax = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ajax') ? TRUE : FALSE;
+		$this->ajax = GeneralUtility::_GP('ajax') ? TRUE : FALSE;
 		// Initialize Clipboard object:
-		$clipObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+		$clipObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
 		$clipObj->initializeClipboard();
 		// This locks the clipboard to the Normal for this request.
 		$clipObj->lockToNormal();
 		// Update clipboard if some actions are sent.
-		$CB = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('CB');
+		$CB = GeneralUtility::_GET('CB');
 		$clipObj->setCmd($CB);
 		$clipObj->cleanCurrent();
 		// Saves
 		$clipObj->endClipboard();
 		// Create clickmenu object
-		$clickMenu = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\ClickMenu\\ClickMenu');
+		$clickMenu = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\ClickMenu\\ClickMenu');
 		// Set internal vars in clickmenu object:
 		$clickMenu->clipObj = $clipObj;
 		$clickMenu->extClassArray = $this->extClassArray;
@@ -222,6 +224,5 @@ class ClickMenuController {
 	}
 
 }
-
 
 ?>

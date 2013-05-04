@@ -27,6 +27,9 @@ namespace TYPO3\CMS\Backend\View;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Browse pages in Web module
  *
@@ -82,7 +85,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		// If the record is locked, present a warning sign.
 		if ($lockInfo = \TYPO3\CMS\Backend\Utility\BackendUtility::isRecordLocked('pages', $row['uid'])) {
 			$aOnClick = 'alert(' . $GLOBALS['LANG']->JScharCode($lockInfo['msg']) . ');return false;';
-			$lockIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-warning-in-use', array('title' => htmlspecialchars($lockInfo['msg']))) . '</a>';
+			$lockIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . IconUtility::getSpriteIcon('status-warning-in-use', array('title' => htmlspecialchars($lockInfo['msg']))) . '</a>';
 		} else {
 			$lockIcon = '';
 		}
@@ -105,7 +108,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
 			$_params = array('pages', $row['uid']);
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
-				$stat .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+				$stat .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
 		return $dragDropIcon . $lockIcon . $pageIdStr . $stat;
@@ -122,7 +125,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 */
 	public function wrapStop($str, $row) {
 		if ($row['php_tree_stop']) {
-			$str .= '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('setTempDBmount' => $row['uid']))) . '" class="typo3-red">+</a> ';
+			$str .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => $row['uid']))) . '" class="typo3-red">+</a> ';
 		}
 		return $str;
 	}
@@ -142,7 +145,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.webpagetree.php']['pageTitleOverlay'])) {
 			$_params = array('title' => &$title, 'row' => &$row);
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.webpagetree.php']['pageTitleOverlay'] as $_funcRef) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+				GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 			}
 			unset($_params);
 		}
@@ -171,7 +174,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		';
 		// -- evaluate AJAX request
 		// IE takes anchor as parameter
-		$PM = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('PM');
+		$PM = GeneralUtility::_GP('PM');
 		if (($PMpos = strpos($PM, '#')) !== FALSE) {
 			$PM = substr($PM, 0, $PMpos);
 		}
@@ -271,7 +274,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	public function PMicon($row, $a, $c, $nextCount, $exp) {
 		$PM = $nextCount ? ($exp ? 'minus' : 'plus') : 'join';
 		$BTM = $a == $c ? 'bottom' : '';
-		$icon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' alt="" />';
+		$icon = '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' alt="" />';
 		if ($nextCount) {
 			$cmd = $this->bank . '_' . ($exp ? '0_' : '1_') . $row['uid'] . '_' . $this->treeName;
 			$icon = $this->PMiconATagWrap($icon, $cmd, !$exp);
@@ -324,7 +327,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			$cmd = $this->bank . '_' . ($isOpen ? '0_' : '1_') . $uid . '_' . $this->treeName;
 			// Only, if not for uid 0
 			if ($uid) {
-				$icon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . ($isOpen ? 'minus' : 'plus') . 'only.gif')) . ' alt="" />';
+				$icon = '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/' . ($isOpen ? 'minus' : 'plus') . 'only.gif')) . ' alt="" />';
 				$firstHtml = $this->PMiconATagWrap($icon, $cmd, !$isOpen);
 			}
 			// Preparing rootRec for the mount
@@ -439,7 +442,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			// Set HTML-icons, if any:
 			if ($this->makeHTML) {
 				if ($row['_FIRST_NOT_IN_MENU']) {
-					$HTML = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/ol/line.gif') . ' alt="" /><br/><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/ol/line.gif') . ' alt="" /><i>Not shown in menu' . $label_shownAlphabetically . ':</i><br>';
+					$HTML = '<img' . IconUtility::skinImg($this->backPath, 'gfx/ol/line.gif') . ' alt="" /><br/><img' . IconUtility::skinImg($this->backPath, 'gfx/ol/line.gif') . ' alt="" /><i>Not shown in menu' . $label_shownAlphabetically . ':</i><br>';
 				} else {
 					$HTML = '';
 				}

@@ -27,6 +27,10 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * API comments:
  *
@@ -113,9 +117,6 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  *
  *
  * The XML/phpArray structure is the internal format of the wizard.
- */
-/**
- * Script Class for rendering the Form Wizard
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -184,13 +185,13 @@ class FormsController {
 	 */
 	public function init() {
 		// GPvars:
-		$this->P = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('P');
-		$this->special = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('special');
-		$this->FORMCFG = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('FORMCFG');
+		$this->P = GeneralUtility::_GP('P');
+		$this->special = GeneralUtility::_GP('special');
+		$this->FORMCFG = GeneralUtility::_GP('FORMCFG');
 		// Setting options:
 		$this->xmlStorage = $this->P['params']['xmlOutput'];
 		// Document template object:
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/wizard_forms.html');
 		$this->doc->JScode = $this->doc->wrapScriptTags('
@@ -199,7 +200,7 @@ class FormsController {
 			}
 		');
 		// Setting form tag:
-		list($rUri) = explode('#', \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
+		list($rUri) = explode('#', GeneralUtility::getIndpEnv('REQUEST_URI'));
 		$this->doc->form = '<form action="' . htmlspecialchars($rUri) . '" method="post" name="wizardForm">';
 	}
 
@@ -252,17 +253,17 @@ class FormsController {
 		);
 		if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
 			// CSH
-			$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz', $GLOBALS['BACK_PATH'], '');
+			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz', $GLOBALS['BACK_PATH'], '');
 			// CSH Buttons
-			$buttons['csh_buttons'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_buttons', $GLOBALS['BACK_PATH'], '');
+			$buttons['csh_buttons'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_buttons', $GLOBALS['BACK_PATH'], '');
 			// Close
-			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(unescape(\'' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl($this->P['returnUrl'])) . '\')); return false;')) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE))) . '</a>';
+			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(unescape(\'' . rawurlencode(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl'])) . '\')); return false;')) . '">' . IconUtility::getSpriteIcon('actions-document-close', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE))) . '</a>';
 			// Save
-			$buttons['save'] = '<input type="image" class="c-inputButton" name="savedok"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/savedok.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', 1) . '" />';
+			$buttons['save'] = '<input type="image" class="c-inputButton" name="savedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/savedok.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', 1) . '" />';
 			// Save & Close
-			$buttons['save_close'] = '<input type="image" class="c-inputButton" name="saveandclosedok"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', 1) . '" />';
+			$buttons['save_close'] = '<input type="image" class="c-inputButton" name="saveandclosedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', 1) . '" />';
 			// Reload
-			$buttons['reload'] = '<input type="image" class="c-inputButton" name="_refresh"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg('', 'gfx/refresh_n.gif') . ' title="' . $GLOBALS['LANG']->getLL('forms_refresh', 1) . '" />';
+			$buttons['reload'] = '<input type="image" class="c-inputButton" name="_refresh"' . IconUtility::skinImg('', 'gfx/refresh_n.gif') . ' title="' . $GLOBALS['LANG']->getLL('forms_refresh', 1) . '" />';
 		}
 		return $buttons;
 	}
@@ -275,7 +276,7 @@ class FormsController {
 	 */
 	public function formsWizard() {
 		// First, check the references by selecting the record:
-		$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($this->P['table'], $this->P['uid']);
+		$row = BackendUtility::getRecord($this->P['table'], $this->P['uid']);
 		if (!is_array($row)) {
 			throw new \RuntimeException('Wizard Error: No reference to record', 1294587124);
 		}
@@ -310,7 +311,7 @@ class FormsController {
 			// Convert to string (either line based or XML):
 			if ($this->xmlStorage) {
 				// Convert the input array to XML:
-				$bodyText = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml_cs($this->FORMCFG['c'], 'T3FormWizard');
+				$bodyText = GeneralUtility::array2xml_cs($this->FORMCFG['c'], 'T3FormWizard');
 				// Setting cfgArr directly from the input:
 				$cfgArr = $this->FORMCFG['c'];
 			} else {
@@ -323,7 +324,7 @@ class FormsController {
 			// If a save button has been pressed, then save the new field content:
 			if ($_POST['savedok_x'] || $_POST['saveandclosedok_x']) {
 				// Make TCEmain object:
-				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+				$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 				$tce->stripslashes_values = 0;
 				// Put content into the data array:
 				$data = array();
@@ -335,16 +336,16 @@ class FormsController {
 				$tce->start($data, array());
 				$tce->process_datamap();
 				// Re-load the record content:
-				$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($this->P['table'], $this->P['uid']);
+				$row = BackendUtility::getRecord($this->P['table'], $this->P['uid']);
 				// If the save/close button was pressed, then redirect the screen:
 				if ($_POST['saveandclosedok_x']) {
-					\TYPO3\CMS\Core\Utility\HttpUtility::redirect(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
+					\TYPO3\CMS\Core\Utility\HttpUtility::redirect(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
 				}
 			}
 		} else {
 			// If nothing has been submitted, load the $bodyText variable from the selected database row:
 			if ($this->xmlStorage) {
-				$cfgArr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($row[$this->P['field']]);
+				$cfgArr = GeneralUtility::xml2array($row[$this->P['field']]);
 			} else {
 				// Regular linebased form configuration:
 				$cfgArr = $this->cfgString2CfgArray($row[$this->P['field']]);
@@ -389,7 +390,7 @@ class FormsController {
 			// If there is a configuration line which is active, then render it:
 			if (!isset($confData['comment'])) {
 				// Special parts:
-				if ($this->special == 'formtype_mail' && \TYPO3\CMS\Core\Utility\GeneralUtility::inList('formtype_mail,subject,html_enabled', $confData['fieldname'])) {
+				if ($this->special == 'formtype_mail' && GeneralUtility::inList('formtype_mail,subject,html_enabled', $confData['fieldname'])) {
 					$specParts[$confData['fieldname']] = $confData['default'];
 				} else {
 					// Render title/field preview COLUMN
@@ -410,11 +411,11 @@ class FormsController {
 								', $opt) . '
 							</select>';
 					// Title field:
-					if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList('hidden,submit', $confData['type'])) {
+					if (!GeneralUtility::inList('hidden,submit', $confData['type'])) {
 						$temp_cells[$GLOBALS['LANG']->getLL('forms_label')] = '<input type="text"' . $this->doc->formWidth(15) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][label]" value="' . htmlspecialchars($confData['label']) . '" />';
 					}
 					// Required checkbox:
-					if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList('check,hidden,submit,label', $confData['type'])) {
+					if (!GeneralUtility::inList('check,hidden,submit,label', $confData['type'])) {
 						$temp_cells[$GLOBALS['LANG']->getLL('forms_required')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][required]" value="1"' . ($confData['required'] ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_required', 1) . '" />';
 					}
 					// Put sub-items together into table cell:
@@ -425,46 +426,46 @@ class FormsController {
 					if ($this->special == 'formtype_mail' && $confData['type'] == 'file') {
 						$confData['fieldname'] = 'attachment' . ++$this->attachmentCounter;
 					}
-					if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList('label', $confData['type'])) {
+					if (!GeneralUtility::inList('label', $confData['type'])) {
 						$temp_cells[$GLOBALS['LANG']->getLL('forms_fieldName')] = '<input type="text"' . $this->doc->formWidth(10) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][fieldname]" value="' . htmlspecialchars($confData['fieldname']) . '" title="' . $GLOBALS['LANG']->getLL('forms_fieldName', 1) . '" />';
 					}
 					// Field configuration depending on the fields type:
 					switch ((string) $confData['type']) {
-					case 'textarea':
-						$temp_cells[$GLOBALS['LANG']->getLL('forms_cols')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][cols]" value="' . htmlspecialchars($confData['cols']) . '" title="' . $GLOBALS['LANG']->getLL('forms_cols', 1) . '" />';
-						$temp_cells[$GLOBALS['LANG']->getLL('forms_rows')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][rows]" value="' . htmlspecialchars($confData['rows']) . '" title="' . $GLOBALS['LANG']->getLL('forms_rows', 1) . '" />';
-						$temp_cells[$GLOBALS['LANG']->getLL('forms_extra')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][extra]" value="OFF"' . ($confData['extra'] == 'OFF' ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_extra', 1) . '" />';
-						break;
-					case 'input':
+						case 'textarea':
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_cols')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][cols]" value="' . htmlspecialchars($confData['cols']) . '" title="' . $GLOBALS['LANG']->getLL('forms_cols', 1) . '" />';
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_rows')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][rows]" value="' . htmlspecialchars($confData['rows']) . '" title="' . $GLOBALS['LANG']->getLL('forms_rows', 1) . '" />';
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_extra')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][extra]" value="OFF"' . ($confData['extra'] == 'OFF' ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_extra', 1) . '" />';
+							break;
+						case 'input':
 
-					case 'password':
-						$temp_cells[$GLOBALS['LANG']->getLL('forms_size')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][size]" value="' . htmlspecialchars($confData['size']) . '" title="' . $GLOBALS['LANG']->getLL('forms_size', 1) . '" />';
-						$temp_cells[$GLOBALS['LANG']->getLL('forms_max')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][max]" value="' . htmlspecialchars($confData['max']) . '" title="' . $GLOBALS['LANG']->getLL('forms_max', 1) . '" />';
-						break;
-					case 'file':
-						$temp_cells[$GLOBALS['LANG']->getLL('forms_size')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][size]" value="' . htmlspecialchars($confData['size']) . '" title="' . $GLOBALS['LANG']->getLL('forms_size', 1) . '" />';
-						break;
-					case 'select':
-						$temp_cells[$GLOBALS['LANG']->getLL('forms_size')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][size]" value="' . htmlspecialchars($confData['size']) . '" title="' . $GLOBALS['LANG']->getLL('forms_size', 1) . '" />';
-						$temp_cells[$GLOBALS['LANG']->getLL('forms_autosize')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][autosize]" value="1"' . ($confData['autosize'] ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_autosize', 1) . '" />';
-						$temp_cells[$GLOBALS['LANG']->getLL('forms_multiple')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][multiple]" value="1"' . ($confData['multiple'] ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_multiple', 1) . '" />';
-						break;
+						case 'password':
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_size')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][size]" value="' . htmlspecialchars($confData['size']) . '" title="' . $GLOBALS['LANG']->getLL('forms_size', 1) . '" />';
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_max')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][max]" value="' . htmlspecialchars($confData['max']) . '" title="' . $GLOBALS['LANG']->getLL('forms_max', 1) . '" />';
+							break;
+						case 'file':
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_size')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][size]" value="' . htmlspecialchars($confData['size']) . '" title="' . $GLOBALS['LANG']->getLL('forms_size', 1) . '" />';
+							break;
+						case 'select':
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_size')] = '<input type="text"' . $this->doc->formWidth(5) . ' name="FORMCFG[c][' . ($k + 1) * 2 . '][size]" value="' . htmlspecialchars($confData['size']) . '" title="' . $GLOBALS['LANG']->getLL('forms_size', 1) . '" />';
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_autosize')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][autosize]" value="1"' . ($confData['autosize'] ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_autosize', 1) . '" />';
+							$temp_cells[$GLOBALS['LANG']->getLL('forms_multiple')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][multiple]" value="1"' . ($confData['multiple'] ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_multiple', 1) . '" />';
+							break;
 					}
 					// Field configuration depending on the fields type:
 					switch ((string) $confData['type']) {
-					case 'textarea':
+						case 'textarea':
 
-					case 'input':
+						case 'input':
 
-					case 'password':
-						if (strlen(trim($confData['specialEval']))) {
-							$hiddenFields[] = '<input type="hidden" name="FORMCFG[c][' . ($k + 1) * 2 . '][specialEval]" value="' . htmlspecialchars($confData['specialEval']) . '" />';
-						}
-						break;
+						case 'password':
+							if (strlen(trim($confData['specialEval']))) {
+								$hiddenFields[] = '<input type="hidden" name="FORMCFG[c][' . ($k + 1) * 2 . '][specialEval]" value="' . htmlspecialchars($confData['specialEval']) . '" />';
+							}
+							break;
 					}
 					// Default data
 					if ($confData['type'] == 'select' || $confData['type'] == 'radio') {
-						$temp_cells[$GLOBALS['LANG']->getLL('forms_options')] = '<textarea ' . $this->doc->formWidthText(15) . ' rows="4" name="FORMCFG[c][' . ($k + 1) * 2 . '][options]" title="' . $GLOBALS['LANG']->getLL('forms_options', 1) . '">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($confData['default']) . '</textarea>';
+						$temp_cells[$GLOBALS['LANG']->getLL('forms_options')] = '<textarea ' . $this->doc->formWidthText(15) . ' rows="4" name="FORMCFG[c][' . ($k + 1) * 2 . '][options]" title="' . $GLOBALS['LANG']->getLL('forms_options', 1) . '">' . GeneralUtility::formatForTextarea($confData['default']) . '</textarea>';
 					} elseif ($confData['type'] == 'check') {
 						$temp_cells[$GLOBALS['LANG']->getLL('forms_checked')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][default]" value="1"' . (trim($confData['default']) ? ' checked="checked"' : '') . ' title="' . $GLOBALS['LANG']->getLL('forms_checked', 1) . '" />';
 					} elseif ($confData['type'] && $confData['type'] != 'file') {
@@ -478,18 +479,18 @@ class FormsController {
 					// FIXME $inputStyle undefined
 					$brTag = $inputStyle ? '' : '<br />';
 					if ($k != 0) {
-						$ctrl .= '<input type="image" name="FORMCFG[row_up][' . ($k + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/pil2up.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_up', 1) . '" />' . $brTag;
+						$ctrl .= '<input type="image" name="FORMCFG[row_up][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2up.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_up', 1) . '" />' . $brTag;
 					} else {
-						$ctrl .= '<input type="image" name="FORMCFG[row_bottom][' . ($k + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/turn_up.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_bottom', 1) . '" />' . $brTag;
+						$ctrl .= '<input type="image" name="FORMCFG[row_bottom][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_up.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_bottom', 1) . '" />' . $brTag;
 					}
-					$ctrl .= '<input type="image" name="FORMCFG[row_remove][' . ($k + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/garbage.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_removeRow', 1) . '" />' . $brTag;
+					$ctrl .= '<input type="image" name="FORMCFG[row_remove][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/garbage.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_removeRow', 1) . '" />' . $brTag;
 					// FIXME $tLines undefined
 					if ($k + 1 != count($tLines)) {
-						$ctrl .= '<input type="image" name="FORMCFG[row_down][' . ($k + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/pil2down.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_down', 1) . '" />' . $brTag;
+						$ctrl .= '<input type="image" name="FORMCFG[row_down][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2down.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_down', 1) . '" />' . $brTag;
 					} else {
-						$ctrl .= '<input type="image" name="FORMCFG[row_top][' . ($k + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/turn_down.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_top', 1) . '" />' . $brTag;
+						$ctrl .= '<input type="image" name="FORMCFG[row_top][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_down.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_top', 1) . '" />' . $brTag;
 					}
-					$ctrl .= '<input type="image" name="FORMCFG[row_add][' . ($k + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/add.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_addRow', 1) . '" />' . $brTag;
+					$ctrl .= '<input type="image" name="FORMCFG[row_add][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/add.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_addRow', 1) . '" />' . $brTag;
 					$ctrl = '<span class="c-wizButtonsV">' . $ctrl . '</span>';
 					// Finally, put together the full row from the generated content above:
 					$bgC = $confData['type'] ? ' class="bgColor5"' : '';
@@ -517,7 +518,7 @@ class FormsController {
 			$tRows[] = '
 				<tr>
 					<td colspan="2" class="bgColor2">&nbsp;</td>
-					<td colspan="2" class="bgColor2"><strong>' . $GLOBALS['LANG']->getLL('forms_special_eform', 1) . ':</strong>' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_formmail_info', $GLOBALS['BACK_PATH'], '') . '</td>
+					<td colspan="2" class="bgColor2"><strong>' . $GLOBALS['LANG']->getLL('forms_special_eform', 1) . ':</strong>' . BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_formmail_info', $GLOBALS['BACK_PATH'], '') . '</td>
 				</tr>';
 			// "FORM type":
 			$tRows[] = '
@@ -612,28 +613,28 @@ class FormsController {
 		if ($cmd && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($kk)) {
 			if (substr($cmd, 0, 4) == 'row_') {
 				switch ($cmd) {
-				case 'row_remove':
-					unset($this->FORMCFG['c'][$kk]);
-					break;
-				case 'row_add':
-					$this->FORMCFG['c'][$kk + 1] = array();
-					break;
-				case 'row_top':
-					$this->FORMCFG['c'][1] = $this->FORMCFG['c'][$kk];
-					unset($this->FORMCFG['c'][$kk]);
-					break;
-				case 'row_bottom':
-					$this->FORMCFG['c'][1000000] = $this->FORMCFG['c'][$kk];
-					unset($this->FORMCFG['c'][$kk]);
-					break;
-				case 'row_up':
-					$this->FORMCFG['c'][$kk - 3] = $this->FORMCFG['c'][$kk];
-					unset($this->FORMCFG['c'][$kk]);
-					break;
-				case 'row_down':
-					$this->FORMCFG['c'][$kk + 3] = $this->FORMCFG['c'][$kk];
-					unset($this->FORMCFG['c'][$kk]);
-					break;
+					case 'row_remove':
+						unset($this->FORMCFG['c'][$kk]);
+						break;
+					case 'row_add':
+						$this->FORMCFG['c'][$kk + 1] = array();
+						break;
+					case 'row_top':
+						$this->FORMCFG['c'][1] = $this->FORMCFG['c'][$kk];
+						unset($this->FORMCFG['c'][$kk]);
+						break;
+					case 'row_bottom':
+						$this->FORMCFG['c'][1000000] = $this->FORMCFG['c'][$kk];
+						unset($this->FORMCFG['c'][$kk]);
+						break;
+					case 'row_up':
+						$this->FORMCFG['c'][$kk - 3] = $this->FORMCFG['c'][$kk];
+						unset($this->FORMCFG['c'][$kk]);
+						break;
+					case 'row_down':
+						$this->FORMCFG['c'][$kk + 3] = $this->FORMCFG['c'][$kk];
+						unset($this->FORMCFG['c'][$kk]);
+						break;
 				}
 				ksort($this->FORMCFG['c']);
 			}
@@ -668,53 +669,52 @@ class FormsController {
 					// Default:
 					$tArr = array('', '', '', '', '', '');
 					switch ((string) $vv['type']) {
-					case 'textarea':
-						if (intval($vv['cols'])) {
-							$tArr[0] = intval($vv['cols']);
-						}
-						if (intval($vv['rows'])) {
-							$tArr[1] = intval($vv['rows']);
-						}
-						if (trim($vv['extra'])) {
-							$tArr[2] = trim($vv['extra']);
-						}
-						if (strlen($vv['specialEval'])) {
-							// Preset blank default value so position 3 can get a value...
-							$thisLine[2] = '';
-							$thisLine[3] = $vv['specialEval'];
-						}
-						break;
-					case 'input':
-
-					case 'password':
-						if (intval($vv['size'])) {
-							$tArr[0] = intval($vv['size']);
-						}
-						if (intval($vv['max'])) {
-							$tArr[1] = intval($vv['max']);
-						}
-						if (strlen($vv['specialEval'])) {
-							// Preset blank default value so position 3 can get a value...
-							$thisLine[2] = '';
-							$thisLine[3] = $vv['specialEval'];
-						}
-						break;
-					case 'file':
-						if (intval($vv['size'])) {
-							$tArr[0] = intval($vv['size']);
-						}
-						break;
-					case 'select':
-						if (intval($vv['size'])) {
-							$tArr[0] = intval($vv['size']);
-						}
-						if ($vv['autosize']) {
-							$tArr[0] = 'auto';
-						}
-						if ($vv['multiple']) {
-							$tArr[1] = 'm';
-						}
-						break;
+						case 'textarea':
+							if (intval($vv['cols'])) {
+								$tArr[0] = intval($vv['cols']);
+							}
+							if (intval($vv['rows'])) {
+								$tArr[1] = intval($vv['rows']);
+							}
+							if (trim($vv['extra'])) {
+								$tArr[2] = trim($vv['extra']);
+							}
+							if (strlen($vv['specialEval'])) {
+								// Preset blank default value so position 3 can get a value...
+								$thisLine[2] = '';
+								$thisLine[3] = $vv['specialEval'];
+							}
+							break;
+						case 'input':
+						case 'password':
+							if (intval($vv['size'])) {
+								$tArr[0] = intval($vv['size']);
+							}
+							if (intval($vv['max'])) {
+								$tArr[1] = intval($vv['max']);
+							}
+							if (strlen($vv['specialEval'])) {
+								// Preset blank default value so position 3 can get a value...
+								$thisLine[2] = '';
+								$thisLine[3] = $vv['specialEval'];
+							}
+							break;
+						case 'file':
+							if (intval($vv['size'])) {
+								$tArr[0] = intval($vv['size']);
+							}
+							break;
+						case 'select':
+							if (intval($vv['size'])) {
+								$tArr[0] = intval($vv['size']);
+							}
+							if ($vv['autosize']) {
+								$tArr[0] = 'auto';
+							}
+							if ($vv['multiple']) {
+								$tArr[1] = 'm';
+							}
+							break;
 					}
 					$tArr = $this->cleanT($tArr);
 					if (count($tArr)) {
@@ -764,17 +764,17 @@ class FormsController {
 			// unconfigured fields) or b) it is NOT a comment.
 			if (!$val || strcspn($val, '#/')) {
 				// Split:
-				$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $val);
+				$parts = GeneralUtility::trimExplode('|', $val);
 				// Label:
 				$confData['label'] = trim($parts[0]);
 				// Field:
-				$fParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $parts[1]);
+				$fParts = GeneralUtility::trimExplode(',', $parts[1]);
 				$fParts[0] = trim($fParts[0]);
 				if (substr($fParts[0], 0, 1) == '*') {
 					$confData['required'] = 1;
 					$fParts[0] = substr($fParts[0], 1);
 				}
-				$typeParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $fParts[0]);
+				$typeParts = GeneralUtility::trimExplode('=', $fParts[0]);
 				$confData['type'] = trim(strtolower(end($typeParts)));
 				if ($confData['type']) {
 					if (count($typeParts) == 1) {
@@ -788,38 +788,36 @@ class FormsController {
 						$confData['fieldname'] = str_replace(' ', '_', trim($typeParts[0]));
 					}
 					switch ((string) $confData['type']) {
-					case 'select':
-
-					case 'radio':
-						$confData['default'] = implode(LF, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $parts[2]));
-						break;
-					default:
-						$confData['default'] = trim($parts[2]);
-						break;
+						case 'select':
+						case 'radio':
+							$confData['default'] = implode(LF, GeneralUtility::trimExplode(',', $parts[2]));
+							break;
+						default:
+							$confData['default'] = trim($parts[2]);
+							break;
 					}
 					// Field configuration depending on the fields type:
 					switch ((string) $confData['type']) {
-					case 'textarea':
-						$confData['cols'] = $fParts[1];
-						$confData['rows'] = $fParts[2];
-						$confData['extra'] = strtoupper($fParts[3]) == 'OFF' ? 'OFF' : '';
-						$confData['specialEval'] = trim($parts[3]);
-						break;
-					case 'input':
-
-					case 'password':
-						$confData['size'] = $fParts[1];
-						$confData['max'] = $fParts[2];
-						$confData['specialEval'] = trim($parts[3]);
-						break;
-					case 'file':
-						$confData['size'] = $fParts[1];
-						break;
-					case 'select':
-						$confData['size'] = intval($fParts[1]) ? $fParts[1] : '';
-						$confData['autosize'] = strtolower(trim($fParts[1])) == 'auto' ? 1 : 0;
-						$confData['multiple'] = strtolower(trim($fParts[2])) == 'm' ? 1 : 0;
-						break;
+						case 'textarea':
+							$confData['cols'] = $fParts[1];
+							$confData['rows'] = $fParts[2];
+							$confData['extra'] = strtoupper($fParts[3]) == 'OFF' ? 'OFF' : '';
+							$confData['specialEval'] = trim($parts[3]);
+							break;
+						case 'input':
+						case 'password':
+							$confData['size'] = $fParts[1];
+							$confData['max'] = $fParts[2];
+							$confData['specialEval'] = trim($parts[3]);
+							break;
+						case 'file':
+							$confData['size'] = $fParts[1];
+							break;
+						case 'select':
+							$confData['size'] = intval($fParts[1]) ? $fParts[1] : '';
+							$confData['autosize'] = strtolower(trim($fParts[1])) == 'auto' ? 1 : 0;
+							$confData['multiple'] = strtolower(trim($fParts[2])) == 'm' ? 1 : 0;
+							break;
 					}
 				}
 			} else {
@@ -886,6 +884,5 @@ class FormsController {
 	}
 
 }
-
 
 ?>
