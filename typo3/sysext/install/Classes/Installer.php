@@ -6011,8 +6011,8 @@ REMOTE_ADDR was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' (' . Gener
 		} else {
 			$this->template = @file_get_contents((PATH_site . $this->templateFilePath . 'Install.html'));
 		}
-		// Add prototype to javascript array for output
-		$this->javascript[] = '<script type="text/javascript" src="' . GeneralUtility::createVersionNumberedFilename('../contrib/prototype/prototype.js') . '"></script>';
+		// Add jquery to javascript array for output
+		$this->javascript[] = '<script type="text/javascript" src="' . GeneralUtility::createVersionNumberedFilename('../contrib/jquery/jquery-1.9.1.min.js') . '"></script>';
 		// Add JS functions for output
 		$this->javascript[] = '<script type="text/javascript" src="' . GeneralUtility::createVersionNumberedFilename('../sysext/install/Resources/Public/Javascript/install.js') . '"></script>';
 		// Include the default stylesheets
