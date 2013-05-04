@@ -4385,7 +4385,7 @@ Connection: close
 	 * @deprecated since 6.1, will be removed two versions later - Use \TYPO3\CMS\Core\Mail\Mailer instead
 	 */
 	static public function plainMailEncoded($email, $subject, $message, $headers = '', $encoding = 'quoted-printable', $charset = '', $dontEncodeHeader = FALSE) {
-		GeneralUtility::logDeprecatedFunction();
+		self::logDeprecatedFunction();
 		if (!$charset) {
 			$charset = 'utf-8';
 		}
