@@ -90,6 +90,28 @@ class DataPreprocessor {
 	 */
 	public $loadModules = '';
 
+	/**
+	 * Internal hooks storage
+	 * @param array<TYPO3\CMS\Backend\Form\DataPreprocessorHookInterface>
+	 */
+	protected $processRecordHookObjects = array();
+
+	/**
+	 * constructor method, initializes the hook objects
+	 */
+	public function __construct() {
+		$hookElements = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Backend\\Form\\DataPreprocessor']['processRecord'];
+		if (is_array($hookElements)) {
+			foreach ($hookElements as $classReference) {
+				/** @var $hookObject \TYPO3\CMS\Backend\Form\DataPreprocessorHookInterface */
+				$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classReference);
+				if ($hookObject instanceof DataPreprocessorHookInterface) {
+					$this->processRecordHookObjects[] = $hookObject;
+				}
+			}
+		}
+	}
+
 	/***********************************************
 	 *
 	 * Getting record content, ready for display in TCEforms
@@ -206,6 +228,12 @@ class DataPreprocessor {
 	 * @todo Define visibility
 	 */
 	public function renderRecord($table, $id, $pid, $row) {
+
+		foreach ($this->processRecordHookObjects as $hookObject) {
+			/** @var $hookObject \TYPO3\CMS\Backend\Form\DataPreprocessorHookInterface */
+			$hookObject->preProcessRenderRecord($table, $id, $pid, $row);
+		}
+
 		$dateTimeFormats = $GLOBALS['TYPO3_DB']->getDateTimeFormats($table);
 		foreach ($GLOBALS['TCA'][$table]['columns'] as $column => $config) {
 			if (isset($config['config']['dbType']) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList('date,datetime', $config['config']['dbType'])) {
@@ -254,6 +282,12 @@ class DataPreprocessor {
 		if (!is_array($TSconfig)) {
 			$TSconfig = array();
 		}
+
+		foreach ($this->processRecordHookObjects as $hookObject) {
+			/** @var $hookObject \TYPO3\CMS\Backend\Form\DataPreprocessorHookInterface */
+			$hookObject->preProcessRenderRecordRaw($table, $id, $pid, $row, $TSconfig, $tscPID);
+		}
+
 		// Create blank accumulation array:
 		$totalRecordContent = array();
 		// Traverse the configured columns for the table (TCA):
@@ -299,6 +333,12 @@ class DataPreprocessor {
 	 * @todo Define visibility
 	 */
 	public function renderRecord_SW($data, $fieldConfig, $TSconfig, $table, $row, $field) {
+
+		foreach ($this->processRecordHookObjects as $hookObject) {
+			/** @var $hookObject \TYPO3\CMS\Backend\Form\DataPreprocessorHookInterface */
+			$hookObject->preProcessRenderRecord_SW($data, $fieldConfig, $TSconfig, $table, $row, $field);
+		}
+
 		switch ((string) $fieldConfig['config']['type']) {
 		case 'group':
 			$data = $this->renderRecord_groupProc($data, $fieldConfig, $TSconfig, $table, $row, $field);
