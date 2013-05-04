@@ -246,12 +246,16 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			// See if the file path variable is set, this takes precedence
 			$filePathConf = $this->cObj->stdWrap($conf['filePath'], $conf['filePath.']);
 			if ($filePathConf) {
-				$fileList = $this->cObj->filelist($filePathConf);
-				list($path) = explode('|', $filePathConf);
+				// split the | separated values in an array
+				list($path, $filePathConfExtensionList, $filePathConfSorting, $filePathConfSortingReverse, $filePathConfAddPath) = GeneralUtility::trimExplode('|', $filePathConf);
+				$allowedExtensions = $filePathConfExtensionList != '' ? explode(',', strtolower($filePathConfExtensionList)) : array();
+				$fileArray = $this->cObj->getFilesInPath($path, $allowedExtensions, $filePathConfSorting, $filePathConfSortingReverse, $filePathConfAddPath);
 			} else {
 				// Get the list of files from the field
 				$field = trim($conf['field']) ? trim($conf['field']) : 'media';
 				$fileList = $this->cObj->data[$field];
+				// Explode into an array:
+				$fileArray = GeneralUtility::trimExplode(',', $fileList, TRUE);
 				$path = 'uploads/media/';
 				if (
 					is_array($GLOBALS['TCA']['tt_content']['columns'][$field]) &&
@@ -262,8 +266,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				}
 			}
 			$path = trim($path);
-			// Explode into an array:
-			$fileArray = GeneralUtility::trimExplode(',', $fileList, TRUE);
+
 			// If there were files to list...:
 			if (count($fileArray)) {
 				// Get the descriptions for the files (if any):

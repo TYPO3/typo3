@@ -3579,88 +3579,123 @@ class ContentObjectRenderer {
 	 *
 	 * @param string $data The command which contains information about what files/directory listing to return. See the "filelist" property of stdWrap for details.
 	 * @return string Comma list of files.
-	 * @access private
 	 * @see stdWrap()
-	 * @todo Define visibility
+	 * @see getFilesInPath()
 	 */
 	public function filelist($data) {
-		$data = trim($data);
-		if ($data) {
-			$data_arr = explode('|', $data);
-			// read directory:
-			// MUST exist!
-			if ($GLOBALS['TSFE']->lockFilePath) {
-				// Cleaning name..., only relative paths accepted.
-				$path = $this->clean_directory($data_arr[0]);
-				// See if path starts with lockFilePath, the additional '/' is needed because clean_directory gets rid of it
-				$path = GeneralUtility::isFirstPartOfStr($path . '/', $GLOBALS['TSFE']->lockFilePath) ? $path : '';
+		// split the | separated values in an array
+		list($path, $extensionList, $sorting, $sortingReverse, $addPath) = GeneralUtility::trimExplode('|', $data);
+
+		$allowedFileExtensions = $extensionList != '' ? explode(',', strtolower($extensionList)) : array();
+
+		// get all files as array
+		$filesArray = $this->getFilesInPath($path, $allowedFileExtensions, $sorting, $sortingReverse, $addPath);
+
+		return implode(',', $filesArray);
+	}
+
+	/**
+	 * Reads a directory for files and returns the filepaths in a string list as an array.
+	 * Implements the stdWrap property "filelist"
+	 *
+	 * @param string $path Path to search for files
+	 * @param string $allowedFileExtensions Limit the file list to only certain extensions. Extensions in lowercase only.
+	 * @param string $sorting Can be "name", "size", "ext", "date", "ctime", "mtime", "mdate" or empty
+	 * @param string $sortingOrder Set this to 'r' to get reverse sorting order
+	 * @param boolean $addPath Add full path to all file names
+	 * @return array Array of files, optionally with the full path
+	 * @see filelist()
+	 */
+	public function getFilesInPath($path, $allowedFileExtensions = array(), $sorting = NULL, $sortingOrder = 'n', $addPath = FALSE) {
+		$path = trim($path);
+		if ($path === '') {
+			return array();
+		}
+
+		$finalFiles = array();
+
+		// read directory:
+		// MUST exist!
+		if ($GLOBALS['TSFE']->lockFilePath) {
+			// Cleaning name..., only relative paths accepted.
+			$path = $this->clean_directory($path);
+			// See if path starts with lockFilePath, the additional '/' is needed because clean_directory gets rid of it
+			$path = GeneralUtility::isFirstPartOfStr($path . '/', $GLOBALS['TSFE']->lockFilePath) ? $path : '';
+		}
+		if ($path) {
+			$items = array(
+				'files' => array(),
+				'sorting' => array()
+			);
+
+			if (count($allowedFileExtensions) > 0) {
+				$allowedFileExtensions = array_unique($allowedFileExtensions);
 			}
-			if ($path) {
-				$items = array(
-					'files' => array(),
-					'sorting' => array()
-				);
-				$ext_list = strtolower(GeneralUtility::uniqueList($data_arr[1]));
-				$sorting = trim($data_arr[2]);
-				// Read dir:
-				$d = @dir($path);
-				$tempArray = array();
-				if (is_object($d)) {
-					$count = 0;
-					while ($entry = $d->read()) {
-						if ($entry != '.' && $entry != '..') {
-							// Because of odd PHP-error where <br />-tag is sometimes placed after a filename!!
-							$wholePath = $path . '/' . $entry;
-							if (file_exists($wholePath) && filetype($wholePath) == 'file') {
-								$info = GeneralUtility::split_fileref($wholePath);
-								if (!$ext_list || GeneralUtility::inList($ext_list, $info['fileext'])) {
-									$items['files'][] = $info['file'];
-									switch ($sorting) {
-										case 'name':
-											$items['sorting'][] = strtolower($info['file']);
-											break;
-										case 'size':
-											$items['sorting'][] = filesize($wholePath);
-											break;
-										case 'ext':
-											$items['sorting'][] = $info['fileext'];
-											break;
-										case 'date':
-											$items['sorting'][] = filectime($wholePath);
-											break;
-										case 'mdate':
-											$items['sorting'][] = filemtime($wholePath);
-											break;
-										default:
-											$items['sorting'][] = $count;
-									}
-									$count++;
-								}
+
+			// Read dir:
+			$d = @dir($path);
+			if (is_object($d)) {
+				$count = 0;
+				while ($entry = $d->read()) {
+
+					// skip current directory and parent directory
+					if ($entry === '.' || $entry === '..') {
+						continue;
+					}
+
+					// Because of odd PHP-error where <br />-tag is sometimes placed after a filename!!
+					$fullFileName = $path . '/' . $entry;
+
+					if (@file_exists($fullFileName) && @is_file($fullFileName)) {
+						$info = GeneralUtility::split_fileref($fullFileName);
+
+						if (count($allowedFileExtensions) === 0 || in_array($info['fileext'], $allowedFileExtensions)) {
+							$items['files'][] = $info['file'];
+							switch ($sorting) {
+								case 'name':
+									$items['sorting'][] = strtolower($info['file']);
+									break;
+								case 'size':
+									$items['sorting'][] = filesize($fullFileName);
+									break;
+								case 'ext':
+									$items['sorting'][] = $info['fileext'];
+									break;
+								case 'ctime':
+								case 'date':
+									$items['sorting'][] = filectime($fullFileName);
+									break;
+								case 'mtime':
+								case 'mdate':
+									$items['sorting'][] = filemtime($fullFileName);
+									break;
+								default:
+									$items['sorting'][] = $count;
 							}
+							$count++;
 						}
 					}
-					$d->close();
 				}
-				// Sort if required
-				if (count($items['sorting'])) {
-					if (strtolower(trim($data_arr[3])) != 'r') {
-						asort($items['sorting']);
-					} else {
-						arsort($items['sorting']);
-					}
+				$d->close();
+			}
+
+			// Sort if required
+			if (count($items['sorting'])) {
+				if (strtolower($sortingOrder) != 'r') {
+					asort($items['sorting']);
+				} else {
+					arsort($items['sorting']);
 				}
-				if (count($items['files'])) {
-					// Make list
-					reset($items['sorting']);
-					$fullPath = trim($data_arr[4]);
-					$list_arr = array();
-					foreach ($items['sorting'] as $key => $v) {
-						$list_arr[] = $fullPath ? $path . '/' . $items['files'][$key] : $items['files'][$key];
-					}
-					return implode(',', $list_arr);
+			}
+
+			// Make list, based on the sorted array from above
+			if (count($items['files'])) {
+				foreach ($items['sorting'] as $key => $v) {
+					$finalFiles[] = ($addPath ? $path . '/' : '') . $items['files'][$key];
 				}
 			}
 		}
+		return $finalFiles;
 	}
 
 	/**
