@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Backend\Tree\View;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Generate a page-tree, browsable.
  *
@@ -80,7 +82,7 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @todo Define visibility
 	 */
 	public function getTitleAttrib($row) {
-		return \TYPO3\CMS\Backend\Utility\BackendUtility::titleAttribForPages($row, '1=1 ' . $this->clause, 0);
+		return BackendUtility::titleAttribForPages($row, '1=1 ' . $this->clause, 0);
 	}
 
 	/**
@@ -117,7 +119,7 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	public function getTitleStr($row, $titleLen = 30) {
 		$title = parent::getTitleStr($row, $titleLen);
 		if (isset($row['is_siteroot']) && $row['is_siteroot'] != 0 && $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showDomainNameWithTitle')) {
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('domainName,sorting', 'sys_domain', 'pid=' . $GLOBALS['TYPO3_DB']->quoteStr(($row['uid'] . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_domain') . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('sys_domain')), 'sys_domain'), '', 'sorting', 1);
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('domainName,sorting', 'sys_domain', 'pid=' . $GLOBALS['TYPO3_DB']->quoteStr(($row['uid'] . BackendUtility::deleteClause('sys_domain') . BackendUtility::BEenableFields('sys_domain')), 'sys_domain'), '', 'sorting', 1);
 			if (is_array($rows) && count($rows) > 0) {
 				$title = sprintf('%s [%s]', $title, htmlspecialchars($rows[0]['domainName']));
 			}

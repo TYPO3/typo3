@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Backend\ContextMenu\Pagetree;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Context Menu Data Provider for the Page Tree
  *
@@ -55,12 +58,12 @@ class ContextMenuDataProvider extends \TYPO3\CMS\Backend\ContextMenu\AbstractCon
 		$tsConfig = $GLOBALS['BE_USER']->getTSConfig('options.contextMenu.' . $this->getContextMenuType() . '.disableItems');
 		$disableItems = array();
 		if (trim($tsConfig['value']) !== '') {
-			$disableItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tsConfig['value']);
+			$disableItems = GeneralUtility::trimExplode(',', $tsConfig['value']);
 		}
 		$tsConfig = $GLOBALS['BE_USER']->getTSConfig('options.contextMenu.pageTree.disableItems');
 		$oldDisableItems = array();
 		if (trim($tsConfig['value']) !== '') {
-			$oldDisableItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tsConfig['value']);
+			$oldDisableItems = GeneralUtility::trimExplode(',', $tsConfig['value']);
 		}
 		$additionalItems = array();
 		foreach ($oldDisableItems as $item) {
@@ -69,7 +72,7 @@ class ContextMenuDataProvider extends \TYPO3\CMS\Backend\ContextMenu\AbstractCon
 				continue;
 			}
 			if (strpos($this->legacyContextMenuMapping[$item], ',')) {
-				$actions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->legacyContextMenuMapping[$item]);
+				$actions = GeneralUtility::trimExplode(',', $this->legacyContextMenuMapping[$item]);
 				$additionalItems = array_merge($additionalItems, $actions);
 			} else {
 				$additionalItems[] = $item;
@@ -95,6 +98,5 @@ class ContextMenuDataProvider extends \TYPO3\CMS\Backend\ContextMenu\AbstractCon
 	}
 
 }
-
 
 ?>

@@ -26,6 +26,10 @@ namespace TYPO3\CMS\Backend\View;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Backend layout for CMS
  *
@@ -74,16 +78,16 @@ class BackendLayoutView {
 	 * @return array $tcaItems
 	 */
 	public function getColPosListItemsParsed($id) {
-		$tsConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($id, 'TCEFORM.tt_content.colPos');
+		$tsConfig = BackendUtility::getModTSconfig($id, 'TCEFORM.tt_content.colPos');
 		$tcaConfig = $GLOBALS['TCA']['tt_content']['columns']['colPos']['config'];
 		/** @var $tceForms \TYPO3\CMS\Backend\Form\FormEngine */
-		$tceForms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
+		$tceForms = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
 		$tcaItems = $tcaConfig['items'];
 		$tcaItems = $tceForms->addItems($tcaItems, $tsConfig['properties']['addItems.']);
 		if (isset($tcaConfig['itemsProcFunc']) && $tcaConfig['itemsProcFunc']) {
 			$tcaItems = $this->addColPosListLayoutItems($id, $tcaItems);
 		}
-		foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tsConfig['properties']['removeItems'], 1) as $removeId) {
+		foreach (GeneralUtility::trimExplode(',', $tsConfig['properties']['removeItems'], 1) as $removeId) {
 			foreach ($tcaItems as $key => $item) {
 				if ($item[1] == $removeId) {
 					unset($tcaItems[$key]);
@@ -100,11 +104,11 @@ class BackendLayoutView {
 	 * @return array|NULL $backendLayout
 	 */
 	public function getSelectedBackendLayout($id) {
-		$rootline = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($id);
+		$rootline = BackendUtility::BEgetRootLine($id);
 		$backendLayoutUid = NULL;
 		for ($i = count($rootline); $i > 0; $i--) {
 			$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, pid, backend_layout, backend_layout_next_level', 'pages', 'uid=' . intval($rootline[$i]['uid']));
-			\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('pages', $page);
+			BackendUtility::workspaceOL('pages', $page);
 			$selectedBackendLayout = intval($page['backend_layout']);
 			$selectedBackendLayoutNextLevel = intval($page['backend_layout_next_level']);
 			if ($selectedBackendLayout != 0 && $page['uid'] == $id) {
@@ -130,7 +134,7 @@ class BackendLayoutView {
 		}
 		if ($backendLayout) {
 			/** @var $parser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
-			$parser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+			$parser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 			$parser->parse($parser->checkIncludeLines($backendLayout['config']));
 			$backendLayout['__config'] = $parser->setup;
 			$backendLayout['__items'] = array();
@@ -141,7 +145,7 @@ class BackendLayoutView {
 					if (isset($row['columns.']) && is_array($row['columns.'])) {
 						foreach ($row['columns.'] as $column) {
 							$backendLayout['__items'][] = array(
-								\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($column['name'], 'LLL:') ? $GLOBALS['LANG']->sL($column['name']) : $column['name'],
+								GeneralUtility::isFirstPartOfStr($column['name'], 'LLL:') ? $GLOBALS['LANG']->sL($column['name']) : $column['name'],
 								$column['colPos'],
 								NULL
 							);

@@ -26,14 +26,9 @@ namespace TYPO3\CMS\Backend;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Class for TYPO3 backend user authentication in the TSFE frontend
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * TYPO3 backend user authentication in the TSFE frontend.
  * This includes mainly functions related to the Admin Panel
@@ -120,7 +115,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 		if (isset($this->extAdminConfig['enable.'])) {
 			foreach ($this->extAdminConfig['enable.'] as $key => $value) {
 				if ($value) {
-					$this->adminPanel = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\View\\AdminPanelView');
+					$this->adminPanel = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\View\\AdminPanelView');
 					$this->extAdmEnabled = TRUE;
 					break;
 				}
@@ -146,7 +141,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 					}
 					$controllerClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['frontendEditingController'][$controllerKey];
 					if ($controllerClass) {
-						$this->frontendEdit = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($controllerClass, FALSE);
+						$this->frontendEdit = GeneralUtility::getUserObj($controllerClass, FALSE);
 					}
 					break;
 				}
@@ -200,13 +195,13 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 		}
 		// Check IP
 		if (trim($GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
-			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
+			if (!GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
 				return FALSE;
 			}
 		}
 		// Check SSL (https)
 		if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']) && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] != 3) {
-			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL')) {
+			if (!GeneralUtility::getIndpEnv('TYPO3_SSL')) {
 				return FALSE;
 			}
 		}

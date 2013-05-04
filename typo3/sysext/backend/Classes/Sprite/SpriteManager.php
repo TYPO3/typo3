@@ -26,6 +26,9 @@ namespace TYPO3\CMS\Backend\Sprite;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * TYPO3 sprite manager, used in BE and in FE if a BE user is logged in.
  *
@@ -91,14 +94,14 @@ class SpriteManager {
 	static protected function createSpriteCache() {
 		$handlerClass = $GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconGenerator_handler'];
 		/** @var $handler \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface */
-		$handler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($handlerClass);
+		$handler = GeneralUtility::makeInstance($handlerClass);
 		// Throw exception if handler class does not implement required interface
 		if (!$handler instanceof \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface) {
 			throw new \RuntimeException('Class ' . $handlerClass . ' in $TYPO3_CONF_VARS[BE][spriteIconGenerator_handler] ' . ' does not implement TYPO3\\CMS\\Backend\\Sprite\\SpriteIconGeneratorInterface', 1294586333);
 		}
 		// Create temp directory if missing
 		if (!is_dir((PATH_site . self::$tempPath))) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir(PATH_site . self::$tempPath);
+			GeneralUtility::mkdir(PATH_site . self::$tempPath);
 		}
 		// Generate CSS and TCA files, build icon set register
 		$handler->generate();

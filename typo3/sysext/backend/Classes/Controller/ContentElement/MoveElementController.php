@@ -27,6 +27,10 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Script Class for rendering the move-element wizard display
  *
@@ -99,17 +103,17 @@ class MoveElementController {
 	 */
 	public function init() {
 		// Setting internal vars:
-		$this->sys_language = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sys_language'));
-		$this->page_id = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('uid'));
-		$this->table = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('table');
-		$this->R_URI = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
-		$this->input_moveUid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('moveUid');
+		$this->sys_language = intval(GeneralUtility::_GP('sys_language'));
+		$this->page_id = intval(GeneralUtility::_GP('uid'));
+		$this->table = GeneralUtility::_GP('table');
+		$this->R_URI = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
+		$this->input_moveUid = GeneralUtility::_GP('moveUid');
 		$this->moveUid = $this->input_moveUid ? $this->input_moveUid : $this->page_id;
-		$this->makeCopy = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('makeCopy');
+		$this->makeCopy = GeneralUtility::_GP('makeCopy');
 		// Select-pages where clause for read-access:
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		// Starting the document template object:
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/move_el.html');
 		$this->doc->JScode = '';
@@ -127,13 +131,13 @@ class MoveElementController {
 	public function main() {
 		if ($this->page_id) {
 			// Get record for element:
-			$elRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($this->table, $this->moveUid);
+			$elRow = BackendUtility::getRecordWSOL($this->table, $this->moveUid);
 			// Headerline: Icon, record title:
-			$hline = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($this->table, $elRow, array('id' => 'c-recIcon', 'title' => htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordIconAltText($elRow, $this->table))));
-			$hline .= \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($this->table, $elRow, TRUE);
+			$hline = IconUtility::getSpriteIconForRecord($this->table, $elRow, array('id' => 'c-recIcon', 'title' => htmlspecialchars(BackendUtility::getRecordIconAltText($elRow, $this->table))));
+			$hline .= BackendUtility::getRecordTitle($this->table, $elRow, TRUE);
 			// Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
 			$hline .= $this->doc->spacer(5);
-			$onClick = 'window.location.href=\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('makeCopy' => !$this->makeCopy)) . '\';';
+			$onClick = 'window.location.href=\'' . GeneralUtility::linkThisScript(array('makeCopy' => !$this->makeCopy)) . '\';';
 			$hline .= $this->doc->spacer(5);
 			$hline .= '<input type="hidden" name="makeCopy" value="0" />' . '<input type="checkbox" name="makeCopy" id="makeCopy" value="1"' . ($this->makeCopy ? ' checked="checked"' : '') . ' onclick="' . htmlspecialchars($onClick) . '" /> <label for="makeCopy" class="t3-label-valign-top">' . $GLOBALS['LANG']->getLL('makeCopy', 1) . '</label>';
 			// Add the header-content to the module content:
@@ -144,19 +148,19 @@ class MoveElementController {
 			// IF the table is "pages":
 			if ((string) $this->table == 'pages') {
 				// Get page record (if accessible):
-				$pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->page_id, $this->perms_clause);
+				$pageinfo = BackendUtility::readPageAccess($this->page_id, $this->perms_clause);
 				if (is_array($pageinfo) && $GLOBALS['BE_USER']->isInWebMount($pageinfo['pid'], $this->perms_clause)) {
 					// Initialize the position map:
-					$posMap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('ext_posMap_pages');
+					$posMap = GeneralUtility::makeInstance('ext_posMap_pages');
 					$posMap->moveOrCopy = $this->makeCopy ? 'copy' : 'move';
 					// Print a "go-up" link IF there is a real parent page (and if the user has read-access to that page).
 					if ($pageinfo['pid']) {
-						$pidPageInfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($pageinfo['pid'], $this->perms_clause);
+						$pidPageInfo = BackendUtility::readPageAccess($pageinfo['pid'], $this->perms_clause);
 						if (is_array($pidPageInfo)) {
 							if ($GLOBALS['BE_USER']->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
-								$code .= '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('uid' => intval($pageinfo['pid']), 'moveUid' => $this->moveUid))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-up') . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
+								$code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('uid' => intval($pageinfo['pid']), 'moveUid' => $this->moveUid))) . '">' . IconUtility::getSpriteIcon('actions-view-go-up') . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
 							} else {
-								$code .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $pidPageInfo) . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '<br />';
+								$code .= IconUtility::getSpriteIconForRecord('pages', $pidPageInfo) . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '<br />';
 							}
 						}
 					}
@@ -167,46 +171,45 @@ class MoveElementController {
 			// IF the table is "tt_content":
 			if ((string) $this->table == 'tt_content') {
 				// First, get the record:
-				$tt_content_rec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('tt_content', $this->moveUid);
+				$tt_content_rec = BackendUtility::getRecord('tt_content', $this->moveUid);
 				// ?
 				if (!$this->input_moveUid) {
 					$this->page_id = $tt_content_rec['pid'];
 				}
 				// Checking if the parent page is readable:
-				$pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->page_id, $this->perms_clause);
+				$pageinfo = BackendUtility::readPageAccess($this->page_id, $this->perms_clause);
 				if (is_array($pageinfo) && $GLOBALS['BE_USER']->isInWebMount($pageinfo['pid'], $this->perms_clause)) {
 					// Initialize the position map:
-					$posMap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('ext_posMap_tt_content');
+					$posMap = GeneralUtility::makeInstance('ext_posMap_tt_content');
 					$posMap->moveOrCopy = $this->makeCopy ? 'copy' : 'move';
 					$posMap->cur_sys_language = $this->sys_language;
 					// Headerline for the parent page: Icon, record title:
-					$hline = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $pageinfo, array('title' => htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordIconAltText($pageinfo, 'pages'))));
-					$hline .= \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pageinfo, TRUE);
+					$hline = IconUtility::getSpriteIconForRecord('pages', $pageinfo, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($pageinfo, 'pages'))));
+					$hline .= BackendUtility::getRecordTitle('pages', $pageinfo, TRUE);
 					// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
 					// SHARED page-TSconfig settings.
-					$modTSconfig_SHARED = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->page_id, 'mod.SHARED');
-					$colPosArray = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $this->page_id, $this);
+					$modTSconfig_SHARED = BackendUtility::getModTSconfig($this->page_id, 'mod.SHARED');
+					$colPosArray = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $this->page_id, $this);
 					foreach ($colPosArray as $colPos) {
 						$colPosList .= $colPosList != '' ? ',' . $colPos[1] : $colPos[1];
 					}
 					// Removing duplicates, if any
-					$colPosList = implode(',', array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $colPosList)));
+					$colPosList = implode(',', array_unique(GeneralUtility::intExplode(',', $colPosList)));
 					// Adding parent page-header and the content element columns from position-map:
 					$code = $hline . '<br />';
 					$code .= $posMap->printContentElementColumns($this->page_id, $this->moveUid, $colPosList, 1, $this->R_URI);
 					// Print a "go-up" link IF there is a real parent page (and if the user has read-access to that page).
-					$code .= '<br />';
-					$code .= '<br />';
+					$code .= '<br /><br />';
 					if ($pageinfo['pid']) {
-						$pidPageInfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($pageinfo['pid'], $this->perms_clause);
+						$pidPageInfo = BackendUtility::readPageAccess($pageinfo['pid'], $this->perms_clause);
 						if (is_array($pidPageInfo)) {
 							if ($GLOBALS['BE_USER']->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
-								$code .= '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array(
+								$code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array(
 									'uid' => intval($pageinfo['pid']),
 									'moveUid' => $this->moveUid
-								))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-up') . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
+								))) . '">' . IconUtility::getSpriteIcon('actions-view-go-up') . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
 							} else {
-								$code .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $pidPageInfo) . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '<br />';
+								$code .= IconUtility::getSpriteIconForRecord('pages', $pidPageInfo) . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '<br />';
 							}
 						}
 					}
@@ -250,21 +253,17 @@ class MoveElementController {
 		);
 		if ($this->page_id) {
 			if ((string) $this->table == 'pages') {
-				// CSH
-				$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'move_el_pages', $GLOBALS['BACK_PATH'], '', TRUE);
+				$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'move_el_pages', $GLOBALS['BACK_PATH'], '', TRUE);
 			} elseif ((string) $this->table == 'tt_content') {
-				// CSH
-				$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'move_el_cs', $GLOBALS['BACK_PATH'], '', TRUE);
+				$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'move_el_cs', $GLOBALS['BACK_PATH'], '', TRUE);
 			}
 			if ($this->R_URI) {
-				// Back
-				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->getLL('goBack', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
+				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->getLL('goBack', TRUE) . '">' . IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
 			}
 		}
 		return $buttons;
 	}
 
 }
-
 
 ?>

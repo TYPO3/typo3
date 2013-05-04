@@ -26,6 +26,10 @@ namespace TYPO3\CMS\Backend\Sprite;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Sprite generator
  *
@@ -317,7 +321,7 @@ class SpriteGenerator {
 		$markerArray['###SPRITEURL###'] .= $this->spriteName . '.png' . $timestamp;
 		foreach ($this->spriteBases as $base) {
 			$markerArray['###SPRITENAME###'] = $base;
-			$cssData .= \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($this->templateSprite, $markerArray);
+			$cssData .= HtmlParser::substituteMarkerArray($this->templateSprite, $markerArray);
 		}
 		foreach ($this->iconsData as $key => $data) {
 			$temp = $data['iconNameParts'];
@@ -336,9 +340,9 @@ class SpriteGenerator {
 			if ($data['width'] != $this->defaultWidth) {
 				$markerArrayIcons['###SIZE_INFO###'] .= TAB . 'width: ' . $data['width'] . 'px;' . LF;
 			}
-			$cssData .= \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($this->templateIcon, $markerArrayIcons);
+			$cssData .= HtmlParser::substituteMarkerArray($this->templateIcon, $markerArrayIcons);
 		}
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $this->cssFolder . $this->spriteName . '.css', $cssData);
+		GeneralUtility::writeFile(PATH_site . $this->cssFolder . $this->spriteName . '.css', $cssData);
 	}
 
 	/**
@@ -350,8 +354,8 @@ class SpriteGenerator {
 		// Fix window paths
 		$this->cssFolder = str_replace('\\', '/', $this->cssFolder);
 		$this->spriteFolder = str_replace('\\', '/', $this->spriteFolder);
-		$cssPathSegments = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', trim($this->cssFolder, '/'));
-		$graphicPathSegments = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', trim($this->spriteFolder, '/'));
+		$cssPathSegments = GeneralUtility::trimExplode('/', trim($this->cssFolder, '/'));
+		$graphicPathSegments = GeneralUtility::trimExplode('/', trim($this->spriteFolder, '/'));
 		$i = 0;
 		while (isset($cssPathSegments[$i]) && isset($graphicPathSegments[$i]) && $cssPathSegments[$i] == $graphicPathSegments[$i]) {
 			unset($cssPathSegments[$i]);
@@ -363,7 +367,7 @@ class SpriteGenerator {
 		}
 		$completePath = array_merge($cssPathSegments, $graphicPathSegments);
 		$path = implode('/', $completePath);
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($path);
+		return GeneralUtility::resolveBackPath($path);
 	}
 
 	/**
@@ -372,7 +376,7 @@ class SpriteGenerator {
 	 * @return void
 	 */
 	protected function generateGraphic() {
-		$tempSprite = \TYPO3\CMS\Core\Utility\GeneralUtility::tempnam($this->spriteName);
+		$tempSprite = GeneralUtility::tempnam($this->spriteName);
 		$filePath = array(
 			'mainFile' => PATH_site . $this->spriteFolder . $this->spriteName . '.png'
 		);
@@ -389,8 +393,8 @@ class SpriteGenerator {
 			}
 		}
 		imagepng($newSprite, $tempSprite . '.png');
-		\TYPO3\CMS\Core\Utility\GeneralUtility::upload_copy_move($tempSprite . '.png', $filePath['mainFile']);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($tempSprite . '.png');
+		GeneralUtility::upload_copy_move($tempSprite . '.png', $filePath['mainFile']);
+		GeneralUtility::unlink_tempfile($tempSprite . '.png');
 	}
 
 	/**
@@ -453,14 +457,14 @@ class SpriteGenerator {
 	 * @return array Returns an array with all files key: iconname, value: fileName
 	 */
 	protected function getFolder($directoryPath) {
-		$subFolders = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs(PATH_site . $directoryPath);
+		$subFolders = GeneralUtility::get_dirs(PATH_site . $directoryPath);
 		if (!$this->ommitSpriteNameInIconName) {
 			$subFolders[] = '';
 		}
 		$resultArray = array();
 		foreach ($subFolders as $folder) {
 			if ($folder !== '.svn') {
-				$icons = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir(PATH_site . $directoryPath . $folder . '/', 'gif,png,jpg');
+				$icons = GeneralUtility::getFilesInDir(PATH_site . $directoryPath . $folder . '/', 'gif,png,jpg');
 				if (!in_array($folder, $this->spriteBases) && count($icons) && $folder !== '') {
 					$this->spriteBases[] = $folder;
 				}
@@ -485,7 +489,7 @@ class SpriteGenerator {
 	 */
 	protected function buildFileInformationCache(array $files) {
 		foreach ($files as $iconName => $iconFile) {
-			$iconNameParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('-', $iconName);
+			$iconNameParts = GeneralUtility::trimExplode('-', $iconName);
 			if (!in_array($iconNameParts[0], $this->spriteBases)) {
 				$this->spriteBases[] = $iconNameParts[0];
 			}
@@ -525,7 +529,7 @@ class SpriteGenerator {
 	 * @return array
 	 */
 	protected function explodeSizeTag($tag = '') {
-		$size = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('x', $tag);
+		$size = GeneralUtility::trimExplode('x', $tag);
 		return array(
 			'width' => $size[0],
 			'height' => $size[1]

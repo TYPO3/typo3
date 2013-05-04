@@ -26,6 +26,11 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Backend\Tree\Pagetree\Commands;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Data Provider of the Page Tree
  *
@@ -47,7 +52,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 	 */
 	protected function initDataProvider() {
 		/** @var $dataProvider \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider */
-		$dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\DataProvider');
+		$dataProvider = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\DataProvider');
 		$this->setDataProvider($dataProvider);
 	}
 
@@ -72,7 +77,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 	public function getNextTreeLevel($nodeId, $nodeData) {
 		$this->initDataProvider();
 		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
+		$node = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
 		if ($nodeId === 'root') {
 			$nodeCollection = $this->dataProvider->getTreeMounts();
 		} else {
@@ -94,7 +99,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 			return array();
 		}
 		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
-		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
+		$node = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
 		$this->initDataProvider();
 		if ($nodeId === 'root') {
 			$nodeCollection = $this->dataProvider->getTreeMounts($searchFilter);
@@ -123,16 +128,16 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 			254 => 'LLL:EXT:lang/locallang_tca.xlf:doktype.I.folder',
 			255 => 'LLL:EXT:lang/locallang_tca.xlf:doktype.I.2'
 		);
-		$doktypes = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.doktypesToShowInNewPageDragArea'));
+		$doktypes = GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.doktypesToShowInNewPageDragArea'));
 		$output = array();
-		$allowedDoktypes = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->groupData['pagetypes_select']);
+		$allowedDoktypes = GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->groupData['pagetypes_select']);
 		$isAdmin = $GLOBALS['BE_USER']->isAdmin();
 		foreach ($doktypes as $doktype) {
 			if (!$isAdmin && !in_array($doktype, $allowedDoktypes)) {
 				continue;
 			}
 			$label = $GLOBALS['LANG']->sL($map[$doktype], TRUE);
-			$spriteIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses($GLOBALS['TCA']['pages']['ctrl']['typeicon_classes'][$doktype]);
+			$spriteIcon = IconUtility::getSpriteIconClasses($GLOBALS['TCA']['pages']['ctrl']['typeicon_classes'][$doktype]);
 			$output[] = array(
 				'nodeType' => $doktype,
 				'cls' => 'typo3-pagetree-topPanel-button',
@@ -151,7 +156,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 	 */
 	public function getIndicators() {
 		/** @var $indicatorProvider \TYPO3\CMS\Backend\Tree\Pagetree\Indicator */
-		$indicatorProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\Indicator');
+		$indicatorProvider = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\Indicator');
 		$indicatorHtmlArr = $indicatorProvider->getAllIndicators();
 		$indicator = array(
 			'html' => implode(' ', $indicatorHtmlArr),
@@ -191,16 +196,16 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 				'canDeleteRecursivly' => $GLOBALS['BE_USER']->uc['recursiveDelete'] == TRUE,
 				'disableIconLinkToContextmenu' => $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.disableIconLinkToContextmenu'),
 				'indicator' => $indicators['html'],
-				'temporaryMountPoint' => \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getMountPointPath()
+				'temporaryMountPoint' => Commands::getMountPointPath()
 			),
 			'Sprites' => array(
-				'Filter' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('actions-system-tree-search-open'),
-				'NewNode' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('actions-page-new'),
-				'Refresh' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('actions-system-refresh'),
-				'InputClear' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('actions-input-clear'),
-				'TrashCan' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('actions-edit-delete'),
-				'TrashCanRestore' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('actions-edit-restore'),
-				'Info' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('actions-document-info')
+				'Filter' => IconUtility::getSpriteIconClasses('actions-system-tree-search-open'),
+				'NewNode' => IconUtility::getSpriteIconClasses('actions-page-new'),
+				'Refresh' => IconUtility::getSpriteIconClasses('actions-system-refresh'),
+				'InputClear' => IconUtility::getSpriteIconClasses('actions-input-clear'),
+				'TrashCan' => IconUtility::getSpriteIconClasses('actions-edit-delete'),
+				'TrashCanRestore' => IconUtility::getSpriteIconClasses('actions-edit-restore'),
+				'Info' => IconUtility::getSpriteIconClasses('actions-document-info')
 			)
 		);
 		return $configuration;

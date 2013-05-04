@@ -26,6 +26,7 @@ namespace TYPO3\CMS\Backend\ContextMenu\Renderer;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Abstract Context Menu Renderer
  *
@@ -61,6 +62,5 @@ abstract class AbstractContextMenuRenderer {
 	abstract public function renderContextMenu(\TYPO3\CMS\Backend\ContextMenu\AbstractContextMenu $contextMenu, $recursive = FALSE);
 
 }
-
 
 ?>
