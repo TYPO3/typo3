@@ -3,7 +3,7 @@
 
 	$(document).ready(function() {
 		manageExtensionListing();
-		$("#typo3-extension-configuration-forms ul").tabs("div.category");
+		$("#typo3-extension-configuration-forms").tabs();
 
 		$('.onClickMaskExtensionManager').click(function() {
 			$('.typo3-extension-manager').mask();

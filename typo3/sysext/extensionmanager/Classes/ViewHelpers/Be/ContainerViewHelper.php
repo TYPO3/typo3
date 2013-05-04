@@ -41,7 +41,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Be;
  * </output>
  *
  * <code title="All options">
- * <f:be.container pageTitle="foo" enableJumpToUrl="false" enableClickMenu="false" loadPrototype="false" loadScriptaculous="false" scriptaculousModule="someModule,someOtherModule" loadExtJs="true" loadExtJsTheme="false" extJsAdapter="jQuery" enableExtJsDebug="true" addCssFile="{f:uri.resource(path:'styles/backend.css')}" addJsFile="{f:uri.resource(path:'scripts/main.js')}">your module content</f:be.container>
+ * <f:be.container pageTitle="foo" enableJumpToUrl="false" enableClickMenu="false" loadJquery="false" loadPrototype="false" loadScriptaculous="false" scriptaculousModule="someModule,someOtherModule" loadExtJs="true" loadExtJsTheme="false" extJsAdapter="jQuery" enableExtJsDebug="true" addCssFile="{f:uri.resource(path:'styles/backend.css')}" addJsFile="{f:uri.resource(path:'scripts/main.js')}">your module content</f:be.container>
  * </code>
  * <output>
  * "your module content" wrapped with propper head & body tags.
@@ -56,6 +56,7 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * @param string  $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame
 	 * @param boolean $enableJumpToUrl If TRUE, includes "jumpTpUrl" javascript function required by ActionMenu. Defaults to TRUE
 	 * @param boolean $enableClickMenu If TRUE, loads clickmenu.js required by BE context menus. Defaults to TRUE
+	 * @param boolean $loadJquery specifies whether to load jQuery library. Defaults to FALSE
 	 * @param boolean $loadPrototype specifies whether to load prototype library. Defaults to TRUE
 	 * @param boolean $loadScriptaculous specifies whether to load scriptaculous libraries. Defaults to FALSE
 	 * @param string  $scriptaculousModule additionales modules for scriptaculous
@@ -70,7 +71,23 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * @see template
 	 * @see \TYPO3\CMS\Core\Page\PageRenderer
 	 */
-	public function render($pageTitle = '', $enableJumpToUrl = TRUE, $enableClickMenu = TRUE, $loadPrototype = TRUE, $loadScriptaculous = FALSE, $scriptaculousModule = '', $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $extJsAdapter = '', $enableExtJsDebug = FALSE, $addCssFiles = array(), $addJsFiles = array(), $triggers = array()) {
+
+	public function render(
+		$pageTitle = '',
+		$enableJumpToUrl = TRUE,
+		$enableClickMenu = TRUE,
+		$loadJquery = FALSE,
+		$loadPrototype = TRUE,
+		$loadScriptaculous = FALSE,
+		$scriptaculousModule = '',
+		$loadExtJs = FALSE,
+		$loadExtJsTheme = TRUE,
+		$extJsAdapter = '',
+		$enableExtJsDebug = FALSE,
+		$addCssFiles = array(),
+		$addJsFiles = array(),
+		$triggers = array()
+	) {
 		$doc = $this->getDocInstance();
 		$pageRenderer = $doc->getPageRenderer();
 		if ($enableJumpToUrl) {
@@ -86,6 +103,9 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 		}
 		if ($enableClickMenu) {
 			$doc->loadJavascriptLib('js/clickmenu.js');
+		}
+		if ($loadJquery) {
+			$pageRenderer->loadJquery(NULL, NULL, $pageRenderer::JQUERY_NAMESPACE_NONE);
 		}
 		if ($loadPrototype) {
 			$pageRenderer->loadPrototype();
