@@ -3568,19 +3568,41 @@ class ContentObjectRenderer {
 	 *
 	 * @param string $data The command which contains information about what files/directory listing to return. See the "filelist" property of stdWrap for details.
 	 * @return string Comma list of files.
-	 * @access private
 	 * @see stdWrap()
-	 * @todo Define visibility
+	 * @see getFilesInPath()
 	 */
 	public function filelist($data) {
-		$data = trim($data);
-		if ($data) {
-			$data_arr = explode('|', $data);
+		// split the | separated values in an array
+		list($path, $extensionList, $sorting, $sortingReverse, $addPath) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $data, FALSE);
+
+		$allowedFileExtensions = (trim($extensionList) != '' ? explode(',', strtolower($extensionList)) : array());
+
+		// get all files as array
+		$filesArray = $this->getFilesInPath($path, $allowedFileExtensions, $sorting, $sortingReverse, $addPath);
+
+		return implode(',', $filesArray);
+	}
+
+	/**
+	 * Reads a directory for files and returns the filepaths in a string list as an array.
+	 * Implements the stdWrap property "filelist"
+	 *
+	 * @param string $data The command which contains information about what files/directory listing to return. See the "filelist" property of stdWrap for details.
+	 * @param string $allowedFileExtensions limit the file list to only certain extensions, all in lowercase
+	 * @param string $sorting can be "name", "size", "ext", "date", "ctime", "mtime", "mdate" or empty
+	 * @return array Array of files, optionally with the full path
+	 * @see filelist()
+	 */
+	public function getFilesInPath($path, $allowedFileExtensions = array(), $sorting = NULL, $sortingReverse = FALSE, $addPath = FALSE) {
+		$finalFiles = array();
+
+		$path = trim($path);
+		if ($path) {
 			// read directory:
 			// MUST exist!
 			if ($GLOBALS['TSFE']->lockFilePath) {
 				// Cleaning name..., only relative paths accepted.
-				$path = $this->clean_directory($data_arr[0]);
+				$path = $this->clean_directory($path);
 				// See if path starts with lockFilePath, the additional '/' is needed because clean_directory gets rid of it
 				$path = \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($path . '/', $GLOBALS['TSFE']->lockFilePath) ? $path : '';
 			}
@@ -3589,68 +3611,77 @@ class ContentObjectRenderer {
 					'files' => array(),
 					'sorting' => array()
 				);
-				$ext_list = strtolower(\TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList($data_arr[1]));
-				$sorting = trim($data_arr[2]);
+
+				if (count($allowedFileExtensions) > 0) {
+					$allowedFileExtensions = array_unique($allowedFileExtensions);
+				}
+
 				// Read dir:
 				$d = @dir($path);
-				$tempArray = array();
 				if (is_object($d)) {
 					$count = 0;
 					while ($entry = $d->read()) {
-						if ($entry != '.' && $entry != '..') {
-							// Because of odd PHP-error where <br />-tag is sometimes placed after a filename!!
-							$wholePath = $path . '/' . $entry;
-							if (file_exists($wholePath) && filetype($wholePath) == 'file') {
-								$info = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($wholePath);
-								if (!$ext_list || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($ext_list, $info['fileext'])) {
-									$items['files'][] = $info['file'];
-									switch ($sorting) {
+
+						// skip current directory and parent directory
+						if ($entry === '.' || $entry === '..') {
+							continue;
+						}
+
+						// Because of odd PHP-error where <br />-tag is sometimes placed after a filename!!
+						$fullFileName = $path . '/' . $entry;
+
+						if (file_exists($fullFileName) && is_file($fullFileName)) {
+							$info = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($fullFileName);
+
+							if (count($allowedFileExtensions) === 0 || in_array($allowedFileExtensions, $info['fileext'])) {
+								$items['files'][] = $info['file'];
+								switch ($sorting) {
 									case 'name':
 										$items['sorting'][] = strtolower($info['file']);
 										break;
 									case 'size':
-										$items['sorting'][] = filesize($wholePath);
+										$items['sorting'][] = filesize($fullFileName);
 										break;
 									case 'ext':
 										$items['sorting'][] = $info['fileext'];
 										break;
+									case 'ctime':
 									case 'date':
-										$items['sorting'][] = filectime($wholePath);
+										$items['sorting'][] = filectime($fullFileName);
 										break;
+									case 'mtime':
 									case 'mdate':
-										$items['sorting'][] = filemtime($wholePath);
+										$items['sorting'][] = filemtime($fullFileName);
 										break;
 									default:
 										$items['sorting'][] = $count;
 										break;
-									}
-									$count++;
 								}
+								$count++;
 							}
 						}
 					}
 					$d->close();
 				}
+
 				// Sort if required
 				if (count($items['sorting'])) {
-					if (strtolower(trim($data_arr[3])) != 'r') {
+					if (strtolower($sortingReverse) != 'r') {
 						asort($items['sorting']);
 					} else {
 						arsort($items['sorting']);
 					}
 				}
+
+				// Make list, based on the sorted array from above
 				if (count($items['files'])) {
-					// Make list
-					reset($items['sorting']);
-					$fullPath = trim($data_arr[4]);
-					$list_arr = array();
 					foreach ($items['sorting'] as $key => $v) {
-						$list_arr[] = $fullPath ? $path . '/' . $items['files'][$key] : $items['files'][$key];
+						$finalFiles[] = ($addPath ? $path . '/' : '') . $items['files'][$key];
 					}
-					return implode(',', $list_arr);
 				}
 			}
 		}
+		return $finalFiles;
 	}
 
 	/**
