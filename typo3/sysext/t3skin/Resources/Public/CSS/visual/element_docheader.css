@@ -1,0 +1,70 @@
+/**
+ * Docheader
+ **/
+
+.typo3-docheader-pagePath {
+	font-weight: bold;
+}
+
+.typo3-docheader-functions {
+	background-color: #585858;
+}
+
+.typo3-docheader-buttons {
+	background-color: #dadada;
+}
+
+#typo3-docheader img,
+#typo3-docheader input {
+	cursor: pointer;
+}
+
+/* Customized docheader style for module menu and tree frames */
+.typo3-docheader-functions {
+	-moz-box-shadow: inset -2px 0 1px #414141;
+	-ms-box-shadow: inset -2px 0 1px #414141;
+	-webkit-box-shadow: inset -2px 0 1px #414141;
+	box-shadow: inset -2px 0 1px #414141;
+}
+
+.typo3-docheader-buttons {
+	-moz-box-shadow: inset -2px 0 1px #b7b7b7;
+	-ms-box-shadow: inset -2px 0 1px #b7b7b7;
+	-webkit-box-shadow: inset -2px 0 1px #b7b7b7;
+	box-shadow: inset -2px 0 1px #b7b7b7;
+}
+
+/**
+ * Shadows of the docheader in module menu and tree frames,
+ * fallback for missing box-shadow support.
+ *
+ * @see modernizr.js
+ */
+.no-boxshadow .typo3-docheader-functions {
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAMAAAAsPuSGAAAACVBMVEVGRkZAQEBRUVH4z1uMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAxJREFUCNdjYGJgBAAACwAEhbbR0wAAAABJRU5ErkJggg==");
+	/* star-hack targets IE7 */
+	*background-image: url("../../Images/backgrounds/module-menu-right-top.png");
+	background-position: right;
+	background-repeat: repeat-y;
+}
+
+.no-boxshadow .typo3-docheader-functions .right {
+	background-image: url("data:image/png;base64,R0lGODlhAgABAIAAAMjIyLOzsyH5BAAAAAAALAAAAAACAAEAAAICRAoAOw==");
+	/* star-hack targets IE7 */
+	*background-image: url("../../Images/backgrounds/module-menu-right.png");
+	background-position: right;
+	background-repeat: repeat-y;
+}
+
+/**
+ * Fail-safe for non-core legacy extensions
+ * @deprecated with TYPO3 version 6.0, will be removed with 6.2
+ */
+
+#typo3-docheader-row2 {
+	background-color: #585858;
+}
+
+#typo3-docheader-row1 {
+	background-color: #dadada;
+}

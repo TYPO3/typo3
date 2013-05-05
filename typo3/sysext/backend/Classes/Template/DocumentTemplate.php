@@ -243,15 +243,15 @@ class DocumentTemplate {
 	// Skinning
 	// stylesheets from core
 	protected $stylesheetsCore = array(
-		'structure' => 'stylesheets/structure/',
-		'visual' => 'stylesheets/visual/',
+		'structure' => 'Resources/Public/CSS/structure/',
+		'visual' => 'Resources/Public/CSS/visual/',
 		'generatedSprites' => '../typo3temp/sprites/'
 	);
 
 	// Include these CSS directories from skins by default
 	protected $stylesheetsSkins = array(
-		'structure' => 'stylesheets/structure/',
-		'visual' => 'stylesheets/visual/'
+		'structure' => 'Resources/Public/CSS/structure/',
+		'visual' => 'Resources/Public/CSS/visual/'
 	);
 
 	/**
