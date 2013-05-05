@@ -49,7 +49,7 @@ class LogoView {
 	 */
 	public function render() {
 		// Default
-		$logoFile = 'gfx/alt_backend_logo.gif';
+		$logoFile = 'gfx/typo3logo_mini.png';
 		if (is_string($this->logo)) {
 			// Overwrite
 			$logoFile = $this->logo;

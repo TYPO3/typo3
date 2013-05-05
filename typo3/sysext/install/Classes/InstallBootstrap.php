@@ -98,7 +98,7 @@ class InstallBootstrap {
 	static protected function dieWithLockedInstallToolMessage() {
 		require_once PATH_site . 'typo3/sysext/core/Classes/Html/HtmlParser.php';
 		// Define the stylesheet
-		$stylesheet = '<link rel="stylesheet" type="text/css" href="' . '../stylesheets/install/install.css" />';
+		$stylesheet = '<link rel="stylesheet" type="text/css" href="' . '../Resources/Public/CSS/install/install.css" />';
 		$javascript = '<script type="text/javascript" src="' . '../contrib/prototype/prototype.js"></script>';
 		$javascript .= '<script type="text/javascript" src="' . '../sysext/install/Resources/Public/Javascript/install.js"></script>';
 		// Get the template file

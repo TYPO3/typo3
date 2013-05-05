@@ -174,7 +174,7 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 				text: TYPO3.LLL.liveSearch.showAllResults,
 				arrowAlign : 'right',
 				shadow: false,
-				icon : '../typo3/sysext/t3skin/icons/module_web_list.gif',
+				icon : '../typo3/sysext/t3skin/Resources/Public/icons/module_web_list.gif',
 				listeners : {
 					scope : this,
 					click : function () {
