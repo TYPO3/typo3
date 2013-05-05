@@ -231,7 +231,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 		// type selector
 		$content .= '<span>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.type') . '</span>';
 		$content .= '<select onchange="this.style.backgroundImage=this.options[this.selectedIndex].style.backgroundImage;if (this.options[this.selectedIndex].value==\'--div--\') {this.selectedIndex=1;}" ';
-		$content .= 'class="select icon-select" name="data[pages][NEW' . $index . '][doktype]" style="background: url(&quot;' . $backPath . 'sysext/t3skin/icons/gfx/i/pages.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); padding: 1px 1px 1px 24px;">';
+		$content .= 'class="select icon-select" name="data[pages][NEW' . $index . '][doktype]" style="background: url(&quot;' . $backPath . 'sysext/t3skin/Resources/Public/icons/gfx/i/pages.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); padding: 1px 1px 1px 24px;">';
 		// dokType
 		$types = $GLOBALS['PAGES_TYPES'];
 		unset($types['default']);
@@ -243,7 +243,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 		$removeItems = isset($this->pagesTsConfig['doktype.']['removeItems']) ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pagesTsConfig['doktype.']['removeItems'], TRUE) : array();
 		$group = '';
 		if (in_array(1, $types) && !in_array(1, $removeItems)) {
-			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/icons/gfx/i/pages.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" selected="selected" value="1">Standard</option>';
+			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/Resources/Public/icons/gfx/i/pages.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" selected="selected" value="1">Standard</option>';
 		}
 		if (in_array(6, $types) && !in_array(6, $removeItems)) {
 			$group .= '<option style="background: url(&quot;' . $backPath . 'gfx/i/be_users_section.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="6">Backend User Section</option>';
@@ -251,24 +251,24 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 		$content .= $group ? '<optgroup class="c-divider" label="Page">' . $group . '</optgroup>' : '';
 		$group = '';
 		if (in_array(4, $types) && !in_array(4, $removeItems)) {
-			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/icons/gfx/i/pages_shortcut.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="4">Shortcut</option>';
+			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/Resources/Public/icons/gfx/i/pages_shortcut.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="4">Shortcut</option>';
 		}
 		if (in_array(7, $types) && !in_array(7, $removeItems)) {
 			$group .= '<option style="background: url(&quot;' . $backPath . 'gfx/i/pages_mountpoint.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="7">Mount Point</option>';
 		}
 		if (in_array(3, $types) && !in_array(3, $removeItems)) {
-			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/icons/gfx/i/pages_link.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="3">Link to external URL</option>';
+			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/Resources/Public/icons/gfx/i/pages_link.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="3">Link to external URL</option>';
 		}
 		$content .= $group ? '<optgroup class="c-divider" label="Link">' . $group . '</optgroup>' : '';
 		$group = '';
 		if (in_array(254, $types) && !in_array(254, $removeItems)) {
-			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/icons/gfx/i/sysf.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="254">Folder</option>';
+			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/Resources/Public/icons/gfx/i/sysf.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="254">Folder</option>';
 		}
 		if (in_array(255, $types) && !in_array(255, $removeItems)) {
-			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/icons/gfx/i/recycler.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="255">Recycler</option>';
+			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/Resources/Public/icons/gfx/i/recycler.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="255">Recycler</option>';
 		}
 		if (in_array(199, $types) && !in_array(199, $removeItems)) {
-			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/icons/gfx/i/spacer_icon.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="199">Visual menu separator</option>';
+			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/Resources/Public/icons/gfx/i/spacer_icon.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="199">Visual menu separator</option>';
 		}
 		$content .= $group ? '<optgroup class="c-divider" label="Special">' . $group . '</optgroup>' : '';
 		$content .= '</select>';

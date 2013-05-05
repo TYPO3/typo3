@@ -1,0 +1,8 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Animated spinner icon
+
+- - - - - - - - - - - - - - - - - - - - - */
+
+span.spinner {
+	background-image: url('../../Images/spinner/f1f1f1.gif');
+}

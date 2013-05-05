@@ -27,7 +27,7 @@ span.stateIcon span {
 }
 
 span.stateIconChecking {
-	background: url(../../../../t3skin/images/spinner/ffffff.gif) top left no-repeat;
+	background: url(../../../../t3skin/Resources/Public/Images/spinner/ffffff.gif) top left no-repeat;
 	height: 16px;
 	width: 16px;
 	padding-left: 20px;
@@ -86,11 +86,11 @@ div.dataTables_wrapper thead td {
 }
 
 div.dataTables_wrapper thead td.sorting_asc {
-	background: url(../../../../t3skin/images/icons/status/status-sorting-asc.png) top right no-repeat;
+	background: url(../../../../t3skin/Resources/Public/Images/icons/status/status-sorting-asc.png) top right no-repeat;
 }
 
 div.dataTables_wrapper thead td.sorting_desc {
-	background: url(../../../../t3skin/images/icons/status/status-sorting-desc.png) bottom right no-repeat;
+	background: url(../../../../t3skin/Resources/Public/Images/icons/status/status-sorting-desc.png) bottom right no-repeat;
 }
 
 div.dataTables_wrapper thead td.notSortable {

@@ -10,7 +10,7 @@ if (TYPO3_MODE == 'BE' || TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER'])) {
 	);
 	// Support for other extensions to add own icons...
 	$presetSkinImgs = is_array($TBE_STYLES['skinImg']) ? $TBE_STYLES['skinImg'] : array();
-	$TBE_STYLES['skins'][$_EXTKEY]['stylesheetDirectories']['sprites'] = 'EXT:t3skin/stylesheets/sprites/';
+	$TBE_STYLES['skins'][$_EXTKEY]['stylesheetDirectories']['sprites'] = 'EXT:t3skin/Resources/Public/CSS/sprites/';
 	/** Setting up backend styles and colors */
 	$TBE_STYLES['mainColors'] = array(
 		// Always use #xxxxxx color definitions!
@@ -66,7 +66,7 @@ if (TYPO3_MODE == 'BE' || TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER'])) {
 	$TBE_STYLES['borderschemes'][4] = array('', '', '', 'wrapperTable4');
 	$TBE_STYLES['borderschemes'][5] = array('', '', '', 'wrapperTable5');
 	// Setting the relative path to the extension in temp. variable:
-	$temp_eP = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY);
+	$temp_eP = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/';
 	// Alternative dimensions for frameset sizes:
 	// Left menu frame width
 	$TBE_STYLES['dims']['leftMenuFrameW'] = 190;
@@ -79,8 +79,8 @@ if (TYPO3_MODE == 'BE' || TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER'])) {
 	$TBE_STYLES['scriptIDindex']['typo3/alt_clickmenu.php']['mainColors']['bgColor5'] = '#dedede';
 	// Setting up auto detection of alternative icons:
 	$TBE_STYLES['skinImgAutoCfg'] = array(
-		'absDir' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'icons/',
-		'relDir' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'icons/',
+		'absDir' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Resources/Public/icons/',
+		'relDir' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/icons/',
 		'forceFileExtension' => 'gif',
 		// Force to look for PNG alternatives...
 		'iconSizeWidth' => 16,
@@ -346,7 +346,7 @@ if (TYPO3_MODE == 'BE' || TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER'])) {
 		'zw'
 	);
 	foreach ($flagNames as $flagName) {
-		$TCA['sys_language']['columns']['flag']['config']['items'][] = array($flagName, $flagName, 'EXT:t3skin/images/flags/' . $flagName . '.png');
+		$TCA['sys_language']['columns']['flag']['config']['items'][] = array($flagName, $flagName, 'EXT:t3skin/Resources/Public/Images/flags/' . $flagName . '.png');
 	}
 	// Manual setting up of alternative icons. This is mainly for module icons which has a special prefix:
 	$TBE_STYLES['skinImg'] = array_merge($presetSkinImgs, array(
@@ -386,12 +386,12 @@ if (TYPO3_MODE == 'BE' || TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER'])) {
 		'MOD:help_txtsconfighelpM1/moduleicon.gif' => array($temp_eP . 'icons/module_help_ts.gif', 'width="25" height="24"')
 	));
 	// Logo at login screen
-	$TBE_STYLES['logo_login'] = $temp_eP . 'images/login/typo3logo-white-greyback.gif';
+	$TBE_STYLES['logo_login'] = $temp_eP . 'Images/login/typo3logo-white-greyback.gif';
 	// extJS theme
-	$TBE_STYLES['extJS']['theme'] = $temp_eP . 'extjs/xtheme-t3skin.css';
+	$TBE_STYLES['extJS']['theme'] = $temp_eP . 'CSS/xtheme-t3skin.css';
 	// Adding HTML template for login screen
-	$TBE_STYLES['htmlTemplates']['EXT:backend/Resources/Private/Templates/login.html'] = 'sysext/t3skin/templates/login.html';
-	$GLOBALS['TBE_STYLES']['stylesheets']['admPanel'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('t3skin') . 'stylesheets/standalone/admin_panel.css';
+	$TBE_STYLES['htmlTemplates']['EXT:backend/Resources/Private/Templates/login.html'] = 'sysext/t3skin/Resources/Private/Templates/login.html';
+	$GLOBALS['TBE_STYLES']['stylesheets']['admPanel'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('t3skin') . 'Resources/Public/CSS/admin_panel.css';
 	foreach ($flagNames as $flagName) {
 		\TYPO3\CMS\Backend\Sprite\SpriteManager::addIconSprite(array(
 			'flags-' . $flagName,

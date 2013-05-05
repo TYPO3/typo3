@@ -250,15 +250,15 @@ class DocumentTemplate {
 	// Skinning
 	// stylesheets from core
 	protected $stylesheetsCore = array(
-		'structure' => 'stylesheets/structure/',
-		'visual' => 'stylesheets/visual/',
+		'structure' => 'Resources/Public/CSS/structure/',
+		'visual' => 'Resources/Public/CSS/visual/',
 		'generatedSprites' => '../typo3temp/sprites/'
 	);
 
 	// Include these CSS directories from skins by default
 	protected $stylesheetsSkins = array(
-		'structure' => 'stylesheets/structure/',
-		'visual' => 'stylesheets/visual/'
+		'structure' => 'Resources/Public/CSS/structure/',
+		'visual' => 'Resources/Public/CSS/visual/'
 	);
 
 	/**
@@ -1240,7 +1240,7 @@ class DocumentTemplate {
 				}
 				// Add all registered directories
 				foreach ($skinStylesheetDirs as $stylesheetDir) {
-					// for EXT:myskin/stylesheets/ syntax
+					// for EXT:myskin/Resources/Public/CSS/ syntax
 					if (substr($stylesheetDir, 0, 4) === 'EXT:') {
 						list($extKey, $path) = explode('/', substr($stylesheetDir, 4), 2);
 						if (strcmp($extKey, '') && ExtensionManagementUtility::isLoaded($extKey) && strcmp($path, '')) {
