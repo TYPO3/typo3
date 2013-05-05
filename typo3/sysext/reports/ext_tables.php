@@ -12,7 +12,7 @@ if (TYPO3_MODE === 'BE') {
 			'Report' => 'index,detail'
 		), array(
 			'access' => 'admin',
-			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/moduleicon.gif',
+			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/Backend-Module.gif',
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf'
 		)
 	);
