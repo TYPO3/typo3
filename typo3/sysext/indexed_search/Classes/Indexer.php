@@ -296,7 +296,7 @@ class Indexer {
 							// Whether to index external documents like PDF, DOC etc. (if possible)
 							$this->conf['index_descrLgd'] = $pObj->config['config']['index_descrLgd'];
 							// Length of description text (max 250, default 200)
-							$this->conf['index_metatags'] = isset($pObj->config['config']['index_metatags']) ? $pObj->config['config']['index_metatags'] : TRUE;
+							$this->conf['index_metatags'] = $pObj->config['config']['index_metatags'] ?: TRUE;
 							// Set to zero:
 							$this->conf['recordUid'] = 0;
 							$this->conf['freeIndexUid'] = 0;
@@ -477,7 +477,7 @@ class Indexer {
 		}
 		// Initialize lexer (class that deconstructs the text into words):
 		// Example configuration (localconf.php) for this hook: $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] = 'EXT:indexed_search/class.lexer.php:&tx_indexedsearch_lexer';
-		$lexerObjRef = $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] ? $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] : 'EXT:indexed_search/class.lexer.php:&tx_indexedsearch_lexer';
+		$lexerObjRef = $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] ?: 'EXT:indexed_search/class.lexer.php:&tx_indexedsearch_lexer';
 		$this->lexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($lexerObjRef);
 		$this->lexerObj->debug = $this->indexerConfig['debugMode'];
 		// Initialize metaphone hook:
@@ -611,7 +611,7 @@ class Indexer {
 		// get title
 		$this->embracingTags($headPart, 'TITLE', $contentArr['title'], $dummy2, $dummy);
 		$titleParts = explode(':', $contentArr['title'], 2);
-		$contentArr['title'] = trim(isset($titleParts[1]) ? $titleParts[1] : $titleParts[0]);
+		$contentArr['title'] = trim($titleParts[1] ?: $titleParts[0]);
 		// get keywords and description metatags
 		if ($this->conf['index_metatags']) {
 			$meta = array();
@@ -673,7 +673,7 @@ class Indexer {
 	 */
 	public function convertHTMLToUtf8($content, $charset = '') {
 		// Find charset:
-		$charset = $charset ? $charset : $this->getHTMLcharset($content);
+		$charset = $charset ?: $this->getHTMLcharset($content);
 		$charset = $this->csObj->parse_charset($charset);
 		// Convert charset:
 		if ($charset && $charset !== 'utf-8') {
@@ -1110,7 +1110,7 @@ class Indexer {
 	public function indexRegularDocument($file, $force = FALSE, $contentTmpFile = '', $altExtension = '') {
 		// Init
 		$fI = pathinfo($file);
-		$ext = $altExtension ? $altExtension : strtolower($fI['extension']);
+		$ext = $altExtension ?: strtolower($fI['extension']);
 		// Create abs-path:
 		if (!$contentTmpFile) {
 			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath($file)) {
@@ -1594,7 +1594,7 @@ class Indexer {
 	public function submitFilePage($hash, $file, $subinfo, $ext, $mtime, $ctime, $size, $content_md5h, $contentParts) {
 		// Find item Type:
 		$storeItemType = $this->external_parsers[$ext]->ext2itemtype_map[$ext];
-		$storeItemType = $storeItemType ? $storeItemType : $ext;
+		$storeItemType = $storeItemType ?: $ext;
 		// Remove any current data for this phash:
 		$this->removeOldIndexedFiles($hash['phash']);
 		// Split filename:
@@ -1607,7 +1607,7 @@ class Indexer {
 			'contentHash' => $content_md5h,
 			'data_filename' => $file,
 			'item_type' => $storeItemType,
-			'item_title' => trim($contentParts['title']) ? $contentParts['title'] : basename($file),
+			'item_title' => trim($contentParts['title']) ?: basename($file),
 			'item_description' => $this->bodyDescription($contentParts),
 			'item_mtime' => $mtime,
 			'item_size' => $size,

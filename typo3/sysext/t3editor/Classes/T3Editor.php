@@ -246,7 +246,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function getParserfileByMode($mode) {
 		switch ($mode) {
 		case self::MODE_TYPOSCRIPT:
-			$relPath = ($GLOBALS['BACK_PATH'] ? $GLOBALS['BACK_PATH'] : '../../../') . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3editor') . 'res/jslib/parse_typoscript/';
+			$relPath = ($GLOBALS['BACK_PATH'] ?: '../../../') . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3editor') . 'res/jslib/parse_typoscript/';
 			$parserfile = '["' . $relPath . 'tokenizetyposcript.js", "' . $relPath . 'parsetyposcript.js"]';
 			break;
 		case self::MODE_JAVASCRIPT:

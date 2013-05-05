@@ -75,10 +75,10 @@ class CustomAttributeController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugi
 	 * @todo Define visibility
 	 */
 	public function render_clickenlarge($content, $conf) {
-		$clickenlarge = isset($this->cObj->parameters['data-htmlarea-clickenlarge']) ? $this->cObj->parameters['data-htmlarea-clickenlarge'] : 0;
+		$clickenlarge = $this->cObj->parameters['data-htmlarea-clickenlarge'] ?: 0;
 		if (!$clickenlarge) {
 			// Backward compatibility
-			$clickenlarge = isset($this->cObj->parameters['clickenlarge']) ? $this->cObj->parameters['clickenlarge'] : 0;
+			$clickenlarge = $this->cObj->parameters['clickenlarge'] ?: 0;
 		}
 		$fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
 		$fileTable = $this->cObj->parameters['data-htmlarea-file-table'];

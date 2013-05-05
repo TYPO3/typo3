@@ -816,7 +816,7 @@ class FormsController {
 						$confData['size'] = $fParts[1];
 						break;
 					case 'select':
-						$confData['size'] = intval($fParts[1]) ? $fParts[1] : '';
+						$confData['size'] = intval($fParts[1]) ?: '';
 						$confData['autosize'] = strtolower(trim($fParts[1])) == 'auto' ? 1 : 0;
 						$confData['multiple'] = strtolower(trim($fParts[2])) == 'm' ? 1 : 0;
 						break;

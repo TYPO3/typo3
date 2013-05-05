@@ -234,7 +234,7 @@ class FileContentParser {
 		// If extension was OK:
 		if ($extOK) {
 			$this->supportedExtensions[$extension] = TRUE;
-			$this->ext2itemtype_map[$extension] = $mainExtension ? $mainExtension : $extension;
+			$this->ext2itemtype_map[$extension] = $mainExtension ?: $extension;
 			return TRUE;
 		}
 	}
@@ -552,7 +552,7 @@ class FileContentParser {
 				$metaContent = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2tree($meta_xml);
 				$metaContent = $metaContent['office:document-meta'][0]['ch']['office:meta'][0]['ch'];
 				if (is_array($metaContent)) {
-					$contentArr['title'] = $metaContent['dc:title'][0]['values'][0] ? $metaContent['dc:title'][0]['values'][0] : $contentArr['title'];
+					$contentArr['title'] = $metaContent['dc:title'][0]['values'][0] ?: $contentArr['title'];
 					$contentArr['description'] = $metaContent['dc:subject'][0]['values'][0] . ' ' . $metaContent['dc:description'][0]['values'][0];
 					// Keywords collected:
 					if (is_array($metaContent['meta:keywords'][0]['ch']['meta:keyword'])) {

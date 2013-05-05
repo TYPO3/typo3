@@ -256,7 +256,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 					}
 				}
 				if ($line) {
-					$saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
+					$saveId = $tplRow['_ORIG_uid'] ?: $tplRow['uid'];
 					// Set the data to be saved
 					$recData = array();
 					$field = $bType == 'setup' ? 'config' : 'constants';
@@ -318,7 +318,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 		}
 		// EDIT A VALUE:
 		if ($this->pObj->sObj) {
-			list($theSetup, $theSetupValue) = $tmpl->ext_getSetup($theSetup, $this->pObj->sObj ? $this->pObj->sObj : '');
+			list($theSetup, $theSetupValue) = $tmpl->ext_getSetup($theSetup, $this->pObj->sObj ?: '');
 			if ($existTemplate) {
 				// Value
 				$out = '';
@@ -402,7 +402,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			if (!$theKey || !str_replace('-', '', $theKey)) {
 				$theKey = '';
 			}
-			list($theSetup, $theSetupValue) = $tmpl->ext_getSetup($theSetup, $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ? $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] : '');
+			list($theSetup, $theSetupValue) = $tmpl->ext_getSetup($theSetup, $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ?: '');
 			$tree = $tmpl->ext_getObjTree($theSetup, $theKey, '', '', $theSetupValue, $this->pObj->MOD_SETTINGS['ts_browser_alphaSort']);
 			$tree = $tmpl->substituteCMarkers($tree);
 			$urlParameters = array(
@@ -430,7 +430,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			} else {
 				$remove = '';
 			}
-			$label = $theKey ? $theKey : ($bType == 'setup' ? $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('setupRoot'), 'toUpper') : $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('constantRoot'), 'toUpper'));
+			$label = $theKey ?: ($bType == 'setup' ? $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('setupRoot'), 'toUpper') : $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('constantRoot'), 'toUpper'));
 			$theOutput .= $this->pObj->doc->spacer(15);
 			$theOutput .= $this->pObj->doc->sectionEnd();
 			$theOutput .= '<table border="0" id="typo3-objectBrowser">

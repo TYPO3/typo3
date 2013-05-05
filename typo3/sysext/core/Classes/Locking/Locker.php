@@ -153,7 +153,7 @@ class Locker {
 			if (is_file($this->resource)) {
 				$this->sysLog('Waiting for a different process to release the lock');
 				$maxExecutionTime = ini_get('max_execution_time');
-				$maxAge = time() - ($maxExecutionTime ? $maxExecutionTime : 120);
+				$maxAge = time() - ($maxExecutionTime ?: 120);
 				if (@filectime($this->resource) < $maxAge) {
 					@unlink($this->resource);
 					$this->sysLog('Unlink stale lockfile');

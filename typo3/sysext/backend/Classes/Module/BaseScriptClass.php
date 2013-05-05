@@ -275,7 +275,7 @@ class BaseScriptClass {
 	 * @todo Define visibility
 	 */
 	public function handleExternalFunctionValue($MM_key = 'function', $MS_value = NULL) {
-		$MS_value = is_null($MS_value) ? $this->MOD_SETTINGS[$MM_key] : $MS_value;
+		$MS_value = $MS_value ?: $this->MOD_SETTINGS[$MM_key];
 		$this->extClassConf = $this->getExternalItemConfig($this->MCONF['name'], $MM_key, $MS_value);
 		if (is_array($this->extClassConf) && $this->extClassConf['path']) {
 			$this->include_once[] = $this->extClassConf['path'];

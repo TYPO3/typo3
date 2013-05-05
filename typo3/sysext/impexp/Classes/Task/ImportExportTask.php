@@ -97,7 +97,7 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 				foreach ($presets as $key => $presetCfg) {
 					$configuration = unserialize($presetCfg['preset_data']);
 					$thumbnailFile = $thumbnails[$configuration['meta']['thumbnail']];
-					$title = strlen($presetCfg['title']) ? $presetCfg['title'] : '[' . $presetCfg['uid'] . ']';
+					$title = $presetCfg['title'] ?: '[' . $presetCfg['uid'] . ']';
 					$icon = 'EXT:impexp/export.gif';
 					$description = array();
 					// Is public?

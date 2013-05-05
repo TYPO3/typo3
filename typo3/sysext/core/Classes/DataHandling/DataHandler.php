@@ -962,7 +962,7 @@ class DataHandler {
 						// If access was granted above, proceed to create or update record:
 						if ($recordAccess) {
 							// Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
-							list($tscPID) = \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid($table, $id, $old_pid_value ? $old_pid_value : $fieldArray['pid']);
+							list($tscPID) = \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid($table, $id, $old_pid_value ?: $fieldArray['pid']);
 							$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 							if ($status == 'new' && $table == 'pages' && is_array($TSConfig['permissions.'])) {
 								$fieldArray = $this->setTSconfigPermissions($fieldArray, $TSConfig['permissions.']);
@@ -1143,7 +1143,7 @@ class DataHandler {
 			\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid($table, $currentRecord);
 			// Get original language record if available:
 			if (is_array($currentRecord) && $GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0 && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && intval($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]) > 0) {
-				$lookUpTable = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] ? $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] : $table;
+				$lookUpTable = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'] ?: $table;
 				$originalLanguageRecord = $this->recordInfo($lookUpTable, $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], '*');
 				\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL($lookUpTable, $originalLanguageRecord);
 				$originalLanguage_diffStorage = unserialize($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']]);
@@ -1346,7 +1346,7 @@ class DataHandler {
 			}
 			if ($status == 'update') {
 				// This checks 1) if we should check for disallowed tables and 2) if there are records from disallowed tables on the current page
-				$onlyAllowedTables = isset($GLOBALS['PAGES_TYPES'][$value]['onlyAllowedTables']) ? $GLOBALS['PAGES_TYPES'][$value]['onlyAllowedTables'] : $GLOBALS['PAGES_TYPES']['default']['onlyAllowedTables'];
+				$onlyAllowedTables = $GLOBALS['PAGES_TYPES'][$value]['onlyAllowedTables'] ?: $GLOBALS['PAGES_TYPES']['default']['onlyAllowedTables'];
 				if ($onlyAllowedTables) {
 					$theWrongTables = $this->doesPageHaveUnallowedTables($id, $value);
 					if ($theWrongTables) {
@@ -1666,7 +1666,7 @@ class DataHandler {
 			if (empty($filter['userFunc'])) {
 				continue;
 			}
-			$parameters = $filter['parameters'] ? $filter['parameters'] : array();
+			$parameters = $filter['parameters'] ?: array();
 			$parameters['values'] = $values;
 			$parameters['tcaFieldConfig'] = $tcaFieldConfiguration;
 			$values = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($filter['userFunc'], $parameters, $this);
@@ -1717,7 +1717,7 @@ class DataHandler {
 			// Setting permitted extensions.
 			$all_files = array();
 			$all_files['webspace']['allow'] = $tcaFieldConf['allowed'];
-			$all_files['webspace']['deny'] = $tcaFieldConf['disallowed'] ? $tcaFieldConf['disallowed'] : '*';
+			$all_files['webspace']['deny'] = $tcaFieldConf['disallowed'] ?: '*';
 			$all_files['ftpspace'] = $all_files['webspace'];
 			$this->fileFunc->init('', $all_files);
 		}
@@ -1810,7 +1810,7 @@ class DataHandler {
 							// Check file size:
 							if (!$maxSize || $fileSize <= $maxSize * 1024) {
 								// Prepare filename:
-								$theEndFileName = isset($this->alternativeFileName[$theFile]) ? $this->alternativeFileName[$theFile] : $theFile;
+								$theEndFileName = $this->alternativeFileName[$theFile] ?: $theFile;
 								$fI = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($theEndFileName);
 								// Check for allowed extension:
 								if ($this->fileFunc->checkIfAllowed($fI['fileext'], $dest, $theEndFileName)) {
@@ -1915,7 +1915,7 @@ class DataHandler {
 								// Check file size:
 								if (!$maxSize || $fileSize <= $maxSize * 1024) {
 									// Prepare filename:
-									$theEndFileName = isset($this->alternativeFileName[$theFile]) ? $this->alternativeFileName[$theFile] : $theFile;
+									$theEndFileName = $this->alternativeFileName[$theFile] ?: $theFile;
 									$fI = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($theEndFileName);
 									// Check for allowed extension:
 									if ($this->fileFunc->checkIfAllowed($fI['fileext'], $dest, $theEndFileName)) {
@@ -2127,7 +2127,7 @@ class DataHandler {
 		// BTW, checking for min and max items here does NOT make any sense when MM is used because the above function calls will just return an array with a single item (the count) if MM is used... Why didn't I perform the check before? Probably because we could not evaluate the validity of record uids etc... Hmm...
 		$valueArrayC = count($valueArray);
 		// NOTE to the comment: It's not really possible to check for too few items, because you must then determine first, if the field is actual used regarding the CType.
-		$maxI = isset($tcaFieldConf['maxitems']) ? intval($tcaFieldConf['maxitems']) : 1;
+		$maxI = intval($tcaFieldConf['maxitems'] ?: 1);
 		if ($valueArrayC > $maxI) {
 			$valueArrayC = $maxI;
 		}
@@ -2187,7 +2187,7 @@ class DataHandler {
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			// If the new value is there:
-			$value = strlen($newValue) ? $newValue : $value;
+			$value = $newValue ?: $value;
 		}
 		return $value;
 	}
@@ -3093,7 +3093,7 @@ class DataHandler {
 		if ($this->isReferenceField($conf) || $inlineSubType == 'mm') {
 			$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
 			$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
-			$mmTable = isset($conf['MM']) && $conf['MM'] ? $conf['MM'] : '';
+			$mmTable = $conf['MM'] ?: '';
 			$localizeForeignTable = isset($conf['foreign_table']) && \TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($conf['foreign_table']);
 			$localizeReferences = $localizeForeignTable && isset($conf['localizeReferencesAtParentLocalization']) && $conf['localizeReferencesAtParentLocalization'];
 			$localizeChildren = $localizeForeignTable && isset($conf['behaviour']['localizeChildrenAtParentLocalization']) && $conf['behaviour']['localizeChildrenAtParentLocalization'];
@@ -3154,7 +3154,7 @@ class DataHandler {
 							$workspaceVersion = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $v['table'], $v['id'], 'uid');
 							// If workspace version does not exist, create a new one:
 							if ($workspaceVersion === FALSE) {
-								$newId = $this->versionizeRecord($v['table'], $v['id'], isset($workspaceOptions['label']) ? $workspaceOptions['label'] : 'Auto-created for WS #' . $this->BE_USER->workspace, isset($workspaceOptions['delete']) ? $workspaceOptions['delete'] : FALSE);
+								$newId = $this->versionizeRecord($v['table'], $v['id'], $workspaceOptions['label'] ?: 'Auto-created for WS #' . $this->BE_USER->workspace, $workspaceOptions['delete'] ?: FALSE);
 							} else {
 								$newId = $workspaceVersion['uid'];
 							}
@@ -4444,7 +4444,7 @@ class DataHandler {
 								$overrideArray = array(
 									't3ver_id' => $highestVerNumber + 1,
 									't3ver_oid' => $id,
-									't3ver_label' => $label ? $label : $subVer . ' / ' . date('d-m-Y H:m:s'),
+									't3ver_label' => $label ?: $subVer . ' / ' . date('d-m-Y H:m:s'),
 									't3ver_wsid' => $this->BE_USER->workspace,
 									't3ver_state' => $delete ? 2 : 0,
 									't3ver_count' => 0,
@@ -5398,7 +5398,7 @@ class DataHandler {
 			// Not a number. Probably a new page
 			return FALSE;
 		}
-		$allowedTableList = isset($GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']) ? $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] : $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
+		$allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] ?: $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
 		$allowedArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $allowedTableList, 1);
 		// If all tables is OK the return TRUE
 		if (strstr($allowedTableList, '*')) {

@@ -1371,7 +1371,7 @@ class ResourceStorage {
 		if (!$targetParentFolder->getStorage() == $this) {
 			throw new \InvalidArgumentException('Cannot move a folder into a folder that does not belong to this storage.', 1325777289);
 		}
-		$newFolderName = $newFolderName ? $newFolderName : $folderToMove->getName();
+		$newFolderName = $newFolderName ?: $folderToMove->getName();
 		// TODO check if folder already exists in $targetParentFolder, handle this conflict then
 		$this->emitPreFolderMoveSignal($folderToMove, $targetParentFolder, $newFolderName);
 		// Get all file objects now so we are able to update them after moving the folder
@@ -1422,7 +1422,7 @@ class ResourceStorage {
 		// TODO implement the $conflictMode handling
 		// TODO permission checks
 		$returnObject = NULL;
-		$newFolderName = $newFolderName ? $newFolderName : $folderToCopy->getName();
+		$newFolderName = $newFolderName ?: $folderToCopy->getName();
 		$this->emitPreFolderCopySignal($folderToCopy, $targetParentFolder, $newFolderName);
 		$sourceStorage = $folderToCopy->getStorage();
 		// call driver method to move the file

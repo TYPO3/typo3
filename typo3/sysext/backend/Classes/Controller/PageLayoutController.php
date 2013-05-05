@@ -732,7 +732,7 @@ class PageLayoutController {
 			if ($uidVal == 'new') {
 				$new_unique_uid = uniqid('NEW');
 				$rec['uid'] = $new_unique_uid;
-				$rec['pid'] = intval($ex_pid) ? intval($ex_pid) : $this->id;
+				$rec['pid'] = intval($ex_pid) ?: $this->id;
 				$recordAccess = TRUE;
 			} else {
 				$rec['uid'] = $uidVal;

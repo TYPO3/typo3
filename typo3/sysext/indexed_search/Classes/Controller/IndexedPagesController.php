@@ -309,7 +309,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			// Technical details:
 			// Display icon:
 			if (!$grouping) {
-				$lines[] = '<td>' . $this->makeItemTypeIcon($row['item_type'], ($row['data_filename'] ? $row['data_filename'] : $row['item_title'])) . '</td>';
+				$lines[] = '<td>' . $this->makeItemTypeIcon($row['item_type'], ($row['data_filename'] ?: $row['item_title'])) . '</td>';
 			} else {
 				$lines[] = '<td>&nbsp;</td>';
 			}
@@ -321,19 +321,19 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			$lines[] = '<td>' . $row['phash'] . '</td>';
 			$lines[] = '<td>' . $row['contentHash'] . '</td>';
 			if ($row['item_type'] === '0') {
-				$lines[] = '<td>' . ($row['data_page_id'] ? $row['data_page_id'] : '&nbsp;') . '</td>';
-				$lines[] = '<td>' . ($row['data_page_type'] ? $row['data_page_type'] : '&nbsp;') . '</td>';
-				$lines[] = '<td>' . ($row['sys_language_uid'] ? $row['sys_language_uid'] : '&nbsp;') . '</td>';
-				$lines[] = '<td>' . ($row['data_page_mp'] ? $row['data_page_mp'] : '&nbsp;') . '</td>';
+				$lines[] = '<td>' . ($row['data_page_id'] ?: '&nbsp;') . '</td>';
+				$lines[] = '<td>' . ($row['data_page_type'] ?: '&nbsp;') . '</td>';
+				$lines[] = '<td>' . ($row['sys_language_uid'] ?: '&nbsp;') . '</td>';
+				$lines[] = '<td>' . ($row['data_page_mp'] ?: '&nbsp;') . '</td>';
 			} else {
 				$lines[] = '<td colspan="4">' . htmlspecialchars($row['data_filename']) . '</td>';
 			}
 			$lines[] = '<td>' . $row['gr_list'] . $this->printExtraGrListRows($extraGrListRows) . '</td>';
 			$lines[] = '<td>' . $this->printRootlineInfo($row) . '</td>';
-			$lines[] = '<td>' . ($row['page_id'] ? $row['page_id'] : '&nbsp;') . '</td>';
+			$lines[] = '<td>' . ($row['page_id'] ?: '&nbsp;') . '</td>';
 			$lines[] = '<td>' . ($row['phash_t3'] != $row['phash'] ? $row['phash_t3'] : '&nbsp;') . '</td>';
 			$lines[] = '<td>' . ($row['freeIndexUid'] ? $row['freeIndexUid'] . ($row['freeIndexSetId'] ? '/' . $row['freeIndexSetId'] : '') : '&nbsp;') . '</td>';
-			$lines[] = '<td>' . ($row['recordUid'] ? $row['recordUid'] : '&nbsp;') . '</td>';
+			$lines[] = '<td>' . ($row['recordUid'] ?: '&nbsp;') . '</td>';
 			// cHash parameters:
 			$arr = unserialize($row['cHashParams']);
 			if (!is_array($arr)) {
@@ -357,7 +357,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			// Words and content:
 			// Display icon:
 			if (!$grouping) {
-				$lines[] = '<td>' . $this->makeItemTypeIcon($row['item_type'], ($row['data_filename'] ? $row['data_filename'] : $row['item_title'])) . '</td>';
+				$lines[] = '<td>' . $this->makeItemTypeIcon($row['item_type'], ($row['data_filename'] ?: $row['item_title'])) . '</td>';
 			} else {
 				$lines[] = '<td>&nbsp;</td>';
 			}
@@ -383,7 +383,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			// Overview
 			// Display icon:
 			if (!$grouping) {
-				$lines[] = '<td>' . $this->makeItemTypeIcon($row['item_type'], ($row['data_filename'] ? $row['data_filename'] : $row['item_title'])) . '</td>';
+				$lines[] = '<td>' . $this->makeItemTypeIcon($row['item_type'], ($row['data_filename'] ?: $row['item_title'])) . '</td>';
 			} else {
 				$lines[] = '<td>&nbsp;</td>';
 			}

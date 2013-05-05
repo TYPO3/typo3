@@ -496,13 +496,13 @@ class PermissionModuleController {
 			$bgCol = $this->lastEdited == $pageId ? ' class="bgColor-20"' : '';
 			$lE_bgCol = $bgCol;
 			// User/Group names:
-			$userName = $beUserArray[$data['row']['perms_userid']] ? $beUserArray[$data['row']['perms_userid']]['username'] : ($data['row']['perms_userid'] ? $data['row']['perms_userid'] : '');
+			$userName = $beUserArray[$data['row']['perms_userid']] ? $beUserArray[$data['row']['perms_userid']]['username'] : ($data['row']['perms_userid'] ?: '');
 			if ($data['row']['perms_userid'] && !$beUserArray[$data['row']['perms_userid']]) {
 				$userName = \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderOwnername($pageId, $data['row']['perms_userid'], htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($userName, 20)), FALSE);
 			} else {
 				$userName = \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderOwnername($pageId, $data['row']['perms_userid'], htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($userName, 20)));
 			}
-			$groupName = $beGroupArray[$data['row']['perms_groupid']] ? $beGroupArray[$data['row']['perms_groupid']]['title'] : ($data['row']['perms_groupid'] ? $data['row']['perms_groupid'] : '');
+			$groupName = $beGroupArray[$data['row']['perms_groupid']] ? $beGroupArray[$data['row']['perms_groupid']]['title'] : ($data['row']['perms_groupid'] ?: '');
 			if ($data['row']['perms_groupid'] && !$beGroupArray[$data['row']['perms_groupid']]) {
 				$groupName = \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderGroupname($pageId, $data['row']['perms_groupid'], htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($groupName, 20)), FALSE);
 			} else {
@@ -513,10 +513,10 @@ class PermissionModuleController {
 			// First column:
 			$cellAttrib = $data['row']['_CSSCLASS'] ? ' class="' . $data['row']['_CSSCLASS'] . '"' : '';
 			$cells[] = '
-					<td align="left" nowrap="nowrap"' . ($cellAttrib ? $cellAttrib : $bgCol) . '>' . $data['HTML'] . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($data['row']['title'], $tLen)) . '&nbsp;</td>';
+					<td align="left" nowrap="nowrap"' . ($cellAttrib ?: $bgCol) . '>' . $data['HTML'] . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($data['row']['title'], $tLen)) . '&nbsp;</td>';
 			// "Edit permissions" -icon
 			if ($editPermsAllowed && $pageId) {
-				$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . ($data['row']['_ORIG_uid'] ? $data['row']['_ORIG_uid'] : $pageId) . '&return_id=' . $this->id . '&edit=1';
+				$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . ($data['row']['_ORIG_uid'] ?: $pageId) . '&return_id=' . $this->id . '&edit=1';
 				$cells[] = '
 					<td' . $bgCol . '><a href="' . htmlspecialchars($aHref) . '" title="' . $GLOBALS['LANG']->getLL('ch_permissions', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a></td>';
 			} else {

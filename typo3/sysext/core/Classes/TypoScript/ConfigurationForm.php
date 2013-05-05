@@ -148,7 +148,7 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 			}
 		');
 		if ($addFormTag) {
-			$content .= '<form action="' . htmlspecialchars(($script ? $script : \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript())) . '" name="' . $this->ext_CEformName . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
+			$content .= '<form action="' . htmlspecialchars(($script ?: \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript())) . '" name="' . $this->ext_CEformName . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
 		}
 		$content .= $addFields;
 		$content .= $printFields;
@@ -216,7 +216,7 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 */
 	public function ext_fNandV($params) {
 		$fN = 'data[' . $params['name'] . ']';
-		$fV = ($params['value'] = isset($this->ext_realValues[$params['name']]) ? $this->ext_realValues[$params['name']] : $params['default_value']);
+		$fV = ($params['value'] = $this->ext_realValues[$params['name']] ?: $params['default_value']);
 		$reg = array();
 		// Values entered from the constantsedit cannot be constants!
 		if (preg_match('/^\\{[\\$][a-zA-Z0-9\\.]*\\}$/', trim($fV), $reg)) {

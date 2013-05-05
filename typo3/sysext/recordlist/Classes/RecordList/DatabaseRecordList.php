@@ -531,7 +531,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 				} else {
 					// Show that there are more records than shown
 					if ($this->totalItems > $this->itemsLimitPerTable) {
-						$countOnFirstPage = $this->totalItems > $this->itemsLimitSingleTable ? $this->itemsLimitSingleTable : $this->totalItems;
+						$countOnFirstPage = $this->totalItems > $this->itemsLimitSingleTable ?: $this->totalItems;
 						$hasMore = $this->totalItems > $this->itemsLimitSingleTable;
 						$iOut .= '<tr><td colspan="' . count($this->fieldArray) . '" style="padding:5px;">
 								<a href="' . htmlspecialchars(($this->listURL() . '&table=' . rawurlencode($table))) . '">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/pildown.gif', 'width="14" height="14"') . ' alt="" />' . ' <i>[1 - ' . $countOnFirstPage . ($hasMore ? '+' : '') . ']</i></a>

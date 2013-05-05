@@ -217,8 +217,8 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 				case 'textarea':
 					$cols = trim($fParts[1]) ? intval($fParts[1]) : 20;
 					$compensateFieldWidth = isset($conf['compensateFieldWidth.']) ? $this->cObj->stdWrap($conf['compensateFieldWidth'], $conf['compensateFieldWidth.']) : $conf['compensateFieldWidth'];
-					$compWidth = doubleval($compensateFieldWidth ? $compensateFieldWidth : $GLOBALS['TSFE']->compensateFieldWidth);
-					$compWidth = $compWidth ? $compWidth : 1;
+					$compWidth = doubleval($compensateFieldWidth ?: $GLOBALS['TSFE']->compensateFieldWidth);
+					$compWidth = $compWidth ?: 1;
 					$cols = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($cols * $compWidth, 1, 120);
 					$rows = trim($fParts[2]) ? \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($fParts[2], 1, 30) : 5;
 					$wrap = trim($fParts[3]);
@@ -237,8 +237,8 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 				case 'password':
 					$size = trim($fParts[1]) ? intval($fParts[1]) : 20;
 					$compensateFieldWidth = isset($conf['compensateFieldWidth.']) ? $this->cObj->stdWrap($conf['compensateFieldWidth'], $conf['compensateFieldWidth.']) : $conf['compensateFieldWidth'];
-					$compWidth = doubleval($compensateFieldWidth ? $compensateFieldWidth : $GLOBALS['TSFE']->compensateFieldWidth);
-					$compWidth = $compWidth ? $compWidth : 1;
+					$compWidth = doubleval($compensateFieldWidth ?: $GLOBALS['TSFE']->compensateFieldWidth);
+					$compWidth = $compWidth ?: 1;
 					$size = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($size * $compWidth, 1, 120);
 					$noValueInsert = isset($conf['noValueInsert.']) ? $this->cObj->stdWrap($conf['noValueInsert'], $conf['noValueInsert.']) : $conf['noValueInsert'];
 					$default = $this->cObj->getFieldDefaultValue($noValueInsert, $confData['fieldname'], trim($parts[2]));

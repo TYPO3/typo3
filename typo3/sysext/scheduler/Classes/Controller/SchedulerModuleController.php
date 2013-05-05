@@ -574,7 +574,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						// If an interval or a cron command is defined, it's a recurring task
 						// FIXME: remove magic numbers for the type, use class constants instead
 						$taskInfo['type'] = 2;
-						$taskInfo['frequency'] = empty($taskInfo['interval']) ? $taskInfo['croncmd'] : $taskInfo['interval'];
+						$taskInfo['frequency'] = $taskInfo['interval'] ?: $taskInfo['croncmd'];
 					} else {
 						// It's not a recurring task
 						// Make sure interval and cron command are both empty
@@ -1198,7 +1198,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	protected function preprocessData() {
 		$result = TRUE;
 		// Validate id
-		$this->submittedData['uid'] = empty($this->submittedData['uid']) ? 0 : intval($this->submittedData['uid']);
+		$this->submittedData['uid'] = intval($this->submittedData['uid'] ?: 0);
 		// Validate selected task class
 		if (!class_exists($this->submittedData['class'])) {
 			$this->addMessage($GLOBALS['LANG']->getLL('msg.noTaskClassFound'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
@@ -1357,7 +1357,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					'extension' => $registrationInformation['extension'],
 					'title' => $title,
 					'description' => $description,
-					'provider' => isset($registrationInformation['additionalFields']) ? $registrationInformation['additionalFields'] : ''
+					'provider' => $registrationInformation['additionalFields'] ?: ''
 				);
 			}
 		}

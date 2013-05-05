@@ -161,9 +161,9 @@ class SpellCheckingController {
 		// Setting start time
 		$time_start = microtime(TRUE);
 		$this->pspell_is_available = in_array('pspell', get_loaded_extensions());
-		$this->AspellDirectory = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['AspellDirectory']) ? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['AspellDirectory']) : '/usr/bin/aspell';
+		$this->AspellDirectory = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['AspellDirectory']) ?: '/usr/bin/aspell';
 		// Setting command mode if requested and available
-		$this->forceCommandMode = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['forceCommandMode']) ? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['forceCommandMode']) : 0;
+		$this->forceCommandMode = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['forceCommandMode']) ?: 0;
 		if (!$this->pspell_is_available || $this->forceCommandMode) {
 			$AspellVersionString = explode('Aspell', shell_exec($this->AspellDirectory . ' -v'));
 			$AspellVersion = substr($AspellVersionString[1], 0, 4);
@@ -195,7 +195,7 @@ class SpellCheckingController {
 			$this->dictionary = 'en';
 		}
 		// Setting the pspell suggestion mode
-		$this->pspellMode = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('pspell_mode') ? \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('pspell_mode') : $this->pspellMode;
+		$this->pspellMode = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('pspell_mode') ?: $this->pspellMode;
 		// Now sanitize $this->pspellMode
 		$this->pspellMode = \TYPO3\CMS\Core\Utility\GeneralUtility::inList('ultra,fast,normal,bad-spellers', $this->pspellMode) ? $this->pspellMode : 'normal';
 		switch ($this->pspellMode) {
@@ -242,9 +242,9 @@ class SpellCheckingController {
 			}
 			// Updating the personal word list
 			$to_p_dict = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('to_p_dict');
-			$to_p_dict = $to_p_dict ? $to_p_dict : array();
+			$to_p_dict = $to_p_dict ?: array();
 			$to_r_list = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('to_r_list');
-			$to_r_list = $to_r_list ? $to_r_list : array();
+			$to_r_list = $to_r_list ?: array();
 			header('Content-Type: text/plain; charset=' . strtoupper($this->parserCharset));
 			header('Pragma: no-cache');
 			if ($to_p_dict || $to_r_list) {

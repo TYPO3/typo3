@@ -225,7 +225,7 @@ class ConfigurationView {
 		$this->content .= $this->doc->sectionEnd();
 		// Variable name:
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('varname')) {
-			$line = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_') ? \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_') : \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('varname');
+			$line = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('_') ?: \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('varname');
 			// Write the line to extTables.php
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('writetoexttables')) {
 				// change value to $GLOBALS

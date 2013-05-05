@@ -123,7 +123,7 @@ class MediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 			}
 		}
 		$mime = $renderType . 'object';
-		$typeConf = $conf['mimeConf.'][$mime . '.'][$conf['type'] . '.'] ? $conf['mimeConf.'][$mime . '.'][$conf['type'] . '.'] : array();
+		$typeConf = $conf['mimeConf.'][$mime . '.'][$conf['type'] . '.'] ?: array();
 		$conf['predefined'] = array();
 		// Width and height
 		$conf['width'] = intval($this->doFlexFormOverlay($conf, 'width'));

@@ -998,7 +998,7 @@ class FormEngine {
 		$PA['pal'] = $pal;
 		// Get the TCA configuration for the current field:
 		$PA['fieldConf'] = $GLOBALS['TCA'][$table]['columns'][$field];
-		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
+		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ?: $PA['fieldConf']['config']['type'];
 		// Using "form_type" locally in this script
 		$skipThisField = $this->inline->skipField($table, $field, $row, $PA['fieldConf']['config']);
 
@@ -1076,9 +1076,9 @@ class FormEngine {
 					$PA['onFocus'] = $palJSfunc && !$GLOBALS['BE_USER']->uc['dontShowPalettesOnFocusInAB'] ? ' onfocus="' . htmlspecialchars($palJSfunc) . '"' : '';
 					// Find item
 					$item = '';
-					$PA['label'] = $PA['altName'] ? $PA['altName'] : $PA['fieldConf']['label'];
-					$PA['label'] = $PA['fieldTSConfig']['label'] ? $PA['fieldTSConfig']['label'] : $PA['label'];
-					$PA['label'] = $PA['fieldTSConfig']['label.'][$GLOBALS['LANG']->lang] ? $PA['fieldTSConfig']['label.'][$GLOBALS['LANG']->lang] : $PA['label'];
+					$PA['label'] = $PA['altName'] ?: $PA['fieldConf']['label'];
+					$PA['label'] = $PA['fieldTSConfig']['label'] ?: $PA['label'];
+					$PA['label'] = $PA['fieldTSConfig']['label.'][$GLOBALS['LANG']->lang] ?: $PA['label'];
 					$PA['label'] = $this->sL($PA['label']);
 					// JavaScript code for event handlers:
 					$PA['fieldChangeFunc'] = array();
@@ -1172,7 +1172,7 @@ class FormEngine {
 	 * @todo Define visibility
 	 */
 	public function getSingleField_SW($table, $field, $row, &$PA) {
-		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
+		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ?: $PA['fieldConf']['config']['type'];
 		// Using "form_type" locally in this script
 		// Hook: getSingleField_beforeRender
 		foreach ($this->hookObjectsSingleField as $hookObject) {
@@ -1237,7 +1237,7 @@ class FormEngine {
 	public function getSingleField_typeInput($table, $field, $row, &$PA) {
 		$config = $PA['fieldConf']['config'];
 		$specConf = $this->getSpecConfFromString($PA['extra'], $PA['fieldConf']['defaultExtras']);
-		$size = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($config['size'] ? $config['size'] : 30, 5, $this->maxInputWidth);
+		$size = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(!empty($config['size']) ? $config['size'] : 30, 5, $this->maxInputWidth);
 		$evalList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $config['eval'], 1);
 		$classAndStyleAttributes = $this->formWidthAsArray($size);
 		$fieldAppendix = '';
@@ -1348,7 +1348,7 @@ class FormEngine {
 		if (isset($config['checkbox'])) {
 			$item .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-input-clear', array('tag' => 'a', 'class' => 't3-tceforms-input-clearer', 'onclick' => 'document.getElementById(\'' . $inputId . '\').value=\'\';document.getElementById(\'' . $inputId . '\').focus();' . implode('', $PA['fieldChangeFunc'])));
 		}
-		$mLgd = $config['max'] ? $config['max'] : 256;
+		$mLgd = $config['max'] ?: 256;
 		$iOnChange = implode('', $PA['fieldChangeFunc']);
 		$cssClasses[] = 'hasDefaultValue';
 		$item .= '<input type="text" ' . $this->getPlaceholderAttribute($table, $field, $config, $row) . 'id="' . $inputId . '" ' . 'class="' . implode(' ', $cssClasses) . '" ' . 'name="' . $PA['itemFormElName'] . '_hr" ' . 'value=""' . 'style="' . $cssStyle . '" ' . 'maxlength="' . $mLgd . '" ' . 'onchange="' . htmlspecialchars($iOnChange) . '"' . $PA['onFocus'] . ' />';
@@ -1448,9 +1448,9 @@ function ' . $evalData . '(value) {
 			return $this->getSingleField_typeNone_render($config, $PA['itemFormElValue']);
 		}
 		// Setting columns number:
-		$cols = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($config['cols'] ? $config['cols'] : 30, 5, $this->maxTextareaWidth);
+		$cols = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($config['cols'] ?: 30, 5, $this->maxTextareaWidth);
 		// Setting number of rows:
-		$origRows = ($rows = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($config['rows'] ? $config['rows'] : 5, 1, 20));
+		$origRows = ($rows = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($config['rows'] ?: 5, 1, 20));
 		if (strlen($PA['itemFormElValue']) > $this->charsPerRow * 2) {
 			$cols = $this->maxTextareaWidth;
 			$rows = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(round(strlen($PA['itemFormElValue']) / $this->charsPerRow), count(explode(LF, $PA['itemFormElValue'])), 20);
@@ -1522,7 +1522,7 @@ function ' . $evalData . '(value) {
 				if ($specConf['nowrap']) {
 					$wrap = 'off';
 				} else {
-					$wrap = $config['wrap'] ? $config['wrap'] : 'virtual';
+					$wrap = $config['wrap'] ?: 'virtual';
 				}
 				$classes = array();
 				if ($specConf['fixed-font']) {

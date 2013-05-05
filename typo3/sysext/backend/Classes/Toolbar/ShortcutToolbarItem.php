@@ -226,7 +226,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 			$moduleParts = explode('|', $row['module_name']);
 			$row['module_name'] = $moduleParts[0];
 			$row['M_module_name'] = $moduleParts[1];
-			$moduleParts = explode('_', $row['M_module_name'] ? $row['M_module_name'] : $row['module_name']);
+			$moduleParts = explode('_', $row['M_module_name'] ?: $row['module_name']);
 			$queryParts = parse_url($row['url']);
 			$queryParameters = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array($queryParts['query'], 1);
 			if ($row['module_name'] == 'xMOD_alt_doc.php' && is_array($queryParameters['edit'])) {
@@ -356,7 +356,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 			}
 			if ($groupId < 0) {
 				// Global group
-				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:bookmark_global', 1) . ': ' . (!empty($label) ? $label : abs($groupId));
+				$label = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:bookmark_global', 1) . ': ' . ($label ?: abs($groupId));
 				if ($groupId == -100) {
 					$label = $GLOBALS['LANG']->getLL('bookmark_global', 1) . ': ' . $GLOBALS['LANG']->getLL('bookmark_all', 1);
 				}
@@ -440,7 +440,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 				$shortcut['type'] = 'other';
 			}
 			// Lookup the title of this page and use it as default description
-			$pageId = $shortcut['recordid'] ? $shortcut['recordid'] : $this->getLinkedPageId($url);
+			$pageId = $shortcut['recordid'] ?: $this->getLinkedPageId($url);
 			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($pageId)) {
 				$page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pageId);
 				if (count($page)) {

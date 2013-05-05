@@ -391,7 +391,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			}
 			$resultData['path'] = '<a href="' . htmlspecialchars($row['data_filename']) . '"' . $targetAttribute . '>' . htmlspecialchars($row['data_filename']) . '</a>';
 		} else {
-			$pathId = $row['data_page_id'] ? $row['data_page_id'] : $row['page_id'];
+			$pathId = $row['data_page_id'] ?: $row['page_id'];
 			$pathMP = $row['data_page_id'] ? $row['data_page_mp'] : '';
 			$pathStr = htmlspecialchars($this->getPathFromPageId($pathId, $pathMP));
 			$resultData['path'] = $this->linkPage($pathId, $pathStr, array(
@@ -430,7 +430,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * @return array Configuration array
 	 */
 	protected function getSpecialConfigForResultRow($row) {
-		$pathId = $row['data_page_id'] ? $row['data_page_id'] : $row['page_id'];
+		$pathId = $row['data_page_id'] ?: $row['page_id'];
 		$pathMP = $row['data_page_id'] ? $row['data_page_mp'] : '';
 		$rl = $GLOBALS['TSFE']->sys_page->getRootLine($pathId, $pathMP);
 		$specConf = $this->settings['specialConfiguration.']['0.'];
@@ -593,7 +593,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				$outputStr = $GLOBALS['TSFE']->csConvObj->crop('utf-8', $row['item_description'], $length);
 				$outputStr = htmlspecialchars($outputStr);
 			}
-			$output = $outputStr ? $outputStr : $markedSW;
+			$output = $outputStr ?: $markedSW;
 			$output = $GLOBALS['TSFE']->csConv($output, 'utf-8');
 		} else {
 			$output = '<span class="noResume">' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.noResume', 'indexed_search') . '</span>';
@@ -777,7 +777,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	protected function procSearchWordsByLexer($searchWords) {
 		$newSearchWords = array();
 		// Init lexer (used to post-processing of search words)
-		$lexerObjRef = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ? $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] : 'EXT:indexed_search/Classes/Lexer.php:&TYPO3\\CMS\\IndexedSearch\\Lexer';
+		$lexerObjRef = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ?: 'EXT:indexed_search/Classes/Lexer.php:&TYPO3\\CMS\\IndexedSearch\\Lexer';
 		$this->lexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($lexerObjRef);
 		// Traverse the search word array
 		foreach ($searchWords as $wordDef) {

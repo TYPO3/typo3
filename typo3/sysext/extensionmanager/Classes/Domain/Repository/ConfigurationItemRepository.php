@@ -108,7 +108,7 @@ class ConfigurationItemRepository {
 			$configurationOption['label'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($configurationOption['label'], $extensionKey);
 		}
 		$configurationOption['labels'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $configurationOption['label'], FALSE, 2);
-		$configurationOption['subcat_name'] = $configurationOption['subcat_name'] ? $configurationOption['subcat_name'] : '__default';
+		$configurationOption['subcat_name'] = $configurationOption['subcat_name'] ?: '__default';
 		$hierarchicConfiguration[$configurationOption['cat']][$configurationOption['subcat_name']][$configurationOption['name']] = $configurationOption;
 		return $hierarchicConfiguration;
 	}
@@ -157,7 +157,7 @@ class ConfigurationItemRepository {
 	 * @return array
 	 */
 	protected function addMetaInformation(&$configuration) {
-		$metaInformation = $configuration['__meta__'] ? $configuration['__meta__'] : array();
+		$metaInformation = $configuration['__meta__'] ?: array();
 		unset($configuration['__meta__']);
 		return $metaInformation;
 	}

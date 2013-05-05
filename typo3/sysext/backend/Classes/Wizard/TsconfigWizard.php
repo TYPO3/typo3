@@ -408,7 +408,7 @@ class TsconfigWizard {
 	 * @todo Define visibility
 	 */
 	public function doLink($params) {
-		$title = trim($params[0]['title']) ? trim($params[0]['title']) : '[GO]';
+		$title = trim($params[0]['title']) ?: '[GO]';
 		$str = $this->linkToObj($title, $params[0]['uid'], $params[1]);
 		return $str;
 	}

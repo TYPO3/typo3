@@ -224,7 +224,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			}
 		}
 		// Init lexer (used to post-processing of search words)
-		$lexerObjRef = $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] ? $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] : 'EXT:indexed_search/Classes/Lexer.php:&TYPO3\\CMS\\IndexedSearch\\Lexer';
+		$lexerObjRef = $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] ?: 'EXT:indexed_search/Classes/Lexer.php:&TYPO3\\CMS\\IndexedSearch\\Lexer';
 		$this->lexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($lexerObjRef);
 		// If "_sections" is set, this value overrides any existing value.
 		if ($this->piVars['_sections']) {
@@ -749,7 +749,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				$this->resultSections = array();
 				foreach ($sections as $id => $resultRows) {
 					$rlParts = explode('-', $id);
-					$theId = $rlParts[2] ? $rlParts[2] : ($rlParts[1] ? $rlParts[1] : $rlParts[0]);
+					$theId = $rlParts[2] ?: ($rlParts[1] ?: $rlParts[0]);
 					$theRLid = $rlParts[2] ? 'rl2_' . $rlParts[2] : ($rlParts[1] ? 'rl1_' . $rlParts[1] : '0');
 					$sectionName = $this->getPathFromPageId($theId);
 					if ($sectionName[0] == '/') {
@@ -1487,7 +1487,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			foreach ($this->resultSections as $id => $dat) {
 				$markerArray = array();
 				$aBegin = '<a href="' . htmlspecialchars(($GLOBALS['TSFE']->anchorPrefix . '#anchor_' . md5($id))) . '">';
-				$aContent = htmlspecialchars((trim($dat[0]) ? trim($dat[0]) : $this->pi_getLL('unnamedSection'))) . ' (' . $dat[1] . ' ' . $this->pi_getLL(($dat[1] > 1 ? 'word_pages' : 'word_page'), '', 1) . ')';
+				$aContent = htmlspecialchars((trim($dat[0]) ?: $this->pi_getLL('unnamedSection'))) . ' (' . $dat[1] . ' ' . $this->pi_getLL(($dat[1] > 1 ? 'word_pages' : 'word_page'), '', 1) . ')';
 				$aEnd = '</a>';
 				$markerArray['###LINK###'] = $aBegin . $aContent . $aEnd;
 				$links[] = $this->cObj->substituteMarkerArrayCached($item, $markerArray, array(), array());
@@ -1902,7 +1902,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				$outputStr = $GLOBALS['TSFE']->csConvObj->crop('utf-8', $row['item_description'], $lgd);
 				$outputStr = htmlspecialchars($outputStr);
 			}
-			$output = $this->utf8_to_currentCharset($outputStr ? $outputStr : $markedSW);
+			$output = $this->utf8_to_currentCharset($outputStr ?: $markedSW);
 		} else {
 			$output = '<span class="noResume">' . $this->pi_getLL('res_noResume', '', 1) . '</span>';
 		}
@@ -2013,7 +2013,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$tmplArray['size'] = \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($row['item_size']);
 		$tmplArray['created'] = $this->formatCreatedDate($row['item_crdate']);
 		$tmplArray['modified'] = $this->formatModifiedDate($row['item_mtime']);
-		$pathId = $row['data_page_id'] ? $row['data_page_id'] : $row['page_id'];
+		$pathId = $row['data_page_id'] ?: $row['page_id'];
 		$pathMP = $row['data_page_id'] ? $row['data_page_mp'] : '';
 		$pI = parse_url($row['data_filename']);
 		if ($pI['scheme']) {
@@ -2042,7 +2042,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @todo Define visibility
 	 */
 	public function getSpecialConfigForRow($row) {
-		$pathId = $row['data_page_id'] ? $row['data_page_id'] : $row['page_id'];
+		$pathId = $row['data_page_id'] ?: $row['page_id'];
 		$pathMP = $row['data_page_id'] ? $row['data_page_mp'] : '';
 		$rl = $this->getRootLine($pathId, $pathMP);
 		$specConf = $this->conf['specConfs.']['0.'];

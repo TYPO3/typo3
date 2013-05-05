@@ -733,7 +733,7 @@ class SoftReferenceIndex {
 					'type' => 'db',
 					'recordRef' => 'pages:' . $tLP['page_id'],
 					'tokenID' => $tokenID,
-					'tokenValue' => $tLP['alias'] ? $tLP['alias'] : $tLP['page_id']
+					'tokenValue' => $tLP['alias'] ?: $tLP['page_id']
 				);
 			}
 			// Add type if applicable

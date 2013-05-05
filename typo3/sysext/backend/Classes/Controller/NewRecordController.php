@@ -366,7 +366,7 @@ class NewRecordController {
 		$rowContent = '';
 		// New pages INSIDE this pages
 		$newPageLinks = array();
-		if ($this->newPagesInto && $this->isTableAllowedForThisPage($this->pageinfo, 'pages') && $GLOBALS['BE_USER']->check('tables_modify', 'pages') && $GLOBALS['BE_USER']->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ? $this->pageinfo['_ORIG_uid'] : $this->id), 'pages')) {
+		if ($this->newPagesInto && $this->isTableAllowedForThisPage($this->pageinfo, 'pages') && $GLOBALS['BE_USER']->check('tables_modify', 'pages') && $GLOBALS['BE_USER']->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ?: $this->id), 'pages')) {
 			// Create link to new page inside:
 			$newPageLinks[] = $this->linkWrap(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, array()) . $GLOBALS['LANG']->sL($v['ctrl']['title'], 1) . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.inside', 1) . ')', $table, $this->id);
 		}
@@ -414,7 +414,7 @@ class NewRecordController {
 				foreach ($GLOBALS['TCA'] as $table => $v) {
 					$count = count($GLOBALS['TCA'][$table]);
 					$counter = 1;
-					if ($table != 'pages' && $this->showNewRecLink($table) && $this->isTableAllowedForThisPage($this->pageinfo, $table) && $GLOBALS['BE_USER']->check('tables_modify', $table) && (($v['ctrl']['rootLevel'] xor $this->id) || $v['ctrl']['rootLevel'] == -1) && $GLOBALS['BE_USER']->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ? $this->pageinfo['_ORIG_uid'] : $this->id), $table)) {
+					if ($table != 'pages' && $this->showNewRecLink($table) && $this->isTableAllowedForThisPage($this->pageinfo, $table) && $GLOBALS['BE_USER']->check('tables_modify', $table) && (($v['ctrl']['rootLevel'] xor $this->id) || $v['ctrl']['rootLevel'] == -1) && $GLOBALS['BE_USER']->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ?: $this->id), $table)) {
 						$newRecordIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, array());
 						$rowContent = '';
 						// Create new link for record:
@@ -636,8 +636,8 @@ class NewRecordController {
 	 * @todo Define visibility
 	 */
 	public function showNewRecLink($table, array $allowedNewTables = array(), array $deniedNewTables = array()) {
-		$allowedNewTables = $allowedNewTables ? $allowedNewTables : $this->allowedNewTables;
-		$deniedNewTables = $deniedNewTables ? $deniedNewTables : $this->deniedNewTables;
+		$allowedNewTables = $allowedNewTables ?: $this->allowedNewTables;
+		$deniedNewTables = $deniedNewTables ?: $this->deniedNewTables;
 		// No deny/allow tables are set:
 		if (!count($allowedNewTables) && !count($deniedNewTables)) {
 			return TRUE;

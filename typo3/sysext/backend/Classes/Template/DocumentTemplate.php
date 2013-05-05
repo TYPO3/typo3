@@ -453,7 +453,7 @@ class DocumentTemplate {
 	 */
 	public function wrapClickMenuOnIcon($str, $table, $uid = 0, $listFr = TRUE, $addParams = '', $enDisItems = '', $returnOnClick = FALSE) {
 		$backPath = rawurlencode($this->backPath) . '|' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(($this->backPath . '|' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']));
-		$onClick = 'showClickmenu("' . $table . '","' . ($uid !== 0 ? $uid : '') . '","' . strval($listFr) . '","' . str_replace('+', '%2B', $enDisItems) . '","' . str_replace('&', '&amp;', addcslashes($backPath, '"')) . '","' . str_replace('&', '&amp;', addcslashes($addParams, '"')) . '");return false;';
+		$onClick = 'showClickmenu("' . $table . '","' . ($uid ?: '') . '","' . strval($listFr) . '","' . str_replace('+', '%2B', $enDisItems) . '","' . str_replace('&', '&amp;', addcslashes($backPath, '"')) . '","' . str_replace('&', '&amp;', addcslashes($addParams, '"')) . '");return false;';
 		return $returnOnClick ? $onClick : '<a href="#" onclick="' . htmlspecialchars($onClick) . '" oncontextmenu="' . htmlspecialchars($onClick) . '">' . $str . '</a>';
 	}
 
@@ -491,7 +491,7 @@ class DocumentTemplate {
 	 * @todo Define visibility
 	 */
 	public function issueCommand($params, $redirectUrl = '') {
-		$redirectUrl = $redirectUrl ? $redirectUrl : \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI');
+		$redirectUrl = $redirectUrl ?: \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI');
 		$commandUrl = $this->backPath . 'tce_db.php?' . $params . '&redirect=' . ($redirectUrl == -1 ? '\'+T3_THIS_LOCATION+\'' : rawurlencode($redirectUrl)) . '&vC=' . rawurlencode($GLOBALS['BE_USER']->veriCode()) . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction') . '&prErr=1&uPT=1';
 		return $commandUrl;
 	}
@@ -661,7 +661,7 @@ class DocumentTemplate {
 	 * @todo Define visibility
 	 */
 	public function redirectUrls($thisLocation = '') {
-		$thisLocation = $thisLocation ? $thisLocation : \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array(
+		$thisLocation = $thisLocation ?: \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array(
 			'CB' => '',
 			'SET' => '',
 			'cmd' => '',

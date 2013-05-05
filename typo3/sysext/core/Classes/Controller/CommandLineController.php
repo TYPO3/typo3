@@ -98,7 +98,7 @@ class CommandLineController {
 		}
 		if (!strcmp($argv[0], $option)) {
 			array_shift($argv);
-			return count($argv) ? $argv : array('');
+			return $argv ?: array('');
 		}
 	}
 

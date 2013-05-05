@@ -321,7 +321,7 @@ class AbstractPlugin {
 		$conf = array();
 		$conf['useCacheHash'] = $this->pi_USER_INT_obj ? 0 : $cache;
 		$conf['no_cache'] = $this->pi_USER_INT_obj ? 0 : !$cache;
-		$conf['parameter'] = $altPageId ? $altPageId : ($this->pi_tmpPageId ? $this->pi_tmpPageId : $GLOBALS['TSFE']->id);
+		$conf['parameter'] = $altPageId ?: ($this->pi_tmpPageId ?: $GLOBALS['TSFE']->id);
 		$conf['additionalParams'] = $this->conf['parent.']['addParams'] . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $urlParameters, '', TRUE) . $this->pi_moreParams;
 		return $this->cObj->typoLink($str, $conf);
 	}
@@ -391,7 +391,7 @@ class AbstractPlugin {
 				$overrulePIvars = array_merge($overrulePIvars, (array) $mergeArr);
 				$str = $this->pi_linkTP($str, array($this->prefixId => $overrulePIvars), $cache, $altPageId);
 			} else {
-				$overrulePIvars = array('showUid' => $uid ? $uid : '');
+				$overrulePIvars = array('showUid' => $uid ?: '');
 				$overrulePIvars = array_merge($overrulePIvars, (array) $mergeArr);
 				$str = $this->pi_linkTP_keepPIvars($str, $overrulePIvars, $cache, 0, $altPageId);
 			}
@@ -415,7 +415,7 @@ class AbstractPlugin {
 	public function pi_openAtagHrefInJSwindow($str, $winName = '', $winParams = 'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1') {
 		if (preg_match('/(.*)(<a[^>]*>)(.*)/i', $str, $match)) {
 			$aTagContent = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes($match[2]);
-			$match[2] = '<a href="#" onclick="' . htmlspecialchars(('vHWin=window.open(\'' . $GLOBALS['TSFE']->baseUrlWrap($aTagContent['href']) . '\',\'' . ($winName ? $winName : md5($aTagContent['href'])) . '\',\'' . $winParams . '\');vHWin.focus();return false;')) . '">';
+			$match[2] = '<a href="#" onclick="' . htmlspecialchars(('vHWin=window.open(\'' . $GLOBALS['TSFE']->baseUrlWrap($aTagContent['href']) . '\',\'' . ($winName ?: md5($aTagContent['href'])) . '\',\'' . $winParams . '\');vHWin.focus();return false;')) . '">';
 			$str = $match[1] . $match[2] . $match[3];
 		}
 		return $str;
@@ -529,7 +529,7 @@ class AbstractPlugin {
 			// Link to previous page
 			if ($alwaysPrev >= 0) {
 				if ($pointer > 0) {
-					$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_prev', '< Previous', $hscText), array($pointerName => $pointer - 1 ? $pointer - 1 : ''), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
+					$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_prev', '< Previous', $hscText), array($pointerName => ($pointer - 1) ?: ''), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
 				} elseif ($alwaysPrev) {
 					$links[] = $this->cObj->wrap($this->pi_getLL('pi_list_browseresults_prev', '< Previous', $hscText), $wrapper['disabledLinkWrap']);
 				}
@@ -546,10 +546,10 @@ class AbstractPlugin {
 					if ($this->internal['dontLinkActivePage']) {
 						$links[] = $this->cObj->wrap($pageText, $wrapper['activeLinkWrap']);
 					} else {
-						$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($pageText, array($pointerName => $a ? $a : ''), $pi_isOnlyFields), $wrapper['activeLinkWrap']);
+						$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($pageText, array($pointerName => $a ?: ''), $pi_isOnlyFields), $wrapper['activeLinkWrap']);
 					}
 				} else {
-					$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($pageText, array($pointerName => $a ? $a : ''), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
+					$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($pageText, array($pointerName => $a ?: ''), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
 				}
 			}
 			if ($pointer < $totalPages - 1 || $showFirstLast) {

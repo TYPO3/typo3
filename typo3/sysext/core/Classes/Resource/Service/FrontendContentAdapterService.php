@@ -89,7 +89,7 @@ class FrontendContentAdapterService {
 					if ($table === 'pages' && isset($row['_LOCALIZED_UID']) && intval($row['sys_language_uid']) > 0) {
 						$table = 'pages_language_overlay';
 					}
-					$files = $fileRepository->findByRelation($table, $migrateFieldName, isset($row['_LOCALIZED_UID']) ? intval($row['_LOCALIZED_UID']) : intval($row['uid']));
+					$files = $fileRepository->findByRelation($table, $migrateFieldName, intval($row['_LOCALIZED_UID'] ?: $row['uid']));
 					$fileFieldContents = array(
 						'paths' => array(),
 						'titleTexts' => array(),

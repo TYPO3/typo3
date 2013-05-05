@@ -76,7 +76,7 @@ class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBacke
 	 * @api
 	 */
 	public function get($entryIdentifier) {
-		return isset($this->entries[$entryIdentifier]) ? $this->entries[$entryIdentifier] : FALSE;
+		return $this->entries[$entryIdentifier] ?: FALSE;
 	}
 
 	/**

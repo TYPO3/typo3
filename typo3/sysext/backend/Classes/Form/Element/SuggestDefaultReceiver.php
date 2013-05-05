@@ -302,7 +302,7 @@ class SuggestDefaultReceiver {
 	 */
 	protected function checkRecordAccess($row, $uid) {
 		$retValue = TRUE;
-		$table = $this->mmForeignTable ? $this->mmForeignTable : $this->table;
+		$table = $this->mmForeignTable ?: $this->table;
 		if ($table == 'pages') {
 			if (!\TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($uid, $GLOBALS['BE_USER']->getPagePermsClause(1))) {
 				$retValue = FALSE;
@@ -326,7 +326,7 @@ class SuggestDefaultReceiver {
 	protected function makeWorkspaceOverlay(&$row) {
 		// Check for workspace-versions
 		if ($GLOBALS['BE_USER']->workspace != 0 && $GLOBALS['TCA'][$this->table]['ctrl']['versioningWS'] == TRUE) {
-			\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL($this->mmForeignTable ? $this->mmForeignTable : $this->table, $row);
+			\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL($this->mmForeignTable ?: $this->table, $row);
 		}
 	}
 
@@ -337,7 +337,7 @@ class SuggestDefaultReceiver {
 	 * @return string The path to the icon
 	 */
 	protected function getIcon($row) {
-		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getIcon($this->mmForeignTable ? $this->mmForeignTable : $this->table, $row);
+		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getIcon($this->mmForeignTable ?: $this->table, $row);
 		return \TYPO3\CMS\Backend\Utility\IconUtility::skinImg('', $icon, '', 1);
 	}
 
@@ -353,7 +353,7 @@ class SuggestDefaultReceiver {
 	 */
 	protected function getRecordPath(&$row, $uid) {
 		$titleLimit = max($this->config['maxPathTitleLength'], 0);
-		if (($this->mmForeignTable ? $this->mmForeignTable : $this->table) == 'pages') {
+		if (($this->mmForeignTable ?: $this->table) == 'pages') {
 			$path = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($uid, '', $titleLimit);
 			// For pages we only want the first (n-1) parts of the path,
 			// because the n-th part is the page itself
@@ -371,7 +371,7 @@ class SuggestDefaultReceiver {
 	 * @return string The label
 	 */
 	protected function getLabel($row) {
-		return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($this->mmForeignTable ? $this->mmForeignTable : $this->table, $row, TRUE);
+		return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($this->mmForeignTable ?: $this->table, $row, TRUE);
 	}
 
 	/**

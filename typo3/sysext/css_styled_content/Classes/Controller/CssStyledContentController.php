@@ -262,7 +262,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				list($path) = explode('|', $filePathConf);
 			} else {
 				// Get the list of files from the field
-				$field = trim($conf['field']) ? trim($conf['field']) : 'media';
+				$field = trim($conf['field']) ?: 'media';
 				$fileList = $this->cObj->data[$field];
 				$path = 'uploads/media/';
 				if (
@@ -425,7 +425,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				}
 			}
 		}
-		return $relations ? $relations : $equalRelations;
+		return $relations ?: $equalRelations;
 	}
 
 	/**
@@ -541,7 +541,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		$colspacing = intval($this->cObj->stdWrap($conf['colSpace'], $conf['colSpace.']));
 		$border = intval($this->cObj->stdWrap($conf['border'], $conf['border.'])) ? 1 : 0;
 		$borderThickness = intval($this->cObj->stdWrap($conf['borderThick'], $conf['borderThick.']));
-		$borderThickness = $borderThickness ? $borderThickness : 1;
+		$borderThickness = $borderThickness ?: 1;
 		$borderSpace = $conf['borderSpace'] && $border ? intval($conf['borderSpace']) : 0;
 		// Generate cols
 		$cols = intval($this->cObj->stdWrap($conf['cols'], $conf['cols.']));
@@ -899,7 +899,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			}
 			// Add the border class if needed
 			if ($border) {
-				$classes[] = $conf['borderClass'] ? $conf['borderClass'] : 'csc-textpic-border';
+				$classes[] = $conf['borderClass'] ?: 'csc-textpic-border';
 			}
 			// Add the class for equal height if needed
 			if ($equalHeight) {
@@ -1014,7 +1014,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			}
 			$borderClass = '';
 			if ($border) {
-				$borderClass = $conf['borderClass'] ? $conf['borderClass'] : 'csc-textpic-border';
+				$borderClass = $conf['borderClass'] ?: 'csc-textpic-border';
 			}
 			// Multiple classes with all properties, to be styled in CSS
 			$class = '';

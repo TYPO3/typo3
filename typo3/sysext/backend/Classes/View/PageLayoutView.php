@@ -939,7 +939,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	public function headerFields($fieldArr, $table, $out = array()) {
 		foreach ($fieldArr as $fieldName) {
 			$ll = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'], 1);
-			$out[$fieldName] = $ll ? $ll : '&nbsp;';
+			$out[$fieldName] = $ll ?: '&nbsp;';
 		}
 		return $out;
 	}
@@ -1053,7 +1053,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$f2 = substr($field, 6);
 					if ($GLOBALS['TCA'][$f2]) {
 						$c = $this->numberOfRecords($f2, $row['uid']);
-						$theData[$field] = '&nbsp;&nbsp;' . ($c ? $c : '');
+						$theData[$field] = '&nbsp;&nbsp;' . ($c ?: '');
 					}
 				} else {
 					$theData[$field] = '&nbsp;&nbsp;' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue('pages', $field, $row[$field]));
@@ -1147,10 +1147,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				$hiddenField = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'];
 				if ($hiddenField && $GLOBALS['TCA']['tt_content']['columns'][$hiddenField] && (!$GLOBALS['TCA']['tt_content']['columns'][$hiddenField]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', 'tt_content:' . $hiddenField))) {
 					if ($row[$hiddenField]) {
-						$params = '&data[tt_content][' . ($row['_ORIG_uid'] ? $row['_ORIG_uid'] : $row['uid']) . '][' . $hiddenField . ']=0';
+						$params = '&data[tt_content][' . ($row['_ORIG_uid'] ?: $row['uid']) . '][' . $hiddenField . ']=0';
 						$out .= '<a href="' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)) . '" title="' . $GLOBALS['LANG']->getLL('unHide', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-unhide') . '</a>';
 					} else {
-						$params = '&data[tt_content][' . ($row['_ORIG_uid'] ? $row['_ORIG_uid'] : $row['uid']) . '][' . $hiddenField . ']=1';
+						$params = '&data[tt_content][' . ($row['_ORIG_uid'] ?: $row['uid']) . '][' . $hiddenField . ']=1';
 						$out .= '<a href="' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)) . '" title="' . $GLOBALS['LANG']->getLL('hide', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-hide') . '</a>';
 					}
 				}

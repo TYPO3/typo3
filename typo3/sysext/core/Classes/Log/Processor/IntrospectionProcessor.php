@@ -53,10 +53,10 @@ class IntrospectionProcessor extends \TYPO3\CMS\Core\Log\Processor\AbstractProce
 		}
 		// we should have the call source now
 		$logRecord->addData(array(
-			'file' => isset($trace[$i]['file']) ? $trace[$i]['file'] : NULL,
-			'line' => isset($trace[$i]['line']) ? $trace[$i]['line'] : NULL,
-			'class' => isset($trace[$i]['class']) ? $trace[$i]['class'] : NULL,
-			'function' => isset($trace[$i]['function']) ? $trace[$i]['function'] : NULL
+			'file' => $trace[$i]['file'] ?: NULL,
+			'line' => $trace[$i]['line'] ?: NULL,
+			'class' => $trace[$i]['class'] ?: NULL,
+			'function' => $trace[$i]['function'] ?: NULL
 		));
 		return $logRecord;
 	}

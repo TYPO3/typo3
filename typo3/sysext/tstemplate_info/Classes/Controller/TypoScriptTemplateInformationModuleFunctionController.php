@@ -215,7 +215,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 		// Initialize
 		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);
 		if ($existTemplate) {
-			$saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
+			$saveId = $tplRow['_ORIG_uid'] ?: $tplRow['uid'];
 		}
 		// Create extension template
 		$newId = $this->pObj->createTemplate($this->pObj->id, $saveId);

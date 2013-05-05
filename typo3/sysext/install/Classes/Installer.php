@@ -4655,7 +4655,7 @@ REMOTE_ADDR was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' (' . Gener
 									$tableMarkers = array(
 										'table' => $table,
 										'definition' => md5($definition),
-										'count' => $insertCount[$table] ? $insertCount[$table] : '',
+										'count' => $insertCount[$table] ?: '',
 										'rowLabel' => $insertCount[$table] ? 'Rows: ' : '',
 										'tableExists' => 'Table exists!',
 										'backPath' => $this->backPath
@@ -5006,7 +5006,7 @@ REMOTE_ADDR was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' (' . Gener
 			$this->sqlHandler->performUpdateQueries($updateStatements['change'], $updateStatements['change']);
 		}
 		// call wizard
-		$action = $this->INSTALL['database_type'] ? $this->INSTALL['database_type'] : 'checkForUpdate';
+		$action = $this->INSTALL['database_type'] ?: 'checkForUpdate';
 		$this->updateWizard_parts($action);
 		$this->output($this->outputWrapper($this->printAll()));
 	}
@@ -5160,7 +5160,7 @@ REMOTE_ADDR was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' (' . Gener
 				if (method_exists($tmpObj, 'checkUserInput') && !$tmpObj->checkUserInput($customOutput)) {
 					$customOutput = '';
 					$userInputMarkers = array(
-						'customOutput' => $customOutput ? $customOutput : 'Something went wrong',
+						'customOutput' => $customOutput ?: 'Something went wrong',
 						'goBack' => 'Go back to update configuration'
 					);
 					$checkUserInput = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($checkUserInputSubpart, $userInputMarkers, '###|###', TRUE, FALSE);
@@ -5377,7 +5377,7 @@ REMOTE_ADDR was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' (' . Gener
 		// Define the markers content
 		$templateMarkers = array(
 			'headerFieldName' => 'Field name:',
-			'headerLabel' => $label ? $label : 'Info:'
+			'headerLabel' => $label ?: 'Info:'
 		);
 		if (is_array($arr)) {
 			$rows = array();
@@ -5684,7 +5684,7 @@ REMOTE_ADDR was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' (' . Gener
 		default:
 			break;
 		}
-		return $out ? $out : $fieldInfo;
+		return $out ?: $fieldInfo;
 	}
 
 	/**
@@ -5871,7 +5871,7 @@ REMOTE_ADDR was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' (' . Gener
 ),';
 			break;
 		}
-		return $out ? $out : $fieldInfo;
+		return $out ?: $fieldInfo;
 	}
 
 	/**
@@ -6520,7 +6520,7 @@ REMOTE_ADDR was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' (' . Gener
 				// Define the markers content
 				$itemMarkers = array(
 					'key' => htmlspecialchars((string) $key),
-					'description' => !empty($description) ? $description : '&nbsp;'
+					'description' => $description ?: '&nbsp;'
 				);
 				// Fill the markers in the subpart
 				$items[] = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($itemSubpart, $itemMarkers, '###|###', TRUE, FALSE);

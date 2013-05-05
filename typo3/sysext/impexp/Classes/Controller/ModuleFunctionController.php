@@ -47,11 +47,11 @@ class ModuleFunctionController extends mod_user_task {
 		$opt = array();
 		if (is_array($presets)) {
 			foreach ($presets as $presetCfg) {
-				$title = strlen($presetCfg['title']) ? $presetCfg['title'] : '[' . $presetCfg['uid'] . ']';
+				$title = $presetCfg['title'] ?: '[' . $presetCfg['uid'] . ']';
 				$opt[] = '
 					<tr class="bgColor4">
 						<td nowrap="nowrap"><a href="index.php?SET[function]=tx_impexp&display=' . $presetCfg['uid'] . '">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($title, 30)) . '</a>&nbsp;</td>
-						<td>' . ($presetCfg['item_uid'] ? $presetCfg['item_uid'] : '&nbsp;') . '</td>
+						<td>' . ($presetCfg['item_uid'] ?: '&nbsp;') . '</td>
 						<td>' . ($presetCfg['public'] ? '[Public]' : '&nbsp;') . '</td>
 						<td>' . ($presetCfg['user_uid'] === $GLOBALS['BE_USER']->user['uid'] ? '[Own]' : '&nbsp;') . '</td>
 					</tr>';
@@ -102,14 +102,14 @@ class ModuleFunctionController extends mod_user_task {
 				foreach ($presets as $presetCfg) {
 					$configuration = unserialize($presetCfg['preset_data']);
 					$thumbnailFile = $thumbnails[$configuration['meta']['thumbnail']];
-					$title = strlen($presetCfg['title']) ? $presetCfg['title'] : '[' . $presetCfg['uid'] . ']';
+					$title = $presetCfg['title'] ?: '[' . $presetCfg['uid'] . ']';
 					$opt[] = '
 					<tr class="bgColor4">
 						<td>' . ($thumbnailFile ? '<img src="' . $this->backPath . '../' . substr($tempDir, strlen(PATH_site)) . basename($thumbnailFile) . '" hspace="2" width="70" style="border: solid black 1px;" alt="" /><br />' : '&nbsp;') . '</td>
 						<td nowrap="nowrap"><a href="index.php?SET[function]=tx_impexp&display=' . $presetCfg['uid'] . '">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($title, 30)) . '</a>&nbsp;</td>
 						<td>' . ($presetCfg['public'] ? 'Yes' : '&nbsp;') . '</td>
 						<td>' . ($presetCfg['user_uid'] === $GLOBALS['BE_USER']->user['uid'] ? 'Own' : '[' . $usernames[$presetCfg['user_uid']]['username'] . ']') . '</td>
-						<td>' . ($configuration['pagetree']['id'] ? $configuration['pagetree']['id'] : '&nbsp;') . '</td>
+						<td>' . ($configuration['pagetree']['id'] ?: '&nbsp;') . '</td>
 						<td>' . htmlspecialchars(($configuration['pagetree']['id'] ? \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($configuration['pagetree']['id'], $clause, 20) : '[Single Records]')) . '</td>
 						<td>
 							<strong>' . htmlspecialchars($configuration['meta']['title']) . '</strong><br />' . htmlspecialchars($configuration['meta']['description']) . ($configuration['meta']['notes'] ? '<br /><br /><strong>Notes:</strong> <em>' . htmlspecialchars($configuration['meta']['notes']) . '</em>' : '') . '

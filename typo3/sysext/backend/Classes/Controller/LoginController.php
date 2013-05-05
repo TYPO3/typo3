@@ -164,7 +164,7 @@ class LoginController {
 		}
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_login.xlf');
 		// Setting the redirect URL to "backend.php" if no alternative input is given
-		$this->redirectToURL = $this->redirect_url ? $this->redirect_url : 'backend.php';
+		$this->redirectToURL = $this->redirect_url ?: 'backend.php';
 		// Do a logout if the command is set
 		if ($this->L == 'OUT' && is_object($GLOBALS['BE_USER'])) {
 			$GLOBALS['BE_USER']->logoff();
@@ -553,7 +553,7 @@ class LoginController {
 				$count++;
 				$newsItem .= \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($newsItemTemplate, $newsItemMarker);
 			}
-			$title = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle'] : $GLOBALS['LANG']->getLL('newsheadline');
+			$title = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle'] ?: $GLOBALS['LANG']->getLL('newsheadline');
 			$newsContent = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarker($newsContent, '###NEWS_HEADLINE###', htmlspecialchars($title));
 			$newsContent = \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart($newsContent, '###NEWS_ITEM###', $newsItem);
 		}

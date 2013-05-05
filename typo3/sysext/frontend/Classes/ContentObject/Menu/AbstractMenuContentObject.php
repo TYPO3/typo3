@@ -328,7 +328,7 @@ class AbstractMenuContentObject {
 			}
 			// Setting "nextActive": This is the page uid + MPvar of the NEXT page in rootline. Used to expand the menu if we are in the right branch of the tree
 			// Notice: The automatic expansion of a menu is designed to work only when no "special" modes (except "directory") are used.
-			$startLevel = $directoryLevel ? $directoryLevel : $this->entryLevel;
+			$startLevel = $directoryLevel ?: $this->entryLevel;
 			$currentLevel = $startLevel + $this->menuNumber;
 			if (is_array($this->tmpl->rootLine[$currentLevel])) {
 				$nextMParray = $this->MP_array;
@@ -381,7 +381,7 @@ class AbstractMenuContentObject {
 			// Begin production of menu:
 			$temp = array();
 			$altSortFieldValue = trim($this->mconf['alternativeSortingField']);
-			$altSortField = $altSortFieldValue ? $altSortFieldValue : 'sorting';
+			$altSortField = $altSortFieldValue ?: 'sorting';
 			// ... only for the FIRST level of a HMENU
 			if ($this->menuNumber == 1 && $this->conf['special']) {
 				$value = isset($this->conf['special.']['value.']) ? $this->parent_cObj->stdWrap($this->conf['special.']['value'], $this->conf['special.']['value.']) : $this->conf['special.']['value'];
@@ -437,7 +437,7 @@ class AbstractMenuContentObject {
 							if ($mount_info['overlay']) {
 								// Overlays should already have their full MPvars calculated:
 								$MP = $this->tmpl->getFromMPmap($mount_info['mount_pid']);
-								$MP = $MP ? $MP : $mount_info['MPvar'];
+								$MP = $MP ?: $mount_info['MPvar'];
 							} else {
 								$MP = ($MP ? $MP . ',' : '') . $mount_info['MPvar'];
 							}
@@ -582,7 +582,7 @@ class AbstractMenuContentObject {
 						'pidInList' => '0',
 						'uidInList' => $id_list,
 						'where' => $sortField . '>=0' . $extraWhere,
-						'orderBy' => $altSortFieldValue ? $altSortFieldValue : $sortField . ' desc',
+						'orderBy' => $altSortFieldValue ?: $sortField . ' desc',
 						'max' => $limit
 					));
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -602,7 +602,7 @@ class AbstractMenuContentObject {
 					} else {
 						// The page record of the 'value'.
 						$value_rec = $this->sys_page->getPage($value);
-						$kfieldSrc = $this->conf['special.']['keywordsField.']['sourceField'] ? $this->conf['special.']['keywordsField.']['sourceField'] : 'keywords';
+						$kfieldSrc = $this->conf['special.']['keywordsField.']['sourceField'] ?: 'keywords';
 						// keywords.
 						$kw = trim(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::keywords($value_rec[$kfieldSrc]));
 					}
@@ -658,7 +658,7 @@ class AbstractMenuContentObject {
 								$keyWordsWhereArr[] = $kfield . ' LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($word, 'pages') . '%\'';
 							}
 						}
-						$res = $this->parent_cObj->exec_getQuery('pages', array('pidInList' => '0', 'uidInList' => $id_list, 'where' => '(' . implode(' OR ', $keyWordsWhereArr) . ')' . $extraWhere, 'orderBy' => $altSortFieldValue ? $altSortFieldValue : $sortField . ' desc', 'max' => $limit));
+						$res = $this->parent_cObj->exec_getQuery('pages', array('pidInList' => '0', 'uidInList' => $id_list, 'where' => '(' . implode(' OR ', $keyWordsWhereArr) . ')' . $extraWhere, 'orderBy' => $altSortFieldValue ?: $sortField . ' desc', 'max' => $limit));
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 							$GLOBALS['TSFE']->sys_page->versionOL('pages', $row, TRUE);
 							if (is_array($row)) {
@@ -1014,7 +1014,7 @@ class AbstractMenuContentObject {
 					// If rollOver on normal, we must apply a state for rollOver on the active
 					if ($ROconf) {
 						// If RollOver on active then apply this
-						$ROconf[$key] = $IFSUBROconf[$key] ? $IFSUBROconf[$key] : $IFSUBconf[$key];
+						$ROconf[$key] = $IFSUBROconf[$key] ?: $IFSUBconf[$key];
 					}
 				}
 			}
@@ -1040,7 +1040,7 @@ class AbstractMenuContentObject {
 					// If rollOver on normal, we must apply a state for rollOver on the active
 					if ($ROconf) {
 						// If RollOver on active then apply this
-						$ROconf[$key] = $ACTROconf[$key] ? $ACTROconf[$key] : $ACTconf[$key];
+						$ROconf[$key] = $ACTROconf[$key] ?: $ACTconf[$key];
 					}
 				}
 			}
@@ -1067,7 +1067,7 @@ class AbstractMenuContentObject {
 					// If rollOver on normal, we must apply a state for rollOver on the active
 					if ($ROconf) {
 						// If RollOver on active then apply this
-						$ROconf[$key] = $ACTIFSUBROconf[$key] ? $ACTIFSUBROconf[$key] : $ACTIFSUBconf[$key];
+						$ROconf[$key] = $ACTIFSUBROconf[$key] ?: $ACTIFSUBconf[$key];
 					}
 				}
 			}
@@ -1094,7 +1094,7 @@ class AbstractMenuContentObject {
 					// If rollOver on normal, we must apply a state for rollOver on the active
 					if ($ROconf) {
 						// If RollOver on active then apply this
-						$ROconf[$key] = $CURROconf[$key] ? $CURROconf[$key] : $CURconf[$key];
+						$ROconf[$key] = $CURROconf[$key] ?: $CURconf[$key];
 					}
 				}
 			}
@@ -1120,7 +1120,7 @@ class AbstractMenuContentObject {
 					// If rollOver on normal, we must apply a state for rollOver on the current
 					if ($ROconf) {
 						// If RollOver on current then apply this
-						$ROconf[$key] = $CURIFSUBROconf[$key] ? $CURIFSUBROconf[$key] : $CURIFSUBconf[$key];
+						$ROconf[$key] = $CURIFSUBROconf[$key] ?: $CURIFSUBconf[$key];
 					}
 				}
 			}
@@ -1146,7 +1146,7 @@ class AbstractMenuContentObject {
 					// If rollOver on normal, we must apply a state for rollOver on the active
 					if ($ROconf) {
 						// If RollOver on active then apply this
-						$ROconf[$key] = $USRROconf[$key] ? $USRROconf[$key] : $USRconf[$key];
+						$ROconf[$key] = $USRROconf[$key] ?: $USRconf[$key];
 					}
 				}
 			}
@@ -1189,7 +1189,7 @@ class AbstractMenuContentObject {
 					// If rollOver on normal, we must apply a state for rollOver on the active
 					if ($ROconf) {
 						// If RollOver on active then apply this
-						$ROconf[$key] = $USERDEF1ROconf[$key] ? $USERDEF1ROconf[$key] : $USERDEF1conf[$key];
+						$ROconf[$key] = $USERDEF1ROconf[$key] ?: $USERDEF1conf[$key];
 					}
 				}
 			}
@@ -1215,7 +1215,7 @@ class AbstractMenuContentObject {
 					// If rollOver on normal, we must apply a state for rollOver on the active
 					if ($ROconf) {
 						// If RollOver on active then apply this
-						$ROconf[$key] = $USERDEF2ROconf[$key] ? $USERDEF2ROconf[$key] : $USERDEF2conf[$key];
+						$ROconf[$key] = $USERDEF2ROconf[$key] ?: $USERDEF2conf[$key];
 					}
 				}
 			}
@@ -1242,7 +1242,7 @@ class AbstractMenuContentObject {
 		if ($this->mconf['overrideId'] || $this->menuArr[$key]['overrideId']) {
 			$overrideArray = array();
 			// If a user script returned the value overrideId in the menu array we use that as page id
-			$overrideArray['uid'] = $this->mconf['overrideId'] ? $this->mconf['overrideId'] : $this->menuArr[$key]['overrideId'];
+			$overrideArray['uid'] = $this->mconf['overrideId'] ?: $this->menuArr[$key]['overrideId'];
 			$overrideArray['alias'] = '';
 			// Clear MP parameters since ID was changed.
 			$MP_params = '';
@@ -1316,7 +1316,7 @@ class AbstractMenuContentObject {
 		if (preg_match('/([0-9]+[\\s])?(([0-9]+)x([0-9]+))?(:.+)?/s', $LD['target'], $matches) || $targetIsType) {
 			// has type?
 			if (intval($matches[1]) || $targetIsType) {
-				$LD['totalURL'] = $this->parent_cObj->URLqMark($LD['totalURL'], '&type=' . ($targetIsType ? $targetIsType : intval($matches[1])));
+				$LD['totalURL'] = $this->parent_cObj->URLqMark($LD['totalURL'], '&type=' . ($targetIsType ?: intval($matches[1])));
 				$LD['target'] = $targetIsType ? '' : trim(substr($LD['target'], strlen($matches[1]) + 1));
 			}
 			// Open in popup window?
@@ -1331,7 +1331,7 @@ class AbstractMenuContentObject {
 		// Added this check: What it does is to enter the baseUrl (if set, which it should for "realurl" based sites)
 		// as URL if the calculated value is empty. The problem is that no link is generated with a blank URL
 		// and blank URLs might appear when the realurl encoding is used and a link to the frontpage is generated.
-		$list['HREF'] = strlen($LD['totalURL']) ? $LD['totalURL'] : $GLOBALS['TSFE']->baseUrl;
+		$list['HREF'] = $LD['totalURL'] ?: $GLOBALS['TSFE']->baseUrl;
 		$list['TARGET'] = $LD['target'];
 		$list['onClick'] = $onClick;
 		return $list;
@@ -1632,7 +1632,7 @@ class AbstractMenuContentObject {
 	 * @todo Define visibility
 	 */
 	public function getPageTitle($title, $nav_title) {
-		return strcmp(trim($nav_title), '') ? $nav_title : $title;
+		return trim($nav_title) ?: $title;
 	}
 
 	/**
@@ -1732,7 +1732,7 @@ class AbstractMenuContentObject {
 	 * @return array
 	 */
 	protected function sectionIndex($altSortField, $pid = NULL) {
-		$pid = intval($pid ? $pid : $this->id);
+		$pid = intval($pid ?: $this->id);
 		$basePageRow = $this->sys_page->getPage($pid);
 		if (!is_array($basePageRow)) {
 			return array();

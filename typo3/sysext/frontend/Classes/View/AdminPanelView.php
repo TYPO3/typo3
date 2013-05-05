@@ -526,7 +526,7 @@ class AdminPanelView {
 				} else {
 					$value1 = '&nbsp;';
 				}
-				$value2 = strlen($arr[1]) ? $arr[1] : '&nbsp;';
+				$value2 = $arr[1] ?: '&nbsp;';
 				$value2 = $value2;
 				$table .= '<tr class="typo3-adminPanel-itemRow">' . '<td class="typo3-adminPanel-section-content-title">' . $value1 . '</td>' . '<td class="typo3-adminPanel-section-content">' . $value2 . '</td>' . '</tr>';
 			}

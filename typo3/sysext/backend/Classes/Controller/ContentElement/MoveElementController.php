@@ -104,7 +104,7 @@ class MoveElementController {
 		$this->table = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('table');
 		$this->R_URI = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
 		$this->input_moveUid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('moveUid');
-		$this->moveUid = $this->input_moveUid ? $this->input_moveUid : $this->page_id;
+		$this->moveUid = $this->input_moveUid ?: $this->page_id;
 		$this->makeCopy = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('makeCopy');
 		// Select-pages where clause for read-access:
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
