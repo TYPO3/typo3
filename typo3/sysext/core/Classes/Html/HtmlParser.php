@@ -237,18 +237,21 @@ class HtmlParser {
 	 * markers.
 	 *
 	 * $markersAndSubparts = array (
-	 * '###SINGLEMARKER1###' => 'value 1',
-	 * '###SUBPARTMARKER1###' => array(
-	 * 0 => array(
-	 * '###SINGLEMARKER2###' => 'value 2',
-	 * ),
-	 * 1 => array(
-	 * '###SINGLEMARKER2###' => 'value 3',
-	 * )
-	 * )
+	 * 	'###SINGLEMARKER1###' => 'value 1',
+	 * 	'###SUBPARTMARKER1###' => array(
+	 * 		0 => array(
+	 * 			'###SINGLEMARKER2###' => 'value 2',
+	 * 		),
+	 * 		1 => array(
+	 * 			'###SINGLEMARKER2###' => 'value 3',
+	 * 		)
+	 * 	),
+	 * 	'###SUBPARTMARKER2###' => array(
+	 * 	),
 	 * )
 	 * Subparts can be nested, so below the 'SINGLEMARKER2' it is possible to have another subpart marker with an array as the
 	 * value, which in its turn contains the elements of the sub-subparts.
+	 * Empty arrays for Subparts will cause the subtemplate to be cleared.
 	 *
 	 * @static
 	 * @param string $content The content stream, typically HTML template content.
@@ -285,16 +288,21 @@ class HtmlParser {
 		}
 		// Replace the subpart contents recursively
 		foreach ($compoundItems as $subpartMarker) {
-			foreach ($markersAndSubparts[$subpartMarker] as $partialMarkersAndSubparts) {
-				$completeMarker = $subpartMarker;
-				if ($uppercase) {
-					// use strtr instead of strtoupper to avoid locale problems with Turkish
-					$completeMarker = strtr($completeMarker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+			$completeMarker = $subpartMarker;
+			if ($uppercase) {
+				// use strtr instead of strtoupper to avoid locale problems with Turkish
+				$completeMarker = strtr($completeMarker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+			}
+			if (count($wraps) > 0) {
+				$completeMarker = $wraps[0] . $completeMarker . $wraps[1];
+			}
+			if (count($markersAndSubparts[$subpartMarker]) > 0) {
+				foreach ($markersAndSubparts[$subpartMarker] as $partialMarkersAndSubparts) {
+					$subpartSubstitutes[$completeMarker] .= self::substituteMarkerAndSubpartArrayRecursive($subTemplates[$completeMarker],
+						$partialMarkersAndSubparts, $wrap, $uppercase, $deleteUnused);
 				}
-				if (count($wraps) > 0) {
-					$completeMarker = $wraps[0] . $completeMarker . $wraps[1];
-				}
-				$subpartSubstitutes[$completeMarker] .= self::substituteMarkerAndSubpartArrayRecursive($subTemplates[$completeMarker], $partialMarkersAndSubparts, $wrap, $uppercase, $deleteUnused);
+			} else {
+				$subpartSubstitutes[$completeMarker] = '';
 			}
 		}
 		// Substitute the single markers and subparts
