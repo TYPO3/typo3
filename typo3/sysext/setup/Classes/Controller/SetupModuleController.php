@@ -179,8 +179,13 @@ class SetupModuleController {
 					if ($config['table']) {
 						if ($config['table'] == 'be_users' && !in_array($field, array('password', 'password2', 'email', 'realName', 'admin'))) {
 							if (!isset($config['access']) || $this->checkAccess($config) && $GLOBALS['BE_USER']->user[$field] !== $d['be_users'][$field]) {
-								$storeRec['be_users'][$beUserId][$field] = $d['be_users'][$field];
-								$GLOBALS['BE_USER']->user[$field] = $d['be_users'][$field];
+								if ($config['type'] === 'check') {
+									$fieldValue = isset($d['be_users'][$field]) ? 1 : 0;
+								} else {
+									$fieldValue = $d['be_users'][$field];
+								}
+								$storeRec['be_users'][$beUserId][$field] = $fieldValue;
+								$GLOBALS['BE_USER']->user[$field] = $fieldValue;
 							}
 						}
 					}
@@ -481,14 +486,14 @@ class SetupModuleController {
 			if (!$value && isset($config['default'])) {
 				$value = $config['default'];
 			}
+			$dataAdd = '';
+			if ($config['table'] == 'be_users') {
+				$dataAdd = '[be_users]';
+			}
 			switch ($type) {
 			case 'text':
 
 			case 'password':
-				$dataAdd = '';
-				if ($config['table'] == 'be_users') {
-					$dataAdd = '[be_users]';
-				}
 				if ($eval == 'md5') {
 					$more .= ' onchange="this.value=this.value?MD5(this.value):\'\';"';
 				}
@@ -506,7 +511,7 @@ class SetupModuleController {
 				}
 				$html = '<input id="field_' . $fieldName . '"
 									type="checkbox"
-									name="data[' . $fieldName . ']"' . ($value ? ' checked="checked"' : '') . $more . ' />';
+									name="data' . $dataAdd . '[' . $fieldName . ']"' . ($value ? ' checked="checked"' : '') . $more . ' />';
 				break;
 			case 'select':
 				if (!$class) {
@@ -515,7 +520,7 @@ class SetupModuleController {
 				if ($config['itemsProcFunc']) {
 					$html = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($config['itemsProcFunc'], $config, $this, '');
 				} else {
-					$html = '<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' id="field_' . $fieldName . '" name="data[' . $fieldName . ']"' . $more . '>' . LF;
+					$html = '<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' id="field_' . $fieldName . '" name="data' . $dataAdd . '[' . $fieldName . ']"' . $more . '>' . LF;
 					foreach ($config['items'] as $key => $optionLabel) {
 						$html .= '<option value="' . $key . '"' . ($value == $key ? ' selected="selected"' : '') . '>' . $this->getLabel($optionLabel, '', FALSE) . '</option>' . LF;
 					}
