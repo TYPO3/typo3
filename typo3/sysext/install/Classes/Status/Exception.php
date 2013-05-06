@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\SystemEnvironment;
+namespace TYPO3\CMS\Install\Status;
 
 /***************************************************************
  *  Copyright notice
@@ -25,16 +25,9 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  ***************************************************************/
 
 /**
- * Info level status
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
+ * A status exception
  */
-class InfoStatus extends AbstractStatus implements StatusInterface {
-
-	/**
-	 * @var string The severity
-	 */
-	protected $severity = 'information';
+class Exception extends \TYPO3\CMS\Install\Exception {
 
 }
 ?>

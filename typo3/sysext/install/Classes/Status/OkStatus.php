@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\SystemEnvironment;
+namespace TYPO3\CMS\Install\Status;
 
 /***************************************************************
  *  Copyright notice
@@ -25,16 +25,16 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  ***************************************************************/
 
 /**
- * Error level status
+ * Ok level status
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class ErrorStatus extends AbstractStatus implements StatusInterface {
+class OkStatus extends AbstractStatus implements StatusInterface {
 
 	/**
 	 * @var string The severity
 	 */
-	protected $severity = 'error';
+	protected $severity = 'ok';
 
 }
 ?>
