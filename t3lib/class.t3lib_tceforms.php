@@ -6112,7 +6112,8 @@ class t3lib_TCEforms {
 	function isDisplayCondition($displayCond, $row, $ffValueKey = '') {
 		$output = FALSE;
 
-		$parts = explode(':', $displayCond);
+			// explode string by colon to max 4 parts
+		$parts = explode(':', $displayCond, 4);
 		switch ((string) $parts[0]) { // Type of condition:
 			case 'FIELD':
 				if ($ffValueKey) {
