@@ -5931,84 +5931,87 @@ function ' . $evalData . '(value) {
 	 */
 	public function isDisplayCondition($displayCond, $row, $ffValueKey = '') {
 		$output = FALSE;
-		$parts = explode(':', $displayCond);
+		list($matchType, $condition) = explode(':', $displayCond, 2);
 		// Type of condition:
-		switch ((string) $parts[0]) {
+		switch ((string) $matchType) {
 		case 'FIELD':
+			list($fieldName, $operator, $operand) = explode(':', $condition, 3);
 			if ($ffValueKey) {
-				if (strpos($parts[1], 'parentRec.') !== FALSE) {
-					$fParts = explode('.', $parts[1]);
+				if (strpos($fieldName, 'parentRec.') !== FALSE) {
+					$fParts = explode('.', $fieldName);
 					$theFieldValue = $row['parentRec'][$fParts[1]];
 				} else {
-					$theFieldValue = $row[$parts[1]][$ffValueKey];
+					$theFieldValue = $row[$fieldName][$ffValueKey];
 				}
 			} else {
-				$theFieldValue = $row[$parts[1]];
+				$theFieldValue = $row[$fieldName];
 			}
-			switch ((string) $parts[2]) {
+			switch ((string) $operator) {
 			case 'REQ':
-				if (strtolower($parts[3]) == 'true') {
+				if (strtolower($operand) == 'true') {
 					$output = $theFieldValue ? TRUE : FALSE;
-				} elseif (strtolower($parts[3]) == 'false') {
+				} elseif (strtolower($operand) == 'false') {
 					$output = !$theFieldValue ? TRUE : FALSE;
 				}
 				break;
 			case '>':
-				$output = $theFieldValue > $parts[3];
+				$output = $theFieldValue > $operand;
 				break;
 			case '<':
-				$output = $theFieldValue < $parts[3];
+				$output = $theFieldValue < $operand;
 				break;
 			case '>=':
-				$output = $theFieldValue >= $parts[3];
+				$output = $theFieldValue >= $operand;
 				break;
 			case '<=':
-				$output = $theFieldValue <= $parts[3];
+				$output = $theFieldValue <= $operand;
 				break;
 			case '-':
 
 			case '!-':
-				$cmpParts = explode('-', $parts[3]);
+				$cmpParts = explode('-', $operand);
 				$output = $theFieldValue >= $cmpParts[0] && $theFieldValue <= $cmpParts[1];
-				if ($parts[2][0] == '!') {
+				if ($operator[0] == '!') {
 					$output = !$output;
 				}
 				break;
 			case 'IN':
 
 			case '!IN':
-				$output = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($parts[3], $theFieldValue);
-				if ($parts[2][0] == '!') {
+				$output = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($operand, $theFieldValue);
+				if ($operator[0] == '!') {
 					$output = !$output;
 				}
 				break;
 			case '=':
 
 			case '!=':
-				$output = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($parts[3], $theFieldValue);
-				if ($parts[2][0] == '!') {
+				$output = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($operand, $theFieldValue);
+				if ($operator[0] == '!') {
 					$output = !$output;
 				}
 				break;
 			}
 			break;
 		case 'EXT':
-			switch ((string) $parts[2]) {
+			list($extensionKey, $operator, $operand) = explode(':', $condition, 3);
+			switch ((string) $operator) {
 			case 'LOADED':
-				if (strtolower($parts[3]) == 'true') {
-					$output = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($parts[1]) ? TRUE : FALSE;
-				} elseif (strtolower($parts[3]) == 'false') {
-					$output = !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($parts[1]) ? TRUE : FALSE;
+				if (strtolower($operand) == 'true') {
+					$output = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey) ? TRUE : FALSE;
+				} elseif (strtolower($operand) == 'false') {
+					$output = !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey) ? TRUE : FALSE;
 				}
 				break;
 			}
 			break;
 		case 'REC':
-			switch ((string) $parts[1]) {
+			list($operator, $operand) = explode(':', $condition, 2);
+			switch ((string) $operator) {
 			case 'NEW':
-				if (strtolower($parts[2]) == 'true') {
+				if (strtolower($operand) == 'true') {
 					$output = !(intval($row['uid']) > 0) ? TRUE : FALSE;
-				} elseif (strtolower($parts[2]) == 'false') {
+				} elseif (strtolower($operand) == 'false') {
 					$output = intval($row['uid']) > 0 ? TRUE : FALSE;
 				}
 				break;
@@ -6017,7 +6020,7 @@ function ' . $evalData . '(value) {
 		case 'HIDE_L10N_SIBLINGS':
 			if ($ffValueKey === 'vDEF') {
 				$output = TRUE;
-			} elseif ($parts[1] === 'except_admin' && $GLOBALS['BE_USER']->isAdmin()) {
+			} elseif ($condition === 'except_admin' && $GLOBALS['BE_USER']->isAdmin()) {
 				$output = TRUE;
 			}
 			break;
@@ -6025,7 +6028,8 @@ function ' . $evalData . '(value) {
 			$output = $GLOBALS['BE_USER']->isAdmin() ? TRUE : FALSE;
 			break;
 		case 'VERSION':
-			switch ((string) $parts[1]) {
+			list($operator, $operand) = explode(':', $condition, 2);
+			switch ((string) $operator) {
 			case 'IS':
 				$isNewRecord = intval($row['uid']) > 0 ? FALSE : TRUE;
 				// Detection of version can be done be detecting the workspace of the user
@@ -6040,10 +6044,10 @@ function ' . $evalData . '(value) {
 				// -- if user is in workspace: always TRUE
 				// -- if editor is in live ws: only TRUE if pid == -1
 				$isVersion = ($isUserInWorkspace || $isRecordDetectedAsVersion) && !$isNewRecord;
-				if (strtolower($parts[2]) == 'true') {
+				if (strtolower($operand) == 'true') {
 					$output = $isVersion;
 				} else {
-					if (strtolower($parts[2]) == 'false') {
+					if (strtolower($operand) == 'false') {
 						$output = !$isVersion;
 					}
 				}
