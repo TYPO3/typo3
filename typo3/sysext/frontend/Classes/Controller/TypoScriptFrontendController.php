@@ -2459,6 +2459,9 @@ class TypoScriptFrontendController {
 	public function includeTCA($TCAloaded = 1) {
 		// Full TCA is always loaded during bootstrap in FE, this method is obsolete.
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		if (!isset($GLOBALS['TCA']['pages'])) {
+			\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
+		}
 	}
 
 	/**
