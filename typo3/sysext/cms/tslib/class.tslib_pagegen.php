@@ -504,11 +504,12 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 				if (($finfo = @finfo_open(FILEINFO_MIME))) {
 					$iconMimeType = ' type="' . finfo_file($finfo, PATH_site . $favIcon) . '"';
 					finfo_close($finfo);
+					$pageRenderer->setIconMimeType($iconMimeType);
 				}
-			} else {
+			} elseif (function_exists('mime_content_type')) {
 				$iconMimeType = ' type="' . mime_content_type(PATH_site . $favIcon) . '"';
+				$pageRenderer->setIconMimeType($iconMimeType);
 			}
-			$pageRenderer->setIconMimeType($iconMimeType);
 			$pageRenderer->setFavIcon(t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $favIcon);
 
 		}
