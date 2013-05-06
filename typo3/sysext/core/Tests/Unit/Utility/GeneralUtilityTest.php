@@ -3201,7 +3201,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$existingDirectory = PATH_site . 'typo3temp/' . uniqid('notExists_') . '/';
 		mkdir($existingDirectory);
 		$this->testFilesToDelete[] = $existingDirectory;
-		$symlinkName = 'typo3temp/' . uniqid('link_');
+		$symlinkName = PATH_site . 'typo3temp/' . uniqid('link_');
 		symlink($existingDirectory, $symlinkName);
 		Utility\GeneralUtility::rmdir($symlinkName, TRUE);
 		$this->assertFalse(is_link($symlinkName));
@@ -3215,7 +3215,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('Test not available on Windows OS.');
 		}
 		$notExistingDirectory = PATH_site . 'typo3temp/' . uniqid('notExists_') . '/';
-		$symlinkName = 'typo3temp/' . uniqid('link_');
+		$symlinkName = PATH_site . 'typo3temp/' . uniqid('link_');
 		symlink($notExistingDirectory, $symlinkName);
 		Utility\GeneralUtility::rmdir($symlinkName, TRUE);
 		$this->assertFalse(is_link($symlinkName));
@@ -3229,7 +3229,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('Test not available on Windows OS.');
 		}
 		$notExistingFile = PATH_site . 'typo3temp/' . uniqid('notExists_');
-		$symlinkName = 'typo3temp/' . uniqid('link_');
+		$symlinkName = PATH_site . 'typo3temp/' . uniqid('link_');
 		symlink($notExistingFile, $symlinkName);
 		Utility\GeneralUtility::rmdir($symlinkName, TRUE);
 		$this->assertFalse(is_link($symlinkName));
