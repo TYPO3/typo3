@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\SystemEnvironment;
+namespace TYPO3\CMS\Install\Status;
 
 /***************************************************************
  *  Copyright notice
@@ -25,16 +25,47 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  ***************************************************************/
 
 /**
- * Ok level status
+ * Status interface
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class OkStatus extends AbstractStatus implements StatusInterface {
+interface StatusInterface {
 
 	/**
-	 * @var string The severity
+	 * Get severity
+	 *
+	 * @return string The severity
 	 */
-	protected $severity = 'ok';
+	public function getSeverity();
 
+	/**
+	 * Get title
+	 *
+	 * @return string The title
+	 */
+	public function getTitle();
+
+	/**
+	 * Set title
+	 *
+	 * @param string $title The title
+	 * @return void
+	 */
+	public function setTitle($title);
+
+	/**
+	 * Get status message
+	 *
+	 * @return string Status message
+	 */
+	public function getMessage();
+
+	/**
+	 * Set status message
+	 *
+	 * @param string $message Status message
+	 * @return void
+	 */
+	public function setMessage($message);
 }
 ?>

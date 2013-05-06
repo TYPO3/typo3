@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\SystemEnvironment;
+namespace TYPO3\CMS\Install\Status;
 
 /***************************************************************
  *  Copyright notice
@@ -25,16 +25,16 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  ***************************************************************/
 
 /**
- * Warning level status
+ * Notice level status
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class WarningStatus extends AbstractStatus implements StatusInterface {
+class NoticeStatus extends AbstractStatus implements StatusInterface {
 
 	/**
 	 * @var string The severity
 	 */
-	protected $severity = 'warning';
+	protected $severity = 'notice';
 
 }
 ?>
