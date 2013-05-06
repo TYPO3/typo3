@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\SystemEnvironment;
+namespace TYPO3\CMS\Install\Status;
 
 /***************************************************************
  *  Copyright notice
@@ -25,16 +25,68 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  ***************************************************************/
 
 /**
- * Notice level status
+ * Abstract status
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class NoticeStatus extends AbstractStatus implements StatusInterface {
+abstract class AbstractStatus implements StatusInterface {
 
 	/**
-	 * @var string The severity
+	 * @var string Severity
 	 */
-	protected $severity = 'notice';
+	protected $severity = '';
 
+	/**
+	 * @var string Title
+	 */
+	protected $title = '';
+
+	/**
+	 * @var string Status message
+	 */
+	protected $message = '';
+
+	/**
+	 * @return string The severity
+	 */
+	public function getSeverity() {
+		return $this->severity;
+	}
+
+	/**
+	 * @return string The title
+	 */
+	public function getTitle() {
+		return $this->title;
+	}
+
+	/**
+	 * Set title
+	 *
+	 * @param string $title The title
+	 * @return void
+	 */
+	public function setTitle($title) {
+		$this->title = $title;
+	}
+
+	/**
+	 * Get status message
+	 *
+	 * @return string Status message
+	 */
+	public function getMessage() {
+		return $this->message;
+	}
+
+	/**
+	 * Set status message
+	 *
+	 * @param string $message Status message
+	 * @return void
+	 */
+	public function setMessage($message) {
+		$this->message = $message;
+	}
 }
 ?>

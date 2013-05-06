@@ -1329,51 +1329,15 @@ REMOTE_ADDR was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' (' . Gener
 	 * Show system environment check
 	 */
 	protected function systemEnvironmentCheck() {
+		$html = '<h3>System environment check</h3>';
+
 		/** @var $statusCheck \TYPO3\CMS\Install\SystemEnvironment\Check */
 		$statusCheck = GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\SystemEnvironment\\Check');
 		$statusObjects = $statusCheck->getStatus();
 
-		$orderedStatus = array(
-			'error' => array(),
-			'warning' => array(),
-			'ok' => array(),
-			'information' => array(),
-			'notice' => array(),
-		);
-
-		/** @var $statusObject \TYPO3\CMS\Install\SystemEnvironment\AbstractStatus */
-		foreach ($statusObjects as $statusObject) {
-			$severityIdentifier = $statusObject->getSeverity();
-
-			if (empty($severityIdentifier) || !is_array($orderedStatus[$severityIdentifier])) {
-				throw new \TYPO3\CMS\Install\Exception('Unknown status severity type', 1362602559);
-			}
-			$orderedStatus[$severityIdentifier][] = $statusObject;
-		}
-
-		$messageHtmlBoilerPlate =
-			'<div class="typo3-message message-%1s" >' .
-				'<div class="header-container" >' .
-					'<div class="message-header message-left" ><strong>%2s</strong></div>' .
-					'<div class="message-header message-right" ></div>' .
-				'</div >' .
-				'<div class="message-body" >%3s</div>' .
-			'</div>' .
-			'<p></p>';
-
-		$html = '<h3>System environment check</h3>';
-		foreach ($orderedStatus as $severity) {
-			foreach ($severity as $status) {
-				/** @var $status \TYPO3\CMS\Install\SystemEnvironment\AbstractStatus */
-				$severityIdentifier = $status->getSeverity();
-				$html .= sprintf(
-					$messageHtmlBoilerPlate,
-					$severityIdentifier,
-					$status->getTitle(),
-					$status->getMessage()
-				);
-			}
-		}
+		/** @var $statusUtility \TYPO3\CMS\Install\Status\StatusUtility */
+		$statusUtility = GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Status\\StatusUtility');
+		$html .= $statusUtility->renderStatusObjectsSortedBySeverity($statusObjects);
 
 		$this->output($this->outputWrapper($html));
 	}

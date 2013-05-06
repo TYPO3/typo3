@@ -50,7 +50,7 @@ class EnvironmentStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterf
 			'notice' => array(),
 		);
 
-		/** @var $statusObject \TYPO3\CMS\Install\SystemEnvironment\AbstractStatus */
+		/** @var $statusObject \TYPO3\CMS\Install\Status\AbstractStatus */
 		foreach ($statusObjects as $statusObject) {
 			$severityIdentifier = $statusObject->getSeverity();
 			if (empty($severityIdentifier) || !is_array($reportStatusTypes[$severityIdentifier])) {

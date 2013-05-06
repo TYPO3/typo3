@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\SystemEnvironment;
+namespace TYPO3\CMS\Install\Status;
 
 /***************************************************************
  *  Copyright notice
@@ -25,43 +25,16 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  ***************************************************************/
 
 /**
- * Interface for SystemEnvironment status
+ * Error level status
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-interface StatusInterface {
+class ErrorStatus extends AbstractStatus implements StatusInterface {
 
 	/**
-	 * @return string The severity
+	 * @var string The severity
 	 */
-	public function getSeverity();
+	protected $severity = 'error';
 
-	/**
-	 * @return string The title
-	 */
-	public function getTitle();
-
-	/**
-	 * Set title
-	 *
-	 * @param string $title The title
-	 * @return void
-	 */
-	public function setTitle($title);
-
-	/**
-	 * Get status message
-	 *
-	 * @return string Status message
-	 */
-	public function getMessage();
-
-	/**
-	 * Set status message
-	 *
-	 * @param string $message Status message
-	 * @return void
-	 */
-	public function setMessage($message);
 }
 ?>
