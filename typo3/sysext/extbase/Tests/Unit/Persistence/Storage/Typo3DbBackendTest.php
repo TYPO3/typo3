@@ -28,6 +28,19 @@
 class Tx_Extbase_Tests_Unit_Persistence_Storage_Typo3DbBackendTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
+	 * @var boolean Enable backup of global and system variables
+	 */
+	protected $backupGlobals = TRUE;
+
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serialization
+	 *
+	 * @var array
+	 */
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
+
+	/**
 	 * This is the data provider for the statement generation with a basic comparison
 	 *
 	 * @return array An array of data
@@ -149,6 +162,26 @@ class Tx_Extbase_Tests_Unit_Persistence_Storage_Typo3DbBackendTest extends Tx_Ex
 
 		$expecedSql = array('orderings' => array('tx_myext_tablename.converted_fieldname ASC', 'tx_myext_tablename.converted_fieldname DESC'));
 		$this->assertSame($expecedSql, $sql);
+	}
+
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_Persistence_Exception_InconsistentQuerySettings
+	 */
+	public function addPageIdStatementCanThrowException() {
+		$tableName = 'foo';
+		$GLOBALS['TCA'][$tableName]['ctrl'] = array();
+		$tableInformationCache = array(
+			$tableName => array(
+				'columnNames' => array(
+					'pid' => 42,
+				),
+			),
+		);
+		$mockTypo3DbBackend = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Storage_Typo3DbBackend'), array('dummy'), array(), '', FALSE);
+		$mockTypo3DbBackend->_set('tableInformationCache', $tableInformationCache);
+		$foo = $bar = array();
+		$mockTypo3DbBackend->_callRef('addPageIdStatement', $tableName, $foo, $bar);
 	}
 
 }
