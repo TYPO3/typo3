@@ -2454,11 +2454,19 @@ class TypoScriptFrontendController {
 	 * @param integer $TCAloaded Probably, keep hands of this value. Just don't set it.
 	 * @return void
 	 * @see getCompressedTCarray()
-	 * @deprecated since 6.1, will be removed in two versions
+	 * @deprecated since 6.1, will be removed in two versions. Obsolete in regular frontend, eid scripts should use \TYPO3\CMS\Frontend\Utility\EidUtility::initTCA()
 	 */
 	public function includeTCA($TCAloaded = 1) {
 		// Full TCA is always loaded during bootstrap in FE, this method is obsolete.
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+
+		// Compatibility layer:
+		// The if below is NOT true in usual frontend (non eid) context, TCA is loaded by bootstrap.
+		// If an eid script calls this method to load TCA, use
+		// \TYPO3\CMS\Frontend\Utility\EidUtility::initTCA() instead.
+		if (!isset($GLOBALS['TCA']['pages'])) {
+			\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
+		}
 	}
 
 	/**
