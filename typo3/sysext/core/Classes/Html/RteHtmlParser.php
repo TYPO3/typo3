@@ -573,12 +573,16 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 						$attribArray['src'] = preg_replace('#^' . preg_quote($sitePath, '#') . '#', '', $attribArray['src']);
 						// If the image is not magic and does not have a file uid, try to add the uid
 						if (!$attribArray['data-htmlarea-file-uid'] && !$isMagicImage) {
-							$fileOrFolderObject = $fileFactory->retrieveFileOrFolderObject($attribArray['src']);
-							if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
-								$fileIdentifier = $fileOrFolderObject->getIdentifier();
-								$fileObject = $fileOrFolderObject->getStorage()->getFile($fileIdentifier);
-								$attribArray['data-htmlarea-file-uid'] = $fileObject->getUid();
-								$attribArray['data-htmlarea-file-table'] = 'sys_file';
+							try {
+								$fileOrFolderObject = $fileFactory->retrieveFileOrFolderObject($attribArray['src']);
+								if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
+									$fileIdentifier = $fileOrFolderObject->getIdentifier();
+									$fileObject = $fileOrFolderObject->getStorage()->getFile($fileIdentifier);
+									$attribArray['data-htmlarea-file-uid'] = $fileObject->getUid();
+									$attribArray['data-htmlarea-file-table'] = 'sys_file';
+								}
+							} catch (\TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException $notFoundException) {
+								// Nothing to be done if file/folder not found
 							}
 						}
 						$attribArray['src'] = $siteUrl . $attribArray['src'];
@@ -774,7 +778,11 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 						} elseif ($fileChar) {
 							// It is an internal file or folder
 							// Try to transform the href into a FAL reference
-							$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($link_param);
+							try {
+								$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($link_param);
+							} catch (\TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException $notFoundException) {
+								// Nothing to be done if file/folder not found
+							}
 							if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
 								// It's a folder
 								$folderIdentifier = $fileOrFolderObject->getIdentifier();
@@ -787,6 +795,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 							} else {
 								$href = $siteUrl . $link_param;
 							}
+							$href = $siteUrl . $link_param;
 						} else {
 							// integer or alias (alias is without slashes or periods or commas, that is 'nospace,alphanum_x,lower,unique' according to tables.php!!)
 							// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/parameters triplet
