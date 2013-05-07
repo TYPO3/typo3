@@ -6,7 +6,7 @@
  *
  * LICENSE:
  *
- * Copyright (c) 2008-2011, Alexey Borzov <avb@php.net>
+ * Copyright (c) 2008-2012, Alexey Borzov <avb@php.net>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,12 +33,12 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @category   HTTP
- * @package    HTTP_Request2
- * @author     Alexey Borzov <avb@php.net>
- * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    SVN: $Id: Exception.php 308629 2011-02-24 17:34:24Z avb $
- * @link       http://pear.php.net/package/HTTP_Request2
+ * @category HTTP
+ * @package  HTTP_Request2
+ * @author   Alexey Borzov <avb@php.net>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version  SVN: $Id: Exception.php 324415 2012-03-21 10:50:50Z avb $
+ * @link     http://pear.php.net/package/HTTP_Request2
  */
 
 /**
@@ -49,10 +49,13 @@ require_once 'PEAR/Exception.php';
 /**
  * Base exception class for HTTP_Request2 package
  *
- * @category   HTTP
- * @package    HTTP_Request2
- * @version    Release: 2.0.0RC1
- * @link       http://pear.php.net/pepr/pepr-proposal-show.php?id=132
+ * @category HTTP
+ * @package  HTTP_Request2
+ * @author   Alexey Borzov <avb@php.net>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version  Release: 2.1.1
+ * @link     http://pear.php.net/package/HTTP_Request2
+ * @link     http://pear.php.net/pepr/pepr-proposal-show.php?id=132
  */
 class HTTP_Request2_Exception extends PEAR_Exception
 {
@@ -76,34 +79,34 @@ class HTTP_Request2_Exception extends PEAR_Exception
     /** Redirect to a protocol other than http(s):// */
     const NON_HTTP_REDIRECT  = 50;
 
-   /**
-    * Native error code
-    * @var int
-    */
+    /**
+     * Native error code
+     * @var int
+     */
     private $_nativeCode;
 
-   /**
-    * Constructor, can set package error code and native error code
-    *
-    * @param string exception message
-    * @param int    package error code, one of class constants
-    * @param int    error code from underlying PHP extension
-    */
+    /**
+     * Constructor, can set package error code and native error code
+     *
+     * @param string $message    exception message
+     * @param int    $code       package error code, one of class constants
+     * @param int    $nativeCode error code from underlying PHP extension
+     */
     public function __construct($message = null, $code = null, $nativeCode = null)
     {
         parent::__construct($message, $code);
         $this->_nativeCode = $nativeCode;
     }
 
-   /**
-    * Returns error code produced by underlying PHP extension
-    *
-    * For Socket Adapter this may contain error number returned by
-    * stream_socket_client(), for Curl Adapter this will contain error number
-    * returned by curl_errno()
-    *
-    * @return integer
-    */
+    /**
+     * Returns error code produced by underlying PHP extension
+     *
+     * For Socket Adapter this may contain error number returned by
+     * stream_socket_client(), for Curl Adapter this will contain error number
+     * returned by curl_errno()
+     *
+     * @return integer
+     */
     public function getNativeCode()
     {
         return $this->_nativeCode;
@@ -113,11 +116,16 @@ class HTTP_Request2_Exception extends PEAR_Exception
 /**
  * Exception thrown in case of missing features
  *
- * @category   HTTP
- * @package    HTTP_Request2
- * @version    Release: 2.0.0RC1
+ * @category HTTP
+ * @package  HTTP_Request2
+ * @author   Alexey Borzov <avb@php.net>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version  Release: 2.1.1
+ * @link     http://pear.php.net/package/HTTP_Request2
  */
-class HTTP_Request2_NotImplementedException extends HTTP_Request2_Exception {}
+class HTTP_Request2_NotImplementedException extends HTTP_Request2_Exception
+{
+}
 
 /**
  * Exception that represents error in the program logic
@@ -129,11 +137,16 @@ class HTTP_Request2_NotImplementedException extends HTTP_Request2_Exception {}
  *
  * The exception will usually contain a package error code.
  *
- * @category   HTTP
- * @package    HTTP_Request2
- * @version    Release: 2.0.0RC1
+ * @category HTTP
+ * @package  HTTP_Request2
+ * @author   Alexey Borzov <avb@php.net>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version  Release: 2.1.1
+ * @link     http://pear.php.net/package/HTTP_Request2
  */
-class HTTP_Request2_LogicException extends HTTP_Request2_Exception {}
+class HTTP_Request2_LogicException extends HTTP_Request2_Exception
+{
+}
 
 /**
  * Exception thrown when connection to a web or proxy server fails
@@ -141,20 +154,30 @@ class HTTP_Request2_LogicException extends HTTP_Request2_Exception {}
  * The exception will not contain a package error code, but will contain
  * native error code, as returned by stream_socket_client() or curl_errno().
  *
- * @category   HTTP
- * @package    HTTP_Request2
- * @version    Release: 2.0.0RC1
+ * @category HTTP
+ * @package  HTTP_Request2
+ * @author   Alexey Borzov <avb@php.net>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version  Release: 2.1.1
+ * @link     http://pear.php.net/package/HTTP_Request2
  */
-class HTTP_Request2_ConnectionException extends HTTP_Request2_Exception {}
+class HTTP_Request2_ConnectionException extends HTTP_Request2_Exception
+{
+}
 
 /**
  * Exception thrown when sending or receiving HTTP message fails
  *
  * The exception may contain both package error code and native error code.
  *
- * @category   HTTP
- * @package    HTTP_Request2
- * @version    Release: 2.0.0RC1
+ * @category HTTP
+ * @package  HTTP_Request2
+ * @author   Alexey Borzov <avb@php.net>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version  Release: 2.1.1
+ * @link     http://pear.php.net/package/HTTP_Request2
  */
-class HTTP_Request2_MessageException extends HTTP_Request2_Exception {}
+class HTTP_Request2_MessageException extends HTTP_Request2_Exception
+{
+}
 ?>
