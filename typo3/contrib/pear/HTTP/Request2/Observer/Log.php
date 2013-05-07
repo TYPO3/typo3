@@ -6,7 +6,7 @@
  *
  * LICENSE:
  *
- * Copyright (c) 2008-2011, Alexey Borzov <avb@php.net>
+ * Copyright (c) 2008-2012, Alexey Borzov <avb@php.net>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@
  * @author   David Jean Louis <izi@php.net>
  * @author   Alexey Borzov <avb@php.net>
  * @license  http://opensource.org/licenses/bsd-license.php New BSD License
- * @version  SVN: $Id: Log.php 308680 2011-02-25 17:40:17Z avb $
+ * @version  SVN: $Id: Log.php 324415 2012-03-21 10:50:50Z avb $
  * @link     http://pear.php.net/package/HTTP_Request2
  */
 
@@ -87,7 +87,7 @@ require_once 'HTTP/Request2/Exception.php';
  * @author   David Jean Louis <izi@php.net>
  * @author   Alexey Borzov <avb@php.net>
  * @license  http://opensource.org/licenses/bsd-license.php New BSD License
- * @version  Release: 2.0.0RC1
+ * @version  Release: 2.1.1
  * @link     http://pear.php.net/package/HTTP_Request2
  */
 class HTTP_Request2_Observer_Log implements SplObserver
@@ -171,10 +171,10 @@ class HTTP_Request2_Observer_Log implements SplObserver
             $this->log('> ' . $event['data'] . ' byte(s) sent');
             break;
         case 'receivedHeaders':
-            $this->log(sprintf('< HTTP/%s %s %s',
-                $event['data']->getVersion(),
-                $event['data']->getStatus(),
-                $event['data']->getReasonPhrase()));
+            $this->log(sprintf(
+                '< HTTP/%s %s %s', $event['data']->getVersion(),
+                $event['data']->getStatus(), $event['data']->getReasonPhrase()
+            ));
             $headers = $event['data']->getHeader();
             foreach ($headers as $key => $val) {
                 $this->log('< ' . $key . ': ' . $val);
