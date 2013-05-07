@@ -6,19 +6,19 @@
  *
  * LICENSE:
  *
- * Copyright (c) 2008-2011, Alexey Borzov <avb@php.net>
+ * Copyright (c) 2008-2012, Alexey Borzov <avb@php.net>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
  *
- *    * Redistributions of source code must retain the above copyright
+ *     * Redistributions of source code must retain the above copyright
  *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
+ *     * Redistributions in binary form must reproduce the above copyright
  *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *    * The names of the authors may not be used to endorse or promote products
+ *     * The names of the authors may not be used to endorse or promote products
  *      derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
@@ -33,12 +33,12 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @category   HTTP
- * @package    HTTP_Request2
- * @author     Alexey Borzov <avb@php.net>
- * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    SVN: $Id: Response.php 309921 2011-04-03 16:43:02Z avb $
- * @link       http://pear.php.net/package/HTTP_Request2
+ * @category HTTP
+ * @package  HTTP_Request2
+ * @author   Alexey Borzov <avb@php.net>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version  SVN: $Id: Response.php 324936 2012-04-07 07:49:03Z avb $
+ * @link     http://pear.php.net/package/HTTP_Request2
  */
 
 /**
@@ -66,84 +66,85 @@ require_once 'HTTP/Request2/Exception.php';
  * var_dump($response->getHeader(), $response->getCookies(), $response->getBody());
  * </code>
  *
- *
- * @category   HTTP
- * @package    HTTP_Request2
- * @author     Alexey Borzov <avb@php.net>
- * @version    Release: 2.0.0RC1
- * @link       http://tools.ietf.org/html/rfc2616#section-6
+ * @category HTTP
+ * @package  HTTP_Request2
+ * @author   Alexey Borzov <avb@php.net>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version  Release: 2.1.1
+ * @link     http://pear.php.net/package/HTTP_Request2
+ * @link     http://tools.ietf.org/html/rfc2616#section-6
  */
 class HTTP_Request2_Response
 {
-   /**
-    * HTTP protocol version (e.g. 1.0, 1.1)
-    * @var  string
-    */
+    /**
+     * HTTP protocol version (e.g. 1.0, 1.1)
+     * @var  string
+     */
     protected $version;
 
-   /**
-    * Status code
-    * @var  integer
-    * @link http://tools.ietf.org/html/rfc2616#section-6.1.1
-    */
+    /**
+     * Status code
+     * @var  integer
+     * @link http://tools.ietf.org/html/rfc2616#section-6.1.1
+     */
     protected $code;
 
-   /**
-    * Reason phrase
-    * @var  string
-    * @link http://tools.ietf.org/html/rfc2616#section-6.1.1
-    */
+    /**
+     * Reason phrase
+     * @var  string
+     * @link http://tools.ietf.org/html/rfc2616#section-6.1.1
+     */
     protected $reasonPhrase;
 
-   /**
-    * Effective URL (may be different from original request URL in case of redirects)
-    * @var  string
-    */
+    /**
+     * Effective URL (may be different from original request URL in case of redirects)
+     * @var  string
+     */
     protected $effectiveUrl;
 
-   /**
-    * Associative array of response headers
-    * @var  array
-    */
+    /**
+     * Associative array of response headers
+     * @var  array
+     */
     protected $headers = array();
 
-   /**
-    * Cookies set in the response
-    * @var  array
-    */
+    /**
+     * Cookies set in the response
+     * @var  array
+     */
     protected $cookies = array();
 
-   /**
-    * Name of last header processed by parseHederLine()
-    *
-    * Used to handle the headers that span multiple lines
-    *
-    * @var  string
-    */
+    /**
+     * Name of last header processed by parseHederLine()
+     *
+     * Used to handle the headers that span multiple lines
+     *
+     * @var  string
+     */
     protected $lastHeader = null;
 
-   /**
-    * Response body
-    * @var  string
-    */
+    /**
+     * Response body
+     * @var  string
+     */
     protected $body = '';
 
-   /**
-    * Whether the body is still encoded by Content-Encoding
-    *
-    * cURL provides the decoded body to the callback; if we are reading from
-    * socket the body is still gzipped / deflated
-    *
-    * @var  bool
-    */
+    /**
+     * Whether the body is still encoded by Content-Encoding
+     *
+     * cURL provides the decoded body to the callback; if we are reading from
+     * socket the body is still gzipped / deflated
+     *
+     * @var  bool
+     */
     protected $bodyEncoded;
 
-   /**
-    * Associative array of HTTP status code / reason phrase.
-    *
-    * @var  array
-    * @link http://tools.ietf.org/html/rfc2616#section-10
-    */
+    /**
+     * Associative array of HTTP status code / reason phrase.
+     *
+     * @var  array
+     * @link http://tools.ietf.org/html/rfc2616#section-10
+     */
     protected static $phrases = array(
 
         // 1xx: Informational - Request received, continuing process
@@ -203,14 +204,34 @@ class HTTP_Request2_Response
 
     );
 
-   /**
-    * Constructor, parses the response status line
-    *
-    * @param    string Response status line (e.g. "HTTP/1.1 200 OK")
-    * @param    bool   Whether body is still encoded by Content-Encoding
-    * @param    string Effective URL of the response
-    * @throws   HTTP_Request2_MessageException if status line is invalid according to spec
-    */
+    /**
+     * Returns the default reason phrase for the given code or all reason phrases
+     *
+     * @param int $code Response code
+     *
+     * @return string|array|null Default reason phrase for $code if $code is given
+     *                           (null if no phrase is available), array of all
+     *                           reason phrases if $code is null
+     * @link   http://pear.php.net/bugs/18716
+     */
+    public static function getDefaultReasonPhrase($code = null)
+    {
+        if (null === $code) {
+            return self::$phrases;
+        } else {
+            return isset(self::$phrases[$code]) ? self::$phrases[$code] : null;
+        }
+    }
+
+    /**
+     * Constructor, parses the response status line
+     *
+     * @param string $statusLine   Response status line (e.g. "HTTP/1.1 200 OK")
+     * @param bool   $bodyEncoded  Whether body is still encoded by Content-Encoding
+     * @param string $effectiveUrl Effective URL of the response
+     *
+     * @throws   HTTP_Request2_MessageException if status line is invalid according to spec
+     */
     public function __construct($statusLine, $bodyEncoded = true, $effectiveUrl = null)
     {
         if (!preg_match('!^HTTP/(\d\.\d) (\d{3})(?: (.+))?!', $statusLine, $m)) {
@@ -219,33 +240,29 @@ class HTTP_Request2_Response
                 HTTP_Request2_Exception::MALFORMED_RESPONSE
             );
         }
-        $this->version = $m[1];
-        $this->code    = intval($m[2]);
-        if (!empty($m[3])) {
-            $this->reasonPhrase = trim($m[3]);
-        } elseif (!empty(self::$phrases[$this->code])) {
-            $this->reasonPhrase = self::$phrases[$this->code];
-        }
+        $this->version      = $m[1];
+        $this->code         = intval($m[2]);
+        $this->reasonPhrase = !empty($m[3]) ? trim($m[3]) : self::getDefaultReasonPhrase($this->code);
         $this->bodyEncoded  = (bool)$bodyEncoded;
         $this->effectiveUrl = (string)$effectiveUrl;
     }
 
-   /**
-    * Parses the line from HTTP response filling $headers array
-    *
-    * The method should be called after reading the line from socket or receiving
-    * it into cURL callback. Passing an empty string here indicates the end of
-    * response headers and triggers additional processing, so be sure to pass an
-    * empty string in the end.
-    *
-    * @param    string  Line from HTTP response
-    */
+    /**
+     * Parses the line from HTTP response filling $headers array
+     *
+     * The method should be called after reading the line from socket or receiving
+     * it into cURL callback. Passing an empty string here indicates the end of
+     * response headers and triggers additional processing, so be sure to pass an
+     * empty string in the end.
+     *
+     * @param string $headerLine Line from HTTP response
+     */
     public function parseHeaderLine($headerLine)
     {
         $headerLine = trim($headerLine, "\r\n");
 
-        // empty string signals the end of headers, process the received ones
         if ('' == $headerLine) {
+            // empty string signals the end of headers, process the received ones
             if (!empty($this->headers['set-cookie'])) {
                 $cookies = is_array($this->headers['set-cookie'])?
                            $this->headers['set-cookie']:
@@ -261,8 +278,8 @@ class HTTP_Request2_Response
                 }
             }
 
-        // string of the form header-name: header value
         } elseif (preg_match('!^([^\x00-\x1f\x7f-\xff()<>@,;:\\\\"/\[\]?={}\s]+):(.+)$!', $headerLine, $m)) {
+            // string of the form header-name: header value
             $name  = strtolower($m[1]);
             $value = trim($m[2]);
             if (empty($this->headers[$name])) {
@@ -275,8 +292,8 @@ class HTTP_Request2_Response
             }
             $this->lastHeader = $name;
 
-        // continuation of a previous header
         } elseif (preg_match('!^\s+(.+)$!', $headerLine, $m) && $this->lastHeader) {
+            // continuation of a previous header
             if (!is_array($this->headers[$this->lastHeader])) {
                 $this->headers[$this->lastHeader] .= ' ' . trim($m[1]);
             } else {
@@ -286,12 +303,13 @@ class HTTP_Request2_Response
         }
     }
 
-   /**
-    * Parses a Set-Cookie header to fill $cookies array
-    *
-    * @param    string    value of Set-Cookie header
-    * @link     http://web.archive.org/web/20080331104521/http://cgi.netscape.com/newsref/std/cookie_spec.html
-    */
+    /**
+     * Parses a Set-Cookie header to fill $cookies array
+     *
+     * @param string $cookieString value of Set-Cookie header
+     *
+     * @link     http://web.archive.org/web/20080331104521/http://cgi.netscape.com/newsref/std/cookie_spec.html
+     */
     protected function parseCookie($cookieString)
     {
         $cookie = array(
@@ -301,14 +319,14 @@ class HTTP_Request2_Response
             'secure'  => false
         );
 
-        // Only a name=value pair
         if (!strpos($cookieString, ';')) {
+            // Only a name=value pair
             $pos = strpos($cookieString, '=');
             $cookie['name']  = trim(substr($cookieString, 0, $pos));
             $cookie['value'] = trim(substr($cookieString, $pos + 1));
 
-        // Some optional parameters are supplied
         } else {
+            // Some optional parameters are supplied
             $elements = explode(';', $cookieString);
             $pos = strpos($elements[0], '=');
             $cookie['name']  = trim(substr($elements[0], 0, $pos));
@@ -336,64 +354,69 @@ class HTTP_Request2_Response
         $this->cookies[] = $cookie;
     }
 
-   /**
-    * Appends a string to the response body
-    * @param    string
-    */
+    /**
+     * Appends a string to the response body
+     *
+     * @param string $bodyChunk part of response body
+     */
     public function appendBody($bodyChunk)
     {
         $this->body .= $bodyChunk;
     }
 
-   /**
-    * Returns the effective URL of the response
-    *
-    * This may be different from the request URL if redirects were followed.
-    *
-    * @return string
-    * @link   http://pear.php.net/bugs/bug.php?id=18412
-    */
+    /**
+     * Returns the effective URL of the response
+     *
+     * This may be different from the request URL if redirects were followed.
+     *
+     * @return string
+     * @link   http://pear.php.net/bugs/bug.php?id=18412
+     */
     public function getEffectiveUrl()
     {
         return $this->effectiveUrl;
     }
 
-   /**
-    * Returns the status code
-    * @return   integer
-    */
+    /**
+     * Returns the status code
+     *
+     * @return   integer
+     */
     public function getStatus()
     {
         return $this->code;
     }
 
-   /**
-    * Returns the reason phrase
-    * @return   string
-    */
+    /**
+     * Returns the reason phrase
+     *
+     * @return   string
+     */
     public function getReasonPhrase()
     {
         return $this->reasonPhrase;
     }
 
-   /**
-    * Whether response is a redirect that can be automatically handled by HTTP_Request2
-    * @return   bool
-    */
+    /**
+     * Whether response is a redirect that can be automatically handled by HTTP_Request2
+     *
+     * @return   bool
+     */
     public function isRedirect()
     {
         return in_array($this->code, array(300, 301, 302, 303, 307))
                && isset($this->headers['location']);
     }
 
-   /**
-    * Returns either the named header or all response headers
-    *
-    * @param    string          Name of header to return
-    * @return   string|array    Value of $headerName header (null if header is
-    *                           not present), array of all response headers if
-    *                           $headerName is null
-    */
+    /**
+     * Returns either the named header or all response headers
+     *
+     * @param string $headerName Name of header to return
+     *
+     * @return   string|array    Value of $headerName header (null if header is
+     *                           not present), array of all response headers if
+     *                           $headerName is null
+     */
     public function getHeader($headerName = null)
     {
         if (null === $headerName) {
@@ -404,42 +427,42 @@ class HTTP_Request2_Response
         }
     }
 
-   /**
-    * Returns cookies set in response
-    *
-    * @return   array
-    */
+    /**
+     * Returns cookies set in response
+     *
+     * @return   array
+     */
     public function getCookies()
     {
         return $this->cookies;
     }
 
-   /**
-    * Returns the body of the response
-    *
-    * @return   string
-    * @throws   HTTP_Request2_Exception if body cannot be decoded
-    */
+    /**
+     * Returns the body of the response
+     *
+     * @return   string
+     * @throws   HTTP_Request2_Exception if body cannot be decoded
+     */
     public function getBody()
     {
-        if (0 == strlen($this->body) || !$this->bodyEncoded ||
-            !in_array(strtolower($this->getHeader('content-encoding')), array('gzip', 'deflate'))
+        if (0 == strlen($this->body) || !$this->bodyEncoded
+            || !in_array(strtolower($this->getHeader('content-encoding')), array('gzip', 'deflate'))
         ) {
             return $this->body;
 
         } else {
             if (extension_loaded('mbstring') && (2 & ini_get('mbstring.func_overload'))) {
                 $oldEncoding = mb_internal_encoding();
-                mb_internal_encoding('iso-8859-1');
+                mb_internal_encoding('8bit');
             }
 
             try {
                 switch (strtolower($this->getHeader('content-encoding'))) {
-                    case 'gzip':
-                        $decoded = self::decodeGzip($this->body);
-                        break;
-                    case 'deflate':
-                        $decoded = self::decodeDeflate($this->body);
+                case 'gzip':
+                    $decoded = self::decodeGzip($this->body);
+                    break;
+                case 'deflate':
+                    $decoded = self::decodeDeflate($this->body);
                 }
             } catch (Exception $e) {
             }
@@ -454,29 +477,30 @@ class HTTP_Request2_Response
         }
     }
 
-   /**
-    * Get the HTTP version of the response
-    *
-    * @return   string
-    */
+    /**
+     * Get the HTTP version of the response
+     *
+     * @return   string
+     */
     public function getVersion()
     {
         return $this->version;
     }
 
-   /**
-    * Decodes the message-body encoded by gzip
-    *
-    * The real decoding work is done by gzinflate() built-in function, this
-    * method only parses the header and checks data for compliance with
-    * RFC 1952
-    *
-    * @param    string  gzip-encoded data
-    * @return   string  decoded data
-    * @throws   HTTP_Request2_LogicException
-    * @throws   HTTP_Request2_MessageException
-    * @link     http://tools.ietf.org/html/rfc1952
-    */
+    /**
+     * Decodes the message-body encoded by gzip
+     *
+     * The real decoding work is done by gzinflate() built-in function, this
+     * method only parses the header and checks data for compliance with
+     * RFC 1952
+     *
+     * @param string $data gzip-encoded data
+     *
+     * @return   string  decoded data
+     * @throws   HTTP_Request2_LogicException
+     * @throws   HTTP_Request2_MessageException
+     * @link     http://tools.ietf.org/html/rfc1952
+     */
     public static function decodeGzip($data)
     {
         $length = strlen($data);
@@ -603,13 +627,14 @@ class HTTP_Request2_Response
         return $unpacked;
     }
 
-   /**
-    * Decodes the message-body encoded by deflate
-    *
-    * @param    string  deflate-encoded data
-    * @return   string  decoded data
-    * @throws   HTTP_Request2_LogicException
-    */
+    /**
+     * Decodes the message-body encoded by deflate
+     *
+     * @param string $data deflate-encoded data
+     *
+     * @return   string  decoded data
+     * @throws   HTTP_Request2_LogicException
+     */
     public static function decodeDeflate($data)
     {
         if (!function_exists('gzuncompress')) {

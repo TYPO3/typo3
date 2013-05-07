@@ -6,7 +6,7 @@
  *
  * LICENSE:
  *
- * Copyright (c) 2008-2011, Alexey Borzov <avb@php.net>
+ * Copyright (c) 2008-2012, Alexey Borzov <avb@php.net>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,12 +33,12 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @category   HTTP
- * @package    HTTP_Request2
- * @author     Alexey Borzov <avb@php.net>
- * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    SVN: $Id: MultipartBody.php 308322 2011-02-14 13:58:03Z avb $
- * @link       http://pear.php.net/package/HTTP_Request2
+ * @category HTTP
+ * @package  HTTP_Request2
+ * @author   Alexey Borzov <avb@php.net>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version  SVN: $Id: MultipartBody.php 324415 2012-03-21 10:50:50Z avb $
+ * @link     http://pear.php.net/package/HTTP_Request2
  */
 
 /**
@@ -47,62 +47,66 @@
  * The class helps to reduce memory consumption by streaming large file uploads
  * from disk, it also allows monitoring of upload progress (see request #7630)
  *
- * @category   HTTP
- * @package    HTTP_Request2
- * @author     Alexey Borzov <avb@php.net>
- * @version    Release: 2.0.0RC1
- * @link       http://tools.ietf.org/html/rfc1867
+ * @category HTTP
+ * @package  HTTP_Request2
+ * @author   Alexey Borzov <avb@php.net>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version  Release: 2.1.1
+ * @link     http://pear.php.net/package/HTTP_Request2
+ * @link     http://tools.ietf.org/html/rfc1867
  */
 class HTTP_Request2_MultipartBody
 {
-   /**
-    * MIME boundary
-    * @var  string
-    */
+    /**
+     * MIME boundary
+     * @var  string
+     */
     private $_boundary;
 
-   /**
-    * Form parameters added via {@link HTTP_Request2::addPostParameter()}
-    * @var  array
-    */
+    /**
+     * Form parameters added via {@link HTTP_Request2::addPostParameter()}
+     * @var  array
+     */
     private $_params = array();
 
-   /**
-    * File uploads added via {@link HTTP_Request2::addUpload()}
-    * @var  array
-    */
+    /**
+     * File uploads added via {@link HTTP_Request2::addUpload()}
+     * @var  array
+     */
     private $_uploads = array();
 
-   /**
-    * Header for parts with parameters
-    * @var  string
-    */
+    /**
+     * Header for parts with parameters
+     * @var  string
+     */
     private $_headerParam = "--%s\r\nContent-Disposition: form-data; name=\"%s\"\r\n\r\n";
 
-   /**
-    * Header for parts with uploads
-    * @var  string
-    */
+    /**
+     * Header for parts with uploads
+     * @var  string
+     */
     private $_headerUpload = "--%s\r\nContent-Disposition: form-data; name=\"%s\"; filename=\"%s\"\r\nContent-Type: %s\r\n\r\n";
 
-   /**
-    * Current position in parameter and upload arrays
-    *
-    * First number is index of "current" part, second number is position within
-    * "current" part
-    *
-    * @var  array
-    */
+    /**
+     * Current position in parameter and upload arrays
+     *
+     * First number is index of "current" part, second number is position within
+     * "current" part
+     *
+     * @var  array
+     */
     private $_pos = array(0, 0);
 
 
-   /**
-    * Constructor. Sets the arrays with POST data.
-    *
-    * @param    array   values of form fields set via {@link HTTP_Request2::addPostParameter()}
-    * @param    array   file uploads set via {@link HTTP_Request2::addUpload()}
-    * @param    bool    whether to append brackets to array variable names
-    */
+    /**
+     * Constructor. Sets the arrays with POST data.
+     *
+     * @param array $params      values of form fields set via
+     *                           {@link HTTP_Request2::addPostParameter()}
+     * @param array $uploads     file uploads set via
+     *                           {@link HTTP_Request2::addUpload()}
+     * @param bool  $useBrackets whether to append brackets to array variable names
+     */
     public function __construct(array $params, array $uploads, $useBrackets = true)
     {
         $this->_params = self::_flattenArray('', $params, $useBrackets);
@@ -123,11 +127,11 @@ class HTTP_Request2_MultipartBody
         }
     }
 
-   /**
-    * Returns the length of the body to use in Content-Length header
-    *
-    * @return   integer
-    */
+    /**
+     * Returns the length of the body to use in Content-Length header
+     *
+     * @return   integer
+     */
     public function getLength()
     {
         $boundaryLength     = strlen($this->getBoundary());
@@ -144,11 +148,11 @@ class HTTP_Request2_MultipartBody
         return $length;
     }
 
-   /**
-    * Returns the boundary to use in Content-Type header
-    *
-    * @return   string
-    */
+    /**
+     * Returns the boundary to use in Content-Type header
+     *
+     * @return   string
+     */
     public function getBoundary()
     {
         if (empty($this->_boundary)) {
@@ -157,12 +161,13 @@ class HTTP_Request2_MultipartBody
         return $this->_boundary;
     }
 
-   /**
-    * Returns next chunk of request body
-    *
-    * @param    integer Amount of bytes to read
-    * @return   string  Up to $length bytes of data, empty string if at end
-    */
+    /**
+     * Returns next chunk of request body
+     *
+     * @param integer $length Number of bytes to read
+     *
+     * @return   string  Up to $length bytes of data, empty string if at end
+     */
     public function read($length)
     {
         $ret         = '';
@@ -172,18 +177,18 @@ class HTTP_Request2_MultipartBody
         while ($length > 0 && $this->_pos[0] <= $paramCount + $uploadCount) {
             $oldLength = $length;
             if ($this->_pos[0] < $paramCount) {
-                $param = sprintf($this->_headerParam, $boundary,
-                                 $this->_params[$this->_pos[0]][0]) .
-                         $this->_params[$this->_pos[0]][1] . "\r\n";
+                $param = sprintf(
+                    $this->_headerParam, $boundary, $this->_params[$this->_pos[0]][0]
+                ) . $this->_params[$this->_pos[0]][1] . "\r\n";
                 $ret    .= substr($param, $this->_pos[1], $length);
                 $length -= min(strlen($param) - $this->_pos[1], $length);
 
             } elseif ($this->_pos[0] < $paramCount + $uploadCount) {
                 $pos    = $this->_pos[0] - $paramCount;
-                $header = sprintf($this->_headerUpload, $boundary,
-                                  $this->_uploads[$pos]['name'],
-                                  $this->_uploads[$pos]['filename'],
-                                  $this->_uploads[$pos]['type']);
+                $header = sprintf(
+                    $this->_headerUpload, $boundary, $this->_uploads[$pos]['name'],
+                    $this->_uploads[$pos]['filename'], $this->_uploads[$pos]['type']
+                );
                 if ($this->_pos[1] < strlen($header)) {
                     $ret    .= substr($header, $this->_pos[1], $length);
                     $length -= min(strlen($header) - $this->_pos[1], $length);
@@ -214,11 +219,11 @@ class HTTP_Request2_MultipartBody
         return $ret;
     }
 
-   /**
-    * Sets the current position to the start of the body
-    *
-    * This allows reusing the same body in another request
-    */
+    /**
+     * Sets the current position to the start of the body
+     *
+     * This allows reusing the same body in another request
+     */
     public function rewind()
     {
         $this->_pos = array(0, 0);
@@ -227,14 +232,14 @@ class HTTP_Request2_MultipartBody
         }
     }
 
-   /**
-    * Returns the body as string
-    *
-    * Note that it reads all file uploads into memory so it is a good idea not
-    * to use this method with large file uploads and rely on read() instead.
-    *
-    * @return   string
-    */
+    /**
+     * Returns the body as string
+     *
+     * Note that it reads all file uploads into memory so it is a good idea not
+     * to use this method with large file uploads and rely on read() instead.
+     *
+     * @return   string
+     */
     public function __toString()
     {
         $this->rewind();
@@ -242,15 +247,16 @@ class HTTP_Request2_MultipartBody
     }
 
 
-   /**
-    * Helper function to change the (probably multidimensional) associative array
-    * into the simple one.
-    *
-    * @param    string  name for item
-    * @param    mixed   item's values
-    * @param    bool    whether to append [] to array variables' names
-    * @return   array   array with the following items: array('item name', 'item value');
-    */
+    /**
+     * Helper function to change the (probably multidimensional) associative array
+     * into the simple one.
+     *
+     * @param string $name        name for item
+     * @param mixed  $values      item's values
+     * @param bool   $useBrackets whether to append [] to array variables' names
+     *
+     * @return   array   array with the following items: array('item name', 'item value');
+     */
     private static function _flattenArray($name, $values, $useBrackets)
     {
         if (!is_array($values)) {
