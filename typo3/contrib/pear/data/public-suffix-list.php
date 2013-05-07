@@ -20,7 +20,7 @@
 // the Initial Developer. All Rights Reserved.
 //
 // Contributor(s):
-//   Ruben Arakelyan <ruben@wackomenace.co.uk>
+//   Ruben Arakelyan <ruben@rubenarakelyan.com>
 //   Gervase Markham <gerv@gerv.net>
 //   Pamela Greene <pamg.bugs@gmail.com>
 //   David Triendl <david@triendl.name>
@@ -231,7 +231,9 @@ return array(
   'priv' => true
  ),
  'au' => array(
-  '*' => true,
+  'com' => true,
+  'net' => true,
+  'org' => true,
   'edu' => array(
    'act' => true,
    'nsw' => true,
@@ -251,6 +253,12 @@ return array(
    'vic' => true,
    'wa' => true
   ),
+  'csiro' => true,
+  'asn' => true,
+  'id' => true,
+  'info' => true,
+  'conf' => true,
+  'oz' => true,
   'act' => true,
   'nsw' => true,
   'nt' => true,
@@ -361,7 +369,15 @@ return array(
   'or' => true,
   'org' => true
  ),
- 'biz' => true,
+ 'biz' => array(
+  'dyndns' => true,
+  'for-better' => true,
+  'for-more' => true,
+  'for-some' => true,
+  'for-the' => true,
+  'selfip' => true,
+  'webhop' => true
+ ),
  'bj' => array(
   'asso' => true,
   'barreau' => true,
@@ -396,6 +412,7 @@ return array(
   'arq' => true,
   'art' => true,
   'ato' => true,
+  'b' => true,
   'bio' => true,
   'blog' => true,
   'bmd' => true,
@@ -407,6 +424,7 @@ return array(
   'coop' => true,
   'ecn' => true,
   'edu' => true,
+  'emp' => true,
   'eng' => true,
   'esp' => true,
   'etc' => true,
@@ -441,9 +459,12 @@ return array(
   'psc' => true,
   'psi' => true,
   'qsl' => true,
+  'radio' => true,
   'rec' => true,
   'slg' => true,
   'srv' => true,
+  'taxi' => true,
+  'teo' => true,
   'tmp' => true,
   'trd' => true,
   'tur' => true,
@@ -499,10 +520,16 @@ return array(
   'qc' => true,
   'sk' => true,
   'yk' => true,
-  'gc' => true
+  'gc' => true,
+  'co' => true
  ),
  'cat' => true,
- 'cc' => true,
+ 'cc' => array(
+  'ftpaccess' => true,
+  'game-server' => true,
+  'myphotos' => true,
+  'scrapping' => true
+ ),
  'cd' => array(
   'gov' => true
  ),
@@ -527,11 +554,14 @@ return array(
   'gouv' => true
  ),
  'ck' => array(
-  '*' => true
+  '*' => true,
+  '!www' => true
  ),
  'cl' => array(
   'gov' => true,
-  'gob' => true
+  'gob' => true,
+  'co' => true,
+  'mil' => true
  ),
  'cm' => array(
   'gov' => true
@@ -604,6 +634,7 @@ return array(
   'de' => true,
   'eu' => true,
   'gb' => true,
+  'gr' => true,
   'hu' => true,
   'jpn' => true,
   'kr' => true,
@@ -617,7 +648,157 @@ return array(
   'uy' => true,
   'za' => true,
   'operaunite' => true,
-  'appspot' => true
+  'appspot' => true,
+  'dyndns-at-home' => true,
+  'dyndns-at-work' => true,
+  'dyndns-blog' => true,
+  'dyndns-free' => true,
+  'dyndns-home' => true,
+  'dyndns-ip' => true,
+  'dyndns-mail' => true,
+  'dyndns-office' => true,
+  'dyndns-pics' => true,
+  'dyndns-remote' => true,
+  'dyndns-server' => true,
+  'dyndns-web' => true,
+  'dyndns-wiki' => true,
+  'dyndns-work' => true,
+  'blogdns' => true,
+  'cechire' => true,
+  'dnsalias' => true,
+  'dnsdojo' => true,
+  'doesntexist' => true,
+  'dontexist' => true,
+  'doomdns' => true,
+  'dyn-o-saur' => true,
+  'dynalias' => true,
+  'est-a-la-maison' => true,
+  'est-a-la-masion' => true,
+  'est-le-patron' => true,
+  'est-mon-blogueur' => true,
+  'from-ak' => true,
+  'from-al' => true,
+  'from-ar' => true,
+  'from-ca' => true,
+  'from-ct' => true,
+  'from-dc' => true,
+  'from-de' => true,
+  'from-fl' => true,
+  'from-ga' => true,
+  'from-hi' => true,
+  'from-ia' => true,
+  'from-id' => true,
+  'from-il' => true,
+  'from-in' => true,
+  'from-ks' => true,
+  'from-ky' => true,
+  'from-ma' => true,
+  'from-md' => true,
+  'from-mi' => true,
+  'from-mn' => true,
+  'from-mo' => true,
+  'from-ms' => true,
+  'from-mt' => true,
+  'from-nc' => true,
+  'from-nd' => true,
+  'from-ne' => true,
+  'from-nh' => true,
+  'from-nj' => true,
+  'from-nm' => true,
+  'from-nv' => true,
+  'from-oh' => true,
+  'from-ok' => true,
+  'from-or' => true,
+  'from-pa' => true,
+  'from-pr' => true,
+  'from-ri' => true,
+  'from-sc' => true,
+  'from-sd' => true,
+  'from-tn' => true,
+  'from-tx' => true,
+  'from-ut' => true,
+  'from-va' => true,
+  'from-vt' => true,
+  'from-wa' => true,
+  'from-wi' => true,
+  'from-wv' => true,
+  'from-wy' => true,
+  'getmyip' => true,
+  'gotdns' => true,
+  'hobby-site' => true,
+  'homelinux' => true,
+  'homeunix' => true,
+  'iamallama' => true,
+  'is-a-anarchist' => true,
+  'is-a-blogger' => true,
+  'is-a-bookkeeper' => true,
+  'is-a-bulls-fan' => true,
+  'is-a-caterer' => true,
+  'is-a-chef' => true,
+  'is-a-conservative' => true,
+  'is-a-cpa' => true,
+  'is-a-cubicle-slave' => true,
+  'is-a-democrat' => true,
+  'is-a-designer' => true,
+  'is-a-doctor' => true,
+  'is-a-financialadvisor' => true,
+  'is-a-geek' => true,
+  'is-a-green' => true,
+  'is-a-guru' => true,
+  'is-a-hard-worker' => true,
+  'is-a-hunter' => true,
+  'is-a-landscaper' => true,
+  'is-a-lawyer' => true,
+  'is-a-liberal' => true,
+  'is-a-libertarian' => true,
+  'is-a-llama' => true,
+  'is-a-musician' => true,
+  'is-a-nascarfan' => true,
+  'is-a-nurse' => true,
+  'is-a-painter' => true,
+  'is-a-personaltrainer' => true,
+  'is-a-photographer' => true,
+  'is-a-player' => true,
+  'is-a-republican' => true,
+  'is-a-rockstar' => true,
+  'is-a-socialist' => true,
+  'is-a-student' => true,
+  'is-a-teacher' => true,
+  'is-a-techie' => true,
+  'is-a-therapist' => true,
+  'is-an-accountant' => true,
+  'is-an-actor' => true,
+  'is-an-actress' => true,
+  'is-an-anarchist' => true,
+  'is-an-artist' => true,
+  'is-an-engineer' => true,
+  'is-an-entertainer' => true,
+  'is-certified' => true,
+  'is-gone' => true,
+  'is-into-anime' => true,
+  'is-into-cars' => true,
+  'is-into-cartoons' => true,
+  'is-into-games' => true,
+  'is-leet' => true,
+  'is-not-certified' => true,
+  'is-slick' => true,
+  'is-uberleet' => true,
+  'is-with-theband' => true,
+  'isa-geek' => true,
+  'isa-hockeynut' => true,
+  'issmarterthanyou' => true,
+  'likes-pie' => true,
+  'likescandy' => true,
+  'neat-url' => true,
+  'saves-the-whales' => true,
+  'selfip' => true,
+  'sells-for-less' => true,
+  'sells-for-u' => true,
+  'servebbs' => true,
+  'simple-url' => true,
+  'space-to-rent' => true,
+  'teaches-yoga' => true,
+  'writesthisblog' => true
  ),
  'coop' => true,
  'cr' => array(
@@ -639,13 +820,22 @@ return array(
  ),
  'cv' => true,
  'cx' => array(
-  'gov' => true
+  'gov' => true,
+  'ath' => true
  ),
  'cy' => array(
   '*' => true
  ),
  'cz' => true,
- 'de' => true,
+ 'de' => array(
+  'com' => true,
+  'fuettertdasnetz' => true,
+  'isteingeek' => true,
+  'istmein' => true,
+  'lebtimnetz' => true,
+  'leitungsen' => true,
+  'traeumtgerade' => true
+ ),
  'dj' => true,
  'dk' => true,
  'dm' => array(
@@ -656,7 +846,16 @@ return array(
   'gov' => true
  ),
  'do' => array(
-  '*' => true
+  'art' => true,
+  'com' => true,
+  'edu' => true,
+  'gob' => true,
+  'gov' => true,
+  'mil' => true,
+  'net' => true,
+  'org' => true,
+  'sld' => true,
+  'web' => true
  ),
  'dz' => array(
   'com' => true,
@@ -696,7 +895,15 @@ return array(
   'fie' => true
  ),
  'eg' => array(
-  '*' => true
+  'com' => true,
+  'edu' => true,
+  'eun' => true,
+  'gov' => true,
+  'mil' => true,
+  'name' => true,
+  'net' => true,
+  'org' => true,
+  'sci' => true
  ),
  'er' => array(
   '*' => true
@@ -812,7 +1019,8 @@ return array(
  ),
  'gs' => true,
  'gt' => array(
-  '*' => true
+  '*' => true,
+  '!www' => true
  ),
  'gu' => array(
   '*' => true
@@ -954,7 +1162,18 @@ return array(
   'gov' => true,
   'mil' => true
  ),
- 'info' => true,
+ 'info' => array(
+  'dyndns' => true,
+  'barrel-of-knowledge' => true,
+  'barrell-of-knowledge' => true,
+  'for-our' => true,
+  'groks-the' => true,
+  'groks-this' => true,
+  'here-for-more' => true,
+  'knowsitall' => true,
+  'selfip' => true,
+  'webhop' => true
+ ),
  'int' => array(
   'eu' => true
  ),
@@ -1672,7 +1891,6 @@ return array(
   'grp' => true,
   'hotel' => true
  ),
- 'local' => true,
  'lr' => array(
   'com' => true,
   'edu' => true,
@@ -2414,16 +2632,59 @@ return array(
   'com' => true,
   'org' => true
  ),
- 'name' => true,
+ 'name' => array(
+  'her' => array(
+   'forgot' => true
+  ),
+  'his' => array(
+   'forgot' => true
+  )
+ ),
  'nc' => array(
   'asso' => true
  ),
  'ne' => true,
  'net' => array(
   'gb' => true,
+  'jp' => true,
   'se' => true,
   'uk' => true,
-  'za' => true
+  'za' => true,
+  'at-band-camp' => true,
+  'blogdns' => true,
+  'broke-it' => true,
+  'buyshouses' => true,
+  'dnsalias' => true,
+  'dnsdojo' => true,
+  'does-it' => true,
+  'dontexist' => true,
+  'dynalias' => true,
+  'dynathome' => true,
+  'endofinternet' => true,
+  'from-az' => true,
+  'from-co' => true,
+  'from-la' => true,
+  'from-ny' => true,
+  'gets-it' => true,
+  'ham-radio-op' => true,
+  'homeftp' => true,
+  'homeip' => true,
+  'homelinux' => true,
+  'homeunix' => true,
+  'in-the-band' => true,
+  'is-a-chef' => true,
+  'is-a-geek' => true,
+  'isa-geek' => true,
+  'kicks-ass' => true,
+  'office-on-the' => true,
+  'podzone' => true,
+  'scrapper-site' => true,
+  'selfip' => true,
+  'sells-it' => true,
+  'servebbs' => true,
+  'serveftp' => true,
+  'thruhere' => true,
+  'webhop' => true
  ),
  'nf' => array(
   'com' => true,
@@ -2449,7 +2710,8 @@ return array(
   '*' => true
  ),
  'nl' => array(
-  'bv' => true
+  'bv' => true,
+  'co' => true
  ),
  'no' => array(
   'fhs' => true,
@@ -3247,7 +3509,8 @@ return array(
   ),
   'østfold' => array(
    'våler' => true
-  )
+  ),
+  'co' => true
  ),
  'np' => array(
   '*' => true
@@ -3261,7 +3524,11 @@ return array(
   'net' => true,
   'com' => true
  ),
- 'nu' => true,
+ 'nu' => array(
+  'merseine' => true,
+  'mine' => true,
+  'shacknet' => true
+ ),
  'nz' => array(
   '*' => true
  ),
@@ -3280,7 +3547,61 @@ return array(
  ),
  'org' => array(
   'ae' => true,
-  'za' => true
+  'us' => true,
+  'za' => true,
+  'dyndns' => array(
+   'go' => true,
+   'home' => true
+  ),
+  'blogdns' => true,
+  'blogsite' => true,
+  'boldlygoingnowhere' => true,
+  'dnsalias' => true,
+  'dnsdojo' => true,
+  'doesntexist' => true,
+  'dontexist' => true,
+  'doomdns' => true,
+  'dvrdns' => true,
+  'dynalias' => true,
+  'endofinternet' => true,
+  'endoftheinternet' => true,
+  'from-me' => true,
+  'game-host' => true,
+  'gotdns' => true,
+  'hobby-site' => true,
+  'homedns' => true,
+  'homeftp' => true,
+  'homelinux' => true,
+  'homeunix' => true,
+  'is-a-bruinsfan' => true,
+  'is-a-candidate' => true,
+  'is-a-celticsfan' => true,
+  'is-a-chef' => true,
+  'is-a-geek' => true,
+  'is-a-knight' => true,
+  'is-a-linux-user' => true,
+  'is-a-patsfan' => true,
+  'is-a-soxfan' => true,
+  'is-found' => true,
+  'is-lost' => true,
+  'is-saved' => true,
+  'is-very-bad' => true,
+  'is-very-evil' => true,
+  'is-very-good' => true,
+  'is-very-nice' => true,
+  'is-very-sweet' => true,
+  'isa-geek' => true,
+  'kicks-ass' => true,
+  'misconfused' => true,
+  'podzone' => true,
+  'readmyblog' => true,
+  'selfip' => true,
+  'sellsyourhome' => true,
+  'servebbs' => true,
+  'serveftp' => true,
+  'servegame' => true,
+  'stuff-4-sale' => true,
+  'webhop' => true
  ),
  'pa' => array(
   'ac' => true,
@@ -3521,6 +3842,7 @@ return array(
   'zakopane' => true,
   'co' => true
  ),
+ 'pm' => true,
  'pn' => array(
   'gov' => true,
   'co' => true,
@@ -3583,7 +3905,14 @@ return array(
   '*' => true
  ),
  'qa' => array(
-  '*' => true
+  'com' => true,
+  'edu' => true,
+  'gov' => true,
+  'mil' => true,
+  'name' => true,
+  'net' => true,
+  'org' => true,
+  'sch' => true
  ),
  're' => array(
   'com' => true,
@@ -3966,7 +4295,6 @@ return array(
  'tr' => array(
   '*' => true,
   '!nic' => true,
-  '!tsk' => true,
   'nc' => array(
    'gov' => true
   )
@@ -3991,7 +4319,12 @@ return array(
   'gov' => true,
   'edu' => true
  ),
- 'tv' => true,
+ 'tv' => array(
+  'dyndns' => true,
+  'better-than' => true,
+  'on-the-web' => true,
+  'worse-than' => true
+ ),
  'tw' => array(
   'edu' => true,
   'gov' => true,
@@ -4068,7 +4401,9 @@ return array(
   'zaporizhzhe' => true,
   'zp' => true,
   'zhitomir' => true,
-  'zt' => true
+  'zt' => true,
+  'co' => true,
+  'pp' => true
  ),
  'ug' => array(
   'co' => true,
@@ -4087,11 +4422,14 @@ return array(
   '!british-library' => true,
   '!icnet' => true,
   '!jet' => true,
+  '!mod' => true,
   '!nel' => true,
   '!nhs' => true,
+  '!nic' => true,
   '!nls' => true,
   '!national-library-scotland' => true,
-  '!parliament' => true
+  '!parliament' => true,
+  '!police' => true
  ),
  'us' => array(
   'dni' => true,
@@ -4376,7 +4714,10 @@ return array(
    'k12' => true,
    'cc' => true,
    'lib' => true
-  )
+  ),
+  'is-by' => true,
+  'land-4-sale' => true,
+  'stuff-4-sale' => true
  ),
  'uy' => array(
   '*' => true
@@ -4420,35 +4761,61 @@ return array(
   'health' => true
  ),
  'vu' => true,
+ 'wf' => true,
  'ws' => array(
   'com' => true,
   'net' => true,
   'org' => true,
   'gov' => true,
-  'edu' => true
+  'edu' => true,
+  'dyndns' => true,
+  'mypets' => true
  ),
+ 'yt' => true,
  'امارات' => true,
+ 'বাংলা' => true,
  '中国' => true,
  '中國' => true,
+ 'الجزائر' => true,
  'مصر' => true,
+ 'გე' => true,
  '香港' => true,
+ 'भारत' => true,
+ 'بھارت' => true,
+ 'భారత్' => true,
+ 'ભારત' => true,
+ 'ਭਾਰਤ' => true,
+ 'ভারত' => true,
+ 'இந்தியா' => true,
+ 'ایران' => true,
+ 'ايران' => true,
  'الاردن' => true,
+ '한국' => true,
  'ලංකා' => true,
  'இலங்கை' => true,
+ 'المغرب' => true,
+ 'عمان' => true,
  'فلسطين' => true,
+ 'срб' => true,
  'рф' => true,
  'قطر' => true,
  'السعودية' => true,
+ 'السعودیة' => true,
+ 'السعودیۃ' => true,
+ 'السعوديه' => true,
+ 'سورية' => true,
+ 'سوريا' => true,
  '新加坡' => true,
  'சிங்கப்பூர்' => true,
  'ไทย' => true,
  'تونس' => true,
  '台灣' => true,
  '台湾' => true,
+ '臺灣' => true,
+ 'укр' => true,
+ 'اليمن' => true,
+ 'xxx' => true,
  'ye' => array(
-  '*' => true
- ),
- 'yu' => array(
   '*' => true
  ),
  'za' => array(
