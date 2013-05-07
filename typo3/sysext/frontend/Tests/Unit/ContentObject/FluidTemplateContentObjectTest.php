@@ -576,5 +576,36 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			->with('baz', array('foo' => 'bar'));
 		$this->fixture->render($configuration);
 	}
+
+
+	/**
+	 * @test
+	 */
+	public function renderWorksWithNestedFluidtemplate() {
+		$this->addMockViewToFixture();
+		$configuration = array(
+			'template' => 'TEXT',
+			'template.' => array(
+				'value' => 'A{anotherFluidTemplate}C'
+			),
+			'variables.' => array(
+				'anotherFluidTemplate' => 'FLUIDTEMPLATE',
+				'anotherFluidTemplate.' => array(
+					'template' => 'TEXT',
+					'template.' => array(
+						'value' => 'B',
+					),
+				),
+			),
+		);
+		$expectedResult = 'ABC';
+
+		// not using mocks - actual rendering
+		$contentObjectRenderer = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+		$fluidTemplateContentObject = new \TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject($contentObjectRenderer);
+		$result = $fluidTemplateContentObject->render($configuration);
+
+		$this->assertEquals($expectedResult, $result);
+	}
 }
 ?>
