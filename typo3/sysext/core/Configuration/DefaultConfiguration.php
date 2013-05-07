@@ -224,7 +224,6 @@ return array(
 		'extListArray' => array(
 			'filelist',
 			'version',
-			'tsconfig_help',
 			'context_help',
 			'extra_page_cm_options',
 			'impexp',

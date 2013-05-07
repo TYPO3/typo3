@@ -689,11 +689,6 @@ interface cms_newContentElementWizardsHook extends \TYPO3\CMS\Backend\Wizard\New
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class SC_wizard_tsconfig extends \TYPO3\CMS\Backend\Wizard\TsconfigWizard {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class t3lib_extjs_ExtDirectRouter extends \TYPO3\CMS\Core\ExtDirect\ExtDirectRouter {}
 
 /**
@@ -6430,11 +6425,6 @@ interface tx_taskcenter_Task extends \TYPO3\CMS\Taskcenter\TaskInterface {}
  * @deprecated since 6.0 will be removed in 7.0
  */
 class tx_taskcenter_status extends \TYPO3\CMS\Taskcenter\TaskStatus {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_tsconfighelp_module1 extends \TYPO3\CMS\TsconfigHelp\Controller\TypoScriptConfigHelpModuleController {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
