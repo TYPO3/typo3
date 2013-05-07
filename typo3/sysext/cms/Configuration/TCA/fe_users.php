@@ -261,15 +261,6 @@ return array(
 				'type' => 'text',
 				'cols' => '40',
 				'rows' => '10',
-				'wizards' => array(
-					'_PADDING' => 4,
-					'0' => array(
-						'title' => 'TSconfig QuickReference',
-						'script' => 'wizard_tsconfig.php?mode=fe_users',
-						'icon' => 'wizard_tsconfig.gif',
-						'JSopenParams' => 'height=500,width=780,status=0,menubar=0,scrollbars=1'
-					)
-				),
 				'softref' => 'TSconfig'
 			),
 			'defaultExtras' => 'fixed-font : enable-tab'

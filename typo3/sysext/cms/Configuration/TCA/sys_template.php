@@ -194,15 +194,6 @@ return array(
 				'type' => 'text',
 				'rows' => 10,
 				'cols' => 48,
-				'wizards' => array(
-					'_PADDING' => 4,
-					'0' => array(
-						'title' => 'TSref online',
-						'script' => 'wizard_tsconfig.php?mode=tsref',
-						'icon' => 'wizard_tsconfig.gif',
-						'JSopenParams' => 'height=500,width=780,status=0,menubar=0,scrollbars=1'
-					)
-				),
 				'wrap' => 'OFF',
 				'softref' => 'TStemplate,email[subst],url[subst]'
 			),

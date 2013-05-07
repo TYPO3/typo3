@@ -378,14 +378,6 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 				// Display "Include TypoScript file content?" checkbox
 				$outCode .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[config]=1', 'id="checkIncludeTypoScriptFileContent"');
 				$outCode .= '<label for="checkIncludeTypoScriptFileContent">' . $GLOBALS['LANG']->getLL('includeTypoScriptFileContent') . '</label><br />';
-				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tsconfig_help')) {
-					$url = $BACK_PATH . 'wizard_tsconfig.php?mode=tsref';
-					$params = array(
-						'formName' => 'editForm',
-						'itemName' => 'data[config]'
-					);
-					$outCode .= '<a href="#" onClick="vHWin=window.open(\'' . $url . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', array('P' => $params)) . '\',\'popUp' . $md5ID . '\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-typoscript-documentation-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:tsRef', TRUE))) . '</a>';
-				}
 				$theOutput .= $this->pObj->doc->spacer(15);
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('setup'), '', TRUE);
 				$theOutput .= $this->pObj->doc->sectionEnd() . $outCode;
