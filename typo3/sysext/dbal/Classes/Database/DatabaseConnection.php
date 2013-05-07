@@ -1872,6 +1872,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			}
 			break;
 		case 'adodb':
+			if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
+				$this->connectDB();
+			}
 			$str = substr($this->handlerInstance[$this->lastHandlerKey]->qstr($str), 1, -1);
 			break;
 		case 'userdefined':
@@ -2415,7 +2418,11 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	public function sql_query($query) {
 		$globalConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dbal']);
 		if ($globalConfig['sql_query.']['passthrough']) {
-			return parent::sql_query($query);
+			$res = mysql_query($query, $this->link);
+			if ($this->debugOutput) {
+				$this->debug('sql_query', $query);
+			}
+			return $res;
 		}
 		// This method is heavily used by Extbase, try to handle it with DBAL-native methods
 		$queryParts = $this->SQLparser->parseSQL($query);
