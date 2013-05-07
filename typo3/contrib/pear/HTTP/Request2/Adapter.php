@@ -6,7 +6,7 @@
  *
  * LICENSE:
  *
- * Copyright (c) 2008-2011, Alexey Borzov <avb@php.net>
+ * Copyright (c) 2008-2012, Alexey Borzov <avb@php.net>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,12 +33,12 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @category   HTTP
- * @package    HTTP_Request2
- * @author     Alexey Borzov <avb@php.net>
- * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    SVN: $Id: Adapter.php 308322 2011-02-14 13:58:03Z avb $
- * @link       http://pear.php.net/package/HTTP_Request2
+ * @category HTTP
+ * @package  HTTP_Request2
+ * @author   Alexey Borzov <avb@php.net>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version  SVN: $Id: Adapter.php 324415 2012-03-21 10:50:50Z avb $
+ * @link     http://pear.php.net/package/HTTP_Request2
  */
 
 /**
@@ -53,66 +53,69 @@ require_once 'HTTP/Request2/Response.php';
  * data, all actual work of sending the request to the remote server and
  * receiving its response is performed by adapters.
  *
- * @category   HTTP
- * @package    HTTP_Request2
- * @author     Alexey Borzov <avb@php.net>
- * @version    Release: 2.0.0RC1
+ * @category HTTP
+ * @package  HTTP_Request2
+ * @author   Alexey Borzov <avb@php.net>
+ * @license  http://opensource.org/licenses/bsd-license.php New BSD License
+ * @version  Release: 2.1.1
+ * @link     http://pear.php.net/package/HTTP_Request2
  */
 abstract class HTTP_Request2_Adapter
 {
-   /**
-    * A list of methods that MUST NOT have a request body, per RFC 2616
-    * @var  array
-    */
+    /**
+     * A list of methods that MUST NOT have a request body, per RFC 2616
+     * @var  array
+     */
     protected static $bodyDisallowed = array('TRACE');
 
-   /**
-    * Methods having defined semantics for request body
-    *
-    * Content-Length header (indicating that the body follows, section 4.3 of
-    * RFC 2616) will be sent for these methods even if no body was added
-    *
-    * @var  array
-    * @link http://pear.php.net/bugs/bug.php?id=12900
-    * @link http://pear.php.net/bugs/bug.php?id=14740
-    */
+    /**
+     * Methods having defined semantics for request body
+     *
+     * Content-Length header (indicating that the body follows, section 4.3 of
+     * RFC 2616) will be sent for these methods even if no body was added
+     *
+     * @var  array
+     * @link http://pear.php.net/bugs/bug.php?id=12900
+     * @link http://pear.php.net/bugs/bug.php?id=14740
+     */
     protected static $bodyRequired = array('POST', 'PUT');
 
-   /**
-    * Request being sent
-    * @var  HTTP_Request2
-    */
+    /**
+     * Request being sent
+     * @var  HTTP_Request2
+     */
     protected $request;
 
-   /**
-    * Request body
-    * @var  string|resource|HTTP_Request2_MultipartBody
-    * @see  HTTP_Request2::getBody()
-    */
+    /**
+     * Request body
+     * @var  string|resource|HTTP_Request2_MultipartBody
+     * @see  HTTP_Request2::getBody()
+     */
     protected $requestBody;
 
-   /**
-    * Length of the request body
-    * @var  integer
-    */
+    /**
+     * Length of the request body
+     * @var  integer
+     */
     protected $contentLength;
 
-   /**
-    * Sends request to the remote server and returns its response
-    *
-    * @param    HTTP_Request2
-    * @return   HTTP_Request2_Response
-    * @throws   HTTP_Request2_Exception
-    */
+    /**
+     * Sends request to the remote server and returns its response
+     *
+     * @param HTTP_Request2 $request HTTP request message
+     *
+     * @return   HTTP_Request2_Response
+     * @throws   HTTP_Request2_Exception
+     */
     abstract public function sendRequest(HTTP_Request2 $request);
 
-   /**
-    * Calculates length of the request body, adds proper headers
-    *
-    * @param    array   associative array of request headers, this method will
-    *                   add proper 'Content-Length' and 'Content-Type' headers
-    *                   to this array (or remove them if not needed)
-    */
+    /**
+     * Calculates length of the request body, adds proper headers
+     *
+     * @param array &$headers associative array of request headers, this method
+     *                        will add proper 'Content-Length' and 'Content-Type'
+     *                        headers to this array (or remove them if not needed)
+     */
     protected function calculateRequestLength(&$headers)
     {
         $this->requestBody = $this->request->getBody();
@@ -130,8 +133,8 @@ abstract class HTTP_Request2_Adapter
             $this->requestBody->rewind();
         }
 
-        if (in_array($this->request->getMethod(), self::$bodyDisallowed) ||
-            0 == $this->contentLength
+        if (in_array($this->request->getMethod(), self::$bodyDisallowed)
+            || 0 == $this->contentLength
         ) {
             // No body: send a Content-Length header nonetheless (request #12900),
             // but do that only for methods that require a body (bug #14740)
