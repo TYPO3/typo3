@@ -23,8 +23,8 @@ class ADODB2_oci8 extends ADODB_DataDict {
 	var $alterCol = ' MODIFY ';
 	var $typeX = 'VARCHAR(4000)';
 	var $typeXL = 'CLOB';
-	
-	function MetaType($t,$len=-1)
+
+	function MetaType($t, $len=-1, $fieldobj=false)
 	{
 		if (is_object($t)) {
 			$fieldobj = $t;
@@ -122,13 +122,13 @@ class ADODB2_oci8 extends ADODB_DataDict {
 		foreach($lines as $v) {
 			$f[] = "\n $v";
 		}
-		
+
 		$s .= implode(', ',$f).')';
 		$sql[] = $s;
 		return $sql;
 	}
-	
-	function AlterColumnSQL($tabname, $flds)
+
+	function AlterColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
 	{
 		$f = array();
 		list($lines,$pkey) = $this->_GenFields($flds);
@@ -140,19 +140,19 @@ class ADODB2_oci8 extends ADODB_DataDict {
 		$sql[] = $s;
 		return $sql;
 	}
-	
-	function DropColumnSQL($tabname, $flds)
+
+	function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
 	{
 		if (!is_array($flds)) $flds = explode(',',$flds);
 		foreach ($flds as $k => $v) $flds[$k] = $this->NameQuote($v);
-		
+
 		$sql = array();
 		$s = "ALTER TABLE $tabname DROP(";
 		$s .= implode(', ',$flds).') CASCADE CONSTRAINTS';
 		$sql[] = $s;
 		return $sql;
 	}
-	
+
 	function _DropAutoIncrement($t)
 	{
 		if (strpos($t,'.') !== false) {

@@ -66,24 +66,24 @@ class ADODB2_sqlite extends ADODB_DataDict {
 		if ($fconstraint) $suffix .= ' '.$fconstraint;
 		return $suffix;
 	}
-	
-	function AlterColumnSQL($tabname, $flds)
+
+	function AlterColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
 	{
 		if ($this->debug) ADOConnection::outp("AlterColumnSQL not supported natively by SQLite");
 		return array();
 	}
-	
-	function DropColumnSQL($tabname, $flds)
+
+	function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
 	{
 		if ($this->debug) ADOConnection::outp("DropColumnSQL not supported natively by SQLite");
 		return array();
 	}
-	
+
 	function RenameColumnSQL($tabname,$oldcolumn,$newcolumn,$flds='')
 	{
 		if ($this->debug) ADOConnection::outp("RenameColumnSQL not supported natively by SQLite");
-		return array();	
+		return array();
 	}
-	
+
 }
 ?>

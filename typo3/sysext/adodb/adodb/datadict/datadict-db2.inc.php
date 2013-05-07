@@ -46,54 +46,54 @@ class ADODB2_db2 extends ADODB_DataDict {
 			return $meta;
 		}
 	}
-	
+
 	// return string must begin with space
 	function _CreateSuffix($fname,&$ftype,$fnotnull,$fdefault,$fautoinc,$fconstraint,$funsigned)
-	{	
+	{
 		$suffix = '';
-		if ($fautoinc) return ' GENERATED ALWAYS AS IDENTITY'; # as identity start with 
+		if ($fautoinc) return ' GENERATED ALWAYS AS IDENTITY'; # as identity start with
 		if (strlen($fdefault)) $suffix .= " DEFAULT $fdefault";
 		if ($fnotnull) $suffix .= ' NOT NULL';
 		if ($fconstraint) $suffix .= ' '.$fconstraint;
 		return $suffix;
 	}
 
-	function AlterColumnSQL($tabname, $flds)
+	function AlterColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
 	{
 		if ($this->debug) ADOConnection::outp("AlterColumnSQL not supported");
 		return array();
 	}
-	
-	
-	function DropColumnSQL($tabname, $flds)
+
+
+	function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
 	{
 		if ($this->debug) ADOConnection::outp("DropColumnSQL not supported");
 		return array();
 	}
-	
-	
+
+
 	function ChangeTableSQL($tablename, $flds, $tableoptions = false)
 	{
-		
+
 		/**
 		  Allow basic table changes to DB2 databases
-		  DB2 will fatally reject changes to non character columns 
+		  DB2 will fatally reject changes to non character columns
 
 		*/
-		
+
 		$validTypes = array("CHAR","VARC");
 		$invalidTypes = array("BIGI","BLOB","CLOB","DATE", "DECI","DOUB", "INTE", "REAL","SMAL", "TIME");
 		// check table exists
 		$cols = $this->MetaColumns($tablename);
-		if ( empty($cols)) { 
+		if ( empty($cols)) {
 			return $this->CreateTableSQL($tablename, $flds, $tableoptions);
 		}
-		
+
 		// already exists, alter table instead
 		list($lines,$pkey) = $this->_GenFields($flds);
 		$alter = 'ALTER TABLE ' . $this->TableName($tablename);
 		$sql = array();
-		
+
 		foreach ( $lines as $id => $v ) {
 			if ( isset($cols[$id]) && is_object($cols[$id]) ) {
 				/**

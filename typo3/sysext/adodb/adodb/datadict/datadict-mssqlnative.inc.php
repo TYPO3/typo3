@@ -52,7 +52,7 @@ class ADODB2_mssqlnative extends ADODB_DataDict {
 	
 	//var $alterCol = ' ALTER COLUMN ';
 	
-	function MetaType($t,$len=-1,$fieldobj=false)
+	function MetaType($t, $len=-1, $fieldobj=false)
 	{
 		if (is_object($t)) {
 			$fieldobj = $t;
@@ -134,8 +134,8 @@ class ADODB2_mssqlnative extends ADODB_DataDict {
 		return $sql;
 	}
 	*/
-	
-	function DropColumnSQL($tabname, $flds)
+
+	function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
 	{
 		$tabname = $this->TableName ($tabname);
 		if (!is_array($flds))
