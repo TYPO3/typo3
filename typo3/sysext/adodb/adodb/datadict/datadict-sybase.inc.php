@@ -86,8 +86,8 @@ class ADODB2_sybase extends ADODB_DataDict {
 		$sql[] = $s;
 		return $sql;
 	}
-	
-	function AlterColumnSQL($tabname, $flds)
+
+	function AlterColumnSQL($tabname, $flds, $tableflds='',$tableoptions='')
 	{
 		$tabname = $this->TableName ($tabname);
 		$sql = array();
@@ -98,8 +98,8 @@ class ADODB2_sybase extends ADODB_DataDict {
 
 		return $sql;
 	}
-	
-	function DropColumnSQL($tabname, $flds)
+
+	function DropColumnSQL($tabname, $flds, $tableflds='',$tableoptions='')
 	{
 		$tabname = $this->TableName($tabname);
 		if (!is_array($flds)) $flds = explode(',',$flds);

@@ -136,8 +136,8 @@ class ADODB2_mssql extends ADODB_DataDict {
 		return $sql;
 	}
 	*/
-	
-	function DropColumnSQL($tabname, $flds)
+
+	function DropColumnSQL($tabname, $flds, $tableflds='',$tableoptions='')
 	{
 		$tabname = $this->TableName ($tabname);
 		if (!is_array($flds))
