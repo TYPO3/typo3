@@ -327,19 +327,9 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 				$out .= '<input type="Submit" name="update_value" value="' . $GLOBALS['LANG']->getLL('updateButton') . '" />';
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('editProperty'), $out, 0, 0);
 				// Property
-				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tsconfig_help')) {
-					$url = $BACK_PATH . 'wizard_tsconfig.php?mode=tsref&onlyProperty=1';
-					$params = array();
-					$params['formName'] = 'editForm';
-					$params['itemName'] = 'data[' . htmlspecialchars($this->pObj->sObj) . '][name]';
-					$params['itemValue'] = 'data[' . htmlspecialchars($this->pObj->sObj) . '][propertyValue]';
-					$TSicon = '<a href="#" onClick="vHWin=window.open(\'' . $url . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', array('P' => $params)) . '\',\'popUp' . $md5ID . '\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img src="' . $BACK_PATH . 'gfx/wizard_tsconfig_s.gif" width="22" height="16" border="0" class="absmiddle" hspace=2 title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:tsRef') . '"></a>';
-				} else {
-					$TSicon = '';
-				}
 				$out = '';
 				$out = '<nobr>' . htmlspecialchars($this->pObj->sObj) . '.';
-				$out .= '<input type="Text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][name]"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' />' . $TSicon . ' = </nobr><br />';
+				$out .= '<input type="Text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][name]"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' /> = </nobr><br />';
 				$out .= '<input type="Text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][propertyValue]"' . $GLOBALS['TBE_TEMPLATE']->formWidth(40) . ' />';
 				$out .= '<input type="Submit" name="add_property" value="' . $GLOBALS['LANG']->getLL('addButton') . '" />';
 				$theOutput .= $this->pObj->doc->spacer(20);

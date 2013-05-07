@@ -302,16 +302,6 @@ return array(
 				'type' => 'text',
 				'cols' => '40',
 				'rows' => '5',
-				'wizards' => array(
-					'_PADDING' => 4,
-					'0' => array(
-						'type' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tsconfig_help') ? 'popup' : '',
-						'title' => 'LLL:EXT:lang/locallang_tca.xlf:TSconfig_title',
-						'script' => 'wizard_tsconfig.php?mode=beuser',
-						'icon' => 'wizard_tsconfig.gif',
-						'JSopenParams' => 'height=500,width=780,status=0,menubar=0,scrollbars=1'
-					)
-				),
 				'softref' => 'TSconfig'
 			),
 			'defaultExtras' => 'fixed-font : enable-tab'
