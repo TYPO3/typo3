@@ -37,7 +37,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TsconfigWizard {
 
-	// Internal, dynamic:
 	/**
 	 * document template object
 	 *
@@ -46,39 +45,44 @@ class TsconfigWizard {
 	 */
 	public $doc;
 
-	// Content accumulation for the module.
 	/**
+	 * Content accumulation for the module.
+	 *
 	 * @todo Define visibility
 	 */
 	public $content;
 
-	// Internal, static: GPvars
-	// Wizard parameters, coming from TCEforms linking to the wizard.
 	/**
+	 * Wizard parameters, coming from TCEforms linking to the wizard.
+	 *
 	 * @todo Define visibility
 	 */
 	public $P;
 
-	// "page", "tsref" or "beuser"
 	/**
+	 * "page", "tsref" or "beuser"
+	 *
 	 * @todo Define visibility
 	 */
 	public $mode;
 
-	// Pointing to an entry in static_tsconfig_help to show.
 	/**
+	 * Pointing to an entry in static_tsconfig_help to show.
+	 *
 	 * @todo Define visibility
 	 */
 	public $show;
 
-	// Object path - for display.
 	/**
+	 * Object path - for display.
+	 *
 	 * @todo Define visibility
 	 */
 	public $objString;
 
-	// If set, the "mixed-field" is not shown and you can select only one property at a time.
 	/**
+	 * If set, the "mixed-field" is not shown and you can select only one property at a time.
+	 *
 	 * @todo Define visibility
 	 */
 	public $onlyProperty;
@@ -87,11 +91,10 @@ class TsconfigWizard {
 	 * Initialization of the class
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function init() {
 		// Check if the tsconfig_help extension is loaded - which is mandatory for this wizard to work.
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tsconfig_help', 1);
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tsconfig_help', TRUE);
 		// Init GPvars:
 		$this->P = GeneralUtility::_GP('P');
 		$this->mode = GeneralUtility::_GP('mode');
@@ -104,9 +107,9 @@ class TsconfigWizard {
 		}
 		unset($this->P['fieldChangeFunc']['alert']);
 		$update = '';
-		foreach ($this->P['fieldChangeFunc'] as $k => $v) {
+		foreach ($this->P['fieldChangeFunc'] as $value) {
 			$update .= '
-			window.opener.' . $v;
+			window.opener.' . $value;
 		}
 		// Init the document table object:
 		$this->doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
@@ -114,10 +117,10 @@ class TsconfigWizard {
 		$this->doc->form = '<form action="" name="editform">';
 		// Adding Styles (should go into stylesheet?)
 		$this->doc->inDocStylesArray[] = '
-			A:link {text-decoration: bold; color: ' . $this->doc->hoverColor . ';}
-			A:visited {text-decoration: bold; color: ' . $this->doc->hoverColor . ';}
-			A:active {text-decoration: bold; color: ' . $this->doc->hoverColor . ';}
-			A:hover {color: ' . $this->doc->bgColor2 . '}
+			a:link {text-decoration: bold; color: ' . $this->doc->hoverColor . ';}
+			a:visited {text-decoration: bold; color: ' . $this->doc->hoverColor . ';}
+			a:active {text-decoration: bold; color: ' . $this->doc->hoverColor . ';}
+			a:hover {color: ' . $this->doc->bgColor2 . '}
 		';
 		$this->doc->JScode .= $this->doc->wrapScriptTags('
 			function checkReference_name() {	// Checks if the input field containing the name exists in the document
@@ -125,18 +128,13 @@ class TsconfigWizard {
 					return window.opener.document.' . $this->P['formName'] . '["' . $this->P['itemName'] . '"];
 				}
 			}
+
 			function checkReference_value() {	// Checks if the input field containing the value exists in the document
 				if (window.opener && window.opener.document && window.opener.document.' . $this->P['formName'] . ' && window.opener.document.' . $this->P['formName'] . '["' . $this->P['itemValue'] . '"] ) {
 					return window.opener.document.' . $this->P['formName'] . '["' . $this->P['itemValue'] . '"];
 				}
 			}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$field,value: ...
-	 * @return	[type]		...
-	 */
 			function setValue(field,value) {
 				var nameField = checkReference_name();
 				var valueField = checkReference_value();
@@ -156,6 +154,7 @@ class TsconfigWizard {
 				}
 				close();
 			}
+
 			function getValue() {	// This is never used. Remove it?
 				var field = checkReference_name();
 				if (field) {
@@ -165,12 +164,6 @@ class TsconfigWizard {
 				}
 			}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$cmd,objString: ...
-	 * @return	[type]		...
-	 */
 			function mixerField(cmd,objString) {
 				var temp;
 				switch(cmd) {
@@ -191,12 +184,6 @@ class TsconfigWizard {
 				}
 			}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$match,replace,string: ...
-	 * @return	[type]		...
-	 */
 			function str_replace(match,replace,string) {
 				var input = ""+string;
 				var matchStr = ""+match;
@@ -213,12 +200,6 @@ class TsconfigWizard {
 				return output;
 			}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	[type]		$show,objString: ...
-	 * @return	[type]		...
-	 */
 			function jump(show, objString) {
 				window.location.href = "' . GeneralUtility::linkThisScript(array('show' => '', 'objString' => '')) . '&show="+show+"&objString="+objString;
 			}
@@ -231,22 +212,30 @@ class TsconfigWizard {
 	 * Main function, rendering the content of the TypoScript property browser, including links to online resources
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
-		// Adding module content:
-		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('tsprop'), $this->browseTSprop($this->mode, $this->show), 0, 1);
-		// Adding link to TSref:
-		if ($this->mode == 'tsref') {
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('tsprop_TSref'), '
-			<a href="' . TYPO3_URL_DOCUMENTATION_TSREF . '" target="_blank">' . $GLOBALS['LANG']->getLL('tsprop_TSref', 1) . '</a>
-			', 0, 1);
-		}
-		// Adding link to admin guides etc:
-		if ($this->mode == 'page' || $this->mode == 'beuser') {
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('tsprop_tsconfig'), '
-			<a href="' . TYPO3_URL_DOCUMENTATION_TSCONFIG . '" target="_blank">' . $GLOBALS['LANG']->getLL('tsprop_tsconfig', 1) . '</a>
-			', 0, 1);
+		// Adding module content
+		$this->content .= $this->doc->section(
+			$GLOBALS['LANG']->getLL('tsprop'),
+			$this->browseTSprop($this->mode, $this->show),
+			FALSE,
+			TRUE
+		);
+		// Adding link to TSref
+		if ($this->mode === 'tsref') {
+			$this->content .= $this->doc->section(
+				$GLOBALS['LANG']->getLL('tsprop_TSref'),
+				'<a href="' . TYPO3_URL_DOCUMENTATION_TSREF . '" target="_blank">' . $GLOBALS['LANG']->getLL('tsprop_TSref', TRUE) . '</a>',
+				FALSE,
+				TRUE
+			);
+		} elseif ($this->mode === 'page' || $this->mode === 'beuser') {
+			$this->content .= $this->doc->section(
+				$GLOBALS['LANG']->getLL('tsprop_tsconfig'),
+				'<a href="' . TYPO3_URL_DOCUMENTATION_TSCONFIG . '" target="_blank">' . $GLOBALS['LANG']->getLL('tsprop_tsconfig', TRUE) . '</a>',
+				FALSE,
+				TRUE
+			);
 		}
 	}
 
@@ -254,7 +243,6 @@ class TsconfigWizard {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function printContent() {
 		$this->content .= $this->doc->endPage();
@@ -277,8 +265,14 @@ class TsconfigWizard {
 		$out = '';
 		if ($show) {
 			// Get the entry data:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'static_tsconfig_help', 'uid=' . intval($show));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'*',
+				'static_tsconfig_help',
+				'uid=' . intval($show)
+			);
 			$rec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
 			$table = unserialize($rec['appdata']);
 			// Title:
 			$obj_string = strtr($this->objString, '()', '[]');
@@ -296,10 +290,10 @@ class TsconfigWizard {
 			// Printing the "mixer-field":
 			if (!$this->onlyProperty) {
 				$links = array();
-				$links[] = '<a href="#" onclick="mixerField(\'Indent\');return false;">' . $GLOBALS['LANG']->getLL('tsprop_mixer_indent', 1) . '</a>';
-				$links[] = '<a href="#" onclick="mixerField(\'Outdent\');return false;">' . $GLOBALS['LANG']->getLL('tsprop_mixer_outdent', 1) . '</a>';
-				$links[] = '<a href="#" onclick="mixerField(\'Wrap\',unescape(\'' . rawurlencode($obj_string) . '\'));return false;">' . $GLOBALS['LANG']->getLL('tsprop_mixer_wrap', 1) . '</a>';
-				$links[] = '<a href="#" onclick="mixerField(\'Transfer\');return false;">' . $GLOBALS['LANG']->getLL('tsprop_mixer_transfer', 1) . '</a>';
+				$links[] = '<a href="#" onclick="mixerField(\'Indent\');return false;">' . $GLOBALS['LANG']->getLL('tsprop_mixer_indent', TRUE) . '</a>';
+				$links[] = '<a href="#" onclick="mixerField(\'Outdent\');return false;">' . $GLOBALS['LANG']->getLL('tsprop_mixer_outdent', TRUE) . '</a>';
+				$links[] = '<a href="#" onclick="mixerField(\'Wrap\',unescape(\'' . rawurlencode($obj_string) . '\'));return false;">' . $GLOBALS['LANG']->getLL('tsprop_mixer_wrap', TRUE) . '</a>';
+				$links[] = '<a href="#" onclick="mixerField(\'Transfer\');return false;">' . $GLOBALS['LANG']->getLL('tsprop_mixer_transfer', TRUE) . '</a>';
 				$out .= '<textarea rows="5" name="mixer" wrap="off"' . $this->doc->formWidthText(48, '', 'off') . ' class="fixed-font enable-tab"></textarea>';
 				$out .= '<br /><strong>' . implode('&nbsp; | &nbsp;', $links) . '</strong>';
 				$out .= '<hr />';
@@ -317,8 +311,6 @@ class TsconfigWizard {
 		$tmpl->ext_noSpecialCharsOnLabels = 1;
 		if (is_array($objTree[$mode . '.'])) {
 			$out .= '
-
-
 			<!--
 				TSconfig, object tree:
 			-->
@@ -346,18 +338,23 @@ class TsconfigWizard {
 	 */
 	public function getObjTree() {
 		$objTree = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,obj_string,title', 'static_tsconfig_help', '');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'uid,obj_string,title',
+			'static_tsconfig_help',
+			''
+		);
 		while ($rec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$rec['obj_string'] = $this->revertFromSpecialChars($rec['obj_string']);
-			$p = explode(';', $rec['obj_string']);
-			foreach ($p as $v) {
-				$p2 = GeneralUtility::trimExplode(':', $v, 1);
-				$subp = GeneralUtility::trimExplode('/', $p2[1], 1);
-				foreach ($subp as $v2) {
-					$this->setObj($objTree, explode('.', $p2[0] . '.' . $v2), array($rec, $v2));
+			//$rec['obj_string'] = $this->revertFromSpecialChars($rec['obj_string']);
+			$objectParts = explode(';', $rec['obj_string']);
+			foreach ($objectParts as $objectPart) {
+				$part = GeneralUtility::trimExplode(':', $objectPart, TRUE);
+				$subParts = GeneralUtility::trimExplode('/', $part[1], TRUE);
+				foreach ($subParts as $subPart) {
+					$this->setObj($objTree, explode('.', $part[0] . '.' . $subPart), array($rec, $subPart));
 				}
 			}
 		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $objTree;
 	}
 
@@ -395,12 +392,12 @@ class TsconfigWizard {
 	 * @return string Output string
 	 * @access private
 	 * @todo Define visibility
-	 */
+
 	public function revertFromSpecialChars($str) {
 		$str = str_replace('&gt;', '>', $str);
 		$str = str_replace('&lt;', '<', $str);
 		return $str;
-	}
+	}*/
 
 	/**
 	 * Creates a link based on input params array:
@@ -472,10 +469,10 @@ class TsconfigWizard {
 			// Traverse the content of "rows":
 			foreach ($table['rows'] as $i => $row) {
 				// Linking:
-				$lP = GeneralUtility::trimExplode(LF, $row['property'], 1);
+				$lP = GeneralUtility::trimExplode(LF, $row['property'], TRUE);
 				$lP2 = array();
-				foreach ($lP as $k => $lStr) {
-					$lP2[$k] = $this->linkProperty($lStr, $lStr, $objString, $row['datatype']);
+				foreach ($lP as $key => $lStr) {
+					$lP2[$key] = $this->linkProperty($lStr, $lStr, $objString, $row['datatype']);
 				}
 				$linkedProperties = implode('<hr />', $lP2);
 				// Data type:
@@ -501,9 +498,6 @@ class TsconfigWizard {
 			}
 			// Return it all:
 			return '
-
-
-
 			<!--
 				TSconfig, attribute selector:
 			-->
@@ -550,10 +544,12 @@ class TsconfigWizard {
 	 * @return boolean Whether the submitted field change functions are valid
 	 */
 	protected function areFieldChangeFunctionsValid() {
-		return isset($this->P['fieldChangeFunc']) && is_array($this->P['fieldChangeFunc']) && isset($this->P['fieldChangeFuncHash']) && $this->P['fieldChangeFuncHash'] === GeneralUtility::hmac(serialize($this->P['fieldChangeFunc']));
+		return isset($this->P['fieldChangeFunc'])
+			&& is_array($this->P['fieldChangeFunc'])
+			&& isset($this->P['fieldChangeFuncHash'])
+			&& $this->P['fieldChangeFuncHash'] === GeneralUtility::hmac(serialize($this->P['fieldChangeFunc']));
 	}
 
 }
-
 
 ?>
