@@ -204,7 +204,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	 * @return void
 	 */
 	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile('js/shortcutmenu.js');
+		$this->backendReference->addJavascriptFile('sysext/backend/Resources/Public/JavaScript/shortcutmenu.js');
 	}
 
 	/**

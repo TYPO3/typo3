@@ -156,7 +156,7 @@ class PageTreeNavigationController {
 		$this->doc->getPageRenderer()->loadScriptaculous('effects');
 		$this->doc->getPageRenderer()->loadExtJS();
 		if ($this->hasFilterBox) {
-			$this->doc->getPageRenderer()->addJsFile('js/pagetreefiltermenu.js');
+			$this->doc->getPageRenderer()->addJsFile('sysext/backend/Resources/Public/JavaScript/pagetreefiltermenu.js');
 		}
 		$this->doc->JScode .= $this->doc->wrapScriptTags(($this->currentSubScript ? 'top.currentSubScript=unescape("' . rawurlencode($this->currentSubScript) . '");' : '') . '
 		// setting prefs for pagetree and drag & drop
