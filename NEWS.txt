@@ -45,3 +45,22 @@ Extbase
 -------------------------------------------------------------------------------
 Fluid
 -------------------------------------------------------------------------------
+
+* Removed title onto alt attribute fallback within ImageViewHelper rendering
+
+In previous versions of fluid the ImageViewHelper renders the title attribute,
+even if you don't set the title tag implicitly. This was done with a fallback
+onto the required alt attribute. Therefor it wasn't possible for developers to
+hide this title attribute in the past.
+With Fluid 6.2 we removed the default fallback onto the alt attribute, so
+develeopers have to explicit set the title tag in their fluid templates,
+if there is a need for a title attribute.
+
+Example:
+    Fluid Tag
+      <f:image src="{file}" alt="Alt-Attribute" />
+    will render in 6.2
+      <img src="fileadmin/xxxx/xxxx.jpg" alt="Alt-Attribute" />
+    and not
+      <img src="fileadmin/xxxx/xxxx.jpg" alt="Alt-Attribute" title="Alt-Attribute" />
+    like in previous versions of fluid.
