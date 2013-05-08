@@ -45,3 +45,19 @@ Extbase
 -------------------------------------------------------------------------------
 Fluid
 -------------------------------------------------------------------------------
+
+* Image view helper does not render title tag by default
+
+In previous versions of fluid the image view helper always rendered the
+title attribute. If not set, the value of the required alt attribute was set as
+title.
+This fallback was removed with version 6.2. If not specifically set, title
+is not rendered anymore.
+
+Example:
+  Fluid Tag
+    <f:image src="{file}" alt="Alt-Attribute" />
+  will render
+    <img src="fileadmin/xxxx.jpg" alt="Alt-Attribute" />
+  and not
+    <img src="fileadmin/xxxx.jpg" alt="Alt-Attribute" title="Alt-Attribute" />
