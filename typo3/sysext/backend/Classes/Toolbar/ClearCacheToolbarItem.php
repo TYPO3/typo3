@@ -149,7 +149,7 @@ class ClearCacheToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHoo
 	 * @return void
 	 */
 	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile('js/clearcachemenu.js');
+		$this->backendReference->addJavascriptFile('sysext/backend/Resources/Public/JavaScript/clearcachemenu.js');
 	}
 
 	/**

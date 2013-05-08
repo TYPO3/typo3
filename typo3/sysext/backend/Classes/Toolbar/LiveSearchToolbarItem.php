@@ -89,7 +89,7 @@ class LiveSearchToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHoo
 	 */
 	protected function addJavascriptToBackend() {
 		$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
-		$this->backendReference->addJavascriptFile('js/livesearch.js');
+		$this->backendReference->addJavascriptFile('sysext/backend/Resources/Public/JavaScript/livesearch.js');
 	}
 
 	/**

@@ -99,18 +99,18 @@ class BackendController {
 		// Add default BE javascript
 		$this->js = '';
 		$this->jsFiles = array(
-			'common' => 'js/common.js',
+			'common' => 'sysext/backend/Resources/Public/JavaScript/common.js',
 			'locallang' => $this->getLocalLangFileName(),
 			'modernizr' => 'contrib/modernizr/modernizr.min.js',
 			'md5' => 'md5.js',
-			'toolbarmanager' => 'js/toolbarmanager.js',
-			'modulemenu' => 'js/modulemenu.js',
-			'iecompatibility' => 'js/iecompatibility.js',
+			'toolbarmanager' => 'sysext/backend/Resources/Public/JavaScript/toolbarmanager.js',
+			'modulemenu' => 'sysext/backend/Resources/Public/JavaScript/modulemenu.js',
+			'iecompatibility' => 'sysext/backend/Resources/Public/JavaScript/iecompatibility.js',
 			'evalfield' => '../t3lib/jsfunc.evalfield.js',
 			'flashmessages' => '../t3lib/js/extjs/ux/flashmessages.js',
 			'tabclosemenu' => '../t3lib/js/extjs/ux/ext.ux.tabclosemenu.js',
 			'notifications' => '../t3lib/js/extjs/notifications.js',
-			'backend' => 'js/backend.js',
+			'backend' => 'sysext/backend/Resources/Public/JavaScript/backend.js',
 			'loginrefresh' => 'js/loginrefresh.js',
 			'debugPanel' => 'js/extjs/debugPanel.js',
 			'viewport' => 'js/extjs/viewport.js',

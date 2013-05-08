@@ -1564,7 +1564,7 @@ class DocumentTemplate {
 	 */
 	public function getDragDropCode($table) {
 		$this->pageRenderer->loadPrototype();
-		$this->loadJavascriptLib('js/common.js');
+		$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/common.js');
 		$this->loadJavascriptLib('js/tree.js');
 		// Setting prefs for drag & drop
 		$this->JScodeArray['dragdrop'] = '
@@ -1684,7 +1684,7 @@ class DocumentTemplate {
 	 */
 	public function getDynTabMenu($menuItems, $identString, $toggle = 0, $foldout = FALSE, $noWrap = TRUE, $fullWidth = FALSE, $defaultTabIndex = 1, $dividers2tabs = 2) {
 		// Load the static code, if not already done with the function below
-		$this->loadJavascriptLib('js/tabmenu.js');
+		$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tabmenu.js');
 		$content = '';
 		if (is_array($menuItems)) {
 			// Init:
@@ -1848,7 +1848,7 @@ class DocumentTemplate {
 	public function setModuleTemplate($filename) {
 		// Load Prototype lib for IE event
 		$this->pageRenderer->loadPrototype();
-		$this->loadJavascriptLib('js/iecompatibility.js');
+		$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/iecompatibility.js');
 		$this->moduleTemplate = $this->getHtmlTemplate($filename);
 	}
 
