@@ -1,6 +1,5 @@
 language: php
 php:
-  - 5.2
   - 5.3
   - 5.4
 script: function check_files() { for file in `find . -name \*.php`; do if ! php -l $file > /dev/null; then echo "Syntax errors detected in file $file"; return 99; fi;  done }; check_files
