@@ -99,7 +99,7 @@ class BackendController {
 		// Add default BE javascript
 		$this->js = '';
 		$this->jsFiles = array(
-			'common' => 'js/common.js',
+			'common' => 'sysext/backend/Resources/Public/JavaScript/common.js',
 			'locallang' => $this->getLocalLangFileName(),
 			'modernizr' => 'contrib/modernizr/modernizr.min.js',
 			'md5' => 'md5.js',

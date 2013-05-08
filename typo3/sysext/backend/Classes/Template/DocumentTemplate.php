@@ -1564,7 +1564,7 @@ class DocumentTemplate {
 	 */
 	public function getDragDropCode($table) {
 		$this->pageRenderer->loadPrototype();
-		$this->loadJavascriptLib('js/common.js');
+		$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/common.js');
 		$this->loadJavascriptLib('js/tree.js');
 		// Setting prefs for drag & drop
 		$this->JScodeArray['dragdrop'] = '
