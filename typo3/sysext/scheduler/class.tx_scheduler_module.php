@@ -1282,10 +1282,6 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			if ($result) {
 				$GLOBALS['BE_USER']->writeLog(4, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was updated', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.updateSuccess'));
-
-				// set the uid of the just created task so that we
-				// can continue editing after initial saving
-				$this->submittedData['uid'] = $task->getTaskUid();
 			} else {
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.updateError'), t3lib_FlashMessage::ERROR);
 			}
@@ -1320,6 +1316,10 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			if ($result) {
 				$GLOBALS['BE_USER']->writeLog(4, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was added', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.addSuccess'));
+
+					// set the uid of the just created task so that we
+					// can continue editing after initial saving
+				$this->submittedData['uid'] = $task->getTaskUid();
 			} else {
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.addError'), t3lib_FlashMessage::ERROR);
 			}
