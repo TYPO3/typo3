@@ -35,4 +35,6 @@ before_script:
   - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/Introduction/typo3conf/ext/introduction/Resources/Private/Subpackages/Introduction/Database/introduction.sql; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/dbimport/cli_users.sql; fi
 
-script: php $PWD/typo3/cli_dispatch.phpsh phpunit $PWD/tests/
+script:
+  - phpLint all
+  - php $PWD/typo3/cli_dispatch.phpsh phpunit $PWD/tests/
