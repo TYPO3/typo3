@@ -1,8 +1,10 @@
 <?php
+namespace TYPO3\CMS\Taskcenter\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2013 Georg Ringer <typo3@ringerge.org>
+ *  (c) 2013 Wouter Wolters <typo3@wouterwolters.nl>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -13,6 +15,8 @@
  *
  *  The GNU General Public License can be found at
  *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
  *
  *  This script is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -21,20 +25,20 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-$LANG->includeLLFile('EXT:taskcenter/task/locallang.xlf');
-$BE_USER->modAccess($MCONF, 1);
-/*
- * @deprecated since 6.0, the classname SC_mod_user_task_index and this file is obsolete
- * and will be removed with 6.2. The class was renamed and is now located at:
- * typo3/sysext/taskcenter/Classes/Controller/TaskModuleController.php
+
+/**
+ * @author Wouter Wolters <typo3@wouterwolters.nl>
  */
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('taskcenter') . 'Classes/Controller/TaskModuleController.php';
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Taskcenter\\Controller\\TaskModuleController');
-// Include files?
-foreach ($SOBE->include_once as $INC_FILE) {
-	include_once $INC_FILE;
+class DragIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+
+	/**
+	 * Render
+	 */
+	public function render() {
+  		return '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/move.gif', 'width="16" height="16" hspace="2"')
+		. ' title="' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('LLL:EXT:lang/locallang_core.xlf:labels.move', 1) . '" alt="" />';
+	}
+
 }
-$SOBE->main();
-$SOBE->printContent();
+
 ?>

@@ -1,0 +1,17 @@
+<f:layout name="Default" />
+
+<f:section name="content">
+	<div id="taskcenter-main">
+		<div id="taskcenter-menu">
+			<ul id="task-list" class="task-list">
+				<f:for each="{tasks}" as="task" iteration="iterator">
+					<f:render partial="TaskMenu" arguments="{task:task, currentTask:currentTask, iterator:iterator}" />
+				</f:for>
+			</ul>
+		</div>
+		<div id="taskcenter-item" class="{itemClass}">
+			<f:flashMessages renderMode="div" />
+			{taskContent}
+		</div>
+	</div>
+</f:section>

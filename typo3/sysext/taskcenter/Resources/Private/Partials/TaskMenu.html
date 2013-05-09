@@ -1,0 +1,13 @@
+{namespace task=TYPO3\CMS\Taskcenter\ViewHelpers}
+<li id="el_{task.id}" class="{task:cssClass(iterator:iterator, task:task, currentTask:currentTask)}">
+	<div class="down">&nbsp;</div>
+	<div class="drag"><task:dragIcon /></div>
+	<div class="image"><task:icon icon="{task.icon}" title="{task.title}"/></div>
+	<div class="t3-row-header link"><a href="{task.link}">{task.title}</a></div>
+	<div class="content">
+	<f:if condition="{task.descriptionHtml}">
+		<f:then><f:format.raw>{task.descriptionHtml}</f:format.raw></f:then>
+		<f:else><p><f:format.nl2br>{task.description}</f:format.nl2br></p></f:else>
+	</f:if>
+	</div>
+</li>
