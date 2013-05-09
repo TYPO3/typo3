@@ -5,6 +5,8 @@ namespace TYPO3\CMS\Taskcenter\Controller;
  *  Copyright notice
  *
  *  (c) 2010-2013 Georg Ringer <typo3@ringerge.org>
+ *      2013 Wouter Wolters <typo3@wouterwolters.nl>
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,139 +31,66 @@ namespace TYPO3\CMS\Taskcenter\Controller;
  *
  * @author Georg Ringer <typo3@ringerge.org>
  */
-class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
-
-	protected $pageinfo;
+class TaskModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
-	 * Initializes the Module
+	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 */
+	protected $doc;
+
+	/**
+	 * @var string
+	 */
+	protected $perms_clause;
+
+	/**
+	 * @var array
+	 */
+	protected $modTSconfig;
+
+	/**
+	 * @var string
+	 */
+	protected $currentTask;
+
+	/**
+	 * Overview action
 	 *
 	 * @return void
 	 */
-	public function __construct() {
-		parent::init();
-		// Initialize document
+	public function overviewAction() {
+		$this->view->assign('isAdmin', $GLOBALS['BE_USER']->isAdmin());
+	}
+
+	/**
+	 * Initialize tasks action
+	 */
+	public function initializeTasksAction() {
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('taskcenter') . 'res/mod_template.html');
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->getPageRenderer()->loadScriptaculous('effects,dragdrop');
-		$this->doc->addStyleSheet('tx_taskcenter', '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('taskcenter') . 'res/mod_styles.css');
+		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+		$this->modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig(
+			intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id')),
+			'mod.user_task'
+		);
 	}
 
 	/**
-	 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
+	 * Tasks action
 	 *
-	 * @return void
+	 * @param string $task
 	 */
-	public function menuConfig() {
-		$this->MOD_MENU = array('mode' => array());
-		$this->MOD_MENU['mode']['information'] = $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/locallang.xml:task_overview');
-		$this->MOD_MENU['mode']['tasks'] = 'Tasks';
-		parent::menuConfig();
-	}
+	public function tasksAction($task = 'taskcenter.tasks') {
+		list($extensionKey, $taskClassName) = explode('.', $task, 2);
+		$taskContent = $this->getTaskContent($extensionKey, $taskClassName);
+		$tasks = $this->getTasks();
+		$this->currentTask = $task;
 
-	/**
-	 * Creates the module's content. In this case it rather acts as a kind of #
-	 * dispatcher redirecting requests to specific tasks.
-	 *
-	 * @return void
-	 */
-	public function main() {
-		$docHeaderButtons = $this->getButtons();
-		$markers = array();
-		$this->doc->JScodeArray[] = '
-			script_ended = 0;
-			function jumpToUrl(URL) {
-				document.location = URL;
-			}
-		';
-		$this->doc->postCode = '
-			<script language="javascript" type="text/javascript">
-				script_ended = 1;
-				if (top.fsMod) {
-					top.fsMod.recentIds["web"] = 0;
-				}
-			</script>
-		';
-		// Render content depending on the mode
-		$mode = (string) $this->MOD_SETTINGS['mode'];
-		if ($mode == 'information') {
-			$this->renderInformationContent();
-		} else {
-			$this->renderModuleContent();
-		}
-		// Compile document
-		$markers['FUNC_MENU'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu(0, 'SET[mode]', $this->MOD_SETTINGS['mode'], $this->MOD_MENU['mode']);
-		$markers['CONTENT'] = $this->content;
-		// Build the <body> for the module
-		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-		// Renders the module page
-		$this->content = $this->doc->render($GLOBALS['LANG']->getLL('title'), $this->content);
-	}
-
-	/**
-	 * Prints out the module's HTML
-	 *
-	 * @return void
-	 */
-	public function printContent() {
-		echo $this->content;
-	}
-
-	/**
-	 * Generates the module content by calling the selected task
-	 *
-	 * @return void
-	 */
-	protected function renderModuleContent() {
-		$title = ($content = ($actionContent = ''));
-		$chosenTask = (string) $this->MOD_SETTINGS['function'];
-		// Render the taskcenter task as default
-		if (empty($chosenTask) || $chosenTask == 'index') {
-			$chosenTask = 'taskcenter.tasks';
-		}
-		// Render the task
-		list($extKey, $taskClass) = explode('.', $chosenTask, 2);
-		$title = $GLOBALS['LANG']->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'][$extKey][$taskClass]['title']);
-		if (class_exists($taskClass)) {
-			$taskInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($taskClass, $this);
-			if ($taskInstance instanceof \TYPO3\CMS\Taskcenter\TaskInterface) {
-				// Check if the task is restricted to admins only
-				if ($this->checkAccess($extKey, $taskClass)) {
-					$actionContent .= $taskInstance->getTask();
-				} else {
-					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('error-access', TRUE), $GLOBALS['LANG']->getLL('error_header'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-					$actionContent .= $flashMessage->render();
-				}
-			} else {
-				// Error if the task is not an instance of tx_taskcenter_Task
-				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('error_no-instance', TRUE), $taskClass, 'TYPO3\\CMS\\Taskcenter\\TaskInterface'), $GLOBALS['LANG']->getLL('error_header'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-				$actionContent .= $flashMessage->render();
-			}
-		} else {
-			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xml:mlang_labels_tabdescr'), $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xml:mlang_tabs_tab'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
-			$actionContent .= $flashMessage->render();
-		}
-		$content = '<div id="taskcenter-main">
-						<div id="taskcenter-menu">' . $this->indexAction() . '</div>
-						<div id="taskcenter-item" class="' . htmlspecialchars(($extKey . '-' . $taskClass)) . '">' . $actionContent . '
-						</div>
-					</div>';
-		$this->content .= $content;
-	}
-
-	/**
-	 * Generates the information content
-	 *
-	 * @return void
-	 */
-	protected function renderInformationContent() {
-		$content = $this->description($GLOBALS['LANG']->getLL('mlang_tabs_tab'), $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xml:mlang_labels_tabdescr'));
-		$content .= $GLOBALS['LANG']->getLL('taskcenter-about');
-		if ($GLOBALS['BE_USER']->isAdmin()) {
-			$content .= '<br /><br />' . $this->description($GLOBALS['LANG']->getLL('taskcenter-adminheader'), $GLOBALS['LANG']->getLL('taskcenter-admin'));
-		}
-		$this->content .= $content;
+		$this->view->assignMultiple(array(
+			'currentTask' => $task,
+			'taskContent' => $taskContent,
+			'itemClass' => htmlspecialchars($extensionKey . '-' . $taskClassName),
+			'tasks' => $tasks
+		));
 	}
 
 	/**
@@ -183,39 +112,25 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Render a list of items as a nicely formated definition list including a
 	 * link, icon, title and description.
 	 * The keys of a single item are:
-	 * - title:				Title of the item
-	 * - link:					Link to the task
-	 * - icon: 				Path to the icon or Icon as HTML if it begins with <img
-	 * - description:	Description of the task, using htmlspecialchars()
-	 * - descriptionHtml:	Description allowing HTML tags which will override the
+	 * - title: Title of the item
+	 * - link: Link to the task
+	 * - icon: Path to the icon or Icon as HTML if it begins with <img
+	 * - description: Description of the task, using htmlspecialchars()
+	 * - descriptionHtml: Description allowing HTML tags which will override the
 	 * description
 	 *
 	 * @param array $items List of items to be displayed in the definition list.
-	 * @param boolean $mainMenu Set it to TRUE to render the main menu
 	 * @return string Fefinition list
 	 */
-	public function renderListMenu($items, $mainMenu = FALSE) {
-		$content = ($section = '');
+	public function renderListMenu(array $items) {
+		$content = '';
 		$count = 0;
 		// Change the sorting of items to the user's one
-		if ($mainMenu) {
-			$this->doc->getPageRenderer()->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('taskcenter') . 'res/tasklist.js');
-			$userSorting = unserialize($GLOBALS['BE_USER']->uc['taskcenter']['sorting']);
-			if (is_array($userSorting)) {
-				$newSorting = array();
-				foreach ($userSorting as $item) {
-					if (isset($items[$item])) {
-						$newSorting[] = $items[$item];
-						unset($items[$item]);
-					}
-				}
-				$items = $newSorting + $items;
-			}
-		}
 		if (is_array($items) && count($items) > 0) {
 			foreach ($items as $item) {
 				$title = htmlspecialchars($item['title']);
-				$icon = ($additionalClass = ($collapsedStyle = ''));
+				$icon = '';
+				$additionalClass = '';
 				// Check for custom icon
 				if (!empty($item['icon'])) {
 					if (strpos($item['icon'], '<img ') === FALSE) {
@@ -235,12 +150,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$description = !empty($item['descriptionHtml']) ? $item['descriptionHtml'] : '<p>' . nl2br(htmlspecialchars($item['description'])) . '</p>';
 				$id = $this->getUniqueKey($item['uid']);
 				// Collapsed & expanded menu items
-				if ($mainMenu && isset($GLOBALS['BE_USER']->uc['taskcenter']['states'][$id]) && $GLOBALS['BE_USER']->uc['taskcenter']['states'][$id]) {
-					$collapsedStyle = 'style="display:none"';
-					$additionalClass = 'collapsed';
-				} else {
-					$additionalClass = 'expanded';
-				}
+				$additionalClass = 'expanded';
 				// First & last menu item
 				if ($count == 0) {
 					$additionalClass .= ' first-item';
@@ -248,94 +158,147 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					$additionalClass .= ' last-item';
 				}
 				// Active menu item
-				$active = (string) $this->MOD_SETTINGS['function'] == $item['uid'] ? ' active-task' : '';
+				$active = (string) $this->currentTask === $item['uid'] ? ' active-task' : '';
 				// Main menu: Render additional syntax to sort tasks
-				if ($mainMenu) {
-					$dragIcon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/move.gif', 'width="16" height="16" hspace="2"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.move', 1) . '" alt="" />';
-					$section = '<div class="down">&nbsp;</div>
-								<div class="drag">' . $dragIcon . '</div>';
-					$backgroundClass = 't3-row-header ';
-				}
 				$content .= '<li class="' . $additionalClass . $active . '" id="el_' . $id . '">
-								' . $section . '
 								<div class="image">' . $icon . '</div>
 								<div class="' . $backgroundClass . 'link"><a href="' . $item['link'] . '">' . $title . '</a></div>
-								<div class="content " ' . $collapsedStyle . '>' . $description . '</div>
+								<div class="content">' . $description . '</div>
 							</li>';
 				$count++;
 			}
-			$navigationId = $mainMenu ? 'id="task-list"' : '';
-			$content = '<ul ' . $navigationId . ' class="task-list">' . $content . '</ul>';
+			$content = '<ul class="task-list">' . $content . '</ul>';
 		}
 		return $content;
 	}
 
 	/**
-	 * Shows an overview list of available reports.
+	 * Get content for task
+	 *
+	 * @param string $extensionKey The extension key
+	 * @param string $taskClassName The class name of the task
+	 * @return string
+	 */
+	protected function getTaskContent($extensionKey, $taskClassName) {
+		$taskContent = '';
+		if (class_exists($taskClassName)) {
+			$taskInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($taskClassName, $this);
+			if ($taskInstance instanceof \TYPO3\CMS\Taskcenter\TaskInterface) {
+				// Check if the task is restricted to admins only
+				if ($this->checkAccess($extensionKey, $taskClassName)) {
+					$taskContent = $taskInstance->getTask();
+				} else {
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						$this->translate('error-access'),
+						$this->translate('error_header'),
+						\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+					);
+					$this->addFlashMessage($flashMessage);
+				}
+			} else {
+				// Error if the task is not an instance of tx_taskcenter_Task
+				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+					'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+					sprintf($this->translate('error_no-instance'), $taskClassName, 'TYPO3\\CMS\\Taskcenter\\TaskInterface'),
+					$this->translate('error_header'),
+					\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+				);
+				$this->addFlashMessage($flashMessage);
+			}
+		} else {
+			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				$this->translate('LLL:EXT:taskcenter/Resources/Private/Language/locallang_mod.xml:mlang_labels_tabdescr'),
+				$this->translate('LLL:EXT:taskcenter/Resources/Private/Language/locallang_mod.xml:mlang_tabs_tab'),
+				\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
+			);
+			$this->addFlashMessage($flashMessage);
+		}
+		return $taskContent;
+	}
+
+	/**
+	 * Get all available tasks
 	 *
 	 * @return string List of available reports
 	 */
-	protected function indexAction() {
-		$content = '';
+	protected function getTasks() {
 		$tasks = array();
-		$icon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('taskcenter') . 'task/task.gif';
+		$icon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('taskcenter') . 'Resources/Public/Images/task.gif';
 		// Render the tasks only if there are any available
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']) && count($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']) > 0) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'] as $extKey => $extensionReports) {
-				foreach ($extensionReports as $taskClass => $task) {
-					if (!$this->checkAccess($extKey, $taskClass)) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'] as $extensionKey => $extensionReports) {
+				foreach ($extensionReports as $taskClassName => $task) {
+					if (!$this->checkAccess($extensionKey, $taskClassName)) {
 						continue;
 					}
-					$link = 'mod.php?M=user_task&SET[function]=' . $extKey . '.' . $taskClass;
-					$taskTitle = $GLOBALS['LANG']->sL($task['title']);
+
+					$link = 'mod.php?M=user_TaskcenterTask&tx_taskcenter_user_taskcentertask[task]=' . $extensionKey . '.' . $taskClassName . '&tx_taskcenter_user_taskcentertask[action]=tasks&tx_taskcenter_user_taskcentertask[controller]=TaskModule';
+					$taskTitle = $this->translate($task['title']);
 					$taskDescriptionHtml = '';
 					// Check for custom icon
 					if (!empty($task['icon'])) {
 						$icon = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFilename($task['icon']);
 					}
-					if (class_exists($taskClass)) {
-						$taskInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($taskClass, $this);
+					if (class_exists($taskClassName)) {
+						$taskInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($taskClassName, $this);
 						if ($taskInstance instanceof \TYPO3\CMS\Taskcenter\TaskInterface) {
 							$taskDescriptionHtml = $taskInstance->getOverview();
 						}
 					}
 					// Generate an array of all tasks
-					$uniqueKey = $this->getUniqueKey($extKey . '.' . $taskClass);
+					$uniqueKey = $this->getUniqueKey($extensionKey . '.' . $taskClassName);
 					$tasks[$uniqueKey] = array(
-						'title' => $taskTitle,
+						'title' => htmlspecialchars($taskTitle),
 						'descriptionHtml' => $taskDescriptionHtml,
-						'description' => $GLOBALS['LANG']->sL($task['description']),
+						'description' => htmlspecialchars($this->translate($task['description'])),
 						'icon' => $icon,
 						'link' => $link,
-						'uid' => $extKey . '.' . $taskClass
+						'uid' => $extensionKey . '.' . $taskClassName,
+						'id' => $this->getUniqueKey($extensionKey . '.' . $taskClassName)
 					);
 				}
 			}
-			$content .= $this->renderListMenu($tasks, TRUE);
 		} else {
-			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('no-tasks', TRUE), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
-			$this->content .= $flashMessage->render();
+			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				$this->translate('no-tasks'),
+				'',
+				\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
+			);
+			$this->addFlashMessage($flashMessage);
 		}
-		return $content;
+
+		if (!empty($tasks)) {
+			$tasks = $this->sortTasks($tasks);
+		}
+
+		return $tasks;
 	}
 
 	/**
-	 * Create the panel of buttons for submitting the form or otherwise
-	 * perform operations.
+	 * Helper function for translating labels
 	 *
-	 * @return array All available buttons as an assoc. array
+	 * @param string $label The label
+	 * @return string The translated label
 	 */
-	protected function getButtons() {
-		$buttons = array(
-			'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']),
-			'shortcut' => '',
-			'open_new_window' => $this->openInNewWindow()
-		);
-		// Shortcut
-		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function', $this->MCONF['name']);
-		}
-		return $buttons;
+	protected function translate($label) {
+		return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($label, 'taskcenter');
+	}
+
+	/**
+	 * Add flash message to the queue
+	 *
+	 * @param \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage
+	 * @return void
+	 */
+	protected function addFlashMessage(\TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage) {
+		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+		$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+		/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+		$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+		$defaultFlashMessageQueue->enqueue($flashMessage);
 	}
 
 	/**
@@ -344,14 +307,14 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * - Tasks can be restriced to admins only
 	 * - Tasks can be blinded for Users with TsConfig taskcenter.<extensionkey>.<taskName> = 0
 	 *
-	 * @param string $extKey Extension key
-	 * @param string $taskClass Name of the task
+	 * @param string $extensionKey The extension key
+	 * @param string $taskClassName The class name of the task
 	 * @return boolean Access to the task allowed or not
 	 */
-	protected function checkAccess($extKey, $taskClass) {
+	protected function checkAccess($extensionKey, $taskClassName) {
 		// Check if task is blinded with TsConfig (taskcenter.<extkey>.<taskName>
-		$tsConfig = $GLOBALS['BE_USER']->getTSConfig('taskcenter.' . $extKey . '.' . $taskClass);
-		if (isset($tsConfig['value']) && intval($tsConfig['value']) == 0) {
+		$tsConfig = $GLOBALS['BE_USER']->getTSConfig('taskcenter.' . $extensionKey . '.' . $taskClassName);
+		if (isset($tsConfig['value']) && intval($tsConfig['value']) === 0) {
 			return FALSE;
 		}
 		// Admins are always allowed
@@ -359,29 +322,10 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			return TRUE;
 		}
 		// Check if task is restricted to admins
-		if (intval($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'][$extKey][$taskClass]['admin']) == 1) {
+		if (intval($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'][$extensionKey][$taskClassName]['admin']) === 1) {
 			return FALSE;
 		}
 		return TRUE;
-	}
-
-	/**
-	 * Returns HTML code to dislay an url in an iframe at the right side of the taskcenter
-	 *
-	 * @param string $url Url to display
-	 * @param integer $max
-	 * @return string Code that inserts the iframe (HTML)
-	 */
-	public function urlInIframe($url, $max = 0) {
-		$this->doc->JScodeArray[] = 'function resizeIframe(frame,max) {
-			var parent = $("typo3-docbody");
-			var parentHeight = $(parent).getHeight() - 0;
-			var parentWidth = $(parent).getWidth() - $("taskcenter-menu").getWidth() - 50;
-			$("list_frame").setStyle({height: parentHeight+"px", width: parentWidth+"px"});
-
-		}
-		Event.observe(window, "resize", resizeIframe, false);';
-		return '<iframe onload="resizeIframe(this,' . $max . ');" scrolling="auto"  width="100%" src="' . $url . '" name="list_frame" id="list_frame" frameborder="no" style="margin-top:-51px;border: none;"></iframe>';
 	}
 
 	/**
@@ -398,15 +342,24 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	}
 
 	/**
-	 * This method prepares the link for opening the devlog in a new window
+	 * Sort tasks
 	 *
-	 * @return string Hyperlink with icon and appropriate JavaScript
+	 * @param array $tasks
+	 * @return array
 	 */
-	protected function openInNewWindow() {
-		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-		$onClick = 'devlogWin=window.open(\'' . $url . '\',\'taskcenter\',\'width=790,status=0,menubar=1,resizable=1,location=0,scrollbars=1,toolbar=0\');return false;';
-		$content = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/open_in_new_window.gif', 'width="19" height="14"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.openInNewWindow', 1) . '" class="absmiddle" alt="" />' . '</a>';
-		return $content;
+	protected function sortTasks(array $tasks) {
+		$userSorting = unserialize($GLOBALS['BE_USER']->uc['taskcenter']['sorting']);
+		if (is_array($userSorting)) {
+			$newSorting = array();
+			foreach ($userSorting as $item) {
+				if (isset($tasks[$item])) {
+					$newSorting[] = $tasks[$item];
+					unset($tasks[$item]);
+				}
+			}
+			$tasks = $newSorting + $tasks;
+		}
+		return $tasks;
 	}
 
 }

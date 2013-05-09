@@ -3,17 +3,23 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 if (TYPO3_MODE === 'BE') {
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'tools_txtaskcenterM1',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'task/'
-	);
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+	// Module USER TOOLS > Task center
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+		'TYPO3.CMS.' . $_EXTKEY,
 		'user',
 		'task',
 		'top',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'task/'
+		array(
+			'TaskModule' => 'overview,tasks'
+		),
+		array(
+			'access' => 'user,group',
+			'icon' => 'EXT:' . $_EXTKEY . '/ext_icon.gif',
+			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf'
+		)
 	);
-	$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['Taskcenter::saveCollapseState'] = 'EXT:taskcenter/Classes/TaskStatus.php:TYPO3\\CMS\\Taskcenter\\TaskStatus->saveCollapseState';
-	$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['Taskcenter::saveSortingState'] = 'EXT:taskcenter/Classes/TaskStatus.php:TYPO3\\CMS\\Taskcenter\\TaskStatus->saveSortingState';
+
+	$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['Taskcenter::saveCollapseState'] = 'TYPO3\\CMS\\Taskcenter\\TaskStatus->saveCollapseState';
+	$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['Taskcenter::saveSortingState'] = 'TYPO3\\CMS\\Taskcenter\\TaskStatus->saveSortingState';
 }
 ?>
