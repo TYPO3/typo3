@@ -455,10 +455,14 @@ class InlineElement {
 			if (isset($rec['hidden']) && intval($rec['hidden'])) {
 				$class .= ' t3-form-field-container-inline-hidden';
 			}
-			$out = '<div class="t3-form-field-record-inline" id="' . $objectId . '_fields" data-expandSingle="' . ($config['appearance']['expandSingle'] ? 1 : 0) . '" data-returnURL="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '">' . $fields . $combination . '</div>';
-			$header = IconUtility::getSpriteIcon('apps-irre-' . ($class != '' ? 'collapsed' : 'expanded'));
+			$extraParameters = ' data-expand-single="' . ($config['appearance']['expandSingle'] ? 1 : 0) . '"';
+			$extraParameters .= ' data-return-url="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '"';
+			$out = '<div class="t3-form-field-record-inline" id="' . $objectId . '_fields"' . $extraParameters . '>' . $fields . $combination . '</div>';
+
+			$header = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-irre-' . ($class != '' ? 'collapsed' : 'expanded'));
 			$header .= $this->renderForeignRecordHeader($parentUid, $foreign_table, $rec, $config, $isVirtualRecord);
 			$out = '<div class="t3-form-field-header-inline" id="' . $objectId . '_header">' . $header . '</div>' . $out;
+
 			// Wrap the header, fields and combination part of a child record with a div container
 			$classMSIE = $this->fObj->clientInfo['BROWSER'] == 'msie' && $this->fObj->clientInfo['VERSION'] < 8 ? 'MSIE' : '';
 			$class .= ' inlineDiv' . $classMSIE . ($isNewRecord ? ' inlineIsNewRecord' : '');

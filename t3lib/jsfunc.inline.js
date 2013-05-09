@@ -60,8 +60,8 @@ var inline = {
 		var recordHeader = TYPO3.jQuery(this);
 		inline.expandCollapseRecord(
 			recordHeader.attr('id').replace('_header', ''),
-			recordHeader.attr('data-expandSingle'),
-			recordHeader.attr('data-returnURL')
+			recordHeader.next().data('expandSingle'),
+			encodeURIComponent(recordHeader.next().data('returnUrl'))
 		);
 	},
 	expandCollapseRecord: function(objectId, expandSingle, returnURL) {
@@ -135,9 +135,9 @@ var inline = {
 				recObjectId = objectPrefix + this.structureSeparator + records[i];
 				escapedRecordObjectId = this.escapeObjectId(recObjectId);
 
-				var recordEntry = TYPO3.jQuery('#' + escapedRecordObjectId);
-				if (records[i] != callingUid && recordEntry.hasClass(this.classVisible)) {
-					TYPO3.jQuery('#' + escapedRecordObjectId + '_div').removeClass(this.classVisible).addClass(this.classCollapsed);
+				var recordEntryDiv = TYPO3.jQuery('#' + escapedRecordObjectId + '_div');
+				if (records[i] != callingUid && recordEntryDiv.hasClass(this.classVisible)) {
+                    recordEntryDiv.removeClass(this.classVisible).addClass(this.classCollapsed);
 					if (this.isNewRecord(recObjectId)) {
 						this.updateExpandedCollapsedStateLocally(recObjectId, 0);
 					} else {
