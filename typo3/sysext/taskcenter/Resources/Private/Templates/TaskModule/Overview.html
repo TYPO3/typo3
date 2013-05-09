@@ -1,0 +1,11 @@
+<f:layout name="Default" />
+
+<f:section name="content">
+	<h3 class="uppercase"><f:translate id="mlang_tabs_tab" /></h3>
+	<p class="description"><f:translate id="LLL:EXT:taskcenter/Resources/Private/Language/locallang_mod.xml:mlang_labels_tabdescr" /></p>
+	<p class="about"><f:translate id="taskcenter-about" /></p>
+	<f:if condition="{isAdmin}">
+		<h3><f:translate id="taskcenter-adminheader" /></h3>
+		<p class="description"><f:translate id="taskcenter-admin" /></p>
+	</f:if>
+</f:section>
