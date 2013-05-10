@@ -180,7 +180,7 @@ class t3lib_TCEforms_Suggest {
 				}
 				unset($tableName, $tableConfig);
 			} else {
-				$queryTables = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldConfig['allowed']);
+				$queryTables = t3lib_div::trimExplode(',', $fieldConfig['allowed']);
 			}
 		} elseif (isset($fieldConfig['foreign_table'])) {
 			$queryTables = array($fieldConfig['foreign_table']);
