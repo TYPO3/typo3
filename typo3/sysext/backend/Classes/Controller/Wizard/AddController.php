@@ -202,7 +202,8 @@ class AddController {
 		} else {
 			// Redirecting to alt_doc.php with instructions to create a new record
 			// AND when closing to return back with information about that records ID etc.
-			$redirectUrl = 'alt_doc.php?returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '&returnEditConf=1&edit[' . $this->P['params']['table'] . '][' . $this->pid . ']=new';
+			$requestUri = GeneralUtility::removeXSS(GeneralUtility::getIndpEnv('REQUEST_URI'));
+			$redirectUrl = 'alt_doc.php?returnUrl=' . rawurlencode($requestUri) . '&returnEditConf=1&edit[' . $this->P['params']['table'] . '][' . $this->pid . ']=new';
 			HttpUtility::redirect($redirectUrl);
 		}
 	}
