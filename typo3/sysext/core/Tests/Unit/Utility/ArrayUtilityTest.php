@@ -681,7 +681,8 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				)
 			),
 			'baz' => 23,
-			'foobar' => NULL
+			'foobar' => NULL,
+			'qux' => 0.1
 		);
 		$expected =
 			'array(' . LF .
@@ -696,6 +697,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				TAB . '),' . LF .
 				TAB . '\'baz\' => 23,' . LF .
 				TAB . '\'foobar\' => NULL,' . LF .
+				TAB . '\'qux\' => 0.1,' . LF .
 			')';
 		$this->assertSame($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($array));
 	}
