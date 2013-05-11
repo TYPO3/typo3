@@ -269,7 +269,7 @@ class ArrayUtility {
 				} else {
 					$lines .= 'array(),' . LF;
 				}
-			} elseif (is_int($value)) {
+			} elseif (is_int($value) || is_float($value)) {
 				$lines .= $value . ',' . LF;
 			} elseif (is_null($value)) {
 				$lines .= 'NULL' . ',' . LF;
