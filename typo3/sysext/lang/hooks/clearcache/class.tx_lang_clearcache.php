@@ -68,9 +68,8 @@ class tx_lang_clearcache {
 
 		if (isset($GLOBALS['BE_USER']) && $isValidCall) {
 			$GLOBALS['BE_USER']->writelog(3, 1, 0, 0, '[lang]: User %s has cleared the language cache', array($GLOBALS['BE_USER']->user['username']));
+			$this->cacheInstance->flush();
 		}
-
-		$this->cacheInstance->flush();
 	}
 
 }
