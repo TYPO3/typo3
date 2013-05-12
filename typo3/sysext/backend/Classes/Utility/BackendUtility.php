@@ -2754,10 +2754,11 @@ class BackendUtility {
 
 	/**
 	 * Call to update the page tree frame (or something else..?) if this is set by the function
-	 * setUpdateSignal(). It will return some JavaScript that does the update (called in the typo3/template.php file, end() function)
+	 * setUpdateSignal(). It will return some JavaScript that does the update
 	 *
 	 * @return string HTML javascript code
-	 * @see 	BackendUtility::setUpdateSignal()
+	 * @see BackendUtility::setUpdateSignal()
+	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::sectionEnd
 	 */
 	static public function getUpdateSignalCode() {
 		$signals = array();

@@ -22,8 +22,8 @@
  * AJAX result in a layer next to the mouse cursor
  */
 var Clickmenu = {
-	clickURL: 'alt_clickmenu.php',	// URL to the clickmenu.php file, see template.php
-	ajax: true,	// template.php -> isCMLayers check
+	clickURL: 'alt_clickmenu.php',
+	ajax: true, // \TYPO3\CMS\Backend\Template\DocumentTemplate::isCMLayers
 	mousePos: { X: null, Y: null },
 	delayClickMenuHide: false,
 
@@ -225,7 +225,7 @@ Event.observe(document, 'mousemove', Clickmenu.calcMousePosEvent.bindAsEventList
 // @deprecated: Deprecated functions since 4.2, here for compatibility, remove in 4.4+
 // ## BEGIN ##
 
-// Still used in Core: typo3/template.php::wrapClickMenuOnIcon()
+// Still used in Core: \TYPO3\CMS\Backend\Template\DocumentTemplate::wrapClickMenuOnIcon()
 function showClickmenu(table, uid, listFr, enDisItems, backPath, addParams) {
 	Clickmenu.show(table, uid, listFr, enDisItems, backPath, addParams);
 }

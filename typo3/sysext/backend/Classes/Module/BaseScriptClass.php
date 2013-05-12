@@ -43,7 +43,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * unset($MCONF);
  * require ('conf.php');
  * require ($BACK_PATH.'init.php');
- * require ($BACK_PATH.'template.php');
  * $GLOBALS['LANG']->includeLLFile('EXT:prototype/locallang.php');
  * $GLOBALS['BE_USER']->modAccess($MCONF,1);
  *
@@ -193,10 +192,7 @@ class BaseScriptClass {
 	public $content = '';
 
 	/**
-	 * Generally used to hold an instance of the 'template' class from typo3/template.php
-	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-	 * @todo Define visibility
 	 */
 	public $doc;
 

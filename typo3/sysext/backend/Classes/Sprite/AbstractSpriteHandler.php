@@ -75,7 +75,8 @@ abstract class AbstractSpriteHandler implements \TYPO3\CMS\Backend\Sprite\Sprite
 	 * \TYPO3\CMS\Backend\Sprite\SpriteManager::addIconSprite
 	 *
 	 * In fact the stylesheet-files are copied to \TYPO3\CMS\Backend\Sprite\SpriteManager::tempPath
-	 * where they automatically will be included from via template.php and
+	 * where they automatically will be included from via
+	 * \TYPO3\CMS\Backend\Template\DocumentTemplate and
 	 * \TYPO3\CMS\Core\Resource\ResourceCompressor
 	 *
 	 * @return void
