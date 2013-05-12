@@ -36,11 +36,12 @@ class VersionView {
 
 	/**
 	 * Creates the version selector for the page id inputted.
-	 * Moved out of the core file typo3/template.php
+	 * Moved out of the core file \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 *
 	 * @param 	integer		Page id to create selector for.
 	 * @param 	boolean		If set, there will be no button for swapping page.
 	 * @return 	void
+	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
 	public function getVersionSelector($id, $noAction = FALSE) {
 		if ($id <= 0) {

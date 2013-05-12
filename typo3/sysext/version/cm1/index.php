@@ -25,7 +25,6 @@
 unset($MCONF);
 require 'conf.php';
 require $BACK_PATH . 'init.php';
-require $BACK_PATH . 'template.php';
 $GLOBALS['LANG']->includeLLFile('EXT:version/locallang.xml');
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Controller\\VersionModuleController');
 $SOBE->init();
