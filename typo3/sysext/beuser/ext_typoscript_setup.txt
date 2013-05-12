@@ -1,1 +1,1 @@
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:beuser/Configuration/TypoScript/setup.txt">
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:beuser/Resources/Private/TypoScripts/Root.ts">
