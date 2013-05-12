@@ -79,10 +79,11 @@ class CObjectViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 	 * @param string $typoscriptObjectPath the TypoScript setup path of the TypoScript object to render
 	 * @param mixed $data the data to be used for rendering the cObject. Can be an object, array or string. If this argument is not set, child nodes will be used
 	 * @param string $currentValueKey
+	 * @param string $table
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return string the content of the rendered TypoScript object
 	 */
-	public function render($typoscriptObjectPath, $data = NULL, $currentValueKey = NULL) {
+	public function render($typoscriptObjectPath, $data = NULL, $currentValueKey = NULL, $table = '') {
 		if (TYPO3_MODE === 'BE') {
 			$this->simulateFrontendEnvironment();
 		}
@@ -97,7 +98,7 @@ class CObjectViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 			$data = array($data);
 		}
 		$contentObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
-		$contentObject->start($data);
+		$contentObject->start($data, $table);
 		if ($currentValue !== NULL) {
 			$contentObject->setCurrentVal($currentValue);
 		} elseif ($currentValueKey !== NULL && isset($data[$currentValueKey])) {
