@@ -1,0 +1,115 @@
+config.index_enable = 0
+config.index_externals = 0
+config.index_metatags = 1
+
+plugin.tx_indexedsearch {
+	templateFile = EXT:indexed_search/pi/indexed_search.tmpl
+
+	# Date formats for created/modified dates in search results. See PHP strftime() function. Leave blank for using system defaults
+	dateFormat {
+		created =
+		modified =
+	}
+
+	show {
+		rules = 1
+		parsetimes = 0
+		L2sections = 0
+		L1sections = 1
+		LxALLtypes = 0
+		clearSearchBox = 0
+		clearSearchBox.enableSubSearchCheckBox = 0
+		forbiddenRecords = 0
+		alwaysShowPageLinks = 0
+		advancedSearchLink = 1
+		resultNumber = 0
+		mediaList =
+	}
+
+	# Blinding of option-selectors / values in these (advanced search) (see $optValues array in source code for options + extResume checkbox)
+	blind {
+		type = 0
+		defOp = 0
+		sections = 0
+		freeIndexUid = 1
+		media = 0
+		order = 0
+		group = 0
+		lang = 0
+		desc = 0
+		results = 0
+		# defOp.1=1
+		# extResume=1
+	}
+	rules_stdWrap {
+	}
+	sectionlinks_stdWrap {
+	}
+	path_stdWrap {
+	}
+	search {
+		rootPidList =
+		page_links = 10
+		detect_sys_domain_records = 0
+		defaultFreeIndexUidList = -1
+		skipExtendToSubpagesChecking = 0
+		exactCount = 0
+		targetPid.data = TSFE:id
+	}
+
+	result_link_target =
+/*
+	flagRendering = CASE
+	flagRendering {
+		key.current = 1
+		2 = TEXT
+		2.value = German
+		default = TEXT
+		default.value = English
+	}
+*/
+/*
+	iconRendering = CASE
+	iconRendering {
+		key.current = 1
+		html = TEXT
+		html.value = HtmL
+		default = TEXT
+		default.value = TYPO3 pages
+	}
+*/
+	forwardSearchWordsInResultLink = 0
+
+	# Setting default values for piVars (please see the source code for the form-field names which you can preset values for here)
+	_DEFAULT_PI_VARS {
+		extResume = 1
+		type = 1
+		group = flat
+	}
+	_CSS_DEFAULT_STYLE (
+		.tx-indexedsearch .tx-indexedsearch-browsebox LI { display:inline; margin-right:5px; }
+		.tx-indexedsearch .tx-indexedsearch-searchbox INPUT.tx-indexedsearch-searchbox-button { width:100px; }
+		.tx-indexedsearch .tx-indexedsearch-searchbox INPUT.tx-indexedsearch-searchbox-sword { width:150px; }
+		.tx-indexedsearch .tx-indexedsearch-whatis { margin-top:10px; margin-bottom:5px; }
+		.tx-indexedsearch .tx-indexedsearch-whatis .tx-indexedsearch-sw { font-weight:bold; font-style:italic; }
+		.tx-indexedsearch .tx-indexedsearch-noresults { text-align:center; font-weight:bold; }
+		.tx-indexedsearch .tx-indexedsearch-res TD.tx-indexedsearch-descr { font-style:italic; }
+		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-descr .tx-indexedsearch-redMarkup { color:red; }
+		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-info { background:#eeeeee; }
+		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead { margin-top:20px; margin-bottom:5px; }
+		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead H2 { margin-top:0px; margin-bottom:0px; }
+		.tx-indexedsearch .tx-indexedsearch-res .tx-indexedsearch-secHead TD { background:#cccccc; vertical-align:middle; }
+		.tx-indexedsearch .tx-indexedsearch-res .noResume { color:#666666; }
+		.tx-indexedsearch .tx-indexedsearch-category { background:#cccccc; font-size:16px; font-weight:bold; }
+
+		/* Additional styles, needed for the tableless template_css.tmpl (styles don't conflict with the original template) */
+		.tx-indexedsearch .res-tmpl-css { clear:both; margin-bottom:1em; }
+		.tx-indexedsearch .searchbox-tmpl-css LABEL { margin-right:1em; width:10em; float:left; }
+		.tx-indexedsearch .result-count-tmpl-css, .tx-indexedsearch .percent-tmpl-css { letter-spacing:0; font-weight:normal; margin-top:-1.2em; float:right; }
+		.tx-indexedsearch .info-tmpl-css dt, .tx-indexedsearch dl.info-tmpl-css dd { float:left; }
+		.tx-indexedsearch .info-tmpl-css dd.item-mtime { float:none; }
+		.tx-indexedsearch .info-tmpl-css dd.item-path { float:none; }
+	)
+	_LOCAL_LANG {
+	}
+}
