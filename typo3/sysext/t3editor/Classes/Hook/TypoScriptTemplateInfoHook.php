@@ -56,11 +56,12 @@ class TypoScriptTemplateInfoHook {
 
 	/**
 	 * Hook-function: inject t3editor JavaScript code before the page is compiled
-	 * called in typo3/template.php:startPage
+	 * called in \TYPO3\CMS\Backend\Template\DocumentTemplate:startPage
 	 *
 	 * @param array $parameters
 	 * @param \TYPO3\CMS\Backend\Template\DocumentTemplate $pObj
 	 * @return void
+	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::startPage
 	 */
 	public function preStartPageHook($parameters, $pObj) {
 		// Enable editor in Template-Modul

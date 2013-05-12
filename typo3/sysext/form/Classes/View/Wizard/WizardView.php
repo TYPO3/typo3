@@ -34,8 +34,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	/**
 	 * The document template object
 	 *
-	 * Needs to be a local variable of the class, because this will be used by
-	 * the TYPO3 Backend Template Class typo3/template.php
+	 * Needs to be a local variable of the class.
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
@@ -45,12 +44,13 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	 * Constructs this view
 	 *
 	 * Defines the global variable SOBE. Normally this is used by the wizards
-	 * which are one file only. SOBE is used by typo3/template.php. This view is
-	 * now the class with the global variable name SOBE.
+	 * which are one file only. This view is now the class with the global
+	 * variable name SOBE.
 	 *
 	 * Defines the document template object.
 	 *
 	 * @param \TYPO3\CMS\Form\Domain\Repository\ContentRepository $repository
+	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Repository\ContentRepository $repository) {
 		parent::__construct($repository);

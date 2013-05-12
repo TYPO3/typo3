@@ -31,11 +31,11 @@ namespace TYPO3\CMS\Lang;
  * Contains the TYPO3 Backend Language class
  * For detailed information about how localization is handled,
  * please refer to the 'Inside TYPO3' document which describes this.
- * This class is normally instantiated as the global variable $LANG in typo3/template.php
+ * This class is normally instantiated as the global variable $GLOBALS['LANG']
  * It's only available in the backend and under certain circumstances in the frontend
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @see typo3/template.php, template
+ * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
  */
 class LanguageService {
 
@@ -121,7 +121,7 @@ class LanguageService {
 
 	/**
 	 * Initializes the backend language.
-	 * This is for example done in typo3/template.php with lines like these:
+	 * This is for example done in \TYPO3\CMS\Backend\Template\DocumentTemplate with lines like these:
 	 * require (PATH_typo3 . 'sysext/lang/lang.php');
 	 * $LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('language');
 	 * $LANG->init($GLOBALS['BE_USER']->uc['lang']);

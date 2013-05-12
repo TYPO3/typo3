@@ -137,8 +137,10 @@ class SetupModuleController {
 
 	/**
 	 * If settings are submitted to _POST[DATA], store them
-	 * NOTICE: This method is called before the template.php is included. See
-	 * bottom of document.
+	 * NOTICE: This method is called before the \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 * is included. See bottom of document.
+	 *
+	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
 	public function storeIncomingData() {
 		// First check if something is submitted in the data-array from POST vars

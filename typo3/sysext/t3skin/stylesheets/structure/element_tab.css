@@ -1,6 +1,5 @@
 /* - - - - - - - - - - - - - - - - - - - - -
-Tab menu (template.php)
-
+Tab menu
 - - - - - - - - - - - - - - - - - - - - - */
 
 table#typo3-tabmenu {
@@ -32,7 +31,7 @@ table#typo3-tabmenu td.tabact a {
 }
 
 /* - - - - - - - - - - - - - - - - - - - - -
-Dynamic Tab menu (template.php)
+Dynamic Tab menu
 - - - - - - - - - - - - - - - - - - - - - */
 
 div.typo3-dyntabmenu-divs {
