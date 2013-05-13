@@ -392,7 +392,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 * new Ajax.Request('/dev/t3e/dummy/typo3/ajax.php', {
 	 * parameters: {
 	 * ajaxID: 'T3Editor::saveCode',
-	 * t3editor_savetype: 'tx_tstemplateinfo'
+	 * t3editor_savetype: 'TypoScriptTemplateInformationModuleFunctionController'
 	 * }
 	 * });
 	 *
