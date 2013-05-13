@@ -1287,9 +1287,13 @@ class DatabaseConnection {
 		$dbArr = array();
 		$db_list = $this->link->query("SHOW DATABASES");
 		while ($row = $db_list->fetch_object()) {
-			$this->setDatabaseName($row->Database);
-			if ($this->sql_select_db()) {
-				$dbArr[] = $row->Database;
+			try {
+				$this->setDatabaseName($row->Database);
+				if ($this->sql_select_db()) {
+					$dbArr[] = $row->Database;
+				}
+			} catch (\RuntimeException $exception) {
+				// just catch exception and continue
 			}
 		}
 		return $dbArr;
