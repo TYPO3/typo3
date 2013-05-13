@@ -439,7 +439,8 @@ class PageRepository {
 	 * @param string $addWhere Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
 	 * @param boolean $checkShortcuts Check if shortcuts exist, checks by default
 	 * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlayed localized fields, if any)
-	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageShortcut(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::makeMenu(), tx_wizardcrpages_webfunc_2, tx_wizardsortpages_webfunc_2
+	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageShortcut(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::makeMenu()
+	 * @see \TYPO3\CMS\WizardCrpages\Controller\CreatePagesWizardModuleFunctionController, \TYPO3\CMS\WizardSortpages\View\SortPagesWizardModuleFunction
 	 * @todo Define visibility
 	 */
 	public function getMenu($uid, $fields = '*', $sortField = 'sorting', $addWhere = '', $checkShortcuts = TRUE) {
