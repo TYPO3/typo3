@@ -42,7 +42,7 @@ class FileEditHook {
 	/**
 	 * @var string
 	 */
-	protected $ajaxSaveType = 'tx_tstemplateinfo';
+	protected $ajaxSaveType = 'TypoScriptTemplateInformationModuleFunctionController';
 
 	/**
 	 * @return \TYPO3\CMS\T3Editor\T3Editor
