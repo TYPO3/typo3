@@ -407,7 +407,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 				foreach ($tmpl->parserErrors[$pEkey] as $inf) {
 					$errorLink = '';
 					if ($templateAnalyzerInstalled) {
-						$errorLink = ' <a href="' . htmlspecialchars(($aHref . '&SET[function]=tx_tstemplateanalyzer&template=all&SET[ts_analyzer_checkLinenum]=1#line-' . $inf[2])) . '">' . $GLOBALS['LANG']->getLL('errorShowDetails') . '</a>';
+						$errorLink = ' <a href="' . htmlspecialchars(($aHref . '&SET[function]=TYPO3\\CMS\\TstemplateAnalyzer\\Controller\\TemplateAnalyzerModuleFunctionController&template=all&SET[ts_analyzer_checkLinenum]=1#line-' . $inf[2])) . '">' . $GLOBALS['LANG']->getLL('errorShowDetails') . '</a>';
 					}
 					$errMsg[] = $inf[1] . ': &nbsp; &nbsp;' . $inf[0] . $errorLink;
 				}
