@@ -1287,9 +1287,15 @@ class DatabaseConnection {
 		$dbArr = array();
 		$db_list = $this->link->query("SHOW DATABASES");
 		while ($row = $db_list->fetch_object()) {
-			$this->setDatabaseName($row->Database);
-			if ($this->sql_select_db()) {
-				$dbArr[] = $row->Database;
+			try {
+				$this->setDatabaseName($row->Database);
+				if ($this->sql_select_db()) {
+					$dbArr[] = $row->Database;
+				}
+			} catch (\RuntimeException $exception) {
+				// The exception happens if we cannot connect to the database
+				// (usually due to missing permissions). This is ok here.
+				// We catch the exception, skip the database and continue.
 			}
 		}
 		return $dbArr;
