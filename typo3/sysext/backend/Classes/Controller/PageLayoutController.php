@@ -522,7 +522,7 @@ class PageLayoutController {
 			// Setting doc-header
 			$this->doc->form = '<form action="' . htmlspecialchars(('db_layout.php?id=' . $this->id . '&imagemode=' . $this->imagemode)) . '" method="post">';
 			// Creating the top function menu:
-			$this->topFuncMenu = BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'], 'db_layout.php', '');
+			$this->topFuncMenu = count($this->MOD_MENU['function']) > 1 ? BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'], 'db_layout.php', '') : '';
 			$this->languageMenu = count($this->MOD_MENU['language']) > 1 ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.language', 1) . BackendUtility::getFuncMenu($this->id, 'SET[language]', $this->current_sys_language, $this->MOD_MENU['language'], 'db_layout.php', '') : '';
 			// Find backend layout / coumns
 			$backendLayout = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getSelectedBackendLayout', $this->id, $this);
