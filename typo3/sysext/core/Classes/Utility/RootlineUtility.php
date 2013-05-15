@@ -236,6 +236,7 @@ class RootlineUtility {
 	 * @return array $pageRecord with additional relations
 	 */
 	protected function enrichWithRelationFields($uid, array $pageRecord) {
+		$pageOverlayFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields']);
 		foreach ($GLOBALS['TCA']['pages']['columns'] as $column => $configuration) {
 			if ($this->columnHasRelationToResolve($configuration)) {
 				$configuration = $configuration['config'];
@@ -245,6 +246,9 @@ class RootlineUtility {
 					$loadDBGroup->start($pageRecord[$column], $configuration['foreign_table'], $configuration['MM'], $uid, 'pages', $configuration);
 					$relatedUids = $loadDBGroup->tableArray[$configuration['foreign_table']];
 				} else {
+					$columnIsOverlaid = in_array($column, $pageOverlayFields);
+					$uid = ($columnIsOverlaid ? $uid : $pageRecord['uid']);
+
 					$table = $configuration['foreign_table'];
 					$field = $configuration['foreign_field'];
 					$whereClauseParts = array($field . ' = ' . intval($uid));
@@ -254,7 +258,7 @@ class RootlineUtility {
 						}
 					}
 					if (isset($configuration['foreign_table_field'])) {
-						if (intval($this->languageUid) > 0) {
+						if (intval($this->languageUid) > 0 && $columnIsOverlaid) {
 							$whereClauseParts[] = trim($configuration['foreign_table_field']) . ' = \'pages_language_overlay\'';
 						} else {
 							$whereClauseParts[] = trim($configuration['foreign_table_field']) . ' = \'pages\'';
