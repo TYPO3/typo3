@@ -549,17 +549,18 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			if ($this->lastHandlerKey === '_DEFAULT' && !$this->isConnected()) {
 				$this->connectDB();
 			}
-			mysql_query(
+			$res = mysql_query(
 				parent::INSERTmultipleRows($table, $fields, $rows, $no_quote_fields),
 				$this->handlerInstance[$this->lastHandlerKey]['link']
 			);
-		}
-		foreach ($rows as $row) {
-			$fields_values = array();
-			foreach ($fields as $key => $value) {
-				$fields_values[$value] = $row[$key];
+		} else {
+			foreach ($rows as $row) {
+				$fields_values = array();
+				foreach ($fields as $key => $value) {
+					$fields_values[$value] = $row[$key];
+				}
+				$res = $this->exec_INSERTquery($table, $fields_values, $no_quote_fields);
 			}
-			$res = $this->exec_INSERTquery($table, $fields_values, $no_quote_fields);
 		}
 		foreach ($this->postProcessHookObjects as $hookObject) {
 			$hookObject->exec_INSERTmultipleRows_postProcessAction($table, $fields, $rows, $no_quote_fields, $this);
