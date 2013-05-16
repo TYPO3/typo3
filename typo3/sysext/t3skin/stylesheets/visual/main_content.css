@@ -14,7 +14,10 @@ h4 {
 
 /* Occasionally used, eg. in About Modules: */
 h1 {
-	font-size: 14px;
+	font-family: Share, Verdana, Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	font-variant: normal;
+	font-weight: normal;
 }
 
 /* MAIN page header: */
