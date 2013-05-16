@@ -479,12 +479,15 @@ class ResourceCompressor {
 	 */
 	public function compressJsFiles(array $jsFiles) {
 		$filesAfterCompression = array();
-		foreach ($jsFiles as $key => $fileOptions) {
-			// if compression is enabled
+		foreach ($jsFiles as $fileName => $fileOptions) {
+			// If compression is enabled
 			if ($fileOptions['compress']) {
-				$fileOptions['file'] = $this->compressJsFile($fileOptions['file']);
+				$compressedFilename = $this->compressJsFile($fileOptions['file']);
+				$fileOptions['file'] = $compressedFilename;
+				$filesAfterCompression[$compressedFilename] = $fileOptions;
+			} else {
+				$filesAfterCompression[$fileName] = $fileOptions;
 			}
-			$filesAfterCompression[$key] = $fileOptions;
 		}
 		return $filesAfterCompression;
 	}
