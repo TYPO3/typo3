@@ -58,6 +58,9 @@
 		<testsuite name="EXT:lowlevel tests">
 			<directory>../../../../typo3/sysext/lowlevel/Tests/Unit/</directory>
 		</testsuite>
+		<testsuite name="EXT:recordlist tests">
+			<directory>../../../../typo3/sysext/recordlist/Tests/Unit/</directory>
+		</testsuite>
 		<testsuite name="EXT:reports tests">
 			<directory>../../../../typo3/sysext/reports/Tests/Unit/</directory>
 		</testsuite>
