@@ -54,11 +54,10 @@ class TextfieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractForm
 	 *
 	 * @param boolean $required If the field is required or not
 	 * @param string $type The field type, e.g. "text", "email", "url" etc.
-	 * @param string $placeholder A string used as a placeholder for the value to enter
 	 * @return string
 	 * @api
 	 */
-	public function render($required = NULL, $type = 'text', $placeholder = NULL) {
+	public function render($required = NULL, $type = 'text') {
 		$name = $this->getName();
 		$this->registerFieldNameForFormTokenGeneration($name);
 
@@ -66,10 +65,6 @@ class TextfieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractForm
 		$this->tag->addAttribute('name', $name);
 
 		$value = $this->getValue();
-
-		if ($placeholder !== NULL) {
-			$this->tag->addAttribute('placeholder', $placeholder);
-		}
 
 		if ($value !== NULL) {
 			$this->tag->addAttribute('value', $value);
