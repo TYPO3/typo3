@@ -1914,7 +1914,7 @@ class ElementBrowser {
 	 */
 	public function printCurrentUrl($str) {
 		// Output the folder or file identifier, when working with files
-		if ($str && $this->act == 'file' || $this->act == 'folder') {
+		if (isset($str) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($str) && ($this->act === 'file' || $this->act === 'folder')) {
 			try {
 				$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($str);
 				if (is_object($fileObject)) {
