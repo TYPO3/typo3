@@ -279,7 +279,7 @@ class AbstractPlugin {
 	 *
 	 * @param integer $id Page id
 	 * @param string $target Target value to use. Affects the &type-value of the URL, defaults to current.
-	 * @param array $urlParameters Additional URL parameters to set (key/value pairs)
+	 * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
 	 * @return string The resulting URL
 	 * @see pi_linkToPage()
 	 * @todo Define visibility
@@ -296,7 +296,7 @@ class AbstractPlugin {
 	 * @param string $str The content string to wrap in <a> tags
 	 * @param integer $id Page id
 	 * @param string $target Target value to use. Affects the &type-value of the URL, defaults to current.
-	 * @param array $urlParameters Additional URL parameters to set (key/value pairs)
+	 * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
 	 * @return string The input string wrapped in <a> tags with the URL and target set.
 	 * @see pi_getPageLink(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTypoLink()
 	 * @todo Define visibility
