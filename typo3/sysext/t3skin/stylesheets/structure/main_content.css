@@ -20,7 +20,8 @@ div {
 
 /* Occasionally used, eg. in About Modules: */
 h1 {
-	margin: 6px 0 16px 0;
+	margin: 6px 0 24px 0;
+	line-height: 1.1em;
 }
 
 h2 {
