@@ -242,6 +242,9 @@ class MailUtility {
 		$addresses = $addressParser->parseAddressList();
 		$addressList = array();
 		foreach ($addresses as $address) {
+			if ($address->mailbox === '') {
+				continue;
+			}
 			if ($address->personal) {
 				// item with name found ( name <email@example.org> )
 				$addressList[$address->mailbox . '@' . $address->host] = $address->personal;
