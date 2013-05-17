@@ -72,7 +72,7 @@ CREATE TABLE be_users (
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
   cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
   realName varchar(80) DEFAULT '' NOT NULL,
-  userMods varchar(255) DEFAULT '' NOT NULL,
+  userMods text,
   allowed_languages varchar(255) DEFAULT '' NOT NULL,
   uc mediumtext,
   file_mountpoints varchar(255) DEFAULT '' NOT NULL,
