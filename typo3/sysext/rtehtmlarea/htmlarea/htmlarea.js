@@ -890,8 +890,16 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				delay: 50
 			};
 			Ext.each(this.nestedParentElements.sorted, function (nested) {
+				var nestedElement = Ext.get(nested);
 				this.mon(
-					Ext.get(nested),
+					nestedElement,
+					Ext.isIE ? 'propertychange' : 'DOMAttrModified',
+					this.onNestedShow,
+					this,
+					options
+				);
+				this.mon(
+					nestedElement.parent(),
 					Ext.isIE ? 'propertychange' : 'DOMAttrModified',
 					this.onNestedShow,
 					this,
@@ -1134,11 +1142,11 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		var styleEvent = true;
 			// In older versions of Gecko attrName is not set and refering to it causes a non-catchable crash
 		if ((Ext.isGecko && navigator.productSub > 2007112700) || Ext.isOpera) {
-			styleEvent = (event.browserEvent.attrName == 'style');
+			styleEvent = (event.browserEvent.attrName == 'style') || (event.browserEvent.attrName == 'className');
 		} else if (Ext.isIE) {
 			styleEvent = (event.browserEvent.propertyName == 'style.display');
 		}
-		if (styleEvent && this.nestedParentElements.sorted.indexOf(target.id) != -1 && (target.style.display == '' || target.style.display == 'block')) {
+		if (styleEvent && (this.nestedParentElements.sorted.indexOf(target.id) != -1 || this.nestedParentElements.sorted.indexOf(target.id.replace('_div', '_fields')) != -1)) {
 				// Check if all container nested elements are displayed
 			if (HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
 				if (this.getEditor().getMode() === 'wysiwyg') {
@@ -2681,17 +2689,26 @@ HTMLArea.util.TYPO3 = function () {
 				currentElement = Ext.get(currentElement);
 				var actionRequired = (currentElement.getStyle('display') == 'none');
 				if (actionRequired) {
-					var originalStyles = currentElement.getStyles('visibility', 'position', 'top', 'display');
+					var visibility = currentElement.dom.style.visibility;
+					var position = currentElement.dom.style.position;
+					var top = currentElement.dom.style.top;
+					var display = currentElement.dom.style.display;
+					var className = currentElement.dom.parentNode.className;
 					currentElement.setStyle({
 						visibility: 'hidden',
 						position: 'absolute',
 						top: '-10000px',
 						display: ''
 					});
+					currentElement.dom.parentElement.className = '';
 				}
 				result = this.accessParentElements(parentElements, callbackFunc, args);
 				if (actionRequired) {
-					currentElement.setStyle(originalStyles);
+					currentElement.dom.style.visibility = visibility;
+					currentElement.dom.style.position = position;
+					currentElement.dom.style.top = top;
+					currentElement.dom.style.display = display;
+					currentElement.dom.parentNode.className = className;
 				}
 			} else {
 				result = eval(callbackFunc);
