@@ -582,7 +582,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				if ($rel) {
 					$imgWidths[$a] = $imgInfo[0] / $rel;
 					// counts the total width of the row with the new height taken into consideration.
-					$relations_cols[floor($a / $colCount)] += $imgWidths[$a];
+					$relations_cols[(int)floor($a / $colCount)] += $imgWidths[$a];
 				}
 			}
 		}
@@ -598,7 +598,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		$rowIdx = 0;
 		for ($a = 0; $a < $imgCount; $a++) {
 			$imgKey = $a + $imgStart;
-			// if the image cannot be interpreted as integer (therefore filename and no FAL id), add the image path
+			// If the image cannot be interpreted as integer (therefore filename and no FAL id), add the image path
 			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($imgs[$imgKey])) {
 				$totalImagePath = intval($imgs[$imgKey]);
 			} else {
@@ -730,9 +730,9 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			// Store the original filepath
 			$origImages[$imgKey] = $GLOBALS['TSFE']->lastImageInfo;
 			if ($GLOBALS['TSFE']->lastImageInfo[0] == 0) {
-				$imageRowsFinalWidths[floor($a / $colCount)] += $this->cObj->data['imagewidth'];
+				$imageRowsFinalWidths[(int)floor($a / $colCount)] += $this->cObj->data['imagewidth'];
 			} else {
-				$imageRowsFinalWidths[floor($a / $colCount)] += $GLOBALS['TSFE']->lastImageInfo[0];
+				$imageRowsFinalWidths[(int)floor($a / $colCount)] += $GLOBALS['TSFE']->lastImageInfo[0];
 			}
 		}
 		// How much space will the image-block occupy?
