@@ -47,7 +47,7 @@ class StorageRepository extends AbstractRepository {
 	/**
 	 * @var string
 	 */
-	protected $typeField = 'type';
+	protected $typeField = 'driver';
 
 	/**
 	 * @var \TYPO3\CMS\Core\Log\Logger
