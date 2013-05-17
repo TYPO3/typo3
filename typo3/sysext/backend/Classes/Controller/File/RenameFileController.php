@@ -132,8 +132,16 @@ class RenameFileController {
 		$code .= '</form>';
 		// Add the HTML as a section:
 		$pageContent .= $code;
-		$docHeaderButtons = array();
+
+		$docHeaderButtons = array(
+			'back' => ''
+		);
 		$docHeaderButtons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'file_rename', $GLOBALS['BACK_PATH']);
+		// Back
+		if ($this->returnUrl) {
+			$docHeaderButtons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
+		}
+
 		// Add the HTML as a section:
 		$markerArray = array(
 			'CSH' => $docHeaderButtons['csh'],
