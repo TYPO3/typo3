@@ -214,7 +214,8 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			'level_up' => '',
 			'refresh' => '',
 			'title' => '',
-			'page_icon' => ''
+			'page_icon' => '',
+			'PASTE' => ''
 		);
 		// Makes the code for the foldericon in the top
 		if ($folderObject) {
@@ -236,6 +237,11 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			}
 			if ($this->clickMenus) {
 				$otherMarkers['PAGE_ICON'] = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($otherMarkers['PAGE_ICON'], $folderObject->getCombinedIdentifier());
+			}
+			// Add paste button
+			$elFromTable = $this->clipObj->elFromTable('_FILE');
+			if (count($elFromTable)) {
+				$buttons['PASTE'] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $this->folderObject->getCombinedIdentifier())) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $this->path, 'into', $elFromTable)) . '" title="' . $GLOBALS['LANG']->getLL('clip_paste', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-paste-after') . '</a>';
 			}
 		}
 		$buttons['refresh'] = '<a href="' . htmlspecialchars($this->listURL()) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.reload', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-refresh') . '</a>';
