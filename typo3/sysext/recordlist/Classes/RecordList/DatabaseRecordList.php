@@ -1532,9 +1532,10 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 		// Setting filename:
 		$filename = $prefix . '_' . date('dmy-Hi') . '.csv';
 		// Creating output header:
-		$mimeType = 'application/octet-stream';
-		header('Content-Type: ' . $mimeType);
+		header('Content-Type: application/octet-stream');
 		header('Content-Disposition: attachment; filename=' . $filename);
+		header('Pragma: cache');
+		header('Cache-Control: private');
 		// Printing the content of the CSV lines:
 		echo implode(chr(13) . chr(10), $this->csvLines);
 		// Exits:
