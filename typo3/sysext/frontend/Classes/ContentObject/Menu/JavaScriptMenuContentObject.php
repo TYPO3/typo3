@@ -65,7 +65,7 @@ class JavaScriptMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu
  var ' . $this->JSVarName . $a . '=0;';
 			}
 			$JScode .= $this->generate_level($levels, 1, $this->id, $this->menuArr, $this->MP_array) . LF;
-			$GLOBALS['TSFE']->additionalHeaderData['JSMenuCode'] = '<script type="text/javascript" src="' . $GLOBALS['TSFE']->absRefPrefix . 't3lib/jsfunc.menu.js"></script>';
+			$GLOBALS['TSFE']->additionalHeaderData['JSMenuCode'] = '<script type="text/javascript" src="' . $GLOBALS['TSFE']->absRefPrefix . 'typo3/sysext/frontend/Resources/Public/JavaScript/jsfunc.menu.js"></script>';
 			$GLOBALS['TSFE']->additionalJavaScript['JSCode'] .= $JScode;
 			// Printing:
 			$allFormCode = '';

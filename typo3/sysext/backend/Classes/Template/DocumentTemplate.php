@@ -1581,7 +1581,7 @@ class DocumentTemplate {
 	 */
 	protected function loadCshJavascript() {
 		$this->pageRenderer->loadExtJS();
-		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/contexthelp.js');
+		$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/contexthelp.js');
 		$this->pageRenderer->addExtDirectCode();
 	}
 

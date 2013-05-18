@@ -46,8 +46,7 @@ class ValueSlider {
 	 * @todo Define visibility
 	 */
 	public function renderWizard(&$params, &$pObj) {
-		$jsPath = '../t3lib/js/extjs/components/slider/';
-		$pObj->loadJavascriptLib($jsPath . 'ValueSlider.js');
+		$pObj->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/ValueSlider.js');
 		$field = $params['field'];
 		$value = $params['row'][$field];
 		// If Slider is used in a flexform
