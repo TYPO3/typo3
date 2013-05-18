@@ -106,7 +106,7 @@ class BackendController {
 			'toolbarmanager' => 'sysext/backend/Resources/Public/JavaScript/toolbarmanager.js',
 			'modulemenu' => 'sysext/backend/Resources/Public/JavaScript/modulemenu.js',
 			'iecompatibility' => 'sysext/backend/Resources/Public/JavaScript/iecompatibility.js',
-			'evalfield' => '../t3lib/jsfunc.evalfield.js',
+			'evalfield' => 'js/jsfunc.evalfield.js',
 			'flashmessages' => '../t3lib/js/extjs/ux/flashmessages.js',
 			'tabclosemenu' => '../t3lib/js/extjs/ux/ext.ux.tabclosemenu.js',
 			'notifications' => '../t3lib/js/extjs/notifications.js',
@@ -118,7 +118,7 @@ class BackendController {
 			'backendcontentiframe' => 'js/extjs/backendcontentiframe.js',
 			'modulepanel' => 'js/extjs/modulepanel.js',
 			'viewportConfiguration' => 'js/extjs/viewportConfiguration.js',
-			'util' => '../t3lib/js/extjs/util.js'
+			'util' => 'sysext/backend/Resources/Public/JavaScript/util.js'
 		);
 		if ($this->debug) {
 			unset($this->jsFiles['loginrefresh']);

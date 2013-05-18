@@ -340,8 +340,8 @@ class TypoScriptFrontendController {
 	/*
 	Eg. insert JS-functions in this array ($additionalHeaderData) to include them once. Use associative keys.
 	Keys in use:
-	JSFormValidate	:		<script type="text/javascript" src="'.$GLOBALS["TSFE"]->absRefPrefix.'t3lib/jsfunc.validateform.js"></script>
-	JSincludeFormupdate :	<script type="text/javascript" src="t3lib/jsfunc.updateform.js"></script>
+	JSFormValidate	:		<script type="text/javascript" src="'.$GLOBALS["TSFE"]->absRefPrefix.'typo3/sysext/frontend/Resources/Public/JavaScript/jsfunc.validateform.js"></script>
+	JSincludeFormupdate :	<script type="text/javascript" src="typo3/js/jsfunc.updateform.js"></script>
 	JSMenuCode, JSMenuCode_menu :			JavaScript for the JavaScript menu
 	JSCode : reserved
 	JSImgCode : reserved

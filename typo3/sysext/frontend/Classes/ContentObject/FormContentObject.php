@@ -611,7 +611,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 			$badMess = isset($conf['badMess.']) ? $this->cObj->stdWrap($conf['badMess'], $conf['badMess.']) : $conf['badMess'];
 			$emailMess = isset($conf['emailMess.']) ? $this->cObj->stdWrap($conf['emailMess'], $conf['emailMess.']) : $conf['emailMess'];
 			$validateForm = ' onsubmit="return validateForm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($formName) . ',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(implode(',', $fieldlist)) . ',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($goodMess) . ',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($badMess) . ',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($emailMess) . ')"';
-			$GLOBALS['TSFE']->additionalHeaderData['JSFormValidate'] = '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($GLOBALS['TSFE']->absRefPrefix . 't3lib/jsfunc.validateform.js')) . '"></script>';
+			$GLOBALS['TSFE']->additionalHeaderData['JSFormValidate'] = '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($GLOBALS['TSFE']->absRefPrefix . 'typo3/sysext/frontend/Resources/Public/JavaScript/jsfunc.validateform.js')) . '"></script>';
 		} else {
 			$validateForm = '';
 		}

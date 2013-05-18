@@ -5308,7 +5308,7 @@ function ' . $evalData . '(value) {
 				'textareaResize' => !$GLOBALS['BE_USER']->uc['resizeTextareas'] == '0'
 			);
 			$pageRenderer->addInlineSettingArray('', $resizableSettings);
-			$this->loadJavascriptLib('../t3lib/jsfunc.evalfield.js');
+			$this->loadJavascriptLib('js/jsfunc.evalfield.js');
 			$this->loadJavascriptLib('jsfunc.tbe_editor.js');
 			$this->loadJavascriptLib('jsfunc.placeholder.js');
 			// Needed for tceform manipulation (date picker)
@@ -5323,18 +5323,18 @@ function ' . $evalData . '(value) {
 			// If IRRE fields were processed, add the JavaScript functions:
 			if ($this->inline->inlineCount) {
 				$GLOBALS['SOBE']->doc->getPageRenderer()->loadScriptaculous();
-				$this->loadJavascriptLib('../t3lib/jsfunc.inline.js');
+				$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.inline.js');
 				$out .= '
 				inline.setPrependFormFieldNames("' . $this->inline->prependNaming . '");
 				inline.setNoTitleString("' . addslashes(BackendUtility::getNoRecordTitle(TRUE)) . '");
 				';
 				// Always include JS functions for Suggest fields as we don't know what will come
-				$this->loadJavascriptLib('../t3lib/js/jsfunc.tceforms_suggest.js');
+				$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_suggest.js');
 			} else {
 				// If Suggest fields were processed, add the JS functions
 				if ($this->suggest->suggestCount > 0) {
 					$pageRenderer->loadScriptaculous();
-					$this->loadJavascriptLib('../t3lib/js/jsfunc.tceforms_suggest.js');
+					$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_suggest.js');
 				}
 			}
 			// Toggle icons:
