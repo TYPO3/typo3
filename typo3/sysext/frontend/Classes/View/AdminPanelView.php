@@ -289,7 +289,7 @@ class AdminPanelView {
 <a id="TSFE_ADMIN"></a>
 <form id="TSFE_ADMIN_PANEL_FORM" name="TSFE_ADMIN_PANEL_FORM" action="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT')) . '#TSFE_ADMIN" method="get" onsubmit="document.forms.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[DUMMY]\'].value=Math.random().toString().substring(2,8)">' . $query . '<table class="typo3-adminPanel">' . $header . $moduleContent . $footer . '</table></form>';
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top']) {
-			$out .= '<script type="text/javascript" src="t3lib/jsfunc.evalfield.js"></script>';
+			$out .= '<script type="text/javascript" src="typo3/js/jsfunc.evalfield.js"></script>';
 			$out .= '<script type="text/javascript">/*<![CDATA[*/' . \TYPO3\CMS\Core\Utility\GeneralUtility::minifyJavaScript('
 				var evalFunc = new evalFunc();
 					// TSFEtypo3FormFieldSet()

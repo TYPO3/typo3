@@ -423,7 +423,7 @@ class PageLayoutController {
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_layout.html');
 			// JavaScript:
-			$this->doc->JScode = '<script type="text/javascript" ' . 'src="' . GeneralUtility::createVersionNumberedFilename(($GLOBALS['BACK_PATH'] . '../t3lib/jsfunc.updateform.js')) . '">' . '</script>';
+			$this->doc->JScode = '<script type="text/javascript" ' . 'src="' . GeneralUtility::createVersionNumberedFilename(($GLOBALS['BACK_PATH'] . 'js/jsfunc.updateform.js')) . '">' . '</script>';
 			$this->doc->JScode .= $this->doc->wrapScriptTags('
 				if (top.fsMod) top.fsMod.recentIds["web"] = ' . intval($this->id) . ';
 				if (top.fsMod) top.fsMod.navFrameHighlightedID["web"] = "pages' . intval($this->id) . '_"+top.fsMod.currentBank; ' . intval($this->id) . ';

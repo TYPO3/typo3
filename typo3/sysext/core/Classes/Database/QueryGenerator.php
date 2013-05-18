@@ -1530,7 +1530,7 @@ class QueryGenerator {
 		$out = '';
 		if ($this->extJSCODE) {
 			$out .= '
-			<script language="javascript" type="text/javascript" src="' . $GLOBALS['BACK_PATH'] . '../t3lib/jsfunc.evalfield.js"></script>
+			<script language="javascript" type="text/javascript" src="' . $GLOBALS['BACK_PATH'] . 'js/jsfunc.evalfield.js"></script>
 			<script language="javascript" type="text/javascript" src="' . $GLOBALS['BACK_PATH'] . 'jsfunc.tbe_editor.js"></script>
 			<script language="javascript" type="text/javascript">
 				TBE_EDITOR.formname = "' . $formname . '";
