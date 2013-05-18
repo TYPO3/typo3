@@ -609,7 +609,7 @@ class DataPreprocessor {
 								$dataValues[$key][$vKey] = $dsConf['TCEforms']['config']['default'];
 							}
 							// Process value:
-							$dataValues[$key][$vKey] = $this->renderRecord_SW($dataValues[$key][$vKey], $dsConf['TCEforms'], $CVTSconfig, $CVtable, $CVrow, '');
+							$dataValues[$key][$vKey] = $this->renderRecord_SW($dataValues[$key][$vKey], $dsConf['TCEforms'], $CVTSconfig, $CVtable, $CVrow, 'pi_flexform');
 						}
 					}
 				}
