@@ -180,7 +180,7 @@ class t3lib_transferData {
 									// Gets the list of fields to copy from the previous record.
 								$fArr = t3lib_div::trimExplode(',', $TCA[$table]['ctrl']['useColumnsForDefaultValues'], 1);
 								foreach ($fArr as $theF) {
-									if (isset($TCA[$table]['columns'][$theF])) {
+									if (isset($TCA[$table]['columns'][$theF]) && !isset($newRow[$theF])) {
 										$newRow[$theF] = $row[$theF];
 									}
 								}
