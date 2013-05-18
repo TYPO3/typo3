@@ -169,7 +169,7 @@ class DataPreprocessor {
 								// Gets the list of fields to copy from the previous record.
 								$fArr = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues'], 1);
 								foreach ($fArr as $theF) {
-									if (isset($GLOBALS['TCA'][$table]['columns'][$theF])) {
+									if (isset($GLOBALS['TCA'][$table]['columns'][$theF]) && !isset($newRow[$theF])) {
 										$newRow[$theF] = $row[$theF];
 									}
 								}
