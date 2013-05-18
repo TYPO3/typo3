@@ -4,8 +4,8 @@ File > List
 - - - - - - - - - - - - - - - - - - - - - */
 
 table#typo3-filelist {
-	margin-top: 10px;
-	width: 98%;
+	margin-top: 24px;
+	width: 100%;
 }
 
 table#typo3-filelist img {

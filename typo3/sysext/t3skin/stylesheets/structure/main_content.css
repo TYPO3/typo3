@@ -75,8 +75,10 @@ a span {
 
 /* Reformatting of the submit buttons */
 form {
-	margin: 0px;
+	margin: 0;
 }
+
+#typo3-docbody form { margin-bottom: 24px; }
 
 input[type="submit"],
 input[type="reset"],

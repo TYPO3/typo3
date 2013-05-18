@@ -56,7 +56,8 @@ div#typo3-docbody {
 }
 
 div#typo3-inner-docbody {
-	padding: 15px 12px;
+	padding: 24px;
+	margin-top: 0;
 }
 
 /* Fix for IE 7 */

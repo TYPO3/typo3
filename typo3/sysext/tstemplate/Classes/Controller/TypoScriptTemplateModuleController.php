@@ -157,7 +157,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 		</script>
 		';
 			$this->doc->inDocStylesArray[] = '
-				TABLE#typo3-objectBrowser { width: 100%; }
+				TABLE#typo3-objectBrowser { width: 100%; margin-bottom: 24px; }
 				TABLE#typo3-objectBrowser A { text-decoration: none; }
 				TABLE#typo3-objectBrowser .comment { color: maroon; font-weight: bold; }
 				TABLE#ts-analyzer { width: 100% }

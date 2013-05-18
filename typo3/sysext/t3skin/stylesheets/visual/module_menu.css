@@ -77,20 +77,9 @@ Module menu
 #typo3-menu li div.modgroup {
 	color: #252524;
 	cursor: pointer;
+	font-size: 10px;
 	font-weight: bold;
 	text-transform: uppercase;
-}
-
-#typo3-menu li div.collapsed {
-	background-image: url('../../images/arrows/module-menu-right.png');
-	background-position: 5px 5px;
-	background-repeat: no-repeat;
-}
-
-#typo3-menu li div.expanded {
-	background-image: url('../../images/arrows/module-menu-down.png');
-	background-position: 4px 7px;
-	background-repeat: no-repeat;
 }
 
 #typo3-menu li ul li {
