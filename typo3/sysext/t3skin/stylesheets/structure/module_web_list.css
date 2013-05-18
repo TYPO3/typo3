@@ -4,7 +4,7 @@ Web > List
 - - - - - - - - - - - - - - - - - - - - - */
 
 table.typo3-dblist {
-	margin-bottom: 10px;
+	margin-bottom: 12px;
 	width: 100%;
 }
 
@@ -162,8 +162,7 @@ input.smallCheckboxes {
 }
 
 div#typo3-listOptions {
-	margin: 10px 0px 10px 0px;
-	width: 93%;
+	margin: 0 0 24px 0;
 }
 
 div#typo3-dblist-pagination {

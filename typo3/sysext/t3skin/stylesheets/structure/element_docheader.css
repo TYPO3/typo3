@@ -6,13 +6,13 @@
 	color: #dadada;
 	height: 27px;
 	line-height: 27px;
-	padding: 0 12px;
+	padding: 0 24px;
 	overflow: hidden;
 }
 .typo3-docheader-buttons {
 	color: #000;
 	height: 16px;
-	padding: 3px 12px;
+	padding: 3px 24px;
 	overflow: hidden;
 }
 

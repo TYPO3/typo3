@@ -4,7 +4,7 @@ Module menu
 - - - - - - - - - - - - - - - - - - - - - */
 
 #typo3-menu {
-	padding-top: 15px;
+	padding-top: 24px;
 }
 
 #typo3-module-menu .x-panel-body {
@@ -16,10 +16,18 @@ Module menu
 	margin: 0;
 }
 
+#typo3-menu > li {
+	margin-bottom: 6px;
+}
+
 #typo3-menu li {
 	clear: both;
 	padding-bottom: 1px;
-	margin-bottom: 0;
+}
+
+#typo3-menu li div.modgroup {
+	padding-left: 24px;
+	margin-bottom: 3px;
 }
 
 #typo3-menu li a {
@@ -46,7 +54,7 @@ Module menu
 }
 
 #typo3-menu li ul {
-	margin-bottom: 5px;
+	margin-bottom: 6px;
 }
 
 #typo3-menu li ul li {
@@ -56,7 +64,7 @@ Module menu
 #typo3-menu li ul li a {
 	display: block;
 	margin-bottom: 1px;
-	padding: 3px 0 3px 15px;
+	padding: 3px 0 3px 24px;
 	white-space: nowrap;
 }
 

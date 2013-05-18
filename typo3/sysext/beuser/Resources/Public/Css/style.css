@@ -5,6 +5,7 @@
 #compareUsers { margin-bottom: 10px; }
 
 div.collapsibleSection { background-color: #ededed; border-top: 1px solid #cdcdcd; border-bottom: 1px solid #cdcdcd; padding: 12px; margin-bottom: 24px; }
+	#typo3-docbody div.collapsibleSection form { margin-bottom: 0; }
 
 #tx_beuser_compare td { min-width: 170px; }
 
