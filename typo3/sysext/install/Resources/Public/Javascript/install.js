@@ -41,4 +41,9 @@ $(document).ready(function() {
 		});
 	});
 
+	// Used in database compare section to select/deselect checkboxes
+	$('.checkall').on('click', function() {
+		$(this).closest('fieldset').find(':checkbox').prop('checked', this.checked);
+	});
+
 });
