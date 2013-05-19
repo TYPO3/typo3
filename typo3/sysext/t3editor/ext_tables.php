@@ -20,7 +20,7 @@ if (TYPO3_MODE === 'BE') {
 		'script' => 'wizard_table.php',
 		'params' => array(
 			'format' => 'html',
-			'style' => 'width:98%; height: 200px;'
+			'style' => 'width:98%; height: 60%;'
 		)
 	);
 	// Activate the t3editor only for type html
