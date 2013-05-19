@@ -4,13 +4,14 @@ User settings
 - - - - - - - - - - - - - - - - - - - - - */
 
 table.typo3-usersettings {
-	padding-bottom: 10px;
+	margin-top: 24px;
 }
 
 table.typo3-usersettings td {
 	width: 300px;
 	line-height: 20px;
-	padding-left: 8px;
+	padding-left: 12px;
+	padding-bottom: 12px;
 }
 
 table.typo3-usersettings td.td-label label {
