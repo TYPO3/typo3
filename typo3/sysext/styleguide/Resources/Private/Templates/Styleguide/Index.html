@@ -1,0 +1,225 @@
+{namespace sg = TYPO3\CMS\Styleguide\ViewHelpers}
+
+<f:layout name="Default"/>
+
+<f:section name="iconButtons">
+	<a href="#"
+	   onclick="window.location.href='alt_doc.php?returnUrl='+T3_THIS_LOCATION+'&edit[be_users][0]=new'; return false;">
+		<bu:spriteManagerIcon iconName="actions-document-new"/>
+	</a>
+</f:section>
+
+<f:section name="content">
+
+	<f:comment>
+		****************************************
+		Typography
+		****************************************
+	</f:comment>
+
+	<h2>Typography</h2>
+
+	<h1>h1. This is a very large header.</h1>
+
+	<h2>h2. This is a large header.</h2>
+
+	<h3>h3. This is a medium header.</h3>
+	<h4>h4. This is a moderate header.</h4>
+	<h5>h5. This is a small header.</h5>
+	<h6>h6. This is a tiny header.</h6>
+
+	<hr/>
+
+	<p>This is a paragraph. Paragraphs are preset with a font size, line height and spacing to match the overall
+		vertical rhythm. To show what a paragraph looks like this needs a little more content so, did you know that
+		there are storms occurring on Jupiter that are larger than the Earth? Pretty cool. Wrap "strong" around type to
+		<strong>make it bold!</strong>. You can also "em" to <em>italicize your words</em>.</p>
+
+	<p>Links are very standard, and the <a href="#">color is preset</a> to the Foundation primary color.</p>
+
+
+	<f:comment>
+		****************************************
+		Panel
+		****************************************
+	</f:comment>
+
+	<div class="panel">
+		Basic panel with content.
+	</div>
+
+
+	<f:comment>
+		****************************************
+		Table
+		****************************************
+	</f:comment>
+
+	<table class="typo3-dblist">
+		<thead>
+			<tr class="t3-row-header">
+				<th colspan="2" width="200">Table Header</th>
+				<th>Table Header</th>
+				<th width="150">Table Header</th>
+				<th width="150">Table Header</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="icon"></td>
+				<td>Content Goes Here</td>
+				<td>This is longer content Donec id elit non mi porta gravida at eget metus.</td>
+				<td>Content Goes Here</td>
+			</tr>
+			<tr>
+				<td class="icon"></td>
+				<td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
+				<td>Content Goes Here</td>
+				<td>Content Goes Here</td>
+			</tr>
+			<tr>
+				<td class="icon"></td>
+				<td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
+				<td>Content Goes Here</td>
+				<td>Content Goes Here</td>
+			</tr>
+		</tbody>
+	</table>
+
+
+	<f:comment>
+		****************************************
+		Lists
+		****************************************
+	</f:comment>
+
+	<h2>Lists</h2>
+
+	<p>Lists are helpful for, well, lists of things.</p>
+
+	<!-- Use .circle or .square to change the style of the bullets -->
+	<ul class="disc">
+		<li>List item with a much longer description or more content.</li>
+		<li>List item</li>
+		<li>List item
+			<ul>
+				<li>Nested List Item</li>
+				<li>Nested List Item</li>
+				<li>Nested List Item</li>
+			</ul>
+		</li>
+		<li>List item</li>
+		<li>List item</li>
+		<li>List item</li>
+	</ul>
+
+	<!-- Sometimes you don't want bullets at all -->
+	<ul class="no-bullet">
+		<li>List item with a much longer description or more content.</li>
+		<li>List item</li>
+		<li>List item
+			<ul>
+				<li>Nested List Item</li>
+				<li>Nested List Item</li>
+				<li>Nested List Item</li>
+			</ul>
+		</li>
+		<li>List item</li>
+	</ul>
+
+	<!-- Ordered lists are great for lists that need order, duh -->
+	<ol>
+		<li>List Item 1</li>
+		<li>List Item 2</li>
+		<li>List Item 3</li>
+	</ol>
+
+	<!-- Definition lists are great for small block of copy that describe the header -->
+	<dl>
+		<dt>Definition List</dt>
+		<dd>Definition Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam id dolor id nibh ultricies
+			vehicula ut id elit.
+		</dd>
+	</dl>
+
+
+	<f:comment>
+		****************************************
+		Blockquotes
+		****************************************
+	</f:comment>
+
+	<h2>Blockquotes</h2>
+
+	<p>Sometimes other people say smart things, and you may want to mention that through a blockquote callout. We've got
+		you covered.</p>
+
+	<blockquote>I do not fear computers. I fear the lack of them. Maecenas faucibus mollis interdum. Aenean lacinia
+		bibendum nulla sed consectetur.<cite>Isaac Asimov</cite></blockquote>
+
+
+	<f:comment>
+		****************************************
+		Pagination
+		****************************************
+	</f:comment>
+
+	<h2>Pagination</h2>
+
+	<ul class="pagination">
+		<li class="arrow unavailable"><a href="">&laquo;</a></li>
+		<li class="current"><a href="">1</a></li>
+		<li><a href="">2</a></li>
+		<li><a href="">3</a></li>
+		<li><a href="">4</a></li>
+		<li class="unavailable"><a href="">&hellip;</a></li>
+		<li><a href="">12</a></li>
+		<li><a href="">13</a></li>
+		<li class="arrow"><a href="">&raquo;</a></li>
+	</ul>
+
+
+	<f:comment>
+		****************************************
+		Breadcrumbs
+		****************************************
+	</f:comment>
+
+	<h2>Breadcrumbs</h2>
+
+	<!-- You can also use this markup -->
+	<nav class="breadcrumbs">
+		<a href="#">Home</a>
+		<a href="#">Features</a>
+		<a class="unavailable" href="#">Gene Splicing</a>
+		<a class="current" href="#">Cloning</a>
+	</nav>
+
+
+	<f:comment>
+		****************************************
+		Buttons
+		****************************************
+	</f:comment>
+
+	<h2>Buttons</h2>
+
+	<!-- Size Classes -->
+	<a href="#" class="button">Default Button</a>
+	<a href="#" class="tiny button">Tiny Button</a>
+	<a href="#" class="small button">Small Button</a>
+	<a href="#" class="large button">Large Button</a>
+
+	<!-- Color Classes -->
+	<a href="#" class="button secondary">Secondary Button</a>
+	<a href="#" class="button success">Success Button</a>
+	<a href="#" class="button alert">Alert Button</a>
+
+	<!-- Radius Classes -->
+	<a href="#" class="button radius">Radius Button</a>
+	<a href="#" class="button round">Round Button</a>
+
+	<!-- Disabled Class -->
+	<a href="#" class="button disabled">Disabled Button</a>
+
+</f:section>

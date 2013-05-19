@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-05-01T00:00:000" product-name="styleguide">
+		<header/>
+		<body>
+			<trans-unit id="backendStyleguide" xml:space="preserve">
+				<source>TYPO3 CMS Backend Styleguide</source>
+			</trans-unit>
+			<trans-unit id="welcome" xml:space="preserve">
+				<source>Welcome</source>
+			</trans-unit>
+			<trans-unit id="index" xml:space="preserve">
+				<source>Index</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
