@@ -464,8 +464,8 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.text',
 			'config' => array(
 				'type' => 'text',
-				'cols' => '48',
-				'rows' => '5',
+				'cols' => '80',
+				'rows' => '15',
 				'wizards' => array(
 					'_PADDING' => 4,
 					'_VALIGN' => 'middle',
