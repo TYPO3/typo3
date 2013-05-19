@@ -2561,7 +2561,8 @@ function ' . $evalData . '(value) {
 	 */
 	public function getSingleField_typeFlex($table, $field, $row, &$PA) {
 		// Data Structure:
-		$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($PA['fieldConf']['config'], $row, $table);
+		$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($PA['fieldConf']['config'], $row, $table, $field);
+
 		$item = '';
 		// Manipulate Flexform DS via TSConfig and group access lists
 		if (is_array($dataStructArray)) {
