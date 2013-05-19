@@ -299,12 +299,15 @@ class FileListController {
 			// add the folder info to the marker array
 			$otherMarkers['FOLDER_INFO'] = $this->filelist->getFolderInfo();
 			$docHeaderButtons = array_merge($this->getButtons(), $buttons);
+
 			// Build the <body> for the module
 			// Create output
-			$pageContent = '';
+			$pageContent = $this->getModuleHeadline() ? '<h1>' . $this->getModuleHeadline() . '</h1>' : '';
+
 			$pageContent .= '<form action="' . htmlspecialchars($this->filelist->listURL()) . '" method="post" name="dblistForm">';
 			$pageContent .= $this->filelist->HTMLcode;
 			$pageContent .= '<input type="hidden" name="cmd" /></form>';
+
 			// Making listing options:
 			if ($this->filelist->HTMLcode) {
 				$pageContent .= '
@@ -352,6 +355,19 @@ class FileListController {
 			// Create output - no access (no warning though)
 			$this->content = $this->doc->render($GLOBALS['LANG']->getLL('files'), $content);
 		}
+	}
+
+	/**
+	 * Get main headline based on active folder for backend module
+	 *
+	 * @return string
+	 */
+	protected function getModuleHeadline() {
+		if (!$this->folderObject || !$this->folderObject->getName()) {
+			return;
+		}
+
+		return $this->folderObject->getName();
 	}
 
 	/**
