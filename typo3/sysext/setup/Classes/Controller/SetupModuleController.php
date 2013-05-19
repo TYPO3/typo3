@@ -447,7 +447,7 @@ class SetupModuleController {
 					if ($this->dividers2tabs) {
 						$result[] = array(
 							'label' => $tabLabel,
-							'content' => count($code) ? $this->doc->spacer(20) . $this->doc->table($code) : ''
+							'content' => count($code) ? $this->doc->table($code) : ''
 						);
 						$tabLabel = $this->getLabel(substr($fieldName, 8), '', FALSE);
 						$i = 0;
@@ -550,7 +550,7 @@ class SetupModuleController {
 		}
 		$result[] = array(
 			'label' => $tabLabel,
-			'content' => count($code) ? $this->doc->spacer(20) . $this->doc->table($code) : ''
+			'content' => count($code) ? $this->doc->table($code) : ''
 		);
 		return $result;
 	}
