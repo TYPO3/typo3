@@ -26,6 +26,8 @@ namespace TYPO3\CMS\Styleguide\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+
 /**
  * Backend module for Styleguide
  */
@@ -35,6 +37,21 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * Index
 	 */
 	public function indexAction() {
+		$this->flashMessageContainer->add($this->getLoremIpsum(), 'Title for Info message', FlashMessage::INFO, TRUE);
+		$this->flashMessageContainer->add($this->getLoremIpsum(), 'Title for Info message', FlashMessage::NOTICE, TRUE);
+		$this->flashMessageContainer->add($this->getLoremIpsum(), 'Title for Info message', FlashMessage::ERROR, TRUE);
+		$this->flashMessageContainer->add($this->getLoremIpsum(), 'Title for Info message', FlashMessage::OK, TRUE);
+		$this->flashMessageContainer->add($this->getLoremIpsum(), 'Title for Info message', FlashMessage::WARNING, TRUE);
+
+	}
+
+	/**
+	 * Lorem ipsum test with fixed length
+	 *
+	 * @return string
+	 */
+	protected function getLoremIpsum() {
+		return 'Bacon ipsum dolor sit amet capicola jerky pork chop rump shoulder shank. Shankle strip steak pig salami. Leberkas shoulder ham hock cow salami bacon pork pork chop, jerky pork belly drumstick ham. Tri-tip strip steak sirloin prosciutto pastrami. Corned beef venison tenderloin, biltong meatball pork tongue short ribs jowl cow hamburger strip steak. Doner turducken jerky short loin chuck filet mignon.';
 	}
 
 }
