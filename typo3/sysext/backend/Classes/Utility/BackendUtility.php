@@ -2618,30 +2618,32 @@ class BackendUtility {
 	 * @return string HTML code for selector box
 	 */
 	static public function getFuncMenu($mainParams, $elementName, $currentValue, $menuItems, $script = '', $addparams = '') {
-		if (is_array($menuItems)) {
-			if (!is_array($mainParams)) {
-				$mainParams = array('id' => $mainParams);
-			}
-			$mainParams = GeneralUtility::implodeArrayForUrl('', $mainParams);
-			if (!$script) {
-				$script = basename(PATH_thisScript);
-				$mainParams .= GeneralUtility::_GET('M') ? '&M=' . rawurlencode(GeneralUtility::_GET('M')) : '';
-			}
-			$options = array();
-			foreach ($menuItems as $value => $label) {
-				$options[] = '<option value="' . htmlspecialchars($value) . '"' . (!strcmp($currentValue, $value) ? ' selected="selected"' : '') . '>' . GeneralUtility::deHSCentities(htmlspecialchars($label)) . '</option>';
-			}
-			if (count($options)) {
-				$onChange = 'jumpToUrl(\'' . $script . '?' . $mainParams . $addparams . '&' . $elementName . '=\'+this.options[this.selectedIndex].value,this);';
-				return '
+		if (!is_array($menuItems) || count($menuItems) <= 1) {
+			return '';
+		}
 
-					<!-- Function Menu of module -->
-					<select name="' . $elementName . '" onchange="' . htmlspecialchars($onChange) . '">
-						' . implode('
-						', $options) . '
-					</select>
-							';
-			}
+		if (!is_array($mainParams)) {
+			$mainParams = array('id' => $mainParams);
+		}
+		$mainParams = GeneralUtility::implodeArrayForUrl('', $mainParams);
+		if (!$script) {
+			$script = basename(PATH_thisScript);
+			$mainParams .= GeneralUtility::_GET('M') ? '&M=' . rawurlencode(GeneralUtility::_GET('M')) : '';
+		}
+		$options = array();
+		foreach ($menuItems as $value => $label) {
+			$options[] = '<option value="' . htmlspecialchars($value) . '"' . (!strcmp($currentValue, $value) ? ' selected="selected"' : '') . '>' . GeneralUtility::deHSCentities(htmlspecialchars($label)) . '</option>';
+		}
+		if (count($options)) {
+			$onChange = 'jumpToUrl(\'' . $script . '?' . $mainParams . $addparams . '&' . $elementName . '=\'+this.options[this.selectedIndex].value,this);';
+			return '
+
+				<!-- Function Menu of module -->
+				<select name="' . $elementName . '" onchange="' . htmlspecialchars($onChange) . '">
+					' . implode('
+					', $options) . '
+				</select>
+						';
 		}
 	}
 
