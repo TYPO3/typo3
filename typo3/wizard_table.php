@@ -347,6 +347,7 @@ class SC_wizard_table {
 			// Traverse the rows:
 		$tRows=array();
 		$k=0;
+		$countLines = count($cfgArr);
 		foreach($cfgArr as $cellArr)	{
 			if (is_array($cellArr))	{
 					// Initialize:
@@ -379,8 +380,7 @@ class SC_wizard_table {
 				}
 				$ctrl.='<input type="image" name="TABLE[row_remove]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').$onClick.' title="'.$LANG->getLL('table_removeRow',1).'" />'.$brTag;
 
-// FIXME what is $tLines? See wizard_forms.php for the same.
-				if (($k+1)!=count($tLines))	{
+				if ($k + 1 != $countLines) {
 					$ctrl.='<input type="image" name="TABLE[row_down]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2down.gif','').$onClick.' title="'.$LANG->getLL('table_down',1).'" />'.$brTag;
 				} else {
 					$ctrl.='<input type="image" name="TABLE[row_top]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_down.gif','').$onClick.' title="'.$LANG->getLL('table_top',1).'" />'.$brTag;
