@@ -134,7 +134,7 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 				}
 			}
 
-			if (isset($postValues['port'])) {
+			if (isset($postValues['port']) && $postValues['host'] !== 'localhost') {
 				$value = $postValues['port'];
 				if (preg_match('/^[0-9]+(:.+)?$/', $value) && $value > 0 && $value <= 65535) {
 					$localConfigurationPathValuePairs['DB/port'] = (int)$value;
@@ -142,7 +142,19 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 					/** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
 					$errorStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
 					$errorStatus->setTitle('Database port not valid');
-					$errorStatus->setMessage('Given port is not numeric or within range 1 to 65535');
+					$errorStatus->setMessage('Given port is not numeric or within range 1 to 65535.');
+					$result[] = $errorStatus;
+				}
+			}
+
+			if (isset($postValues['socket']) && $postValues['socket'] !== '') {
+				if (@file_exists($postValues['socket'])) {
+					$localConfigurationPathValuePairs['DB/socket'] = $postValues['socket'];
+				} else {
+					/** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
+					$errorStatus = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+					$errorStatus->setTitle('Socket does not exist');
+					$errorStatus->setMessage('Given socket location does not exist on server.');
 					$result[] = $errorStatus;
 				}
 			}
@@ -196,7 +208,7 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 			return TRUE;
 		}
 		if (!isset($GLOBALS['TYPO3_CONF_VARS']['DB']['host'])
-			|| !isset($GLOBALS['TYPO3_CONF_VARS']['DB']['port'])
+			|| (!isset($GLOBALS['TYPO3_CONF_VARS']['DB']['port']) && $GLOBALS['TYPO3_CONF_VARS']['DB']['host'] !== 'localhost')
 		) {
 			return TRUE;
 		}
@@ -218,7 +230,8 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 			->assign('password', $GLOBALS['TYPO3_CONF_VARS']['DB']['password'] ?: '')
 			->assign('host', $this->getConfiguredHost() ?: '127.0.0.1')
 			->assign('port', $this->getConfiguredOrDefaultPort())
-			->assign('database', $GLOBALS['TYPO3_CONF_VARS']['DB']['database'] ?: '');
+			->assign('database', $GLOBALS['TYPO3_CONF_VARS']['DB']['database'] ?: '')
+			->assign('socket', $GLOBALS['TYPO3_CONF_VARS']['DB']['socket'] ?: '');
 
 		if ($isDbalEnabled) {
 			$this->view->assign('selectedDbalDriver', $this->getSelectedDbalDriver());
@@ -229,7 +242,8 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 				->assign('renderConnectDetailsUsername', TRUE)
 				->assign('renderConnectDetailsPassword', TRUE)
 				->assign('renderConnectDetailsHost', TRUE)
-				->assign('renderConnectDetailsPort', TRUE);
+				->assign('renderConnectDetailsPort', TRUE)
+				->assign('renderConnectDetailsSocket', TRUE);
 		}
 
 		return $this->view->render();
@@ -329,6 +343,7 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 		$databaseConnection->setDatabasePassword($password);
 		$databaseConnection->setDatabaseHost($this->getConfiguredHost());
 		$databaseConnection->setDatabasePort($this->getConfiguredPort());
+		$databaseConnection->setDatabaseSocket($this->getConfiguredSocket());
 
 		$result = FALSE;
 		if (@$databaseConnection->sql_pconnect()) {
@@ -486,6 +501,16 @@ class DatabaseConnect extends Action\AbstractAction implements StepInterface {
 			$port = $hostPortArray[1];
 		}
 		return (int)$port;
+	}
+
+	/**
+	 * Returns configured socket, if set
+	 *
+	 * @return string|NULL
+	 */
+	protected function getConfiguredSocket() {
+		$socket = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['socket']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['socket'] : NULL;
+		return $socket;
 	}
 }
 ?>

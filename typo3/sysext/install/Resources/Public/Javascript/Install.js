@@ -57,4 +57,24 @@ $(document).ready(function() {
 		}
 	});
 
+	$('#t3-install-step-type').change(function() {
+		var connectionType = $(this).val(),
+			hostField = $('#t3-install-step-host'),
+			portField = $('#t3-install-step-port'),
+			socketField = $('#t3-install-step-socket');
+
+		if (connectionType === 'socket') {
+			hostField.parent().fadeOut();
+			hostField.val('localhost');
+			portField.parent().fadeOut();
+			socketField.parent().fadeIn();
+		} else {
+			hostField.parent().fadeIn();
+			if (hostField.val() === 'localhost') {
+				hostField.val('127.0.0.1');
+			}
+			portField.parent().fadeIn();
+			socketField.parent().fadeOut();
+		}
+	}).trigger('change');
 });

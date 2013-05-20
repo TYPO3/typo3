@@ -185,6 +185,7 @@ abstract class AbstractAction {
 			$database->setDatabasePassword($GLOBALS['TYPO3_CONF_VARS']['DB']['password']);
 			$database->setDatabaseHost($GLOBALS['TYPO3_CONF_VARS']['DB']['host']);
 			$database->setDatabasePort($GLOBALS['TYPO3_CONF_VARS']['DB']['port']);
+			$database->setDatabaseSocket($GLOBALS['TYPO3_CONF_VARS']['DB']['socket']);
 			$database->setDatabaseName($GLOBALS['TYPO3_CONF_VARS']['DB']['database']);
 			$database->connectDB();
 		}
