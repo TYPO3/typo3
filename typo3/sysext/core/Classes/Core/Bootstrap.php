@@ -677,7 +677,6 @@ class Bootstrap {
 	/**
 	 * Initialize database connection in $GLOBALS and connect if requested
 	 *
-	 * @param boolean $connect Whether db should be connected
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
@@ -695,6 +694,9 @@ class Bootstrap {
 			// @TODO: Find a way to handle this case in the install tool and drop this
 			list($databaseHost, $databasePort) = explode(':', $databaseHost);
 			$databaseConnection->setDatabasePort($databasePort);
+		}
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['DB']['socket'])) {
+			$databaseConnection->setDatabaseSocket($GLOBALS['TYPO3_CONF_VARS']['DB']['socket']);
 		}
 		$databaseConnection->setDatabaseHost($databaseHost);
 
