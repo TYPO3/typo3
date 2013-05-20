@@ -581,7 +581,8 @@ class PageLayoutController {
 				'closedok' => '',
 				'deletedok' => '',
 				'undo' => '',
-				'history_record' => ''
+				'history_record' => '',
+				'edit_language' => ''
 			);
 			$markers = array(
 				'CSH' => BackendUtility::cshItem($this->descrTable, '', $GLOBALS['BACK_PATH'], '', TRUE),
@@ -1004,6 +1005,7 @@ class PageLayoutController {
 			'move_record' => '',
 			'new_page' => '',
 			'edit_page' => '',
+			'edit_language' => '',
 			'csh' => '',
 			'shortcut' => '',
 			'cache' => '',
@@ -1030,11 +1032,46 @@ class PageLayoutController {
 			if (MathUtility::canBeInterpretedAsInteger($this->eRParts[1])) {
 				$buttons['move_record'] = '<a href="' . htmlspecialchars(($GLOBALS['BACK_PATH'] . 'move_el.php?table=' . $this->eRParts[0] . '&uid=' . $this->eRParts[1] . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '">' . IconUtility::getSpriteIcon(('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move'), array('class' => 'c-inputButton', 'title' => $GLOBALS['LANG']->getLL(('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page')), 1))) . '</a>';
 			}
-			// Edit page properties
+
+			// Edit page properties and page language overlay icons
 			if ($this->CALC_PERMS & 2) {
-				$params = '&edit[pages][' . $this->id . ']=edit';
-				$buttons['edit_page'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'])) . '" title="' . $GLOBALS['LANG']->getLL('editPageProperties', TRUE) . '">' . IconUtility::getSpriteIcon('actions-page-open') . '</a>';
+
+				// Edit localized page_language_overlay only when one specific language is selected
+				if ($this->MOD_SETTINGS['function'] == 1 && $this->current_sys_language > 0) {
+					$overlayRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+						'uid',
+						'pages_language_overlay',
+						'pid = ' . intval($this->id) . ' ' .
+						'AND sys_language_uid = ' . intval($this->current_sys_language) .
+						\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages_language_overlay') .
+						\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
+						'',
+						'',
+						'',
+						'sys_language_uid'
+					);
+
+					$editLanguageOnClick = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(
+						'&edit[pages_language_overlay][' . $overlayRecord['uid'] . ']=edit',
+						$GLOBALS['BACK_PATH'])
+					);
+					$buttons['edit_language'] = '<a href="#" ' .
+						'onclick="' . $editLanguageOnClick . '"' .
+						'title="' . $GLOBALS['LANG']->getLL('editPageLanguageOverlayProperties', TRUE) . '">' .
+						\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('mimetypes-x-content-page-language-overlay') .
+						'</a>';
+				}
+
+
+				// Edit page properties
+				$editPageOnClick = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[pages][' . $this->id . ']=edit', $GLOBALS['BACK_PATH']));
+				$buttons['edit_page'] = '<a href="#" ' .
+					'onclick="' . $editPageOnClick . '"' .
+					'title="' . $GLOBALS['LANG']->getLL('editPageProperties', TRUE) . '">' .
+					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-open') .
+					'</a>';
 			}
+
 			// Add CSH (Context Sensitive Help) icon to tool bar
 			if ($function == 'quickEdit') {
 				$buttons['csh'] = BackendUtility::cshItem($this->descrTable, 'quickEdit', $GLOBALS['BACK_PATH'], '', TRUE, 'margin-top: 0px; margin-bottom: 0px;');
