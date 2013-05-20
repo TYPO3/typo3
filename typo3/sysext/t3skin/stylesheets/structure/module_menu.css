@@ -5,6 +5,12 @@ Module menu
 
 #typo3-menu {
 	padding-top: 24px;
+	bottom: 0;
+	overflow: auto;
+	position: absolute;
+	top: 30px;
+	width: 100%;
+	z-index: 2;
 }
 
 #typo3-module-menu .x-panel-body {

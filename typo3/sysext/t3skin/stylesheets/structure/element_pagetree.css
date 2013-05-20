@@ -41,7 +41,7 @@ Pagetree
 
 #typo3-pagetree .x-panel-tbar .x-toolbar {
 	padding-top: 7px;
-	height: 20px;
+	height: 23px;
 }
 
 #typo3-pagetree .x-toolbar-ct {
@@ -121,11 +121,11 @@ Pagetree
 
 .typo3-pagetree-topPanel-item {
 	padding: 0 3px 0 3px;
-	height: 22px;
+	height: 24px;
 }
 
 #typo3-pagetree-topPanel-filterWrap {
-	height: 22px;
+	height: 24px;
 }
 
 #typo3-pagetree-topPanel-filter {
@@ -142,8 +142,8 @@ Pagetree
 #typo3-pagetree .typo3-pagetree-topPanel-button {
 	margin-right: 1px;
 	margin-top: -2px;
-	margin-bottom: -2px;
-	padding: 2px 3px 4px 3px;
+	margin-bottom: -3px;
+	padding: 2px 3px 7px 3px;
 }
 
 #typo3-pagetree-topPanel-defaultPanel {

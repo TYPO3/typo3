@@ -30,7 +30,6 @@ body#typo3-alt-file-navframe-php {
 
 #typo3-alt-file-navframe-php #typo3-docheader-row1,
 #typo3-pagetree-topPanelItems,
-#typo3-pagetree .x-panel-tbar,
 #typo3-pagetree-deletionDropZone .x-panel-body {
 	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAYAAAAb4BS0AAAAGElEQVR42gENAPL/AEBAQExAQECzQEBA/xb3BD8CHBN0AAAAAElFTkSuQmCC");
 	/* star-hack targets IE7 */

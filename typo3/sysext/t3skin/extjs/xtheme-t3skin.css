@@ -2271,23 +2271,7 @@ body.ext-chrome #typo3-navigationContainer-xsplit {
    If no tree frame is in use, an empty container is shown instead */
 #typo3-navigationContainer-xcollapsed,
 #typo3-navigationDummy {
-	background-color: #ebebeb;
-	-moz-box-shadow:
-		inset -2px 0 1px rgba(0, 0, 0, 0.15),
-		inset 0 27px #585858,
-		inset 0 49px #dadada;
-	-ms-box-shadow:
-		inset -2px 0 1px rgba(0, 0, 0, 0.15),
-		inset 0 27px #585858,
-		inset 0 49px #dadada;
-	-webkit-box-shadow:
-		inset -2px 0 1px rgba(0, 0, 0, 0.15),
-		inset 0 27px #585858,
-		inset 0 49px #dadada;
-	box-shadow:
-		inset -2px 0 1px rgba(0, 0, 0, 0.15),
-		inset 0 27px #585858,
-		inset 0 49px #dadada;
+	background: #ebebeb url('../extjs/images/splitbar/splitbar-background-top.png') left top repeat-x;
 	overflow: visible;
 }
 

@@ -51,7 +51,14 @@ Pagetree
 }
 
 #typo3-pagetree .x-panel-tbar {
-	background-color: #585858;
+	background: #feb145; /* Old browsers */
+	background: -moz-linear-gradient(top,  #feb145 0%, #fda632 1%, #ea6e26 98%, #ea6e28 99%, #f08041 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#feb145), color-stop(1%,#fda632), color-stop(98%,#ea6e26), color-stop(99%,#ea6e28), color-stop(100%,#f08041)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #feb145 0%,#fda632 1%,#ea6e26 98%,#ea6e28 99%,#f08041 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #feb145 0%,#fda632 1%,#ea6e26 98%,#ea6e28 99%,#f08041 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #feb145 0%,#fda632 1%,#ea6e26 98%,#ea6e28 99%,#f08041 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #feb145 0%,#fda632 1%,#ea6e26 98%,#ea6e28 99%,#f08041 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feb145', endColorstr='#f08041',GradientType=0 ); /* IE6-9 */
 	border: none;
 }
 
@@ -161,12 +168,12 @@ Pagetree
 
 #typo3-pagetree-topPanel .x-btn-click,
 #typo3-pagetree-topPanel .x-btn-over {
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAWCAIAAACKUbHAAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAD9JREFUCB19wdERAUAARDEv23+FmsGZG38Sz0sfKoXEppDKyldyxBzzM1eObWYMM5Zr/ipEWRm9UXnr0OVxvQAaNAkk1SzJpgAAAABJRU5ErkJggg==");
+	background: #fff url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAWCAIAAACKUbHAAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAD9JREFUCB19wdERAUAARDEv23+FmsGZG38Sz0sfKoXEppDKyldyxBzzM1eObWYMM5Zr/ipEWRm9UXnr0OVxvQAaNAkk1SzJpgAAAABJRU5ErkJggg==");
 	*background-image: url("../../images/backgrounds/docheader-pagetree-button-hover.png");
 }
 
 #typo3-pagetree-topPanel .x-btn-pressed {
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAAWCAIAAABlk9r+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADtJREFUCB0FwYENADAMw6Ap/79cPFhV7b333ltVDdWqWLkaxYABc7AL5nDj7gw0cMMxxCCrXLtTVmhV+SoifU9efLPxAAAAAElFTkSuQmCC");
+	background: #DADADA url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAAWCAIAAABlk9r+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADtJREFUCB0FwYENADAMw6Ap/79cPFhV7b333ltVDdWqWLkaxYABc7AL5nDj7gw0cMMxxCCrXLtTVmhV+SoifU9efLPxAAAAAElFTkSuQmCC");
 	*background-image: url("../../images/backgrounds/docheader-pagetree-button.png");
 }
 

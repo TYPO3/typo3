@@ -144,7 +144,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 				id: this.id + '-topPanelItems',
 				border: false,
 				region: 'north',
-				height: 49,
+				height: 52,
 				items: [
 					topPanel, {
 						border: false,

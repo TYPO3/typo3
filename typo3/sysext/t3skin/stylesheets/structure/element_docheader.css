@@ -4,8 +4,8 @@
 
 .typo3-docheader-functions {
 	color: #dadada;
-	height: 27px;
-	line-height: 27px;
+	height: 30px;
+	line-height: 30px;
 	padding: 0 24px;
 	overflow: hidden;
 }
@@ -51,8 +51,8 @@
 /** Behave like .typo3-docheader-functions */
 #typo3-docheader-row2 {
 	color: #dadada;
-	height: 27px;
-	line-height: 27px;
+	height: 30px;
+	line-height: 30px;
 	padding: 0 12px;
 	overflow: hidden;
 
@@ -71,7 +71,7 @@
 	padding: 3px 12px;
 	overflow: hidden;
 
-	margin-top: 27px;
+	margin-top: 30px;
 }
 
 #typo3-docheader .docheader-row2-left,

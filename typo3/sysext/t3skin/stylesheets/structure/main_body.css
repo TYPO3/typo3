@@ -50,7 +50,7 @@ div#typo3-docbody {
 	bottom: 0;
 	overflow: auto;
 	position: absolute;
-	top: 49px;
+	top: 52px;
 	width: 100%;
 	z-index: 2;
 }
@@ -69,5 +69,5 @@ div#typo3-inner-docbody {
 	height: 90%;
 	padding-bottom: 0;
 	padding-top: 0;
-	top: 51px;
+	top: 54px;
 }
