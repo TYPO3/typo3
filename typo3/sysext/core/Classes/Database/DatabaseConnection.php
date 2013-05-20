@@ -106,6 +106,11 @@ class DatabaseConnection {
 	protected $databasePort = 3306;
 
 	/**
+	 * @var string|NULL Database socket to connect to
+	 */
+	protected $databaseSocket = NULL;
+
+	/**
 	 * @var string Database name to connect to
 	 */
 	protected $databaseName = '';
@@ -1184,7 +1189,7 @@ class DatabaseConnection {
 			$this->databaseUserPassword,
 			NULL,
 			$this->databasePort,
-			NULL,
+			$this->databaseSocket,
 			$this->connectionCompression ? MYSQLI_CLIENT_COMPRESS : 0
 		);
 
@@ -1435,6 +1440,16 @@ class DatabaseConnection {
 	public function setDatabasePort($port = 3306) {
 		$this->disconnectIfConnected();
 		$this->databasePort = (int)$port;
+	}
+
+	/**
+	 * Set database socket
+	 *
+	 * @param string|NULL $socket
+	 */
+	public function setDatabaseSocket($socket = NULL) {
+		$this->disconnectIfConnected();
+		$this->databaseSocket = $socket;
 	}
 
 	/**
@@ -1814,6 +1829,7 @@ class DatabaseConnection {
 			'explainOutput',
 			'databaseHost',
 			'databasePort',
+			'databaseSocket',
 			'databaseName',
 			'databaseUsername',
 			'databaseUserPassword',
