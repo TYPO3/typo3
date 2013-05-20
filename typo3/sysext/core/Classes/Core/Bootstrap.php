@@ -271,7 +271,9 @@ class Bootstrap {
 			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Components.PageTree.ContextMenuDataProvider', 'TYPO3\\CMS\\Backend\\ContextMenu\\Pagetree\\Extdirect\\ContextMenuConfiguration', 'web', 'user,group');
 			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.LiveSearchActions.ExtDirect', 'TYPO3\\CMS\\Backend\\Search\\LiveSearch\\ExtDirect\\LiveSearchDataProvider', 'web_list', 'user,group');
 			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.BackendUserSettings.ExtDirect', 'TYPO3\\CMS\\Backend\\User\\ExtDirect\\BackendUserSettingsDataProvider');
-			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.CSH.ExtDirect', 'TYPO3\\CMS\\ContextHelp\\ExtDirect\\ContextHelpDataProvider');
+			if (Utility\ExtensionManagementUtility::isLoaded('context_help')) {
+				Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.CSH.ExtDirect', 'TYPO3\\CMS\\ContextHelp\\ExtDirect\\ContextHelpDataProvider');
+			}
 			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.ExtDirectStateProvider.ExtDirect', 'TYPO3\\CMS\\Backend\\InterfaceState\\ExtDirect\\DataProvider');
 			Utility\ExtensionManagementUtility::registerExtDirectComponent(
 				'TYPO3.Components.DragAndDrop.CommandController',
