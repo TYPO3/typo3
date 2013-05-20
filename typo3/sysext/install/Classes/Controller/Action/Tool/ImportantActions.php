@@ -82,6 +82,7 @@ class ImportantActions extends Action\AbstractAction implements Action\ActionInt
 			->assign('databaseUsername', $GLOBALS['TYPO3_CONF_VARS']['DB']['username'])
 			->assign('databaseHost', $GLOBALS['TYPO3_CONF_VARS']['DB']['host'])
 			->assign('databasePort', $GLOBALS['TYPO3_CONF_VARS']['DB']['port'])
+			->assign('databaseSocket', $GLOBALS['TYPO3_CONF_VARS']['DB']['socket'])
 			->assign('databaseNumberOfTables', count($this->getDatabase()->admin_get_tables()));
 
 		return $this->view->render();

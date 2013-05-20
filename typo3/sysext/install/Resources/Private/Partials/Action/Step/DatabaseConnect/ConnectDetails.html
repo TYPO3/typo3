@@ -7,35 +7,49 @@
 			<f:if condition="{renderConnectDetailsUsername}">
 				<li>
 					<label for="t3-install-step-username">Username</label>
-					<input id="t3-install-step-username" class="t3-install-form-input-text" type="text" value="{username}" name="install[values][username]">
+					<input id="t3-install-step-username" class="t3-install-form-input-text" type="text" value="{username}" name="install[values][username]" />
 				</li>
 			</f:if>
 
 			<f:if condition="{renderConnectDetailsPassword}">
 				<li>
 					<label for="t3-install-step-password">Password</label>
-					<input id="t3-install-step-password" class="t3-install-form-input-text" type="password" value="{password}" name="install[values][password]">
+					<input id="t3-install-step-password" class="t3-install-form-input-text" type="password" value="{password}" name="install[values][password]" />
 				</li>
 			</f:if>
 
 			<f:if condition="{renderConnectDetailsHost}">
 				<li>
+					<label for="t3-install-step-type">Type</label>
+					<select id="t3-install-step-type">
+						<option value="tcp">TCP/IP based connection</option>
+						<option value="socket" {f:if(condition:'{host} == \'localhost\'',then:'selected="selected"')}>Socket based connection</option>
+					</select>
+				</li>
+				<li>
 					<label for="t3-install-step-host">Host</label>
-					<input id="t3-install-step-host" class="t3-install-form-input-text" type="text" value="{host}" name="install[values][host]">
+					<input id="t3-install-step-host" class="t3-install-form-input-text" type="text" value="{host}" name="install[values][host]" />
 				</li>
 			</f:if>
 
 			<f:if condition="{renderConnectDetailsPort}">
 				<li>
 					<label for="t3-install-step-port">Port</label>
-					<input id="t3-install-step-port" class="t3-install-form-input-text" type="text" value="{port}" name="install[values][port]">
+					<input id="t3-install-step-port" class="t3-install-form-input-text" type="text" value="{port}" name="install[values][port]" />
+				</li>
+			</f:if>
+
+			<f:if condition="{renderConnectDetailsSocket}">
+				<li>
+					<label for="t3-install-step-socket">Socket</label>
+					<input id="t3-install-step-socket" class="t3-install-form-input-text" type="text" value="{socket}" name="install[values][socket]" placeholder="Default socket or enter name" />
 				</li>
 			</f:if>
 
 			<f:if condition="{renderConnectDetailsDatabase}">
 				<li>
 					<label for="t3-install-step-database">Database</label>
-					<input id="t3-install-step-database" class="t3-install-form-input-text" type="text" value="{database}" name="install[values][database]">
+					<input id="t3-install-step-database" class="t3-install-form-input-text" type="text" value="{database}" name="install[values][database]" />
 				</li>
 			</f:if>
 
