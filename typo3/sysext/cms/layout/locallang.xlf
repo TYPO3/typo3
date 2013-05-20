@@ -108,6 +108,9 @@
 			<trans-unit id="editPageProperties" xml:space="preserve">
 				<source>Edit page properties</source>
 			</trans-unit>
+			<trans-unit id="editPageLanguageOverlayProperties" xml:space="preserve">
+				<source>Edit page language overlay properties</source>
+			</trans-unit>
 			<trans-unit id="newRecordGeneral" xml:space="preserve">
 				<source>Create new record</source>
 			</trans-unit>
