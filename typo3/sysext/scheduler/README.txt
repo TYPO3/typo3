@@ -1,1 +1,0 @@
-The TYPO3 Scheduler makes it possible to manage cron jobs in a centralized way. Please refer to the manual for more details.
