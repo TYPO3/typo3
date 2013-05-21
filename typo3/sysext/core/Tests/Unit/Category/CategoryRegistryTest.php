@@ -91,6 +91,15 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
+	 * @expectedException \RuntimeException
+	 * @expectedExceptionCode 1369122038
+	 */
+	public function doesAddThrowExceptionOnEmptyAdds() {
+		$this->fixture->add('test_extension_a', '', 'categories');
+	}
+
+	/**
+	 * @test
 	 */
 	public function areMultipleElementsOfSameExtensionRegistered() {
 		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
@@ -176,13 +185,35 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function areDefaultCategorizedTabledLoaded() {
+	public function areDefaultCategorizedTablesLoaded() {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables'] = $this->tables['first'] . ',' . $this->tables['second'];
 		$this->fixture->applyTca();
 
 		$registry = $this->fixture->get();
 		$this->assertCount(2, $registry['core']);
 		$this->assertSame(key($registry['core']), $this->tables['first']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function areEmptyStringDefaultCategorizedTablesLoaded() {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables'] = '';
+		$this->fixture->applyTca();
+
+		$registry = $this->fixture->get();
+		$this->assertNull($registry['core']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function areNullDefaultCategorizedTablesLoaded() {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables'] = NULL;
+		$this->fixture->applyTca();
+
+		$registry = $this->fixture->get();
+		$this->assertNull($registry['core']);
 	}
 
 	/**
