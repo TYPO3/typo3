@@ -42,12 +42,19 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		$this->flashMessageContainer->add($this->getLoremIpsum(), 'Title for Info message', FlashMessage::ERROR, TRUE);
 		$this->flashMessageContainer->add($this->getLoremIpsum(), 'Title for Info message', FlashMessage::OK, TRUE);
 		$this->flashMessageContainer->add($this->getLoremIpsum(), 'Title for Info message', FlashMessage::WARNING, TRUE);
-
 	}
+
 	/**
 	 * Forms
 	 */
 	public function formAction() {
+	}
+
+	/**
+	/**
+	 * Tables
+	 */
+	public function tableAction() {
 	}
 
 	/**

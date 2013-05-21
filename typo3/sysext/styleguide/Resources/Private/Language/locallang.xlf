@@ -15,6 +15,9 @@
 			<trans-unit id="form" xml:space="preserve">
 				<source>Form</source>
 			</trans-unit>
+			<trans-unit id="table" xml:space="preserve">
+				<source>Table</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

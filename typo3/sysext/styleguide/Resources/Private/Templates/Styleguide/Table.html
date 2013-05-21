@@ -1,0 +1,99 @@
+{namespace sg = TYPO3\CMS\Styleguide\ViewHelpers}
+{namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+
+<f:layout name="Default"/>
+
+<f:section name="iconButtons">
+	<a href="#"
+	   onclick="window.location.href='alt_doc.php?returnUrl='+T3_THIS_LOCATION+'&edit[be_users][0]=new'; return false;">
+		<bu:spriteManagerIcon iconName="actions-document-new"/>
+	</a>
+</f:section>
+
+<f:section name="content">
+
+	<f:comment>
+		****************************************
+		Table
+		****************************************
+	</f:comment>
+
+	<h2>Table (typo3-dblist)</h2>
+
+	<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">
+		<tr class="t3-row-header">
+			<td></td>
+			<td>Username</td>
+			<td>Real name</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>Option</td>
+		</tr>
+
+		<tr class="db_list_normal">
+			<td class="col-icon">
+				<a href="#" onClick="showClickmenu('be_users', '{backendUser.uid}', '1', '', '', ''); return false;" title="id={backendUser.uid}">
+					<bu:spriteIconForRecord table="be_users" object="{backendUser}" />
+				</a>
+			</td>
+			<td>
+				<b>Username1</b>
+			</td>
+			<td>
+				Firstname Lastname
+			</td>
+			<td>
+				<f:link.action action="table">
+					<bu:spriteManagerIcon iconName="actions-edit-add"/>
+				</f:link.action>
+			</td>
+			<td>
+				<a href="#" onclick="top.launchView('pages', '1'); return false;">
+					<bu:spriteManagerIcon iconName="actions-document-info" />
+				</a>
+				<a href="alt_doc.php?edit[pages][1]=edit&returnUrl={returnUrl}">
+					<bu:spriteManagerIcon iconName="actions-document-open" />
+				</a>
+			</td>
+			<td>
+				Never
+			</td>
+		</tr>
+		<tr class="db_list_normal">
+			<td class="col-icon">
+				<a href="#" onClick="showClickmenu('be_users', '{backendUser.uid}', '1', '', '', ''); return false;" title="id={backendUser.uid}">
+					<bu:spriteIconForRecord table="be_users" object="{backendUser}" />
+				</a>
+			</td>
+			<td>
+				<b>Username2</b>
+			</td>
+			<td>
+				Random Doe
+			</td>
+			<td>
+				<f:link.action action="table">
+					<bu:spriteManagerIcon iconName="actions-edit-add"/>
+				</f:link.action>
+			</td>
+			<td>
+				<a href="#" onclick="top.launchView('pages', '1'); return false;">
+					<bu:spriteManagerIcon iconName="actions-document-info" />
+				</a>
+				<a href="alt_doc.php?edit[pages][1]=edit&returnUrl={returnUrl}">
+					<bu:spriteManagerIcon iconName="actions-document-open" />
+				</a>
+			</td>
+			<td>
+				Never
+			</td>
+		</tr>
+
+		<tr>
+			<td colspan="6">
+				100 Entries
+			</td>
+		</tr>
+	</table>
+
+</f:section>
