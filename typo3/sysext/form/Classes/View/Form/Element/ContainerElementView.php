@@ -48,7 +48,12 @@ class ContainerElementView extends \TYPO3\CMS\Form\View\Form\Element\AbstractEle
 				$childNode = $child->render();
 			} else {
 				$childNode = $child->render('elementWrap');
-				$childNode->setAttribute('class', $child->getElementWraps());
+				$class = '';
+				if (strlen($childNode->getAttribute('class')) > 0) {
+					$class = $childNode->getAttribute('class') . ' ';
+				}
+				$class .= $child->getElementWraps();
+				$childNode->setAttribute('class', $class);
 			}
 			$importedNode = $dom->importNode($childNode, TRUE);
 			$documentFragment->appendChild($importedNode);
