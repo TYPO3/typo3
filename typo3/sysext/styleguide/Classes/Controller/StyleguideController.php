@@ -51,6 +51,11 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	}
 
 	/**
+	 * Testel
+	 */
+	public function testelAction() {
+	}
+
 	/**
 	 * Tables
 	 */
