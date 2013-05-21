@@ -72,9 +72,14 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 *              + position: insert position of the categories field
 	 *              + fieldConfiguration: TCA field config array to override defaults
 	 * @return bool
+	 * @throws \RuntimeException
 	 */
 	public function add($extensionKey, $tableName, $fieldName = 'categories', $options = array()) {
 		$result = FALSE;
+
+		if ($tableName === '') {
+			throw new \RuntimeException('TYPO3\\CMS\\Core\\Category\\CategoryRegistry No tableName given.', 1369122038);
+		}
 
 			// Makes sure there is an existing table configuration and nothing registered yet:
 		if (!$this->isRegistered($tableName, $fieldName)) {
@@ -192,8 +197,11 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function registerDefaultCategorizedTables() {
-
-		$defaultCategorizedTables = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables']);
+		$defaultCategorizedTables = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(
+			',',
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables'],
+			TRUE
+		);
 		foreach ($defaultCategorizedTables as $defaultCategorizedTable) {
 			if (!$this->isRegistered($defaultCategorizedTable)) {
 				$this->add('core', $defaultCategorizedTable, 'categories');
