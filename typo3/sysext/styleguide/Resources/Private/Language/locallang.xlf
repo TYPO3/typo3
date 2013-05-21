@@ -12,6 +12,9 @@
 			<trans-unit id="index" xml:space="preserve">
 				<source>Index</source>
 			</trans-unit>
+			<trans-unit id="form" xml:space="preserve">
+				<source>Form</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

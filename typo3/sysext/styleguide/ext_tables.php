@@ -13,7 +13,7 @@ if (TYPO3_MODE === 'BE') {
 		'styleguide',
 		'',
 		array(
-			'Styleguide' => 'index'
+			'Styleguide' => 'index,form'
 		),
 		array(
 			'access' => 'user,group',
