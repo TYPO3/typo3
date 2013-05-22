@@ -185,6 +185,12 @@ class SuggestDefaultReceiver {
 					$croppedPath = htmlspecialchars($path);
 				}
 				$label = $this->getLabel($row);
+				if ($row['sys_language_uid'] > 0) {
+					$language = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_language', $row['sys_language_uid'], '*');
+					$languageIcon = IconUtility::getSpriteIconForRecord('sys_language', $language, array('style' => 'float: right'));
+				} else {
+					$languageIcon = '';
+				}
 				$entry = array(
 					'text' => '<span class="suggest-label">' . $label . '</span><span class="suggest-uid">[' . $uid . ']</span><br />
 								<span class="suggest-path">' . $croppedPath . '</span>',
@@ -194,7 +200,8 @@ class SuggestDefaultReceiver {
 					'uid' => $uid,
 					'style' => '',
 					'class' => isset($this->config['cssClass']) ? $this->config['cssClass'] : '',
-					'sprite' => $spriteIcon
+					'sprite' => $spriteIcon,
+					'sprite-language' => $languageIcon
 				);
 				$rows[$this->table . '_' . $uid] = $this->renderRecord($row, $entry);
 			}
