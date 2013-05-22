@@ -994,6 +994,8 @@ class ResourceStorage {
 		}
 		// Mark the file object as deleted
 		$fileObject->setDeleted();
+		$fileObject->updateProperties(array('deleted' => 1));
+		$this->getFileRepository()->update($fileObject);
 
 		$this->emitPostFileDeleteSignal($fileObject);
 
