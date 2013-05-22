@@ -700,6 +700,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 						$fullsearch->formW = 48;
 						// Additional configuration
 						$GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels'] = 1;
+						$GLOBALS['SOBE']->MOD_SETTINGS['queryFields'] = $sql_query['qC']['queryFields'];
 						$cP = $fullsearch->getQueryResultCode($type, $res, $sql_query['qC']['queryTable']);
 						$actionContent = $cP['content'];
 						// If the result is rendered as csv or xml, show a download link
