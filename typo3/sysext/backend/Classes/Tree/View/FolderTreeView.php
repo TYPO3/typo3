@@ -270,7 +270,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 			$isOpen = $this->stored[$storageHashNumber][$folderHashSpecUID] || $this->expandFirst;
 			// Set PM icon:
 			$cmd = $this->generateExpandCollapseParameter($this->bank, !$isOpen, $rootLevelFolder);
-			if (!$storageObject->isBrowsable() || $this->getNumberOfSubfolders($storageObject->getRootLevelFolder()) === 0) {
+			if (!$storageObject->isBrowsable() || $this->getNumberOfSubfolders($rootLevelFolder) === 0) {
 				$rootIcon = 'blank';
 			} elseif (!$isOpen) {
 				$rootIcon = 'plusonly';
