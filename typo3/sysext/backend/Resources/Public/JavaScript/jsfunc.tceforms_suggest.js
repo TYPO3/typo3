@@ -94,7 +94,7 @@ TCEForms.Suggest = Class.create({
 			var rec_uid = arr[3];
 			var rec_field = arr[4];
 
-			var formEl = 'data[' + rec_table + '][' + rec_uid + '][' + rec_field + ']';
+			var formEl = this.objectId;
 			var suggestLabelNode = Element.select(this.escapeObjectId(item.id), '.suggest-label')[0];
 			var label = (suggestLabelNode.textContent ? suggestLabelNode.textContent : suggestLabelNode.innerText)
 			setFormValueFromBrowseWin(formEl, ins_table + '_' + ins_uid, label);
