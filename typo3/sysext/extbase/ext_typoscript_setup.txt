@@ -70,7 +70,7 @@ config.tx_extbase {
 			TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 				mapping {
 					tableName = fe_users
-					recordType = Tx_Extbase_Domain_Model_FrontendUser
+					recordType = TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 					columns {
 						lockToDomain.mapOnProperty = lockToDomain
 					}
@@ -79,7 +79,7 @@ config.tx_extbase {
 			TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup {
 				mapping {
 					tableName = fe_groups
-					recordType = Tx_Extbase_Domain_Model_FrontendUserGroup
+					recordType = TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup
 					columns {
 						lockToDomain.mapOnProperty = lockToDomain
 					}
