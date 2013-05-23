@@ -102,6 +102,33 @@ class SuggestElement {
 	}
 
 	/**
+	 * Search a data structure array recursively -- including within nested
+	 * (repeating) elements -- for a particular field config.
+	 *
+	 * @param $dataStructure
+	 * @param $fieldName
+	 * @return array
+	 */
+	protected function getNestedDsFieldConfig($dataStructure, $fieldName) {
+		$out = array();
+		$els = $dataStructure['ROOT']['el'] ? $dataStructure['ROOT']['el'] : $dataStructure['el'];
+		if (is_array($els)) {
+			foreach ($els as $k => $ds) {
+				if ($k === $fieldName) {
+					$out = $ds['TCEforms']['config'];
+					break;
+				} elseif (isset($ds['el'][$fieldName]['TCEforms']['config'])) {
+					$out = $ds['el'][$fieldName]['TCEforms']['config'];
+					break;
+				} else {
+					$out = $this->getNestedDsFieldConfig($ds, $fieldName);
+				}
+			}
+		}
+		return $out;
+	}
+
+	/**
 	 * Ajax handler for the "suggest" feature in TCEforms.
 	 *
 	 * @param array $params The parameters from the AJAX call
@@ -140,8 +167,8 @@ class SuggestElement {
 				$continue = TRUE;
 				foreach ($flexformDSArray as $sheet) {
 					foreach ($sheet as $_ => $dataStructure) {
-						if (isset($dataStructure['ROOT']['el'][$flexformElement]['TCEforms']['config'])) {
-							$fieldConfig = $dataStructure['ROOT']['el'][$flexformElement]['TCEforms']['config'];
+						$fieldConfig = $this->getNestedDsFieldConfig($dataStructure, $flexformElement);
+						if (count($fieldConfig) > 0) {
 							$continue = FALSE;
 							break;
 						}
