@@ -228,7 +228,7 @@ class LiveSearch {
 				'id' => $tableName . ':' . $row['uid'],
 				'pageId' => $tableName === 'pages' ? $row['uid'] : $row['pid'],
 				'recordTitle' => $isFirst ? $this->getRecordTitlePrep($this->getTitleOfCurrentRecordType($tableName), self::GROUP_TITLE_MAX_LENGTH) : '',
-				'iconHTML' => IconUtility::getSpriteIconForRecord($tableName, $row),
+				'iconHTML' => IconUtility::getSpriteIconForRecord($tableName, $row, array('title' => 'id=' . $row['uid'] . ', pid=' . $row['pid'])),
 				'title' => $this->getRecordTitlePrep($this->getTitleFromCurrentRow($tableName, $row), self::RECORD_TITLE_MAX_LENGTH),
 				'editLink' => $this->getEditLink($tableName, $row)
 			);
@@ -259,7 +259,8 @@ class LiveSearch {
 		// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
 		// @todo Is there an existing function to generate this link?
 		if ($permsEdit) {
-			$editLink = 'alt_doc.php?' . '&edit[' . $tableName . '][' . $row['uid'] . ']=edit';
+			$returnUrl = rawurlencode('mod.php?M=web_list&id=' . $row['pid']);
+			$editLink = 'alt_doc.php?' . '&edit[' . $tableName . '][' . $row['uid'] . ']=edit&returnUrl='.$returnUrl;
 		}
 		return $editLink;
 	}
