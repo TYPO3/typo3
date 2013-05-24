@@ -27,14 +27,14 @@ namespace TYPO3\CMS\Openid;
 /**
  * This class is the OpenID return script for the TYPO3 Backend.
  *
- * @author 	Dmitry Dulepov <dmitry@typo3.org>
+ * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class OpenidReturn {
 
 	/**
 	 * Processed Backend session creation and redirect to backend.php
 	 *
-	 * @return 	void
+	 * @return void
 	 */
 	public function main() {
 		if ($GLOBALS['BE_USER']->user['uid']) {
