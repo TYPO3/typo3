@@ -26,15 +26,15 @@ namespace TYPO3\CMS\Openid;
 /**
  * This class is the OpenID return script for the TYPO3 Backend (used in the user-settings module).
  *
- * @author 	Steffen Gebert <steffen@steffen-gebert.de>
+ * @author Steffen Gebert <steffen@steffen-gebert.de>
  */
 class OpenidModuleSetup {
 
 	/**
 	 * Checks weather BE user has access to change its OpenID identifier
 	 *
-	 * @param 	array		$config: Configuration of the field
-	 * @return 	boolean		Whether it is allowed to modify the given field
+	 * @param array $config: Configuration of the field
+	 * @return boolean Whether it is allowed to modify the given field
 	 */
 	public function accessLevelCheck(array $config) {
 		$setupConfig = $GLOBALS['BE_USER']->getTSConfigProp('setup.fields');
@@ -47,9 +47,9 @@ class OpenidModuleSetup {
 	/**
 	 * Render OpenID identifier field for user setup
 	 *
-	 * @param 	array					$config: Configuration of the field
-	 * @param 	SC_mod_user_setup_index	$parent: The calling parent object
-	 * @return 	string					HTML input field to change the OpenId
+	 * @param array $parameters Configuration of the field
+	 * @param \TYPO3\CMS\Setup\Controller\SetupModuleController $parent: The calling parent object
+	 * @return string HTML input field to change the OpenId
 	 */
 	public function renderOpenID(array $parameters, \TYPO3\CMS\Setup\Controller\SetupModuleController $parent) {
 		$openid = $GLOBALS['BE_USER']->user['tx_openid_openid'];

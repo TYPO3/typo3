@@ -34,6 +34,6 @@ require_once '../../init.php';
  */
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid') . 'Classes/OpenidReturn.php';
 $module = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Openid\\OpenidReturn');
-/* @var tx_openid_return $module */
+/* @var \TYPO3\CMS\Openid\OpenidReturn $module */
 $module->main();
 ?>
