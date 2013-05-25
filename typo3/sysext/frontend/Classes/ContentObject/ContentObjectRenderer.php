@@ -6375,7 +6375,7 @@ class ContentObjectRenderer {
 	 */
 	protected function forceAbsoluteUrl($url, array $configuration) {
 		if (!empty($url) && isset($configuration['forceAbsoluteUrl']) && $configuration['forceAbsoluteUrl']) {
-			if (preg_match('#^(?:([a-z]+)(://))?([^/]*)(.*)$#', $url, $matches)) {
+			if (preg_match('#^(?:([a-z]+)(://)([^/]*)/?)?(.*)$#', $url, $matches)) {
 				$urlParts = array(
 					'scheme' => $matches[1],
 					'delimiter' => '://',
@@ -6387,6 +6387,7 @@ class ContentObjectRenderer {
 				if (empty($urlParts['host'])) {
 					$urlParts['scheme'] = 'http';
 					$urlParts['host'] = $this->getEnvironmentVariable('HTTP_HOST');
+					$urlParts['path'] = '/' . ltrim($urlParts['path'], '/');
 					$isUrlModified = TRUE;
 				}
 				// Override scheme:
