@@ -1382,6 +1382,58 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 		);
 	}
+
+	/**
+	 * @param $expected The expected URL
+	 * @param $url The URL to parse and manipulate
+	 * @param $configuration The configuration array
+	 * @test
+	 * @dataProvider forceAbsoluteUrlReturnsAbsoluteUrlDataProvider
+	 */
+	public function forceAbsoluteUrlReturnsAbsoluteUrl($expected, $url, array $configuration) {
+		$server = $_SERVER['HTTP_HOST'];
+		// Force hostname
+		$_SERVER['HTTP_HOST'] = 'localhost';
+		$this->assertEquals($expected, $this->cObj->_call('forceAbsoluteUrl', $url, $configuration));
+		$_SERVER['HTTP_HOST'] = $server;
+	}
+
+	/**
+	 * @return array The test data for forceAbsoluteUrlReturnsAbsoluteUrl
+	 */
+	public function forceAbsoluteUrlReturnsAbsoluteUrlDataProvider() {
+		return array(
+			'Missing forceAbsoluteUrl leaves URL untouched' => array(
+				'foo',
+				'foo',
+				array()
+			),
+			'Absolute URL stays unchanged' => array(
+				'http://example.org/',
+				'http://example.org/',
+				array(
+					'forceAbsoluteUrl' => '1'
+				)
+			),
+			'Scheme can be forced' => array(
+				'typo3://example.org',
+				'http://example.org',
+				array(
+					'forceAbsoluteUrl' => '1',
+					'forceAbsoluteUrl.' => array(
+						'scheme' => 'typo3'
+					)
+				)
+			),
+			'Scheme and host is added to local file path' => array(
+				'http://localhost/fileadmin/my.pdf',
+				'fileadmin/my.pdf',
+				array(
+					'forceAbsoluteUrl' => '1'
+				)
+			)
+		);
+	}
 }
 
 ?>
