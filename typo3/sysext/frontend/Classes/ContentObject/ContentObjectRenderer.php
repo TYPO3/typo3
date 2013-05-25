@@ -6076,12 +6076,13 @@ class ContentObjectRenderer {
 	 */
 	protected function forceAbsoluteUrl($url, array $configuration) {
 		if (!empty($url) && isset($configuration['forceAbsoluteUrl']) && $configuration['forceAbsoluteUrl']) {
-			if (preg_match('#^(?:([a-z]+)(://))?([^/]*)(.*)$#', $url, $matches)) {
+			$urlParsed = parse_url($url);
+			if (is_array($urlParsed)) {
 				$urlParts = array(
-					'scheme' => $matches[1],
+					'scheme' => isset($urlParsed['scheme']) ? $urlParsed['scheme'] : '',
 					'delimiter' => '://',
-					'host' => $matches[3],
-					'path' => $matches[4]
+					'host' => isset($urlParsed['host']) ? $urlParsed['host'] : '',
+				 	'path' => isset($urlParsed['path']) ? '/' . ltrim($urlParsed['path'], '/') : ''
 				);
 				// Set scheme and host if not yet part of the URL:
 				if (empty($urlParts['host'])) {
