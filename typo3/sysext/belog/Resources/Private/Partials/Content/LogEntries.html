@@ -1,10 +1,10 @@
 {namespace belog=TYPO3\CMS\Belog\ViewHelpers}
 
 <f:if condition="{constraint.groupByPage}">
-	<div class="divider">
-		<h3>
+	<div>
+		<h2>
 			<f:translate key="overview" />
-		</h3>
+		</h2>
 		<f:translate
 			key="timeInfo"
 			arguments="{
@@ -12,26 +12,26 @@
 				1: '{f:format.date(format:\'{settings.dateFormat} H:i\', date:\'@{constraint.endTimestamp}\')}'
 			}"
 		/>
-		<br />
-		<f:for each="{groupedLogEntries}" as="pidEntry" key="pid">
-			<f:if condition="{pid} > 0">
-				<br />
-				<f:translate
-					key="pagenameWithUID"
-					arguments="{
-						0: '{belog:be.pagePath(pid:\'{pid}\')}',
-						1: '{pid}'
-					}"
-				/>
-			</f:if>
-		</f:for>
+		<p>
+			<f:for each="{groupedLogEntries}" as="pidEntry" key="pid">
+				<f:if condition="{pid} > 0">
+					<br />
+					<f:translate
+						key="pagenameWithUID"
+						arguments="{
+							0: '{belog:be.pagePath(pid:\'{pid}\')}',
+							1: '{pid}'
+						}"
+					/>
+				</f:if>
+			</f:for>
+		</p>
 	</div>
 </f:if>
 
 <f:for each="{groupedLogEntries}" as="pidEntry" key="pid">
 	<div>
-		<div style="padding-top: 10px;"></div>
-		<h3>
+		<h2>
 			<f:if condition="{constraint.groupByPage}">
 				<f:then>
 					<f:if condition="{pid} < 1">
@@ -93,11 +93,12 @@
 					/>
 				</f:else>
 			</f:if>
-		</h3>
+		</h2>
 		<f:for each="{pidEntry}" as="day" key="dayTimestamp">
-			<h4 class="uppercase">
+			<h3>
 				<f:format.date format="{settings.dateFormat}">@{dayTimestamp}</f:format.date>
-			</h4>
+			</h3>
+
 			<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist">
 				<thead>
 					<tr>
