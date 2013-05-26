@@ -39,6 +39,14 @@ h4 {
 	margin: 6px 0;
 }
 
+p,
+ul,
+ol,
+dl,
+blockquote {
+	margin-bottom: 1.25em;
+}
+
 /* Preformatted text - not used so much in TYPO3 */
 pre {
 	margin: 0px;
@@ -79,7 +87,7 @@ form {
 	margin: 0;
 }
 
-#typo3-docbody form { margin-bottom: 24px; }
+#typo3-docbody form { margin-bottom: 1.25em; }
 
 input[type="submit"],
 input[type="reset"],

@@ -1316,6 +1316,11 @@ td.x-grid3-hd-over, td.x-grid3-hd-menu-open {
 	background-color:#d8d8d8;
 	border-color:#8d8d8d;
 }
+
+.x-tree ul {
+	margin-bottom: 0;
+}
+
 .x-tree .x-panel-body{
 	background-color:#fff;
 }
