@@ -4,7 +4,7 @@ INSTALLING TYPO3
 
 This document is a part of the TYPO3 project. TYPO3 is an open source web
 content management system released under the GNU GPL. TYPO3 is copyright
-(c) 1999-2012 by Kasper Skaarhoj.
+(c) 1999-2013 by Kasper Skaarhoj.
 
 This document describes the system requirements for TYPO3 and the installation
 routine.
@@ -20,6 +20,7 @@ document assumes that Apache and MySQL will be used. This document does not
 cover using TYPO3 with other databases or web servers.
 
 The following configuration is the minimum required:
+
 - a web server capable of running PHP
 - PHP 5.3.0 or newer with the following extensions:
 	- fileinfo
@@ -35,8 +36,6 @@ The following configuration is the minimum required:
 	- standard
 	- xml
 	- zlib
-	Some extensions can be optionally compiled into PHP. A list of loaded
-	extensions can be checked using the phpinfo() function.
 - memory_limit set to at least 64M in php.ini
 - register_globals is disabled in php.ini
 - MySQL 5.0 or newer
@@ -46,10 +45,12 @@ The following configuration is the minimum required:
 - Apache stack size 8MB (or more). (see FAQ below)
 
 The following configuration is recommended:
+
 - Apache 2.x
 - mod_expires and mod_rewrite enabled in the Apache configuration
 - PHP 5.3.7 or newer with the following extensions:
 	- cURL
+	- fileinfo
 	- filter
 	- GD2
 	- hash
@@ -64,12 +65,11 @@ The following configuration is recommended:
 	- standard
 	- xml
 	- zlib
-	Some extensions can be optionally compiled into PHP. A list of loaded
-	extensions can be checked using the phpinfo() function.
 - Safe mode is not supported, thus it must not be activated
 - Magic Quotes is deprecated, thus it should be deactivated
 - memory_limit set to 128M or more in php.ini
 - MySQL 5.1 or newer
+- FreeType 2
 - GraphicsMagick or ImageMagick v6 or newer
 - 200 MB or more of disk space
 - AllowOverride in the Apache configuration includes "Indexes" and "FileInfo"
@@ -97,7 +97,7 @@ Obtaining TYPO3
 ===============================================================================
 
 To get TYPO3, navigate to the following location:
-	http://typo3.org/download/packages/
+	http://typo3.org/download/
 
 TYPO3 consists of two packages: source and dummy. The source package contains
 files that are the same for every TYPO3 web site. The dummy package contains
@@ -204,7 +204,7 @@ Troubleshooting
 
 For troubleshooting read the FAQ below. If your problem is not listed, feel
 free to ask questions in the TYPO3 mailing lists:
-	http://typo3.org/community/mailing-lists/
+	http://typo3.org/support/mailing-lists/
 
 
 ===============================================================================
