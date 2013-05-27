@@ -1,0 +1,64 @@
+<!-- ###FULLDOC### begin -->
+			<div class="linkvalidator_checkoptions">
+				###ID###
+				###CHECKALLLINK###
+				<h4>###CHECKOPTIONS_TITLE###</h4>
+				<div>###CHECKOPTIONS###</div>
+			</div>
+			<div class="linkvalidator_funcmenu"><h4>###FUNC_TITLE###</h4><div>###FUNC_MENU###</div></div>
+			<div class="linkvalidator_button">###REFRESH######UPDATE###</div>
+
+			###CONTENT###
+<!-- ###FULLDOC### end -->
+
+
+<!-- ###CHECKOPTIONS_SECTION### begin -->
+	<table class="typo3-dblist" id="linkvalidator_statsTable" cellspacing="0" cellpadding="0">
+		<tr class="t3-row-header">
+			<td>
+				###TOTAL_COUNT_LABEL###
+			</td>
+			<td class="number">###TOTAL_COUNT###</td>
+		</tr>
+		<!-- ###HOOK_SECTION### begin -->
+		<tr class="db_list_normal">
+			<td>
+				<div class="linkvalidator_singleOption">###OPTION###</div>
+			</td>
+			<td class="number">###COUNT###</td>
+		</tr>
+		<!-- ###HOOK_SECTION### end -->
+	</table>
+<!-- ###CHECKOPTIONS_SECTION### end -->
+
+
+<!-- ###BROKENLINKS_CONTENT### begin -->
+	###LIST_HEADER###
+	<table class="typo3-dblist" id="linkvalidator_brokenLinksTable" cellspacing="0" cellpadding="0">
+		<tr class="t3-row-header">
+			<td></td>
+			<td>###TABLEHEAD_PATH###</td>
+			<td>###TABLEHEAD_ELEMENT###</td>
+			<td>###TABLEHEAD_HEADLINK###</td>
+			<td>###TABLEHEAD_LINKTARGET###</td>
+			<td>###TABLEHEAD_LINKMESSAGE###</td>
+			<td>###TABLEHEAD_LASTCHECK###</td>
+		</tr>
+		<!-- ###BROKENLINKS_ITEM### begin -->
+		<tr class="db_list_normal">
+			<td>###ACTIONLINK###</td>
+			<td>###PATH###</td>
+			<td>###ELEMENT###</td>
+			<td>###HEADLINK###</td>
+			<td><a href="###LINKTARGET###" target="_blank">###LINKTARGET###</a></td>
+			<td>###LINKMESSAGE###</td>
+			<td>###LASTCHECK###</td>
+		</tr>
+		<!-- ###BROKENLINKS_ITEM### end -->
+	</table>
+<!-- ###BROKENLINKS_CONTENT### end -->
+
+<!-- ###NOBROKENLINKS_CONTENT### begin -->
+	###LIST_HEADER###
+	###NO_BROKEN_LINKS###
+<!-- ###NOBROKENLINKS_CONTENT### end -->
