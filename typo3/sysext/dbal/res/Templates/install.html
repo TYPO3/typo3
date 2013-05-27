@@ -1,0 +1,202 @@
+?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>Template: Step Output</title>
+</head>
+<body>
+<!-- ###TEMPLATE### begin -->
+
+<!-- ###CONNECTION_FORM### begin -->
+<script type="text/javascript" src="../contrib/prototype/prototype.js"></script>
+<script type="text/javascript" src="../sysext/install/Resources/Public/Javascript/install.js"></script>
+
+<p>###LLDESCRIPTION###</p>
+<form method="post" action="###ACTION###">
+	<fieldset class="t3-install-form-label-width-7">
+		<ol>
+			<li class="t3-install-hidden">
+				<input type="hidden" value="###STEP###" name="step" />
+				<input type="hidden" value="###ENCRYPTIONKEY###" name="TYPO3_INSTALL[localconf.php][encryptionKey]" />
+				<input type="hidden" value="###BRANCH###" name="TYPO3_INSTALL[localconf.php][compat_version]" />
+			</li>
+			<!-- ###DATABASE_DRIVER### begin -->
+			<li>
+				<label>###LABELDRIVER###</label>
+				<select name="TYPO3_INSTALL[localconf.php][typo_db_driver]">
+					<!-- ###ABSTRACTION_LAYER### begin -->
+					<optgroup label="###LABELABSTRACTIONLAYER###">
+						<!-- ###VENDOR### begin -->
+						<option value="###DRIVER###"###SELECTED### onclick="###ONCLICK###">###LABELVENDOR###</option>
+						<!-- ###VENDOR### end -->
+					</optgroup>
+					<!-- ###ABSTRACTION_LAYER### end -->
+				</select>
+			</li>
+			<!-- ###DATABASE_DRIVER### end -->
+
+			###DRIVER_OPTIONS###
+		</ol>
+	</fieldset>
+	<fieldset class="t3-install-form-submit">
+		<ol>
+			<li>
+				<button type="submit">###CONTINUE###<span class="t3-install-form-button-icon-positive">&nbsp;</span></button>
+			</li>
+		</ol>
+	</fieldset>
+</form>
+<!-- ###CONNECTION_FORM### end -->
+
+
+
+
+<!-- ###DATABASE_FORM### begin -->
+<form id="t3-install-123-step3" method="post" action="###ACTION###">
+	<fieldset>
+		<ol>
+			<li class="t3-install-hidden">
+				<input type="hidden" value="###STEP###" name="step" />
+			</li>
+			<li>
+				<label for="t3-install-123-database">###LLOPTION2###</label>
+				<p>###LLREMARK2###</p>
+				<select id="t3-install-123-database" name="TYPO3_INSTALL[localconf.php][typo_db]">
+					<option value="">Select database</option>
+					<!-- ###DATABASEOPTIONS### begin -->
+					<option value="###DATABASEVALUE###" ###DATABASESELECTED###>###DATABASENAME###</option>
+					<!-- ###DATABASEOPTIONS### end -->
+				</select>
+			</li>
+		</ol>
+	</fieldset>
+	<fieldset class="t3-install-form-submit">
+		<ol>
+			<li>
+				<button type="submit">###CONTINUE###<span class="t3-install-form-button-icon-positive">&nbsp;</span></button>
+			</li>
+		</ol>
+	</fieldset>
+</form>
+<!-- ###DATABASE_FORM### end -->
+
+
+
+
+
+<!-- ###DRIVER_MYSQL### begin -->
+<!-- ###DRIVER_MYSQLI### begin -->
+<li>
+	<label for="t3-install-form-username">###LABELUSERNAME###</label>
+	<input id="t3-install-form-username" class="t3-install-form-input-text" type="text" value="###USERNAME###" name="TYPO3_INSTALL[localconf.php][typo_db_username]" />
+</li>
+<li>
+	<label for="t3-install-form-password">###LABELPASSWORD###</label>
+	<input id="t3-install-form-password" class="t3-install-form-input-text" type="password" value="###PASSWORD###" name="TYPO3_INSTALL[localconf.php][typo_db_password]" />
+</li>
+<li>
+	<label for="t3-install-form-host">###LABELHOST###</label>
+	<input id="t3-install-form-host" class="t3-install-form-input-text" type="text" value="###HOST###" name="TYPO3_INSTALL[localconf.php][typo_db_host]" />
+</li>
+<!-- ###DRIVER_MYSQLI### end -->
+<!-- ###DRIVER_MYSQL### end -->
+
+
+
+
+<!-- ###DRIVER_DEFAULT### begin -->
+<li>
+	<label for="t3-install-form-username">###LABELUSERNAME###</label>
+	<input id="t3-install-form-username" class="t3-install-form-input-text" type="text" value="###USERNAME###" name="TYPO3_INSTALL[localconf.php][typo_db_username]" />
+</li>
+<li>
+	<label for="t3-install-form-password">###LABELPASSWORD###</label>
+	<input id="t3-install-form-password" class="t3-install-form-input-text" type="password" value="###PASSWORD###" name="TYPO3_INSTALL[localconf.php][typo_db_password]" />
+</li>
+<li>
+	<label for="t3-install-form-host">###LABELHOST###</label>
+	<input id="t3-install-form-host" class="t3-install-form-input-text" type="text" value="###HOST###" name="TYPO3_INSTALL[localconf.php][typo_db_host]" />
+</li>
+<li>
+	<label for="t3-install-form-database">###LABELDATABASE###</label>
+	<input id="t3-install-form-database" class="t3-install-form-input-text" type="text" value="###DATABASE###" name="TYPO3_INSTALL[localconf.php][typo_db]" />
+</li>
+<!-- ###DRIVER_DEFAULT### end -->
+
+
+
+
+<!-- ###DRIVER_MSSQL### begin -->
+<li>
+	<label for="t3-install-form-username">###LABELUSERNAME###</label>
+	<input id="t3-install-form-username" class="t3-install-form-input-text" type="text" value="###USERNAME###" name="TYPO3_INSTALL[localconf.php][typo_db_username]" />
+</li>
+<li>
+	<label for="t3-install-form-password">###LABELPASSWORD###</label>
+	<input id="t3-install-form-password" class="t3-install-form-input-text" type="password" value="###PASSWORD###" name="TYPO3_INSTALL[localconf.php][typo_db_password]" />
+</li>
+<li>
+	<label for="t3-install-form-host">###LABELHOST###</label>
+	<input id="t3-install-form-host" class="t3-install-form-input-text" type="text" value="###HOST###" name="TYPO3_INSTALL[localconf.php][typo_db_host]" />
+</li>
+<li>
+	<label for="t3-install-form-database">###LABELDATABASE###</label>
+	<input id="t3-install-form-database" class="t3-install-form-input-text" type="text" value="###DATABASE###" name="TYPO3_INSTALL[localconf.php][typo_db]" />
+</li>
+<!-- ###DRIVER_MSSQL### end -->
+
+
+
+
+
+<!-- ###DRIVER_ODBC_MSSQL### begin -->
+<li>
+	<label for="t3-install-form-username">###LABELUSERNAME###</label>
+	<input id="t3-install-form-username" class="t3-install-form-input-text" type="text" value="###USERNAME###" name="TYPO3_INSTALL[localconf.php][typo_db_username]" />
+</li>
+<li>
+	<label for="t3-install-form-password">###LABELPASSWORD###</label>
+	<input id="t3-install-form-password" class="t3-install-form-input-text" type="password" value="###PASSWORD###" name="TYPO3_INSTALL[localconf.php][typo_db_password]" />
+</li>
+<li>
+	<label for="t3-install-form-host">###LABELHOST###</label>
+	<input id="t3-install-form-host" class="t3-install-form-input-text" type="text" value="###HOST###" name="TYPO3_INSTALL[localconf.php][typo_db_host]" />
+</li>
+<input type="hidden" value="###DATABASE###" name="TYPO3_INSTALL[localconf.php][typo_db]" />
+<!-- ###DRIVER_ODBC_MSSQL### end -->
+
+
+
+
+<!-- ###DRIVER_OCI8### begin -->
+<li>
+	<label for="t3-install-form-username">###LABELUSERNAME###</label>
+	<input id="t3-install-form-username" class="t3-install-form-input-text" type="text" value="###USERNAME###" name="TYPO3_INSTALL[localconf.php][typo_db_username]" />
+</li>
+<li>
+	<label for="t3-install-form-password">###LABELPASSWORD###</label>
+	<input id="t3-install-form-password" class="t3-install-form-input-text" type="password" value="###PASSWORD###" name="TYPO3_INSTALL[localconf.php][typo_db_password]" />
+</li>
+<li>
+	<label for="t3-install-form-host">###LABELHOST###</label>
+	<input id="t3-install-form-host" class="t3-install-form-input-text" type="text" value="###HOST###" name="TYPO3_INSTALL[localconf.php][typo_db_host]" />
+</li>
+<li>
+	<label for="t3-install-form-type">###LABELTYPE###</label>
+	<select id="t3-install-form-type" name="TYPO3_INSTALL[localconf.php][typo_db_type]">
+		<option value="sid">###LABELSID###</option>
+		<option value="servicename">###LABELSERVICENAME###</option>
+	</select>
+</li>
+<li>
+	<label for="t3-install-form-database">###LABELDATABASE###</label>
+	<input id="t3-install-form-database" class="t3-install-form-input-text" type="text" value="###DATABASE###" name="TYPO3_INSTALL[localconf.php][typo_db]" />
+</li>
+<!-- ###DRIVER_OCI8### end -->
+
+<!-- ###TEMPLATE### end -->
+</body>
+</html>
