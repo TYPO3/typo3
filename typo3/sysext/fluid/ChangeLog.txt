@@ -1,0 +1,548 @@
+ChangeLog for Fluid
+===================
+
+Changes for 6.1.0
+=================
+
+[!!!][FEATURE] Allow Fluid arrays only in ViewHelper arguments
+--------------------------------------------------------------
+
+This change greatly enhances the JavaScript compatibility of Fluid.
+
+Fluid Arrays are a subset of the JavaScript object syntax, making it
+hard to work with them in mixed HTML/JavaScript documents. For example
+before this change, the following JavaScript Object was parsed by Fluid::
+
+	var uris = {
+	  endPoint1: '{f:uri.action(.)}',
+	  endPoint2: '{f:uri.action(.)}',
+	};
+
+Before this change, the above snippet resulted in the following template,
+as the generated array was casted to a string:
+
+	var uris = Array
+
+With this change, Fluid only parses arrays which are used inside
+ViewHelper arguments, such that an array inside normal text is not
+converted anymore.
+
+Breaking Change
+===============
+
+This change is only breaking in very rare cases where one relied on
+the inner contents of the ViewHelper being an array, f.e. if one used
+the debug ViewHelper as follows::
+
+	<f:debug>{key1: 'value1', key2: 'value2'}</f:debug>
+
+. or if anybody wrote custom ViewHelpers which use this convention.
+
+Relying on that would be very fragile anyways, as the insertion of a
+single space character before the opening curly bracket or after the
+closing one would cast the array back to a string.
+
+ViewHelpers which were written like this should be re-written to take
+the array as ViewHelper argument::
+
+	<f:debug value="{key1: 'value1', key2: 'value2'}" />
+
+Full Changes for 6.1.0
+======================
+
+[BUGFIX] Fluid must not use legacy flash message handling
+[BUGFIX] Don't use folders as templates, partials and layouts
+[TASK] Use __DIR__ instead of dirname(__FILE__)
+[TASK] Add namespaing to ConfigurationManagerInterface
+[TASK] Remove further t3lib mentions
+[TASK] Update t3lib mentions
+[TASK] Adjust Comments to describe string comparison
+[CLEANUP] Drop incomplete tests
+[BUGFIX] Add needed setting to handle file_references correctly
+[BUGFIX] Add needed setting to handle file_references correctly
+[TASK] Remove not maintained md5 in ext_emconf
+[BUGFIX] Incomplete mock reset in StandaloneViewTest
+[BUGFIX] FormViewHelper creates inline styling
+[BUGFIX] PHP 5.4 E_STRICT warning in HtmlViewHelper
+[TASK] Cleanup fluid
+[FEATURE] Adjustable decimals for view helper format.currency
+[TASK] Update examples in ValidationResults ViewHelper
+[TASK] Sync TYPO3 CMS Fluid with Flow Fluid 1.1 (part3)
+[TASK] Sync CMS Fluid with Flow Fluid 1.1 (part2)
+[TASK] Add test for GroupedForViewHelper to support DateTime Objects
+[TASK] Replace ObjectManager create with get
+[BUGFIX] Apply arguments to the default string
+[TASK] Clean up Unit tests in fluid
+[FEATURE] Complete the Property Mapper whitelist change for fluid
+[BUGFIX] Follow-up typo to #45316
+[TASK] Sync CMS Fluid with Flow Fluid 1.1 (part1)
+[FEATURE] Support literal strings in boolean arguments
+[TASK] Add dataproviders for 2 tests in DateViewHelperTest
+[BUGFIX] Skip a SelectViewHelperTest on Mac
+[BUGFIX] Unit test fails with broken timezone
+[BUGFIX] Wrong numbers in BE paginage widget
+[BUGFIX] Remove superfluous newline
+[BUGFIX] Date ViewHelper not using configured Timezones
+[BUGFIX] Fix typo and improve backup of system settings
+[FEATURE] Introduce prepend option for Select ViewHelper
+[BUGFIX] Remove PHP Error caused by setlocale call
+[BUGFIX] Incomplete locale backup in unit test
+[BUGFIX] selectViewHelper sorting should respect locales
+Revert "[TASK] Adjust failing test"
+[TASK] Adjust failing test
+[BUGFIX] Image viewhelper clears $GLOBALS['TSFE'] in backend context
+[TASK] Update version to 6.1.0-dev
+
+Changes for 1.4.0:
+==================
+included in TYPO3 4.6.0
+
+This change features numerous cleanups, and the following new features:
+
+Compilation of Fluid Templates to PHP files
+-------------------------------------------
+
+This adds a compile step to the parsing process of templates, layouts and
+partials.
+If no compiled cache file exists, Fluid will create it while parsing the
+respective Fluid template.
+The cache file is invalidated as soon as the template/layout/partial
+has been modified (or if caches are flushed).
+This speeds up the rendering process by factor 2-5, and reduces memory
+consumption drastically.
+
+!!! $this->arguments->hasArgument() removed
+-------------------------------------------
+
+AbstractViewHelper::$arguments are no longer an object but an array.
+
+If you used $this->arguments->hasArgument() in your custom ViewHelpers,
+you'll have to replace this with $this->hasArgument().
+
+THIS IS A BREAKING CHANGE.
+
+!!! Introduction of {_all} Variable
+-----------------------------------
+
+You can now use {_all} inside your template to access all variables available
+right now. This is especially helpful for debugging:
+
+    {_all -> f:debug()}
+
+or for passing all currently available variables to a partial:
+
+    <f:render partial="..." arguments="{_all}" />
+
+This is only a breaking change if you used a variable _all inside your own
+templates.
+
+Widgets: Allow overriding templateRootPath
+------------------------------------------
+It is now possible to override the widget template root path via the framework
+configuration, for example:
+
+    plugin.tx_extension.view {
+      widget.<WidgetViewHelperClassName>.templateRootPath=...
+    }
+
+Full Changes from 1.4.0 beta1 to 1.4.0:
+=======================================
+[TASK] Update version to 1.4.0-rc1
+[TASK] Increase version number
+[BUGFIX] Create new CObject in CObject ViewHelper
+[BUGFIX] Fix Doc comment in format.padding ViewHelper
+[BUGFIX] ViewHelper: Make SelectViewHelper use property paths as arguments
+[FEATURE] Add parameter to RenderViewHelper for optional sections
+[BUGFIX] Sanitize identifier when compiling templates
+[BUGFIX] use $for only when not empty and not NULL
+[+BUGFIX] disable cache when displaying FlashMessages in frontend
+[+FEATURE] Comment ViewHelper
+[TASK] Remove fluid autoloader
+[+TASK] Marking Fluid as "stable" instead of "beta"
+[+BUGFIX] Incorrect type of Error thrown (FLOW3 Error)
+[BUGFIX] Make textfield view helper handle zero (not empty) values
+
+Full Changes for 1.4.0 beta1:
+=============================
+
+[!!!][FEATURE] Compilation of Fluid templates to PHP files. Resolves: #28545
+[TASK] Minor cleanups
+[TASK] Tweak inline comment in TemplateView
+[!!!][+FEATURE] Add a reserved variable {_all} returning all template variables
+[BUGFIX] Deactivate EscapeInterceptor for certain ViewHelpers. Related: #27678
+[TASK] Split escape ViewHelper into dedicated format ViewHelpers. Related: #27628
+[BUGFIX] Whitespace fixes
+[FEATURE] IconViewHelper (BE) should support CSS-sprites. Resolves: #9957
+[TASK] Code Cleanup in TemplateView
+[+BUGFIX] Use of depreciated function debug in debugViewHelper. Fixes: #27970
+[BUGFIX] Fix Widget support. Resolves: #27783
+[TASK] Recreate ext_autoload.php. Related: #27680
+[+FEATURE] (ViewHelpers): Adjust Fluid to new Property Mapper. Related: #27656
+[+TASK] Fluid: Make use of newly introduced Extension Service. Related: #13864
+[+BUGFIX] Fix unit tests
+[TASK] Fluid: Use strpos() instead of strstr() where possible
+[TASK] Make TextboxViewHelper a subclass of TextFieldViewHelper
+[TASK] (ViewHelper): Code Cleanup to AbstractFormField ViewHelper
+[TASK] (Core): Code Cleanup in AbstractTagBasedViewHelper
+[+BUGFIX] (Core): Condition improvements. Resolves: #27557
+[TASK] Cleanup and small improvements to Interceptors
+[TASK] Comment and non-functional changes
+[+BUGFIX] Empty a tag ends with /> instead of </a>. Resolves: #27556
+[BUGFIX] Better error message for "unknown section" exception
+[+BUGFIX] Fluid (Core): Simplify debugging of exceptions thrown during render
+[+BUGFIX] Fluid: Fix CObjViewHelper. Fixes: #26138
+[+FEATURE] Widgets: Allow overriding templateRootPath. Thanks to Peter Bücker. Resolves: #10823
+[FEATURE] PaddingViewHelper: allow padding-type right/left/both. Resolves: #9283
+[BUGFIX] Fix documentation for BE-ViewHelpers. Resolves: #9942
+[~TASK] Update jQuery versions
+[+BUGFIX] CObjViewHelper: fixed using numeric values as data argument. Fixes: #12891
+[+BUGFIX] ActionMenuItemViewHelper: XHTML compliance in "selected" attribute value. Fixes: #8744
+[+BUGFIX] Fluid: CObjViewHelper fix deprecated call "getAccessibleProperties". Fixes: #26138
+[!!!][+TASK] Fluid v4 (Core): Make layout UpperCamelCase (with fallback)
+[~TASK] Fluid: Raising version from 1.3.0 to 1.4.0-devel
+[+FEATURE] Fluid (ViewHelpers): Add RawViewHelper
+[+FEATURE] Fluid v4 (Core): Set layoutName by variable
+
+
+
+Changes for 1.3.0:
+==================
+included in TYPO3 4.5.0 LTS.
+
+Here, only smaller bugs and inconsistencies have been fixed. For a description of bigger features, see below to the versions where they were introduced.
+
+Full Changes for 1.3.0:
+=======================
+
+[+TASK] Fluid (ViewHelpers): fixed typo in doc comment examples of emailViewhelper
+[+BUGFIX] Fluid (Tests): Fixed CropViewHelper unit test
+[+BUGFIX] Fixed comparison of Objects
+	Objects in comparison expressions were compared lazily
+	with == before this change. Now, they are compared with
+	===, which is the expected behavior on objects.
+[+TASK] Fluid (ViewHelpers): Extended inline documentation of FlashMessages ViewHelper
+[+BUGFIX] Fluid (Tests): Fixed Fluid unit tests!
+
+Changes for 1.3.0 RC1:
+======================
+included in TYPO3 4.5.0 RC1.
+
+This change contains numerous bugfixes, most notably fixes the Widget
+Bootstrap and the Standalone View (which is used in "FLUIDTEMPLATE").
+
+Full Changes for 1.3.0 RC1:
+===========================
+
+[+BUGFIX] Fluid (View): Fix StandaloneView
+	Since implementation of Dependency Injection the Fluid
+	Standalone view was broken in some cases, cause it did not
+	properly initialize all needed objects.
+	Fixes: #11520
+[+BUGFIX] Fluid (Core): Allow ViewHelpers to be placed in t3lib and tslib
+	The Fluid template parser does now recognize ViewHelpers inside t3lib/
+	or sysext/cms/tslib/, so Fluid can now be used inside the TYPO3 core.
+	Thanks to Andreas Wolf for the patch!
+	Resolves: #12061
+[+BUGFIX] Fluid (Widget): Adopt Widget Bootstrap to Extbase Bootstrap changes
+	Problem: The configureObjectManager method in Tx_Fluid_Core_Widget_Bootstrap
+	uses a call on a static method Tx_Extbase_Object_Container_Container::getContainer()
+	which doesn't exist anymore. The Container has become a t3lib_Singleton.
+	This patch changes the behavior, and makes it work again.
+	Thanks to Thomas Maroschik for the patch!
+	Resolves: #11991
+
+Changes for 1.3.0 Beta 4:
+=========================
+included in TYPO3 4.5.0 Beta 4.
+
+This change contains numerous bugfixes.
+
+Full Changes for 1.3.0 Beta 4:
+==============================
+
+[~TASK] Fluid (Tests): Fixed some testcase class names
+[+FEATURE] Fluid (ViewHelpers): prepend URIs with scheme if it's not specified in link.external / uri.external ViewHelpers. Resolves #10401
+[+TASK] Fluid (ViewHelpers): Fix, cleanup and extend inline documentation of ViewHelpers
+[+BUGFIX] Fluid (View): Fixed deprecation message about lowercase template files names
+
+Changes for 1.3.0 Beta 2:
+=========================
+included in TYPO3 4.5.0 Beta 2.
+
+The main change is the updating of the FlashMessage ViewHelper and concept:
+
+Since r3062 Extbase uses the t3lib_FlashMessageQueue to store flashmessages.
+Now you can output them including title and severity, making it possible
+to render flashmessages just like the ones from the core in BE mode.
+To keep backwards compatibility, the default rendering still outputs
+only the message bodies in an unordered list. Set the renderMode argument
+to "div" in order to display the new style:
+<f:flashMessages renderMode="div" />
+
+**********************************************************************************************
+*Extbase / Fluid 1.3.0 can now ONLY BE USED WITH TYPO3 4.5, as the older versions do not have*
+*the FlashMessageQueue available!                                                            *
+**********************************************************************************************
+
+Full Changes for 1.3.0 Beta 2:
+==============================
+[+BUGFIX] Fluid (ViewHelpers/Widget): widget.link and widget.uri no create relative URLs
+[+FEATURE] Fluid (ViewHelpers): Add render mode to FlashMessage ViewHelper
+[-TASK] Fluid: Removed all @scope annotations as they are not used in v4
+[+TASK] Fluid (View): Added additional check for deprecated lower case template filenames that works on case insensitive file systems (Windows) too. Watch your deprecation log in typo3conf and fix your template filenames if they're still lower case.
+[+BUGFIX]: explicitly cast offset to integer to avoid exceptions in paginate view helper
+
+
+Changes for 1.3.0 Beta 1a:
+==========================
+included in TYPO3 4.5.0 Beta 1.
+
+This Fluid Release contains the following main features, along with the usual bunch of bugfixes:
+
+* Fluid Widgets (see below)
+* Fluid Standalone View (in Fluid 1.3.0 Alpha 3, but has not been inside a TYPO3 Release yet)
+	In order to be able to use Fluid templates beyond the Extbase plugin context
+	(e.g. to render E-Mail templates or to use the new FLUIDTEMPLATE content object)
+	we created a new template view, that encapsulates inner workings and provides
+	an easy-to-use API:
+
+	$view = t3lib_div::makeInstance('Tx_Fluid_View_StandaloneView');
+	$view->setTemplatePathAndFilename('foo/Bar.html');
+	print $view->render();
+
+Fluid Widgets
+-------------
+
+Widgets are special ViewHelpers which encapsulate complex functionality. It can be best understood
+what widgets are by giving some examples:
+* <f:widget.paginate> renders a Paginator, i.e. can be used to display large amounts of objects. This
+  is best known from search engines.
+* <f:widget.autocomplete> adds autocompletion functionality to a text field.
+* More widgets could include a Google Maps widget, a sortable grid, ...
+
+Internally, widgets consist of an own Controller and View part.
+
+Using widgets inside your templates is really simple: Just use them like standard ViewHelpers,
+and consult their documentation for usage examples. An example for the <f:widget.paginate> follows below:
+
+<f:widget.paginate itemsPerPage="10" objects="{blogs}" as="paginatedBlogs">
+	// use {paginatedBlogs} as you used {blogs} before, most certainly inside
+	// a <f:for> loop.
+</f:widget.paginate>
+
+In the above example, it looks like {blogs} contains all Blog objects, thus you might wonder if all
+objects were fetched from the database. However, the blogs are NOT fetched from the database until
+you actually use them, so the paginate ViewHelper will adjust the query sent to the database and
+receive only the small subset of objects. So, there is no negative performance overhead in using
+the Paginate Widget.
+
+For more details on how to write widgets, consult the Fluid manual, section "Fluid Widgets".
+
+Full Changes for 1.3.0 Beta 1a:
+===============================
+[+FEATURE] Fluid (ViewHelpers): the subject argument of the count ViewHelper is now optional so you can use it like {objects -> f:count()}
+[+BUGFIX] Fluid (ViewHelpers): Fixed inline documentation of widget.autocomplete ViewHelper. This fixes #10882
+[+TASK] Fluid (ViewHelpers): Added some more inline documentation for cObject, widget.paginate, widget.autocomplete & count ViewHelpers
+[+BUGFIX] Fluid (ViewHelpers): replaced two occurrences of Tx_Extbase_Dispatcher::*() by using the injected ConfigurationManager
+[+TASK] Fluid (ViewHelpers): uri.image now works in BE mode too
+[+BUGFIX] Fluid (ViewHelpers): Adjustment to skinning api change
+[+FEATURE] Fluid (ViewHelpers/Widget): Slightly improved paginate widget: The link to the first page now skips the currentPage argument resulting in nicer URLs and less cHashes
+[+FEATURE] Fluid (ViewHelpers): excluding obsolete widget arguments & cHash from widget links if they're not explicitly set
+[+BUGFIX] Fluid (Core/Widget): AjaxWidgetContextHolder now uses a unique id for the Ajax WidgetContext. This makes sure, that the ajax response gets the right context, even if you open multiple browser windows in the same session
+[+BUGFIX] Fluid (Core): The Fluid Widget Bootstrap now initializes the object manager in order to respect "config.tx_extbase.object" configuration.. TODO: this should be somehow refactored to avoid code duplication
+[+BUGFIX] Fluid: Reduced the typeNum for the fluidAjaxWidgetResponse page. Apparently 7076857368 was too large ;) TODO: the typeNum should be somehow configurable
+[~TASK] Fluid (ViewHelpers/Widget): removed $GLOBALS['TSFE']->additionalHeaderData call from AutocompleteViewHelper as this is not configurable like this. Moved the jQuery includes to Configuration/TypoScript/setup.txt which can be included in your main TS template
+[+BUGFIX] Fluid (ViewHelpers): Fixed Widget URI generation in widget.link/widget.uri ViewHelpers/Link/WidgetViewHelpers
+[~TASK] Fluid (ViewHelpers/Widget): Tweaked PaginateViewHelper: Minor refactoring of controller & template
+[-TASK] Fluid (Compatibility): Forgot to remove obsolete Tx_Fluid_Compatibility_ObjectManager in previous commit
+[+FEATURE] Fluid (Core/Widget): Added Tx_Fluid_Core_Widget_Bootstrap that is used to dispatch Ajax requests (see ext_typoscript_setup.txt).
+[~TASK] Fluid (Compatibility): Removed Tx_Fluid_Compatibility_ObjectManager and replaced instances by Tx_Extbase_Object_ObjectManagerInterface instances
+[~TASK] Fluid (Core/Widget): AbstractWidgetController has to be a singleton so it can be injected in the WidgetViewHelper.. To be discussed!
+[+TASK] Fluid (Core/Widget): AjaxWidgetContextHolder is now correctly stored in the BE/FE Users session if the ajaxWidget of the corresponding Widget is TRUE.
+[+TASK] Fluid (Core/Widget): The WidgetContext now contains a reference to the parent extension & plugin name. That's needed for the widgetAjaxResponse.
+[+BUGFIX] Fluid (Core/Widget): WidgetRequestBuilder now correctly interprets GET parameters and dispatches Ajax requests
+[+BUGFIX] Fluid (ViewHelpers): Modified ViewHelpers cObject, format.crop, format.html, image, uri.image so that they use dependency injection in order to retrieve the current cObject instance from the configurationManager
+[+BUGFIX] Fluid (ViewHelpers): Fixed form ViewHelper to respect configured pluginNamespace in field name prefixes
+[+BUGFIX] Fluid (ViewHelpers): link.widget/uri.widget ViewHelpers now create correct URIs
+[+BUGFIX] Fluid (ViewHelpers): replaced @inject annotation by injectController method in AutocompleteViewHelper.
+[+FEATURE] First step of "Fluid widget" backport
+	This is the first step of the Widget backport (#8773). This contains all the core classes that are required for the widget implementation and two exemplary Widget ViewHelpers "widget.paginate" and "widget.autocomplete".
+	Note: Ajax widgets are not yet working!!
+	Relates to: #8773
+	Relates to: #10568
+[!!!][+BUGFIX] Fluid (View): Adjust fluid to recent resolveView() backport
+	Tx_Fluid_View_AbstractTemplateView now implements the Tx_Extbase_MVC_View_ViewInterface that was changed in r2675.
+	NOTE: This is a breaking change because the API method Tx_Fluid_View_TemplateView::hasTemplate was renamed to canRender(). Besides I deleted the TemplateViewInterface that is no longer needed. Implement Tx_Extbase_MVC_View_ViewInterface or simply extend Tx_Fluid_View_AbstractTemplateView if you want to write your own view implementation
+	Relates to: #8990
+[+BUGFIX] Fluid: Adjust Fluid to Dependency Injection changes. Relates to: #9062
+
+Changes for 1.3.0 Alpha 3:
+==========================
+[+BUGFIX] Fluid (ViewHelpers): ImageViewHelper supports additionalAttributes argument
+	The image view helper did not call the parent constructor, which registeres the "additionalAttributes" argument. Thanks to Michael Knoll.
+[+FEATURE] Fluid (View): Fluid Standalone view (#10473)
+[+TASK] Fluid (ViewHelpers): Minor tweak in CObject ViewHelper
+	Make sure, that the configurationManager is initialized.
+	This is just a preliminary solution that will be replaced as soon
+	as the Extbase dispatcher refactoring (#7153) is done.
+
+Changes for 1.3.0 Alpha 2:
+==========================
+included in TYPO3 4.5.0 Alpha 2.
+
+In this release, mostly small bugfixes have been made in Fluid. Highlights are:
+
+ * {settings} is now automatically in partials. (#6289)
+
+ * You can now use <f:security.ifAuthenticated> and <f:security.ifHasRole role="foo"> (#9143)
+   in your Fluid templates to check whether an FE user is currently logged in / belongs to the
+   specified usergroup.
+   Note: if "role" is a numeric value the uid of the usergroup is compared, otherwise the title
+   of the usergroup.
+   To deal with BE users you can use the respective be.security.* view helpers
+
+ * Boolean expressions can now contain negative numbers. Resolves #9434.
+
+Full Changes:
+-------------
+
+[+FEATURE] Fluid (Core): {settings} is available in Partials
+Now, the {settings} are automatically available in partials and sections.
+Before, they had to be passed explicitely, i.e. by calling
+<f:render section="..." arguments="{settings: settings}" />.
+If somebody defined his own "settings"-argument, this still takes precedence:
+<f:render section="..." arguments="{settings: some.different.settings}" />
+This means that this change is completely backwards compatible.
+NOTE: The settings are NOT merged together, like it has been suggested in #6289,
+as this will lead to un-obvious behavior for the user.
+
+[-API] Fluid (Core): Remove getTemplateParser() method.
+This method has accidentally gotten an @api annotation,
+and was only needed for the Viewhelpertest package.
+Now, this package is cleaned up, and this method can be
+completely thrown away.
+
+[+BUGFIX] Fluid (ViewHelpers): Fix bug in Form ViewHelper
+Since #6521 you can use the "objectName" argument to specify the name of a bound object rather then using the "name" attribute.
+But if you do so, the rendered hidden identity field is not correct anymore. This behavior is fixed with this commit.
+Resolves: #9515
+
+* Documentation Cleanup
+
+[+FEATURE] Fluid (ViewHelpers): Backported ifAuthenticated & ifHasRole security ViewHelpers
+you can now use <f:security.ifAuthenticated> and <f:security.ifHasRole role="foo">
+in your Fluid templates to check whether an FE user is currently logged in / belongs to the
+specified usergroup.
+Note: if role is a numeric value the uid of the usergroup is compared, otherwise the title
+of the usergroup.
+to deal with BE users you can use the respective be.security.* view helpers
+Resolves #9143
+
+[TASK] Fluid (Core): Regular Expression performance improvements
+In rare cases, on some systems (like mine), the
+PCRE parser reproducably crashes if one passes very
+long argument strings into it, or very complex ones.
+With this patch, the parser is slightly modified
+to decrease the use of backtracking; which then avoids
+the crashes mostly.
+
+[TASK] Fluid (Core): Formatted Regular Expressions more nicely
+There were some undocumented regular expressions
+in the parser, which needed to be formatted nicely.
+
+[+BUGFIX] Fluid (Core): Boolean expressions can now contain negative numbers. Resolves #9434.
+Boolean expressions with negative numbers did not work so far.
+Now, they work as expected. Example from Viewhelpertest which displayed
+a wrong result before, and now displays the correct result:
+<f:if condition="{testVariables.number.minusOne} < -1.1">
+	<f:then>Then part!</f:then>
+	<f:else>Else part!</f:else>
+</f:if>
+Issue: #9434
+
+
+
+Changes for 1.3.0 Alpha 1
+=========================
+included in TYPO3 4.5.0 Alpha 1.
+
+In this release, numerous bugs have been fixed, making Fluid more stable than ever. Below are some nice features which have been introduced:
+
+* Instead of <f:form name="...">, you should now write write <f:form objectName="...">, to create an XHTML compliant form (#6521)
+
+* The <f:for>-ViewHelper has now Iteration Information available, if you want that:
+  <f:for each="{objects}" as="object" iteration="iteration">
+     {iteration.index} is a counter which starts at 0
+     {iteration.cycle} is a counter which starts at 1
+     {iteration.isEven} / {iteration.isOdd} is a boolean variable which is true if the index is even/odd
+     {iteration.isFirst} / {iteration.isLast} is a boolean variable which is true if it is the first or last element in the list.
+  </f:for>
+
+!!! Refactored all Condition-ViewHelpers like f:if, f:security.if* to use a newly created base class F3\Fluid\Core\ViewHelper\ConditionViewHelper. This greatly simplifies the implementation of custom conditions.
+  THIS IS A BREAKING CHANGE in case you copied the f:if ViewHelper to create a custom condition ViewHelper, as the internal workings changed. Please check the new f:if ViewHelper to see how to adjust your ViewHelper -- you basically just have to throw away a lot of code. Resolves #8824.
+
+* Fixed section, partial and layout rendering to function in all cases as expected now, and tested this behavior also.
+  !!! Removed renderSection() and renderWithLayout() from public API in Tx_Fluid_View_TemplateView, as this should only be called from inside Fluid.
+
+* Fixing checkbox, radio and select-ViewHelpers, but this task is not finished yet.
+  !!! The value argument is required again in form.checkbox and form.radio ViewHelpers. This is a breaking change, as the value argument has not been mandatory for a while. But it probably won't break existing templates as omitting the value makes no sense at all.
+
+* Fixed BE support of ViewHelpers (cObject, format.crop, uri.resource, format.html, image)
+
+* Negative numeric values are now properly converted to FALSE when used in boolean ViewHelper arguments.
+
+* added f:uri.image ViewHelper, working just like f:image, but returning the URL and not the full image tag.
+
+Full Changes:
+-------------
+[~TASK] Fluid: Changed version of Extbase dependency from '1.2.0-1.2.999' to '1.3.0.devel' to reflect the version scheme defined in the wiki. Relates to #9152.
+[+BUGFIX] Fluid (View): AbstractTemplateView now correctly implements F3\FLOW3\MVC\View\ViewInterface and assign() and assignMultiple() will return an instance of $this to allow chaining again like $this->view->assign()->assign()... This fixes #9090 (backported from Fluid package r4931)
+[~TASK] Fluid (Tests): committing modified AbstractFormFieldViewHelperTest that I forgot to add in previous commit
+[+TASK] Fluid (ViewHelpers): Small performance improvement in ForViewHelper: Objects will only be converted to arrays if reverse is TRUE. Relates to #8732 (backported from Fluid package r4907)
+[+TASK] Fluid (View): Added getter for template parser to AbstractTemplateView. This is useful if you want to use the parser from within your custom ViewHelper (creating a new instance would skip interceptor registration) (backported from Fluid package r4907)
+[~TASK] Fluid (ViewHelpers): Added argument "objectName" to form ViewHelper. This is now the recommended way to specify the name of the object that is bound to a form! If objectName is not specified, the name attribute will be used as object name for backwards-compatibility reasons. This resolves #6521 (backported from Fluid package r4905)
+* Raised Fluid version in trunk to 1.3.0-devel
+[+BUGFIX] Fluid (ViewHelpers): Fixed a possible security issue where the content inside the Fluid a is not properly HTML escaped.
+[+FEATURE] Fluid (ViewHelpers): Added iteration information to for ViewHelper. Thanks to all the contributors for your input and patches! This resolves #6149 (backported from Fluid package r4904)
+[~TASK] Fluid (ViewHelpers): Fresh backport from Fluid package r4899 (Mostly fixed typos. slightly improved count ViewHelper)
+[~TASK] Fluid (ViewHelpers): Replaced custom convertToArray() method by PHPs iterator_to_array() function in cycle, for and groupedFor ViewHelpers. This resolves #8732. (backport from Fluid package r4898)
+[+BUGFIX] Fluid (ViewHelpers): Now, it is possible to "unselect" checkboxes and multiselect fields in editing forms. This fixes #5638. This fixes #8535. This fixes #6897 (improved forward-backport from Fluid package r4874)
+[+TASK] Fluid (Tests): Backported FormViewHelperTest from Fluid package
+[+BUGFIX] Fluid (ViewHelpers): FormViewHelper wraps hidden fields with a div tag to create XHTML valid output. This fixes #5512 (backported from Fluid package)
+[~TASK] Fluid (ViewHelpers): Fixed BE support of the ViewHelpers cObject, format.crop, uri.resource. Relates to #8947
+[~TASK] Fluid (ViewHelpers): Added BE support in the ViewHelpers format.html and image. Relates to #8947
+[!!!][+TASK] Fluid (ViewHelpers): The value argument is required again in form.checkbox and form.radio ViewHelpers. This is a breaking change, as the value argument has not been mandatory for a while. But it probably won't break existing templates as omitting the value makes no sense at all. Relates to #8852 (backported from Fluid package r4864)
+[+FEATURE] Fluid (Core): implemented overrideArgument() method in AbstractViewHelper to be able to override previously registered arguments in subclasses. This resolves #8852 (backported from Fluid package r4864)
+[+BUGFIX] Fluid (Core): Negative numeric values are properly converted to FALSE when used in boolean ViewHelper arguments. This resolves #8893 (backported from Fluid package r4864)
+[+BUGFIX] Fluid (ViewHelpers): Reversed the rendering order of header and childNodes in be.container ViewHelper to enable child nodes to modify the pageRenderer. This resolves #8880 (thanks to Andreas Wolf)
+[+BUGFIX] Fluid: Removed leading slash from @var annotations that were backported by mistake
+[+BUGFIX] Fluid: Replaced SplObjectStorage by Tx_Extbase_Persistence_ObjectStorage to be PHP 5.2-compatible (which ships with a broken implementation of SplObjectStorage)
+[!!!][~TASK] Fluid (Core): Renamed ConditionViewHelper and TagBasedViewHelper to Abstract*ViewHelper as per CGL. (backported from Fluid package r4840). To be backwards-compatible, TagBasedViewHelper.php still exists and will write an entry to TYPO3s deprecation log if used. Please adapt your custom ViewHelpers and inherit from AbstractTagBasedViewHelper instead of TagBasedViewHelper. This resolves #8834
+[~TASK] Fluid: Marked vfs unit tests to be skipped, as vfs is not part of v4 (yet)
+[-TASK] Fluid: Removed @package/@subpackage annotations from all Fluid classes. They have already been removed in FLOW3 packages in r2813.
+[-TASK] Fluid: Removed @version annotation from all Fluid classes to ease the backporting process. Relates to #8835 (backported from Fluid package)
+[+BUGFIX] Fluid (View): fixed method signature of AbstractTemplateView:getTemplateSource() that was different from the concrete implementation (backported from Fluid package)
+Fluid in v5 and v4 are now synchronized again!
+[+FEATURE] Fluid: The TemplateVariableContainer now provides a method to retrieve all variables.
+[~TASK] Fluid (Core): Introduced a RenderingContextInterface to more cleanly decouple Fluid's rendering context from the TypoScript rendering context. Note that view helpers (and other code) should now refer to that interface instead of the concrete Fluid implementation!
+[!!!][+BUGFIX] Fluid (Core): Refactored all Condition-ViewHelpers like f:if, f:security.if* to use a newly created base class F3\Fluid\Core\ViewHelper\ConditionViewHelper. This greatly simplifies the implementation of custom conditions. However, THIS IS A BREAKING CHANGE in case you copied the f:if ViewHelper to create a custom condition ViewHelper, as the internal workings changed. Please check the new f:if ViewHelper to see how to adjust your ViewHelper -- you basically just have to throw away a lot of code. Resolves #8824.
+[!!!][-API] Fluid (TemplateView): Removed renderSection() and renderWithLayout() from public API in Tx_Fluid_View_TemplateView, as this should only be called from inside Fluid.
+[!!!][TASK] Fluid (ViewHelpers): the <f:section />-ViewHelper now does NOT render itself anymore when encountered in a normal template. Example: Before the change, the template "before <f:section name='...'> middle </f:section> after" was rendered as "before middle after", but now it is only rendered as "before after". Although this is a breaking change, it is quite unlikely that anybody relied on this behavior, as it was inconsistent beforehand.
+[TASK] Fluid (TemplateView): Major refactoring of the layout, partial and section rendering mechanism. This also induces a speedup as retundant rendering is eliminated.
+[+FEATURE] Fluid (ViewHelpers): The <f:render>-ViewHelper can be now used to render sections in the same partial and template. In these cases, all arguments need to be specified explicitely. Additionally, it can now be used to render a section recursively.
+[~TASK] Fluid (Core): Removed some non-API-methods which were never called.
+[+FEATURE] Fluid (ViewHelpers): format.crop ViewHelper now supports all features in Backend mode. Relates to #8648
+[+TASK] Fluid: Set dependency to Extbase 1.2.x in ext_emconf.php to avoid confusions when working with different versions
+[+TASK] Fluid: Backported recent changes from Fluid package:
+[+FEATURE] Fluid (ViewHelpers): added "selectAllByDefault" argument to form.select ViewHelper. Resolves #4984
+~TASK] Fluid (Parser): Got rid of the constructor in Parser\Configuration.
+[+FEATURE] Fluid (ViewHelpers): Added uri.image ViewHelper. This resolves #8233
+[+FEATURE] Fluid (ViewHelpers): Added URI options noCache, noCacheHash, section, format, additionalParams, absolute, addQueryString & argumentsToBeExcludedFromQueryString to FormViewHelper. Resolves #8247 [+BUGFIX] Fluid: Removed a leading backslash in ViewHelperBaseTestcase that led to an error with PHP < 5.3
+[+TASK] Fluid: Backported some recent Fluid changes (Note: this is not a complete backport, there are still changes in Fluid Package that are not backported yet):
+[+BUGFIX] Fluid (ViewHelpers): form.select ViewHelper did only check whether "multiple" attribute was set and not whether it was empty or not. Resolves #5879
+[+FEATURE] Fluid (ViewHelpers): GroupedForViewHelper can now group by object. Resolves #7389
+
+
+HOW TO CREATE THE CHANGELOG
+===========================
+git log [startRevision]..HEAD --pretty=format:"%s%n%b%n" | grep -v "^$" | grep -v "git-svn-id"
