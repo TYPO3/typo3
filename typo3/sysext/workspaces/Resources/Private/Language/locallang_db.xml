@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for db fields of sys_workspace_stage and sys_workspace</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="sys_filemounts.tabs.staging">Staging</label>
+			<label index="sys_workspace.custom_stages">Custom stages:</label>
+			<label index="sys_workspace_stage.responsible_persons">Responsible persons:</label>
+			<label index="sys_workspace_stage.default_mailcomment">Default mail comment:</label>
+			<label index="sys_workspace_stage.parentid">UID of parent record:</label>
+			<label index="sys_workspace_stage.parenttable">Parent table:</label>
+			<label index="sys_workspace_stage">Workspace Stage</label>
+		</languageKey>
+	</data>
+</T3locallang>

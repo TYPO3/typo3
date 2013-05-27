@@ -1,0 +1,18 @@
+<f:layout name="module" />
+
+<f:section name="main">
+
+<f:if condition="{performWorkspaceSwitch}">
+<script type="text/javascript">
+	top.TYPO3ModuleMenu.refreshMenu();
+	top.TYPO3BackendWorkspaceMenu.performWorkspaceSwitch({activeWorkspaceUid}, "{activeWorkspaceTitle}");
+</script>
+</f:if>
+
+<f:if condition="{showGrid}">
+	<f:then><div id="workspacegrid"></div>
+	</f:then>
+	<f:else><f:translate key="editorInLive" /></f:else>
+</f:if>
+
+</f:section>
