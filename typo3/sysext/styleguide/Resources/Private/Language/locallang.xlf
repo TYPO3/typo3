@@ -18,6 +18,9 @@
 			<trans-unit id="table" xml:space="preserve">
 				<source>Table</source>
 			</trans-unit>
+			<trans-unit id="grid" xml:space="preserve">
+				<source>Grid</source>
+			</trans-unit>
 			<trans-unit id="testel" xml:space="preserve">
 				<source>Testel</source>
 			</trans-unit>

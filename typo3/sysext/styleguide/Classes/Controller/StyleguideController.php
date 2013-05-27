@@ -57,6 +57,12 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	}
 
 	/**
+	 * Grid
+	 */
+	public function gridAction() {
+	}
+
+	/**
 	 * Tables
 	 */
 	public function tableAction() {
