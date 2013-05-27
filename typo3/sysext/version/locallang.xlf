@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="version">
+		<header/>
+		<body>
+			<trans-unit id="title" xml:space="preserve">
+				<source>Versioning</source>
+			</trans-unit>
+			<trans-unit id="title_review" xml:space="preserve">
+				<source>Send to review/pub</source>
+			</trans-unit>
+			<trans-unit id="mlang_labels_tablabel" xml:space="preserve">
+				<source>Page and content versioning and workspace management for pages.</source>
+			</trans-unit>
+			<trans-unit id="mlang_labels_tabdescr" xml:space="preserve">
+				<source>The Web&gt;Versioning module provides access to versioning features for the page tree.</source>
+			</trans-unit>
+			<trans-unit id="mlang_tabs_tab" xml:space="preserve">
+				<source>Versioning</source>
+			</trans-unit>
+			<trans-unit id="clickAPage_header" xml:space="preserve">
+				<source>Web&gt;Versioning module</source>
+			</trans-unit>
+			<trans-unit id="clickAPage_content" xml:space="preserve">
+				<source>Please click a page in the pagetree frame to see the versioning module.</source>
+			</trans-unit>
+			<trans-unit id="filter_drafts" xml:space="preserve">
+				<source>Drafts</source>
+			</trans-unit>
+			<trans-unit id="filter_archive" xml:space="preserve">
+				<source>Archive</source>
+			</trans-unit>
+			<trans-unit id="filter_all" xml:space="preserve">
+				<source>All</source>
+			</trans-unit>
+			<trans-unit id="diffing" xml:space="preserve">
+				<source>DIFFING</source>
+			</trans-unit>
+			<trans-unit id="fieldname" xml:space="preserve">
+				<source>Fieldname</source>
+			</trans-unit>
+			<trans-unit id="coloredDiffView" xml:space="preserve">
+				<source>Colored diff-view</source>
+			</trans-unit>
+			<trans-unit id="recordsMatchesCompletely" xml:space="preserve">
+				<source>Records matches completely on all editable fields!</source>
+			</trans-unit>
+			<trans-unit id="errorRecordsNotFound" xml:space="preserve">
+				<source>ERROR: Records could strangely not be found!</source>
+			</trans-unit>
+			<trans-unit id="errorDiffSources" xml:space="preserve">
+				<source>ERROR: You didn't select two sources for diffing!</source>
+			</trans-unit>
+			<trans-unit id="tblHeader_title" xml:space="preserve">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tblHeader_uid" xml:space="preserve">
+				<source>UID</source>
+			</trans-unit>
+			<trans-unit id="tblHeader_t3ver_oid" xml:space="preserve">
+				<source>oid</source>
+			</trans-unit>
+			<trans-unit id="tblHeader_t3ver_id" xml:space="preserve">
+				<source>id</source>
+			</trans-unit>
+			<trans-unit id="tblHeader_t3ver_wsid" xml:space="preserve">
+				<source>wsid</source>
+			</trans-unit>
+			<trans-unit id="tblHeader_t3ver_state" xml:space="preserve">
+				<source>state</source>
+			</trans-unit>
+			<trans-unit id="tblHeader_t3ver_stage" xml:space="preserve">
+				<source>stage</source>
+			</trans-unit>
+			<trans-unit id="tblHeader_t3ver_count" xml:space="preserve">
+				<source>count</source>
+			</trans-unit>
+			<trans-unit id="tblHeader_pid" xml:space="preserve">
+				<source>pid</source>
+			</trans-unit>
+			<trans-unit id="tblHeader_t3ver_label" xml:space="preserve">
+				<source>Label</source>
+			</trans-unit>
+			<trans-unit id="tblHeaderDesc_title" xml:space="preserve">
+				<source>Header of element</source>
+			</trans-unit>
+			<trans-unit id="tblHeaderDesc_uid" xml:space="preserve">
+				<source>Unique ID of element</source>
+			</trans-unit>
+			<trans-unit id="tblHeaderDesc_t3ver_oid" xml:space="preserve">
+				<source>t3ver_oid - Reference to live version UID</source>
+			</trans-unit>
+			<trans-unit id="tblHeaderDesc_t3ver_id" xml:space="preserve">
+				<source>t3ver_id - Version number, incremental integer</source>
+			</trans-unit>
+			<trans-unit id="tblHeaderDesc_t3ver_wsid" xml:space="preserve">
+				<source>t3ver_wsid - Workspace ID. There can be only one version of an element per ID (except ID zero).</source>
+			</trans-unit>
+			<trans-unit id="tblHeaderDesc_t3ver_state" xml:space="preserve">
+				<source>t3ver_state - Special states of a version: 1=Placeholder for "New". 2=Marked deleted.</source>
+			</trans-unit>
+			<trans-unit id="tblHeaderDesc_t3ver_stage" xml:space="preserve">
+				<source>t3ver_stage - Publishing stage: Editing (0), review (1), publish (10), rejected (-1).</source>
+			</trans-unit>
+			<trans-unit id="tblHeaderDesc_t3ver_count" xml:space="preserve">
+				<source>t3ver_count - Life cycle counter. Incremented each time element is unpublished.</source>
+			</trans-unit>
+			<trans-unit id="tblHeaderDesc_pid" xml:space="preserve">
+				<source>Page ID</source>
+			</trans-unit>
+			<trans-unit id="tblHeaderDesc_t3ver_label" xml:space="preserve">
+				<source>Label</source>
+			</trans-unit>
+			<trans-unit id="diff" xml:space="preserve">
+				<source>Diff</source>
+			</trans-unit>
+			<trans-unit id="swapWithCurrent" xml:space="preserve">
+				<source>SWAP with current</source>
+			</trans-unit>
+			<trans-unit id="currentOnlineVersion" xml:space="preserve">
+				<source>CURRENT ONLINE VERSION!</source>
+			</trans-unit>
+			<trans-unit id="cmdPid0" xml:space="preserve">
+				<source>Page: Page + content</source>
+			</trans-unit>
+			<trans-unit id="cmdPid100" xml:space="preserve">
+				<source>Branch: All subpages</source>
+			</trans-unit>
+			<trans-unit id="cmdPid1" xml:space="preserve">
+				<source>Element: Just record</source>
+			</trans-unit>
+			<trans-unit id="createNewVersion" xml:space="preserve">
+				<source>Create new version</source>
+			</trans-unit>
+			<trans-unit id="previewLink" xml:space="preserve">
+				<source>Preview Link</source>
+			</trans-unit>
+			<trans-unit id="publishPage" xml:space="preserve">
+				<source>Publish Page</source>
+			</trans-unit>
+			<trans-unit id="swapPage" xml:space="preserve">
+				<source>Swap page</source>
+			</trans-unit>
+			<trans-unit id="publishPageQuestion" xml:space="preserve">
+				<source>Are you sure you want to publish all content %sfrom this page?</source>
+			</trans-unit>
+			<trans-unit id="swapPageQuestion" xml:space="preserve">
+				<source>Are you sure you want to publish (swap) all content %sfrom this page?</source>
+			</trans-unit>
+			<trans-unit id="publishPageQuestionStage" xml:space="preserve">
+				<source>in "Publish" stage </source>
+			</trans-unit>
+			<trans-unit id="previewUrl" xml:space="preserve">
+				<source>Preview Url:</source>
+			</trans-unit>
+			<trans-unit id="previewInstruction" xml:space="preserve">
+				<source>You can preview this page from the workspace using this link for the next %s hours (does not require backend login):</source>
+			</trans-unit>
+			<trans-unit id="versionDetails" xml:space="preserve">
+				<source>Details for version</source>
+			</trans-unit>
+			<trans-unit id="wsManagement" xml:space="preserve">
+				<source>Workspace management</source>
+			</trans-unit>
+			<trans-unit id="showDiffView" xml:space="preserve">
+				<source>Show difference view</source>
+			</trans-unit>
+			<trans-unit id="liveVersion" xml:space="preserve">
+				<source>Live Version:</source>
+			</trans-unit>
+			<trans-unit id="wsVersions" xml:space="preserve">
+				<source>Workspace Versions:</source>
+			</trans-unit>
+			<trans-unit id="controls" xml:space="preserve">
+				<source>Controls:</source>
+			</trans-unit>
+			<trans-unit id="goBack" xml:space="preserve">
+				<source>Click here to go back</source>
+			</trans-unit>
+			<trans-unit id="showAllInformation" xml:space="preserve">
+				<source>Show all information</source>
+			</trans-unit>
+			<trans-unit id="newElement" xml:space="preserve">
+				<source>New element</source>
+			</trans-unit>
+			<trans-unit id="deletedElement" xml:space="preserve">
+				<source>Deleted element</source>
+			</trans-unit>
+			<trans-unit id="moveToPlaceholder" xml:space="preserve">
+				<source>Move-to placeholder (destination)</source>
+			</trans-unit>
+			<trans-unit id="moveToPointer" xml:space="preserve">
+				<source>Move-to pointer (source)</source>
+			</trans-unit>
+			<trans-unit id="notAvailable" xml:space="preserve">
+				<source>N/A</source>
+			</trans-unit>
+			<trans-unit id="change" xml:space="preserve">
+				<source>change:</source>
+			</trans-unit>
+			<trans-unit id="element" xml:space="preserve">
+				<source> [Element]</source>
+			</trans-unit>
+			<trans-unit id="page" xml:space="preserve">
+				<source> [Page]</source>
+			</trans-unit>
+			<trans-unit id="branch" xml:space="preserve">
+				<source> [Branch]</source>
+			</trans-unit>
+			<trans-unit id="otherVersions" xml:space="preserve">
+				<source>Other version(s) in workspace </source>
+			</trans-unit>
+			<trans-unit id="multipleVersions" xml:space="preserve">
+				<source>Multiple versions in same workspace!</source>
+			</trans-unit>
+			<trans-unit id="versionInVersion" xml:space="preserve">
+				<source>Version inside version!</source>
+			</trans-unit>
+			<trans-unit id="lifecycle" xml:space="preserve">
+				<source>Lifecycle</source>
+			</trans-unit>
+			<trans-unit id="workspace" xml:space="preserve">
+				<source>Workspace</source>
+			</trans-unit>
+			<trans-unit id="diffToLiveElement" xml:space="preserve">
+				<source>Difference to live element:</source>
+			</trans-unit>
+			<trans-unit id="commentForReviewer" xml:space="preserve">
+				<source>Comment for Reviewer:</source>
+			</trans-unit>
+			<trans-unit id="commentForPublisher" xml:space="preserve">
+				<source>Comment for Publisher:</source>
+			</trans-unit>
+			<trans-unit id="sendItemsToReview" xml:space="preserve">
+				<source>Sending %s item(s) to review. </source>
+			</trans-unit>
+			<trans-unit id="sendAllToReview" xml:space="preserve">
+				<source>Send all to Review</source>
+			</trans-unit>
+			<trans-unit id="approveToPublish" xml:space="preserve">
+				<source>Approving %s item(s) to publishing. </source>
+			</trans-unit>
+			<trans-unit id="approveAllToPublish" xml:space="preserve">
+				<source>Approve all for Publishing</source>
+			</trans-unit>
+			<trans-unit id="offline" xml:space="preserve">
+				<source>[Offline]</source>
+			</trans-unit>
+			<trans-unit id="draft" xml:space="preserve">
+				<source>Draft</source>
+			</trans-unit>
+			<trans-unit id="archive" xml:space="preserve">
+				<source>Archive</source>
+			</trans-unit>
+			<trans-unit id="publishedXTimes" xml:space="preserve">
+				<source>Published %s times</source>
+			</trans-unit>
+			<trans-unit id="stage.sentToReview" xml:space="preserve">
+				<source>sent element to "Review"</source>
+			</trans-unit>
+			<trans-unit id="stage.approvedForPublish" xml:space="preserve">
+				<source>approved for "Publish"</source>
+			</trans-unit>
+			<trans-unit id="stage.rejectedElement" xml:space="preserve">
+				<source>rejected element!</source>
+			</trans-unit>
+			<trans-unit id="stage.resetToEdit" xml:space="preserve">
+				<source>reset to "Editing"</source>
+			</trans-unit>
+			<trans-unit id="stage.undefined" xml:space="preserve">
+				<source>[undefined]</source>
+			</trans-unit>
+			<trans-unit id="userComment" xml:space="preserve">
+				<source>User Comment</source>
+			</trans-unit>
+			<trans-unit id="subElementsClick" xml:space="preserve">
+				<source>[Sub elements, click for details]</source>
+			</trans-unit>
+			<trans-unit id="subElements" xml:space="preserve">
+				<source>[Sub elements]</source>
+			</trans-unit>
+			<trans-unit id="completeMatch" xml:space="preserve">
+				<source>Complete match on editable fields.</source>
+			</trans-unit>
+			<trans-unit id="editing" xml:space="preserve">
+				<source>Editing</source>
+			</trans-unit>
+			<trans-unit id="sendToReview" xml:space="preserve">
+				<source>Send to Review</source>
+			</trans-unit>
+			<trans-unit id="review" xml:space="preserve">
+				<source>Review</source>
+			</trans-unit>
+			<trans-unit id="swap" xml:space="preserve">
+				<source>Swap</source>
+			</trans-unit>
+			<trans-unit id="approveForPublishing" xml:space="preserve">
+				<source>Approve for Publishing</source>
+			</trans-unit>
+			<trans-unit id="publish" xml:space="preserve">
+				<source>Publish</source>
+			</trans-unit>
+			<trans-unit id="rejected" xml:space="preserve">
+				<source>Rejected</source>
+			</trans-unit>
+			<trans-unit id="comment" xml:space="preserve">
+				<source>Comment:</source>
+			</trans-unit>
+			<trans-unit id="resetStage" xml:space="preserve">
+				<source>Reset stage</source>
+			</trans-unit>
+			<trans-unit id="undefined" xml:space="preserve">
+				<source>Undefined</source>
+			</trans-unit>
+			<trans-unit id="rejectExplain" xml:space="preserve">
+				<source>Please explain why you reject:</source>
+			</trans-unit>
+			<trans-unit id="removeFromWorkspace" xml:space="preserve">
+				<source>Remove from workspace</source>
+			</trans-unit>
+			<trans-unit id="showLog" xml:space="preserve">
+				<source>Show Log</source>
+			</trans-unit>
+			<trans-unit id="liveWorkspace" xml:space="preserve">
+				<source>[Live workspace]</source>
+			</trans-unit>
+			<trans-unit id="draftWorkspaces" xml:space="preserve">
+				<source>Draft Workspaces</source>
+			</trans-unit>
+			<trans-unit id="defaultDraft" xml:space="preserve">
+				<source>[Default Draft]</source>
+			</trans-unit>
+			<trans-unit id="errors" xml:space="preserve">
+				<source>Errors:</source>
+			</trans-unit>
+			<trans-unit id="refresh" xml:space="preserve">
+				<source>Refresh</source>
+			</trans-unit>
+			<trans-unit id="allowPreviewOfWholeWorkspace" xml:space="preserve">
+				<source>Allow preview of whole workspace</source>
+			</trans-unit>
+			<trans-unit id="versionId" xml:space="preserve">
+				<source>ID:</source>
+			</trans-unit>
+			<trans-unit id="workspaceId" xml:space="preserve">
+				<source>Workspace-Id:</source>
+			</trans-unit>
+			<trans-unit id="live" xml:space="preserve">
+				<source>LIVE</source>
+			</trans-unit>
+			<trans-unit id="versionSelect.label" xml:space="preserve">
+				<source>Versions of this page:</source>
+			</trans-unit>
+			<trans-unit id="versionSelect.live" xml:space="preserve">
+				<source>LIVE version</source>
+			</trans-unit>
+			<trans-unit id="versionSelect.publish" xml:space="preserve">
+				<source>Publish page</source>
+			</trans-unit>
+			<trans-unit id="versionSelect.inBranch" xml:space="preserve">
+				<source>Inside branch, no further versioning possible</source>
+			</trans-unit>
+			<trans-unit id="versionSelect.versionsFound" xml:space="preserve">
+				<source>Versions found on page, no "Page" versioning possible</source>
+			</trans-unit>
+			<trans-unit id="autopublishTask.name" xml:space="preserve">
+				<source>Workspaces auto-publication</source>
+			</trans-unit>
+			<trans-unit id="autopublishTask.description" xml:space="preserve">
+				<source>This tasks checks any workspace that has a publication date set in the past and automatically publishes it.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
