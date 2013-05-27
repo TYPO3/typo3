@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>DBAL debugging module</description>
+        <type>module</type>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="title">DBAL Analysis Module</label>
+            <label index="Debug_log">Debug log</label>
+            <label index="Cached_info">Cached info</label>
+            <label index="SQL_check">SQL Check</label>
+        </languageKey>
+    </data>
+</T3locallang>

@@ -1,0 +1,131 @@
+2008-02-04  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #7295: Uninitialized variable in ->handler_getFromTableList() (Patch by Oliver Klee)
+
+2007-05-30  Karsten Dambekalns <karsten@typo3.org>
+
+	* Added default values and some usability improvements to cached info display in debug module (closes bug #3750)
+	* EXPLAIN PLAN support for Oracle (closes bug #3850)
+	* Fixed a warning when using admin_get_fields() on a non-existent table
+	* Fixed a bug causing inserts with more than one affected CLOB field to fail
+	* quoteWhereClause() now die()s when the input cannot be parsed by parseWhereClause()
+	* PHP backtraces can be logged with the queries now (closes bug #3856)
+
+2007-05-29  Karsten Dambekalns <karsten@typo3.org>
+
+	* Closes bug #4462: creates tables without OIDs on PostgreSQL now
+	* Closes bugs #4494, #3759: & is translated to BITAND() on Oracle now
+	* Large text fields are CLOB fields now; for Oracle LIKE comparisons against such fields are translated to dbms_lob.instr() calls. This should fix e.g. bug #5535 as well as issues with TV data that cannot be unserialized (see comments on bug #4638)
+	* Updates to the manual
+	* A fix for bug #5481, field mapping not working on the right side of a comparison in WHERE clauses
+	* Fixed bugs #2438 and #4496 about quoting of DISTINCT in SELECT clauses
+
+2006-07-19  Karsten Dambekalns <karsten@typo3.org>
+
+	* Fixes SQL issues when searching in list view or with the global search box on the bottom of the BE page
+
+2006-06-30  Karsten Dambekalns <karsten@typo3.org>
+
+	* this update closes bugs #3638, #2106, #2866, #3754 (for Firefox, broken in MSIE) and maybe a few more
+	* Implemented support for sysLog() on connection failure
+	* DBAL now honours the no_pconnect setting
+	* For handlers in native mode the setDBinit queries are executed upon connection
+	* The initial value for generated sequences can be configured per handler, to avoid duplicate key errors after having imported data
+	* BLOB fields are handled correctly now during INSERT and UPDATE
+	* Setting $store_lastBuiltQuery acts like in t3lib_db now (fill $debug_lastBuiltQuery)
+	* For the native handler quoting methods directly return the input for speedup, as no quoting is needed in that case
+	* Added support for native and userdefined handler to MetaType()
+	* Changed mapping of types to always use the largest possible integer, map tinytext to varchar instead of text
+	* admin_get_tables() skips tables whose names match /BIN\$/ (coming from the recycle bin on Oracle)
+	* Importing dumps using the install tool now works, see manual for tips
+	* Changed the way NOT NULL and DEFAULT are handled when setting up tables, see manual for the rules that now apply
+	* Code cleanup (indentation, documentation)
+	* Updated the manual and added new content
+
+2006-01-19  Karsten Dambekalns <karsten@typo3.org>
+
+	* Changes to connection handling, detecting failed connections.
+	* Added support for $no_quote_fields in UPDATE and INSERT methods.
+
+2006-01-04  Karsten Dambekalns <karsten@typo3.org>
+
+	* Changed the way a connection is established with ADOdb. The new
+	way allows ODBC connections (rather, connections to drivers having
+	an underscore in their name).
+	* Changes to ext_tables.sql to make it more portable.
+	* When printing errors, output the offending SQL as well.
+	* Some small fixes, enhancements to code documentation.
+	* Some additions to the manual.
+
+2005-12-27  Karsten Dambekalns <karsten@typo3.org>
+
+	* Converted locallang to XML, small adaptions to syext location.
+	* One slight fix to the SQL check in the BE module (wrong output if
+	an error occurred).
+
+2005-12-26  Karsten Dambekalns <karsten@typo3.org>
+
+	* Code cleanup and improvements to the mapping. Merged 3rd
+	party changes done by DIACC GmbH.
+
+2005-12-23  Karsten Dambekalns <karsten@typo3.org>
+
+	* Fixed a few issues that were left undiscovered yet.
+	* Added a new module to test query building and parsing
+	from the DBAL debug module.
+	* Finalized fix for bug #1649.
+
+2005-12-22  Karsten Dambekalns <karsten@typo3.org>
+
+	* Fixed bug #2077 (NOT handling breaking, consequently
+	discarding WHERE clauses).
+
+2005-12-21  Karsten Dambekalns <karsten@typo3.org>
+
+	* Fixed bug #1781 to allow easier install.
+	* Closed bug #1204 as not reproducable. Probably rather a
+	PHP/Apache bug than a DBAL bug.
+	* Closed bug #1317 which has been fixed earlier. It was due
+	to a msissing check for the incoming SQL (string/array) in the
+	native part of exec_UPDATEquery().
+	* Fixed parseFieldDef() t3lib_sqlparser to allow datatypes
+	with just a trailing comma (like in "tyinytext," as opposed
+	to "varchar(19)". This prevented installation of some
+	extensions.
+	* Fixed bug #2072.
+	* Fixed bug #1206.
+	* Fixed a bug with error logging and array queries (BLOB).
+	* Prepared a fix for bug #1649, pending core list approval.
+	* Fixed a bug in t3lib_page, getMultipleGroupsWhereClause()
+	where double quotes were used to quote a literal for use in
+	SQL. THIS IS MYSQL-ONLY! NEVER DO THIS! ALWAYS USE SINGLE
+	QUOTES!
+
+2005-06-07  Karsten Dambekalns <karsten@typo3.org>
+
+	Documentation update.
+
+2005-05-19  Karsten Dambekalns <karsten@typo3.org>
+
+	Committed changes to go along with the library removal done
+	earlier. Completed debug logging.
+
+2005-02-07  Karsten Dambekalns <karsten@typo3.org>
+
+	Bringing the DBAL extension AS OF JANUARY 2005 into CVS.  Works
+	pretty well, but still needs more work. A few optimizations are
+	planned and some bugs in native mode need to be fixed. Checking
+	this in is (similar to yesterday's commit) more for
+	historic/archival reasons.  This version will NOT work with 3.7.x.
+	You have been warned.
+
+2005-02-06  Karsten Dambekalns <karsten@typo3.org>
+
+	Bringing the DBAL extension AS OF JULY 2004 into CVS. This is
+	rather for historic purposes, more changes will follow in the near
+	future.  This version was already a huge step forward, but it will
+	not work as expected with 3.7.x or 3.8.x. You have been warned.
+
+2004-03-28  Kasper Skaarhoej <kasperYYYY@typo3.com>
+
+	Initial revision
