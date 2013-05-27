@@ -1,0 +1,48 @@
+config.tx_extbase {
+	objects {
+		Tx_Extbase_Persistence_Storage_BackendInterface {
+			className = Tx_Extbase_Persistence_Storage_Typo3DbBackend
+		}
+		Tx_Extbase_Persistence_QuerySettingsInterface {
+			className = Tx_Extbase_Persistence_Typo3QuerySettings
+		}
+	}
+	mvc {
+		requestHandlers {
+			Tx_Extbase_MVC_Web_FrontendRequestHandler = Tx_Extbase_MVC_Web_FrontendRequestHandler
+			Tx_Extbase_MVC_Web_BackendRequestHandler = Tx_Extbase_MVC_Web_BackendRequestHandler
+			Tx_Extbase_MVC_CLI_RequestHandler = Tx_Extbase_MVC_CLI_RequestHandler
+		}
+		throwPageNotFoundExceptionIfActionCantBeResolved = 0
+	}
+	persistence{
+		enableAutomaticCacheClearing = 1
+		updateReferenceIndex = 0
+		classes {
+			Tx_Extbase_Domain_Model_FrontendUser {
+				mapping {
+					tableName = fe_users
+					recordType = Tx_Extbase_Domain_Model_FrontendUser
+					columns {
+						lockToDomain.mapOnProperty = lockToDomain
+					}
+				}
+			}
+			Tx_Extbase_Domain_Model_FrontendUserGroup {
+				mapping {
+					tableName = fe_groups
+					recordType = Tx_Extbase_Domain_Model_FrontendUserGroup
+					columns {
+						lockToDomain.mapOnProperty = lockToDomain
+					}
+				}
+			}
+		}
+	}
+	features {
+		 # this enables/disables the reworked property mapper (see http://forge.typo3.org/projects/typo3v4-mvc/wiki/PropertyMapper_rework)
+		rewrittenPropertyMapper = 0
+		 # if enabled, default controller and/or action is skipped when creating URIs through the URI Builder (see http://forge.typo3.org/projects/typo3v4-mvc/wiki/Skip_default_arguments_in_URIs)
+		skipDefaultArguments = 0
+	}
+}

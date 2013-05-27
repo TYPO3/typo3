@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="extbase">
+		<header/>
+		<body>
+			<trans-unit id="fe_users.tx_extbase_type" xml:space="preserve">
+				<source>Record Type</source>
+			</trans-unit>
+			<trans-unit id="fe_users.tx_extbase_type.0" xml:space="preserve">
+				<source>undefined</source>
+			</trans-unit>
+			<trans-unit id="fe_users.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUser" xml:space="preserve">
+				<source>Tx_Extbase_Domain_Model_FrontendUser</source>
+			</trans-unit>
+			<trans-unit id="fe_groups.tx_extbase_type" xml:space="preserve">
+				<source>Record Type</source>
+			</trans-unit>
+			<trans-unit id="fe_groups.tx_extbase_type.0" xml:space="preserve">
+				<source>undefined</source>
+			</trans-unit>
+			<trans-unit id="fe_groups.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUserGroup" xml:space="preserve">
+				<source>Tx_Extbase_Domain_Model_FrontendUserGroup</source>
+			</trans-unit>
+			<trans-unit id="task.action" xml:space="preserve">
+				<source>CommandController Command</source>
+			</trans-unit>
+			<trans-unit id="task.name" xml:space="preserve">
+				<source>Extbase CommandController Task</source>
+			</trans-unit>
+			<trans-unit id="task.description" xml:space="preserve">
+				<source>Allows Extbase CommandController commands to be configured and executed through the scheduler framework.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
