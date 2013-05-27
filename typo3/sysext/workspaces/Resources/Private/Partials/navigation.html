@@ -1,0 +1,34 @@
+<ul class="x-tab-strip x-tab-strip-top">
+	<f:for each="{workspaceList}" as="workspace" key="uid">
+		<f:if condition="{uid}=={activeWorkspaceUid}">
+			<f:then>
+				<li class="x-tab-strip-active x-tab-strip-closable">
+					<span class="x-tab-right">
+						<em class="x-tab-left"><span class="x-tab-strip-inner"><span class="x-tab-strip-text">{workspace}</span></span></em>
+					</span>
+				</li>
+			</f:then>
+			<f:else>
+				<li class="x-tab-strip-closable">
+					<f:link.action controller="Review" action="index" additionalParams="{workspace:uid}" class="x-tab-right">
+						<em class="x-tab-left"><span class="x-tab-strip-inner"><span class="x-tab-strip-text">{workspace}</span></span></em>
+					</f:link.action>
+				</li>
+			</f:else>
+		</f:if>
+	</f:for>
+	<f:if condition="{showAllWorkspaceTab}">
+		<li class="last {f:if(condition: '-98=={activeWorkspaceUid}', then: 'x-tab-strip-active')}">
+			<f:link.action controller="Review" action="fullIndex" class="x-tab-right">
+				<em class="x-tab-left">
+					<span class="x-tab-strip-inner">
+						<span class="x-tab-strip-text">
+							All
+						</span>
+					</span>
+				</em>
+			</f:link.action>
+		</li>
+	</f:if>
+	<div class="x-clear"></div>
+ </ul>
