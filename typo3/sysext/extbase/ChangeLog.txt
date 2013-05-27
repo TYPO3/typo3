@@ -1,0 +1,1408 @@
+ChangeLog for Extbase
+=====================
+
+Changes for 6.1.0
+=================
+
+!!! Introduce explicit saving of modified domain objects
+--------------------------------------------------------
+
+In conjunction with the new property mapper the persistence layer
+saves modified domain objects that failed validation and/or mapping.
+
+This bugfix aligns the behavior of the persistence layer with Flow
+and introduces explicit saving of modified domain objects.
+
+Modified objects now need to be passed through their repository
+update method in order to be scheduled for saving by the persistence
+managers persistAll method.
+
+
+!!! Enable rewritten PropertyMapper as default
+----------------------------------------------
+
+After solving the missing security features and bugfixes
+the rewritten PropertyMapper is now ready to be used in
+production environments.
+
+
+!!! Remove support for TCA setting 'foreign_selector'
+-----------------------------------------------------
+
+The TCA setting 'foreign_selector' is a UI feature which can be
+configured for field in a relation table, when this table
+is editable using the IRRE feature. Then a selector box
+is rendered making it possible to select records from a child
+table.
+
+In this scenario the relation table itself may contain other
+editable fields, which should be represented by a domain model.
+
+The latter is currently not possible with Extbase because
+'foreign_selector' triggers the DataMapper to resolve a
+many to many relation to the child table.
+
+Solution is to remove this behaviour and let the DataMapper
+resolve the one to many relation to the relation table.
+
+
+!!! Remove forced STI settings from extbase configuration
+---------------------------------------------------------
+
+The tx_extbase_type setting for fe_users and fe_groups was introduced
+as a demonstration of Single Table Inheritance handled in extbase.
+The forced setting brings more problems then doing good in real live
+scenarios though.
+
+So the typoscript is dropped, but TCA and sql kept for backwards
+compatibility reasons.
+
+Before 6.1 only fe_users with tx_extbase_type
+Tx_Extbase_Domain_Model_FrontendUser and
+fe_groups with Tx_Extbase_Domain_Model_FrontendUserGroup
+are returned. Since 6.1 all fe_users and fe_groups are
+returned if you don't set the TypoScript setting on your own.
+
+
+Full Changes for 6.1.0
+======================
+
+[BUGFIX] Don't respect sys_language in Backends getObjectByIdentifier
+[BUGFIX] Fix persisting new objects
+[BUGFIX] Fix failing unit tests
+[TASK] Update changelog and version to 6.1.0
+[TASK] Cleanup Extbase for 6.1 release
+[BUGFIX] Backend support for native DateTime
+[BUGFIX] Scheduler throws fatal error while saving an Extbase Task
+[!!!][BUGFIX] Introduce explicit saving of modified domain objects
+[BUGFIX] Extbase must not use legacy flash message handling
+[BUGFIX] Persist an empty unmodified objectstorage
+[BUGFIX] Remove ObjectMapper part from TS-Template
+[BUGFIX] Validation with invalid validator caused unrelated errors
+[BUGFIX] Fix attaching objects to a existing objectstorage
+[BUGFIX] Improve description of registerModule()
+[TASK] Cleanup require and require_once
+[BUGFIX] Mark objectstorage clean after saving
+[TASK] UriBuilder can handle multidim arrays in exludes params
+[TASK] Detect inject methods more strictly
+[BUGFIX] Clearing label through TS doesn't work
+[TASK] Typo3DbBackend, getRowsFromResult(): Drop source-argument
+[BUGFIX] Call RequestHandlerResolver also for CLI requests
+[BUGFIX] Only throw tooDirty if uid part of cleanProperties
+[TASK] Typo3DbBackend: Drop non-functional code
+[BUGFIX] getPlainValue for @lazy objects
+[TASK] Backport Flow property mapper
+[BUGFIX] Localization ignores extensionName argument for TypoScript labels
+[TASK] Provide .gitignore and ignore code coverage report folder
+[BUGFIX] Added handling for array in findOneByXXX result
+[BUGFIX] RequestBuilder must not call $request->setMethod with NULL
+[TASK] Fix typehints in docblocks of Mapper
+[TASK] Optimize persisting a dirty objectStorage
+[BUGFIX] Prevent call of updateReferenceIndex on unknown object
+[TASK] Simplify propertyName-creation
+[BUGFIX] Prevent building empty IN () query by throwing exception
+[TASK] Add caching layer for getTargetPidByPlugin
+[BUGFIX] Redirect-method in abstractController does not work with SSL
+[BUGFIX] Translation of extbase-core
+[BUGFIX] RespectStoragePage does not respect rootLevel
+[TASK] Disable functional tests
+[TASK] Update t3lib mentions
+[BUGFIX] Property Mapper chokes on already-converted objects
+[BUGFIX] Fix namespace in FileMountRepositoryTest
+[TASK] Update copyright year to 2013
+Revert "[TASK] Make current persistence replaceable"
+[BUGFIX] Native DateTime values cannot be mapped from storage
+Revert "[BUGFIX] Native DateTime values cannot be mapped from storage"
+[BUGFIX] Native DateTime values cannot be mapped from storage
+[BUGFIX] FlashMessageContainer uses static flashMessageQueue
+[TASK] Remove not maintained md5 in ext_emconf
+[TASK] Table Mapping for File Model
+[BUGFIX] TypoScript configuration not available in backend
+[FEATURE] Use EnvironmentService to detect TYPO3_MODE in several places
+[TASK] Rename methods in EnvironmentService
+[BUGFIX] Fix wrong parenthesis in Typo3DbBackend
+[FEATURE] Introduce methods to detect TYPO3_MODE properly
+[TASK] Streamline creation of column maps
+[FEATURE] Providing Core Resource FileReference functionality
+[TASK] Remove obsolete doc comment check in reports module
+[!!!][FEATURE] Enable rewritten PropertyMapper as default
+[!!!][BUGFIX] Remove support for TCA setting 'foreign_selector'
+[BUGFIX] TypeConverter can handle oldschool classnames
+[SECURITY] SQL Injection Possibility in Extbase
+[BUGFIX] Prevent Extbase warnings accessing ObjectStorages with strings
+[BUGFIX] BooleanValidator skips Validation with missing compare param
+[BUGFIX] Prevent PHP errors with missing ColumnMap object
+[BUGFIX] Fix tests for old property mapper
+[FEATURE] Introducing a BooleanValidator.
+[FEATURE] TCA refactoring
+[BUGFIX] Old property mapper shouldn't map other domain objects
+[BUGFIX] Fix tests throwing errors in MapperTest
+[BUGFIX] ReflectionService rejects classSchema for custom models
+Revert "[BUGFIX] Prevent sql errors with missing ColumnMap"
+Revert "[TASK] Remove loadTCA calls"
+[BUGFIX] Add foreign_match_fields support for one-to-x relations
+[FEATURE] Make use of the ClassNamingUtility class
+[BUGFIX] Respect wildcard in PropertyConfiguration shouldMap()
+[BUGFIX] Followup to issue #45323
+[TASK] Replace ObjectManager create with get
+[TASK] Sync objectmananger get and create with Flow
+[TASK] Clean up Unit tests in extbase
+[!!!][TASK] Remove forced STI settings from extbase configuration
+[FEATURE] (MVC): Whitelist-based Property Mapping Configuration
+[TASK] Decouple BE module runner and Bootstrap
+[TASK] Improve Test
+[TASK] Add FileReference table mapping in extbase configuration
+[TASK] Provide unit test for Mvc/Response
+[TASK] Improve code coverage of Mvc/Request
+[FEATURE] Allow different overriding of object mapping per plugin
+[TASK] Remove loadTCA calls
+[BUGFIX] Alphanumeric validator fails with broken PCRE
+[BUGFIX] RepositoryTest raises warning
+[BUGFIX] ConfigurationManager must use namespaced FrontendSimulator
+[TASK] Provide Unit Test for Scheduler/Task
+[BUGFIX] Ordering without grouping is incompatible with non-MySQL DBMS
+[TASK] Provide Unit Test for Scheduler/TaskExecuter
+Revert "[FEATURE] Allow different overriding of object mapping per plugin"
+[TASK] Improve code coverage of Scheduler/FieldProvider
+[TASK] Increase code coverage of FrontendConfigurationManager
+[TASK] Increase code coverage of Service/TypeHandlingService
+[TASK] Increase code coverage of SignalSlot/Dispatcher
+[TASK] Provide Unit Test for Error/Message
+[FEATURE] Provide UnitTest.xml with code coverage generation
+[TASK] Rename property, getter and setters of File Model
+[FEATURE] Add userGroups to backendUser model
+[FEATURE] Add filemount property to backend users
+[BUGFIX] Remove newline after ?> in AbstractController
+[BUGFIX] Avoid clearing the page cache too often
+[BUGFIX] Correct indention of class comment
+[BUGFIX] Suppress debug output of debugger in unit tests
+[BUGFIX] Fix failing tests in ActionControllerTest
+Revert "[FEATURE] Introduce beforeCallActionMethod signal"
+[FEATURE] Introduce beforeCallActionMethod signal
+[FEATURE] Introduce beforeCallActionMethod signal
+[BUGFIX] Prevent sql errors with missing ColumnMap
+[BUGFIX] DebuggerUtility does not rewind instances of Iterator
+[BUGFIX] Make AlphanumericValidator work with umlauts
+[BUGFIX] Use interface in PersistenceManager::injectQueryFactory
+[BUGFIX] Use interface in Mapper::injectQueryFactory
+[CLEANUP] Remove newlines after closing php tag
+[FEATURE] Allow different overriding of object mapping per plugin
+[TASK] Make current persistence replaceable
+[BUGFIX] Deprecated functions used in on fresh 6.0 final
+[CLEANUP] Remove all @author annotations
+[CLEANUP] Replace wrong/old file copyright comments
+[FEATURE] Recursive starting point/storage pid via TypoScript
+[BUGFIX] MM_match_fields is ignored when persisting MM relations
+[TASK] Update ChangeLog.txt for 6.0
+[TASK] Update version to 6.1.0-dev
+
+Changes for 6.0.0
+=================
+
+Full Changes for 6.0.0
+======================
+[TASK] Timestamp support for DateTimeConverter
+[BUGFIX] MM_match_fields is ignored when persisting MM relations
+[BUGFIX] Missing table definitions crash Dbal
+[BUGFIX] Remove property item of category model
+[TASK] Adjust namespaces of persistence unit tests
+[TASK] Move persistence unit tests
+[CLEANUP] Adjust code to coding guidelines
+[TASK] Comment legacy files to be removed with 6.2
+[BUGFIX] Use tablename for fullQuoteStr call
+[BUGFIX] Remove newlines after closing php tag
+[BUGFIX] Force command controller task arguments saved as array
+[BUGFIX] Prevent sql errors with unsupported relation
+[BUGFIX] Make saving scheduler commandController tasks working again
+[BUGFIX] Add missing TypoScript Mapping for Category Model
+[BUGFIX] Tx_Extbase_DomainObject_AbstractDomainObject#getUid is final
+[BUGFIX] Fix small DebuggerUtility issues
+[BUGFIX] Fix and deprecate legacy creation of objects in repository
+[!!!][BUGFIX] Remove property isOnline from frontenduser model
+[BUGFIX] Make ValidatorResolver respect namespaces
+[BUGFIX] Reset 'vendorName' in RequestBuilder to NULL for new requests
+[BUGFIX] Correctly apply _LOCAL_LANG from typoscript
+[TASK] Rename Reflection/Service to Reflection/ReflectionService
+[BUGFIX] Cache in BackendConfigurationManager is not taking pageId into account
+[BUGFIX] DataMapperFactory respects foreign_table_field
+[BUGFIX] Fix Annotation for Category model
+[TASK] Add "Abstract" prefix to abstract task class
+[TASK] Adjust phpdoc for classes (files) of backports
+[BUBFIX] Fix fatal error in Test
+[BUGFIX] Fix several namespace related bugs
+[BUGFIX] Mapping of DomainObject with namespaces
+[BUGFIX] Dont respect pid for static & rootlevel tables
+[BUGFIX] Namespaced domain models are not updated
+[TASK] Adjust phpdoc to namespaces
+[TASK] Resync TYPO3Flow- and Extbase-Persistence
+[BUGFIX] Misspelling in Typo3DbBackend.php
+[TASK] Cleanup Typo3DbBackend
+[BUGFIX] resolveValidatorObjectName support for namespaces
+[BUGFIX] Support plugins in namespaced extensions
+[BUGFIX] Rename File after renaming class
+[BUGFIX] Typo3DbBackend language handling crashes in BE
+[TASK] Rename FlashMessages to FlashMessageContainer
+[TASK] Remove deprecated methods and classes
+[TASK] Rename ExtensionManager class
+[TASK] Update doc block example code to to namespaces
+[BUGFIX] PHP 5.4 unit test warnings
+[TASK] Change objectStorage patch in migration script
+[TASK] Change namespace and classname of ObjectStorage
+[TASK] Move ObjectStorage from Generic to Persistence
+[TASK] Remove ext_autoload.php
+[TASK] Cleanup files in persistence
+[TASK] Remove duplicate files in persistence
+Revert "[BUGFIX] Support plugins in namespaced extensions"
+[BUGFIX] Support plugins in namespaced extensions
+[TASK] Use core interface for accessible objects
+[TASK] Remove forceCharset references from LocalizationUtility
+[BUGFIX] NotEmpty Validator does not work with arrays and objects
+[TASK] Add phpdoc-comments for variables
+[BUGFIX] Removed trash files and their references
+[CLEANUP] Remove old SVN comments
+[BUGFIX] Fix mismatches between count of param in phpdoc and function-signature
+[TASK] Add explanation for $configurationType
+[BUGFIX] Fix namespace related bugs in DebuggerUtility
+[TASK] Clean up testcases to use getAccessibleMock() function
+[TASK] Fix typo: seperator -> separator
+Revert "[BUGFIX] Property mapper: Exception not thrown but skipped"
+[BUGFIX] Replace deprecated calls in Repository
+[BUGFIX] Change class name hash generation to md5
+[BUGFIX] Fix broken table name mapping for namespaced extension models
+[BUGFIX] Fix generation of class schema for namespaced arguments
+[BUGFIX] Query Generation creates invalid query in BE scope
+[BUGFIX] Fix generation of class name hash
+[BUGFIX] Correct link to first page in BE paginator widget
+[BUGFIX] Respect namespaced models in the reflection service
+[BUGFIX] Property Validation with Namespaces
+[TASK] Provide class alias file for extbase
+[TASK] Introduce base class for PHPUnit tests
+[TASK] Update version number of all sysexts to 6.0.0
+[BUGFIX] Remove PHP warnings in request
+[TASK] Make all classes non final
+[BUGFIX] Fix Exception Class Name
+[TASK] Fix class naming and alias map after namespace change
+[BUGFIX] Fix translation fallback
+[TASK] Remove superfluous parenthesis in sysexts
+[TASK] Adopt Extbase to the Autoloader -> ClassLoader name change
+[BUGFIX] Broken backups in BackendConfigurationManagerTest
+[BUGFIX] Incomplete mocking and backups it tests
+[BUGFIX] Declare LocalizationUtility::translateFileReference static
+[BUGFIX] TypeHandlingService throws Exception for StorageObjects
+[BUGFIX] fix Mvc/Request builds old classnames
+[BUGFIX] Fix old propertymapper checking target with namespace
+[BUGFIX] Fixed missing class mapping without TS
+[BUGFIX] Fix classes without or broken namespace
+[CLEANUP] General code cleanup
+[BUGFIX] Subrequests can't be resolved
+[BUGFIX] Make Cli\Command Namespace aware
+[BUGFIX] Unit tests after namespace switch
+[BUGFIX] Naming clash: Fix several unit test failures
+[BUGFIX] Interface Tx_Scheduler_AdditionalFieldProvider' not found
+[BUGFIX] Reanimate unit tests
+[TASK] Make extbase tests run again
+[TASK] Move and Namespace classes
+[BUGFIX] Failing test translateForEmptyStringKeyReturnsNull()
+[FEATURE] Integrate basic file abstraction layer models
+[BUGFIX] Property mapper: Exception not thrown but skipped
+[TASK] Unit test for FrontendUserGroup model
+[TASK] Unit test for FrontendUser model
+[BUGFIX] ObjectManager dependencies in SignalSlot registration
+[BUGFIX] Possible failure in dependency injection
+[BUGFIX] Web Request should map $_FILES into arguments
+[FEATURE] Backend usergroup model and repository
+[FEATURE] File mount model and repository
+[FEATURE] Handle enable fields and deleted records settings granulary
+[FEATURE] Improved translation handling for statement generation
+[BUGFIX] email validator
+[BUGFIX] DataMapper returns array on RELATION_HAS_ONE
+[Task] Make Exception for Controllerdetermination more expressive
+[TASK] Add Domain Model and Repository to Category
+[BUG] Fix lastlogin property to correct lowerCamelCase
+[FEATURE] Add a BackendUser model
+[TASK] Small bugfix in Tx_Extbase_MVC_View_ViewInterface
+[BUGFIX] Remove additional slashes from typolink urls if prefixing
+[BUGFIX] public function configureModule should be static
+[FEATURE][Performance] Add caches for persistence layer
+[TASK] use the objectManager to create empty domain objects
+[BUGFIX] Container calls Cache too often
+[TASK] Update Readme to point to the current documentation location
+[BUGFIX] Only set request for Web_Response
+[TASK] Harmonize coding style of if constructs
+[BUGFIX] CLI argument handling chokes on = use
+Merge "[BUGFIX] Priority of CLI request handler should be lower"
+[BUGFIX] Priority of CLI request handler should be lower
+[BUGFIX] Return NULL instead of empty string in Localization::translate()
+[BUGFIX] Fix unit test for NumberRangeValidator
+[BUGFIX] FLUIDTEMPLATE - Serialization of 'Closure' is not allowed
+[BUGFIX] Extbase core bootstrap not found in frontend
+[BUGFIX] Fatal error in reports module
+Merge "[Task] Update changelog and version to 6.0.0-dev"
+[CLEANUP] Cleaned up Extbase
+Merge "[TASK] Backport changes to Extbase_Error_Message"
+Merge "[TASK] Improve performance of Utility/Arrays::integerExplode"
+Merge "[BUGFIX] Fix undefined variables in Typo3DBBackend::parseOrderings"
+[BUGFIX] Fix undefined variables in Typo3DBBackend::parseOrderings
+Merge "[TASK] Remove trailing whitespace"
+[FEATURE] Allow overwriting of Bootstrap with DI
+[TASK] Sync persistence folder scheme with FLOW3
+[CLEANUP] clean up ext_autoload.php
+[Task] Update changelog and version to 6.0.0-dev
+[TASK] Remove trailing whitespace
+[TASK] Remove deprecated methods & properties
+[TASK] Remove access to constant TYPO3_UseCachingFramework
+Merge "[BUGFIX] Respect all subclasses (single table inheritance)"
+[TASK] Backport changes to Extbase_Error_Message
+[TASK] Improve performance of Utility/Arrays::integerExplode
+
+Changes for 4.7.0
+=================
+
+This release features 48 changes, most of them are bugfixes and performance improvments.
+Special thanks goes to all the folks who attended the codesprint, you really got stuff
+done! Of course thanks goes to all the community members as well, for submitting patches.
+
+You rock!
+
+!!! Changes in Signal / Slot implementation
+-------------------------------------------
+
+A registered slot now gets the signalInformation (classname::name) by default
+(was not given before) set as last parameter in the arguments array. You can
+avoid this by setting passSignalInformation to FALSE in your connect()-call.
+
+CommandController as SchedulerTasks
+-----------------------------------
+
+It's now possible to let your commandController be run as scheduler tasks. See
+http://forge.typo3.org/projects/typo3v4-mvc/wiki/CommandControllerInSchedulerTask
+for more information.
+
+Object-aware Debugger from FLOW3
+--------------------------------
+
+It always was hard to debug Extbase objects because of their depth and recursion.
+With this release the object-aware debugger from FLOW3 was backported. Just use
+Tx_Extbase_Utility_Debugger::var_dump() instead.
+
+DI works without inject-methods
+-------------------------------
+
+You can now use @inject annotations to your protected properties and the objectManager
+will take care, even without the inject-method. Please notice that this works through
+reflection and might be slow! Please profile your code or use inject-methods for now.
+
+Shorthand syntax for foreign validators
+---------------------------------------
+
+You can now use foreign validators without giving the hole classname. Just use
+@validate YourExtension::Foo
+and Extbase will try to find
+Tx_YourExtension_Validation_Validator_FooValidator.
+
+Full Changes for 4.7.0
+======================
+[RELEASE] Extbase 4.7.0
+[TASK] Update version number to 4.7.0rc2
+[BUGFIX] Respect localized records when auto determining defaultPid
+[TASK] Rename deprecation message version from 1.6 to 6.0
+[TASK] Update version to 4.7.0rc1
+[BUGFIX] Fix the unit tests to work with PHPUnit 3.6
+[BUGFIX] Unit test failures concerning the HMAC
+[TASK] Add unittest for shorthand for custom validators
+[SECURITY] Protect arguments of form __referrer with HMAC
+[TASK] Update version to 4.7.0beta3
+[BUGFIX] Fix the @return of findAll
+[+BUGFIX] Make $query->equals, no case sensitivity, work with UTF8
+[BUGFIX] Add missing "command" variable to Tx_Extbase_MVC_CLI_Request
+[BUGFIX] Fix unit tests
+[BUGFIX] parseDynamicOperand appends to uninitialized variable
+[BUGFIX] Tx_Extbase_Persistence_QueryInterface needs to provide getSource
+[CLEANUP] Replace deprecated interface from unittests
+[BUGFIX] property mapping for models w/o __construct
+[BUGFIX] Extbase produces errors in TYPO3 Log
+[BUGFIX] ObjectContainer does not support namespaces
+[BUGFIX] Removed obsolet file.
+Revert "[+CLEANUP] correct sql statement building"
+[FEATURE] Shorthand syntax for foreign Validators
+[BUGFIX] Set default storagePageUid to current page in BE context
+[+FEATURE] make DI work without inject-methods
+Revert "[BUGFIX] keep PersistentObjectConverterTest from cloning objects"
+[BUGFIX] Reset LazyObjectStorage array pointer at initialization
+[BUGFIX] Enable some support for workspace previews
+[BUGFIX] Repository replace() does not replace unpersisted objects
+[BUGFIX] Child objects are now fetched only by uid (pid and sys_language_uid are ignored).
+[BUGFIX] adjust SignalSlotDispatcher's unit-tests
+[TASK] Backported FLOW3 Debugger
+[+CLEANUP] correct sql statement building
+[CLEANUP] Performance in Reflection Service's cache handling
+[BUGFIX] Fatal error on matching non-existing column, DB Backend
+[FEATURE] Run CommandController commands through Scheduler
+[REVERT] let PersistentObjectConverter clone objects
+[BUGFIX] keep PersistentObjectConverterTest from cloning objects
+[!!!][~BACKPORT] backport FLOW3 changes to SignalSlotDispatcher
+[TASK] Coding guidelines cleanup for ClassInfo class
+[BUGFIX] Invalid LOCAL_LANG overlay for non-existing languages
+[BUGFIX] Make SignalSlot Dispatcher a singleton
+[BUGFIX] DateTime properties are not mapped correctly
+[TASK] Extbase (MVC): Avoid code-duplication in Tx_Extbase_MVC_Web_FrontendRequestHandler::isCacheable()
+[BUGFIX] Make changed action resolving backwards compatible
+[CLEANUP] remove not needed parameter
+[BUGFIX] Fix PHP Warnings in Unit Tests
+
+
+Changes for 1.4.0:
+==================
+included in TYPO3 4.6.0.
+
+This release features more than 100 changes, most of them being bugfixes in all areas of Extbase.
+Thanks every community member for bug reports, submitting patches and reviewing! Extbase
+would not be possible without you!
+
+!!! New Property Mapper, updated MVC stack
+------------------------------------------
+
+The Property Mapper has been completely rewritten in FLOW3, and this has also been backported
+to Extbase. The new property mapper is very configurable and extensible.
+
+Furthermore, the MVC stack has been adjusted to be in sync with FLOW3 again. However, the new
+behavior is ONLY ACTIVATED MANUALLY. We suggest that you activate it for your new extensions
+by inserting:
+
+	plugin.tx_[yourExtensionName].features.rewrittenPropertyMapper = 1
+
+The documentation for the new property mapper can be found at
+
+http://flow3.typo3.org/documentation/guide/partiii/propertymapping.html
+
+They also apply to Extbase.
+
+!!! Updated Validation API
+--------------------------
+
+The Validation API has also changed, but this is only a breaking change if you do NOT subclass
+ *AbstractValidator*, but implement *ValidatorInterface* yourself. In this case, you need to
+adjust your custom validator to support the new API.
+
+Dependency Injection for Domain Objects
+---------------------------------------
+
+Dependency Injection is now also possible for reconstituted Domain Objects.
+
+Signal / Slot implementation
+----------------------------
+
+The "Signal / Slot" feature has been backported from FLOW3, implementing a future-proof
+alternative to hooks.
+
+Command Controller
+------------------
+
+Use it from commandline like this:
+	./cli_dispatch.phpsh extbase <command identifier> --argumentName=value
+
+for example:
+	./cli_dispatch.phpsh extbase help
+
+NOTE: Unlike in FLOW3 Commands have to be registered explictly
+in ext_localconf.php in order to be callable via CLI:
+	if (TYPO3_MODE === 'BE') {
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'Tx_MyExtension_Command_FooCommandController';
+	}
+
+
+Full Changes for 1.4.0 beta1 - 1.4.0:
+=====================================
+[BUGFIX] Pootle: Multi-line labels are not rendered properly
+[TASK] English XLIFF files should not contain target element
+[TASK] Fix CGL issues on "else if" constructs
+[TASK] Update version to 1.4.0-rc1
+[FEATURE] Backport CommandController Implementation
+[!!!][TASK] Disable rewritten property mapper by default
+[BUGFIX] Removing "Repository" in class name makes extensions unusable
+[BUGFIX] Default error FlashMessage has wrong severity
+[BUGFIX] Fix check against @ignorevalidation annotations
+[BUGFIX] ConfigurationManager use FrontendSimulator only if neccessary
+[TASK] Increase version number
+[BUGFIX] Default action is not properly resolved
+[FEATURE] Descriptive error on invalid action name
+[BUGFIX] Replaced call to deprecated t3lib_div::testInt()
+[FEATURE] Skip default controller and action in generated URIs
+[FEATURE] Setting a scheme for a URI
+[BUGFIX] Don't clone ContentObject in ConfigurationManager
+[TASK] Remove deprecated methods & properties
+[BUGFIX] Tx_Extbase_Utility_Localization::translate() must return NULL for non-existing keys
+[BUGFIX] Clone ContentObject
+[BUGFIX] Fix method visibility of AbstractConfigurationManager::getTypoScriptSetup()
+[TASK] Convert XLIFF files to Tab indentation
+[BUGFIX] XLIFF: Approved attribute is on wrong element
+[+BUGFIX] Fixing incorrect references to F3 classes
+[+BUGFIX] Added missing initializeView method in EmptyView
+[+BUGFIX] Fix classname of Exception, ConfigurationManager
+
+Full Changes for 1.4.0 beta1:
+=============================
+[!!!][TASK] Enable rewritten property mapper by default
+[+FEATURE] Extbase (Persistence): Allow pid of object to be set from action-controller. Thanks to Michael Budnick and Balisky Christophe. Resolves: #7572
+[FEATURE] Speed up ObjectAccess
+[+FEATURE] Extbase (Persistence): Allow removing previously set limit with unsetLimit(). Resolves: #27445
+[-TASK] Remove autoloader. Thanks to Christian Kuhn. Resolves: #28249
+[+FEATURE] introduce signal in MVC/Dispatcher
+[TASK] Correct classnaming for Tx_Extbase_Tests_Unit_BaseTestCase
+[-BUGFIX] remove datecheck on timezone test
+[+FEATURE] remove usage of deprecated methods in unit-tests
+[BUGFIX] Adjust unit tests to changes
+[BUGFIX] create ClassSchema with ObjectManager::create()
+[BUGFIX] TypeHandling class not found. This is a hotfix for #28121. Resolves: #28121
+[TASK] Extbase (Utility): Add service for TypeHandling. Related: #13864
+[+BUGFIX] Extbase: CGL: Convert case of acronyms from UPPERCASE to CamelCase. Resolves: #12189
+[TASK] Extbase: Use strpos() instead of strstr() where possible
+[+BUGFIX] allow skipping of arguments in signal dispatch
+[TASK] Adjust PHP dependency in ext_emconf.php
+[FEATURE] Add check for loaded DBAL to requirements check
+[TASK] Recreate ext_autoload.php. Resolves: #27680
+[!!!][+FEATURE] (MVC): Modify MVC stack to use the new property mapper. Resolves: #27656
+[!!!][+FEATURE] (Validation): Adjusted and re-done Validation API. Resolves: #27653
+[+FEATURE] (Property): Add new property mapper. Related: #27059
+[+FEATURE] (Persistence): Synchronize PersistenceManagerInterface more with FLOW3. Resolves: #27657
+[+FEATURE] (Reflection): Object Access can now access private properties. Resolves: #27652
+[+FEATURE] (Utility): synchronize TypeHandling class with FLOW3. Resolves: #27651
+[!!!][FEATURE] Improve error and message handling. Resolves: #27650
+[TASK] (MVC, Property): Deprecation of the the old property mapper
+[+FEATURE] (Configuration): Feature flag implementation
+[+BUGFIX] (Persistence): return correct objectCountByQuery when query contains left join and no limit. Fixes: #13075
+[BUGFIX] Adapt cache configuration to 4.6. Resolves: #27546
+[+BUGFIX] (SignalSlot): Fix unit tests. Resolves: #27550
+[+BUGFIX] Make ObjectManager::isRegistered work
+[+FEATURE] backport SignalSlotDispatcher
+[+BUGFIX] Fix localization handling to support XLIFF. Resolves: #27411
+[+BUGFIX] Extbase (Validation): E-mail address with space at the end is invalid. Thanks to Marc Bastian Heinrichs. Resolves: #27305
+[+BUGFIX] Throw exception if a class to be reflected does not exist. Fixes: #8718
+[TASK][!!!] Fix localization handling to support XLIFF. Resolves: #27411
+[TASK] Extbase (Validation): Clean up tests for FloatValidatorTest and Integer ValidatorTest
+[+BUGFIX] Extbase (Persistence): Use correct language-uid for translations. Thanks to Benjamin Mack. Resolves: #26521
+[TASK] Extbase (Persistence): Remove duplicate registration in identity map. Thanks to Alexander Stehlik. Resolves: #26875
+[BUGFIX] Fix EmailAddressValidatorTest
+[+FEATURE] Extbase (MVC): Make response format configurable in TypoScript. Thanks to Christian Zenker. Resolves: #9216
+[BUGFIX] Docu, AbstractController: Clearer difference of forward/redirect. Resolves: #7900
+[BUGFIX] Fix case of setChildSortByFieldName in DataMapFactory. Resolves: #27334
+[+BUGFIX] (Property) Fixed only adding objects to ObjectStorage. Thanks to Thomas Maroschik. Fixes: #13288
+[+TASK] Extbase: Move static typoscript utility methods to a service. Related: #13864
+[+TASK] Extbase: Move most of the static extension utility methods to a service. Related: #13864
+[+BUGFIX] baseUri is added on external links. Thanks to Michael Feinbier for this fix! Resolves: #10258
+[+BUGFIX] (Testing): Fix wrong doc comment in BaseTestCase. Resolves #13695
+[+BUGFIX] Cloning a ValueObject should not set its uid to NULL. Resolves #26772
+[+BUGFIX] ObjectStorage->toArray(): fix array pointer problem. Resolves #9117
+[+BUGFIX] Persistence: Fixed building unionStatement from opposite. Thanks to Christian Zindel. Resolves #13782
+[+BUGFIX] Persistence: Update tstamp column on objects removal. Thanks to Michel Nederlof. Resolves #10634
+[+BUGFIX] correct warning in ObjectStorage & LazyObjectStorage
+[~CLEANUP] some smaller comment cleanups
+[+TASK] Extbase: Moved static cache utility class to a service. Relates to: #13864
+[+FEATURE] implement ObjectManager::isRegistered()
+[+TASK] improve exception message in Argument
+[TASK] Performance tuning in container by moving some information into the cached ClassInfo object.
+[~BUGFIX] avoid fe_user's type to be overridden
+[+BUGFIX] Avoiding cHash for nonCacheable actions prevent action from being called. Related: #13970
+[+BUGFIX] MVC: Make forwarding of objects work. Resolves #9867
+[~CLEANUP] correct function parameter types
+[+BUGFIX] Persistence: return ObjectCount return value as an integer. Thanks to Georg Ringer. Resolves #13151
+[+BUGFIX] Revert incorrect deletion of Query::count() & Query::withUid(). Relates: #13745
+[~CLEANUP] apply naming convention for flexForms
+[+TASK] Move FlexForm parsing to a dedicated Service. Thanks to Rens Admiraal. Resolves #13032
+[!!!][+BUGFIX] make backend-modules in web use new pagetree by default
+[~CLEANUP] smaller deprecated clean-ups
+[+FEATURE] Extbase: Enable Dependency Injection for Domain Models. Thanks to Pascal Jungblut. Resolves #11311
+[+BUGFIX] (Persistence) Make Typo3QuerySettings exchangeable. Resolves #13191
+[+BUGFIX] (Persistence) clone setDefaultQuerySettings for new queries. Resolves #12702
+[~BUGFIX] correct annotations of Tx_Extbase_Persistence_Mapper_DataMapper. Resolves #13185. Thanks to Simon Schaufelberger.
+[~TASK] (FlashMessages) finish the renaming of flashMessages
+[+BUGFIX] (Configuration): Adjusted ConfigurationManagerInterface Interface to implementation
+[~TASK] Extbase: Raising version from 1.3.0 to 1.4.0-devel
+[+TASK] Extbase (MVC): Removed duplicated code from RequestBuilder. Thanks to Peter Niederlag. Resolves #12569.
+
+
+Changes for 1.3.0:
+==================
+included in TYPO3 4.5.0 LTS.
+
+This release fixes an important bug in the persistence layer, which caused related objects not to be updated.
+
+Full Changes for 1.3.0:
+=======================
+
+[+BUGFIX] Extbase (Tests): reset added t3lib_div instances in UriBuilder & Extension tests
+[+BUGFIX] Extbase (Persistence): Fixed updating of related objects. Thanks to Björn Steinbrück and Bastian Waidelich for digging into this issue. Resolves #9270, #9182, #10211.
+	This is the second attempt after having reverted the first one in r3920. The patch includes some clean-up. Important additional changes:
+	* The objects within an ObjectStorage are now added to the queue. This is necessary to persist changes made to those contained objects without having changed the composition of objects.
+	* Moved the _memorizeCleanState() from the AbstractEntity to the AbstractDomainObject. In theory ValueObjects are immutable, but we need this as sometimes ValueObjects are stored in two steps (1. to get a UID, 2. to persist its properties). Maybe we have to recheck this for 1.4.
+	* Fixed some possible problems with detecting an ObjectStorage (namely SplObjectStorage->getUid()).
+[+TASK] Extbase (Persistence): Added two properties to describe a weird PHP behavior if calling current() on an ObjectStorage.
+[+BUGFIX] Extbase (MVC): Fixed argument order of Tx_Extbase_Utility_Extension::isActionCacheable() call in UriBuilder
+[+TASK] Extbase (DomainObject): Added setPid() and getPid() to the DomainObjectInterface and removed the "final" keyword.
+[~TASK] Extbase: Moved isActionCacheable() from UriBuilder to Utility/Extension helper class
+	Moved the protected method to a public static functions in Tx_Extbase_Utility_Extension
+	and added respective unit tests.
+	Note: We're not happy with all the public static functions in Utility/Extension.php
+	but that's currently the place for those helper functions.
+[+TASK] Extbase (Utility): implemented validation of arguments passed to sql statements in Tx_Extbase_Utility_Cache. (resolves #11978)
+
+Changes for 1.3.0 RC1:
+======================
+included in TYPO3 4.5.0 RC1.
+
+This release features many bugfixes, in the following areas:
+* Persistence - invalid SQL has been fixed at various places
+* MVC - the URI Builder can now handle cached / uncached actions correctly
+* Improved error handling to catch some configuration errors
+* Localization - TypoScript overrides for locallang keys with dot inside now works (_LOCAL_LANG.foo.bar)
+* Persistence - added "pid" property and getter and setter to AbstractDomainModel; thus you can now move
+  domain objects to different pages. However, this feature has *no support for workspaces* yet.
+* Dependency Injection - now allows the injection of prototypes (see below)
+* Configuration - for defining the Storage PID, one can use arbitary TypoScript objects (see below)
+
+Dependency Injection Improvements
+---------------------------------
+
+Now, Prototype objects are allowed to be injected into other objects. This means the following cases
+are supported:
+
+* Singletons which need Singletons (most common)
+* Singletons which need Prototypes (very uncommon,
+  as it usually hints at the fact that the injected
+  prototype should be a singleton). In this case,
+  WE WRITE A DEVLOG MESSAGE
+* Prototypes which need Singletons
+* Prototypes which need Prototypes
+
+TypoScript Storage PID Improvements
+-----------------------------------
+
+The persistence.storagePid now has stdWrap properties so the storagePid can be set dynamically.
+Now follows an example for use in the Frontend:
+	plugin.tx_extkey.persistence.storagePid.cObject = TEXT
+	plugin.tx_extkey.persistence.storagePid.cObject.value = 8,3
+... and this is how you can use it in the backend:
+	module.tx_extkey.persistence.storagePid.cObject = TEXT
+	module.tx_extkey.persistence.storagePid.cObject.value = 8,3
+
+Full Changes for 1.3.0 RC1:
+===========================
+[+BUGFIX] Extbase (Object): constructor injection now works if default value for a dependency is NULL. Thanks to Lienhart Woitok! Resolves #11623
+[+BUGFIX] Extbase (Object): Allow injection of prototypes via dependency injection. Resolves #12013
+[+BUGFIX] Extbase (Persistence): Use sql_free_result() in Typo3DbBackend to free result memory. Resolves #10957
+[~BUGFIX] Extbase (Persistence): fixed an wrong referenced exception (resolves #12403)
+[~BUGFIX] Extbase (Persistence): make Tx_Extbase_Persistence_Repository::remove() handle freshly created objects right. (resolves #11128)
+[+BUGFIX] Extbase (MVC): UriBuilder automatically added a cHash even on links to nonCacheable actions where this is not needed/recommended (resolves #8565)
+[~BUGFIX] Extbase (Persistence): made union statement on comma seperated list use find_in_set (Thanks to Marc Bastian Heinrichs) (resolves #9772)
+[~FOLLOWUP] Extbase (Utility): allow clearPageCache() to clear single, multiple and all pageCaches. (resolves 11978)
+[+TASK] Extbase (Utility): allow clearPageCache() to clear single, multiple and all pageCaches.
+[+BUGFIX] Extbase (MVC): Improve Error Handling in Request Builder. Resolves #11302
+[+BUGFIX] Extbase (Persistence): remove superfluous require_once statements. Thanks to Oliver Klee. Resolves #12324
+[+BUGFIX] Extbase (Tests): Remove require_once of phpunit testclasses. Thanks to Oliver Klee. Resolves #12323
+[+BUGFIX] Extbase (Utility): Make _LOCAL_LANG override work with dots. Thanks to Thomas Maroschik. Resolves #12121
+[+BUGFIX] Extbase (Persistence): Fixed using the correct columnname for contains comparison with RELATION_HAS_MANY and empty parentKeyFieldName. Resolves #11048
+[+BUGFIX] Extbase (Persistence): Added the missing pid property to the AbstractDomainModel. Related to #11361
+[+BUGFIX] Extbase (Persistence): Language Oberlay now works with page table as well. Thanks to Andre Stoesel. Resolves #11319
+[+BUGFIX] Extbase (Persistence): The QueryObject gets cloned now in the getFirst() method of the QueryResult (as it was intended). Thanks to Sebastian Fischer. Resolves #11855.
+[+BUGFIX] Extbase (Bootstrap): Bootstrap calls initialize on reflectionService if it's already initialized. Resolves #12346, resolves #12156
+[+BUGFIX] Extbase (Persistence): Fix equals constraint with $caseSensitive FALSE (closing bracket missing). Thanks to Alexander Berl. Resolves #10781
+[+BUGFIX] Extbase (Reflection): ObjectAccess::isPropertyGettable works for ArrayAccess objects. Resolves #10148
+[+BUGFIX] Extbase (Configuration): Allow StoragePid to be manually defined by TS. Thanks to Rens Admiraal! Resolves #8397
+[+BUGFIX] Extbase (Configuration): Fix warning in AbstractConfigurationManager. Resolves #11631
+[+BUGFIX] Extbase (Object): Disabling Dependency Injection for injectSettings method. Resolves #11011
+
+
+Changes for 1.3.0 Beta 4:
+=========================
+included in TYPO3 4.5.0 Beta 4.
+
+This release contains numerous bugfixes, and a few small features:
+
+* Tx_Extbase_Utility_Extension::registerPlugin() now has a fourth parameter $pluginIconPathAndFilename
+  that you can set to the path of an icon, that will be displayed in the plugin dropdown in the backend.
+  You can use it like:
+  Tx_Extbase_Utility_Extension::registerPlugin(
+		$_EXTKEY,
+		'MyPlugin',
+		'My Plugin description',
+		t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/someIcon.gif'
+  );
+* Hidden Records in Workspaces now work
+  Before, if t3lib_pageSelect::getRecordOverlay returned FALSE (if
+  no translation is found), a fatal error occured:
+  PHP Catchable Fatal Error: Argument 2 passed to Tx_Extbase_Persistence_Mapper_DataMapper::getTargetType()
+  must be an array, boolean given, called in Persistence/Mapper/DataMapper.php
+
+Full Changes for 1.3.0 Beta 4:
+==============================
+
+[+TASK] Extbase (Tests): Fixed a repository unit test so that it works in CLI mode
+[+TASK] Extbase (Tests): Fixed Extbase unit tests
+[+BUGFIX] Extbase (Persistence): Hidden Records in Workspaces now work
+[~TASK] Extbase: Fixed line endings (Windows to Unix).
+[~TASK] Fluid (Tests): Fixed some more testcase class names and some unit tests
+[+FEATURE] Extbase (Utility): Add support for custom specify custom plugin icon. Resolves #11179
+
+Changes for 1.3.0 Beta 3:
+=========================
+included in TYPO3 4.5.0 Beta 3.
+
+This release features numerous stability improvements, the biggest one
+being a re-written core of the Object Manager, such that Lifecycle Methods
+are supported now. This means, that a method "initializeObject()" gets called
+as soon as all dependencies are injected and initialized.
+
+Additionally, Extbase didn't work in all cases in the TYPO3 Backend. This has
+also been improved, so Extbase (again) works in the backend
+with an empty page tree.
+
+Full Changes for 1.3.0 Beta 3:
+=============================
+
+[+BUGFIX] Extbase (Tests): Fixed Tx_Extbase_MVC_Controller_AbstractController_testcase. Thanks to Oliver Klee. Resolves #11567.
+[BUGFIX] Extbase (Configuration): Make Extbase work again in Backend
+[!!!][+TASK] Extbase (Object): Rewritten Object Container
+[+BUGFIX] Extbase (MVC): Improve Exception message
+	If one misses the @dontvalidate annotation, he will
+	get a strange error which does not have a hint that
+	the @dontvalidate is missing. Now, the exception message
+	is extended.
+[+API] Extbase (Configuration): Adding getContentObject to API
+[+TASK] Extbase (Reflection): Added deprecation annotation to ObjectAccess::getAccessiblePropertyNames()
+	To stay in sync with FLOW3, the methods getAccessibleProperties() and getAccessiblePropertyNames() to
+	getGettableProperties() and getGettablePropertyNames().
+	For compatibility reasons the old methods will stay in Extbase until version 1.5.
+	Note: you can now check wheter properties are settable as well
+[+FEATURE] Extbase (Reflection): Tx_Extbase_Reflection_ObjectAccess supports stdClass objects now
+	I've backported the ObjectAccess class and its unit tests from FLOW3.
+	Note: FLOW3's implementation allows to specify a third argument for the
+	method getPropertyPath() in order to support Closures.
+	This part is not backported as it's not compatible with PHP < 5.3.
+
+Changes for 1.3.0 Beta 2a:
+==========================
+included in TYPO3 4.5.0 Beta 2.
+
+This release includes a whole bunch of bugfixes and refactorings, the most important ones listed below.
+Because the FlashMessages now use t3lib_FlashMessage, TYPO3 4.5 is MANDATORY!
+
+The main changes are:
+
+* Tx_Extbase_MVC_Controller_FlashMessages now internally uses the
+  t3lib_FlashMessageQueue that has been introduced with TYPO3 4.3.
+  This results in following changes:
+  - flashmessages are now treated globally, not in a per-extension-scope. As soon as you output the messages first, the session will be flushed
+  - a flashmessage is not a simple strings anymore, but consists of
+    message body and (optionally) title & severity.
+    You can specify title and severity like this:
+    $this->flashMessages->add('Your message', 'some title', t3lib_FlashMessage::WARNING);
+  - you can now output flashmessages in backend that were set from other TYPO3 classes
+  - a revised flashmessage ViewHelper allows you to render flashmessages in the style
+    of core flashmessages now (see Fluid changelog)
+  - Resolves #10821
+* Configuration Manager can now deal with recurring FlexForm Sections (#6067)
+* Fixed Tx_Extbase_Domain_Model_FrontendUser (and marked the old API as deprecated)
+* Bugfixes related to Lazy Loading
+
+Full Changes for 1.3.0 Beta 2a:
+==============================
+[+BUGFIX] Extbase (Configuration): change the order of methods to determine the current pageId for backend modules, which is used to fetch the TS framework configuration. Fixes #11205
+[+TASK] Extbase (Object): Make sure the class info cache is returning valid objects
+[+BUGFIX] Extbase (Persistence): Persistence_Backend::getIdentifierByObject should work with LazyLoadingProxy
+	getIdentifierByObject should check if object is an instance of Tx_Extbase_Persistence_LazyLoadingProxy and should return the
+	identifier of the real object.
+[+BUGFIX] Extbase (Configuration): slightly tweaked FrontendConfigurationManager (basically replaced explode() by t3lib_div::trimExplode() call)
+[+TASK] Extbase (Tests): Added some unit tests for Backend- and FrontendConfigurationManager. To be continued
+[+BUGFIX] Extbase (DomainObject): added default __toString method to Tx_Extbase_DomainObject_AbstractDomainObject. Thanks to Marco Huber. Resolves #8083
+[+BUGFIX] Extbase (MVC): Fixed UriBuilder for handling LazyLoadingProxy objects as arguments. Resolves #10705
+[+TASK] Extbase (Object): re-added Tx_Extbase_Object_Manager to gain more backwards compatibility. This class is marked deprecated and will be removed in Extbase 1.5
+[+BUGFIX] Extbase (Tests): tweaked ObjectContainer tests. Tests are failing deliberately for now
+	The DI implementation has to be rewritten, as discussed.
+	This relates to: #11160
+[+BUGFIX] Extbase (Domain): fixed (non-breaking) method name for getting usergroup in Tx_Extbase_Domain_Model_FrontendUser. Resolves #11019
+[+TASK] extbase (ConfigurationManager): Made FrontendConfigurationManager parse recurring sections in flexforms right. Thanks to Franz Koch (resolves #6067)
+[+BUGFIX] Extbase (Configuration): Slightly tweaked AbstractConfigurationManager
+[+TASK] Extbase (Tests): Added unit tests for AbstractConfigurationManager
+	Note: the ConfigurationManager now always overrides switchableControllerActions
+	when retrieving configuration for the current plugin. Before that only happened
+	when no extensionName/pluginName was specified.
+	Additionally: It's not possible anymore to specify new controllers in
+	switchableControllerAction configuration. That was the intended behavior.
+[+TASK] Extbase (Tests): Renamed test files from "*_testcase.php" to "*Test.php"
+[+TASK] Extbase (Tests): Moving all Tests in "Unit" directory.
+[+FEATURE] Extbase (MVC): add possibility to output FlashMessageQueue (Resolves #10821)
+[+TASK] Extbase (Persistence): counting query results does not work with limit constraints (resolves #10956)	Tx_Extbase_Persistence_Storage_Typo3DbBackend::getObjectCountByQuery() replaces the SELECT part
+	of a query by COUNT(*) before executing a statement.
+	This did not work as expected in some cases, e.g. the LIMIT constraint was ignored by the count query.
+[+TASK] Extbase (Persistence): findOneBy*() methods should return NULL if no item was found (Resolves #10958)
+[+TASK] Extbase (Core): Slightly improved error handling in bootstrap (Resolves #11055)
+[~TASK] Extbase (Utility): Changed Tx_Extbase_Utility_TypoScript:convertPlainArrayToTypoScriptArray to self::convertPlainArrayToTypoScriptArray. Resolves #10538.
+[+BUGFIX] Extbase (MVC): UriBuilder: use current plugin if no pluginName has been specified
+	If multiple plugins are found, that are configured to handle the specified action, Extbase
+	will throw an Exception. Now, this only happens if the *current* plugin does not contain
+	the action.
+
+Changes for 1.3.0 Beta 1a:
+==========================
+included in TYPO3 4.5.0 Beta 1.
+
+Extbase 1.3.0 Beta 1 has a lot new and greatly improved features, and also many bugfixes.
+The highlights are outlined below, and explained in-depth a little further down.
+
+NOTE: This release brings new table definitions, so please visit the install tool or the Extension
+Manager and update the tables of Extbase.
+
+*** EVERY FEATURE IS DESCRIBED IN DEPTH BELOW ***
+
+* Dependency Injection
+* Dispatcher Refactoring & Completely re-done Configuration Manager
+	This means that Tx_Extbase_Dispatcher is now DEPRECATED!
+	Additionally, if you defined the TypoScript setup for a plugin by hand (which you should not),
+	the syntax has changed a bit there.
+* QueryResult refactoring (needed for Fluid Widgets)
+	THIS COULD BE A BREAKING CHANGE FOR YOU!
+
+Additionally, the following smaller features were implemented:
+
+* Configurable plugin namespaces (#8365)
+* Automatic target page determination (#9121)
+* Improved resolveView() mechanism
+* Allowing plugins to be registered as new content element (#10666)
+* Default Orderings & QuerySettings (#10319)
+
+Breaking Changes:
+
+* The UriBuilder now uses the current cObject instead of creating a new instance in the constructor. This is a breaking change if you instantiated the UriBuilder in your code. Please use the Extbase ObjectManager or inject the ConfigurationManager manually.
+* fixed typo in getter and setter of Tx_Extbase_Domain_Model_FrontendUser::lastlogin
+* Flashmessages now share a scope throughout the extension. Before, every plugin had it's own scope leading to the messages only being output when entering the same plugin again (e.g. redirecting from one plugin to another would never display the messages)
+
+Known issues:
+
+* The Unit Tests do not fully work again, we will fix that in the next days.
+* There might be still issues with the support of backend modules, we are working on that!
+
+Dependency Injection
+--------------------
+
+Instead of creating objects through t3lib_div::makeInstance, and connecting them together manually,
+you yan now use Dependency Injection (DI) for that. Let's give an example: If my class "Tx_Foo_Controller_MyController"
+needs another class "Tx_Foo_Service_LoggingService", it can get an instance of the logging service
+by Dependency Injection, by specifying the following code:
+
+class Tx_Foo_Controller_MyController {
+	protected $loggingService;
+
+	/**
+	 * @param Tx_Foo_Service_LoggingService $loggingService
+	 */
+	public function injectLoggingService(Tx_Foo_Service_LoggingService $loggingService) {
+		$this->loggingService = $loggingService;
+	}
+}
+
+The DI container finds that the class "MyController" has an method whose name starts with "inject",
+and thus passes the logging service to MyController.
+It is important that you can *only retrieve Singletons* through the inject annotations. If you need
+to instanciate a prototype object, it is important to *not* use t3lib_div::makeInstance() anymore
+(as it bypasses the DI container), but instead you need to inject the ObjectManager, and ask it
+to create your prototype object using the create() method. Example:
+
+class Tx_Foo_Controller_MyController {
+	protected $logFile;
+
+	/**
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+		$this->logFile = $objectManager->create('Tx_Foo_Domain_Model_LogFile');
+	}
+}
+
+In the above example, you have seen that we reference not the concrete implementation *ObjectManager*,
+but instead the *ObjectManagerInterface*. If a name ends with "...Interface", Extbase DI automatically
+strips away the "Interface" from the name, and expects to find a concrete implementation of that interface.
+This is generally a very good practice: For your core classes, you should always reference an *interface*,
+and let the DI container instanciate the concrete class.
+
+Additionally, Extbase DI allows to *replace* certain implementation classes by other classes through
+configuration in TypoScript. Let's give an example, and then you can see the concept:
+
+config.tx_extbase.objects {
+	Tx_Extbase_Persistence_Storage_BackendInterface {
+		className = Tx_Extbase_Persistence_Storage_Typo3DbBackend
+	}
+}
+
+This essentially means to the DI container: "At all places where you encounter a "BackendInterface",
+you should instanciate the "Typo3DbBackend" class."
+
+However, note that this setting can only be configured *globally* right now, it is not possible
+to override that on a per-extension basis.
+
+Generally, the Extbase DI container provides a subset of the functionality of FLOW3's dependency injection.
+
+Dispatcher Refactoring & Completely re-done Configuration Manager
+-----------------------------------------------------------------
+
+In the last versions of Extbase, the Dispatcher (Tx_Extbase_Dispatcher) was the main entry point to Extbase.
+However, as we did not have Dependency Injection at that point, it became really complex and did lots of things
+which it should not do in the first place. That's why we greatly improved that part. Now, any Extbase extension
+is invoked using the Tx_Extbase_Core_Bootstrap. Additionally, the TypoScript used for the registration of any
+Extbase extension has been cleaned up and adjusted:
+
+lib.foo = USER
+lib.foo {
+	userFunc = tx_extbase_core_bootstrap->run
+	extensionName = YourExtension
+	pluginName = YourPlugin
+}
+
+Additionally, you can also override the list of Switchable Controller Actions through TypoScript:
+
+lib.foo = USER
+lib.foo {
+	userFunc = tx_extbase_core_bootstrap->run
+	extensionName = YourExtension
+	pluginName = YourPlugin
+	switchableControllerActions {
+		Standard {
+			1 = action2
+			2 = action3
+		}
+	}
+}
+
+Of course, you cannot call actions which were not defined previously in the plugin; so the Switchable
+Controller Actions in TypoScript can be only used to shrink the number of actions available.
+
+NOTE: If you manually defined the above snippet, notice that there is a NON-BACKWARDS-COMPATIBLE change
+in there. But you did that at your own risk, as that was never public API ;)
+
+If you used Tx_Extbase_Dispatcher before in your own code, it should still work, but it is deprecated.
+Instead, instead
+
+OLD: Tx_Extbase_Dispatcher::getConfigurationManager()
+NEW: inject Tx_Extbase_Configuration_ConfigurationManagerInterface into your class
+
+OLD: Tx_Extbase_Dispatcher::getPersistenceManager()
+NEW: inject Tx_Extbase_Persistence_ManagerInterface into your class
+
+OLD: Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration()
+NEW: inject Tx_Extbase_Configuration_ConfigurationManagerInterface into your class,
+     and call $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+     on the ConfigurationManager.
+
+Please note that the Configuration Manager is STILL NO PUBLIC API, and its method signature has also changed.
+
+QueryResult refactoring (needed for Fluid Widgets)
+--------------------------------------------------
+
+Before this change, a call of $query->execute() inside a repository immediately executed the query and
+returned the result as array.
+Now, queries are executed lazily at the first moment where you really need them. This means that $query->execute()
+returns an object of type Tx_Extbase_Persistence_QueryResultInterface, which behaves like an array, meaning you
+can use foreach() to loop over the query result.
+However, due to an inconsistency of PHP, the array_* methods, and the iteration methods like current(),
+next(), ... do NOT work on objects which implement ArrayAccess -- that's the reason why the QueryResult
+refactoring is a breaking change.
+
+Now, however, the following is possible:
+* Return the first query result: $query->execute()->getFirst()
+* Get the underlying query: $query->execute()->getQuery()
+* Convert the result to array: $query->execute()->toArray()
+
+This change is a prerequisite for Fluid Widgets to work. See the Fluid ChangeLog for details.
+
+
+Configurable Plugin Namespaces
+------------------------------
+
+By default each Extbase plugin has a unique URI prefix to avoid collisions with other plugins on your website.
+This so called plugin namespace usually has the format tx_yourextension_yourplugin.
+With Extbase 1.3 it is possible to override this namespace. This comes in handy if want to interact with 3rd party
+extensions, for example with tt_news:
+
+plugin.tx_yourextension.view.pluginNamespace = tx_ttnews
+
+This sets the plugin namespace of all your plugins inside the extension to "tx_ttnews", making it possibl
+to directly access tt_news parameters in your controller:
+
+/**
+ * @param integer $tt_news tt_news Article uid
+ * @return void
+ */
+public function yourAction($tt_news) {
+	// interact with $tt_news uid
+}
+
+This works with automatic mapping to Domain models too of course:
+
+/**
+ * @param Tx_YourExtension_Domain_Model_NewsArticle $tt_news tt_news Article
+ * @return void
+ */
+public function yourAction(Tx_YourExtension_Domain_Model_NewsArticle $tt_news) {
+	// interact with $tt_news object
+}
+
+You can also override the plugin namespace for a single instance by adding the section <view.pluginNamespace> to your
+plugin FlexForm.
+
+
+Automatic target page determination
+-----------------------------------
+
+In TYPO3 v5 we won't have the notion of page uids. To accustom developers to this change, we're trying to free you from
+the need to specify target pages from within your Extension. Of course you can put all your functionality into one fully
+fledged plugin, then you won't have to deal with target pages as the current page is used by default.
+
+But sometimes you want to be able to change the surrounding contents of a special view of your extension (e.g. the
+subcontent column of a details page). As before you can still specify the target page explicitly like:
+
+<f:link.action action="foo" pageUid="123" />
+
+With Extbase 1.3 you can also use a new feature called "automatic target page determination". It is disabled by default,
+but you can enable it with the following TypoScript:
+
+plugin.tx_yourextension.view.defaultPid = auto
+
+Then Extbase will search the page tree for a plugin that is configured to handle the specified action and you can omit
+the "pageUid" parameter in your links. Of course, this does not work if you use the same plugin multiple times in your
+page tree. In this case you can override the default page ID for the respective plugins:
+
+plugin.tx_yourextension_yourplugin.view.defaultPid = 123
+
+Note: By default this feature is not activated, because that would be a breaking change in some cases
+
+
+Improved resolveView() mechanism
+--------------------------------
+
+Another feature we backported from FLOW3 is the improved view resolving.
+You can now change the default view implementation *per format* by inserting the following line in your Controller:
+
+protected $viewFormatToObjectNameMap = array(
+	'json' => 'Tx_YourExtension_View_JsonView',
+	'html' => 'Tx_YourExtension_View_HtmlView'
+);
+
+
+Allowing plugins to be registered as new content element
+--------------------------------------------------------
+
+This is done using an additional parameter to Tx_Extbase_Utility_Extension::configurePlugin
+that allows you to specify the plugin type. Example:
+
+Tx_Extbase_Utility_Extension::configurePlugin(
+	$_EXTKEY,
+	'BlogList',
+	array('Blog' => 'index'),
+	array(),
+	Tx_Extbase_Utility_Extension::PLUGIN_TYPE_CONTENT_ELEMENT
+);
+(The default value for the pluginType parameter is Tx_Extbase_Utility_Extension::PLUGIN_TYPE_PLUGIN)
+
+Default Orderings & QuerySettings
+---------------------------------
+
+It is now possible to change the default orderings of a repository without you having to modify the query by setting
+the $defaultOrderings property of your Repository to a non-empty array:
+
+protected $defaultOrderings = array(
+	'title' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
+	'date' => 'title' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
+);
+
+This will change the default ordering for all queries created by this repository. Of course you can override the
+ordering by calling $query->setOrderings() in your custom finder method.
+
+Besides it's now possible to change the default query settings of a repository. This way you could for instance disable
+"respect storage pid" for all queries. We added a life-cycle method "initializeObject" to the repository which will be
+executed as soon as the repository is created. Just override it like the following:
+
+public function initializeObject() {
+	$querySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
+	$querySettings->setRespectStoragePage(FALSE);
+	$this->setDefaultQuerySettings($querySettings);
+}
+
+Of course, QuerySettings can be overridden too in your custom finder method by calling $query->setQuerySettings();
+
+
+Full Changes for 1.3.0 Beta 1a:
+===============================
+[+TASK] Extbase: Re-implement support for BE modules
+[+FEATURE] Extbase (Utility): Allow plugins to be registered as new content element
+	Added a fifth parameter to Tx_Extbase_Utility_Extension::configurePlugin that allows
+	you to specify the plugin type (currently "list_type" and "CType" are supported).
+	Thanks to Marc Bastian Heinrichs, Rens Admiraal & Franz Koch for your help!
+	Resolves: #10666
+[+BUGFIX] Extbase (Utility): Added condition to Tx_Extbase_Utility_Extension::getTargetPidByPlugin() in order to only select tt_content entries that are of CType "list". Thanks to Marc Bastian Heinrichs
+[!!!][~TASK] Extbase (Configuration): Major rework of the ConfigurationManager
+	Configuration of controllers and actions is now stored in a global registry
+	($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']). But you
+	should never access this directly. Instead always retrieve the frameworkConfiguration
+	from the ConfigurationManager.
+	Inserting an Extbase plugin is now as simple as:
+	lib.foo = USER
+	lib.foo {
+	  userFunc = tx_extbase_core_bootstrap->run
+	  extensionName = YourExtension
+	  pluginName = YourPlugin
+	}
+	This is not really a breaking change as it does not change the public API. But it's not unlikely that it changes the behavior of your Extension in case you modified the TypoScript, that is generated by Tx_Extbase_Utility_Extension::configurePlugin().
+	NOTE: Unit tests of Extbase and Fluid v4 are broken currently. We'll be fixing those asap
+[~TAKS] Extbase (MVC): FrontendRequestHandler now retrieves the current cObject through the ConfigurationManager
+[+BUGFIX] Extbase (MVC): FrontendRequestHandler was refering to $this->frameworkConfiguration which wasn't available
+[-API] Extbase (MVC): marked Tx_Extbase_MVC_Web_Request::getContentObjectData() deprecated as should retrieve the current cObject through the ConfigurationManager
+[+TASK] Extbase (MVC): modified the Tx_Extbase_MVC_Web_RequestBuilder so that it's possible to change the action only by specifying the action parameter. Before you had to specify the controller as well, even if it was the default controller
+[+BUGFIX] Extbase (MVC): Flashmessages now share a scope throughout the extension. Before, every plugin had it's own scope leading to the messages only being output when entering the same plugin again (e.g. redirecting from one plugin to another would never display the messages)
+[~TASK] Extbase (Core): The Flashmessages now get persisted in the Bootstrap in resetSingletons()
+[-TASK] Extbase (Core): Removed some commented lines from Bootstrap
+[FEATURE] Extbase (Object): Make DI Class Mapping configurable through TS
+	It is now possible to configure the Dependency Injection class mapping by specifying:
+	config.tx_extbase.objects.[FullyQualifiedObjectName].className = [NewClassName]
+	This has the effect of effectively replacing [FullyQualifiedObjectName] with
+	[NewClassName].
+	Resolves: #10559
+[-TASK] Extbase (Utility): Removed two obsolete checks for $GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'] in Tx_Extbase_Utility_Extension
+[~TASK] Extbase: added two doc comments that were missing
+[+BUGFIX] Extbase (Persistence): Extbase still used PHPs current() on some QueryResults in Persistence/Repository. Replaced these by calls to the getFirst() method of the QueryResult
+[+TASK] Extbase (Persistence): added a private field to the QueryResult to make the above case easier to debug: When calling current() on an Iterator, PHP returns the first field of that object instead of calling the current() method of the Iterator interface.. With our somewhat pragmatic approach you'll see the warning if you debug the results of current($query->execute())
+[+BUGFIX] Extbase (Persistence): Replaced two occurrences of Query->count() by Query->execute()->count() to avoid deprecated warnings in the Core
+[+BUGFIX] Extbase (MVC): view configuration (templateRootPath, ...) has to be set before View::canRender() is called
+[!!!][+TASK] Extbase (MVC): The UriBuilder now uses the current cObject instead of creating a new instance in the constructor. This is a breaking change if you instantiated the UriBuilder in your code. Please use the Extbase ObjectManager or inject the ConfigurationManager manually.
+[+BUGFIX] Extbase (Reflection): ReflectionService now uses a cacheIdentifier per Extension. Besides the Bootstrap now resets the ReflectionService after dispatching a request. This resolves #10146
+[+TASK] Extbase (Configuration): The ConfigurationManager now holds the current cObject. You can retrieve it via ConfigurationManagerInterface::getContentObject()
+[+BUGFIX] Extbase (Configuration): When loading configuration of other plugins, the context specific configuration (e.g. flexform settings) are no longer merged with the frameworkConfiguration
+[+BUGFIX] Extbase (MVC): Controllers are no Singletons by default. If a controller contains stateful fields (e.g. $this->settings) this breaks multiple plugins on one page
+[+TASK] Extbase (Persistence): QuerySettings now also store the storage page id(s). This is required for the upcoming Ajax Widgets
+[+BUGFIX] Extbase: fixed php warning in Tx_Extbase_Persistence_LazyLoadingProxy when loading the real instance would return NULL. Resolves #10683
+[+BUGFIX] Extbase: use 3rd parameter = TRUE of t3lib_div::trimExplode to split switchableControllerActionParts from flexform. Thanks to Georg Ringer. Resolves #10688
+[+TASK] Extbase: Replaced "public static" by "static public" in various places to be CGL conform
+[+TASK] Extbase: Marked Utitlity_Extension camelCase/underscore helper functions deprecated
+[+TASK] Extbase: Removed obsolete FIXME comments, whitespace fixes
+[!!!] Extbase: Reintegrating branch "dispatcher" to trunk. Resolves: #10605
+	Branch history:
+[+FEATURE] Extbase (Configuration): Extend ConfigurationManager so that it can load configuration of different plugins
+[+FEATURE] Extbase (Configuration): 1st level cache for ConfigurationManager. Resolves: #10717. Resolves: #10716
+[+TASK] Extbase: cleaned up Configuration* implementation, replaced t3lib_div::makeInstance() calls
+	Streamlined ConfigurationManager API and enforced its usage throughout the Extbase classes.
+	Replaced all t3lib_div::makeInstance() calls by $objectManager->create()/$objectManager->get() throughout the Extbase classes.
+	Some smaller tweaks and fixes. Resolves: #10655. Resolves: #10712
+[TASK] Extbase (Object): Make tests work again. Resolves: #10709
+[TASK] Extbase (Object): Updated autoload.php and emconf. Relates to: #10561
+[TASK] Extbase (Object): Use typed exceptions. Relates to: #10561
+[TASK] Extbase (Object): CGL cleanup
+	Additionally, removed support for @inject annotations at methods. Relates to: #10561
+[TASK] Extbase (Object): Remove getParents. Relates to: #10561
+[TASK] Extbase (Object): Remove isSingleton. Relates to: #10561
+[TASK] Extbase (Object): Remove injectExtensionSettings feature. Relates to: #10561
+[TASK] Extbase (Object): Change namespaces to Tx_Extbase_Object_Container. Relates to: #10561
+[TASK] Extbase (Object): Add Container to Extbase. Relates to: #10561
+[+TASK] Extbase (Core): moved Tx_Extbase_Bootstrap to Tx_Extbase_Core_Bootstrap
+	Moving Bootstrap to be compliant with FLOW3
+	Removed obsolete Classes. Resolves: #10704
+[+TASK] Extbase: Merged current trunk (r2689) with local modifications into dispatcher branch
+	Note: This still needs a cleanup and some fixes (see FIXME comments) before it can be merged back to the trunk. Relates to: #10605. Relates to: #10655
+[+TASK] Extbase (Configuration): Moved CONFIGURATION_TYPE_* constraints to ConfigurationManagerInterface. Resolves #10604.
+[~TASK] Extbase (Configuration): The concrete configuration management strategy gets instanciate only once now.
+[+FEATURE] Extbase (MVC): Decoupled framework settings from Dispatcher.
+	With the new dependency injection feature you can get the Configuration Manager injected by adding the lines
+	protected $configurationManager;
+	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+	}
+	You can get various types of configuration invoking
+	$this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManager::CONFIGURATION_TYPE_EXTBASE)
+	where the class constant must be either CONFIGURATION_TYPE_EXTBASE (for Extbase settings), or CONFIGURATION_TYPE_SETTINGS (for the current module/plugin settings), or CONFIGURATION_TYPE_TYPOSCRIPT (for a raw TS array). Resolves #4741.
+[~TAKS] Extbase: Removed obsolete code.
+[~TASK] Extbase: Added core patch for mod.php (see previous commit).
+[+TASK] Extbase: Changed the way a module gets called.
+	- You can now specify a function name to be invoked by mod.php:
+$TBE_MODULES['_dispatcher'][] = 'Tx_Extbase_Bootstrap->callModule';
+	- This requires a core patch.
+[~TASK] Extbase: Changed configuration of the RequestHandler class names to TypoScript.
+	- The request handlers can now be registered in TypoScript with the setting:
+	   config.tx_extbase.mvc.requestHandlers.[RequestHandlerClassName] = [RequestHandlerClassName].
+	- There are now two RequestHandlers in Extbase: FrontendRequestHandler and BackendRequestHandler. Common functionality is in the AbstractRequestHandler.
+[+API][+FEATURE] Extbase (Utility): Implemented mechanism to register RequestHandlers.
+[+TASK] Extbase: Backported Request Handler Resolver.
+[~TASK] Extbase: Added "deprecated" annotation to Dispatcher.
+[~TASK] Extbase: Added missing comment.
+[+BUGFIX] Extbase (Reflection): The ReflectionService now gets injected to the dispatcher. Related to #10146.
+[+BUGFIX] Extbase (Reflection): Changed the way the Reflection Service and it's cache gets initialized.
+	* Removed check for pre-initialized Reflection Service in the Bootstrap.
+	* Now using a fixed cache key ('ReflectionData').
+	Related to #10146.
+[~TASK] Extbase: First step of the Dispatcher refactoring.
+	* Added and adapted some Unit Tests.
+	* Moved the Dispatcher to MVC.
+	* Added a backwards compatibility Dispatcher on root level.
+	* Added a Bootstrap class.
+	* Removed all backend module support for now.
+	Related to #7153.
+[+TASK] Extbase: Added branch for the dispatcher refactoring.
+[!!!][+BUGFIX] Extbase: fixed typo in getter and setter of Tx_Extbase_Domain_Model_FrontendUser::lastlogin . Thanks to Christian Schwan. Resolves #9345
+[+FEATURE] Extbase (MVC): Backport possibility to change the view object class name more easily
+	Backported FLOW3s improved resolveView() mechanism. Tx_Fluid_View_TemplateView is still the default implementation, but can be easily changed by setting $defaultViewObjectName in your controller. Besides it's possible to specifying different views depending on the current request format by setting $viewFormatToObjectNameMap.
+	NOTE: If the view can't be rendered, the new template based "NotFoundView" will be created. So instead of the invisible HTML comments of the EmptyView, you'll get a more meaningful error message if the template file could not be found
+	Resolves: #8990
+[!!!][+FEATURE] Extbase (Persistence): Backport QueryResult from FLOW3
+	Now Query::execute() returns an instance of QueryResultInterface that allows it to modify the query before actually accessing the records that it retrieves. This is required for the upcoming "Fluid widgets" backport (#10568).
+	NOTE: This change is not backwards compatible, if you work with PHPs array_* functions on the query result. To work around this issue, you'll have to convert the query result to an array before by calling the QueryResult::toArray() method. We're planning to add a compatibility mode, but that's not yet implemented.
+	Resolves: #10566
+[+BUGFIX] Extbase (Object): Minor fix in ObjectManager to make it compatible with PHP 5.2.x
+	Relates to: #9062
+[+BUGFIX] Extbase (Object): Refactor Object Manager
+	The Object Manager is now at the same location and
+	has the same API as in FLOW3.
+[+BUGFIX] Extbase: Major cleanups to Dependency Injection and Persistence
+	Now, DI finally works with Persistence, cleaning
+	this greatly up. Additionally, all internal
+	t3lib_div::makeInstance calls have been replaced.
+	Now, dependency injection is actually usable.
+	Additionally, we completely thought over which
+	persistence classes need to be singleton and which
+	should be prototype, leading finally to a
+	coherent design in the persistence layer.
+[+BUGFIX] Extbase: remove non-used interfaces
+	Removed classes which were not used.
+	Relates to: #9062
+	Resolves: #10585
+	Resolves: #10564
+	* Cleaned up Persistence Backend
+	* Cleaned up QOM Factory
+[+BUGFIX] Extbase (MVC): Fix arguments object
+	The arguments object is now correctly inheriting from ArrayObject
+	Resolves: #10562
+[+BUGFIX] Extbase (MVC): Make database connection work again
+	Resolves: #10585
+[+FEATURE] Extbase (DI): merging DI into trunk. (resolves #10558)
+[+TASK] Extbase: Undefined identifier in Tx_Extbase_Persistence_Storage_Typo3DbBackend::removeRow
+	Method clearPageCache was given an undefined variable $uid as second parameter.
+	Resolves: #10570
+[+TASK] Extbase: $query->contains generate incomplete SQL
+	Use FIND_IN_SET instead of a self-constructed query of LIKE statements
+	Resolves: #8959
+[+BUGFIX] Extbase (Persistence): Removed method createQuery from the QOMFactory. It is neither part of the API nor is it used by Extbase. Resolves #10215
+[+BUGFIX] Extbase (Property): Minor fix in PHP doc comment
+	Fix the order of @param annotation in Tx_Extbase_Property_Mapper::mapAndValidate()
+	Resolves: #5887
+[~CONFIGURATION] Extbase (MVC): Changed default value for automatic target page determination
+	The page id gets automatically detected if plugin.tx_extensionname_pluginname.view.defaultPid
+	is an empty string (was "auto" before). This ensures backwards compatibility.
+	Resolves #9121
+[TASK] Extbase: moved Release Notes to ChangeLog.txt.
+[+FEATURE] Extbase (MVC): Automatic target page determination
+	you can use the "pageUid" argument of the link.* and uri.* view helpers
+	to link to a different page. That is deprecated though as we won't have
+	the notion of "page uids" in v5. Instead the target page is now determined
+	automatically.
+	If the target page can't be determined because more than one active
+	plugin is capable of handling the action an exception will be thrown.
+	In that case you'll have to define the target page either by using the
+	pageUid argument or - preferably - by setting
+	plugin.tx_extensionname_pluginname.view.defaultPid to a fixed page uid.
+	Note: This feature still has to be documented!
+	Resolves: #9121
+[+FEATURE] Extbase (MVC): Configurable plugin namespace
+	until now the namespace (aka prefix) of Extbase plugins was
+	fixed (tx_extensionname_pluginname). This is now configurable
+	via TypoScript. Just write:
+	plugin.tx_extensionname_pluginname.view.pluginNamespace = my_custom_namespace
+	to change the prefix for a specific plugin or
+	plugin.tx_extensionname.view.pluginNamespace = my_custom_namespace
+	to change if for the whole extension.
+	Note: This feature still has to be documented!
+	Resolves: #8365
+
+Changes for 1.3.0 Alpha 2:
+==========================
+included in TYPO3 4.5.0 Alpha 2.
+
+Since the last version, one (possible BREAKING) change happened:
+
+ * Fixed Extbase Caching Bug.
+   Non-cacheable actions were cached due to the fact that TYPO3s
+   TypoScript condition "GP" does not merge GET & POST vars.
+   Additionally "switchableControllerActions" that were overridden
+   in the plugin flexform were not taken into account.
+
+!!! This is a breaking change if you set up your TS configuration
+    of the plugin manually.
+
+Full Changes:
+-------------
+
+[!!!][+BUGFIX] Extbase: Fix Extbase Caching Bug (thanks to Bastian Waidelich)
+
+[-TASK] Extbase (MVC): removed fallback to current page in AbstractController::redirect() as that's already done within the UriBuilder if $targetPageUid is NULL
+
+
+Changes for 1.3.0 Alpha 1:
+==========================
+included in TYPO3 4.5.0 Alpha 1.
+
+Since the last version, the following notable things happened:
+
+* All methods trying to find an object by uid now ignore the storagePid. This changes the behavior of argument mapping and the way extbase fetches 1:1 relations. Resolves #5631. You should not experience any negative side-effects of this change, i.e. if your extension worked before, it will definitely after this change. However, it makes the record handling more robust.
+* Performance improvements in TypoScript::convertTypoScriptArrayToPlainArray. Thanks to Timo Schmidt.
+* Numerous other bugfixes, see below.
+
+Full Changes:
+-------------
+[~TASK] Extbase: Raised version number to 1.3.0-devel to reflect the version scheme defined in the wiki. Resolves #9152. Thanks Xavier for pointing to it.
+[+TASK] Extbase (MVC): cleaned up View implementations and added assign() and assignMultiple() methods to ViewInterface. This resolves #9137
+[+BUGFIX] Extbase: Fixed a small typo in extension description.
+[+BUGFIX] Extbase (Persistence): DataMapper now mapps NULL into a property on non-existing related object instead of FALSE. Resolves #8973.
+[+BUGFIX] Extbase (Reflection): getParentClass() in Tx_Extbase_Reflection_ClassReflection no longer causes a fatal error if no parent class exists. Resolves #8800.
+[+BUGFIX] Extbase (Utility): Improved performance of TypoScript::convertTypoScriptArrayToPlainArray. Thanks to Timo Schmidt. Resolves #8857.
+[~TASK] Extbase: Changed state to 'stable'. Resolves #8768.
+[+BUGFIX] Extbase: Fixed EOL and encoding of several files. Resolves #8876.
+[+BUGFIX] Extbase (MVC): Fixed a problem where a non-required action argument throwed Exception if it was not found in the Backend. Thanks to Marc Bastian Heinrichs. Resolves #7277.
+[!!!][+BUGFIX] Extbase (Persistence): All methods trying to find an object by uid now ignores the storagePid. This changes the behavior of argument mapping and the way extbase fetches 1:1 relations. Resolves #5631.
+[+BUGFIX] Extbase (Persistence): Fixed a problem where localized objects inside an aggregate are not translated. Resolves #8555.
+[~TASK] Extbase: Removed new lines at the end of php files.
+
+RELEASE NOTES of Extbase v1.0.0
+===============================
+
+This package contains the Extbase Framework for Extensions. You may
+also want to install the BlogExample (blog_example) to experiment
+with. This little example extension demonstrates some of the main
+features of Extbase. The documentation is bundled in a separate
+extension called doc_extbase. Both, the blog_example and the
+doc_extbase can downloaded via TER.
+
+http://typo3.org/extensions/repository/view/blog_example/current/
+http://typo3.org/extensions/repository/view/doc_extbase/current/
+
+Currently Extbase is in ALPHA state. Do not expect everything in the
+right place and shape. And keep in mind that the API may change
+until TYPO3 v4.3beta1 is released.
+
+If you have any feature requests or encountered issues regarding
+this package please use the facilities on forge to report.
+
+We are very open to answer your questions. Please use the newsgroup
+
+typo3.projects.typo3v4mvc on lists.netfielders.de
+
+so other developers can react to your comments and also
+profit from the postet solutions. Do not contact a member of the
+development team via private email (or skype, or visits, or ...)
+until he accepted this channel. We all do coding for Extbase on
+our sparetime and must handle our regular work load - and don't
+forget about our families ;-).
+
+We hope you have fun with this package!
+
+-- Your Extbase Development Team
+
+HOW TO CREATE THE CHANGELOG
+===========================
+git log [startRevision]..HEAD --pretty=format:"%s%n%b%n" | grep -v "^$" | grep -v "git-svn-id"
+
+Verify that the merge into the Core succeeded:
+diff -urNw --exclude=".git" --exclude=".svn" -I "@version"  ../../../typo3/sysext/extbase/ .

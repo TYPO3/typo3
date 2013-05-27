@@ -1,0 +1,104 @@
+config.tx_extbase {
+	mvc {
+		requestHandlers {
+			TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler = TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler
+			TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler = TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler
+			TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler = TYPO3\CMS\Extbase\Mvc\Cli\RequestHandler
+		}
+		throwPageNotFoundExceptionIfActionCantBeResolved = 0
+	}
+	persistence{
+		enableAutomaticCacheClearing = 1
+		updateReferenceIndex = 0
+		classes {
+			TYPO3\CMS\Extbase\Domain\Model\FileMount {
+				mapping {
+					tableName = sys_filemounts
+					columns {
+						title.mapOnProperty = title
+						path.mapOnProperty = path
+						base.mapOnProperty = isAbsolutePath
+					}
+				}
+			}
+			TYPO3\CMS\Extbase\Domain\Model\FileReference {
+				mapping {
+					tableName = sys_file_reference
+				}
+			}
+			TYPO3\CMS\Extbase\Domain\Model\File {
+				mapping {
+					tableName = sys_file
+				}
+			}
+			TYPO3\CMS\Extbase\Domain\Model\BackendUser {
+				mapping {
+					tableName = be_users
+					columns {
+						username.mapOnProperty = userName
+						admin.mapOnProperty = isAdministrator
+						disable.mapOnProperty = isDisabled
+						realName.mapOnProperty = realName
+						starttime.mapOnProperty = startDateAndTime
+						endtime.mapOnProperty = endDateAndTime
+						disableIPlock.mapOnProperty = ipLockIsDisabled
+						lastlogin.mapOnProperty = lastLoginDateAndTime
+					}
+				}
+			}
+			TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup {
+				mapping {
+					tableName = be_groups
+					columns {
+						subgroup.mapOnProperty = subGroups
+						groupMods.mapOnProperty = modules
+						tables_select.mapOnProperty = tablesListening
+						tables_modify.mapOnProperty = tablesModify
+						pagetypes_select.mapOnProperty = pageTypes
+						non_exclude_fields.mapOnProperty = allowedExcludeFields
+						explicit_allowdeny.mapOnProperty = explicitlyAllowAndDeny
+						allowed_languages.mapOnProperty = allowedLanguages
+						workspace_perms.mapOnProperty = workspacePermission
+						db_mountpoints.mapOnProperty = databaseMounts
+						fileoper_perms.mapOnProperty = fileOperationPermissions
+						lockToDomain.mapOnProperty = lockToDomain
+						hide_in_lists.mapOnProperty = hideInList
+						TSconfig.mapOnProperty = tsConfig
+					}
+				}
+			}
+			TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
+				mapping {
+					tableName = fe_users
+					columns {
+						lockToDomain.mapOnProperty = lockToDomain
+					}
+				}
+			}
+			TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup {
+				mapping {
+					tableName = fe_groups
+					columns {
+						lockToDomain.mapOnProperty = lockToDomain
+					}
+				}
+			}
+			TYPO3\CMS\Extbase\Domain\Model\Category {
+				mapping {
+					tableName = sys_category
+				}
+			}
+		}
+	}
+	features {
+		 # this enables/disables the reworked property mapper (see http://forge.typo3.org/projects/typo3v4-mvc/wiki/PropertyMapper_rework)
+		rewrittenPropertyMapper = 1
+		 # if enabled, default controller and/or action is skipped when creating URIs through the URI Builder (see http://forge.typo3.org/projects/typo3v4-mvc/wiki/Skip_default_arguments_in_URIs)
+		skipDefaultArguments = 0
+		# if set to 1, the enable fields are ignored in BE context
+		ignoreAllEnableFieldsInBe = 0
+	}
+	legacy {
+		enableLegacyFlashMessageHandling = 1
+	}
+}

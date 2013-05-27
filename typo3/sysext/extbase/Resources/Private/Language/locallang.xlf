@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2012-10-17T19:30:32Z" product-name="extbase">
+		<header/>
+		<body>
+			<trans-unit id="property.error" xml:space="preserve">
+				<source>Validation errors for property "%s"</source>
+			</trans-unit>
+			<trans-unit id="validator.emailaddress.notvalid" xml:space="preserve">
+				<source>The given subject was not a valid email address.</source>
+			</trans-unit>
+			<trans-unit id="validator.stringlength.between" xml:space="preserve">
+				<source>The length of the given string was not between %s and %s characters.</source>
+			</trans-unit>
+			<trans-unit id="validator.stringlength.less" xml:space="preserve">
+				<source>The length of the given string is less than %s characters.</source>
+			</trans-unit>
+			<trans-unit id="validator.string.notvalid" xml:space="preserve">
+				<source>A valid string is expected.</source>
+			</trans-unit>
+			<trans-unit id="validator.stringlength.exceed" xml:space="preserve">
+				<source>The length of the given string exceeded %s characters.</source>
+			</trans-unit>
+			<trans-unit id="validator.alphanumeric.notvalid" xml:space="preserve">
+				<source>The given subject was not a valid alphanumeric string.</source>
+			</trans-unit>
+			<trans-unit id="validator.datetime.notvalid" xml:space="preserve">
+				<source>The given subject was not a valid DateTime. Got: '%s'</source>
+			</trans-unit>
+			<trans-unit id="validator.genericobject.noobject" xml:space="preserve">
+				<source>Value is no object.</source>
+			</trans-unit>
+			<trans-unit id="validator.float.notvalid" xml:space="preserve">
+				<source>The given subject was not a valid float.</source>
+			</trans-unit>
+			<trans-unit id="validator.text.notvalid" xml:space="preserve">
+				<source>The given subject was not a valid text (e.g. contained XML tags).</source>
+			</trans-unit>
+			<trans-unit id="validator.regularexpression.empty" xml:space="preserve">
+				<source>The regular expression was empty.</source>
+			</trans-unit>
+			<trans-unit id="validator.regularexpression.nomatch" xml:space="preserve">
+				<source>The given subject did not match the pattern.</source>
+			</trans-unit>
+			<trans-unit id="validator.regularexpression.error" xml:space="preserve">
+				<source>The reguar expression '%s' contained an error.</source>
+			</trans-unit>
+			<trans-unit id="validator.numberrange.notvalid" xml:space="preserve">
+				<source>The given subject was not a valid number.</source>
+			</trans-unit>
+			<trans-unit id="validator.numberrange.range" xml:space="preserve">
+				<source>The given subject was not in the valid range (%s - %s).</source>
+			</trans-unit>
+			<trans-unit id="validator.notempty.null" xml:space="preserve">
+				<source>The given subject was NULL.</source>
+			</trans-unit>
+			<trans-unit id="validator.notempty.empty" xml:space="preserve">
+				<source>The given subject was empty.</source>
+			</trans-unit>
+			<trans-unit id="validator.number.notvalid" xml:space="preserve">
+				<source>The given subject was not a valid number.</source>
+			</trans-unit>
+			<trans-unit id="validator.integer.notvalid" xml:space="preserve">
+				<source>The given subject was not a valid integer</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
