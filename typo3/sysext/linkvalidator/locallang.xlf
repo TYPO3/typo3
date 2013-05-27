@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="linkvalidator">
+		<header/>
+		<body>
+			<trans-unit id="mod_linkvalidator" xml:space="preserve">
+				<source>Linkvalidator</source>
+			</trans-unit>
+			<trans-unit id="tasks.validate.name" xml:space="preserve">
+				<source>Linkvalidator</source>
+			</trans-unit>
+			<trans-unit id="tasks.validate.description" xml:space="preserve">
+				<source>Search for broken links and store the result into the temporary table tx_linkvalidator_link in order to ease up the backend module.</source>
+			</trans-unit>
+			<trans-unit id="tasks.validate.page" xml:space="preserve">
+				<source>Start page (uid)</source>
+			</trans-unit>
+			<trans-unit id="tasks.validate.depth" xml:space="preserve">
+				<source>Depth</source>
+			</trans-unit>
+			<trans-unit id="tasks.validate.conf" xml:space="preserve">
+				<source>Overwrite TSconfig</source>
+			</trans-unit>
+			<trans-unit id="tasks.validate.email" xml:space="preserve">
+				<source>Send email report to</source>
+			</trans-unit>
+			<trans-unit id="tasks.validate.emailOnBrokenLinkOnly" xml:space="preserve">
+				<source>Send email on new broken links only</source>
+			</trans-unit>
+			<trans-unit id="tasks.validate.emailTemplateFile" xml:space="preserve">
+				<source>Email template file</source>
+			</trans-unit>
+			<trans-unit id="tasks.validate.invalidEmail" xml:space="preserve">
+				<source>Invalid email format!</source>
+			</trans-unit>
+			<trans-unit id="tasks.validate.invalidPage" xml:space="preserve">
+				<source>Invalid page uid, please enter a valid page uid!</source>
+			</trans-unit>
+			<trans-unit id="tasks.validate.invalidDepth" xml:space="preserve">
+				<source>There is no depth set, please set it to one of the offered values!</source>
+			</trans-unit>
+			<trans-unit id="tasks.error.noSubject" xml:space="preserve">
+				<source>No subject for the notification email</source>
+			</trans-unit>
+			<trans-unit id="tasks.error.invalidToEmail" xml:space="preserve">
+				<source>Invalid format of one or more of the recipient email addresses!</source>
+			</trans-unit>
+			<trans-unit id="tasks.error.invalidFromEmail" xml:space="preserve">
+				<source>Invalid format of the email address in the from header</source>
+			</trans-unit>
+			<trans-unit id="tasks.error.invalidTSconfig" xml:space="preserve">
+				<source>Invalid TSconfig in the task configuration!</source>
+			</trans-unit>
+			<trans-unit id="tasks.error.invalidEmailTemplateFile" xml:space="preserve">
+				<source>The email template file is not existing!</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

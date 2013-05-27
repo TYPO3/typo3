@@ -4,6 +4,3 @@
 [submodule "typo3/sysext/workspaces"]
 	path = typo3/sysext/workspaces
 	url = git://git.typo3.org/TYPO3v4/CoreProjects/workspaces/workspaces.git
-[submodule "typo3/sysext/linkvalidator"]
-	path = typo3/sysext/linkvalidator
-	url = git://git.typo3.org/TYPO3v4/Extensions/linkvalidator.git
