@@ -1,0 +1,580 @@
+2011-02-24  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Updated manual with hint suggested by Jigal regarding table2handlerKeys
+
+2011-02-21  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #17399: Install Tool "COMPARE" fails to update mysql tables 
+	* Fixed bug #17661: Remove deprecated methods from t3lib_div
+	* Fixed bug #17670: Remove deprecated functions scheduled for removal in 4.6
+
+2011-01-26  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #17327: Alter table in install tool does not work
+	* Fixed unit tests
+
+2011-01-25  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #17221: Install tool is unable to delete database tables
+
+2011-01-24  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.2.0
+	* Fixed bug #17269: Search with LIKE is case sensitive on Oracle
+
+2010-12-27  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.2.0beta3
+
+2010-12-06  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16679: Cannot login to backend at the end of 1-2-3 wizard when using Oracle
+
+2010-12-05  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16677: PHP notices from XCLASS inclusions
+	* Fixed bug #16678: DBAL is active with MySQL at the end of 1-2-3 wizard
+
+2010-12-02  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16639: Install Tool is unusable since DBAL merge
+
+2010-12-01  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.2.0beta2
+
+2010-12-01  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed use of undefined variable $where in method exec_INSERTquery() with MySQL handler
+	* Fixed use of undefined variable $mapping in method map_subquery()
+	* Follow-up for bug #16392: Native tables could not be retrieved anymore
+	* Code cleanup
+	* Fixed bug #16492: groupBy and orderBy fail on exec_query (thanks to Oguzhan Alan)
+
+2010-11-30  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16501: DBAL does not support multi-column indexes in create table queries
+	* Added feature #16491: Provide a pass-through flag for sql_exec() which goes directly to the native MySQL engine
+
+2010-11-18  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16392: Install tool cannot compare "ENGINE" of MySQL Tables when DBAL is active
+
+2010-11-17  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16444: DBAL installs itself automatically whenever the install tool is called
+
+2010-11-14  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.2.0beta1
+
+2010-11-14  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #15755: Allow DBAL to interact with EM to configure remapping
+
+2010-10-30  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16179: 1-2-3 install tool wizard does not let DBAL load early enough
+	* Fixed bug #15941: Log deprecated functions (and adjust comments)
+	* Fixed bug #15960: Misleading error message in ux_t3lib_DB->cacheFieldInfo() (thanks to Martin Kuster)
+	* Fixed bug #16120: UPDATE queries fails for $GLOBALS['TYPO3_DB']->sql_query (thanks to Alan Oguzhan)
+
+2010-10-19  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.2.0alpha3
+
+2010-09-28  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #15075: [Install] make a pre-check for required php-extensions (thanks to Jigal van Hemert)
+
+2010-09-21  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.2.0alpha2
+
+2010-09-20  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Merged branch QueryCache to trunk
+	* Updated documentation to describe how to use Memcached to cache prepared queries
+	* Fixed bug #15751: dbal does not parse setDBinit correctly (thanks to Tamer Erdogan)
+
+2010-08-30  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15582: Call to deprecated function template::middle()
+
+2010-08-24  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed caching with Memcached
+	* Synchronized code from trunk
+
+2010-08-23  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15535: Error: No pages are found on the rootlevel! in Frontend when using Oracle
+	* Updated ADOdb version dependency
+	* Set version to 1.2.0alpha1
+
+2010-08-19  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Updated caching mechanism to cache prepared queries
+	* Synchronized code from trunk
+	* Added unit test for feature #15457
+	* Added feature #15457: Add support for prepared queries
+
+2010-08-14  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Code cleanup with useless blank spaces at end of line
+
+2010-08-08  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit test for bug #15253: NOT LIKE is not remapped using dbms_lob.instr with Oracle
+	* Fixed bug #12535: DAM-related: Element browser crashes as where-clause cannot be parsed
+
+2010-07-27  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15160: Queries should only be parsed once
+
+2010-07-17  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Updated PHP documentation
+
+2010-07-16  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit test for bug #14818: t3lib_db->listQuery() performance
+	* Fixed bug #14985: FIND_IN_SET should be used isntead of complicated LIKE where clause
+
+2010-07-11  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15045: Trailing newlines after php closing tag
+
+2010-06-27  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Synchronized @deprecated annotations with Core
+
+2010-06-22  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #14814: Improve install tool texts
+
+2010-06-19  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #3855: Log number of returned or affected rows
+	* Updated copyright year in manual
+
+2010-06-12  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13431: Include BE:forceCharset config option (thanks to Armin Guenther)
+
+2010-06-11  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14405: Rename the test cases from *_testcase to *Test
+
+2010-06-03  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14479: Speed up Oracle layer by not defaulting to dbms_lob.instr for LIKE query (thanks to Michiel Roos)
+
+2010-05-28  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #7015: t3lib_DB displays wrong SQL in error case
+
+2010-05-27  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14496: SQL parser does not handle ALTER TABLE with character set operation
+	* Fixed bug #14456: SQL parser doesn't accept ALTER TABLE statement without CHANGE, DROP or ADD keyword
+	* Fixed bug #14457: 1-2-3 Install Process breaks with PostgreSQL
+
+2010-05-21  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14372: Mapping does not work with table alias
+	* Follow-up of changeset 32847: DBAL cannot be loaded if typo3conf/ is not writable
+
+2010-05-03  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed 1-2-3 installer crash when having only mysql available
+
+2010-05-01  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14274: Some exception are not caught when trying to install DBAL in 1-2-3 Install Tool process
+	* Fixed bug #2186: Error installing static_info_tables
+	* Fixed bug #14265: Driver dropdown in install tool should be hidden when only MySQL is available
+
+2010-04-29  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added autoloader for Install Tool
+
+2010-04-22  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14182: Multiple join conditions are not supported
+
+2010-04-15  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14120: Add a method to check if database is connected
+
+2010-04-14  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.1.2
+
+2010-04-12  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #13508: Use exec_TRUNCATEquery() instead of DELETE FROM throughout the core
+
+2010-04-06  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added skeleton of a cache for generated queries
+
+2010-03-07  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #4640: Backend login impossible with MSSQL via ODBC (thanks to Felix Eckhofer)
+
+2010-02-21  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #2367: No support for LIMIT [PostgreSQL]
+
+2010-02-14  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.1.1
+
+2010-02-14  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit test for #12829: ALTER TABLE is not able to parse length restriction in index creation
+
+2010-02-13  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit tests for #4493: WHERE func(expr) IN (n,...m) is broken
+	* Fixed bug #6196: IFNULL operator cannot be parsed
+	* Fixed bug #13528: Argument 1 passed to ux_t3lib_DB::_quoteFieldNames() must be an array, string given
+
+2010-02-11  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Follow-up of #13504: Using TRUNCATE instead of TRUNCATETABLE as public DB API
+
+2010-02-10  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13504: Cannot parse TRUNCATE TABLE in install tool
+
+2010-02-09  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit test for bug #13490: Where clause 0=0 cannot be parsed
+
+2010-02-07  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #12858: Provide an API to insert multiple rows at once
+	* Fixed bug #13453: Method compileINSERT of ux_t3lib_sqlparser should be protected
+	* Added feature #13209: MySQL extended INSERT statements cannot be parsed
+
+2010-02-06  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit tests for bug #13430: Cannot parse INSERT when VALUES has no space before left parenthesis
+
+2010-02-05  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13422: Invalid quoting of numeric column names
+
+2010-02-03  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit tests for bug #13412: BETWEEN operator is not supported
+
+2010-01-24  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13090: version warning with CSS styled content
+
+2010-01-14  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #13199: fileadminDir is hardcoded in several places (thanks to Susanne Moog)
+
+2010-01-08  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Updated copyright year
+
+2010-01-05  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #13134: Support of SQL LOCATE function
+
+2010-01-03  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #13135: Support for CASE WHEN flow control
+
+2009-12-30  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.1.0
+
+2009-12-28  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12603: sql_query does not respect "mapping"
+	* Fixed bug #13104: SQL parser cannot parse escaped single quote in INSERT statement
+
+2009-12-27  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Updated documentation: now using new documentation template
+	* Updated documentation: removed obsolete information, added small cookbook for extension developers, added tutorials for Oracle and PostgreSQL
+
+2009-12-13  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13003: Move back methods belonging to t3lib_sqlparser
+
+2009-12-11  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12897: Cannot parse SQL hints
+
+2009-11-29  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12758: Added support for EXISTS (subquery)
+
+2009-11-29  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.0.2 [TYPO3 4.3.0]
+	* Fixed bug #12800: Add functionality to work with caching framework (support for "IN (subquery)" in where clause)
+	* Follow-up of changeset 26118: parts of initial patch for RFC 12231 had actually not been integrated
+
+2009-11-27  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Cleanup: Reorganized unit-tests
+
+2009-11-25  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.0.1
+
+2009-11-20  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit-test for bug #5708: Fieldmapping doesn't work on the "right side" in where clause with table.field
+	* Fixed bugs #5044/#11142: Column's default value is not properly quoted in CREATE TABLE
+	* Added unit-test for bug #12670: Columns with NOT NULL are created as NULLable
+
+2009-11-17  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.0.0 (stable)
+	* Updated documentation: updated copyright and refreshed TOC
+	* Added unit-test for bug #4466: Index on tx_realurl_uniqalias breaks with DBAL
+
+2009-11-16  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Now using Core dispatcher for backend module (thanks to Oliver Hader)
+
+2009-11-15  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12596: RIGHT OUTER JOIN is not supported
+
+2009-11-11  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit test for bug #11093: bigint (int8) values get converted to int4 by int-cast
+
+2009-11-10  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Removed comments stating that SQL parser is experimental
+	* Follow-up of revision 26334: LIKE on Oracle should use dbms_lob.instr() function
+	* Updated Oracle unit tests to use $GLOBALS['TYPO3_DB'] instead of a fixture to avoid side-effects on SQL rewriting
+	* Updated general database unit tests to use $GLOBALS['TYPO3_DB'] instead of a fixture to avoid side-effects on SQL rewriting
+
+2009-11-09  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #10965: Float database field gets converted to integer on insert (thanks to Christian Ducrot)
+	* Fixed bug #12515: DAM-related: CONCAT operator cannot be used after LIKE
+	* Fixed bug #10411: Applied missing chunks of patch
+
+2009-11-07  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit test for RFC #6198: Problem with strings in IN
+	* Added unit test for RFC #6953: Mapping of fieldnames in SQL-functions like MIN(), MAX() or SUM() does not work
+
+2009-11-06  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 0.9.25
+	* Fixed bug: tables and fields were not always properly mapped in INNER JOINs
+	* Added unit tests to test quoting and remapping of tables and fields when using Oracle
+
+2009-11-05  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 0.9.24
+	* Follow-up of RFC #12452: Reflected change of visibility of method compileFieldCfg() in t3lib_sqlparser
+
+2009-11-04  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Updated ext_emconf.php's author and extension version dependencies
+
+2009-11-03  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added some general unit tests (without any engine-specific test nor mapping)
+	* Cleanup #12440: Copy DBAL-only SQL parser methods from t3lib_sqlparser to ux_t3lib_sqlparser
+	* Fixed bug #12231: New caching framework (4.3-dev) does not work with DBAL
+
+2009-10-28  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added compatibility operators for PostgreSQL as resource script (thanks to Ries van Twisk)
+	* Added message in Extension Manager to let users know compatibility scripts may need to be run
+
+2009-10-27  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Follow-up of changeset 25876: Using tx_dbal_sqlengine instead of t3lib_sqlengine for sample handlers
+	* Created icons for extension and Debug module
+	* Cleanup: Applied CGL
+
+2009-10-26  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12354: Include t3lib_sqlengine from Core to DBAL
+	* Fixed bug #12349: Clean-up SQL parser and SQL engine
+
+2009-10-20  Oliver Hader  <oliver@typo3.org>
+
+	* Set version to 0.9.23
+
+2009-10-08  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #6953: Mapping of fieldnames in SQL-functions like MIN(), MAX() or SUM() does not work (thanks to Christian and Michael Miousse)
+
+2009-10-01  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Raised version to 0.9.22
+
+2009-09-29  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12071: t3lib_sqlparser is not able to parse alias of a joined table
+
+2009-09-20  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12012: admin_get_tables() method is using PHP5.3-deprecated function mysql_list_tables
+
+2009-09-18  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Raised version to 0.9.21
+
+2009-09-18  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #11984: Remove reference operators for objects
+
+2009-09-03  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #11436: Unknown tables break Install-Tool (thanks to David Bruchmann)
+	* Fixed bug #11108: DBAL wildly quotes fields and table names
+
+2009-09-04  Karsten Dambekalns <karsten@typo3.org>
+
+	* Raised version to 0.9.20
+
+2008-02-04  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #7295: Uninitialized variable in ->handler_getFromTableList() (Patch by Oliver Klee)
+
+2007-05-30  Karsten Dambekalns <karsten@typo3.org>
+
+	* Added default values and some usability improvements to cached info display in debug module (closes bug #3750)
+	* EXPLAIN PLAN support for Oracle (closes bug #3850)
+	* Fixed a warning when using admin_get_fields() on a non-existent table
+	* Fixed a bug causing inserts with more than one affected CLOB field to fail
+	* quoteWhereClause() now die()s when the input cannot be parsed by parseWhereClause()
+	* PHP backtraces can be logged with the queries now (closes bug #3856)
+
+2007-05-29  Karsten Dambekalns <karsten@typo3.org>
+
+	* Closes bug #4462: creates tables without OIDs on PostgreSQL now
+	* Closes bugs #4494, #3759: & is translated to BITAND() on Oracle now
+	* Large text fields are CLOB fields now; for Oracle LIKE comparisons against such fields are translated to dbms_lob.instr() calls. This should fix e.g. bug #5535 as well as issues with TV data that cannot be unserialized (see comments on bug #4638)
+	* Updates to the manual
+	* A fix for bug #5481, field mapping not working on the right side of a comparison in WHERE clauses
+	* Fixed bugs #2438 and #4496 about quoting of DISTINCT in SELECT clauses
+
+2006-07-19  Karsten Dambekalns <karsten@typo3.org>
+
+	* Fixes SQL issues when searching in list view or with the global search box on the bottom of the BE page
+
+2006-06-30  Karsten Dambekalns <karsten@typo3.org>
+
+	* this update closes bugs #3638, #2106, #2866, #3754 (for Firefox, broken in MSIE) and maybe a few more
+	* Implemented support for sysLog() on connection failure
+	* DBAL now honours the no_pconnect setting
+	* For handlers in native mode the setDBinit queries are executed upon connection
+	* The initial value for generated sequences can be configured per handler, to avoid duplicate key errors after having imported data
+	* BLOB fields are handled correctly now during INSERT and UPDATE
+	* Setting $store_lastBuiltQuery acts like in t3lib_db now (fill $debug_lastBuiltQuery)
+	* For the native handler quoting methods directly return the input for speedup, as no quoting is needed in that case
+	* Added support for native and userdefined handler to MetaType()
+	* Changed mapping of types to always use the largest possible integer, map tinytext to varchar instead of text
+	* admin_get_tables() skips tables whose names match /BIN\$/ (coming from the recycle bin on Oracle)
+	* Importing dumps using the install tool now works, see manual for tips
+	* Changed the way NOT NULL and DEFAULT are handled when setting up tables, see manual for the rules that now apply
+	* Code cleanup (indentation, documentation)
+	* Updated the manual and added new content
+
+2006-01-19  Karsten Dambekalns <karsten@typo3.org>
+
+	* Changes to connection handling, detecting failed connections.
+	* Added support for $no_quote_fields in UPDATE and INSERT methods.
+
+2006-01-04  Karsten Dambekalns <karsten@typo3.org>
+
+	* Changed the way a connection is established with ADOdb. The new
+	way allows ODBC connections (rather, connections to drivers having
+	an underscore in their name).
+	* Changes to ext_tables.sql to make it more portable.
+	* When printing errors, output the offending SQL as well.
+	* Some small fixes, enhancements to code documentation.
+	* Some additions to the manual.
+
+2005-12-27  Karsten Dambekalns <karsten@typo3.org>
+
+	* Converted locallang to XML, small adaptions to syext location.
+	* One slight fix to the SQL check in the BE module (wrong output if
+	an error occurred).
+
+2005-12-26  Karsten Dambekalns <karsten@typo3.org>
+
+	* Code cleanup and improvements to the mapping. Merged 3rd
+	party changes done by DIACC GmbH.
+
+2005-12-23  Karsten Dambekalns <karsten@typo3.org>
+
+	* Fixed a few issues that were left undiscovered yet.
+	* Added a new module to test query building and parsing
+	from the DBAL debug module.
+	* Finalized fix for bug #1649.
+
+2005-12-22  Karsten Dambekalns <karsten@typo3.org>
+
+	* Fixed bug #2077 (NOT handling breaking, consequently
+	discarding WHERE clauses).
+
+2005-12-21  Karsten Dambekalns <karsten@typo3.org>
+
+	* Fixed bug #1781 to allow easier install.
+	* Closed bug #1204 as not reproducable. Probably rather a
+	PHP/Apache bug than a DBAL bug.
+	* Closed bug #1317 which has been fixed earlier. It was due
+	to a msissing check for the incoming SQL (string/array) in the
+	native part of exec_UPDATEquery().
+	* Fixed parseFieldDef() t3lib_sqlparser to allow datatypes
+	with just a trailing comma (like in "tyinytext," as opposed
+	to "varchar(19)". This prevented installation of some
+	extensions.
+	* Fixed bug #2072.
+	* Fixed bug #1206.
+	* Fixed a bug with error logging and array queries (BLOB).
+	* Prepared a fix for bug #1649, pending core list approval.
+	* Fixed a bug in t3lib_page, getMultipleGroupsWhereClause()
+	where double quotes were used to quote a literal for use in
+	SQL. THIS IS MYSQL-ONLY! NEVER DO THIS! ALWAYS USE SINGLE
+	QUOTES!
+
+2005-06-07  Karsten Dambekalns <karsten@typo3.org>
+
+	Documentation update.
+
+2005-05-19  Karsten Dambekalns <karsten@typo3.org>
+
+	Committed changes to go along with the library removal done
+	earlier. Completed debug logging.
+
+2005-02-07  Karsten Dambekalns <karsten@typo3.org>
+
+	Bringing the DBAL extension AS OF JANUARY 2005 into CVS.  Works
+	pretty well, but still needs more work. A few optimizations are
+	planned and some bugs in native mode need to be fixed. Checking
+	this in is (similar to yesterday's commit) more for
+	historic/archival reasons.  This version will NOT work with 3.7.x.
+	You have been warned.
+
+2005-02-06  Karsten Dambekalns <karsten@typo3.org>
+
+	Bringing the DBAL extension AS OF JULY 2004 into CVS. This is
+	rather for historic purposes, more changes will follow in the near
+	future.  This version was already a huge step forward, but it will
+	not work as expected with 3.7.x or 3.8.x. You have been warned.
+
+2004-03-28  Kasper Skaarhoej <kasperYYYY@typo3.com>
+
+	Initial revision

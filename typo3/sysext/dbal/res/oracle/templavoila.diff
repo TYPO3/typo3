@@ -1,0 +1,13 @@
+Index: ext_tables.sql
+===================================================================
+--- ext_tables.sql	(revision 29620)
++++ ext_tables.sql	(working copy)
+@@ -24,7 +24,7 @@
+ 	title varchar(60) DEFAULT '' NOT NULL,
+ 	datastructure varchar(100) DEFAULT '' NOT NULL,
+ 	fileref tinytext,
+-	templatemapping blob,
++	templatemapping mediumtext,
+ 	previewicon tinytext,
+ 	description tinytext,
+ 	rendertype varchar(32) DEFAULT '' NOT NULL,
