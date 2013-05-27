@@ -1,0 +1,92 @@
+@charset "UTF-8";
+
+#linkvalidator-main div.x-tab-panel-bwrap div div div div.x-panel-body {
+	overflow: auto;
+}
+
+.linkvalidator_funcmenu {
+	margin-bottom: 25px;
+	margin-left: 25px;
+	margin-top: 0;
+	float: left;
+}
+.linkvalidator_funcmenu input {
+	margin-left: 5px;
+}
+.linkvalidator_funcmenu div {
+	margin-top: 11px;
+}
+#linkvalidator-main .linkvalidator_funcmenu h4 {
+	clear: both;
+	padding: 0;
+}
+
+#linkvalidator-main h4 {
+	padding-top: 16px;
+}
+
+.linkvalidator_checkoptions {
+	float: left;
+	display: block;
+	margin-top: 0px;
+	width: 225px;
+}
+.linkvalidator_checkoptions div {
+	float: left;
+}
+#linkvalidator-main .linkvalidator_checkoptions h4 {
+	clear: both;
+	padding-top: 0px;
+}
+
+.linkvalidator_button {
+	clear: both;
+}
+
+#linkvalidator-main .typo3-message {
+	margin-top: 10px;
+}
+
+.linkvalidator_singleOption {
+	padding: 0;
+}
+.linkvalidator_singleOption label {
+	padding-left: 10px;
+	vertical-align: middle;
+}
+.linkvalidator_singleOption input {
+	vertical-align: middle;
+}
+.linkvalidator_singleOption .checkbox,
+.linkvalidator_singleOption .checkbox:hover {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+.linkvalidator_singleOption-showalllinks {
+	padding-bottom: 10px;
+}
+
+#linkvalidator_statsTable {
+	width: 230px;
+	margin-top: 5px;
+	margin-bottom: 14px;
+}
+#linkvalidator_statsTable .t3-row-header td.number {
+	padding-top: 4px;
+}
+#linkvalidator_statsTable td,
+#linkvalidator_statsTable span {
+	vertical-align: middle;
+}
+#linkvalidator_statsTable td.number {
+	padding-right: 6px;
+	text-align: center;
+}
+#linkvalidator_statsTable td,
+#linkvalidator_brokenLinksTable td {
+	border-left: 1px solid white;
+}
+#linkvalidator_statsTable td:first-child,
+#linkvalidator_brokenLinksTable td:first-child {
+	border-left: none;
+}
