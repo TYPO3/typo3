@@ -655,7 +655,13 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				$typeOfRelation = $columnMap instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap ? $columnMap->getTypeOfRelation() : NULL;
 				if ($typeOfRelation === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 					$relationTableName = $columnMap->getRelationTableName();
-					$sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=?)';
+					$matchFieldsWhere = '';
+					if ($columnMap->getRelationTableMatchFields() !== NULL) {
+						foreach ($columnMap->getRelationTableMatchFields() as $matchColumnName => $matchValue) {
+							$matchFieldsWhere .= ' AND ' . $matchColumnName . '=' . $this->databaseHandle->fullQuoteStr($matchValue, $relationTableName);
+						}
+					}
+					$sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=?' . $matchFieldsWhere . ')';
 					$parameters[] = intval($this->getPlainValue($operand2));
 				} elseif ($typeOfRelation === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
 					$parentKeyFieldName = $columnMap->getParentKeyFieldName();
