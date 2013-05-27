@@ -23,7 +23,7 @@ body#typo3-alt-file-navframe-php {
 
 #typo3-alt-file-navframe-php #typo3-docbody,
 #typo3-pagetree-treeContainer {
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAYAAAAb4BS0AAAAGElEQVR42gENAPL/AMjIyEzIyMizyMjI/zhvCQelaHPPAAAAAElFTkSuQmCC");
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA9JREFUeNpiun79OkCAAQAFFgKIFwyKvQAAAABJRU5ErkJggg==");
 	/* star-hack targets IE7 */
 	*background-image: url("../../images/shadows/navigation-container.png");
 }
