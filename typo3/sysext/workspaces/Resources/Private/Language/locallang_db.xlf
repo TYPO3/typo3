@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="workspaces">
+		<header/>
+		<body>
+			<trans-unit id="sys_filemounts.tabs.staging" xml:space="preserve">
+				<source>Staging</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.custom_stages" xml:space="preserve">
+				<source>Custom stages:</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace_stage.responsible_persons" xml:space="preserve">
+				<source>Responsible persons:</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace_stage.default_mailcomment" xml:space="preserve">
+				<source>Default mail comment:</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace_stage.parentid" xml:space="preserve">
+				<source>UID of parent record:</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace_stage.parenttable" xml:space="preserve">
+				<source>Parent table:</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace_stage" xml:space="preserve">
+				<source>Workspace Stage</source>
+			</trans-unit>
+			<trans-unit id="tabs.notification_settings" xml:space="preserve">
+				<source>Notification settings</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.edit_notification_mode" xml:space="preserve">
+				<source>Edit stage: Recipient suggestion checkboxes</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.notification_mode.0" xml:space="preserve">
+				<source>All are selected per default (can be changed)</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.notification_mode.1" xml:space="preserve">
+				<source>Some are selected per default (defaults cannot be unchecked)</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.notification_mode.2" xml:space="preserve">
+				<source>All are selected per default (cannot be changed)</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.edit_notification_defaults" xml:space="preserve">
+				<source>Edit stage: default notification mail recipients</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.edit_allow_notificaton_settings" xml:space="preserve">
+				<source>Allow notification settings during stage change back to edit stage</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.publish_notification_mode" xml:space="preserve">
+				<source>Ready to publish stage: Recipient suggestion checkboxes</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.publish_notification_defaults" xml:space="preserve">
+				<source>Ready to publish stage: default notification mail recipients</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace.publish_allow_notificaton_settings" xml:space="preserve">
+				<source>Allow notification settings during stage change to ready to publish</source>
+			</trans-unit>
+			<trans-unit id="tabs.general" xml:space="preserve">
+				<source>General</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace_stage.notification_mode" xml:space="preserve">
+				<source>Recipient suggestion checkboxes</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace_stage.notification_defaults" xml:space="preserve">
+				<source>Default notification mail recipients</source>
+			</trans-unit>
+			<trans-unit id="sys_workspace_stage.allow_notificaton_settings" xml:space="preserve">
+				<source>Allow notification settings during stage change</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
