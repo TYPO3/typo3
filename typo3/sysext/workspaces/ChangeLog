@@ -1,0 +1,333 @@
+2011-02-22  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #12457: Split view und grid don't use StateProvider yet
+	* Fixed bug #12855: Generate preview link visible in Live-Workspace and on non-content pages
+
+2011-02-21  Marco Bresch <typo3@starfinanz.de>
+
+	* Fixed bug #13074: missing cache_frontend configuration
+
+2011-02-20  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #13098:Hide sys_workspace_stage in list view (Thanks to Andreas Kiessling)
+
+2011-02-20  Steffen Kamper  <steffen@typo3.org>
+
+	* Changes according to changed ExtDirect inclusion (#17592)
+
+2011-02-17  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #12621: Documentation for new options concerning stageNotificationEmail
+	* Fixed bug #12693: Naming of Documentation folder
+
+2011-02-16  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #13003: singleIndex rows not showing up due to browser security violations
+	* Fixed bug #13002: singleIndex page much have invalid workspace id
+
+2011-01-26  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #3523: Rewrite of workspace manual started
+
+2011-01-26  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Raised version to 4.5.0
+
+2011-01-26  Marco Bresch  <typo3@starfinanz.de>
+
+	* Fixed bug #12534: Positioning of toolbar in IE6 (Thanks to Markus Antecki)
+
+2011-01-25  Sonja Scholz  <ss@cabag.ch>
+
+	* Fixed bug #10636: workspace module not usable in IE6 (Thanks to Markus Antecki)
+
+2011-01-25  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Raised version to 4.5.0rc2
+	* Fixed bug #12406: Not possible to publish change of IRRE ordering
+	* Fixed bug #12464: Slider element is not always visible during the dragging process..
+
+2011-01-24  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #17222: fitToParent calculates wrong height - workspace grid needs 40 pixel offset for render the legend
+
+2011-01-21  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Followup to #11539: Split view / initial height calculated right
+	* Followup to #11539: Split view / tooltip styling added
+
+2011-01-21  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #12448: grid preview links are broken
+	* Raised version to 4.5.0rc1
+	* Fixed bug #12415: Respect change #17167: Cache ExtDirect::getAPI calls
+	* Fixed bug #12308: Workspace non-admin not workspace owner sees icon to swap updated version with Live site
+	* Fixed bug #12384: Mount points are not taken into account in element-list
+	* Fixed bug #12325: Hide icons that don't work in the current context
+	* Fixed bug #11539: Split view
+
+2011-01-20  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #12055: Publishing a page does not update the new page tree
+	* Fixed bug #12413: Rename extension "list" to "recordlist"
+	* Fixed bug #12000: Cache and Favorites submenus shifts when in Workspaces
+	* Fixed bug #11574: Workspaces grid: stages should "sit" on one line
+	* Fixed bug #12446: Fixed instantiation of UriBuilder (broken since extbase merge)
+	* Fixed bug #12453: Autopublish task crashes because of misspelled class name (Thanks to Francois Suter)
+
+2011-01-20  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #12386: "Publish only content in publish stage" doesn't work anymore
+	* Fixed bug #12077: Tooltips for slider
+	* Fxied bug #12334:"Allow members to edit records in "Review" stage" should be removed
+	* Fixed bug #12286: Wrong icon for "Generate workspace preview link" - use eye icon instead
+
+2011-01-18  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #11972: Switching workspaces with tabs causes module menu to loose its selection
+	* Fixed bug #12405: The workspaces module does not work in Internet Explorer
+
+2011-01-18  Sonja Scholz  <ss@cabag.ch>
+
+	* Fixed bug #11481: Naming of "Release" mass action is unclear
+	* Fixed bug #12350: Wrong backpath for thumbnail generation in diff view
+
+2011-01-18  Marco Bresch  <typo3@starfinanz.de>
+
+	* Fixed bug #10439: Data array used in ws-grid should be cached
+
+2011-01-18  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #12347: Incorrect registration of status report
+	* Fixed bug #12333: "Un-Publish:" should be hidden
+	* Fixed bug #12322: "null" is shown in diff view if original fields are empty in Firefox
+	* Fixed bug #11587: Trash icon should "discard" too
+	* Fixed bug #11529: Infinite not infinite / moved pages not always visible in element list
+
+2011-01-16  Sonja Scholz  <ss@cabag.ch>
+
+	* Fixed bug #11825: non-admin editors can't see non-page records within the review module
+	* Fixed bug #12272: Topbar isn't highlighted if there's only on workspace
+	* Fixed bug #12273: "Go to workspace module" link appears even if user has no access to it
+
+2011-01-16  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Followup to #16630: migrateWorkspaces in Install-Tool does not work, if extbase is not intalled
+	* Fixed bug #12076: Remove "help" tab
+	* Fixed bug #12192: Description of workspace module for "about modules" missing
+	* Fixed bug #12194: Legend too wide
+
+2011-01-16  Sonja Scholz  <ss@cabag.ch>
+
+	* Fixed bug #12291: Icon "Open version of page" does not go the the page of the clicked element
+
+2011-01-15  Marco Bresch  <typo3@starfinanz.de>
+
+	* Fixed bug: include htmlspecialchars for labels to display html-tags
+	* Bug #11585: Hide difference column for default
+
+2011-01-12  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Fixed bug: migrateWorkspaces in Install-Tool does not work, if extbase is not intalled
+	* Raised version to 4.5.0beta4
+
+2011-01-09  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #11971: Live Tab is linked in Live view
+
+2011-01-06  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #11815: WorkspacePreviewLink should be a link
+	* Fixed bug #11029: Workspaces module: Row detail view (Thanks to Lars Zimmermann and Berit Jensen)
+
+2011-01-06  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #11674: Selection of row deletes checkbox selection
+	* Fixed bug #11647: Switching workspace doesn't refresh new pagetree
+
+2011-01-01  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #3358: make sure only "element" versioning type is supported / used - added status report for Reports module
+
+2010-12-30  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #11789: fluid viewhelper renderFlashMessages is deprecated
+
+2010-12-28  Steffen Kamper  <steffen@typo3.org>
+
+	* Follow-up to #11635: Removed remaining event listener
+
+2010-12-26  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed issue #11722: TempFlashMessageQueueViewHelper is not required anymore
+	* Fixed bug #11718: ExtJS confirmation window contents might be "cached"
+
+2010-12-25  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #11473: Send to stage window may be too large
+	* Fixed bug #11608: Missing space in Mass Release Confirmation
+	* Fixed bug #11635: Remove "Preview of workspace ..." box when in workspace preview module
+	* Fixed bug #11657: singleView should not have depth and mass-action combos
+	* Fixed bug #11600: [All] tab in ws-module should not have action-buttons
+
+2010-12-22  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #11568: Remove "Enable comparison view" switch
+	* Fixed bug #11479: Label of publish action is confusing
+
+2010-12-22  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Added feature #10642: Design of workspace preview/comparison view (Thanks to Lars Zimmermann)
+
+2010-12-21  Sonja Scholz  <ss@cabag.ch>
+
+	* Fixed bug #11480: Add warning when choosing mass actions
+
+2010-12-21  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Followup-to #9819: Workspace preview window - browser compatibility fixed
+
+2010-12-20  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #10693: Save and view command previews wrong page record
+	* Fixed bug #11532: Generate Workspace Preview Link not working
+	* Fixed bug #11605: Do you really want to swap?? - one question mark is enough
+	* Fixed bug #11531 Check if email is set before trying to send an email
+	* Fixed bug #11141: switching with the tabs in the workspace module should also switch to the related workspace
+
+2010-12-19  Marco Bresch  <marco.bresch@starfinanz.de>
+
+	* Fixed bug #11142: The 'All' tab throws Exception 'No such workspace defined'
+
+2010-12-19  Sonja Scholz  <ss@cabag.ch>
+
+	* Cleanup: #11153: Determine whether Tx_Workspaces_Service_Stages::encodeStageUid and resolveStageUid are required
+
+2010-12-19  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Followup-to #9819: Workspace preview window - "live" and "workspace" buttons are clickable now
+
+2010-12-18  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #11318: workspaces task miss title
+
+2010-12-17  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Followup-to #9819: Workspace preview window - empty preview.css included in order to support the skin team
+
+2010-12-14  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #9819: Workspace preview window
+
+2010-12-05  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #11290: PHP notices from XCLASS inclusions
+
+2010-12-01  Oliver Hader  <oliver@typo3.org>
+
+	* Raised version to 4.5.0beta2b
+
+2010-12-01  Steffen Ritter  <typo3@steffen-ritter.net>
+
+	* Follow-Up #11131: Usability: labels improvements, change the label as a new one is introduced
+
+2010-12-01  Oliver Hader  <oliver@typo3.org>
+
+	* Raised version to 4.5.0beta2a
+
+2010-12-01  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #11193: Remove calls to disable compression and merging of CSS/JS
+
+2010-12-01  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Fixed ext_emconf.php
+	* Raised version to 4.5.0beta2
+
+2010-11-30  Steffen Ritter  <typo3@steffen-ritter.net>
+
+	* Fixed bug #11143: Editing workspaces record shows PHP warning
+	* Fixed bug #10291: change action icons
+	* Fixed bug #7050: Remove UID from WSP Dropdown
+	* Fixed bug #11152 Calls about this-> in static context in workspaces-lib
+	* Cleanup: Added several small changes from the Skin-Team at the xTemplate
+
+2010-11-30  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #11138: preview links in page- and list-module point to mod.php instead of typo3/mod.php
+
+2010-11-30  Oliver Hader  <oliver@tpyo3.org>
+
+	* Fixed bug #11124: Stages should use suggest wizard for persons
+	* Cleanup: Fixed PHPdoc comments and exception timestamp
+	* Fixed bug #11115: ExtDirect exception sendToNextStageWindow: StageId is supposed to be an integer
+	* Fixed task #11161: Simplify outputting errors from PHP to the grid component
+	* Fixed bug #11144: Records that belong to a particular workspace shall be removed when the workspace is removed
+
+2010-11-29  Sonja Scholz  <ss@cabag.ch>
+
+	* Fixed bug: #11131: Usability: labels improvements
+
+2010-11-29  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug: #11006: Error when using old-style workspace
+	* Fixed bug: #10831: New preview window shows wrong behavior for new page in LIVE WS
+
+2010-11-28  Sonja Scholz  <ss@cabag.ch>
+
+	* Fixed bug: #11116: Add some CSS classes for detailView
+
+2010-11-22  Oliver Hader  <oliver@tpyo3.org>
+
+	* Cleanup: Fixed PHPdoc comments
+	* Fixed bug #11033: DB error in query after publish to Live action
+
+2010-11-17  Tolleiv Nietsch  <info@tolleiv.de>
+
+	* Fixed bug: #10916 workspace preview module raises error in conjunction with the newest extbase version
+
+2010-11-17  Oliver Hader  <oliver@tpyo3.org>
+
+	* Raised version to 4.5.0beta1a
+
+2010-11-17  Tolleiv Nietsch  <info@tolleiv.de>
+
+	* Fixed bug: #10896 php-warnings after merge into Core - missing argument
+	* Fixed bug: #10895 php-warnings after merge into Core - array_merge on non-array
+
+2010-11-17  Steffen Ritter  <info@rs-websystems.de>
+
+	* Fixed bug #10894: Workspaces Extbase Controller has to be adapted according to breaking changes in Extbase 1.3.beta1
+
+2010-11-17  Oliver Hader  <oliver@tpyo3.org>
+
+	* Cleanup: Fixed ext_emconf.php
+	* Raised version to 4.5.0beta1
+
+2010-11-16  Tolleiv Nietsch  <info@tolleiv.de>
+
+	* Fixed bug: #10778 Consider http://bugs.typo3.org/view.php?id=9508 when implementing preview link in new module
+	* Fixed bug: #10819 viewOnClick causes error if frontendpreview is disabled
+	* Fixed issue: #10817 DAU WS-Module warning
+
+2010-11-12  Oliver Hader  <oliver@tpyo3.org>
+
+	* Fixed bug: Typing error and superfluous labels in locallang file
+	* Fixed bug: Missing fields in SQL definition reviewers, stagechg_notification
+	* Cleanup: Defined svn:eol-style property
+	* Cleanup: Fixed formatting and configuration in the ExtJS part (thanks to Steffen Kamper)
+	* Cleanup: Added language label for swap workspace column (thanks to Steffen Kamper)
+	* Cleanup: Defined fixed width of ExtJS components (thanks to Steffen Kamper)
+	* Cleanup: Remover superfluous quotes (thanks to Steffen Kamper)
+	* Cleanup: Fixed undefined variables and added PHPdoc comments
+
+2010-11-11  Oliver Hader  <oliver@tpyo3.org>
+
+	* Cleanup: Added PHPdoc comments and some formatting changes
+	* Cleanup: Fixed formatting issues
+	* Cleanup: Fixed copyright notices
+	* Cleanup: Fixed ext_emconf.php
+
+2010-11-11  Workspaces Team  http://forge.typo3.org/projects/show/typo3v4-workspaces
+
+	* Imported workspaces system extension from GitHub repository after commit f1cd6371d96faa8a8d35

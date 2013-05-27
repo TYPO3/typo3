@@ -1,0 +1,35 @@
+<!-- ###FULLDOC### begin -->
+<div class="typo3-fullDoc">
+	<div id="typo3-docheader">
+		<div class="typo3-docheader-functions">
+			<div class="left"></div>
+			<div class="right">
+				<f:be.pagePath /><f:be.pageInfo />
+			</div>
+		</div>
+		<div class="typo3-docheader-buttons">
+			<div class="left">
+				<f:if condition="{showPreviewLink}">
+					<a href="#" onclick="TYPO3.Workspaces.Actions.generateWorkspacePreviewLink();return false;" title="{f:translate(key:'tooltip.generatePagePreview')}" id="goPreviewLinkButton">
+						<span class="t3-icon t3-icon-extensions t3-icon-extensions-workspaces t3-icon-workspaces-generatepreviewlink">&nbsp;</span>
+						<f:translate key="label_doaction_generatePreviewLink">Generate Workspace Preview Link</f:translate>
+					</a>
+				</f:if>
+			</div>
+			<div class="right">
+				<f:be.buttons.shortcut />
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="typo3-docbody">
+	<div id="typo3-inner-docbody">
+
+		<f:flashMessages renderMode="div" />
+
+		<f:render partial="navigation" arguments="{workspaceList: workspaceList, activeWorkspaceUid: activeWorkspaceUid, showAllWorkspaceTab:showAllWorkspaceTab}" />
+		<div class="typo3-dyntabmenu-divs"><f:render section="main" /></div>
+		<f:if condition="{showLegend}"><f:render partial="legend" /></f:if>
+	</div>
+</div>

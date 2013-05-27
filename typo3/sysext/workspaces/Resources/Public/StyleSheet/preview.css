@@ -1,0 +1,381 @@
+/**
+ * Top bar
+ */
+
+/**
+ * Tabs
+ */
+
+/* panel containing the tabs */
+.x-tab-panel-header {
+	background-color: #3f3f3f;
+	background-image: url('../../../../../../typo3/sysext/t3skin/extjs/images/backgrounds/topbar.png');
+	background-image: -moz-linear-gradient(center top, #494949 0%, #373737 91%, #343434 92%, #2A2A2A 100%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #494949), color-stop(0.91, #373737), color-stop(0.92, #343434), color-stop(1, #2a2a2a));
+	background-repeat: repeat-x;
+	border: none;
+	padding-bottom: 0;
+	padding-top: 9px;
+}
+
+.x-tab-strip-wrap {
+	background: url('../Images/typo3-logo.png') no-repeat 16px 0;
+	padding-left: 140px;
+}
+
+/* normal tab */
+ul.x-tab-strip li {
+	margin-left: 4px;
+}
+
+ul.x-tab-strip-top {
+	border-bottom: 0;
+}
+
+/* reset ExtJS "no skin" nonsense */
+.x-tab-strip-top .x-tab-right,
+.x-tab-strip-top .x-tab-strip-over .x-tab-right {
+	background-position: 0 0;
+}
+
+/* we don't need the active tab to be 1px below the inactive */
+.x-tab-strip-top .x-tab-strip-active .x-tab-right {
+	margin-bottom: 0;
+}
+
+.x-tab-strip span.x-tab-strip-text,
+.x-tab-strip-top .x-tab-strip-active .x-tab-right span.x-tab-strip-text {
+	padding-bottom: 4px;
+}
+
+/* normal tab styling */
+.x-tab-strip .x-tab-right {
+	background-color: #707171;
+	background-image: -moz-linear-gradient(center top, #707171 0%, #474747 85%, #363636 100%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #707171), color-stop(0.85, #474747), color-stop(1, #363636));
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#707171', EndColorStr='#474747'); /* IE6, IE7 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#707171', EndColorStr='#474747')"; /* IE8 */
+	-moz-border-radius-topleft: 3px;
+	-moz-border-radius-topright: 3px;
+	-webkit-border-top-left-radius: 3px;
+	-webkit-border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+
+}
+
+/* container surrounding text */
+.x-tab-strip-inner {
+	padding: 4px;
+}
+
+/* hover tab */
+.x-tab-strip-over .x-tab-right {
+	background-color: #707171;
+	background-image: -moz-linear-gradient(center top, #888888 0%, #474747 85%, #363636 100%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #888888), color-stop(0.85, #474747), color-stop(1, #363636));
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#888888', EndColorStr='#474747'); /* IE6, IE7 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#888888', EndColorStr='#474747')"; /* IE8 */
+}
+
+/* active tab */
+.x-tab-strip-active .x-tab-right {
+	background-color: #989898;
+	background-image: -moz-linear-gradient(center top, #989898 0%, #6c6c6c 85%, #474747 100%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #989898), color-stop(0.85, #6c6c6c), color-stop(1, #474747));
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#989898', EndColorStr='#6c6c6c'); /* IE6, IE7 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#989898', EndColorStr='#6c6c6c')"; /* IE8 */
+}
+
+/* tab label */
+.x-tab-strip span.x-tab-strip-text {
+	color: #ffffff;
+}
+
+/* text in tabs should not be italic.. why should it be? */
+.x-tab-strip em {
+	font-style: normal;
+}
+
+/**
+ * Slider
+ */
+#controls {
+	padding-top: 5px;
+}
+#slider {
+	padding-top: 5px;
+}
+
+/* remove default ExtJS border */
+.x-panel-body {
+	border: none;
+}
+
+.x-slider-horz .x-slider-thumb {
+	background-image: url('../Images/slider-thumb.png');
+	height: 21px;
+	padding: 0 2px;
+	top: 0;
+	width: 7px;
+}
+
+.x-slider-horz .x-slider-thumb-over, .x-slider-horz .x-slider-thumb-drag {
+	background-position: -7px -21px;
+}
+
+.x-slider-horz .x-slider-inner {
+	background-image: url('../Images/slider-bg.png');
+}
+
+#visual-mode-selector {
+	list-style: none;
+	background-color: #f9f9f9;
+	border: 1px solid #abb2bc;
+	border-top: none;
+}
+
+#visual-mode-selector td {
+	text-align: left;
+}
+
+#visual-mode-selector td button {
+	font-size: 11px;
+	line-height: 12px;
+	text-decoration: none;
+}
+
+#visual-mode-options {
+	display: block;
+	height: 20px;
+	margin: 0px 0 0 10px;
+}
+#visual-mode-options.x-btn-menu-active {
+	background-color: #f9f9f9;
+	border: 1px solid #abb2bc;
+	border-bottom: none;
+}
+#visual-mode-options .x-btn-arrow {
+	padding-right: 2px;
+}
+
+#visual-mode-options .x-btn-text {
+	font-size: 11px;
+}
+#visual-mode-options.x-btn-menu-active .x-btn-text {
+	color: black;
+}
+
+#visual-mode-toolbar {
+	border:none;
+}
+
+/**
+ * Preview panel
+ */
+.x-panel-body-noheader {
+	border-top: 0;
+}
+
+.x-tip {
+	background-color: #ffffc7;
+	border: 1px solid #cccccc;
+	-moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	-ms-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* the mask for dialogs */
+.ext-el-mask {
+	background-color: #000000;
+	-moz-opacity: 0.75;
+	opacity: 0.75;
+	filter:alpha(opacity=75);
+}
+
+.x-mask-loading {
+	border: none;
+}
+
+.x-mask-loading div {
+	background-image: url("../../../../t3skin/images/spinner/big-f0f0f0.gif");
+	background-position: top center;
+	border: none;
+	color: #828282;
+	padding-top: 40px;
+}
+
+.x-window-tc {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/window/top-bottom.png);
+}
+.x-window-tl {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/window/left-corners.png);
+}
+.x-window-tr {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/window/right-corners.png);
+}
+.x-window-bc {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/window/top-bottom.png);
+}
+.x-window-bl {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/window/left-corners.png);
+}
+.x-window-br {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/window/right-corners.png);
+}
+
+.x-window-ml {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/window/left-right.png);
+}
+.x-window-mr {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/window/left-right.png);
+}
+
+.x-window-mc {
+	border:1px solid #A2AAB8;
+	background:#e8e8e8;
+}
+
+.x-window-tl .x-window-header {
+    color: #FFFFFF;
+    font: bold 10px verdana,arial,tahoma,verdana,sans-serif;
+    padding: 4px 0;
+}
+.x-window-draggable, .x-window-draggable .x-window-header-text {
+    cursor: move;
+}
+
+.x-window-tl .x-window-header {
+	color:#fff;
+	font:bold 10px verdana, arial,tahoma,verdana,sans-serif;
+	padding:4px 0 4px 0;
+}
+
+.x-window-mc {
+	border-color:#A2AAB8;
+	font: normal 10px verdana, arial,tahoma,helvetica,sans-serif;
+	background-color:#e7e7e7;
+}
+
+.x-window-maximized .x-window-tc {
+	background-color:#fff;
+}
+
+.x-window-bbar .x-toolbar {
+	border-top-color:#A2AAB8;
+}
+
+.x-form-text, textarea.x-form-field {
+    background-color: #FFFFFF;
+    background-image: none;
+    border-color: #B5B8C8;
+}
+
+.x-btn {
+	color: #FFF;
+}
+.t3-icon-system-options-view {
+	float: right;
+}
+#feToolbarButtonNextStage.x-btn, #feToolbarButtonPreviousStage.x-btn, #feToolbarButtonDiscardStage.x-btn {
+	background-image: url('../Images/button_approve.png');
+	background-repeat: repeat-x;
+	border: 1px solid #7c7c7c;
+	-moz-border-radius: 1px;
+	-webkit-border-radius: 1px;
+	border-radius: 1px;
+	height: 13px;
+	line-height: 8px;
+	margin-right: 10px;
+	font-size: 13px;
+	margin-top:0px;
+}
+#feToolbarButtonNextStage.x-btn .x-btn-text, #feToolbarButtonPreviousStage.x-btn .x-btn-text, #feToolbarButtonDiscardStage.x-btn .x-btn-text {
+	color: #FFF;
+	font-size: 11px;
+	line-height: 8px;
+	height: 13px;
+	padding: 0 3px 0 3px;
+}
+#feToolbarButtonPreviousStage.x-btn .x-btn-text {
+	color:#7c7c7c;
+}
+#feToolbarButtonPreviousStage.x-btn {
+	background-image: url('../Images/button_reject.png');
+}
+#feToolbarButtonDiscardStage.x-btn {
+	background-image: url('../Images/button_discard.png');
+}
+#sendToStageWindow .x-btn {
+	background-color: #d5d5d5;
+	background-image: url('../../../../../../typo3/sysext/t3skin/extjs/images/backgrounds/button.png');
+	background-repeat: repeat-x;
+	background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #d5d5d5));
+	background-image: linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
+	border: 1px solid #7c7c7c;
+	-moz-border-radius: 1px;
+	-webkit-border-radius: 1px;
+	border-radius: 1px;
+	color: #434343;
+}
+#sendToStageWindow .x-btn-pressed,
+#sendToStageWindow .x-btn-over,
+#sendToStageWindow .x-btn-icon.x-btn-over {
+	background-color: #bdbcbc;
+	background-image: url('../../../../../../typo3/sysext/t3skin/extjs/images/backgrounds/button-hover.png');
+	background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #bdbcbc 90%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #bdbcbc));
+	background-image: linear-gradient(center top, #f6f6f6 10%, #bdbcbc 90%);
+	border-color: #737f91;
+	color: #1e1e1e;
+}
+
+#sendToStageWindow .x-btn-over .x-btn-mc em.x-btn-split,
+#sendToStageWindow .x-btn-click .x-btn-mc em.x-btn-split,
+#sendToStageWindow .x-btn-menu-active .x-btn-mc em.x-btn-split,
+#sendToStageWindow .x-btn-pressed .x-btn-mc em.x-btn-split {
+	background-image:url(../../../../../../typo3/sysext/t3skin/extjs/images/button/s-arrow-o.gif);
+}
+
+.x-tool {
+    background-image: url("../../../../../../typo3/sysext/t3skin/extjs/images/panel/tool-sprites.gif");
+}
+
+.x-tool-close {
+    background-position: 0 0;
+}
+.x-tool-close-over {
+    background-position: -15px 0;
+}
+
+/* text */
+.x-btn.sliderButton .x-btn-text {
+    color: #A0A0A0;
+    font-style: normal;
+}
+
+/* alignment of text in Button "Live" */
+#sizeSliderButtonLive .x-btn-mc {
+	text-align: right;
+}
+
+/* alignment of text in Button "Workspace" */
+#sizeSliderButtonWorkspace .x-btn-mc {
+	text-align: left;
+}
+.x-panel-header {
+	border: none;
+	font-weight: bold;
+	padding-left:0px;
+}
+
+.x-window-dlg .x-btn {
+     background-color: #D5D5D5;
+     background-image: -moz-linear-gradient(center top , #F6F6F6 10%, #D5D5D5 90%);
+     background-repeat: repeat-x;
+     border-radius: 1px 1px 1px 1px;
+     border: 1px solid #7C7C7C;
+     color: #434343;
+}
