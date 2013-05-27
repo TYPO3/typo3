@@ -1,0 +1,13 @@
+Index: ext_tables.sql
+===================================================================
+--- ext_tables.sql	(revision 6890)
++++ ext_tables.sql	(working copy)
+@@ -107,7 +107,7 @@
+ CREATE TABLE index_stat_search (
+   uid int(11) NOT NULL auto_increment,
+   searchstring varchar(255) DEFAULT '' NOT NULL,
+-  searchoptions blob,
++  searchoptions varchar(4000),
+   tstamp int(11) DEFAULT '0' NOT NULL,
+   feuser_id int(11) unsigned DEFAULT '0' NOT NULL,
+   cookie varchar(10) DEFAULT '' NOT NULL,
