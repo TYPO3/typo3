@@ -1,0 +1,6 @@
+  # cat=basic; type=boolean; label=Enable MySQL pass-through: Method $GLOBALS['TYPO3_DB']->sql_query() is only experimentally supported by DBAL. Its use should be avoided. When active, this flag tells DBAL to not try to parse the query and always send it as-this to MySQL, thus as if DBAL were not loaded.
+sql_query.passthrough=1
+
+  # cat=basic; type=user[EXT:dbal/Classes/ExtensionManager/MessageDisplay.php:TYPO3\CMS\Dbal\ExtensionManager\MessageDisplay->displayMessage];
+Compatibility=
+

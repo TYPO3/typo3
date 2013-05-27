@@ -1,0 +1,66 @@
+Index: ext_tables.sql
+===================================================================
+--- ext_tables.sql	(revision 29851)
++++ ext_tables.sql	(working copy)
+@@ -7,7 +7,7 @@
+ 	language_id int(11) DEFAULT '0' NOT NULL,
+ 	rootpage_id int(11) DEFAULT '0' NOT NULL,
+ 	mpvar tinytext NOT NULL,
+-	pagepath text NOT NULL,
++	pagepath varchar(4000) NOT NULL,
+ 	expire int(11) DEFAULT '0' NOT NULL,
+ 
+ 	PRIMARY KEY (cache_id),
+@@ -41,7 +41,7 @@
+ CREATE TABLE tx_realurl_chashcache (
+ 	spurl_hash char(32) DEFAULT '' NOT NULL,
+ 	chash_string varchar(32) DEFAULT '' NOT NULL,
+-	spurl_string text,
++	spurl_string varchar(4000),
+ 
+ 	PRIMARY KEY (spurl_hash),
+ 	KEY chash_string (chash_string)
+@@ -55,7 +55,7 @@
+ CREATE TABLE tx_realurl_urldecodecache (
+ 	url_hash char(32) DEFAULT '' NOT NULL,
+ 	spurl tinytext NOT NULL,
+-	content blob NOT NULL,
++	content varchar(4000) NOT NULL,
+ 	page_id int(11) DEFAULT '0' NOT NULL,
+ 	rootpage_id int(11) DEFAULT '0' NOT NULL,
+ 	tstamp int(11) DEFAULT '0' NOT NULL,
+@@ -73,7 +73,7 @@
+ 	url_hash char(32) DEFAULT '' NOT NULL,
+ 	origparams tinytext NOT NULL,
+ 	internalExtras tinytext NOT NULL,
+-	content text NOT NULL,
++	content varchar(4000) NOT NULL,
+ 	page_id int(11) DEFAULT '0' NOT NULL,
+ 	tstamp int(11) DEFAULT '0' NOT NULL,
+ 
+@@ -83,9 +83,9 @@
+ 
+ CREATE TABLE tx_realurl_errorlog (
+ 	url_hash int(11) DEFAULT '0' NOT NULL,
+-	url text NOT NULL,
+-	error text NOT NULL,
+-	last_referer text NOT NULL,
++	url varchar(4000) NOT NULL,
++	error varchar(4000) NOT NULL,
++	last_referer varchar(4000) NOT NULL,
+ 	counter int(11) DEFAULT '0' NOT NULL,
+ 	cr_date int(11) DEFAULT '0' NOT NULL,
+ 	tstamp int(11) DEFAULT '0' NOT NULL,
+@@ -97,9 +97,9 @@
+ 
+ CREATE TABLE tx_realurl_redirects (
+ 	url_hash int(11) DEFAULT '0' NOT NULL,
+-	url text NOT NULL,
+-	destination text NOT NULL,
+-	last_referer text NOT NULL,
++	url varchar(4000) NOT NULL,
++	destination varchar(4000) NOT NULL,
++	last_referer varchar(4000) NOT NULL,
+ 	counter int(11) DEFAULT '0' NOT NULL,
+ 	tstamp int(11) DEFAULT '0' NOT NULL,
+ 	has_moved int(11) DEFAULT '0' NOT NULL,
