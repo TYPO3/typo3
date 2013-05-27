@@ -1,0 +1,47 @@
+<script type="text/javascript">
+
+		// @todo redirect to split module if this is opened standalone
+
+		// having this is very important, otherwise the parent.resize call will fail
+	document.domain = '{backendDomain}';
+
+	var asNumber = function(val) {
+		return isNaN(val) ? 0 : parseInt(val, 10);
+	};
+	var TYPO3 = TYPO3 || {};
+	TYPO3.ready = function () {
+		// make sure we're in the workspace preview module
+		if (typeof parent.resize == 'function') {
+				// try to find the height of the document
+			var docHeight = Math.max(
+				asNumber(window.innerHeight),
+				asNumber(document.height),
+				asNumber(document.body.scrollHeight),
+				asNumber(document.body.offsetHeight),
+				asNumber(document.body.clientHeight),
+				asNumber(document.documentElement.scrollHeight),
+				asNumber(document.documentElement.offsetHeight),
+				asNumber(document.documentElement.clientHeight)
+			);
+			parent.resize(docHeight);
+				// remove the ugly red box if we're in the ws-repview frames
+			var element = document.getElementById('typo3-previewInfo');
+			if (element) {
+				element.parentNode.removeChild(element);
+			}
+		}
+	};
+		// trigger this after content is loaded, inspired by jQuery
+	if (document.addEventListener && !/opera/.test(navigator.userAgent.toLowerCase())) {
+		document.addEventListener("DOMContentLoaded", TYPO3.ready, false);
+	} else {
+		(function() {
+			if (document.readyState != "loaded" && document.readyState != "complete") {
+				setTimeout(arguments.callee, 10);
+			} else {
+				TYPO3.ready();
+			}
+		})();
+	}
+
+</script>
