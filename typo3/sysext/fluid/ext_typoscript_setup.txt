@@ -1,0 +1,23 @@
+fluidAjaxWidgetResponse = PAGE
+fluidAjaxWidgetResponse {
+	 # todo: make page type configurable
+	typeNum = 7076
+	headerData >
+	config {
+		no_cache=1
+		disableAllHeaderCode = 1
+		additionalHeaders = Content-type:text/plain
+	}
+	10 = USER_INT
+	10 {
+		userFunc = tx_fluid_core_widget_bootstrap->run
+	}
+}
+
+config.tx_extbase {
+	mvc {
+		requestHandlers {
+			TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler = TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler
+		}
+	}
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2012-03-30T23:43:57Z" product-name="fluid">
+		<header/>
+		<body>
+			<trans-unit id="widget.pagination.previous">
+				<source>previous</source>
+			</trans-unit>
+			<trans-unit id="widget.pagination.next">
+				<source>next</source>
+			</trans-unit>
+			<trans-unit id="widget.pagination.first">
+				<source>first</source>
+			</trans-unit>
+			<trans-unit id="widget.pagination.last">
+				<source>last</source>
+			</trans-unit>
+			<trans-unit id="widget.pagination.records">
+				<source>Records</source>
+			</trans-unit>
+			<trans-unit id="widget.pagination.page">
+				<source>Page</source>
+			</trans-unit>
+			<trans-unit id="widget.pagination.refresh">
+				<source>Refresh</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
