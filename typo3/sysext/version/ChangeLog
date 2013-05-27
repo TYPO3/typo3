@@ -1,0 +1,87 @@
+2011-02-20  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #13096: class tx_version_tcemain_CommandMap contains calls to protected methods from tx_version_tcemain (Thanks to Andreas Kiessling)
+	* Fixed bug #13094: Cannot push IRRE records to next stage (Thanks to Andreas Kiessling)
+	* Fixed bug #13097: tx_version_tcemain->processCmdmap - &$commandIsProcessed is not set to TRUE (Thanks to Andreas Kiessling)
+
+2011-02-17  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Fixed bug #12615: Dependencies in sysext 'version' and 'workspaces'
+
+2011-01-26  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Reapplied #17284: Formprotection persistToken method is called too often, causing unnecessary DB-load - included in 4.5.0 (Thanks to Helmut Hummel / Ernesto Baschny)
+	* Raised version to 4.5.0
+
+2011-01-25  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Raised version to 4.5.0rc2
+
+2011-01-24  Susanne Moog <typo3@susanne-moog.de>
+
+	* Fixed bug #12505: Fatal Error: Call to undefined method t3lib_TCEmain::rawCopyPageContent()
+
+2011-01-21  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Raised version to 4.5.0rc1
+
+2011-01-20  Tolleiv Nietsch <typo3@tolleiv.de>
+
+	* Fixed bug #12386: "Publish only content in publish stage" doesn't work anymore
+
+2011-01-20  Susanne Moog <typo3@susanne-moog.de>
+
+	* Fixed bug #12397: CSRF protection for clickmenu and old workspace module (Thanks to Helmut Hummel)
+
+2011-01-12  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Follow-up to bug #11832: Label of the anchor is empty
+	* Raised version to 4.5.0beta4
+
+2011-01-09  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #11832: Versioning - t3lib_extMgm::createListViewLink() function no longer available (Thanks to Mark Johnston)
+	* Fixed bug #16786: Generating preview link not working since Update to 4.4.5
+
+2011-01-06  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug #11926: Language file Resources/Private/Language/emails.xml can not be translated (Thanks to Christopher).
+
+2011-01-01  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Fixed bug #11833: Sorting order of IRRE records is wrong after publishing
+
+2010-12-28  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Cleanup: Fixed PHPdoc comments, type hints and XCLASS blocks
+	* Cleanup: Renamed command map class file to start with proper extension prefix
+
+2010-12-22  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug:#11606 Remove "Send to review / pub" from contextmenu
+
+2010-12-21  Sonja Scholz  <ss@cabag.ch>
+
+	* Fixed bug #11633: Versioning module should not be available when workspaces is loaded
+
+2010-12-05  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #11290: PHP notices from XCLASS inclusions
+
+2010-12-01  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Fixed ext_emconf.php
+	* Raised version to 4.5.0beta2a
+
+2010-12-01  Tolleiv Nietsch  <typo3@tolleiv.de>
+
+	* Fixed bug: #11209: BACK_PATH is not handled right in class.tx_version_gui.php
+
+2010-12-01  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Fixed ext_emconf.php
+	* Raised version to 4.5.0beta2
+
+2010-11-28  Sonja Scholz  <ss@cabag.ch>
+
+	* Fixed bug #5923: Notify per email if groups are selected instead of single users
