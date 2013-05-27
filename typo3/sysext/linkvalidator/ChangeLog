@@ -1,0 +1,344 @@
+2011-10-23 TYPO3 4.6 (linkvalidator 1.5.0)
+
+22feb54    [BUGFIX] Pootle: Multi-line labels are not rendered (Xavier Perseguers)
+b4393ad    [TASK] Fix version number of 4.6 branch (Philipp Gampe)
+a195d11    [TASK] English XLIFF files should not contain target element (Dominique Feyer)
+3b062e3    [TASK] Prepare merge for 4.6-RC1 (part 2)  05/5705/2 4.6RC1 (Philipp Gampe)
+
+2011-10-11 TYPO3 4.6-RC1 (linkvalidator 1.5.0-rc1)
+
+27e93d6    Merge "[BUGFIX] Invalid target language in localization file" (Philipp Gampe)
+ba0178b    [BUGFIX] Invalid target language in localization file (Xavier Perseguers)
+36f1b21    [BUGFIX][SECURITY] SQL Injection in Scheduler Task of Linkvalidator (Oliver Hader)
+9636b77    [TASK] Merge Changes from core since last sync (Philipp Gampe)
+709531e    [TASK] Prepare merge for 4.6-RC1 (Philipp Gampe)
+5607748    Merge "[BUGFIX] SQL error if a task is run on a disabled page" (Philipp Gampe)
+e2bb756    [TASK] Update manual (Philipp Gampe)
+79b4741    [BUGFIX] SQL error if a task is run on a disabled page (Philipp Gampe)
+6856163    Merge "[BUGFIX] It is not possible to set page 0 to schedular task" (Philipp Gampe)
+28a38da    Merge "[BUGFIX] SQL error if opening a disabled page with module" (Philipp Gampe)
+0fece3f    [BUGFIX] It is not possible to set page 0 to schedular task (Philipp Gampe)
+df464d4    [BUGFIX] Revert change in interface signature (Philipp Gampe)
+4335331    [BUGFIX] SQL error if opening a disabled page with module (Philipp Gampe)
+c12d8f5    [TASK] Fix CGL issues (Philipp Gampe)
+74a9c14    [BUGFIX] Initialize $currentR in analyseTypoLinks (Bjoern Pedersen)
+e5d6b19    [TASK] Bump version number (Christopher)
+0c69001    [TASK] Release linkvalidator 1.0.4 (Philipp Gampe)
+defb32e    [TASK] Fix phpdoc and method signatures (Philipp Gampe)
+2f1f5e0    [BUGFIX] Fatal error with E_STRICT: Declarations of fetchType and checkLink must be compatible with interface
+64769ad    [BUGFIX] XLIFF: Approved attribute is on wrong element (Christopher)
+11b6535    [TASK] Unify table layouts (Christopher)
+fb76d81    [TASK] Update ChangeLog (Christopher)
+5096f76    [TASK] Refactor to t3lib_http_Request for external URLs (Philipp Gampe)
+ad08acf    [TASK] Add XLIFF files (Philipp Gampe)
+267122e    [TASK] Fix localization handling to support XLIFF (Christopher)
+2a9f3ff    [TASK] Merge changes from 4.5 upstream to master (Philipp Gampe)
+6b026f3    [BUGFIX] Correct initialisation of BACK_PATH (Stefan Neufeind)
+79e5177    [TASK] Add .gitignore file. (Christopher)
+
+
+Since linkvalidator switched to git, you can always get the full changelog via:
+http://git.typo3.org/TYPO3v4/Extensions/linkvalidator.git
+
+For you convenience the git log is included above.
+
+
+
+2011-10-05  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* [TASK] Fix CGL issues
+
+2011-08-30  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* [TASK] Release linkvalidator 1.0.4
+
+2011-08-26  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* [BUGFIX] Fatal error with E_STRICT: Declaration of fetchType must be compatible with interface
+	* [TASK] Fix phpdoc and method signatures
+
+2011-08-26  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* [BUGFIX] XLIFF: Approved attribute is on wrong element
+
+2011-08-19  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* [TASK] Unify table layouts
+
+2011-08-11  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* [TASK] Refactor to t3lib_http_Request for external URLs
+
+2011-08-10  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* [TASK] Add XLIFF files
+
+2011-07-17  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* [TASK] Fix localization handling to support XLIFF
+
+2011-07-17  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* [TASK] Merge changes from 4.5 upstream to master
+
+2011-07-17  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* [BUGFIX] Correct initialisation of BACK_PATH
+
+2011-07-15  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* [TASK] Add .gitignore file
+
+2011-05-22  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* Task: Fix whitespace issues in all branches
+	* Task: Update Version Number to 1.0.3
+	* Release linkvalidator 1.0.3
+
+2011-05-21  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* Feature #13800: Add user-agent header
+	* Fixed Bug #13680: Refactor external link, do not follow senseless loop, add user agent (thanks to Daniel Minder)
+
+2011-05-18  Philipp Gampe  <forge.typo3.org@philippgampe.info>
+
+	* Fixed bug #13828: checkhidden has no effect for some configurations (Michael Miousse)
+	* Fixed bug #26731: The info module does not show up in IE 7 and 8 (Michael Miousse)
+	* Fixed bug #13368: Content of Tab is not scrollable (Michael Miousse)
+
+2011-04-26  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #13757: Scheduler task does not work at all
+
+2011-04-21  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #13953: Third-party classes cannot be checked due to dynamicConfigFile in TCA (thanks to Jan Philipp Timme)
+
+2011-02-24  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #13340: Regression in TYPO3 4.5.1: pid and uid database fields are always 0
+
+2011-02-24  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #13318: Regression in linkvalidator
+
+2011-02-22  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #12649: Split up analyzeRecord()
+	* Cleaned emconf for the release of TYPO3 4.5.1
+	* Release linkvalidator 1.0.1
+
+2011-02-15  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #12652: If none of the link types are marked to be checked, all of them are checked
+	* Fixed bug #12650: tx_linkvalidator_tasks_validator: exec() is too long
+	* Fixed bug #12454: Use setting "defaultMailFromName" and "defaultMailFromAddress"
+
+2011-02-06  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #12517: Replace exec_SELECTgetRows with exec_SELECTgetSingleRow whenever a single record is expected (thanks to Jo Hasenau)
+	* Fixed bug #12549: Unify capitalization of language labels
+
+2011-01-26  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #12526: Manual needs new screenshots and text since we now use 2 tabs in the module (thanks to Patrick Gaumond)
+	* Cleaned emconf for the release of TYPO3 4.5
+	* Release linkvalidator 1.0.0
+
+2011-01-25  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Added Feature #12447: Clearly separate Checks from Report in the module (thanks to Patrick Gaumond, Philipp Gampe, Steffen Kamper and Christopher Stelmaszyk)
+
+2011-01-21  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Merged changes from mantis-#17176: Remove unnecessary comments and color profiles from all shipped .png / .gif files (Thanks to Steffen Gebert)
+
+2011-01-20  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #12432: Selected page metas are not processed
+	* Fixed bug #12431: Do not put labels into members
+	* Fixed bug #12429: Do not use private accessors
+	* Fixed bug #12428: Adapt Variable Names to naming conventions
+	* Fixed bug #12427: Rename draw*() methods to render*()
+	* Fixed bug #12426: Rename classes according to naming conventions
+	* Fixed bug #12425: Give modfunc1 a better name
+	* Fixed bug #12424: Only use the class name for the hook
+	* Fixed bug #12416: tx_linkvalidator_tasks_Validate: Missing public / protected declarations
+	* Fixed bug #12226: website that has multiple domainsrecords produces funny links
+	* Fixed bug #12414: OOP principle of data encapsulation violated in tx_linkvalidator_tasks_Validate
+	* Fixed bug #12385: Conflict scheduler:testtask with linkvalidator::task
+	* Fixed bug #12411: Fix Copyright Notices
+
+2011-01-20  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #12360: Show error message, if the module is not accessible for the current user
+	* Fixed bug #12412: XSS issue in tx_linkvalidator_tasks_ValidateAdditionalFieldProvider
+	* Fixed bug #12419: Use American English for "analyseRecord"
+	* Fixed bug #12420: Indentation in modfunc1, getTemplateMarkers()
+	* Fixed bug #12421: Rename tx_linkvalidator_links to tx_linkvalidator_link
+	* Fixed bug #12423: ext_tables.sql: Use underscores to separate words in field names
+	* Fixed bug #12422: ext_tables.sql: Do not use abbreviations for field names
+
+2011-01-19  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Added Feature #12340: Enhance the tx_linkvalidator_linkTypes_Interface (thanks to Ernesto Baschny and Christopher Stelmaszyk)
+	* Added Feature #12344: Migrate to t3lib_htmlmail to SwiftMailer (thanks to Ernesto Baschny and Christopher Stelmaszyk)
+	* Fixed bug #12377: Other link types than supported use the same type than the last found
+
+2011-01-18  Oliver Hader  <oliver.hader@typo3.org>
+
+	* Cleanup: Fixed PHPdoc comments and type hints in module, processing and abstract linktype class
+
+2011-01-17  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #10989: Anchors in internal links are incorrectly treated as pages (thanks to Michael Miousse)
+
+2011-01-17  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #12226: Website that has multiple domainsrecords produces funny links
+
+2011-01-15  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #12243: Information on storage location of broken links is wrong in text
+	* Fixed bug #12232: Redirects to https get reported as 404 (thanks to Andreas Lappe)
+	* Fixed bug #12235: Reporting errors does not work with cURL (thanks to Andreas Lappe)
+
+2011-01-08  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #12019: Do not display the format of the date of the last check
+	* Fixed bug #12026: Combine columns Type, Headline and Field
+	* Fixed bug #12022: Add CSH labels for the labels of the Scheduler job
+	* Fixed bug #12024: Remove cellspacing (thanks to Steffen Gebert)
+	* Fixed bug #12025: Add link to scheduler
+
+2011-01-07  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Followup to bug #11269: Proofread the manual
+	* Followup to bug #11822: Add extension description in ext_emconf.php
+	* Fixed bug #12008: Row "Title" should be called "Headline"
+	* Fixed bug #12009: Display a nice text, if an element does not have a headline
+
+2011-01-07  Pierre Boivin  <pierre.boivin@infoglobe.ca>
+
+	* Followup to bug #11794: If website root is active, searching for links does not work
+
+2011-01-06  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Followup to bug #11836: Make use of Flash Messages
+	* Fixed bug #11888: Button "Check Links" only checks those categories of links which are marked with the checkboxes below
+	* Fixed bug #11269: Proofread the manual
+
+2011-01-05  Pierre Boivin  <pierre.boivin@infoglobe.ca>
+
+	* Fixed bug #11794: If website root is active, searching for links does not work
+
+2011-01-05  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #11797: linkvalidator saves translated texts in the database which is not good (thanks to Michael Miousse and Philipp Gampe)
+	* Fixed bug #11802: Field linktitle often stays empty (thanks to Philipp Gampe)
+	* Followup to bug #11776: URL/Linktarget for files is broken
+
+2011-01-04  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #11889: Clean up CSS
+
+2011-01-03  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #11866: When the edit pencil next to a link is clicked, you end up at tree root with search_levels=0 after saving
+	* Followup to bug #10907: Invalid external url not detected (thanks to Philipp Gampe)
+
+2011-01-02  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #11821: Do not use abbreviations in code
+	* Fixed bug #11777: Add CSH to table headers
+	* Fixed bug #11848: Use labels for the table fields containing the broken links
+
+2011-01-01  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #11822: Add extension description in ext_emconf.php
+	* Fixed bug #11820: Remove comments "End of function xy"
+	* Fixed bug #11817: Use new documentation template for the manual
+	* Fixed bug #11269: Proofread the manual
+	* Fixed bug #11799: Improve usability of the linkvalidator interface
+	* Fixed bug #11834: Do not show the table with the list of broken links, if there are no broken links
+	* Fixed bug #11836: Make use of Flash Messages
+	* Fixed bug #11819: Prevent PHP notices by fixing XClass inclusion code
+	* Fixed bug #11823: Add @package and @subpackage to comment blocks
+
+2010-12-31  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #11776: URL/Linktarget for files is broken
+	* Fixed bug #11800: Checkboxes showing the number of broken links do not display the value "zero"
+	* Fixed bug #11803: Fix locallang files
+	* Fixed bug #11801: Variable in the message "Page '' does not exist." will never be filled
+	* Fixed bug #11798: Table displaying the number of broken links must be styled
+	* Fixed bug #11813: Give the User Interface a clear structure
+	* Fixed bug #11811: Label tags in Statistics table do not work
+	* Fixed bug #11812: Changing a checkbox from the statistics table resets the depth chosen for pages to check
+	* Fixed bug #11814: Fix indentation in HTML templates, CSS files and SQL file
+
+2010-12-30  Christopher Stelmaszyk  <chrissitopher@gmx.de>
+
+	* Fixed bug #11779: Unify usage of tooltips in table rows
+	* Fixed bug #11775: Table should use new design for TYPO3 4.5
+	* Fixed bug #11796: Improve usage of $GLOBALS['LANG']
+
+2010-12-28  Pierre Boivin  <pierre.boivin@infoglobe.ca>
+
+	* Fixed bug #11715: Use localized format for date and time
+
+2010-12-06  Pierre Boivin  <pierre.boivin@infoglobe.ca>
+
+	* Fixed bug #11277: Initialize and other methods in modfunc1 could be protected
+	* Fixed bug #11278: Create an interface for the linktype classes
+	* Fixed bug #10589: HTTP errors might not be detected (Thanks to Tolleiv Nietsch)
+	* Fixed bug #11274: Change true to 1 for showUpdateButton
+	* Fixed bug #11272: Fix dos line endings in ext_tables.php
+	* Fixed bug #11270: List in the BE module should be sorted by record
+	* Fixed bug #11275: Remove clear.gif in modfunc1
+	* Fixed bug #10987: linkvalidator doesn't detect hidden pages (Thanks to Joh. Feustel)
+
+2010-12-03  Pierre Boivin  <pierre.boivin@infoglobe.ca>
+
+	* Fixed bug #11271: Lowercase all filenames
+	* Fixed bug #11280: Refactor class tx_linkvalidator_processing
+	* Fixed bug #10907: Invalid external url not detected
+
+2010-11-22  Tolleiv Nietsch  <info@tolleiv.de>
+
+	* Fixed bug #10988: getBrokenUrl returns wrong url (Thanks to Johannes Feustel)
+
+2010-11-20  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #10998: Rename and move link classes and processing class
+
+2010-11-17  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #10912: Rename and move task to classes/tasks and change locallang namespace
+	* Fixed bug #10900: Regression: Fatal error in class.tx_linkvalidator_modfunc1.php
+	* Tagging version 1.0.0
+	* Fixed bug #10892: Basic cleanup throughout the extension
+	* Fixed bug #10891: Fix deprecation warning "call by reference" in modfunc1
+	* Fixed bug #10820: Error and warning in scheduler task
+	* Fixed bug #10890: Add ext:info as dependency in ext_emconf
+
+2010-11-12  Tolleiv Nietsch  <info@tolleiv.de>
+
+	* Fixed bug #10763: The mailtemplate setting should have a default setting
+	* Fixed bug #10598: "Check links" button must be hideable with TS - renamed noUpdateButton to showUpdateButton, manual updated
+
+2010-11-11  Michael Miousse  <michael.miousse@infoglobe.ca>
+
+	* Fixed bug #10740: news field added in the table tx_linkvalidator_links, 2 new index in locallang.xml for the header of the new column and the format of the string in the column, news column added in tx_linkvalidator_modfunc1 and time() saved in the new field added to the table tx_linkvalidator_links
+	* Fixed bug #10737: news mod tsconfig added to remove the check link button. mod.linkvalidator.noUpdateButton = 0
+	* Fixed bug #10739: Refresh Button added in tx_linkvalidator_modfunc1, news index in the locallang file, new marquer in the template mod_template.html and new css
+	* Fixed bug #10736: Automatic refresh on changing selection of depth level has been removed
+	* Fixed bug #10643: Fix PHP Warning "array_search() expects parameter 2 to be array, null given" in modfunc1/class.tx_linkvalidator_modfunc1.php
+
+2010-11-03  Tolleiv Nietsch  <info@tolleiv.de>
+
+	* Fixed bug #10598: Extend tx_linkvalidator_checkbase API a bit
+
+2010-07-19  Jochen Rieger / Dimitri König / Michael Miousse  <j.rieger@connecta.ag, mmiousse@infoglobe.ca>
+
+	* initial code generated with kickstarter
