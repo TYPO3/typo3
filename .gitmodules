@@ -4,9 +4,6 @@
 [submodule "typo3/sysext/version"]
 	path = typo3/sysext/version
 	url = git://git.typo3.org/TYPO3v4/CoreProjects/workspaces/version.git
-[submodule "typo3/sysext/extbase"]
-	path = typo3/sysext/extbase
-	url = git://git.typo3.org/TYPO3v4/CoreProjects/MVC/extbase.git
 [submodule "typo3/sysext/fluid"]
 	path = typo3/sysext/fluid
 	url = git://git.typo3.org/TYPO3v4/CoreProjects/MVC/fluid.git

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="fe_users.tx_extbase_type">Record Type</label>
+			<label index="fe_users.tx_extbase_type.0">undefined</label>
+			<label index="fe_users.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUser">Tx_Extbase_Domain_Model_FrontendUser</label>
+			<label index="fe_groups.tx_extbase_type">Record Type</label>
+			<label index="fe_groups.tx_extbase_type.0">undefined</label>
+			<label index="fe_groups.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUserGroup">Tx_Extbase_Domain_Model_FrontendUserGroup</label>
+		</languageKey>
+	</data>
+</T3locallang>
