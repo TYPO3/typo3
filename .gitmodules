@@ -4,9 +4,6 @@
 [submodule "typo3/sysext/version"]
 	path = typo3/sysext/version
 	url = git://git.typo3.org/TYPO3v4/CoreProjects/workspaces/version.git
-[submodule "typo3/sysext/fluid"]
-	path = typo3/sysext/fluid
-	url = git://git.typo3.org/TYPO3v4/CoreProjects/MVC/fluid.git
 [submodule "typo3/sysext/linkvalidator"]
 	path = typo3/sysext/linkvalidator
 	url = git://git.typo3.org/TYPO3v4/Extensions/linkvalidator.git
