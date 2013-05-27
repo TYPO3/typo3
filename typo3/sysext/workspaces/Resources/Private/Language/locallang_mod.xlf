@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:38Z" product-name="workspaces">
+		<header/>
+		<body>
+			<trans-unit id="mlang_tabs_tab" xml:space="preserve">
+				<source>Workspaces</source>
+			</trans-unit>
+			<trans-unit id="mlang_labels_tabdescr" xml:space="preserve">
+				<source>This module contains the overview of all elements within the current workspace and it enables to continue the review and publishing workflow for them.</source>
+			</trans-unit>
+			<trans-unit id="mlang_labels_tablabel" xml:space="preserve">
+				<source>Create and handle versioning workflows</source>
+			</trans-unit>
+			<trans-unit id="autopublishTask.name" xml:space="preserve">
+				<source>Workspaces auto-publication</source>
+			</trans-unit>
+			<trans-unit id="autopublishTask.description" xml:space="preserve">
+				<source>This tasks checks any workspace that has a publication date set in the past and automatically publishes it.</source>
+			</trans-unit>
+			<trans-unit id="cleanupPreviewLinkTask.name" xml:space="preserve">
+				<source>Workspaces cleanup preview links</source>
+			</trans-unit>
+			<trans-unit id="cleanupPreviewLinkTask.description" xml:space="preserve">
+				<source>This task delete old preview links</source>
+			</trans-unit>
+			<trans-unit id="stage_ready_to_publish" xml:space="preserve">
+				<source>Ready to publish</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

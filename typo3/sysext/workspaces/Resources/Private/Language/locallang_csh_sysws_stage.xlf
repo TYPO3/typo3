@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="workspaces">
+		<header/>
+		<body>
+			<trans-unit id=".description" xml:space="preserve">
+				<source>Defines custom workspace stages in TYPO3 which allows for groups of people to work together in a defined process. More information about workspaces can be found in the document "Inside TYPO3".</source>
+			</trans-unit>
+			<trans-unit id="title.description" xml:space="preserve">
+				<source>Enter the name of the workspace stage.</source>
+			</trans-unit>
+			<trans-unit id="responsible_persons.description" xml:space="preserve">
+				<source>Define which BE users are responsible for this workspace stage. This selected BE users are possible recipients for the stage change emails.</source>
+			</trans-unit>
+			<trans-unit id="default_mailcomment.description" xml:space="preserve">
+				<source>Here its possible to define a standard mail comment which will be inserted into the stage change mail. When no standard mail comment was defined here its possible to write a comment for the mail on every stage change.</source>
+			</trans-unit>
+			<trans-unit id="notification_mode.description" xml:space="preserve">
+				<source>You can choose one of three settings for the recipient suggestion list on stage change. In the most configurations the default option is a good choice. For exact explanation about the single options please refer to the documentation.</source>
+			</trans-unit>
+			<trans-unit id="notification_defaults.description" xml:space="preserve">
+				<source>Select these backend users or backend groups that should be selected per default to receive a notification mail. Select only users/groups that are also selected as responsible for this stage.</source>
+			</trans-unit>
+			<trans-unit id="allow_notificaton_settings.description" xml:space="preserve">
+				<source>Disable this checkbox to hide the recipient and additional recipient fields from the stage change popup window. Notifications are sent in the background nevertheless but based on configuration in workspace stage setting.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
