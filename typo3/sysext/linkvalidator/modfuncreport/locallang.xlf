@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="linkvalidator">
+		<header/>
+		<body>
+			<trans-unit id="menu.introduction" xml:space="preserve">
+				<source>Introduction</source>
+			</trans-unit>
+			<trans-unit id="menu.checkLinks" xml:space="preserve">
+				<source>Check Links for validity</source>
+			</trans-unit>
+			<trans-unit id="menu.overview" xml:space="preserve">
+				<source>Overview of links on website</source>
+			</trans-unit>
+			<trans-unit id="overview.header" xml:space="preserve">
+				<source>Overview - choose options to check the links</source>
+			</trans-unit>
+			<trans-unit id="overview.all.header" xml:space="preserve">
+				<source>Total amounts in tt_content</source>
+			</trans-unit>
+			<trans-unit id="overview.all.records" xml:space="preserve">
+				<source>Records with ext. links:</source>
+			</trans-unit>
+			<trans-unit id="overview.all.links" xml:space="preserve">
+				<source>External links:</source>
+			</trans-unit>
+			<trans-unit id="overview.branch.header" xml:space="preserve">
+				<source>Amounts from actual branch in tt_content</source>
+			</trans-unit>
+			<trans-unit id="overview.branch.records" xml:space="preserve">
+				<source>Records with ext. links:</source>
+			</trans-unit>
+			<trans-unit id="overview.branch.links" xml:space="preserve">
+				<source>External links:</source>
+			</trans-unit>
+			<trans-unit id="overview.attention.header" xml:space="preserve">
+				<source>Attention:</source>
+			</trans-unit>
+			<trans-unit id="overview.attention.text" xml:space="preserve">
+				<source>Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</source>
+			</trans-unit>
+			<trans-unit id="Report" xml:space="preserve">
+				<source>Report</source>
+			</trans-unit>
+			<trans-unit id="CheckLink" xml:space="preserve">
+				<source>Check Links</source>
+			</trans-unit>
+			<trans-unit id="report.statistics.header" xml:space="preserve">
+				<source>Show these types of broken links</source>
+			</trans-unit>
+			<trans-unit id="checklinks.statistics.header" xml:space="preserve">
+				<source>Check these types of broken links</source>
+			</trans-unit>
+			<trans-unit id="report.func.title" xml:space="preserve">
+				<source>Show this level</source>
+			</trans-unit>
+			<trans-unit id="checklinks.func.title" xml:space="preserve">
+				<source>Check this level</source>
+			</trans-unit>
+			<trans-unit id="overviews.nbtotal" xml:space="preserve">
+				<source>Broken links total:</source>
+			</trans-unit>
+			<trans-unit id="hooks.db" xml:space="preserve">
+				<source>Internal Links:</source>
+			</trans-unit>
+			<trans-unit id="hooks.file" xml:space="preserve">
+				<source>File Links:</source>
+			</trans-unit>
+			<trans-unit id="hooks.external" xml:space="preserve">
+				<source>External Links:</source>
+			</trans-unit>
+			<trans-unit id="hooks.linkhandler" xml:space="preserve">
+				<source>Linkhandler Links:</source>
+			</trans-unit>
+			<trans-unit id="label_refresh" xml:space="preserve">
+				<source>Refresh display</source>
+			</trans-unit>
+			<trans-unit id="label_update" xml:space="preserve">
+				<source>Check links</source>
+			</trans-unit>
+			<trans-unit id="list.header" xml:space="preserve">
+				<source>Listing of broken links</source>
+			</trans-unit>
+			<trans-unit id="list.tableHead.path" xml:space="preserve">
+				<source>Path</source>
+			</trans-unit>
+			<trans-unit id="list.tableHead.element" xml:space="preserve">
+				<source>Element</source>
+			</trans-unit>
+			<trans-unit id="list.tableHead.headlink" xml:space="preserve">
+				<source>Link</source>
+			</trans-unit>
+			<trans-unit id="list.tableHead.linktarget" xml:space="preserve">
+				<source>URL / Link Target</source>
+			</trans-unit>
+			<trans-unit id="list.tableHead.linkmessage" xml:space="preserve">
+				<source>Error message</source>
+			</trans-unit>
+			<trans-unit id="list.tableHead.lastCheck" xml:space="preserve">
+				<source>Last check</source>
+			</trans-unit>
+			<trans-unit id="list.edit" xml:space="preserve">
+				<source>Edit element containing this broken link</source>
+			</trans-unit>
+			<trans-unit id="list.field" xml:space="preserve">
+				<source>(Field: %s)</source>
+			</trans-unit>
+			<trans-unit id="list.no.headline" xml:space="preserve">
+				<source>no headline</source>
+			</trans-unit>
+			<trans-unit id="list.report.pagedeleted" xml:space="preserve">
+				<source>Page '###title###' (###uid###) is deleted.</source>
+			</trans-unit>
+			<trans-unit id="list.report.pagenotvisible" xml:space="preserve">
+				<source>Page '###title###' (###uid###) is not visible.</source>
+			</trans-unit>
+			<trans-unit id="list.report.pagenotexisting" xml:space="preserve">
+				<source>Page (###uid###) does not exist.</source>
+			</trans-unit>
+			<trans-unit id="list.report.contentmoved" xml:space="preserve">
+				<source>Element '###title###' (###uid###) is not located on page ###wrongpage###, but on page ###rightpage###.</source>
+			</trans-unit>
+			<trans-unit id="list.report.contentdeleted" xml:space="preserve">
+				<source>Element '###title###' (###uid###) is deleted.</source>
+			</trans-unit>
+			<trans-unit id="list.report.contentnotvisible" xml:space="preserve">
+				<source>Element '###title###' (###uid###) is not visible.</source>
+			</trans-unit>
+			<trans-unit id="list.report.contentnotexisting" xml:space="preserve">
+				<source>Element (###uid###) does not exist.</source>
+			</trans-unit>
+			<trans-unit id="list.report.rowdeleted" xml:space="preserve">
+				<source>###title### row (###uid###) is deleted.</source>
+			</trans-unit>
+			<trans-unit id="list.report.rowdeleted.default.title" xml:space="preserve">
+				<source>Linked</source>
+			</trans-unit>
+			<trans-unit id="list.report.rownotexisting" xml:space="preserve">
+				<source>Row (###uid###) does not exist.</source>
+			</trans-unit>
+			<trans-unit id="list.report.noinformation" xml:space="preserve">
+				<source>No information about the error is available.</source>
+			</trans-unit>
+			<trans-unit id="list.report.noresponse" xml:space="preserve">
+				<source>External Link not reachable.</source>
+			</trans-unit>
+			<trans-unit id="list.report.redirectloop" xml:space="preserve">
+				<source>A redirect loop occurred. (%s: %s)</source>
+			</trans-unit>
+			<trans-unit id="list.report.pageforbidden403" xml:space="preserve">
+				<source>Accessing this address is not allowed (403).</source>
+			</trans-unit>
+			<trans-unit id="list.report.pagenotfound404" xml:space="preserve">
+				<source>The requested url was not found (404).</source>
+			</trans-unit>
+			<trans-unit id="list.report.externalerror" xml:space="preserve">
+				<source>External Link returned HTTP error code (%s).</source>
+			</trans-unit>
+			<trans-unit id="list.report.filenotexisting" xml:space="preserve">
+				<source>File doesn't exist.</source>
+			</trans-unit>
+			<trans-unit id="list.report.timeout" xml:space="preserve">
+				<source>Operation timeout. The specified time-out period was reached according to the conditions.</source>
+			</trans-unit>
+			<trans-unit id="list.report.internalerror500" xml:space="preserve">
+				<source>Internal Server Error (500)</source>
+			</trans-unit>
+			<trans-unit id="list.report.couldnotresolvehost" xml:space="preserve">
+				<source>Could not resolve host. The given remote host was not resolved.</source>
+			</trans-unit>
+			<trans-unit id="list.report.errornetworkdata" xml:space="preserve">
+				<source>Failure with receiving network data.</source>
+			</trans-unit>
+			<trans-unit id="list.report.otherhttpcode" xml:space="preserve">
+				<source>An error occurred (%s): "%s".</source>
+			</trans-unit>
+			<trans-unit id="list.report.httpexception" xml:space="preserve">
+				<source>Exception: %s</source>
+			</trans-unit>
+			<trans-unit id="list.msg.ok" xml:space="preserve">
+				<source>Ok</source>
+			</trans-unit>
+			<trans-unit id="list.msg.lastRun" xml:space="preserve">
+				<source>%1$s %2$s</source>
+			</trans-unit>
+			<trans-unit id="list.no.broken.links.title" xml:space="preserve">
+				<source>No broken links to show!</source>
+			</trans-unit>
+			<trans-unit id="list.no.broken.links" xml:space="preserve">
+				<source>There are no broken links to be displayed.</source>
+			</trans-unit>
+			<trans-unit id="no.access.title" xml:space="preserve">
+				<source>No access!</source>
+			</trans-unit>
+			<trans-unit id="no.access" xml:space="preserve">
+				<source>You do not have access to these listings.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
