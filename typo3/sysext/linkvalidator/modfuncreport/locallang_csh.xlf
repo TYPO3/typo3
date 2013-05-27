@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="linkvalidator">
+		<header/>
+		<body>
+			<trans-unit id="checkboxes.description" xml:space="preserve">
+				<source>Click the following checkboxes to consider or to ignore the corresponding broken links.</source>
+			</trans-unit>
+			<trans-unit id="tablehead_path.description" xml:space="preserve">
+				<source>Path to the content element, which contains the broken link.</source>
+			</trans-unit>
+			<trans-unit id="tablehead_element.description" xml:space="preserve">
+				<source>Type of the element containing the broken link, its headline and the field in which the broken link is located.</source>
+			</trans-unit>
+			<trans-unit id="tablehead_headlink.description" xml:space="preserve">
+				<source>The linking text.</source>
+			</trans-unit>
+			<trans-unit id="tablehead_linktarget.description" xml:space="preserve">
+				<source>URL to which the broken link is pointing.</source>
+			</trans-unit>
+			<trans-unit id="tablehead_linkmessage.description" xml:space="preserve">
+				<source>Status of that link.</source>
+			</trans-unit>
+			<trans-unit id="tablehead_lastcheck.description" xml:space="preserve">
+				<source>Date and time of the last update of the information in each table row.</source>
+			</trans-unit>
+			<trans-unit id="task_page.alttitle" xml:space="preserve">
+				<source>Start page of the task</source>
+			</trans-unit>
+			<trans-unit id="task_page.description" xml:space="preserve">
+				<source>UID of the start page for this task.</source>
+			</trans-unit>
+			<trans-unit id="task_depth.alttitle" xml:space="preserve">
+				<source>Depth of the task</source>
+			</trans-unit>
+			<trans-unit id="task_depth.description" xml:space="preserve">
+				<source>Level of pages the task should check.</source>
+			</trans-unit>
+			<trans-unit id="task_configuration.alttitle" xml:space="preserve">
+				<source>Special TSconfig code</source>
+			</trans-unit>
+			<trans-unit id="task_configuration.description" xml:space="preserve">
+				<source>TSconfig Code which defines settings for linkvalidator to be used for this task.</source>
+			</trans-unit>
+			<trans-unit id="task_email.alttitle" xml:space="preserve">
+				<source>Email address</source>
+			</trans-unit>
+			<trans-unit id="task_email.description" xml:space="preserve">
+				<source>Email address to which an email report is sent.</source>
+			</trans-unit>
+			<trans-unit id="task_emailonbrokenlinkonly.alttitle" xml:space="preserve">
+				<source>Mailing option</source>
+			</trans-unit>
+			<trans-unit id="task_emailonbrokenlinkonly.description" xml:space="preserve">
+				<source>Only send an email, if new broken links were found.</source>
+			</trans-unit>
+			<trans-unit id="task_emailfile.alttitle" xml:space="preserve">
+				<source>Email template file</source>
+			</trans-unit>
+			<trans-unit id="task_emailfile.description" xml:space="preserve">
+				<source>Define a template to be used for the email.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

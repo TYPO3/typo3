@@ -1,0 +1,181 @@
+﻿Manual for Linkvalidator
+Extension Key: linkvalidator
+Language: en
+Version: 1.5.0
+Keywords: forEditors, forAdmins, forBeginners, forIntermediates, forAdvanced
+Copyright 2000-2011, Linkvalidator Team, <j.rieger@connecta.ag>, <mmiousse@infoglobe.ca>
+
+This document is published under the Open Content License
+available from http://www.opencontent.org/opl.shtml
+
+The content of this document is related to TYPO3 
+- a GNU/GPL CMS/Framework available from www.typo3.org
+
+
+
+Official documentation
+This document is included as part of the official TYPO3 documentation. It has been approved by the TYPO3 Documentation Team following a peer-review process. The reader should expect the information in this document to be accurate - please report discrepancies to the Documentation Team (documentation@typo3.org). Official documents are kept up-to-date to the best of the Documentation Team's abilities.
+
+Core Manual
+This document is a Core Manual. Core Manuals address the built in functionality of TYPO3 and are designed to provide the reader with in-depth information. Each Core Manual addresses a particular process or function and how it is implemented within the TYPO3 source code. These may include information on available APIs, specific configuration options, etc.
+Core Manuals are written as reference manuals. The reader should rely on the Table of Contents to identify what particular section will best address the task at hand.
+Table of Contents
+Manual for Linkvalidator	1
+Introduction	3
+About this document	3
+What's new	3
+Credits	3
+Feedback	3
+Introduction	4
+What does it do?	4
+Screenshots	4
+Administration	7
+Configuration	8
+Reference	8
+Hint for large sites	10
+Next steps	11
+
+
+Introduction
+About this document
+Linkvalidator is a system extension which enables you to conveniently check your website for broken links. This manual explains how to install and configure the extension for your needs. 
+What's new
+The extension is based on cag_linkchecker. For inclusion in TYPO3 4.5 the code has undergone a major overhaul. As a result not only some bugs were fixed, but also the functional range and the styling were adapted and a brand new scheduler task was added. 
+Credits
+This extension is particularly based on the extension "cag_linkchecker", which was originally developed for Connecta AG, Wiesbaden. cag_linkchecker is maintained by Jochen Rieger and Dimitri König. 
+Feedback
+For general questions about the documentation get in touch by writing to documentation@typo3.org.
+If you find a bug in this manual, please file an issue in the bug tracker of this extension: http://forge.typo3.org/projects/extension-linkvalidator/issues
+Maintaining quality documentation is hard work and the Documentation Team is always looking for volunteers. If you feel like helping please join the documentation mailing list (typo3.projects.documentation on lists.typo3.org).
+
+Introduction
+What does it do?
+Linkvalidator checks the links in your website for validity, reports broken links or missing files in your TYPO3 installation and provides a way to conveniently fix these problems. 
+
+It includes the following features: 
+Linkvalidator can check all kinds of links. This includes internal links to pages and content elements, file links to files in the local file system and external links to files somewhere else in the web. 
+Linkvalidator by default looks into header fields and bodytext fields. It can be configured to check any field you like. 
+Linkvalidator offers a just in time check of your website. Additionally the TYPO3 scheduler is fully supported to run checks automatically. In this case you can choose, if you want to receive an email report, if broken links were found. 
+Linkvalidator is extendable. It provides hooks to check special types of links like those from the extension "linkhandler". The possibility to check these already is built in. 
+
+Screenshots
+This is the linkvalidator backend module. It is located inside the info module and by default provides two tabs: "Report" and "Check Links". The Report tab is always shown first. Here you can view the broken links which were found, when your website was last checked. 
+
+The Check Links tab is used to check links on demand and can be hidden with TSconfig, if desired. 
+
+The workflow in the module is the following: 
+First you set the depth of pages you want to consider when checking for broken links in the Check Links tab. Then click the Check links button. 
+Once the checks are done, the module automatically switches to the Report tab where the results are displayed. 
+The type and ID of the content containing the broken link become visible when you move the mouse over the icon for the content type. The pencil icons at the beginning of each row enable you to quickly fix the displayed elements. 
+
+Linkvalidator features full support of the TYPO3 scheduler. This is the linkvalidator task: 
+
+With this task you can run linkvalidator regularly via cron without having to manually update the stored information on broken links. 
+You can e.g. overwrite the TSconfig configuration. Without any change, the linkvalidator settings which apply for the respective pages will be used. If you set values there, the former will be overwritten. 
+The linkvalidator task can send you a status report via email. You can create an own email template as needed. The default template is located in typo3/sysext/linkvalidator/res/mailtemplate.html. 
+Administration
+Use the extension manager to install linkvalidator. It is not installed by default. 
+Apply the needed changes to the database. 
+
+You are advised to use cURL to check for links. Linkvalidator uses the HTTP request library shipped with TYPO3. Please have a look in the Install Tool at the section “All Configuration” which includes an HTTP section at the end.
+There you may define a default timeout and you may change from using sockets to using the cURL library.
+
+
+Configuration
+You find the standard configuration in typo3/sysext/linkvalidator/res/pagetsconfig.txt. 
+This may serve you as an example on how to configure the extension for your needs. 
+
+Reference
+You can set the following options in the TSconfig for a page (e.g. the root page) and override them in user or groups TSconfig. You must prefix them with mod.linkvalidator, e.g. mod.linkvalidator.searchFields.pages = media. 
+Property
+Data type
+Description
+Default
+searchFields.[key]
+string
+Comma separated list of table fields in which to check for broken links. 
+
+Example:
+
+pages = media,url
+pages = media,url
+tt_content = bodytext,header_link,records
+tt_news = bodytext,links
+linktypes
+string
+Comma separated list of hooks to load. 
+
+Possible values: 
+
+db: Check links to database records. 
+file: Check links to files located in your local TYPO3 installation. 
+external: Check links to external files. 
+linkhandler: Check links provided by the extension "linkhandler". 
+
+This list may be extended by other extensions providing a linktype checker, e.g. DAM.
+db,file,external
+checkhidden
+boolean
+If set, disabled pages and content elements are checked for broken links, too.
+0
+showCheckLinkTab
+boolean
+If set, the backend module shows a "Check Links" tab, which you can use to perform the checks on demand. 
+
+
+Note: Depending on the number of page levels to check and on the number of links in these pages, this check can take some time and need some resources. For large sites it might therefore be advisable to hide the tab. 
+
+Note: Linkvalidator uses a database table to store information about the broken links, which it found in your website. If showCheckLinkTab is set to 0, you must use the scheduler task provided by linkvalidator to update these information. 
+1
+mail.fromname
+string
+Set the from name of the report mail sent by the cron script. 
+Install Tool
+defaultMailFromName
+mail.fromemail
+string
+Set the from email of the report mail sent by the cron script. 
+Install Tool
+defaultMailFromAddress
+mail.replytoname
+string
+Set the replyto name of the report mail sent by the cron script. 
+
+mail.replytoemail
+string
+Set the replyto email of the report mail sent by the cron script. 
+
+mail.subject
+string
+Set the subject of the report mail sent by the cron script. 
+TYPO3 Linkvalidator report
+[page:mod.linkvalidator; beuser:mod.linkvalidator]
+
+Example:
+mod.linkvalidator {
+	searchFields {
+		pages = media,url
+		tt_content = bodytext,header_link,records
+		tt_news = bodytext,links
+	}
+	linktypes = db,file,external
+	checkhidden = 0
+	mail {
+		fromname = TYPO3 Linkvalidator
+		fromemail = no_reply@mydomain.com
+		replytoname =
+		replytoemail =
+		subject = TYPO3 Linkvalidator report
+	}
+}
+
+
+Hint for large sites
+If you have a website with many hundreds of pages, checking all links will take some time and might lead to a time out. It will also need some resources so that it might make sense to do the check at night. If you want to check many pages, you should not use the "Check Links" tab in the backend module of linkvalidator. Use the TYPO3 scheduler instead. The task provided by linkvalidator will cache the broken links just like the button "Check Links" would do. Afterwards you can use the backend module as usual to fix the according elements. 
+If you still want to check trees with many pages just in time, set the depth to a reasonable level like 2 or 3. Do not use "infinite". 
+
+
+Next steps
+If you need more information on how to use the TYPO3 scheduler to run linkvalidator regularly via cron job, please refer to the scheduler manual. You can open it from the TYPO3 extension manager. 
+
+
