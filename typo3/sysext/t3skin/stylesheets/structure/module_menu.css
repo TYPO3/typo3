@@ -50,6 +50,7 @@ Module menu
 	float: left;
 	vertical-align: top;
 	width: 20px;
+	margin-right: 6px;
 }
 
 #typo3-menu li ul {
