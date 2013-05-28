@@ -81,6 +81,13 @@ class FileListController {
 	public $overwriteExistingFiles;
 
 	/**
+	 * The file list object
+	 *
+	 * @var \TYPO3\CMS\Filelist\FileList
+	 */
+	public $filelist = NULL;
+
+	/**
 	 * Initialize variables, file object
 	 * Incoming GET vars include id, pointer, table, imagemode
 	 *
