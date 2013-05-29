@@ -141,8 +141,8 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 		$this->pageRenderer->addInlineSetting('Workspaces', 'disableNextStageButton', $this->isInvalidStage($nextStage));
 		$this->pageRenderer->addInlineSetting('Workspaces', 'disablePreviousStageButton', $this->isInvalidStage($previousStage));
 		$this->pageRenderer->addInlineSetting('Workspaces', 'disableDiscardStageButton', $this->isInvalidStage($nextStage) && $this->isInvalidStage($previousStage));
-		$resourcePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('lang') . 'res/js/be/';
-		$this->pageRenderer->addJsFile($resourcePath . 'typo3lang.js');
+		$resourcePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('lang') . 'Resources/Public/JavaScript/';
+		$this->pageRenderer->addJsFile($resourcePath . 'Typo3Lang.js');
 		$this->pageRenderer->addJsInlineCode('workspaces.preview.lll', '
 		TYPO3.lang = {
 			visualPreview: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.visualPreview', TRUE)) . ',
