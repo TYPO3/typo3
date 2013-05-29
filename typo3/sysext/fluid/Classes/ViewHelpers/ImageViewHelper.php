@@ -106,11 +106,12 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 	 * @param integer $maxWidth maximum width of the image
 	 * @param integer $maxHeight maximum height of the image
 	 * @param boolean $treatIdAsReference given src argument is a sys_file_reference record
+	 * @param string $parameters additional parameters to ImageMagick
 	 *
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return string rendered tag.
 	 */
-	public function render($src, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL, $treatIdAsReference = FALSE) {
+	public function render($src, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL, $treatIdAsReference = FALSE, $parameters = NULL) {
 		if (TYPO3_MODE === 'BE') {
 			$this->simulateFrontendEnvironment();
 		}
@@ -121,7 +122,8 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 			'minH' => $minHeight,
 			'maxW' => $maxWidth,
 			'maxH' => $maxHeight,
-			'treatIdAsReference' => $treatIdAsReference
+			'treatIdAsReference' => $treatIdAsReference,
+			'params' => $parameters
 		);
 		if (TYPO3_MODE === 'BE' && substr($src, 0, 3) === '../') {
 			$src = substr($src, 3);
