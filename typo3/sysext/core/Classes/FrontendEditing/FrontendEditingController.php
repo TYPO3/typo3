@@ -527,7 +527,7 @@ class FrontendEditingController {
 					unset($allow['hide']);
 					unset($allow['delete']);
 				}
-				if (!($perms & 2)) {
+				if (!($perms & 2) || !$GLOBALS['BE_USER']->checkLanguageAccess(0)) {
 					unset($allow['edit']);
 					unset($allow['move']);
 					unset($allow['hide']);
