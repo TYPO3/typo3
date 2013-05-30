@@ -197,10 +197,13 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	}
 
 	/**
-	 * Injects the flash messages container
+	 * This method is deprecated! For further information have a look at
+	 * the PhpDoc of class \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer
 	 *
 	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer
 	 * @return void
+	 *
+	 * @deprecated since Extbase 6.1, will be removed 2 versions later
 	 */
 	public function injectFlashMessageContainer(\TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer) {
 		$this->flashMessageContainer = $flashMessageContainer;
