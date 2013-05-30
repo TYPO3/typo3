@@ -33,6 +33,16 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
+ *
+ * This object is deprecated as Extbase uses the FlashMessageService provided
+ * by the core from 6.1 on. Therefore please do not use this object but call
+ * (Abstract)Controller->controllerContext->getFlashMessageQueue() instead.
+ *
+ * For sure you are free to use TYPO3\CMS\Core\Messaging\FlashMessageService
+ * and fetch a custom FlashMessageQueue by calling
+ * FlashMessageQueue->getMessageQueueByIdentifier('customIdentifier')
+ *
+ * @deprecated since Extbase 6.1, will be removed 2 versions later
  */
 class FlashMessageContainer implements \TYPO3\CMS\Core\SingletonInterface {
 
