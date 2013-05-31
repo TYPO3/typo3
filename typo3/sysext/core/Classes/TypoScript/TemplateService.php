@@ -697,6 +697,38 @@ class TemplateService {
 	}
 
 	/**
+	 * This function can be used to update the data of the current rootLine
+	 * e.g. when a different language is used.
+	 *
+	 * This function must not be used if there are different pages in the
+	 * rootline as before!
+	 *
+	 * @param array $fullRootLine Array containing the FULL rootline (up to the TYPO3 root)
+	 * @return void
+	 * @throws \RuntimeException If the given $fullRootLine does not contain all pages that are in the current template rootline
+	 */
+	public function updateRootlineData($fullRootLine) {
+		if (!is_array($this->rootLine) || count($this->rootLine) === 0) {
+			return;
+		}
+
+		$fullRootLineByUid = array();
+		foreach ($fullRootLine as $rootLineData) {
+			$fullRootLineByUid[$rootLineData['uid']] = $rootLineData;
+		}
+
+		foreach ($this->rootLine as $level => $dataArray) {
+			$currentUid = $dataArray['uid'];
+
+			if (!array_key_exists($currentUid, $fullRootLineByUid)) {
+				throw new \RuntimeException(sprintf('The full rootLine does not contain data for the page with the uid %d that is contained in the template rootline.', $currentUid), 1370419654);
+			}
+
+			$this->rootLine[$level] = $fullRootLineByUid[$currentUid];
+		}
+	}
+
+	/**
 	 * Includes static template records (from static_template table, loaded through a hook) and static template files (from extensions) for the input template record row.
 	 *
 	 * @param string $idList A list of already processed template ids including the current; The list is on the form "[prefix]_[uid]" where [prefix] is "sys" for "sys_template" records, "static" for "static_template" records and "ext_" for static include files (from extensions). The list is used to check that the recursive inclusion of templates does not go into circles: Simply it is used to NOT include a template record/file which has already BEEN included somewhere in the recursion.
