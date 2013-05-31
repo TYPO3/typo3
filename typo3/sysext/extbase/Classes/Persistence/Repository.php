@@ -239,7 +239,7 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 * @api
 	 */
 	public function findByUid($uid) {
-		return $this->persistenceManager->getObjectByIdentifier($uid, $this->objectType);
+		return $this->findByIdentifier($uid);
 	}
 
 	/**
@@ -250,7 +250,30 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 * @api
 	 */
 	public function findByIdentifier($identifier) {
-		return $this->persistenceManager->getObjectByIdentifier($identifier, $this->objectType);
+		/**
+		 * @todo: This method must be changed again in 6.2 + 1
+		 * This is marked @deprecated to be found in cleanup sessions.
+		 *
+		 * The repository should directly talk to the backend which
+		 * does not respect query settings of the repository as
+		 * findByIdentifier is strictly defined by finding an
+		 * undeleted object by its identifier regardless if it
+		 * is hidden/visible or a versioning/translation overlay.
+		 *
+		 * As a consequence users will be forced to overwrite this method
+		 * and mimic this behaviour to be able to find objects by identifier
+		 * respecting their query settings from 6.1 + 1 on.
+		 */
+		if ($this->session->hasIdentifier($identifier, $this->objectType)) {
+			$object = $this->session->getObjectByIdentifier($identifier, $this->objectType);
+		} else {
+			$query = $this->createQuery();
+			$query->getQuerySettings()->setRespectStoragePage(FALSE);
+			$query->getQuerySettings()->setRespectSysLanguage(FALSE);
+			$object = $query->matching($query->equals('uid', $identifier))->execute()->getFirst();
+		}
+
+		return $object;
 	}
 
 	/**
