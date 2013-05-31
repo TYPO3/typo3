@@ -2574,11 +2574,9 @@ class TypoScriptFrontendController {
 	 * Updating content of the two rootLines IF the language key is set!
 	 */
 	protected function updateRootLinesWithTranslations() {
-		if ($this->sys_language_uid && is_array($this->tmpl->rootLine)) {
-			$this->tmpl->rootLine = array_reverse($this->sys_page->getRootLine($this->id, $this->MP));
-		}
-		if ($this->sys_language_uid && is_array($this->rootLine)) {
+		if ($this->sys_language_uid) {
 			$this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
+			$this->tmpl->updateRootlineData($this->rootLine);
 		}
 	}
 
