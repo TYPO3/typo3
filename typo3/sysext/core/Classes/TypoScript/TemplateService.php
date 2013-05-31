@@ -422,6 +422,7 @@ class TemplateService {
 	 * @todo Define visibility
 	 */
 	public function start($theRootLine) {
+
 		if (is_array($theRootLine)) {
 			$setupData = '';
 			$hash = '';
@@ -693,6 +694,39 @@ class TemplateService {
 			$this->nextLevel = $row['nextLevel'];
 		} else {
 			$this->nextLevel = 0;
+		}
+	}
+
+	/**
+	 * This function can be used to update the data of the current rootLine
+	 * e.g. when a different language is used.
+	 *
+	 * This function must not be used if there are different pages in the
+	 * rootline as before!
+	 *
+	 * @param array $fullRootLine Array containing the FULL rootline (up to the TYPO3 root)
+	 * @throws \RuntimeException If the given $fullRootLine does not contain all pages that are in the current template rootline
+	 */
+	public function updateRootlineData($fullRootLine) {
+
+		if (!is_array($this->rootLine) || count($this->rootLine) === 0) {
+			return;
+		}
+
+		$fullRootLineByUid = array();
+		foreach ($fullRootLine as $rootLineData) {
+			$fullRootLineByUid[$rootLineData['uid']] = $rootLineData;
+		}
+
+		foreach ($this->rootLine as $level => $dataArray) {
+
+			$currentUid = $dataArray['uid'];
+
+			if (!array_key_exists($currentUid, $fullRootLineByUid)) {
+				throw new \RuntimeException(sprintf('The full rootLine does not contain data for the page with the uid %d that is contained in the template rootline.', $currentUid), 1370419654);
+			}
+
+			$this->rootLine[$level] = $fullRootLineByUid[$currentUid];
 		}
 	}
 

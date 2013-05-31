@@ -44,12 +44,18 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $templateService;
 
 	/**
+	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Core\TypoScript\TemplateService
+	 */
+	protected $templateServiceMock;
+
+	/**
 	 * Sets up this test case.
 	 *
 	 * @return void
 	 */
 	protected function setUp() {
 		$this->templateService = new \TYPO3\CMS\Core\TypoScript\TemplateService();
+		$this->templateServiceMock = $this->fixture = $this->getAccessibleMock('\\TYPO3\\CMS\\Core\\TypoScript\\TemplateService', array('dummy'));
 	}
 
 	/**
@@ -59,6 +65,7 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected function tearDown() {
 		unset($this->templateService);
+		unset($this->templateServiceMock);
 	}
 
 	/**
@@ -110,6 +117,52 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertTrue(
 			in_array('test.Core.TypoScript = 1', $this->templateService->config)
 		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function updateRootlineDataOverwritesOwnArrayData() {
+
+		$originalRootline = array(
+			0 => array('uid' => 2, 'title' => 'originalTitle'),
+			1 => array('uid' => 3, 'title' => 'originalTitle2'),
+		);
+
+		$updatedRootline = array(
+			0 => array('uid' => 1, 'title' => 'newTitle'),
+			1 => array('uid' => 2, 'title' => 'newTitle2'),
+			2 => array('uid' => 3, 'title' => 'newTitle3'),
+		);
+
+		$expectedRootline = array(
+			0 => array('uid' => 2, 'title' => 'newTitle2'),
+			1 => array('uid' => 3, 'title' => 'newTitle3'),
+		);
+
+		$this->templateServiceMock->_set('rootLine', $originalRootline);
+		$this->templateServiceMock->updateRootlineData($updatedRootline);
+		$this->assertEquals($expectedRootline, $this->templateServiceMock->_get('rootLine'));
+	}
+
+	/**
+	 * @test
+	 * @expectedException \RuntimeException
+	 */
+	public function updateRootlineDataWithInvalidNewRootlineThrowsException() {
+
+		$originalRootline = array(
+			0 => array('uid' => 2, 'title' => 'originalTitle'),
+			1 => array('uid' => 3, 'title' => 'originalTitle2'),
+		);
+
+		$newInvalidRootline = array(
+			0 => array('uid' => 1, 'title' => 'newTitle'),
+			1 => array('uid' => 2, 'title' => 'newTitle2'),
+		);
+
+		$this->templateServiceMock->_set('rootLine', $originalRootline);
+		$this->templateServiceMock->updateRootlineData($newInvalidRootline);
 	}
 
 }
