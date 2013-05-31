@@ -411,8 +411,8 @@ class PermissionModuleController {
 			<input type="hidden" name="data[pages][' . $this->id . '][perms_group]" value="' . $this->pageinfo['perms_group'] . '" />
 			<input type="hidden" name="data[pages][' . $this->id . '][perms_everybody]" value="' . $this->pageinfo['perms_everybody'] . '" />
 			' . $this->getRecursiveSelect($this->id, $this->perms_clause) . '
-			<input type="submit" name="submit" value="' . $GLOBALS['LANG']->getLL('Save', 1) . '" />' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('Abort', 1) . '" onclick="' . htmlspecialchars(('jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_perm') . '&id=' . $this->id), TRUE) . '); return false;')) . '" />
-			<input type="hidden" name="redirect" value="' . htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . intval($this->return_id) . '&lastEdited=' . $this->id)) . '" />
+			<input type="submit" name="submit" value="' . $GLOBALS['LANG']->getLL('Save', 1) . '" />' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('Abort', 1) . '" onclick="' . htmlspecialchars(('jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('integration_perm') . '&id=' . $this->id), TRUE) . '); return false;')) . '" />
+			<input type="hidden" name="redirect" value="' . htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('integration_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . intval($this->return_id) . '&lastEdited=' . $this->id)) . '" />
 			' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction');
 		// Adding section with the permission setting matrix:
 		$this->content .= $this->doc->divider(5);
@@ -516,7 +516,7 @@ class PermissionModuleController {
 					<td align="left" nowrap="nowrap"' . ($cellAttrib ? $cellAttrib : $bgCol) . '>' . $data['HTML'] . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($data['row']['title'], $tLen)) . '&nbsp;</td>';
 			// "Edit permissions" -icon
 			if ($editPermsAllowed && $pageId) {
-				$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . ($data['row']['_ORIG_uid'] ? $data['row']['_ORIG_uid'] : $pageId) . '&return_id=' . $this->id . '&edit=1';
+				$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('integration_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . ($data['row']['_ORIG_uid'] ? $data['row']['_ORIG_uid'] : $pageId) . '&return_id=' . $this->id . '&edit=1';
 				$cells[] = '
 					<td' . $bgCol . '><a href="' . htmlspecialchars($aHref) . '" title="' . $GLOBALS['LANG']->getLL('ch_permissions', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a></td>';
 			} else {

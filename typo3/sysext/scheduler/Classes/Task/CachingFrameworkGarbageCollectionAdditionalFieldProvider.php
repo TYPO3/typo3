@@ -60,7 +60,7 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldHtml,
 			'label' => 'LLL:EXT:scheduler/mod1/locallang.xml:label.cachingFrameworkGarbageCollection.selectBackends',
-			'cshKey' => '_MOD_tools_txschedulerM1',
+			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldId
 		);
 		return $additionalFields;

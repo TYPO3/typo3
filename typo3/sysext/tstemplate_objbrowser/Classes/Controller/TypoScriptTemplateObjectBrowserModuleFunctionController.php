@@ -351,7 +351,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			$urlParameters = array(
 				'id' => $this->pObj->id
 			);
-			$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
+			$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('integration_ts', $urlParameters);
 			if (!$this->pObj->MOD_SETTINGS[('ts_browser_TLKeys_' . $bType)][$this->pObj->sObj]) {
 				if (count($theSetup)) {
 					$out = '<a href="' . htmlspecialchars(($aHref . '&addKey[' . rawurlencode($this->pObj->sObj) . ']=1&SET[ts_browser_toplevel_' . $bType . ']=' . rawurlencode($this->pObj->sObj))) . '">';
@@ -398,7 +398,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			$urlParameters = array(
 				'id' => $this->pObj->id
 			);
-			$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
+			$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('integration_ts', $urlParameters);
 			// Parser Errors:
 			$pEkey = $bType == 'setup' ? 'config' : 'constants';
 			if (count($tmpl->parserErrors[$pEkey])) {
@@ -407,7 +407,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 				foreach ($tmpl->parserErrors[$pEkey] as $inf) {
 					$errorLink = '';
 					if ($templateAnalyzerInstalled) {
-						$errorLink = ' <a href="' . htmlspecialchars(($aHref . '&SET[function]=TYPO3\\CMS\\TstemplateAnalyzer\\Controller\\TemplateAnalyzerModuleFunctionController&template=all&SET[ts_analyzer_checkLinenum]=1#line-' . $inf[2])) . '">' . $GLOBALS['LANG']->getLL('errorShowDetails') . '</a>';
+						$errorLink = ' <a href="' . htmlspecialchars(($aHref . '&SET[function]=tx_tstemplateanalyzer&template=all&SET[ts_analyzer_checkLinenum]=1#line-' . $inf[2])) . '">' . $GLOBALS['LANG']->getLL('errorShowDetails') . '</a>';
 					}
 					$errMsg[] = $inf[1] . ': &nbsp; &nbsp;' . $inf[0] . $errorLink;
 				}

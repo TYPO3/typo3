@@ -115,7 +115,7 @@ class ModuleLoader {
 		[help] => about
 		[_PATHS] => Array
 		(
-		[tools_install] => /www/htdocs/typo3/32/coreinstall/typo3/ext/install/mod/
+		[system_install] => /www/htdocs/typo3/32/coreinstall/typo3/ext/install/mod/
 		[tools_txphpmyadmin] => /www/htdocs/typo3/32/coreinstall/typo3/ext/phpmyadmin/modsub/
 		))
 		 */

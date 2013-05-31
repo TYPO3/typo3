@@ -64,7 +64,7 @@ class RecyclerGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Sch
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldHtml,
 			'label' => 'LLL:EXT:scheduler/mod1/locallang.xml:label.recyclerGarbageCollection.numberOfDays',
-			'cshKey' => '_MOD_tools_txschedulerM1',
+			'cshKey' => '_MOD_system_txschedulerM1',
 			'cshLabel' => $fieldId
 		);
 		return $additionalFields;

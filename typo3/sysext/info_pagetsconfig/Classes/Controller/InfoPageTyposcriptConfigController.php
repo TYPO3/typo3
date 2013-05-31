@@ -161,7 +161,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 				$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_func', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
 				break;
 			case '1g':
-				$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.web_ts', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
+				$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('mod.integration_ts', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));
 				break;
 			case '2':
 				$modTSconfig = $GLOBALS['BE_USER']->getTSConfig('RTE', \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($this->pObj->id));

@@ -288,10 +288,10 @@ class DatabaseIntegrityView {
 		$availableModFuncs = array('records', 'relations', 'search', 'filesearch', 'refindex');
 		$content = '<dl class="t3-overview-list">';
 		foreach ($availableModFuncs as $modFunc) {
-			$functionUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tools_dbint') . '&SET[function]=' . $modFunc;
+			$functionUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('system_dbint') . '&SET[function]=' . $modFunc;
 			$title = $GLOBALS['LANG']->getLL($modFunc);
 			$description = $GLOBALS['LANG']->getLL($modFunc . '_description');
-			$icon = '<img src="' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'MOD:tools_dbint/db.gif', '', 1) . '" width="16" height="16" title="' . $title . '" alt="' . $title . '" />';
+			$icon = '<img src="' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'MOD:system_dbint/db.gif', '', 1) . '" width="16" height="16" title="' . $title . '" alt="' . $title . '" />';
 			$content .= '
 				<dt><a href="' . htmlspecialchars($functionUrl) . '">' . $icon . $title . '</a></dt>
 				<dd>' . $description . '</dd>
@@ -466,7 +466,7 @@ class DatabaseIntegrityView {
 				if (is_array($admin->lRecords[$t])) {
 					foreach ($admin->lRecords[$t] as $data) {
 						if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($admin->lostPagesList, $data[pid])) {
-							$lr .= '<nobr><strong><a href="' . htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tools_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid'])) . '"><img src="' . $BACK_PATH . 'gfx/required_h.gif" width="10" hspace="3" height="10" border="0" align="top" title="' . $GLOBALS['LANG']->getLL('fixLostRecord') . '"></a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</strong></nobr><br>';
+							$lr .= '<nobr><strong><a href="' . htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('system_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid'])) . '"><img src="' . $BACK_PATH . 'gfx/required_h.gif" width="10" hspace="3" height="10" border="0" align="top" title="' . $GLOBALS['LANG']->getLL('fixLostRecord') . '"></a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</strong></nobr><br>';
 						} else {
 							$lr .= '<nobr><img src="' . $BACK_PATH . 'clear.gif" width="16" height="1" border="0"><font color="Gray">uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</font></nobr><br>';
 						}

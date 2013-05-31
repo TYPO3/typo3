@@ -1376,7 +1376,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 */
 	protected function getTemplateMarkers() {
 		$markers = array(
-			'CSH' => \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('_MOD_tools_txschedulerM1', ''),
+			'CSH' => \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('_MOD_system_txschedulerM1', ''),
 			'FUNC_MENU' => $this->getFunctionMenu(),
 			'CONTENT' => $this->content,
 			'TITLE' => $GLOBALS['LANG']->getLL('title')
