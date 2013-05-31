@@ -163,8 +163,10 @@ $registry->addDriversToTCA();
 $GLOBALS['TBE_MODULES'] = array(
 	'web' => 'list',
 	'file' => '',
+	'integration' => '',
 	'user' => '',
 	'tools' => '',
+	'system' => '',
 	'help' => ''
 );
 

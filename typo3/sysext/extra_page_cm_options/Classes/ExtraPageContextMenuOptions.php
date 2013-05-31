@@ -99,7 +99,7 @@ class ExtraPageContextMenuOptions {
 				if (!in_array('new_wizard', $backRef->disabledItems) && ($table === 'pages' || $table === 'tt_content')) {
 					$localItems['new_wizard'] = $backRef->DB_newWizard($table, $uid, $backRef->rec);
 				}
-				if (!in_array('perms', $backRef->disabledItems) && $table === 'pages' && $GLOBALS['BE_USER']->check('modules', 'web_perm')) {
+				if (!in_array('perms', $backRef->disabledItems) && $table === 'pages' && $GLOBALS['BE_USER']->check('modules', 'integration_perm')) {
 					$localItems['perms'] = $backRef->DB_perms($table, $uid, $backRef->rec);
 				}
 				if (!in_array('db_list', $backRef->disabledItems) && $GLOBALS['BE_USER']->check('modules', 'web_list')) {

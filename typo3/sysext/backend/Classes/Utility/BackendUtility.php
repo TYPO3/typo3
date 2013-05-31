@@ -3897,7 +3897,7 @@ class BackendUtility {
 			$registry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
 			$lastRefIndexUpdate = $registry->get('core', 'sys_refindex_lastUpdate');
 			if (!$count && $lastRefIndexUpdate) {
-				$url =  static::getModuleUrl('tools_dbint') . '&id=0&SET[function]=refindex';
+				$url =  static::getModuleUrl('system_dbint') . '&id=0&SET[function]=refindex';
 				$warnings['backend_reference'] = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.backend_reference_index'), '<a href="' . $url . '">', '</a>', self::dateTime($lastRefIndexUpdate));
 			}
 			// Check for memcached if configured

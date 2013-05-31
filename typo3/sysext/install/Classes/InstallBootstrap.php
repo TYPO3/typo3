@@ -118,7 +118,7 @@ class InstallBootstrap {
 						case sensitive, but the file itself can simply be an empty file.
 					</li>
 					<li class="t3-install-locked-user-settings">
-						Alternatively, in the Backend, go to <a href="javascript:top.goToModule(\'tools_install\',1);">Admin tools &gt; Install</a>
+						Alternatively, in the Backend, go to <a href="javascript:top.goToModule(\'system_install\',1);">Admin tools &gt; Install</a>
 						and let TYPO3 create this file for you.<br />
 						You are recommended to log out from the Install Tool after finishing your work.
 						The file will then automatically be deleted.

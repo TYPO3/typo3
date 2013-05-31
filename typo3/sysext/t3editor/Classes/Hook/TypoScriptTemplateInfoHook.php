@@ -65,7 +65,7 @@ class TypoScriptTemplateInfoHook {
 	 */
 	public function preStartPageHook($parameters, $pObj) {
 		// Enable editor in Template-Modul
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('M') === 'web_ts') {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('M') === 'integration_ts') {
 			$t3editor = $this->getT3editor();
 			// Insert javascript code in document header
 			$pObj->JScode .= $t3editor->getJavascriptCode($pObj);
@@ -150,7 +150,7 @@ class TypoScriptTemplateInfoHook {
 						$tstemplateinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\TstemplateInfo\\Controller\\TypoScriptTemplateInformationModuleFunctionController');
 						/* @var $tstemplateinfo \TYPO3\CMS\TstemplateInfo\Controller\TypoScriptTemplateInformationModuleFunctionController */
 						// load the MOD_SETTINGS in order to check if the includeTypoScriptFileContent is set
-						$tstemplateinfo->pObj->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(array('includeTypoScriptFileContent' => TRUE), array(), 'web_ts');
+						$tstemplateinfo->pObj->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(array('includeTypoScriptFileContent' => TRUE), array(), 'integration_ts');
 						$recData['sys_template'][$saveId] = $tstemplateinfo->processTemplateRowBeforeSaving($recData['sys_template'][$saveId]);
 						// Create new tce-object
 						$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');

@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 /**
  * Module: TypoScript Tools
  *
- * $TYPO3_CONF_VARS["MODS"]["web_ts"]["onlineResourceDir"]  = Directory of default resources. Eg. "fileadmin/res/" or so.
+ * $TYPO3_CONF_VARS["MODS"]["integration_ts"]["onlineResourceDir"]  = Directory of default resources. Eg. "fileadmin/res/" or so.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -132,7 +132,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 				'id' => $this->id,
 				'template' => 'all'
 			);
-			$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
+			$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('integration_ts', $urlParameters);
 			$this->doc->form = '<form action="' . htmlspecialchars($aHref) . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" name="editForm">';
 			// JavaScript
 			$this->doc->JScode = '
@@ -145,7 +145,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 				document.forms[0].action = ' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(($aHref . '#'), TRUE) . '+aname;
 			}
 			function brPoint(lnumber,t) {
-				window.location.href = ' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(($aHref . '&SET[function]=TYPO3\\CMS\\TstemplateObjbrowser\\Controller\\TypoScriptTemplateObjectBrowserModuleFunctionController&SET[ts_browser_type]='), TRUE) . '+(t?"setup":"const")+"&breakPointLN="+lnumber;
+				window.location.href = ' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(($aHref . '&SET[function]=tx_tstemplateobjbrowser&SET[ts_browser_type]='), TRUE) . '+(t?"setup":"const")+"&breakPointLN="+lnumber;
 				return false;
 			}
 		</script>
@@ -249,7 +249,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 		if ($this->id && $this->access) {
 			// View page
 			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . '</a>';
-			if ($this->extClassConf['name'] == 'TYPO3\CMS\TstemplateInfo\Controller\TypoScriptTemplateInformationModuleFunctionController') {
+			if ($this->extClassConf['name'] == 'tx_tstemplateinfo') {
 				// NEW button
 				$buttons['new'] = '<input type="image" class="c-inputButton" name="createExtension" value="New"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/new_el.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle', TRUE) . '" />';
 				if (!empty($this->e) && !\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('abort') && !\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('saveclose')) {
@@ -268,16 +268,16 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 						'html' => '<input type="image" class="c-inputButton" name="abort" src="clear.gif" ' . 'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '" ' . 'value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '" ' . '/>'
 					));
 				}
-			} elseif ($this->extClassConf['name'] == 'TYPO3\CMS\TstemplateCeditor\Controller\TypoScriptTemplateConstantEditorModuleFunctionController' && count($this->MOD_MENU['constant_editor_cat'])) {
+			} elseif ($this->extClassConf['name'] == 'tx_tstemplateceditor' && count($this->MOD_MENU['constant_editor_cat'])) {
 				// SAVE button
 				$buttons['save'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" class="c-inputButton" name="submit" src="clear.gif" ' . 'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . 'value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . '/>'));
-			} elseif ($this->extClassConf['name'] == 'TYPO3\CMS\TstemplateObjbrowser\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController') {
+			} elseif ($this->extClassConf['name'] == 'tx_tstemplateobjbrowser') {
 				if (!empty($this->sObj)) {
 					// BACK
 					$urlParameters = array(
 						'id' => $this->id
 					);
-					$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
+					$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('integration_ts', $urlParameters);
 					$buttons['back'] = '<a href="' . htmlspecialchars($aHref) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
 				}
 			}
@@ -307,11 +307,11 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 		$urlParameters = array(
 			'id' => $this->id
 		);
-		$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
+		$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('integration_ts', $urlParameters);
 		if ($onlyKey) {
-			$title = '<a href="' . htmlspecialchars(($aHref . '&e[' . $onlyKey . ']=1&SET[function]=TYPO3\\CMS\\TstemplateInfo\\Controller\\TypoScriptTemplateInformationModuleFunctionController')) . '">' . htmlspecialchars($title) . '</a>';
+			$title = '<a href="' . htmlspecialchars(($aHref . '&e[' . $onlyKey . ']=1&SET[function]=tx_tstemplateinfo')) . '">' . htmlspecialchars($title) . '</a>';
 		} else {
-			$title = '<a href="' . htmlspecialchars(($aHref . '&e[constants]=1&e[config]=1&SET[function]=TYPO3\\CMS\\TstemplateInfo\\Controller\\TypoScriptTemplateInformationModuleFunctionController')) . '">' . htmlspecialchars($title) . '</a>';
+			$title = '<a href="' . htmlspecialchars(($aHref . '&e[constants]=1&e[config]=1&SET[function]=tx_tstemplateinfo')) . '">' . htmlspecialchars($title) . '</a>';
 		}
 		return $title;
 	}
@@ -369,7 +369,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			$urlParameters = array(
 				'id' => $first['uid']
 			);
-			$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
+			$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('integration_ts', $urlParameters);
 			$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('goToClosest'), sprintf($GLOBALS['LANG']->getLL('goToClosestDescription') . '<br /><br />%s<strong>' . $GLOBALS['LANG']->getLL('goToClosestAction') . '</strong>%s', htmlspecialchars($first['title']), $first['uid'], '<a href="' . htmlspecialchars($aHref) . '">', '</a>'), 0, 1);
 		}
 		return $theOutput;
