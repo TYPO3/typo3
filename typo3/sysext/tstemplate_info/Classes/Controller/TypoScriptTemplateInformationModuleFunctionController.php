@@ -55,7 +55,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 		$urlParameters = array(
 			'id' => $this->pObj->id
 		);
-		$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
+		$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('integration_ts', $urlParameters);
 		$ret .= '<a href="' . htmlspecialchars(($aHref . '&e[' . $field . ']=1')) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:editField', TRUE))) . '<strong>' . $label . '&nbsp;&nbsp;</strong></a>';
 		$ret .= '</td><td width="80%" class="bgColor4">' . $data . '&nbsp;</td></tr>';
 		return $ret;
@@ -85,7 +85,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 					$urlParameters = array(
 						'id' => $this->pObj->id
 					);
-					$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
+					$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('integration_ts', $urlParameters);
 					$functions .= '<a href="' . htmlspecialchars(($aHref . '&e[file]=' . rawurlencode($v))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:editFile', TRUE))) . '</a>';
 				}
 				$functions .= '</td>';
@@ -225,7 +225,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 				'id' => $this->pObj->id,
 				'SET[templatesOnPage]' => $newId
 			);
-			$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
+			$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('integration_ts', $urlParameters);
 			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($aHref);
 		}
 		if ($existTemplate) {

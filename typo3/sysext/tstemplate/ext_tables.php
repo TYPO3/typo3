@@ -4,7 +4,7 @@ if (!defined('TYPO3_MODE')) {
 }
 if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
-		'web',
+		'integration',
 		'ts',
 		'',
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'ts/'

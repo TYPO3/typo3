@@ -4,8 +4,8 @@ if (!defined('TYPO3_MODE')) {
 }
 if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
-		'web_ts',
-		'TYPO3\\CMS\\TstemplateObjbrowser\\Controller\\TypoScriptTemplateObjectBrowserModuleFunctionController',
+		'integration_ts',
+		'tx_tstemplateobjbrowser',
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Controller/TypoScriptTemplateObjectBrowserModuleFunctionController.php',
 		'LLL:EXT:tstemplate/ts/locallang.xlf:objectBrowser'
 	);
