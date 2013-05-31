@@ -6,7 +6,7 @@ if (TYPO3_MODE === 'BE') {
 	// Module Admin > Backend Users
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
 		'TYPO3.CMS.' . $_EXTKEY,
-		'tools',
+		'system',
 		'tx_Beuser',
 		'top',
 		array(

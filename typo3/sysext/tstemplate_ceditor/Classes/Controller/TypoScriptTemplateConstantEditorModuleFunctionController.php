@@ -33,7 +33,7 @@ namespace TYPO3\CMS\TstemplateCeditor\Controller;
  * Module Include-file
  *
  * localconf-variables:
- * $TYPO3_CONF_VARS['MODS']['web_ts']['onlineResourceDir'] = 'fileadmin/fonts/';		// This is the path (must be in "fileadmin/" !!) where the web_ts/constant-editor submodule fetches online resources. Put fonts (ttf) and standard images here!
+ * $TYPO3_CONF_VARS['MODS']['integration_ts']['onlineResourceDir'] = 'fileadmin/fonts/';		// This is the path (must be in "fileadmin/" !!) where the integration_ts/constant-editor submodule fetches online resources. Put fonts (ttf) and standard images here!
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
