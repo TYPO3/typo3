@@ -138,7 +138,7 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 			'id' => $GLOBALS['SOBE']->id,
 			'template' => 'all'
 		);
-		$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
+		$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('integration_ts', $urlParameters);
 		$completeLink = '<p><a href="' . htmlspecialchars($aHref) . '">' . $GLOBALS['LANG']->getLL('viewCompleteTS', TRUE) . '</a></p>';
 		$theOutput .= $this->pObj->doc->spacer(5);
 		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('completeTS', TRUE), $completeLink, 0, 1);
