@@ -720,7 +720,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 						$actionContent .= '<hr /> ' . $fullsearch->tableWrap($sql_query['qSelect']);
 					}
 					$actionContent .= '<br /><a title="' . $GLOBALS['LANG']->getLL('action_editQuery') . '" href="'
-						. \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tools_dbint')
+						. \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('system_dbint')
 						. '&id=' . '&SET[function]=search' . '&SET[search]=query'
 						. '&storeControl[STORE]=-' . $record['uid'] . '&storeControl[LOAD]=1' . '">
 						<img class="icon"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'],

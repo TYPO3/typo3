@@ -427,7 +427,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 					if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('breakPointLN')) {
 						$urlParameters['breakPointLN'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('breakPointLN');
 					}
-					$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters) . '#' . $goto;
+					$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('integration_ts', $urlParameters) . '#' . $goto;
 					$HTML .= '<a name="' . $goto . '" href="' . htmlspecialchars($aHref) . '">' . $theIcon . '</a>';
 				}
 				$label = $key;
@@ -443,7 +443,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 						if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('breakPointLN')) {
 							$urlParameters['breakPointLN'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('breakPointLN');
 						}
-						$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
+						$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('integration_ts', $urlParameters);
 						if ($this->bType != 'const') {
 							$ln = is_array($arr[$key . '.ln..']) ? 'Defined in: ' . $this->lineNumberToScript($arr[($key . '.ln..')]) : 'N/A';
 						} else {
@@ -654,7 +654,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 					'id' => $GLOBALS['SOBE']->id,
 					'template' => $row['templateID']
 				);
-				$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
+				$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('integration_ts', $urlParameters);
 				$A_B = '<a href="' . htmlspecialchars($aHref) . '">';
 				$A_E = '</a>';
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('template') == $row['templateID']) {

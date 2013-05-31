@@ -121,7 +121,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 		}
 		$compareUserList = $this->moduleData->getCompareUserList();
 		$this->view->assign('demand', $demand);
-		$this->view->assign('returnUrl', 'mod.php?M=tools_BeuserTxBeuser');
+		$this->view->assign('returnUrl', 'mod.php?M=system_beuserTxBeuser');
 		$this->view->assign('dateFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']);
 		$this->view->assign('timeFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
 		$this->view->assign('backendUsers', $this->backendUserRepository->findDemanded($demand));
