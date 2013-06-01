@@ -177,6 +177,9 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 	 * @return mixed Value
 	 */
 	protected function getPropertyValue() {
+		if (!$this->viewHelperVariableContainer->exists('TYPO3\Fluid\ViewHelpers\FormViewHelper', 'formObject')) {
+			return NULL;
+		}
 		$formObject = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'formObject');
 		$propertyName = $this->arguments['property'];
 		if (is_array($formObject)) {
