@@ -47,6 +47,18 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 	}
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
+	 */
+	protected $environmentService;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+	 */
+	public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService) {
+		$this->environmentService = $environmentService;
+	}
+
+	/**
 	 * @var array
 	 */
 	protected $typoScriptSetupCache = array();
@@ -136,16 +148,27 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 		if ($pageId > 0) {
 			return $pageId;
 		}
+
+		if ($this->environmentService->isEnvironmentInFrontendMode()) {
+			$contentObject = $this->getContentObject();
+			$pageId = (int) $contentObject->data['pid'];
+			if ($pageId > 0) {
+				return $pageId;
+			}
+		}
+
 		// get current site root
 		$rootPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'pages', 'deleted=0 AND hidden=0 AND is_siteroot=1', '', '', '1');
 		if (count($rootPages) > 0) {
 			return $rootPages[0]['uid'];
 		}
+
 		// get root template
 		$rootTemplates = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('pid', 'sys_template', 'deleted=0 AND hidden=0 AND root=1', '', '', '1');
 		if (count($rootTemplates) > 0) {
 			return $rootTemplates[0]['pid'];
 		}
+
 		// fallback
 		return self::DEFAULT_BACKEND_STORAGE_PID;
 	}
