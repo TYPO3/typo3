@@ -286,7 +286,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 							$newPass = $_params['newPassword'];
 						}
 						// Save new password and clear DB-hash
-						$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid=' . $user['uid'], array('password' => $newPass, 'felogin_forgotHash' => ''));
+						$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid=' . $user['uid'], array('password' => $newPass, 'felogin_forgotHash' => '', 'tstamp' => $GLOBALS['EXEC_TIME']));
 						$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('change_password_done_message', $this->conf['changePasswordDoneMessage_stdWrap.']);
 						$done = TRUE;
 						$subpartArray['###CHANGEPASSWORD_FORM###'] = '';
