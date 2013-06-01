@@ -71,17 +71,29 @@ class CheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
 	 */
 	public function render($checked = NULL) {
 		$this->tag->addAttribute('type', 'checkbox');
+
 		$nameAttribute = $this->getName();
 		$valueAttribute = $this->getValue();
-		if ($checked === NULL && $this->isObjectAccessorMode()) {
-			$propertyValue = $this->getPropertyValue();
-			if (is_bool($propertyValue)) {
-				$checked = $propertyValue === (boolean) $valueAttribute;
-			} elseif (is_array($propertyValue)) {
-				$checked = in_array($valueAttribute, $propertyValue);
-				$nameAttribute .= '[]';
+		if ($this->isObjectAccessorMode()) {
+			if ($this->hasMappingErrorOccured()) {
+				$propertyValue = $this->getLastSubmittedFormData();
 			} else {
-				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Checkbox viewhelpers can only be bound to properties of type boolean or array. Property "' . $this->arguments['property'] . '" is of type "' . (is_object($propertyValue) ? get_class($propertyValue) : gettype($propertyValue)) . '".', 1248261038);
+				$propertyValue = $this->getPropertyValue();
+			}
+
+			if ($propertyValue instanceof \Traversable) {
+				$propertyValue = iterator_to_array($propertyValue);
+			}
+			if (is_array($propertyValue)) {
+				if ($checked === NULL) {
+					$checked = in_array($valueAttribute, $propertyValue);
+				}
+				$nameAttribute .= '[]';
+			} elseif (($multiple = FALSE) === TRUE) {
+				// @todo: implement correct as in Flow.Fluid
+				$nameAttribute .= '[]';
+			} elseif ($checked === NULL && $propertyValue !== NULL) {
+				$checked = (boolean) $propertyValue === (boolean) $valueAttribute;
 			}
 		}
 		$this->registerFieldNameForFormTokenGeneration($nameAttribute);
