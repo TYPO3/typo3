@@ -27,10 +27,13 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Validator for text
+ * Validator for "plain" text.
+ *
+ * @api
  */
-class TextValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
+class TextValidator extends AbstractValidator {
 
 	/**
 	 * Returns TRUE, if the given property ($propertyValue) is a valid text (contains no XML tags).

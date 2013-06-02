@@ -27,10 +27,13 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Validator for not empty values
+ * Validator for not empty values.
+ *
+ * @api
  */
-class NotEmptyValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
+class NotEmptyValidator extends AbstractValidator {
 
 	/**
 	 * Checks if the given property ($propertyValue) is not empty (NULL, empty string, empty array or empty object).

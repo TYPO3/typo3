@@ -27,10 +27,13 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Validator for general numbers
+ * Validator for general numbers.
+ *
+ * @api
  */
-class NumberValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
+class NumberValidator extends AbstractValidator {
 
 	/**
 	 * Checks if the given value is a valid number.

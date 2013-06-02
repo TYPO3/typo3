@@ -28,9 +28,9 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Contract for an object validator
+ * Contract for a validator
  *
- * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
+ * @api
  */
 interface ObjectValidatorInterface extends \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {
 
@@ -39,6 +39,8 @@ interface ObjectValidatorInterface extends \TYPO3\CMS\Extbase\Validation\Validat
 	 *
 	 * @param object $object The object to be checked
 	 * @return boolean TRUE if this validator can validate instances of the given object or FALSE if it can't
+	 *
+	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
 	 */
 	public function canValidate($object);
 
@@ -50,6 +52,8 @@ interface ObjectValidatorInterface extends \TYPO3\CMS\Extbase\Validation\Validat
 	 * @param object $object The object containing the property to validate
 	 * @param string $propertyName Name of the property to validate
 	 * @return boolean TRUE if the property value is valid, FALSE if an error occured
+	 *
+	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
 	 */
 	public function isPropertyValid($object, $propertyName);
 }

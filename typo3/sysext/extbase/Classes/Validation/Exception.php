@@ -27,8 +27,11 @@ namespace TYPO3\CMS\Extbase\Validation;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * A generic validation exception
+ *
+ * @api
  */
 class Exception extends \TYPO3\CMS\Extbase\Exception {
 

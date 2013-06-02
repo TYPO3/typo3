@@ -152,7 +152,7 @@ class ResultTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @param string $dataTypeInSingular
 	 * @param string $dataTypeInPlural
 	 */
-	public function hasMessageshouldReturnTrueIfSubObjectHasErrors($dataTypeInSingular, $dataTypeInPlural) {
+	public function hasMessagesShouldReturnTrueIfSubObjectHasErrors($dataTypeInSingular, $dataTypeInPlural) {
 		$addMethodName = 'add' . $dataTypeInSingular;
 		$methodName = 'has' . $dataTypeInPlural;
 		$message = $this->getMockMessage($dataTypeInSingular);
