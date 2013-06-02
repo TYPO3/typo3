@@ -39,7 +39,10 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestC
 	 * @test
 	 */
 	public function isValidReturnsFalseIfTheValueIsNoObject() {
+		$configurationManager = $this->getMock('TYPO3\CMS\Extbase\Configuration\ConfigurationManager', array('isFeatureEnabled'), array(), '', FALSE);
+		$configurationManager->expects($this->any())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(FALSE));
 		$validator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\GenericObjectValidator', array('addError'), array(), '', FALSE);
+		$validator->injectConfigurationManager($configurationManager);
 		$this->assertFalse($validator->isValid('foo'));
 	}
 
@@ -47,9 +50,12 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestC
 	 * @test
 	 */
 	public function isValidChecksAllPropertiesForWhichAPropertyValidatorExists() {
+		$configurationManager = $this->getMock('TYPO3\CMS\Extbase\Configuration\ConfigurationManager', array('isFeatureEnabled'), array(), '', FALSE);
+		$configurationManager->expects($this->any())->method('isFeatureEnabled')->with('rewrittenPropertyMapper')->will($this->returnValue(FALSE));
 		$mockPropertyValidators = array('foo' => 'validator', 'bar' => 'validator');
 		$mockObject = new \stdClass();
 		$validator = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\GenericObjectValidator', array('addError', 'isPropertyValid'), array(), '', FALSE);
+		$validator->injectConfigurationManager($configurationManager);
 		$validator->_set('propertyValidators', $mockPropertyValidators);
 		$validator->expects($this->at(0))->method('isPropertyValid')->with($mockObject, 'foo')->will($this->returnValue(TRUE));
 		$validator->expects($this->at(1))->method('isPropertyValid')->with($mockObject, 'bar')->will($this->returnValue(TRUE));

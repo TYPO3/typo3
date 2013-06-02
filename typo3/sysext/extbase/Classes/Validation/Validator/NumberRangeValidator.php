@@ -36,49 +36,60 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 class NumberRangeValidator extends AbstractValidator {
 
 	/**
-	 * Returns TRUE, if the given property ($propertyValue) is a valid number in the given range.
-	 *
-	 * If at least one error occurred, the result is FALSE.
+	 * @var array
+	 */
+	protected $supportedOptions = array(
+		'minimum' => array(0, 'The minimum value to accept', 'integer'),
+		'maximum' => array(PHP_INT_MAX, 'The maximum value to accept', 'integer')
+	);
+
+	/**
+	 * The given value is valid if it is a number in the specified range.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @return boolean TRUE if the value is within the range, otherwise FALSE
+	 * @return void
+	 * @api
 	 */
 	public function isValid($value) {
-		if (isset($this->options['minimum'])) {
-			$this->options['startRange'] = $this->options['minimum'];
-		}
-		if (isset($this->options['maximum'])) {
-			$this->options['endRange'] = $this->options['maximum'];
-		}
-		$this->errors = array();
 		if (!is_numeric($value)) {
 			$this->addError(
 				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
 					'validator.numberrange.notvalid',
 					'extbase'
 				), 1221563685);
-			return FALSE;
+			return;
 		}
-		$startRange = isset($this->options['startRange']) ? intval($this->options['startRange']) : 0;
-		$endRange = isset($this->options['endRange']) ? intval($this->options['endRange']) : PHP_INT_MAX;
-		if ($startRange > $endRange) {
-			$x = $startRange;
-			$startRange = $endRange;
-			$endRange = $x;
+
+		$minimum = $this->options['minimum'];
+		$maximum = $this->options['maximum'];
+
+		/**
+		 * @todo: remove this fallback in 6.3
+		 * @deprecated since Extbase 1.4, will be removed two versions after Extbase 6.1
+		 */
+		if ($minimum === NULL && isset($this->options['startRange'])) {
+			$minimum = $this->options['startRange'];
 		}
-		if ($value >= $startRange && $value <= $endRange) {
-			return TRUE;
+
+		if ($maximum === NULL && isset($this->options['endRange'])) {
+			$maximum = $this->options['endRange'];
 		}
-		$this->addError(
-			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+
+		if ($minimum > $maximum) {
+			$x = $minimum;
+			$minimum = $maximum;
+			$maximum = $x;
+		}
+		if ($value < $minimum || $value > $maximum) {
+			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
 				'validator.numberrange.range',
 				'extbase',
 				array(
-					$startRange,
-					$endRange
+					$minimum,
+					$maximum
 				)
-			), 1221561046, array($startRange, $endRange));
-		return FALSE;
+			), 1221561046, array($minimum, $maximum));
+		}
 	}
 }
 

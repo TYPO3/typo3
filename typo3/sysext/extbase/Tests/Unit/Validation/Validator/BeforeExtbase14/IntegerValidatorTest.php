@@ -71,8 +71,9 @@ class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @param mixed $number
 	 */
 	public function integerValidatorReturnsTrueForAValidInteger($number) {
-		$integerValidator = new \TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator();
-		$this->assertTrue($integerValidator->isValid($number), "Validator declared {$number} as invalid though it is valid.");
+		$integerValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\IntegerValidator', array('addError'), array(), '', FALSE);
+		$integerValidator->expects($this->never())->method('addError');
+		$integerValidator->isValid($number);
 	}
 
 	/**
@@ -82,7 +83,8 @@ class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function integerValidatorReturnsFalseForAnInvalidInteger($number) {
 		$integerValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\IntegerValidator', array('addError'), array(), '', FALSE);
-		$this->assertFalse($integerValidator->isValid($number), "Validator declared {$number} as valid though it is invalid.");
+		$integerValidator->expects($this->once())->method('addError');
+		$integerValidator->isValid($number);
 	}
 
 	/**

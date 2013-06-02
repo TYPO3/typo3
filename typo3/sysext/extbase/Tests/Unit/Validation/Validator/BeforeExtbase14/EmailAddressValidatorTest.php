@@ -56,8 +56,9 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 	 * @param mixed $address
 	 */
 	public function emailAddressValidatorReturnsTrueForAValidEmailAddress($address) {
-		$emailAddressValidator = new \TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator();
-		$this->assertTrue($emailAddressValidator->isValid($address), "{$address} was declared to be invalid, but it is valid.");
+		$emailAddressValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator', array('addError'), array(), '', FALSE);
+		$emailAddressValidator->expects($this->never())->method('addError');
+		$emailAddressValidator->isValid($address);
 	}
 
 	/**
@@ -84,7 +85,8 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 	 */
 	public function emailAddressValidatorReturnsFalseForAnInvalidEmailAddress($address) {
 		$emailAddressValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator', array('addError'), array(), '', FALSE);
-		$this->assertFalse($emailAddressValidator->isValid($address));
+		$emailAddressValidator->expects($this->once())->method('addError');
+		$emailAddressValidator->isValid($address);
 	}
 
 	/**

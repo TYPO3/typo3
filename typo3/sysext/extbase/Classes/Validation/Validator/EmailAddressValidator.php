@@ -37,22 +37,29 @@ class EmailAddressValidator extends AbstractValidator {
 
 	/**
 	 * Checks if the given value is a valid email address.
-	 * If at least one error occurred, the result is FALSE.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @return boolean TRUE if the value is valid, FALSE if an error occured
+	 * @return void
+	 * @api
 	 */
 	public function isValid($value) {
-		$this->errors = array();
-		if (is_string($value) && \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($value)) {
-			return TRUE;
+		if (!is_string($value) || !$this->validEmail($value)) {
+			$this->addError(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					'validator.emailaddress.notvalid',
+					'extbase'
+				), 1221559976);
 		}
-		$this->addError(
-			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
-				'validator.emailaddress.notvalid',
-				'extbase'
-			), 1221559976);
-		return FALSE;
+	}
+
+	/**
+	 * Checking syntax of input email address
+	 *
+	 * @param string $emailAddress Input string to evaluate
+	 * @return boolean Returns TRUE if the $email address (input string) is valid
+	 */
+	protected function validEmail($emailAddress) {
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($emailAddress);
 	}
 }
 
