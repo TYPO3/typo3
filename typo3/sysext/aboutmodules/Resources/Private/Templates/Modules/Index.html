@@ -18,22 +18,9 @@
 			<f:for each="{modules}" as="mainModule">
 				<tr class="c-mainitem">
 					<td colspan="3">
-						<f:if condition="{mainModules.subModules -> f:count()} > 0">
-							<f:then>
-								<h2><f:image src="{mainModule.icon}" alt="" /> {mainModule.label}</h2>
-							</f:then>
-							<f:else>
-								<h2>
-									<a href="#" onclick="top.goToModule('{mainModule.name}'); return false;">
-										<f:image src="{mainModule.icon}" alt="" />
-									</a>
-
-									<a href="#" onclick="top.goToModule('{mainModule.name}'); return false;">
-										{mainModule.label}
-									</a>
-								</h2>
-							</f:else>
-						</f:if>
+						<h2>
+							{mainModule.label}
+						</h2>
 					</td>
 				</tr>
 
