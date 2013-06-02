@@ -71,6 +71,14 @@ interface ObjectManagerInterface extends \TYPO3\CMS\Core\SingletonInterface {
 	 * @api
 	 */
 	public function getEmptyObject($className);
+
+	/**
+	 * Returns the scope of the specified object.
+	 *
+	 * @param string $objectName The object name
+	 * @return integer One of the Container::SCOPE_ constants
+	 */
+	public function getScope($objectName);
 }
 
 ?>

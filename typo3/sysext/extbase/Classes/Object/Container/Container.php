@@ -36,6 +36,9 @@ namespace TYPO3\CMS\Extbase\Object\Container;
  */
 class Container implements \TYPO3\CMS\Core\SingletonInterface {
 
+	const SCOPE_PROTOTYPE = 1;
+	const SCOPE_SINGLETON = 2;
+
 	/**
 	 * internal cache for classinfos
 	 *
@@ -326,6 +329,24 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->getClassInfoCache()->set($classNameHash, $classInfo);
 		}
 		return $classInfo;
+	}
+
+	/**
+	 * @param string $className
+	 *
+	 * @return boolean
+	 */
+	public function isSingleton($className) {
+		return $this->getClassInfo($className)->getIsSingleton();
+	}
+
+	/**
+	 * @param string $className
+	 *
+	 * @return boolean
+	 */
+	public function isPrototype($className) {
+		return !$this->isSingleton($className);
 	}
 }
 
