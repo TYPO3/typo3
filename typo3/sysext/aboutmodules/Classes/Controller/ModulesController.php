@@ -68,7 +68,6 @@ class ModulesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 			$mainModuleData = array();
 			$moduleKey = $moduleName . '_tab';
 			$mainModuleData['name'] = $moduleName;
-			$mainModuleData['icon'] = substr($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey], strlen(PATH_site));
 			$mainModuleData['label'] = $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey];
 			if (is_array($moduleInfo['sub']) && count($moduleInfo['sub']) > 0) {
 				$mainModuleData['subModules'] = $this->getSubModuleData($moduleName, $moduleInfo['sub']);
