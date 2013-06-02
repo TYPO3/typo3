@@ -80,7 +80,7 @@ class ValidationResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
 	 */
 	public function render($for = '', $as = 'validationResults') {
 		$validationResults = $this->controllerContext->getRequest()->getOriginalRequestMappingResults();
-		if ($for !== '') {
+		if ($validationResults !== NULL && $for !== '') {
 			$validationResults = $validationResults->forProperty($for);
 		}
 		$this->templateVariableContainer->add($as, $validationResults);

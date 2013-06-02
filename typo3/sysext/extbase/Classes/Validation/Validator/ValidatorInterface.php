@@ -34,6 +34,30 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  */
 interface ValidatorInterface {
 
+	/**
+	 * Constructs the validator and sets validation options
+	 *
+	 * @param array $options The validation options
+	 * @api
+	 */
+	//public function __construct(array $options = array());
+
+	/**
+	 * Checks if the given value is valid according to the validator, and returns
+	 * the Error Messages object which occurred.
+	 *
+	 * @param mixed $value The value that should be validated
+	 * @return \TYPO3\CMS\Extbase\Error\Result
+	 * @api
+	 */
+	//public function validate($value);
+
+	/**
+	 * Returns the options of this validator which can be specified in the constructor
+	 *
+	 * @return array
+	 */
+	//public function getOptions();
 }
 
 ?>
