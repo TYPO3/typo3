@@ -2,44 +2,36 @@
 TYPO3 styles for basic elements
 - - - - - - - - - - - - - - - - - - - - - */
 
+body {
+	color: black;
+	font-family: 'Helvetica Neue', Arial, sans-serif;
+	font-size: 13px;
+	line-height: 1.5;
+}
+
 h1,
 h2,
 h3,
 h4 {
-	color: #555555;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-weight: bold;
+	color: #333;
+	font-weight: normal;
 }
 
-/* Occasionally used, eg. in About Modules: */
 h1 {
-	font-family: Share, Verdana, Arial, Helvetica, sans-serif;
-	font-size: 24px;
+	font-family: Share, Arial, Helvetica, sans-serif;
 	font-variant: normal;
 	font-weight: normal;
 }
 
-/* MAIN page header: */
 h2 {
-	font-size: 14px;
-	line-height: 18px;
 }
 
-/* Normal section headers */
 h3 {
-	font-size: 12px;
 }
 
 /* Discrete section headers (no background) */
 h4 {
-	font-size: 12px;
-}
-
-body {
-	color: black;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	line-height: 14px;
+	text-transform: uppercase;
 }
 
 /* Preformatted text - not used so much in TYPO3 */
@@ -289,9 +281,7 @@ input,
 textarea,
 select,
 button {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 11px;
-	line-height: 16px;
 }
 
 textarea {

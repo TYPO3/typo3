@@ -76,7 +76,7 @@ Module menu
 #typo3-menu li div.modgroup {
 	color: #252524;
 	cursor: pointer;
-	font-size: 10px;
+	font-size: 9px;
 	font-weight: bold;
 	text-transform: uppercase;
 }
@@ -84,7 +84,7 @@ Module menu
 #typo3-menu li ul li {
 	cursor: pointer;
 	font-weight: normal;
-	line-height: 15px;
+	font-size: 11px;
 }
 
 #typo3-menu li ul li a {
