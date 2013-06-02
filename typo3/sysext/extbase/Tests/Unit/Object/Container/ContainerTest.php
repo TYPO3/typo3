@@ -310,6 +310,22 @@ class ContainerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$object = $this->container->getInstance('t3lib_object_prototypeNeedsSingletonInConstructor');
 		$this->assertInstanceOf('t3lib_object_singleton', $object->dependency);
 	}
+
+	/**
+	 * @test
+	 */
+	public function isSingletonReturnsTrueForSingletonInstancesAndFalseForPrototypes() {
+		$this->assertTrue($this->container->isSingleton('TYPO3\CMS\Extbase\Object\Container\Container'));
+		$this->assertFalse($this->container->isSingleton('TYPO3\CMS\Extbase\Core\Bootstrap'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function isPrototypeReturnsFalseForSingletonInstancesAndTrueForPrototypes() {
+		$this->assertFalse($this->container->isPrototype('TYPO3\CMS\Extbase\Object\Container\Container'));
+		$this->assertTrue($this->container->isPrototype('TYPO3\CMS\Extbase\Core\Bootstrap'));
+	}
 }
 
 ?>
