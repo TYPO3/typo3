@@ -39,8 +39,9 @@ class NotEmptyValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function notEmptyValidatorReturnsTrueForASimpleString() {
-		$notEmptyValidator = new \TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator();
-		$this->assertTrue($notEmptyValidator->isValid('a not empty string'));
+		$notEmptyValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NotEmptyValidator', array('addError'), array(), '', FALSE);
+		$notEmptyValidator->expects($this->never())->method('addError');
+		$notEmptyValidator->isValid('a not empty string');
 	}
 
 	/**
@@ -48,7 +49,8 @@ class NotEmptyValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function notEmptyValidatorReturnsFalseForAnEmptyString() {
 		$notEmptyValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NotEmptyValidator', array('addError'), array(), '', FALSE);
-		$this->assertFalse($notEmptyValidator->isValid(''));
+		$notEmptyValidator->expects($this->once())->method('addError');
+		$notEmptyValidator->isValid('');
 	}
 
 	/**
@@ -56,7 +58,8 @@ class NotEmptyValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function notEmptyValidatorReturnsFalseForANullValue() {
 		$notEmptyValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NotEmptyValidator', array('addError'), array(), '', FALSE);
-		$this->assertFalse($notEmptyValidator->isValid(NULL));
+		$notEmptyValidator->expects($this->once())->method('addError');
+		$notEmptyValidator->isValid(NULL);
 	}
 
 	/**

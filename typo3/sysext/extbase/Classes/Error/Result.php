@@ -208,8 +208,14 @@ class Result {
 		if ($propertyPath === '' || $propertyPath === NULL) {
 			return $this;
 		}
-		$propertyPathSegments = explode('.', $propertyPath);
-		return $this->recurseThroughResult($propertyPathSegments);
+		if (strpos($propertyPath, '.') !== FALSE) {
+			return $this->recurseThroughResult(explode('.', $propertyPath));
+		}
+		if (!isset($this->propertyResults[$propertyPath])) {
+			$this->propertyResults[$propertyPath] = new Result();
+			$this->propertyResults[$propertyPath]->setParent($this);
+		}
+		return $this->propertyResults[$propertyPath];
 	}
 
 	/**
@@ -227,6 +233,7 @@ class Result {
 
 		if (!isset($this->propertyResults[$propertyName])) {
 			$this->propertyResults[$propertyName] = new Result();
+			$this->propertyResults[$propertyName]->setParent($this);
 		}
 
 		return $this->propertyResults[$propertyName]->recurseThroughResult($pathSegments);
@@ -416,12 +423,25 @@ class Result {
 	 * @return void
 	 * @api
 	 */
-	public function merge(\TYPO3\CMS\Extbase\Error\Result $otherResult) {
-		$this->mergeProperty($otherResult, 'getErrors', 'addError');
-		$this->mergeProperty($otherResult, 'getWarnings', 'addWarning');
-		$this->mergeProperty($otherResult, 'getNotices', 'addNotice');
+	public function merge(Result $otherResult) {
+		if ($otherResult->errorsExist) {
+			$this->mergeProperty($otherResult, 'getErrors', 'addError');
+		}
+		if ($otherResult->warningsExist) {
+			$this->mergeProperty($otherResult, 'getWarnings', 'addWarning');
+		}
+		if ($otherResult->noticesExist) {
+			$this->mergeProperty($otherResult, 'getNotices', 'addNotice');
+		}
+
 		foreach ($otherResult->getSubResults() as $subPropertyName => $subResult) {
-			$this->forProperty($subPropertyName)->merge($subResult);
+			/** @var $subResult Result */
+			if (array_key_exists($subPropertyName, $this->propertyResults) && $this->propertyResults[$subPropertyName]->hasMessages()) {
+				$this->forProperty($subPropertyName)->merge($subResult);
+			} else {
+				$this->propertyResults[$subPropertyName] = $subResult;
+				$subResult->setParent($this);
+			}
 		}
 	}
 
