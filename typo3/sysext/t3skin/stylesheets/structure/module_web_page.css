@@ -1,6 +1,5 @@
 /* - - - - - - - - - - - - - - - - - - - - -
 Web > Page
-
 - - - - - - - - - - - - - - - - - - - - - */
 
 .t3-lang-gridContainer {
@@ -112,6 +111,7 @@ td.t3-gridCell div.t3-page-ce {
 #ext-cms-layout-db-layout-php h2 {
 	margin-bottom: 0px;
 }
+
 td.t3-page-column.t3-gridCell .t3-page-colHeader {
 	padding-top: 36px;
 }
