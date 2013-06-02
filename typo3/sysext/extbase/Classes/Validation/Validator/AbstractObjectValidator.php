@@ -34,6 +34,16 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  */
 abstract class AbstractObjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ObjectValidatorInterface {
 
+	/**
+	 * Allows to set a container to keep track of validated instances.
+	 *
+	 * @param \SplObjectStorage $validatedInstancesContainer A container to keep track of validated instances
+	 * @return void
+	 * @api
+	 */
+	public function setValidatedInstancesContainer(\SplObjectStorage $validatedInstancesContainer) {
+		// deliberately empty
+	}
 }
 
 ?>

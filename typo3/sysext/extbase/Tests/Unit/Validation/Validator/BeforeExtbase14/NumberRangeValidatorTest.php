@@ -39,9 +39,10 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 	 * @test
 	 */
 	public function numberRangeValidatorReturnsTrueForASimpleIntegerInRange() {
-		$numberRangeValidator = new \TYPO3\CMS\Extbase\Validation\Validator\NumberRangeValidator();
+		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError'), array(), '', FALSE);
+		$numberRangeValidator->expects($this->never())->method('addError');
 		$numberRangeValidator->setOptions(array('startRange' => 0, 'endRange' => 1000));
-		$this->assertTrue($numberRangeValidator->isValid(10.5));
+		$numberRangeValidator->isValid(10.5);
 	}
 
 	/**
@@ -49,8 +50,9 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 	 */
 	public function numberRangeValidatorReturnsFalseForANumberOutOfRange() {
 		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError'), array(), '', FALSE);
+		$numberRangeValidator->expects($this->once())->method('addError');
 		$numberRangeValidator->setOptions(array('startRange' => 0, 'endRange' => 1000));
-		$this->assertFalse($numberRangeValidator->isValid(1000.1));
+		$numberRangeValidator->isValid(1000.1);
 	}
 
 	/**
@@ -58,8 +60,9 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 	 */
 	public function numberRangeValidatorReturnsTrueForANumberInReversedRange() {
 		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError'), array(), '', FALSE);
+		$numberRangeValidator->expects($this->never())->method('addError');
 		$numberRangeValidator->setOptions(array('startRange' => 1000, 'endRange' => 0));
-		$this->assertTrue($numberRangeValidator->isValid(100));
+		$numberRangeValidator->isValid(100);
 	}
 
 	/**
@@ -67,8 +70,9 @@ class NumberRangeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 	 */
 	public function numberRangeValidatorReturnsFalseForAString() {
 		$numberRangeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberRangeValidator', array('addError'), array(), '', FALSE);
+		$numberRangeValidator->expects($this->once())->method('addError');
 		$numberRangeValidator->setOptions(array('startRange' => 0, 'endRange' => 1000));
-		$this->assertFalse($numberRangeValidator->isValid('not a number'));
+		$numberRangeValidator->isValid('not a number');
 	}
 
 	/**

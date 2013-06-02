@@ -207,37 +207,67 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	}
 
 	/**
-	 * Adds the needed valiators to the Arguments:
-	 * - Validators checking the data type from the @param annotation
-	 * - Custom validators specified with @validate.
+	 * Adds the needed validators to the Arguments:
 	 *
-	 * In case @dontvalidate is NOT set for an argument, the following two
-	 * validators are also added:
-	 * - Model-based validators (@validate annotations in the model)
+	 * - Validators checking the data type from the @param annotation
+	 * - Custom validators specified with validate annotations.
+	 * - Model-based validators (validate annotations in the model)
 	 * - Custom model validator classes
 	 *
 	 * @return void
 	 */
 	protected function initializeActionMethodValidators() {
-		// TODO: still needs to be modified
-		$parameterValidators = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName);
-		$dontValidateAnnotations = array();
+
 		if (!$this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
-			// If the rewritten property mapper is *enabled*, we do not support @dontvalidate annotation, thus $dontValidateAnnotations stays empty.
+			// @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
+
+			$parameterValidators = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName);
+			$dontValidateAnnotations = array();
+
 			$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
 			if (isset($methodTagsValues['dontvalidate'])) {
 				$dontValidateAnnotations = $methodTagsValues['dontvalidate'];
 			}
-		}
-		foreach ($this->arguments as $argument) {
-			$validator = $parameterValidators[$argument->getName()];
-			if (array_search('$' . $argument->getName(), $dontValidateAnnotations) === FALSE) {
+
+			foreach ($this->arguments as $argument) {
+				$validator = $parameterValidators[$argument->getName()];
+				if (array_search('$' . $argument->getName(), $dontValidateAnnotations) === FALSE) {
+					$baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
+					if ($baseValidatorConjunction !== NULL) {
+						$validator->addValidator($baseValidatorConjunction);
+					}
+				}
+				$argument->setValidator($validator);
+			}
+		} else {
+			/**
+			 * @todo: add validation group support
+			 * (https://review.typo3.org/#/c/13556/4)
+			 */
+
+			$actionMethodParameters = static::getActionMethodParameters($this->objectManager);
+			if (isset($actionMethodParameters[$this->actionMethodName])) {
+				$methodParameters = $actionMethodParameters[$this->actionMethodName];
+			} else {
+				$methodParameters = array();
+			}
+
+			/**
+			 * @todo: add resolving of $actionValidateAnnotations and pass them to
+			 * buildMethodArgumentsValidatorConjunctions as in TYPO3.Flow
+			 */
+
+			$parameterValidators = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName, $methodParameters);
+
+			foreach ($this->arguments as $argument) {
+				$validator = $parameterValidators[$argument->getName()];
+
 				$baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
-				if ($baseValidatorConjunction !== NULL) {
+				if (count($baseValidatorConjunction) > 0) {
 					$validator->addValidator($baseValidatorConjunction);
 				}
+				$argument->setValidator($validator);
 			}
-			$argument->setValidator($validator);
 		}
 	}
 
