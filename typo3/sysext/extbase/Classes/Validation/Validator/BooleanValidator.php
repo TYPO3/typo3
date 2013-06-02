@@ -45,7 +45,7 @@ class BooleanValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractV
 	 */
 	public function isValid($value) {
 		if (!isset($this->options['is'])) {
-			return TRUE;
+			return;
 		}
 		switch (strtolower((string)$this->options['is'])) {
 			case 'true':
@@ -59,12 +59,10 @@ class BooleanValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractV
 				break;
 			default:
 				$this->addError('The given expectation is not valid.', 1361959227);
-				return FALSE;
+				return;
 		}
 
-		if ($value === $expectation) {
-			return TRUE;
-		} else {
+		if ($value !== $expectation) {
 			if (!is_bool($value)) {
 				$this->addError('The given subject is not true.', 1361959230);
 			} else {
@@ -74,7 +72,6 @@ class BooleanValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractV
 					$this->addError('The given subject is not false.', 1361959229);
 				}
 			}
-			return FALSE;
 		}
 	}
 

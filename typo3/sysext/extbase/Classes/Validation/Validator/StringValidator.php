@@ -36,12 +36,10 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 class StringValidator extends AbstractValidator {
 
 	/**
-	 * Returns TRUE, if the given property ($value) is a valid string.
-	 *
-	 * Otherwise, it is FALSE.
+	 * Checks if the given value is a string.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @return boolean TRUE if the value is valid, FALSE if an error occured
+	 * @return void
 	 * @api
 	 */
 	public function isValid($value) {
@@ -50,10 +48,8 @@ class StringValidator extends AbstractValidator {
 				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
 					'validator.string.notvalid',
 					'extbase'
-				), 1238108067);
-			return FALSE;
+				), 1238108070);
 		}
-		return TRUE;
 	}
 }
 

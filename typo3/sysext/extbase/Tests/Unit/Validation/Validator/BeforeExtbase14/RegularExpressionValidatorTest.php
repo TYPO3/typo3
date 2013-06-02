@@ -40,9 +40,10 @@ class RegularExpressionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 	 */
 	public function regularExpressionValidatorMatchesABasicExpressionCorrectly() {
 		$regularExpressionValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\RegularExpressionValidator', array('addError'), array(), '', FALSE);
+		$regularExpressionValidator->expects($this->once())->method('addError');
 		$regularExpressionValidator->setOptions(array('regularExpression' => '/^simple[0-9]expression$/'));
-		$this->assertTrue($regularExpressionValidator->isValid('simple1expression'));
-		$this->assertFalse($regularExpressionValidator->isValid('simple1expressions'));
+		$regularExpressionValidator->isValid('simple1expression');
+		$regularExpressionValidator->isValid('simple1expressions');
 	}
 
 	/**
