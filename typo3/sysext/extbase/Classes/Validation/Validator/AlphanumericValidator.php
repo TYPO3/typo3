@@ -29,8 +29,10 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  ***************************************************************/
 /**
  * Validator for alphanumeric strings
+ *
+ * @api
  */
-class AlphanumericValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
+class AlphanumericValidator extends AbstractValidator {
 
 	/**
 	 * Returns TRUE, if the given property ($propertyValue) is a valid

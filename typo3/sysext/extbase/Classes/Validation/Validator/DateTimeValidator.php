@@ -27,10 +27,13 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Validator for DateTime objects
+ * Validator for DateTime objects.
+ *
+ * @api
  */
-class DateTimeValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
+class DateTimeValidator extends AbstractValidator {
 
 	/**
 	 * Checks if the given value is a valid DateTime object.

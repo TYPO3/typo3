@@ -27,10 +27,13 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Validator for general numbers
+ *
+ * @api
  */
-class NumberRangeValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
+class NumberRangeValidator extends AbstractValidator {
 
 	/**
 	 * Returns TRUE, if the given property ($propertyValue) is a valid number in the given range.

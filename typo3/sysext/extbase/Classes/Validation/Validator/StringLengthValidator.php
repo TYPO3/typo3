@@ -27,10 +27,13 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Validator for string length
+ * Validator for string length.
+ *
+ * @api
  */
-class StringLengthValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
+class StringLengthValidator extends AbstractValidator {
 
 	/**
 	 * Returns TRUE, if the given property ($value) is a valid string and its length

@@ -27,19 +27,20 @@ namespace TYPO3\CMS\Extbase\Validation;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Objects of this kind contain a list of validation errors which occurred during
- * validation.
+ * This object holds a validation error.
+ *
  */
 class Error extends \TYPO3\CMS\Extbase\Error\Error {
 
 	/**
-	 * @var string The default (english) error message.
+	 * @var string
 	 */
 	protected $message = 'Unknown validation error';
 
 	/**
-	 * @var string The error code
+	 * @var string
 	 */
 	protected $code = 1201447005;
 }

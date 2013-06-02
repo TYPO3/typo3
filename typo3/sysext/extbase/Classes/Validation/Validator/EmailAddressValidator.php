@@ -27,10 +27,13 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Validator for email addresses
+ *
+ * @api
  */
-class EmailAddressValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
+class EmailAddressValidator extends AbstractValidator {
 
 	/**
 	 * Checks if the given value is a valid email address.
