@@ -39,35 +39,33 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Match validator names and options
-	 *
 	 * @var string
 	 */
 	const PATTERN_MATCH_VALIDATORS = '/
-			(?:^|,\\s*)
-			(?P<validatorName>[a-z0-9_:.\\\\]+)
-			\\s*
-			(?:\\(
-				(?P<validatorOptions>(?:\\s*[a-z0-9]+\\s*=\\s*(?:
+			(?:^|,\s*)
+			(?P<validatorName>[a-z0-9\\\\]+)
+			\s*
+			(?:\(
+				(?P<validatorOptions>(?:\s*[a-z0-9]+\s*=\s*(?:
 					"(?:\\\\"|[^"])*"
 					|\'(?:\\\\\'|[^\'])*\'
-					|(?:\\s|[^,"\']*)
-				)(?:\\s|,)*)*)
-			\\))?
+					|(?:\s|[^,"\']*)
+				)(?:\s|,)*)*)
+			\))?
 		/ixS';
 
 	/**
 	 * Match validator options (to parse actual options)
-	 *
 	 * @var string
 	 */
 	const PATTERN_MATCH_VALIDATOROPTIONS = '/
-			\\s*
+			\s*
 			(?P<optionName>[a-z0-9]+)
-			\\s*=\\s*
+			\s*=\s*
 			(?P<optionValue>
 				"(?:\\\\"|[^"])*"
 				|\'(?:\\\\\'|[^\'])*\'
-				|(?:\\s|[^,"\']*)
+				|(?:\s|[^,"\']*)
 			)
 		/ixS';
 
@@ -354,7 +352,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 				/**
 				 * Shorthand built in
 				 */
-				$possibleClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\' . $this->unifyDataType($validatorName);
+				$possibleClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\' . $this->getValidatorType($validatorName);
 			}
 		} else {
 			/**
@@ -383,12 +381,12 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Preprocess data types. Used to map primitive PHP types to DataTypes used in Extbase.
+	 * Used to map PHP types to validator types.
 	 *
 	 * @param string $type Data type to unify
 	 * @return string unified data type
 	 */
-	protected function unifyDataType($type) {
+	protected function getValidatorType($type) {
 		switch ($type) {
 			case 'int':
 				$type = 'Integer';
