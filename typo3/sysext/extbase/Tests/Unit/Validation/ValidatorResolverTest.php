@@ -377,11 +377,11 @@ class ValidatorResolverTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function resolveValidatorObjectNameCallsUnifyDataType() {
+	public function resolveValidatorObjectNameCallsGetValidatorType() {
 		$validatorName = uniqid('FooValidator');
 		eval('namespace TYPO3\CMS\Extbase\Validation\Validator;' . LF . 'class ' . $validatorName . 'Validator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {}');
-		$mockValidatorResolver = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver', array('unifyDataType'));
-		$mockValidatorResolver->expects($this->once())->method('unifyDataType')->with($validatorName)->will($this->returnValue($validatorName));
+		$mockValidatorResolver = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver', array('getValidatorType'));
+		$mockValidatorResolver->expects($this->once())->method('getValidatorType')->with($validatorName)->will($this->returnValue($validatorName));
 
 		$mockValidatorResolver->_call('resolveValidatorObjectName', $validatorName);
 	}
@@ -390,26 +390,26 @@ class ValidatorResolverTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function unifyDataTypeCorrectlyRenamesPhpDataTypes() {
-		$this->assertEquals('Integer', $this->validatorResolver->_call('unifyDataType', 'integer'));
-		$this->assertEquals('Integer', $this->validatorResolver->_call('unifyDataType', 'int'));
-		$this->assertEquals('String', $this->validatorResolver->_call('unifyDataType', 'string'));
-		$this->assertEquals('Array', $this->validatorResolver->_call('unifyDataType', 'array'));
-		$this->assertEquals('Float', $this->validatorResolver->_call('unifyDataType', 'float'));
-		$this->assertEquals('Float', $this->validatorResolver->_call('unifyDataType', 'double'));
-		$this->assertEquals('Boolean', $this->validatorResolver->_call('unifyDataType', 'boolean'));
-		$this->assertEquals('Boolean', $this->validatorResolver->_call('unifyDataType', 'bool'));
-		$this->assertEquals('Boolean', $this->validatorResolver->_call('unifyDataType', 'bool'));
-		$this->assertEquals('Number', $this->validatorResolver->_call('unifyDataType', 'number'));
-		$this->assertEquals('Number', $this->validatorResolver->_call('unifyDataType', 'numeric'));
+	public function getValidatorTypeCorrectlyRenamesPhpDataTypes() {
+		$this->assertEquals('Integer', $this->validatorResolver->_call('getValidatorType', 'integer'));
+		$this->assertEquals('Integer', $this->validatorResolver->_call('getValidatorType', 'int'));
+		$this->assertEquals('String', $this->validatorResolver->_call('getValidatorType', 'string'));
+		$this->assertEquals('Array', $this->validatorResolver->_call('getValidatorType', 'array'));
+		$this->assertEquals('Float', $this->validatorResolver->_call('getValidatorType', 'float'));
+		$this->assertEquals('Float', $this->validatorResolver->_call('getValidatorType', 'double'));
+		$this->assertEquals('Boolean', $this->validatorResolver->_call('getValidatorType', 'boolean'));
+		$this->assertEquals('Boolean', $this->validatorResolver->_call('getValidatorType', 'bool'));
+		$this->assertEquals('Boolean', $this->validatorResolver->_call('getValidatorType', 'bool'));
+		$this->assertEquals('Number', $this->validatorResolver->_call('getValidatorType', 'number'));
+		$this->assertEquals('Number', $this->validatorResolver->_call('getValidatorType', 'numeric'));
 	}
 
 	/**
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function unifyDataTypeRenamesMixedToRaw() {
-		$this->assertEquals('Raw', $this->validatorResolver->_call('unifyDataType', 'mixed'));
+	public function getValidatorTypeRenamesMixedToRaw() {
+		$this->assertEquals('Raw', $this->validatorResolver->_call('getValidatorType', 'mixed'));
 	}
 
 	/**
