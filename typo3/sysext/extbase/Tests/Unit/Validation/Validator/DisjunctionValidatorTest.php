@@ -32,6 +32,7 @@ class DisjunctionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCas
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function allValidatorsInTheDisjunctionAreCalledEvenIfOneReturnsNoError() {
+		$this->markTestSkipped('Needs a bugfix of Flow first.');
 		$validatorDisjunction = new \TYPO3\CMS\Extbase\Validation\Validator\DisjunctionValidator(array());
 		$validatorObject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
 		$validatorObject->expects($this->once())->method('validate')->will($this->returnValue(new \TYPO3\CMS\Extbase\Error\Result()));
