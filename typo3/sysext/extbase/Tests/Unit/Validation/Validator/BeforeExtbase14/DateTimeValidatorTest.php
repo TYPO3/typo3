@@ -39,8 +39,9 @@ class DateTimeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function dateTimeValidatorReturnsTrueForAValidDateTimeObject() {
-		$dateTimeValidator = new \TYPO3\CMS\Extbase\Validation\Validator\DateTimeValidator();
-		$this->assertTrue($dateTimeValidator->isValid(new \DateTime()));
+		$dateTimeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\DateTimeValidator', array('addError'), array(), '', FALSE);
+		$dateTimeValidator->expects($this->never())->method('addError');
+		$dateTimeValidator->isValid(new \DateTime());
 	}
 
 	/**
@@ -48,7 +49,8 @@ class DateTimeValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function dateTimeValidatorReturnsFalseForAnInvalidDateTimeObject() {
 		$dateTimeValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\DateTimeValidator', array('addError'), array(), '', FALSE);
-		$this->assertFalse($dateTimeValidator->isValid('blah'));
+		$dateTimeValidator->expects($this->once())->method('addError');
+		$dateTimeValidator->isValid('blah');
 	}
 }
 

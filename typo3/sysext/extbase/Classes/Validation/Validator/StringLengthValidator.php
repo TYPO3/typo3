@@ -36,36 +36,50 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 class StringLengthValidator extends AbstractValidator {
 
 	/**
-	 * Returns TRUE, if the given property ($value) is a valid string and its length
-	 * is between 'minimum' (defaults to 0 if not specified) and 'maximum' (defaults to infinite if not specified)
-	 * to be specified in the validation options.
-	 *
-	 * If at least one error occurred, the result is FALSE.
+	 * @var array
+	 */
+	protected $supportedOptions = array(
+		'minimum' => array(0, 'Minimum length for a valid string', 'integer'),
+		'maximum' => array(PHP_INT_MAX, 'Maximum length for a valid string', 'integer')
+	);
+
+	/**
+	 * Checks if the given value is a valid string (or can be cast to a string
+	 * if an object is given) and its length is between minimum and maximum
+	 * specified in the validation options.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidSubjectException
+	 * @return void
 	 * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException
-	 * @return boolean TRUE if the value is valid, FALSE if an error occured
+	 * @api
 	 */
 	public function isValid($value) {
-		$this->errors = array();
-		if (isset($this->options['minimum']) && isset($this->options['maximum']) && $this->options['maximum'] < $this->options['minimum']) {
+		if ($this->options['maximum'] < $this->options['minimum']) {
 			throw new \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException('The \'maximum\' is shorter than the \'minimum\' in the StringLengthValidator.', 1238107096);
 		}
-		if (is_object($value) && !method_exists($value, '__toString')) {
-			throw new \TYPO3\CMS\Extbase\Validation\Exception\InvalidSubjectException('The given object could not be converted to a string.', 1238110957);
+
+		if (is_object($value)) {
+			if (!method_exists($value, '__toString')) {
+				$this->addError('The given object could not be converted to a string.', 1238110957);
+				return;
+			}
+		} elseif (!is_string($value)) {
+			$this->addError('The given value was not a valid string.', 1269883975);
+			return;
 		}
+
 		// TODO Use \TYPO3\CMS\Core\Charset\CharsetConverter::strlen() instead; How do we get the charset?
 		$stringLength = strlen($value);
 		$isValid = TRUE;
-		if (isset($this->options['minimum']) && $stringLength < $this->options['minimum']) {
+		if ($stringLength < $this->options['minimum']) {
 			$isValid = FALSE;
 		}
-		if (isset($this->options['maximum']) && $stringLength > $this->options['maximum']) {
+		if ($stringLength > $this->options['maximum']) {
 			$isValid = FALSE;
 		}
+
 		if ($isValid === FALSE) {
-			if (isset($this->options['minimum']) && isset($this->options['maximum'])) {
+			if ($this->options['minimum'] > 0 && $this->options['maximum'] < PHP_INT_MAX) {
 				$this->addError(
 					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
 						'validator.stringlength.between',
@@ -75,7 +89,7 @@ class StringLengthValidator extends AbstractValidator {
 							$this->options['maximum']
 						)
 					), 1238108067, array($this->options['minimum'], $this->options['maximum']));
-			} elseif (isset($this->options['minimum'])) {
+			} elseif ($this->options['minimum'] > 0) {
 				$this->addError(
 					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
 						'validator.stringlength.less',
@@ -95,7 +109,6 @@ class StringLengthValidator extends AbstractValidator {
 					), 1238108069, array($this->options['maximum']));
 			}
 		}
-		return $isValid;
 	}
 }
 

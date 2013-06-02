@@ -86,7 +86,9 @@ abstract class AbstractValidator implements \TYPO3\CMS\Extbase\Validation\Valida
 	 */
 	public function validate($value) {
 		$this->result = new \TYPO3\CMS\Extbase\Error\Result();
-		$this->isValid($value);
+		if ($this->acceptsEmptyValues === FALSE || $this->isEmpty($value) === FALSE) {
+			$this->isValid($value);
+		}
 		return $this->result;
 	}
 

@@ -39,12 +39,13 @@ class RawValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function theRawValidatorAlwaysReturnsTRUE() {
-		$rawValidator = new \TYPO3\CMS\Extbase\Validation\Validator\RawValidator();
-		$this->assertTrue($rawValidator->isValid('simple1expression'));
-		$this->assertTrue($rawValidator->isValid(''));
-		$this->assertTrue($rawValidator->isValid(NULL));
-		$this->assertTrue($rawValidator->isValid(FALSE));
-		$this->assertTrue($rawValidator->isValid(new \ArrayObject()));
+		$rawValidator = $this->getMock('TYPO3\CMS\Extbase\Validation\Validator\RawValidator', array('addError'), array(), '', FALSE);
+		$rawValidator->expects($this->never())->method('addError');
+		$rawValidator->isValid('simple1expression');
+		$rawValidator->isValid('');
+		$rawValidator->isValid(NULL);
+		$rawValidator->isValid(FALSE);
+		$rawValidator->isValid(new \ArrayObject());
 	}
 }
 
