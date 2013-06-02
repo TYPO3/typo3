@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Validation\Validator;
+namespace TYPO3\CMS\Extbase\Validation\Exception;
 
 /***************************************************************
  *  Copyright notice
@@ -27,36 +27,11 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
- * Validator for DateTime objects.
- *
- * @api
+ * An "Invalid TypeHint" Exception
  */
-class DateTimeValidator extends AbstractValidator {
+class InvalidTypeHintException extends \TYPO3\CMS\Extbase\Validation\Exception {
 
-	/**
-	 * Checks if the given value is a valid DateTime object.
-	 *
-	 * If at least one error occurred, the result is FALSE.
-	 *
-	 * @param mixed $value The value that should be validated
-	 * @return boolean TRUE if the value is valid, FALSE if an error occured
-	 */
-	public function isValid($value) {
-		$this->errors = array();
-		if ($value instanceof \DateTime) {
-			return;
-		}
-		$this->addError(
-			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
-				'validator.datetime.notvalid',
-				'extbase',
-				array(
-					gettype($value)
-				)
-			), 1238087674, array(gettype($value)));
-	}
 }
 
 ?>

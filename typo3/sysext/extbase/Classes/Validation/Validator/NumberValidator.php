@@ -44,16 +44,13 @@ class NumberValidator extends AbstractValidator {
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
 	public function isValid($value) {
-		$this->errors = array();
-		if (is_numeric($value)) {
-			return TRUE;
-		}
-		$this->addError(
+		if (!is_numeric($value)) {
+			$this->addError(
 			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
 				'validator.number.notvalid',
 				'extbase'
 			), 1221563685);
-		return FALSE;
+		}
 	}
 }
 

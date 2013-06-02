@@ -38,22 +38,18 @@ class IntegerValidator extends AbstractValidator {
 	/**
 	 * Checks if the given value is a valid integer.
 	 *
-	 * If at least one error occurred, the result is FALSE.
-	 *
 	 * @param mixed $value The value that should be validated
-	 * @return boolean TRUE if the value is valid, FALSE if an error occured
+	 * @return void
+	 * @api
 	 */
 	public function isValid($value) {
-		$this->errors = array();
-		if (filter_var($value, FILTER_VALIDATE_INT) !== FALSE) {
-			return TRUE;
+		if (filter_var($value, FILTER_VALIDATE_INT) === FALSE) {
+			$this->addError(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+				'validator.integer.notvalid',
+				'extbase'
+				), 1221560494);
 		}
-		$this->addError(
-			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
-			'validator.integer.notvalid',
-			'extbase'
-			), 1221560494);
-		return FALSE;
 	}
 }
 
