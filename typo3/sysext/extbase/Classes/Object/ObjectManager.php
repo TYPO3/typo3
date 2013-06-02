@@ -1,6 +1,8 @@
 <?php
 namespace TYPO3\CMS\Extbase\Object;
 
+use \TYPO3\CMS\Extbase\Object\Container\Container;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -105,6 +107,21 @@ class ObjectManager implements ObjectManagerInterface {
 			$instance = $this->objectContainer->getInstance($objectName, $arguments);
 		}
 		return $instance;
+	}
+
+	/**
+	 * Returns the scope of the specified object.
+	 *
+	 * @param string $objectName The object name
+	 * @return integer One of the Container::SCOPE_ constants
+	 * @throws \TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException
+	 * @api
+	 */
+	public function getScope($objectName) {
+		if (!$this->isRegistered($objectName)) {
+			throw new \TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException('Object "' . $objectName . '" is not registered.', 1265367590);
+		}
+		return $this->objectContainer->isSingleton() ? Container::SCOPE_SINGLETON : Container::SCOPE_PROTOTYPE;
 	}
 
 	/**
