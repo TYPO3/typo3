@@ -39,27 +39,38 @@ class DisjunctionValidator extends AbstractCompositeValidator {
 	 * Checks if the given value is valid according to the validators of the
 	 * disjunction.
 	 *
-	 * If all validators fail, the result is FALSE.
+	 * So only one validator has to be valid, to make the whole disjunction valid.
+	 * Errors are only returned if all validators failed.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @param boolean $resetInstancesCurrentlyUnderValidation Reserved for internal use!
 	 * @return \TYPO3\CMS\Extbase\Error\Result
 	 * @api
 	 */
-	public function validate($value, $resetInstancesCurrentlyUnderValidation = TRUE) {
-		$result = new \TYPO3\CMS\Extbase\Error\Result();
-		$oneWithoutErrors = FALSE;
-		foreach ($this->validators as $validator) {
-			$validatorResult = $validator->validate($value);
-			if ($validatorResult->hasErrors()) {
-				$result->merge($validatorResult);
-			} else {
-				$oneWithoutErrors = TRUE;
+	public function validate($value) {
+		$validators = $this->getValidators();
+		if ($validators->count() > 0) {
+			$result = NULL;
+			foreach ($validators as $validator) {
+				$validatorResult = $validator->validate($value);
+				if ($validatorResult->hasErrors()) {
+					if ($result === NULL) {
+						$result = $validatorResult;
+					} else {
+						$result->merge($validatorResult);
+					}
+				} else {
+					if ($result === NULL) {
+						$result = $validatorResult;
+					} else {
+						$result->clear();
+					}
+					break;
+				}
 			}
-		}
-		if ($oneWithoutErrors === TRUE) {
+		} else {
 			$result = new \TYPO3\CMS\Extbase\Error\Result();
 		}
+
 		return $result;
 	}
 

@@ -46,7 +46,7 @@ class DateTimeValidator extends AbstractValidator {
 	public function isValid($value) {
 		$this->errors = array();
 		if ($value instanceof \DateTime) {
-			return TRUE;
+			return;
 		}
 		$this->addError(
 			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
@@ -56,7 +56,6 @@ class DateTimeValidator extends AbstractValidator {
 					gettype($value)
 				)
 			), 1238087674, array(gettype($value)));
-		return FALSE;
 	}
 }
 

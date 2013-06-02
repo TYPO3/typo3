@@ -36,6 +36,14 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 class NotEmptyValidator extends AbstractValidator {
 
 	/**
+	 * This validator always needs to be executed even if the given value is empty.
+	 * See AbstractValidator::validate()
+	 *
+	 * @var boolean
+	 */
+	protected $acceptsEmptyValues = FALSE;
+
+	/**
 	 * Checks if the given property ($propertyValue) is not empty (NULL, empty string, empty array or empty object).
 	 *
 	 * If at least one error occurred, the result is FALSE.
@@ -44,14 +52,12 @@ class NotEmptyValidator extends AbstractValidator {
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
 	public function isValid($value) {
-		$this->errors = array();
 		if ($value === NULL) {
 			$this->addError(
 				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
 					'validator.notempty.null',
 					'extbase'
 				), 1221560910);
-			return FALSE;
 		}
 		if ($value === '') {
 			$this->addError(
@@ -59,7 +65,6 @@ class NotEmptyValidator extends AbstractValidator {
 					'validator.notempty.empty',
 					'extbase'
 				), 1221560718);
-			return FALSE;
 		}
 		if (is_array($value) && empty($value)) {
 			$this->addError(
@@ -67,7 +72,6 @@ class NotEmptyValidator extends AbstractValidator {
 					'validator.notempty.empty',
 					'extbase'
 				), 1347992400);
-			return FALSE;
 		}
 		if (is_object($value) && $value instanceof \Countable && $value->count() === 0) {
 			$this->addError(
@@ -75,9 +79,7 @@ class NotEmptyValidator extends AbstractValidator {
 					'validator.notempty.empty',
 					'extbase'
 				), 1347992453);
-			return FALSE;
 		}
-		return TRUE;
 	}
 }
 

@@ -37,16 +37,27 @@ class ConjunctionValidator extends AbstractCompositeValidator {
 
 	/**
 	 * Checks if the given value is valid according to the validators of the conjunction.
+	 * Every validator has to be valid, to make the whole conjunction valid.
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @return \TYPO3\CMS\Extbase\Error\Result
 	 * @api
 	 */
 	public function validate($value) {
-		$result = new \TYPO3\CMS\Extbase\Error\Result();
-		foreach ($this->validators as $validator) {
-			$result->merge($validator->validate($value));
+		$validators = $this->getValidators();
+		if ($validators->count() > 0) {
+			$result = NULL;
+			foreach ($validators as $validator) {
+				if ($result === NULL) {
+					$result = $validator->validate($value);
+				} else {
+					$result->merge($validator->validate($value));
+				}
+			}
+		} else {
+			$result = new \TYPO3\CMS\Extbase\Error\Result;
 		}
+
 		return $result;
 	}
 

@@ -33,48 +33,16 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  * @api
  */
-class RawValidator implements ValidatorInterface {
+class RawValidator extends AbstractValidator {
 
 	/**
-	 * Always returns TRUE
+	 * This validator is always valid.
 	 *
-	 * @param mixed $value The value that should be validated
-	 * @return boolean TRUE
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function isValid($value) {
-		return TRUE;
-	}
-
-	/**
-	 * Sets options for the validator
-	 *
-	 * @param array $options Not used
+	 * @param mixed $value The value that should be validated (not used here)
 	 * @return void
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function setOptions(array $options) {
-	}
-
-	/**
-	 * Returns an array of errors which occurred during the last isValid() call.
-	 *
-	 * @return array An array of error messages or an empty array if no errors occurred.
-	 * @deprecated since Extbase 1.4.0, will be removed two versions after Extbase 6.1
-	 */
-	public function getErrors() {
-		return array();
-	}
-
-	/**
-	 * Always returns TRUE
-	 *
-	 * @param mixed $value The value that should be validated
-	 * @return \TYPO3\CMS\Extbase\Error\Result
 	 * @api
 	 */
-	public function validate($value) {
-		return new \TYPO3\CMS\Extbase\Error\Result();
+	public function isValid($value) {
 	}
 }
 

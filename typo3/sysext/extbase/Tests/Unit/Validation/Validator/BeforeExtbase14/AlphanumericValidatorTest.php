@@ -39,16 +39,19 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 	 * @test
 	 */
 	public function alphanumericValidatorReturnsTrueForAnAlphanumericString() {
-		$alphanumericValidator = new \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator();
-		$this->assertTrue($alphanumericValidator->isValid('12ssDF34daweidf'));
+		$alphanumericValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\AlphanumericValidator', array('dummy'), array(), '', FALSE);
+		$alphanumericValidator->expects($this->never())->method('addError');
+		$alphanumericValidator->isValid('12ssDF34daweidf');
 	}
 
 	/**
 	 * @test
 	 */
 	public function alphanumericValidatorReturnsFalseForAStringWithSpecialCharacters() {
-		$alphanumericValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\AlphanumericValidator', array('addError'), array(), '', FALSE);
-		$this->assertFalse($alphanumericValidator->isValid('adsf%&/$jklsfdö'));
+		/** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator $alphanumericValidator */
+		$alphanumericValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\AlphanumericValidator', array('dummy'), array(), '', FALSE);
+		$alphanumericValidator->expects($this->never())->method('addError');
+		$alphanumericValidator->isValid('adsf%&/$jklsfdö');
 	}
 
 	/**
