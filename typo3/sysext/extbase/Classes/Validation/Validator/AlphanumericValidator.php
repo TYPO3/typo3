@@ -35,26 +35,20 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 class AlphanumericValidator extends AbstractValidator {
 
 	/**
-	 * Returns TRUE, if the given property ($propertyValue) is a valid
-	 * alphanumeric string, which is defined as [a-zA-Z0-9]*.
-	 *
-	 * If at least one error occurred, the result is FALSE.
+	 * The given $value is valid if it is an alphanumeric string, which is defined as [\pL\d]*.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @return boolean TRUE if the value is valid, FALSE if an error occured
+	 * @return void
+	 * @api
 	 */
 	public function isValid($value) {
-		$this->errors = array();
 		if (!is_string($value) || preg_match('/^[\pL\d]*$/u', $value) !== 1) {
 			$this->addError(
 				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
 					'validator.alphanumeric.notvalid',
 					'extbase'
 				), 1221551320);
-			return FALSE;
 		}
-
-		return TRUE;
 	}
 }
 

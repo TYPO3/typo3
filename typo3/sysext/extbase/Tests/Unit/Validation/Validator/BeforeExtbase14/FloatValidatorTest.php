@@ -73,8 +73,9 @@ class FloatValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @param mixed $number
 	 */
 	public function floatValidatorReturnsTrueForAValidFloat($number) {
-		$floatValidator = new \TYPO3\CMS\Extbase\Validation\Validator\FloatValidator();
-		$this->assertTrue($floatValidator->isValid($number), "Validator declared {$number} as invalid though it is valid.");
+		$floatValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\FloatValidator', array('addError'), array(), '', FALSE);
+		$floatValidator->expects($this->never())->method('addError');
+		$floatValidator->isValid($number);
 	}
 
 	/**
@@ -84,7 +85,8 @@ class FloatValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function floatValidatorReturnsFalseForAnInvalidFloat($number) {
 		$floatValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\FloatValidator', array('addError'), array(), '', FALSE);
-		$this->assertFalse($floatValidator->isValid($number), "Validator declared {$number} as valid though it is invalid.");
+		$floatValidator->expects($this->once())->method('addError');
+		$floatValidator->isValid($number);
 	}
 
 	/**

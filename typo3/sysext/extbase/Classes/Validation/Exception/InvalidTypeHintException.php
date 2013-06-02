@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Validation\Validator;
+namespace TYPO3\CMS\Extbase\Validation\Exception;
 
 /***************************************************************
  *  Copyright notice
@@ -27,30 +27,11 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
- * Validator for strings.
- *
- * @api
+ * An "Invalid TypeHint" Exception
  */
-class StringValidator extends AbstractValidator {
+class InvalidTypeHintException extends \TYPO3\CMS\Extbase\Validation\Exception {
 
-	/**
-	 * Checks if the given value is a string.
-	 *
-	 * @param mixed $value The value that should be validated
-	 * @return void
-	 * @api
-	 */
-	public function isValid($value) {
-		if (!is_string($value)) {
-			$this->addError(
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
-					'validator.string.notvalid',
-					'extbase'
-				), 1238108067);
-		}
-	}
 }
 
 ?>

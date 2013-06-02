@@ -39,8 +39,9 @@ class TextValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function textValidatorReturnsTrueForASimpleString() {
-		$textValidator = new \TYPO3\CMS\Extbase\Validation\Validator\TextValidator();
-		$this->assertTrue($textValidator->isValid('this is a very simple string'));
+		$textValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\TextValidator', array('addError'), array(), '', FALSE);
+		$textValidator->expects($this->never())->method('addError');
+		$textValidator->isValid('this is a very simple string');
 	}
 
 	/**
@@ -51,7 +52,8 @@ class TextValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 Vu dan durch jÃ©ngt grÃ©ng, ze rou Monn voll stolz.
 Ke kille Minutt d\'Kirmes net. Hir Wand Lann Gaas da, wÃ¤r hu Heck Gart zÃ«nter, Welt Ronn grousse der ke. Wou fond eraus Wisen am. Hu dÃ©nen d\'Gaassen eng, eng am virun geplot d\'LÃ«tzebuerger, get botze rÃ«scht Blieder si. Dat Dauschen schÃ©inste Milliounen fu. Ze riede mÃ©ngem Keppchen dÃ©i, si gÃ©t fergiess erwaacht, rÃ¤ich jÃ©ngt duerch en nun. GÃ«tt Gaas d\'Vullen hie hu, laacht GrÃ©nge der dÃ©. Gemaacht gehÃ©iert da aus, gutt gudden d\'wÃ¤iss mat wa.';
 		$textValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\TextValidator', array('addError'), array(), '', FALSE);
-		$this->assertTrue($textValidator->isValid($sampleText));
+		$textValidator->expects($this->never())->method('addError');
+		$textValidator->isValid($sampleText);
 	}
 
 	/**
@@ -60,7 +62,8 @@ Ke kille Minutt d\'Kirmes net. Hir Wand Lann Gaas da, wÃ¤r hu Heck Gart zÃ«n
 	public function textValidatorAllowsCommonSpecialCharacters() {
 		$sampleText = '3% of most people tend to use semikolae; we need to check & allow that. And hashes (#) are not evil either, nor is the sign called \'quote\'.';
 		$textValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\TextValidator', array('addError'), array(), '', FALSE);
-		$this->assertTrue($textValidator->isValid($sampleText));
+		$textValidator->expects($this->never())->method('addError');
+		$textValidator->isValid($sampleText);
 	}
 
 	/**
@@ -68,7 +71,8 @@ Ke kille Minutt d\'Kirmes net. Hir Wand Lann Gaas da, wÃ¤r hu Heck Gart zÃ«n
 	 */
 	public function textValidatorReturnsFalseForAStringWithHtml() {
 		$textValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\TextValidator', array('addError'), array(), '', FALSE);
-		$this->assertFalse($textValidator->isValid('<span style="color: #BBBBBB;">a nice text</span>'));
+		$textValidator->expects($this->once())->method('addError');
+		$textValidator->isValid('<span style="color: #BBBBBB;">a nice text</span>');
 	}
 
 	/**

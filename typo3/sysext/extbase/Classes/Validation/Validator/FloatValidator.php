@@ -36,24 +36,24 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 class FloatValidator extends AbstractValidator {
 
 	/**
-	 * Checks if the given value is a valid float.
-	 *
-	 * If at least one error occurred, the result is FALSE.
+	 * The given value is valid if it is of type float or a string matching the regular expression [0-9.e+-]
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @return boolean TRUE if the value is valid, FALSE if an error occured
+	 * @return void
+	 * @api
 	 */
 	public function isValid($value) {
-		$this->errors = array();
-		if (is_float($value) || is_string($value) && strpos($value, '.') !== FALSE && preg_match('/^[0-9.e+-]+$/', $value)) {
-			return TRUE;
+		if (is_float($value)) {
+			return;
 		}
-		$this->addError(
-			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
-			'validator.float.notvalid',
-			'extbase'
-			), 1221560288);
-		return FALSE;
+
+		if (!is_string($value) || strpos($value, '.') === FALSE || preg_match('/^[0-9.e+-]+$/', $value) !== 1) {
+			$this->addError(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+				'validator.float.notvalid',
+				'extbase'
+				), 1221560288);
+		}
 	}
 }
 

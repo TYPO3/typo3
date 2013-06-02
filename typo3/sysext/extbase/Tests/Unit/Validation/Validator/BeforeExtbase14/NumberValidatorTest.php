@@ -39,8 +39,9 @@ class NumberValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function numberValidatorReturnsTrueForASimpleInteger() {
-		$numberValidator = new \TYPO3\CMS\Extbase\Validation\Validator\NumberValidator();
-		$this->assertTrue($numberValidator->isValid(1029437));
+		$numberValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberValidator', array('addError'), array(), '', FALSE);
+		$numberValidator->expects($this->never())->method('addError');
+		$numberValidator->isValid(1029437);
 	}
 
 	/**
@@ -48,7 +49,8 @@ class NumberValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function numberValidatorReturnsFalseForAString() {
 		$numberValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\NumberValidator', array('addError'), array(), '', FALSE);
-		$this->assertFalse($numberValidator->isValid('not a number'));
+		$numberValidator->expects($this->once())->method('addError');
+		$numberValidator->isValid('not a number');
 	}
 
 	/**
