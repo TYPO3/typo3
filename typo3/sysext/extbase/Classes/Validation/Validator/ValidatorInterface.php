@@ -28,18 +28,7 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Contract for a validator. This interface has drastically changed with Extbase 1.4.0, so that's why this interface does not contain any mandatory methods.
- *
- * For compatibility with Extbase < 1.4.0, the following methods need to exist:
- * - setOptions($options) to set validation options
- * - isValid($object) to check whether an object is valid (returns boolean value)
- * - getErrors() to get errors occuring during validation.
- *
- * For Extbase >= 1.4.0, the following methods need to exist:
- * - __construct($options) to set validation options
- * - validate($object) to check whether the given object is valid. Returns a \TYPO3\CMS\Extbase\Error\Result object which can then be checked for validity.
- *
- * Please see the source file for proper documentation of the above methods.
+ * Contract for a validator
  *
  * @api
  */

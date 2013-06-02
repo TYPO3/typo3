@@ -27,13 +27,13 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Validator to chain many validators in a conjunction (logical and). So every
- * validator has to be valid, to make the whole conjunction valid.
+ * Validator to chain many validators in a conjunction (logical and).
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @api
  */
-class ConjunctionValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator {
+class ConjunctionValidator extends AbstractCompositeValidator {
 
 	/**
 	 * Checks if the given value is valid according to the validators of the conjunction.

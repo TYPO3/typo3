@@ -27,14 +27,13 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Validator to chain many validators in a disjunction (logical or). So only one
- * validator has to be valid, to make the whole disjunction valid. Errors are
- * only returned if all validators failed.
+ * Validator to chain many validators in a disjunction (logical or).
  *
- * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @api
  */
-class DisjunctionValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractCompositeValidator {
+class DisjunctionValidator extends AbstractCompositeValidator {
 
 	/**
 	 * Checks if the given value is valid according to the validators of the

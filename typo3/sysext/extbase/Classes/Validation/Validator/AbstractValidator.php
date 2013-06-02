@@ -33,6 +33,24 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 abstract class AbstractValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {
 
 	/**
+	 * Specifies whether this validator accepts empty values.
+	 *
+	 * If this is TRUE, the validators isValid() method is not called in case of an empty value
+	 * Note: A value is considered empty if it is NULL or an empty string!
+	 * By default all validators except for NotEmpty and the Composite Validators accept empty values
+	 *
+	 * @var boolean
+	 */
+	protected $acceptsEmptyValues = TRUE;
+
+	/**
+	 * This contains the supported options, their default values, types and descriptions.
+	 *
+	 * @var array
+	 */
+	protected $supportedOptions = array();
+
+	/**
 	 * @var array
 	 */
 	protected $options = array();
@@ -118,6 +136,23 @@ abstract class AbstractValidator implements \TYPO3\CMS\Extbase\Validation\Valida
 		}
 		// the following is @deprecated since Extbase 1.4.0:
 		$this->errors[] = new \TYPO3\CMS\Extbase\Validation\Error($message, $code, $arguments, $title);
+	}
+
+	/**
+	 * Returns the options of this validator
+	 *
+	 * @return array
+	 */
+	public function getOptions() {
+		return $this->options;
+	}
+
+	/**
+	 * @param mixed $value
+	 * @return boolean TRUE if the given $value is NULL or an empty string ('')
+	 */
+	final protected function isEmpty($value) {
+		return $value === NULL || $value === '';
 	}
 }
 

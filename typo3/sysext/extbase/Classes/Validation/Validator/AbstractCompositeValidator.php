@@ -35,6 +35,13 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 abstract class AbstractCompositeValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface, \Countable {
 
 	/**
+	 * This contains the supported options, their default values and descriptions.
+	 *
+	 * @var array
+	 */
+	protected $supportedOptions = array();
+
+	/**
 	 * @var array
 	 */
 	protected $options = array();
@@ -45,12 +52,19 @@ abstract class AbstractCompositeValidator implements \TYPO3\CMS\Extbase\Validati
 	protected $validators;
 
 	/**
+	 * @var \SplObjectStorage
+	 */
+	protected $validatedInstancesContainer;
+
+	/**
 	 * @var array
 	 */
 	protected $errors = array();
 
 	/**
-	 * Constructs the validator conjunction
+	 * Constructs the composite validator and sets validation options
+	 *
+	 * @api
 	 */
 	public function __construct() {
 		$this->validators = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
@@ -81,6 +95,7 @@ abstract class AbstractCompositeValidator implements \TYPO3\CMS\Extbase\Validati
 	 *
 	 * @param \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator The validator that should be added
 	 * @return void
+	 * @api
 	 */
 	public function addValidator(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator) {
 		$this->validators->attach($validator);
@@ -104,9 +119,39 @@ abstract class AbstractCompositeValidator implements \TYPO3\CMS\Extbase\Validati
 	 * Returns the number of validators contained in this conjunction.
 	 *
 	 * @return integer The number of validators
+	 * @api
 	 */
 	public function count() {
 		return count($this->validators);
+	}
+
+	/**
+	 * Returns the child validators of this Composite Validator
+	 *
+	 * @return \SplObjectStorage
+	 */
+	public function getValidators() {
+		return $this->validators;
+	}
+
+	/**
+	 * Returns the options for this validator
+	 *
+	 * @return array
+	 */
+	public function getOptions() {
+		return $this->options;
+	}
+
+	/**
+	 * Allows to set a container to keep track of validated instances.
+	 *
+	 * @param \SplObjectStorage $validatedInstancesContainer A container to keep track of validated instances
+	 * @return void
+	 * @api
+	 */
+	public function setValidatedInstancesContainer(\SplObjectStorage $validatedInstancesContainer) {
+		$this->validatedInstancesContainer = $validatedInstancesContainer;
 	}
 }
 

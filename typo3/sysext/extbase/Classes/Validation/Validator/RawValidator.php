@@ -27,10 +27,13 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * A validator which accepts any input
+ * A validator which accepts any input.
+ *
+ * @api
  */
-class RawValidator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {
+class RawValidator implements ValidatorInterface {
 
 	/**
 	 * Always returns TRUE

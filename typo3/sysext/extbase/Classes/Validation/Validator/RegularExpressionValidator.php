@@ -27,12 +27,14 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Validator based on regular expressions
+ * Validator based on regular expressions.
  *
- * The regular expression is specified in the options by using the array key "regularExpression"
+ * @api
  */
-class RegularExpressionValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
+class RegularExpressionValidator extends AbstractValidator {
+
 
 	/**
 	 * Returns TRUE, if the given property ($value) matches the given regular expression.
