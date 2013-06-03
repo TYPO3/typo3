@@ -3,7 +3,7 @@ TYPO3 styles for basic elements
 - - - - - - - - - - - - - - - - - - - - - */
 
 html {
-       height: 100%;
+	height: 100%;
 }
 
 select,
@@ -78,33 +78,6 @@ td {
 
 a span {
 	cursor: pointer;
-}
-/* Forms */
-
-/* Reformatting of the submit buttons */
-form {
-	margin: 0;
-}
-
-#typo3-docbody form { margin-bottom: 1.25em; }
-
-input[type="submit"],
-input[type="reset"],
-input[type="button"] {
-	padding: 2px 4px 2px 4px;
-}
-
-label {
-	vertical-align: middle;
-}
-
-.checkbox,
-.radio,
-.checkbox:hover {
-	height: 13px;
-	margin-right: 5px;
-	vertical-align: middle;
-	width: 13px;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - -
