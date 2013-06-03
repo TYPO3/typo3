@@ -1,6 +1,5 @@
 /* - - - - - - - - - - - - - - - - - - - - -
 Web > List
-
 - - - - - - - - - - - - - - - - - - - - - */
 
 table.typo3-dblist {
@@ -14,13 +13,6 @@ table.typo3-dblist tr td.db_list_alt {
 
 table.typo3-dblist tr.db_list_alt td {
 	background-color: #e4e5f0;
-}
-
-tr.t3-row-header td {
-	color: #fff;
-	font-size: 10px;
-	font-weight: bold;
-	line-height: 16px;
 }
 
 table#typo3-dblist-top table.bgColor4 {

@@ -57,19 +57,6 @@ div.hr {
 	height: 1px;
 }
 
-th,
-td {
-	vertical-align: top;
-}
-
-.t3-row-header {
-	padding: 1px 4px;
-}
-
-.t3-row-header span.t3-icon {
-	margin-right: 3px;
-}
-
 /** .uppercase is kept for backwards-compatibility, use .divider */
 .divider,
 .uppercase {
@@ -102,41 +89,9 @@ img.absmiddle {
 	width: 12px;
 }
 
-.tableheader td {
-	padding-left: 2px;
-	padding-right: 2px;
-}
-
-.lrPadding td {
-	padding-left: 2px;
-	padding-right: 2px;
-}
-
 .alignToInputText, .alignToInputText:hover {
 	margin-top: 5px;
 	margin-right: 2px;
 	vertical-align: top;
 }
 
-table.t3-table-info td {
-	padding: 2px 4px;
-}
-
-.t3-col-header {
-	padding: 0 10px 0 3px;
-}
-
-/** used in the admin tools => DB check **/
-.t3-overview-list dt {
-	padding: 0px 0px 2px 20px;
-}
-
-.t3-overview-list dt img {
-	vertical-align: middle;
-	margin-right: 5px;
-}
-
-.t3-overview-list dd {
-	margin: 2px 0 15px 20px;
-	padding-left: 22px; 
-}
