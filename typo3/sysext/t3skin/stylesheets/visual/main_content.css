@@ -203,11 +203,6 @@ div.diff-g {
 	color: black;
 }
 
-textarea.fixed-font {
-	font-family: "Lucida Console", "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace;
-	font-size: 11px;
-}
-
 /** .uppercase is kept for backwards-compatibility, use .divider */
 .divider,
 .uppercase {
@@ -239,11 +234,8 @@ Dimmed span tag color (disabled)
 	color: #cccccc;
 }
 
-
 /* - - - - - - - - - - - - - - - - - - - - -
-
 Red span tag color (warning, notice)
-
 - - - - - - - - - - - - - - - - - - - - - */
 
 .typo3-red {
@@ -279,79 +271,4 @@ div.warningbox {
 
 span.warningboxheader {
 	margin-left: 5px;
-}
-
-/* - - - - - - - - - - - - - - - - - - - - -
-input elements
-- - - - - - - - - - - - - - - - - - - - - */
-
-input,
-textarea,
-select,
-button {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	line-height: 16px;
-}
-
-textarea {
-	background-color: #fefefe;
-	border: 1px solid #7c7c7c;
-}
-
-textarea:hover {
-	border: 1px solid #737f91;
-}
-
-input[type="submit"],
-input[type="reset"],
-input[type="button"],
-input[type="submit"][disabled="disabled"]:hover,
-input[type="reset"][disabled="disabled"]:hover,
-input[type="button"][disabled="disabled"]:hover {
-	background-color: #f6f6f6;
-	background-image: url('../../images/backgrounds/button.png');
-	background-image: linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
-	background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
-	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #d5d5d5));
-	background-position: bottom;
-	background-repeat: repeat-x;
-	border: 1px solid #7c7c7c;
-	border-radius: 1px;
-	-moz-border-radius: 1px;
-	color: #434343;
-	cursor: pointer;
-}
-
-input[type="submit"]:hover,
-input[type="reset"]:hover,
-input[type="button"]:hover {
-	background-color: #c8c8c8;
-	background-image: url('../../images/backgrounds/button-hover.png');
-	background-image: linear-gradient(center top, #f6f6f6 10%, #c8c8c8 90%);
-	background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #bdbcbc 90%);
-	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #c8c8c8));
-	background-position: bottom;
-	background-repeat: repeat-x;
-	border: 1px solid #737f91;
-	color: #1e1e1e;
-	cursor: pointer;
-}
-
-input[type="submit"][disabled="disabled"],
-input[type="reset"][disabled="disabled"],
-input[type="button"][disabled="disabled"],
-input[type="submit"][disabled="disabled"]:hover,
-input[type="reset"][disabled="disabled"]:hover,
-input[type="button"][disabled="disabled"]:hover {
-	cursor: default;
-	opacity: 0.5;
-}
-
-.checkbox,
-.checkbox:hover,
-input[type="checkbox"] {
-	background: none;
-	border: none;
-	cursor: pointer;
 }
