@@ -4,10 +4,10 @@
 		<header/>
 		<body>
 			<trans-unit id=".description" xml:space="preserve">
-				<source>All visible content on webpages in TYPO3 is typically made by "Pagecontent" records. They are typically referred to as "Content Elements". Often Content Elements are managed by the "Page" module which is designed to handle Content Elements in multiple columns and languages.</source>
+				<source>All visible content on webpages in TYPO3 is typically made by "Page content" records. They are typically referred to as "Content Elements". Often Content Elements are managed by the "Page" module which is designed to handle Content Elements in multiple columns and languages.</source>
 			</trans-unit>
 			<trans-unit id=".details" xml:space="preserve">
-				<source>"Pagecontent" records is ordered and can thus be rearranged. Also notice that the "Language" and "Column" selector of the "Pagecontent" records determines where and in which situation they appear. If you do not change the value of the "Language" and "Column" selectors you are most sure that the element will appear by default.</source>
+				<source>"Page content" records is ordered and can thus be rearranged. Also notice that the "Language" and "Column" selector of the "Page content" records determines where and in which situation they appear. If you do not change the value of the "Language" and "Column" selectors you are most sure that the element will appear by default.</source>
 			</trans-unit>
 			<trans-unit id="_.seeAlso" xml:space="preserve">
 				<source>Page Content principles | http://typo3.org/documentation/document-library/doc_tut_quickstart/Page_content/,
@@ -298,7 +298,7 @@ xMOD_csh_corebe:wizard_table_wiz</source>
 				<source>Places the body text to the left, centered or to the right.</source>
 			</trans-unit>
 			<trans-unit id="text_align.details" xml:space="preserve">
-				<source>See Pagecontent / Fontface for comments.
+				<source>See Page content / Font face for comments.
 &lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</source>
 			</trans-unit>
 			<trans-unit id="_text_align.seeAlso" xml:space="preserve">
@@ -321,7 +321,7 @@ tt_content:bodytext</source>
 				<source>Select a font size for the body text.</source>
 			</trans-unit>
 			<trans-unit id="text_size.details" xml:space="preserve">
-				<source>See Pagecontent / Fontface for comments.
+				<source>See Page content / Font face for comments.
 &lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</source>
 			</trans-unit>
 			<trans-unit id="_text_size.seeAlso" xml:space="preserve">
@@ -333,7 +333,7 @@ tt_content:bodytext</source>
 				<source>Select a color for the body text.</source>
 			</trans-unit>
 			<trans-unit id="text_color.details" xml:space="preserve">
-				<source>See Pagecontent / Fontface for comments.
+				<source>See Page content / Font face for comments.
 &lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</source>
 			</trans-unit>
 			<trans-unit id="_text_color.seeAlso" xml:space="preserve">
@@ -351,7 +351,7 @@ tt_content:bodytext</source>
 &amp;lt;i&amp;gt;&lt;em&gt;This is italics&lt;/em&gt;&amp;lt;i&amp;gt;
 &amp;lt;u&amp;gt;&lt;u&gt;This is underlined&lt;/u&gt;&amp;lt;u&amp;gt;
 
-See Pagecontent / Fontface for comments.
+See Page content / Font face for comments.
 &lt;b&gt;Notice:&lt;/b&gt; This option is obsolete when you are using CSS for rendering.</source>
 			</trans-unit>
 			<trans-unit id="_text_properties.seeAlso" xml:space="preserve">
@@ -366,7 +366,7 @@ tt_content:bodytext</source>
 				<source>You can attach images to the content element and almost as many as you like.
 Depending on the configuration of TYPO3 you can even attach them in any format you like. Especially you do not need to worry about size and compression because these factors are normally handled by TYPO3 internally.
 
-When you use the "Text w/image" type, it's important to select a proper position of the imageblock. For this purpose, use the Position selector which is displayed below (or if you click in the image list field in the Classic backend). See link to "Pagecontent / Position" below.
+When you use the "Text w/image" type, it's important to select a proper position of the image block. For this purpose, use the Position selector which is displayed below (or if you click in the image list field in the Classic backend). See link to "Page content / Position" below.
 You can also display images in multiple columns and enable an option which enables a link so you can click the image and see a bigger version. Just to name a few options.
 Most likely you don't have all options available. This depends on your permissions in the system.</source>
 			</trans-unit>
@@ -448,7 +448,7 @@ tt_content:image</source>
 			<trans-unit id="image_link.details" xml:space="preserve">
 				<source>By default all images share the same link. However you may ask the administrator to configure the TypoScript template to allow a separate link for each image. If this is the case, you simply separate the link values by a comma.
 
-See Pagecontent&gt;Link below for details on syntax.</source>
+See Page content&gt;Link below for details on syntax.</source>
 			</trans-unit>
 			<trans-unit id="_image_link.seeAlso" xml:space="preserve">
 				<source>tt_content:header_link,
@@ -581,7 +581,7 @@ Like the previous, but including 'submenu' links to all content elements on the 
 &lt;strong&gt;Sitemap&lt;/strong&gt;
 Generates a classic tree sitemap. Maybe your TypoScript template is configured to another design of the sitemap, but anyhow you'll get a sitemap out of this. Notice that the sitemap will begin from the current page unless you specify another "Startingpoint" page in the list below.
 
-&lt;strong&gt;Section index (pagecontent w/Index checked)&lt;/strong&gt;
+&lt;strong&gt;Section index (page content w/Index checked)&lt;/strong&gt;
 This makes a menu to the content elements on this page (or the page specified in the Starting point list). Great way to make an index in the top of the page.
 Notice that all content elements with the "Index" checkbox set is selected. So if you don't want certain content elements to appear in the list, just un-check the Index checkbox for those elements.
 
