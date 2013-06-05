@@ -217,6 +217,14 @@ class AbstractMenuContentObject {
 	public $nameAttribute = 'name';
 
 	/**
+	 * TRUE to use cHash in generated link (normally only for the language
+	 * selector and if parameters exist in the URL).
+	 *
+	 * @var bool
+	 */
+	protected $useCacheHash = FALSE;
+
+	/**
 	 * The initialization of the object. This just sets some internal variables.
 	 *
 	 * @param object $tmpl The $GLOBALS['TSFE']->tmpl object
@@ -373,6 +381,8 @@ class AbstractMenuContentObject {
 	 */
 	public function makeMenu() {
 		if ($this->id) {
+			$this->useCacheHash = FALSE;
+
 			// Initializing showAccessRestrictedPages
 			if ($this->mconf['showAccessRestrictedPages']) {
 				// SAVING where_groupAccess
@@ -415,6 +425,7 @@ class AbstractMenuContentObject {
 							}
 							if ($this->conf['addQueryString']) {
 								$getVars = $this->parent_cObj->getQueryArguments($this->conf['addQueryString.'], array('L' => $sUid), TRUE);
+								$this->analyzeCacheHashRequirements($getVars);
 							} else {
 								$getVars = '&L=' . $sUid;
 							}
@@ -904,6 +915,28 @@ class AbstractMenuContentObject {
 			if ($this->mconf['showAccessRestrictedPages']) {
 				// RESTORING where_groupAccess
 				$this->sys_page->where_groupAccess = $SAVED_where_groupAccess;
+			}
+		}
+	}
+
+	/**
+	 * Analyzes the parameters to find if the link needs a cHash parameter.
+	 *
+	 * @param string $queryString
+	 * @return void
+	 */
+	protected function analyzeCacheHashRequirements($queryString) {
+		$parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array($queryString);
+		if (count($parameters) > 0) {
+			$cacheHashCalculator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator');
+			/** @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator $cacheHashCalculator */
+			$cHashParameters = $cacheHashCalculator->getRelevantParameters($queryString);
+			if (count($cHashParameters) > 1) {
+				$this->useCacheHash = (
+					$GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] ||
+					!isset($parameters['no_cache']) ||
+					!$parameters['no_cache']
+				);
 			}
 		}
 	}
@@ -1765,6 +1798,8 @@ class AbstractMenuContentObject {
 		}
 		if ($no_cache) {
 			$conf['no_cache'] = TRUE;
+		} elseif ($this->useCacheHash) {
+			$conf['useCacheHash'] = TRUE;
 		}
 		if ($oTarget) {
 			$conf['target'] = $oTarget;
