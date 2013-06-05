@@ -3656,7 +3656,7 @@ if (version == "n3") {
 		}
 		// Send content-lenght header.
 		// Notice that all HTML content outside the length of the content-length header will be cut off! Therefore content of unknown length from included PHP-scripts and if admin users are logged in (admin panel might show...) or if debug mode is turned on, we disable it!
-		if (!empty($this->config['config']['enableContentLengthHeader']) && !$this->beUserLogin && !$this->TYPO3_CONF_VARS['FE']['debug'] && !$this->config['config']['debug'] && !$this->doWorkspacePreview()) {
+		if ((!isset($this->config['config']['enableContentLengthHeader']) || !empty($this->config['config']['enableContentLengthHeader'])) && !$this->beUserLogin && !$this->TYPO3_CONF_VARS['FE']['debug'] && !$this->config['config']['debug'] && !$this->doWorkspacePreview()) {
 			header('Content-Length: ' . strlen($this->content));
 		}
 	}
