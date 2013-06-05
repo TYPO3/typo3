@@ -150,7 +150,7 @@ EXT:lang/cshimages/be_groups_11.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="tables_modify.image_descr" xml:space="preserve">
-				<source>The screen shot above shows how the "Create new record" dialog looks for a user limited to editing only "Page" and "Pagecontent" elements.
+				<source>The screen shot above shows how the "Create new record" dialog looks for a user limited to editing only "Page" and "Page content" elements.
 The two tables are simply added to the list of "Tables (modify)" in the group Access Lists.
 This is (an example of) the full amount of elements that can be created on the page by the "admin" user for whom there are no restrictions.</source>
 			</trans-unit>
