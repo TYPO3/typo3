@@ -73,6 +73,11 @@ result: '0, 22, 11, 4'
 Administration / Customization
 -------------------------------------------------------------------------------
 
+* Content-length Header is now enabled by default
+
+The TypoScript setting config.enableContentLengthHeader has a new default
+value and is now enabled by default.
+
 -------------------------------------------------------------------------------
 Extbase
 -------------------------------------------------------------------------------
