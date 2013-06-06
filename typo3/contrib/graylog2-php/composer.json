@@ -1,0 +1,19 @@
+{
+    "name": "graylog2/gelf-php",
+    "description": "PHP classes to send GELF (Graylog extended log format) messages",
+    "keywords": ["log","logging"],
+    "homepage": "http://github.com/Graylog2/gelf-php",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lennart Koopmann",
+            "email": "lennart@socketfeed.com",
+            "homepage": "http://www.lennartkoopmann.net/"
+        }
+    ],
+    "autoload": {
+        "classmap": [""]
+    },
+    "require": {}
+}
