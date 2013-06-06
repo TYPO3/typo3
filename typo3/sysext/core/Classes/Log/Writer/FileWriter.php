@@ -49,12 +49,15 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	protected $defaultLogFile = 'typo3temp/logs/typo3.log';
 
 	/**
-	 * Log file handle
+	 * Log file handle storage
+	 *
+	 * To avoid concurrent file handles on a the same file when using several FileWriter instances,
+	 * we share the file handles in a static class variable
 	 *
 	 * @static
-	 * @var resource
+	 * @var array
 	 */
-	static protected $logFileHandle = NULL;
+	static protected $logFileHandles = array();
 
 	/**
 	 * Constructor, opens the log file handle
@@ -85,7 +88,7 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	 * @throws \InvalidArgumentException
 	 */
 	public function setLogFile($logFile) {
-		if (is_resource(self::$logFileHandle)) {
+		if (is_resource(self::$logFileHandles[$logFile])) {
 			$this->closeLogFile();
 		}
 		// Skip handling if logFile is a stream resource
@@ -98,6 +101,7 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 		}
 		$this->logFile = $logFile;
 		$this->openLogFile();
+
 		return $this;
 	}
 
@@ -118,9 +122,10 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	 * @throws \RuntimeException
 	 */
 	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
-		if (FALSE === fwrite(self::$logFileHandle, $record . LF)) {
+		if (FALSE === fwrite(self::$logFileHandles[$this->logFile], $record . LF)) {
 			throw new \RuntimeException('Could not write log record to log file', 1345036335);
 		}
+
 		return $this;
 	}
 
@@ -132,8 +137,8 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	 */
 	protected function openLogFile() {
 		$this->createLogFile();
-		self::$logFileHandle = fopen($this->logFile, 'a');
-		if (!is_resource(self::$logFileHandle)) {
+		self::$logFileHandles[$this->logFile] = fopen($this->logFile, 'a');
+		if (!is_resource(self::$logFileHandles[$this->logFile])) {
 			throw new \RuntimeException('Could not open log file "' . $this->logFile . '"', 1321804422);
 		}
 	}
@@ -144,8 +149,8 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	 * @return void
 	 */
 	protected function closeLogFile() {
-		if (is_resource(self::$logFileHandle)) {
-			fclose(self::$logFileHandle);
+		if (is_resource(self::$logFileHandles[$this->logFile])) {
+			fclose(self::$logFileHandles[$this->logFile]);
 		}
 	}
 
