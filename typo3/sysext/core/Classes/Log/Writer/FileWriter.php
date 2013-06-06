@@ -51,10 +51,9 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	/**
 	 * Log file handle
 	 *
-	 * @static
 	 * @var resource
 	 */
-	static protected $logFileHandle = NULL;
+	protected $logFileHandle = NULL;
 
 	/**
 	 * Constructor, opens the log file handle
@@ -85,7 +84,7 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	 * @throws \InvalidArgumentException
 	 */
 	public function setLogFile($logFile) {
-		if (is_resource(self::$logFileHandle)) {
+		if (is_resource($this->logFileHandle)) {
 			$this->closeLogFile();
 		}
 		// Skip handling if logFile is a stream resource
@@ -98,6 +97,7 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 		}
 		$this->logFile = $logFile;
 		$this->openLogFile();
+
 		return $this;
 	}
 
@@ -118,9 +118,10 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	 * @throws \RuntimeException
 	 */
 	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
-		if (FALSE === fwrite(self::$logFileHandle, $record . LF)) {
+		if (FALSE === fwrite($this->logFileHandle, $record . LF)) {
 			throw new \RuntimeException('Could not write log record to log file', 1345036335);
 		}
+
 		return $this;
 	}
 
@@ -132,8 +133,8 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	 */
 	protected function openLogFile() {
 		$this->createLogFile();
-		self::$logFileHandle = fopen($this->logFile, 'a');
-		if (!is_resource(self::$logFileHandle)) {
+		$this->logFileHandle = fopen($this->logFile, 'a');
+		if (!is_resource($this->logFileHandle)) {
 			throw new \RuntimeException('Could not open log file "' . $this->logFile . '"', 1321804422);
 		}
 	}
@@ -144,8 +145,8 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	 * @return void
 	 */
 	protected function closeLogFile() {
-		if (is_resource(self::$logFileHandle)) {
-			fclose(self::$logFileHandle);
+		if (is_resource($this->logFileHandle)) {
+			fclose($this->logFileHandle);
 		}
 	}
 
