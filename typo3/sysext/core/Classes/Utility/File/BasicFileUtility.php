@@ -158,7 +158,7 @@ class BasicFileUtility {
 	 * - writable		: is file writeable by web user (FALSE = yes; TRUE = no) *)
 	 * - readable		: is file readable by web user (FALSE = yes; TRUE = no) *)
 	 *
-	 * ) logic is reversed because of handling by functions in class.file_list.inc
+	 * ) logic is reversed because of handling by functions in TYPO3\CMS\Filelist\FileList
 	 *
 	 * @param 	string		Filepath to existing file. Should probably be absolute. Filefunctions are performed on this value.
 	 * @return 	array		Information about the file in the filepath

@@ -581,7 +581,8 @@ class InlineElement {
 
 	/**
 	 * Render the control-icons for a record header (create new, sorting, delete, disable/enable).
-	 * Most of the parts are copy&paste from class.db_list_extra.inc and modified for the JavaScript calls here
+	 * Most of the parts are copy&paste from TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList and
+	 * modified for the JavaScript calls here
 	 *
 	 * @param string $parentUid The uid of the parent (embedding) record (uid or NEW...)
 	 * @param string $foreign_table The table (foreign_table) we create control-icons for
