@@ -34,12 +34,7 @@
  */
 $BACK_PATH = '';
 require_once 'init.php';
-/*
- * @deprecated since 6.0, the classname SC_alt_db_navframe and this file is obsolete
- * and will be removed with 6.2. The class was renamed and is now located at:
- * typo3/sysext/backend/Classes/Controller/PageTreeNavigationController.php
- */
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/Controller/PageTreeNavigationController.php';
+
 // Make instance if it is not an AJAX call
 if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
 	$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\PageTreeNavigationController');

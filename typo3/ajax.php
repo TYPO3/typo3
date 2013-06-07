@@ -57,9 +57,11 @@ require 'init.php';
 
 // finding the script path from the variable
 $ajaxScript = $TYPO3_CONF_VARS['BE']['AJAX'][$ajaxID];
+
 // Instantiating the AJAX object
 $ajaxObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\\AjaxRequestHandler', $ajaxID);
 $ajaxParams = array();
+
 // Evaluating the arguments and calling the AJAX method/function
 if (empty($ajaxID)) {
 	$ajaxObj->setError('No valid ajaxID parameter given.');
@@ -71,6 +73,7 @@ if (empty($ajaxID)) {
 		$ajaxObj->setError('Registered backend function for ajaxID "' . $ajaxID . '" was not found.');
 	}
 }
+
 // Outputting the content (and setting the X-JSON-Header)
 $ajaxObj->render();
 ?>
