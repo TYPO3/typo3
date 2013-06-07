@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Dbal\RecordList;
  * @author 	Karsten Dambekalns <k.dambekalns@fishfarm.de>
  */
 /**
- * Child class for rendering of Web > List (not the final class. see class.db_list_extra)
+ * Child class for rendering of Web > List (not the final class)
  *
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author 	Karsten Dambekalns <k.dambekalns@fishfarm.de>
