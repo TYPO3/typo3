@@ -375,16 +375,19 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 			// Get the two previous rows for sorting if displaying page > 1
 			$this->firstElementNumber = $this->firstElementNumber - 2;
 			$this->iLimit = $this->iLimit + 2;
-			// (API function from class.db_list.inc)
+			// (API function from TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList)
 			$queryParts = $this->makeQueryArray($table, $id, $addWhere, $selFieldList);
 			$this->firstElementNumber = $this->firstElementNumber + 2;
 			$this->iLimit = $this->iLimit - 2;
 		} else {
-			// (API function from class.db_list.inc)
+			// (API function from TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList)
 			$queryParts = $this->makeQueryArray($table, $id, $addWhere, $selFieldList);
 		}
-		// Finding the total amount of records on the page (API function from class.db_list.inc)
+
+		// Finding the total amount of records on the page
+		// (API function from TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList)
 		$this->setTotalItems($queryParts);
+
 		// Init:
 		$dbCount = 0;
 		$out = '';

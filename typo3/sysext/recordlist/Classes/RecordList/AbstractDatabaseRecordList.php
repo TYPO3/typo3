@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Recordlist\RecordList;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Child class for rendering of Web > List (not the final class. see class.db_list_extra)
+ * Child class for rendering of Web > List (not the final class.
  * Shared between Web>List (db_list.php) and Web>Page (sysext/cms/layout/db_layout.php)
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>

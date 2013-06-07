@@ -33,7 +33,8 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Include file extending db_list.inc for use with the web_layout module
+ * Include file extending \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList
+ * for use with the web_layout module
  *
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  * XHTML compliant
