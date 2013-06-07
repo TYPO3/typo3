@@ -52,7 +52,6 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Creates this object.
 	 */
 	public function __construct() {
-		require_once PATH_typo3 . 'class.show_rechis.inc';
 		$this->backendUserNames = \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames();
 	}
 
