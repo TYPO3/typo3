@@ -34,12 +34,7 @@
  */
 $GLOBALS['BACK_PATH'] = '';
 require 'init.php';
-/*
- * @deprecated since 6.0, the classname SC_file_edit and this file is obsolete
- * and will be removed with 6.2. The class was renamed and is now located at:
- * typo3/sysext/backend/Classes/Controller/File/EditFileController.php
- */
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/Controller/File/EditFileController.php';
+
 // Make instance:
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\EditFileController');
 $SOBE->init();
