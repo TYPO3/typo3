@@ -24,22 +24,16 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Colorpicker wizard
- *
- * Revised for TYPO3 3.7 May/2004 by Kasper Skårhøj
  *
  * @author Mathias Schreiber <schreiber@wmdb.de>
  * @author Peter Kühn <peter@kuehn.com>
  * @author Kasper Skårhøj <typo3@typo3.com>
  */
-$GLOBALS['BACK_PATH'] = '';
 require 'init.php';
-$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\ColorpickerController');
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+// Make instance
+\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\ColorpickerController');
 ?>
