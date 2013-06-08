@@ -24,22 +24,16 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Wizard to display the RTE in "full screen" mode
  *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- * XHTML compliant
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-$BACK_PATH = '';
 require 'init.php';
-$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
 \TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\RteController');
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+$rteController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\RteController');
+$rteController->main();
+$rteController->printContent();
 ?>

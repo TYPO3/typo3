@@ -24,27 +24,16 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Wizard to help make tables (eg. for tt_content elements) of type "table".
  * Each line is a table row, each cell divided by a |
  *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- * XHTML compliant
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-$BACK_PATH = '';
 require 'init.php';
-$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\TableController');
-$SOBE->init();
-
-// Include files?
-foreach ($SOBE->include_once as $INC_FILE) {
-	include_once $INC_FILE;
-}
-$SOBE->main();
-$SOBE->printContent();
+$tableController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\TableController');
+$tableController->main();
+$tableController->printContent();
 ?>
