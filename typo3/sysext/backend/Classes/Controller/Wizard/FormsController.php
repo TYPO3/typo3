@@ -137,12 +137,6 @@ class FormsController {
 	 */
 	public $content;
 
-	// List of files to include.
-	/**
-	 * @todo Define visibility
-	 */
-	public $include_once = array();
-
 	// Used to numerate attachments automatically.
 	/**
 	 * @todo Define visibility
@@ -178,12 +172,21 @@ class FormsController {
 	public $special;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
+		$GLOBALS['SOBE'] = $this;
+
+		$this->init();
+	}
+
+	/**
 	 * Initialization the class
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
-	public function init() {
+	protected function init() {
 		// GPvars:
 		$this->P = GeneralUtility::_GP('P');
 		$this->special = GeneralUtility::_GP('special');
@@ -208,9 +211,8 @@ class FormsController {
 	 * Main function for rendering the form wizard HTML
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
-	public function main() {
+	protected function main() {
 		if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
 			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('forms_title'), $this->formsWizard(), 0, 1);
 		} else {
