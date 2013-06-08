@@ -67,7 +67,7 @@ EXT:lang/cshimages/be_groups_4.png</source>
 			</trans-unit>
 			<trans-unit id="file_mountpoints.details" xml:space="preserve">
 				<source>The file folder tree is used by all File-submodules to navigate the file folders on the webserver. If you want users to access the servers file system through TYPO3 they need at least one File Mount (and access to eg. File &gt; Filelist module).
-You can mount a path in "fileadmin/" relative to the TYPO3 installation or you can mount an absolute path somewhere else on the server (outside webroot!). The last requires that $TYPO3_CONF_VARS[BE][lockRootPath] is defined. The path you mount is defined by the Filemount record you refer to by this field. So a File Mount just points to another record inside of which the details are configured. See screen shots below.
+You can mount a path in "fileadmin/" relative to the TYPO3 installation or you can mount an absolute path somewhere else on the server (outside webroot!). The last requires that $TYPO3_CONF_VARS[BE][lockRootPath] is defined. The path you mount is defined by the Filemount record you refer to by this field. So a File Mount just points to another record inside of which the details are configured. See screenshots below.
 "admin" users always have the "fileadmin/" folder mounted by default.
 Notice; as with 'DB mounts' the file folder mounts may be inherited by the users which are members of this group.</source>
 			</trans-unit>
@@ -150,7 +150,7 @@ EXT:lang/cshimages/be_groups_11.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="tables_modify.image_descr" xml:space="preserve">
-				<source>The screen shot above shows how the "Create new record" dialog looks for a user limited to editing only "Page" and "Page content" elements.
+				<source>The screenshot above shows how the "Create new record" dialog looks for a user limited to editing only "Page" and "Page content" elements.
 The two tables are simply added to the list of "Tables (modify)" in the group Access Lists.
 This is (an example of) the full amount of elements that can be created on the page by the "admin" user for whom there are no restrictions.</source>
 			</trans-unit>
@@ -222,7 +222,7 @@ EXT:lang/cshimages/be_groups_13.png</source>
 			</trans-unit>
 			<trans-unit id="groupMods.image_descr" xml:space="preserve">
 				<source>The Backend Modules available for a user is reflected in the menu items of the backend. For most regular users only modules in the Web and File main modules are enabled. Typically "Web &gt; Page" is used for editing of page content.
-This is the assignment of Backend Modules to the user from the screen shot above. All four Web sub-modules and the two User sub-modules are configured here. However the File &gt; Filelist module must have been configured for another member group of this user (or inside the user profile itself which is also possible). The Help modules are all accessible by default and does not require explicit access.</source>
+This is the assignment of Backend Modules to the user from the screenshot above. All four Web sub-modules and the two User sub-modules are configured here. However the File &gt; Filelist module must have been configured for another member group of this user (or inside the user profile itself which is also possible). The Help modules are all accessible by default and does not require explicit access.</source>
 			</trans-unit>
 			<trans-unit id="inc_access_lists.description" xml:space="preserve">
 				<source>Select whether the Access Lists for Page type, Tables, Module and Allowed excludefield are enabled for this group.</source>
