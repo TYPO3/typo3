@@ -73,12 +73,21 @@ class RteController {
 	public $R_URI;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
+		$GLOBALS['SOBE'] = $this;
+
+		$this->init();
+	}
+
+	/**
 	 * Initialization of the class
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
-	public function init() {
+	protected function init() {
 		// Setting GPvars:
 		$this->P = GeneralUtility::_GP('P');
 		$this->popView = GeneralUtility::_GP('popView');
@@ -99,7 +108,6 @@ class RteController {
 	 * Main function, rendering the document with the iframe with the RTE in.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Translate id to the workspace version:

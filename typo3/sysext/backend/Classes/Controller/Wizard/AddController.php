@@ -45,12 +45,6 @@ class AddController {
 	 */
 	public $content;
 
-	// List of files to include.
-	/**
-	 * @todo Define visibility
-	 */
-	public $include_once = array();
-
 	// If set, the TCEmain class is loaded and used to add the returning ID to the parent record.
 	/**
 	 * @todo Define visibility
@@ -90,12 +84,21 @@ class AddController {
 	public $returnEditConf;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
+		$GLOBALS['SOBE'] = $this;
+
+		$this->init();
+	}
+
+	/**
 	 * Initialization of the class.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
-	public function init() {
+	protected function init() {
 		// Init GPvars:
 		$this->P = GeneralUtility::_GP('P');
 		$this->returnEditConf = GeneralUtility::_GP('returnEditConf');
@@ -140,7 +143,6 @@ class AddController {
 	 * Will issue a location-header, redirecting either BACK or to a new alt_doc.php instance...
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		if ($this->returnEditConf) {
