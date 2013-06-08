@@ -49,7 +49,7 @@ EXT:lang/cshimages/core_3.png</source>
 			</trans-unit>
 			<trans-unit id="menu_modules.image_descr" xml:space="preserve">
 				<source>This is the range of menu options for a typical backend user.
-For another backend user it might be different. This screen shot shows how another user has different permissions set and therefore access to other modules only. Also the backend language has been set different for this user.</source>
+For another backend user it might be different. This screenshot shows how another user has different permissions set and therefore access to other modules only. Also the backend language has been set different for this user.</source>
 			</trans-unit>
 			<trans-unit id="menu_adminFunction.alttitle" xml:space="preserve">
 				<source>Admin Functions</source>
