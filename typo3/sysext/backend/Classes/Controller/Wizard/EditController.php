@@ -51,12 +51,21 @@ class EditController {
 	public $doClose;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
+		$GLOBALS['SOBE'] = $this;
+
+		$this->init();
+	}
+
+	/**
 	 * Initialization of the script
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
-	public function init() {
+	protected function init() {
 		$this->P = GeneralUtility::_GP('P');
 		// Used for the return URL to alt_doc.php so that we can close the window.
 		$this->doClose = GeneralUtility::_GP('doClose');
@@ -67,7 +76,6 @@ class EditController {
 	 * Makes a header-location redirect to an edit form IF POSSIBLE from the passed data - otherwise the window will just close.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		if ($this->doClose) {
