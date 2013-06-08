@@ -65,11 +65,10 @@ class ListController {
 
 	/**
 	 * Initialization of the class, setting GPvars.
-	 *
-	 * @return 	void
-	 * @todo Define visibility
 	 */
-	public function init() {
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
+		$GLOBALS['SOBE'] = $this;
 		$this->P = GeneralUtility::_GP('P');
 		$this->table = GeneralUtility::_GP('table');
 		$this->id = GeneralUtility::_GP('id');
@@ -80,7 +79,6 @@ class ListController {
 	 * Will issue a location-header, redirecting either BACK or to a new alt_doc.php instance...
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		// Get this record
