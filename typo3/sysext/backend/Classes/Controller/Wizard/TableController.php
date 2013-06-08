@@ -54,12 +54,6 @@ class TableController {
 	 */
 	public $content;
 
-	// List of files to include.
-	/**
-	 * @todo Define visibility
-	 */
-	public $include_once = array();
-
 	// TRUE, then <input> fields are shown, not textareas.
 	/**
 	 * @todo Define visibility
@@ -115,12 +109,23 @@ class TableController {
 	public $tableParsing_delimiter;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
+		$GLOBALS['SOBE'] = $this;
+
+		$this->init();
+		$this->main();
+		$this->printContent();
+	}
+
+	/**
 	 * Initialization of the class
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
-	public function init() {
+	protected function init() {
 		// GPvars:
 		$this->P = GeneralUtility::_GP('P');
 		$this->TABLECFG = GeneralUtility::_GP('TABLE');
@@ -149,9 +154,8 @@ class TableController {
 	 * Main function, rendering the table wizard
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
-	public function main() {
+	protected function main() {
 		if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
 			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('table_title'), $this->tableWizard(), 0, 1);
 		} else {

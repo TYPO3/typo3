@@ -116,12 +116,23 @@ class ColorpickerController {
 	public $content;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
+		$GLOBALS['SOBE'] = $this;
+
+		$this->init();
+		$this->main();
+		$this->printContent();
+	}
+
+	/**
 	 * Initialises the Class
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
-	public function init() {
+	protected function init() {
 		// Setting GET vars (used in frameset script):
 		$this->P = GeneralUtility::_GP('P', 1);
 		// Setting GET vars (used in colorpicker script):
@@ -191,9 +202,8 @@ class ColorpickerController {
 	 * Main Method, rendering either colorpicker or frameset depending on ->showPicker
 	 *
 	 * @return 	void
-	 * @todo Define visibility
 	 */
-	public function main() {
+	protected function main() {
 		// Show frameset by default:
 		if (!GeneralUtility::_GP('showPicker')) {
 			$this->frameSet();
