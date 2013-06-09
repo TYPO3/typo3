@@ -95,3 +95,6 @@ img.absmiddle {
 	vertical-align: top;
 }
 
+.nowrap {
+	white-space: nowrap;
+}
