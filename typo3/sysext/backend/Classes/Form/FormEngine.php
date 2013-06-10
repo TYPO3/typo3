@@ -2369,8 +2369,32 @@ function ' . $evalData . '(value) {
 					} else {
 						$rowCopy = array();
 						$rowCopy[$field] = $imgPath;
-						$thumbnailCode = BackendUtility::thumbCode($rowCopy, $table, $field, $this->backPath, 'thumbs.php', $config['uploadfolder'], 0, ' align="middle"');
-						$imgs[] = '<span class="nobr">' . $thumbnailCode . $imgPath . '</span>';
+						$thumbnailCode = '';
+						try {
+							$thumbnailCode = BackendUtility::thumbCode(
+								$rowCopy, $table, $field, $this->backPath, 'thumbs.php',
+								$config['uploadfolder'], 0, ' align="middle"'
+							);
+							$thumbnailCode = '<span class="nobr">' . $thumbnailCode . $imgPath . '</span>';
+
+						} catch (\Exception $exception) {
+							/** @var $flashMessage FlashMessage */
+							$message = $exception->getMessage();
+							$flashMessage = GeneralUtility::makeInstance(
+								'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+								htmlspecialchars($message), '', FlashMessage::ERROR, TRUE
+							);
+							$class = 'TYPO3\\CMS\\Core\\Messaging\\FlashMessageService';
+							/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+							$flashMessageService = GeneralUtility::makeInstance($class);
+							$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+							$defaultFlashMessageQueue->enqueue($flashMessage);
+
+							$logMessage = $message . ' (' . $table . ':' . $row['uid'] . ')';
+							GeneralUtility::sysLog($logMessage, 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+						}
+
+						$imgs[] = $thumbnailCode;
 					}
 				}
 				$thumbsnail = implode('<br />', $imgs);
