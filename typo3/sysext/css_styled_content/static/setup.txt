@@ -1299,7 +1299,7 @@ tt_content.uploads {
 				10 = LOAD_REGISTER
 				10 {
 					oddEvenClass = li-odd li-first |*| li-even || li-odd
-					elementClass = csc-uploads-element csc-uploads-element-{register:fileExtension}
+					elementClass = csc-uploads-element csc-uploads-element-{file:current:extension}
 					elementClass.insertData = 1
 				}
 
