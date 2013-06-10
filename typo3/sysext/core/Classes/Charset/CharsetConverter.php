@@ -1140,7 +1140,7 @@ class CharsetConverter {
 	 *
 	 ********************************************/
 	/**
-	 * This will initialize a charset for use if it's defined in the PATH_t3lib.'csconvtbl/' folder
+	 * This will initialize a charset for use if it's defined in the 'typo3/sysext/core/Resources/Private/Charsets/csconvtbl/' folder
 	 * This function is automatically called by the conversion functions
 	 *
 	 * PLEASE SEE: http://www.unicode.org/Public/MAPPINGS/
@@ -1154,7 +1154,7 @@ class CharsetConverter {
 		// Only process if the charset is not yet loaded:
 		if (!is_array($this->parsedCharsets[$charset])) {
 			// Conversion table filename:
-			$charsetConvTableFile = PATH_t3lib . 'csconvtbl/' . $charset . '.tbl';
+			$charsetConvTableFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') . 'Resources/Private/Charsets/csconvtbl/' . $charset . '.tbl';
 			// If the conversion table is found:
 			if ($charset && \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($charsetConvTableFile) && @is_file($charsetConvTableFile)) {
 				// Cache file for charsets:
@@ -1244,7 +1244,7 @@ class CharsetConverter {
 			break;
 		}
 		// Process main Unicode data file
-		$unicodeDataFile = PATH_t3lib . 'unidata/UnicodeData.txt';
+		$unicodeDataFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') . 'Resources/Private/Charsets/unidata/UnicodeData.txt';
 		if (!(\TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($unicodeDataFile) && @is_file($unicodeDataFile))) {
 			return FALSE;
 		}
@@ -1342,7 +1342,7 @@ class CharsetConverter {
 		}
 		fclose($fh);
 		// Process additional Unicode data for casing (allow folded characters to expand into a sequence)
-		$specialCasingFile = PATH_t3lib . 'unidata/SpecialCasing.txt';
+		$specialCasingFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') . 'Resources/Private/Charsets/unidata/SpecialCasing.txt';
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($specialCasingFile) && @is_file($specialCasingFile)) {
 			$fh = fopen($specialCasingFile, 'rb');
 			if ($fh) {
@@ -1380,7 +1380,7 @@ class CharsetConverter {
 			}
 		}
 		// Process custom decompositions
-		$customTranslitFile = PATH_t3lib . 'unidata/Translit.txt';
+		$customTranslitFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') . 'Resources/Private/Charsets/unidata/Translit.txt';
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($customTranslitFile) && @is_file($customTranslitFile)) {
 			$fh = fopen($customTranslitFile, 'rb');
 			if ($fh) {
