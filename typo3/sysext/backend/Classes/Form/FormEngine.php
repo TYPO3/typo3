@@ -2369,7 +2369,11 @@ function ' . $evalData . '(value) {
 					} else {
 						$rowCopy = array();
 						$rowCopy[$field] = $imgPath;
-						$thumbnailCode = BackendUtility::thumbCode($rowCopy, $table, $field, $this->backPath, 'thumbs.php', $config['uploadfolder'], 0, ' align="middle"');
+						try {
+							$thumbnailCode = BackendUtility::thumbCode($rowCopy, $table, $field, $this->backPath, 'thumbs.php', $config['uploadfolder'], 0, ' align="middle"');
+						} catch (\Exception $e) {
+							$thumbnailCode = '<strong>' . $e->getMessage() . '</strong><br/>';
+						}
 						$imgs[] = '<span class="nobr">' . $thumbnailCode . $imgPath . '</span>';
 					}
 				}
