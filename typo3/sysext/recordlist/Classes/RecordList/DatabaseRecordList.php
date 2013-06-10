@@ -1245,7 +1245,12 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\AbstractDataba
 	 * @return string HTML of reference a link, will be empty if there are no
 	 */
 	protected function createReferenceHtml($tableName, $uid) {
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('tablename, recuid, field', 'sys_refindex', 'ref_table = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_refindex') . ' AND ref_uid = ' . $uid . ' AND deleted = 0', '', '', '0,20');
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'tablename, recuid, field',
+			'sys_refindex',
+			'ref_table = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_refindex') .
+				' AND ref_uid = ' . $uid . ' AND deleted = 0'
+		);
 		return $this->generateReferenceToolTip($rows, '\'' . $tableName . '\', \'' . $uid . '\'');
 	}
 
