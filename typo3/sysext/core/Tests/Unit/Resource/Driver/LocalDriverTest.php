@@ -647,6 +647,28 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		$this->assertEquals(0, strlen($fileData));
 	}
 
+	/**
+	 * @test
+	 */
+	public function createdFilesHaveCorrectRights() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('createdFilesHaveCorrectRights() tests not available on Windows');
+		}
+
+			// No one will use this as his default file create mask so we hopefully don't get any false positives
+		$testpattern = '0046';
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = $testpattern;
+
+		$this->addToMount(array(
+			'someDir' => array()
+		));
+		/** @var $fixture \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
+		list($basedir, $fixture) = $this->prepareRealTestEnvironment();
+		mkdir($basedir . '/someDir');
+		$fixture->createFile('testfile.txt', $fixture->getFolder('/someDir'));
+		$this->assertEquals($testpattern, decoct(fileperms($basedir . '/someDir/testfile.txt') & 0777));
+	}
+
 	/**********************************
 	 * File and directory listing
 	 **********************************/
