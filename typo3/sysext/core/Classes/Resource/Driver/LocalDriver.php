@@ -1101,8 +1101,8 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException('Invalid characters in fileName "' . $fileName . '"', 1320572272);
 		}
 		$filePath = $parentFolder->getIdentifier() . $this->sanitizeFileName(ltrim($fileName, '/'));
-		// TODO set permissions of new file
 		$result = touch($this->absoluteBasePath . $filePath);
+		GeneralUtility::fixPermissions($this->absoluteBasePath . ltrim($filePath, '/'));
 		clearstatcache();
 		if ($result !== TRUE) {
 			throw new \RuntimeException('Creating file ' . $filePath . ' failed.', 1320569854);
