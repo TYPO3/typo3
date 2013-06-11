@@ -34,6 +34,14 @@ namespace TYPO3\CMS\Recordlist\Browser;
  */
 class ElementBrowser {
 
+	/**
+	 * Optional instance of a record list that TBE_expandPage() should
+	 * use to render the records in a page
+	 *
+	 * @var string
+	 */
+	protected $recordList = NULL;
+
 	// Internal, static:
 	// Current site URL (Frontend)
 	/**
@@ -1409,7 +1417,11 @@ class ElementBrowser {
 			$table = '';
 			// Generate the record list:
 			/** @var $dblist \TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList */
-			$dblist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\RecordList\\ElementBrowserRecordList');
+			if (isset($this->recordList)) {
+				$dblist = $this->recordList;
+			} else {
+				$dblist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\RecordList\\ElementBrowserRecordList');
+			}
 			$dblist->thisScript = $this->thisScript;
 			$dblist->backPath = $GLOBALS['BACK_PATH'];
 			$dblist->thumbs = 0;
@@ -2050,6 +2062,21 @@ class ElementBrowser {
 			$info = $hookObject->parseCurrentUrl($href, $siteUrl, $info);
 		}
 		return $info;
+	}
+
+	/**
+	 * Setter for the class that should be used by TBE_expandPage()
+	 * to generate the record list.
+	 *
+	 * @param \TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList $recordList
+	 */
+	public function setRecordList($recordList) {
+
+		if (!$recordList instanceof \TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList) {
+			throw new \InvalidArgumentException('Record list needs to be an instance of \\TYPO3\\CMS\\Backend\\RecordList\\ElementBrowserRecordList', 1370878522);
+		}
+
+		$this->recordList = $recordList;
 	}
 
 	/**
