@@ -77,7 +77,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		}
 		// Note: parseCurUrl will invoke the hooks
 		$this->curUrlInfo = $this->parseCurUrl($this->curUrlArray['href'], $this->siteURL);
-		if (isset($this->curUrlArray['data-htmlarea-external']) && $this->curUrlInfo['act'] != 'mail') {
+		if (isset($this->curUrlArray['data-htmlarea-external']) && !$this->curUrlInfo['prevent-act-override'] && $this->curUrlInfo['act'] != 'mail') {
 			$this->curUrlInfo['act'] = 'url';
 			$this->curUrlInfo['info'] = $this->curUrlArray['href'];
 		}
