@@ -416,6 +416,23 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function flushByTagDoesNotLeaveOrphanedEntriesInTagsTable() {
+		$backend = $this->setUpBackend();
+		$this->setUpMockFrontendOfBackend($backend);
+		$data = 'some data' . microtime();
+		$backend->set('BackendDbTest1', $data, array('UnitTestTag%boring', 'UnitTestTag%special'));
+		$backend->set('BackendDbTest2', $data, array('UnitTestTag%boring2', 'UnitTestTag%special'));
+		$backend->flushByTag('UnitTestTag%special');
+
+		$tagEntriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $this->testingTagsTable, 'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('BackendDbTest1', $this->testingTagsTable));
+		$this->assertCount(0, $tagEntriesFound);
+		$tagEntriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $this->testingTagsTable, 'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('BackendDbTest2', $this->testingTagsTable));
+		$this->assertCount(0, $tagEntriesFound);
+	}
+
+	/**
+	 * @test
+	 */
 	public function hasReturnsTheCorrectResultForEntryWithExceededLifetime() {
 		$backend = $this->setUpBackend();
 		$mockCache = $this->setUpMockFrontendOfBackend($backend);
