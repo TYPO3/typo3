@@ -89,7 +89,7 @@ class SchemaMigratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 						)
 					)
 				),
-				diff_currentValues => array(
+				'diff_currentValues' => array(
 					'tx_foo' => array(
 						'fields' => array(
 							'foo' => 'varchar(255) DEFAULT \'0\''
@@ -127,7 +127,7 @@ class SchemaMigratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array(
 				'extra' => array(),
 				'diff' => array(),
-				diff_currentValues => NULL
+				'diff_currentValues' => NULL
 			)
 		);
 	}
@@ -158,7 +158,7 @@ class SchemaMigratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array(
 				'extra' => array(),
 				'diff' => array(),
-				diff_currentValues => NULL
+				'diff_currentValues' => NULL
 			)
 		);
 	}
