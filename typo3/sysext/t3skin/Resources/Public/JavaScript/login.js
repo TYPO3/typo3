@@ -53,7 +53,7 @@ TYPO3BackendLogin = {
 			);
 		}
 
-		$A(['t3-username', 't3-password']).each(function(value) {
+		$A(['t3-username', 't3-password', 'openid_url']).each(function(value) {
 			Event.observe(
 					$(value + '-clearIcon'),
 					'click',
@@ -125,13 +125,18 @@ TYPO3BackendLogin = {
 
 		$('t3-login-form-footer-default').hide();
 		$('t3-login-form-footer-openId').show();
+		$('t3-login-username-section').hide();
 		$('t3-login-password-section').hide();
+		$('t3-login-openid_url-section').show();
 
 		if ($('t3-login-interface-section')) {
 			$('t3-login-interface-section').hide();
 		}
 
-		$('t3-username').activate();
+		$('openid_url').activate();
+		if ($('t3-username').getValue() == '') {
+			$('t3-username').setValue('openid_url');
+		}
 
 		TYPO3BackendLogin.setLogintypeCookie('openid');
 	},
@@ -142,9 +147,15 @@ TYPO3BackendLogin = {
 	switchToDefault: function() {
 		$('t3-login-openIdLogo').hide();
 
+		if ($('t3-username').getValue() == 'openid_url') {
+			$('t3-username').setValue('');
+		}
+
 		$('t3-login-form-footer-default').show();
 		$('t3-login-form-footer-openId').hide();
+		$('t3-login-username-section').show();
 		$('t3-login-password-section').show();
+		$('t3-login-openid_url-section').hide();
 
 		if ($('t3-login-interface-section')) {
 			$('t3-login-interface-section').show();

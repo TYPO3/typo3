@@ -78,8 +78,8 @@ class Wizard extends OpenidService {
 			$this->renderHtml();
 			return;
 		} elseif (GeneralUtility::_POST('openid_url') != '') {
-			$this->openIDIdentifier = GeneralUtility::_POST('openid_url');
-			$this->sendOpenIDRequest();
+			$openIDIdentifier = GeneralUtility::_POST('openid_url');
+			$this->sendOpenIDRequest($openIDIdentifier);
 
 			// When sendOpenIDRequest() returns, there was an error
 			$flashMessageService = GeneralUtility::makeInstance(
@@ -89,7 +89,7 @@ class Wizard extends OpenidService {
 				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 				sprintf(
 					$GLOBALS['LANG']->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:error.setup'),
-					htmlspecialchars($this->openIDIdentifier)
+					htmlspecialchars($openIDIdentifier)
 				),
 				$GLOBALS['LANG']->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:title.error'),
 				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR

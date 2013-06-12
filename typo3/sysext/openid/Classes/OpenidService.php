@@ -53,11 +53,6 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	protected $authenticationInformation = array();
 
 	/**
-	 * OpenID identifier after it has been normalized.
-	 */
-	protected $openIDIdentifier;
-
-	/**
 	 * OpenID response object. It is initialized when OpenID provider returns
 	 * with success/failure response to us.
 	 *
@@ -142,15 +137,43 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 		// Store login and authetication data
 		$this->loginData = $loginData;
 		$this->authenticationInformation = $authenticationInformation;
-		// Implement normalization according to OpenID 2.0 specification
-		$this->openIDIdentifier = $this->normalizeOpenID($this->loginData['uname']);
 		// If we are here after authentication by the OpenID server, get its response.
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_mode') == 'finish' && $this->openIDResponse == NULL) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_mode') === 'finish' && $this->openIDResponse === NULL) {
 			$this->includePHPOpenIDLibrary();
 			$openIDConsumer = $this->getOpenIDConsumer();
-			$this->openIDResponse = $openIDConsumer->complete($this->getReturnURL());
+			$this->openIDResponse = $openIDConsumer->complete($this->getReturnURL(GeneralUtility::_GP('tx_openid_claimed')));
 		}
 		$this->parentObject = $parentObject;
+	}
+
+	/**
+	 * Process the submitted OpenID URL if valid.
+	 *
+	 * @param array $loginData Credentials that are submitted and potentially modified by other services
+	 * @param string $passwordTransmissionStrategy Keyword of how the password has been hashed or encrypted before submission
+	 * @return boolean
+	 */
+	public function processLoginData(array &$loginData, $passwordTransmissionStrategy) {
+		$isProcessed = FALSE;
+		// Pre-process the login only if no password has been submitted
+		if (empty($loginData['uident_text'])) {
+			try {
+				$openIdUrl = GeneralUtility::_POST('openid_url');
+				if (!empty($openIdUrl)) {
+					$loginData['uident_openid'] = $this->normalizeOpenID($openIdUrl);
+					$isProcessed = TRUE;
+				} elseif (!empty($loginData['uname'])) {
+					// It might be the case that during frontend login the OpenID URL is submitted in the username field
+					// Since we are a low priority service, and no password has been submitted it is OK to just asume
+					// we might have gotten an OpenID URL
+					$loginData['uident_openid'] = $this->normalizeOpenID($loginData['uname']);
+					$isProcessed = TRUE;
+				}
+			} catch (Exception $e) {
+				$this->writeLog($e->getMessage());
+			}
+		}
+		return $isProcessed;
 	}
 
 	/**
@@ -162,37 +185,35 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * @return mixed User record (content of fe_users/be_users as appropriate for the current mode)
 	 */
 	public function getUser() {
+		if ($this->loginData['status'] !== 'login') {
+			return NULL;
+		}
 		$userRecord = NULL;
-		if ($this->loginData['status'] === 'login') {
-			if ($this->openIDResponse instanceof \Auth_OpenID_ConsumerResponse) {
-				$GLOBALS['BACK_PATH'] = $this->getBackPath();
-				// We are running inside the OpenID return script
-				// Note: we cannot use $this->openIDResponse->getDisplayIdentifier()
-				// because it may return a different identifier. For example,
-				// LiveJournal server converts all underscore characters in the
-				// original identfier to dashes.
-				if ($this->openIDResponse->status === Auth_OpenID_SUCCESS) {
-					$openIDIdentifier = $this->getFinalOpenIDIdentifier();
-					if ($openIDIdentifier) {
-						$userRecord = $this->getUserRecord($openIDIdentifier);
-						if ($userRecord != NULL) {
-							$this->writeLog('User \'%s\' logged in with OpenID \'%s\'', $userRecord[$this->parentObject->formfield_uname], $openIDIdentifier);
-						} else {
-							$this->writeLog('Failed to login user using OpenID \'%s\'', $openIDIdentifier);
-						}
+		if ($this->openIDResponse instanceof \Auth_OpenID_ConsumerResponse) {
+			$GLOBALS['BACK_PATH'] = $this->getBackPath();
+			// We are running inside the OpenID return script
+			// Note: we cannot use $this->openIDResponse->getDisplayIdentifier()
+			// because it may return a different identifier. For example,
+			// LiveJournal server converts all underscore characters in the
+			// original identfier to dashes.
+			if ($this->openIDResponse->status === Auth_OpenID_SUCCESS) {
+				$openIDIdentifier = $this->getFinalOpenIDIdentifier();
+				if ($openIDIdentifier) {
+					$userRecord = $this->getUserRecord($openIDIdentifier);
+					if (!empty($userRecord) && is_array($userRecord)) {
+						// The above function will return user record from the OpenID. It means that
+						// user actually tried to authenticate using his OpenID. In this case
+						// we must change the password in the record to a long random string so
+						// that this user cannot be authenticated with other service.
+						$userRecord[$this->authenticationInformation['db_user']['userident_column']] = GeneralUtility::getRandomHexString(42);
+						$this->writeLog('User \'%s\' logged in with OpenID \'%s\'', $userRecord[$this->parentObject->formfield_uname], $openIDIdentifier);
+					} else {
+						$this->writeLog('Failed to login user using OpenID \'%s\'', $openIDIdentifier);
 					}
 				}
-			} else {
-				// Here if user just started authentication
-				$userRecord = $this->getUserRecord($this->openIDIdentifier);
 			}
-			// The above function will return user record from the OpenID. It means that
-			// user actually tried to authenticate using his OpenID. In this case
-			// we must change the password in the record to a long random string so
-			// that this user cannot be authenticated with other service.
-			if (is_array($userRecord)) {
-				$userRecord[$this->authenticationInformation['db_user']['userident_column']] = GeneralUtility::getRandomHexString(42);
-			}
+		} elseif (!empty($this->loginData['uident_openid'])) {
+			$this->sendOpenIDRequest($this->loginData['uident_openid']);
 		}
 		return $userRecord;
 	}
@@ -217,20 +238,6 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 					$result = 200;
 				} else {
 					$this->writeLog('OpenID authentication failed with code \'%s\'.', $this->openIDResponse->status);
-				}
-			} else {
-				// We may need to send a request to the OpenID server.
-				// First, check if the supplied login name equals with the configured OpenID.
-				if ($this->openIDIdentifier === $userRecord['tx_openid_openid']) {
-					// Next, check if the user identifier looks like an OpenID identifier.
-					// Prevent PHP warning in case if identifiers is not an OpenID identifier
-					// (not an URL).
-					// TODO: Improve testing here. After normalization has been added, now all identifiers will succeed here...
-					$urlParts = @parse_url($this->openIDIdentifier);
-					if (is_array($urlParts) && $urlParts['scheme'] != '' && $urlParts['host']) {
-						// Yes, this looks like a good OpenID. Ask OpenID server (should not return)
-						$this->sendOpenIDRequest();
-					}
 				}
 			}
 		}
@@ -285,9 +292,10 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 */
 	protected function getUserRecord($openIDIdentifier) {
 		$record = NULL;
-		if ($openIDIdentifier) {
-			// $openIDIdentifier always as a trailing slash because it got normalized
-			// but tx_openid_openid possibly not so check for both alternatives in database
+		try {
+			$openIDIdentifier = $this->normalizeOpenID($openIDIdentifier);
+			// $openIDIdentifier always has a trailing slash
+			// but tx_openid_openid field possibly not so check for both alternatives in database
 			$record = $this->databaseConnection->exec_SELECTgetSingleRow(
 				'*',
 				$this->authenticationInformation['db_user']['table'],
@@ -302,10 +310,10 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 				// Make sure to work only with normalized OpenID during the whole process
 				$record['tx_openid_openid'] = $this->normalizeOpenID($record['tx_openid_openid']);
 			}
-		} else {
+		} catch (Exception $e) {
 			// This should never happen and generally means hack attempt.
 			// We just log it and do not return any records.
-			$this->writeLog('getUserRecord is called with the empty OpenID');
+			$this->writeLog($e->getMessage());
 		}
 		return $record;
 	}
@@ -335,11 +343,11 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * This function does not return on success. If it returns, it means something
 	 * went totally wrong with OpenID.
 	 *
+	 * @param string $openIDIdentifier The OpenID identifier for discovery and auth request
 	 * @return void
 	 */
-	protected function sendOpenIDRequest() {
+	protected function sendOpenIDRequest($openIDIdentifier) {
 		$this->includePHPOpenIDLibrary();
-		$openIDIdentifier = $this->openIDIdentifier;
 		// Initialize OpenID client system, get the consumer
 		$openIDConsumer = $this->getOpenIDConsumer();
 		// Begin the OpenID authentication process
@@ -355,7 +363,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 		// response.
 		// For OpenID version 1, we *should* send a redirect. For OpenID version 2,
 		// we should use a Javascript form to send a POST request to the server.
-		$returnURL = $this->getReturnURL();
+		$returnURL = $this->getReturnURL($openIDIdentifier);
 		$trustedRoot = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 		if ($authenticationRequest->shouldSendRedirect()) {
 			$redirectURL = $authenticationRequest->redirectURL($trustedRoot, $returnURL);
@@ -391,9 +399,10 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * the OpenID server, the user will be sent to this URL to complete
 	 * authentication process with the current site. We send it to our script.
 	 *
+	 * @param string $claimedIdentifier The OpenID identifier for discovery and auth request
 	 * @return string Return URL
 	 */
-	protected function getReturnURL() {
+	protected function getReturnURL($claimedIdentifier) {
 		if ($this->authenticationInformation['loginType'] === 'FE') {
 			// We will use eID to send user back, create session data and
 			// return to the calling page.
@@ -410,10 +419,8 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 		}
 		if (GeneralUtility::_GP('tx_openid_mode') === 'finish') {
 			$requestURL = GeneralUtility::_GP('tx_openid_location');
-			$claimedIdentifier = GeneralUtility::_GP('tx_openid_claimed');
 		} else {
 			$requestURL = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-			$claimedIdentifier = $this->openIDIdentifier;
 		}
 		$returnURL .= 'tx_openid_location=' . rawurlencode($requestURL) . '&' . 'tx_openid_mode=finish&' . 'tx_openid_claimed=' . rawurlencode($claimedIdentifier) . '&' . 'tx_openid_signature=' . $this->getSignature($claimedIdentifier);
 		return GeneralUtility::locationHeaderUrl($returnURL);
@@ -438,8 +445,12 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 *
 	 * @param string $openIDIdentifier OpenID identifier to normalize
 	 * @return string Normalized OpenID identifier
+	 * @throws Exception
 	 */
 	protected function normalizeOpenID($openIDIdentifier) {
+		if (empty($openIDIdentifier)) {
+			throw new Exception('Empty OpenID Identifier given.', 1381922460);
+		}
 		// Strip everything with and behind the fragment delimiter character "#"
 		if (strpos($openIDIdentifier, '#') !== FALSE) {
 			$openIDIdentifier = preg_replace('/#.*$/', '', $openIDIdentifier);
@@ -448,11 +459,11 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 		if (!preg_match('#^https?://#', $openIDIdentifier)) {
 			$escapedIdentifier = $this->databaseConnection->quoteStr($openIDIdentifier, $this->authenticationInformation['db_user']['table']);
 			$condition = 'tx_openid_openid IN ('
-					. '\'http://' . $escapedIdentifier . '\','
-					. '\'http://' . $escapedIdentifier . '/\','
-					. '\'https://' . $escapedIdentifier . '\','
-					. '\'https://' . $escapedIdentifier . '/\''
-					. ')';
+				. '\'http://' . $escapedIdentifier . '\','
+				. '\'http://' . $escapedIdentifier . '/\','
+				. '\'https://' . $escapedIdentifier . '\','
+				. '\'https://' . $escapedIdentifier . '/\''
+				. ')';
 			$row = $this->databaseConnection->exec_SELECTgetSingleRow(
 				'tx_openid_openid',
 				$this->authenticationInformation['db_user']['table'],
@@ -460,6 +471,11 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 			);
 			if (is_array($row)) {
 				$openIDIdentifier = $row['tx_openid_openid'];
+			} else {
+				// This only happens when the OpenID provider will select the final OpenID identity
+				// In this case we require a valid URL as we cannot guess the scheme
+				// So we throw an Exception and do not start the OpenID handshake at all
+				throw new Exception('Trying to authenticate with OpenID but identifier is neither found in a user record nor it is a valid URL.', 1381922465);
 			}
 		}
 		// An empty path component is normalized to a slash
@@ -495,7 +511,6 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 		if (!$result) {
 			$result = $this->getSignedClaimedOpenIDIdentifier();
 		}
-		$result = $this->getAdjustedOpenIDIdentifier($result);
 		return $result;
 	}
 
@@ -509,25 +524,6 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 		$signature = $this->getSignature($result);
 		if ($signature !== GeneralUtility::_GP('tx_openid_signature')) {
 			$result = '';
-		}
-		return $result;
-	}
-
-	/**
-	 * Adjusts the OpenID identifier to to claimed OpenID, if the only difference
-	 * is in normalizing the URLs. Example:
-	 * + OpenID returned from provider: https://account.provider.net/
-	 * + OpenID used in TYPO3: https://account.provider.net (not normalized)
-	 *
-	 * @param string $openIDIdentifier The OpenID returned by the OpenID provider
-	 * @return string Adjusted OpenID identifier
-	 */
-	protected function getAdjustedOpenIDIdentifier($openIDIdentifier) {
-		$result = '';
-		$claimedOpenIDIdentifier = $this->getSignedClaimedOpenIDIdentifier();
-		$pattern = '#^' . preg_quote($claimedOpenIDIdentifier, '#') . '/?$#';
-		if (preg_match($pattern, $openIDIdentifier)) {
-			$result = $claimedOpenIDIdentifier;
 		}
 		return $result;
 	}

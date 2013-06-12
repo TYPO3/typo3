@@ -86,7 +86,7 @@ class RsaAuthService extends \TYPO3\CMS\Sv\AuthenticationService {
 			if ($key != NULL && substr($password, 0, 4) === 'rsa:') {
 				// Decode password and store it in loginData
 				$decryptedPassword = $this->backend->decrypt($key, substr($password, 4));
-				if ($decryptedPassword != NULL) {
+				if ($decryptedPassword !== NULL) {
 					$loginData['uident_text'] = $decryptedPassword;
 					$isProcessed = TRUE;
 				} else {

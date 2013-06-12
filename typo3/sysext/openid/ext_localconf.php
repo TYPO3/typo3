@@ -3,6 +3,20 @@
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
+// Register OpenID pocessing service with TYPO3
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService($_EXTKEY, 'auth', 'tx_openid_service_process', array(
+	'title' => 'OpenID Authentication',
+	'description' => 'OpenID processing login information service for Frontend and Backend',
+	'subtype' => 'processLoginDataBE,processLoginDataFE',
+	'available' => TRUE,
+	'priority' => 35,
+	// Must be lower than for \TYPO3\CMS\Sv\AuthenticationService (50) to let other processing take place before
+	'quality' => 50,
+	'os' => '',
+	'exec' => '',
+	'className' => 'TYPO3\\CMS\\Openid\\OpenidService'
+));
+
 // Register OpenID authentication service with TYPO3
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService($_EXTKEY, 'auth', 'tx_openid_service', array(
 	'title' => 'OpenID Authentication',
@@ -10,7 +24,7 @@ if (!defined('TYPO3_MODE')) {
 	'subtype' => 'getUserFE,authUserFE,getUserBE,authUserBE',
 	'available' => TRUE,
 	'priority' => 75,
-	// Must be higher than for \TYPO3\CMS\Sv\AuthenticationService (50) or \TYPO3\CMS\Sv\AuthenticationService will deny request unconditionally
+	// Must be higher than for \TYPO3\CMS\Sv\AuthenticationService (50) or \TYPO3\CMS\Sv\AuthenticationService will log failed login attempts
 	'quality' => 50,
 	'os' => '',
 	'exec' => '',

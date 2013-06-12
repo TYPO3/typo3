@@ -78,7 +78,7 @@
 <!-- ###LOGIN_ERROR### end -->
 
 <div id="t3-login-form-fields" class="###CSS_OPENIDCLASS###">
-	<div class="t3-login-field">
+	<div class="t3-login-field" id="t3-login-username-section">
 		<input type="text" id="t3-username" name="username" value="###VALUE_USERNAME###" placeholder="###LABEL_USERNAME###" class="t3-username" autofocus="autofocus" />
 
 		<div class="t3-login-clearInputField">
@@ -99,6 +99,15 @@
 		</div>
 		<div class="t3-login-alert-capslock" id="t3-password-alert-capslock" style="display: none">
 			<img src="sysext/t3skin/icons/login_capslock.gif" alt="###ERROR_CAPSLOCK###" title="###ERROR_CAPSLOCK###" />
+		</div>
+	</div>
+	<div class="t3-login-field" id="t3-login-openid_url-section" style="display: none">
+		<input type="text" id="openid_url" name="openid_url" value="###VALUE_OPENID_URL###" placeholder="###LABEL_OPENID###" class="t3-openidurl" />
+
+		<div class="t3-login-clearInputField">
+			<a id="openid_url-clearIcon" style="display: none;">
+				<img src="sysext/t3skin/icons/common-input-clear.png" alt="###CLEAR###" title="###CLEAR###" />
+			</a>
 		</div>
 	</div>
 	<div class="t3-login-field clearfix">
