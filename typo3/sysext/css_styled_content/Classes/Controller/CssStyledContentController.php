@@ -97,10 +97,6 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			$out = '
 				<ul class="csc-bulletlist csc-bulletlist-' . $type . '">' . implode('', $lines) . '
 				</ul>';
-			// Calling stdWrap:
-			if ($conf['stdWrap.']) {
-				$out = $this->cObj->stdWrap($out, $conf['stdWrap.']);
-			}
 			// Return value
 			return $out;
 		}
@@ -229,10 +225,6 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			$out = '
 				<table ' . GeneralUtility::implodeAttributes($tableTagParams) . '>' . $tableContents . '
 				</table>';
-			// Calling stdWrap:
-			if ($conf['stdWrap.']) {
-				$out = $this->cObj->stdWrap($out, $conf['stdWrap.']);
-			}
 			// Return value
 			return $out;
 		}
@@ -374,10 +366,6 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				// Compile it all into table tags:
 				$out = $this->cObj->wrap(implode('', $outputEntries), $outerWrap);
 			}
-			// Calling stdWrap:
-			if ($conf['stdWrap.']) {
-				$out = $this->cObj->stdWrap($out, $conf['stdWrap.']);
-			}
 			// Return value
 			return $out;
 		}
@@ -490,9 +478,6 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		$imgList = trim($this->cObj->stdWrap($conf['imgList'], $conf['imgList.']));
 		if (!$imgList) {
 			// No images, that's easy
-			if (is_array($conf['stdWrap.'])) {
-				return $this->cObj->stdWrap($content, $conf['stdWrap.']);
-			}
 			return $content;
 		}
 		$imgs = GeneralUtility::trimExplode(',', $imgList);
@@ -1049,9 +1034,6 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		$output = str_replace('###TEXT###', $content, $output);
 		$output = str_replace('###IMAGES###', $images, $output);
 		$output = str_replace('###CLASSES###', $class, $output);
-		if ($conf['stdWrap.']) {
-			$output = $this->cObj->stdWrap($output, $conf['stdWrap.']);
-		}
 		return $output;
 	}
 
