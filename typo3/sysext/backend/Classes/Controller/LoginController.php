@@ -68,6 +68,12 @@ class LoginController {
 	 */
 	public $p;
 
+	// GPvar: preset openid URL
+	/**
+	 * @todo Define visibility
+	 */
+	public $o;
+
 	// GPvar: If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
 	/**
 	 * @todo Define visibility
@@ -152,6 +158,7 @@ class LoginController {
 		if (GeneralUtility::getIndpEnv('TYPO3_SSL')) {
 			$this->u = GeneralUtility::_GP('u');
 			$this->p = GeneralUtility::_GP('p');
+			$this->o = GeneralUtility::_GP('openid_url');
 		}
 		// If "L" is "OUT", then any logged in is logged out. If redirect_url is given, we redirect to it
 		$this->L = GeneralUtility::_GP('L');
@@ -248,6 +255,7 @@ class LoginController {
 		$markers = array(
 			'VALUE_USERNAME' => htmlspecialchars($this->u),
 			'VALUE_PASSWORD' => htmlspecialchars($this->p),
+			'VALUE_OPENID_URL' => htmlspecialchars($this->o),
 			'VALUE_SUBMIT' => $GLOBALS['LANG']->getLL('labels.submitLogin', TRUE)
 		);
 		// Show an error message if the login command was successful already, otherwise remove the subpart

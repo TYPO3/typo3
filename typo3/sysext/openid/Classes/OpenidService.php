@@ -143,7 +143,12 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 		$this->loginData = $loginData;
 		$this->authenticationInformation = $authenticationInformation;
 		// Implement normalization according to OpenID 2.0 specification
-		$this->openIDIdentifier = $this->normalizeOpenID($this->loginData['uname']);
+		if (isset($_POST['openid_url'])) {
+			$this->openIDIdentifier = $this->normalizeOpenID($_POST['openid_url'], true);
+		} else {
+			//BC for pre-6.2/non-js FE login forms
+			$this->openIDIdentifier = $this->normalizeOpenID($this->loginData['uname']);
+		}
 		// If we are here after authentication by the OpenID server, get its response.
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_mode') == 'finish' && $this->openIDResponse == NULL) {
 			$this->includePHPOpenIDLibrary();
@@ -162,38 +167,50 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * @return mixed User record (content of fe_users/be_users as appropriate for the current mode)
 	 */
 	public function getUser() {
+		if ($this->loginData['status'] != 'login') {
+			return NULL;
+		}
+
 		$userRecord = NULL;
-		if ($this->loginData['status'] === 'login') {
-			if ($this->openIDResponse instanceof \Auth_OpenID_ConsumerResponse) {
-				$GLOBALS['BACK_PATH'] = $this->getBackPath();
-				// We are running inside the OpenID return script
-				// Note: we cannot use $this->openIDResponse->getDisplayIdentifier()
-				// because it may return a different identifier. For example,
-				// LiveJournal server converts all underscore characters in the
-				// original identfier to dashes.
-				if ($this->openIDResponse->status === Auth_OpenID_SUCCESS) {
-					$openIDIdentifier = $this->getFinalOpenIDIdentifier();
-					if ($openIDIdentifier) {
-						$userRecord = $this->getUserRecord($openIDIdentifier);
-						if ($userRecord != NULL) {
-							$this->writeLog('User \'%s\' logged in with OpenID \'%s\'', $userRecord[$this->parentObject->formfield_uname], $openIDIdentifier);
-						} else {
-							$this->writeLog('Failed to login user using OpenID \'%s\'', $openIDIdentifier);
-						}
+		if ($this->openIDResponse instanceof \Auth_OpenID_ConsumerResponse) {
+			$GLOBALS['BACK_PATH'] = $this->getBackPath();
+			// We are running inside the OpenID return script
+			// Note: we cannot use $this->openIDResponse->getDisplayIdentifier()
+			// because it may return a different identifier. For example,
+			// LiveJournal server converts all underscore characters in the
+			// original identfier to dashes.
+			if ($this->openIDResponse->status == Auth_OpenID_SUCCESS) {
+				$openIDIdentifier = $this->getFinalOpenIDIdentifier();
+				if ($openIDIdentifier) {
+					$userRecord = $this->getUserRecord($openIDIdentifier);
+					if ($userRecord != NULL) {
+						$this->writeLog('User \'%s\' logged in with OpenID \'%s\'', $userRecord[$this->parentObject->formfield_uname], $openIDIdentifier);
+					} else {
+						$this->writeLog('Failed to login user using OpenID \'%s\'', $openIDIdentifier);
 					}
 				}
-			} else {
-				// Here if user just started authentication
-				$userRecord = $this->getUserRecord($this->openIDIdentifier);
 			}
-			// The above function will return user record from the OpenID. It means that
-			// user actually tried to authenticate using his OpenID. In this case
-			// we must change the password in the record to a long random string so
-			// that this user cannot be authenticated with other service.
-			if (is_array($userRecord)) {
-				$userRecord[$this->authenticationInformation['db_user']['userident_column']] = GeneralUtility::getRandomHexString(42);
+		} else if (isset($this->loginData['uident_text'])) {
+			//user gave a password which we do not have with OpenID
+			//return null to skip this login service
+			return NULL;
+		} else {
+			// Here if user just started authentication
+			$urlParts = @parse_url($this->openIDIdentifier);
+			if (is_array($urlParts) && $urlParts['scheme'] != '' && $urlParts['host']) {
+				// Yes, this looks like a good OpenID. Ask OpenID server (should not return)
+				$this->sendOpenIDRequest();
 			}
 		}
+
+		// The above function will return user record from the OpenID. It means that
+		// user actually tried to authenticate using his OpenID. In this case
+		// we must change the password in the record to a long random string so
+		// that this user cannot be authenticated with other service.
+		if (is_array($userRecord)) {
+			$userRecord[$this->authenticationInformation['db_user']['userident_column']] = GeneralUtility::getRandomHexString(42);
+		}
+
 		return $userRecord;
 	}
 
@@ -217,20 +234,6 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 					$result = 200;
 				} else {
 					$this->writeLog('OpenID authentication failed with code \'%s\'.', $this->openIDResponse->status);
-				}
-			} else {
-				// We may need to send a request to the OpenID server.
-				// First, check if the supplied login name equals with the configured OpenID.
-				if ($this->openIDIdentifier === $userRecord['tx_openid_openid']) {
-					// Next, check if the user identifier looks like an OpenID identifier.
-					// Prevent PHP warning in case if identifiers is not an OpenID identifier
-					// (not an URL).
-					// TODO: Improve testing here. After normalization has been added, now all identifiers will succeed here...
-					$urlParts = @parse_url($this->openIDIdentifier);
-					if (is_array($urlParts) && $urlParts['scheme'] != '' && $urlParts['host']) {
-						// Yes, this looks like a good OpenID. Ask OpenID server (should not return)
-						$this->sendOpenIDRequest();
-					}
 				}
 			}
 		}
@@ -436,30 +439,35 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * Implement normalization according to OpenID 2.0 specification
 	 * See http://openid.net/specs/openid-authentication-2_0.html#normalization
 	 *
-	 * @param string $openIDIdentifier OpenID identifier to normalize
+	 * @param string  $openIDIdentifier OpenID identifier to normalize
+	 * @param boolean $forceSchema      Always add http:// if missing
 	 * @return string Normalized OpenID identifier
 	 */
-	protected function normalizeOpenID($openIDIdentifier) {
+	protected function normalizeOpenID($openIDIdentifier, $forceSchema = false) {
 		// Strip everything with and behind the fragment delimiter character "#"
 		if (strpos($openIDIdentifier, '#') !== FALSE) {
 			$openIDIdentifier = preg_replace('/#.*$/', '', $openIDIdentifier);
 		}
 		// A URI with a missing scheme is normalized to a http URI
 		if (!preg_match('#^https?://#', $openIDIdentifier)) {
-			$escapedIdentifier = $this->databaseConnection->quoteStr($openIDIdentifier, $this->authenticationInformation['db_user']['table']);
-			$condition = 'tx_openid_openid IN ('
+			if ($forceSchema) {
+				$openIDIdentifier = 'http://' . $openIDIdentifier;
+			} else {
+				$escapedIdentifier = $this->databaseConnection->quoteStr($openIDIdentifier, $this->authenticationInformation['db_user']['table']);
+				$condition = 'tx_openid_openid IN ('
 					. '\'http://' . $escapedIdentifier . '\','
 					. '\'http://' . $escapedIdentifier . '/\','
 					. '\'https://' . $escapedIdentifier . '\','
 					. '\'https://' . $escapedIdentifier . '/\''
 					. ')';
-			$row = $this->databaseConnection->exec_SELECTgetSingleRow(
-				'tx_openid_openid',
-				$this->authenticationInformation['db_user']['table'],
-				$condition
-			);
-			if (is_array($row)) {
-				$openIDIdentifier = $row['tx_openid_openid'];
+				$row = $this->databaseConnection->exec_SELECTgetSingleRow(
+					'tx_openid_openid',
+					$this->authenticationInformation['db_user']['table'],
+					$condition
+				);
+				if (is_array($row)) {
+					$openIDIdentifier = $row['tx_openid_openid'];
+				}
 			}
 		}
 		// An empty path component is normalized to a slash
@@ -495,7 +503,8 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 		if (!$result) {
 			$result = $this->getSignedClaimedOpenIDIdentifier();
 		}
-		$result = $this->getAdjustedOpenIDIdentifier($result);
+		//do not check this since the claimed id by the openid provider may be different from the original one
+		//$result = $this->getAdjustedOpenIDIdentifier($result);
 		return $result;
 	}
 
