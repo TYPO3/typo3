@@ -257,7 +257,6 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 		$this->throwExceptionIfFrontendDoesNotExist();
 		$tagsTableWhereClause = $this->tagsTable . '.tag = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tag, $this->tagsTable);
 		$this->deleteCacheTableRowsByTagsTableWhereClause($tagsTableWhereClause);
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->tagsTable, $tagsTableWhereClause);
 	}
 
 	/**
@@ -366,6 +365,7 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 		$GLOBALS['TYPO3_DB']->sql_free_result($cacheEntryIdentifierRowsResource);
 		if (count($cacheEntryIdentifiers)) {
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->cacheTable, 'identifier IN (' . implode(', ', $cacheEntryIdentifiers) . ')');
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->tagsTable, 'identifier IN (' . implode(', ', $cacheEntryIdentifiers) . ')');
 		}
 	}
 
