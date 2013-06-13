@@ -154,12 +154,16 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$identifier = '42';
 		$object = new \stdClass();
 
-		$mockPersistenceManager = $this->getMock('TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface');
-		$mockPersistenceManager->expects($this->once())->method('getObjectByIdentifier')->with($identifier, 'stdClass')->will($this->returnValue($object));
+		$expectedResult = $this->getMock('TYPO3\CMS\Extbase\Persistence\QueryResultInterface');
+		$expectedResult->expects($this->once())->method('getFirst')->will($this->returnValue($object));
 
-		$repository = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Repository', array('createQuery'));
-		$this->inject($repository, 'persistenceManager', $mockPersistenceManager);
-		$repository->_set('objectType', 'stdClass');
+		$mockQuery = $this->getMock('TYPO3\CMS\Extbase\Persistence\QueryInterface');
+		$mockQuery->expects($this->any())->method('getQuerySettings')->will($this->returnValue($this->mockQuerySettings));
+		$mockQuery->expects($this->once())->method('matching')->will($this->returnValue($mockQuery));
+		$mockQuery->expects($this->once())->method('execute')->will($this->returnValue($expectedResult));
+
+		$repository = $this->getMock('TYPO3\CMS\Extbase\Persistence\Repository', array('createQuery'));
+		$repository->expects($this->once())->method('createQuery')->will($this->returnValue($mockQuery));
 
 		$this->assertSame($object, $repository->findByIdentifier($identifier));
 	}
@@ -350,10 +354,10 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function findByUidReturnsResultOfGetObjectByIdentifierCall() {
 		$fakeUid = '123';
 		$object = new \stdClass();
-		$this->repository->_set('objectType', 'someObjectType');
-		$this->mockPersistenceManager->expects($this->once())->method('getObjectByIdentifier')->with($fakeUid, 'someObjectType')->will($this->returnValue($object));
+		$repository = $this->getMock('TYPO3\CMS\Extbase\Persistence\Repository', array('findByIdentifier'));
 		$expectedResult = $object;
-		$actualResult = $this->repository->findByUid($fakeUid);
+		$repository->expects($this->once())->method('findByIdentifier')->will($this->returnValue($object));
+		$actualResult = $repository->findByUid($fakeUid);
 		$this->assertSame($expectedResult, $actualResult);
 	}
 
