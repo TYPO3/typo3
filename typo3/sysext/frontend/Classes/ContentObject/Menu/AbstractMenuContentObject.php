@@ -1759,7 +1759,7 @@ class AbstractMenuContentObject {
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resource)) {
 			$this->sys_page->versionOL('tt_content', $row);
 			if ($GLOBALS['TSFE']->sys_language_contentOL && $basePageRow['_PAGES_OVERLAY_LANGUAGE']) {
-				$row = $this->sys_page->getRecordOverlay('tt_content', $row, $basePageRow['_PAGES_OVERLAY_LANGUAGE'], $GLOBALS['TSFE']->sys_language_contentOL);
+				$row = $this->sys_page->getRecordOverlayWithFallback('tt_content', $row, $basePageRow['_PAGES_OVERLAY_LANGUAGE']);
 			}
 			if ($this->mconf['sectionIndex.']['type'] !== 'all') {
 				$doIncludeInSectionIndex = $row['sectionIndex'] >= 1;
