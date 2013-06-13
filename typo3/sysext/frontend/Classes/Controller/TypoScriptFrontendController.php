@@ -736,7 +736,7 @@ class TypoScriptFrontendController {
 	 * The page cache object, use this to save pages to the cache and to
 	 * retrieve them again
 	 *
-	 * @var \TYPO3\CMS\Cache\Backend\AbstractBackend
+	 * @var \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 	 */
 	protected $pageCache;
 
@@ -1405,11 +1405,14 @@ class TypoScriptFrontendController {
 	 *
 	 * Sets or manipulates internal variables such as: $this->id, $this->page, $this->rootLine, $this->MP, $this->pageNotFound
 	 *
+	 * @param integer $iterations Number of loops which can be done to find a page (follow shortcuts or login pages)
 	 * @return void
+	 * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
+	 * @throws \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException
 	 * @access private
 	 * @todo Define visibility
 	 */
-	public function getPageAndRootline() {
+	public function getPageAndRootline($iterations = 20) {
 		$this->page = $this->sys_page->getPage($this->id);
 		if (!count($this->page)) {
 			// If no page, we try to find the page before in the rootLine.
@@ -1451,6 +1454,8 @@ class TypoScriptFrontendController {
 				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648781);
 			}
 		}
+		// We found something so reset to zero
+		$this->pageNotFound = 0;
 		// Is the ID a link to another page??
 		if ($this->page['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT) {
 			// We need to clear MP if the page is a shortcut. Reason is if the short cut goes to another page, then we LEAVE the rootline which the MP expects.
@@ -1487,19 +1492,26 @@ class TypoScriptFrontendController {
 		}
 		// Checking for include section regarding the hidden/starttime/endtime/fe_user (that is access control of a whole subbranch!)
 		if ($this->checkRootlineForIncludeSection()) {
-			if (!count($this->rootLine)) {
+			$message = '';
+			if (count($this->rootLine)) {
+				if ($iterations > 0) {
+					$this->pageNotFound = 0;
+					$el = reset($this->rootLine);
+					$this->id = $el['uid'];
+					$this->getPageAndRootline($iterations - 1);
+				} else {
+					$message = 'The requested page was not accessible due to many shortcut loops into non accessible pages!';
+				}
+			} else {
 				$message = 'The requested page was not accessible!';
+			}
+			if ($message) {
 				if ($this->checkPageUnavailableHandler()) {
 					$this->pageUnavailableAndExit($message);
 				} else {
 					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($message, 'cms', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 					throw new \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException($message, 1301648234);
 				}
-			} else {
-				$el = reset($this->rootLine);
-				$this->id = $el['uid'];
-				$this->page = $this->sys_page->getPage($this->id);
-				$this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
 			}
 		}
 	}
