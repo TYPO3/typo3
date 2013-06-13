@@ -42,6 +42,18 @@ Administration / Customization
 Extbase
 -------------------------------------------------------------------------------
 
+* Support of custom language fallbacks
+
+Please be aware of the fact that the content_fallback setting respects the
+already documented customizable language fallback feature like
+"sys_language_mode = content_fallback; 1,2" much more completely now.
+In general this means that you can define e.g. German as fallback language
+for a different region like e.g. Austria instead of the site-wide English
+default language. The setting is taken into account independently on page and
+content level. The latter only if related extensions are using the new
+API method "getRecordOverlayWithFallback" instead of the
+old (deprecated) "getRecordOverlay".
+
 -------------------------------------------------------------------------------
 Fluid
 -------------------------------------------------------------------------------

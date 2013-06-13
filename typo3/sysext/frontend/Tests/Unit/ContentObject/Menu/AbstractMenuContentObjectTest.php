@@ -117,7 +117,7 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$this->fixture->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(array('_PAGES_OVERLAY_LANGUAGE' => 1)));
 		$this->fixture->parent_cObj->expects($this->once())->method('exec_getQuery')->will($this->returnValue(1));
 		$GLOBALS['TYPO3_DB']->expects($this->exactly(2))->method('sql_fetch_assoc')->will($this->onConsecutiveCalls($this->returnValue(array('uid' => 0, 'header' => 'NOT_OVERLAID')), $this->returnValue(FALSE)));
-		$this->fixture->sys_page->expects($this->once())->method('getRecordOverlay')->will($this->returnValue(array('uid' => 0, 'header' => 'OVERLAID')));
+		$this->fixture->sys_page->expects($this->once())->method('getRecordOverlayWithFallback')->will($this->returnValue(array('uid' => 0, 'header' => 'OVERLAID')));
 		$result = $this->fixture->_call('sectionIndex', 'field');
 		$this->assertEquals($result[0]['title'], 'OVERLAID');
 	}

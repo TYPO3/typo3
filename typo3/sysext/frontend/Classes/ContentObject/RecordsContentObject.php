@@ -85,7 +85,7 @@ class RecordsContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 					if ($val['table'] === 'pages') {
 						$row = $GLOBALS['TSFE']->sys_page->getPageOverlay($row);
 					} else {
-						$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($val['table'], $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
+						$row = $GLOBALS['TSFE']->sys_page->getRecordOverlayWithFallback($val['table'], $row);
 					}
 				}
 				// Might be unset in the content overlay things...
