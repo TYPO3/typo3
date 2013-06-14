@@ -37,7 +37,15 @@ class TimeSinceLastUpdateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	 * @return string
 	 */
 	public function render($lastUpdateTime) {
-		return \TYPO3\CMS\Backend\Utility\BackendUtility::calcAge(time() - $lastUpdateTime->format('U'), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears'));
+		if (NULL === $lastUpdateTime) {
+			return $GLOBALS['LANG']->sL(
+				'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.updateFromTer.never'
+			);
+		}
+		return \TYPO3\CMS\Backend\Utility\BackendUtility::calcAge(
+			time() - $lastUpdateTime->format('U'),
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')
+		);
 	}
 }
 
