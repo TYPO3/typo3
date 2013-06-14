@@ -570,17 +570,18 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	public function exec_INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
 		if ((string) $this->handlerCfg[$this->lastHandlerKey]['type'] === 'native') {
 			$this->lastHandlerKey = $this->handler_getFromTableList($table);
-			mysql_query(
+			$res = mysql_query(
 				parent::INSERTmultipleRows($table, $fields, $rows, $no_quote_fields),
 				$this->handlerInstance[$this->lastHandlerKey]['link']
 			);
-		}
-		foreach ($rows as $row) {
-			$fields_values = array();
-			foreach ($fields as $key => $value) {
-				$fields_values[$value] = $row[$key];
+		} else {
+			foreach ($rows as $row) {
+				$fields_values = array();
+				foreach ($fields as $key => $value) {
+					$fields_values[$value] = $row[$key];
+				}
+				$res = $this->exec_INSERTquery($table, $fields_values, $no_quote_fields);
 			}
-			$res = $this->exec_INSERTquery($table, $fields_values, $no_quote_fields);
 		}
 		foreach ($this->postProcessHookObjects as $hookObject) {
 			$hookObject->exec_INSERTmultipleRows_postProcessAction($table, $fields, $rows, $no_quote_fields, $this);
