@@ -84,7 +84,7 @@ class MathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	///////////////////////////////
-	// Tests concerning testInt
+	// Tests concerning canBeInterpretedAsInteger
 	///////////////////////////////
 	/**
 	 * Data provider for canBeInterpretedAsIntegerReturnsTrue
@@ -107,12 +107,12 @@ class MathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider functionCanBeInterpretedAsIntegerValidDataProvider
 	 */
-	public function testIntReturnsTrue($int) {
+	public function canBeInterpretedAsIntegerReturnsTrue($int) {
 		$this->assertTrue(\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($int));
 	}
 
 	/**
-	 * Data provider for testIntReturnsFalse
+	 * Data provider for canBeInterpretedAsIntegerReturnsFalse
 	 *
 	 * @return array Data sets
 	 */
@@ -156,6 +156,83 @@ class MathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function canBeInterpretedAsIntegerReturnsFalse($int) {
 		$this->assertFalse(\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($int));
+	}
+
+	///////////////////////////////
+	// Tests concerning canBeInterpretedAsFloat
+	///////////////////////////////
+	/**
+	 * Data provider for canBeInterpretedAsFloatReturnsTrue
+	 *
+	 * @return array Data sets
+	 */
+	public function functionCanBeInterpretedAsFloatValidDataProvider() {
+		// testcases for Integer apply for float as well
+		$intTestcases = $this->functionCanBeInterpretedAsIntegerValidDataProvider();
+		$floatTestcases = array(
+			'zero as float' => array((float) 0),
+			'negative float' => array((float) -7.5),
+			'negative float as string with exp #1' => array('-7.5e3'),
+			'negative float as string with exp #2' => array('-7.5e03'),
+			'negative float as string with exp #3' => array('-7.5e-3'),
+			'float' => array(3.14159),
+			'float as string' => array('3.14159'),
+			'float as string only a dot' => array('10.'),
+			'float as string trailing zero' => array('10.0'),
+			'float as string trailing zeros' => array('10.00'),
+		);
+		return array_merge($intTestcases, $floatTestcases);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider functionCanBeInterpretedAsFloatValidDataProvider
+	 */
+	public function canBeInterpretedAsFloatReturnsTrue($val) {
+		$this->assertTrue(\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsFloat($val));
+	}
+
+	/**
+	 * Data provider for canBeInterpretedAsFloatReturnsFalse
+	 *
+	 * @return array Data sets
+	 */
+	public function functionCanBeInterpretedAsFloatInvalidDataProvider() {
+		$objectWithNumericalStringRepresentation = new \TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\MathUtilityTestClassWithStringRepresentationFixture();
+		$objectWithNumericalStringRepresentation->setString('1234');
+		$objectWithNonNumericalStringRepresentation = new \TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\MathUtilityTestClassWithStringRepresentationFixture();
+		$objectWithNonNumericalStringRepresentation->setString('foo');
+		$objectWithEmptyStringRepresentation = new \TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\MathUtilityTestClassWithStringRepresentationFixture();
+		$objectWithEmptyStringRepresentation->setString('');
+		return array(
+			// 'int as string with leading zero' => array('01234'),
+			// 'positive int as string with plus modifier' => array('+1234'),
+			// 'negative int as string with leading zero' => array('-01234'),
+			// 'largest int plus one' => array(PHP_INT_MAX + 1),
+			'string' => array('testInt'),
+			'empty string' => array(''),
+			'int in string' => array('5 times of testInt'),
+			'int as string with space after' => array('5 '),
+			'int as string with space before' => array(' 5'),
+			'int as string with many spaces before' => array('     5'),
+			'null' => array(NULL),
+			'empty array' => array(array()),
+			'int in array' => array(array(32425)),
+			'int as string in array' => array(array('32425')),
+			'negative float as string with invalid chars in exponent' => array('-7.5eX3'),
+			'object without string representation' => array(new \stdClass()),
+			'object with numerical string representation' => array($objectWithNumericalStringRepresentation),
+			'object without numerical string representation' => array($objectWithNonNumericalStringRepresentation),
+			'object with empty string representation' => array($objectWithEmptyStringRepresentation)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider functionCanBeInterpretedAsFloatInvalidDataProvider
+	 */
+	public function canBeInterpretedAsFloatReturnsFalse($int) {
+		$this->assertFalse(\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsFloat($int));
 	}
 
 	//////////////////////////////////
