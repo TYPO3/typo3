@@ -222,7 +222,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		// Add Flowplayer js-file
 		$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/flowplayer/example/flowplayer-3.2.6.min.js');
 		// Add Flowpayer css for exprss install
-		$GLOBALS['TSFE']->getPageRenderer()->addCssFile(TYPO3_mainDir . '../t3lib/js/flowplayer/express-install.css');
+		$GLOBALS['TSFE']->getPageRenderer()->addCssFile(TYPO3_mainDir . 'contrib/flowplayer/express-install/express-install.css');
 		// Add videoJS js-file
 		$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/video.js');
 		// Add videoJS js-file
