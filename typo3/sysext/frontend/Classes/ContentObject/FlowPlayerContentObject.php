@@ -222,7 +222,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		// Add Flowplayer js-file
 		$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/flowplayer/example/flowplayer-3.2.6.min.js');
 		// Add Flowpayer css for exprss install
-		$GLOBALS['TSFE']->getPageRenderer()->addCssFile(TYPO3_mainDir . '../t3lib/js/flowplayer/express-install.css');
+		$GLOBALS['TSFE']->getPageRenderer()->addCssFile(TYPO3_mainDir . 'contrib/flowplayer/express-install/express-install.css');
 		// Add videoJS js-file
 		$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/video.js');
 		// Add videoJS js-file
@@ -230,8 +230,8 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		// Add videoJS css-file
 		$GLOBALS['TSFE']->getPageRenderer()->addCssFile(TYPO3_mainDir . 'contrib/videojs/video-js/video-js.css');
 		// Add extended videoJS control bar
-		$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . '../t3lib/js/videojs/control-bar.js');
-		$GLOBALS['TSFE']->getPageRenderer()->addCssFile(TYPO3_mainDir . '../t3lib/js/videojs/control-bar.css');
+		$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/controls/control-bar.js');
+		$GLOBALS['TSFE']->getPageRenderer()->addCssFile(TYPO3_mainDir . 'contrib/videojs/video-js/controls/control-bar.css');
 		// Build Flash configuration
 		$player = isset($typeConf['player.']) ? $this->cObj->stdWrap($typeConf['player'], $typeConf['player.']) : $typeConf['player'];
 		if (!$player) {
@@ -346,7 +346,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 			// Assemble captions track tag
 			$videoCaptions = '<track id="' . $replaceElementIdString . '_captions_track" kind="captions" src="' . $conf['caption'] . '"></track>' . LF;
 			// Add videoJS extension for captions
-			$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . '../t3lib/js/videojs/captions.js');
+			$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/controls/captions.js');
 			// Flowplayer captions
 			$conf['videoflashvars']['captionUrl'] = $conf['caption'];
 			// Flowplayer captions plugin configuration
@@ -360,7 +360,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		if ($conf['type'] == 'video') {
 			if (is_array($conf['audioSources']) && count($conf['audioSources'])) {
 				// Add videoJS audio description toggle
-				$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . '../t3lib/js/videojs/audio-description.js');
+				$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/controls/audio-description.js');
 			}
 			if (isset($conf['audioFallback'])) {
 				// Audio description flowplayer config (remove controls)
