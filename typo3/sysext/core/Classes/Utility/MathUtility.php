@@ -90,6 +90,28 @@ class MathUtility {
 	}
 
 	/**
+	 * Tests if the input can be interpreted as float.
+	 *
+	 * Note: Float casting from objects or arrays is considered undefined and thus will return false.
+	 *
+	 * @see http://www.php.net/manual/en/language.types.float.php, section "Formally" for the notation
+	 * @param mixed $var Any input variable to test
+	 * @return boolean Returns TRUE if string is a float
+	 */
+	static public function canBeInterpretedAsFloat($var) {
+		$pattern_lnum = '[0-9]+';
+		$pattern_dnum = '([0-9]*[\.]' . $pattern_lnum . ')|(' . $pattern_lnum . '[\.][0-9]*)';
+		$pattern_exp_dnum = '[+-]?((' . $pattern_lnum . '|' . $pattern_dnum . ')([eE][+-]?' . $pattern_lnum . ')?)';
+
+		if ($var === '' || is_object($var) || is_array($var)) {
+			return FALSE;
+		}
+
+		$matches = preg_match('/^' . $pattern_exp_dnum . '$/', $var);
+		return $matches === 1;
+	}
+
+	/**
 	 * Calculates the input by +,-,*,/,%,^ with priority to + and -
 	 *
 	 * @param string $string Input string, eg "123 + 456 / 789 - 4
