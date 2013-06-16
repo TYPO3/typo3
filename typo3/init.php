@@ -56,7 +56,7 @@ require 'sysext/core/Classes/Core/Bootstrap.php';
 
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 	->baseSetup('typo3/')
-	->redirectToInstallToolIfLocalConfigurationFileDoesNotExist('../')
+	->redirectToInstallerIfLocalConfigurationFileDoesNotExist('../')
 	->startOutputBuffering()
 	->loadConfigurationAndInitialize()
 	->loadTypo3LoadedExtAndExtLocalconf(TRUE)

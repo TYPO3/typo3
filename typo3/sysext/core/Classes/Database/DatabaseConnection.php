@@ -1183,7 +1183,7 @@ class DatabaseConnection {
 			$this->databaseUsername,
 			$this->databaseUserPassword,
 			NULL,
-			$this->databasePort,
+			(int)$this->databasePort,
 			NULL,
 			$this->connectionCompression ? MYSQLI_CLIENT_COMPRESS : 0
 		);

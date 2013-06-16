@@ -1,0 +1,35 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<f:layout name="ToolAuthenticated" />
+
+<f:section name="Content">
+	<h3>Important actions</h3>
+
+	<f:for each="{actionMessages}" as="statusMessage">
+		<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
+	</f:for>
+
+	<f:render partial="Action/Tool/ImportantActions/SystemInformation" arguments="{_all}" />
+	<hr />
+
+	<f:if condition="{databaseAnalyzerSuggestion}">
+		<f:then>
+			<f:render partial="Action/Tool/ImportantActions/DatabaseAnalyzerData" arguments="{_all}"/>
+		</f:then>
+		<f:else>
+			<f:render partial="Action/Tool/ImportantActions/DatabaseAnalyzerButton" arguments="{_all}"/>
+		</f:else>
+	</f:if>
+	<hr />
+
+	<f:render partial="Action/Tool/ImportantActions/NewInstallToolPassword" arguments="{_all}"/>
+	<hr />
+
+	<f:render partial="Action/Tool/ImportantActions/ChangeSiteName" arguments="{_all}"/>
+	<hr />
+
+	<f:render partial="Action/Tool/ImportantActions/SetNewEncryptionKey" arguments="{_all}"/>
+	<hr />
+
+	<f:render partial="Action/Tool/ImportantActions/CreateAdministrator" arguments="{_all}"/>
+</f:section>

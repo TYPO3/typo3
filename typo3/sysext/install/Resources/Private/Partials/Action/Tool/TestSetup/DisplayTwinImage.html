@@ -1,0 +1,54 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<h4>{test.title}</h4>
+
+<f:if condition="{test.message}">
+	<f:render partial="Action/Common/StatusMessage" arguments="{message: test.message}" />
+</f:if>
+
+<f:if condition="{test.error}">
+	<f:then>
+		<f:render partial="Action/Common/StatusMessage" arguments="{message: test.error}"/>
+	</f:then>
+	<f:else>
+		<table class="t3-install-displaytwinimageimages">
+			<tbody>
+				<tr>
+					<td>
+						<img src="../../../../{test.referenceFile -> i:file.relativePath()}?{time}" />
+					</td>
+					<td>
+						<img src="../../../../{test.outputFile -> i:file.relativePath()}?{time}" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<strong>Reference</strong>
+					</td>
+					<td>
+						<strong>Your system</strong>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						{test.referenceFile -> i:file.size()},
+						{test.referenceFile -> i:file.imageDimension()}
+						x {test.referenceFile -> i:file.imageDimension(dimension:'height')} pixel
+					</td>
+					<td>
+						{test.outputFile -> i:file.size()},
+						{test.outputFile -> i:file.imageDimension()}
+						x {test.outputFile -> i:file.imageDimension(dimension:'height')} pixel
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<f:if condition="{test.command}">
+			<div class="t3-install-displaytwinimagetextarea">
+				{i:format.imageMagickCommands(commands:test.command)}
+			</div>
+		</f:if>
+	</f:else>
+</f:if>
+
+<p></p>
