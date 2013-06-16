@@ -1464,22 +1464,7 @@ class ux_t3lib_sqlparser extends \TYPO3\CMS\Dbal\Database\SqlParser {}
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_dbal_autoloader extends \TYPO3\CMS\Dbal\Autoloader {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class tx_dbal_module1 extends \TYPO3\CMS\Dbal\Controller\ModuleController {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_dbal_tsparserext extends \TYPO3\CMS\Dbal\ExtensionManager\MessageDisplay {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_dbal_installtool extends \TYPO3\CMS\Dbal\Hooks\InstallToolHooks {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
@@ -5409,16 +5394,6 @@ class tx_infopagetsconfig_webinfo extends \TYPO3\CMS\InfoPagetsconfig\Controller
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-interface Tx_Install_Interfaces_CheckTheDatabaseHook extends \TYPO3\CMS\Install\CheckTheDatabaseHookInterface {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_install_mod1 extends \TYPO3\CMS\Install\Controller\InstallToolModuleController {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
 class tx_coreupdates_addflexformstoacl extends \TYPO3\CMS\Install\CoreUpdates\AddFlexFormsToAclUpdate {}
 
 /**
@@ -5489,17 +5464,7 @@ class tx_coreupdates_t3skin extends \TYPO3\CMS\Install\CoreUpdates\T3skinUpdate 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_install_ajax extends \TYPO3\CMS\Install\EidHandler {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class Tx_Install_Service_BasicService extends \TYPO3\CMS\Install\EnableFileService {}
-
-/**
- * @deprecated since 6.0 will be removed in 7.0
- */
-class tx_install extends \TYPO3\CMS\Install\Installer {}
+class Tx_Install_Service_BasicService extends \TYPO3\CMS\Install\Service\EnableFileService {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
@@ -5509,12 +5474,12 @@ class tx_install_report_InstallStatus extends \TYPO3\CMS\Install\Report\InstallS
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_install_session extends \TYPO3\CMS\Install\Session {}
+class tx_install_session extends \TYPO3\CMS\Install\Service\SessionService {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class t3lib_install_Sql extends \TYPO3\CMS\Install\Sql\SchemaMigrator {}
+class t3lib_install_Sql extends \TYPO3\CMS\Install\Service\SqlSchemaMigrationService {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0

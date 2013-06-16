@@ -1,0 +1,34 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<form method="post">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+	<f:if condition="{combiningImagesTested}">
+		<f:then>
+
+			<f:render partial="Action/Tool/TestSetup/AboutImageHandling" arguments="{_all}" />
+			<f:render partial="Action/Tool/TestSetup/VerifyTestResults" arguments="{_all}" />
+			<f:render partial="Action/Tool/TestSetup/CurrentConfiguration" arguments="{_all}" />
+
+			<p></p>
+
+			<h4>Combining images</h4>
+
+			<p>
+				This verifies that the ImageMagick tool, 'combine'/'composite', is able to
+				combine two images through a grayscale mask.
+			</p>
+			<p>
+				If the masking seems to work but inverted, that just means you'll have to make
+				sure the invert flag is set (some combination of im_negate_mask/im_imvMaskState)
+			</p>
+
+			<f:for each="{testResults}" as="test">
+				<f:render partial="Action/Tool/TestSetup/DisplayTwinImage" arguments="{_all}"/>
+			</f:for>
+		</f:then>
+		<f:else>
+			<h4>Combining images</h4>
+		</f:else>
+	</f:if>
+	<f:render partial="Action/Common/SubmitButton" arguments="{name:'testCombiningImages', text:'Test combining images'}"/>
+</form>

@@ -1,0 +1,23 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<f:layout name="Step" />
+
+<f:section name="Content">
+	<h3>Auto configuration and login</h3>
+
+	<p>
+		Installation done! This last step will set some configuration values based on your
+		system environment and redirects to the TYPO3 CMS backend ready for you to log in
+		with user "admin" and your previously set password.
+	</p>
+
+	<form method="post">
+		<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+		<input type="hidden" value="execute" name="install[set]" />
+
+		<button type="submit">
+			Continue
+			<span class="t3-install-form-button-icon-positive">&nbsp;</span>
+		</button>
+	</form>
+</f:section>

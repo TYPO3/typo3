@@ -181,14 +181,8 @@ class SystemEnvironmentBuilder {
 		if (!is_file(PATH_thisScript)) {
 			die('Unable to determine path to entry script.');
 		}
-		if (!is_dir(PATH_t3lib)) {
-			die('Calculated absolute path to t3lib directory does not exist.');
-		}
 		if (!is_dir(PATH_tslib)) {
 			die('Calculated absolute path to tslib directory does not exist.');
-		}
-		if (!is_dir(PATH_typo3conf)) {
-			die('Calculated absolute path to typo3conf directory does not exist');
 		}
 	}
 

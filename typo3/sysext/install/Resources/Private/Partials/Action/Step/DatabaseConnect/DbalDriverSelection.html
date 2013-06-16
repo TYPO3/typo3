@@ -1,0 +1,45 @@
+<form method="post">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+	<input type="hidden" value="execute" name="install[set]" />
+
+	<fieldset class="t3-install-form-label-width-7">
+		<ol>
+			<li>
+				<label>Driver</label>
+				<select name="install[values][setDbalDriver]" onChange="this.form.submit();">
+					<f:if condition="{selectedDbalDriver}">
+						<f:then>
+						</f:then>
+						<f:else>
+							<option></option>
+						</f:else>
+					</f:if>
+
+					<f:if condition="{dbalDrivers}">
+						<f:then>
+							<f:for each="{dbalDrivers}" as="drivers" key="abstractionLayer">
+								<optgroup label="{abstractionLayer}">
+									<f:for each="{drivers}" as="driver">
+										<f:if condition="{driver.selected}">
+											<f:then>
+												<option value="{driver.driver}" selected="selected">
+													{driver.label}
+												</option>
+											</f:then>
+											<f:else>
+												<option value="{driver.driver}">
+													{driver.label}
+												</option>
+											</f:else>
+										</f:if>
+									</f:for>
+								</optgroup>
+							</f:for>
+						</f:then>
+					</f:if>
+				</select>
+			</li>
+		</ol>
+	</fieldset>
+</form>
+<hr />
