@@ -53,7 +53,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface 
 	 * @return \TYPO3\CMS\Reports\Status Indicates status of the file system
 	 */
 	protected function getFileSystemStatus() {
-		$value = $GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_writable');
+		$value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_writable');
 		$message = '';
 		$severity = \TYPO3\CMS\Reports\Status::OK;
 		// Requirement level
@@ -87,17 +87,17 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface 
 			if (!@is_dir((PATH_site . $relPath))) {
 				if ($requirementLevel > 0) {
 					// directory is required
-					$value = $GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_missingDirectory');
-					$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_directoryDoesNotExistCouldNotCreate'), $relPath) . '<br />';
+					$value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_missingDirectory');
+					$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryDoesNotExistCouldNotCreate'), $relPath) . '<br />';
 					$severity = \TYPO3\CMS\Reports\Status::ERROR;
 				} else {
-					$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_directoryDoesNotExist'), $relPath);
+					$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryDoesNotExist'), $relPath);
 					if ($requirementLevel == 0) {
-						$message .= ' ' . $GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_directoryShouldAlsoBeWritable');
+						$message .= ' ' . $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryShouldAlsoBeWritable');
 					}
 					$message .= '<br />';
 					if ($severity < \TYPO3\CMS\Reports\Status::WARNING) {
-						$value = $GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_nonExistingDirectory');
+						$value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_nonExistingDirectory');
 						$severity = \TYPO3\CMS\Reports\Status::WARNING;
 					}
 				}
@@ -105,22 +105,22 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface 
 				if (!is_writable((PATH_site . $relPath))) {
 					switch ($requirementLevel) {
 					case 0:
-						$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_directoryShouldBeWritable'), (PATH_site . $relPath)) . '<br />';
+						$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryShouldBeWritable'), (PATH_site . $relPath)) . '<br />';
 						if ($severity < \TYPO3\CMS\Reports\Status::WARNING) {
-							$value = $GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_recommendedWritableDirectory');
+							$value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_recommendedWritableDirectory');
 							$severity = \TYPO3\CMS\Reports\Status::WARNING;
 						}
 						break;
 					case 2:
-						$value = $GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_requiredWritableDirectory');
-						$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_directoryMustBeWritable'), (PATH_site . $relPath)) . '<br />';
+						$value = $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_requiredWritableDirectory');
+						$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_directoryMustBeWritable'), (PATH_site . $relPath)) . '<br />';
 						$severity = \TYPO3\CMS\Reports\Status::ERROR;
 						break;
 					}
 				}
 			}
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_fileSystem'), $value, $message, $severity);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_fileSystem'), $value, $message, $severity);
 	}
 
 	/**
@@ -138,7 +138,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface 
 			$url = 'install/index.php?redirect_url=index.php' . urlencode('?TYPO3_INSTALL[type]=update');
 			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_update'), '<a href="' . $url . '">', '</a>');
 		}
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_remainingUpdates'), $value, $message, $severity);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_remainingUpdates'), $value, $message, $severity);
 	}
 
 }

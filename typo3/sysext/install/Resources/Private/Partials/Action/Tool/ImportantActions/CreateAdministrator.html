@@ -1,0 +1,40 @@
+<h4>Create backend administrator user</h4>
+<p>
+	You should use this function only if there are no admin users in the database, for instance if this is a blank database.
+	After you've created the user, log in and add the rest of the user information, like email and real name.
+</p>
+<form method="post">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+	<fieldset>
+		<ol>
+			<li>
+				<label for="t3-install-username">Username:</label>
+				<input
+					id="t3-install-username"
+					class="t3-install-form-input-text"
+					type="text"
+					name="install[values][newUserUsername]"
+				/>
+			</li>
+			<li>
+				<label for="t3-install-password">Password:</label>
+				<input
+					id="t3-install-password"
+					class="t3-install-form-input-text t3-install-form-password-strength"
+					type="password"
+					name="install[values][newUserPassword]"
+				/>
+			</li>
+			<li>
+				<label for="t3-install-password-repeat">Password again:</label>
+				<input
+					id="t3-install-password-repeat"
+					class="t3-install-form-input-text"
+					type="password"
+					name="install[values][newUserPasswordCheck]"
+				/>
+			</li>
+		</ol>
+	</fieldset>
+	<f:render partial="Action/Common/SubmitButton" arguments="{name:'createAdministrator', text:'Create administrator'}"/>
+</form>

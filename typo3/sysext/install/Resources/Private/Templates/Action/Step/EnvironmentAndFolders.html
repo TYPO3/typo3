@@ -1,0 +1,68 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<f:layout name="Step" />
+
+<f:section name="Content">
+	<h3>System environment check</h3>
+
+	<p>
+		TYPO3 is an enterprise content management system that is powerful, yet easy to install.
+	</p>
+	<p>
+		After some simple steps you'll be ready to add content to your website.
+		This first step checks your system environment and points out issues.
+	</p>
+
+	<f:if condition="{errorsOrWarningsFromStatus}">
+		<f:then>
+			<form method="post">
+				<button type="submit">
+					Fixed. Check again!
+					<span class="t3-install-form-button-icon-positive">&nbsp;</span>
+				</button>
+			</form>
+
+			<form method="post">
+				<input type="hidden" value="environmentAndFolders" name="install[action]" />
+				<input type="hidden" value="execute" name="install[set]" />
+				<button type="submit">
+					I know what I'm doing, continue!
+					<span class="t3-install-form-button-icon-negative">&nbsp;</span>
+				</button>
+			</form>
+		</f:then>
+		<f:else>
+			<form method="post">
+				<input type="hidden" value="environmentAndFolders" name="install[action]" />
+				<input type="hidden" value="execute" name="install[set]" />
+				<button type="submit">
+					System looks good. Continue!
+					<span class="t3-install-form-button-icon-positive">&nbsp;</span>
+				</button>
+			</form>
+		</f:else>
+	</f:if>
+
+	<f:if condition="{errorsOrWarningsFromStatus}">
+		<p>Detailed analysis</p>
+
+		<f:if condition="{structureErrors}">
+			<f:for each="{structureErrors}" as="message">
+				<f:render partial="Action/Common/StatusMessage" arguments="{message: message}" />
+			</f:for>
+		</f:if>
+
+		<f:if condition="{environmentStatus.error}">
+			<f:for each="{environmentStatus.error}" as="message">
+				<f:render partial="Action/Common/StatusMessage" arguments="{message: message}" />
+			</f:for>
+		</f:if>
+
+		<f:if condition="{environmentStatus.warning}">
+			<f:for each="{environmentStatus.warning}" as="message">
+				<f:render partial="Action/Common/StatusMessage" arguments="{message: message}" />
+			</f:for>
+		</f:if>
+	</f:if>
+
+</f:section>
