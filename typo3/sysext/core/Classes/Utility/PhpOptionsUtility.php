@@ -65,8 +65,10 @@ class PhpOptionsUtility {
 	 * Check if php sql.safe_mode is enabled
 	 *
 	 * @return boolean TRUE if sql.safe_mode is enabled, FALSE if disabled
+	 * @deprecated since 6.2, will be removed two versions later
 	 */
 	static public function isSqlSafeModeEnabled() {
+		GeneralUtility::logDeprecatedFunction();
 		return self::getIniValueBoolean('sql.safe_mode');
 	}
 

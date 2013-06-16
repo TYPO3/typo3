@@ -210,7 +210,8 @@ return array(
 				'Image.Preview' => 'TYPO3\\CMS\\Core\\Resource\\Processing\\ImagePreviewTask',
 				'Image.CropScaleMask' => 'TYPO3\\CMS\\Core\\Resource\\Processing\\ImageCropScaleMaskTask'
 			)
-		)
+		),
+		'isInitialInstallationInProgress' => FALSE,		// Boolean: If TRUE, the installation is 'in progress'. This value is handled within the install tool step installer internally.
 	),
 	'EXT' => array( // Options related to the Extension Management
 		'allowGlobalInstall' => FALSE,		// Boolean: If set, global extensions in typo3/ext/ are allowed to be installed, updated and deleted etc.
