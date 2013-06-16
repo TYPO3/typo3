@@ -64,11 +64,6 @@ class ConfigurationManager {
 	protected $additionalFactoryConfigurationFile = 'typo3conf/AdditionalFactoryConfiguration.php';
 
 	/**
-	 * @var string Path to legacy localconf.php file, relative to PATH_site
-	 */
-	protected $localconfFile = 'typo3conf/localconf.php';
-
-	/**
 	 * @var string Absolute path to typo3conf directory
 	 */
 	protected $pathTypo3Conf = PATH_typo3conf;
@@ -153,16 +148,6 @@ class ConfigurationManager {
 	 */
 	protected function getAdditionalFactoryConfigurationFileLocation() {
 		return PATH_site . $this->additionalFactoryConfigurationFile;
-	}
-
-	/**
-	 * Get the file resource
-	 *
-	 * @return string
-	 * @deprecated since 6.1, will be removed if the compatibily layer for localconf.php is dropped
-	 */
-	public function getLocalconfFileLocation() {
-		return PATH_site . $this->localconfFile;
 	}
 
 	/**
@@ -265,12 +250,6 @@ class ConfigurationManager {
 		) {
 			$result = FALSE;
 		}
-		if (
-			file_exists($this->getLocalconfFileLocation())
-			&& !@is_writable($this->getLocalconfFileLocation())
-		) {
-			$result = FALSE;
-		}
 		return $result;
 	}
 
@@ -278,7 +257,6 @@ class ConfigurationManager {
 	 * Reads the configuration array and exports it to the global variable
 	 *
 	 * @access private
-	 * @throws \RuntimeException
 	 * @throws \UnexpectedValueException
 	 * @return void
 	 */
@@ -293,36 +271,9 @@ class ConfigurationManager {
 			if (@is_file($this->getAdditionalConfigurationFileLocation())) {
 				require $this->getAdditionalConfigurationFileLocation();
 			}
-			// @deprecated since 6.0: Simulate old 'extList' as comma separated list of 'extListArray'
-			$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = implode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray']);
-		} elseif (@is_file($this->getLocalconfFileLocation())) {
-			$GLOBALS['TYPO3_CONF_VARS'] = $this->getDefaultConfiguration();
-			// Legacy localconf.php handling
-			// @deprecated: Can be removed if old localconf.php is not supported anymore
-			global $TYPO3_CONF_VARS, $typo_db, $typo_db_username, $typo_db_password, $typo_db_host, $typo_db_extTableDef_script;
-			require $this->getLocalconfFileLocation();
-			// If the localconf.php was not upgraded to LocalConfiguration.php, the default extListArray
-			// from EXT:core/Configuration/DefaultConfiguration.php is still set. In this case we just unset
-			// this key here, so \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray() falls back to use extList string
-			// @deprecated: This case can be removed later if localconf.php is not supported anymore
-			unset($TYPO3_CONF_VARS['EXT']['extListArray']);
-			// Write the old globals into the new place in the configuration array
-			$GLOBALS['TYPO3_CONF_VARS']['DB'] = array();
-			$GLOBALS['TYPO3_CONF_VARS']['DB']['database'] = $typo_db;
-			$GLOBALS['TYPO3_CONF_VARS']['DB']['username'] = $typo_db_username;
-			$GLOBALS['TYPO3_CONF_VARS']['DB']['password'] = $typo_db_password;
-			$GLOBALS['TYPO3_CONF_VARS']['DB']['host'] = $typo_db_host;
-			$GLOBALS['TYPO3_CONF_VARS']['DB']['extTablesDefinitionScript'] = $typo_db_extTableDef_script;
-			unset($GLOBALS['typo_db']);
-			unset($GLOBALS['typo_db_username']);
-			unset($GLOBALS['typo_db_password']);
-			unset($GLOBALS['typo_db_host']);
-			unset($GLOBALS['typo_db_extTableDef_script']);
 		} else {
-			throw new \RuntimeException(
-				'Neither ' . $this->localConfigurationFile . ' (recommended) nor ' . $this->localconfFile . ' (obsolete) could be found!',
-				1349272337
-			);
+			// No LocalConfiguration (yet), load DefaultConfiguration only
+			$GLOBALS['TYPO3_CONF_VARS'] = $this->getDefaultConfiguration();
 		}
 	}
 
@@ -379,13 +330,15 @@ class ConfigurationManager {
 	 * file in typo3conf to create a basic LocalConfiguration.php. This is used
 	 * by the install tool in an early step.
 	 *
+	 * @throws \RuntimeException
 	 * @return void
 	 * @access private
 	 */
 	public function createLocalConfigurationFromFactoryConfiguration() {
 		if (file_exists($this->getLocalConfigurationFileLocation())) {
 			throw new \RuntimeException(
-				'LocalConfiguration.php exists already', 1364836026
+				'LocalConfiguration.php exists already',
+				1364836026
 			);
 		}
 		$localConfigurationArray = require $this->getFactoryConfigurationFileLocation();

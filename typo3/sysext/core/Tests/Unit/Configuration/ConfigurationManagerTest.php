@@ -350,34 +350,6 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function canWriteConfigurationReturnsFalseIfLocalconfFileIsNotWritable() {
-		if (function_exists('posix_getegid') && posix_getegid() === 0) {
-			$this->markTestSkipped('Test skipped if run on linux as root');
-		} elseif (TYPO3_OS == 'WIN') {
-			$this->markTestSkipped('Not available on Windows');
-		}
-		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('dummy'));
-
-		$file = 'typo3temp/' . uniqid('test_');
-		$absoluteFile = PATH_site . $file;
-		touch($absoluteFile);
-		$this->testFilesToDelete[] = $absoluteFile;
-		chmod($absoluteFile, 0444);
-		clearstatcache();
-
-		$fixture->_set('localconfFile', $file);
-
-		$result = $fixture->canWriteConfiguration();
-
-		chmod($absoluteFile, 0644);
-
-		$this->assertFalse($result);
-	}
-
-	/**
-	 * @test
-	 */
 	public function canWriteConfigurationReturnsTrueIfDirectoryAndFilesAreWritable() {
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('dummy'));

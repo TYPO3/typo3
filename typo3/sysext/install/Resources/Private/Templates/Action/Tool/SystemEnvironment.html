@@ -1,0 +1,13 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<f:layout name="ToolAuthenticated" />
+
+<f:section name="Content">
+	<h3>System environment check</h3>
+
+	<f:for each="{statusObjectsBySeverity}" as="statusMessages">
+		<f:for each="{statusMessages}" as="statusMessage">
+			<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
+		</f:for>
+	</f:for>
+</f:section>

@@ -1,0 +1,31 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<form method="post">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+	<f:if condition="{writeGifAndPngTested}">
+		<f:then>
+
+			<f:render partial="Action/Tool/TestSetup/AboutImageHandling" arguments="{_all}" />
+			<f:render partial="Action/Tool/TestSetup/VerifyTestResults" arguments="{_all}" />
+			<f:render partial="Action/Tool/TestSetup/CurrentConfiguration" arguments="{_all}" />
+
+			<p></p>
+
+			<h4>Writing gif and png</h4>
+
+			<p>
+				This verifies that ImageMagick is able to write GIF and PNG files.
+				The GIF-file isattempted compressed with LZW by the
+				\TYPO3\CMS\Core\Utility\GeneralUtility::gif_compress() function.
+			</p>
+
+			<f:for each="{testResults}" as="test">
+				<f:render partial="Action/Tool/TestSetup/DisplayTwinImage" arguments="{_all}"/>
+			</f:for>
+		</f:then>
+		<f:else>
+			<h4>Writing gif and png</h4>
+		</f:else>
+	</f:if>
+	<f:render partial="Action/Common/SubmitButton" arguments="{name:'testWriteGifAndPng', text:'Test image formats'}"/>
+</form>

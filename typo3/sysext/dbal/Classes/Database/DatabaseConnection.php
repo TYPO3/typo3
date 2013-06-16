@@ -174,7 +174,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	public $SQLparser;
 
 	/**
-	 * @var \TYPO3\CMS\Install\Sql\SchemaMigrator
+	 * @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService
 	 */
 	protected $installerSql = NULL;
 
@@ -192,7 +192,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	public function __construct() {
 		// Set SQL parser object for internal use:
 		$this->SQLparser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\SqlParser');
-		$this->installerSql = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Sql\\SchemaMigrator');
+		$this->installerSql = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Service\SqlSchemaMigrationService');
 		$this->queryCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('dbal');
 		// Set internal variables with configuration:
 		$this->conf = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal'];
@@ -271,12 +271,14 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @return void
 	 */
 	protected function analyzeExtensionTables() {
-		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extensionConfiguration) {
-			if (!is_array($extensionConfiguration) || !isset($extensionConfiguration['ext_tables.sql'])) {
-				continue;
+		if (is_array($GLOBALS['TYPO3_LOADED_EXT'])) {
+			foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extensionConfiguration) {
+				if (!is_array($extensionConfiguration) || !isset($extensionConfiguration['ext_tables.sql'])) {
+					continue;
+				}
+				$extensionsSql = file_get_contents($extensionConfiguration['ext_tables.sql']);
+				$this->parseAndAnalyzeSql($extensionsSql);
 			}
-			$extensionsSql = file_get_contents($extensionConfiguration['ext_tables.sql']);
-			$this->parseAndAnalyzeSql($extensionsSql);
 		}
 	}
 
@@ -318,7 +320,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * Analyzes fields and adds the extracted information to the field type, auto increment and primary key info caches.
 	 *
-	 * @param array $parsedExtSQL The output produced by \TYPO3\CMS\Install\Sql\SchemaMigrator->getFieldDefinitions_fileContent()
+	 * @param array $parsedExtSQL The output produced by \TYPO3\CMS\Install\Service\SqlSchemaMigrationService->getFieldDefinitions_fileContent()
 	 * @return void
 	 */
 	protected function analyzeFields($parsedExtSQL) {
