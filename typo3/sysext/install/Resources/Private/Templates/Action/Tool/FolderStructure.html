@@ -1,0 +1,44 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<f:layout name="ToolAuthenticated" />
+
+<f:section name="Content">
+	<h3>File and folder status below <i:constant name="PATH_site" /></h3>
+
+	<f:if condition="{fixedStatus}">
+		<h4>Fix action results:</h4>
+		<f:for each="{fixedStatus}" as="statusMessage">
+			<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
+		</f:for>
+		<hr />
+	</f:if>
+
+	<f:if condition="{fixableStatus}">
+		<form method="post">
+			<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+			<f:render partial="Action/Common/SubmitButton" arguments="{name:'fix', text:'Fix errors'}"/>
+		</form>
+		<hr />
+	</f:if>
+
+	<f:if condition="{notFixableStatus}">
+		<h4>These structure elements are not fixable:</h4>
+		<f:for each="{notFixableStatus}" as="statusMessage">
+			<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
+		</f:for>
+	</f:if>
+
+	<f:if condition="{fixableStatus}">
+		<h4>These structure elements are fixable:</h4>
+		<f:for each="{fixableStatus}" as="statusMessage">
+			<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
+		</f:for>
+	</f:if>
+
+	<f:if condition="{okStatus}">
+		<h4>These structures are ok:</h4>
+		<f:for each="{okStatus}" as="statusMessage">
+			<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
+		</f:for>
+	</f:if>
+</f:section>

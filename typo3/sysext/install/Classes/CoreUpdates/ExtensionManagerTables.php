@@ -36,16 +36,16 @@ class ExtensionManagerTables extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	protected $title = 'Add the default Extension Manager database tables';
 
 	/**
-	 * @var null|\TYPO3\CMS\Install\Sql\SchemaMigrator
+	 * @var null|\TYPO3\CMS\Install\Service\SqlSchemaMigrationService
 	 */
 	protected $installToolSqlParser = NULL;
 
 	/**
-	 * @return \TYPO3\CMS\Install\Sql\SchemaMigrator
+	 * @return \TYPO3\CMS\Install\Service\SqlSchemaMigrationService
 	 */
 	protected function getInstallToolSqlParser() {
 		if ($this->installToolSqlParser === NULL) {
-			$this->installToolSqlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Sql\\SchemaMigrator');
+			$this->installToolSqlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Service\\SqlSchemaMigrationService');
 		}
 
 		return $this->installToolSqlParser;

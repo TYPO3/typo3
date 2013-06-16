@@ -1,0 +1,22 @@
+<form method="post">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+	<input type="hidden" name="install[values][identifier]" value="{updateWizardData.identifier}"/>
+
+	<h4>{updateWizardData.title}</h4>
+
+	<f:format.raw>{updateWizardData.wizardHtml}</f:format.raw>
+
+	<fieldset>
+		<ol>
+			<li class="t3-install-form-label-after">
+				<input id="t3-install-showdatabasequeries" type="checkbox" name="install[values][showDatabaseQueries]" value="1" />
+				<label for="t3-install-showdatabasequeries">Show database queries performed</label>
+			</li>
+		</ol>
+	</fieldset>
+
+	<f:render
+		partial="Action/Common/SubmitButton"
+		arguments="{name:'performUpdate', text:'Perform updates!'}"
+	/>
+</form>

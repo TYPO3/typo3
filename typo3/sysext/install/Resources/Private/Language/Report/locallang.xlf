@@ -24,6 +24,42 @@
 			<trans-unit id="environment.status.message.info" xml:space="preserve">
 				<source />
 			</trans-unit>
+			<trans-unit id="status_fileSystem" xml:space="preserve">
+				<source>File System</source>
+			</trans-unit>
+			<trans-unit id="status_writable" xml:space="preserve">
+				<source>Writable</source>
+			</trans-unit>
+			<trans-unit id="status_missingDirectory" xml:space="preserve">
+				<source>Required Directory Missing</source>
+			</trans-unit>
+			<trans-unit id="status_nonExistingDirectory" xml:space="preserve">
+				<source>Directory not existing</source>
+			</trans-unit>
+			<trans-unit id="status_recommendedWritableDirectory" xml:space="preserve">
+				<source>Directory should be writable</source>
+			</trans-unit>
+			<trans-unit id="status_requiredWritableDirectory" xml:space="preserve">
+				<source>Directory not writable</source>
+			</trans-unit>
+			<trans-unit id="status_directoryDoesNotExist" xml:space="preserve">
+				<source>%s does not exist.</source>
+			</trans-unit>
+			<trans-unit id="status_directoryDoesNotExistCouldNotCreate" xml:space="preserve">
+				<source>%s does not exist and could not be created.</source>
+			</trans-unit>
+			<trans-unit id="status_directoryShouldAlsoBeWritable" xml:space="preserve">
+				<source>Also note that it should be writable, if it did exist.</source>
+			</trans-unit>
+			<trans-unit id="status_directoryShouldBeWritable" xml:space="preserve">
+				<source>%s should be writable.</source>
+			</trans-unit>
+			<trans-unit id="status_directoryMustBeWritable" xml:space="preserve">
+				<source>%s must be writable.</source>
+			</trans-unit>
+			<trans-unit id="status_remainingUpdates" xml:space="preserve">
+				<source>Remaining Updates</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

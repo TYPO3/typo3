@@ -1,0 +1,45 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<form method="post">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+	<f:if condition="{convertImageFormatsToJpgTested}">
+		<f:then>
+
+			<f:render partial="Action/Tool/TestSetup/AboutImageHandling" arguments="{_all}" />
+			<f:render partial="Action/Tool/TestSetup/VerifyTestResults" arguments="{_all}" />
+			<f:render partial="Action/Tool/TestSetup/CurrentConfiguration" arguments="{_all}" />
+
+			<p></p>
+
+			<h4>Convert image formats to jpg</h4>
+
+			<p>
+				This verifies that your ImageMagick installation is able to read the default
+				formats jpg, gif, png, tif, bmp, pcx, tga, pdf and ai. The tool 'identify' is
+				used to read the pixeldimensions of non-web formats and 'convert' is used to
+				read the image and convert it to jpg.
+			</p>
+
+			<div class="typo3-message message-notice">
+				<div class="header-container">
+					<div class="message-header">
+						<strong>Dark images</strong>
+					</div>
+				</div>
+				<div class="message-body">
+					In case the images appear remarkably darker than the reference images,
+					try to set [TYPO3_CONF_VARS][GFX][colorspace] = sRGB.
+				</div>
+			</div>
+			<p></p>
+
+			<f:for each="{testResults}" as="test">
+				<f:render partial="Action/Tool/TestSetup/DisplayTwinImage" arguments="{_all}"/>
+			</f:for>
+		</f:then>
+		<f:else>
+			<h4>Convert image formats to jpg</h4>
+		</f:else>
+	</f:if>
+	<f:render partial="Action/Common/SubmitButton" arguments="{name:'testConvertImageFormatsToJpg', text:'Test image formats'}"/>
+</form>

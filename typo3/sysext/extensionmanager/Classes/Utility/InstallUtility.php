@@ -39,7 +39,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	public $objectManager;
 
 	/**
-	 * @var \TYPO3\CMS\Install\Sql\SchemaMigrator
+	 * @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService
 	 */
 	public $installToolSqlParser;
 
@@ -115,8 +115,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function __construct() {
 		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		/** @var $installToolSqlParser \TYPO3\CMS\Install\Sql\SchemaMigrator */
-		$this->installToolSqlParser = $this->objectManager->get('TYPO3\\CMS\\Install\\Sql\\SchemaMigrator');
+		/** @var $installToolSqlParser \TYPO3\CMS\Install\Service\SqlSchemaMigrationService */
+		$this->installToolSqlParser = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\SqlSchemaMigrationService');
 		$this->dependencyUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility');
 	}
 

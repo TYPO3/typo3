@@ -1,0 +1,113 @@
+<h4>Clean typo3temp/ folder</h4>
+
+<div class="toggleGroup">
+	<div class="toggleButton">
+		<h4>About</h4>
+	</div>
+	<div class="toggleData" style="display:none">
+		<p>
+			TYPO3 uses this directory for temporary files, mainly processed and cached images.
+			The filenames are cryptic. They are unique representations of the file properties
+			made by md5-hashing a serialized array with information.
+		</p>
+		<p>
+			Anyway this directory may contain many thousand files and a lot of them may be of no use anymore.
+		</p>
+		<p>
+			With this action you can delete the files in this folder. When you do that, you
+			should also clear the cache database tables afterwards.
+		</p>
+		<p>
+			This tool will delete files only if the last 10 characters before the extension
+			(3 chars+'.') are hexadecimal valid ciphers, which are lowercase a-f and 0-9.
+		</p>
+	</div>
+</div>
+
+<dl class="t3-install-definitionlist">
+	<dt>
+		Number of temporary files:
+	</dt>
+	<dd>
+		{typo3TempData.numberOfFilesInSelectedDirectory}
+	</dd>
+	<dt>
+		Number matching:
+	</dt>
+	<dd>
+		{typo3TempData.numberOfFilesMatchingCriteria}
+	</dd>
+	<dt>
+		Number deleted:
+	</dt>
+	<dd>
+		{typo3TempData.numberOfDeletedFiles}
+	</dd>
+</dl>
+
+<form method="post">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+
+	<fieldset>
+		<ol>
+			<li>
+				<label for="t3-install-delete">
+					Delete files by condition
+				</label>
+				<select
+					id="t3-install-delete"
+					name="install[values][condition]"
+				>
+					<option value="0">All</option>
+					<option value="day" {f:if(condition:'{typo3TempData.selectedCondition} == \'day\'', then:'selected="selected"')}>Last acces more than a day ago</option>
+					<option value="week" {f:if(condition:'{typo3TempData.selectedCondition} == \'week\'', then:'selected="selected"')}>Last acces more than a week ago</option>
+					<option value="month" {f:if(condition:'{typo3TempData.selectedCondition} == \'month\'', then:'selected="selected"')}>Last acces more than a month ago</option>
+					<option value="10" {f:if(condition:'{typo3TempData.selectedCondition} == \'10\'', then:'selected="selected"')}>File size greater than 10K</option>
+					<option value="50" {f:if(condition:'{typo3TempData.selectedCondition} == \'50\'', then:'selected="selected"')}>File size greater than 50K</option>
+					<option value="100" {f:if(condition:'{typo3TempData.selectedCondition} == \'100\'', then:'selected="selected"')}>File size greater than 100K</option>
+				</select>
+			</li>
+
+			<li>
+				<label for="t3-install-action">
+					Number of files at a time:
+				</label>
+				<select
+					id="t3-install-action"
+					name="install[values][numberOfFiles]"
+				>
+					<option value="0">Don't delete, just display statistics</option>
+					<option value="500" {f:if(condition:'{typo3TempData.numberOfFiles} == \'500\'', then:'selected="selected"')}>Delete 500</option>
+					<option value="1000" {f:if(condition:'{typo3TempData.numberOfFiles} == \'1000\'', then:'selected="selected"')}>Delete 1000</option>
+					<option value="5000" {f:if(condition:'{typo3TempData.numberOfFiles} == \'5000\'', then:'selected="selected"')}>Delete 5000</option>
+				</select>
+			</li>
+
+			<li>
+				<label for="t3-install-subdirectory">
+					From sub-directory:
+				</label>
+				<select
+					id="t3-install-subdirectory"
+					name="install[values][subDirectory]"
+				>
+					<f:for each="{typo3TempData.subDirectories}" as="subDirectory">
+						<option
+							value="{subDirectory.name}"
+							{f:if(condition:subDirectory.selected, then:'selected="selected"')}
+						>
+							<f:if condition="{subDirectory.name}">
+								{subDirectory.name}/ (Files: {subDirectory.filesNumber})
+							</f:if>
+						</option>
+					</f:for>
+				</select>
+			</li>
+		</ol>
+	</fieldset>
+
+	<f:render
+		partial="Action/Common/SubmitButton"
+		arguments="{name:'deleteTypo3TempFiles', text:'Execute'}"
+	/>
+</form>

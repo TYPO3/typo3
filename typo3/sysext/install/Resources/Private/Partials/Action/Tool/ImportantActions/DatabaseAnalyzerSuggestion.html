@@ -1,0 +1,25 @@
+<fieldset>
+	<legend>{label}</legend>
+	<ol>
+		<li class="t3-install-form-label-after">
+			<input type="checkbox" class="checkall" id="t3-install-{key}-checkbox">
+			<label for="t3-install-{key}-checkbox">select/deselect all</label>
+		</li>
+		<f:for each="{data}" as="field">
+			<li class="t3-install-form-label-after">
+				<input type="checkbox" id="t3-install-db-{field.hash}" name="install[values][{field.hash}]" value="1">
+				<label for="t3-install-db-{field.hash}">
+					{field.statement}
+					<f:if condition="{field.current}">
+						<br />
+						Current value: {field.current}
+					</f:if>
+					<f:if condition="{field.count}">
+						<br />
+						{field.count}
+					</f:if>
+				</label>
+			</li>
+		</f:for>
+	</ol>
+</fieldset>
