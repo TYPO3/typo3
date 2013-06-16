@@ -1,0 +1,21 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<f:layout name="ToolAuthenticated" />
+
+<f:section name="Content">
+	<h3>Clean up your installation</h3>
+
+	<f:for each="{actionMessages}" as="statusMessage">
+		<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
+	</f:for>
+
+	<f:render partial="Action/Tool/CleanUp/Typo3TempFiles" arguments="{_all}" />
+	<hr />
+
+	<f:render partial="Action/Tool/CleanUp/ClearTables" arguments="{_all}" />
+	<hr />
+
+	<f:render partial="Action/Tool/CleanUp/ResetBackendUserUc" arguments="{_all}" />
+	<hr />
+
+</f:section>

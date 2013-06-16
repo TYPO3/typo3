@@ -108,10 +108,11 @@ class InstallToolFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
+	 * @deprecated since 6.2. Test can be removed if injectInstallTool method is dropped
 	 */
 	public function createValidationErrorMessageAddsErrorMessage() {
 		$installTool = $this->getMock(
-			'TYPO3\\CMS\\Install\\Installer', array('addErrorMessage'), array(), '', FALSE
+			'stdClass', array('addErrorMessage'), array(), '', FALSE
 		);
 		$installTool->expects($this->once())->method('addErrorMessage')
 			->with(
