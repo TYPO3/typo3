@@ -1,0 +1,54 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<f:layout name="ToolAuthenticated" />
+
+<f:section name="Content">
+
+	<f:if condition="{configurationValuesSaved}">
+		<f:then>
+			<h3>Saved configuration values</h3>
+
+			<f:if condition="{savedConfigurationValueMessages}">
+				<f:then>
+					<f:for each="{savedConfigurationValueMessages}" as="statusMessage">
+						<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
+					</f:for>
+				</f:then>
+
+					<f:else>
+					<div class="typo3-message message-warning">
+						<div class="header-container">
+							<div class="message-header">
+								No values changed
+							</div>
+						</div>
+					</div>
+				</f:else>
+			</f:if>
+
+			<hr />
+
+			<form method="post">
+				<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+				<f:render partial="Action/Common/SubmitButton" arguments="{name:'continue', text:'Continue'}"/>
+			</form>
+		</f:then>
+
+		<f:else>
+			<h3>Change configuration values</h3>
+
+			<form method="post">
+				<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+
+				<f:for each="{data}" as="sectionData" key="sectionName">
+					<f:if condition="{sectionData}">
+						<f:render partial="Action/Tool/AllConfiguration/SubSection" arguments="{_all}" />
+					</f:if>
+				</f:for>
+
+				<f:render partial="Action/Common/SubmitButton" arguments="{name:'write', text:'Write configuration'}"/>
+			</form>
+		</f:else>
+	</f:if>
+
+</f:section>

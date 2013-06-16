@@ -1,0 +1,25 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<f:layout name="ToolAuthenticated" />
+
+<f:section name="Content">
+	<h3>Update wizard</h3>
+
+	<f:for each="{actionMessages}" as="statusMessage">
+		<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
+	</f:for>
+
+
+	<f:if condition="{updateAction} == 'listUpdates'">
+		<f:render partial="Action/Tool/UpdateWizard/ListUpdates" arguments="{_all}" />
+	</f:if>
+
+	<f:if condition="{updateAction} == 'getUserInput'">
+		<f:render partial="Action/Tool/UpdateWizard/GetUserInput" arguments="{_all}" />
+	</f:if>
+
+	<f:if condition="{updateAction} == 'performUpdate'">
+		<f:render partial="Action/Tool/UpdateWizard/PerformUpdate" arguments="{_all}" />
+	</f:if>
+
+</f:section>

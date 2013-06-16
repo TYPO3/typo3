@@ -1,0 +1,85 @@
+<h4>Database analyzer</h4>
+
+<form method="post">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+	<input type="hidden" name="install[set][databaseAnalyzerAnalyze]" />
+
+	<f:if condition="{databaseAnalyzerSuggestion.addTable}">
+		<f:render
+			partial="Action/Tool/ImportantActions/DatabaseAnalyzerSuggestion"
+			arguments="{
+				key: 'addTable',
+				label: 'Add tables',
+				data: '{databaseAnalyzerSuggestion.addTable}'
+			}"
+		/>
+	</f:if>
+
+	<f:if condition="{databaseAnalyzerSuggestion.addField}">
+		<f:render
+			partial="Action/Tool/ImportantActions/DatabaseAnalyzerSuggestion"
+			arguments="{
+				key: 'addField',
+				label: 'Add fields to tables',
+				data: '{databaseAnalyzerSuggestion.addField}'
+			}"
+		/>
+	</f:if>
+
+	<f:if condition="{databaseAnalyzerSuggestion.change}">
+		<f:render
+			partial="Action/Tool/ImportantActions/DatabaseAnalyzerSuggestion"
+			arguments="{
+				key: 'change',
+				label: 'Change fields',
+				data: '{databaseAnalyzerSuggestion.change}'
+			}"
+		/>
+	</f:if>
+
+	<f:if condition="{databaseAnalyzerSuggestion.renameTableToUnused}">
+		<f:render
+			partial="Action/Tool/ImportantActions/DatabaseAnalyzerSuggestion"
+			arguments="{
+				key: 'renameTableToUnused',
+				label: 'Remove tables (rename with prefix)',
+				data: '{databaseAnalyzerSuggestion.renameTableToUnused}'
+			}"
+		/>
+	</f:if>
+
+	<f:if condition="{databaseAnalyzerSuggestion.renameTableFieldToUnused}">
+		<f:render
+			partial="Action/Tool/ImportantActions/DatabaseAnalyzerSuggestion"
+			arguments="{
+				key: 'renameTableFieldToUnused',
+				label: 'Remove unused fields (rename with prefix)',
+				data: '{databaseAnalyzerSuggestion.renameTableFieldToUnused}'
+			}"
+		/>
+	</f:if>
+
+	<f:if condition="{databaseAnalyzerSuggestion.deleteField}">
+		<f:render
+			partial="Action/Tool/ImportantActions/DatabaseAnalyzerSuggestion"
+			arguments="{
+				key: 'deleteField',
+				label: 'Drop fields (really!)',
+				data: '{databaseAnalyzerSuggestion.deleteField}'
+			}"
+		/>
+	</f:if>
+
+	<f:if condition="{databaseAnalyzerSuggestion.deleteTable}">
+		<f:render
+			partial="Action/Tool/ImportantActions/DatabaseAnalyzerSuggestion"
+			arguments="{
+				key: 'deleteTable',
+				label: 'Drop tables (really!)',
+				data: '{databaseAnalyzerSuggestion.deleteTable}'
+			}"
+		/>
+	</f:if>
+
+	<f:render partial="Action/Common/SubmitButton" arguments="{name:'databaseAnalyzerExecute', text:'Execute'}"/>
+</form>

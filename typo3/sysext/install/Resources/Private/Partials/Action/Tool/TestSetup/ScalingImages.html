@@ -1,0 +1,28 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<form method="post">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+	<f:if condition="{scalingImagesTested}">
+		<f:then>
+			<f:render partial="Action/Tool/TestSetup/AboutImageHandling" arguments="{_all}" />
+			<f:render partial="Action/Tool/TestSetup/VerifyTestResults" arguments="{_all}" />
+			<f:render partial="Action/Tool/TestSetup/CurrentConfiguration" arguments="{_all}" />
+
+			<p></p>
+
+			<h4>Scaling images</h4>
+
+			<p>
+				This shows how ImageMagick reacts when scaling transparent GIF and PNG files.
+			</p>
+
+			<f:for each="{testResults}" as="test">
+				<f:render partial="Action/Tool/TestSetup/DisplayTwinImage" arguments="{_all}"/>
+			</f:for>
+		</f:then>
+		<f:else>
+			<h4>Scaling images</h4>
+		</f:else>
+	</f:if>
+	<f:render partial="Action/Common/SubmitButton" arguments="{name:'testScalingImages', text:'Test scaling images'}"/>
+</form>
