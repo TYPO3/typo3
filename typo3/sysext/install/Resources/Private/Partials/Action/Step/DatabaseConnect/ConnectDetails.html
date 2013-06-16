@@ -1,0 +1,66 @@
+<form method="post">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+	<input type="hidden" value="execute" name="install[set]" />
+
+	<fieldset class="t3-install-form-label-width-7">
+		<ol>
+			<f:if condition="{renderConnectDetailsUsername}">
+				<li>
+					<label>Username</label>
+					<input class="t3-install-form-input-text" type="text" value="{username}" name="install[values][username]">
+				</li>
+			</f:if>
+
+			<f:if condition="{renderConnectDetailsPassword}">
+				<li>
+					<label>Password</label>
+					<input class="t3-install-form-input-text" type="password" value="{password}" name="install[values][password]">
+				</li>
+			</f:if>
+
+			<f:if condition="{renderConnectDetailsHost}">
+				<li>
+					<label>Host</label>
+					<input class="t3-install-form-input-text" type="text" value="{host}" name="install[values][host]">
+				</li>
+			</f:if>
+
+			<f:if condition="{renderConnectDetailsPort}">
+				<li>
+					<label>Port</label>
+					<input class="t3-install-form-input-text" type="text" value="{port}" name="install[values][port]">
+				</li>
+			</f:if>
+
+			<f:if condition="{renderConnectDetailsDatabase}">
+				<li>
+					<label>Database</label>
+					<input class="t3-install-form-input-text" type="text" value="{database}" name="install[values][database]">
+				</li>
+			</f:if>
+
+			<f:if condition="{renderConnectDetailsOracleSidConnect}">
+				<li>
+					<label>Oracle Sid</label>
+					<select id="t3-install-form-type" name="install[values][type]">
+						<option value="servicename">Service name</option>
+						<f:if condition="{oracleSidSelected}">
+							<f:then>
+								<option value="sid" selected="selected">SID</option>
+							</f:then>
+							<f:else>
+								<option value="sid">SID</option>
+							</f:else>
+						</f:if>
+					</select>
+				</li>
+			</f:if>
+		</ol>
+	</fieldset>
+
+	<button type="submit">
+		Continue
+		<span class="t3-install-form-button-icon-positive">&nbsp;</span>
+	</button>
+</form>
+<hr />

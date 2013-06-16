@@ -1,0 +1,39 @@
+<h4>Clear tables</h4>
+
+<p>
+	Use with care! Clearing tables here can have a negative impact on your site functionality.
+	You could log out all users and delete all their basket data and loose logging
+	information!
+</p>
+<p>
+	Some database tables in TYPO3 CMS hold semi-temporary data that is not deleted if
+	clicking "Clear all cache" in the backend. Those can be cleared here, effectively
+	removing *all* rows from it. This can be useful in rare cases.
+</p>
+
+<form method="post">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+
+	<f:for each="{cleanableTables}" as="cleanableTable">
+		<fieldset>
+			<ol>
+				<li class="t3-install-form-label-after">
+					<input
+						id="t3-install-database_clearcache-{cleanableTable.name}"
+						name="install[values][{cleanableTable.name}]"
+						value="1"
+						type="checkbox"
+					/>
+					<label for="t3-install-database_clearcache-{cleanableTable.name}">
+						<strong>{cleanableTable.name}</strong>, Rows: {cleanableTable.rows}, Description: {cleanableTable.description}
+					</label>
+				</li>
+			</ol>
+		</fieldset>
+	</f:for>
+
+	<f:render
+		partial="Action/Common/SubmitButton"
+		arguments="{name:'clearTables', text:'Clear selected tables'}"
+	/>
+</form>

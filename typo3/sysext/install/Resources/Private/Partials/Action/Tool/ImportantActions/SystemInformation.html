@@ -1,0 +1,22 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<h4>Main system information</h4>
+
+<dl id="systemInformation">
+	<dt>Operating system:</dt>
+	<dd>{operatingSystem}</dd>
+	<dt>PHP version:</dt>
+	<dd><i:constant name="PHP_VERSION" /></dd>
+	<dt>PHP CGI detected:</dt>
+	<dd>{f:if(condition:cgiDetected, then:'Yes', else:'No')}</dd>
+	<dt>Database name:</dt>
+	<dd>{databaseName} </dd>
+	<dt>Database username:</dt>
+	<dd>{databaseUsername} </dd>
+	<dt>Database host:</dt>
+	<dd>{databaseHost} </dd>
+	<dt>Database port:</dt>
+	<dd>{databasePort} </dd>
+	<dt>Database tables:</dt>
+	<dd>{databaseNumberOfTables} </dd>
+</dl>

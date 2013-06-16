@@ -1,0 +1,42 @@
+<p>
+	If you upgrade your TYPO3 installation from one major version to another (e.g. 4.5 to 4.6),
+	then the Upgrade Wizards guide you through the necessary steps to upgrade your database
+	records or explicitly install extensions that ship with the latest TYPO3 version.
+</p>
+<hr />
+
+<f:if condition="{availableUpdates}">
+	<f:then>
+		<f:for each="{availableUpdates}" as="availableUpdate">
+			<form method="post">
+				<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+				<input type="hidden" name="install[values][identifier]" value="{availableUpdate.identifier}"/>
+				<h4>{availableUpdate.title}</h4>
+				<f:format.raw>{availableUpdate.explanation}</f:format.raw>
+				<f:if condition="{availableUpdate.renderNext}">
+					<f:render
+						partial="Action/Common/SubmitButton"
+						arguments="{name:'getUserInput', text:'Next'}"
+					/>
+				</f:if>
+				<hr />
+			</form>
+		</f:for>
+	</f:then>
+	<f:else>
+		<p>
+			<strong>No updates to perform!</strong>
+		</p>
+		<hr />
+	</f:else>
+</f:if>
+
+<h4>Final step</h4>
+<p>
+	When all updates are done you should check your database for required updates.
+	<br />
+	Perform the database analyzer steps until no more changes are required.
+</p>
+<a href="Install.php?install[action]=importantActions&install[context]={context}&install[controller]=tool">
+	Go to database analyzer
+</a>

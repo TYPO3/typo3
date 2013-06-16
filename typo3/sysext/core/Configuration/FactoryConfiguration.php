@@ -7,6 +7,10 @@
  */
 return array(
 	'BE' => array(
+		'explicitADmode' => 'explicitAllow',
+		'fileCreateMask' => '0664',
+		'folderCreateMask' => '2774',
+		'forceCharset' => 'utf-8',
 		'installToolPassword' => 'bacb98acf97e0b6112b1d1b650b84971',
 	),
 	'DB' => array(
@@ -50,7 +54,13 @@ return array(
 			'form',
 		),
 	),
+	'GFX' => array(
+		'jpg_quality' => '80',
+	),
 	'SYS' => array(
+		'compat_version' => '6.2',
+		'isInitialInstallationInProgress' => TRUE,
+		'setDBinit' => 'SET NAMES utf8;',
 		'sitename' => 'New TYPO3 site',
 	),
 );
