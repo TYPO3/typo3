@@ -1,0 +1,51 @@
+<f:comment>
+	Login form is significantly different from other install tool actions:
+	It does not render the menu and loads other css. So, it does not use
+	the 'InstallToolAuthenticated' layout and just renders its adapted
+	content from a partial.
+	The loginForm however does respect the context, so it renders a docheader
+	if called by the backend, or a the standalone content if not.
+</f:comment>
+
+<f:if condition="{context} == 'backend'">
+	<f:then>
+		<!DOCTYPE html>
+		<html>
+		<head>
+			<title>Install tool login</title>
+			<f:render partial="Action/Common/Headers" arguments="{_all}" />
+			<link rel="stylesheet" type="text/css" href="../Resources/Public/Stylesheets/Action/Common/Login.css?{time}" />
+			<link rel="stylesheet" type="text/css" href="../../../sysext/t3skin/stylesheets/visual/element_docheader.css?{time}" />
+			<link rel="stylesheet" type="text/css" href="../../../sysext/t3skin/stylesheets/structure/element_docheader.css?{time}" />
+		</head>
+		<body>
+		<div id="typo3-docheader">
+			<div class="typo3-docheader-functions"></div>
+			<div class="typo3-docheader-buttons"></div>
+		</div>
+		<div id="typo3-docbody">
+			<div id="typo3-inner-docbody">
+				<div id="t3-install-outer" class="t3-install-login">
+					<f:render partial="Action/Common/LoginForm.html" arguments="{_all}" />
+				</div>
+			</div>
+		</div>
+		</body>
+		</html>
+	</f:then>
+	<f:else>
+		<!DOCTYPE html>
+		<html>
+		<head>
+			<title>Install tool login</title>
+			<f:render partial="Action/Common/Headers" arguments="{_all}" />
+			<link rel="stylesheet" type="text/css" href="../Resources/Public/Stylesheets/Action/Common/Login.css?{time}" />
+		</head>
+		<body class="standalone">
+		<div id="t3-install-outer" class="t3-install-login">
+			<f:render partial="Action/Common/LoginForm.html" arguments="{_all}" />
+		</div>
+		</body>
+		</html>
+	</f:else>
+</f:if>

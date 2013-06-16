@@ -1,0 +1,27 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<f:layout name="BackendModule" />
+
+<f:section name="Content">
+	<f:form action="enableInstallTool" method="post" id="t3-install-form-unlock">
+		<f:form.hidden name="installToolEnableToken" value="{installToolEnableToken}" />
+		<div id="container">
+			<div class="typo3-message message-warning">
+				<h2>
+					<f:translate
+						key="LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:confirmUnlockInstallToolTitle"
+					/>
+				</h2>
+				<f:translate
+					key="LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:confirmUnlockInstallToolMessage"
+				/>
+				<button value="enableInstallTool">
+					<f:translate
+						key="LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:confirmUnlockInstallToolButton"
+					/>
+					<span class="t3-install-form-button-icon-positive">&nbsp;</span>
+				</button>
+			</div>
+		</div>
+	</f:form>
+</f:section>

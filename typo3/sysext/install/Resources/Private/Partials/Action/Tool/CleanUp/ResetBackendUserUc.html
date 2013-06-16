@@ -1,0 +1,19 @@
+<h4>Reset backend user preferences</h4>
+
+<p>
+	If you press this button all backend users from the tables be_users will
+	have their user preferences cleared (field 'uc' set to an empty string).
+</p>
+<p>
+	This may come in handy in rare cases where that configuration may be corrupt.
+	Clearing this will clear all user settings from the 'Setup' module.
+</p>
+
+<form method="post">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+
+	<f:render
+		partial="Action/Common/SubmitButton"
+		arguments="{name:'resetBackendUserUc', text:'Reset backend user preferences'}"
+	/>
+</form>

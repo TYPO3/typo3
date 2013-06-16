@@ -1,0 +1,32 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<f:layout name="ToolAuthenticated" />
+
+<f:section name="Content">
+	<h3>Test system settings</h3>
+
+	<f:for each="{actionMessages}" as="statusMessage">
+		<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
+	</f:for>
+
+	<f:render partial="Action/Tool/TestSetup/Mail" arguments="{_all}" />
+	<hr />
+
+	<f:render partial="Action/Tool/TestSetup/TrueTypeFontDpi" arguments="{_all}" />
+	<hr />
+
+	<f:render partial="Action/Tool/TestSetup/ConvertImageFormatsToJpg" arguments="{_all}" />
+	<hr />
+
+	<f:render partial="Action/Tool/TestSetup/WriteGifAndPng" arguments="{_all}" />
+	<hr />
+
+	<f:render partial="Action/Tool/TestSetup/ScalingImages" arguments="{_all}" />
+	<hr />
+
+	<f:render partial="Action/Tool/TestSetup/CombiningImages" arguments="{_all}" />
+	<hr />
+
+	<f:render partial="Action/Tool/TestSetup/Gdlib" arguments="{_all}" />
+	<hr />
+</f:section>
