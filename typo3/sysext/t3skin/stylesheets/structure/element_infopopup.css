@@ -2,21 +2,18 @@
 Information popup, show_item.php
 - - - - - - - - - - - - - - - - - - - - - */
 
-#typo3-show-item-php {
-	width: 100%;
-}
-#typo3-show-item-php > div {
-	padding: 0 10px;
+body#typo3-show-item-php {
+	padding: 12px 24px;
+	height: auto;
 }
 
-#typo3-show-item-php h3 {
-	margin-top: 0;
-	padding-left: 10px;
+#typo3-show-item-php h1 small {
+	color: #aaa;
+	font-size: 0.7em;
 }
 
-table#typo3-showitem {
-	margin: 10px 0;
-}
+#typo3-show-item-php table { margin-bottom: 1.5em; }
+	#typo3-show-item-php table td { line-height: normal; height: auto; padding: 6px; }
 
 #typo3-show-item-php div.fileInfoContainer.fileDimensions {
 	margin-left: 18px;
