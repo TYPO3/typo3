@@ -1,0 +1,10 @@
+<form method="post">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+	<h4>True type font dpi settings</h4>
+	<f:if condition="{trueTypeFontDpiTested}">
+		<f:for each="{testResults}" as="test">
+			<f:render partial="Action/Tool/TestSetup/DisplayTwinImage" arguments="{_all}"/>
+		</f:for>
+	</f:if>
+	<f:render partial="Action/Common/SubmitButton" arguments="{name:'testTrueTypeFontDpi', text:'Test true type font dpi'}"/>
+</form>

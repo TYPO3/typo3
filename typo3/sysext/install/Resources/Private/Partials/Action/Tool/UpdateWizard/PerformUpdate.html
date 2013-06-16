@@ -1,0 +1,32 @@
+<p class="innerWidth">
+	<strong>{wizardData.title}</strong>
+</p>
+
+<f:if condition="{wizardData.wizardInputBroken}">
+	<f:then>
+		<a href="javascript:history.back()">
+			Go back to update configuration
+		</a>
+	</f:then>
+
+	<f:else>
+		<f:if condition="{wizardData.queries}">
+			<f:for each="{wizardData.queries}" as="query">
+				{query}
+				<br />
+			</f:for>
+		</f:if>
+	</f:else>
+</f:if>
+
+<f:if condition="{nextUpdateWizardIdentifier}">
+	<form method="post">
+		<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+		<input type="hidden" name="install[values][identifier]" value="{nextUpdateWizardIdentifier}"/>
+		<f:render
+			partial="Action/Common/SubmitButton"
+			arguments="{name:'getUserInput', text:'Go to the next update wizard'}"
+		/>
+		<hr />
+	</form>
+</f:if>

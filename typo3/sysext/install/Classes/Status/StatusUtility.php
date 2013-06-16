@@ -31,13 +31,6 @@ namespace TYPO3\CMS\Install\Status;
 class StatusUtility {
 
 	/**
-	 * Default constructor
-	 */
-	public function __construct() {
-		require_once __DIR__ . '/Exception.php';
-	}
-
-	/**
 	 * Render a flat list of status objects
 	 *
 	 * @param array $statusObjects <\TYPO3\CMS\Install\Status\StatusInterface> $statusObjects

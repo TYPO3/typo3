@@ -1,4 +1,0 @@
-AuthType Basic
-AuthName Typo3InstallScript
-AuthUserFile /www/.htpasswd
-require valid-user

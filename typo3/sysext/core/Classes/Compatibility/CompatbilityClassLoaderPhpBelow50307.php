@@ -1,6 +1,5 @@
 <?php
 namespace TYPO3\CMS\Core\Compatibility;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -27,6 +26,8 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This is a compatibility layer for systems running PHP < 5.3.7
@@ -83,6 +84,10 @@ class CompatbilityClassLoaderPhpBelow50307 extends \TYPO3\CMS\Core\Core\ClassLoa
 		) {
 			// If class in question starts with one of the allowed old prefixes
 			static::checkClassCacheEntryAndRequire($classPath);
+			// Load original file if the class is still not there (because cache is disabled)
+			if (!class_exists($className)) {
+				static::requireClassFile($classPath);
+			}
 		} else {
 			// Do nothing for system extensions or external libraries.
 			// They are already using the proper type hints or do not use them at all.
