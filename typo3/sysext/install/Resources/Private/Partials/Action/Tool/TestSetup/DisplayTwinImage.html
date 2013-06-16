@@ -1,0 +1,72 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<h4>{test.title}</h4>
+
+<f:if condition="{test.message}">
+	<f:render partial="Action/Common/StatusMessage" arguments="{message: test.message}" />
+</f:if>
+
+<f:if condition="{test.error}">
+	<f:then>
+		<f:render partial="Action/Common/StatusMessage" arguments="{message: test.error}"/>
+	</f:then>
+	<f:else>
+		<table class="t3-install-displaytwinimageimages">
+			<tbody>
+				<tr>
+					<td>
+						<strong>Reference</strong>
+					</td>
+					<td>
+						<strong>Your system</strong>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<img src="../../../../{test.referenceFile -> i:file.relativePath()}?{time}" />
+					</td>
+					<td>
+						<f:if condition="{test.outputFile}">
+							<f:then>
+								<img src="../../../../{test.outputFile -> i:file.relativePath()}?{time}" />
+							</f:then>
+							<f:else>
+								<div class="typo3-message message-error" >
+									<div class="header-container">
+										<div class="message-header"><strong>No image</strong></div>
+									</div>
+									<div class="message-body">
+										Your system generated no image at all. This is probaly a misconfiguration.
+									</div>
+								</div>
+							</f:else>
+						</f:if>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						{test.referenceFile -> i:file.size()},
+						{test.referenceFile -> i:file.imageDimension()}
+						x {test.referenceFile -> i:file.imageDimension(dimension:'height')} pixel
+					</td>
+					<td>
+						<f:if condition="{test.outputFile}">
+							<f:then>
+								{test.outputFile -> i:file.size()},
+								{test.outputFile -> i:file.imageDimension()}
+								x {test.outputFile -> i:file.imageDimension(dimension:'height')} pixel
+							</f:then>
+						</f:if>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<f:if condition="{test.command}">
+			<div class="t3-install-displaytwinimagetextarea">
+				{i:format.imageMagickCommands(commands:test.command)}
+			</div>
+		</f:if>
+	</f:else>
+</f:if>
+
+<p></p>

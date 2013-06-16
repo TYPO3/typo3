@@ -31,48 +31,6 @@ class StatusUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException \TYPO3\CMS\Install\Status\Exception
-	 */
-	public function renderStatusObjectsAsHtmlThrowsExceptionIfObjectDoesNotImplementStatusInterface() {
-		$statusUtility = new \TYPO3\CMS\Install\Status\StatusUtility();
-		$statusUtility->renderStatusObjectsAsHtml(array(new \stdClass()));
-	}
-
-	/**
-	 * @test
-	 */
-	public function renderStatusObjectsAsHtmlRendersSeverity() {
-		$mockStatus = $this->getMock('TYPO3\\CMS\\Install\\Status\\StatusInterface');
-		$uniqueSeverity = uniqid('severity_');
-		$mockStatus->expects($this->once())->method('getSeverity')->will($this->returnValue($uniqueSeverity));
-		$statusUtility = new \TYPO3\CMS\Install\Status\StatusUtility();
-		$this->assertContains($uniqueSeverity, $statusUtility->renderStatusObjectsAsHtml(array($mockStatus)));
-	}
-
-	/**
-	 * @test
-	 */
-	public function renderStatusObjectsAsHtmlRendersTitle() {
-		$mockStatus = $this->getMock('TYPO3\\CMS\\Install\\Status\\StatusInterface');
-		$uniqueTitle = uniqid('title_');
-		$mockStatus->expects($this->once())->method('getTitle')->will($this->returnValue($uniqueTitle));
-		$statusUtility = new \TYPO3\CMS\Install\Status\StatusUtility();
-		$this->assertContains($uniqueTitle, $statusUtility->renderStatusObjectsAsHtml(array($mockStatus)));
-	}
-
-	/**
-	 * @test
-	 */
-	public function renderStatusObjectsAsHtmlRendersMessage() {
-		$mockStatus = $this->getMock('TYPO3\\CMS\\Install\\Status\\StatusInterface');
-		$uniqueMessage = uniqid('message_');
-		$mockStatus->expects($this->once())->method('getMessage')->will($this->returnValue($uniqueMessage));
-		$statusUtility = new \TYPO3\CMS\Install\Status\StatusUtility();
-		$this->assertContains($uniqueMessage, $statusUtility->renderStatusObjectsAsHtml(array($mockStatus)));
-	}
-
-	/**
-	 * @test
 	 */
 	public function sortBySeveritySortsGivenStatusObjects() {
 		$errorMock = $this->getMock('TYPO3\\CMS\\Install\\Status\\ErrorStatus', array('dummy'));

@@ -1,0 +1,146 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<f:layout name="ToolAuthenticated" />
+
+<f:section name="Content">
+	<h3>Welcome</h3>
+
+	<h4>How to configure TYPO3</h4>
+	<p>
+		Local configuration is done by overriding default values in the
+		included file, typo3conf/LocalConfiguration.php. In this file you enter the
+		database information along with values in the global array
+		TYPO3_CONF_VARS.
+		<br />
+		The options in the TYPO3_CONF_VARS array and how to use it for your
+		own purposes is discussed in the base configuration file,
+		EXT:core/Configuration/DefaultConfiguration.php. This file sets up the default values and
+		subsequently includes the LocalConfiguration.php file in which you can then
+		override values.
+		<br />
+		See this page for <i:constant name="TYPO3_URL_SYSTEMREQUIREMENTS" /> more
+		information about system requirements.</a>
+	</p>
+	<hr />
+
+
+	<h4>Using this script</h4>
+	<p>
+		There are three primary steps for you to take:
+	</p>
+	<p>
+		<strong>1: Basic Configuration</strong>
+		<br />
+		In this step your PHP-configuration is checked. If
+		there are any settings that will prevent TYPO3 from
+		running correctly you'll get warnings and errors
+		with a description of the problem.
+		<br />
+		You'll have to enter a database username, password
+		and hostname. Then you can choose to create a new
+		database or select an existing one.
+		<br />
+		Finally the image processing settings are entered
+		and verified and you can choose to let the script
+		update the configuration with the suggested settings.
+	</p>
+	<p>
+		<strong>2: Database Analyser</strong>
+		<br />
+		In this step you can either install a new database
+		or update the database from any previous TYPO3
+		version.
+		<br />
+		You can also get an overview of extra/missing
+		fields/tables in the database compared to a raw
+		sql-file.
+		<br />
+		The database is also verified against your
+		configuration ($TCA) and you can
+		even see suggestions for entries in $TCA or new
+		fields in the database.
+	</p>
+	<p>
+		<strong>3: Upgrade Wizard</strong>
+		<br />
+		Here you will find update methods taking care of
+		changes to the TYPO3 core which are not backwards
+		compatible.
+		<br />
+		It is recommended to run this wizard after every
+		update to make sure everything will still work
+		flawlessly.
+	</p>
+	<p>
+		<strong>4: Image Processing</strong>
+		<br />
+		This step is a visual guide to verify your
+		configuration of the image processing software.
+		<br />
+		You'll be presented to a list of images that should
+		all match in pairs. If some irregularity appears,
+		you'll get a warning. Thus you're able to track an
+		error before you'll discover it on your website.
+	</p>
+	<p>
+		<strong>5: All Configuration</strong>
+		<br />
+		This gives you access to any of the configuration
+		options in the TYPO3_CONF_VARS array. Every option
+		is also presented with a comment explaining what it
+		does.
+	</p>
+	<p>
+		<strong>6: Cleanup</strong>
+		<br />
+		Here you can clean up the temporary files in typo3temp/
+		folder and the tables used for caching of data in
+		your database.
+	</p>
+	<hr />
+
+
+	<h4>Header legend</h4>
+	<h4 class="typo3-message message-notice">
+		Notice!
+	</h4>
+	<p>
+		Indicates that something is important to be aware of.
+		<br />
+		This does <em>not</em> indicate an error.
+	</p>
+
+	<h4 class="typo3-message message-information">
+		Just information
+	</h4>
+	<p>
+		This is a simple message with some information about something.
+	</p>
+
+	<h4 class="typo3-message message-ok">
+		Check was successful
+	</h4>
+	<p>
+		Indicates that something was checked and returned an expected result.
+	</p>
+
+	<h4 class="typo3-message message-warning">
+		Warning!
+	</h4>
+	<p>
+		Indicates that something may very well cause trouble
+		and you should definitely look into it before proceeding.
+		<br />
+		This indicates a <em>potential</em> error.
+	</p>
+
+	<h4 class="typo3-message message-error">
+		Error!
+	</h4>
+	<p>
+		Indicates that something is definitely wrong and that TYPO3 will most
+		likely not perform as expected if this problem is not solved.
+		<br />
+		This indicates an actual error.
+	</p>
+</f:section>

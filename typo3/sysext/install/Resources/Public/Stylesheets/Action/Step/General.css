@@ -1,0 +1,412 @@
+@charset "UTF-8";
+
+/* http://meyerweb.com/eric/tools/css/reset/ */
+/* v1.0 | 20080212 */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+
+body {
+	line-height: 1;
+}
+
+ol, ul {
+	list-style: none;
+}
+
+blockquote, q {
+	quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: none;
+}
+
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+
+/* remember to highlight inserts somehow! */
+ins {
+	text-decoration: none;
+}
+
+del {
+	text-decoration: line-through;
+}
+
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* Font size 62.8% = 1em = 10px */
+body {
+	font: 62.8% Verdana, Arial, Helvetica, sans-serif;
+}
+
+pre {
+	font-size: 1.2em;
+	margin: 1em 1em;
+}
+
+code {
+	font-size: 1.2em;
+}
+
+p, form, fieldset, h3, h4, h5, h6, dl {
+	margin: 1em 0 1em 0;
+}
+
+ol, ul {
+	margin: 1em 0 1em 1.5em;
+	padding: 0 0 0 1em;
+}
+
+ul {
+	list-style: disc;
+}
+
+ol {
+	list-style: decimal;
+}
+
+dl dd {
+	margin-left: 1.5em;
+}
+
+fieldset li p {
+	margin-top: 0;
+}
+
+h2 {
+	margin: 2.5em 0 1.7em 0.8em;
+	color: #585858;
+	font-size: 120%;
+	font-weight: bold;
+}
+
+h3 {
+	font-size: 120%;
+	margin: 0.7em 0 1.5em
+}
+
+h4 {
+	font-size: 110%;
+	margin: 0;
+}
+
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+* html .clearfix {
+	height: 1%;
+}
+
+legend {
+	margin-left: 1em;
+	font-weight: bold;
+}
+
+fieldset ol {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+fieldset li {
+	margin-bottom: 0.5em;
+	float: left;
+	clear: left;
+	width: 100%;
+}
+
+label {
+	float: left;
+	width: 18em;
+	margin-right: 1em;
+	padding: 0.2em 0;
+}
+
+fieldset span {
+	float: left;
+	width: 29em;
+}
+
+.t3-install-form-label-after input {
+	float: left;
+}
+
+.t3-install-form-label-after label,
+.t3-install-form-label-above label {
+	float: none;
+	display: block;
+	width: auto;
+	margin-right: 0;
+}
+
+.t3-install-form-label-above label {
+	margin-bottom: 0.5em;
+}
+
+.t3-install-form-label-after label {
+	padding-left: 3em;
+}
+
+.t3-install-form-label-width-7 label {
+	width: 7em;
+}
+
+.t3-install-form-label-width-21 label {
+	width: 21em;
+}
+
+fieldset.t3-install-form-submit {
+	float: none;
+	width: auto;
+}
+
+.t3-install-login fieldset.t3-install-form-submit {
+	margin-left: 8em;
+}
+
+fieldset select,
+input.t3-install-form-input-text,
+textarea {
+	border: 1px solid #7c7c7c;
+	color: #000000;
+	font-size: 1.1em;
+	line-height: 1.7em;
+	margin: 0;
+	width: 20em;
+}
+
+fieldset select {
+	height: 2em;
+	padding: 0.2em;
+	width: 17.4em;
+}
+
+input.t3-install-form-input-text {
+	height: 1.7em;
+	padding: 0.1em 0.1em 0 0.45em;
+}
+
+button {
+	color: #606060;
+	font-size: 1.1em;
+	padding: 0.3em 0.6em;
+	border: 1px solid #7c7c7c;
+	background: #f6f6f6 url('../../../Images/Background/Button.jpg') repeat-x left bottom;
+	cursor: pointer;
+}
+
+button:hover {
+	background: #ededed url('../../../Images/Background/ButtonHover.jpg');
+}
+
+button span {
+	background-repeat: no-repeat;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	margin-left: 0.6em;
+	float: none;
+}
+
+button span.t3-install-form-button-icon-negative {
+	background-image: url('../../../Images/Icon/Error.png');
+}
+
+button span.t3-install-form-button-icon-positive {
+	background-image: url('../../../Images/Icon/Ok.png');
+}
+
+.t3-install-strong {
+	font-weight: bold;
+}
+
+#t3-install-outer {
+	width: 76em;
+	margin: 1em auto;
+}
+
+#t3-install-right {
+	padding-left: 19em;
+	width: 57em;
+}
+
+#t3-install-box-body {
+	font-size: 110%;
+	line-height: 1.7em;
+	padding: 0.1em 1.8em 1.8em 1.8em;
+	color: #606060;
+}
+
+.t3-install-login #t3-install-box-body {
+	padding: 0.1em 0 0 3.6em;
+}
+
+#t3-install-box-body h3 {
+	margin: 0.75em 0 2em;
+}
+
+.t3-install-login #t3-install-box-body h3 {
+	margin: 1em 0;
+}
+
+#t3-install-box-body a {
+	color: #606060 !important;
+	text-decoration: underline !important;
+}
+
+#t3-install-box-body a:hover {
+	color: #111 !important;
+}
+
+.typo3-message {
+	padding: 0.6em 0.6em 0.6em 2.6em;
+	background-repeat: no-repeat;
+	background-position: 0.5em 0.7em;
+	border: 1px solid;
+	color: #000000;
+}
+
+.typo3-message h4 {
+	margin-top: 0;
+}
+
+.message-notice {
+	background-image: url("../../../Images/Icon/Notice.png");
+	background-color: #f6f7fa;
+	border-color: #c2cbcf;
+}
+
+.message-information {
+	background-image: url("../../../Images/Icon/Information.png");
+	background-color: #ddeef9;
+	border-color: #8aafc4;
+}
+
+.message-ok {
+	background-image: url("../../../Images/Icon/Ok.png");
+	background-color: #cdeaca;
+	border-color: #58b548;
+}
+
+.message-warning {
+	background-image: url("../../../Images/Icon/Warning.png");
+	background-color: #fbffb3;
+	border-color: #c4b70d;
+}
+
+.message-error {
+	background-image: url("../../../Images/Icon/Error.png");
+	background-color: #fbb19b;
+	border-color: #dc4c42;
+}
+
+#t3-install-copyright {
+	color: #797878;
+	border-top: 1px #5f5f5f solid;
+	margin-top: 3.7em;
+	clear: both;
+}
+
+#t3-install-copyright a {
+	color: #797878;
+}
+
+/* IE7 only styles */
+
+
+/* Font size 62.8% = 1em = 10px */
+body {
+	background: #4f4f4f url('../../../Images/Background/Body.jpg') repeat-x fixed;
+}
+
+#t3-install-outer {
+	width: 43em;
+	margin-left: 16em;
+}
+
+h1 {
+	background: url('../../../Images/Background/Logo.gif') no-repeat scroll 0 0 transparent;
+	margin: 2em 0 3.7em 0;
+	height: 34px;
+}
+
+h2 {
+	background-color: #585858;
+	font-size: 120%;
+	font-weight: bold;
+	color: #ffffff;
+	padding: 0.5em 1.8em 0.5em 1.8em;
+	margin: 0;
+}
+
+h3 {
+	font-size: 163%;
+}
+
+#t3-install-box-border-top {
+	height: 3px;
+	background: #3e3e3e url('../../../Images/Background/ContentTop.png') no-repeat center bottom;
+}
+
+#t3-install-box-border-bottom {
+	height: 3px;
+	background: #4d4c4d url('../../../Images/Background/ContentBottom.png') no-repeat center top;
+}
+
+#t3-install-box-body {
+	color: #787878;
+	background: #ebebeb url('../../../Images/Background/Content.jpg') repeat-x left bottom;
+	padding: 1em 1.8em 1em;
+}
+
+#stepInstaller-databaseSelect label {
+	float: none;
+	font-weight: bold;
+}
+
+#stepInstaller-databaseSelect p {
+	margin: 0 0 0.5em;
+}
+
+#stepInstaller-databaseSelect ul {
+	list-style: none;
+}
+
+#stepInstaller-databaseSelect ul li div {
+	display: inline-block;
+	margin-bottom: 10px;
+	width: 90%;
+}
+
+#stepInstaller-databaseSelect ul li input.radio {
+	vertical-align: top;
+}

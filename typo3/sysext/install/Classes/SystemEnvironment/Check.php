@@ -36,6 +36,8 @@ use TYPO3\CMS\Install\Status;
  * specific configuration values or directories. It should not fail
  * if there is no TYPO3 at all.
  *
+ * The only core code used is the class loader
+ *
  * This class is instantiated as the *very first* class during
  * installation. It is meant to be *standalone* und must not have
  * any requirements, except the status classes. It must be possible
@@ -74,21 +76,8 @@ class Check {
 		'standard',
 		'xml',
 		'zip',
-		'zlib'
+		'zlib',
 	);
-
-	/**
-	 * Constructor to load further classes
-	 */
-	public function __construct() {
-		require_once(__DIR__ . '/../Status/StatusInterface.php');
-		require_once(__DIR__ . '/../Status/AbstractStatus.php');
-		require_once(__DIR__ . '/../Status/NoticeStatus.php');
-		require_once(__DIR__ . '/../Status/InfoStatus.php');
-		require_once(__DIR__ . '/../Status/OkStatus.php');
-		require_once(__DIR__ . '/../Status/WarningStatus.php');
-		require_once(__DIR__ . '/../Status/ErrorStatus.php');
-	}
 
 	/**
 	 * Get all status information as array with status objects
@@ -107,7 +96,6 @@ class Check {
 		$statusArray[] = $this->checkDisableFunctions();
 		$statusArray[] = $this->checkSafeMode();
 		$statusArray[] = $this->checkDocRoot();
-		$statusArray[] = $this->checkSqlSafeMode();
 		$statusArray[] = $this->checkOpenBaseDir();
 		$statusArray[] = $this->checkOpenSslInstalled();
 		$statusArray[] = $this->checkSuhosinLoaded();
@@ -130,6 +118,7 @@ class Check {
 		$statusArray[] = $this->checkGdLibFreeTypeSupport();
 		$statusArray[] = $this->checkPhpMagicQuotes();
 		$statusArray[] = $this->checkRegisterGlobals();
+		$statusArray[] = $this->isTrueTypeFontDpiStandard();
 		return $statusArray;
 	}
 
@@ -332,7 +321,7 @@ class Check {
 				$status->setTitle('Infinite PHP script execution time');
 				$status->setMessage(
 					'Your max_execution_time is set to 0 (infinite). While TYPO3 is fine' .
-					' with this, you risk a denial-of-service of you system if for whatever' .
+					' with this, you risk a denial-of-service of your system if for whatever' .
 					' reason some script hangs in an infinite loop. You are usually on safe side ' .
 					' if max_execution_time is reduced to ' . $recommendedMaximumExecutionTime
 				);
@@ -458,36 +447,6 @@ class Check {
 		} else {
 			$status = new Status\OkStatus();
 			$status->setTitle('PHP doc_root is not set');
-		}
-		return $status;
-	}
-
-	/**
-	 * Check sql.safe_mode
-	 *
-	 * @return Status\OkStatus|Status\WarningStatus
-	 */
-	protected function checkSqlSafeMode() {
-		$sqlSafeModeEnabled = FALSE;
-		if (version_compare(phpversion(), '5.4', '<')) {
-			$sqlSafeModeEnabled = filter_var(
-				ini_get('sql.safe_mode'),
-				FILTER_VALIDATE_BOOLEAN,
-				array(FILTER_REQUIRE_SCALAR, FILTER_NULL_ON_FAILURE)
-			);
-		}
-		if ($sqlSafeModeEnabled) {
-			$status = new Status\WarningStatus();
-			$status->setTitle('sql.safe_mode is enabled');
-			$status->setMessage(
-				'This means that you can only connect to the database with a' .
-				' username corresponding to the user of the webserver process' .
-				' or file owner. Consult your ISP for information about this.' .
-				' The owner of the current file is: ' . get_current_user()
-			);
-		} else {
-			$status = new Status\OkStatus();
-			$status->setTitle('PHP sql.safe_mode is off');
 		}
 		return $status;
 	}
@@ -800,15 +759,15 @@ class Check {
 			$status->setTitle('Windows apache thread stack size');
 			$status->setMessage(
 				'This current value can not be checked by the system, so please ignore this warning if it' .
-				' is already taken care off: Fluid uses complex regular expressions which require a lot' .
+				' is already taken care of: Fluid uses complex regular expressions which require a lot' .
 				' of stack space during the first processing.' .
-				' On Windows the default stack size for Apache is a lot smaller than on unix.' .
-				' You can increase the size to 8MB (default on unix) by adding to the httpd.conf:' .
-				' ThreadStackSize 8388608. Restart Apache after this change.'
+				' On Windows the default stack size for Apache is a lot smaller than on UNIX.' .
+				' You can increase the size to 8MB (default on UNIX) by adding to the httpd.conf:' .
+				' <IfModule mpm_winnt_module>ThreadStackSize 8388608</IfModule>. Restart Apache after this change.'
 			);
 		} else {
 			$status = new Status\OkStatus();
-			$status->setTitle('ThreadStackSize is not an issue on unix systems');
+			$status->setTitle('ThreadStackSize is not an issue on UNIX systems');
 		}
 		return $status;
 	}
@@ -958,7 +917,7 @@ class Check {
 			&& function_exists('imagegif')
 			&& (imagetypes() & IMG_GIF)
 		) {
-			$imageResource = @imagecreatefromgif(__DIR__ . '/TestImages/jesus.gif');
+			$imageResource = @imagecreatefromgif(__DIR__ . '/../../Resources/Public/Images/TestInput/Test.gif');
 			if (is_resource($imageResource)) {
 				imagedestroy($imageResource);
 				$status = new Status\OkStatus();
@@ -1017,7 +976,7 @@ class Check {
 			&& function_exists('imagepng')
 			&& (imagetypes() & IMG_PNG)
 		) {
-			$imageResource = @imagecreatefrompng(__DIR__ . '/TestImages/jesus.png');
+			$imageResource = @imagecreatefrompng(__DIR__ . '/../../Resources/Public/Images/TestInput/Test.png');
 			if (is_resource($imageResource)) {
 				imagedestroy($imageResource);
 				$status = new Status\OkStatus();
@@ -1065,6 +1024,44 @@ class Check {
 				' in your environment. Install it.'
 			);
 		}
+		return $status;
+	}
+
+	/**
+	 * Create true type font test image
+	 *
+	 * @return Status\OkStatus|Status\NoticeStatus
+	 */
+	protected function isTrueTypeFontDpiStandard() {
+		// 20 Pixels at 96 DPI - the DefaultConfiguration
+		$fontSize = (20 / 96 * 72);
+
+		$textDimensions = @imageftbbox(
+			$fontSize,
+			0,
+			__DIR__ . '/../../Resources/Private/Font/vera.ttf',
+			'Testing true type support'
+		);
+		$fontBoxWidth = $textDimensions[2] - $textDimensions[0];
+
+		if ($fontBoxWidth < 300 && $fontBoxWidth > 200) {
+			$status = new Status\OkStatus();
+			$status->setTitle('FreeType True Type Font DPI');
+			$status->setMessage('Fonts are rendered by FreeType library. ' .
+					'We need to ensure that the final dimensions are as expected. ' .
+					'This server renderes fonts based on 96 DPI correctly'
+			);
+
+		} else {
+			$status = new Status\NoticeStatus();
+			$status->setTitle('FreeType True Type Font DPI');
+			$status->setMessage('Fonts are rendered by FreeType library. ' .
+					'This server renders fonts not as expected. ' .
+					'Please configure FreeType or TYPO3_CONF_VARS[GFX][TTFdpi]'
+			);
+
+		}
+
 		return $status;
 	}
 

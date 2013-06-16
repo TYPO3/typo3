@@ -31,51 +31,6 @@ namespace TYPO3\CMS\Install\Status;
 class StatusUtility {
 
 	/**
-	 * Default constructor
-	 */
-	public function __construct() {
-		require_once __DIR__ . '/Exception.php';
-	}
-
-	/**
-	 * Render a flat list of status objects
-	 *
-	 * @param array $statusObjects <\TYPO3\CMS\Install\Status\StatusInterface> $statusObjects
-	 * @throws Exception
-	 * @return string Rendered objects
-	 */
-	public function renderStatusObjectsAsHtml(array $statusObjects = array()) {
-		$messageHtmlBoilerPlate =
-			'<div class="typo3-message message-%1s" >' .
-				'<div class="header-container">' .
-					'<div class="message-header message-left"><strong>%2s</strong></div>' .
-					'<div class="message-header message-right"></div>' .
-				'</div>' .
-				'<div class="message-body">%3s</div>' .
-			'</div>' .
-			'<p></p>';
-
-		$html = '';
-		foreach ($statusObjects as $status) {
-			if (!$status instanceof StatusInterface) {
-				throw new Exception(
-					'Object must implement StatusInterface',
-					1366919440
-				);
-			}
-			/** @var $status StatusInterface */
-			$severityIdentifier = $status->getSeverity();
-			$html .= sprintf(
-				$messageHtmlBoilerPlate,
-				$severityIdentifier,
-				$status->getTitle(),
-				$status->getMessage()
-			);
-		}
-		return $html;
-	}
-
-	/**
 	 * Order status objects by severity
 	 *
 	 * @param array<\TYPO3\CMS\Install\Status\StatusInterface> $statusObjects Status objects in random order
