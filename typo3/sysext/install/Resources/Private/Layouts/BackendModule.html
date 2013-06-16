@@ -1,0 +1,31 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<f:comment>
+	This layout is for the 'backend module' that only shows the 'Unlock the Install Tool' message
+	and then redirects to the step installation / install tool
+</f:comment>
+
+<i:be.container
+	pageTitle="Install tool"
+	enableJumpToUrl="true"
+	enableClickMenu="false"
+	loadPrototype="false"
+	loadScriptaculous="false"
+	loadExtJs="false"
+	loadExtJsTheme="false"
+	addCssFiles="{
+		0:'{f:uri.resource(path:\'Stylesheets/BackendModule/ShowEnableInstallToolButton.css\')}'
+	}"
+	addJsFiles="{}"
+>
+
+	<div id="typo3-docheader">
+		<div class="typo3-docheader-functions"></div>
+		<div class="typo3-docheader-buttons"></div>
+	</div>
+	<div id="typo3-docbody">
+		<div id="typo3-inner-docbody">
+			<f:render section="Content" />
+		</div>
+	</div>
+</i:be.container>

@@ -1,0 +1,611 @@
+@charset "UTF-8";
+
+/* http://meyerweb.com/eric/tools/css/reset/ */
+/* v1.0 | 20080212 */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: none;
+}
+
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+
+/* remember to highlight inserts somehow! */
+ins {
+	text-decoration: none;
+}
+del {
+	text-decoration: line-through;
+}
+
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/* Font size 62.8% = 1em = 10px */
+body {
+	font: 62.8% Verdana, Arial, Helvetica, sans-serif;
+}
+
+pre {
+	font-size: 1.2em;
+	margin: 1em 1em;
+}
+
+code {
+	font-size: 1.2em;
+}
+
+p, form, fieldset, h3, h4, h5, h6, dl {
+	margin: 1em 0 1em 0;
+}
+
+ol, ul {
+	margin: 1em 0 1em 1.5em;
+	padding: 0 0 0 1em;
+}
+
+ul {
+	list-style: disc;
+}
+
+ol {
+	list-style: decimal;
+}
+
+dl dd {
+	margin-left: 1.5em;
+}
+
+fieldset li p {
+	margin-top: 0;
+}
+
+h2 {
+	margin: 2.5em 0 1.7em 0.8em;
+	color: #585858;
+	font-size: 120%;
+	font-weight: bold;
+}
+
+h3 {
+	font-size: 120%;
+	margin: 0.7em 0 1.5em
+}
+
+h4 {
+	font-size: 110%;
+	margin: 0;
+}
+
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+* html .clearfix {
+	height: 1%;
+}
+
+legend {
+	margin-left: 1em;
+	font-weight: bold;
+}
+
+fieldset ol {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+fieldset li {
+	margin-bottom: 0.5em;
+	float: left;
+	clear: left;
+	width: 100%;
+}
+
+label {
+	float: left;
+	width: 18em;
+	margin-right: 1em;
+	padding: 0.2em 0;
+}
+
+fieldset span {
+	float: left;
+	width: 29em;
+}
+
+.t3-install-form-label-after input {
+	float: left;
+}
+
+.t3-install-form-label-after label,
+.t3-install-form-label-above label {
+	float: none;
+	display: block;
+	width: auto;
+	margin-right: 0;
+}
+
+.t3-install-form-label-above label {
+	margin-bottom: 0.5em;
+}
+
+.t3-install-form-label-after label {
+	padding-left: 3em;
+}
+
+.t3-install-form-label-width-7 label {
+	width: 7em;
+}
+
+.t3-install-form-label-width-21 label {
+	width: 21em;
+}
+
+fieldset.t3-install-form-submit {
+	float: none;
+	width: auto;
+}
+
+.t3-install-login fieldset.t3-install-form-submit {
+	margin-left: 8em;
+}
+
+fieldset select,
+input.t3-install-form-input-text,
+textarea {
+	border: 1px solid #7c7c7c;
+	color: #000000;
+	font-size: 1.1em;
+	line-height: 1.7em;
+	margin: 0;
+	width: 20em;
+}
+
+fieldset select {
+	height: 2em;
+	padding: 0.2em;
+	width: 17.4em;
+}
+
+input.t3-install-form-input-text {
+	height: 1.7em;
+	padding: 0.1em 0.1em 0 0.45em;
+}
+
+textarea {
+	width: 99%;
+	font-size: 1.2em;
+}
+
+button {
+	color: #606060;
+	font-size: 1.1em;
+	padding: 0.3em 0.6em;
+	border: 1px solid #7c7c7c;
+	background: #f6f6f6 url('../../../Images/Background/Button.jpg') repeat-x left bottom;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #ededed;
+	background-image: url('../../../Images/Background/ButtonHover.jpg');
+}
+
+button span {
+	background-repeat: no-repeat;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	margin-left: 0.6em;
+	float: none;
+}
+
+button span.t3-install-form-button-icon-negative {
+	background-image: url('../../../Images/Icon/Error.png');
+}
+
+button span.t3-install-form-button-icon-positive {
+	background-image: url('../../../Images/Icon/Ok.png');
+}
+
+.t3-install-hidden {
+	display: none;
+}
+
+.t3-install-strong {
+	font-weight: bold;
+}
+
+#t3-install-outer {
+	width: 76em;
+	margin: 1em auto;
+}
+
+#t3-install-left {
+	float: left;
+	width: 19em;
+	clear: both;
+}
+
+#t3-install-right {
+	padding-left: 19em;
+	width: 57em;
+}
+
+#t3-install-menu {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	width: 16em;
+	font-size: 110%;
+	line-height: 2em;
+}
+
+#t3-install-menu li {
+	padding: 0.35em 0 0.35em 2.8em;
+}
+
+#t3-install-menu li.act {
+	background-color: #585858;
+	line-height: 1.5em;
+}
+
+#t3-install-menu a {
+	color: #606060;
+	text-decoration: none;
+}
+
+#t3-install-menu a:hover {
+	color: #111;
+}
+
+#t3-install-menu li.act a {
+	font-weight: bold;
+	color: #ffffff;
+}
+
+#t3-install-menu li {
+	background-repeat: no-repeat;
+	background-position: 0.7em center;
+}
+
+#t3-install-menu #t3-install-menu-importantActions {
+	background-image: url('../../../Images/Menu/ImportantActions.png');
+}
+
+#t3-install-menu #t3-install-menu-systemEnvironment {
+	background-image: url('../../../Images/Menu/SystemEnvironment.png');
+}
+
+#t3-install-menu #t3-install-menu-folderStructure {
+	background-image: url('../../../Images/Menu/FolderStructure.png');
+}
+
+#t3-install-menu #t3-install-menu-updateWizard {
+	background-image: url('../../../Images/Menu/UpdateWizard.png');
+}
+
+#t3-install-menu #t3-install-menu-testSetup {
+	background-image: url('../../../Images/Menu/TestSetup.png');
+}
+
+#t3-install-menu #t3-install-menu-allConfiguration {
+	background-image: url('../../../Images/Menu/AllConfiguration.png');
+}
+
+#t3-install-menu #t3-install-menu-cleanUp {
+	background-image: url('../../../Images/Menu/CleanUp.png');
+}
+
+#t3-install-menu #t3-install-menu-welcome {
+	background-image: url('../../../Images/Menu/Welcome.png');
+}
+
+#t3-install-menu #t3-install-menu-logout {
+	background-image: url('../../../Images/Menu/Logout.gif');
+}
+
+#t3-install-links {
+	margin: 2em 0 0 0.8em;
+	padding: 0;
+	list-style: none;
+	width: 15.2em;
+	font-size: 110%;
+	line-height: 2em;
+}
+
+#t3-install-links a {
+	color: #797878;
+	text-decoration: none;
+}
+
+#t3-install-links a:hover {
+	text-decoration: underline;
+}
+
+#t3-install-box-body {
+	font-size: 110%;
+	line-height: 1.7em;
+	padding: 0.1em 1.8em 1.8em 1.8em;
+	color: #606060;
+}
+
+.t3-install-login #t3-install-box-body {
+	padding: 0.1em 0 0 3.6em;
+}
+
+#t3-install-box-body h3 {
+	margin: 0.75em 0 2em;
+}
+
+.t3-install-login #t3-install-box-body h3 {
+	margin: 1em 0;
+}
+
+#t3-install-box-body a {
+	color: #606060 !important;
+	text-decoration: underline !important;
+}
+
+#t3-install-box-body a:hover {
+	color: #111 !important;
+}
+
+
+
+.typo3-message {
+	padding: 0.6em 0.6em 0.6em 2.6em;
+	background-repeat: no-repeat;
+	background-position: 0.5em 0.7em;
+	border: 1px solid;
+	color: #000000;
+}
+
+.typo3-message h4 {
+	margin-top: 0;
+}
+
+.message-notice {
+	background-image: url("../../../Images/Icon/Notice.png");
+	background-color: #f6f7fa;
+	border-color: #c2cbcf;
+}
+
+.message-information {
+	background-image: url("../../../Images/Icon/Information.png");
+	background-color: #ddeef9;
+	border-color: #8aafc4;
+}
+
+.message-ok {
+	background-image: url("../../../Images/Icon/Ok.png");
+	background-color: #cdeaca;
+	border-color: #58b548;
+}
+
+.message-warning {
+	background-image: url("../../../Images/Icon/Warning.png");
+	background-color: #fbffb3;
+	border-color: #c4b70d;
+}
+
+.message-error {
+	background-image: url("../../../Images/Icon/Error.png");
+	background-color: #fbb19b;
+	border-color: #dc4c42;
+}
+
+#t3-install-copyright {
+	color: #797878;
+	border-top: 1px #5f5f5f solid;
+	margin-top: 3.7em;
+	clear: both;
+}
+
+#t3-install-copyright a {
+	color: #797878;
+}
+
+body {
+	background-color: #f2f2f2;
+}
+
+h1,
+#t3-install-menu-border-top,
+#t3-install-menu-bottom,
+#t3-install-links,
+#t3-install-box-border-top,
+#t3-install-box-border-bottom,
+#t3-install-copyright {
+	display: none;
+}
+
+#t3-install-box-body,
+#t3-install-menu {
+	border: 1px #dcdcdc solid;
+	background-color: #ffffff;
+}
+
+#systemInformation dt {
+	float: left;
+	width: 11em;
+}
+
+#systemInformation dd {
+	padding-left: 11em;
+	font-weight: bold;
+}
+
+#t3-install-imagemagickversions td {
+	padding-right: 1em;
+}
+
+.t3-install-definitionlist dt {
+	float: left;
+	width: 19em;
+}
+.t3-install-definitionlist dd {
+	font-weight: bold;
+	padding-left: 19em;
+}
+.t3-install-definitionlist dd span {
+	font-weight: normal;
+}
+
+.t3-install-displaytwinimagetextarea {
+	width: 48em;
+	overflow: scroll;
+	border: 1px #797878 solid;
+}
+
+.t3-install-displaytwinimagetextarea textarea {
+	width: 300em;
+	border: 0;
+}
+
+.t3-install-displaytwinimageimages,
+.t3-install-displaytwinimagereference,
+.t3-install-displaytwinimagedifferentfilesize {
+	width: 100%;
+	margin: 0.3em 0;
+}
+
+.t3-install-displaytwinimageimages td,
+.t3-install-displaytwinimagereference th,
+.t3-install-displaytwinimagereference td,
+.t3-install-displaytwinimagedifferentfilesize th,
+.t3-install-displaytwinimagedifferentfilesize td {
+	text-align: center;
+}
+
+/* 5: All configuration */
+.t3-install-description {
+	word-wrap: break-word;
+	width: 48em;
+}
+
+/* Stylesheet for the standalone version of the Install Tool */
+
+body.standalone {
+	background: #4f4f4f url('../../../Images/Background/Body.jpg') repeat-x fixed;
+}
+
+body.standalone #t3-install-outer {
+	margin: 0 auto;
+}
+
+body.standalone h1,
+body.standalone #t3-install-menu-border-top,
+body.standalone #t3-install-menu-bottom,
+body.standalone #t3-install-links,
+body.standalone #t3-install-box-border-top,
+body.standalone #t3-install-box-border-bottom,
+body.standalone #t3-install-copyright {
+	display: block;
+}
+
+body.standalone #t3-install-form-login,
+body.standalone #t3-install-form-login .t3-install-form-submit,
+body.standalone #t3-install-box-body {
+	margin-bottom: 0;
+}
+
+body.standalone #t3-install-form-login .t3-install-form-submit {
+	padding-bottom: 1em;
+}
+
+body.standalone h1 {
+	background: url('../../../Images/Background/Logo.gif') no-repeat scroll 0 0 transparent;
+	text-indent:-999em;
+	margin: 2em 0 3.7em 0;
+	height: 34px;
+	width: 19em;
+	float: left;
+}
+
+body.standalone h2 {
+	padding: 3.3em 0 3.7em 17.5em;
+	margin: 0;
+	height: auto;
+	color: #ffffff;
+}
+
+body.standalone #t3-install-box-border-top {
+	height: 3px;
+	background: #3e3e3e url('../../../Images/Background/ContentTop.png') no-repeat center bottom;
+}
+
+body.standalone #t3-install-box-body {
+	background-color: #eeeeee;
+}
+
+body.standalone #t3-install-box-border-bottom {
+	height: 3px;
+	background: #4d4c4d url('../../../Images/Background/ContentBottom.png') no-repeat center top;
+}
+
+body.standalone #t3-install-menu,
+body.standalone #t3-install-box-body {
+	border: 0;
+}
+
+body.standalone #t3-install-menu-border-top {
+	width: 17.6em;
+	height: 3px;
+	background: #3e3e3e url('../../../Images/Background/ContentTop.png') no-repeat center bottom;
+}
+
+body.standalone #t3-install-menu {
+	background: #ebebeb url('../../../Images/Background/Menu.gif') repeat-x left bottom;
+}
+
+body.standalone #t3-install-menu-bottom {
+	width: 17.6em;
+	height: 3px;
+	background: #3e3e3e url('../../../Images/Background/ContentBottom.png') no-repeat center bottom;
+}
+
+body.standalone .t3-install-login h2 {
+	clear: both;
+	margin: 0;
+	padding: 0.5em 0 0.5em 3.35em;
+}
