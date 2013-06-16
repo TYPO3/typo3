@@ -1,0 +1,61 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<div class="toggleGroup">
+	<div class="toggleButton">
+		<h4><strong>Section: $TYPO3_CONF_VARS['{sectionName}']</strong></h4>
+	</div>
+	<p></p>
+
+	<div class="toggleData" style="display:none">
+		<f:for each="{sectionData}" as="item">
+			<div class="typo3-message message-ok" >
+				<div class="header-container">
+					<div class="message-header">
+						<strong>[{sectionName}][{item.key}] </strong>
+						<f:if condition="{item.value}">
+							= {item.value -> i:format.crop(maxCharacters: 40)}
+						</f:if>
+					</div>
+				</div>
+				<div class="message-body">
+					{item.description -> f:format.raw()}
+					<br />
+
+					<f:if condition="{item.type} == 'textarea'">
+						<textarea
+							rows="5"
+							cols="60"
+							name="install[values][{sectionName}][{item.key}]"
+						>{item.value}</textarea>
+					</f:if>
+
+					<f:if condition="{item.type} == 'checkbox'">
+						<input
+							type="hidden"
+							value="0"
+							name="install[values][{sectionName}][{item.key}]"
+						/>
+						<input
+							type="checkbox"
+							value="{item.value}"
+							name="install[values][{sectionName}][{item.key}]"
+							{f:if(condition: item.checked, then:'checked="checked"')}
+						/>
+					</f:if>
+
+					<f:if condition="{item.type} == 'input'">
+						<input
+							type="text"
+							value="{item.value}"
+							name="install[values][{sectionName}][{item.key}]"
+							class="t3-install-form-input-text"
+						/>
+					</f:if>
+				</div>
+			</div>
+			<p></p>
+		</f:for>
+	</div>
+</div>
+
+<hr />
