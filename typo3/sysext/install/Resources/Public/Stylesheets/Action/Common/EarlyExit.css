@@ -1,0 +1,45 @@
+@charset "UTF-8";
+
+body {
+	/* Font size 62.8% = 1em = 10px */
+	font: 62.8% Verdana, Arial, Helvetica, sans-serif;
+	padding-top: 11em;
+	background: #4f4f4f;
+}
+
+h1 {
+	background: url('../../../Images/Background/Logo.gif') no-repeat scroll 0 0 transparent;
+	text-indent: -999em;
+	display: block;
+	height: 34px;
+	margin: 0 0 1.85em;
+}
+
+h2 {
+	margin-top: 0;
+}
+
+#container {
+	margin: 0 auto;
+	width: 41em;
+	font-size: 110%;
+	line-height: 1.7em;
+}
+
+.typo3-message {
+	background-position: 1.2em 1.8em;
+	background-repeat: no-repeat;
+	border: 1px solid;
+	color: #9e7d4a;
+	padding: 1.5em 1.5em 1em 3.5em;
+}
+
+.message-warning {
+	background-image: url("../../../Images/Icon/Warning.png");
+	background-color: #fbf6de;
+	border-color: #b1905c;
+}
+
+.typo3-message ul {
+	padding-left: 20px;
+}

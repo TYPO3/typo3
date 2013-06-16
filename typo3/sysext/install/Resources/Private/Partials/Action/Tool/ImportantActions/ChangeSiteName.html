@@ -1,0 +1,19 @@
+<h4>Change site name</h4>
+<form method="post">
+	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
+	<fieldset>
+		<ol>
+			<li>
+				<label for="t3-install-form-sitename">Site name:</label>
+				<input
+					id="t3-install-form-sitename"
+					type="text"
+					name="install[values][newSiteName]"
+					value="{siteName}"
+					class="t3-install-form-input-text"
+				/>
+			</li>
+		</ol>
+	</fieldset>
+	<f:render partial="Action/Common/SubmitButton" arguments="{name:'changeSiteName', text:'Change name'}"/>
+</form>

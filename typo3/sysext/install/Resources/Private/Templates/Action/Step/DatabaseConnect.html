@@ -1,0 +1,27 @@
+{namespace i=TYPO3\CMS\Install\ViewHelpers}
+
+<f:layout name="Step" />
+
+<f:section name="Content">
+	<h3>Connect to your database host</h3>
+
+	<p>
+		If you have not already created a username and password to access the database, please do so now.
+		This can be done using tools provided by your host.
+	</p>
+
+	<f:if condition="{isDbalEnabled}">
+		<f:then>
+			<f:render partial="Action/Step/DatabaseConnect/DbalDriverSelection" arguments="{_all}" />
+			<f:if condition="{selectedDbalDriver}">
+				<f:render partial="Action/Step/DatabaseConnect/ConnectDetails" arguments="{_all}" />
+			</f:if>
+			<f:render partial="Action/Step/DatabaseConnect/UnloadDbal" arguments="{_all}" />
+		</f:then>
+
+		<f:else>
+			<f:render partial="Action/Step/DatabaseConnect/ConnectDetails" arguments="{_all}" />
+			<f:render partial="Action/Step/DatabaseConnect/LoadDbal" arguments="{_all}" />
+		</f:else>
+	</f:if>
+</f:section>
