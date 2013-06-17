@@ -62,7 +62,7 @@ class MediaWizardProviderManager {
 	static public function getValidMediaWizardProvider($url) {
 		// Go through registered providers in reverse order (last one registered wins)
 		$providers = array_reverse(self::$providers, TRUE);
-		foreach (self::$providers as $className => $provider) {
+		foreach ($providers as $provider) {
 			/** @var $provider \TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderInterface */
 			if ($provider->canHandle($url)) {
 				return $provider;
