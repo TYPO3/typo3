@@ -1488,9 +1488,13 @@ function ' . $evalData . '(value) {
 				list($tscPID, $thePidValue) = $this->getTSCpid($table, $row['uid'], $row['pid']);
 				// If the pid-value is not negative (that is, a pid could NOT be fetched)
 				if ($thePidValue >= 0) {
-					$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
 					$RTEtypeVal = BackendUtility::getTCAtypeValue($table, $row);
-					$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $table, $field, $RTEtypeVal);
+					if(!$specConf['richtext']['parameters']) {
+						$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
+						$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $table, $field, $RTEtypeVal);
+					} else {
+						$thisConfig = array();
+					}
 					if (!$thisConfig['disabled']) {
 						if (!$this->disableRTE) {
 							$this->RTEcounter++;
