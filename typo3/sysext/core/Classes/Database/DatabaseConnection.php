@@ -1339,7 +1339,7 @@ class DatabaseConnection {
 			$this->connectDB();
 		}
 		$output = array();
-		$columns_res = $this->link->query('SHOW COLUMNS FROM `' . $tableName . '`');
+		$columns_res = $this->link->query('SHOW FULL COLUMNS FROM `' . $tableName . '`');
 		while ($fieldRow = $columns_res->fetch_assoc()) {
 			$output[$fieldRow['Field']] = $fieldRow;
 		}

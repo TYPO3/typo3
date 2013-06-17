@@ -579,6 +579,9 @@ class SchemaMigrator {
 		if ($row['Extra']) {
 			$field[] = $row['Extra'];
 		}
+		if ($row['Comment']) {
+			$field[] = "COMMENT '" . $row['Comment'] . "'";
+		}
 		return implode(' ', $field);
 	}
 
