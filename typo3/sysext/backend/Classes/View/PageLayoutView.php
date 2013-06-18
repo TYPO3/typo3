@@ -415,7 +415,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			// For each languages... :
 			// If not languageMode, then we'll only be through this once.
 			foreach ($langListArr as $lP) {
-				$showLanguage = ' AND sys_language_uid IN (' . intval($lP) . ',-1)';
+				if (count($langListArr) === 1 || $lP == 0) {
+					$showLanguage = ' AND sys_language_uid IN (' . intval($lP) . ',-1)';
+				} else {
+					$showLanguage = ' AND sys_language_uid=' . $lP;
+				}
 				$cList = explode(',', $this->tt_contentConfig['cols']);
 				$content = array();
 				$head = array();
@@ -450,7 +454,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						}
 						if (is_array($row) && (int) $row['t3ver_state'] != 2) {
 							$singleElementHTML = '';
-							if (!$lP && $row['sys_language_uid'] != -1) {
+							if (($this->defLangBinding && !$lP) ||
+								(!$this->defLangBinding && $lP && $row['sys_language_uid'] != -1)
+							) {
 								$defLanguageCount[$key][] = $row['uid'];
 							}
 							$editUidList .= $row['uid'] . ',';
