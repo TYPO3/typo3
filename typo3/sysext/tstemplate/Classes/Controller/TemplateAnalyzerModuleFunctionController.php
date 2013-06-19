@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\TstemplateAnalyzer\Controller;
+namespace TYPO3\CMS\TsTemplate\Controller;
 
 /***************************************************************
  *  Copyright notice
@@ -44,7 +44,7 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 	 */
 	public function init(&$pObj, $conf) {
 		parent::init($pObj, $conf);
-		$GLOBALS['LANG']->includeLLFile('EXT:tstemplate_analyzer/locallang.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf');
 		$this->pObj->modMenu_setDefaultList .= ',ts_analyzer_checkLinenum,ts_analyzer_checkSyntax';
 	}
 
