@@ -117,7 +117,7 @@ class UpdateWizard extends Action\AbstractAction implements Action\ActionInterfa
 		$updateObject = $this->getUpgradeObjectInstance($className, $wizardIdentifier);
 		$wizardHtml = '';
 		if (method_exists($updateObject, 'getUserInput')) {
-			$wizardHtml = $updateObject->getUserInput('install[values][wizardData]');
+			$wizardHtml = $updateObject->getUserInput('install[values][' . $wizardIdentifier . ']');
 		}
 
 		$updateWizardData = array(
@@ -219,7 +219,7 @@ class UpdateWizard extends Action\AbstractAction implements Action\ActionInterfa
 		$updateObject->setIdentifier($identifier);
 		$updateObject->versionNumber = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
 		$updateObject->pObj = $this;
-		$updateObject->userInput = $formValues['update'][$identifier];
+		$updateObject->userInput = $formValues['values'][$identifier];
 		return $updateObject;
 	}
 
