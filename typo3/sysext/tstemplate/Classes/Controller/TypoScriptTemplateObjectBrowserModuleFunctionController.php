@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\TstemplateObjbrowser\Controller;
+namespace TYPO3\CMS\TsTemplate\Controller;
 
 /***************************************************************
  *  Copyright notice
@@ -55,7 +55,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 	 * @todo Define visibility
 	 */
 	public function modMenu() {
-		$GLOBALS['LANG']->includeLLFile('EXT:tstemplate_objbrowser/locallang.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf');
 		$modMenu = array(
 			'ts_browser_type' => array(
 				'const' => $GLOBALS['LANG']->getLL('constants'),
@@ -403,7 +403,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			$pEkey = $bType == 'setup' ? 'config' : 'constants';
 			if (count($tmpl->parserErrors[$pEkey])) {
 				$errMsg = array();
-				$templateAnalyzerInstalled = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tstemplate_analyzer');
+				$templateAnalyzerInstalled = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tstemplate');
 				foreach ($tmpl->parserErrors[$pEkey] as $inf) {
 					$errorLink = '';
 					if ($templateAnalyzerInstalled) {
