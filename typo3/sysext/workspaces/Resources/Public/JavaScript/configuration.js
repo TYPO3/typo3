@@ -251,7 +251,7 @@ TYPO3.Workspaces.Configuration.Stage = {
 TYPO3.Workspaces.Configuration.RowButtons = {
 	xtype: 'actioncolumn',
 	header: TYPO3.l10n.localize('column.actions'),
-	width: 70,
+	width: 80,
 	hideable: false,
 	hidden: (TYPO3.settings.Workspaces.allView === '1'),
 	menuDisabled: true,
