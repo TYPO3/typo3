@@ -386,6 +386,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 			// Notice: 'pid' and 'logintype' parameter names cannot be changed!
 			// They are essential for FE user authentication.
 			$returnURL = 'index.php?eID=tx_openid&' . 'pid=' . $this->authenticationInformation['db_user']['checkPidList'] . '&' . 'logintype=login&';
+			$table = 'fe_users';
 		} else {
 			// In the Backend we will use dedicated script to create session.
 			// It is much easier for the Backend to manage users.
@@ -393,29 +394,35 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 			// It is essential for BE user authentication.
 			$absoluteSiteURL = substr(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), strlen(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST')));
 			$returnURL = $absoluteSiteURL . TYPO3_mainDir . 'sysext/' . $this->extKey . '/class.tx_openid_return.php?login_status=login&';
+			$table = 'be_users';
 		}
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_mode') == 'finish') {
 			$requestURL = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_location');
-			$claimedIdentifier = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_claimed');
+			$claimedIdentifier = $this->getSignedExtParameter('tx_openid_claimed', 'tx_openid_signature');
+			$randomKey = $this->getSignedExtParameter('tx_openid_key', 'tx_openid_signature2');
 		} else {
 			$requestURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
 			$claimedIdentifier = $this->openIDIdentifier;
+
+			$randomKey = \TYPO3\CMS\Core\Utility\GeneralUtility::getRandomHexString(64);
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'tx_openid_openid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($claimedIdentifier, $table), array('tx_openid_key' => $randomKey));
 		}
-		$returnURL .= 'tx_openid_location=' . rawurlencode($requestURL) . '&' . 'tx_openid_mode=finish&' . 'tx_openid_claimed=' . rawurlencode($claimedIdentifier) . '&' . 'tx_openid_signature=' . $this->getSignature($claimedIdentifier);
+
+		$returnURL .= 'tx_openid_key=' . $randomKey . '&tx_openid_location=' . rawurlencode($requestURL) . '&' . 'tx_openid_mode=finish&' . 'tx_openid_claimed=' . rawurlencode($claimedIdentifier) . '&' . 'tx_openid_signature=' . $this->getSignature($claimedIdentifier) . '&tx_openid_signature2=' . $this->getSignature($randomKey);
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($returnURL);
 	}
 
 	/**
-	 * Signs claimed id.
+	 * Signs the passed value.
 	 *
-	 * @param string $claimedIdentifier
+	 * @param string $value
 	 * @return string
 	 */
-	protected function getSignature($claimedIdentifier) {
+	protected function getSignature($value) {
 		// You can also increase security by using sha1 (beware of too long URLs!)
 		return md5(implode('/', array(
-			$claimedIdentifier,
-			strval(strlen($claimedIdentifier)),
+			$value,
+			strval(strlen($value)),
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
 		)));
 	}
@@ -467,14 +474,11 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * @return string
 	 */
 	protected function getFinalOpenIDIdentifier() {
-		$result = $this->getSignedParameter('openid_identity');
-		if (!$result) {
-			$result = $this->getSignedParameter('openid_claimed_id');
-		}
-		if (!$result) {
-			$result = $this->getSignedClaimedOpenIDIdentifier();
-		}
-		$result = $this->getAdjustedOpenIDIdentifier($result);
+		$key = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_key');
+		$table = (TYPO3_MODE == 'BE' ? 'be_users' : 'fe_users');
+		$userRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('tx_openid_openid', $table, 'tx_openid_key=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($key, $table));
+		$result = is_array($userRow) ? $userRow['tx_openid_openid'] : '';
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'tx_openid_key=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($key, $table), array('tx_openid_key' => ''));
 		return $result;
 	}
 
@@ -483,30 +487,11 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 *
 	 * @return string The signed OpenID, if signature did not match this is empty
 	 */
-	protected function getSignedClaimedOpenIDIdentifier() {
-		$result = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_claimed');
+	protected function getSignedExtParameter($parameterName, $signatureParameterName) {
+		$result = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($parameterName);
 		$signature = $this->getSignature($result);
-		if ($signature !== \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_signature')) {
+		if ($signature !== \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($signatureParameterName)) {
 			$result = '';
-		}
-		return $result;
-	}
-
-	/**
-	 * Adjusts the OpenID identifier to to claimed OpenID, if the only difference
-	 * is in normalizing the URLs. Example:
-	 * + OpenID returned from provider: https://account.provider.net/
-	 * + OpenID used in TYPO3: https://account.provider.net (not normalized)
-	 *
-	 * @param string $openIDIdentifier The OpenID returned by the OpenID provider
-	 * @return string Adjusted OpenID identifier
-	 */
-	protected function getAdjustedOpenIDIdentifier($openIDIdentifier) {
-		$result = '';
-		$claimedOpenIDIdentifier = $this->getSignedClaimedOpenIDIdentifier();
-		$pattern = '#^' . preg_quote($claimedOpenIDIdentifier, '#') . '/?$#';
-		if (preg_match($pattern, $openIDIdentifier)) {
-			$result = $claimedOpenIDIdentifier;
 		}
 		return $result;
 	}
