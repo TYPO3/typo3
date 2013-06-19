@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\TstemplateCeditor\Controller;
+namespace TYPO3\CMS\TsTemplate\Controller;
 
 /***************************************************************
  *  Copyright notice
@@ -55,8 +55,8 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 		$tmpl->tt_track = 0;
 		// Do not log time-performance information
 		$tmpl->init();
-		$tmpl->ext_localGfxPrefix = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('tstemplate_ceditor');
-		$tmpl->ext_localWebGfxPrefix = $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tstemplate_ceditor');
+		$tmpl->ext_localGfxPrefix = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('tstemplate');
+		$tmpl->ext_localWebGfxPrefix = $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tstemplate') . 'Resources/Public/';
 		// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
 		$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);
 		// IF there was a template...
@@ -101,7 +101,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 	public function main() {
 		global $TYPO3_CONF_VARS;
 		global $tmpl, $tplRow, $theConstants;
-		$GLOBALS['LANG']->includeLLFile('EXT:tstemplate_ceditor/locallang.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf');
 		$theOutput = '';
 		// Create extension template
 		$this->pObj->createTemplate($this->pObj->id);
