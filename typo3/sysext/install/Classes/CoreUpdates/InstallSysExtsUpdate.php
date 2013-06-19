@@ -165,10 +165,10 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 			// Get extension keys that were submitted by the user to be installed and that are valid for this update wizard
-		if (is_array($this->pObj->INSTALL['update']['installSystemExtensions']['sysext'])) {
+		if (is_array($this->userInput['sysext'])) {
 			$extArray = array_intersect(
 				$this->systemExtensions,
-				array_keys($this->pObj->INSTALL['update']['installSystemExtensions']['sysext'])
+				array_keys($this->userInput['sysext'])
 			);
 			$this->installExtensions($extArray, $customMessages);
 		}
