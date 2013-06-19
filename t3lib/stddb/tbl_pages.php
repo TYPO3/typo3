@@ -134,7 +134,7 @@ $TCA['pages'] = array(
 				)
 			)
 		),
-		'TYPO3\\CMS\\Impexp\\ImportExport_origuid' => array('config' => array('type' => 'passthrough')),
+		'tx_impexp_origuid' => array('config' => array('type' => 'passthrough')),
 		't3ver_label' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.versionLabel',
 			'config' => array(
