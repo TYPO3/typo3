@@ -3,6 +3,7 @@ Workspace Selector
 - - - - - - - - - - - - - - - - - - - - - */
 
 #workspace-selector-menu ul {
+	overflow: scroll;
 	list-style: none;
 	background-color: #f9f9f9;
 	border: 1px solid #abb2bc;
@@ -20,8 +21,10 @@ Workspace Selector
 }
 
 #workspace-selector-menu li.divider {
-	border-right: 1px solid #a5a5a5;
 	border-top: 1px solid #a5a5a5;
+	border-right: 0;
+	border-bottom: 0;
+	border-left: 0;
 	background-image: url('../../icons/gfx/shortcutgroups-bg.png');
 	background-repeat: repeat-x;
 }
