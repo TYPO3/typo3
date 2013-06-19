@@ -260,14 +260,7 @@ class UpdateWizard extends Action\AbstractAction implements Action\ActionInterfa
 
 		/** @var \TYPO3\CMS\Install\Service\SqlExpectedSchemaService $expectedSchemaService */
 		$expectedSchemaService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\SqlExpectedSchemaService');
-		$expectedCachingFrameworkSchema = $expectedSchemaService->getExpectedDatabaseSchema();
-
-		// Forces creation / update of caching framework tables that are needed by some update wizards
-		$cacheTablesConfiguration = implode(
-			LF,
-			$sqlHandler->getStatementArray($expectedCachingFrameworkSchema, 1, '^CREATE TABLE ')
-		);
-		$neededTableDefinition = $sqlHandler->getFieldDefinitions_fileContent($cacheTablesConfiguration);
+		$neededTableDefinition = $expectedSchemaService->getExpectedDatabaseSchema();
 		$currentTableDefinition = $sqlHandler->getFieldDefinitions_database();
 		$updateTableDefinition = $sqlHandler->getDatabaseExtra($neededTableDefinition, $currentTableDefinition);
 		$updateStatements = $sqlHandler->getUpdateSuggestions($updateTableDefinition);
