@@ -166,28 +166,28 @@ class UpdateWizard extends Action\AbstractAction implements Action\ActionInterfa
 					'No performUpdate method in update wizard with identifier ' . $wizardIdentifier,
 					1371035200
 				);
+			}
+
+			// Both variables are used by reference in performUpdate()
+			$customOutput = '';
+			$databaseQueries = array();
+			$performResult = $updateObject->performUpdate($databaseQueries, $customOutput);
+
+			if ($performResult) {
+				/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
+				$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\OkStatus');
+				$message->setTitle('Update successful');
 			} else {
-				// Both variables are used by reference in performUpdate()
-				$customOutput = '';
-				$databaseQueries = array();
-				$performResult = $updateObject->performUpdate($databaseQueries, $customOutput);
-
-				if ($performResult) {
-					/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-					$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\OkStatus');
-					$message->setTitle('Update successful');
-				} else {
-					/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
-					$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
-					$message->setTitle('Update failed!');
-					if ($customOutput) {
-						$message->setMessage($customOutput);
-					}
+				/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
+				$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+				$message->setTitle('Update failed!');
+				if ($customOutput) {
+					$message->setMessage($customOutput);
 				}
+			}
 
-				if ($this->postValues['values']['showDatabaseQueries'] == 1) {
-					$wizardData['queries'] = $databaseQueries;
-				}
+			if ($this->postValues['values']['showDatabaseQueries'] == 1) {
+				$wizardData['queries'] = $databaseQueries;
 			}
 		}
 
