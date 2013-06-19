@@ -60,9 +60,16 @@ TYPO3.ContextHelp = function() {
 		} else {
 				// If a table is defined, use ExtDirect call to get the tooltip's content
 			if (table) {
+				var description = '';
+				if (typeof(top.TYPO3.LLL) !== 'undefined') {
+					description = top.TYPO3.LLL.core.csh_tooltip_loading;
+				} else if (opener && typeof(opener.top.TYPO3.LLL) !== 'undefined') {
+					description = opener.top.TYPO3.LLL.core.csh_tooltip_loading;
+				}
+
 					// Clear old tooltip contents
 				updateTip({
-					description: top.TYPO3.LLL.core.csh_tooltip_loading,
+					description: description,
 					cshLink: '',
 					moreInfo: '',
 					title: ''
