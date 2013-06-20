@@ -1,6 +1,8 @@
 <?php
 namespace TYPO3\CMS\Frontend\Controller;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -1438,10 +1440,9 @@ class TypoScriptFrontendController {
 				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648781);
 			}
 		}
+
 		// Is the ID a link to another page??
 		if ($this->page['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT) {
-			// We need to clear MP if the page is a shortcut. Reason is if the short cut goes to another page, then we LEAVE the rootline which the MP expects.
-			$this->MP = '';
 			// saving the page so that we can check later - when we know
 			// about languages - whether we took the correct shortcut or
 			// whether a translation of the page overwrites the shortcut
@@ -1512,33 +1513,75 @@ class TypoScriptFrontendController {
 
 		case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE:
 			$pageArray = $this->sys_page->getMenu($idArray[0] ? $idArray[0] : $thisUid, '*', 'sorting', 'AND pages.doktype<199 AND pages.doktype!=' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION);
-			$pO = 0;
+
 			if ($mode == \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE && count($pageArray)) {
 				$randval = intval(rand(0, count($pageArray) - 1));
-				$pO = $randval;
+
+				$pageArray = array_values($pageArray);
+				$page = $pageArray[$randval];
+			} else {
+				$page = reset($pageArray);
 			}
-			$c = 0;
-			foreach ($pageArray as $pV) {
-				if ($c == $pO) {
-					$page = $pV;
-					break;
+
+			// get back MP vars (stored here by getMenu function)
+			if (isset($page['_MP_PARAM']) && $page['_MP_PARAM']) {
+				if ($this->MP) {
+					$this->MP .= ',';
 				}
-				$c++;
+
+				$this->MP .= $page['_MP_PARAM'];
 			}
+
 			if (count($page) == 0) {
 				$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a subpage. ' . 'However, this page has no accessible subpages.';
 				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648328);
 			}
 			break;
 		case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_PARENT_PAGE:
-			$parent = $this->sys_page->getPage($thisUid);
-			$page = $this->sys_page->getPage($parent['pid']);
+			$thisPage = $this->sys_page->getPage($thisUid);
+
+			if ($this->MP != '') {
+				list($mountedPage, $mountPoint) = explode('-', $this->MP);
+
+				if ($thisPage['pid'] == $mountedPage) {
+					// the link goes to the currently mounted page
+					$mountPointRecord = BackendUtility::getRecordRaw('pages', 'uid=' . intval($mountPoint));
+
+					// mount_pid_ol tells us if the mount point should be replaced by the mounted page (= the root
+					// of the mounted subtree)
+					if ($mountPointRecord['mount_pid_ol'] == 1) {
+						// the mount point should be replaced by the mounted page
+						$targetPageId = $mountedPage;
+					} else {
+						// the mount point should be used (i.e., the mounted page just is a kind of "folder")
+						$targetPageId = $mountPoint;
+
+						// reset the mount point because we moved to it and thus are not in the mounted subtree anymore
+						$this->MP = '';
+					}
+				} else {
+					// we are somewhere below the first level of the mounted subtree, so we can safely link to the
+					// current page's parent.
+					$targetPageId = $thisPage['pid'];
+				}
+
+			} else {
+				// no mountpoint, just move to the parent page
+				$targetPageId = $thisPage['pid'];
+			}
+
+			$page = $this->sys_page->getPage($targetPageId);
+
 			if (count($page) == 0) {
 				$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. ' . 'However, the parent page is not accessible.';
 				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648358);
 			}
 			break;
 		default:
+			// We need to clear MP if the page is a shortcut. Reason is AS the short cut goes to another page, then we
+			// LEAVE the rootline which the MP expects.
+			$this->MP = '';
+
 			$page = $this->sys_page->getPage($idArray[0]);
 			if (count($page) == 0) {
 				$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a page, which is not accessible (ID ' . $idArray[0] . ').';
