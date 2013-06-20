@@ -74,7 +74,6 @@ class FluidTemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstr
 	 * @return string The HTML output
 	 */
 	public function render($conf = array()) {
-		$parentView = $this->view;
 		$this->initializeStandaloneViewInstance();
 
 		if (!is_array($conf)) {
@@ -90,10 +89,8 @@ class FluidTemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstr
 		$this->assignContentObjectDataAndCurrent($conf);
 
 		$content = $this->renderFluidView();
-		$content = $this->applyStandardWrapToRenderedContent($content, $conf);
 
-		$this->view = $parentView;
-		return $content;
+		return $this->applyStandardWrapToRenderedContent($content, $conf);
 	}
 
 	/**
