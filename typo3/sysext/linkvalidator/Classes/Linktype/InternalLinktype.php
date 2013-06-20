@@ -92,6 +92,9 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 			$parts = explode('#c', $url);
 			$page = $parts[0];
 			$anchor = $parts[1];
+		} elseif (strpos($url, 'file:') !== FALSE) {
+			// TODO: validate this resource file
+			return TRUE;
 		} else {
 			$page = $url;
 		}
