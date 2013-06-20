@@ -245,7 +245,7 @@ class TestSetup extends Action\AbstractAction implements Action\ActionInterface 
 			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\InfoStatus');
 			$message->setTitle('Compressed gif');
 			$message->setMessage(
-				'Method used by compress: ' . $methodUsed . '<br />'
+				'Method used by compress: ' . $methodUsed . LF
 				. ' Previous filesize: ' . $previousSize . '. Current filesize:' . $compressedSize
 			);
 		} else {
@@ -464,8 +464,8 @@ class TestSetup extends Action\AbstractAction implements Action\ActionInterface 
 				'\'niceText\' is a concept that tries to improve the antialiasing of the rendered type by'
 				. ' actually rendering the textstring in double size on a black/white mask, downscaling the mask'
 				. ' and masking the text onto the image through this mask. This involves'
-				. ' ImageMagick \'combine\'/\'composite\' and \'convert\'.'
-				. ' <br />If the image has another background color than the image above (eg. dark background'
+				. ' ImageMagick \'combine\'/\'composite\' and \'convert\'.' . LF
+				. ' If the image has another background color than the image above (eg. dark background'
 				. ' color with light text) then you will have to set TYPO3_CONF_VARS[GFX][im_imvMaskState]=1'
 			);
 			$testResults['niceText']['message'] = $message;
