@@ -97,6 +97,7 @@ class Check {
 		$statusArray[] = $this->checkSafeMode();
 		$statusArray[] = $this->checkDocRoot();
 		$statusArray[] = $this->checkOpenBaseDir();
+		$statusArray[] = $this->checkXdebugMaxNestingLevel();
 		$statusArray[] = $this->checkOpenSslInstalled();
 		$statusArray[] = $this->checkSuhosinLoaded();
 		$statusArray[] = $this->checkSuhosinRequestMaxVars();
@@ -476,7 +477,40 @@ class Check {
 	}
 
 	/**
+	 * If xdebug is loaded, the default max_nesting_level of 100 must be raised
+	 *
+	 * @return Status\NoticeStatus|Status\OkStatus
+	 */
+	protected function checkXdebugMaxNestingLevel() {
+		if (extension_loaded('xdebug')) {
+			$recommendedMaxNestingLevel = 400;
+			$currentMaxNestingLevel = ini_get('xdebug.max_nesting_level');
+			if ($currentMaxNestingLevel < $recommendedMaxNestingLevel) {
+				$status = new Status\ErrorStatus();
+				$status->setTitle('PHP xdebug.max_nesting_level not high enough');
+				$status->setMessage(
+					'xdebug.max_nesting_level=' . $currentMaxNestingLevel . '. This setting' .
+					' controls the maximum number of nested function calls to protect against' .
+					' infinite recursion. The current value is too low for TYPO3 CMS and must' .
+					' be either raised or xdebug unloaded. A value of ' . $recommendedMaxNestingLevel .
+					' is recommended. Warning: Expect fatal PHP errors in central parts of the CMS' .
+					' if the default value of 100 is not raised significantly.'
+				);
+			} else {
+				$status = new Status\OkStatus();
+				$status->setTitle('PHP xdebug.max_nesting_level ok');
+			}
+		} else {
+			$status = new Status\OkStatus();
+			$status->setTitle('PHP xdebug extension not loaded');
+		}
+		return $status;
+	}
+
+	/**
 	 * Check accessibility and functionality of OpenSSL
+	 *
+	 * @return Status\NoticeStatus|Status\OkStatus
 	 */
 	protected function checkOpenSslInstalled() {
 		if (extension_loaded('openssl')) {
