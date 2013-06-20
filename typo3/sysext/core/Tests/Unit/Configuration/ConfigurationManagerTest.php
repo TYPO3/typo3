@@ -294,6 +294,66 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function removeLocalConfigurationKeysByPathRemovesGivenPathsFromConfigurationAndReturnsTrue() {
+		$currentLocalConfiguration = array(
+			'toRemove1' => 'foo',
+			'notChanged' => 23,
+			'toRemove2' => 'bar',
+		);
+		$expectedConfiguration = array(
+			'notChanged' => 23,
+		);
+
+		$this->createFixtureWithMockedMethods(
+			array(
+				'getLocalConfiguration',
+				'writeLocalConfiguration',
+			)
+		);
+		$this->fixture->expects($this->once())
+			->method('getLocalConfiguration')
+			->will($this->returnValue($currentLocalConfiguration));
+		$this->fixture->expects($this->once())
+			->method('writeLocalConfiguration')
+			->with($expectedConfiguration);
+
+		$removePaths = array(
+			'toRemove1',
+			'toRemove2',
+		);
+		$this->assertTrue($this->fixture->removeLocalConfigurationKeysByPath($removePaths));
+	}
+
+	/**
+	 * @test
+	 */
+	public function removeLocalConfigurationKeysByPathReturnsFalseIfNothingIsRemoved() {
+		$currentLocalConfiguration = array(
+			'notChanged' => 23,
+		);
+		$expectedConfiguration = array(
+			'notChanged' => 23,
+		);
+		$this->createFixtureWithMockedMethods(
+			array(
+				'getLocalConfiguration',
+				'writeLocalConfiguration',
+			)
+		);
+		$this->fixture->expects($this->once())
+			->method('getLocalConfiguration')
+			->will($this->returnValue($currentLocalConfiguration));
+		$this->fixture->expects($this->once())
+			->method('writeLocalConfiguration')
+			->with($expectedConfiguration);
+
+		$removePaths = array();
+		$this->assertFalse($this->fixture->removeLocalConfigurationKeysByPath($removePaths));
+	}
+
+	/**
+	 * @test
+	 */
 	public function canWriteConfigurationReturnsFalseIfDirectoryIsNotWritable() {
 		if (function_exists('posix_getegid') && posix_getegid() === 0) {
 			$this->markTestSkipped('Test skipped if run on linux as root');
