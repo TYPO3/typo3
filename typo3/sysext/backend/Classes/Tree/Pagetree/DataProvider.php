@@ -411,6 +411,13 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 		if (is_numeric($id) && $id >= 0) {
 			$where .= ' AND pid= ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(intval($id), 'pages');
 		}
+
+		$excludedDoktypes = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.excludeDoktypes');
+		if (!empty($excludedDoktypes)) {
+			$excludedDoktypes = $GLOBALS['TYPO3_DB']->fullQuoteArray(GeneralUtility::intExplode(',', $excludedDoktypes), 'pages');
+			$where .= ' AND doktype NOT IN (' . implode(',', $excludedDoktypes) . ')';
+		}
+
 		if ($searchFilter !== '') {
 			if (is_numeric($searchFilter) && $searchFilter > 0) {
 				$searchWhere .= 'uid = ' . intval($searchFilter) . ' OR ';
