@@ -1,31 +1,31 @@
 <?php
 namespace TYPO3\CMS\Frontend\Controller;
 
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 1999-2013 Kasper Skårhøj (kasperYYYY@typo3.com)
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *  A copy is found in the textfile GPL.txt and important notices to the license
- *  from the author is found in LICENSE.txt distributed with these scripts.
- *
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+	/***************************************************************
+	 *  Copyright notice
+	 *
+	 *  (c) 1999-2013 Kasper Skårhøj (kasperYYYY@typo3.com)
+	 *  All rights reserved
+	 *
+	 *  This script is part of the TYPO3 project. The TYPO3 project is
+	 *  free software; you can redistribute it and/or modify
+	 *  it under the terms of the GNU General Public License as published by
+	 *  the Free Software Foundation; either version 2 of the License, or
+	 *  (at your option) any later version.
+	 *
+	 *  The GNU General Public License can be found at
+	 *  http://www.gnu.org/copyleft/gpl.html.
+	 *  A copy is found in the textfile GPL.txt and important notices to the license
+	 *  from the author is found in LICENSE.txt distributed with these scripts.
+	 *
+	 *
+	 *  This script is distributed in the hope that it will be useful,
+	 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+	 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	 *  GNU General Public License for more details.
+	 *
+	 *  This copyright notice MUST APPEAR in all copies of the script!
+	 ***************************************************************/
 
 /**
  * Class for the built TypoScript based Front End. Instantiated in
@@ -756,6 +756,7 @@ class TypoScriptFrontendController {
 	 * @param string $jumpurl The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('jumpurl')
 	 * @param string $MP The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('MP')
 	 * @param string $RDCT The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('RDCT')
+	 *
 	 * @see index_ts.php
 	 * @todo Define visibility
 	 */
@@ -776,7 +777,7 @@ class TypoScriptFrontendController {
 		}
 		$this->cHash = $cHash;
 		$this->jumpurl = $jumpurl;
-		$this->MP = $this->TYPO3_CONF_VARS['FE']['enable_mount_pids'] ? (string) $MP : '';
+		$this->MP = $this->TYPO3_CONF_VARS['FE']['enable_mount_pids'] ? (string)$MP : '';
 		$this->RDCT = $RDCT;
 		$this->clientInfo = \TYPO3\CMS\Core\Utility\GeneralUtility::clientInfo();
 		$this->uniqueString = md5(microtime());
@@ -803,30 +804,31 @@ class TypoScriptFrontendController {
 	public function connectToDB() {
 		try {
 			$GLOBALS['TYPO3_DB']->connectDB();
-		} catch (\RuntimeException $exception) {
+		}
+		catch (\RuntimeException $exception) {
 			switch ($exception->getCode()) {
-			case 1270853883:
-				// Cannot connect to current database
-				$message = 'Cannot connect to the configured database "' . TYPO3_db . '"';
-				if ($this->checkPageUnavailableHandler()) {
-					$this->pageUnavailableAndExit($message);
-				} else {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($message, 'cms', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
-					throw new \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException($message, 1301648782);
-				}
-				break;
-			case 1270853884:
-				// Username / password not accepted
-				$message = 'The current username, password or host was not accepted when' . ' the connection to the database was attempted to be established!';
-				if ($this->checkPageUnavailableHandler()) {
-					$this->pageUnavailableAndExit($message);
-				} else {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($message, 'cms', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
-					throw new \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException('Database Error: ' . $message, 1301648945);
-				}
-				break;
-			default:
-				throw $exception;
+				case 1270853883:
+					// Cannot connect to current database
+					$message = 'Cannot connect to the configured database "' . TYPO3_db . '"';
+					if ($this->checkPageUnavailableHandler()) {
+						$this->pageUnavailableAndExit($message);
+					} else {
+						\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($message, 'cms', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+						throw new \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException($message, 1301648782);
+					}
+					break;
+				case 1270853884:
+					// Username / password not accepted
+					$message = 'The current username, password or host was not accepted when' . ' the connection to the database was attempted to be established!';
+					if ($this->checkPageUnavailableHandler()) {
+						$this->pageUnavailableAndExit($message);
+					} else {
+						\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($message, 'cms', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+						throw new \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException('Database Error: ' . $message, 1301648945);
+					}
+					break;
+				default:
+					throw $exception;
 			}
 		}
 		// Call post processing function for DB connection:
@@ -1282,7 +1284,7 @@ class TypoScriptFrontendController {
 		$this->idParts = explode(',', $this->id);
 		$this->id = $this->idParts[0];
 
-			// Hook for further id manipulation
+		// Hook for further id manipulation
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['modifyPageId'])) {
 			$_params = array('id' => $this->id);
 			$newId = FALSE;
@@ -1351,9 +1353,9 @@ class TypoScriptFrontendController {
 		if ($this->page['url_scheme'] > 0) {
 			$newUrl = '';
 			$requestUrlScheme = parse_url(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), PHP_URL_SCHEME);
-			if ((int) $this->page['url_scheme'] === \TYPO3\CMS\Core\Utility\HttpUtility::SCHEME_HTTP && $requestUrlScheme == 'https') {
+			if ((int)$this->page['url_scheme'] === \TYPO3\CMS\Core\Utility\HttpUtility::SCHEME_HTTP && $requestUrlScheme == 'https') {
 				$newUrl = 'http://' . substr(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), 8);
-			} elseif ((int) $this->page['url_scheme'] === \TYPO3\CMS\Core\Utility\HttpUtility::SCHEME_HTTPS && $requestUrlScheme == 'http') {
+			} elseif ((int)$this->page['url_scheme'] === \TYPO3\CMS\Core\Utility\HttpUtility::SCHEME_HTTPS && $requestUrlScheme == 'http') {
 				$newUrl = 'https://' . substr(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), 7);
 			}
 			if ($newUrl !== '') {
@@ -1440,8 +1442,6 @@ class TypoScriptFrontendController {
 		}
 		// Is the ID a link to another page??
 		if ($this->page['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT) {
-			// We need to clear MP if the page is a shortcut. Reason is if the short cut goes to another page, then we LEAVE the rootline which the MP expects.
-			$this->MP = '';
 			// saving the page so that we can check later - when we know
 			// about languages - whether we took the correct shortcut or
 			// whether a translation of the page overwrites the shortcut
@@ -1499,6 +1499,7 @@ class TypoScriptFrontendController {
 	 * @param integer $thisUid The current page UID of the page which is a shortcut
 	 * @param integer $itera Safety feature which makes sure that the function is calling itself recursively max 20 times (since this function can find shortcuts to other shortcuts to other shortcuts...)
 	 * @param array $pageLog An array filled with previous page uids tested by the function - new page uids are evaluated against this to avoid going in circles.
+	 *
 	 * @return mixed Returns the page record of the page that the shortcut pointed to.
 	 * @access private
 	 * @see getPageAndRootline()
@@ -1508,43 +1509,62 @@ class TypoScriptFrontendController {
 		$idArray = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $SC);
 		// Find $page record depending on shortcut mode:
 		switch ($mode) {
-		case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_FIRST_SUBPAGE:
+			case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_FIRST_SUBPAGE:
 
-		case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE:
-			$pageArray = $this->sys_page->getMenu($idArray[0] ? $idArray[0] : $thisUid, '*', 'sorting', 'AND pages.doktype<199 AND pages.doktype!=' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION);
-			$pO = 0;
-			if ($mode == \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE && count($pageArray)) {
-				$randval = intval(rand(0, count($pageArray) - 1));
-				$pO = $randval;
-			}
-			$c = 0;
-			foreach ($pageArray as $pV) {
-				if ($c == $pO) {
-					$page = $pV;
-					break;
+			case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE:
+				$pageArray = $this->sys_page->getMenu($idArray[0] ? $idArray[0] : $thisUid, '*', 'sorting', 'AND pages.doktype<199 AND pages.doktype!=' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION);
+				if ($mode == t3lib_pageSelect::SHORTCUT_MODE_RANDOM_SUBPAGE && count($pageArray)) {
+					$randval = intval(rand(0, count($pageArray) - 1));
+
+					$pageArray = array_values($pageArray);
+					$page = $pageArray[$randval];
+				} else {
+					$page = reset($pageArray);
 				}
-				$c++;
-			}
-			if (count($page) == 0) {
-				$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a subpage. ' . 'However, this page has no accessible subpages.';
-				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648328);
-			}
-			break;
-		case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_PARENT_PAGE:
-			$parent = $this->sys_page->getPage($thisUid);
-			$page = $this->sys_page->getPage($parent['pid']);
-			if (count($page) == 0) {
-				$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. ' . 'However, the parent page is not accessible.';
-				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648358);
-			}
-			break;
-		default:
-			$page = $this->sys_page->getPage($idArray[0]);
-			if (count($page) == 0) {
-				$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a page, which is not accessible (ID ' . $idArray[0] . ').';
-				throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648404);
-			}
-			break;
+				// get back MP vars (stored here by getMenu function)
+				if (isset($page['_MP_PARAM']) && $page['_MP_PARAM']) {
+					if ($this->MP) {
+						$this->MP .= ',';
+					}
+					$this->MP .= $page['_MP_PARAM'];
+				}
+				if (count($page) == 0) {
+					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a subpage. ' . 'However, this page has no accessible subpages.';
+					throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648328);
+				}
+				break;
+			case \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_PARENT_PAGE:
+				if ($this->MP != '') {
+					list($mountedPage, $mountPoint) = explode('-', $this->MP);
+
+					$mountPointRecord = t3lib_BEfunc::getRecordRaw('pages', 'uid=' . intval($mountPoint));
+					if ($mountPointRecord['mount_pid_ol'] == 1) {
+						$targetPageId = $mountedPage;
+					} else {
+						$targetPageId = $mountPoint;
+						// reset the mount point because we moved to it and thus are not in the mounted subtree anymore
+						$this->MP = '';
+					}
+				} else {
+					$shortcutPage = $this->sys_page->getPage($thisUid);
+					$targetPageId = $shortcutPage['pid'];
+				}
+
+				$page = $this->sys_page->getPage($targetPageId);
+
+				if (count($page) == 0) {
+					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. ' . 'However, the parent page is not accessible.';
+					throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648358);
+				}
+				break;
+			default:
+				// We need to clear MP if the page is a shortcut. Reason is AS the short cut goes to another page, then we LEAVE the rootline which the MP expects $this->MP = '';
+				$page = $this->sys_page->getPage($idArray[0]);
+				if (count($page) == 0) {
+					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a page, which is not accessible (ID ' . $idArray[0] . ').';
+					throw new \TYPO3\CMS\Core\Error\Http\PageNotFoundException($message, 1301648404);
+				}
+				break;
 		}
 		// Check if short cut page was a shortcut itself, if so look up recursively:
 		if ($page['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT) {
@@ -1609,6 +1629,7 @@ class TypoScriptFrontendController {
 	 *
 	 * @param array $row The page record to evaluate (needs fields: hidden, starttime, endtime, fe_group)
 	 * @param boolean $bypassGroupCheck Bypass group-check
+	 *
 	 * @return boolean TRUE, if record is viewable.
 	 * @see TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer::getTreeList(), checkPagerecordForIncludeSection()
 	 * @todo Define visibility
@@ -1624,6 +1645,7 @@ class TypoScriptFrontendController {
 	 *
 	 * @param array $row The page record to evaluate (needs field: fe_group)
 	 * @param mixed $groupList List of group id's (comma list or array). Default is $this->gr_list
+	 *
 	 * @return boolean TRUE, if group access is granted.
 	 * @access private
 	 * @todo Define visibility
@@ -1643,6 +1665,7 @@ class TypoScriptFrontendController {
 	 * Checks page record for include section
 	 *
 	 * @param array $row The page record to evaluate (needs fields: extendToSubpages + hidden, starttime, endtime, fe_group)
+	 *
 	 * @return boolean Returns TRUE if either extendToSubpages is not checked or if the enableFields does not disable the page record.
 	 * @access private
 	 * @see checkEnableFields(), TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer::getTreeList(), checkRootlineForIncludeSection()
@@ -1667,10 +1690,10 @@ class TypoScriptFrontendController {
 			// If a value is set for login state:
 			if ($this->rootLine[$a]['fe_login_mode'] > 0) {
 				// Determine state from value:
-				if ((int) $this->rootLine[$a]['fe_login_mode'] === 1) {
+				if ((int)$this->rootLine[$a]['fe_login_mode'] === 1) {
 					$disable = TRUE;
 					$this->loginAllowedInBranch_mode = 'all';
-				} elseif ((int) $this->rootLine[$a]['fe_login_mode'] === 3) {
+				} elseif ((int)$this->rootLine[$a]['fe_login_mode'] === 3) {
 					$disable = TRUE;
 					$this->loginAllowedInBranch_mode = 'groups';
 				} else {
@@ -1735,6 +1758,7 @@ class TypoScriptFrontendController {
 	 * If not inside domain, then default to first page in domain.
 	 *
 	 * @param integer $domainStartPage Page uid of the page where the found domain record is (pid of the domain record)
+	 *
 	 * @return void
 	 * @access private
 	 * @todo Define visibility
@@ -1776,6 +1800,7 @@ class TypoScriptFrontendController {
 	 * Looking up a domain record based on HTTP_HOST
 	 *
 	 * @param boolean $recursive If set, it looks "recursively" meaning that a domain like "123.456.typo3.com" would find a domain record like "typo3.com" if "123.456.typo3.com" or "456.typo3.com" did not exist.
+	 *
 	 * @return integer Returns the page id of the page where the domain record was found.
 	 * @access private
 	 * @todo Define visibility
@@ -1802,6 +1827,7 @@ class TypoScriptFrontendController {
 	 *
 	 * @param string $reason Reason text
 	 * @param string $header HTTP header to send
+	 *
 	 * @return void Function exits.
 	 * @todo Define visibility
 	 */
@@ -1816,6 +1842,7 @@ class TypoScriptFrontendController {
 	 *
 	 * @param string $reason Reason text
 	 * @param string $header HTTP header to send
+	 *
 	 * @return void Function exits.
 	 * @todo Define visibility
 	 */
@@ -1853,6 +1880,7 @@ class TypoScriptFrontendController {
 	 * @param mixed $code Which type of handling; If a true PHP-boolean or TRUE then a \TYPO3\CMS\Core\Messaging\ErrorpageMessage is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
 	 * @param string $header If set, this is passed directly to the PHP function, header()
 	 * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
+	 *
 	 * @return void (The function exits!)
 	 * @todo Define visibility
 	 */
@@ -1866,6 +1894,7 @@ class TypoScriptFrontendController {
 	 * @param mixed $code Which type of handling; If a true PHP-boolean or TRUE then a \TYPO3\CMS\Core\Messaging\ErrorpageMessage is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
 	 * @param string $header If set, this is passed directly to the PHP function, header()
 	 * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
+	 *
 	 * @return void (The function exits!)
 	 * @todo Define visibility
 	 */
@@ -1880,6 +1909,7 @@ class TypoScriptFrontendController {
 	 * @param mixed $code Which type of handling; If a true PHP-boolean or TRUE then a \TYPO3\CMS\Core\Messaging\ErrorpageMessage is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
 	 * @param string $header If set, this is passed directly to the PHP function, header()
 	 * @param string $reason If set, error messages will also mention this as the reason for the page-not-found.
+	 *
 	 * @return void (The function exits!)
 	 * @todo Define visibility
 	 */
@@ -2026,6 +2056,7 @@ class TypoScriptFrontendController {
 	 * Merging values into the global $_GET
 	 *
 	 * @param array $GET_VARS Array of key/value pairs that will be merged into the current GET-vars. (Non-escaped values)
+	 *
 	 * @return void
 	 * @todo Define visibility
 	 */
@@ -2200,7 +2231,7 @@ class TypoScriptFrontendController {
 						}
 					}
 					// Fetches the lowlevel config stored with the cached data
-					$this->config = (array) unserialize($row['cache_data']);
+					$this->config = (array)unserialize($row['cache_data']);
 					// Getting the content
 					$this->content = $row['content'];
 					// Flag for temp content
@@ -2296,14 +2327,15 @@ class TypoScriptFrontendController {
 	 * Used to get and later store the cached data.
 	 *
 	 * @param boolean $createLockHashBase Whether to create the lock hash, which doesn't contain the "this->all" (the template information)
+	 *
 	 * @return string the serialized hash base
 	 */
 	protected function createHashBase($createLockHashBase = FALSE) {
 		$hashParameters = array(
 			'id' => intval($this->id),
 			'type' => intval($this->type),
-			'gr_list' => (string) $this->gr_list,
-			'MP' => (string) $this->MP,
+			'gr_list' => (string)$this->gr_list,
+			'MP' => (string)$this->MP,
 			'cHash' => $this->cHash_array,
 			'domainStartPage' => $this->domainStartPage
 		);
@@ -2452,6 +2484,7 @@ class TypoScriptFrontendController {
 	 * after calling this function.
 	 *
 	 * @param integer $TCAloaded Probably, keep hands of this value. Just don't set it.
+	 *
 	 * @return void
 	 * @see getCompressedTCarray()
 	 * @deprecated since 6.1, will be removed in two versions. Obsolete in regular frontend, eid scripts should use \TYPO3\CMS\Frontend\Utility\EidUtility::initTCA()
@@ -2503,27 +2536,27 @@ class TypoScriptFrontendController {
 					if (\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($this->page['l18n_cfg'])) {
 						$this->pageNotFoundAndExit('Page is not available in the requested language.');
 					} else {
-						switch ((string) $this->sys_language_mode) {
-						case 'strict':
-							$this->pageNotFoundAndExit('Page is not available in the requested language (strict).');
-							break;
-						case 'content_fallback':
-							$fallBackOrder = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $sys_language_content);
-							foreach ($fallBackOrder as $orderValue) {
-								if (!strcmp($orderValue, '0') || count($this->sys_page->getPageOverlay($this->id, $orderValue))) {
-									$this->sys_language_content = $orderValue;
-									// Setting content uid (but leaving the sys_language_uid)
-									break;
+						switch ((string)$this->sys_language_mode) {
+							case 'strict':
+								$this->pageNotFoundAndExit('Page is not available in the requested language (strict).');
+								break;
+							case 'content_fallback':
+								$fallBackOrder = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $sys_language_content);
+								foreach ($fallBackOrder as $orderValue) {
+									if (!strcmp($orderValue, '0') || count($this->sys_page->getPageOverlay($this->id, $orderValue))) {
+										$this->sys_language_content = $orderValue;
+										// Setting content uid (but leaving the sys_language_uid)
+										break;
+									}
 								}
-							}
-							break;
-						case 'ignore':
-							$this->sys_language_content = $this->sys_language_uid;
-							break;
-						default:
-							// Default is that everything defaults to the default language...
-							$this->sys_language_uid = ($this->sys_language_content = 0);
-							break;
+								break;
+							case 'ignore':
+								$this->sys_language_content = $this->sys_language_uid;
+								break;
+							default:
+								// Default is that everything defaults to the default language...
+								$this->sys_language_uid = ($this->sys_language_content = 0);
+								break;
 						}
 					}
 				}
@@ -2642,9 +2675,9 @@ class TypoScriptFrontendController {
 		// Check Submission of data.
 		// This is done at this point, because we need the config values
 		switch ($this->checkDataSubmission()) {
-		case 'email':
-			$this->sendFormmail();
-			break;
+			case 'email':
+				$this->sendFormmail();
+				break;
 		}
 	}
 
@@ -2696,6 +2729,7 @@ class TypoScriptFrontendController {
 	 * Checks if a formmail submission can be sent as email
 	 *
 	 * @param string $locationData The input from $_POST['locationData']
+	 *
 	 * @return void
 	 * @access private
 	 * @see checkDataSubmission()
@@ -2769,6 +2803,7 @@ class TypoScriptFrontendController {
 	 * Extracts the value of recipient copy field from a formmail CE bodytext
 	 *
 	 * @param string $bodytext The content of the related bodytext field
+	 *
 	 * @return string The value of the recipient_copy field, or an empty string
 	 * @todo Define visibility
 	 */
@@ -2821,16 +2856,16 @@ class TypoScriptFrontendController {
 	public function jumpUrl() {
 		if ($this->jumpurl) {
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('juSecure')) {
-				$locationData = (string) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('locationData');
+				$locationData = (string)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('locationData');
 				// Need a type cast here because mimeType is optional!
-				$mimeType = (string) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('mimeType');
+				$mimeType = (string)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('mimeType');
 				$hArr = array(
 					$this->jumpurl,
 					$locationData,
 					$mimeType
 				);
 				$calcJuHash = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(serialize($hArr));
-				$juHash = (string) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('juHash');
+				$juHash = (string)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('juHash');
 				if ($juHash === $calcJuHash) {
 					if ($this->locDataCheck($locationData)) {
 						// 211002 - goes with cObj->filelink() rawurlencode() of filenames so spaces can be allowed.
@@ -2867,20 +2902,20 @@ class TypoScriptFrontendController {
 				}
 				if ($TSConf['TSFE.']['jumpURL_HTTPStatusCode']) {
 					switch (intval($TSConf['TSFE.']['jumpURL_HTTPStatusCode'])) {
-					case 301:
-						$statusCode = \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_301;
-						break;
-					case 302:
-						$statusCode = \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_302;
-						break;
-					case 307:
-						$statusCode = \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_307;
-						break;
-					case 303:
+						case 301:
+							$statusCode = \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_301;
+							break;
+						case 302:
+							$statusCode = \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_302;
+							break;
+						case 307:
+							$statusCode = \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_307;
+							break;
+						case 303:
 
-					default:
-						$statusCode = \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_303;
-						break;
+						default:
+							$statusCode = \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_303;
+							break;
 					}
 				}
 
@@ -2934,7 +2969,7 @@ class TypoScriptFrontendController {
 	 */
 	public function calculateLinkVars() {
 		$this->linkVars = '';
-		$linkVars = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', (string) $this->config['config']['linkVars']);
+		$linkVars = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', (string)$this->config['config']['linkVars']);
 		if (empty($linkVars)) {
 			return;
 		}
@@ -3109,6 +3144,7 @@ class TypoScriptFrontendController {
 	 * @param string $content The content to store in the HTML field of the cache table
 	 * @param mixed $data The additional cache_data array, fx. $this->config
 	 * @param integer $expirationTstamp Expiration timestamp
+	 *
 	 * @return void
 	 * @see realPageCacheContent(), tempPageCacheContent()
 	 * @todo Define visibility
@@ -3151,13 +3187,14 @@ class TypoScriptFrontendController {
 	 * Clears cache content for a list of page ids
 	 *
 	 * @param string $pidList A list of INTEGER numbers which points to page uids for which to clear entries in the cache_pages cache (page content cache)
+	 *
 	 * @return void
 	 * @todo Define visibility
 	 */
 	public function clearPageCacheContent_pidList($pidList) {
 		$pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pidList);
 		foreach ($pageIds as $pageId) {
-			$this->pageCache->flushByTag('pageId_' . (int) $pageId);
+			$this->pageCache->flushByTag('pageId_' . (int)$pageId);
 		}
 	}
 
@@ -3181,6 +3218,7 @@ class TypoScriptFrontendController {
 	 *
 	 * @param \TYPO3\CMS\Core\Locking\Locker $lockObj Reference to a locking object
 	 * @param string $key String to identify the lock in the system
+	 *
 	 * @return boolean Returns TRUE if the lock could be obtained, FALSE otherwise (= process had to wait for existing lock to be released)
 	 * @see releasePageGenerationLock()
 	 * @todo Define visibility
@@ -3204,7 +3242,8 @@ class TypoScriptFrontendController {
 					$lockObj->sysLog('Acquired lock');
 				}
 			}
-		} catch (\Exception $e) {
+		}
+		catch (\Exception $e) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Locking: Failed to acquire lock: ' . $e->getMessage(), 'cms', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 			// If locking fails, return with FALSE and continue without locking
 			$success = FALSE;
@@ -3216,6 +3255,7 @@ class TypoScriptFrontendController {
 	 * Release the page generation lock
 	 *
 	 * @param \TYPO3\CMS\Core\Locking\Locker $lockObj Reference to a locking object
+	 *
 	 * @return boolean Returns TRUE on success, FALSE otherwise
 	 * @see acquirePageGenerationLock()
 	 * @todo Define visibility
@@ -3238,6 +3278,7 @@ class TypoScriptFrontendController {
 	 * entries by tag
 	 *
 	 * @param array $tags An array of tag
+	 *
 	 * @return void
 	 */
 	public function addCacheTags(array $tags) {
@@ -3415,6 +3456,7 @@ class TypoScriptFrontendController {
 	 * Include libraries for uncached objects.
 	 *
 	 * @param array $INTiS_config $GLOBALS['TSFE']->config['INTincScript'] or part of it
+	 *
 	 * @return void
 	 * @see INTincScript()
 	 */
@@ -3431,6 +3473,7 @@ class TypoScriptFrontendController {
 	 * Processes the INTinclude-scripts and substitue in content.
 	 *
 	 * @param array $INTiS_config $GLOBALS['TSFE']->config['INTincScript'] or part of it
+	 *
 	 * @return void
 	 * @see INTincScript()
 	 */
@@ -3452,15 +3495,15 @@ class TypoScriptFrontendController {
 					/* @var $INTiS_cObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
 					$INTiS_cObj->INT_include = 1;
 					switch ($INTiS_config[$INTiS_key]['type']) {
-					case 'COA':
-						$incContent = $INTiS_cObj->COBJ_ARRAY($INTiS_config[$INTiS_key]['conf']);
-						break;
-					case 'FUNC':
-						$incContent = $INTiS_cObj->USER($INTiS_config[$INTiS_key]['conf']);
-						break;
-					case 'POSTUSERFUNC':
-						$incContent = $INTiS_cObj->callUserFunction($INTiS_config[$INTiS_key]['postUserFunc'], $INTiS_config[$INTiS_key]['conf'], $INTiS_config[$INTiS_key]['content']);
-						break;
+						case 'COA':
+							$incContent = $INTiS_cObj->COBJ_ARRAY($INTiS_config[$INTiS_key]['conf']);
+							break;
+						case 'FUNC':
+							$incContent = $INTiS_cObj->USER($INTiS_config[$INTiS_key]['conf']);
+							break;
+						case 'POSTUSERFUNC':
+							$incContent = $INTiS_cObj->callUserFunction($INTiS_config[$INTiS_key]['postUserFunc'], $INTiS_config[$INTiS_key]['conf'], $INTiS_config[$INTiS_key]['content']);
+							break;
 					}
 					$this->content .= $this->convOutputCharset($incContent, 'INC-' . $INTiS_c);
 					$this->content .= substr($INTiS_cPart, 35);
@@ -3744,7 +3787,7 @@ if (version == "n3") {
 		}
 		// Hook for supplying custom search/replace data
 		if (isset($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace'])) {
-			$contentStrReplaceHooks = &$this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace'];
+			$contentStrReplaceHooks = & $this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace'];
 			if (is_array($contentStrReplaceHooks)) {
 				$_params = array(
 					'search' => &$search,
@@ -3939,6 +3982,7 @@ if (version == "n3") {
 	 * @param integer $start Start of range
 	 * @param integer $end End of range
 	 * @param integer $offset Offset
+	 *
 	 * @return string encoded/decoded version of character
 	 * @todo Define visibility
 	 */
@@ -3957,6 +4001,7 @@ if (version == "n3") {
 	 *
 	 * @param string $string Input string to en/decode: "mailto:blabla@bla.com
 	 * @param boolean $back If set, the process is reversed, effectively decoding, not encoding.
+	 *
 	 * @return string encoded/decoded version of $string
 	 * @todo Define visibility
 	 */
@@ -3997,6 +4042,7 @@ if (version == "n3") {
 	 *
 	 * @param string $string Input string to en/decode
 	 * @param boolean $decode If set, string is decoded, not encoded.
+	 *
 	 * @return string encoded/decoded version of $string
 	 * @todo Define visibility
 	 */
@@ -4029,6 +4075,7 @@ if (version == "n3") {
 	 * value).
 	 *
 	 * @param string $string String to crypt, may be empty
+	 *
 	 * @return string binary crypt string, will have the same length as $string
 	 */
 	protected function roundTripCryptString($string) {
@@ -4047,6 +4094,7 @@ if (version == "n3") {
 	 * Checks if a PHPfile may be included.
 	 *
 	 * @param string $incFile Relative path to php file
+	 *
 	 * @return boolean Returns TRUE if $GLOBALS['TYPO3_CONF_VARS']['FE']['noPHPscriptInclude'] is not set OR if the file requested for inclusion is found in one of the allowed paths.
 	 * @see \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::includeMakeMenu()
 	 * @todo Define visibility
@@ -4098,6 +4146,7 @@ if (version == "n3") {
 	 * Designed as a wrapper functions for use with all frontend links that are processed by JavaScript (for "realurl" compatibility!). So each time a URL goes into window.open, window.location.href or otherwise, wrap it with this function!
 	 *
 	 * @param string $url Input URL, relative or absolute
+	 *
 	 * @return string Processed input value.
 	 * @todo Define visibility
 	 */
@@ -4119,6 +4168,7 @@ if (version == "n3") {
 	 *
 	 * @param string $typoScriptProperty Deprecated object or property
 	 * @param string $explanation Message or additional information
+	 *
 	 * @return void
 	 * @todo Define visibility
 	 */
@@ -4132,6 +4182,7 @@ if (version == "n3") {
 	 * Updates the tstamp field of a cache_md5params record to the current time.
 	 *
 	 * @param string $hash The hash string identifying the cache_md5params record for which to update the "tstamp" field to the current time.
+	 *
 	 * @return void
 	 * @access private
 	 * @todo Define visibility
@@ -4147,6 +4198,7 @@ if (version == "n3") {
 	 * TYPO3_CONF_VARS in ext:core/Configuration/DefaultConfiguration.php
 	 *
 	 * @param string $content The page content to clean up. Will be written to a temporary file which "tidy" is then asked to clean up. File content is read back and returned.
+	 *
 	 * @return string Returns the
 	 * @todo Define visibility
 	 */
@@ -4212,6 +4264,7 @@ if (version == "n3") {
 	 * Returns the name of the workspace
 	 *
 	 * @param boolean $returnTitle If set, returns title of current workspace being previewed
+	 *
 	 * @return mixed If $returnTitle is set, returns string (title), otherwise workspace integer for which workspace is being preview. False if none.
 	 * @todo Define visibility
 	 */
@@ -4239,6 +4292,7 @@ if (version == "n3") {
 	 * Includes a comma-separated list of library files by PHP function include_once.
 	 *
 	 * @param array $libraries The libraries to be included.
+	 *
 	 * @return void
 	 */
 	public function includeLibraries(array $libraries) {
@@ -4319,6 +4373,7 @@ if (version == "n3") {
 	 *
 	 * @param string $key is the key in the array, for num-key let the value be empty. Note reserved keys 'openPic' and 'mouseOver'
 	 * @param string $content is the content if you want any
+	 *
 	 * @return void
 	 * @see \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::writeMenu(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::imageLinkWrap()
 	 * @todo Define visibility
@@ -4326,8 +4381,8 @@ if (version == "n3") {
 	public function setJS($key, $content = '') {
 		if ($key) {
 			switch ($key) {
-			case 'mouseOver':
-				$this->additionalJavaScript[$key] = '		// JS function for mouse-over
+				case 'mouseOver':
+					$this->additionalJavaScript[$key] = '		// JS function for mouse-over
 	function over(name, imgObj) {	//
 		if (version == "n3" && document[name]) {document[name].src = eval(name+"_h.src");}
 		else if (document.getElementById && document.getElementById(name)) {document.getElementById(name).src = eval(name+"_h.src");}
@@ -4339,16 +4394,16 @@ if (version == "n3") {
 		else if (document.getElementById && document.getElementById(name)) {document.getElementById(name).src = eval(name+"_n.src");}
 		else if (imgObj)	{imgObj.src = eval(name+"_n.src");}
 	}';
-				break;
-			case 'openPic':
-				$this->additionalJavaScript[$key] = '	function openPic(url, winName, winParams) {	//
+					break;
+				case 'openPic':
+					$this->additionalJavaScript[$key] = '	function openPic(url, winName, winParams) {	//
 		var theWindow = window.open(url, winName, winParams);
 		if (theWindow)	{theWindow.focus();}
 	}';
-				break;
-			default:
-				$this->additionalJavaScript[$key] = $content;
-				break;
+					break;
+				default:
+					$this->additionalJavaScript[$key] = $content;
+					break;
 			}
 		}
 	}
@@ -4358,6 +4413,7 @@ if (version == "n3") {
 	 *
 	 * @param string $key Is the key in the array, for num-key let the value be empty
 	 * @param string $content Is the content if you want any
+	 *
 	 * @return void
 	 * @see setJS()
 	 * @todo Define visibility
@@ -4365,9 +4421,9 @@ if (version == "n3") {
 	public function setCSS($key, $content) {
 		if ($key) {
 			switch ($key) {
-			default:
-				$this->additionalCSS[$key] = $content;
-				break;
+				default:
+					$this->additionalCSS[$key] = $content;
+					break;
 			}
 		}
 	}
@@ -4377,6 +4433,7 @@ if (version == "n3") {
 	 * There is no special magic in this, the only point is that you don't have to call md5(uniqid()) which is slow and by this you are sure to get a unique string each time in a little faster way.
 	 *
 	 * @param string $str Some string to include in what is hashed. Not significant at all.
+	 *
 	 * @return string MD5 hash of ->uniqueString, input string and uniqueCounter
 	 * @todo Define visibility
 	 */
@@ -4389,6 +4446,7 @@ if (version == "n3") {
 	 *
 	 * @param string $reason An optional reason to be written to the syslog.
 	 * @param boolean $internal Whether the call is done from core itself (should only be used by core).
+	 *
 	 * @return void
 	 * @todo Define visibility
 	 */
@@ -4439,6 +4497,7 @@ if (version == "n3") {
 	 * Sets the cache-timeout in seconds
 	 *
 	 * @param integer $seconds Cache-timeout in seconds
+	 *
 	 * @return void
 	 * @todo Define visibility
 	 */
@@ -4502,6 +4561,7 @@ if (version == "n3") {
 	 * @param string $subject The subject
 	 * @param string $message The message
 	 * @param string $headers The headers (string with lines)
+	 *
 	 * @return void
 	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::plainMailEncoded()
 	 * @todo Define visibility
@@ -4547,6 +4607,7 @@ if (version == "n3") {
 	 * Split Label function for front-end applications.
 	 *
 	 * @param string $input Key string. Accepts the "LLL:" prefix.
+	 *
 	 * @return string Label value, if any.
 	 * @todo Define visibility
 	 */
@@ -4578,6 +4639,7 @@ if (version == "n3") {
 	 * Read locallang files - for frontend applications
 	 *
 	 * @param string $fileRef Reference to a relative filename to include.
+	 *
 	 * @return array Returns the $LOCAL_LANG array found in the file. If no array found, returns empty array.
 	 * @todo Define visibility
 	 */
@@ -4614,6 +4676,7 @@ if (version == "n3") {
 	 *
 	 * @param string $index Local_lang key for which to return label (language is determined by $this->lang)
 	 * @param array $LOCAL_LANG The locallang array in which to search
+	 *
 	 * @return string Label value of $index key.
 	 * @todo Define visibility
 	 */
@@ -4664,6 +4727,7 @@ if (version == "n3") {
 	 *
 	 * @param string $str String to convert charset for
 	 * @param string $from Optional "from" charset.
+	 *
 	 * @return string Output string, converted if needed.
 	 * @see \TYPO3\CMS\Core\Charset\CharsetConverter
 	 * @todo Define visibility
@@ -4682,6 +4746,7 @@ if (version == "n3") {
 	 *
 	 * @param string $content Content to be converted.
 	 * @param string $label Label (just for fun, no function)
+	 *
 	 * @return string Converted content string.
 	 * @todo Define visibility
 	 */
@@ -4757,6 +4822,7 @@ if (version == "n3") {
 	 *
 	 * @param string $tableDef Table definition (format tablename:pid)
 	 * @param integer $now "Now" time value
+	 *
 	 * @return integer Value of the next start/stop time or PHP_INT_MAX if not found
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::calculatePageCacheTimeout()
 	 */
@@ -4785,7 +4851,6 @@ if (version == "n3") {
 		}
 		return $result;
 	}
-
 
 	/**
 	 * Fetches/returns the cached contents of the sys_domain database table.
@@ -4842,8 +4907,9 @@ if (version == "n3") {
 	 * meaning of these fields.
 	 *
 	 * @param int $targetPid Target page id
+	 *
 	 * @return mixed Return domain data or NULL
-	*/
+	 */
 	public function getDomainDataForPid($targetPid) {
 		$result = NULL;
 
@@ -4865,6 +4931,7 @@ if (version == "n3") {
 	 * the first is returned.
 	 *
 	 * @param int $targetPid Target page id
+	 *
 	 * @return mixed Return domain name or NULL if not found
 	 */
 	public function getDomainNameForPid($targetPid) {
