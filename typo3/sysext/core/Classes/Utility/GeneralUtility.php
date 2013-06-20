@@ -4588,7 +4588,13 @@ Connection: close
 			// No processing
 			$messageSubstituted = $message;
 		} else {
-			$messageSubstituted = preg_replace('/(http|https):\\/\\/.+(?=[\\]\\.\\?]*([\\! \'"()<>]+|$))/eiU', 'self::makeRedirectUrl("\\0",' . $lengthLimit . ',"' . $index_script_url . '")', $message);
+			$messageSubstituted = preg_replace_callback(
+				'/(http|https):\\/\\/.+(?=[\\]\\.\\?]*([\\! \'"()<>]+|$))/iU',
+				function (array $matches) use ($lengthLimit, $index_script_url) {
+					return GeneralUtility::makeRedirectUrl($matches[0], $lengthLimit, $index_script_url);
+				},
+				$message
+			);
 		}
 		return $messageSubstituted;
 	}
