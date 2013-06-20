@@ -5996,6 +5996,8 @@ class tslib_cObj {
 								$absoluteUrlScheme = $conf['forceAbsoluteUrl.']['scheme'];
 							} elseif ($page['url_scheme'] > 0) {
 								$absoluteUrlScheme = ((int)$page['url_scheme'] === t3lib_utility_http::SCHEME_HTTP) ? 'http' : 'https';
+							} elseif (t3lib_div::getIndpEnv('TYPO3_SSL')) {
+								$absoluteUrlScheme = 'https';
 							}
 
 								// If no domain records are defined, use current domain:
