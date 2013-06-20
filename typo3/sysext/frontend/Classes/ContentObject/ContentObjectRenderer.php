@@ -6093,6 +6093,8 @@ class ContentObjectRenderer {
 								$absoluteUrlScheme = $conf['forceAbsoluteUrl.']['scheme'];
 							} elseif ($page['url_scheme'] > 0) {
 								$absoluteUrlScheme = (int) $page['url_scheme'] === \TYPO3\CMS\Core\Utility\HttpUtility::SCHEME_HTTP ? 'http' : 'https';
+							} elseif (t3lib_div::getIndpEnv('TYPO3_SSL')) {
+								$absoluteUrlScheme = 'https';
 							}
 							// If no domain records are defined, use current domain:
 							$currentUrlScheme = parse_url(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), PHP_URL_SCHEME);
