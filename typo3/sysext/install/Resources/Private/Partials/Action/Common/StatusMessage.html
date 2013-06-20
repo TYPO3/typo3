@@ -1,8 +1,10 @@
-<div class="typo3-message message-{message.severity}" >
+<div class="typo3-message message-{message.severity}">
 	<div class="header-container">
 		<div class="message-header message-left"><strong>{message.title}</strong></div>
 		<div class="message-header message-right"></div>
 	</div>
-	<div class="message-body">{message.message}</div>
+	<div class="message-body">
+		<f:format.nl2br>{message.message}</f:format.nl2br>
+	</div>
 </div>
 <p></p>
