@@ -58,7 +58,7 @@ class ToolController extends AbstractController {
 		$this->loadBaseExtensions();
 		$this->initializeObjectManager();
 
-		// Warning: Order of this methods is security relevant and interferes with different access
+		// Warning: Order of these methods is security relevant and interferes with different access
 		// conditions (new/existing installation). See the single method comments for details.
 		$this->outputInstallToolNotEnabledMessageIfNeeded();
 		$this->outputInstallToolPasswordNotSetMessageIfNeeded();

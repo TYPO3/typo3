@@ -43,6 +43,51 @@ class StepController extends AbstractController {
 	);
 
 	/**
+	 * @var array List of obsolete configuration options in LocalConfiguration to be removed
+	 */
+	protected $obsoleteLocalConfigurationSettings = array(
+		// @TODO: #34092 - Remove it? Still used in core
+		// 'BE/forceCharset',
+		// #26519
+		'BE/loginLabels',
+		// #44506
+		'BE/loginNews',
+		// #30613
+		'BE/useOnContextMenuHandler',
+		// #48179
+		'EXT/em_mirrorListURL',
+		'EXT/em_wsdlURL',
+		// #43094
+		'EXT/extList',
+		// #35877
+		'EXT/extList_FE',
+		// #41813
+		'EXT/noEdit',
+		// #26090
+		'FE/defaultTypoScript_editorcfg',
+		'FE/defaultTypoScript_editorcfg.',
+		// #25099
+		'FE/simulateStaticDocuments',
+		// @TODO: #14441 - Still referenced at one place
+		//'GFX/gdlib_2',
+		// # ?
+		'GFX/noIconProc',
+		// #17606
+		'GFX/TTFLocaleConv',
+		// #39164
+		'SYS/additionalAllowedClassPrefixes',
+		// #27689
+		'SYS/caching/cacheBackends',
+		'SYS/caching/cacheFrontends',
+		// #38414
+		'SYS/extCache',
+		// @TODO: #35923 - Still referenced in SqlSchemaMigrationService
+		//'SYS/multiplyDBfieldSize',
+		// #46993
+		'SYS/T3instID',
+	);
+
+	/**
 	 * Index action acts a a dispatcher to different steps
 	 *
 	 * @throws Exception
@@ -52,11 +97,12 @@ class StepController extends AbstractController {
 		$this->loadBaseExtensions();
 		$this->initializeObjectManager();
 
-		// Warning: Order of this methods is security relevant and interferes with different access
+		// Warning: Order of these methods is security relevant and interferes with different access
 		// conditions (new/existing installation). See the single method comments for details.
 		$this->outputInstallToolNotEnabledMessageIfNeeded();
 		$this->migrateLocalconfToLocalConfigurationIfNeeded();
 		$this->outputInstallToolPasswordNotSetMessageIfNeeded();
+		$this->removeObsoleteLocalConfigurationSettings();
 		$this->executeOrOutputFirstInstallStepIfNeeded();
 		$this->generateEncryptionKeyIfNeeded();
 		$this->initializeSession();
@@ -243,6 +289,23 @@ class StepController extends AbstractController {
 			rename($localConfFileLocation, PATH_site . 'typo3conf/localconf.obsolete.php');
 
 			// Perform a reload to self, so bootstrap now uses new LocalConfiguration.php
+			$this->redirect();
+		}
+	}
+
+	/**
+	 * Some settings in LocalConfiguration vanished in DefaultConfiguration
+	 * and have no impact on the core anymore.
+	 * To keep the configuration clean, those old settings are just silently
+	 * removed from LocalConfiguration if set.
+	 *
+	 * @return void
+	 */
+	protected function removeObsoleteLocalConfigurationSettings() {
+		/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
+		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$removed = $configurationManager->removeLocalConfigurationKeysByPath($this->obsoleteLocalConfigurationSettings);
+		if ($removed) {
 			$this->redirect();
 		}
 	}
