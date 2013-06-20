@@ -24,8 +24,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\ArrayUtility;
+
 /**
- * Testcase for class \TYPO3\CMS\Core\Utility\ArrayUtility
+ * Test case
  *
  * @author Susanne Moog <typo3@susanne-moog.de>
  * @author Christian Kuhn <lolli@schwarzbu.ch>
@@ -171,7 +173,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function filterByValueRecursiveCorrectlyFiltersArray($needle, $haystack, $expectedResult) {
 		$this->assertEquals(
 			$expectedResult,
-			\TYPO3\CMS\Core\Utility\ArrayUtility::filterByValueRecursive($needle, $haystack)
+			ArrayUtility::filterByValueRecursive($needle, $haystack)
 		);
 	}
 
@@ -182,7 +184,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$instance = new \stdClass();
 		$this->assertEquals(
 			array($instance),
-			\TYPO3\CMS\Core\Utility\ArrayUtility::filterByValueRecursive($instance, array($instance))
+			ArrayUtility::filterByValueRecursive($instance, array($instance))
 		);
 	}
 
@@ -192,7 +194,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function filterByValueRecursiveDoesNotMatchDifferentInstancesOfSameClass() {
 		$this->assertEquals(
 			array(),
-			\TYPO3\CMS\Core\Utility\ArrayUtility::filterByValueRecursive(new \stdClass(), array(new \stdClass()))
+			ArrayUtility::filterByValueRecursive(new \stdClass(), array(new \stdClass()))
 		);
 	}
 
@@ -248,7 +250,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \RuntimeException
 	 */
 	public function getValueByPathThrowsExceptionIfPathIsEmpty() {
-		\TYPO3\CMS\Core\Utility\ArrayUtility::getValueByPath(array(), '');
+		ArrayUtility::getValueByPath(array(), '');
 	}
 
 	/**
@@ -308,7 +310,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \RuntimeException
 	 */
 	public function getValueByPathThrowsExceptionIfPathNotExists(array $array, $path) {
-		\TYPO3\CMS\Core\Utility\ArrayUtility::getValueByPath($array, $path);
+		ArrayUtility::getValueByPath($array, $path);
 	}
 
 	/**
@@ -408,7 +410,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider getValueByPathValidDataProvider
 	 */
 	public function getValueByPathGetsCorrectValue(array $array, $path, $expectedResult) {
-		$this->assertEquals($expectedResult, \TYPO3\CMS\Core\Utility\ArrayUtility::getValueByPath($array, $path));
+		$this->assertEquals($expectedResult, ArrayUtility::getValueByPath($array, $path));
 	}
 
 	/**
@@ -428,7 +430,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$delimeter = '%';
 		$this->assertEquals(
 			$expected,
-			\TYPO3\CMS\Core\Utility\ArrayUtility::getValueByPath($input, $searchPath, $delimeter)
+			ArrayUtility::getValueByPath($input, $searchPath, $delimeter)
 		);
 	}
 
@@ -440,7 +442,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \RuntimeException
 	 */
 	public function setValueByPathThrowsExceptionIfPathIsEmpty() {
-		\TYPO3\CMS\Core\Utility\ArrayUtility::setValueByPath(array(), '', NULL);
+		ArrayUtility::setValueByPath(array(), '', NULL);
 	}
 
 	/**
@@ -448,7 +450,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \RuntimeException
 	 */
 	public function setValueByPathThrowsExceptionIfPathIsNotAString() {
-		\TYPO3\CMS\Core\Utility\ArrayUtility::setValueByPath(array(), array('foo'), NULL);
+		ArrayUtility::setValueByPath(array(), array('foo'), NULL);
 	}
 
 	/**
@@ -629,7 +631,133 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setValueByPathSetsCorrectValue(array $array, $path, $value, $expectedResult) {
 		$this->assertEquals(
 			$expectedResult,
-			\TYPO3\CMS\Core\Utility\ArrayUtility::setValueByPath($array, $path, $value)
+			ArrayUtility::setValueByPath($array, $path, $value)
+		);
+	}
+
+	/**********************
+	/* Tests concerning removeByPath
+	 ***********************/
+
+	/**
+	 * @test
+	 * @expectedException \RuntimeException
+	 */
+	public function removeByPathThrowsExceptionIfPathIsEmpty() {
+		ArrayUtility::removeByPath(array(), '');
+	}
+
+	/**
+	 * @test
+	 * @expectedException \RuntimeException
+	 */
+	public function removeByPathThrowsExceptionIfPathIsNotAString() {
+		ArrayUtility::removeByPath(array(), array('foo'));
+	}
+
+	/**
+	 * @test
+	 * @expectedException \RuntimeException
+	 */
+	public function removeByPathThrowsExceptionWithEmptyPathSegment() {
+		$inputArray = array(
+			'foo' => array(
+				'bar' => 42,
+			),
+		);
+		ArrayUtility::removeByPath($inputArray, 'foo//bar');
+	}
+
+	/**
+	 * @test
+	 * @expectedException \RuntimeException
+	 */
+	public function removeByPathThrowsExceptionIfPathDoesNotExistInArray() {
+		$inputArray = array(
+			'foo' => array(
+				'bar' => 42,
+			),
+		);
+		ArrayUtility::removeByPath($inputArray, 'foo/baz');
+	}
+
+	/**
+	 * @test
+	 */
+	public function removeByPathAcceptsGivenDelimiter() {
+		$inputArray = array(
+			'foo' => array(
+				'toRemove' => 42,
+				'keep' => 23
+			),
+		);
+		$path = 'foo.toRemove';
+		$expected = array(
+			'foo' => array(
+				'keep' => 23,
+			),
+		);
+		$this->assertEquals(
+			$expected,
+			ArrayUtility::removeByPath($inputArray, $path, '.')
+		);
+	}
+
+	/**
+	 * Data provider for removeByPathRemovesCorrectPath
+	 */
+	public function removeByPathRemovesCorrectPathDataProvider() {
+		return array(
+			'single value' => array(
+				array(
+					'foo' => array(
+						'toRemove' => 42,
+						'keep' => 23
+					),
+				),
+				'foo/toRemove',
+				array(
+					'foo' => array(
+						'keep' => 23,
+					),
+				),
+			),
+			'whole array' => array(
+				array(
+					'foo' => array(
+						'bar' => 42
+					),
+				),
+				'foo',
+				array(),
+			),
+			'sub array' => array(
+				array(
+					'foo' => array(
+						'keep' => 23,
+						'toRemove' => array(
+							'foo' => 'bar',
+						),
+					),
+				),
+				'foo/toRemove',
+				array(
+					'foo' => array(
+						'keep' => 23,
+					),
+				),
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider removeByPathRemovesCorrectPathDataProvider
+	 */
+	public function removeByPathRemovesCorrectPath(array $array, $path, $expectedResult) {
+		$this->assertEquals(
+			$expectedResult,
+			ArrayUtility::removeByPath($array, $path)
 		);
 	}
 
@@ -660,7 +788,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 			'z' => NULL
 		);
-		$this->assertSame($expectedResult, \TYPO3\CMS\Core\Utility\ArrayUtility::sortByKeyRecursive($unsortedArray));
+		$this->assertSame($expectedResult, ArrayUtility::sortByKeyRecursive($unsortedArray));
 	}
 
 	///////////////////////
@@ -701,7 +829,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				TAB . '\'qux\' => 0.1,' . LF .
 				TAB . '\'qux2\' => 1.0E-9,' . LF .
 			')';
-		$this->assertSame($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($array));
+		$this->assertSame($expected, ArrayUtility::arrayExport($array));
 	}
 
 	/**
@@ -714,7 +842,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'bar' => new \stdClass()
 			)
 		);
-		\TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($array);
+		ArrayUtility::arrayExport($array);
 	}
 
 	/**
@@ -732,7 +860,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				TAB . '23 => \'integer key\',' . LF .
 				TAB . '42 => \'string key representing integer\',' . LF .
 			')';
-		$this->assertSame($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($array));
+		$this->assertSame($expected, ArrayUtility::arrayExport($array));
 	}
 
 	/**
@@ -750,7 +878,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				TAB . '\'one\',' . LF .
 				TAB . '\'two\',' . LF .
 			')';
-		$this->assertSame($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($array));
+		$this->assertSame($expected, ArrayUtility::arrayExport($array));
 	}
 
 	/**
@@ -770,7 +898,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				TAB . '3 => \'three\',' . LF .
 				TAB . '4 => \'four\',' . LF .
 			')';
-		$this->assertSame($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($array));
+		$this->assertSame($expected, ArrayUtility::arrayExport($array));
 	}
 
 
@@ -877,7 +1005,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider flattenCalculatesExpectedResultDataProvider
 	 */
 	public function flattenCalculatesExpectedResult(array $array, array $expected) {
-		$this->assertEquals($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::flatten($array));
+		$this->assertEquals($expected, ArrayUtility::flatten($array));
 	}
 
 
@@ -1089,7 +1217,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider intersectRecursiveCalculatesExpectedResultDataProvider
 	 */
 	public function intersectRecursiveCalculatesExpectedResult(array $source, array $mask, array $expected) {
-		$this->assertSame($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::intersectRecursive($source, $mask));
+		$this->assertSame($expected, ArrayUtility::intersectRecursive($source, $mask));
 	}
 
 
@@ -1221,7 +1349,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider renumberKeysToAvoidLeapsIfKeysAreAllNumericDataProvider
 	 */
 	public function renumberKeysToAvoidLeapsIfKeysAreAllNumeric(array $inputArray, array $expected) {
-		$this->assertEquals($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($inputArray));
+		$this->assertEquals($expected, ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($inputArray));
 	}
 
 }

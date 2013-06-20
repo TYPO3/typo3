@@ -234,6 +234,26 @@ class ConfigurationManager {
 	}
 
 	/**
+	 * Remove keys from LocalConfiguration
+	 *
+	 * @param array $keys Array with key paths to remove from LocalConfiguration
+	 * @return boolean TRUE if something was removed
+	 */
+	public function removeLocalConfigurationKeysByPath(array $keys) {
+		$result = FALSE;
+		$localConfiguration = $this->getLocalConfiguration();
+		foreach ($keys as $path) {
+			// Remove key if path is within LocalConfiguration
+			if (Utility\ArrayUtility::isValidPath($localConfiguration, $path)) {
+				$result = TRUE;
+				$localConfiguration = Utility\ArrayUtility::removeByPath($localConfiguration, $path);
+			}
+		}
+		$this->writeLocalConfiguration($localConfiguration);
+		return $result;
+	}
+
+	/**
 	 * Checks if the configuration can be written.
 	 *
 	 * @return boolean

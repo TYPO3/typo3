@@ -215,7 +215,6 @@ class Bootstrap {
 	 */
 	public function applyAdditionalConfigurationSettings() {
 		$this->getInstance()
-			->deprecationLogForOldExtCacheSetting()
 			->initializeExceptionHandling()
 			->setFinalCachingFrameworkCacheConfiguration()
 			->defineLoggingAndExceptionConstants()
@@ -624,19 +623,6 @@ class Bootstrap {
 	 */
 	protected function loadAdditionalConfigurationFromExtensions($allowCaching = TRUE) {
 		Utility\ExtensionManagementUtility::loadExtLocalconf($allowCaching);
-		return $this;
-	}
-
-	/**
-	 * Write deprecation log if deprecated extCache setting was set in the instance.
-	 *
-	 * @return \TYPO3\CMS\Core\Core\Bootstrap
-	 * @deprecated since 6.0, the check will be removed two version later.
-	 */
-	protected function deprecationLogForOldExtCacheSetting() {
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache']) && $GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache'] !== -1) {
-			Utility\GeneralUtility::deprecationLog('Setting $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'extCache\'] is unused and can be removed from localconf.php');
-		}
 		return $this;
 	}
 

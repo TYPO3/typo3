@@ -201,7 +201,7 @@ class ArrayUtility {
 		foreach ($path as $segment) {
 			// Fail if the part is empty
 			if (empty($segment)) {
-				throw new \RuntimeException('Invalid path specified: ' . $path, 1341406846);
+				throw new \RuntimeException('Invalid path segment specified', 1341406846);
 			}
 			// Create cell if it doesn't exist
 			if (!array_key_exists($segment, $pointer)) {
@@ -212,6 +212,46 @@ class ArrayUtility {
 		}
 		// Set value of target cell
 		$pointer = $value;
+		return $array;
+	}
+
+	/**
+	 * Remove a sub part from an array specified by path
+	 *
+	 * @param array $array Input array to manipulate
+	 * @param string $path Path to remove from array
+	 * @param string $delimiter Path delimiter
+	 * @return array Modified array
+	 * @throws \RuntimeException
+	 */
+	static public function removeByPath(array $array, $path, $delimiter = '/') {
+		if (empty($path)) {
+			throw new \RuntimeException('Path must not be empty', 1371757718);
+		}
+		if (!is_string($path)) {
+			throw new \RuntimeException('Path must be a string', 1371757719);
+		}
+		// Extract parts of the path
+		$path = str_getcsv($path, $delimiter);
+		$pathDepth = count($path);
+		$currentDepth = 0;
+		$pointer = &$array;
+		// Find path in given array
+		foreach ($path as $segment) {
+			$currentDepth++;
+			// Fail if the part is empty
+			if (empty($segment)) {
+				throw new \RuntimeException('Invalid path segment specified', 1371757720);
+			}
+			if (!array_key_exists($segment, $pointer)) {
+				throw new \RuntimeException('Path segment ' . $segment . ' does not exist in array', 1371758436);
+			}
+			if ($currentDepth === $pathDepth) {
+				unset($pointer[$segment]);
+			} else {
+				$pointer = &$pointer[$segment];
+			}
+		}
 		return $array;
 	}
 
@@ -392,7 +432,7 @@ class ArrayUtility {
 	}
 
 	/**
-	 * Renumber the keys of an array to avoid leaps is keys are all numeric.
+	 * Renumber the keys of an array to avoid leaps if keys are all numeric.
 	 *
 	 * Is called recursively for nested arrays.
 	 *
