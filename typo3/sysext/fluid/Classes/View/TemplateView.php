@@ -19,6 +19,11 @@ namespace TYPO3\CMS\Fluid\View;
 class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 */
+	protected $configurationManager;
+
+	/**
 	 * Pattern to be resolved for "@templateRoot" in the other patterns.
 	 *
 	 * @var string
@@ -98,7 +103,16 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 	public function __construct() {
 		$this->injectTemplateParser(\TYPO3\CMS\Fluid\Compatibility\TemplateParserBuilder::build());
 		$this->injectObjectManager(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager'));
+		$this->injectConfigurationManager($this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface'));
 		$this->setRenderingContext($this->objectManager->get('TYPO3\\CMS\\Fluid\\Core\\Rendering\\RenderingContextInterface'));
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+	 * @return void
+	 */
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
 	}
 
 	public function initializeView() {
@@ -417,6 +431,42 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 	 * @return array unix style path
 	 */
 	protected function expandGenericPathPattern($pattern, $bubbleControllerAndSubpackage, $formatIsOptional) {
+		$pathOverlayConfigurations = $this->buildPathOverlayConfigurations();
+		$templateRootPath = $backupTemplateRootPath = $this->getTemplateRootPath();
+		$partialRootPath = $backupPartialRootPath = $this->getPartialRootPath();
+		$layoutRootPath = $backupLayoutRootPath = $this->getLayoutRootPath();
+		$paths = $this->expandSingleGenericPathPattern($pattern, $bubbleControllerAndSubpackage, $formatIsOptional);
+		foreach ($pathOverlayConfigurations as $overlayPaths) {
+			$templateRootPath = $overlayPaths['templateRootPath'];
+			$partialRootPath = $overlayPaths['partialRootPath'];
+			$layoutRootPath = $overlayPaths['layoutRootPath'];
+			if (!empty($templateRootPath)) {
+				$this->setTemplateRootPath($templateRootPath);
+			}
+			if (!empty($partialRootPath)) {
+				$this->setPartialRootPath($partialRootPath);
+			}
+			if (!empty($layoutRootPath)) {
+				$this->setLayoutRootPath($layoutRootPath);
+			}
+			$subset = $this->expandSingleGenericPathPattern($pattern, $bubbleControllerAndSubpackage, $formatIsOptional);
+			$paths = array_merge($paths, $subset);
+		}
+		$paths = array_unique($paths);
+		$paths = array_reverse($paths);
+		return $paths;
+	}
+
+	/**
+	 * Called by expandGenericPathPattern to resolve paths.
+	 * Is called once per registered overlay path set.
+	 *
+	 * @param string $pattern Pattern to be resolved
+	 * @param boolean $bubbleControllerAndSubpackage if TRUE, then we successively split off parts from "@controller" and "@subpackage" until both are empty.
+	 * @param boolean $formatIsOptional if TRUE, then half of the resulting strings will have ."@format" stripped off, and the other half will have it.
+	 * @return array unix style path
+	 */
+	protected function expandSingleGenericPathPattern($pattern, $bubbleControllerAndSubpackage, $formatIsOptional) {
 		$pattern = str_replace('@templateRoot', $this->getTemplateRootPath(), $pattern);
 		$pattern = str_replace('@partialRoot', $this->getPartialRootPath(), $pattern);
 		$pattern = str_replace('@layoutRoot', $this->getLayoutRootPath(), $pattern);
@@ -452,6 +502,47 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		} while ($i++ < count($subpackageParts) && $bubbleControllerAndSubpackage);
 
 		return $results;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private function buildPathOverlayConfigurations() {
+		$configurationType = \TYPO3\CMS\Extbase\Configuration\ConfigurationManager::CONFIGURATION_TYPE_FRAMEWORK;
+		$configurations = $this->configurationManager->getConfiguration($configurationType);
+		$configurations = $configurations['view'];
+		$templateRootPath = NULL;
+		$partialRootPath = NULL;
+		$layoutRootPath = NULL;
+		$overlays = array();
+		$paths = array();
+		if (TRUE === isset($configurations['overlays'])) {
+			$overlays = $configurations['overlays'];
+		}
+		foreach ($overlays as $overlaySubpackageKey => $configuration) {
+			if (isset($configuration['templateRootPath'])) {
+				$templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($configuration['templateRootPath']);
+			}
+			if (isset($configuration['partialRootPath'])) {
+				$partialRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($configuration['partialRootPath']);
+			}
+			if (isset($configuration['layoutRootPath'])) {
+				$layoutRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($configuration['layoutRootPath']);
+			}
+			$paths[$overlaySubpackageKey] = array(
+				'templateRootPath' => $templateRootPath,
+				'partialRootPath' => $partialRootPath,
+				'layoutRootPath' => $layoutRootPath
+			);
+		}
+		$paths = array_reverse($paths);
+		$paths[] = array(
+			'templateRootPath' => $this->getTemplateRootPath(),
+			'partialRootPath' => $this->getPartialRootPath(),
+			'layoutRootPath' => $this->getLayoutRootPath()
+		);
+		return $paths;
 	}
 
 	/**
