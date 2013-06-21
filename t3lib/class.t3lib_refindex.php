@@ -374,7 +374,7 @@ class t3lib_refindex {
 
 						// Get current value array:
 						// NOTICE: failure to resolve Data Structures can lead to integrity problems with the reference index. Please look up the note in the JavaDoc documentation for the function t3lib_BEfunc::getFlexFormDS()
-					$dataStructArray = t3lib_BEfunc::getFlexFormDS($conf, $row, $table, '', $this->WSOL);
+					$dataStructArray = t3lib_BEfunc::getFlexFormDS($conf, $row, $table, $field, $this->WSOL);
 					$currentValueArray = t3lib_div::xml2array($value);
 
 						// Traversing the XML structure, processing files:

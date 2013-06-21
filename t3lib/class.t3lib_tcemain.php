@@ -1694,7 +1694,7 @@ class t3lib_TCEmain {
 			$newRecordPidValue = $status == 'new' ? $realPid : 0;
 
 				// Get current value array:
-			$dataStructArray = t3lib_BEfunc::getFlexFormDS($tcaFieldConf, $this->checkValue_currentRecord, $table, '', TRUE, $newRecordPidValue);
+			$dataStructArray = t3lib_BEfunc::getFlexFormDS($tcaFieldConf, $this->checkValue_currentRecord, $table, $field, TRUE, $newRecordPidValue);
 
 			$currentValueArray = t3lib_div::xml2array($curValue);
 			if (!is_array($currentValueArray)) {
