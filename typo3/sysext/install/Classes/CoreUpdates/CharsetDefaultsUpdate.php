@@ -42,10 +42,10 @@ class CharsetDefaultsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 * @return 	boolean		whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description, &$showUpdate = FALSE) {
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) && $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] != '' && $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] != 'utf-8' || $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] === '-1') {
-			$description = 'The configuration variables $TYPO3_CONF_VARS[\'SYS\'][\'setDBinit\'] and/or
-				$TYPO3_CONF_VARS[\'BE\'][\'forceCharset\'] are relying on empty default values.<br />
-				However, the defaults for both values have changed in TYPO3 4.5.<br /><br />
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] === '-1') {
+			$description = 'The configuration variables $TYPO3_CONF_VARS[\'SYS\'][\'setDBinit\']
+				is relying on empty default values.<br />
+				However, the default has changed in TYPO3 4.5.<br /><br />
 				Please click "Next" to write the former default settings to your localconf.php,
 				so that your setup will continue to work like before.';
 			$showUpdate = 1;
@@ -67,12 +67,7 @@ class CharsetDefaultsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getLocalConfigurationValueByPath('SYS/setDBinit') === '-1') {
 			$result1 = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('SYS/setDBinit', '');
 		}
-		// Update the "forceCharset" setting
-		$result2 = FALSE;
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getLocalConfigurationValueByPath('BE/forceCharset') !== '') {
-			$result2 = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('BE/forceCharset', '');
-		}
-		if ($result1 && $result2) {
+		if ($result1) {
 			$customMessages[] = 'The configuration was successfully updated.';
 			return TRUE;
 		} else {
