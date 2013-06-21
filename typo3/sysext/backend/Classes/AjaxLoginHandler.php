@@ -87,7 +87,7 @@ class AjaxLoginHandler {
 	 */
 	public function logout(array $parameters, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj) {
 		$GLOBALS['BE_USER']->logoff();
-		if ($GLOBALS['BE_USER']->user['uid']) {
+		if (isset($GLOBALS['BE_USER']->user['uid'])) {
 			$ajaxObj->addContent('logout', array('success' => FALSE));
 		} else {
 			$ajaxObj->addContent('logout', array('success' => TRUE));
