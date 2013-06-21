@@ -47,6 +47,7 @@ class AbstractPluginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		parent::setUp();
 
 		// Allow objects until 100 levels deep when executing the stdWrap
+		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->cObjectDepthCounter = 100;
 
 		$this->abstractPlugin = new \TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
