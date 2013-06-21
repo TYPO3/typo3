@@ -90,7 +90,7 @@ class AjaxLogin {
 	 */
 	public function logout(array $parameters, TYPO3AJAX $ajaxObj) {
 		$GLOBALS['BE_USER']->logoff();
-		if($GLOBALS['BE_USER']->user['uid']) {
+		if(isset($GLOBALS['BE_USER']->user['uid'])) {
 			$ajaxObj->addContent('logout', array('success' => FALSE));
 		} else {
 			$ajaxObj->addContent('logout', array('success' => TRUE));
