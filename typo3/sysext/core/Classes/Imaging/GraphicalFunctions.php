@@ -26,22 +26,14 @@ namespace TYPO3\CMS\Core\Imaging;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Standard graphical functions
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
- * Class contains a bunch of cool functions for manipulating graphics with GDlib/Freetype and ImageMagick
+ * Class contains a bunch of cool functions for manipulating graphics with GDlib/Freetype and ImageMagick.
  * VERY OFTEN used with gifbuilder that extends this class and provides a TypoScript API to using these functions
  *
- * With TYPO3 4.4 GDlib 1.x support was dropped, also an option from $TYPO3_CONF_VARS
- * $TYPO3_CONF_VARS['GFX']['gdlib_2'] = 0,	// String/Boolean. Set this if you are using the new GDlib 2.0.1+. If you don't set this flag and still use GDlib2, you might encounter strange behaviours like black images etc. This feature might take effect only if ImageMagick is installed and working as well! You can also use the value "no_imagecopyresized_fix" - in that case it will NOT try to fix a known issue where "imagecopyresized" does not work correctly.
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder
  */
 class GraphicalFunctions {
 
@@ -57,12 +49,6 @@ class GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public $noFramePrepended = 0;
-
-	// If set, imagecopyresized will not be called directly. For GD2 (some PHP installs?)
-	/**
-	 * @todo Define visibility
-	 */
-	public $imagecopyresized_fix = 0;
 
 	// This should be changed to 'png' if you want this class to read/make PNG-files instead!
 	/**
@@ -359,9 +345,6 @@ class GraphicalFunctions {
 		if ($gfxConf['im_noFramePrepended']) {
 			$this->noFramePrepended = 1;
 		}
-		// Kept for backwards compatibility, can be turned on manually through localconf.php,
-		// but not through the installer anymore
-		$this->imagecopyresized_fix = $gfxConf['gdlib_2'] === 'no_imagecopyresized_fix' ? 0 : 1;
 		if ($gfxConf['gdlib_png']) {
 			$this->gifExtension = 'png';
 		}
@@ -617,7 +600,7 @@ class GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function imagecopyresized(&$dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight) {
-		if ($this->imagecopyresized_fix && !$this->saveAlphaLayer) {
+		if (!$this->saveAlphaLayer) {
 			// Make true color image
 			$tmpImg = imagecreatetruecolor(imagesx($dstImg), imagesy($dstImg));
 			// Copy the source image onto that
