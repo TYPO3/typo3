@@ -46,8 +46,8 @@ class StepController extends AbstractController {
 	 * @var array List of obsolete configuration options in LocalConfiguration to be removed
 	 */
 	protected $obsoleteLocalConfigurationSettings = array(
-		// @TODO: #34092 - Remove it? Still used in core
-		// 'BE/forceCharset',
+		// #34092
+		'BE/forceCharset',
 		// #26519
 		'BE/loginLabels',
 		// #44506
@@ -70,7 +70,7 @@ class StepController extends AbstractController {
 		'FE/simulateStaticDocuments',
 		// #22687
 		'GFX/gdlib_2',
-		// # ?
+		// #18431
 		'GFX/noIconProc',
 		// #17606
 		'GFX/TTFLocaleConv',
