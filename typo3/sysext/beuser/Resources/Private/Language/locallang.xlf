@@ -85,7 +85,7 @@
 				<source>Inactive only</source>
 			</trans-unit>
 			<trans-unit id="loginBefore" xml:space="preserve">
-				<source>Login before</source>
+				<source>Logged in before</source>
 			</trans-unit>
 			<trans-unit id="neverLoggedIn" xml:space="preserve">
 				<source>Never logged in</source>
