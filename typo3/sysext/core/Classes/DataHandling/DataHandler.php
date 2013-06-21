@@ -1989,7 +1989,7 @@ class DataHandler {
 			// The problem is, that when copying a page, flexfrom XML comes along in the array for the new record - but since $this->checkValue_currentRecord does not have a uid or pid for that sake, the \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS() function returns no good DS. For new records we do know the expected PID so therefore we send that with this special parameter. Only active when larger than zero.
 			$newRecordPidValue = $status == 'new' ? $realPid : 0;
 			// Get current value array:
-			$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($tcaFieldConf, $this->checkValue_currentRecord, $table, '', TRUE, $newRecordPidValue);
+			$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($tcaFieldConf, $this->checkValue_currentRecord, $table, $field, TRUE, $newRecordPidValue);
 			$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($curValue);
 			if (!is_array($currentValueArray)) {
 				$currentValueArray = array();
