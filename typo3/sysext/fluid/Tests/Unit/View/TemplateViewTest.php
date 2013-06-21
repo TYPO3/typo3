@@ -23,33 +23,35 @@ class TemplateViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 */
-	public function expandGenericPathPatternWorksWithOldNamingSchemeOfSubPackage() {
+	public function expandSingleGenericPathPatternWorksWithOldNamingSchemeOfSubPackage() {
 		$mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', 'ViewHelpers_Widget', 'Paginate', 'html');
+
 		$templateView = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\TemplateView', array('getTemplateRootPath', 'getPartialRootPath', 'getLayoutRootPath'), array(), '', FALSE);
 		$templateView->_set('controllerContext', $mockControllerContext);
 		$templateView->expects($this->any())->method('getTemplateRootPath')->will($this->returnValue('Resources/Private/'));
 		$expected = array('Resources/Private/Templates/ViewHelpers/Widget/Paginate/@action.html');
-		$actual = $templateView->_call('expandGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', FALSE, FALSE);
+		$actual = $templateView->_call('expandSingleGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', FALSE, FALSE);
 		$this->assertEquals($expected, $actual);
 	}
 
 	/**
 	 * @test
 	 */
-	public function expandGenericPathPatternWorksWithNewNamingSchemeOfSubPackage() {
+	public function expandSingleGenericPathPatternWorksWithNewNamingSchemeOfSubPackage() {
 		$mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', 'ViewHelpers\\Widget', 'Paginate', 'html');
+
 		$templateView = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\TemplateView', array('getTemplateRootPath', 'getPartialRootPath', 'getLayoutRootPath'), array(), '', FALSE);
 		$templateView->_set('controllerContext', $mockControllerContext);
 		$templateView->expects($this->any())->method('getTemplateRootPath')->will($this->returnValue('Resources/Private/'));
 		$expected = array('Resources/Private/Templates/ViewHelpers/Widget/Paginate/@action.html');
-		$actual = $templateView->_call('expandGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', FALSE, FALSE);
+		$actual = $templateView->_call('expandSingleGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', FALSE, FALSE);
 		$this->assertEquals($expected, $actual);
 	}
 
 	/**
 	 * @test
 	 */
-	public function expandGenericPathPatternWorksWithBubblingDisabledAndFormatNotOptional() {
+	public function expandSingleGenericPathPatternWorksWithBubblingDisabledAndFormatNotOptional() {
 		$mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', NULL, 'My', 'html');
 
 		$templateView = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\TemplateView', array('getTemplateRootPath', 'getPartialRootPath', 'getLayoutRootPath'), array(), '', FALSE);
@@ -57,21 +59,20 @@ class TemplateViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$templateView->expects($this->any())->method('getTemplateRootPath')->will($this->returnValue('Resources/Private/'));
 
 		$expected = array('Resources/Private/Templates/My/@action.html');
-		$actual = $templateView->_call('expandGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', FALSE, FALSE);
+		$actual = $templateView->_call('expandSingleGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', FALSE, FALSE);
 		$this->assertEquals($expected, $actual);
 	}
-
 
 	/**
 	 * @test
 	 */
-	public function expandGenericPathPatternWorksWithSubpackageAndBubblingDisabledAndFormatNotOptional() {
+	public function expandGenericSinglePathPatternWorksWithSubpackageAndBubblingDisabledAndFormatNotOptional() {
 		$mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', 'MySubPackage', 'My', 'html');
 
 		$templateView = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\TemplateView', array('getTemplateRootPath', 'getPartialRootPath', 'getLayoutRootPath'), array(), '', FALSE);
 		$templateView->_set('controllerContext', $mockControllerContext);
 		$templateView->expects($this->any())->method('getTemplateRootPath')->will($this->returnValue('Resources/Private/'));
-		$actual = $templateView->_call('expandGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', FALSE, FALSE);
+		$actual = $templateView->_call('expandSingleGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', FALSE, FALSE);
 
 		$expected = array(
 			'Resources/Private/Templates/MySubPackage/My/@action.html'
@@ -82,13 +83,13 @@ class TemplateViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 */
-	public function expandGenericPathPatternWorksWithSubpackageAndBubblingDisabledAndFormatOptional() {
+	public function expandSingleGenericPathPatternWorksWithSubpackageAndBubblingDisabledAndFormatOptional() {
 		$mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', 'MySubPackage', 'My', 'html');
 
 		$templateView = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\TemplateView', array('getTemplateRootPath', 'getPartialRootPath', 'getLayoutRootPath'), array(), '', FALSE);
 		$templateView->_set('controllerContext', $mockControllerContext);
 		$templateView->expects($this->any())->method('getTemplateRootPath')->will($this->returnValue('Resources/Private/'));
-		$actual = $templateView->_call('expandGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', FALSE, TRUE);
+		$actual = $templateView->_call('expandSingleGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', FALSE, TRUE);
 
 		$expected = array(
 			'Resources/Private/Templates/MySubPackage/My/@action.html',
@@ -100,13 +101,13 @@ class TemplateViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 */
-	public function expandGenericPathPatternWorksWithSubpackageAndBubblingEnabledAndFormatOptional() {
+	public function expandSingleGenericPathPatternWorksWithSubpackageAndBubblingEnabledAndFormatOptional() {
 		$mockControllerContext = $this->setupMockControllerContextForPathResolving('MyPackage', 'MySubPackage', 'My', 'html');
 
 		$templateView = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\TemplateView', array('getTemplateRootPath', 'getPartialRootPath', 'getLayoutRootPath'), array(), '', FALSE);
 		$templateView->_set('controllerContext', $mockControllerContext);
 		$templateView->expects($this->any())->method('getTemplateRootPath')->will($this->returnValue('Resources/Private/'));
-		$actual = $templateView->_call('expandGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', TRUE, TRUE);
+		$actual = $templateView->_call('expandSingleGenericPathPattern', '@templateRoot/Templates/@subpackage/@controller/@action.@format', TRUE, TRUE);
 
 		$expected = array(
 			'Resources/Private/Templates/MySubPackage/My/@action.html',
@@ -114,7 +115,7 @@ class TemplateViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'Resources/Private/Templates/MySubPackage/@action.html',
 			'Resources/Private/Templates/MySubPackage/@action',
 			'Resources/Private/Templates/@action.html',
-			'Resources/Private/Templates/@action'
+			'Resources/Private/Templates/@action',
 		);
 		$this->assertEquals($expected, $actual);
 	}
