@@ -43,25 +43,10 @@ class SqlSchemaMigrationService {
 	 */
 	protected $deletedPrefixKey = 'zzz_deleted_';
 
-	// Prefix used for tables/fields when deleted/renamed.
-	/**
-	 * @var float|int Multiplier of SQL field size (for char, varchar and text fields)
-	 */
-	protected $multiplySize = 1;
-
 	/**
 	 * @var array Caching output of $GLOBALS['TYPO3_DB']->admin_get_charsets()
 	 */
 	protected $character_sets = array();
-
-	/**
-	 * Constructor function
-	 */
-	public function __construct() {
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize'] >= 1 && $GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize'] <= 5) {
-			$this->multiplySize = (double) $GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize'];
-		}
-	}
 
 	/**
 	 * Set prefix of deleted tables
@@ -169,74 +154,7 @@ class SqlSchemaMigrationService {
 				}
 			}
 		}
-		$this->getFieldDefinitions_sqlContent_parseTypes($total);
 		return $total;
-	}
-
-	/**
-	 * Multiplies varchars/tinytext fields in size according to $this->multiplySize
-	 * Useful if you want to use UTF-8 in the database and needs to extend the field sizes in the database so UTF-8 chars are not discarded. For most charsets available as single byte sets, multiplication with 2 should be enough. For chinese, use 3.
-	 *
-	 * @param array	$total Total array (from getFieldDefinitions_fileContent())
-	 * @return void
-	 * @access private
-	 * @see getFieldDefinitions_fileContent()
-	 */
-	protected function getFieldDefinitions_sqlContent_parseTypes(&$total) {
-		$mSize = (double) $this->multiplySize;
-		if ($mSize > 1) {
-			/** @var $sqlParser \TYPO3\CMS\Core\Database\SqlParser */
-			$sqlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\SqlParser');
-			foreach ($total as $table => $cfg) {
-				if (is_array($cfg['fields'])) {
-					foreach ($cfg['fields'] as $fN => $fType) {
-						$orig_fType = $fType;
-						$fInfo = $sqlParser->parseFieldDef($fType);
-						switch ($fInfo['fieldType']) {
-						case 'char':
-
-						case 'varchar':
-							$newSize = round($fInfo['value'] * $mSize);
-							if ($newSize <= 255) {
-								$fInfo['value'] = $newSize;
-							} else {
-								$fInfo = array(
-									'fieldType' => 'text',
-									'featureIndex' => array(
-										'NOTNULL' => array(
-											'keyword' => 'NOT NULL'
-										)
-									)
-								);
-								// Change key definition if necessary (must use "prefix" on TEXT columns)
-								if (is_array($cfg['keys'])) {
-									foreach ($cfg['keys'] as $kN => $kType) {
-										$match = array();
-										preg_match('/^([^(]*)\\(([^)]+)\\)(.*)/', $kType, $match);
-										$keys = array();
-										foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $match[2]) as $kfN) {
-											if ($fN == $kfN) {
-												$kfN .= '(' . $newSize . ')';
-											}
-											$keys[] = $kfN;
-										}
-										$total[$table]['keys'][$kN] = $match[1] . '(' . implode(',', $keys) . ')' . $match[3];
-									}
-								}
-							}
-							break;
-						case 'tinytext':
-							$fInfo['fieldType'] = 'text';
-							break;
-						}
-						$total[$table]['fields'][$fN] = $sqlParser->compileFieldCfg($fInfo);
-						if ($sqlParser->parse_error) {
-							throw new \RuntimeException('TYPO3 Fatal Error: ' . $sqlParser->parse_error, 1270853961);
-						}
-					}
-				}
-			}
-		}
 	}
 
 	/**

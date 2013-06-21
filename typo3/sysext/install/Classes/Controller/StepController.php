@@ -81,8 +81,8 @@ class StepController extends AbstractController {
 		'SYS/caching/cacheFrontends',
 		// #38414
 		'SYS/extCache',
-		// @TODO: #35923 - Still referenced in SqlSchemaMigrationService
-		//'SYS/multiplyDBfieldSize',
+		// #35923
+		'SYS/multiplyDBfieldSize',
 		// #46993
 		'SYS/T3instID',
 	);
