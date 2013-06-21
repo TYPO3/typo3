@@ -342,30 +342,12 @@ class Bootstrap {
 	 *
 	 * Since TYPO3 4.5, everything other than UTF-8 is deprecated.
 	 *
-	 * [BE][forceCharset] is set to the charset that TYPO3 is using
 	 * [SYS][setDBinit] is used to set the DB connection
 	 * and both settings need to be adjusted for UTF-8 in order to work properly
 	 *
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
 	protected function checkUtf8DatabaseSettingsOrDie() {
-		// Check if [BE][forceCharset] has been set in localconf.php
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'])) {
-			// die() unless we're already on UTF-8
-			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] != 'utf-8' &&
-				$GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] &&
-				TYPO3_enterInstallScript !== '1') {
-
-				die('This installation was just upgraded to a new TYPO3 version. Since TYPO3 4.7, utf-8 is always enforced.<br />' .
-					'The configuration option $GLOBALS[\'TYPO3_CONF_VARS\'][BE][forceCharset] was marked as deprecated in TYPO3 4.5 and is now ignored.<br />' .
-					'You have configured the value to something different, which is not supported anymore.<br />' .
-					'Please proceed to the Update Wizard in the TYPO3 Install Tool to update your configuration.'
-				);
-			} else {
-				unset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']);
-			}
-		}
-
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']) &&
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] !== '-1' &&
 			preg_match('/SET NAMES [\'"]?utf8[\'"]?/i', $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']) === FALSE &&
