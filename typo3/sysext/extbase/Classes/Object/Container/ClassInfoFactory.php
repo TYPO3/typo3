@@ -42,6 +42,9 @@ class ClassInfoFactory {
 	 * @return \TYPO3\CMS\Extbase\Object\Container\ClassInfo the class info
 	 */
 	public function buildClassInfoFromClassName($className) {
+		if ($className === 'DateTime') {
+			return new \TYPO3\CMS\Extbase\Object\Container\ClassInfo($className, array(), array(), FALSE, FALSE, array());
+		}
 		try {
 			$reflectedClass = new \ReflectionClass($className);
 		} catch (\Exception $e) {

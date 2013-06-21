@@ -68,6 +68,22 @@ class ClassInfoFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$classInfo = $this->classInfoFactory->buildClassInfoFromClassName('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithInjectProperties');
 		$this->assertEquals(array('secondDummyClass' => 'TYPO3\\CMS\\Extbase\\Tests\\Fixture\\SecondDummyClass'), $classInfo->getInjectProperties());
 	}
+
+	/**
+	 * @test
+	 */
+	public function buildClassInfoReturnsCustomClassInfoForDateTime() {
+
+		/** @var \PHPUnit_Framework_MockObject_MockObject | \TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory $classInfoFactory */
+		$classInfoFactory = $this->getMock('TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory', array('dummy'));
+		$classInfoFactory->expects($this->never())->method('getConstructorArguments');
+
+		$classInfo = $classInfoFactory->buildClassInfoFromClassName('DateTime');
+		$this->assertEquals(
+			new \TYPO3\CMS\Extbase\Object\Container\ClassInfo('DateTime', array(), array(), FALSE, FALSE, array()),
+			$classInfo
+		);
+	}
 }
 
 ?>
