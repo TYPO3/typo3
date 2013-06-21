@@ -68,8 +68,8 @@ class StepController extends AbstractController {
 		'FE/defaultTypoScript_editorcfg.',
 		// #25099
 		'FE/simulateStaticDocuments',
-		// @TODO: #14441 - Still referenced at one place
-		//'GFX/gdlib_2',
+		// #22687
+		'GFX/gdlib_2',
 		// # ?
 		'GFX/noIconProc',
 		// #17606
