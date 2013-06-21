@@ -87,7 +87,7 @@ class t3lib_flexformtools {
 		$this->callBackObj = $callBackObj;
 
 			// Get Data Structure:
-		$dataStructArray = t3lib_BEfunc::getFlexFormDS($GLOBALS['TCA'][$table]['columns'][$field]['config'], $row, $table);
+		$dataStructArray = t3lib_BEfunc::getFlexFormDS($GLOBALS['TCA'][$table]['columns'][$field]['config'], $row, $table, $field);
 
 			// If data structure was ok, proceed:
 		if (is_array($dataStructArray)) {
