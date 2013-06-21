@@ -111,7 +111,7 @@ class FlexFormTools {
 		}
 		$this->callBackObj = $callBackObj;
 		// Get Data Structure:
-		$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns'][$field]['config'], $row, $table);
+		$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($GLOBALS['TCA'][$table]['columns'][$field]['config'], $row, $table, $field);
 		// If data structure was ok, proceed:
 		if (is_array($dataStructArray)) {
 			// Get flexform XML data:
