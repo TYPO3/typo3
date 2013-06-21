@@ -10,7 +10,6 @@ return array(
 		'explicitADmode' => 'explicitAllow',
 		'fileCreateMask' => '0664',
 		'folderCreateMask' => '2774',
-		'forceCharset' => 'utf-8',
 		'installToolPassword' => 'bacb98acf97e0b6112b1d1b650b84971',
 	),
 	'DB' => array(
