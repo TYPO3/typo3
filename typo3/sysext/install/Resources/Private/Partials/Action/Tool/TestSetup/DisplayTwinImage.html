@@ -45,14 +45,14 @@
 				</tr>
 				<tr>
 					<td>
-						{test.referenceFile -> i:file.size()},
+						{test.referenceFile -> i:file.size()}Bytes,
 						{test.referenceFile -> i:file.imageDimension()}
 						x {test.referenceFile -> i:file.imageDimension(dimension:'height')} pixel
 					</td>
 					<td>
 						<f:if condition="{test.outputFile}">
 							<f:then>
-								{test.outputFile -> i:file.size()},
+								{test.outputFile -> i:file.size()}Bytes,
 								{test.outputFile -> i:file.imageDimension()}
 								x {test.outputFile -> i:file.imageDimension(dimension:'height')} pixel
 							</f:then>
