@@ -942,15 +942,11 @@ class ResourceStorage {
 			throw new Exception\InsufficientFileWritePermissionsException('Writing to file "' . $file->getIdentifier() . '" is not allowed.', 1330121088);
 		}
 			// Call driver method to update the file and update file properties afterwards
-		try {
-			$result = $this->driver->setFileContents($file, $contents);
-			$fileInfo = $this->driver->getFileInfo($file);
-			$fileInfo['sha1'] = $this->driver->hash($file, 'sha1');
-			$file->updateProperties($fileInfo);
-			$this->getFileRepository()->update($file);
-		} catch (\RuntimeException $e) {
-			throw $e;
-		}
+		$result = $this->driver->setFileContents($file, $contents);
+		$fileInfo = $this->driver->getFileInfo($file);
+		$fileInfo['sha1'] = $this->driver->hash($file, 'sha1');
+		$file->updateProperties($fileInfo);
+		$this->getFileRepository()->update($file);
 		return $result;
 	}
 
