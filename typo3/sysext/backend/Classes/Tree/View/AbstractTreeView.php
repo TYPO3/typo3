@@ -951,7 +951,7 @@ abstract class AbstractTreeView {
 			}
 			// Passing on default <td> class for subelements:
 			if (is_array($row) && $subCSSclass !== '') {
-				if ($this->table === 'pages' && $this->highlightPagesWithVersions && !isset($row['_CSSCLASS']) && count(BackendUtility::countVersionsOfRecordsOnPage($this->BE_USER->workspace, $row['uid']))) {
+				if ($this->table === 'pages' && $this->highlightPagesWithVersions && !isset($row['_CSSCLASS']) && \TYPO3\CMS\Backend\Utility\RecordUtility::getInstance()->hasVersions($row['uid'])) {
 					$row['_CSSCLASS'] = 'ver-versions';
 				}
 				if (!isset($row['_CSSCLASS'])) {

@@ -84,7 +84,7 @@ class PagetreeCollectionsProcessor implements \TYPO3\CMS\Backend\Tree\Pagetree\C
 	 * @return void
 	 */
 	protected function highlightVersionizedElements(\TYPO3\CMS\Backend\Tree\TreeNode $node) {
-		if (!$node->getCls() && count(\TYPO3\CMS\Backend\Utility\BackendUtility::countVersionsOfRecordsOnPage($GLOBALS['BE_USER']->workspace, $node->getId(), TRUE))) {
+		if (!$node->getCls() && \TYPO3\CMS\Backend\Utility\RecordUtility::getInstance()->hasVersions($node->getId())) {
 			$node->setCls('ver-versions');
 		}
 	}
