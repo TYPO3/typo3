@@ -1,5 +1,5 @@
 treeeditor.js
-tree.js
+tree.jsw
 filteringtree.js
 nodeui.js
 deletiondropzone.js

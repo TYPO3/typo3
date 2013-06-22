@@ -491,7 +491,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			// Loading ExtJs inline code
 			$this->pageRenderer->enableExtJSQuickTips();
 			// Add TYPO3 notifications JavaScript
-			$this->pageRenderer->addJsFile('../t3lib/js/extjs/notifications.js');
+			$this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/notifications.js');
 			// Add RTE JavaScript
 			$this->addRteJsFiles($this->TCEform->RTEcounter);
 			$this->pageRenderer->addJsFile($this->buildJSMainLangFile($this->TCEform->RTEcounter));

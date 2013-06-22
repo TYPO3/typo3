@@ -65,10 +65,9 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 		));
 		$states = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['States'];
 		$this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
-		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/notifications.js');
-		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ux/flashmessages.js');
-		$this->pageRenderer->addJsFile($this->backPath . 'js/extjs/iframepanel.js');
-		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/notifications.js');
+		$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/notifications.js');
+		$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/flashmessages.js');
+		$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/iframepanel.js');
 		$resourcePathJavaScript = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/JavaScript/';
 		$jsFiles = array(
 			'Ext.ux.plugins.TabStripContainer.js',

@@ -1374,7 +1374,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			$filterNamespaces = array('TYPO3');
 		}
 		// For ExtDirect we need flash message support
-		$this->addJsFile(\TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($this->backPath . '../t3lib/js/extjs/ux/flashmessages.js'));
+		$this->addJsFile(\TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($this->backPath . 'sysext/backend/Resources/Public/JavaScript/flashmessages.js'));
 		// Add language labels for ExtDirect
 		if (TYPO3_MODE === 'FE') {
 			$this->addInlineLanguageLabelArray(array(

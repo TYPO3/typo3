@@ -842,7 +842,7 @@ class DocumentTemplate {
 		// add docstyles
 		$this->docStyle();
 		if ($this->extDirectStateProvider) {
-			$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ExtDirect.StateProvider.js');
+			$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/ExtDirect.StateProvider.js');
 		}
 		// Add jsCode for overriding the console with a debug panel connection
 		$this->pageRenderer->addJsInlineCode('consoleOverrideWithDebugPanel', 'if (typeof top.Ext === "object") {
@@ -1548,7 +1548,7 @@ class DocumentTemplate {
 	 */
 	public function getContextMenuCode() {
 		$this->pageRenderer->loadPrototype();
-		$this->loadJavascriptLib('js/clickmenu.js');
+		$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/clickmenu.js');
 		$this->JScodeArray['clickmenu'] = '
 			Clickmenu.clickURL = "' . $this->backPath . 'alt_clickmenu.php";
 			Clickmenu.ajax     = true;';
