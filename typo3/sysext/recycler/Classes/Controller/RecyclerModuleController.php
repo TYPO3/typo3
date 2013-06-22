@@ -140,7 +140,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 		$this->pageRenderer->addInlineLanguageLabelArray($this->getJavaScriptLabels());
 		// Load Recycler JavaScript:
 		// Load Plugins
-		$uxPath = $this->doc->backpath . '../t3lib/js/extjs/ux/';
+		$uxPath = $this->doc->backpath . 'js/extjs/ux/';
 		$this->pageRenderer->addJsFile($uxPath . 'Ext.grid.RowExpander.js');
 		$this->pageRenderer->addJsFile($uxPath . 'Ext.app.SearchField.js');
 		$this->pageRenderer->addJsFile($uxPath . 'Ext.ux.FitToParent.js');
