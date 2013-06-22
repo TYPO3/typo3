@@ -2229,7 +2229,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDirsReturnsArrayOfDirectoriesFromGivenDirectory() {
-		$path = PATH_t3lib;
+		$path = PATH_typo3conf;
 		$directories = Utility\GeneralUtility::get_dirs($path);
 		$this->assertInternalType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $directories);
 	}

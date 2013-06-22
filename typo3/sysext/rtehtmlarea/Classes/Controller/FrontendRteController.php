@@ -256,9 +256,9 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 			$this->pageRenderer->loadExtJs();
 			$this->pageRenderer->enableExtJSQuickTips();
 		}
-		$this->pageRenderer->addCssFile($this->siteURL . 't3lib/js/extjs/ux/resize.css');
-		$this->pageRenderer->addJsFile($this->getFullFileName('t3lib/js/extjs/ux/ext.resizable.js'));
-		$this->pageRenderer->addJsFile($this->getFullFileName('t3lib/js/extjs/notifications.js'));
+		$this->pageRenderer->addCssFile($this->siteURL . 'typo3/js/extjs/ux/resize.css');
+		$this->pageRenderer->addJsFile($this->getFullFileName('typo3/js/extjs/ux/ext.resizable.js'));
+		$this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/notifications.js');
 		// Add RTE JavaScript
 		$this->addRteJsFiles($this->TCEform->RTEcounter);
 		$this->pageRenderer->addJsFile($this->buildJSMainLangFile($this->TCEform->RTEcounter));

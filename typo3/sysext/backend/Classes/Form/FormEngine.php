@@ -5299,8 +5299,8 @@ function ' . $evalData . '(value) {
 			$pageRenderer->loadExtJS();
 			// Make textareas resizable and flexible
 			if (!($GLOBALS['BE_USER']->uc['resizeTextareas'] == '0' && $GLOBALS['BE_USER']->uc['resizeTextareas_Flexible'] == '0')) {
-				$pageRenderer->addCssFile($this->backPath . '../t3lib/js/extjs/ux/resize.css');
-				$this->loadJavascriptLib('../t3lib/js/extjs/ux/ext.resizable.js');
+				$pageRenderer->addCssFile($this->backPath . 'js/extjs/ux/resize.css');
+				$this->loadJavascriptLib('js/extjs/ux/ext.resizable.js');
 			}
 			$resizableSettings = array(
 				'textareaMaxHeight' => $GLOBALS['BE_USER']->uc['resizeTextareas_MaxHeight'] > 0 ? $GLOBALS['BE_USER']->uc['resizeTextareas_MaxHeight'] : '600',
@@ -5318,8 +5318,8 @@ function ' . $evalData . '(value) {
 				'dateFormatUS' => array('n-j-Y', 'G:i n-j-Y')
 			);
 			$pageRenderer->addInlineSettingArray('', $typo3Settings);
-			$this->loadJavascriptLib('../t3lib/js/extjs/ux/Ext.ux.DateTimePicker.js');
-			$this->loadJavascriptLib('../t3lib/js/extjs/tceforms.js');
+			$this->loadJavascriptLib('js/extjs/ux/Ext.ux.DateTimePicker.js');
+			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tceforms.js');
 			// If IRRE fields were processed, add the JavaScript functions:
 			if ($this->inline->inlineCount) {
 				$GLOBALS['SOBE']->doc->getPageRenderer()->loadScriptaculous();
