@@ -128,7 +128,6 @@ the web server.
 
 Change permissions of the directories and files. The following directories and
 files should be read-only for the web server:
-	t3lib/
 	typo3/
 	index.php
 
@@ -170,9 +169,8 @@ Users of Windows XP/2000 or newer can use the "junction" program by
 Marc Russinovich to create links. The program can be obtained at:
 	http://technet.microsoft.com/en-us/sysinternals/bb896768.aspx
 
-Next create links for the typo3/ and t3lib/ directories:
+Next create link for the typo3/ directory:
 cd /var/www/example.com
-	ln -s typo3_src/t3lib
 	ln -s typo3_src/typo3
 
 Linux, Unix and Mac OS X users also create a symbolic link to index.php
