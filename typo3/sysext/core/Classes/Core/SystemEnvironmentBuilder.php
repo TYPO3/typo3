@@ -122,7 +122,7 @@ class SystemEnvironmentBuilder {
 		define('TYPO3_URL_GENERAL', 'http://typo3.org/');
 		define('TYPO3_URL_ORG', 'http://typo3.org/');
 		define('TYPO3_URL_LICENSE', 'http://typo3.org/licenses');
-		define('TYPO3_URL_EXCEPTION', 'http://typo3.org/go/exception/v4/');
+		define('TYPO3_URL_EXCEPTION', 'http://typo3.org/go/exception/CMS/');
 		define('TYPO3_URL_MAILINGLISTS', 'http://lists.typo3.org/cgi-bin/mailman/listinfo');
 		define('TYPO3_URL_DOCUMENTATION', 'http://typo3.org/documentation/');
 		define('TYPO3_URL_DOCUMENTATION_TSREF', 'http://docs.typo3.org/typo3cms/TyposcriptReference/');
