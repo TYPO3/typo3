@@ -544,3 +544,8 @@ img.t3-tceforms-sysfile-imagepreview {
 * html div#typo3-docbody table.typo3-TCEforms {
 	margin-top: 20px;
 }
+
+.typo3-TCEforms .formField-field img[src*="clear.gif"],
+.typo3-TCEforms .t3-form-palette-field img[src*="clear.gif"] {
+	z-index: 0;
+}
