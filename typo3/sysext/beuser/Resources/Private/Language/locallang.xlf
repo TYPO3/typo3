@@ -120,6 +120,9 @@
 			<trans-unit id="switchBackMode" xml:space="preserve">
 				<source>[switch-back mode]</source>
 			</trans-unit>
+			<trans-unit id="confirm" xml:space="preserve">
+				<source>Are you sure you want to delete this record?</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
