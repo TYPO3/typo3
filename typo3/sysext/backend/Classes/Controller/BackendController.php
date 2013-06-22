@@ -107,14 +107,14 @@ class BackendController {
 			'modulemenu' => 'sysext/backend/Resources/Public/JavaScript/modulemenu.js',
 			'iecompatibility' => 'sysext/backend/Resources/Public/JavaScript/iecompatibility.js',
 			'evalfield' => 'js/jsfunc.evalfield.js',
-			'flashmessages' => '../t3lib/js/extjs/ux/flashmessages.js',
-			'tabclosemenu' => '../t3lib/js/extjs/ux/ext.ux.tabclosemenu.js',
-			'notifications' => '../t3lib/js/extjs/notifications.js',
+			'flashmessages' => 'sysext/backend/Resources/Public/JavaScript/flashmessages.js',
+			'tabclosemenu' => 'js/extjs/ux/ext.ux.tabclosemenu.js',
+			'notifications' => 'sysext/backend/Resources/Public/JavaScript/notifications.js',
 			'backend' => 'sysext/backend/Resources/Public/JavaScript/backend.js',
-			'loginrefresh' => 'js/loginrefresh.js',
+			'loginrefresh' => 'sysext/backend/Resources/Public/JavaScript/loginrefresh.js',
 			'debugPanel' => 'js/extjs/debugPanel.js',
 			'viewport' => 'js/extjs/viewport.js',
-			'iframepanel' => 'js/extjs/iframepanel.js',
+			'iframepanel' => 'sysext/backend/Resources/Public/JavaScript/iframepanel.js',
 			'backendcontentiframe' => 'js/extjs/backendcontentiframe.js',
 			'modulepanel' => 'js/extjs/modulepanel.js',
 			'viewportConfiguration' => 'js/extjs/viewportConfiguration.js',
@@ -242,7 +242,7 @@ class BackendController {
 			$component = strtolower(substr($info['componentId'], strrpos($info['componentId'], '-') + 1));
 			$componentDirectory = 'components/' . $component . '/';
 			if ($info['isCoreComponent']) {
-				$absoluteComponentPath = PATH_t3lib . 'js/extjs/' . $componentDirectory;
+				$absoluteComponentPath = PATH_site . 'typo3/js/extjs/' . $componentDirectory;
 				$relativeComponentPath = '../' . str_replace(PATH_site, '', $absoluteComponentPath);
 			} else {
 				$absoluteComponentPath = ExtensionManagementUtility::extPath($info['extKey']) . $componentDirectory;

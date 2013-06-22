@@ -209,9 +209,9 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 			checkSub.disabled = buttonDisable;
 		}');
 		// Add JS
-		$this->pageRenderer->addJsFile($this->doc->backPath . '../t3lib/js/extjs/ux/Ext.ux.FitToParent.js');
-		$this->pageRenderer->addJsFile($this->doc->backPath . '../t3lib/js/extjs/ux/flashmessages.js');
-		$this->pageRenderer->addJsFile($this->doc->backPath . 'js/extjs/iframepanel.js');
+		$this->pageRenderer->addJsFile($this->doc->backPath . 'js/extjs/ux/Ext.ux.FitToParent.js');
+		$this->pageRenderer->addJsFile($this->doc->backPath . 'sysext/backend/Resources/Public/JavaScript/flashmessages.js');
+		$this->pageRenderer->addJsFile($this->doc->backPath . 'sysext/backend/Resources/Public/JavaScript/iframepanel.js');
 		if ($this->modTS['showCheckLinkTab'] == 1) {
 			$this->updateListHtml = '<input type="submit" name="updateLinkList" id="updateLinkList" value="' . $GLOBALS['LANG']->getLL('label_update') . '"/>';
 		}
@@ -633,7 +633,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	 */
 	protected function loadHeaderData() {
 		$this->doc->addStyleSheet('linkvalidator', $this->relativePath . 'Resources/Public/Css/linkvalidator.css', 'linkvalidator');
-		$this->doc->getPageRenderer()->addJsFile($this->doc->backPath . '../t3lib/js/extjs/ux/Ext.ux.FitToParent.js');
+		$this->doc->getPageRenderer()->addJsFile($this->doc->backPath . 'js/extjs/ux/Ext.ux.FitToParent.js');
 	}
 
 	/**

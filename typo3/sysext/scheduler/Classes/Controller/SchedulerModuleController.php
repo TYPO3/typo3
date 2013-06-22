@@ -639,8 +639,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$pageRenderer = $this->doc->getPageRenderer();
 		$pageRenderer->loadExtJS();
 		$pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler') . 'res/tx_scheduler_be.js');
-		$pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/tceforms.js');
-		$pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/ux/Ext.ux.DateTimePicker.js');
+		$pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/tceforms.js');
+		$pageRenderer->addJsFile($this->backPath . 'js/extjs/ux/Ext.ux.DateTimePicker.js');
 		// Define settings for Date Picker
 		$typo3Settings = array(
 			'datePickerUSmode' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 1 : 0,

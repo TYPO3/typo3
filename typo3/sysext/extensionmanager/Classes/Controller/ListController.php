@@ -78,7 +78,7 @@ class ListController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCont
 	 * Add the needed JavaScript files for all actions
 	 */
 	public function initializeAction() {
-		$this->pageRenderer->addJsFile('../t3lib/js/extjs/notifications.js');
+		$this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/notifications.js');
 		$this->pageRenderer->addInlineLanguageLabelFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
 	}
 
