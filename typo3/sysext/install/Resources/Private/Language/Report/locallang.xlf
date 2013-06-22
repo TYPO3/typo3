@@ -13,7 +13,7 @@
 				<source>The system environment check returned errors. Those errors will affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
 			</trans-unit>
 			<trans-unit id="environment.status.message.warning" xml:space="preserve">
-				<source>The system environment check returned warnings. Those errors might have a negative affect to the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
+				<source>The system environment check returned warnings. Those warnings might have a negative effect on the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
 			</trans-unit>
 			<trans-unit id="environment.status.message.notice" xml:space="preserve">
 				<source>The system environment check returned notices. Those should not affect the functionality and stability of your TYPO3 CMS instance. Please check the install tool "System environment" for all details.</source>
