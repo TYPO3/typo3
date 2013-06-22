@@ -27,7 +27,7 @@ CREATE TABLE be_groups (
   lockToDomain varchar(50) DEFAULT '' NOT NULL,
   deleted tinyint(1) unsigned DEFAULT '0' NOT NULL,
   TSconfig text,
-  subgroup varchar(255) DEFAULT '' NOT NULL,
+  subgroup text,
   hide_in_lists tinyint(4) DEFAULT '0' NOT NULL,
   workspace_perms tinyint(3) DEFAULT '1' NOT NULL,
   PRIMARY KEY (uid),
