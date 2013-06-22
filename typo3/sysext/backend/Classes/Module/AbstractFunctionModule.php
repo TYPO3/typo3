@@ -73,9 +73,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
  * 'web_func',
- * 'tx_wizardcrpages_webfunc_2',
- * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'class.tx_wizardcrpages_webfunc_2.php',
- * 'LLL:EXT:wizard_crpages/locallang.php:wiz_crMany',
+ * 'TYPO3\\CMS\\WizardCrpages\\Controller\\CreatePagesWizardModuleFunctionController',
+ * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Controller/CreatePagesWizardModuleFunctionController.php',
+ * 'LLL:EXT:wizard_crpages/locallang.xlf:wiz_crMany',
  * 'wiz'
  * );
  *
@@ -134,7 +134,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @see \TYPO3\CMS\Backend\Module\BaseScriptClass
  * @see \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController
- * @see tx_wizardsortpages_webfunc_2
+ * @see \TYPO3\CMS\WizardSortpages\View\SortPagesWizardModuleFunction
  */
 abstract class AbstractFunctionModule {
 
