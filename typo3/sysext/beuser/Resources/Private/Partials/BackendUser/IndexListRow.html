@@ -26,6 +26,7 @@
 		<a href="alt_doc.php?edit[be_users][{backendUser.uid}]=edit&returnUrl={returnUrl}">
 			<bu:spriteManagerIcon iconName="actions-document-open" />
 		</a>
+
 		<f:if condition="{backendUser.isDisabled} == 1">
 			<f:then>
 				<a href="<bu:issueCommand parameters="tce_db.php?&data[be_users][{backendUser.uid}][disable]=0&redirect={redirectUrl}" />">
@@ -38,6 +39,9 @@
 				</a>
 			</f:else>
 		</f:if>
+
+		<bu:RemoveUser backendUser="{backendUser}" />
+
 		<f:comment>
 			No need to check if currently listed user is current user.
 			SU does not work with admin users and current user must always be admin.
