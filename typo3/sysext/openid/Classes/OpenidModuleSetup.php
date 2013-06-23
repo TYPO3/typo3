@@ -53,7 +53,23 @@ class OpenidModuleSetup {
 	 */
 	public function renderOpenID(array $parameters, \TYPO3\CMS\Setup\Controller\SetupModuleController $parent) {
 		$openid = $GLOBALS['BE_USER']->user['tx_openid_openid'];
-		return '<input id="field_tx_openid_openid"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' type="text" name="data[be_users][tx_openid_openid]"' . ' value="' . htmlspecialchars($openid) . '" />';
+		$add = htmlspecialchars(
+			$GLOBALS['LANG']->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:addopenid')
+		);
+
+		return '<input id="field_tx_openid_openid"' .
+			$GLOBALS['TBE_TEMPLATE']->formWidth(20) .
+			' type="text" name="data[be_users][tx_openid_openid]"' .
+			' value="' . htmlspecialchars($openid) . '" />' .
+			'&nbsp;&nbsp;<a href="#" onclick="' .
+			'vHWin=window.open(\'../typo3/mod.php\?' .
+			'M=openid_wizard&' .
+			'P[itemName]=data%5Bbe_users%5D%5Btx_openid_openid%5D\'' .
+			',null,\'width=600,height=400,status=0,menubar=0,scrollbars=0\');' .
+			'vHWin.focus();return false;' .
+			'">' .
+			'<img src="../typo3/sysext/openid/ext_icon.gif" alt="' . $add . '" title="' . $add . '"/>' .
+			'</a>';
 	}
 
 }
