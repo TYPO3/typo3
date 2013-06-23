@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="openid">
+		<header/>
+		<body>
+			<trans-unit id="title.error" xml:space="preserve">
+				<source>Error during OpenID authentication</source>
+			</trans-unit>
+			<trans-unit id="title.success" xml:space="preserve">
+				<source>OpenID authentication successful</source>
+			</trans-unit>
+			<trans-unit id="error.cancelled" xml:space="preserve">
+				<source>OpenID authentication has been cancelled.</source>
+			</trans-unit>
+			<trans-unit id="error.general" xml:space="preserve">
+				<source><![CDATA[Status: %s<br/>Message: %s]]></source>
+			</trans-unit>
+			<trans-unit id="error.no-response" xml:space="preserve">
+				<source>We got no OpenID response.</source>
+			</trans-unit>
+			<trans-unit id="error.setup" xml:space="preserve">
+				<source>Error setting up OpenID authentication for "%s".</source>
+			</trans-unit>
+			<trans-unit id="youropenid" xml:space="preserve">
+				<source><![CDATA[OpenID is: <tt>%s</tt>]]></source>
+			</trans-unit>
+
+			<trans-unit id="addopenid" xml:space="preserve">
+				<source>Add OpenID</source>
+			</trans-unit>
+
+			<trans-unit id="html.title" xml:space="preserve">
+				<source>OpenID registration</source>
+			</trans-unit>
+			<trans-unit id="html.description" xml:space="preserve">
+				<source>Add an OpenID to your backend user. This OpenID can then be used to log in the TYPO3 backend.</source>
+			</trans-unit>
+			<trans-unit id="html.openid_url" xml:space="preserve">
+				<source>OpenID identifier</source>
+			</trans-unit>
+			<trans-unit id="html.submit" xml:space="preserve">
+				<source>Login</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
