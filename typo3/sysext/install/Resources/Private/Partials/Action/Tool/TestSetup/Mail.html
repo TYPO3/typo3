@@ -5,6 +5,21 @@
 	You should then receive a testmail from "typo3installtool@example.org".
 </p>
 
+<p>
+	In case no mail is received, your setup might be broken. Check the following:
+	<ul>
+		<li>
+			If $TYPO3_CONF_VARS['MAIL']['transport'] set to mail or sendmail, TYPO3 tries to use PHPs internal
+			mail() function. There might be no such programm installed.
+		</li>
+		<li>
+			If $TYPO3_CONF_VARS['MAIL']['transport'] to smtp, check the data given in
+			$TYPO3_CONF_VARS['MAIL'][transport_smtp_*] is valid. Wrong data here results in faulty requests to the
+			mail server. You can find the resulting messages in the mail servers log.
+		</li>
+	</ul>
+</p>
+
 <form method="post">
 	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
 	<fieldset>
