@@ -161,9 +161,6 @@ class SystemEnvironmentBuilder {
 		// Example "install/" for the install tool entry script
 		// Example "../typo3conf/ext/templavoila/mod2/ for an extension installed in typo3conf/ext/
 		define('PATH_typo3_mod', defined('TYPO3_MOD_PATH') ? TYPO3_MOD_PATH : '');
-		// Absolute path to the t3lib directory with trailing slash
-		// Example "/var/www/instance-name/htdocs/t3lib/"
-		define('PATH_t3lib', PATH_site . 't3lib/');
 		// Absolute path to the typo3conf directory with trailing slash
 		// Example "/var/www/instance-name/htdocs/typo3conf/"
 		define('PATH_typo3conf', PATH_site . 'typo3conf/');
