@@ -12,7 +12,17 @@ $tempColumns = array(
 			'type' => 'input',
 			'size' => '30',
 			// Requirement: unique (BE users are unique in the whole system)
-			'eval' => 'trim,nospace,unique'
+			'eval' => 'trim,nospace,unique',
+			'wizards' => Array(
+				'_PADDING' => 2,
+				'0' => Array(
+					'type' => 'popup',
+					'title' => 'Add OpenID',
+					'script' => 'mod.php?M=openid_wizard',
+					'icon' => 'EXT:openid/ext_icon.gif',
+					'JSopenParams' => ',width=600,height=400,status=0,menubar=0,scrollbars=0',
+				)
+			),
 		)
 	)
 );
@@ -37,4 +47,12 @@ $GLOBALS['TYPO3_USER_SETTINGS']['columns']['tx_openid_openid'] = array(
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToUserSettings('tx_openid_openid', 'after:password2');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_user_setup', 'EXT:openid/locallang_csh_mod.xlf');
+
+if (TYPO3_MODE === 'BE') {
+	// Register wizard
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'openid_wizard',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'wizard/'
+	);
+}
 ?>
