@@ -226,27 +226,29 @@ class AbstractController {
 
 	/**
 	 * If install tool login mail is set, send a mail for a successful login.
-	 * This is currently straight ahead code and could be improved.
 	 *
 	 * @return void
 	 */
 	protected function sendLoginSuccessfulMail() {
 		$warningEmailAddress = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
 		if ($warningEmailAddress) {
-			$subject = 'Install Tool Login at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'';
-			$body =
-				'There has been an Install Tool login at TYPO3 site'
+			/** @var \TYPO3\CMS\Core\Mail\MailMessage $mailMessage */
+			$mailMessage = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+			$mailMessage
+				->addTo($warningEmailAddress)
+				->setSubject('Install Tool Login at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
+				->addFrom('typo3installtool@example.org', 'TYPO3 Install Tool WARNING')
+				->setBody('There has been an Install Tool login at TYPO3 site'
 				. ' \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\''
 				. ' (' . GeneralUtility::getIndpEnv('HTTP_HOST') . ')'
 				. ' from remote address \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\''
-				. ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')';
-			mail($warningEmailAddress, $subject, $body, 'From: TYPO3 Install Tool WARNING <>');
+				. ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')')
+				->send();
 		}
 	}
 
 	/**
 	 * If install tool login mail is set, send a mail for a failed login.
-	 * This is currently straight ahead code and could be improved.
 	 *
 	 * @return void
 	 */
@@ -254,15 +256,19 @@ class AbstractController {
 		$formValues = GeneralUtility::_GP('install');
 		$warningEmailAddress = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
 		if ($warningEmailAddress) {
-			$subject = 'Install Tool Login ATTEMPT at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'';
-			$body =
-				'There has been an Install Tool login attempt at TYPO3 site'
+			/** @var \TYPO3\CMS\Core\Mail\MailMessage $mailMessage */
+			$mailMessage = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+			$mailMessage
+				->addTo($warningEmailAddress)
+				->setSubject('Install Tool Login ATTEMPT at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
+				->addFrom('typo3installtool@example.org', 'TYPO3 Install Tool WARNING')
+				->setBody('There has been an Install Tool login attempt at TYPO3 site'
 				. ' \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\''
 				. ' (' . GeneralUtility::getIndpEnv('HTTP_HOST') . ')'
 				. ' The MD5 hash of the last 5 characters of the password tried was \'' . substr(md5($formValues['password']), -5) . '\''
 				. ' remote addres was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\''
-				. ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')';
-			mail($warningEmailAddress, $subject, $body, 'From: TYPO3 Install Tool WARNING <>');
+				. ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')')
+				->send();
 		}
 	}
 
