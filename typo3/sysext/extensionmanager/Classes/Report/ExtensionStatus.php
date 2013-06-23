@@ -85,6 +85,8 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$extensionStatus = $this->getSecurityStatusOfExtensions();
 		$status['extensionsSecurityStatusInstalled'] = $extensionStatus->loaded;
 		$status['extensionsSecurityStatusNotInstalled'] = $extensionStatus->existing;
+		$status['extensionsOutdatedStatusInstalled'] = $extensionStatus->loadedoutdated;
+		$status['extensionsOutdatedStatusNotInstalled'] = $extensionStatus->existingoutdated;
 
 		return $status;
 	}
@@ -133,6 +135,8 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$extensionInformation = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
 		$loadedInsecure = array();
 		$existingInsecure = array();
+		$loadedOutdated = array();
+		$existingOutdated = array();
 		foreach ($extensionInformation as $extensionKey => $information) {
 			if (
 				array_key_exists('terObject', $information)
@@ -152,6 +156,21 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 						);
 					} else {
 						$existingInsecure[] = array(
+							'extensionKey' => $extensionKey,
+							'version' => $terObject->getVersion(),
+						);
+					}
+				} elseif ($insecureStatus === -2) {
+					if (
+						array_key_exists('installed', $information)
+						&& $information['installed'] === TRUE
+					) {
+						$loadedOutdated[] = array(
+							'extensionKey' => $extensionKey,
+							'version' => $terObject->getVersion(),
+						);
+					} else {
+						$existingOutdated[] = array(
 							'extensionKey' => $extensionKey,
 							'version' => $terObject->getVersion(),
 						);
@@ -219,6 +238,68 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$result->existing = $this->objectManager->get(
 			'TYPO3\\CMS\\Reports\\Status',
 			$GLOBALS['LANG']->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingExtensions.title'),
+			$value,
+			$message,
+			$severity
+		);
+
+		if (count($loadedOutdated) === 0) {
+			$value = $GLOBALS['LANG']->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value');
+			$message = '';
+			$severity = \TYPO3\CMS\Reports\Status::OK;
+		} else {
+			$value = sprintf(
+				$GLOBALS['LANG']->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value'),
+				count($loadedOutdated)
+			);
+			$extensionList = array();
+			foreach ($loadedOutdated as $outdatedExtension) {
+				$extensionList[] = sprintf(
+					$GLOBALS['LANG']->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message.extension'),
+					$outdatedExtension['extensionKey'],
+					$outdatedExtension['version']
+				);
+			}
+			$message = sprintf(
+				$GLOBALS['LANG']->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message'),
+				implode('', $extensionList)
+			);
+			$severity = \TYPO3\CMS\Reports\Status::WARNING;
+		}
+		$result->loadedoutdated = $this->objectManager->get(
+			'TYPO3\\CMS\\Reports\\Status',
+			$GLOBALS['LANG']->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.loadedOutdatedExtensions.title'),
+			$value,
+			$message,
+			$severity
+		);
+
+		if (count($existingOutdated) === 0) {
+			$value = $GLOBALS['LANG']->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value');
+			$message = '';
+			$severity = \TYPO3\CMS\Reports\Status::OK;
+		} else {
+			$value = sprintf(
+				$GLOBALS['LANG']->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingOutdatedExtensions.outdatedExtensionExists.value'),
+				count($existingOutdated)
+			);
+			$extensionList = array();
+			foreach ($existingOutdated as $outdatedExtension) {
+				$extensionList[] = sprintf(
+					$GLOBALS['LANG']->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension'),
+					$outdatedExtension['extensionKey'],
+					$outdatedExtension['version']
+				);
+			}
+			$message = sprintf(
+				$GLOBALS['LANG']->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingOutdatedExtensions.outdatedExtensionExists.message'),
+				implode('', $extensionList)
+			);
+			$severity = \TYPO3\CMS\Reports\Status::WARNING;
+		}
+		$result->existingoutdated = $this->objectManager->get(
+			'TYPO3\\CMS\\Reports\\Status',
+			$GLOBALS['LANG']->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:report.status.existingOutdatedExtensions.title'),
 			$value,
 			$message,
 			$severity
