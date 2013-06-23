@@ -1,0 +1,46 @@
+<f:be.container pageTitle="{f:translate(key:'LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:html.title')}"
+	includeCssFiles="{
+		0:'{f:uri.resource(extensionName:\'openid\', path:\'StyleSheets/Wizard.css\')}'
+	}"
+>
+	<h1><f:translate key="LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:html.title" /></h1>
+
+	<p><f:translate key="LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:html.description" /></p>
+
+	<f:if condition="{messages->f:count()} > 0">
+		<f:for each="{messages}" as="message">
+			<f:format.raw>{message}</f:format.raw>
+		</f:for>
+	</f:if>
+	<f:if condition="{claimedId}">
+		<script type="text/javascript">
+			var form;
+			if (window.opener.document.editform) {
+				//normal TCE edit form
+				<f:if condition="{parentFormItemNameNoHr}">
+				window.opener.document.editform["{parentFormItemNameNoHr}"].value="{claimedId}";
+				</f:if>
+				window.opener.document.editform["{parentFormItemName}"].value="{claimedId}";
+				<f:if condition="{parentFormFieldChangeFunc}">
+				window.opener.{parentFormFieldChangeFunc}
+				</f:if>
+			} else if (window.opener.document.usersetup) {
+				//backend user settings
+				window.opener.document.usersetup["{parentFormItemName}"].value="{claimedId}";
+			}
+			window.close();
+		</script>
+	</f:if>
+
+	<f:if condition="{showForm}">
+		<form method="post" action="{formAction}">
+			<input type="hidden" name="P[itemName]" value="{parentFormItemName}"/>
+			<input type="hidden" name="P[fieldChangeFunc][TBE_EDITOR_fieldChanged]" value="{parentFormFieldChangeFunc}"/>
+
+			<label for="openid_url"><f:translate key="LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:html.openid_url" /></label>
+			<input type="text" name="openid_url" id="openid_url" value="{openid_url}"/>
+
+			<input type="submit" value="{f:translate(key:'LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:html.submit')}"/>
+		</form>
+	</f:if>
+</f:be.container>
