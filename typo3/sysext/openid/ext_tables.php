@@ -12,7 +12,17 @@ $tempColumns = array(
 			'type' => 'input',
 			'size' => '30',
 			// Requirement: unique (BE users are unique in the whole system)
-			'eval' => 'trim,nospace,unique'
+			'eval' => 'trim,nospace,unique',
+			'wizards' => Array(
+				'_PADDING' => 2,
+				'0' => Array(
+					'type' => 'popup',
+					'title' => 'Add OpenID',
+					'script' => 'EXT:openid/wizard/index.php',
+					'icon' => 'EXT:openid/ext_icon.gif',
+					'JSopenParams' => ',width=600,height=400,status=0,menubar=0,scrollbars=0',
+				)
+			),
 		)
 	)
 );
