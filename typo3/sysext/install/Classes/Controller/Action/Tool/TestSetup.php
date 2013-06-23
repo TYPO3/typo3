@@ -164,7 +164,7 @@ class TestSetup extends Action\AbstractAction implements Action\ActionInterface 
 		$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\InfoStatus');
 		$message->setTitle('True type font DPI settings');
 		$message->setMessage(
-			'If the text "Tesing true type" does not fit into the image, set TYPO3_CONF_VARS[GFX][TTFdpi] to 96'
+			'If the two images below do not look the same, set $TYPO3_CONF_VARS[GFX][TTFdpi] to a value of 72.'
 		);
 
 		$testResults = array();
