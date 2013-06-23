@@ -1,0 +1,22 @@
+<f:if condition="{messages->f:count()} > 0">
+ <f:for each="{messages}" as="message">
+  <f:format.raw>{message}</f:format.raw>
+ </f:for>
+</f:if>
+<f:if condition="{claimedID}">
+ <script type="text/javascript">
+  window.opener.document.editform["{parentFormItemName}"].value="{claimedId}";
+  window.close();
+ </script>
+</f:if>
+
+<f:if condition="{showForm}">
+ <form method="post" action="{formAction}">
+  <input type="hidden" name="P[itemName]" value="{parentFormItemName}"/>
+
+  <label for="openid_url">OpenID identifier</label>
+  <input type="text" name="openid_url" id="openid_url" value="{openid_url}"/>
+
+  <input type="submit" value="Login"/>
+ </form>
+</f:if>
