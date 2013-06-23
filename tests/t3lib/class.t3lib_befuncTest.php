@@ -31,6 +31,22 @@
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class t3lib_befuncTest extends tx_phpunit_testcase {
+
+	/**
+	 * Enable backup of global and system variables
+	 *
+	 * @var boolean
+	 */
+	protected $backupGlobals = TRUE;
+
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
+	 *
+	 * @var array
+	 */
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
+
 	/**
 	 * @var t3lib_BEfunc
 	 */
