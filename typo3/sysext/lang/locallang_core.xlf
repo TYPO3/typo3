@@ -820,6 +820,9 @@ Would you like to save now in order to refresh the display?</source>
 			<trans-unit id="warning.install_password" xml:space="preserve">
 				<source>The Install Tool is still using the default password "joh316". Update this within the %sAbout section%s of the Install Tool.</source>
 			</trans-unit>
+			<trans-unit id="warning.installtool_default_password" xml:space="preserve">
+				<source>The Install Tool is still using the default password "joh316". Update this within the %sImportant actions section%s of the Install Tool.</source>
+			</trans-unit>
 			<trans-unit id="warning.backend_admin" xml:space="preserve">
 				<source>The default backend user "admin" with password "password" is still present. %sEdit this account%s, either deleting it completely or changing the username and password.</source>
 			</trans-unit>
