@@ -2937,7 +2937,7 @@ function ' . $evalData . '(value) {
 							$rotateLang = array($PA['_valLang']);
 						}
 						$conditionData = is_array($editData) ? $editData : array();
-						// Add current $row to data processed by isDisplayCondition()
+						// Add current $row to data processed by \TYPO3\CMS\Backend\Form\ElementConditionMatcher
 						$conditionData['parentRec'] = $row;
 						$tRows = array();
 
@@ -5960,9 +5960,7 @@ function ' . $evalData . '(value) {
 		GeneralUtility::logDeprecatedFunction();
 		/** @var $elementConditionMatcher \TYPO3\CMS\Backend\Form\ElementConditionMatcher */
 		$elementConditionMatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\ElementConditionMatcher');
-		$elementConditionMatcher->setRecord($row);
-		$elementConditionMatcher->setFlexformValueKey($ffValueKey);
-		return $elementConditionMatcher->match($displayCond);
+		return $elementConditionMatcher->match($displayCond, $row, $ffValueKey);
 	}
 
 	/**
@@ -6309,6 +6307,5 @@ function ' . $evalData . '(value) {
 	}
 
 }
-
 
 ?>
