@@ -845,7 +845,7 @@ Would you like to save now in order to refresh the display?</source>
 				<source>The encryption key is not set. Set it in the %sBasic Configuration section%s of the Install Tool.</source>
 			</trans-unit>
 			<trans-unit id="warning.install_update" xml:space="preserve">
-				<source>This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the %sUpdate Wizard%s section of the Install Tool to see how TYPO3 would change.</source>
+				<source>This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the Update Wizard section of the %sInstall Tool%s to see how TYPO3 would change.</source>
 			</trans-unit>
 			<trans-unit id="warning.header" xml:space="preserve">
 				<source>Important Notice!</source>
