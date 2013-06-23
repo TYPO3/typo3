@@ -111,7 +111,6 @@ class Check {
 		foreach ($this->requiredPhpExtensions as $extension) {
 			$statusArray[] = $this->checkRequiredPhpExtension($extension);
 		}
-		$statusArray[] = $this->checkMailCapabilities();
 		$statusArray[] = $this->checkGdLibTrueColorSupport();
 		$statusArray[] = $this->checkGdLibGifSupport();
 		$statusArray[] = $this->checkGdLibJpgSupport();
@@ -823,89 +822,6 @@ class Check {
 		} else {
 			$status = new Status\OkStatus();
 			$status->setTitle('PHP extension ' . $extension . ' loaded');
-		}
-		return $status;
-	}
-
-	/**
-	 * Check smtp settings
-	 *
-	 * @return Status\ErrorStatus|Status\OkStatus|Status\WarningStatus
-	 */
-	protected function checkMailCapabilities() {
-		if ($this->isWindowsOs()) {
-			$smtpIni = ini_get('SMTP');
-			$brokenSmtp = FALSE;
-			$smtpIpAddress = '';
-			if (!$this->isValidIp($smtpIni)) {
-				if (!$this->isValidIp(@gethostbyname($smtpIni))) {
-					$brokenSmtp = TRUE;
-				} else {
-					$smtpIpAddress = @gethostbyname($smtpIni);
-				}
-			} else {
-				$smtpIpAddress = $smtpIni;
-			}
-
-			$smtpPortIni =  intval(ini_get('smtp_port'));
-			$brokenSmtpPort = FALSE;
-			if (intval($smtpPortIni) < 1 || intval($smtpPortIni) > 65535) {
-				$brokenSmtpPort = TRUE;
-			}
-
-			if ($brokenSmtp || $brokenSmtpPort) {
-				$status = new Status\ErrorStatus();
-				$status->setTitle('Mail configuration is not set correctly');
-				$status->setMessage(
-					'PHP mail() function requires SMTP and smtp_port to have' .
-					' correct values on Windows. If installation is completed,' .
-					' the mail system can be tested in the install tool.'
-				);
-			} elseif ($smtpIpAddress === '127.0.0.1' || $smtpIpAddress === '::1') {
-				$status = new Status\WarningStatus();
-				$status->setTitle('Mail is configured, potential problem exists');
-				$status->setMessage(
-					'smtp=' . $smtpIni . ' - This server! Are you sure it runs SMTP server?' .
-					' If installation is completed, the mail system can be tested in the install tool.'
-				);
-			} else {
-				$status = new Status\OkStatus();
-				$status->setTitle('Mail is configured');
-				$status->setMessage(
-					'smtp=' . $smtpIni . ', smtp_port=' . ini_get('smtp_port') . '.' .
-					' Values for mail setup look ok. If installation is completed,' .
-					' the mail system can be tested in the install tool. '
-				);
-			}
-		} elseif (!ini_get('sendmail_path')) {
-			$status = new Status\WarningStatus();
-			$status->setTitle('PHP sendmail_path not defined');
-			$status->setMessage(
-				'This may be critical to TYPO3\'s use of the mail() function.' .
-				' Your setup is rather uncommon. If installation is completed, the' .
-				' mail system can be tested in the install tool.'
-			);
-		} else {
-			list($mailBinary) = explode(' ', ini_get('sendmail_path'));
-			if (!@is_executable($mailBinary)) {
-				$status = new Status\ErrorStatus();
-				$status->setTitle('Mail program not found or not executable');
-				$status->setMessage(
-					'sendmail_path = ' . ini_get('sendmail_path') .
-					' This may be critical to TYPO3\'s use of the mail() function. Please' .
-					' be sure that the mail() function in your php-installation works.  If' .
-					' installation is completed, the mail system can be tested in the install tool.'
-				);
-			} else {
-				$status = new Status\OkStatus();
-				$status->setTitle('PHP sendmail path given');
-				$status->setMessage(
-					'sendmail_path = ' . ini_get('sendmail_path') . '.' .
-					' This setting is crucial for TYPO3\'s use of the mail() function. The' .
-					' current value looks fine. The mail system can be tested in the' .
-					' install tool if the installation is completed.'
-				);
-			}
 		}
 		return $status;
 	}
