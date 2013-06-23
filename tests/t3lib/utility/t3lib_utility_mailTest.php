@@ -31,29 +31,24 @@
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class t3lib_utility_mailTest extends tx_phpunit_testcase {
+
 	/**
-	 * backed-up TYPO3_CONF_VARS SC_OPTIONS
+	 * Enable backup of global and system variables
+	 *
+	 * @var boolean
+	 */
+	protected $backupGlobals = TRUE;
+
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
 	 *
 	 * @var array
 	 */
-	private $scOptionsBackup = array();
-
-	/**
-	 * backed-up T3_VAR callUserFunction
-	 *
-	 * @var array
-	 */
-	private $callUserFunctionBackup = array();
-
-	public function setUp() {
-		$this->scOptionsBackup = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'];
-		$this->callUserFunctionBackup = $GLOBALS['T3_VAR']['callUserFunction'];
-	}
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	public function tearDown() {
 		t3lib_div::purgeInstances();
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] = $this->scOptionsBackup;
-		$GLOBALS['T3_VAR']['callUserFunction'] = $this->callUserFunctionBackup;
 	}
 
 
@@ -65,10 +60,13 @@ class t3lib_utility_mailTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function mailCallsHook() {
+		$GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'] = 'Unit Test';
+		$GLOABLS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] = 'unittest@example.org';
 		$to = 'john@example.com';
 		$subject = 'Good news everybody!';
 		$messageBody = 'The hooks works!';
-		$additionalHeaders = 'Reply-to: jane@example.com';
+		$additionalHeaders = 'Reply-to: jane@example.com' . LF .
+			'From: Unit Test <unittest@example.org>';
 		$additionalParameters = '-f postmaster@example.com';
 
 		$mockMailer = $this->getMock('mockMailer', array('mail'));
