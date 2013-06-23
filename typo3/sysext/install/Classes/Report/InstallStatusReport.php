@@ -135,7 +135,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface 
 		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version(TYPO3_branch)) {
 			$value = $GLOBALS['LANG']->getLL('status_updateIncomplete');
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
-			$url = 'install/index.php?redirect_url=index.php' . urlencode('?TYPO3_INSTALL[type]=update');
+			$url = 'sysext/install/Start/Install.php?install[action]=updateWizard&install[context]=backend&install[controller]=tool';
 			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_update'), '<a href="' . $url . '">', '</a>');
 		}
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_remainingUpdates'), $value, $message, $severity);
