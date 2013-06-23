@@ -5960,9 +5960,7 @@ function ' . $evalData . '(value) {
 		GeneralUtility::logDeprecatedFunction();
 		/** @var $elementConditionMatcher \TYPO3\CMS\Backend\Form\ElementConditionMatcher */
 		$elementConditionMatcher = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\ElementConditionMatcher');
-		$elementConditionMatcher->setRecord($row);
-		$elementConditionMatcher->setFlexformValueKey($ffValueKey);
-		return $elementConditionMatcher->match($displayCond);
+		return $elementConditionMatcher->match($displayCond, $row, $ffValueKey);
 	}
 
 	/**
