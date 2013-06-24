@@ -2,6 +2,7 @@ language: php
 php:
   - 5.3
   - 5.4
+  - 5.5
 
 env:
   - DB=mysql
@@ -13,7 +14,7 @@ before_script:
 # Install build dependencies
   - git clone git://github.com/typo3-ci/TYPO3-Travis-Integration.git build-environment
   - source build-environment/install-helper.sh
-  - installPhpModule igbinary
+  - if [[ "$TRAVIS_PHP_VERSION" != "5.5" ]]; then installPhpModule igbinary; fi
   - installPhpModule -y memcache
   - installPhpModule redis
   - if [[ "$TRAVIS_PHP_VERSION" == "5.3" ]]; then installPhpModule -y apc; fi
