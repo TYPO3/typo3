@@ -67,7 +67,7 @@ return array(
 					array('', 0)
 				),
 				'foreign_table' => 'sys_category',
-				'foreign_table_where' => 'AND sys_category.uid=###REC_FIELD_l10n_parent### AND sys_category.sys_language_uid IN (-1,0)'
+				'foreign_table_where' => 'AND sys_category.uid=###REC_FIELD_l10n_parent### AND sys_language_uid = 0'
 			)
 		),
 		'l10n_diffsource' => array(
