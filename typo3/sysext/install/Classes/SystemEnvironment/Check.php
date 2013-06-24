@@ -703,7 +703,7 @@ class Check {
 				$status->setMessage(
 					'suhosin.executor.include.whitelist= ' . implode(' ', $currentWhiteListArray) . '. vfs' .
 					' is currently not a hard requirement of TYPO3 CMS but tons of unit tests rely on it.' .
-					' Furthermore, vfs is likely a base for an additional compatibilyt layer in the future.' .
+					' Furthermore, vfs is likely a base for an additional compatibility layer in the future.' .
 					' A useful setting is "suhosin.executor.include.whitelist = phar vfs".'
 				);
 			} else {
