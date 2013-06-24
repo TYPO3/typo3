@@ -41,7 +41,6 @@ class LogoutController {
 	 * Performs the logout processing
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function logout() {
 		// Logout written to log
