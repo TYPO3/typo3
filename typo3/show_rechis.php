@@ -24,21 +24,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Shows information about a database or file item
  *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- * XHTML Compliant
- *
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-$BACK_PATH = '';
-require $BACK_PATH . 'init.php';
-$LANG->includeLLFile('EXT:lang/locallang_show_rechis.xlf');
+require 'init.php';
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ContentElement\\ElementHistoryController');
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+$elementHistoryController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\ContentElement\\ElementHistoryController');
+$elementHistoryController->main();
+$elementHistoryController->printContent();
 ?>

@@ -38,7 +38,6 @@ class ListFrameLoaderController {
 	 * Main content generated
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function main() {
 		$GLOBALS['TBE_TEMPLATE']->divClass = '';

@@ -109,8 +109,19 @@ class ElementInformationController {
 	protected $folderObject;
 
 	/**
-	 * Determines if table/uid point to database record or file and
-	 * if user has access to view information
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['BACK_PATH'] = '';
+		$GLOBALS['SOBE'] = $this;
+
+		$this->init();
+	}
+
+	/**
+	 * Initialization of the class
+	 * Will determine if table/uid GET vars are database record or a file and if
+	 * the user has access to view information about the item.
 	 *
 	 * @return void
 	 */

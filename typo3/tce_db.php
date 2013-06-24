@@ -31,24 +31,16 @@
  * that manipulates all information in the database!!
  * For syntax and API information, see the document 'TYPO3 Core APIs'
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 require 'init.php';
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\SimpleDataHandlerController');
-$SOBE->init();
+$simpleDataHandlerController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\SimpleDataHandlerController');
 
-// Include files?
-foreach ($SOBE->include_once as $INC_FILE) {
-	include_once $INC_FILE;
-}
 $formprotection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
 if ($formprotection->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formToken'), 'tceAction')) {
-	$SOBE->initClipboard();
-	$SOBE->main();
+	$simpleDataHandlerController->initClipboard();
+	$simpleDataHandlerController->main();
 }
-$SOBE->finish();
+$simpleDataHandlerController->finish();
 ?>
