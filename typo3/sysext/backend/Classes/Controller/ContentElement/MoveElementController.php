@@ -96,6 +96,15 @@ class MoveElementController {
 	public $content;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
+		$GLOBALS['SOBE'] = $this;
+		$this->init();
+	}
+
+	/**
 	 * Constructor, initializing internal variables.
 	 *
 	 * @return void

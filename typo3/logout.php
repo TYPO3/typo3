@@ -24,6 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Logout script for the backend
  * This script saves the interface positions and calls the closeTypo3Windows in the frameset
@@ -32,7 +33,6 @@
  */
 require 'init.php';
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\LogoutController');
-$SOBE->logout();
+$logoutController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\LogoutController');
+$logoutController->logout();
 ?>

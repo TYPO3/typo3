@@ -124,6 +124,14 @@ class SimpleDataHandlerController {
 	public $tce;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['SOBE'] = $this;
+  		$this->init();
+	}
+
+	/**
 	 * Initialization of the class
 	 *
 	 * @return void

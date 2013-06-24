@@ -138,6 +138,13 @@ class LoginController {
 	protected $signalSlotDispatcher;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->init();
+	}
+
+	/**
 	 * Initialize the login box. Will also react on a &L=OUT flag and exit.
 	 *
 	 * @return void

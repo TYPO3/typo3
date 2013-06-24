@@ -24,6 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Gateway for TCE (TYPO3 Core Engine) file-handling through POST forms.
  * This script serves as the fileadministration part of the TYPO3 Core Engine.
@@ -31,15 +32,11 @@
  *
  * For syntax and API information, see the document 'TYPO3 Core APIs'
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require_once 'init.php';
+require 'init.php';
 
-// Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\FileController');
-$SOBE->init();
-$SOBE->main();
-$SOBE->finish();
+$fileController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\FileController');
+$fileController->main();
+$fileController->finish();
 ?>

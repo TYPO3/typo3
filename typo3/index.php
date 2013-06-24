@@ -24,22 +24,16 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Login-screen of TYPO3.
- *
- * Revised for TYPO3 3.6 December/2003 by Kasper Skårhøj
- * XHTML compliant
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 define('TYPO3_PROCEED_IF_NO_USER', 1);
 require 'init.php';
 
-/**
- * @var $SOBE \TYPO3\CMS\Backend\Controller\LoginController
- */
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\LoginController');
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+$loginController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\LoginController');
+$loginController->main();
+$loginController->printContent();
 ?>
